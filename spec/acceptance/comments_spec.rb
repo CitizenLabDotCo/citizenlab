@@ -10,27 +10,118 @@ resource "Comments" do
     header "Content-Type", "application/json"
     @project = create(:continuous_project, with_permissions: true)
     @idea = create(:idea, project: @project)
-    @comments = ['published','deleted'].map{|ps| create(:comment, idea: @idea, publication_status: ps)}
   end
 
   get "web_api/v1/ideas/:idea_id/comments" do
     with_options scope: :page do
       parameter :number, "Page number"
+      parameter :size, "Number of top-level comments per page. The response will include 2 to 5 child comments per top-level comment, so expect to receive more"
+    end
+    parameter :sort, "Either new, -new, upvotes_count or -upvotes_count. Defaults to -new. Only applies to the top-level comments, children are always returned chronologically."
+
+    describe do
+      before do
+        @c1 = create(:comment, idea: @idea)
+        @c2 = create(:comment, idea: @idea)
+        @c1sub1 = create(:comment, parent: @c2, idea: @idea)
+        @c1sub2 = create(:comment, parent: @c2, idea: @idea)
+        @c1sub3 = create(:comment, parent: @c2, idea: @idea)
+        @c1sub4 = create(:comment, parent: @c2, idea: @idea)
+        @c1sub5 = create(:comment, parent: @c2, idea: @idea)
+        @c3 = create(:comment, idea: @idea)
+        @c3sub1 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub2 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub3 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub4 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub5 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub6 = create(:comment, parent: @c3, idea: @idea)
+        @c4 = create(:comment, idea: @idea)
+        @c4sub1 = create(:comment, parent: @c4, idea: @idea)
+      end
+
+      let(:idea_id) { @idea.id }
+      let(:size) { 3 }
+
+      example_request "List the top-level comments of an idea" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 10
+        expect(json_response[:data].map{|d| d[:id]}).to eq([
+          @c1,
+          @c2,
+          @c1sub1,
+          @c1sub2,
+          @c1sub3,
+          @c1sub4,
+          @c1sub5,
+          @c3,
+          @c3sub5,
+          @c3sub6,
+        ].map(&:id))
+        expect(json_response[:meta][:total]).to eq 4
+      end
+    end
+
+    describe do
+      let(:idea_id) { @idea.id }
+      let(:sort) { "-upvotes_count" }
+
+      before do
+        @c1, @c2, @c3 = create_list(:comment, 3, idea: @idea)
+        create_list(:vote, 2, votable: @c3)
+        create_list(:vote, 3, votable: @c2)
+        @c3sub1, @c3sub2 = create_list(:comment, 2, parent: @c3, idea: @idea)
+        create(:vote, votable: @c3sub2)
+      end
+
+      example_request "List the top-level comments of an idea sorted by descending upvotes_count" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].map{|d| d[:id]}).to eq([
+          @c2, 
+          @c3, 
+          @c3sub1,
+          @c3sub2, 
+          @c1
+        ].map(&:id))
+      end
+    end
+
+  end
+
+  get "web_api/v1/comments/:comment_id/children" do
+    explanation "Children are always returned chronologically"
+    with_options scope: :page do
+      parameter :number, "Page number"
       parameter :size, "Number of comments per page"
     end
 
-    let(:idea_id) { @idea.id }
+    before do
+      @c = create(:comment, idea: @idea)
+      @csub1 = create(:comment, parent: @c, idea: @idea)
+      @csub2 = create(:comment, parent: @c, idea: @idea)
+      @csub3 = create(:comment, parent: @c, idea: @idea)
+      @csub4 = create(:comment, parent: @c, idea: @idea)
+      @csub5 = create(:comment, parent: @c, idea: @idea)
+      @csub6 = create(:comment, parent: @c, idea: @idea)
+      @c2 = create(:comment, idea: @idea)
+    end
 
-    example_request "List all comments of an idea" do
+    let(:comment_id) { @c.id }
+
+    example_request "List the direct child comments of a comment" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
-      published_comment_data = json_response[:data].select{|cd| cd.dig(:attributes,:publication_status) == 'published'}&.first
-      expect(published_comment_data).to be_present
-      expect(published_comment_data.dig(:attributes,:body_multiloc)).to be_present
-      deleted_comment_data = json_response[:data].select{|cd| cd.dig(:attributes,:publication_status) == 'deleted'}&.first
-      expect(deleted_comment_data).to be_present
-      expect(deleted_comment_data.dig(:attributes,:body_multiloc)).to be_blank
+      expect(json_response[:data].size).to eq 6
+      expect(json_response[:data].map{|d| d[:id]}).to eq([
+        @csub1,
+        @csub2,
+        @csub3,
+        @csub4,
+        @csub5,
+        @csub6,
+      ].map(&:id))
     end
   end
 
@@ -73,12 +164,12 @@ resource "Comments" do
   end
 
   get "web_api/v1/comments/:id" do
-    let(:id) { @comments.first.id }
+    let(:id) { create(:comment).id }
 
     example_request "Get one comment by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @comments.first.id
+      expect(json_response.dig(:data, :id)).to eq id
     end
   end
 
@@ -122,11 +213,11 @@ resource "Comments" do
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
         expect(json_response.dig(:data,:relationships,:parent,:data)).to be_nil
         expect(json_response.dig(:data,:relationships,:idea,:data,:id)).to eq idea_id
-        expect(@idea.reload.comments_count).to eq 2
+        expect(@idea.reload.comments_count).to eq 1
       end
 
       describe do
-        let(:parent_id) { @comments.first.id }
+        let(:parent_id) { create(:comment, idea: @idea).id }
 
         example_request "Create a comment on a comment" do
           expect(response_status).to eq 201
@@ -215,7 +306,7 @@ resource "Comments" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
-        expect(@idea.reload.comments_count).to eq 2
+        expect(@idea.reload.comments_count).to eq 1
       end
 
       example "Admins cannot modify a comment", document: false do

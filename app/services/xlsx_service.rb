@@ -104,8 +104,9 @@ class XlsxService
       wb.add_worksheet(name: "Comments") do |sheet|
         sheet.add_row [
           "id",
-          "body",
           "idea",
+          "body",
+          "upvotes_count",
           "author_name",
           "author_email",
           "created_at",

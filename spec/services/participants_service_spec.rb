@@ -158,11 +158,16 @@ describe ParticipantsService do
       expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 3
     end
 
-    it "gives voting a score of 1" do
+    it "gives idea voting a score of 1" do
       upvote_activity = create(:idea_upvoted_activity)
       downvote_activity = create(:idea_downvoted_activity)
       expect(service.with_engagement_scores(Activity.where(id: upvote_activity.id)).first.score).to eq 1
       expect(service.with_engagement_scores(Activity.where(id: downvote_activity.id)).first.score).to eq 1
+    end
+
+    it "gives comment voting a score of 1" do
+      upvote_activity = create(:comment_upvoted_activity)
+      expect(service.with_engagement_scores(Activity.where(id: upvote_activity.id)).first.score).to eq 1
     end
 
     it "returns 0 for non-engaging activities" do
