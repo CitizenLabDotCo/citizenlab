@@ -90,12 +90,12 @@ interface DataProps {
 
 interface InputProps {
   ideaId: string;
-  statusId: string | null;
+  statusId?: string | null;
   ideaTitle: string;
   projectId: string;
-  locale: Locale;
+  locale?: Locale;
   translateButtonClicked?: boolean;
-  onTranslationLoaded: () => void;
+  onTranslationLoaded?: () => void;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -120,7 +120,7 @@ const IdeaHeader = React.memo<Props>((props: Props) => {
       }
 
       <Header>
-        {translateButtonClicked ?
+        {locale && onTranslationLoaded && translateButtonClicked ?
           <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={ideaId}>
             {translation => {
               if (!isNilOrError(translation)) {

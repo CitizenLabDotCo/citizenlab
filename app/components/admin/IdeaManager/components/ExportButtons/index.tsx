@@ -6,7 +6,7 @@ import { requestBlob } from 'utils/request';
 import { saveAs } from 'file-saver';
 
 // analytics
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
 // components
@@ -14,40 +14,20 @@ import ExportIdeasButton from './ExportIdeasButton';
 import ExportCommentsButton from './ExportCommentsButton';
 
 const Container = styled.div`
-  &.project {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
-    margin-left: 70px;
-    padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
 
-    & > *:not(:last-child) {
-      margin-bottom: 15px;
-    }
-  }
-
-  &.all {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: flex-end;
-
-    & > *:not(:last-child) {
-      margin-right: 15px;
-    }
+  & > *:not(:last-child) {
+    margin-bottom: 20px;
   }
 `;
 
 interface Props {
-  exportType: string;
+  exportType: 'selected_ideas' | 'project' | 'all';
   exportQueryParameter: 'all' | string | string[];
   className?: string;
-}
-
-interface ITracks {
-  clickExportIdeas: () => void;
-  clickExportComments: () => void;
 }
 
 interface State {
@@ -55,9 +35,9 @@ interface State {
   exportingComments: boolean;
 }
 
-class ExportButtons extends React.PureComponent<Props & ITracks, State> {
+class ExportButtons extends React.PureComponent<Props, State> {
 
-  constructor(props: Props & ITracks) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       exportingIdeas: false,
@@ -66,7 +46,7 @@ class ExportButtons extends React.PureComponent<Props & ITracks, State> {
   }
 
   handleExportIdeas = async () => {
-    const { exportQueryParameter: queryParameter, clickExportIdeas } = this.props;
+    const { exportQueryParameter: queryParameter } = this.props;
 
     const queryParametersObject = {};
     if (isString(queryParameter) && queryParameter !== 'all') {
@@ -85,11 +65,11 @@ class ExportButtons extends React.PureComponent<Props & ITracks, State> {
     }
 
     // track this click for user analytics
-    clickExportIdeas();
+    trackEventByName(tracks.clickExportIdeas.name);
   }
 
   handleExportComments = async () => {
-    const { exportQueryParameter: queryParameter, clickExportComments } = this.props;
+    const { exportQueryParameter: queryParameter } = this.props;
 
     const queryParametersObject = {};
     if (isString(queryParameter) && queryParameter !== 'all') {
@@ -108,7 +88,7 @@ class ExportButtons extends React.PureComponent<Props & ITracks, State> {
     }
 
     // track this click for user analytics
-    clickExportComments();
+    trackEventByName(tracks.clickExportComments.name);
   }
 
   render() {
@@ -131,4 +111,4 @@ class ExportButtons extends React.PureComponent<Props & ITracks, State> {
   }
 }
 
-export default injectTracks<Props>(tracks)(ExportButtons);
+export default ExportButtons;

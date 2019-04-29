@@ -12,24 +12,26 @@ import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/
 
 // style
 import styled from 'styled-components';
-
-// typings
-import { GetProjectChildProps } from 'resources/GetProject';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 const Container = styled.div``;
 
 interface InputProps {
   ideaId: string;
-  project: GetProjectChildProps;
   className?: string;
 }
 
 interface DataProps {
+  idea: GetIdeaChildProps;
+  project: GetProjectChildProps;
   permission: GetPermissionChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  className?: string;
+}
 
 interface State {}
 
@@ -64,6 +66,8 @@ export class OfficialFeedback extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  project: ({ idea, render }) => !isNilOrError(idea) ? <GetProject id={idea.relationships.project.data.id} >{render}</GetProject> : null,
   permission: ({ project, render }) => !isNilOrError(project) ? <GetPermission item={project} action="moderate" >{render}</GetPermission> : null,
   officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks ideaId={ideaId}>{render}</GetOfficialFeedbacks>
 });
