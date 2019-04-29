@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { get } from 'lodash-es';
 import { Select } from 'semantic-ui-react';
 import { IOption } from 'typings';
 
@@ -23,7 +24,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
-import { get } from 'lodash';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;

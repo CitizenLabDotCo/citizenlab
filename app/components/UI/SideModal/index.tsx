@@ -298,12 +298,14 @@ export default class SideModal extends React.PureComponent<Props, State> {
     ) : undefined);
 
     return ReactDOM.createPortal(
-      <TransitionGroup
-        tabIndex="-1"
-        component="aside"
-      >
-        {element}
-      </TransitionGroup>,
+      (
+        <TransitionGroup
+          tabIndex="-1"
+          component="aside"
+        >
+          {element}
+        </TransitionGroup>
+      ),
       document.body
     );
   }
