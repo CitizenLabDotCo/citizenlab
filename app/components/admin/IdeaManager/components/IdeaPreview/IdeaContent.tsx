@@ -26,6 +26,7 @@ import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResou
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetIdeaStatus, { GetIdeaStatusChildProps } from 'resources/GetIdeaStatus';
 import { deleteIdea } from 'services/ideas';
 
 // i18n
@@ -41,6 +42,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
+import GetLocale from 'resources/GetLocale';
 
 const Row = styled.div`
   display: flex;
@@ -197,6 +199,7 @@ interface DataProps {
   ideaImages: GetIdeaImagesChildProps;
   ideaFiles: GetResourceFilesChildProps;
   tenant: GetTenantChildProps;
+  ideaStatus: GetIdeaStatusChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -239,7 +242,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
   }
 
   render() {
-    const { idea, localize, ideaImages, ideaFiles, tenant, handleClickEdit, intl: { formatMessage } } = this.props;
+    const { idea, localize, ideaImages, ideaFiles, ideaStatus, tenant, handleClickEdit, intl: { formatMessage } } = this.props;
     const { showMap } = this.state;
     if (!isNilOrError(idea)) {
       const ideaTitle = localize(idea.attributes.title_multiloc);
@@ -277,6 +280,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
           <Content>
             <IdeaHeader
               ideaId={idea.id}
+              statusId={ideaStatus ? ideaStatus.id : null}
               ideaTitle={ideaTitle}
               projectId={idea.relationships.project.data.id}
             />
@@ -371,7 +375,9 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
-  tenant: <GetTenant />
+  ideaStatus: ({ ideaId, render }) => <GetIdeaStatus id={ideaId}>{render}</GetIdeaStatus>,
+  tenant: <GetTenant />,
+  locale: <GetLocale />
 });
 
 const IdeaContentWithHOCs = injectIntl(injectLocalize(IdeaContent));
