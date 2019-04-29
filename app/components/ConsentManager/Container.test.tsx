@@ -75,7 +75,8 @@ describe('<ConsentManager />', () => {
           advertising: null,
           functional: null
         }}
-      />);
+      />
+    );
     expect(wrapper).toMatchSnapshot();
   });
   it('renders correctly when there is no new destination', () => {
@@ -94,7 +95,8 @@ describe('<ConsentManager />', () => {
           advertising: true,
           functional: false
         }}
-      />);
+      />
+    );
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -114,7 +116,8 @@ describe('<ConsentManager />', () => {
           advertising: null,
           functional: null
         }}
-      />);
+      />
+    );
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -134,7 +137,8 @@ describe('<ConsentManager />', () => {
           advertising: null,
           functional: null
         }}
-      />);
+      />
+    );
     wrapper.find('.e2e-accept-cookies-btn').find('button').simulate('click');
     expect(saveConsent).toBeCalled();
     expect(setPreferences).not.toBeCalled();
@@ -156,7 +160,8 @@ describe('<ConsentManager />', () => {
           advertising: null,
           functional: null
         }}
-      />);
+      />
+    );
     wrapper.find('.integration-open-modal').find('button').simulate('click');
     expect(wrapper.find('Modal').prop('opened')).toBeTruthy();
   });
@@ -176,7 +181,8 @@ describe('<ConsentManager />', () => {
           advertising: null,
           functional: null
         }}
-      />);
+      />
+    );
     wrapper.find('Banner').find('.integration-button-close').find('button').simulate('click');
     expect(saveConsent).toBeCalled();
     expect(setPreferences).not.toBeCalled();
@@ -198,7 +204,8 @@ describe('<ConsentManager />', () => {
           advertising: null,
           functional: null
         }}
-      />);
+      />
+    );
     wrapper.find('.integration-open-modal').find('button').simulate('click');
     wrapper.find('Modal').find('.e2e-modal-close-button').find('button').simulate('click');
     expect(wrapper.find('Modal').prop('opened')).toBeFalsy();
@@ -219,7 +226,8 @@ describe('<ConsentManager />', () => {
           advertising: null,
           functional: null
         }}
-      />);
+      />
+    );
     wrapper.find('.integration-open-modal').find('button').simulate('click');
     wrapper.find('Modal').find('.integration-cancel').find('button').simulate('click');
     expect(wrapper.find('Modal').prop('opened')).toBeFalsy();
@@ -240,7 +248,8 @@ describe('<ConsentManager />', () => {
           advertising: null,
           functional: null
         }}
-      />);
+      />
+    );
     wrapper.find('.integration-open-modal').find('button').simulate('click');
     wrapper.find('Modal').find('.integration-cancel').find('button').simulate('click');
     expect(wrapper.find('Modal').prop('opened')).toBeTruthy();
@@ -262,7 +271,8 @@ describe('<ConsentManager />', () => {
           advertising: null,
           functional: null
         }}
-      />);
+      />
+    );
     expect(wrapper.instance().validate()).toBeFalsy();
   });
   it('is valid when when no field is empty', () => {
@@ -281,7 +291,8 @@ describe('<ConsentManager />', () => {
           advertising: false,
           functional: true
         }}
-      />);
+      />
+    );
     expect(wrapper.instance().validate()).toBeTruthy();
   });
 });
