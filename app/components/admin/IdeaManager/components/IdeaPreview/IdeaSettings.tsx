@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { get } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -28,12 +29,11 @@ import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaSta
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { GetIdeasChildProps } from 'resources/GetIdeas';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
-import { GetIdeasChildProps } from 'resources/GetIdeas';
-import { get } from 'lodash';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
