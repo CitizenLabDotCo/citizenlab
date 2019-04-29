@@ -16,6 +16,7 @@ import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
+import UserComments from './UserComments';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -101,7 +102,9 @@ class UsersShowPage extends PureComponent<Props, State> {
               </UserIdeas>
             }
             {currentTab === 'comments' &&
-              'hi'
+              <UserComments
+                userId={user.id}
+              />
             }
             </StyledContentContainer>
 
