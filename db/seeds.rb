@@ -484,6 +484,11 @@ if Apartment::Tenant.current == 'localhost'
         moderator.add_role 'project_moderator', project_id: project.id
         moderator.save!
        end
+
+      if rand(5) == 0 
+        project.default_assignee = User.admin.or(User.project_moderator(project.id)).shuffle.first
+        project.save!
+      end
     end
 
 
@@ -513,7 +518,8 @@ if Apartment::Tenant.current == 'localhost'
         created_at: created_at,
         location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
-        budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1)
+        budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1),
+        assignee: rand(5) == 0 ? User.admin.or(User.project_moderator(project.id)).shuffle.first : nil
       })
 
       LogActivityJob.perform_later(idea, 'created', idea.author, idea.created_at.to_i)

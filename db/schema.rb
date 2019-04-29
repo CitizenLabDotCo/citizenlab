@@ -298,6 +298,7 @@ ActiveRecord::Schema.define(version: 2019_03_25_155516) do
     t.integer "budget"
     t.integer "baskets_count", default: 0, null: false
     t.integer "official_feedbacks_count", default: 0, null: false
+    t.uuid "assignee_id"
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
@@ -530,6 +531,7 @@ ActiveRecord::Schema.define(version: 2019_03_25_155516) do
     t.integer "ordering"
     t.integer "max_budget"
     t.integer "comments_count", default: 0, null: false
+    t.uuid "default_assignee_id"
     t.index ["created_at"], name: "index_projects_on_created_at", order: :desc
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -669,6 +671,7 @@ ActiveRecord::Schema.define(version: 2019_03_25_155516) do
   add_foreign_key "idea_images", "ideas"
   add_foreign_key "ideas", "idea_statuses"
   add_foreign_key "ideas", "projects"
+  add_foreign_key "ideas", "users", column: "assignee_id"
   add_foreign_key "ideas", "users", column: "author_id"
   add_foreign_key "ideas_phases", "ideas"
   add_foreign_key "ideas_phases", "phases"
@@ -699,6 +702,7 @@ ActiveRecord::Schema.define(version: 2019_03_25_155516) do
   add_foreign_key "phases", "projects"
   add_foreign_key "project_files", "projects"
   add_foreign_key "project_images", "projects"
+  add_foreign_key "projects", "users", column: "default_assignee_id"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"

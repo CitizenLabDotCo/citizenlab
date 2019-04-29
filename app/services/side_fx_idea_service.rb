@@ -2,27 +2,46 @@ class SideFxIdeaService
 
   include SideFxHelper
 
+  def initialize
+    @automatic_assignment = false
+  end
+
   def before_create idea, user
-    set_phase(idea)
+    before_publish idea, user if idea.published?
   end
 
   def after_create idea, user
     if idea.published?
-      add_autovote idea
-      log_activity_jobs_after_published idea, user
+      after_publish idea, user
+    end
+  end
+
+  def before_update idea, user
+    if idea.project_id_changed?
+      unless ProjectPolicy.new(idea.assignee, idea.project).moderate?
+        idea.assignee = nil
+      end
+    end
+
+    if idea.publication_status_change == ['draft', 'published']
+      before_publish idea, user
     end
   end
 
   def after_update idea, user
     if idea.publication_status_previous_change == ['draft','published']
-      add_autovote idea
-      log_activity_jobs_after_published idea, user
+      after_publish idea, user
     elsif idea.published?
       LogActivityJob.perform_later(idea, 'changed', user, idea.updated_at.to_i)
     end
 
     if idea.idea_status_id_previously_changed?
       LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i, payload: {change: idea.idea_status_id_previous_change})
+    end
+
+    if idea.assignee_id_previously_changed?
+      initiating_user = @automatic_assignment ? nil : user
+      LogActivityJob.perform_later(idea, 'changed_assignee', initiating_user, idea.updated_at.to_i, payload: {change: idea.assignee_id_previous_change})
     end
 
     if idea.title_multiloc_previously_changed?
@@ -34,6 +53,8 @@ class SideFxIdeaService
     end
   end
 
+  def before_destroy idea, user
+  end
 
   def after_destroy frozen_idea, user
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
@@ -44,12 +65,29 @@ class SideFxIdeaService
 
   private
 
+  def before_publish idea, user
+    set_phase(idea)
+    set_assignee(idea)
+  end
+
+  def after_publish idea, user
+    add_autovote idea
+    log_activity_jobs_after_published idea, user
+  end
+
   def set_phase idea
     if idea.project&.timeline? && idea.phases.empty?
       phase = TimelineService.new.current_and_future_phases(idea.project).find do |phase|
         phase&.can_contain_ideas?
       end
       idea.phases = [phase] if phase
+    end
+  end
+
+  def set_assignee idea
+    if idea.project&.default_assignee && !idea.assignee
+      idea.assignee = idea.project.default_assignee
+      @automatic_assignment = true
     end
   end
 
