@@ -78,6 +78,10 @@ export function commentsForIdeaStream(ideaId: string, streamParams: IStreamParam
   return streams.get<IComments>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/comments`, ...streamParams });
 }
 
+export function commentsForUserStream(userId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IComments>({ apiEndpoint: `${API_PATH}/users/${userId}/comments`, ...streamParams });
+}
+
 export async function addCommentToIdea(ideaId: string,  projectId: string, authorId: string, body: { [key: string]: string }) {
   const comment = await streams.add<IComment>(`${API_PATH}/ideas/${ideaId}/comments`, {
     comment: {
