@@ -17,6 +17,7 @@ describe('Idea show page actions', () => {
         cy.visit('/ideas/controversial-idea');
         cy.acceptCookies();
       });
+
       it('asks unauthorised users to log in or sign up before they vote', () => {
         cy.get('.e2e-vote-controls-desktop').find('.e2e-ideacard-upvote-button').click();
         cy.get('.e2e-vote-controls-desktop').find('.e2e-login-button');
@@ -31,6 +32,7 @@ describe('Idea show page actions', () => {
         cy.acceptCookies();
         cy.get('#e2e-idea-show');
       });
+
       describe('Feedback', () => {
         it('saves a new feedback and deletes it', () => {
           // input
@@ -53,6 +55,7 @@ describe('Idea show page actions', () => {
           cy.get('.e2e-official-feedback-post').should('not.exist');
         });
       });
+
       describe('Comment', () => {
         it('lets authorized admins reply to comments and delete their answer', () => {
           const commentThread = cy.get('.e2e-comment-thread').first();
@@ -70,16 +73,19 @@ describe('Idea show page actions', () => {
         });
       });
     });
+
     describe('authorised peasant', () => {
       before(() => {
         cy.apiSignup(firstName, lastName, peasantEmail, peasantPassword);
       });
+
       beforeEach(() => {
         cy.login(peasantEmail, peasantPassword);
         cy.visit('/ideas/controversial-idea');
         cy.acceptCookies();
         cy.get('#e2e-idea-show');
       });
+
       describe('Vote', () => {
         it('lets authorized users vote as expected', () => {
           cy.get('.e2e-vote-controls-desktop').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
@@ -109,6 +115,7 @@ describe('Idea show page actions', () => {
           cy.get('@upvoteBtn').click().wait(1000);
         });
       });
+
       describe('Comment', () => {
         it('shows a working comment input', () => {
           const commentBody = `test${salt}`;
