@@ -108,6 +108,10 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
 `;
 
+const StyledComments = styled(Comments)`
+  margin-top: 30px;
+`;
+
 const Right = styled.div`
   flex: 2;
   position: sticky;
@@ -320,7 +324,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   ideaId={idea.id}
                 />
 
-                <Comments ideaId={idea.id} />
+                <StyledComments ideaId={idea.id} />
               </Left>
               <Right>
                 <VotePreview ideaId={idea.id}/>
