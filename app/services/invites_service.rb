@@ -19,7 +19,7 @@ class InvitesService
   end
 
   class InviteError < RuntimeError
-    attr_accessor :error_key, :row, :rows, :value, :raw_error
+    attr_accessor :error_key, :row, :rows, :value, :raw_error, :ignore
 
     def initialize error_key, options
       @error_key = error_key
@@ -27,6 +27,7 @@ class InvitesService
       @rows = options[:rows]
       @value = options[:value]
       @raw_error = options[:raw_error]
+      @ignore = options[:ignore] || false
     end
 
     def to_h
@@ -35,6 +36,7 @@ class InvitesService
       h[:rows] = rows if rows
       h[:value] = value if value
       h[:raw_error] = raw_error if raw_error
+      h[:ignore] = ignore
       h
     end
   end
@@ -73,8 +75,8 @@ class InvitesService
     after_xlsx_to_hash_array hash_array
     invites = build_invites(hash_array, default_params, inviter)
     pre_check_invites(invites)
-    if @errors.empty?
-      save_invites(invites)
+    if @errors.reject(&:ignore).empty?
+      save_invites(invites - ignored_invites(invites))
     else
       fail_now
     end
@@ -90,8 +92,8 @@ class InvitesService
     hash_array = emails.map{|e| {"email" => e}}
     invites = build_invites(hash_array, default_params, inviter)
     pre_check_invites(invites)
-    if @errors.empty?
-      save_invites(invites)
+    if @errors.reject(&:ignore).empty?
+      save_invites(invites - ignored_invites(invites))
     else
       fail_now
     end
@@ -165,17 +167,13 @@ class InvitesService
       add_error(:no_invites_specified)
       fail_now
     else
-      existing_user_emails = User.where('lower(email) IN (?)', hash_array.map{|h| h['email']&.downcase}.compact).pluck(:email).map(&:downcase)
-      invites = hash_array.select do |invite_params|
-        !(invite_params['email'] && existing_user_emails.include?(invite_params['email'].downcase))
-      end.map do |invite_params|
+      invites = hash_array.map do |invite_params|
         build_invite(invite_params, default_params, inviter)
       end
-      return [] if invites.blank?
-      invitees = invites.map(&:invitee)
       # Since invites will later be created in a single transaction, the
       # normal mechanism for generating slugs could result in non-unique
       # slugs. Therefore we generate the slugs manually
+      invitees = invites.map(&:invitee)
       invitees.zip(SlugService.new.generate_slugs(invitees){|u| u.display_name}) do |(invitee, slug)|
         if invitee.display_name.present?
           invitee.slug = slug
@@ -224,11 +222,9 @@ class InvitesService
         elsif field == :email && error_descriptor[:error] == :invalid
           add_error(:invalid_email, row: row, value: error_descriptor[:value], raw_error: e)
         elsif field == :email && error_descriptor[:error] == :taken
-          if (User.find_by_cimail(e.record.email).invite_status == 'pending')
-            add_error(:email_already_invited, row: row, value: error_descriptor[:value], raw_error: e)
-          else
-            add_error(:email_already_active, row: row, value: error_descriptor[:value], raw_error: e)
-          end
+          add_error(:email_already_active, row: row, value: error_descriptor[:value], raw_error: e, ignore: true)
+        elsif field == :email && error_descriptor[:error] == :taken_by_invite
+          add_error(:email_already_invited, row: row, value: error_descriptor[:value], raw_error: e, ignore: true)
         else
           add_error(:invalid_row, row: row, value: field, raw_error: e)
         end
@@ -256,6 +252,10 @@ class InvitesService
 
   def fail_now
     raise InvitesFailedError.new(errors: @errors)
+  end
+
+  def ignored_invites invites
+    @errors.select(&:ignore).map{|e| invites[e.row]}
   end
 
 end
