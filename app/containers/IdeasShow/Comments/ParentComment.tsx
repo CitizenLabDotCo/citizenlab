@@ -184,7 +184,7 @@ class ParentComment extends PureComponent<Props, State> {
       }
 
       return (
-        <Container className="e2e-comment-thread">
+        <Container className="e2e-parent-and-childcomments">
           <ParentCommentContainer className={`${commentDeleted && 'deleted'}`}>
             <Comment
               ideaId={idea.id}
