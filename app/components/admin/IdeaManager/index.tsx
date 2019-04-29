@@ -55,6 +55,13 @@ const TopActionBar = styled.div`
   margin-bottom: 20px;
 `;
 
+const MiddleColumnTop = styled.div`
+  transition: 200ms;
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+`;
+
 const ThreeColumns = styled.div`
   display: flex;
   margin: -10px;
@@ -75,11 +82,12 @@ const Sticky = styled.div`
 `;
 
 const MiddleColumn = styled.div`
+  flex: 1;
   transition: 200ms;
 `;
 
 const RightColumn = styled.div`
-  max-width: 260px;
+  max-width: 200px;
   display: flex;
 
   ${media.smallerThan1280px`
@@ -357,7 +365,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
               resetSelectedIdeas={this.resetSelectedIdeas}
             />
           </LeftColumn>
-          <MiddleColumn>
+          <MiddleColumnTop>
             <IdeasCount
               feedbackNeeded={feedbackNeededFilterActive}
               project={selectedProject}
@@ -367,8 +375,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
               searchTerm={searchTerm}
               assignee={assignee}
             />
-          </MiddleColumn>
-          <StyledInput icon="search" onChange={this.handleSearchChange}/>
+            <StyledInput icon="search" onChange={this.handleSearchChange}/>
+          </MiddleColumnTop>
         </ThreeColumns>
         <ThreeColumns>
           <LeftColumn>
