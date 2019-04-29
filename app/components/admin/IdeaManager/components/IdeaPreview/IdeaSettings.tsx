@@ -33,6 +33,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 import { GetIdeasChildProps } from 'resources/GetIdeas';
+import { get } from 'lodash';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -208,7 +209,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   statuses: <GetIdeaStatuses/>,
-  prospectAssignees: ({ idea, render }) => !isNilOrError(idea) ? <GetUsers canModerateProject={idea.relationships.project.data.id}>{render}</GetUsers> : null
+  prospectAssignees: ({ idea, render }) => <GetUsers canModerateProject={get(idea, 'relationships.project.data.id')}>{render}</GetUsers>
 });
 
 const IdeaSettingsWithHOCs = injectIntl(injectLocalize(IdeaSettings));
