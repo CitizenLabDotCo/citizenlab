@@ -1,9 +1,9 @@
 import { IUser } from 'services/users';
 
-export const makeUser = (attributes = {}) : IUser => {
+export const makeUser = (attributes = {}, id?: string) : IUser => {
   return {
     data: {
-      id: '522ae8cc-a5ed-4d31-9aa0-470904934ec6',
+      id: id ? id : '522ae8cc-a5ed-4d31-9aa0-470904934ec6',
       type: 'users',
       attributes: {
         first_name: 'Test',

@@ -128,6 +128,7 @@ export function trackPage(path: string, properties: {} = {}) {
   });
 }
 
+// Use this function, trackEvent/injectTracks will get factored out in the future
 export function trackEventByName(eventName: string, properties: {} = {}) {
   events$.next({
     properties,

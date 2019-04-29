@@ -4,6 +4,7 @@ import { isFunction } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import FocusTrap from 'focus-trap-react';
+import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -293,6 +294,8 @@ export default class Modal extends PureComponent<Props, State> {
     window.addEventListener('popstate', this.handlePopstateEvent);
     disableBodyScroll(this.ModalContentElement);
 
+    eventEmitter.emit('modal', 'modalOpened', null);
+
     this.unlisten = clHistory.listen(this.props.close);
 
     if (this.ModalCloseButton) {
@@ -302,6 +305,7 @@ export default class Modal extends PureComponent<Props, State> {
 
   manuallyCloseModal = () => {
     this.props.close();
+    eventEmitter.emit('modal', 'modalClosed', null);
   }
 
   handlePopstateEvent = () => {
@@ -339,6 +343,7 @@ export default class Modal extends PureComponent<Props, State> {
   setCloseButtonRef = (element: HTMLButtonElement) => {
     this.ModalCloseButton = (element || null);
   }
+
   setContentRef = (element: HTMLDivElement) => {
     this.ModalContentElement = (element || null);
   }
