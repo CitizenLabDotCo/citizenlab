@@ -15,10 +15,6 @@ import InfoTooltip from 'components/admin/InfoTooltip';
 import Button from 'components/UI/Button';
 import { Top, Content, Container } from '.';
 
-// utils
-import { get, trimEnd } from 'lodash-es';
-import linkifyHtml from 'linkifyjs/html';
-
 // resources
 import IdeaBody from 'containers/IdeasShow/IdeaBody';
 import IdeaMap from 'containers/IdeasShow/IdeaMap';
@@ -41,6 +37,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
+import { get } from 'lodash-es';
 
 const Row = styled.div`
   display: flex;
@@ -109,6 +106,10 @@ const AddressWrapper = styled.div`
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
+`;
+
+const StyledComments = styled(Comments)`
+  margin-top: 30px;
 `;
 
 const Right = styled.div`
@@ -254,11 +255,6 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
 
       const ideaImageLarge = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
 
-      let ideaBody = localize(idea.attributes.body_multiloc);
-      ideaBody = trimEnd(ideaBody, '<p><br></p>');
-      ideaBody = trimEnd(ideaBody, '<p></p>');
-      ideaBody = linkifyHtml(ideaBody);
-
       const ideaLocation = (idea.attributes.location_point_geojson || null);
       const ideaAdress = (idea.attributes.location_description || null);
 
@@ -300,7 +296,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                 />
                 <IdeaBody
                   ideaId={idea.id}
-                  ideaBody={ideaBody}
+                  ideaBody={localize(idea.attributes.body_multiloc)}
                 />
                 {ideaLocation &&
                   <>
@@ -328,7 +324,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   ideaId={idea.id}
                 />
 
-                <Comments ideaId={idea.id} />
+                <StyledComments ideaId={idea.id} />
               </Left>
               <Right>
                 <VotePreview ideaId={idea.id}/>

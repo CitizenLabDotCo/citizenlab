@@ -23,6 +23,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
+import { get } from 'lodash';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
@@ -126,7 +127,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  prospectAssignees: ({ idea, render }) => !isNilOrError(idea) ? <GetUsers canModerateProject={idea.relationships.project.data.id}>{render}</GetUsers> : null
+  prospectAssignees: ({ idea, render }) => <GetUsers canModerateProject={get(idea, 'relationships.project.data.id')}>{render}</GetUsers>
 });
 
 const AssigneeSelectWithHocs = injectIntl<Props>(AssigneeSelect);
