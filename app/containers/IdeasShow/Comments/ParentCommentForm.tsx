@@ -183,7 +183,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     return (
       <Container className={className}>
         {(authUser && canComment) &&
-          <CommentContainer className={`e2e-comment-form ideaCommentForm ${focused ? 'focused' : ''}`}>
+          <CommentContainer className={`ideaCommentForm ${focused ? 'focused' : ''}`}>
             <AuthorWrapper>
               <StyledAuthor
                 authorId={authUser.id}
@@ -202,6 +202,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
 
                 <MentionsTextArea
                   id="submit-comment"
+                  className="e2e-parent-comment-form"
                   name="comment"
                   placeholder={this.placeholder}
                   rows={5}
@@ -219,7 +220,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
                 />
                 <ButtonWrapper>
                   <Button
-                    className="e2e-submit-comment"
+                    className="e2e-submit-parentcomment"
                     processing={processing}
                     icon="send"
                     onClick={this.onSubmit}
