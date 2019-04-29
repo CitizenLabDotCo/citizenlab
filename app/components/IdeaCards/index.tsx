@@ -135,6 +135,7 @@ const ViewButtons = styled.div`
 
     ${media.smallerThanMinTablet`
       margin-left: 0px;
+      margin-bottom: 15px;
     `}
   }
 `;
