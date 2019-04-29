@@ -4,11 +4,13 @@ module EmailCampaigns
     CAMPAIGN_CLASSES = [   
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,
+      Campaigns::AssigneeDigest,
       Campaigns::CommentDeletedByAdmin,   
       Campaigns::CommentMarkedAsSpam,
       Campaigns::CommentOnYourComment,
       Campaigns::CommentOnYourIdea,
       Campaigns::FirstIdeaPublished,
+      Campaigns::IdeaAssignedToYou,
       Campaigns::IdeaMarkedAsSpam,
       Campaigns::IdeaPublished,
       Campaigns::InviteAccepted,
