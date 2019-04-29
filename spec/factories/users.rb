@@ -19,7 +19,13 @@ FactoryBot.define do
 
     factory :admin do
       roles { [{type: 'admin'}] }
+      factory :super_admin do
+        sequence(:email) do |n|
+          "#{Faker::Name.first_name}.#{Faker::Name.last_name}-#{n}@citizenlab.co"
+        end
+      end
     end
+
 
     factory :moderator do
       transient do

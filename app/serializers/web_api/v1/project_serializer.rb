@@ -14,6 +14,8 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   has_one :user_basket
   has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, unless: :is_participation_context?
 
+  belongs_to :default_assignee, if: :can_moderate?
+
   def header_bg
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
@@ -80,12 +82,16 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
     TimelineService.new.timeline_active object
   end
 
+  def can_moderate?
+    ProjectPolicy.new(scope, object).moderate?
+  end
 
   private
 
   def avatars_for_project
     @avatars_for_project ||= AvatarsService.new.avatars_for_project(object, limit: 3)
   end
+
 
 
 end

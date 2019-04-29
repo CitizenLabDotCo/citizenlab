@@ -6,14 +6,12 @@ class WebApi::V1::IdeasController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   def index
-    @ideas = policy_scope(Idea).includes(:author, :topics, :areas, :phases, :idea_images, project: [:phases])
+    @ideas = policy_scope(Idea).includes(:author, :assignee, :topics, :areas, :phases, :idea_images, project: [:phases])
       .left_outer_joins(:idea_status).left_outer_joins(:idea_trending_info)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    trending_idea_service = TrendingIdeaService.new
-
-    add_common_index_filters params
+    @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
 
     if params[:sort].present? && !params[:search].present?
       @ideas = case params[:sort]
@@ -22,9 +20,9 @@ class WebApi::V1::IdeasController < ApplicationController
         when "-new"
           @ideas.order_new(:asc)
         when "trending"
-          trending_idea_service.sort_trending @ideas
+          TrendingIdeaService.new.sort_trending @ideas
         when "-trending"
-          trending_idea_service.sort_trending(@ideas).reverse
+          TrendingIdeaService.new.sort_trending(@ideas).reverse
         when "popular"
           @ideas.order_popular
         when "-popular"
@@ -63,7 +61,7 @@ class WebApi::V1::IdeasController < ApplicationController
     if current_user
       votes = Vote.where(user: current_user, votable_id: @idea_ids, votable_type: 'Idea')
       votes_by_idea_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @ideas, include: ['author', 'user_vote', 'idea_images'], vbii: votes_by_idea_id, pcs: ParticipationContextService.new
+      render json: @ideas, include: ['author', 'user_vote', 'idea_images', 'assignee'], vbii: votes_by_idea_id, pcs: ParticipationContextService.new
     else
       render json: @ideas, include: ['author', 'idea_images'], pcs: ParticipationContextService.new
     end
@@ -75,7 +73,7 @@ class WebApi::V1::IdeasController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    add_common_index_filters params
+    @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
     render json: @ideas, each_serializer: WebApi::V1::IdeaMarkerSerializer
@@ -105,15 +103,17 @@ class WebApi::V1::IdeasController < ApplicationController
 
   # insert
   def create
+    service = SideFxIdeaService.new
+
     @idea = Idea.new(permitted_attributes(Idea))
     @idea.author ||= current_user
 
-    SideFxIdeaService.new.before_create(@idea, current_user)
+    service.before_create(@idea, current_user)
 
     authorize @idea
     ActiveRecord::Base.transaction do
       if @idea.save
-        SideFxIdeaService.new.after_create(@idea, current_user)
+        service.after_create(@idea, current_user)
         render json: @idea.reload, status: :created, include: ['author','topics','areas','phases','user_vote','idea_images']
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
@@ -124,13 +124,20 @@ class WebApi::V1::IdeasController < ApplicationController
 
   # patch
   def update
+    service = SideFxIdeaService.new
+
     params[:idea][:area_ids] ||= [] if params[:idea].has_key?(:area_ids)
     params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].has_key?(:phase_ids)
+
+    @idea.assign_attributes(permitted_attributes(@idea))
+    authorize @idea
+
+    service.before_update(@idea, current_user)
     ActiveRecord::Base.transaction do
-      if @idea.update(permitted_attributes(@idea))
+      if @idea.save
         authorize @idea
-        SideFxIdeaService.new.after_update(@idea, current_user)
+        service.after_update(@idea, current_user)
         render json: @idea.reload, status: :ok, include: ['author','topics','areas','user_vote','idea_images']
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
@@ -140,9 +147,12 @@ class WebApi::V1::IdeasController < ApplicationController
 
   # delete
   def destroy
+    service = SideFxIdeaService.new
+    
+    service.before_destroy(@idea, current_user)
     idea = @idea.destroy
     if idea.destroyed?
-      SideFxIdeaService.new.after_destroy(idea, current_user)
+      service.after_destroy(idea, current_user)
       head :ok
     else
       head 500
@@ -158,27 +168,6 @@ class WebApi::V1::IdeasController < ApplicationController
   def set_idea
     @idea = Idea.find params[:id]
     authorize @idea
-  end
-
-  def add_common_index_filters params
-    @ideas = @ideas.with_some_topics(params[:topics]) if params[:topics].present?
-    @ideas = @ideas.with_some_areas(params[:areas]) if params[:areas].present?
-    @ideas = @ideas.in_phase(params[:phase]) if params[:phase].present?
-    @ideas = @ideas.where(project_id: params[:projects]) if params[:projects].present?
-    @ideas = @ideas.where(author_id: params[:author]) if params[:author].present?
-    @ideas = @ideas.where(idea_status_id: params[:idea_status]) if params[:idea_status].present?
-    @ideas = @ideas.search_by_all(params[:search]) if params[:search].present?
-    @ideas = @ideas.with_project_publication_status(params[:project_publication_status]) if params[:project_publication_status].present?
-
-    if params[:publication_status].present?
-      @ideas = @ideas.where(publication_status: params[:publication_status])
-    else
-      @ideas = @ideas.where(publication_status: 'published')
-    end
-
-    if (params[:filter_trending] == 'true') && !params[:search].present?
-      @ideas = trending_idea_service.filter_trending @ideas
-    end
   end
 
   def user_not_authorized exception

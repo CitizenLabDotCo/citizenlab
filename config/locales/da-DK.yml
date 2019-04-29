@@ -2,6 +2,8 @@ da:
   statuses:
     proposed: proposed
     proposed_description: This idea has been proposed to the city
+    viewed: viewed
+    viewed_description: This idea has been seen by someone from the city
     under_consideration: under consideration
     under_consideration_description: This idea has been taken into consideration by the city
     accepted: accepted

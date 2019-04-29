@@ -8,12 +8,12 @@ class UserPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope
+      scope.all
     end
   end
 
   def index?
-    user&.active? && user.admin?
+    user&.active? && (user.admin? || user.project_moderator?)
   end
 
   def create?
