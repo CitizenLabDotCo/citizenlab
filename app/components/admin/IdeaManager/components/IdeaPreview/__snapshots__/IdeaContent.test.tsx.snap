@@ -40,7 +40,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
           ideaId="myIdeasiD"
         />
         <IdeaBody
-          ideaBody="<p>Ea ea aut. Quasi corrupti iste. Delectus eum voluptates.</p><p>Est harum voluptates. Et fugit enim. Suscipit inventore ullam.</p><p>Eos mollitia omnis. Laudantium porro perferendis. Minus in aut."
+          ideaBody="<p>Ea ea aut. Quasi corrupti iste. Delectus eum voluptates.</p><p>Est harum voluptates. Et fugit enim. Suscipit inventore ullam.</p><p>Eos mollitia omnis. Laudantium porro perferendis. Minus in aut.</p>"
           ideaId="myIdeasiD"
         />
         <CSSTransition
