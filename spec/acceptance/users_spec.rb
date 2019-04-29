@@ -546,6 +546,7 @@ resource "Users" do
         create(:comment, author: @user)
         create(:comment)
         create(:comment, author: @user)
+        create(:comment, author: @user, publication_status: 'deleted')
         do_request
         expect(status).to eq 200
         json_response = json_parse(response_body)
