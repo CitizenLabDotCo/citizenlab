@@ -68,6 +68,8 @@ Rails.application.routes.draw do
         post "reset_password" => "reset_password#reset_password", on: :collection
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
+        get 'ideas_count', on: :member
+        get 'comments_count', on: :member
       end
 
       resources :topics, only: [:index, :show]
