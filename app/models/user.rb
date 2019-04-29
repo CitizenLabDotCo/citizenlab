@@ -12,6 +12,8 @@ class User < ApplicationRecord
     :using => { :tsearch => {:prefix => true} }
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
+  has_many :assigned_ideas, class_name: 'Idea', foreign_key: :assignee_id, dependent: :nullify
+  has_many :default_assigned_projects, class_name: 'Project', foreign_key: :default_assignee_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :votes, dependent: :nullify
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
@@ -53,8 +55,17 @@ class User < ApplicationRecord
   validate do |record|
     record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
     record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
-    if (record.email && User.where('lower(email) = lower(?)', record.email).pluck(:email).select{|email| email != record.email}.present?)
-      record.errors.add(:email, :taken, value: record.email)
+    if record.email && User.find_by_cimail(record.email).present?
+      duplicate_user = User.find_by_cimail(record.email)
+      if duplicate_user.invite_pending? && duplicate_user.id != id
+        ErrorsService.new.remove record.errors, :email, :taken, value: record.email
+        record.errors.add(:email, :taken_by_invite, value: record.email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
+      elsif duplicate_user.email != record.email
+        # We're only checking this case, as the other case is covered
+        # by the uniqueness constraint which can "cleverly" distinguish
+        # true duplicates from the record itself.
+        record.errors.add(:email, :taken, value: record.email)
+      end
     end
   end
 
@@ -140,7 +151,7 @@ class User < ApplicationRecord
   end
 
   def display_name
-    [first_name, last_name].join(" ")
+    [first_name, last_name].compact.join(" ")
   end
 
   def admin?

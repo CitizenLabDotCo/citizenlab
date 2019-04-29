@@ -19,6 +19,7 @@ class Idea < ApplicationRecord
     delta_magnitude: proc { |idea| idea.comments_count }
 
   belongs_to :author, class_name: 'User', optional: true
+  belongs_to :assignee, class_name: 'User', optional: true
 
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics
@@ -53,6 +54,7 @@ class Idea < ApplicationRecord
   validates :author_name, presence: true, unless: :draft?, on: :create
   validates :idea_status, presence: true, unless: :draft?
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
+  validate :assignee_can_moderate_project, unless: :draft?
 
   before_validation :generate_slug, on: :create
   before_validation :set_author_name
@@ -110,7 +112,17 @@ class Idea < ApplicationRecord
     .order("idea_statuses.ordering #{direction}")
   }
 
+  scope :order_random, -> {
+    modulus = RandomOrderingService.new.modulus_of_the_day
+    order("(extract(epoch from ideas.created_at) * 100)::bigint % #{modulus}")
+  }
+
   scope :published, -> {where publication_status: 'published'}
+
+  scope :feedback_needed, -> {
+    joins(:idea_status).where(idea_statuses: {code: 'proposed'})
+      .where('ideas.id NOT IN (SELECT DISTINCT(idea_id) FROM official_feedbacks)')
+  }
 
 
   def location_point_geojson
@@ -168,6 +180,17 @@ class Idea < ApplicationRecord
   def strip_title
     self.title_multiloc.each do |key, value|
       self.title_multiloc[key] = value.strip
+    end
+  end
+
+  def assignee_can_moderate_project
+    if self.assignee && self.project &&
+      !ProjectPolicy.new(self.assignee, self.project).moderate?
+      self.errors.add(
+        :assignee_id,
+        :assignee_can_not_moderate_project,
+        message: 'The assignee can not moderate the project of this idea'
+      )
     end
   end
 

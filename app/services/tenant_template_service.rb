@@ -68,6 +68,7 @@ class TenantTemplateService
       @template['models']['custom_field']              = yml_custom_fields
       @template['models']['custom_field_option']       = yml_custom_field_options
       @template['models']['topic']                     = yml_topics
+      @template['models']['user']                      = yml_users
       @template['models']['project']                   = yml_projects
       @template['models']['project_file']              = yml_project_files
       @template['models']['project_image']             = yml_project_images
@@ -75,7 +76,6 @@ class TenantTemplateService
       @template['models']['phase']                     = yml_phases
       @template['models']['phase_file']                = yml_phase_files
       @template['models']['areas_project']             = yml_areas_projects
-      @template['models']['user']                      = yml_users
       @template['models']['email_campaigns/campaigns'] = yml_campaigns
       @template['models']['basket']                    = yml_baskets
       @template['models']['event']                     = yml_events
@@ -328,6 +328,36 @@ class TenantTemplateService
     end
   end
 
+  def yml_users
+    # Roles are left out so first user to login becomes
+    # admin and because project ids of moderators would
+    # become invalid.
+    # Pending invitations are cleared out.
+
+    # TODO properly copy project moderator roles and domicile
+    User.where("invite_status IS NULL or invite_status != ?", 'pending').map do |u|
+      yml_user = { 
+        'email'                     => u.email, 
+        'password_digest'           => u.password_digest,
+        'created_at'                => u.created_at.to_s,
+        'updated_at'                => u.updated_at.to_s,
+        'remote_avatar_url'         => u.avatar_url,
+        'first_name'                => u.first_name,
+        'last_name'                 => u.last_name,
+        'locale'                    => u.locale,
+        'bio_multiloc'              => u.bio_multiloc,
+        'cl1_migrated'              => u.cl1_migrated,
+        'custom_field_values'       => u.custom_field_values.delete_if{|k,v| v.nil? || (k == 'domicile')},
+        'registration_completed_at' => u.registration_completed_at.to_s
+      }
+      if !yml_user['password_digest']
+        yml_user['password'] = SecureRandom.urlsafe_base64 32
+      end
+      store_ref yml_user, u.id, :user
+      yml_user
+    end
+  end
+
   def yml_projects
     Project.all.map do |p|
       yml_project = yml_participation_context p
@@ -439,36 +469,6 @@ class TenantTemplateService
         'area_ref'    => lookup_ref(a.area_id, :area),
         'project_ref' => lookup_ref(a.project_id, :project)
       }
-    end
-  end
-
-  def yml_users
-    # Roles are left out so first user to login becomes
-    # admin and because project ids of moderators would
-    # become invalid.
-    # Pending invitations are cleared out.
-
-    # TODO properly copy project moderator roles and domicile
-    User.where("invite_status IS NULL or invite_status != ?", 'pending').map do |u|
-      yml_user = { 
-        'email'                     => u.email, 
-        'password_digest'           => u.password_digest,
-        'created_at'                => u.created_at.to_s,
-        'updated_at'                => u.updated_at.to_s,
-        'remote_avatar_url'         => u.avatar_url,
-        'first_name'                => u.first_name,
-        'last_name'                 => u.last_name,
-        'locale'                    => u.locale,
-        'bio_multiloc'              => u.bio_multiloc,
-        'cl1_migrated'              => u.cl1_migrated,
-        'custom_field_values'       => u.custom_field_values.delete_if{|k,v| v.nil? || (k == 'domicile')},
-        'registration_completed_at' => u.registration_completed_at.to_s
-      }
-      if !yml_user['password_digest']
-        yml_user['password'] = SecureRandom.urlsafe_base64 32
-      end
-      store_ref yml_user, u.id, :user
-      yml_user
     end
   end
 
