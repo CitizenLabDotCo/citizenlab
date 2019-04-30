@@ -7,8 +7,10 @@
 - Time remaning on project card is no longer Capitalized
 - Non-admin users no longer get pushed to intercom
 - Improvements to the idea manager for IE11
+- When filtering on a project in the idea manager, the selected project is highlighted again
 - @citizenlab.cl admins can now also access churned platforms
 - The user count in the user manager now includes migrated cl1 users
+- Sending invitations will no longer fail on duplicate mixed-case email addresses
 
 ### Added
 
@@ -25,6 +27,10 @@
 - New smart group rule for users that contributed to a specific topic
 - New smart group rule for users that contributed to ideas with a specific status
 - Clear error message when an invitee does a normal sign up
+
+### Changed
+
+- The idea grid no longer shows a 'post an idea' button when there are no ideas yet
 
 ## 2019-04-24
 
