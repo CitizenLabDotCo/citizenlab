@@ -1,72 +1,72 @@
 es:
   email_campaigns:
     campaign_type_description:
-      "manual": Direct messages sent by administrators or moderators
-      "comment_on_your_comment": When someone replies to my comment
-      "comment_on_your_idea": When someone replies to my idea
-      "admin_rights_received": When I'm given admin rights
-      "comment_deleted_by_admin": When an admin deletes my comment
-      "comment_marked_as_spam": When a comment is marked as spam
-      "idea_assigned_to_you": When an idea has been assigned to me
-      "idea_marked_as_spam": When an idea is marked as spam
-      "invite_received": When someone invites me to the platform
-      "invite_reminder": When someone invited me to the platform (reminder after 3 days)
-      "invite_accepted": When someone accepts my invitation
-      "mention_in_comment": When someone mentions me in a comment
-      "mention_in_official_feedback": When someone mentions me in official feedback
-      "project_moderation_rights_received": When I'm given project moderation rights
-      "project_phase_started": When a project enters a new phase
-      "project_phase_upcoming": When a project will enter a new phase one week from now (for administrators and moderators)
-      "status_change_of_your_idea": When the status of my idea changes
-      "welcome": When I register on the platform
-      "password_reset": When I request a password reset for my account
-      "first_idea_published": When my first idea gets published
-      "idea_published": When my idea gets published
-      "new_comment_for_admin": When a new comment was written in a project I can moderate
-      "new_comment_on_commented_idea": When a new comment has been placed on an idea I commented on
-      "new_comment_on_voted_idea": When a new comment has been placed on an idea I voted for
-      "new_idea_for_admin": When an idea is published in a project I can moderate
-      "official_feedback_on_commented_idea": When a new official feedback has been placed on an idea I commented on
-      "official_feedback_on_voted_idea": When a new official feedback has been placed on an idea I voted for
-      "official_feedback_on_your_idea": When a new official feedback has been placed on my idea
-      "status_change_of_commented_idea": When the status of an idea I commented on has been changed
-      "status_change_of_voted_idea": When the status of an idea I voted for has been changed
-      "admin_digest": A weekly overview of the activity on the platform (only for administrators)
-      "moderator_digest": A weekly overview of the activity on the platform (only for moderators)
-      "assignee_digest": A weekly overview of new ideas assigned to me (only for admins and moderators)
-      "user_digest": A weekly overview of the activity on the platform (for citizens)
+      "manual": Mensajes directos enviados por administradores o moderadores
+      "comment_on_your_comment": Cuando alguien responde a mi comentario
+      "comment_on_your_idea": Cuando alguien responde a mi idea
+      "admin_rights_received": Cuando se me otorgan derechos de administración
+      "comment_deleted_by_admin": Cuando un administrador elimina mi comentario
+      "comment_marked_as_spam": Cuando un comentario se ha marcado como spam
+      "idea_assigned_to_you": Cuando se me ha asignado una idea
+      "idea_marked_as_spam": Cuando una idea es marcada como spam
+      "invite_received": Cuando alguien me invita a la plataforma
+      "invite_reminder": Cuando alguien me invitó a la plataforma (recordatorio después de 3 días)
+      "invite_accepted": Cuando alguien acepta mi invitación
+      "mention_in_comment": Cuando alguien me menciona en un comentario
+      "mention_in_official_feedback": Cuando alguien me menciona en una publicación oficial
+      "project_moderation_rights_received": Cuando me entregan derechos para moderar proyectos
+      "project_phase_started": Cuando un proyecto entra en una nueva fase
+      "project_phase_upcoming": Cuando un proyecto entrará en una nueva fase de una semana (para administradores y moderadores)
+      "status_change_of_your_idea": Cuando cambia el estatus de mi idea
+      "welcome": Cuando me registro en la plataforma
+      "password_reset": Cuándo solicito una contraseña restablecer mi cuenta
+      "first_idea_published": Cuando se publique mi primera idea
+      "idea_published": Cuando mi idea se publique
+      "new_comment_for_admin": Cuando un nuevo comentario fue escrito en un proyecto que modero
+      "new_comment_on_commented_idea": Cuando se ha escrito un nuevo comentario sobre una idea que he comentado
+      "new_comment_on_voted_idea": Cuando se ha escrito un nuevo comentario sobre una idea por la que he votado
+      "new_idea_for_admin": Cuando una idea se publica en un proyecto que puedo moderar
+      "official_feedback_on_commented_idea": Cuando se ha publicado nueva información oficial sobre una idea que he comentado
+      "official_feedback_on_voted_idea": Cuando nueva información oficial ha sido publicada en una idea por la que he votado
+      "official_feedback_on_your_idea": Cuando nueva información oficial ha sido publicada en mi idea
+      "status_change_of_commented_idea": Cuando ha cambiado el estatus de una idea que he comentado
+      "status_change_of_voted_idea": Cuando ha cambiado el estatus de una idea por la que he votado
+      "admin_digest": Resumen semanal de las actividad en la plataforma (sólo para administradores)
+      "moderator_digest": Resumen semanal de las actividad en la plataforma (sólo para moderadores)
+      "assignee_digest": Resumen semanal de nuevas ideas asignadas (sólo para administradores y moderadores)
+      "user_digest": Resumen semanal de la actividad en la plataforma (para los ciudadanos)
     admin_campaign_type_description:
-      "manual": Direct messages sent by administrators or moderators
-      "comment_on_your_comment": When a user receives a reply on their comment
-      "comment_on_your_idea": When a user receives a reply on their idea
-      "admin_rights_received": When a user is given admin rights
-      "comment_deleted_by_admin": When an admin deletes my comment
-      "comment_marked_as_spam": When a user marks a comment as spam (for administrators and moderators)
-      "idea_assigned_to_you": When an idea has been assigned to me
-      "idea_marked_as_spam": When a user marks an idea as spam (for administrators and moderators)
-      "invite_received": When a user gets invited to the platform
-      "invite_reminder": When someone invited me to the platform (reminder after 3 days)
-      "invite_accepted": When a user accepts my invitation
-      "mention_in_comment": When a user is mentioned in a comment
-      "mention_in_official_feedback": When someone mentions me in official feedback
-      "project_moderation_rights_received": When a user is given project moderation rights
-      "project_phase_started": When a project enters a new phase
-      "project_phase_upcoming": When a project will enter a new phase one week from now (for administrators and moderators)
-      "status_change_of_your_idea": When the status of my idea changes
-      "welcome": When a user registers on the platform
-      "password_reset": When a user requests a password reset
-      "first_idea_published": When a user’s first idea gets published
-      "idea_published": When my idea gets published
-      "new_comment_for_admin": When a new comment was written in a project I can moderate
-      "new_comment_on_commented_idea": When a new comment has been placed on an idea the user commented on
-      "new_comment_on_voted_idea": When a new comment has been placed on an idea the user voted for
-      "new_idea_for_admin": When an idea is published in a project I can moderate
-      "official_feedback_on_commented_idea": When a new official feedback has been placed on an idea I commented on
-      "official_feedback_on_voted_idea": When a new official feedback has been placed on an idea I voted for
-      "official_feedback_on_your_idea": When a new official feedback has been placed on my idea
-      "status_change_of_commented_idea": When the status of an idea the user commented on has been changed
-      "status_change_of_voted_idea": When the status of an idea the user voted for has been changed
-      "admin_digest": A weekly overview of the activity on the platform (only for administrators)
-      "moderator_digest": A weekly overview of the activity on the platform (only for moderators)
-      "assignee_digest": A weekly overview of new ideas assigned to me (only for admins and moderators)
-      "user_digest": A weekly overview of the activity on the platform (for citizens)
+      "manual": Mensajes directos enviados por administradores o moderadores
+      "comment_on_your_comment": Cuando un usuario recibe una respuesta a su comentario
+      "comment_on_your_idea": Cuando un usuario recibe una respuesta a su comentario
+      "admin_rights_received": Cuando a un usuario se le entregan derechos de administrador
+      "comment_deleted_by_admin": Cuando un administrador elimina mi comentario
+      "comment_marked_as_spam": Cuando un usuario marca un comentario como spam (para los administradores y moderadores)
+      "idea_assigned_to_you": Cuando se me ha asignado una idea
+      "idea_marked_as_spam": Cuando un usuario marca una idea como spam (para los administradores y moderadores)
+      "invite_received": Cuando un usuario es invitado a la plataforma
+      "invite_reminder": Cuando alguien me invitó a la plataforma (recordatorio después de 3 días)
+      "invite_accepted": Cuando un usuario acepta mi invitación
+      "mention_in_comment": Cuando un usuario es mencionado en un comentario
+      "mention_in_official_feedback": Cuando alguien me menciona en una publicación oficial
+      "project_moderation_rights_received": Cuando a un usuario se le entregan derechos de moderación del proyecto
+      "project_phase_started": Cuando un proyecto entra en una nueva fase
+      "project_phase_upcoming": Cuando un proyecto entrará en una nueva fase de una semana (para administradores y moderadores)
+      "status_change_of_your_idea": Cuando cambia el estatus de mi idea
+      "welcome": Cuando un usuario se registra en la plataforma
+      "password_reset": Cuando un usuario solicita restablecer la contraseña
+      "first_idea_published": Cuando se publica la primera idea de un usuario
+      "idea_published": Cuando mi idea sea publicada
+      "new_comment_for_admin": Cuando un nuevo comentario fue escrito en un proyecto que puedo moderar 
+      "new_comment_on_commented_idea": Cuando se ha escrito un nuevo comentario en una idea, el usuario ha comentado
+      "new_comment_on_voted_idea": Cuando se ha escrito un nuevo comentario en una idea que el usuario ha votado a favor
+      "new_idea_for_admin": Puedo moderar cuando una idea se publica en un proyecto
+      "official_feedback_on_commented_idea": Cuando nueva información oficial se ha publicado sobre una idea que he comentado
+      "official_feedback_on_voted_idea": Cuando nueva información oficial se ha publicado en una idea por la que he votado
+      "official_feedback_on_your_idea": Cuando nueva información oficial ha sido publicada en mi idea
+      "status_change_of_commented_idea": Cuando cambia de estatus una idea comentada por el usuario
+      "status_change_of_voted_idea": Cuando cambia de estatus una idea votada por el usuario
+      "admin_digest": Resumen semanal de las actividad en la plataforma (sólo para administradores)
+      "moderator_digest": Resumen semanal de las actividad en la plataforma (sólo para moderadores)
+      "assignee_digest": Resumen semanal de las actividad en la plataforma (sólo para administradores y moderadores)
+      "user_digest": Resumen semanal de las actividad en la plataforma (para ciudadanos)
