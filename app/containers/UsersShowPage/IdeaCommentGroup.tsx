@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -22,6 +22,8 @@ import { canModerate } from 'services/permissions/rules/projectPermissions';
 import Icon from 'components/UI/Icon';
 import { darken } from 'polished';
 import CommentVote from 'containers/IdeasShow/Comments/CommentVote';
+import eventEmitter from 'utils/eventEmitter';
+import { IModalInfo } from 'containers/App';
 
 const Container = styled.div`
   width: 100%;
@@ -108,7 +110,24 @@ export const reducer = (acc: ICommentData[][], current: ICommentData) => {
   }
 };
 
+export const componentName = 'containers/UsersShowPage/IdeaCommentGroup';
+
 export class IdeaCommentGroup extends PureComponent<Props> {
+
+  onIdeaLinkClick = (event: FormEvent<any>) => {
+    event.preventDefault();
+
+    const { idea } = this.props;
+
+    if (!isNilOrError(idea)) {
+      eventEmitter.emit<IModalInfo>(componentName, 'ideaCardClick', {
+        type: 'idea',
+        id: idea.id,
+        url: `/ideas/${idea.attributes.slug}`
+      });
+    }
+  }
+
   render() {
     const { idea, commentsForIdea, userId, user } = this.props;
 
@@ -118,7 +137,10 @@ export class IdeaCommentGroup extends PureComponent<Props> {
       const votingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.voting, 'enabled', false) : false);
       return ((
         <Container>
-          <IdeaLink to={`/ideas/${slug}`}>
+          <IdeaLink
+            to={`/ideas/${slug}`}
+            onClick={this.onIdeaLinkClick}
+          >
             <IdeaLinkLeft>
               <Icon name="lightBulb" />
               <T value={title_multiloc} />
