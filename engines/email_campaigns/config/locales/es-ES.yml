@@ -24,7 +24,7 @@ es:
       "idea_published": Cuando mi idea se publique
       "new_comment_for_admin": Cuando un nuevo comentario fue escrito en un proyecto que modero
       "new_comment_on_commented_idea": Cuando se ha escrito un nuevo comentario sobre una idea que he comentado
-      "new_comment_on_voted_idea": Cuando se ha escrito un nuevo comentario sobre una idea por la que he votado
+      "new_comment_on_voted_idea": Cuando se ha escrito un nuevo comentario sobre una idea por la cual he votado
       "new_idea_for_admin": Cuando una idea se publica en un proyecto que puedo moderar
       "official_feedback_on_commented_idea": Cuando se ha publicado nueva información oficial sobre una idea que he comentado
       "official_feedback_on_voted_idea": Cuando nueva información oficial ha sido publicada en una idea por la que he votado
@@ -38,7 +38,7 @@ es:
     admin_campaign_type_description:
       "manual": Mensajes directos enviados por administradores o moderadores
       "comment_on_your_comment": Cuando un usuario recibe una respuesta a su comentario
-      "comment_on_your_idea": Cuando un usuario recibe una respuesta a su comentario
+      "comment_on_your_idea": Cuando un usuario recibe una respuesta para su idea
       "admin_rights_received": Cuando a un usuario se le entregan derechos de administrador
       "comment_deleted_by_admin": Cuando un administrador elimina mi comentario
       "comment_marked_as_spam": Cuando un usuario marca un comentario como spam (para los administradores y moderadores)
