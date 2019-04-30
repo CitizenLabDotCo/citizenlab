@@ -21,6 +21,7 @@ import { Link } from 'utils/cl-router/Link';
 import T from 'components/T';
 import IdeaCommentGroup from './IdeaCommentGroup';
 import CommentHeader from 'containers/IdeasShow/Comments/CommentHeader';
+import { adopt } from 'react-adopt';
 
 const Container = styled.div`
   display: flex;
@@ -80,8 +81,12 @@ export class UsersComments extends PureComponent<Props> {
   }
 }
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetCommentsForUser userId={inputProps.userId}>
-    {comments => <UsersComments comments={comments} {...inputProps} />}
-  </GetCommentsForUser>
-));
+const Data = adopt<DataProps, InputProps>({
+  comments: ({ userId, render }) =>  <GetCommentsForUser userId={userId}>{render}</GetCommentsForUser>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <UsersComments {...inputProps} {...dataProps} />}
+  </Data>
+);
