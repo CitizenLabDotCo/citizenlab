@@ -19,26 +19,59 @@ import CommentBody from 'containers/IdeasShow/Comments/CommentBody';
 import { adopt } from 'react-adopt';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import { canModerate } from 'services/permissions/rules/projectPermissions';
+import Icon from 'components/UI/Icon';
+import { darken } from 'polished';
+import CommentVote from 'containers/IdeasShow/Comments/CommentVote';
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 20px 40px;
+  padding: 20px 40px 40px;
   background: #fff;
   &:not(:last-child) {
     margin-bottom: 20px;
   }
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
 `;
 
 const IdeaLink = styled(Link)`
-  background: ${colors.adminBackground};
+  background: ${colors.background};
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 17px;
+  svg {
+    height: 20px;
+    width: 14px;
+    margin-right: 10px;
+  }
+  &:hover, &:focus {
+    background: ${darken(.02, colors.background)};
+  }
+`;
+
+const IdeaLinkLeft = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  color: ${({ theme }) => theme.colorText};
+`;
+const IdeaLinkRight = styled.div`
+  color: ${colors.label};
+  text-decoration: underline;
+`;
+
+const StyledCommentVote = styled(CommentVote)`
+  margin-top: 15px;
 `;
 
 const CommentContainer = styled.div`
-  padding-top: 20px;
+  padding-top: 27px;
   &:not(:last-child) {
-    padding-bottom: 20px;
+    padding-bottom: 27px;
     border-bottom: 1px solid ${colors.separation};
   }
 `;
@@ -82,11 +115,17 @@ export class IdeaCommentGroup extends PureComponent<Props> {
     if (!isNilOrError(idea) && !isNilOrError(user)) {
       const { slug, title_multiloc } = idea.attributes;
       const projectId = idea.relationships.project.data.id;
+      const votingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.voting, 'enabled', false) : false);
       return ((
         <Container>
           <IdeaLink to={`/ideas/${slug}`}>
-            <T value={title_multiloc} />
-            <FormattedMessage {...messages.seeIdea} />
+            <IdeaLinkLeft>
+              <Icon name="lightBulb" />
+              <T value={title_multiloc} />
+            </IdeaLinkLeft>
+            <IdeaLinkRight>
+              <FormattedMessage {...messages.seeIdea} />
+            </IdeaLinkRight>
           </IdeaLink>
           {commentsForIdea.map(comment => {
             return (
@@ -103,9 +142,15 @@ export class IdeaCommentGroup extends PureComponent<Props> {
                   commentId={comment.id}
                   commentType="parent"
                   editing={false}
-                  moderator={false}
+                  moderator={canModerate(projectId, { data: user })}
                   onCommentSaved={nothingHappens}
                   onCancelEditing={nothingHappens}
+                />
+                <StyledCommentVote
+                  ideaId={get(comment, 'relationships.idea.data.id')}
+                  commentId={comment.id}
+                  commentType={undefined}
+                  votingEnabled={votingEnabled}
                 />
               </CommentContainer>
           );
