@@ -21,9 +21,9 @@
   - Comments are visually clearly grouped per parent comment
   - Sub-comments use @mentions to target which other subcomment they reply to
   - Comments can be sorted by time or by votes
+- Ideas can now be sorted randomly, which is the new default
 - New smart group rule for users that contributed to a specific topic
 - New smart group rule for users that contributed to ideas with a specific status
-- Ideas can now be sorted randomly, which is the new default
 - Clear error message when an invitee does a normal sign up
 
 ## 2019-04-24
