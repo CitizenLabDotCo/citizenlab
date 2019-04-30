@@ -241,7 +241,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
             {authUser && commentingEnabled && canReply &&
               <LeftActions>
                 <Separator className="first">•</Separator>
-                <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
+                <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply} className="e2e-comment-reply-button">
                   <FormattedMessage {...messages.commentReplyButton} />
                 </ReplyButton>
                 <FeatureFlag name="machine_translations">

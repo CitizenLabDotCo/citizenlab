@@ -1,4 +1,3 @@
-import { GetProjectChildProps } from 'resources/GetProject';
 import { ProcessType } from 'services/projects';
 import { ParticipationMethod, SurveyServices } from 'services/participationContexts';
 
@@ -76,4 +75,4 @@ export const getMockProject = (id: string, processType: ProcessType, participati
       data: null // IRelationship | null,
     }
   },
-} as GetProjectChildProps);
+});

@@ -270,7 +270,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
       return (
-        <Container className={className}>
+        <Container className={`${className} e2e-childcomment-form`}>
           <Form className={`${visible ? 'visible' : 'hidden'} ${focused ? 'focused' : 'blurred'}`} onSubmit={this.handleSubmit}>
             <label>
               <HiddenLabel>
@@ -280,7 +280,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
                 <TextareaWrapper>
                   <MentionsTextArea
                     name="comment"
-                    className={`e2e-reply childcommentform-${parentId}`}
+                    className={`childcommentform-${parentId}`}
                     placeholder={this.placeholder}
                     rows={smallerThanSmallTablet ? 2 : 1}
                     value={inputValue}
@@ -299,7 +299,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
                 </TextareaWrapper>
                 <ButtonWrapper className={isButtonVisible ? 'visible' : ''}>
                   <Button
-                    className="e2e-submit-comment"
+                    className="e2e-submit-childcomment"
                     processing={processing}
                     icon="send"
                     onClick={this.handleSubmit}

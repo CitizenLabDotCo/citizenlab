@@ -651,7 +651,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       localize,
       ideaImages,
       authUser,
-      project,
       className
     } = this.props;
     const {
@@ -673,6 +672,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const createdAt = idea.attributes.created_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
+      // If you're not an admin/mod, statusId can be null
       const statusId: string | null = get(idea, 'relationships.idea_status.data.id', null);
       const ideaImageLarge: string | null = get(ideaImages, '[0].attributes.versions.large', null);
       const ideaLocation = (idea.attributes.location_point_geojson || null);
@@ -798,7 +798,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 />
 
                 <StyledOfficialFeedback
-                  project={project}
                   ideaId={ideaId}
                 />
               </LeftColumn>

@@ -57,6 +57,17 @@ describe('isAdminPage', () => {
     expect(isAdminPage('/en/admin/dashboard')).toBe(true);
   });
 
+  it('returns true when testing a specific admin URL', () => {
+    // test whether URL is an admin page AND that we're at admin/projects
+    expect(isAdminPage('/en/admin/projects', 'projects')).toBe(true);
+    expect(isAdminPage('/en/admin/users/4f3da66a-f6d1-42ab-9962-3f08be4c75e5', 'users')).toBe(true);
+  });
+
+  it('returns false when testing a specific admin URL that does not match our expected page', () => {
+    // test whether URL is an admin page AND that we're at admin/ideas
+    expect(isAdminPage('/en/admin/projects', 'ideas')).toBe(false);
+  });
+
   it('returns false for an non-admin URLs', () => {
     expect(isAdminPage('/en')).toBe(false);
     expect(isAdminPage('/en/projects/choose-where-to-plant-the-tree/info')).toBe(false);
