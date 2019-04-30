@@ -37,7 +37,7 @@ const Container = styled.div`
 `;
 
 const ContainerInner = styled.div`
-  padding-top: 28px;
+  padding-top: 20px;
   padding-bottom: 25px;
   position: relative;
 
@@ -47,7 +47,6 @@ const ContainerInner = styled.div`
 
   &.lastComment {
     border-bottom: none;
-    padding-bottom: 40px;
   }
 
   &.parent {
