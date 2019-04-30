@@ -2,7 +2,7 @@ es:
   email_campaigns:
     campaign_type_description:
       "manual": Mensajes directos enviados por administradores o moderadores
-      "comment_on_your_comment": Cuando alguien responde a mi comentario
+      "comment_on_your_comment": Cuando alguien responde mi comentario
       "comment_on_your_idea": Cuando alguien responde a mi idea
       "admin_rights_received": Cuando se me otorgan derechos de administración
       "comment_deleted_by_admin": Cuando un administrador elimina mi comentario
@@ -16,10 +16,10 @@ es:
       "mention_in_official_feedback": Cuando alguien me menciona en una publicación oficial
       "project_moderation_rights_received": Cuando me entregan derechos para moderar proyectos
       "project_phase_started": Cuando un proyecto entra en una nueva fase
-      "project_phase_upcoming": Cuando un proyecto entrará en una nueva fase de una semana (para administradores y moderadores)
+      "project_phase_upcoming": Cuando un proyecto esté a una semana de entrar en una nueva fase (para administradores y moderadores)
       "status_change_of_your_idea": Cuando cambia el estatus de mi idea
       "welcome": Cuando me registro en la plataforma
-      "password_reset": Cuándo solicito una contraseña restablecer mi cuenta
+      "password_reset": Cuándo solicito restablecer la constraseña para mi cuenta
       "first_idea_published": Cuando se publique mi primera idea
       "idea_published": Cuando mi idea se publique
       "new_comment_for_admin": Cuando un nuevo comentario fue escrito en un proyecto que modero
