@@ -4,10 +4,16 @@ import { Formik } from 'formik';
 import OfficialFeedbackForm, { FormValues, formatMentionsBodyMultiloc } from './OfficialFeedbackForm';
 import { CLErrorsJSON } from 'typings';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
+
+// utils
+import { isAdminPage } from 'utils/helperUtils';
+
 interface Props {
   ideaId: string;
   className?: string;
-  // newCommentPosted: () => void;
 }
 
 interface State {}
@@ -30,6 +36,9 @@ export default class OfficialFeedbackNew extends PureComponent<Props, State> {
       setErrors(apiErrors);
       setSubmitting(false);
     }
+
+    // analytics
+    trackEventByName(tracks.officialFeedbackGiven, { location: isAdminPage(location.pathname) ? 'Admin/idea manager' : 'Citizen/idea page' });
   }
 
   renderFn = (props) => {

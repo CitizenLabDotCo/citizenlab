@@ -5,8 +5,9 @@ module.exports = function (api) {
     [
       "@babel/preset-env",
       {
-        "useBuiltIns": "entry",
-        "targets": "> 1%, last 1 version, Safari > 8, IE 11"
+        useBuiltIns: "entry",
+        corejs: 3,
+        targets: "> 1%, last 1 version, Safari > 9, IE 11"
       }
     ],
     "@babel/preset-react",

@@ -62,6 +62,10 @@ const ProjectNavbarItems = styled.ul`
   margin: 0;
   padding: 0;
   height: 58px;
+
+  ${media.smallerThanMinTablet`
+    height: 52px;
+  `}
 `;
 
 const ProjectNavbarIcon = styled(Icon)`
@@ -71,6 +75,10 @@ const ProjectNavbarIcon = styled(Icon)`
   fill: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   margin-right: 9px;
   transition: fill 100ms ease-out;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const InfoIcon = ProjectNavbarIcon.extend`
@@ -100,7 +108,7 @@ const ProjectNavbarLink = styled(Link)`
 
   &:first-of-type {
     ${media.smallerThanMinTablet`
-      margin-left: 20px;
+      margin-left: 15px;
     `};
   }
 
@@ -108,9 +116,13 @@ const ProjectNavbarLink = styled(Link)`
     margin-right: 0px;
 
     ${media.smallerThanMinTablet`
-      margin-right: 20px;
+      margin-right: 15px;
     `};
   }
+
+  ${media.smallerThanMinTablet`
+    margin-right: 35px;
+  `}
 `;
 
 const Spacer = styled.div`
@@ -187,17 +199,6 @@ class ProjectNavbar extends PureComponent<Props, State> {
     this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
   }
 
-  setRef = (ref: HTMLDivElement) => {
-    const currentPath = location.pathname;
-    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
-
-    if (ref && lastUrlSegment === 'events') {
-      setTimeout(() => {
-        ref.scrollLeft += 200;
-      }, 10);
-    }
-  }
-
   render() {
     const { project, events, phase, theme } = this.props;
 
@@ -208,6 +209,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
       if (project) {
         const projectType = project.attributes.process_type;
         const projectMethod = project.attributes.participation_method;
+        const projectPublicationStatus = project.attributes.publication_status;
         const isPBProject = (projectType === 'continuous' && project.attributes.participation_method === 'budgeting');
         const isPBPhase = (phase && phase.attributes.participation_method === 'budgeting');
         let participationContextType: 'Project' | 'Phase' | null = null;
@@ -226,7 +228,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
         }
 
         return (
-          <ProjectNavbarWrapper innerRef={this.setRef}>
+          <ProjectNavbarWrapper>
             <StyledContentContainer>
               <ProjectNavbarItems>
 
@@ -300,7 +302,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                 }
 
                 {/* Continuous Ideation Idea Button desktop */}
-                {projectType === 'continuous' && projectMethod === 'ideation' &&
+                {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
                   <StyledIdeaButton
                     projectId={project.id}
                     fullHeight={true}

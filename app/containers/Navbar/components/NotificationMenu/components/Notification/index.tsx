@@ -17,6 +17,7 @@ import OfficialFeedbackOnCommentedIdeaNotification from '../OfficialFeedbackOnCo
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
 import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification';
 import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotification';
+import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
 
 import {
   TNotificationData,
@@ -37,7 +38,8 @@ import {
   IOfficialFeedbackOnCommentedIdeaNotificationData,
   IMentionInOfficialFeedbackNotificationData,
   IProjectPhaseStartedNotificationData,
-  IProjectPhaseUpcomingNotificationData
+  IProjectPhaseUpcomingNotificationData,
+  IIdeaAssignedToYouNotificationData
 } from 'services/notifications';
 import styled from 'styled-components';
 
@@ -90,6 +92,8 @@ export default class Notification extends PureComponent<Props> {
         return <ProjectPhaseStartedNotification notification={notification as IProjectPhaseStartedNotificationData} />;
       case 'project_phase_upcoming':
         return <ProjectPhaseUpcomingNotification notification={notification as IProjectPhaseUpcomingNotificationData} />;
+      case 'idea_assigned_to_you':
+        return <IdeaAssignedToYouNotification notification={notification as IIdeaAssignedToYouNotificationData} />;
       default: return null;
     }
   }

@@ -14,13 +14,6 @@ export interface IEvent {
   };
 }
 
-interface IIdentification {
-  userId: string;
-  properties?: {
-    [key: string]: any,
-  };
-}
-
 export interface IPageChange {
   path: string;
   properties?: {
@@ -31,14 +24,13 @@ export interface IPageChange {
 const tenant$ = currentTenantStream().observable;
 const authUser$ = authUserStream().observable;
 const events$ = new Subject<IEvent>();
-const identifications$ = new Subject<IIdentification>();
 const pageChanges$ = new Subject<IPageChange>();
 
 combineLatest(tenant$, authUser$, events$).subscribe(([tenant, user, event]) => {
   if (analytics) {
     analytics.track(
       event.name,
-      addTenantInfo(event.properties, tenant.data),
+      { ...event.properties, ...tenantInfo(tenant.data) },
       { integrations: integrations(user) },
     );
   }
@@ -52,54 +44,64 @@ combineLatest(tenant$, authUser$, pageChanges$).subscribe(([tenant, user, pageCh
         path: pageChange.path,
         url: `https://${tenant.data.attributes.host}${pageChange.path}`,
         title: null,
-        ...addTenantInfo(pageChange.properties, tenant.data),
+        ...tenantInfo(tenant.data),
+        ...pageChange.properties,
       },
       { integrations: integrations(user) },
     );
   }
 });
 
-combineLatest(tenant$, authUser$, identifications$).subscribe(([tenant, user, identification]) => {
-  if (analytics) {
+combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
+  if (!analytics) return;
+
+  if (user) {
     analytics.identify(
-      identification.userId,
-      addTenantInfo(identification.properties, tenant.data),
+      user.data.id,
+      {
+        ...tenantInfo(tenant.data),
+        email: user.data.attributes.email,
+        firstName: user.data.attributes.first_name,
+        lastName: user.data.attributes.last_name,
+        createdAt: user.data.attributes.created_at,
+        avatar: user.data.attributes.avatar.large,
+        birthday: user.data.attributes.birthyear,
+        gender: user.data.attributes.gender,
+        locale: user.data.attributes.locale,
+        isSuperAdmin: isSuperAdmin(user),
+        isAdmin: isAdmin(user),
+        isProjectModerator: isProjectModerator(user),
+        highestRole: user.data.attributes.highest_role,
+      },
+      {
+        integrations: integrations(user),
+        Intercom: { hideDefaultLauncher: !isAdmin(user) }
+      } as any
+    );
+    analytics.group(
+      tenant.data.id,
+      {
+        ...tenantInfo(tenant.data),
+        name: tenant.data.attributes.name,
+        website: tenant.data.attributes.settings.core.organization_site,
+        avatar: tenant.data.attributes.logo && tenant.data.attributes.logo.medium,
+        tenantLocales: tenant.data.attributes.settings.core.locales,
+      },
       { integrations: integrations(user) },
     );
-
-    if (tenant) {
-      analytics.group(
-        tenant.data.id,
-        addTenantInfo(
-          {
-            name: tenant.data.attributes.name,
-            website: tenant.data.attributes.settings.core.organization_site,
-            avatar: tenant.data.attributes.logo && tenant.data.attributes.logo.medium,
-            tenantLocales: tenant.data.attributes.settings.core.locales,
-          },
-          tenant.data
-        ),
-        { integrations: integrations(user) },
-      );
-    }
+  } else { // no user
+    analytics.identify(
+      tenantInfo(tenant.data),
+      {
+        integrations: integrations(user),
+        Intercom: { hideDefaultLauncher: true }
+      } as any
+    );
   }
 });
 
-authUser$.subscribe((authUser) => {
-  if (analytics) {
-    const userId = (authUser ? authUser.data.id : '');
-    const hideMessenger = (authUser ? !isAdmin(authUser) : true);
-    analytics.identify(userId, {}, {
-      Intercom: {
-        hideDefaultLauncher: hideMessenger
-      }
-    } as any);
-  }
-});
-
-export function addTenantInfo(properties, tenant: ITenantData) {
+export function tenantInfo(tenant: ITenantData) {
   return {
-    ...properties,
     tenantId: tenant && tenant.id,
     tenantName: tenant && tenant.attributes.name,
     tenantHost: tenant && tenant.attributes.host,
@@ -110,7 +112,6 @@ export function addTenantInfo(properties, tenant: ITenantData) {
 
 export function integrations(user: IUser | null) {
   const output = {
-    All: true,
     Intercom: false,
   };
   if (user) {
@@ -127,26 +128,7 @@ export function trackPage(path: string, properties: {} = {}) {
   });
 }
 
-export function trackIdentification(user: IUser) {
-  identifications$.next({
-    userId: user.data.id,
-    properties: {
-      email: user.data.attributes.email,
-      firstName: user.data.attributes.first_name,
-      lastName: user.data.attributes.last_name,
-      createdAt: user.data.attributes.created_at,
-      avatar: user.data.attributes.avatar.large,
-      birthday: user.data.attributes.birthyear,
-      gender: user.data.attributes.gender,
-      locale: user.data.attributes.locale,
-      isSuperAdmin: isSuperAdmin(user),
-      isAdmin: isAdmin(user),
-      isProjectModerator: isProjectModerator(user),
-      highestRole: user.data.attributes.highest_role,
-    },
-  });
-}
-
+// Use this function, trackEvent/injectTracks will get factored out in the future
 export function trackEventByName(eventName: string, properties: {} = {}) {
   events$.next({
     properties,

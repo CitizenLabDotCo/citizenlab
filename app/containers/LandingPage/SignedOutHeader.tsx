@@ -42,15 +42,15 @@ const Header = styled.div`
   justify-content: center;
 
   ${media.desktop`
-    min-height: 500px;
+    min-height: 450px;
   `}
 
   ${media.smallerThanMaxTablet`
-    min-height: 400px;
+    min-height: 350px;
   `}
 
   ${media.smallerThanMinTablet`
-    min-height: 350px;
+    min-height: 300px;
   `}
 `;
 
@@ -89,7 +89,10 @@ const HeaderContent = styled.div`
   width: 100%;
   height: 100%;
   max-width: ${(props) => props.theme.maxPageWidth + 60}px;
-  padding: 35px 30px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-left: 30px;
+  padding-right: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -109,8 +112,7 @@ const HeaderTitle: any = styled.h1`
   padding: 0;
 
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxxl}px;
-    line-height: 40px;
+    font-size: ${fontSizes.xxxl}px;
   `}
 `;
 

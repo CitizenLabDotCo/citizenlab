@@ -4,6 +4,11 @@ import { Label, Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import GetTopics from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+
+const StyledLabel = styled(Label)`
+  white-space: nowrap;
+`;
 
 interface Props {
   selectedTopics: string[];
@@ -30,7 +35,7 @@ export default class TopicsSelector extends React.PureComponent<Props> {
                 if (isNilOrError(topic)) return null;
 
                 return (
-                  <Label
+                  <StyledLabel
                     key={topic.id}
                     color="teal"
                     basic={true}
@@ -40,7 +45,7 @@ export default class TopicsSelector extends React.PureComponent<Props> {
                       name="delete"
                       onClick={this.handleTopicDelete(topic.id)}
                     />
-                  </Label>
+                  </StyledLabel>
                 );
               })}
             </>

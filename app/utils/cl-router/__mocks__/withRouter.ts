@@ -7,7 +7,7 @@ export const mockWithRouterProps : WithRouterProps = {
     query: '',
     state: '',
     action: 'PUSH',
-    key: '',
+    key: ''
   },
   router: {
     push: () => null,

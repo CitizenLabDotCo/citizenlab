@@ -11,10 +11,11 @@ import { Locale, Multiloc } from 'typings';
 import OfficialFeedbackEdit from './Form/OfficialFeedbackEdit';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import T from 'components/T';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // styles
 import { colors, fontSizes } from 'utils/styleUtils';
-import { transparentize, darken } from 'polished';
+import { lighten } from 'polished';
 
 // i18n
 import messages from './messages';
@@ -35,54 +36,28 @@ const Container = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
-  padding: 17px 34px 27px 34px;
+  padding: 30px;
+  padding-top: 35px;
   margin-bottom: 10px;
-`;
 
-const PostContainer = styled(Container)`
-  background-color: rgba(236, 90, 36, 0.06);
-
-  a {
-    color: ${colors.clBlueDark};
-
-    &.mention {
-      background: ${transparentize(0.94, colors.clBlueDark)};
-      padding-left: 4px;
-      padding-right: 4px;
-
-      &:hover {
-        background: ${transparentize(0.8, colors.clBlueDark)};
-      }
-    }
-
-    &:not(.mention){
-      text-decoration: underline;
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-      word-break: break-all;
-      word-break: break-word;
-      hyphens: auto;
-
-      &:hover {
-        text-decoration: underline;
-        color: ${darken(0.15, colors.clBlueDark)};
-      }
-    }
-
-    &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
-    }
+  &.last {
+    margin-bottom: 0;
   }
 `;
 
+const PostContainer = styled(Container)`
+  white-space: pre-line;
+  background: ${lighten(0.545, colors.clRedError)};
+  background: rgba(236, 90, 36, 0.06);
+  position: relative;
+`;
+
 const EditFormContainer = styled(Container)`
-  background-color: ${colors.adminBackground};
+  background: ${colors.adminBackground};
 `;
 
 const Body = styled.div`
-  line-height: 23px;
-  margin-bottom: 16px;
-  white-space: pre-line;
+  margin-bottom: 30px;
 `;
 
 const Footer = styled.div`
@@ -91,23 +66,28 @@ const Footer = styled.div`
 `;
 
 const Author = styled.span`
-  font-weight: 600;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 500;
 `;
 
 const DatePosted = styled.span`
   color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  font-weight: 300;
 `;
 
 const DateEdited = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
+  font-weight: 300;
   font-style: italic;
-  margin-top: 10px;
 `;
 
 const StyledMoreActionsMenu = styled(MoreActionsMenu)`
-  align-self: flex-end;
-  margin-bottom: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 `;
 
 interface DataProps {
@@ -118,6 +98,7 @@ interface DataProps {
 interface InputProps {
   editingAllowed: boolean | null;
   officialFeedbackPost: IOfficialFeedbackData;
+  last: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -170,7 +151,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
   }
 
   render() {
-    const { editingAllowed, officialFeedbackPost, locale, tenantLocales } = this.props;
+    const { editingAllowed, officialFeedbackPost, locale, tenantLocales, last } = this.props;
     const { showEditForm } = this.state;
     const { body_multiloc, author_multiloc, created_at, updated_at } = officialFeedbackPost.attributes;
 
@@ -186,13 +167,22 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
     }
 
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales)) {
+      const formattedDate = (
+        <FormattedDate
+          value={created_at}
+          year="numeric"
+          month="long"
+          day="numeric"
+        />
+      );
+
       return (
-        <PostContainer key={officialFeedbackPost.id} className="e2e-official-feedback-post">
+        <PostContainer key={officialFeedbackPost.id} className={`e2e-official-feedback-post ${last ? 'last' : ''}`}>
           {editingAllowed &&
             <StyledMoreActionsMenu ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)} actions={this.getActions(officialFeedbackPost.id)} />
           }
 
-          <>
+          <QuillEditedContent>
             <Body>
               <div dangerouslySetInnerHTML={{ __html: this.getPostBodyText(body_multiloc, locale, tenantLocales) }} />
             </Body>
@@ -200,18 +190,22 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
               <Author>
                 <T value={author_multiloc} />
               </Author>
-              <DatePosted><FormattedDate value={created_at} /></DatePosted>
+
+              <DatePosted>
+                {formattedDate}
+              </DatePosted>
+
               {updated_at && updated_at !== created_at && (
                 <DateEdited>
                   <FormattedMessage
                     {...messages.lastEdition}
-                    values={{ date: <FormattedDate value={updated_at} /> }}
+                    values={{ date: formattedDate }}
                   />
                 </DateEdited>
               )
             }
             </Footer>
-          </>
+          </QuillEditedContent>
         </PostContainer>
       );
     }
@@ -220,11 +214,15 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
   }
 }
 
-const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
-
 const Data = adopt<DataProps, {}>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />
 });
 
-export default (inputProps: InputProps) => <Data>{dataProps => <OfficialFeedbackPostWithIntl {...inputProps} {...dataProps} />}</Data>;
+const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
+
+export default (inputProps: InputProps) => (
+  <Data>
+    {dataProps => <OfficialFeedbackPostWithIntl {...inputProps} {...dataProps} />}
+  </Data>
+);

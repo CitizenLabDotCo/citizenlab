@@ -30,7 +30,7 @@ describe('IdeaCards component', () => {
       cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
 
       // sort by newest first
-      cy.get('#e2e-ideas-sort-filter ').click();
+      cy.get('#e2e-ideas-sort-filter').click();
       cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-new').click();
       cy.wait(1000);
 
@@ -39,7 +39,7 @@ describe('IdeaCards component', () => {
       cy.get('.e2e-idea-card').first().contains(ideaTitle);
 
       // sort by oldest first
-      cy.get('#e2e-ideas-sort-filter ').click();
+      cy.get('#e2e-ideas-sort-filter').click();
       cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-old').click();
       cy.wait(1000);
 

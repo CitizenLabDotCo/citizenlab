@@ -36,7 +36,7 @@ export default class FilterSidebarPhases extends React.PureComponent<Props, Stat
     return (
       <Menu secondary={true} vertical={true} fluid={true}>
         <Menu.Item onClick={this.clearFilter} active={!this.props.selectedPhase}>
-          <FormattedMessage {...messages.allIdeas} />
+          <FormattedMessage {...messages.allPhases} />
         </Menu.Item>
         <Divider />
         {this.props.phases && this.props.phases.map((phase, index) => (

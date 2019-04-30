@@ -14,34 +14,27 @@ import PBExpenses from '../pb/PBExpenses';
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
   padding-top: 30px;
+  background: ${colors.background};
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 50px;
   padding-bottom: 100px;
   background: ${colors.background};
+
+  ${media.smallerThanMinTablet`
+    padding-top: 30px;
+  `}
 `;
 
 const StyledPBExpenses = styled(PBExpenses)`
   margin-bottom: 60px;
-`;
-
-const IdeasTitle = styled.h1`
-  color: #333;
-  font-size: ${fontSizes.xxxl}px;
-  line-height: 35px;
-  font-weight: 600;
-  margin-bottom: 30px;
 `;
 
 interface InputProps {
@@ -80,9 +73,6 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
                   participationContextType="Project"
                 />
               }
-              <IdeasTitle>
-                <FormattedMessage {...messages.navIdeas} />
-              </IdeasTitle>
               <IdeaCards
                 type="load-more"
                 sort="trending"

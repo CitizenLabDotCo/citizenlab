@@ -4,7 +4,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import ModeratorList from './ModeratorList';
 import UserSearch from 'components/UserSearch';
-// import Warning from 'components/UI/Warning';
 import { GetModeratorsChildProps } from 'resources/GetModerators';
 import { SubSectionTitle } from 'components/admin/Section';
 import InfoTooltip from 'components/admin/InfoTooltip';
@@ -28,10 +27,6 @@ const StyledA = styled.a`
     text-decoration: underline;
   }
 `;
-
-// const StyledWarning = styled(Warning)`
-//   margin-bottom: 15px;
-// `;
 
 class Moderators extends PureComponent<Props & InjectedIntlProps>{
   render() {

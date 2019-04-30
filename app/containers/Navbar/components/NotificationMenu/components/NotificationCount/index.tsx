@@ -46,7 +46,7 @@ const NewNotificationsIndicator = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${({ theme }) => theme.invertedNavbarColors && theme.navbarBackgroundColor ? theme.navbarBackgroundColor : '#fff'};
   position: absolute;
-  top: -8px;
+  top: -9px;
   left: 15px;
   min-width: 18px;
   min-height: 18px;
