@@ -8,12 +8,12 @@ class UserPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope
+      scope.all
     end
   end
 
   def index?
-    user&.active? && user.admin?
+    user&.active? && (user.admin? || user.project_moderator?)
   end
 
   def create?
@@ -41,7 +41,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.active? && user.admin?
+    user&.active? && (record.id == user.id || user.admin?)
   end
 
   def view_private_attributes?
@@ -62,7 +62,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   private
-  
+
   def allowed_custom_field_keys
     unchangeable_keys = SingleSignOnService.new.custom_fields_user_cant_change(user)
     enabled_fields = CustomField

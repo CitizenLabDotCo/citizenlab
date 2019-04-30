@@ -33,8 +33,8 @@ resource "Users" do
 
   context "when authenticated" do
     before do
-      @user = create(:user)
-      @users = create_list(:user, 5)
+      @user = create(:user, last_name: 'Hoorens')
+      @users = ["Bednar", "Cole", "Hagenes", "MacGyver", "Oberbrunner"].map{|l| create(:user, last_name: l)}
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
     end
@@ -52,6 +52,8 @@ resource "Users" do
         parameter :search, 'Filter by searching in first_name, last_name and email', required: false
         parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
         parameter :group, "Filter by group_id", required: false
+        parameter :can_moderate_project, "Filter by users (and admins) who can moderate the project (by id)", required: false
+        parameter :can_moderate, "Filter out admins and moderators", required: false
 
         example_request "List all users" do
           expect(status).to eq 200
@@ -77,9 +79,6 @@ resource "Users" do
         end
 
         example "List all users sorted by last_name" do
-          duplicate_last_names = User.all.pluck(:last_name).group_by{ |e| e }.select { |k, v| v.size > 1 }.map(&:first)
-          User.where(last_name: duplicate_last_names).each(&:destroy!)
-
           do_request sort: 'last_name'
           json_response = json_parse(response_body)
 
@@ -96,7 +95,6 @@ resource "Users" do
 
           expect(json_response[:data].size).to eq 3
           expect(json_response[:data].map{|u| u[:id]}).to match_array group_users.map(&:id)
-
         end
 
         example "List all users in group, ordered by role" do
@@ -114,7 +112,31 @@ resource "Users" do
           expect(json_response[:data].size).to eq 6
           expect(json_response[:data].map{|u| u[:id]}).to match_array group_users.map(&:id)
           expect(json_response[:data].map{|u| u[:id]}.reverse.take(2)).to match_array [admin.id,both.id]
+        end
 
+        example "List all users who can moderate a project" do
+          p = create(:project)
+          a = create(:admin)
+          m1 = create(:moderator, project: p)
+          m2 = create(:moderator)
+          u = create(:user)
+          i = create(:idea, project: p) # a participant, just in case
+
+          do_request(can_moderate_project: p.id)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id,m1.id,@user.id]
+        end
+
+        example "List all users who can moderate" do
+          p = create(:project)
+          a = create(:admin)
+          m1 = create(:moderator, project: p)
+          m2 = create(:moderator)
+          u = create(:user)
+
+          do_request(can_moderate: true)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id,m1.id,m2.id,@user.id]
         end
       end
 
@@ -313,6 +335,8 @@ resource "Users" do
         
         example_request "[error] Registering an invited user" do
           expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :email)).to include({error: "taken_by_invite", value: email, inviter_email: invitee.invitee_invite.inviter.email})
         end
       end
 

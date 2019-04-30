@@ -1,6 +1,4 @@
-class VotePolicy < ApplicationPolicy
-  # The policiy does not work for voting on comments
-  # because the ParticipationContextService doesn't.
+class IdeaVotePolicy < ApplicationPolicy
 
   class Scope
     attr_reader :user, :scope
