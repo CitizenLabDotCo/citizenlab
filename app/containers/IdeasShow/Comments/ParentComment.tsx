@@ -89,6 +89,7 @@ interface InputProps {
   ideaId: string;
   commentId: string;
   childCommentIds: string[] | false;
+  className?: string;
 }
 
 interface DataProps {
@@ -166,7 +167,7 @@ class ParentComment extends PureComponent<Props, State> {
   }
 
   render() {
-    const { commentId, authUser, comment, idea } = this.props;
+    const { commentId, authUser, comment, idea, className } = this.props;
     const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
@@ -184,7 +185,7 @@ class ParentComment extends PureComponent<Props, State> {
       }
 
       return (
-        <Container className="e2e-parent-and-childcomments">
+        <Container className={`e2e-parent-and-childcomments ${className}`}>
           <ParentCommentContainer className={`${commentDeleted && 'deleted'}`}>
             <Comment
               ideaId={idea.id}
