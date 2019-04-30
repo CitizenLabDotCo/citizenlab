@@ -1,29 +1,38 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { adopt } from 'react-adopt';
+import { get } from 'lodash-es';
 
-// resources
+// resources & typings
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
+
+// permissions
+import { canModerate } from 'services/permissions/rules/projectPermissions';
+
+// typings
 import { ICommentData } from 'services/comments';
+import { IModalInfo } from 'containers/App';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
-import Link from 'utils/cl-router/Link';
-import T from 'components/T';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import CommentHeader from 'containers/IdeasShow/Comments/CommentHeader';
-import { get } from 'lodash-es';
-import CommentBody from 'containers/IdeasShow/Comments/CommentBody';
-import { adopt } from 'react-adopt';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
-import { canModerate } from 'services/permissions/rules/projectPermissions';
-import Icon from 'components/UI/Icon';
 import { darken } from 'polished';
+
+// Components
+import Icon from 'components/UI/Icon';
+import Link from 'utils/cl-router/Link';
+import CommentHeader from 'containers/IdeasShow/Comments/CommentHeader';
+import CommentBody from 'containers/IdeasShow/Comments/CommentBody';
 import CommentVote from 'containers/IdeasShow/Comments/CommentVote';
-import eventEmitter from 'utils/eventEmitter';
-import { IModalInfo } from 'containers/App';
+
+// intl
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import T from 'components/T';
 
 const Container = styled.div`
   width: 100%;
@@ -179,8 +188,8 @@ export class IdeaCommentGroup extends PureComponent<Props> {
                   votingEnabled={votingEnabled}
                 />
               </CommentContainer>
-          );
-        })}
+            );
+          })}
         </Container>
       ));
     }
