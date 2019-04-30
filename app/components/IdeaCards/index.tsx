@@ -13,7 +13,6 @@ import SelectProjects from './SelectProjects';
 
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
-import IdeaButton from 'components/IdeaButton';
 import FeatureFlag from 'components/FeatureFlag';
 
 // resources
@@ -392,18 +391,6 @@ class IdeaCards extends PureComponent<Props, State> {
                 <FormattedMessage {...messages.noIdea} />
               </EmptyMessageLine>
             </EmptyMessage>
-            {/* If there's at least 1 project, we can potentially show this button */}
-            {queryParameters.projects && queryParameters.projects.length > 0 &&
-              <IdeaButton
-                // -If we DON'T have the project filter option, we're not on the ideas index page (only place with projects filter)
-                // Other places that use this component always only have a project tied to them
-                // We can grab its id by getting the first element of the projects parameter.
-                // -If we DO have the project filter, we cannot show an idea button that links to a particular project
-                // Hence the projectId will be undefined and we link to the project selection page before showing the idea
-                projectId={!allowProjectsFilter ? (queryParameters.projects && queryParameters.projects[0]) : undefined}
-                phaseId={queryParameters.phase}
-              />
-            }
           </EmptyContainer>
         }
 
