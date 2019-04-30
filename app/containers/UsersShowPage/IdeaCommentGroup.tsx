@@ -17,6 +17,8 @@ import CommentHeader from 'containers/IdeasShow/Comments/CommentHeader';
 import { get } from 'lodash-es';
 import CommentBody from 'containers/IdeasShow/Comments/CommentBody';
 import { adopt } from 'react-adopt';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 const Container = styled.div`
   width: 100%;
@@ -44,10 +46,12 @@ const CommentContainer = styled.div`
 interface InputProps {
   ideaId: string;
   commentsForIdea: ICommentData[];
+  userId: string;
 }
 
 interface DataProps {
   idea: GetIdeaChildProps;
+  user: GetUserChildProps;
 }
 
 const nothingHappens = () => {};
@@ -73,9 +77,9 @@ export const reducer = (acc: ICommentData[][], current: ICommentData) => {
 
 export class IdeaCommentGroup extends PureComponent<Props> {
   render() {
-    const { idea, commentsForIdea } = this.props;
+    const { idea, commentsForIdea, userId, user } = this.props;
 
-    if (!isNilOrError(idea)) {
+    if (!isNilOrError(idea) && !isNilOrError(user)) {
       const { slug, title_multiloc } = idea.attributes;
       const projectId = idea.relationships.project.data.id;
       return ((
@@ -85,16 +89,15 @@ export class IdeaCommentGroup extends PureComponent<Props> {
             <FormattedMessage {...messages.seeIdea} />
           </IdeaLink>
           {commentsForIdea.map(comment => {
-            const authorId = get(comment, 'relationships.author.data.id', null);
             return (
               <CommentContainer key={comment.id}>
                 <CommentHeader
                   projectId={projectId}
-                  authorId={authorId}
+                  authorId={userId}
                   commentId={comment.id}
                   commentType="parent"
                   commentCreatedAt={comment.attributes.created_at}
-                  moderator={true}
+                  moderator={canModerate(projectId, { data: user })}
                 />
                 <CommentBody
                   commentId={comment.id}
@@ -116,7 +119,8 @@ export class IdeaCommentGroup extends PureComponent<Props> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  idea: ({ ideaId, render }) =>  <GetIdea id={ideaId}>{render}</GetIdea>
+  idea: ({ ideaId, render }) =>  <GetIdea id={ideaId}>{render}</GetIdea>,
+  user: ({ userId, render }) =>  <GetUser id={userId}>{render}</GetUser>
 });
 
 export default (inputProps: InputProps) => (

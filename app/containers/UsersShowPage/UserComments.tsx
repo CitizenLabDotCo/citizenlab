@@ -60,7 +60,7 @@ export const reducer = (acc: ICommentData[][], current: ICommentData) => {
 
 export class UsersComments extends PureComponent<Props> {
   render() {
-    const { comments } = this.props;
+    const { comments, userId } = this.props;
 
     if (!isNilOrError(comments) && comments.length > 0) {
 
@@ -71,6 +71,7 @@ export class UsersComments extends PureComponent<Props> {
               key={commentForIdea[0].relationships.idea.data.id}
               ideaId={commentForIdea[0].relationships.idea.data.id}
               commentsForIdea={commentForIdea}
+              userId={userId}
             />
           ))}
           </Container>
