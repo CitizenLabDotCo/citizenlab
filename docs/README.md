@@ -1,5 +1,37 @@
 # Changelog
 
+## 2019-04-30
+
+### Fixed
+
+- Time remaning on project card is no longer Capitalized
+- Non-admin users no longer get pushed to intercom
+- Improvements to the idea manager for IE11
+- When filtering on a project in the idea manager, the selected project is highlighted again
+- @citizenlab.cl admins can now also access churned platforms
+- The user count in the user manager now includes migrated cl1 users
+- Sending invitations will no longer fail on duplicate mixed-case email addresses
+
+### Added
+
+- Ideas can now be assigned to moderators and admins in the idea manager
+  - Added filter on assignee, set by default to 'assigned to me'
+  - Added filter to only show ideas that need feedback
+  - When clicking an idea, it now opens in and can be partially edited from a half screen modal
+  - Admins and moderators get a weekly digest email with their ideas that need feedback
+- Completely new comments UI with support for comment upvotes
+  - Comments are visually clearly grouped per parent comment
+  - Sub-comments use @mentions to target which other subcomment they reply to
+  - Comments can be sorted by time or by votes
+- Ideas can now be sorted randomly, which is the new default
+- New smart group rule for users that contributed to a specific topic
+- New smart group rule for users that contributed to ideas with a specific status
+- Clear error message when an invitee does a normal sign up
+
+### Changed
+
+- The idea grid no longer shows a 'post an idea' button when there are no ideas yet
+
 ## 2019-04-24
 
 ### Fixed
