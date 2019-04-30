@@ -1,6 +1,7 @@
 // libraries
 import React, { Component } from 'react';
 import { values as getValues, every } from 'lodash-es';
+import { adopt } from 'react-adopt';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -22,10 +23,13 @@ import { Multiloc, Locale, MultilocFormValues } from 'typings';
 // stylings
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
-import GetLocale from 'resources/GetLocale';
 
 // utils
-import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
+import { isNonEmptyString } from 'utils/helperUtils';
+
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 
 const ButtonContainer = styled.div`
   >:not(:last-child) {
@@ -37,11 +41,17 @@ const CancelButton = styled(Button)`
   margin-top: 10px;
 `;
 
-export interface Props {
-  locale: Locale;
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
+}
+
+interface InputProps {
   onCancel?: () => void;
   editForm?: boolean;
 }
+
+export interface Props extends DataProps, InputProps {}
 
 export interface FormValues extends MultilocFormValues {
   author_multiloc: Multiloc;
@@ -49,10 +59,23 @@ export interface FormValues extends MultilocFormValues {
 }
 
 interface State {
-  selectedLocale: Locale;
+  selectedLocale: GetLocaleChildProps;
 }
 
 class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikProps<FormValues>, State> {
+  public static validate = (values: FormValues): FormikErrors<FormValues> => {
+    const errors: FormikErrors<FormValues> = {};
+
+    if (!every(getValues(values.author_multiloc), isNonEmptyString)) {
+      errors.author_multiloc = [{ error: 'blank' }] as any;
+    }
+    if (!every(getValues(values.body_multiloc), isNonEmptyString)) {
+      errors.body_multiloc = [{ error: 'blank' }] as any;
+    }
+
+    return errors;
+  }
+
   constructor(props: Props & InjectedIntlProps) {
     super(props as any);
     this.state = {
@@ -90,6 +113,8 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
   render() {
     const { isSubmitting, isValid, touched, values, onCancel, editForm, status } = this.props;
     const { selectedLocale } = this.state;
+
+    if (!selectedLocale) return null;
 
     return (
       <Form>
@@ -139,8 +164,14 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
   }
 }
 
-const OfficialFeedbackFormWithIntl = injectIntl(OfficialFeedbackForm);
-class OfficialFeedbackFormWithHoCs extends Component<Props & FormikProps<FormValues>> {
+const OfficialFeedbackFormWithIntl = injectIntl<Props>(OfficialFeedbackForm);
+
+const Data = adopt<DataProps, InputProps>({
+  tenantLocales: <GetTenantLocales />,
+  locale: <GetLocale />
+});
+
+export default class OfficialFeedbackFormWithHoCs extends Component<Props & FormikProps<FormValues>> {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
 
@@ -156,10 +187,11 @@ class OfficialFeedbackFormWithHoCs extends Component<Props & FormikProps<FormVal
 
   render() {
     return (
-      <GetLocale>
-        {locale => isNilOrError(locale) ? null :  <OfficialFeedbackFormWithIntl {...this.props} locale={locale} />}
-      </GetLocale>
+      <Data {...this.props}>
+        {dataProps => <OfficialFeedbackFormWithIntl {...this.props} {...dataProps} />}
+      </Data>
     );
+
   }
 }
 
@@ -173,5 +205,3 @@ export const formatMentionsBodyMultiloc = (bodyMultiloc: Multiloc): Multiloc => 
 
   return formattedMentionsBodyMultiloc;
 };
-
-export default OfficialFeedbackFormWithHoCs;
