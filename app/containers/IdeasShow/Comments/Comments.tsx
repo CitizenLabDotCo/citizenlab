@@ -1,9 +1,10 @@
-import React, { memo, useMemo, useCallback } from 'react';
+import React, { memo, useState, useMemo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ParentComment from './ParentComment';
 import CommentSorting, { ICommentSortOptions } from './CommentSorting';
+import Spinner from 'components/UI/Spinner';
 
 // services
 import { ICommentData } from 'services/comments';
@@ -16,7 +17,22 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const Container = styled.div``;
+const Container = styled.div`
+  position: relative;
+`;
+
+const SpinnerWrapper = styled.div`
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+`;
 
 const StyledCommentSorting = styled(CommentSorting)`
   display: flex;
@@ -29,6 +45,12 @@ const StyledCommentSorting = styled(CommentSorting)`
   `}
 `;
 
+const StyledParentComment = styled(ParentComment)`
+  &.loading {
+    opacity: 0;
+  }
+`;
+
 interface Props {
   ideaId: string;
   comments: ICommentData[];
@@ -38,6 +60,8 @@ interface Props {
 }
 
 const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, onSortOrderChange, className }) => {
+
+  const [loading, setLoading] = useState(false);
 
   const sortedParentComments = useMemo(() => {
     const sortByDate = (commentA: ICommentData, commentB: ICommentData) => new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
@@ -61,14 +85,22 @@ const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, onSortOrderC
 
   const handleSortOrderChange = useCallback(
     (sortOrder: 'oldest_to_newest' | 'most_upvoted') => {
+      setLoading(true);
       trackEventByName(tracks.clickCommentsSortOrder);
       onSortOrderChange(sortOrder);
+      setTimeout(() => setLoading(false), 300);
     }, []
   );
 
   if (sortedParentComments && sortedParentComments.length > 0) {
     return (
       <Container className={`e2e-comments-container ${className}`}>
+        {loading &&
+          <SpinnerWrapper>
+            <Spinner />
+          </SpinnerWrapper>
+        }
+
         <StyledCommentSorting onChange={handleSortOrderChange} />
 
         {sortedParentComments.map((parentComment, _index) => {
@@ -84,14 +116,16 @@ const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, onSortOrderC
           }).map(comment => comment.id));
 
           return (
-            <ParentComment
+            <StyledParentComment
               key={parentComment.id}
               ideaId={ideaId}
               commentId={parentComment.id}
               childCommentIds={childCommentIds}
+              className={loading ? 'loading' : ''}
             />
           );
         })}
+
       </Container>
     );
   }
