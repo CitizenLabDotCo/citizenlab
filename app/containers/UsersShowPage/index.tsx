@@ -90,6 +90,7 @@ class UsersShowPage extends PureComponent<Props, State> {
             <UserNavbar
               currentTab={currentTab}
               selectTab={this.changeTab}
+              userId={user.id}
             />
 
             <StyledContentContainer>

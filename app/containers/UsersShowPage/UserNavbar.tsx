@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
-// import { adopt } from 'react-adopt';
-// import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // resources
+import GetUserStats, { GetUserStatsChildProps } from 'resources/GetUserStats';
 
 // styles
 import { fontSizes, media, colors } from 'utils/styleUtils';
@@ -11,12 +12,11 @@ import { rgba } from 'polished';
 
 // components
 import Icon from 'components/UI/Icon';
+import { UserTab } from './';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-import { UserTab } from './';
 
 const UserNavbarWrapper = styled.nav`
   width: 100%;
@@ -87,15 +87,18 @@ const TabIcon = styled(Icon)`
 interface InputProps {
   currentTab: UserTab;
   selectTab: (tab: UserTab) => () => void;
+  userId: string;
 }
 
 interface DataProps {
+  ideasCount: GetUserStatsChildProps;
+  commentsCount: GetUserStatsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 const UserNavbar = memo<Props>(props => {
-  const { currentTab, selectTab } = props;
+  const { currentTab, selectTab, ideasCount, commentsCount } = props;
   return (
     <UserNavbarWrapper>
       <UserNavbarButton
@@ -103,27 +106,30 @@ const UserNavbar = memo<Props>(props => {
         className={currentTab === 'ideas' ? 'active' : ''}
       >
         <TabIcon name="lightBulb" />
-        <FormattedMessage {...messages.ideasWithCount} values={{ count: 0 }} />
+        {!isNilOrError(ideasCount) &&
+          <FormattedMessage {...messages.ideasWithCount} values={{ ideasCount }} />
+        }
       </UserNavbarButton>
       <UserNavbarButton
         onClick={selectTab('comments')}
         className={currentTab === 'comments' ? 'active' : ''}
       >
         <TabIcon name="bubbles" />
-        <FormattedMessage {...messages.commentsWithCount} values={{ count: 0 }} />
+        {!isNilOrError(commentsCount) &&
+          <FormattedMessage {...messages.commentsWithCount} values={{ commentsCount }} />
+        }
       </UserNavbarButton>
     </UserNavbarWrapper>
   );
 });
 
-export default UserNavbar;
+const Data = adopt<DataProps, InputProps>({
+  ideasCount: ({ userId, render }) => <GetUserStats userId={userId} resource="ideas">{render}</GetUserStats>,
+  commentsCount: ({ userId, render }) => <GetUserStats userId={userId} resource="comments">{render}</GetUserStats>
+});
 
-// leaving that in case the counters are on the stats endpoint
-// const Data = adopt<DataProps, InputProps>({
-// });
-//
-// export default (inputProps: InputProps) => (
-//   <Data {...inputProps}>
-//     {dataProps => <UserNavbar {...inputProps} {...dataProps} />}
-//   </Data>
-// );
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <UserNavbar {...inputProps} {...dataProps} />}
+  </Data>
+);
