@@ -652,7 +652,7 @@
   "app.containers.AdminPage.ProjectEdit.headerImageLabel": "Image de couverture (obligatoire)",
   "app.containers.AdminPage.ProjectEdit.headerImageLabelTooltip": "Cette image sera visible en haut de la page du projet. Les dimensions idéales sont 1440x330.",
   "app.containers.AdminPage.ProjectEdit.ideaAssignmentSectionTitle": "Who is the main responsible for this project?",
-  "app.containers.AdminPage.ProjectEdit.ideaAssignmentTooltip": "Every new idea within this project will be assigned to this person by default. The main responsible will get notified when a new idea gets added. Idea assignment can be easily changed in the {linkToIdeasOverview}.",
+  "app.containers.AdminPage.ProjectEdit.ideaAssignmentTooltip": "Every new idea within the project will be assigned to this person by default. The main responsible will get notified when a new idea gets added. Idea assignment can be easily changed in the {linkToIdeasOverview}.",
   "app.containers.AdminPage.ProjectEdit.ideasOverview": "Ideas overview",
   "app.containers.AdminPage.ProjectEdit.ideasTab": "Idées",
   "app.containers.AdminPage.ProjectEdit.ideation": "Idéation",
