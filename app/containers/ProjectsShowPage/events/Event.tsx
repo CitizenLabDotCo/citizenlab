@@ -132,7 +132,7 @@ const EventTime = styled.div`
 `;
 
 const EventTitle = styled.div`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.xl}px;
   line-height: 23px;
   margin-top: 10px;

@@ -8,27 +8,11 @@ import IdeaCards from 'components/IdeaCards';
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div``;
-
-const IdeasTitle = styled.h1`
-  color: ${colors.text};
-  font-size: ${fontSizes.xxxl}px;
-  line-height: normal;
-  font-weight: 600;
-  margin-bottom: 15px;
-
-  ${media.biggerThanMinTablet`
-    display: none;
-  `}
-`;
 
 const StyledIdeaCards = styled(IdeaCards)`
   &.budgeting {
@@ -65,9 +49,6 @@ class PhaseIdeas extends PureComponent<Props, State> {
       if ((participationMethod === 'ideation' || participationMethod === 'budgeting')) {
         return (
           <Container className={className}>
-            <IdeasTitle>
-              <FormattedMessage {...messages.navIdeas} />
-            </IdeasTitle>
             <StyledIdeaCards
               className={participationMethod}
               type="load-more"

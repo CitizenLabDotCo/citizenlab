@@ -283,7 +283,11 @@ interface State {
 }
 
 class IdeaCards extends PureComponent<Props, State> {
-  constructor(props: Props) {
+  static defaultProps = {
+    showViewToggle: false
+  };
+
+  constructor(props) {
     super(props);
     this.state = {
       selectedView: (props.defaultView || 'card')
@@ -332,7 +336,8 @@ class IdeaCards extends PureComponent<Props, State> {
       ideas,
       className,
       theme,
-      allowProjectsFilter
+      allowProjectsFilter,
+      showViewToggle
     } = this.props;
     const {
       queryParameters,
@@ -343,7 +348,6 @@ class IdeaCards extends PureComponent<Props, State> {
       loadingMore
     } = ideas;
     const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
-    const showViewToggle = (this.props.showViewToggle || false);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
 
