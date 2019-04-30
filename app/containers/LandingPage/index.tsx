@@ -70,7 +70,7 @@ const FooterBanner: any = styled.div`
 
   p {
     color: #fff;
-    font-size: ${fontSizes.xxxl + 1}px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: normal;
     font-weight: 600;
     margin-bottom: 30px;
