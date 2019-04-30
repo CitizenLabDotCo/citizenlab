@@ -12,11 +12,11 @@ export default defineMessages({
   },
   ideasWithCount: {
     id: 'app.containers.UsersShowPage.ideasWithCount',
-    defaultMessage: 'Ideas({count})',
+    defaultMessage: 'Ideas({ideasCount})',
   },
   commentsWithCount: {
     id: 'app.containers.UsersShowPage.commentsWithCount',
-    defaultMessage: 'Comments({count})',
+    defaultMessage: 'Comments({commentsCount})',
   },
   seeIdea: {
     id: 'app.containers.UsersShowPage.seeIdea',
