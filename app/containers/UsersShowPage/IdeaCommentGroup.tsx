@@ -16,6 +16,7 @@ import messages from './messages';
 import CommentHeader from 'containers/IdeasShow/Comments/CommentHeader';
 import { get } from 'lodash-es';
 import CommentBody from 'containers/IdeasShow/Comments/CommentBody';
+import { adopt } from 'react-adopt';
 
 const Container = styled.div`
   width: 100%;
@@ -114,8 +115,12 @@ export class IdeaCommentGroup extends PureComponent<Props> {
   }
 }
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetIdea id={inputProps.ideaId}>
-    {idea => <IdeaCommentGroup idea={idea} {...inputProps} />}
-  </GetIdea>
-));
+const Data = adopt<DataProps, InputProps>({
+  idea: ({ ideaId, render }) =>  <GetIdea id={ideaId}>{render}</GetIdea>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeaCommentGroup {...inputProps} {...dataProps} />}
+  </Data>
+);

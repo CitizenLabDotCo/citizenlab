@@ -17,6 +17,7 @@ import { media, colors } from 'utils/styleUtils';
 import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
 import UserComments from './UserComments';
+import { adopt } from 'react-adopt';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -119,8 +120,12 @@ class UsersShowPage extends PureComponent<Props, State> {
   }
 }
 
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  user: ({ params, render }) =>  <GetUser slug={params.slug}>{render}</GetUser>
+});
+
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetUser slug={inputProps.params.slug}>
-    {user => <UsersShowPage user={user} />}
-  </GetUser>
+  <Data {...inputProps}>
+    {dataProps => <UsersShowPage {...inputProps} {...dataProps} />}
+  </Data>
 ));
