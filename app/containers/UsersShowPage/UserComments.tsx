@@ -1,12 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { adopt } from 'react-adopt';
 
 // components
-import IdeaCards from 'components/IdeaCards';
-import ContentContainer from 'components/ContentContainer';
-import Footer from 'components/Footer';
-import UsersShowPageMeta from './UsersShowPageMeta';
+import IdeaCommentGroup from './IdeaCommentGroup';
 
 // resources
 import GetCommentsForUser, { GetCommentsForUserChildProps } from 'resources/GetCommentsForUser';
@@ -14,14 +11,6 @@ import { ICommentData } from 'services/comments';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
-import UserHeader from './UserHeader';
-import UserNavbar from './UserNavbar';
-import { Link } from 'utils/cl-router/Link';
-import T from 'components/T';
-import IdeaCommentGroup from './IdeaCommentGroup';
-import CommentHeader from 'containers/IdeasShow/Comments/CommentHeader';
-import { adopt } from 'react-adopt';
 
 const Container = styled.div`
   display: flex;
@@ -58,29 +47,20 @@ export const reducer = (acc: ICommentData[][], current: ICommentData) => {
   }
 };
 
-export class UsersComments extends PureComponent<Props> {
-  render() {
-    const { comments, userId } = this.props;
-
-    if (!isNilOrError(comments) && comments.length > 0) {
-
-      return (
-        <Container>
-          {comments.reduce(reducer, [[]]).map(commentForIdea => (
-            <IdeaCommentGroup
-              key={commentForIdea[0].relationships.idea.data.id}
-              ideaId={commentForIdea[0].relationships.idea.data.id}
-              commentsForIdea={commentForIdea}
-              userId={userId}
-            />
-          ))}
-          </Container>
-        );
-      }
-
-    return null;
-  }
-}
+export const UsersComments = memo<Props>(({ comments, userId }) => (
+  !isNilOrError(comments) && comments.length > 0) ? (
+    <Container>
+      {comments.reduce(reducer, [[]]).map(commentForIdea => (
+        <IdeaCommentGroup
+          key={commentForIdea[0].relationships.idea.data.id}
+          ideaId={commentForIdea[0].relationships.idea.data.id}
+          commentsForIdea={commentForIdea}
+          userId={userId}
+        />
+      ))}
+    </Container>
+  ) : null
+);
 
 const Data = adopt<DataProps, InputProps>({
   comments: ({ userId, render }) =>  <GetCommentsForUser userId={userId}>{render}</GetCommentsForUser>
