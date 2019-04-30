@@ -14,7 +14,7 @@ class InvitesService
     end
 
     def to_h
-      errors.map(&:to_h)
+      errors.reject(&:ignore).map(&:to_h)
     end
   end
 
