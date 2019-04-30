@@ -20,6 +20,7 @@ class FilterSidebarProjectsItem extends React.PureComponent<Props> {
     return connectDropTarget(
       <div>
         <Menu.Item
+          className="e2e-idea-manager-project-filter-item"
           active={active || (isOver && canDrop)}
           onClick={onClick}
         >

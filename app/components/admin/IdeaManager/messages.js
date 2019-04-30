@@ -5,6 +5,26 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.header',
     defaultMessage: 'Ideas',
   },
+  anyFeedbackStatus: {
+    id: 'app.components.admin.IdeaManager.anyFeedbackStatus',
+    defaultMessage: 'All ideas',
+  },
+  needFeedback: {
+    id: 'app.components.admin.IdeaManager.needFeedback',
+    defaultMessage: 'Need Feedback',
+  },
+  anyAssignment: {
+    id: 'app.components.admin.IdeaManager.anyAssignment',
+    defaultMessage: 'All ideas',
+  },
+  unassignedIdeas: {
+    id: 'app.components.admin.IdeaManager.unassignedIdeas',
+    defaultMessage: 'Unassigned',
+  },
+  assignedToMe: {
+    id: 'app.components.admin.IdeaManager.assignedToMe',
+    defaultMessage: 'Assigned to me',
+  },
   delete: {
     id: 'app.components.admin.IdeaManager.delete',
     defaultMessage: 'Delete',
@@ -29,6 +49,10 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.edit',
     defaultMessage: 'Edit',
   },
+  assignedTo: {
+    id: 'app.components.admin.IdeaManager.assignedTo',
+    defaultMessage: 'Assigned to {assigneeName}',
+  },
   title: {
     id: 'app.components.admin.IdeaManager.title',
     defaultMessage: 'Title',
@@ -36,6 +60,10 @@ export default defineMessages({
   author: {
     id: 'app.components.admin.IdeaManager.author',
     defaultMessage: 'Author',
+  },
+  assignee: {
+    id: 'app.components.admin.IdeaManager.assignee',
+    defaultMessage: 'Assignee',
   },
   publication_date: {
     id: 'app.components.admin.IdeaManager.publication_date',
@@ -132,5 +160,49 @@ export default defineMessages({
   subtitleIdeas: {
     id: 'app.components.admin.IdeaManager.subtitleIdeas',
     defaultMessage: 'Get an overview of all the ideas inside your project. Add themes and change the status by dragging and dropping ideas to one of the left columns, or edit the ideas.',
+  },
+  noOne: {
+    id: 'app.components.admin.IdeaManager.noOne',
+    defaultMessage: 'Unassigned',
+  },
+  exports: {
+    id: 'app.components.admin.IdeaManager.exports',
+    defaultMessage: 'Exports',
+  },
+  noIdeasHere: {
+    id: 'app.components.admin.IdeaManager.noIdeasHere',
+    defaultMessage: 'No ideas match the current filters',
+  },
+  resetFiltersDescription: {
+    id: 'app.components.admin.IdeaManager.resetFiltersDescription',
+    defaultMessage: 'Reset the filters to see all ideas.',
+  },
+  resetFiltersButton: {
+    id: 'app.components.admin.IdeaManager.resetFiltersButton',
+    defaultMessage: 'Reset filters',
+  },
+  allProjects: {
+    id: 'app.components.admin.IdeaManager.allProjects',
+    defaultMessage: 'All projects',
+  },
+  allTopics: {
+    id: 'app.components.admin.IdeaManager.allTopics',
+    defaultMessage: 'All topics',
+  },
+  allStatuses: {
+    id: 'app.components.admin.IdeaManager.allStatuses',
+    defaultMessage: 'All statuses',
+  },
+  allPhases: {
+    id: 'app.components.admin.IdeaManager.allPhases',
+    defaultMessage: 'All phases',
+  },
+  oneIdea: {
+    id: 'app.components.admin.IdeaManager.oneIdea',
+    defaultMessage: '1 idea',
+  },
+  multipleIdeas: {
+    id: 'app.components.admin.IdeaManager.multipleIdeas',
+    defaultMessage: '{ideaCount} ideas',
   },
 });

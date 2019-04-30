@@ -35,6 +35,7 @@ interface State {
 }
 class WidgetCode extends PureComponent<Props & DataProps, State> {
   snippetRef = createRef<HTMLTextAreaElement>();
+
   constructor(props: Props & DataProps) {
     super(props);
     this.state = {
@@ -51,13 +52,20 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
     if (document.execCommand('copy')) {
       this.setState({ copied: true });
       setTimeout(() => this.setState({ copied: false }), 3000);
-      window.getSelection().removeAllRanges();
+
+      const selection = window.getSelection();
+
+      if (selection) {
+        selection.removeAllRanges();
+      }
     }
   }
 
   render() {
     const { path, tenant, width, height } = this.props;
+
     if (isNilOrError(tenant)) return null;
+
     const text = `<iframe src="https://${tenant.attributes.host}/widgets${path}" width="${width}" height="${height}" frameborder="0" scrolling="no" />`;
 
     return (

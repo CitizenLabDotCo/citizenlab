@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, isString, isEmpty, omitBy, isNil, isEqual, isBoolean, omit, cloneDeep } from 'lodash-es';
+import { get, isString, isEmpty, isEqual, isBoolean, omit, cloneDeep } from 'lodash-es';
 import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { map, startWith, distinctUntilChanged, tap, debounceTime, mergeScan, switchMap } from 'rxjs/operators';
 import { ideasStream, IIdeaData, IdeaPublicationStatus } from 'services/ideas';
@@ -8,7 +8,7 @@ import shallowCompare from 'utils/shallowCompare';
 import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
 
 export type SortAttribute = 'new' | 'trending' | 'popular' | 'author_name' | 'upvotes_count' | 'downvotes_count' | 'baskets_count' | 'status';
-export type Sort =  'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular' | 'author_name' | '-author_name' | 'upvotes_count' | '-upvotes_count' | 'downvotes_count' | '-downvotes_count' | 'baskets_count' | '-baskets_count' | 'status' | '-status';
+export type Sort = 'random' | 'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular' | 'author_name' | '-author_name' | 'upvotes_count' | '-upvotes_count' | 'downvotes_count' | '-downvotes_count' | 'baskets_count' | '-baskets_count' | 'status' | '-status';
 export type PublicationStatus = IdeaPublicationStatus;
 
 export interface InputProps {
@@ -27,6 +27,8 @@ export interface InputProps {
   projectPublicationStatus?: ProjectPublicationStatus;
   boundingBox?: number[];
   cache?: boolean;
+  assignee?: string;
+  feedbackNeeded?: boolean;
 }
 
 interface IQueryParameters {
@@ -43,6 +45,8 @@ interface IQueryParameters {
   publication_status: PublicationStatus | undefined;
   project_publication_status: ProjectPublicationStatus | undefined;
   bounding_box: number[] | undefined;
+  assignee: string | undefined;
+  feedback_needed: boolean | undefined;
 }
 
 interface IAccumulator {
@@ -69,12 +73,15 @@ export type GetIdeasChildProps = State & {
   onChangeIdeaStatus: (ideaStatus: string) => void;
   onChangePublicationStatus: (publicationStatus: PublicationStatus) => void;
   onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
+  onChangeAssignee: (assignee: string | undefined) => void;
+  onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
+  onResetParams: (paramsToOmit?: (keyof IQueryParameters)[]) => void;
 };
 
 interface State {
   queryParameters: IQueryParameters;
   searchValue: string | undefined;
-  ideasList: IIdeaData[] | undefined| null;
+  ideasList: IIdeaData[] | undefined | null;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;
@@ -91,23 +98,27 @@ export default class GetIdeas extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    const queryDefaults = {
+      'page[number]': 1,
+      'page[size]': props.pageSize,
+      sort: props.sort,
+      projects: undefined,
+      phase: undefined,
+      author: undefined,
+      search: undefined,
+      topics: undefined,
+      areas: undefined,
+      idea_status: undefined,
+      publication_status: undefined,
+      project_publication_status: undefined,
+      bounding_box: undefined,
+      assignee: undefined,
+      feedback_needed: undefined
+    };
+    const queryParameters = this.getQueryParameters(queryDefaults, props);
     this.state = {
       // defaults
-      queryParameters: {
-        'page[number]': 1,
-        'page[size]': props.pageSize,
-        sort: props.sort,
-        projects: undefined,
-        phase: undefined,
-        author: undefined,
-        search: undefined,
-        topics: undefined,
-        areas: undefined,
-        idea_status: undefined,
-        publication_status: undefined,
-        project_publication_status: undefined,
-        bounding_box: undefined
-      },
+      queryParameters,
       searchValue: undefined,
       ideasList: undefined,
       hasMore: false,
@@ -118,14 +129,13 @@ export default class GetIdeas extends React.Component<Props, State> {
       currentPage: 1,
       lastPage: 1
     };
-    const queryParameters = this.getQueryParameters(this.state, props);
     this.queryParameters$ = new BehaviorSubject(queryParameters);
     this.search$ = new Subject();
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    const queryParameters = this.getQueryParameters(this.state, this.props);
+    const queryParameters = this.getQueryParameters(this.state.queryParameters, this.props);
     const startAccumulatorValue: IAccumulator = { queryParameters, ideas: null, hasMore: false };
     const queryParametersInput$ = this.queryParameters$.pipe(
       distinctUntilChanged((x, y) => shallowCompare(x, y)),
@@ -233,7 +243,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     const { children: nextChildren, ...nextPropsWithoutChildren } = this.props;
 
     if (!isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren)) {
-      const queryParameters = this.getQueryParameters(this.state, this.props);
+      const queryParameters = this.getQueryParameters(this.state.queryParameters, this.props);
       this.queryParameters$.next(queryParameters);
     }
   }
@@ -242,8 +252,8 @@ export default class GetIdeas extends React.Component<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getQueryParameters = (state: State, props: Props) => {
-    const InputPropsQueryParameters: IQueryParameters = {
+  getQueryParameters = (queryParameters: IQueryParameters, props: Props) => {
+    const inputPropsQueryParameters: IQueryParameters = {
       'page[number]': props.pageNumber as number,
       'page[size]': props.pageSize,
       projects: props.projectIds,
@@ -256,12 +266,14 @@ export default class GetIdeas extends React.Component<Props, State> {
       idea_status: props.ideaStatusId,
       publication_status: props.publicationStatus,
       project_publication_status: props.projectPublicationStatus,
-      bounding_box: props.boundingBox
+      bounding_box: props.boundingBox,
+      assignee: props.assignee,
+      feedback_needed: props.feedbackNeeded
     };
 
     return {
-      ...state.queryParameters,
-      ...omitBy(InputPropsQueryParameters, isNil)
+      ...queryParameters,
+      ...inputPropsQueryParameters
     };
   }
 
@@ -348,6 +360,61 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
 
+  handleAssigneeOnChange = (assignee: string | undefined) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      assignee,
+      'page[number]': 1,
+    });
+  }
+
+  handleFeedbackFilterOnChange = (feedbackNeeded: boolean) => {
+    if (feedbackNeeded === true) {
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        feedback_needed: true,
+        'page[number]': 1,
+      });
+    } else if (feedbackNeeded === false) {
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        feedback_needed: undefined,
+        'page[number]': 1,
+      });
+    }
+  }
+
+  handleResetParams = (paramsToOmit?: (keyof IQueryParameters)[]) => {
+    const defaultResetQueryParameters = {
+      projects: undefined,
+      'page[number]': 1,
+      'page[size]': this.props.pageSize,
+      phase: undefined,
+      author: undefined,
+      sort: this.props.sort,
+      search: undefined,
+      topics: undefined,
+      areas: undefined,
+      idea_status: undefined,
+      publication_status: undefined,
+      project_publication_status: undefined,
+      bounding_box: undefined,
+      assignee: undefined,
+      feedback_needed: undefined
+    };
+
+    if (paramsToOmit && paramsToOmit.length > 0) {
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        ...omit(defaultResetQueryParameters, paramsToOmit)
+      });
+    } else {
+      this.queryParameters$.next(defaultResetQueryParameters);
+    }
+
+    this.search$.next('');
+  }
+
   render() {
     const { children } = this.props;
     return (children as children)({
@@ -363,6 +430,9 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeIdeaStatus: this.handleIdeaStatusOnChange,
       onChangePublicationStatus: this.handlePublicationStatusOnChange,
       onChangeProjectPublicationStatus: this.handleProjectPublicationStatusOnChange,
+      onChangeAssignee: this.handleAssigneeOnChange,
+      onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
+      onResetParams: this.handleResetParams,
     });
   }
 }

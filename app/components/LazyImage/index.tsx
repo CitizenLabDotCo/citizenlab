@@ -2,18 +2,18 @@
 import React, { PureComponent } from 'react';
 
 // Lazy Images observer
-import { lazyImageObserver } from 'utils/lazyImagesObserver';
+import Observer from '@researchgate/react-intersection-observer';
 
 // Stylings
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Image: any = styled.img`
+const Image = styled.img`
   background: ${colors.placeholderBg};
   transition: opacity 200ms ease-out;
   opacity: 0;
 
-  &.loaded{
+  &.loaded {
     opacity: 1;
   }
 `;
@@ -21,31 +21,34 @@ const Image: any = styled.img`
 export interface Props {
   src: HTMLImageElement['src'];
   alt?: HTMLImageElement['alt'];
-  srcset?: HTMLImageElement['srcset'];
   role?: string;
   cover?: boolean;
   className?: string;
 }
-export interface State {
+
+interface State {
+  visible: boolean;
   loaded: boolean;
 }
 
-export class LazyImage extends PureComponent<Props, State> {
-  image: HTMLImageElement | null;
+export default class LazyImage extends PureComponent<Props, State> {
+  static defaultProps = {
+    alt: '',
+    role: 'presentation'
+  };
 
   constructor(props) {
     super(props);
     this.state = {
+      visible: false,
       loaded: false,
     };
   }
 
-  observeImage = (image: HTMLImageElement) => {
-    if (image) {
-      lazyImageObserver.observe(image);
-      this.image = image;
-    } else if (this.image) {
-      lazyImageObserver.unobserve(this.image);
+  handleIntersection = (event: IntersectionObserverEntry, unobserve: () => void) => {
+    if (event.isIntersecting) {
+      this.setState({ visible: true });
+      unobserve();
     }
   }
 
@@ -54,15 +57,8 @@ export class LazyImage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { src, srcset, cover, className } = this.props;
-    let { alt, role } = this.props;
-    const { loaded } = this.state;
-
-    // A11y requires a role "presentation" on images without any alt text
-    if (!alt) {
-      alt = '';
-      role = 'presentation';
-    }
+    const { src, alt, role, cover, className } = this.props;
+    const { visible, loaded } = this.state;
 
     if (cover && !(window['CSS'] && CSS.supports('object-fit: cover'))) {
       // Legacy browsers, no lazy-loading for you!
@@ -71,19 +67,17 @@ export class LazyImage extends PureComponent<Props, State> {
       const style = cover ? { objectFit: 'cover', objectPosition: 'center' } as any : undefined;
 
       return (
-        <Image
-          src=""
-          {...{ alt, role, style }}
-          className={`${loaded ? 'loaded' : ''} ${className}`}
-          data-src={src}
-          data-srcset={srcset || ''}
-          innerRef={this.observeImage}
-          onLoad={this.handleImageLoaded}
-        />
+        <Observer onChange={this.handleIntersection}>
+          <Image
+            src={visible ? src : undefined}
+            alt={alt}
+            role={role}
+            style={style}
+            className={`${visible ? 'visible' : ''} ${loaded ? 'loaded' : ''} ${className}`}
+            onLoad={this.handleImageLoaded}
+          />
+        </Observer>
       );
     }
-
   }
 }
-
-export default LazyImage;

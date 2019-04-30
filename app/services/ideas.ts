@@ -38,6 +38,9 @@ export interface IIdeaData {
     author: {
       data: IRelationship | null;
     };
+    assignee: {
+      data: IRelationship | null;
+    };
     phases: {
       data: IRelationship[];
     }
@@ -125,6 +128,7 @@ export interface IdeaActivity {
 export interface IIdeaAdd {
   author_id: string | null;
   project_id: string | null;
+  assignee_id?: string | null;
   idea_status_id?: string | null;
   publication_status: IdeaPublicationStatus;
   title_multiloc: Multiloc;
@@ -165,7 +169,7 @@ export async function addIdea(object: IIdeaAdd) {
 
 export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
   const response = await streams.update<IIdea>(`${API_PATH}/ideas/${ideaId}`, ideaId, { idea: object });
-  streams.fetchAllWith({ dataId: [response.data.relationships.project.data.id] });
+  streams.fetchAllWith({ dataId: [response.data.relationships.project.data.id], apiEndpoint: [`${API_PATH}/ideas`, `${API_PATH}/stats/ideas_count`] });
   return response;
 }
 

@@ -5,7 +5,7 @@ import { globalState, IAdminFullWidth, IAdminNoPadding, IGlobalStateService } fr
 // components
 import Sidebar from './sideBar/';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
@@ -55,6 +55,10 @@ const RightColumn = styled.div`
     padding: 0;
     max-width: none,
   }
+
+  ${media.smallerThan1280px`
+    padding: 2.5rem 2.5rem;
+  `}
 `;
 
 type Props = {};

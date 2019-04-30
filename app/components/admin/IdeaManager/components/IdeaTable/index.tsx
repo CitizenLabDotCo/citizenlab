@@ -1,5 +1,6 @@
 import React from 'react';
 import { clone, omit, every, fromPairs, isEmpty, isFunction } from 'lodash-es';
+import styled from 'styled-components';
 
 // components
 import { Table } from 'semantic-ui-react';
@@ -24,6 +25,51 @@ import { SortDirection } from 'utils/paginationUtils';
 // i18n
 import messages from '../../messages';
 import InfoTooltip from 'components/admin/InfoTooltip';
+import IdeaPreview from '../IdeaPreview';
+import NoIdeas from './NoIdeas';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
+const Container = styled.div`
+  .ui.table {
+    margin-bottom: 0;
+  }
+
+  tr {
+    overflow: hidden;
+
+    transition: all 500ms ease;
+    &.fade-enter, &.fade-enter + tr {
+      opacity: 0;
+      height: 0;
+
+      &.fade-enter-active, &.fade-enter-active + tr {
+        opacity: 1;
+        height: auto;
+      }
+    }
+
+    &.fade-enter-done, &.fade-enter-done + tr {
+      opacity: 1;
+    }
+
+    &.fade-exit, &.fade-exit + tr {
+      opacity: 1;
+
+      &.fade-exit-active, &.fade-exit-active + tr {
+        opacity: 0;
+        height: 0;
+      }
+    }
+
+    &.fade-exit-done, &.fade-exit-done + tr {
+      display: none;
+    }
+  }
+`;
+
+const TableHeaderCellText = styled.span`
+  font-weight: 600;
+`;
 
 interface Props {
   ideaSortAttribute?: SortAttribute;
@@ -38,11 +84,24 @@ interface Props {
   ideaLastPageNumber?: number;
   onIdeaChangePage?: (number: number) => void;
   activeFilterMenu: string | null;
+  handleSeeAllIdeas: () => void;
 }
 
-interface State {}
+type State = {
+  ideaModal: string | null;
+};
 
 export default class IdeaTable extends React.Component<Props, State> {
+  constructor (props) {
+    super(props);
+    this.state = {
+      ideaModal: null,
+    };
+  }
+
+  onClickIdeaTitle = (ideaId: string) => this.setState({ ideaModal: ideaId });
+
+  onCloseModal = () => this.setState({ ideaModal: null });
 
   handleSortClick = (newSortAttribute: SortAttribute) => () => {
     const { ideaSortAttribute: oldSortAttribute, ideaSortDirection: oldSortDirection, onChangeIdeaSort } = this.props;
@@ -100,93 +159,124 @@ export default class IdeaTable extends React.Component<Props, State> {
   }
 
   render() {
-    const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu, statuses } = this.props;
+    const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu, statuses, handleSeeAllIdeas } = this.props;
+    const { ideaModal } = this.state;
 
-    return(
-      <Table sortable size="small">
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell width={1}>
-              <Checkbox value={this.allSelected()} onChange={this.toggleSelectAll} size="17px"/>
-            </Table.HeaderCell>
-            <Table.HeaderCell width={4}>
-              <FormattedMessage {...messages.title} />
-            </Table.HeaderCell>
-            <Table.HeaderCell width={2}>
-              <SortableTableHeader
-                direction={ideaSortAttribute === 'author_name' ? ideaSortDirection : null}
-                onToggle={this.handleSortClick('author_name')}
-              >
-                <FormattedMessage {...messages.author} />
-              </SortableTableHeader>
-            </Table.HeaderCell>
-            <Table.HeaderCell width={2}>
-              <SortableTableHeader
-                direction={ideaSortAttribute === 'new' ? ideaSortDirection : null}
-                onToggle={this.handleSortClick('new')}
-              >
-                <FormattedMessage {...messages.publication_date} />
-              </SortableTableHeader>
-            </Table.HeaderCell>
-            <Table.HeaderCell width={1}>
-              <SortableTableHeader
-                direction={ideaSortAttribute === 'upvotes_count' ? ideaSortDirection : null}
-                onToggle={this.handleSortClick('upvotes_count')}
-              >
-                <FormattedMessage {...messages.up} />
-              </SortableTableHeader>
-            </Table.HeaderCell >
-            <Table.HeaderCell width={1}>
-              <SortableTableHeader
-                direction={ideaSortAttribute === 'downvotes_count' ? ideaSortDirection : null}
-                onToggle={this.handleSortClick('downvotes_count')}
-              >
-                <FormattedMessage {...messages.down} />
-              </SortableTableHeader>
-            </Table.HeaderCell>
-            <FeatureFlag name="participatory_budgeting">
+    return (
+      <Container>
+        <Table sortable size="small">
+          <Table.Header>
+            <Table.Row>
               <Table.HeaderCell width={1}>
+                <Checkbox value={this.allSelected()} onChange={this.toggleSelectAll} size="17px"/>
+              </Table.HeaderCell>
+              <Table.HeaderCell width={4}>
+                <TableHeaderCellText>
+                  <FormattedMessage {...messages.title} />
+                </TableHeaderCellText>
+              </Table.HeaderCell>
+              <Table.HeaderCell width={2}>
+                <TableHeaderCellText>
+                  <FormattedMessage {...messages.assignee} />
+                </TableHeaderCellText>
+              </Table.HeaderCell>
+              <Table.HeaderCell width={2}>
                 <SortableTableHeader
-                  direction={ideaSortAttribute === 'baskets_count' ? ideaSortDirection : null}
-                  onToggle={this.handleSortClick('baskets_count')}
+                  direction={ideaSortAttribute === 'new' ? ideaSortDirection : null}
+                  onToggle={this.handleSortClick('new')}
                 >
-                  <FormattedMessage {...messages.participatoryBudgettingPicks} />
-                  &nbsp;
-                  <InfoTooltip {...messages.basketsCountTooltip} size="small" position="top-left" />
+                  <TableHeaderCellText>
+                    <FormattedMessage {...messages.publication_date} />
+                  </TableHeaderCellText>
                 </SortableTableHeader>
               </Table.HeaderCell>
-            </FeatureFlag>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {(ideas || []).map((idea) =>
-            <Row
-              key={idea.id}
-              idea={idea}
-              phases={phases}
-              statuses={statuses}
-              onSelectIdea={this.selectIdea(idea)}
-              onUnselectIdea={this.unselectIdea(idea)}
-              onToggleSelectIdea={this.toggleSelectIdea(idea)}
-              onSingleSelectIdea={this.singleSelectIdea(idea)}
-              selected={selectedIdeas[idea.id]}
-              selectedIdeas={selectedIdeas}
-              activeFilterMenu={activeFilterMenu}
-            />
-          )}
-        </Table.Body>
-        <Table.Footer fullWidth={true}>
-          <Table.Row>
-            <Table.HeaderCell colSpan="7">
-              <Pagination
-                currentPage={this.props.ideaCurrentPageNumber || 1}
-                totalPages={this.props.ideaLastPageNumber || 1}
-                loadPage={this.handlePaginationClick}
-              />
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Footer>
-      </Table>
+              <Table.HeaderCell width={1}>
+                <SortableTableHeader
+                  direction={ideaSortAttribute === 'upvotes_count' ? ideaSortDirection : null}
+                  onToggle={this.handleSortClick('upvotes_count')}
+                >
+                  <TableHeaderCellText>
+                    <FormattedMessage {...messages.up} />
+                  </TableHeaderCellText>
+                </SortableTableHeader>
+              </Table.HeaderCell >
+              <Table.HeaderCell width={1}>
+                <SortableTableHeader
+                  direction={ideaSortAttribute === 'downvotes_count' ? ideaSortDirection : null}
+                  onToggle={this.handleSortClick('downvotes_count')}
+                >
+                  <TableHeaderCellText>
+                    <FormattedMessage {...messages.down} />
+                  </TableHeaderCellText>
+                </SortableTableHeader>
+              </Table.HeaderCell>
+              <FeatureFlag name="participatory_budgeting">
+                <Table.HeaderCell width={1}>
+                  <SortableTableHeader
+                    direction={ideaSortAttribute === 'baskets_count' ? ideaSortDirection : null}
+                    onToggle={this.handleSortClick('baskets_count')}
+                  >
+                    <TableHeaderCellText>
+                      <FormattedMessage {...messages.participatoryBudgettingPicks} />
+                    </TableHeaderCellText>
+                    &nbsp;
+                    <InfoTooltip {...messages.basketsCountTooltip} size="small" position="top-left" />
+                  </SortableTableHeader>
+                </Table.HeaderCell>
+              </FeatureFlag>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {!!ideas && ideas.length > 0 ?
+              <TransitionGroup component={null}>
+                {ideas.map((idea) =>
+                  <CSSTransition classNames="fade" timeout={500} key={idea.id}>
+                    <Row
+                      className="e2e-idea-manager-idea-row"
+                      key={idea.id}
+                      idea={idea}
+                      phases={phases}
+                      statuses={statuses}
+                      onUnselectIdea={this.unselectIdea(idea)}
+                      onToggleSelectIdea={this.toggleSelectIdea(idea)}
+                      onSingleSelectIdea={this.singleSelectIdea(idea)}
+                      selected={selectedIdeas[idea.id]}
+                      selectedIdeas={selectedIdeas}
+                      activeFilterMenu={activeFilterMenu}
+                      openIdea={this.onClickIdeaTitle}
+                    />
+                  </CSSTransition>
+                )}
+              </TransitionGroup> : null
+            }
+          </Table.Body>
+          {!!ideas && ideas.length > 0 &&
+            <Table.Footer fullWidth={true}>
+              <Table.Row>
+                <Table.HeaderCell colSpan="7">
+                  <Pagination
+                    currentPage={this.props.ideaCurrentPageNumber || 1}
+                    totalPages={this.props.ideaLastPageNumber || 1}
+                    loadPage={this.handlePaginationClick}
+                  />
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Footer>
+          }
+        </Table>
+        <TransitionGroup component={null}>
+          {!ideas || ideas.length === 0 &&
+            <CSSTransition classNames="fade" timeout={500}>
+              <NoIdeas handleSeeAllIdeas={handleSeeAllIdeas} />
+            </CSSTransition>
+          }
+        </TransitionGroup>
+
+        <IdeaPreview
+          ideaId={ideaModal}
+          closeSideModal={this.onCloseModal}
+        />
+      </Container>
     );
   }
 }

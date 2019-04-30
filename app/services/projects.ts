@@ -82,6 +82,9 @@ export interface IProjectData {
     user_basket: {
       data: IRelationship | null;
     }
+    default_assignee: {
+      data: IRelationship | null
+    }
   };
 }
 
@@ -104,6 +107,7 @@ export interface IUpdatedProjectProperties {
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
+  default_assignee_id?: string | null;
 }
 
 export interface IProject {

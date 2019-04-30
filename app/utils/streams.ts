@@ -368,17 +368,18 @@ class Streams {
     return this.streams[streamId] as IStream<T>;
   }
 
-  async add<T>(unsafeApiEndpoint: string, bodyData: object | null) {
+  async add<T>(unsafeApiEndpoint: string, bodyData: object | null, waitForRefetchesToResolve = false) {
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
     try {
+      const promises: Promise<any>[] = [];
       const response = await request<T>(apiEndpoint, bodyData, { method: 'POST' }, null);
 
       forEach(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint], (streamId) => {
         const stream = this.streams[streamId];
 
         if (!stream.cacheStream) {
-          stream.fetch();
+          promises.push(stream.fetch());
         } else {
           stream.observer.next((previous) => (this.deepFreeze({
             ...previous,
@@ -388,8 +389,12 @@ class Streams {
       });
 
       forEach(this.streamIdsByApiEndPointWithQuery[apiEndpoint], (streamId) => {
-        this.streams[streamId].fetch();
+        promises.push(this.streams[streamId].fetch());
       });
+
+      if (waitForRefetchesToResolve) {
+        await Promise.all(promises);
+      }
 
       return response;
     } catch (error) {
@@ -400,10 +405,11 @@ class Streams {
     }
   }
 
-  async update<T>(unsafeApiEndpoint: string, dataId: string, bodyData: object) {
+  async update<T>(unsafeApiEndpoint: string, dataId: string, bodyData: object, waitForRefetchesToResolve = false) {
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
     try {
+      const promises: Promise<any>[] = [];
       const response = await request<T>(apiEndpoint, bodyData, { method: 'PATCH' }, null);
 
       union(
@@ -414,7 +420,7 @@ class Streams {
         const streamHasDataId = has(stream, `dataIds.${dataId}`);
 
         if (!stream.cacheStream) {
-          stream.fetch();
+          promises.push(stream.fetch());
         } else if (streamHasDataId && stream.type === 'singleObject') {
           stream.observer.next(response);
         } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
@@ -429,8 +435,12 @@ class Streams {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint],
         this.streamIdsByDataIdWithQuery[dataId]
       ).forEach((streamId) => {
-        this.streams[streamId].fetch();
+        promises.push(this.streams[streamId].fetch());
       });
+
+      if (waitForRefetchesToResolve) {
+        await Promise.all(promises);
+      }
 
       return response;
     } catch (error) {
@@ -441,10 +451,12 @@ class Streams {
     }
   }
 
-  async delete(unsafeApiEndpoint: string, dataId: string) {
+  async delete(unsafeApiEndpoint: string, dataId: string, waitForRefetchesToResolve = false) {
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
     try {
+      const promises: Promise<any>[] = [];
+
       await request(apiEndpoint, null, { method: 'DELETE' }, null);
 
       union(
@@ -455,7 +467,7 @@ class Streams {
         const streamHasDataId = has(stream, `dataIds.${dataId}`);
 
         if (!stream.cacheStream) {
-          stream.fetch();
+          promises.push(stream.fetch());
         } else if (streamHasDataId && stream.type === 'singleObject') {
           stream.observer.next(undefined);
         } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
@@ -470,8 +482,12 @@ class Streams {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint],
         this.streamIdsByDataIdWithQuery[dataId]
       ).forEach((streamId) => {
-        this.streams[streamId].fetch();
+        promises.push(this.streams[streamId].fetch());
       });
+
+      if (waitForRefetchesToResolve) {
+        await Promise.all(promises);
+      }
 
       return true;
     } catch (error) {

@@ -42,7 +42,14 @@ export default class GetComments extends React.Component<Props, State> {
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         filter(({ ideaId }) => isString(ideaId)),
-        switchMap(({ ideaId }: { ideaId: string }) => commentsForIdeaStream(ideaId).observable)
+        switchMap(({ ideaId }: { ideaId: string }) => {
+          return commentsForIdeaStream(ideaId, {
+            queryParameters: {
+              'page[number]': 1,
+              'page[size]': 500
+            }
+          }).observable;
+        })
       )
       .subscribe((comments) => this.setState({ comments: !isNilOrError(comments) ? comments.data : comments }))
     ];

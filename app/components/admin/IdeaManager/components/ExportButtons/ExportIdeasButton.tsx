@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from 'components/UI/Button';
+import { fontSizes } from 'utils/styleUtils';
 
 // i18n
 import messages from '../../messages';
@@ -18,10 +19,11 @@ export default class ExportIdeasButton extends React.PureComponent<Props, State>
     const { onClick, exportingIdeas, exportType } = this.props;
     return (
       <Button
-        style="secondary"
-        icon="download"
+        style="text"
         onClick={onClick}
         processing={exportingIdeas}
+        padding="0"
+        fontSize={`${fontSizes.small}px`}
       >
         {exportType === 'all' && <FormattedMessage {...messages.exportIdeas} />}
         {exportType === 'project' && <FormattedMessage {...messages.exportIdeasProjects} />}

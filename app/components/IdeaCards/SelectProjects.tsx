@@ -44,10 +44,9 @@ class SelectProjects extends PureComponent<Props & InjectedLocalized, State> {
     const { selectedValues } = this.state;
     const { projects, localize } = this.props;
     const projectsList = projects.projectsList;
-    let options: any = [];
 
     if (projectsList && projectsList.length > 0) {
-      options = projectsList.map(project => {
+      const options = projectsList.map(project => {
         return {
           text:  localize(project.attributes.title_multiloc),
           value: project.id

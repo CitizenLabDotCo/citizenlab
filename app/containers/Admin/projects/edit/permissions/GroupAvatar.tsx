@@ -116,8 +116,8 @@ export default class GroupAvatar extends React.PureComponent<Props, State> {
       return (
         <GroupAvatarWrapper className={className} count={count}>
           {users.map((user) => (
-            <AvatarWrapper>
-              <Avatar key={user.data.id} userId={user.data.id} size="30px" />
+            <AvatarWrapper key={user.data.id}>
+              <Avatar userId={user.data.id} size="30px" />
             </AvatarWrapper>
           ))}
         </GroupAvatarWrapper>

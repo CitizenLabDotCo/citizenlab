@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-import { has, isString, sortBy, last, get, isEmpty, trimEnd } from 'lodash-es';
-import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
-import linkifyHtml from 'linkifyjs/html';
+import { has, isString, sortBy, last, get, isEmpty, isUndefined } from 'lodash-es';
+import { Subscription, combineLatest, of } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -14,7 +13,6 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import StatusBadge from 'components/StatusBadge';
-import Comments from './Comments';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
@@ -31,6 +29,7 @@ import SimilarIdeas from './SimilarIdeas';
 import HasPermission from 'components/HasPermission';
 import IdeaHeader from './IdeaHeader';
 import IdeaAuthor from './IdeaAuthor';
+import IdeaFooter from './IdeaFooter';
 import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
 import Icon from 'components/UI/Icon';
@@ -45,7 +44,6 @@ import { API_PATH } from 'containers/App/constants';
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
-import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
@@ -71,17 +69,17 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import TranslateButton from './TranslateButton';
 
-const loadingTimeout = 400;
-const loadingEasing = 'ease-out';
-const loadingDelay = 100;
-
-const contentTimeout = 500;
-const contentEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
-const contentDelay = 500;
+const maxPageWidth = '810px';
+const loadingSpinnerFadeInDuration = 300;
+const loadingSpinnerFadeInEasing = 'ease-out';
+const loadingSpinnerFadeInDelay = 100;
+const contentFadeInDuration = 400;
+const contentFadeInEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
+const contentFadeInDelay = 350;
 const contentTranslateDistance = '25px';
 
 const StyledSpinner = styled<SpinnerProps>(Spinner)`
-  transition: all ${loadingTimeout}ms ${loadingEasing} ${loadingDelay}ms;
+  transition: all ${loadingSpinnerFadeInDuration}ms ${loadingSpinnerFadeInEasing} ${loadingSpinnerFadeInDelay}ms;
 `;
 
 const Loading = styled.div`
@@ -109,9 +107,24 @@ const Loading = styled.div`
 `;
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px);
   background: #fff;
   transform: none;
   will-change: transform, opacity;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+  `}
+
+  &.inModal {
+    min-height: 100vh;
+
+    ${media.smallerThanMaxTablet`
+      min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    `}
+  }
 
   &.content-enter {
     opacity: 0;
@@ -120,7 +133,7 @@ const Container = styled.div`
     &.content-enter-active {
       opacity: 1;
       transform: translateY(0);
-      transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
+      transition: all ${contentFadeInDuration}ms ${contentFadeInEasing} ${contentFadeInDelay}ms;
     }
   }
 
@@ -131,7 +144,7 @@ const Container = styled.div`
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 820px;
+  max-width: ${maxPageWidth};
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -139,13 +152,17 @@ const IdeaContainer = styled.div`
   margin-right: auto;
   padding: 0;
   padding-top: 60px;
-  padding-bottom: 60px;
-  padding-left: 20px;
-  padding-right: 20px;
   position: relative;
 
   ${media.smallerThanMaxTablet`
     padding-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    padding-left: 15px;
+    padding-right: 15px;
   `}
 `;
 
@@ -164,8 +181,7 @@ const LeftColumn = styled.div`
   flex-basis: 0;
   margin: 0;
   padding: 0;
-  padding-right: 55px;
-  min-width: 0;
+  padding-right: 70px;
 
   ${media.smallerThanMaxTablet`
     padding: 0;
@@ -174,10 +190,15 @@ const LeftColumn = styled.div`
 
 const IdeaImage = styled.img`
   width: 100%;
-  margin: 0 0 2rem;
-  padding: 0;
-  border-radius: 8px;
+  height: auto;
+  margin-bottom: 25px;
+  border-radius: 3px;
   border: 1px solid ${colors.separation};
+`;
+
+const StyledIdeaAuthor = styled(IdeaAuthor)`
+  margin-top: -4px;
+  margin-left: -4px;
 `;
 
 const MetaButtons = styled.div`
@@ -239,12 +260,13 @@ const LocationButton = styled.div`
 `;
 
 const MapWrapper = styled.div`
-  border-radius: 8px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px solid ${colors.separation};
   height: 265px;
   position: relative;
   overflow: hidden;
   z-index: 2;
+  margin-top: 20px;
 
   &.map-enter {
     height: 0;
@@ -293,23 +315,6 @@ const StyledTranslateButton = styled(TranslateButton)`
   margin-bottom: 30px;
 `;
 
-const StyledOfficialFeedback = styled(OfficialFeedback)`
-  margin-bottom: 112px;
-`;
-
-const SeparatorRow = styled.div`
-  width: 100%;
-  height: 1px;
-  margin: 0;
-  margin-top: 45px;
-  margin-bottom: 25px;
-
-  ${media.smallerThanMaxTablet`
-    margin-top: 20px;
-    margin-bottom: 20px;
-  `}
-`;
-
 const RightColumn = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
@@ -356,17 +361,6 @@ const VoteLabel = styled.div`
 
 const StatusContainer = styled.div``;
 
-const StatusContainerMobile = styled(StatusContainer)`
-  margin-top: -20px;
-  margin-bottom: 35px;
-  transform-origin: top left;
-  transform: scale(0.9);
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
 const StatusTitle = styled.h4`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
@@ -381,7 +375,6 @@ const VoteControlMobile = styled.div`
   border-bottom: solid 1px ${colors.separation};
   padding-top: 15px;
   padding-bottom: 15px;
-  margin-top: -10px;
   margin-bottom: 30px;
 
   ${media.biggerThanMaxTablet`
@@ -390,10 +383,8 @@ const VoteControlMobile = styled.div`
 `;
 
 const AssignBudgetControlMobile = styled.div`
-  margin-top: 15px;
-  margin-bottom: 25px;
-  padding-top: 25px;
-  border-top: solid 1px ${colors.separation};
+  margin-top: 40px;
+  margin-bottom: 40px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -406,13 +397,9 @@ const SharingWrapper = styled.div`
 `;
 
 const SharingMobile = styled(Sharing)`
-  margin: 0;
-  margin-bottom: 25px;
   padding: 0;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-top: solid 1px ${colors.separation};
-  border-bottom: solid 1px ${colors.separation};
+  margin: 0;
+  margin-top: 30px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -421,11 +408,10 @@ const SharingMobile = styled(Sharing)`
 
 const MoreActionsMenuWrapper = styled.div`
   margin-top: 40px;
-  user-select: none;
+`;
 
-  * {
-    user-select: none;
-  }
+const StyledOfficialFeedback = styled(OfficialFeedback)`
+  margin-top: 85px;
 `;
 
 interface DataProps {
@@ -434,7 +420,6 @@ interface DataProps {
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
   ideaImages: GetIdeaImagesChildProps;
-  ideaComments: GetCommentsChildProps;
   ideaFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
 }
@@ -443,11 +428,20 @@ interface InputProps {
   ideaId: string | null;
   inModal?: boolean | undefined;
   animatePageEnter?: boolean;
+  className?: string;
 }
 
-interface Props extends DataProps, InputProps { }
+interface Props extends DataProps, InputProps {}
 
-type State = {
+interface IActionInfos {
+  participationContextType: 'Project' | 'Phase' | null;
+  participationContextId: string | null;
+  budgetingDescriptor: any | null;
+  showBudgetControl: boolean | null;
+  showVoteControl: boolean | null;
+}
+
+interface State {
   opened: boolean;
   loaded: boolean;
   showMap: boolean;
@@ -456,11 +450,11 @@ type State = {
   translateButtonClicked: boolean;
   titleTranslationLoading: boolean;
   bodyTranslationLoading: boolean;
-};
+  actionInfos: IActionInfos | null;
+}
 
 export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   initialState: State;
-  ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
   static defaultProps = {
@@ -477,17 +471,16 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
       titleTranslationLoading: false,
-      bodyTranslationLoading: false
+      bodyTranslationLoading: false,
+      ideaBody: null,
+      actionInfos: null
     };
     this.initialState = initialState;
     this.state = initialState;
-    this.ideaId$ = new BehaviorSubject(null);
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    this.setOpened();
-    this.setLoaded();
     const authUser$ = authUserStream().observable;
     const query = clHistory.getCurrentLocation().query;
     const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
@@ -519,24 +512,68 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     ];
   }
 
-  componentDidUpdate() {
-    this.setOpened();
-    this.setLoaded();
-  }
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    const { opened, loaded, actionInfos } = prevState;
+    const { idea, ideaImages, project, phases } = nextProps;
+    let stateToUpdate: Partial<State> = {};
 
-  setOpened() {
-    const { idea } = this.props;
-    if (!this.state.opened && idea !== undefined) this.setState({ opened: true });
-  }
-  setLoaded() {
-    const { idea, ideaImages, project } = this.props;
-    if (!this.state.loaded
-      && idea !== undefined
-      && ideaImages !== undefined
-      && project !== undefined
-      ) {
-      this.setState({ loaded: true });
+    if (!opened && !isNilOrError(idea)) {
+      stateToUpdate = {
+        ...stateToUpdate,
+        opened: true
+      };
     }
+
+    if (!loaded && !isNilOrError(idea) && !isUndefined(ideaImages) && !isNilOrError(project)) {
+      stateToUpdate = {
+        ...stateToUpdate,
+        loaded: true
+      };
+    }
+
+    if (!actionInfos && !isNilOrError(idea) && !isNilOrError(project)) {
+      const pbProject = (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'budgeting' ? project : null);
+      const pbPhase = (!pbProject && !isNilOrError(phases) ? phases.find(phase => phase.attributes.participation_method === 'budgeting') : null);
+      const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.attributes.start_at, pbPhase.attributes.end_at]) === 'present');
+      const lastPhase = (!isNilOrError(phases) ? last(sortBy(phases, [phase => phase.attributes.end_at])) : null);
+      const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.id === pbPhase.id);
+      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)));
+      const upvotesCount = idea.attributes.upvotes_count;
+      const downvotesCount = idea.attributes.downvotes_count;
+      const votingEnabled = idea.relationships.action_descriptor.data.voting.enabled;
+      const cancellingEnabled = idea.relationships.action_descriptor.data.voting.cancelling_enabled;
+      const votingFutureEnabled = idea.relationships.action_descriptor.data.voting.future_enabled;
+      const hideVote = !(votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount || downvotesCount);
+      const showVoteControl = (!hideVote && !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast)));
+      const budgetingDescriptor = get(idea, 'relationships.action_descriptor.data.budgeting', null);
+      let participationContextType: 'Project' | 'Phase' | null = null;
+      let participationContextId: string | null = null;
+
+      if (pbProject) {
+        participationContextType = 'Project';
+      } else if (pbPhase) {
+        participationContextType = 'Phase';
+      }
+
+      if (!isNilOrError(pbProject)) {
+        participationContextId = pbProject.id;
+      } else if (!isNilOrError(pbPhase)) {
+        participationContextId = pbPhase.id;
+      }
+
+      stateToUpdate = {
+        ...stateToUpdate,
+        actionInfos: {
+          participationContextType,
+          participationContextId,
+          budgetingDescriptor,
+          showBudgetControl,
+          showVoteControl
+        }
+      };
+    }
+
+    return isEmpty(stateToUpdate) ? null : stateToUpdate;
   }
 
   componentWillUnmount() {
@@ -554,10 +591,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   handleMapToggle = () => {
-    this.setState((state) => {
-      const showMap = !state.showMap;
-      return { showMap };
-    });
+    this.setState(({ showMap }) => ({ showMap: !showMap }));
   }
 
   openSpamModal = () => {
@@ -589,84 +623,24 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.setState({ ideaIdForSocialSharing: null });
   }
 
-// ---------------describes idea to determine what to show---------------
-  getActionsInfos = () => {
-    const { project, phases, idea } = this.props;
-    if (!isNilOrError(idea) && !isNilOrError(project)) {
-      const pbProject = project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'budgeting' ? project : null;
-      const pbPhase = (!pbProject && !isNilOrError(phases) ? phases.find(phase => phase.attributes.participation_method === 'budgeting') : null);
-      const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.attributes.start_at, pbPhase.attributes.end_at]) === 'present');
-      const lastPhase = (phases ? last(sortBy(phases, [phase => phase.attributes.end_at])) : null);
-      const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.id === pbPhase.id);
-
-      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)));
-
-      const upvotesCount = idea.attributes.upvotes_count;
-      const downvotesCount = idea.attributes.downvotes_count;
-      const votingEnabled = idea.relationships.action_descriptor.data.voting.enabled;
-      const cancellingEnabled = idea.relationships.action_descriptor.data.voting.cancelling_enabled;
-      const votingFutureEnabled = idea.relationships.action_descriptor.data.voting.future_enabled;
-      const hideVote = !(votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount || downvotesCount);
-
-      const showVoteControl = (!hideVote && !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast)));
-
-      let participationContextType: 'Project' | 'Phase' | null = null;
-
-      if (pbProject) {
-        participationContextType = 'Project';
-      } else if (pbPhase) {
-        participationContextType = 'Phase';
-      }
-
-      let participationContextId: string | null = null;
-
-      if (!isNilOrError(pbProject)) {
-        participationContextId = pbProject.id;
-      } else if (!isNilOrError(pbPhase)) {
-        participationContextId = pbPhase.id;
-      }
-      const budgetingDescriptor = get(idea, 'relationships.action_descriptor.data.budgeting', null);
-
-      return {
-        participationContextType,
-        participationContextId,
-        budgetingDescriptor,
-        showBudgetControl,
-        showVoteControl
-      };
-    }
-
-    return {
-      participationContextType: null,
-      participationContextId: null,
-      budgetingDescriptor: null,
-      showBudgetControl: null,
-      showVoteControl: null
-    };
-  }
-
   translateIdea = () => {
-    // tracking
     trackEvent(tracks.clickTranslateIdeaButton);
-
-    this.setState({
-      translateButtonClicked: true,
-    });
+    this.setState({ translateButtonClicked: true });
   }
 
   backToOriginalContent = () => {
-    // tracking
     trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
-
-    this.setState({
-      translateButtonClicked: false,
-    });
+    this.setState({ translateButtonClicked: false });
   }
 
-  onTitleTranslationLoaded = () => this.setState({ titleTranslationLoading: false });
-  onBodyTranslationLoaded = () => this.setState({ bodyTranslationLoading: false });
+  onTitleTranslationLoaded = () => {
+    this.setState({ titleTranslationLoading: false });
+  }
 
-// ---------------Render---------------
+  onBodyTranslationLoaded = () => {
+    this.setState({ bodyTranslationLoading: false });
+  }
+
   render() {
     const {
       inModal,
@@ -677,8 +651,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       localize,
       ideaImages,
       authUser,
-      project,
-      intl: { formatMessage }
+      className
     } = this.props;
     const {
       opened,
@@ -687,28 +660,32 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       ideaIdForSocialSharing,
       translateButtonClicked,
       titleTranslationLoading,
-      bodyTranslationLoading
+      bodyTranslationLoading,
+      spamModalVisible,
+      actionInfos
     } = this.state;
+    const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
     if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
-      const authorId = get(idea, 'relationships.author.data.id', null);
+      const authorId: string | null = get(idea, 'relationships.author.data.id', null);
       const createdAt = idea.attributes.created_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
-      const statusId = get(idea, 'relationships.idea_status.data.id', null);
-      const ideaImageLarge = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
+      // If you're not an admin/mod, statusId can be null
+      const statusId: string | null = get(idea, 'relationships.idea_status.data.id', null);
+      const ideaImageLarge: string | null = get(ideaImages, '[0].attributes.versions.large', null);
       const ideaLocation = (idea.attributes.location_point_geojson || null);
       const ideaAdress = (idea.attributes.location_description || null);
       const projectId = idea.relationships.project.data.id;
       const ideaUrl = location.href;
       const ideaId = idea.id;
-
-      let ideaBody = localize(idea.attributes.body_multiloc);
-      ideaBody = trimEnd(ideaBody, '<p><br></p>');
-      ideaBody = trimEnd(ideaBody, '<p></p>');
-      ideaBody = linkifyHtml(ideaBody);
-
+      const ideaBody = localize(idea.attributes.body_multiloc);
+      const participationContextType = get(actionInfos, 'participationContextType', null);
+      const participationContextId = get(actionInfos, 'participationContextId', null);
+      const budgetingDescriptor = get(actionInfos, 'budgetingDescriptor', null);
+      const showBudgetControl = get(actionInfos, 'showBudgetControl', null);
+      const showVoteControl = get(actionInfos, 'showVoteControl', null);
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_idea',
         campaign: 'share_content',
@@ -718,22 +695,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         campaign: 'share_content'
       };
 
-      const {
-        participationContextType,
-        participationContextId,
-        budgetingDescriptor,
-        showBudgetControl,
-        showVoteControl
-      } = this.getActionsInfos();
-
       content = (
         <>
-          <IdeaMeta
-            ideaId={ideaId}
-          />
+          <IdeaMeta ideaId={ideaId} />
           <IdeaContainer id="e2e-idea-show">
             <IdeaHeader
               ideaId={ideaId}
+              statusId={statusId}
               ideaTitle={ideaTitle}
               projectId={projectId}
               locale={locale}
@@ -743,12 +711,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
             <Content>
               <LeftColumn>
-                {statusId &&
-                  <StatusContainerMobile>
-                    <StatusBadge statusId={statusId} />
-                  </StatusContainerMobile>
-                }
-
                 {!inModal && showVoteControl &&
                   <VoteControlMobile>
                     <VoteControl
@@ -760,10 +722,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 {ideaImageLarge &&
-                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { ideaTitle })} className="e2e-ideaImage"/>
+                  <IdeaImage
+                    src={ideaImageLarge}
+                    alt={formatMessage(messages.imageAltText, { ideaTitle })}
+                    className="e2e-ideaImage"
+                  />
                 }
 
-                <IdeaAuthor
+                <StyledIdeaAuthor
                   ideaId={ideaId}
                   authorId={authorId}
                   ideaCreatedAt={createdAt}
@@ -807,11 +773,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </>
                 }
 
-                {ideaFiles && !isNilOrError(ideaFiles) &&
+                {!isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
                   <FileAttachments files={ideaFiles} />
                 }
-
-                <SeparatorRow />
 
                 {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
                   <AssignBudgetControlMobile>
@@ -834,12 +798,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 />
 
                 <StyledOfficialFeedback
-                  project={project}
                   ideaId={ideaId}
                 />
-
-                <Comments ideaId={ideaId} />
-
               </LeftColumn>
 
               <RightColumnDesktop>
@@ -953,10 +913,17 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             </Content>
           </IdeaContainer>
 
+          {loaded &&
+            <IdeaFooter
+              ideaId={ideaId}
+              commentsCount={idea.attributes.comments_count}
+            />
+          }
+
           <Modal
-            opened={this.state.spamModalVisible}
+            opened={spamModalVisible}
             close={this.closeSpamModal}
-            label={formatMessage(messages.spanModalLabelIdea)}
+            label={formatMessage(messages.spamModalLabelIdea)}
             header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
           >
             <SpamReportForm
@@ -973,7 +940,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         <CSSTransition
           classNames="loading"
           in={(opened && !loaded)}
-          timeout={loadingTimeout}
+          timeout={loadingSpinnerFadeInDuration}
           mountOnEnter={false}
           unmountOnExit={true}
           exit={false}
@@ -986,13 +953,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         <CSSTransition
           classNames="content"
           in={(opened && loaded)}
-          timeout={contentTimeout + contentDelay}
+          timeout={contentFadeInDuration + contentFadeInDelay}
           mountOnEnter={false}
           unmountOnExit={false}
           enter={animatePageEnter}
           exit={true}
         >
-          <Container>
+          <Container className={`${className} ${inModal ? 'inModal' : ''}`}>
             {content}
           </Container>
         </CSSTransition>
@@ -1018,14 +985,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl<Props & InjectedLocalized>(IdeasShow));
 
 const Data = adopt<DataProps, InputProps>({
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   locale: <GetLocale />,
-  project: ({ idea, render }) => !isNilOrError(idea) ? <GetProject id={idea.relationships.project.data.id}>{render}</GetProject> : null,
-  phases: ({ idea, render }) => !isNilOrError(idea) ? <GetPhases projectId={idea.relationships.project.data.id}>{render}</GetPhases> : null,
-  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
-  ideaComments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
   authUser: <GetAuthUser/>,
-  ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
+  ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
+  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
+  phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>
 });
 
 export default (inputProps: InputProps) => (
