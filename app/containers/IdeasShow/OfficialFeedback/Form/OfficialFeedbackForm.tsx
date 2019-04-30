@@ -173,14 +173,62 @@ const Data = adopt<DataProps, InputProps>({
 
 export default class OfficialFeedbackFormWithHoCs extends Component<Props & FormikProps<FormValues>> {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
-    const errors: FormikErrors<FormValues> = {};
+    let errors: FormikErrors<FormValues> = {};
+    const bodyMultilocValues = getValues(values.body_multiloc);
+    const authorMultilocValues = getValues(values.author_multiloc);
 
-    if (!every(getValues(values.author_multiloc), isNonEmptyString)) {
-      errors.author_multiloc = [{ error: 'blank' }] as any;
+    // values
+    // values.body_multiloc & values.author_multiloc
+    // if they haven't been touched in at least one language, their value is an {}
+    // once you type in them, their values become strings (for the selected locale)
+    // we only want to enable the Give an update button only when there's a (non-empty) body and author multiloc for the same language
+    // if values.body_multiloc has no language keys or language key but string is empty => error = blank
+    // if values.author_multiloc has no language keys or language key but string is empty => error = blank
+    // if values.body_multiloc has val
+
+    // grab locales of body_multiloc, then check if there's at least one matching locale in author_multiloc that has a non-empty string value
+    // const localesWithBodyContent = Object.keys(values.body_multiloc);
+    let validOfficialFeedbacks = 0;
+    for (const locale of localesWithBodyContent) {
+      if (!isNonEmptyString(values.body_multiloc[locale]) && !isNonEmptyString(values.author_multiloc[locale])) {
+        validOfficialFeedbacks += 1;
+      }
     }
-    if (!every(getValues(values.body_multiloc), isNonEmptyString)) {
+
+    if (validOfficialFeedbacks > 0) {
+      errors = {};
+    }
+
+    // if (!every(bodyMultilocValues, isNonEmptyString) || bodyMultilocValues.length === 0) {
+    //   errors.body_multiloc = [{ error: 'blank' }] as any;
+    // }
+    // if (!every(authorMultilocValues, isNonEmptyString) || authorMultilocValues.length === 0) {
+    //   errors.author_multiloc = [{ error: 'blank' }] as any;
+    // }
+
+    if (bodyMultilocValues.length === 0) {
       errors.body_multiloc = [{ error: 'blank' }] as any;
     }
+
+    if (authorMultilocValues.length === 0) {
+      errors.author_multiloc = [{ error: 'blank' }] as any;
+    }
+
+    const localesWithBodyContent = Object.keys(values.body_multiloc);
+    for (const locale of localesWithBodyContent) {
+      if (!isNonEmptyString(values.body_multiloc[locale]) && isNonEmptyString(values.author_multiloc[locale])) {
+        errors.author_multiloc = [{ error: 'blank' }] as any;
+      }
+    }
+
+    const localesWithAuthorContent = Object.keys(values.body_multiloc);
+    for (const locale of localesWithAuthorContent) {
+      if (!isNonEmptyString(values.body_multiloc[locale]) && !isNonEmptyString(values.author_multiloc[locale])) {
+        validOfficialFeedbacks += 1;
+      }
+    }
+
+    console.log(errors);
 
     return errors;
   }
