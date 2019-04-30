@@ -30,7 +30,7 @@ class FilterSidebarStatuses extends React.PureComponent<Props> {
     return (
       <Menu secondary={true} vertical={true} fluid={true}>
         <Menu.Item onClick={this.clearFilter} active={!this.props.selectedStatus}>
-          <FormattedMessage {...messages.allIdeas} />
+          <FormattedMessage {...messages.allStatuses} />
         </Menu.Item>
         <Divider />
         {this.props.statuses && this.props.statuses.map((status) => (

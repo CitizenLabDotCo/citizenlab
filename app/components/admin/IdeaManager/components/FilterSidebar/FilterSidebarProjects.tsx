@@ -8,17 +8,18 @@ import messages from '../../messages';
 interface Props {
   projects?: IProjectData[];
   selectedProject?: string;
-  onChangeProjectFilter?: (project: string | null) => void;
+  onChangeProjectFilter?: (project: string[] | undefined) => void;
 }
 
 class FilterSidebarProjects extends React.PureComponent<Props> {
 
-  handleItemClick = (id) => () => {
-    this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(id);
+  handleItemClick = (id: string) => () => {
+    const projectIds = [id];
+    this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(projectIds);
   }
 
   clearFilter = () => {
-    this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(null);
+    this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(undefined);
   }
 
   isActive = (id) => {
@@ -29,7 +30,7 @@ class FilterSidebarProjects extends React.PureComponent<Props> {
     return (
       <Menu secondary={true} vertical={true} fluid={true}>
         <Menu.Item onClick={this.clearFilter} active={!this.props.selectedProject || this.props.selectedProject.length === 0}>
-          <FormattedMessage {...messages.allIdeas} />
+          <FormattedMessage {...messages.allProjects} />
         </Menu.Item>
         <Divider />
         {this.props.projects && this.props.projects.map((project) => (
