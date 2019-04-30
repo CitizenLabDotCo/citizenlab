@@ -223,42 +223,49 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (!isNilOrError(idea) && !isNilOrError(comment) && !isNilOrError(locale)) {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
-      const showTranslateButton = commentBodyMultiloc && !commentBodyMultiloc[locale];
       const createdAt = comment.attributes.created_at;
       const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
       const votingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.voting, 'enabled', false) : false);
+      const upvoteCount = comment.attributes.upvotes_count;
+      const showVoteComponent = (votingEnabled || (!votingEnabled && upvoteCount > 0));
+      const showReplyButton = !!(authUser && commentingEnabled && canReply);
+      const showTranslateButton = !!(commentBodyMultiloc && !commentBodyMultiloc[locale]);
 
       return (
         <Container className={className}>
           <Left>
-            <CommentVote
-              ideaId={ideaId}
-              commentId={commentId}
-              commentType={commentType}
-              votingEnabled={votingEnabled}
-            />
-
-            {authUser && commentingEnabled && canReply &&
-              <LeftActions>
-                <Separator className="first">•</Separator>
-                <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply} className="e2e-comment-reply-button">
-                  <FormattedMessage {...messages.commentReplyButton} />
-                </ReplyButton>
-                <FeatureFlag name="machine_translations">
-                  {showTranslateButton &&
-                    <>
-                      <Separator>•</Separator>
-                      <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
-                        {!translateButtonClicked
-                          ? <FormattedMessage {...messages.seeTranslation} />
-                          : <FormattedMessage {...messages.seeOriginal} />
-                        }
-                      </TranslateButton>
-                    </>
-                  }
-                </FeatureFlag>
-              </LeftActions>
+            {showVoteComponent &&
+              <CommentVote
+                ideaId={ideaId}
+                commentId={commentId}
+                commentType={commentType}
+                votingEnabled={votingEnabled}
+              />
             }
+
+            <LeftActions>
+              {showReplyButton &&
+                <>
+                  <Separator className="first">•</Separator>
+                  <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply} className="e2e-comment-reply-button">
+                    <FormattedMessage {...messages.commentReplyButton} />
+                  </ReplyButton>
+                </>
+              }
+              <FeatureFlag name="machine_translations">
+                {showTranslateButton &&
+                  <>
+                    <Separator>•</Separator>
+                    <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
+                      {!translateButtonClicked
+                        ? <FormattedMessage {...messages.seeTranslation} />
+                        : <FormattedMessage {...messages.seeOriginal} />
+                      }
+                    </TranslateButton>
+                  </>
+                }
+              </FeatureFlag>
+            </LeftActions>
           </Left>
 
           <Right>
