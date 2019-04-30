@@ -37,8 +37,8 @@ const Container = styled.div`
 `;
 
 const ContainerInner = styled.div`
-  padding-top: 22px;
-  padding-bottom: 30px;
+  padding-top: 25px;
+  padding-bottom: 35px;
   position: relative;
 
   &.hasBottomBorder {
