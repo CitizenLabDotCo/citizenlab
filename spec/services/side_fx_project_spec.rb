@@ -20,8 +20,9 @@ describe SideFxProjectService do
         .from(nil).to(admin2)
     end
 
-    it "sets the default_assignee to the first admin that's not a super admin if it's created by a super admin" do
+    it "sets the default_assignee to the first active admin that's not a super admin if it's created by a super admin" do
       super_admin = create(:super_admin)
+      invited_admin = create(:invite, invitee: create(:admin, registration_completed_at: nil, invite_status: 'pending'))
       admin1 = create(:admin)
       admin2 = create(:admin)
       expect{service.before_create(project, super_admin)}.to change{project.default_assignee}
