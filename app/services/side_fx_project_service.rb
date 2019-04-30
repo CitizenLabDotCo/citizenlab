@@ -54,7 +54,7 @@ class SideFxProjectService
 
   def set_default_assignee project, current_user
     project.default_assignee ||= if current_user&.super_admin?
-      User.admin.order(:created_at).reject(&:super_admin?).first
+      User.active.admin.order(:created_at).reject(&:super_admin?).first
     else
       current_user
     end
