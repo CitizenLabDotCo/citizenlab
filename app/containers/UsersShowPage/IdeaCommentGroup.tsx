@@ -7,7 +7,7 @@ import { ICommentData } from 'services/comments';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -31,10 +31,14 @@ const Container = styled.div`
   flex-direction: column;
   padding: 20px 40px 40px;
   background: #fff;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
   &:not(:last-child) {
     margin-bottom: 20px;
   }
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
+
+  ${media.smallerThanMinTablet`
+    padding: 17px 30px 30px;
+  `}
 `;
 
 const IdeaLink = styled(Link)`
