@@ -1,6 +1,6 @@
 class IdeaStatus < ApplicationRecord
 
-  CODES = %w(proposed under_consideration accepted implemented rejected custom)
+  CODES = %w(proposed viewed under_consideration accepted implemented rejected custom)
 
   has_many :ideas, dependent: :nullify
   has_many :notifications, foreign_key: :idea_status_id, dependent: :nullify

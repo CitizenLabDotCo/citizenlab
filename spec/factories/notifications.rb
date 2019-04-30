@@ -28,6 +28,11 @@ FactoryBot.define do
     idea
   end
 
+  factory :idea_assigned_to_you, parent: :notification, class: 'Notifications::IdeaAssignedToYou' do
+    initiating_user
+    idea
+  end
+
   factory :idea_marked_as_spam, parent: :notification, class: 'Notifications::IdeaMarkedAsSpam' do
     idea
   end

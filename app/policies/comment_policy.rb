@@ -8,8 +8,7 @@ class CommentPolicy < ApplicationPolicy
     end
 
     def resolve
-      idea_ids = Pundit.policy_scope(user, Idea).pluck(:id)
-      scope.where(idea: idea_ids)
+      scope.where(idea: Pundit.policy_scope(user, Idea))
     end
   end
 
@@ -21,6 +20,10 @@ class CommentPolicy < ApplicationPolicy
       check_commenting_allowed(record, user)
     ) || 
     user&.active_admin_or_moderator?(record.project.id)
+  end
+
+  def children?
+    show?
   end
 
   def show?

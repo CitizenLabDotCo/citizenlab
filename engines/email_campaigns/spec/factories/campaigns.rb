@@ -41,6 +41,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :idea_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::IdeaAssignedToYou do
+    enabled { true }
+  end
+
   factory :idea_published_campaign, class: EmailCampaigns::Campaigns::IdeaPublished do
     enabled { true }
   end
@@ -132,6 +136,11 @@ FactoryBot.define do
   end
 
   factory :moderator_digest_campaign, class: EmailCampaigns::Campaigns::ModeratorDigest do
+    enabled { true }
+    schedule { weekly_schedule }
+  end
+
+  factory :assignee_digest_campaign, class: EmailCampaigns::Campaigns::AssigneeDigest do
     enabled { true }
     schedule { weekly_schedule }
   end

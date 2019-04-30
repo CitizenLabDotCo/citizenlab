@@ -7,5 +7,9 @@ FactoryBot.define do
     factory :downvote do
       mode { "down" }
     end
+
+    factory :comment_vote do
+      association :votable, factory: :comment
+    end
   end
 end

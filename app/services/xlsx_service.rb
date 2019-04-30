@@ -66,7 +66,9 @@ class XlsxService
           "project",
           "topics",
           "areas",
-          "idea_status"
+          "idea_status",
+          "assignee",
+          "assignee_email"
         ], style: header_style(s)
         ideas.each do |idea|
           sheet.add_row [
@@ -84,7 +86,9 @@ class XlsxService
             @@multiloc_service.t(idea&.project&.title_multiloc),
             idea.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(','),
             idea.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(','),
-            @@multiloc_service.t(idea&.idea_status&.title_multiloc)
+            @@multiloc_service.t(idea&.idea_status&.title_multiloc),
+            idea.assignee&.display_name,
+            idea.assignee&.email
           ]
         end
         sheet.column_info[2].width = 65
@@ -100,8 +104,9 @@ class XlsxService
       wb.add_worksheet(name: "Comments") do |sheet|
         sheet.add_row [
           "id",
-          "body",
           "idea",
+          "body",
+          "upvotes_count",
           "author_name",
           "author_email",
           "created_at",
