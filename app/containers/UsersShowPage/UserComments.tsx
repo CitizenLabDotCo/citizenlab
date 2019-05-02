@@ -43,13 +43,15 @@ export const reducer = (acc: ICommentData[][], current: ICommentData) => {
     return [[current]];
   }
 
-  if (current.relationships.idea.data.id === lastArray[lastArray.length - 1].relationships.idea.data.id) {
-    lastArray.push(current);
-    return acc;
-  } else {
-    acc.push([current]);
-    return acc;
+  if (current.attributes.publication_status === 'published') {
+    if (current.relationships.idea.data.id === lastArray[lastArray.length - 1].relationships.idea.data.id) {
+      lastArray.push(current);
+    } else {
+      acc.push([current]);
+    }
   }
+  return acc;
+
 };
 
 export const UsersComments = memo<Props>(({ comments, userId }) => (

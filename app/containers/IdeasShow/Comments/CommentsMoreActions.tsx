@@ -26,6 +26,7 @@ import styled from 'styled-components';
 
 // Utils
 import eventEmitter from 'utils/eventEmitter';
+import { get } from 'lodash';
 
 const ButtonsWrapper = styled.div`
   display: flex;
@@ -136,10 +137,14 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
       loading_deleteComment: true,
     });
 
+    const { comment } = this.props;
+
+    const authorId = get(comment, 'relationships.author.data.id', undefined);
+
     if (!isDeleteReason(reason)) {
-      markForDeletion(this.props.projectId, this.props.comment.id);
+      markForDeletion(this.props.projectId, this.props.comment.id, undefined, authorId);
     } else {
-      markForDeletion(this.props.projectId, this.props.comment.id, reason);
+      markForDeletion(this.props.projectId, this.props.comment.id, reason, authorId);
     }
 
     eventEmitter.emit('modal', 'modalClosed', null);
