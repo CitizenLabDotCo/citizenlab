@@ -61,8 +61,9 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
         const selfLink = get(newComments, 'links.self');
         const lastLink = get(newComments, 'links.last');
         const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-        const { querying, commentsList } = this.state;
+        const { loadingMore, commentsList } = this.state;
 
+        // if we received null or error, we just pass that in in any case
         if (isNilOrError(newComments)) {
           this.setState({
             hasMore,
@@ -73,7 +74,11 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
         } else {
           this.setState({
             hasMore,
-            commentsList: (querying ? newComments.data : [...(!isNilOrError(commentsList) ? commentsList : []), ...newComments.data]),
+            // if we had not set loading more, we should'nt aggregate the content,
+            // it's either first load for this id or a refetch
+            commentsList: (!loadingMore
+              ? newComments.data
+              : [...(!isNilOrError(commentsList) ? commentsList : []), ...newComments.data]),
             loadingMore: false,
             querying: false
           });

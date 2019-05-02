@@ -91,6 +91,8 @@ export async function addCommentToIdea(ideaId: string,  projectId: string, autho
   }, true);
 
   streams.fetchAllWith({ dataId: [ideaId, projectId, comment.data.id] });
+  // refetch commentsForUser
+  streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments`] });
 
   return comment;
 }
@@ -111,6 +113,9 @@ export async function addCommentToComment(
     }
   }, true);
 
+  // refetch commentsForUser
+  streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments`] });
+
   if (waitForChildCommentsRefetch) {
     await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`] });
     streams.fetchAllWith({ dataId: [ideaId, projectId, parentCommentId, comment.data.id] });
@@ -124,13 +129,26 @@ export async function addCommentToComment(
   return comment;
 }
 
-export function updateComment(commentId: string, object: IUpdatedComment) {
-  return streams.update<IComment>(`${API_PATH}/comments/${commentId}`, commentId, { comment: object });
+export async function updateComment(commentId: string, object: IUpdatedComment) {
+  const response = await streams.update<IComment>(`${API_PATH}/comments/${commentId}`, commentId, { comment: object });
+
+  // refetch commentsForUser
+  if (object.author_id) {
+    streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${object.author_id}/comments`] });
+  }
+
+  return response;
 }
 
-export async function markForDeletion(projectId: string, commentId: string, reason?: DeleteReason) {
+export async function markForDeletion(projectId: string, commentId: string, reason?: DeleteReason, authorId?: string) {
   if (reason && reason.reason_code !== 'other') { delete reason.other_reason; }
   const response = await request(`${API_PATH}/comments/${commentId}/mark_as_deleted`, { comment: reason }, { method: 'POST' }, {});
+
+  // refetch commentsForUser
+  if (authorId) {
+    streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments`] });
+  }
+
   streams.fetchAllWith({ dataId: [commentId, projectId] });
   return response;
 }
