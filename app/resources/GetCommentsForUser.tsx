@@ -60,9 +60,9 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
         }),
         distinctUntilChanged(),
       ).subscribe((newComments: IComments) => {
-        const selfLink = get(newComments, 'links.self');
-        const lastLink = get(newComments, 'links.last');
-        const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
+        const selfLink = get(newComments, 'meta.current_page');
+        const lastLink = get(newComments, 'meta.total_pages');
+        const hasMore = (Number.isInteger(selfLink) && Number.isInteger(lastLink) && selfLink !== lastLink);
         const { loadingMore, commentsList } = this.state;
 
         // if we received null or error, we just pass that in in any case
