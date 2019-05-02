@@ -54,7 +54,7 @@ export const reducer = (acc: ICommentData[][], current: ICommentData) => {
 
 };
 
-export const UsersComments = memo<Props>(({ comments, userId }) => (
+export const UserComments = memo<Props>(({ comments, userId }) => (
   !isNilOrError(comments.commentsList) && comments.commentsList.length > 0) ? (
     <Container>
       {comments.commentsList.reduce(reducer, [[]]).map(commentForIdea => (
@@ -83,7 +83,7 @@ const Data = adopt<DataProps, InputProps>({
 
 const WrappedUserComments = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <UsersComments {...inputProps} {...dataProps} />}
+    {dataProps => <UserComments {...inputProps} {...dataProps} />}
   </Data>
 );
 
