@@ -24,9 +24,6 @@ import { Multiloc, Locale, MultilocFormValues } from 'typings';
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
-// utils
-import { isNonEmptyString } from 'utils/helperUtils';
-
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
