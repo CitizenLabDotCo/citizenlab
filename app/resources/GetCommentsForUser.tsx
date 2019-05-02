@@ -4,6 +4,7 @@ import { switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { ICommentData, commentsForUserStream, IComments } from 'services/comments';
 import { isString, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   userId: string;
@@ -56,7 +57,8 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
               'page[size]': 5
             }
           }).observable;
-        })
+        }),
+        distinctUntilChanged(),
       ).subscribe((newComments: IComments) => {
         const selfLink = get(newComments, 'links.self');
         const lastLink = get(newComments, 'links.last');
@@ -72,10 +74,10 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
             querying: false
           });
         } else {
+          // if we had not set loading more, we should'nt aggregate the content,
+          // it's either first load for this id or a refetch
           this.setState({
             hasMore,
-            // if we had not set loading more, we should'nt aggregate the content,
-            // it's either first load for this id or a refetch
             commentsList: (!loadingMore
               ? newComments.data
               : [...(!isNilOrError(commentsList) ? commentsList : []), ...newComments.data]),
@@ -100,9 +102,11 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
   }
 
   loadMore = () => {
-    const incr = this.state.pageNumber + 1;
-    this.pageNumber$.next(incr);
-    this.setState({ pageNumber: incr });
+    if (this.state.hasMore) {
+      const incr = this.state.pageNumber + 1;
+      this.pageNumber$.next(incr);
+      this.setState({ pageNumber: incr, loadingMore: true });
+    }
   }
 
   render() {
