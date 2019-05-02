@@ -10,7 +10,7 @@ jest.mock('utils/cl-intl');
 jest.mock('services/comments');
 import { makeComments } from 'services/comments';
 
-describe('<ConsentManager />', () => {
+describe('<UserComments />', () => {
 
   it('reducer splits the array returned  by the back-end into arrays of comments belonging to the same idea', () => {
     const commentsAsReturned = makeComments([{ ideaId: 'idea1' }, { ideaId: 'idea1' }, { ideaId: 'idea1' }, { ideaId: 'idea2' }, { ideaId: 'idea2' }]);

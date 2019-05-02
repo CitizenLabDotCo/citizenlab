@@ -143,8 +143,10 @@ const Data = adopt<DataProps, InputProps>({
     user: ({ userSlug, render }) => <GetUser slug={userSlug}>{render}</GetUser>
 });
 
-export default (inputProps: InputProps) => (
+const WrappedUserHeader = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <UserHeader {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default WrappedUserHeader;

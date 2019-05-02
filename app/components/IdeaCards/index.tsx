@@ -460,8 +460,10 @@ const Data = adopt<DataProps, InputProps>({
 
 const IdeaCardsWithHoCs = withTheme<Props, State>(IdeaCards);
 
-export default (inputProps: InputProps) => (
+const WrappedIdeaCards = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <IdeaCardsWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default WrappedIdeaCards;

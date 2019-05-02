@@ -64,7 +64,7 @@ interface State {
   currentTab: UserTab;
 }
 
-class UsersShowPage extends PureComponent<Props, State> {
+export class UsersShowPage extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
