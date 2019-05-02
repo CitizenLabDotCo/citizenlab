@@ -26,7 +26,6 @@ import styled from 'styled-components';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 
 const ButtonContainer = styled.div`
   >:not(:last-child) {
@@ -40,7 +39,6 @@ const CancelButton = styled(Button)`
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
 }
 
 interface InputProps {
@@ -151,7 +149,6 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
 const OfficialFeedbackFormWithIntl = injectIntl<Props>(OfficialFeedbackForm);
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
   locale: <GetLocale />
 });
 
