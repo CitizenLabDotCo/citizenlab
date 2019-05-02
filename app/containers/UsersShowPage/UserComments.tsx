@@ -81,8 +81,10 @@ const Data = adopt<DataProps, InputProps>({
   comments: ({ userId, render }) =>  <GetCommentsForUser userId={userId}>{render}</GetCommentsForUser>
 });
 
-export default (inputProps: InputProps) => (
+const WrappedUserComments = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <UsersComments {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default WrappedUserComments;

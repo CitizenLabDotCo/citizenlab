@@ -128,8 +128,10 @@ const Data = adopt<DataProps, InputProps>({
   commentsCount: ({ userId, render }) => <GetUserStats userId={userId} resource="comments">{render}</GetUserStats>
 });
 
-export default (inputProps: InputProps) => (
+const WrappedUserNavbar = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <UserNavbar {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default WrappedUserNavbar;
