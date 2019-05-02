@@ -1,8 +1,8 @@
 import { ICommentData, IComment, IComments } from 'services/comments';
 import { BehaviorSubject } from 'rxjs';
 
-export const makeCommentData = (attributes = {}, ideaId?: string, authorId?: string, parentId?: string) : ICommentData => ({
-  id: 'commentId',
+export const makeCommentData = (id = 'commentId', attributes = {}, ideaId?: string, authorId?: string, parentId?: string) : ICommentData => ({
+  id,
   type: 'comments',
   attributes: {
     body_multiloc: { en: 'Just a comment' },
@@ -40,12 +40,12 @@ export const makeCommentData = (attributes = {}, ideaId?: string, authorId?: str
   }
 });
 
-export const makeComment = (attributes = {}, ideaId?: string, authorId?: string, parentId?: string) : IComment => ({
-  data: makeCommentData(attributes,  ideaId, authorId, parentId)
+export const makeComment = (id = 'commentId', attributes = {}, ideaId?: string, authorId?: string, parentId?: string) : IComment => ({
+  data: makeCommentData(id, attributes,  ideaId, authorId, parentId)
 });
 
-export const makeComments = (argumentsArray = [{ attributes: {}, ideaId: undefined, authorId: undefined, parentId: undefined }]) : IComments => ({
-  data: argumentsArray.map(args => makeCommentData(args.attributes, args.ideaId, args.authorId, args.parentId))
+export const makeComments = (argumentsArray = [{ id: undefined, attributes: {}, ideaId: undefined, authorId: undefined, parentId: undefined }]) : IComments => ({
+  data: argumentsArray.map(args => makeCommentData(args.id, args.attributes, args.ideaId, args.authorId, args.parentId))
 });
 
 const mockCommentsForUser = new BehaviorSubject<undefined | IComments>(undefined);

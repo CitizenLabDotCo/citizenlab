@@ -213,8 +213,10 @@ const Data = adopt<DataProps, InputProps>({
   user: ({ userId, render }) =>  <GetUser id={userId}>{render}</GetUser>
 });
 
-export default (inputProps: InputProps) => (
+const WrappedIdeaComments = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <IdeaCommentGroup {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default WrappedIdeaComments;
