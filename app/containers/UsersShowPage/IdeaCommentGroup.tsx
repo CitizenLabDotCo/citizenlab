@@ -73,10 +73,20 @@ const IdeaLinkLeft = styled.div`
   justify-content: flex-start;
   align-items: center;
   color: ${({ theme }) => theme.colorText};
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-right: 10px;
+  min-width: 0px;
+  > span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 `;
 const IdeaLinkRight = styled.div`
   color: ${colors.label};
   text-decoration: underline;
+  white-space: nowrap;
 `;
 
 const StyledCommentVote = styled(CommentVote)`
