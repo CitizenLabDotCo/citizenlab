@@ -48,15 +48,14 @@ export const makeComments = (argumentsArray = [{ attributes: {}, ideaId: undefin
   data: argumentsArray.map(args => makeCommentData(args.attributes, args.ideaId, args.authorId, args.parentId))
 });
 
-let mockCommentsForUser: IComments = makeComments();
+const mockCommentsForUser = new BehaviorSubject<undefined | IComments>(undefined);
 
 export const __setMockCommentsForUser = (comments: IComments) => {
-  mockCommentsForUser = comments;
+  mockCommentsForUser.next(comments);
 };
 
 export const commentsForUserStream = jest.fn(() => {
-  const observable = new BehaviorSubject(mockCommentsForUser);
   return {
-    observable
+    observable: mockCommentsForUser
   };
 });
