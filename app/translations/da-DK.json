@@ -206,6 +206,7 @@
   "app.components.Upload.remaining": "resterende",
   "app.components.UserName.deletedUser": "slettet bruger",
   "app.components.UserSearch.addModerators": "Tilføj",
+  "app.components.UserSearch.noOptions": "",
   "app.components.UserSearch.searchUsers": "Søg brugere",
   "app.components.VoteControl.budgetingDisabled": "Det er ikke længere muligt at tildele et budget til denne ide.",
   "app.components.VoteControl.budgetingDisabledFutureEnabled": "Det er endnu ikke muligt at tildele et budget til denne ide. Det vil blive aktiveret med start fra\n{enabledFromDate}.",

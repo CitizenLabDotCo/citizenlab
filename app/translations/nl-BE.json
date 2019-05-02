@@ -206,6 +206,7 @@
   "app.components.Upload.remaining": "overblijvend",
   "app.components.UserName.deletedUser": "verwijderde gebruiker",
   "app.components.UserSearch.addModerators": "Toevoegen",
+  "app.components.UserSearch.noOptions": "",
   "app.components.UserSearch.searchUsers": "Zoek gebruikers",
   "app.components.VoteControl.budgetingDisabled": "Een budget toekennen aan dit idee is niet langer mogelijk.",
   "app.components.VoteControl.budgetingDisabledFutureEnabled": "Een budget toekennen aan dit idee is nog niet mogelijk. Het wordt mogelijk vanaf {enabledFromDate}.",

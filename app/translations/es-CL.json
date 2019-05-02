@@ -206,6 +206,7 @@
   "app.components.Upload.remaining": "restante",
   "app.components.UserName.deletedUser": "usuario eliminado",
   "app.components.UserSearch.addModerators": "Añadir",
+  "app.components.UserSearch.noOptions": "",
   "app.components.UserSearch.searchUsers": "Búsqueda de usuarios",
   "app.components.VoteControl.budgetingDisabled": "Ya no es posible asignar presupuesto a esta idea.",
   "app.components.VoteControl.budgetingDisabledFutureEnabled": "Todavía no es posible asignar presupuesto a esta idea. Se habilitará a partir de {enabledFromDate}.",
