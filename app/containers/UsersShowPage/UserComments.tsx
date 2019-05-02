@@ -10,12 +10,14 @@ import GetCommentsForUser, { GetCommentsForUserChildProps } from 'resources/GetC
 import { ICommentData } from 'services/comments';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import Button from 'components/UI/Button';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { darken, rgba } from 'polished';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -23,6 +25,19 @@ const Container = styled.div`
   margin: auto;
 
   max-width: 760px;
+`;
+
+const Footer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 0px;
+  `}
 `;
 
 interface InputProps {
@@ -33,7 +48,9 @@ interface DataProps {
   comments: GetCommentsForUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 export const reducer = (acc: ICommentData[][], current: ICommentData) => {
   const accLen = acc.length;
@@ -54,7 +71,7 @@ export const reducer = (acc: ICommentData[][], current: ICommentData) => {
 
 };
 
-export const UserComments = memo<Props>(({ comments, userId }) => (
+export const UserComments = memo<Props>(({ comments, userId, theme }) => (
   !isNilOrError(comments.commentsList) && comments.commentsList.length > 0) ? (
     <Container>
       {comments.commentsList.reduce(reducer, [[]]).map(commentForIdea => (
@@ -66,12 +83,20 @@ export const UserComments = memo<Props>(({ comments, userId }) => (
         />
       ))}
       {comments.hasMore &&
-        <Button
-          onClick={comments.loadMore}
-          processing={comments.loadingMore}
-        >
-          <FormattedMessage {...messages.loadMoreComments} />
-        </Button>
+        <Footer>
+          <Button
+            onClick={comments.loadMore}
+            processing={comments.loadingMore}
+            icon="showMore"
+            textColor={theme.colorText}
+            textHoverColor={darken(0.1, theme.colorText)}
+            bgColor={rgba(theme.colorText, 0.08)}
+            bgHoverColor={rgba(theme.colorText, 0.12)}
+            height="50px"
+          >
+            <FormattedMessage {...messages.loadMoreComments} />
+          </Button>
+        </Footer>
       }
     </Container>
   ) : null
@@ -81,9 +106,11 @@ const Data = adopt<DataProps, InputProps>({
   comments: ({ userId, render }) =>  <GetCommentsForUser userId={userId}>{render}</GetCommentsForUser>
 });
 
+const UserCommentsWithHocs = withTheme<Props, {}>(UserComments);
+
 const WrappedUserComments = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <UserComments {...inputProps} {...dataProps} />}
+    {dataProps => <UserCommentsWithHocs {...inputProps} {...dataProps} />}
   </Data>
 );
 
