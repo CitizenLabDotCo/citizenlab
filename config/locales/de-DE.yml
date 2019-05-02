@@ -2,8 +2,8 @@ de:
   statuses:
     proposed: vorgeschlagen
     proposed_description: Diese Idee wurde der Stadtverwaltung vorgestellt
-    viewed: viewed
-    viewed_description: This idea has been seen by someone from the city
+    viewed: angesehen
+    viewed_description: Diese Idee wurde von jemandem gesehen aus der Stadt
     under_consideration: unter Berücksichtigung
     under_consideration_description: Diese Idee wird von der Stadtverwaltung berücksichtigt
     accepted: akzeptiert
