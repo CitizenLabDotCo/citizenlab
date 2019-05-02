@@ -140,6 +140,10 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  noOptionsMessage = () => {
+    return this.props.intl.formatMessage(messages.noOptions);
+  }
+
   render() {
     const { selection } = this.state;
     const { formatMessage } = this.props.intl;
@@ -159,6 +163,7 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
             onChange={this.handleOnChange}
             placeholder={formatMessage(messages.searchUsers)}
             styles={selectStyles}
+            noOptionsMessage={this.noOptionsMessage}
           />
 
           <AddGroupButton
