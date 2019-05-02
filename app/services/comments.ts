@@ -91,8 +91,9 @@ export async function addCommentToIdea(ideaId: string,  projectId: string, autho
   }, true);
 
   streams.fetchAllWith({ dataId: [ideaId, projectId, comment.data.id] });
-  // refetch commentsForUser
+  // refetch commentsForUser and comments for user count
   streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments`] });
+  streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments_count`] });
 
   return comment;
 }
@@ -113,8 +114,9 @@ export async function addCommentToComment(
     }
   }, true);
 
-  // refetch commentsForUser
+  // refetch commentsForUser and comments for user count
   streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments`] });
+  streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments_count`] });
 
   if (waitForChildCommentsRefetch) {
     await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`] });
@@ -144,9 +146,10 @@ export async function markForDeletion(projectId: string, commentId: string, reas
   if (reason && reason.reason_code !== 'other') { delete reason.other_reason; }
   const response = await request(`${API_PATH}/comments/${commentId}/mark_as_deleted`, { comment: reason }, { method: 'POST' }, {});
 
-  // refetch commentsForUser
+  // refetch commentsForUser and comments for user count
   if (authorId) {
     streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments`] });
+    streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments_count`] });
   }
 
   streams.fetchAllWith({ dataId: [commentId, projectId] });
