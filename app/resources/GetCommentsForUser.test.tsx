@@ -50,9 +50,9 @@ describe('<GetCommentsForUser />', () => {
   it('adds new comments on load more', () => {
     const wrapper = shallow(<GetCommentsForUser userId="id5">{child}</GetCommentsForUser>);
     const commentsList1 = makeComments([{ id: 'comment1' }]);
-    commentsList1.links = {
-      self: 'self',
-      last: 'last'
+    commentsList1.meta = {
+      current_page: 1,
+      total_pages: 2
     };
     __setMockCommentsForUser(commentsList1);
 
@@ -62,7 +62,6 @@ describe('<GetCommentsForUser />', () => {
     const commentsList2 = makeComments([{ id: 'comment2' }]);
     __setMockCommentsForUser(commentsList2);
 
-    wrapper.update();
     expect(child.mock.calls[child.mock.calls.length - 1][0].commentsList).toEqual([...commentsList1.data, ...commentsList2.data]);
   });
 
