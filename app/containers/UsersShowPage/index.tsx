@@ -62,19 +62,22 @@ export type UserTab = 'ideas' | 'comments';
 
 interface State {
   currentTab: UserTab;
+  savedScrollIndex: number;
 }
 
 export class UsersShowPage extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      currentTab: 'ideas'
+      currentTab: 'ideas',
+      savedScrollIndex: 0
     };
   }
 
   changeTab = (toTab: UserTab) => () => {
-    this.setState({ currentTab: toTab });
-    window.scrollTo(0, 0);
+    const oldScroll = this.state.savedScrollIndex;
+    this.setState({ currentTab: toTab, savedScrollIndex: window.pageYOffset });
+    window.scrollTo(0, oldScroll);
   }
 
   render() {
