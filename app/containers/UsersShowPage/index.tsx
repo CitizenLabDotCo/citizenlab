@@ -74,6 +74,7 @@ class UsersShowPage extends PureComponent<Props, State> {
 
   changeTab = (toTab: UserTab) => () => {
     this.setState({ currentTab: toTab });
+    window.scrollTo(0, 0);
   }
 
   render() {
