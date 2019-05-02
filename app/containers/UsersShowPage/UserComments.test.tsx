@@ -2,6 +2,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
+import { theme } from 'utils/testUtils/withTheme';
+
 // component to test
 import { UserComments, reducer } from './UserComments';
 
@@ -34,7 +36,7 @@ describe('<UserComments />', () => {
   it('renders correctly with actual comments and more', () => {
     const loadMore = jest.fn();
     const commentsAsReturned = { loadMore, hasMore: true, commentsList: makeComments([{ ideaId: 'idea1' }]).data };
-    const Wrapper = shallow(<UserComments comments={commentsAsReturned} />);
+    const Wrapper = shallow(<UserComments comments={commentsAsReturned} theme={theme} />);
     Wrapper.find('WithTheme(Button)').prop('onClick')();
     expect(Wrapper.find('WithTheme(Button)')).toMatchSnapshot();
     expect(loadMore).toHaveBeenCalledTimes(1);

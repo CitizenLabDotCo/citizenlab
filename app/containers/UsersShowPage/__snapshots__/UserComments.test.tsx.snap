@@ -146,6 +146,10 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
 
 exports[`<UserComments /> renders correctly with actual comments and more 1`] = `
 <WithTheme(Button)
+  bgColor="rgba(230,143,81,0.08)"
+  bgHoverColor="rgba(230,143,81,0.12)"
+  height="50px"
+  icon="showMore"
   onClick={
     [MockFunction] {
       "calls": Array [
@@ -159,6 +163,8 @@ exports[`<UserComments /> renders correctly with actual comments and more 1`] = 
       ],
     }
   }
+  textColor="#e68f51"
+  textHoverColor="#e07224"
 >
   <FormattedMessage
     defaultMessage="Load more comments"
