@@ -20,41 +20,64 @@ describe('<GetCommentsForUser />', () => {
     jest.mock('services/comments');
 
     child = jest.fn();
+    child.mockReset();
   });
 
   it('calls the commentsForUserStream stream with the given user id', () => {
-    shallow(<GetCommentsForUser userId="someId">{child}</GetCommentsForUser>);
-    expect(commentsForUserStream.mock.calls[0][0]).toEqual('someId');
+    shallow(<GetCommentsForUser userId="id1">{child}</GetCommentsForUser>);
+    expect(commentsForUserStream.mock.calls[0][0]).toEqual('id1');
   });
 
-  it('passes an undefined list to the child function initially', () => {
-    shallow(<GetCommentsForUser userId="anotherId">{child}</GetCommentsForUser>);
+  it('passes an undefined commmentsList to the child function initially', () => {
+    shallow(<GetCommentsForUser userId="id2">{child}</GetCommentsForUser>);
     expect(child.mock.calls[0][0].commentsList).toEqual(undefined);
   });
 
   it('passes the data to the child function received from the streams', () => {
-    shallow(<GetCommentsForUser userId="yetAnother">{child}</GetCommentsForUser>);
-    const commentsList = makeComments([{}]);
+    shallow(<GetCommentsForUser userId="id3">{child}</GetCommentsForUser>);
+    const commentsList = makeComments([{ id: 'comment1' }]);
     __setMockCommentsForUser(commentsList);
-    expect(child.mock.calls[2][0].commentsList).toEqual(commentsList.data);
+    expect(child.mock.calls[child.mock.calls.length - 1][0].commentsList).toEqual(commentsList.data);
   });
 
   it('passes and Error to the child function when it receives and Error from the streams', () => {
-    shallow(<GetCommentsForUser userId="someId">{child}</GetCommentsForUser>);
+    shallow(<GetCommentsForUser userId="id4">{child}</GetCommentsForUser>);
     const error = new Error;
     __setMockCommentsForUser(error);
-    expect(child.mock.calls[2][0].commentsList).toEqual(error);
+    expect(child.mock.calls[child.mock.calls.length - 1][0].commentsList).toEqual(error);
   });
 
   it('adds new comments on load more', () => {
-    shallow(<GetCommentsForUser userId="someId">{child}</GetCommentsForUser>);
-    const commentsList = makeComments([{}]);
-    __setMockCommentsForUser(commentsList);
-    expect(child.mock.calls[2][0].commentsList).toEqual(commentsList.data);
-    child.mock.calls[2][0].loadMore();
-    __setMockCommentsForUser(commentsList);
+    const wrapper = shallow(<GetCommentsForUser userId="id5">{child}</GetCommentsForUser>);
+    const commentsList1 = makeComments([{ id: 'comment1' }]);
+    commentsList1.links = {
+      self: 'self',
+      last: 'last'
+    };
+    __setMockCommentsForUser(commentsList1);
 
-    expect(child.mock.calls[3][0].commentsList).toEqual([...commentsList.data, ...commentsList.data]);
+    expect(child.mock.calls[child.mock.calls.length - 1][0].commentsList).toEqual(commentsList1.data);
 
+    child.mock.calls[child.mock.calls.length - 1][0].loadMore();
+    const commentsList2 = makeComments([{ id: 'comment2' }]);
+    __setMockCommentsForUser(commentsList2);
+
+    wrapper.update();
+    expect(child.mock.calls[child.mock.calls.length - 1][0].commentsList).toEqual([...commentsList1.data, ...commentsList2.data]);
   });
+
+  // it('reacts correctly to a userId change', () => {
+  //   let userId = 'id6';
+  //   const wrapper = shallow(<GetCommentsForUser userId={userId}>{child}</GetCommentsForUser>);
+  //
+  //   expect(commentsForUserStream.mock.calls[0][0]).toEqual('id6');
+  //
+  //   userId = 'id7';
+  //
+  //   wrapper.setProps({ userId: 'id7' });
+  //   wrapper.update();
+  //
+  //   expect(commentsForUserStream.mock.calls).toMatchSnapshot();
+  //
+  // });
 });
