@@ -11,6 +11,11 @@ import { ICommentData } from 'services/comments';
 
 // style
 import styled from 'styled-components';
+import Button from 'components/UI/Button';
+
+// intl
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -48,9 +53,9 @@ export const reducer = (acc: ICommentData[][], current: ICommentData) => {
 };
 
 export const UsersComments = memo<Props>(({ comments, userId }) => (
-  !isNilOrError(comments) && comments.length > 0) ? (
+  !isNilOrError(comments.commentsList) && comments.commentsList.length > 0) ? (
     <Container>
-      {comments.reduce(reducer, [[]]).map(commentForIdea => (
+      {comments.commentsList.reduce(reducer, [[]]).map(commentForIdea => (
         <IdeaCommentGroup
           key={commentForIdea[0].relationships.idea.data.id}
           ideaId={commentForIdea[0].relationships.idea.data.id}
@@ -58,6 +63,14 @@ export const UsersComments = memo<Props>(({ comments, userId }) => (
           userId={userId}
         />
       ))}
+      {comments.hasMore &&
+        <Button
+          onClick={comments.loadMore}
+          processing={comments.loadingMore}
+        >
+          <FormattedMessage {...messages.loadMoreComments} />
+        </Button>
+      }
     </Container>
   ) : null
 );

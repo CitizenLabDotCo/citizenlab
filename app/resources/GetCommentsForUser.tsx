@@ -4,7 +4,6 @@ import { switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { ICommentData, commentsForUserStream, IComments } from 'services/comments';
 import { isString, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   userId: string;
