@@ -133,23 +133,26 @@ resource "Comments" do
 
     describe do
       before do
-        @i1 = create(:idea, published_at: Time.now - 1.day)
-        @i2 = create(:idea, published_at: Time.now)
+        @i1 = create(:idea, published_at: Time.now)
+        @i2 = create(:idea, published_at: Time.now  - 1.day)
+        @i3 = create(:idea, published_at: Time.now - 3.days)
         @user = create(:user)
-        @c1 = create(:comment, idea: @i1, author: @user, created_at: Time.now - 1.hour)
-        @c2 = create(:comment, idea: @i2, author: @user)
-        @c3 = create(:comment, idea: @i1, author: @user, created_at: Time.now)
+        @c1 = create(:comment, idea: @i2, author: @user, created_at: Time.now - 1.hour)
+        @c2 = create(:comment, idea: @i1, author: @user)
+        @c3 = create(:comment, idea: @i2, author: @user, created_at: Time.now)
         @c4 = create(:comment)
+        @c5 = create(:comment, idea: @i3, author: @user)
       end
 
       let(:user_id) { @user.id }
+      let(:size) { 2 }
 
       example_request "List the comments of a user" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].map{|d| d[:id]}).to eq [@c2.id, @c3.id, @c1.id]
-        expect(json_response[:included].map{|d| d.dig(:attributes, :slug)}).to match_array [@i1.slug, @i2.slug]
+        expect(json_response[:included].map{|d| d.dig(:attributes, :slug)}).to eq [@i1.slug, @i2.slug]
       end
     end
   end
