@@ -2,6 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 import { first } from 'rxjs/operators';
+import { get } from 'lodash';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
@@ -164,6 +165,7 @@ export function geotaggedIdeasStream(streamParams: IStreamParams | null = null) 
 export async function addIdea(object: IIdeaAdd) {
   const response = await streams.add<IIdea>(`${API_PATH}/ideas/`, { idea: object });
   streams.fetchAllWith({ dataId: [response.data.relationships.project.data.id] });
+  streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${object.author_id}/ideas_count`] });
   return response;
 }
 
@@ -178,6 +180,10 @@ export async function deleteIdea(ideaId: string) {
     ideaByIdStream(ideaId).observable.pipe(first()).toPromise(),
     streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId)
   ]);
+  const authorId = get(idea, 'relationships.author.data.id', false);
+  if (authorId) {
+    streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/ideas_count`] });
+  }
   streams.fetchAllWith({ dataId: [idea.data.relationships.project.data.id] });
   return response;
 }
