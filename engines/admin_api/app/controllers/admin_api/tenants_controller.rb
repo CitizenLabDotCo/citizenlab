@@ -36,8 +36,7 @@ module AdminApi
 
     def update
       if tenant_params[:settings]
-        new_settings = @tenant.settings.deep_merge(tenant_params[:settings].to_h)
-        @tenant.assign_attributes(settings: new_settings)
+        @tenant.assign_attributes(settings: tenant_params[:settings])
       end
 
       if tenant_params[:style]
