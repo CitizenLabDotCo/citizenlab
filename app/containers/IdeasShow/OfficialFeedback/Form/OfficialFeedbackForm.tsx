@@ -1,6 +1,6 @@
 // libraries
 import React, { Component } from 'react';
-import { values as getValues, every } from 'lodash-es';
+import { isEmpty, uniq } from 'lodash-es';
 import { adopt } from 'react-adopt';
 
 // intl
@@ -63,19 +63,6 @@ interface State {
 }
 
 class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikProps<FormValues>, State> {
-  public static validate = (values: FormValues): FormikErrors<FormValues> => {
-    const errors: FormikErrors<FormValues> = {};
-
-    if (!every(getValues(values.author_multiloc), isNonEmptyString)) {
-      errors.author_multiloc = [{ error: 'blank' }] as any;
-    }
-    if (!every(getValues(values.body_multiloc), isNonEmptyString)) {
-      errors.body_multiloc = [{ error: 'blank' }] as any;
-    }
-
-    return errors;
-  }
-
   constructor(props: Props & InjectedIntlProps) {
     super(props as any);
     this.state = {
@@ -173,7 +160,50 @@ const Data = adopt<DataProps, InputProps>({
 
 export default class OfficialFeedbackFormWithHoCs extends Component<Props & FormikProps<FormValues>> {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
-    let errors: FormikErrors<FormValues> = {};
+    const errors: FormikErrors<FormValues> = {};
+
+    // Get array of locales that has an author and/or body content based on the combined keys of both the author and body objects
+    const locales: string[] = uniq([...Object.keys(values.author_multiloc), ...Object.keys(values.body_multiloc)]);
+
+    // First loop over both the author and body content values for each locale
+    // and determine whether or not one of them is empty while the other is not.
+    // If that's the case, set the error for the value (author or body) that's empty.
+    locales.forEach((locale) => {
+      if ((isEmpty(values.author_multiloc[locale]) && !isEmpty(values.body_multiloc[locale])) || (!isEmpty(values.author_multiloc[locale]) && isEmpty(values.body_multiloc[locale]))) {
+        if (isEmpty(values.author_multiloc[locale])) {
+          errors.author_multiloc = [{ error: 'blank' }] as any;
+        }
+
+        if (isEmpty(values.body_multiloc[locale])) {
+          errors.body_multiloc = [{ error: 'blank' }] as any;
+        }
+      }
+    });
+
+    // If the errors object is still empty after the previous loop do a secondary check
+    // to see if there is at least one locale that has both author and body text.
+    if (isEmpty(errors)) {
+      let hasOneOrMoreValidatedLocales = false;
+
+      locales.forEach((locale) => {
+        if (!isEmpty(values.author_multiloc[locale]) && !isEmpty(values.body_multiloc[locale])) {
+          hasOneOrMoreValidatedLocales = true;
+        }
+      });
+
+      // If there are no valid locales, than loop through them again and set error where the value is empty
+      if (!hasOneOrMoreValidatedLocales) {
+        locales.forEach((locale) => {
+          if (isEmpty(values.author_multiloc[locale])) {
+            errors.author_multiloc = [{ error: 'blank' }] as any;
+          }
+
+          if (isEmpty(values.body_multiloc[locale])) {
+            errors.body_multiloc = [{ error: 'blank' }] as any;
+          }
+        });
+      }
+    }
 
     return errors;
   }
@@ -184,7 +214,6 @@ export default class OfficialFeedbackFormWithHoCs extends Component<Props & Form
         {dataProps => <OfficialFeedbackFormWithIntl {...this.props} {...dataProps} />}
       </Data>
     );
-
   }
 }
 
