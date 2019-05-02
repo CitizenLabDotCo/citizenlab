@@ -206,6 +206,7 @@
   "app.components.Upload.remaining": "restant(s)",
   "app.components.UserName.deletedUser": "utilisateur supprimé",
   "app.components.UserSearch.addModerators": "Ajouter",
+  "app.components.UserSearch.noOptions": "",
   "app.components.UserSearch.searchUsers": "Recherchez des utilisateurs",
   "app.components.VoteControl.budgetingDisabled": "Désolé. Attribuer un budget à cette idée n’est plus possible.",
   "app.components.VoteControl.budgetingDisabledFutureEnabled": "Désolé. Attribuer un budget à cette idée n’est pas encore possible. Il sera activé à partir de {enabledFromDate}.",
