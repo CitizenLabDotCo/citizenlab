@@ -49,7 +49,9 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
   componentDidMount() {
     this.subscriptions = [
       this.pageNumber$.pipe(
+        // when page number changes
         distinctUntilChanged(),
+        // return the observable stream for these params
         switchMap(pageNumber => {
           return commentsForUserStream(this.props.userId, {
             queryParameters: {
@@ -58,22 +60,24 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
             }
           }).observable;
         }),
+        // when this stream receives a different value
         distinctUntilChanged(),
       ).subscribe((newComments: IComments) => {
-        const selfLink = get(newComments, 'meta.current_page');
-        const lastLink = get(newComments, 'meta.total_pages');
-        const hasMore = (Number.isInteger(selfLink) && Number.isInteger(lastLink) && selfLink !== lastLink);
-        const { loadingMore, commentsList } = this.state;
-
         // if we received null or error, we just pass that in in any case
         if (isNilOrError(newComments)) {
           this.setState({
-            hasMore,
+            hasMore: false,
             commentsList: newComments,
             loadingMore: false,
             querying: false
           });
         } else {
+          const { loadingMore, commentsList } = this.state;
+          // is this the last page ?
+          const selfLink = get(newComments, 'meta.current_page');
+          const lastLink = get(newComments, 'meta.total_pages');
+          const hasMore = (Number.isInteger(selfLink) && Number.isInteger(lastLink) && selfLink !== lastLink);
+
           // if we had not set loading more, we should'nt aggregate the content,
           // it's either first load for this id or a refetch
           this.setState({
