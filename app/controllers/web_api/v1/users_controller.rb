@@ -148,11 +148,11 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def ideas_count
-    render json: {count: @user.ideas.published.count}, status: :ok
+    render json: {count: policy_scope(@user.ideas.published).count}, status: :ok
   end
 
   def comments_count
-    render json: {count: @user.comments.published.count}, status: :ok
+    render json: {count: policy_scope(@user.comments.published).count}, status: :ok
   end
 
   private
