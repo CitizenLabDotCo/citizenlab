@@ -1420,7 +1420,7 @@
   "app.containers.app.navbar.mobilePageHome": "Accueil",
   "app.containers.app.navbar.mobilePageIdeas": "Idées",
   "app.containers.app.navbar.mobilePageProjects": "{tenantName, select, frw {Communes} UrbanLab {Quartiers} other {Projets}}",
-  "app.containers.app.navbar.myIdeas": "Mes idées",
+  "app.containers.app.navbar.myProfile": "",
   "app.containers.app.navbar.pageIdeas": "Idées",
   "app.containers.app.navbar.pageInformation": "{tenantName, select, UrbanLab {UrbanLab} other {A propos}}",
   "app.containers.app.navbar.pageOverview": "Accueil",
