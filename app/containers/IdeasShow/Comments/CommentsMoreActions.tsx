@@ -26,7 +26,7 @@ import styled from 'styled-components';
 
 // Utils
 import eventEmitter from 'utils/eventEmitter';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 
 const ButtonsWrapper = styled.div`
   display: flex;
