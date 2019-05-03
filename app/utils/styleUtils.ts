@@ -83,6 +83,11 @@ export const media = {
       ${css(style, ...args)}
     }
   `,
+  smallerThan1100px: (style: any, ...args) => css`
+    @media (max-width: 1100px) {
+      ${css(style, ...args)}
+    }
+  `,
   desktop: (style: any, ...args) => css`
     @media (min-height: 800px) and (min-width: 1280px) {
       ${css(style, ...args)}

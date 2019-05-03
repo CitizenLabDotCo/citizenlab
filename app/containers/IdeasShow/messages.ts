@@ -197,9 +197,9 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentsWithCount',
     defaultMessage: 'Comments ({count})',
   },
-  ideaStatus: {
-    id: 'app.containers.IdeasShow.ideaStatus',
-    defaultMessage: 'Idea status',
+  currentStatus: {
+    id: 'app.containers.IdeasShow.currentStatus',
+    defaultMessage: 'Current status',
   },
   commentsTitle: {
     id: 'app.containers.IdeasShow.commentsTitle',
