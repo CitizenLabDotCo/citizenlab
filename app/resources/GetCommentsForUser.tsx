@@ -2,9 +2,8 @@ import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { ICommentData, commentsForUserStream, IComments } from 'services/comments';
-import { isString, get } from 'lodash-es';
+import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import shallowCompare from 'utils/shallowCompare';
 
 interface InputProps {
   userId: string;
