@@ -14,9 +14,32 @@ Array [
 ]
 `;
 
-exports[`<UserComments /> renders correctly when empty 1`] = `""`;
+exports[`<UserComments /> renders correctly when empty 1`] = `
+<UserComments__MessageContainer>
+  <FormattedMessage
+    defaultMessage="This user has not posted any comment yet."
+    id="app.containers.UsersShowPage.noCommentsForUser"
+  />
+</UserComments__MessageContainer>
+`;
 
-exports[`<UserComments /> renders correctly when error 1`] = `""`;
+exports[`<UserComments /> renders correctly when empty and own profile 1`] = `
+<UserComments__MessageContainer>
+  <FormattedMessage
+    defaultMessage="You have not posted any comment yet."
+    id="app.containers.UsersShowPage.noCommentsForYou"
+  />
+</UserComments__MessageContainer>
+`;
+
+exports[`<UserComments /> renders correctly when error 1`] = `
+<UserComments__MessageContainer>
+  <FormattedMessage
+    defaultMessage="An error has occured, please try again later."
+    id="app.containers.UsersShowPage.tryAgain"
+  />
+</UserComments__MessageContainer>
+`;
 
 exports[`<UserComments /> renders correctly with actual comments 1`] = `
 <UserComments__Container>
