@@ -84,6 +84,16 @@ const StatusContainer = styled.div`
   `}
 `;
 
+const StatusTitle = styled.h4`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  line-height: 20px;
+  font-weight: 400;
+  margin: 0;
+  margin-bottom: 8px;
+  padding: 0;
+`;
+
 interface DataProps {
   project: GetProjectChildProps;
 }
@@ -137,6 +147,7 @@ const IdeaHeader = React.memo<Props>((props: Props) => {
 
         {statusId &&
           <StatusContainer>
+            <StatusTitle><FormattedMessage {...messages.currentStatus} /></StatusTitle>
             <StatusBadge statusId={statusId} />
           </StatusContainer>
         }

@@ -69,7 +69,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import TranslateButton from './TranslateButton';
 
-const maxPageWidth = '810px';
+const maxPageWidth = '1150px';
 const loadingSpinnerFadeInDuration = 300;
 const loadingSpinnerFadeInEasing = 'ease-out';
 const loadingSpinnerFadeInDelay = 100;
@@ -154,6 +154,14 @@ const IdeaContainer = styled.div`
   padding-top: 60px;
   position: relative;
 
+  ${media.smallerThan1200px`
+    max-width: 1050px;
+  `}
+
+  ${media.smallerThan1100px`
+    max-width: 950px;
+  `}
+
   ${media.smallerThanMaxTablet`
     padding-top: 30px;
     padding-left: 30px;
@@ -176,12 +184,14 @@ const Content = styled.div`
 `;
 
 const LeftColumn = styled.div`
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: 0;
+  flex: 2;
   margin: 0;
   padding: 0;
   padding-right: 70px;
+
+  ${media.smallerThan1200px`
+    padding-right: 50px;
+  `}
 
   ${media.smallerThanMaxTablet`
     padding: 0;
@@ -316,10 +326,7 @@ const StyledTranslateButton = styled(TranslateButton)`
 `;
 
 const RightColumn = styled.div`
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: 200px;
-  width: 200px;
+  flex: 1;
   margin: 0;
   padding: 0;
 `;
@@ -345,6 +352,18 @@ const ControlWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 35px;
+  padding: 35px;
+  border: 1px solid #E0E0E0;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+`;
+
+const ControlWrapperHorizontalRule: any = styled.hr`
+  width: 100%;
+  border: none;
+  height: 1px;
+  background-color: ${colors.separation};
+  margin: 35px 0
 `;
 
 const VoteLabel = styled.div`
@@ -662,7 +681,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       titleTranslationLoading,
       bodyTranslationLoading,
       spamModalVisible,
-      actionInfos
+      actionInfos,
     } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
@@ -829,14 +848,16 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                           budgetingDescriptor={budgetingDescriptor}
                         />
                       }
-                    </ControlWrapper>
-                  }
 
-                  {statusId &&
-                    <StatusContainer>
-                      <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle>
-                      <StatusBadge statusId={statusId} />
-                    </StatusContainer>
+                      <ControlWrapperHorizontalRule />
+
+                      {statusId &&
+                        <StatusContainer>
+                          <StatusTitle><FormattedMessage {...messages.currentStatus} /></StatusTitle>
+                          <StatusBadge statusId={statusId} />
+                        </StatusContainer>
+                      }
+                    </ControlWrapper>
                   }
 
                   <MetaButtons>
