@@ -18,6 +18,22 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.commentsWithCount',
     defaultMessage: 'Comments({commentsCount})',
   },
+  loadingComments: {
+    id: 'app.containers.UsersShowPage.loadingComments',
+    defaultMessage: 'Loading user comments...',
+  },
+  tryAgain: {
+    id: 'app.containers.UsersShowPage.tryAgain',
+    defaultMessage: 'An error has occured, please try again later.',
+  },
+  noCommentsForYou: {
+    id: 'app.containers.UsersShowPage.noCommentsForYou',
+    defaultMessage: 'You have not posted any comment yet.',
+  },
+  noCommentsForUser: {
+    id: 'app.containers.UsersShowPage.noCommentsForUser',
+    defaultMessage: 'This user has not posted any comment yet.',
+  },
   seeIdea: {
     id: 'app.containers.UsersShowPage.seeIdea',
     defaultMessage: 'See idea',
