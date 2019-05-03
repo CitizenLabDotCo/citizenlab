@@ -5,9 +5,13 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingDisabledProjectInactive',
     defaultMessage: 'You can no longer or not yet vote on ideas in {projectName}',
   },
-  votingDisabledNotInActiveContext: {
-    id: 'app.components.VoteControl.votingDisabledNotInActiveContext',
-    defaultMessage: 'This idea is no longer or not yet considered in {projectName}',
+  votingDisabledPhaseCompleted: {
+    id: 'app.components.VoteControl.votingDisabledNotInCurrentPhase',
+    defaultMessage: 'Voting on this idea is no longer possible because the phase it belongs to has ended',
+  },
+  votingDisabledPhaseNotYetStarted: {
+    id: 'app.components.VoteControl.votingDisabledPhaseNotYetStarted',
+    defaultMessage: 'Voting on this idea is not yet possible because the phase it belongs to has not yet started',
   },
   votingDisabledPossibleLater: {
     id: 'app.components.VoteControl.votingDisabledPossibleLater',
