@@ -602,6 +602,7 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "List of projects on the platform",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projects dashboard",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Create as many projects as you want and edit them at any time.",
+  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Here are the projects on the platform you are moderating.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projects",
   "app.containers.AdminPage.ProjectDashboard.publishedTooltip": "Published projects are currently active projects which are shown on the platform.",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Description",

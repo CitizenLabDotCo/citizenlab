@@ -602,6 +602,7 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "",
+  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "",
   "app.containers.AdminPage.ProjectDashboard.publishedTooltip": "",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "",
