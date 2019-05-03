@@ -1,7 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 
 // resources & typings
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -19,7 +18,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // Components
@@ -27,7 +26,6 @@ import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import CommentHeader from 'containers/IdeasShow/Comments/CommentHeader';
 import CommentBody from 'containers/IdeasShow/Comments/CommentBody';
-import CommentVote from 'containers/IdeasShow/Comments/CommentVote';
 
 // intl
 import messages from './messages';
@@ -89,8 +87,29 @@ const IdeaLinkRight = styled.div`
   white-space: nowrap;
 `;
 
-const StyledCommentVote = styled(CommentVote)`
+const VoteIcon: any = styled(Icon)`
+  height: 18px;
+  width: 20px;
+  fill: ${({ theme }) => theme.colorText};
+  position: absolute;
+  top: -1px;
+`;
+
+const IconContainer = styled.div`
+  position: relative;
+  width: 20px;
+  margin-right: 5px;
+`;
+
+const Votes = styled.div`
+  font-size: ${fontSizes.large};
+  font-weight: 600;
+  color:  ${({ theme }) => theme.colorText};
+`;
+
+const VotesContainer = styled.div`
   margin-top: 15px;
+  display: flex;
 `;
 
 const CommentContainer = styled.div`
@@ -157,8 +176,7 @@ export class IdeaCommentGroup extends PureComponent<Props> {
     if (!isNilOrError(idea) && !isNilOrError(user)) {
       const { slug, title_multiloc } = idea.attributes;
       const projectId = idea.relationships.project.data.id;
-      const votingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.voting, 'enabled', false) : false);
-      return ((
+      return (
         <Container>
           <IdeaLink
             to={`/ideas/${slug}`}
@@ -191,17 +209,19 @@ export class IdeaCommentGroup extends PureComponent<Props> {
                   onCommentSaved={nothingHappens}
                   onCancelEditing={nothingHappens}
                 />
-                <StyledCommentVote
-                  ideaId={get(comment, 'relationships.idea.data.id')}
-                  commentId={comment.id}
-                  commentType={undefined}
-                  votingEnabled={votingEnabled}
-                />
+                <VotesContainer>
+                  <IconContainer>
+                    <VoteIcon name="upvote-2"/>
+                  </IconContainer>
+                  <Votes>
+                    {comment.attributes.upvotes_count}
+                  </Votes>
+                </VotesContainer>
               </CommentContainer>
             );
           })}
         </Container>
-      ));
+      );
     }
 
     return null;
