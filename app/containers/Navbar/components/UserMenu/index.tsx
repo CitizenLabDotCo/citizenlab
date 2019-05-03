@@ -193,7 +193,7 @@ class UserMenu extends PureComponent<Props, State> {
                   padding="11px 11px"
                   justify="space-between"
                 >
-                  <FormattedMessage {...messages.myIdeas} />
+                  <FormattedMessage {...messages.myProfile} />
                 </DropdownListItem>
 
                 <DropdownListItem

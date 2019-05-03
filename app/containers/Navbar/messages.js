@@ -30,9 +30,9 @@ export default defineMessages({
     id: 'app.containers.app.navbar.register',
     defaultMessage: 'Register',
   },
-  myIdeas: {
-    id: 'app.containers.app.navbar.myIdeas',
-    defaultMessage: 'My ideas',
+  myProfile: {
+    id: 'app.containers.app.navbar.myProfile',
+    defaultMessage: 'My contributions',
   },
   editProfile: {
     id: 'app.containers.app.navbar.editProfile',
