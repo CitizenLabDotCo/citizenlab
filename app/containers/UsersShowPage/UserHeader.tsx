@@ -100,7 +100,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const UserHeader = memo<Props>(props => {
+export const UserHeader = memo<Props>(props => {
     const { user, authUser } = props;
 
     if (!isNilOrError(user)) {
