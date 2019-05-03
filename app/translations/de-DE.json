@@ -1420,7 +1420,7 @@
   "app.containers.app.navbar.mobilePageHome": "Startseite",
   "app.containers.app.navbar.mobilePageIdeas": "{orgName, select, München {Mängelmeldungen} other {Ideen}}",
   "app.containers.app.navbar.mobilePageProjects": "{orgName, select, München {Bezirke} other {Projekte}}",
-  "app.containers.app.navbar.myIdeas": "Meine Ideen",
+  "app.containers.app.navbar.myProfile": "",
   "app.containers.app.navbar.pageIdeas": "{orgName, select, München {Meldungen} other {Ideen}}",
   "app.containers.app.navbar.pageInformation": "Impressum",
   "app.containers.app.navbar.pageOverview": "Startseite",

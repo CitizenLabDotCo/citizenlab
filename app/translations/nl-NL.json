@@ -1420,7 +1420,7 @@
   "app.containers.app.navbar.mobilePageHome": "Welkom",
   "app.containers.app.navbar.mobilePageIdeas": "Ideeën",
   "app.containers.app.navbar.mobilePageProjects": "Projecten",
-  "app.containers.app.navbar.myIdeas": "Mijn ideeën",
+  "app.containers.app.navbar.myProfile": "",
   "app.containers.app.navbar.pageIdeas": "Ideeën",
   "app.containers.app.navbar.pageInformation": "Over",
   "app.containers.app.navbar.pageOverview": "Home",
