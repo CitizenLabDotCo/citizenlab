@@ -23,6 +23,11 @@ describe('<UserComments />', () => {
     const Wrapper = shallow(<UserComments comments={commentsAsReturned} />);
     expect(Wrapper).toMatchSnapshot();
   });
+  it('renders correctly when empty and own profile', () => {
+    const commentsAsReturned = { commentsList: [] };
+    const Wrapper = shallow(<UserComments comments={commentsAsReturned} userId="someUser" authUser={{ id: 'someUser' }} />);
+    expect(Wrapper).toMatchSnapshot();
+  });
   it('renders correctly when error', () => {
     const commentsAsReturned = { commentsList: new Error };
     const Wrapper = shallow(<UserComments comments={commentsAsReturned} />);
