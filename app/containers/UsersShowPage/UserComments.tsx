@@ -17,7 +17,8 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { darken, rgba } from 'polished';
-import { media } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div`
   display: flex;
@@ -40,12 +41,23 @@ const Footer = styled.div`
   `}
 `;
 
+const MessageContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${colors.label};
+  font-size: ${fontSizes.medium}px;
+  font-weight: 400;
+`;
+
 interface InputProps {
   userId: string;
 }
 
 interface DataProps {
   comments: GetCommentsForUserChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -71,10 +83,10 @@ export const reducer = (acc: ICommentData[][], current: ICommentData) => {
 
 };
 
-export const UserComments = memo<Props>(({ comments, userId, theme }) => (
-  !isNilOrError(comments.commentsList) && comments.commentsList.length > 0) ? (
+export const UserComments = memo<Props>(({ comments, comments: { commentsList }, userId, theme, authUser }) => (
+  !isNilOrError(commentsList) && commentsList.length > 0) ? (
     <Container>
-      {comments.commentsList.reduce(reducer, [[]]).map(commentForIdea => (
+      {commentsList.reduce(reducer, [[]]).map(commentForIdea => (
         <IdeaCommentGroup
           key={commentForIdea[0].relationships.idea.data.id}
           ideaId={commentForIdea[0].relationships.idea.data.id}
@@ -99,11 +111,31 @@ export const UserComments = memo<Props>(({ comments, userId, theme }) => (
         </Footer>
       }
     </Container>
-  ) : null
+  ) : (commentsList === undefined ? (
+    <MessageContainer>
+        <FormattedMessage {...messages.loadingComments} />
+    </MessageContainer>
+  ) : (commentsList === null || Array.isArray(commentsList) && commentsList.length === 0 ? (
+    !isNilOrError(authUser) && userId === authUser.id ? (
+      <MessageContainer>
+        <FormattedMessage {...messages.noCommentsForYou} />
+      </MessageContainer>
+    ) : (
+      <MessageContainer>
+        <FormattedMessage {...messages.noCommentsForUser} />
+      </MessageContainer>
+    )
+  ) : (
+    <MessageContainer>
+        <FormattedMessage {...messages.tryAgain} />
+    </MessageContainer>
+  ))
+  )
 );
 
 const Data = adopt<DataProps, InputProps>({
-  comments: ({ userId, render }) =>  <GetCommentsForUser userId={userId}>{render}</GetCommentsForUser>
+  comments: ({ userId, render }) =>  <GetCommentsForUser userId={userId}>{render}</GetCommentsForUser>,
+  authUser: <GetAuthUser />
 });
 
 const UserCommentsWithHocs = withTheme<Props, {}>(UserComments);
