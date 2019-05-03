@@ -135,23 +135,6 @@ const nothingHappens = () => {};
 
 interface Props extends InputProps, DataProps {}
 
-export const reducer = (acc: ICommentData[][], current: ICommentData) => {
-  const accLen = acc.length;
-  const lastArray = acc[accLen - 1];
-
-  if (lastArray.length === 0) {
-    return [[current]];
-  }
-
-  if (current.relationships.idea.data.id === lastArray[lastArray.length - 1].relationships.idea.data.id) {
-    lastArray.push(current);
-    return acc;
-  } else {
-    acc.push([current]);
-    return acc;
-  }
-};
-
 export const componentName = 'containers/UsersShowPage/IdeaCommentGroup';
 
 export class IdeaCommentGroup extends PureComponent<Props> {
