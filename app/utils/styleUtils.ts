@@ -9,7 +9,13 @@ export const viewportWidths = {
   phone: 360,
   largePhone: 415,
   smallTablet: 767,
-  largeTablet: 1023,
+  largeTablet: 1023
+};
+
+export const ideaPageContentWidths = {
+  default: '1150px',
+  smallerThan1200px: '1050px',
+  smallerThan1100px: '950px'
 };
 
 export const media = {
