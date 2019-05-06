@@ -37,8 +37,8 @@ const Container = styled.div`
 `;
 
 const ContainerInner = styled.div`
-  padding-top: 28px;
-  padding-bottom: 25px;
+  padding-top: 25px;
+  padding-bottom: 35px;
   position: relative;
 
   &.hasBottomBorder {
@@ -47,7 +47,6 @@ const ContainerInner = styled.div`
 
   &.lastComment {
     border-bottom: none;
-    padding-bottom: 40px;
   }
 
   &.parent {
@@ -61,6 +60,9 @@ const ContainerInner = styled.div`
   }
 
   ${media.smallerThanMinTablet`
+    padding-top: 20px;
+    padding-bottom: 25px;
+
     &.parent {
       padding-left: 20px;
       padding-right: 20px;

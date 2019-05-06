@@ -43,10 +43,10 @@ const Events = styled.div`
 
 const Title = styled.h1`
   color: ${colors.text};
-  font-size: ${fontSizes.xxxl}px;
+  font-size: ${fontSizes.xxl}px;
   line-height: normal;
   font-weight: 600;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 `;
 
 const EventList = styled.div``;
