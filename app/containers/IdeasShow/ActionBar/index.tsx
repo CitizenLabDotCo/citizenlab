@@ -2,12 +2,10 @@ import React, { memo } from 'react';
 
 // styles
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media, ideaPageContentWidths } from 'utils/styleUtils';
 
 // components
 import BreadCrumbs from './Breadcrumbs';
-
-import { maxPageWidths } from '../index';
 
 const Container = styled.div`
   width: 100%;
@@ -17,7 +15,7 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  max-width: 1150px;
+  max-width: ${ideaPageContentWidths.default};
   height: 100%;
   margin: 0 auto;
   display: flex;
@@ -25,23 +23,21 @@ const Content = styled.div`
   justify-content: space-between;
 
   ${media.smallerThan1200px`
-    max-width: 1050px;
+    max-width: ${ideaPageContentWidths.smallerThan1200px};
   `}
 
   ${media.smallerThan1100px`
-    max-width: 950px;
+    max-width: ${ideaPageContentWidths.smallerThan1100px};
   `}
 `;
 
-const Left = styled.div`
-`;
+const Left = styled.div``;
 
-const Right = styled.div`
-`;
+const Right = styled.div``;
 
 interface Props {}
 
-const ActionBar = (props: Props) => {
+const ActionBar = memo<Props>((_props: Props) => {
   return (
     <Container>
       <Content>
@@ -49,11 +45,11 @@ const ActionBar = (props: Props) => {
           <BreadCrumbs />
         </Left>
         <Right>
-          {maxPageWidths.fullWidth}
+          {ideaPageContentWidths.default}
         </Right>
       </Content>
     </Container>
   );
-};
+});
 
 export default ActionBar;
