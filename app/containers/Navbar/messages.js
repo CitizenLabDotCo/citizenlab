@@ -32,11 +32,11 @@ export default defineMessages({
   },
   myProfile: {
     id: 'app.containers.app.navbar.myProfile',
-    defaultMessage: 'My contributions',
+    defaultMessage: 'My profile',
   },
   editProfile: {
     id: 'app.containers.app.navbar.editProfile',
-    defaultMessage: 'Edit profile',
+    defaultMessage: 'Settings',
   },
   signOut: {
     id: 'app.containers.app.navbar.signOut',
