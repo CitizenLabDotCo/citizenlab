@@ -34,6 +34,7 @@ import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
 import Icon from 'components/UI/Icon';
 import IdeaBody from './IdeaBody';
+import ActionBar from './ActionBar';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -69,7 +70,11 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import TranslateButton from './TranslateButton';
 
-const maxPageWidth = '1150px';
+export const maxPageWidths = {
+  fullWidth: '1150px',
+  '1200px': '1050px',
+  '1100px': '950px'
+};
 const loadingSpinnerFadeInDuration = 300;
 const loadingSpinnerFadeInEasing = 'ease-out';
 const loadingSpinnerFadeInDelay = 100;
@@ -144,7 +149,7 @@ const Container = styled.div`
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: ${maxPageWidth};
+  max-width: ${maxPageWidths.fullWidth};
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -155,11 +160,11 @@ const IdeaContainer = styled.div`
   position: relative;
 
   ${media.smallerThan1200px`
-    max-width: 1050px;
+    max-width: ${maxPageWidths['1200px']};
   `}
 
   ${media.smallerThan1100px`
-    max-width: 950px;
+    max-width: ${maxPageWidths['1100px']};
   `}
 
   ${media.smallerThanMaxTablet`
@@ -233,12 +238,6 @@ const LocationLabel = styled.div`
   ${media.smallerThanMinTablet`
     display: none;
   `}
-`;
-
-const ActionBar = styled.div`
-  height: 52px;
-  background-color:rgba(132, 147, 158, 0.06);
-  color: ${colors.label};
 `;
 
 const LocationIconWrapper = styled.div`
