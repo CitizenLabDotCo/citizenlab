@@ -25,8 +25,8 @@ const UserNavbarWrapper = styled.nav`
   top: ${({ theme }) => theme.menuHeight}px;
   left: 0;
   z-index: 10;
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
-  border-top: 1px solid ${colors.background};
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
   display: flex;
   justify-content: center;
   height: 54px;
