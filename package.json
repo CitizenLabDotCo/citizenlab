@@ -199,7 +199,7 @@
     "style-loader": "0.23.1",
     "styled-components": "3.x",
     "ts-jest": "24.0.2",
-    "ts-loader": "5.4.4",
+    "ts-loader": "5.4.6",
     "tslint": "5.16.0",
     "tslint-config-airbnb": "5.11.1",
     "tslint-consistent-codestyle": "1.15.1",
