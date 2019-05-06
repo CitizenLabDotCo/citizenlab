@@ -21,9 +21,9 @@ import messages from './messages';
 const UserNavbarWrapper = styled.nav`
   width: 100%;
   background-color: white;
-  position: fixed; /* IE11 fallback */
   position: sticky;
   top: ${({ theme }) => theme.menuHeight}px;
+  left: 0;
   z-index: 10;
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
   border-top: 1px solid ${colors.background};
