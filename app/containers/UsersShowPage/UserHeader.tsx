@@ -9,6 +9,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,7 +19,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
