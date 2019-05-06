@@ -223,7 +223,7 @@ const ProjectsListItem = styled(Link)`
   text-decoration: none;
   padding: 10px;
   margin-bottom: 4px;
-  background: #fff;
+  background: transparent;
   border-radius: ${(props: any) => props.theme.borderRadius};
   text-decoration: none;
 

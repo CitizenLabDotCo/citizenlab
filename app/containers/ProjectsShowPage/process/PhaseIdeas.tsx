@@ -52,8 +52,6 @@ class PhaseIdeas extends PureComponent<Props, State> {
             <StyledIdeaCards
               className={participationMethod}
               type="load-more"
-              sort={'trending'}
-              pageSize={12}
               projectIds={projectIds}
               phaseId={phaseId}
               showViewToggle={true}

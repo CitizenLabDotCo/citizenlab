@@ -280,19 +280,19 @@ export default defineMessages({
   },
   commentingDisabledProjectInactive: {
     id: 'app.components.IdeasShow.commentingDisabledProjectInactive',
-    defaultMessage: 'Commenting on this idea is not possible, since \'{projectName}\' is not yet or no longer active.',
+    defaultMessage: "Commenting on this idea is not possible because '{projectName}' is currently not active.",
   },
   commentingDisabledInContext: {
     id: 'app.components.IdeasShow.commentingDisabledInContext',
-    defaultMessage: 'Commenting on ideas in \'{projectName}\' is currently disabled.',
+    defaultMessage: "Commenting on ideas in '{projectName}' is currently disabled.",
   },
   commentingDisabledIdeaNotInCurrentPhase: {
     id: 'app.components.IdeasShow.commentingDisabledIdeaNotInCurrentPhase',
-    defaultMessage: 'Commenting on this idea is impossible since it\'s no longer or not yet in consideration.',
+    defaultMessage: "Commenting on this idea is not possible since it's no longer or not yet in consideration.",
   },
   commentingNotPermitted: {
     id: 'app.components.IdeasShow.commentingNotPermitted',
-    defaultMessage: 'Unfortunately, you don\'t have the rights to comment on this idea.',
+    defaultMessage: 'Commenting on this idea is currently not allowed',
   },
   commentingMaybeNotPermitted: {
     id: 'app.components.IdeasShow.commentingMaybeNotPermitted',

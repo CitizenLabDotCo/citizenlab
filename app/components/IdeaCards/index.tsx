@@ -16,7 +16,7 @@ import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
 
 // resources
-import GetIdeas, { GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
+import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -312,7 +312,7 @@ class IdeaCards extends PureComponent<Props, State> {
     this.props.ideas.onChangeProjects(projects);
   }
 
-  handleSortOnChange = (sort: string) => {
+  handleSortOnChange = (sort: Sort) => {
     this.props.ideas.onChangeSorting(sort);
   }
 
@@ -441,7 +441,7 @@ class IdeaCards extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} sort="random">{render}</GetIdeas>
+  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>
 });
 
 const IdeaCardsWithHoCs = withTheme<Props, State>(IdeaCards);
