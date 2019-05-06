@@ -113,7 +113,7 @@ const UserNavbar = memo<Props>(props => {
       </UserNavbarButton>
       <UserNavbarButton
         onClick={selectTab('comments')}
-        className={currentTab === 'comments' ? 'active' : ''}
+        className={`e2e-comment-section-nav ${currentTab === 'comments' ? 'active' : ''}`}
       >
         <TabIcon name="bubbles" />
         {!isNilOrError(commentsCount) &&
