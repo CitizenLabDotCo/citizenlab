@@ -235,6 +235,12 @@ const LocationLabel = styled.div`
   `}
 `;
 
+const ActionBar = styled.div`
+  height: 52px;
+  background-color:rgba(132, 147, 158, 0.06);
+  color: ${colors.label};
+`;
+
 const LocationIconWrapper = styled.div`
   width: 22px;
   height: 36px;
@@ -717,6 +723,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       content = (
         <>
           <IdeaMeta ideaId={ideaId} />
+          <ActionBar />
           <IdeaContainer id="e2e-idea-show">
             <IdeaHeader
               ideaId={ideaId}
