@@ -142,14 +142,13 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
     }
   }
 
-  onNewIdea = (pathname) => (_event) => {
+  onNewIdea = (pathname: string) => (_event) => {
     trackEventByName(tracks.clickNewIdea.name, { extra: { pathnameFrom: pathname } });
   }
 
   render() {
     const { projectId } = this.props.params;
     const { project, intl: { formatMessage } } = this.props;
-
     const { children, location: { pathname } } = this.props;
     const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
     const tabbedProps = {
@@ -158,6 +157,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
       },
       tabs: ((projectId && !isNilOrError(project)) ? this.getTabs(projectId, project) : [])
     };
+
     return (
       <>
         <TopContainer>
