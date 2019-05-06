@@ -89,7 +89,10 @@ const HeaderContent = styled.div`
   width: 100%;
   height: 100%;
   max-width: ${(props) => props.theme.maxPageWidth + 60}px;
-  padding: 35px 30px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-left: 30px;
+  padding-right: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;

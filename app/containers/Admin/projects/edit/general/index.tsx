@@ -49,8 +49,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // utils
 import { convertUrlToUploadFileObservable } from 'utils/imageTools';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 
 // style
 import styled from 'styled-components';
@@ -541,11 +539,6 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             projectId = project.data.id;
             redirect = true;
           }
-
-          streams.fetchAllWith({
-            apiEndpoint: [`${API_PATH}/projects`],
-            dataId: [projectId as string]
-          });
         }
 
         if (isString(projectId)) {

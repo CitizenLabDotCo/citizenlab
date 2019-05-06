@@ -12,6 +12,7 @@ import CommentsMoreActions from './CommentsMoreActions';
 import eventEmitter from 'utils/eventEmitter';
 
 // resources
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -141,6 +142,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  tenantLocales: GetTenantLocalesChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   idea: GetIdeaChildProps;
@@ -218,47 +220,54 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
 
   render() {
-    const { commentType, ideaId, projectId, commentId, className, comment, locale, authUser, idea, canReply } = this.props;
+    const { commentType, ideaId, projectId, commentId, className, comment, tenantLocales, locale, authUser, idea, canReply } = this.props;
     const { translateButtonClicked } = this.state;
 
-    if (!isNilOrError(idea) && !isNilOrError(comment) && !isNilOrError(locale)) {
+    if (!isNilOrError(idea) && !isNilOrError(comment) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
-      const showTranslateButton = commentBodyMultiloc && !commentBodyMultiloc[locale];
       const createdAt = comment.attributes.created_at;
       const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
       const votingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.voting, 'enabled', false) : false);
+      const upvoteCount = comment.attributes.upvotes_count;
+      const showVoteComponent = (votingEnabled || (!votingEnabled && upvoteCount > 0));
+      const showReplyButton = !!(authUser && commentingEnabled && canReply);
+      const showTranslateButton = !!(commentBodyMultiloc && !commentBodyMultiloc[locale] && tenantLocales.length > 1);
 
       return (
         <Container className={className}>
           <Left>
-            <CommentVote
-              ideaId={ideaId}
-              commentId={commentId}
-              commentType={commentType}
-              votingEnabled={votingEnabled}
-            />
-
-            {authUser && commentingEnabled && canReply &&
-              <LeftActions>
-                <Separator className="first">•</Separator>
-                <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply} className="e2e-comment-reply-button">
-                  <FormattedMessage {...messages.commentReplyButton} />
-                </ReplyButton>
-                <FeatureFlag name="machine_translations">
-                  {showTranslateButton &&
-                    <>
-                      <Separator>•</Separator>
-                      <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
-                        {!translateButtonClicked
-                          ? <FormattedMessage {...messages.seeTranslation} />
-                          : <FormattedMessage {...messages.seeOriginal} />
-                        }
-                      </TranslateButton>
-                    </>
-                  }
-                </FeatureFlag>
-              </LeftActions>
+            {showVoteComponent &&
+              <CommentVote
+                ideaId={ideaId}
+                commentId={commentId}
+                commentType={commentType}
+                votingEnabled={votingEnabled}
+              />
             }
+
+            <LeftActions>
+              {showReplyButton &&
+                <>
+                  {showVoteComponent && <Separator className="first">•</Separator>}
+                  <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply} className="e2e-comment-reply-button">
+                    <FormattedMessage {...messages.commentReplyButton} />
+                  </ReplyButton>
+                </>
+              }
+              <FeatureFlag name="machine_translations">
+                {showTranslateButton &&
+                  <>
+                    {showReplyButton && <Separator>•</Separator>}
+                    <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
+                      {!translateButtonClicked
+                        ? <FormattedMessage {...messages.seeTranslation} />
+                        : <FormattedMessage {...messages.seeOriginal} />
+                      }
+                    </TranslateButton>
+                  </>
+                }
+              </FeatureFlag>
+            </LeftActions>
           </Left>
 
           <Right>
@@ -284,6 +293,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  tenantLocales: <GetTenantLocales />,
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,

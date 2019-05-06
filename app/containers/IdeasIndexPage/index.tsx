@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -57,7 +57,7 @@ const PageTitle = styled.h1`
   `}
 `;
 
-export default React.memo(() => (
+export default memo(() => (
   <>
     <IdeasIndexMeta />
     <Container>
@@ -67,8 +67,6 @@ export default React.memo(() => (
         </PageTitle>
         <IdeaCards
           type="load-more"
-          sort="trending"
-          pageSize={12}
           allowProjectsFilter={true}
           projectPublicationStatus="published"
         />

@@ -21,7 +21,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // styling
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled.div`
@@ -40,11 +40,15 @@ const Header = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 20px;
+`;
 
-  h2 {
-    padding: 0;
-    margin: 0;
-  }
+const HeaderTitle = styled.h2`
+  color: ${colors.text};
+  font-size: ${fontSizes.xxl}px;
+  line-height: normal;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
 `;
 
 const AllEvents = styled(Link)`
@@ -104,9 +108,9 @@ export default (inputProps: InputProps) => (
             <Container className={'e2e-events-preview'}>
               <ContentContainer>
                 <Header>
-                  <h2>
+                  <HeaderTitle>
                     <FormattedMessage {...messages.upcomingEvents} />
-                  </h2>
+                  </HeaderTitle>
                   <AllEvents to={`/projects/${project.attributes.slug}/events`}>
                     <FormattedMessage {...messages.allEvents} />
                   </AllEvents>
