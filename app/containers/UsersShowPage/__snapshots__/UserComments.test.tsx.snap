@@ -42,7 +42,9 @@ exports[`<UserComments /> renders correctly when error 1`] = `
 `;
 
 exports[`<UserComments /> renders correctly with actual comments 1`] = `
-<UserComments__Container>
+<UserComments__Container
+  className="e2e-profile-comments"
+>
   <WrappedIdeaComments
     commentsForIdea={
       Array [
