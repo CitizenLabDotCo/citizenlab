@@ -5,9 +5,7 @@ import LoadingComments from './Comments/LoadingComments';
 
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
-
-const maxPageWidth = '810px';
+import { media, ideaPageContentMaxWidth } from 'utils/styleUtils';
 
 const Container = styled.div`
   flex: 1;
@@ -23,16 +21,16 @@ const Container = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  max-width: ${maxPageWidth};
+  max-width: ${ideaPageContentMaxWidth};
   margin-left: auto;
   margin-right: auto;
   margin-top: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
   padding-bottom: 60px;
 
   ${media.smallerThanMaxTablet`
     margin-top: 20px;
-    padding-left: 30px;
-    padding-right: 30px;
   `}
 
   ${media.smallerThanMinTablet`

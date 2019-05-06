@@ -66,7 +66,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, ideaPageContentWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, ideaPageContentMaxWidth } from 'utils/styleUtils';
 import { darken } from 'polished';
 import TranslateButton from './TranslateButton';
 
@@ -144,7 +144,7 @@ const Container = styled.div`
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: ${ideaPageContentWidths.default};
+  max-width: ${ideaPageContentMaxWidth};
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -152,20 +152,12 @@ const IdeaContainer = styled.div`
   margin-right: auto;
   padding: 0;
   padding-top: 60px;
+  padding-left: 30px;
+  padding-right: 30px;
   position: relative;
-
-  ${media.smallerThan1200px`
-    max-width: ${ideaPageContentWidths.smallerThan1200px};
-  `}
-
-  ${media.smallerThan1100px`
-    max-width: ${ideaPageContentWidths.smallerThan1100px};
-  `}
 
   ${media.smallerThanMaxTablet`
     padding-top: 30px;
-    padding-left: 30px;
-    padding-right: 30px;
   `}
 
   ${media.smallerThanMinTablet`
