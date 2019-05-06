@@ -46,9 +46,18 @@ export default class GetPhases extends React.Component<Props, State> {
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         tap(() => resetOnChange && this.setState({ phases: undefined })),
-        switchMap(({ projectId }) => projectId ? phasesStream(projectId).observable : of(null))
-      )
-      .subscribe((phases) => this.setState({ phases: !isNilOrError(phases) ? phases.data : phases }))
+        switchMap(({ projectId }) => {
+          if (projectId) {
+            return phasesStream(projectId).observable ;
+          }
+
+          return of(null);
+        })
+      ).subscribe((phases) => {
+        this.setState({
+          phases: (!isNilOrError(phases) ? phases.data : phases)
+        });
+      })
     ];
   }
 

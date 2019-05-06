@@ -29,7 +29,7 @@ const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container: any = styled.div`
   position: fixed;
-  top: 0;
+  top: ${props => props.theme.menuHeight}px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -43,7 +43,7 @@ const Container: any = styled.div`
   display: none;
 
   &.opened {
-    z-index: 10000;
+    z-index: 996;
     display: block;
   }
 
@@ -57,6 +57,7 @@ const Container: any = styled.div`
   }
 
   ${media.smallerThanMaxTablet`
+    top: 0;
     will-change: opacity, transform;
 
     &.modal-enter {
@@ -84,7 +85,7 @@ const Content = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 10001;
+  z-index: 997;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 
@@ -106,7 +107,7 @@ const TopBar: any = styled.div`
   right: 0;
   background: #fff;
   border-bottom: solid 1px ${colors.separation};
-  z-index: 10002;
+  z-index: 998;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -178,45 +179,6 @@ const GoBackButtonWrapper = styled.div`
 
 const HeaderChildWrapper = styled.div`
   display: inline-block;
-`;
-
-const CloseIcon = styled(Icon)`
-  width: 13px;
-  height: 13px;
-  fill: ${colors.label};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: fill 100ms ease-out;
-`;
-
-const CloseButton = styled.div`
-  height: 52px;
-  width: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  cursor: pointer;
-  top: 20px;
-  right: 33px;
-  border-radius: 50%;
-  border: solid 1px ${lighten(0.35, colors.label)};
-  background: #fff;
-  z-index: 10002;
-  transition: border-color 100ms ease-out;
-
-  &:hover {
-    border-color: #000;
-
-    ${CloseIcon} {
-      fill: #000;
-    }
-  }
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 interface InputProps {
@@ -367,10 +329,6 @@ class Modal extends PureComponent<Props, State> {
               {children}
             </ContentInner>
           </Content>
-
-          <CloseButton onClick={this.clickCloseButton}>
-            <CloseIcon name="close4" />
-          </CloseButton>
 
           <TopBar>
             <TopBarInner>

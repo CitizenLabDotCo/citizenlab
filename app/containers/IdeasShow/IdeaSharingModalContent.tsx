@@ -153,7 +153,7 @@ class IdeaSharingModalContent extends PureComponent<Props & InjectedIntlProps & 
               url={ideaUrl}
               twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
               emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-              emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
+              emailBody={formatMessage(messages.emailSharingBody, { ideaTitle, ideaUrl })}
               utmParams={{
                 source: 'share_idea',
                 campaign: 'ideaflow',

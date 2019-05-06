@@ -133,11 +133,11 @@ const Container = styled.div`
 
   &.content-enter {
     opacity: 0;
-    transform: translateY(${contentTranslateDistance});
+    /* transform: translateY(${contentTranslateDistance}); */
 
     &.content-enter-active {
       opacity: 1;
-      transform: translateY(0);
+      /* transform: translateY(0); */
       transition: all ${contentFadeInDuration}ms ${contentFadeInEasing} ${contentFadeInDelay}ms;
     }
   }
@@ -323,7 +323,7 @@ const AddressWrapper = styled.div`
   right: 0;
   left: 0;
   bottom: 0;
-  z-index: 1000;
+  z-index: 3;
 `;
 
 const StyledTranslateButton = styled(TranslateButton)`
@@ -337,10 +337,6 @@ const RightColumn = styled.div`
 `;
 
 const RightColumnDesktop = styled(RightColumn)`
-  position: sticky;
-  top: 95px;
-  align-self: flex-start;
-
   ${media.smallerThanMaxTablet`
     display: none;
   `}
@@ -368,7 +364,7 @@ const ControlWrapperHorizontalRule: any = styled.hr`
   border: none;
   height: 1px;
   background-color: ${colors.separation};
-  margin: 35px 0
+  margin: 35px 0;
 `;
 
 const VoteLabel = styled.div`
@@ -555,20 +551,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       };
     }
 
-    if (!actionInfos && !isNilOrError(idea) && !isNilOrError(project)) {
-      const pbProject = (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'budgeting' ? project : null);
-      const pbPhase = (!pbProject && !isNilOrError(phases) ? phases.find(phase => phase.attributes.participation_method === 'budgeting') : null);
-      const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.attributes.start_at, pbPhase.attributes.end_at]) === 'present');
-      const lastPhase = (!isNilOrError(phases) ? last(sortBy(phases, [phase => phase.attributes.end_at])) : null);
-      const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.id === pbPhase.id);
-      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)));
+    if (!actionInfos && !isNilOrError(idea) && !isNilOrError(project) && !isUndefined(phases)) {
       const upvotesCount = idea.attributes.upvotes_count;
       const downvotesCount = idea.attributes.downvotes_count;
       const votingEnabled = idea.relationships.action_descriptor.data.voting.enabled;
       const cancellingEnabled = idea.relationships.action_descriptor.data.voting.cancelling_enabled;
       const votingFutureEnabled = idea.relationships.action_descriptor.data.voting.future_enabled;
-      const hideVote = !(votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount || downvotesCount);
-      const showVoteControl = (!hideVote && !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast)));
+      const pbProject = (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'budgeting' ? project : null);
+      const pbPhase = (!pbProject && !isNilOrError(phases) ? phases.find(phase => phase.attributes.participation_method === 'budgeting') : null);
+      const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.attributes.start_at, pbPhase.attributes.end_at]) === 'present');
+      const lastPhase = (!isNilOrError(phases) ? last(sortBy(phases, [phase => phase.attributes.end_at])) : null);
+      const lastPhaseHasPassed = (lastPhase ? pastPresentOrFuture([lastPhase.attributes.start_at, lastPhase.attributes.end_at]) === 'past' : false);
+      const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.id === pbPhase.id);
+      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
+      const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0));
       const budgetingDescriptor = get(idea, 'relationships.action_descriptor.data.budgeting', null);
       let participationContextType: 'Project' | 'Phase' | null = null;
       let participationContextId: string | null = null;
