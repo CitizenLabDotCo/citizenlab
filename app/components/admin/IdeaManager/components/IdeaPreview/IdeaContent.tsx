@@ -282,7 +282,6 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             <IdeaHeader
               ideaId={idea.id}
               ideaTitle={ideaTitle}
-              projectId={idea.relationships.project.data.id}
             />
             <Row>
               <Left>
