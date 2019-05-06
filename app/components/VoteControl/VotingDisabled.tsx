@@ -66,10 +66,8 @@ class VotingDisabled extends PureComponent<Props, State> {
     event.preventDefault();
     event.stopPropagation();
 
-    const { project } = this.props;
-
-    if (!isNilOrError(project)) {
-      clHistory.push(`/projects/${project.attributes.slug}`);
+    if (!isNilOrError(this.props.project)) {
+      clHistory.push(`/projects/${this.props.project.attributes.slug}`);
     }
   }
 
@@ -77,7 +75,14 @@ class VotingDisabled extends PureComponent<Props, State> {
     const { votingDescriptor, project } = this.props;
     const projectTitle = (!isNilOrError(project) ? project.attributes.title_multiloc : {});
     const message = this.reasonToMessage();
-    const enabledFromDate = (votingDescriptor.future_enabled ? <FormattedDate value={votingDescriptor.future_enabled} /> : null);
+    const enabledFromDate = (votingDescriptor.future_enabled ? (
+      <FormattedDate
+        value={votingDescriptor.future_enabled}
+        year="numeric"
+        month="long"
+        day="numeric"
+      />
+    ) : null);
     const projectName = (
       <ProjectLink onClick={this.handleProjectLinkClick} role="navigation">
         <T value={projectTitle} />
