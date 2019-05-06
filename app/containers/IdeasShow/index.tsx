@@ -128,11 +128,11 @@ const Container = styled.div`
 
   &.content-enter {
     opacity: 0;
-    transform: translateY(${contentTranslateDistance});
+    /* transform: translateY(${contentTranslateDistance}); */
 
     &.content-enter-active {
       opacity: 1;
-      transform: translateY(0);
+      /* transform: translateY(0); */
       transition: all ${contentFadeInDuration}ms ${contentFadeInEasing} ${contentFadeInDelay}ms;
     }
   }
@@ -324,7 +324,7 @@ const AddressWrapper = styled.div`
   right: 0;
   left: 0;
   bottom: 0;
-  z-index: 1000;
+  z-index: 3;
 `;
 
 const StyledTranslateButton = styled(TranslateButton)`
@@ -338,10 +338,6 @@ const RightColumn = styled.div`
 `;
 
 const RightColumnDesktop = styled(RightColumn)`
-  position: sticky;
-  top: 95px;
-  align-self: flex-start;
-
   ${media.smallerThanMaxTablet`
     display: none;
   `}
@@ -369,7 +365,7 @@ const ControlWrapperHorizontalRule: any = styled.hr`
   border: none;
   height: 1px;
   background-color: ${colors.separation};
-  margin: 35px 0
+  margin: 35px 0;
 `;
 
 const VoteLabel = styled.div`

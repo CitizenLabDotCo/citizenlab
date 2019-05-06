@@ -101,7 +101,7 @@ const AddressWrapper = styled.div`
   right: 0;
   left: 0;
   bottom: 0;
-  z-index: 1000;
+  z-index: 3;
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
