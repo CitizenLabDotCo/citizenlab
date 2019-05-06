@@ -50,6 +50,7 @@ const UserNavbarButton = styled.ul`
   height: 100%;
   position: relative;
   margin: 0px;
+  cursor: pointer;
 
   &:focus,
   &:hover {
