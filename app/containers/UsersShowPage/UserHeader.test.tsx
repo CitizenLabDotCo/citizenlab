@@ -19,8 +19,8 @@ describe('<UserHeader />', () => {
   });
   it('renders correctly on some user with a bio', () => {
     const user = makeUser({ bio_multiloc: { en: 'Hi there ! ' } });
-    const Wrapper = shallow(<UserHeader user={user.data} />);
-    expect(Wrapper).toMatchSnapshot();
+    const Bio = shallow(<UserHeader user={user.data} />).find('UserHeader__Bio');
+    expect(Bio).toMatchSnapshot();
   });
   it('renders correctly on your own profile', () => {
     const user = makeUser({}, 'someUser');
