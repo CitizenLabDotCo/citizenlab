@@ -937,12 +937,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             </Content>
           </IdeaContainer>
 
-          {loaded &&
-            <IdeaFooter
-              ideaId={ideaId}
-              commentsCount={idea.attributes.comments_count}
-            />
-          }
+          {loaded && <IdeaFooter ideaId={ideaId} />}
 
           <Modal
             opened={spamModalVisible}
