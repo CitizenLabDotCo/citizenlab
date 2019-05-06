@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetUserStats, { GetUserStatsChildProps } from 'resources/GetUserStats';
 
 // styles
-import { fontSizes, media, colors } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
 import styled from 'styled-components';
 import { rgba } from 'polished';
 
