@@ -55,6 +55,7 @@ const IdeaLink = styled(Link)`
   justify-content: space-between;
   align-items: center;
   padding: 7px 17px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   svg {
     height: 20px;
     width: 14px;
