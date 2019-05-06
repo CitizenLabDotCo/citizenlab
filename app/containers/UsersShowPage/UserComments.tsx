@@ -85,7 +85,7 @@ export const reducer = (acc: ICommentData[][], current: ICommentData) => {
 
 export const UserComments = memo<Props>(({ comments, comments: { commentsList }, userId, theme, authUser }) => (
   !isNilOrError(commentsList) && commentsList.length > 0) ? (
-    <Container>
+    <Container className="e2e-profile-comments">
       {commentsList.reduce(reducer, [[]]).map(commentForIdea => (
         <IdeaCommentGroup
           key={commentForIdea[0].relationships.idea.data.id}
