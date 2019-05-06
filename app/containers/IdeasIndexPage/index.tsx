@@ -67,8 +67,6 @@ export default memo(() => (
         </PageTitle>
         <IdeaCards
           type="load-more"
-          sort="trending"
-          pageSize={12}
           allowProjectsFilter={true}
           projectPublicationStatus="published"
         />
