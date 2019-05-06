@@ -47,6 +47,7 @@ const UserNavbarButton = styled.ul`
   transition: all 100ms ease;
   border-top: 3px solid transparent;
   border-bottom: 3px solid transparent;
+  white-space: nowrap;
   height: 100%;
   position: relative;
   margin: 0px;
