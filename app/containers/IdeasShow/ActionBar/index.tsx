@@ -23,6 +23,7 @@ const Container = styled.div`
   height: 52px;
   background-color: rgba(132, 147, 158, 0.06);
   color: ${colors.label};
+  border-bottom: 1px solid ${colors.adminSeparation};
 `;
 
 const Inner = styled.div`
