@@ -16,8 +16,6 @@ import StatusBadge from 'components/StatusBadge';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
 import VoteControl from 'components/VoteControl';
 import VoteWrapper from './VoteWrapper';
@@ -26,7 +24,6 @@ import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
-import HasPermission from 'components/HasPermission';
 import IdeaHeader from './IdeaHeader';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
@@ -51,7 +48,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // services
-import { updateIdea, deleteIdea } from 'services/ideas';
+import { updateIdea } from 'services/ideas';
 import { authUserStream } from 'services/auth';
 
 // i18n
@@ -421,10 +418,6 @@ const SharingMobile = styled(Sharing)`
   `}
 `;
 
-const MoreActionsMenuWrapper = styled.div`
-  margin-top: 40px;
-`;
-
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 85px;
 `;
@@ -609,27 +602,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.setState(({ showMap }) => ({ showMap: !showMap }));
   }
 
-  openSpamModal = () => {
-    this.setState({ spamModalVisible: true });
-  }
-
-  closeSpamModal = () => {
-    this.setState({ spamModalVisible: false });
-  }
-
-  editIdea = () => {
-    clHistory.push(`/ideas/edit/${this.props.ideaId}`);
-  }
-
-  deleteIdea = (ideaId) => () => {
-    const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
-
-    if (window.confirm(message)) {
-      deleteIdea(ideaId);
-      clHistory.goBack();
-    }
-  }
-
   unauthenticatedVoteClick = () => {
     clHistory.push('/sign-in');
   }
@@ -676,7 +648,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       translateButtonClicked,
       titleTranslationLoading,
       bodyTranslationLoading,
-      spamModalVisible,
       actionInfos,
     } = this.state;
     const { formatMessage } = this.props.intl;
@@ -713,7 +684,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       content = (
         <>
           <IdeaMeta ideaId={ideaId} />
-          <ActionBar />
+          <ActionBar ideaId={ideaId} />
           <IdeaContainer id="e2e-idea-show">
             <IdeaHeader
               ideaId={ideaId}
@@ -889,39 +860,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                         utmParams={utmParams}
                       />
                     </SharingWrapper>
-
-                    {!isNilOrError(authUser) &&
-                      <MoreActionsMenuWrapper>
-                        <HasPermission item={idea} action="edit" context={idea}>
-                          <MoreActionsMenu
-                            actions={[
-                              {
-                                label: <FormattedMessage {...messages.reportAsSpam} />,
-                                handler: this.openSpamModal,
-                              },
-                              {
-                                label: <FormattedMessage {...messages.editIdea} />,
-                                handler: this.editIdea,
-                              },
-                              {
-                                label: <FormattedMessage {...messages.deleteIdea} />,
-                                handler: this.deleteIdea(ideaId),
-                              }
-                            ]}
-                            label={<FormattedMessage {...messages.moreOptions} />}
-                          />
-                          <HasPermission.No>
-                            <MoreActionsMenu
-                              actions={[{
-                                label: <FormattedMessage {...messages.reportAsSpam} />,
-                                handler: this.openSpamModal,
-                              }]}
-                              label={<FormattedMessage {...messages.moreOptions} />}
-                            />
-                          </HasPermission.No>
-                        </HasPermission>
-                      </MoreActionsMenuWrapper>
-                    }
                   </MetaButtons>
                   <FeatureFlag name="similar_ideas">
                     <SimilarIdeas ideaId={ideaId} />
@@ -932,18 +870,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           </IdeaContainer>
 
           {loaded && <IdeaFooter ideaId={ideaId} />}
-
-          <Modal
-            opened={spamModalVisible}
-            close={this.closeSpamModal}
-            label={formatMessage(messages.spamModalLabelIdea)}
-            header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
-          >
-            <SpamReportForm
-              resourceId={ideaId}
-              resourceType="ideas"
-            />
-          </Modal>
         </>
       );
     }
