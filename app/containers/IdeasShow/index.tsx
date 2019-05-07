@@ -531,20 +531,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       };
     }
 
-    if (!actionInfos && !isNilOrError(idea) && !isNilOrError(project)) {
-      const pbProject = (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'budgeting' ? project : null);
-      const pbPhase = (!pbProject && !isNilOrError(phases) ? phases.find(phase => phase.attributes.participation_method === 'budgeting') : null);
-      const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.attributes.start_at, pbPhase.attributes.end_at]) === 'present');
-      const lastPhase = (!isNilOrError(phases) ? last(sortBy(phases, [phase => phase.attributes.end_at])) : null);
-      const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.id === pbPhase.id);
-      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)));
+    if (!actionInfos && !isNilOrError(idea) && !isNilOrError(project) && !isUndefined(phases)) {
       const upvotesCount = idea.attributes.upvotes_count;
       const downvotesCount = idea.attributes.downvotes_count;
       const votingEnabled = idea.relationships.action_descriptor.data.voting.enabled;
       const cancellingEnabled = idea.relationships.action_descriptor.data.voting.cancelling_enabled;
       const votingFutureEnabled = idea.relationships.action_descriptor.data.voting.future_enabled;
-      const hideVote = !(votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount || downvotesCount);
-      const showVoteControl = (!hideVote && !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast)));
+      const pbProject = (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'budgeting' ? project : null);
+      const pbPhase = (!pbProject && !isNilOrError(phases) ? phases.find(phase => phase.attributes.participation_method === 'budgeting') : null);
+      const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.attributes.start_at, pbPhase.attributes.end_at]) === 'present');
+      const lastPhase = (!isNilOrError(phases) ? last(sortBy(phases, [phase => phase.attributes.end_at])) : null);
+      const lastPhaseHasPassed = (lastPhase ? pastPresentOrFuture([lastPhase.attributes.start_at, lastPhase.attributes.end_at]) === 'past' : false);
+      const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.id === pbPhase.id);
+      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
+      const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0));
       const budgetingDescriptor = get(idea, 'relationships.action_descriptor.data.budgeting', null);
       let participationContextType: 'Project' | 'Phase' | null = null;
       let participationContextId: string | null = null;

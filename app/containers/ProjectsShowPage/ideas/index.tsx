@@ -75,8 +75,6 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
               }
               <IdeaCards
                 type="load-more"
-                sort="trending"
-                pageSize={12}
                 projectIds={projectIds}
                 participationMethod={project.attributes.participation_method}
                 participationContextId={projectId}
