@@ -5,7 +5,7 @@ import Button from 'components/UI/Button';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // styles
 import { colors, fontSizes } from 'utils/styleUtils';

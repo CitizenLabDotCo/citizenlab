@@ -32,7 +32,7 @@ import OfficialFeedback from './OfficialFeedback';
 import Icon from 'components/UI/Icon';
 import IdeaBody from './IdeaBody';
 import ActionBar from './ActionBar';
-import TranslateButton from './ActionBar/TranslateButton';
+import TranslateButton from './TranslateButton';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
