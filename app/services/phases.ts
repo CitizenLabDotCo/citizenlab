@@ -74,16 +74,24 @@ export function phaseStream(phaseID: string, streamParams: IStreamParams | null 
   return streams.get<IPhase>({ apiEndpoint: `${apiEndpoint}/${phaseID}`, ...streamParams });
 }
 
-export function updatePhase(phaseId: string, object: IUpdatedPhaseProperties) {
-  return streams.update<IPhase>(`${apiEndpoint}/${phaseId}`, phaseId, { phase: object });
+export async function updatePhase(phaseId: string, object: IUpdatedPhaseProperties) {
+  const response = await streams.update<IPhase>(`${apiEndpoint}/${phaseId}`, phaseId, { phase: object });
+  const projectId = response.data.relationships.project.data.id;
+  streams.fetchAllWith({ dataId: [phaseId, projectId] });
+  return response;
 }
 
-export function addPhase(projectId: string, object: IUpdatedPhaseProperties) {
-  return streams.add<IPhase>(`${API_PATH}/projects/${projectId}/phases`, { phase: object });
+export async function addPhase(projectId: string, object: IUpdatedPhaseProperties) {
+  const response = await streams.add<IPhase>(`${API_PATH}/projects/${projectId}/phases`, { phase: object });
+  const phaseId = response.data.id;
+  streams.fetchAllWith({ dataId: [phaseId, projectId] });
+  return response;
 }
 
-export function deletePhase(phaseId: string) {
-  return streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
+export async function deletePhase(projectId: string, phaseId: string) {
+  const response = await streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
+  streams.fetchAllWith({ dataId: [phaseId, projectId] });
+  return response;
 }
 
 export function canContainIdeas(phase: IPhaseData) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, isString, isEmpty, isEqual, isBoolean, omit, cloneDeep } from 'lodash-es';
+import { get, isString, isEmpty, isEqual, isBoolean, omit, cloneDeep, omitBy, isNil, isArray } from 'lodash-es';
 import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { map, startWith, distinctUntilChanged, tap, debounceTime, mergeScan, switchMap } from 'rxjs/operators';
 import { ideasStream, IIdeaData, IdeaPublicationStatus } from 'services/ideas';
@@ -14,11 +14,11 @@ export type PublicationStatus = IdeaPublicationStatus;
 export interface InputProps {
   type: 'load-more' | 'paginated';
   pageNumber?: number;
-  pageSize: number;
-  projectIds?: string[];
+  pageSize?: number;
+  projectIds?: string[] | 'all';
   phaseId?: string;
   authorId?: string;
-  sort: Sort;
+  sort?: Sort;
   search?: string;
   topics?: string[];
   areas?: string[];
@@ -67,7 +67,7 @@ export type GetIdeasChildProps = State & {
   onChangeProjects: (projectIds: string[] | undefined) => void;
   onChangePhase: (phaseId: string) => void;
   onChangeSearchTerm: (search: string) => void;
-  onChangeSorting: (sort: string) => void;
+  onChangeSorting: (sort: Sort) => void;
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeIdeaStatus: (ideaStatus: string) => void;
@@ -92,16 +92,23 @@ interface State {
 }
 
 export default class GetIdeas extends React.Component<Props, State> {
+  defaultQueryParameters: IQueryParameters;
   queryParameters$: BehaviorSubject<IQueryParameters>;
   search$: Subject<string | undefined>;
   subscriptions: Subscription[];
 
+  static defaultProps = {
+    pageNumber: 1,
+    pageSize: 12,
+    sort: 'random'
+  };
+
   constructor(props: Props) {
     super(props);
-    const queryDefaults = {
-      'page[number]': 1,
-      'page[size]': props.pageSize,
-      sort: props.sort,
+    this.defaultQueryParameters = {
+      'page[number]': props.pageNumber as number,
+      'page[size]': props.pageSize as number,
+      sort: props.sort as Sort,
       projects: undefined,
       phase: undefined,
       author: undefined,
@@ -115,7 +122,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       assignee: undefined,
       feedback_needed: undefined
     };
-    const queryParameters = this.getQueryParameters(queryDefaults, props);
+    const queryParameters = this.getQueryParameters(this.defaultQueryParameters, props);
     this.state = {
       // defaults
       queryParameters,
@@ -124,8 +131,8 @@ export default class GetIdeas extends React.Component<Props, State> {
       hasMore: false,
       querying: true,
       loadingMore: false,
-      sortAttribute: getSortAttribute<Sort, SortAttribute>(props.sort),
-      sortDirection: getSortDirection<Sort>(props.sort),
+      sortAttribute: getSortAttribute<Sort, SortAttribute>(props.sort as Sort),
+      sortDirection: getSortDirection<Sort>(props.sort as Sort),
       currentPage: 1,
       lastPage: 1
     };
@@ -221,8 +228,7 @@ export default class GetIdeas extends React.Component<Props, State> {
               map(ideas => ({ queryParameters, ideas }))
             );
           })
-        )
-        .subscribe(({ ideas, queryParameters }) => {
+        ).subscribe(({ ideas, queryParameters }) => {
           this.setState({
             queryParameters,
             ideasList: (ideas ? ideas.data : null),
@@ -253,13 +259,21 @@ export default class GetIdeas extends React.Component<Props, State> {
   }
 
   getQueryParameters = (queryParameters: IQueryParameters, props: Props) => {
+    let projects: string[] | undefined = undefined;
+
+    if (isNil(props.projectIds)) {
+      projects = queryParameters.projects;
+    } else if (isArray(props.projectIds)) {
+      projects = props.projectIds;
+    }
+
     const inputPropsQueryParameters: IQueryParameters = {
+      projects,
       'page[number]': props.pageNumber as number,
-      'page[size]': props.pageSize,
-      projects: props.projectIds,
+      'page[size]': props.pageSize as number,
       phase: props.phaseId,
       author: props.authorId,
-      sort: props.sort,
+      sort: props.sort as Sort,
       search: props.search,
       topics: props.topics,
       areas: props.areas,
@@ -271,9 +285,15 @@ export default class GetIdeas extends React.Component<Props, State> {
       feedback_needed: props.feedbackNeeded
     };
 
+    // Omit all queryParameters that are nil.
+    // Why do this? Because we assume that an input prop that's nil is an input prop that should be ignored,
+    // and not overwrite a none-nil value that's part of this.state.queryParameters.
     return {
       ...queryParameters,
-      ...inputPropsQueryParameters
+      ...omitBy(inputPropsQueryParameters, isNil),
+      // Make an exception for 'projects', because when it's undefined we don't want to ignore it but instead pass it along
+      // to let the request know we don't want to apply a projects filter but load the ideas for all projects
+      projects
     };
   }
 
@@ -296,7 +316,8 @@ export default class GetIdeas extends React.Component<Props, State> {
   handlePhaseOnChange = (phaseId: string) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      phase: phaseId
+      phase: phaseId,
+      'page[number]': 1
     });
   }
 
@@ -356,7 +377,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       project_publication_status: projectPublicationStatus,
-      'page[number]': 1,
+      'page[number]': 1
     });
   }
 
@@ -364,52 +385,28 @@ export default class GetIdeas extends React.Component<Props, State> {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       assignee,
-      'page[number]': 1,
+      'page[number]': 1
     });
   }
 
   handleFeedbackFilterOnChange = (feedbackNeeded: boolean) => {
-    if (feedbackNeeded === true) {
-      this.queryParameters$.next({
-        ...this.state.queryParameters,
-        feedback_needed: true,
-        'page[number]': 1,
-      });
-    } else if (feedbackNeeded === false) {
-      this.queryParameters$.next({
-        ...this.state.queryParameters,
-        feedback_needed: undefined,
-        'page[number]': 1,
-      });
-    }
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      feedback_needed: (feedbackNeeded || undefined),
+      'page[number]': 1
+    });
   }
 
   handleResetParams = (paramsToOmit?: (keyof IQueryParameters)[]) => {
-    const defaultResetQueryParameters = {
-      projects: undefined,
-      'page[number]': 1,
-      'page[size]': this.props.pageSize,
-      phase: undefined,
-      author: undefined,
-      sort: this.props.sort,
-      search: undefined,
-      topics: undefined,
-      areas: undefined,
-      idea_status: undefined,
-      publication_status: undefined,
-      project_publication_status: undefined,
-      bounding_box: undefined,
-      assignee: undefined,
-      feedback_needed: undefined
-    };
+    const defaultQueryParameters = cloneDeep(this.defaultQueryParameters);
 
     if (paramsToOmit && paramsToOmit.length > 0) {
       this.queryParameters$.next({
         ...this.state.queryParameters,
-        ...omit(defaultResetQueryParameters, paramsToOmit)
+        ...omit(defaultQueryParameters, paramsToOmit)
       });
     } else {
-      this.queryParameters$.next(defaultResetQueryParameters);
+      this.queryParameters$.next(defaultQueryParameters);
     }
 
     this.search$.next('');

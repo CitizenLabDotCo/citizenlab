@@ -1,12 +1,6 @@
-/*
- * IdeasIndexPage Messages
- *
- * This contains all the text for the IdeasIndexPage component.
- */
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  // header
   titleCity: {
     id: 'app.containers.landing.titleCity',
     defaultMessage: 'Change the future of {name}',
@@ -19,8 +13,6 @@ export default defineMessages({
     id: 'app.containers.landing.createAccount',
     defaultMessage: 'Create an account',
   },
-
-  // ideas
   ideasFrom: {
     id: 'app.containers.landing.ideasFrom',
     defaultMessage: 'Ideas for {name}',
@@ -37,8 +29,6 @@ export default defineMessages({
     id: 'app.containers.landing.exploreAllIdeas',
     defaultMessage: 'Explore all ideas',
   },
-
-  // projects
   projectsFrom: {
     id: 'app.containers.landing.projectsFrom',
     defaultMessage: 'Projects from {name}',
@@ -73,18 +63,18 @@ export default defineMessages({
   },
   completeYourProfile: {
     id: 'app.containers.landing.completeYourProfile',
-    defaultMessage: `Welcome {firstName}. It's time to complete your profile.`,
+    defaultMessage: "Welcome {firstName}. It's time to complete your profile.",
   },
   completeProfile: {
     id: 'app.containers.landing.completeProfile',
-    defaultMessage: `Complete profile`,
+    defaultMessage: 'Complete profile',
   },
   doItLater: {
     id: 'app.containers.landing.doItLater',
-    defaultMessage: `I'll do it later`,
+    defaultMessage: "I'll do it later",
   },
   defaultSignedInMessage: {
     id: 'app.containers.landing.defaultSignedInMessage',
-    defaultMessage: `{firstName}, inspire change today!`,
+    defaultMessage: '{firstName}, inspire change today!',
   }
 });

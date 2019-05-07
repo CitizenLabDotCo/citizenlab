@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { isString, has, get, isEmpty, last, sortBy } from 'lodash-es';
 import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -210,9 +211,10 @@ const Downvote = Vote.extend`
 
 interface Props {
   ideaId: string;
+  size: '1' | '2' | '3';
   unauthenticatedVoteClick?: () => void;
   disabledVoteClick?: () => void;
-  size: '1' | '2' | '3';
+  className?: string;
 }
 
 interface State {
@@ -474,46 +476,27 @@ export default class VoteControl extends PureComponent<Props, State> {
     this.downvoteElement = element;
   }
 
-  hideVotes = () => {
-    return !(
-      this.state.votingEnabled ||
-      this.state.cancellingEnabled ||
-      this.state.votingFutureEnabled ||
-      this.state.upvotesCount ||
-      this.state.downvotesCount
-    );
-  }
-
-  upvotingEnabled = () => {
-    const { myVoteMode, votingEnabled, cancellingEnabled } = this.state;
-    return (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
-  }
-
-  downvotingEnabled = () => {
-    const { myVoteMode, votingEnabled, cancellingEnabled } = this.state;
-    return (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
-  }
-
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
   }
 
   render() {
-    const className = this.props['className'];
-    const { size } = this.props;
-    const { project, phases, upvotesCount, downvotesCount, myVoteMode, votingAnimation, votingEnabled } = this.state;
-    const upvotingEnabled = this.upvotingEnabled();
-    const downvotingEnabled = this.downvotingEnabled();
+    const { size, className } = this.props;
+    const { project, phases, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, votingFutureEnabled, upvotesCount, downvotesCount } = this.state;
+    const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
+    const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
     const projectProcessType = get(project, 'data.attributes.process_type');
     const projectParticipationMethod = get(project, 'data.attributes.participation_method');
     const pbProject = (project && projectProcessType === 'continuous' && projectParticipationMethod === 'budgeting' ? project : null);
     const pbPhase = (!pbProject && phases ? phases.find(phase => phase.data.attributes.participation_method === 'budgeting') : null);
     const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.data.attributes.start_at, pbPhase.data.attributes.end_at]) === 'present');
-    const lastPhase = (phases ? last(sortBy(phases, [phase => phase.data.attributes.end_at]) as IPhase[]) : null);
+    const lastPhase = (!isNilOrError(phases) ? last(sortBy(phases, [phase => phase.data.attributes.end_at])) : null);
+    const lastPhaseHasPassed = (lastPhase ? pastPresentOrFuture([lastPhase.data.attributes.start_at, lastPhase.data.attributes.end_at]) === 'past' : false);
     const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
-    const showVoteControl = !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast));
+    const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
+    const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0));
 
-    if (this.hideVotes() || !showVoteControl) return null;
+    if (!showVoteControl) return null;
 
     return (
       <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode} ${votingEnabled && 'enabled'}`}>
