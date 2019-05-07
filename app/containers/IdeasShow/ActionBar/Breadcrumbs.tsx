@@ -5,9 +5,10 @@ import styled from 'styled-components';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
+import { truncate } from 'utils/textUtils';
 
 // styles
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // i18n
@@ -53,6 +54,20 @@ const ProjectLink = styled(Link)`
   }
 `;
 
+const LinkText = styled.span`
+  ${media.largePhone`
+    display: none;
+  `}
+`;
+
+const TruncatedLinkText = styled.span`
+  display: none;
+
+  ${media.largePhone`
+    display: inline;
+  `}
+`;
+
 interface DataProps {
   idea: GetIdeaChildProps;
   project: GetProjectChildProps;
@@ -74,7 +89,11 @@ const Breadcrumbs = memo(({ project, localize }: Props & InjectedLocalized) => {
         </HomeLink>
         <Separator>/</Separator>
         <ProjectLink to={`/projects/${project.attributes.slug}`}>
-          {localize(project.attributes.title_multiloc)}
+          {/* If we're on a small screen, we show a truncated version of the project */}
+          <LinkText>{localize(project.attributes.title_multiloc)}</LinkText>
+          <TruncatedLinkText>
+            {truncate(localize(project.attributes.title_multiloc), 28)}
+          </TruncatedLinkText>
         </ProjectLink>
       </Container>
     );
