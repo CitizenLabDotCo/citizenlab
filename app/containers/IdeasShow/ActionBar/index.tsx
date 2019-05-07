@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
-import { colors, ideaPageContentMaxWidth } from 'utils/styleUtils';
+import { colors, media, ideaPageContentMaxWidth } from 'utils/styleUtils';
 
 // components
 import BreadCrumbs from './Breadcrumbs';
@@ -45,6 +45,10 @@ const Right = styled.div`
 
 const StyledTranslateButton = styled(TranslateButton)`
   margin-right: 25px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 interface InputProps {

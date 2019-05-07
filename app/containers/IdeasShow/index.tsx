@@ -32,6 +32,7 @@ import OfficialFeedback from './OfficialFeedback';
 import Icon from 'components/UI/Icon';
 import IdeaBody from './IdeaBody';
 import ActionBar from './ActionBar';
+import TranslateButton from './ActionBar/TranslateButton';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -179,6 +180,16 @@ const LeftColumn = styled.div`
 
   ${media.smallerThanMaxTablet`
     padding: 0;
+  `}
+`;
+
+const StyledTranslateButton = styled(TranslateButton)`
+  display: none;
+  width: fit-content;
+  margin-bottom: 40px;
+
+  ${media.smallerThanMinTablet`
+    display: block;
   `}
 `;
 
@@ -656,6 +667,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         source: 'share_idea',
         campaign: 'share_content'
       };
+      const showTranslateButton = !isNilOrError(idea) &&
+                              !isNilOrError(locale) &&
+                              !idea.attributes.title_multiloc[locale];
 
       content = (
         <>
@@ -668,6 +682,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           <IdeaContainer id="e2e-idea-show">
             <Content>
               <LeftColumn>
+                {/* <FeatureFlag name="machine_translations"> */}
+                  {showTranslateButton &&
+                    <StyledTranslateButton
+                      translateButtonClicked={translateButtonClicked}
+                      onClick={this.onTranslateIdea}
+                    />
+                  }
+                {/* </FeatureFlag> */}
                 <IdeaHeader
                   ideaId={ideaId}
                   statusId={statusId}

@@ -34,6 +34,7 @@ const TranslateButton = (props: Props) => {
       fontWeight="600"
       icon="translate"
       borderColor={colors.separation}
+      width="fit-content"
     >
       {translateButtonClicked ?
         <FormattedMessage {...messages.seeOriginal} />
