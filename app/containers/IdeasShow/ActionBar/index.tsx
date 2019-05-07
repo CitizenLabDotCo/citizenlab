@@ -1,4 +1,8 @@
 import React, { memo } from 'react';
+import { adopt } from 'react-adopt';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
@@ -6,7 +10,13 @@ import { colors, ideaPageContentMaxWidth } from 'utils/styleUtils';
 
 // components
 import BreadCrumbs from './Breadcrumbs';
-import MoreActionsMenu from './IdeaMoreActions';
+import IdeaMoreActions from './IdeaMoreActions';
+import TranslateButton from './TranslateButton';
+import FeatureFlag from 'components/FeatureFlag';
+
+// resource
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 const Container = styled.div`
   width: 100%;
@@ -28,25 +38,62 @@ const Inner = styled.div`
 
 const Left = styled.div``;
 
-const Right = styled.div``;
+const Right = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
-interface Props {
+const StyledTranslateButton = styled(TranslateButton)`
+  margin-right: 25px;
+`;
+
+interface InputProps {
   ideaId: string;
+  onTranslateIdea: () => void;
+  translateButtonClicked: boolean;
 }
 
-const ActionBar = memo<Props>(({ ideaId }: Props) => {
-  return (
+interface DataProps {
+  idea: GetIdeaChildProps;
+  locale: GetLocaleChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+const ActionBar = memo<Props>(({ ideaId, onTranslateIdea, translateButtonClicked, idea, locale }: Props) => {
+  const showTranslateButton = !isNilOrError(idea) &&
+                              !isNilOrError(locale) &&
+                              !idea.attributes.title_multiloc[locale];
+
+ return (
     <Container>
       <Inner>
         <Left>
           <BreadCrumbs ideaId={ideaId} />
         </Left>
         <Right>
-          <MoreActionsMenu ideaId={ideaId} />
+          {/* <FeatureFlag name="machine_translations"> */}
+            {showTranslateButton &&
+              <StyledTranslateButton
+                translateButtonClicked={translateButtonClicked}
+                onClick={onTranslateIdea}
+              />
+            }
+          {/* </FeatureFlag> */}
+          <IdeaMoreActions ideaId={ideaId} />
         </Right>
       </Inner>
     </Container>
   );
 });
 
-export default ActionBar;
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ActionBar {...inputProps} {...dataProps} />}
+  </Data>
+);

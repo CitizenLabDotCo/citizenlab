@@ -65,7 +65,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { media, colors, fontSizes, ideaPageContentMaxWidth } from 'utils/styleUtils';
 import { darken } from 'polished';
-import TranslateButton from './TranslateButton';
 
 const loadingSpinnerFadeInDuration = 300;
 const loadingSpinnerFadeInEasing = 'ease-out';
@@ -305,10 +304,6 @@ const AddressWrapper = styled.div`
   z-index: 3;
 `;
 
-const StyledTranslateButton = styled(TranslateButton)`
-  margin-bottom: 30px;
-`;
-
 const RightColumn = styled.div`
   flex: 1;
   margin: 0;
@@ -446,8 +441,6 @@ interface State {
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
-  titleTranslationLoading: boolean;
-  bodyTranslationLoading: boolean;
   actionInfos: IActionInfos | null;
 }
 
@@ -468,8 +461,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
-      titleTranslationLoading: false,
-      bodyTranslationLoading: false,
       ideaBody: null,
       actionInfos: null
     };
@@ -600,22 +591,19 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.setState({ ideaIdForSocialSharing: null });
   }
 
-  translateIdea = () => {
-    trackEvent(tracks.clickTranslateIdeaButton);
-    this.setState({ translateButtonClicked: true });
-  }
+  onTranslateIdea = () => {
+    this.setState(prevState => {
+      // analytics
+      if (prevState.translateButtonClicked === true) {
+        trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
+      } else if (prevState.translateButtonClicked === false) {
+        trackEvent(tracks.clickTranslateIdeaButton);
+      }
 
-  backToOriginalContent = () => {
-    trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
-    this.setState({ translateButtonClicked: false });
-  }
-
-  onTitleTranslationLoaded = () => {
-    this.setState({ titleTranslationLoading: false });
-  }
-
-  onBodyTranslationLoaded = () => {
-    this.setState({ bodyTranslationLoading: false });
+      return ({
+        translateButtonClicked: !prevState.translateButtonClicked
+      });
+    });
   }
 
   render() {
@@ -636,8 +624,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       showMap,
       ideaIdForSocialSharing,
       translateButtonClicked,
-      titleTranslationLoading,
-      bodyTranslationLoading,
       actionInfos,
     } = this.state;
     const { formatMessage } = this.props.intl;
@@ -674,7 +660,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       content = (
         <>
           <IdeaMeta ideaId={ideaId} />
-          <ActionBar ideaId={ideaId} />
+          <ActionBar
+            ideaId={ideaId}
+            translateButtonClicked={translateButtonClicked}
+            onTranslateIdea={this.onTranslateIdea}
+          />
           <IdeaContainer id="e2e-idea-show">
             <Content>
               <LeftColumn>
@@ -684,7 +674,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   ideaTitle={ideaTitle}
                   locale={locale}
                   translateButtonClicked={translateButtonClicked}
-                  onTranslationLoaded={this.onTitleTranslationLoaded}
                 />
 
                 {!inModal && showVoteControl &&
@@ -711,23 +700,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   ideaCreatedAt={createdAt}
                 />
 
-                <FeatureFlag name="machine_translations">
-                  <StyledTranslateButton
-                    idea={idea}
-                    locale={locale}
-                    translateButtonClicked={translateButtonClicked}
-                    translationsLoading={titleTranslationLoading || bodyTranslationLoading}
-                    translateIdea={this.translateIdea}
-                    backToOriginalContent={this.backToOriginalContent}
-                  />
-                </FeatureFlag>
-
                 <IdeaBody
                   ideaId={ideaId}
                   locale={locale}
                   ideaBody={ideaBody}
                   translateButtonClicked={translateButtonClicked}
-                  onTranslationLoaded={this.onTitleTranslationLoaded}
                 />
 
                 {ideaLocation &&
