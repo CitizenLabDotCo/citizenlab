@@ -6,6 +6,7 @@ import { colors, media, ideaPageContentWidths } from 'utils/styleUtils';
 
 // components
 import BreadCrumbs from './Breadcrumbs';
+import MoreActionsMenu from './IdeaMoreActions';
 
 const Container = styled.div`
   width: 100%;
@@ -14,7 +15,7 @@ const Container = styled.div`
   color: ${colors.label};
 `;
 
-const Content = styled.div`
+const Inner = styled.div`
   max-width: ${ideaPageContentWidths.default};
   height: 100%;
   margin: 0 auto;
@@ -35,19 +36,21 @@ const Left = styled.div``;
 
 const Right = styled.div``;
 
-interface Props {}
+interface Props {
+  ideaId: string;
+}
 
-const ActionBar = memo<Props>((_props: Props) => {
+const ActionBar = memo<Props>(({ ideaId }: Props) => {
   return (
     <Container>
-      <Content>
+      <Inner>
         <Left>
-          <BreadCrumbs />
+          <BreadCrumbs ideaId={ideaId} />
         </Left>
         <Right>
-          {ideaPageContentWidths.default}
+          <MoreActionsMenu ideaId={ideaId} />
         </Right>
-      </Content>
+      </Inner>
     </Container>
   );
 });
