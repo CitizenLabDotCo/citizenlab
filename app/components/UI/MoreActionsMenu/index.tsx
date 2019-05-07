@@ -22,10 +22,10 @@ const MoreOptionsIcon = styled(Icon)`
   transition: all 100ms ease-out;
 `;
 
-const MoreOptionsLabel = styled.div`
+const MoreOptionsLabel: any = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.base}px;
+  font-size: ${(props: any) => props.fontSize ? `${props.fontSize}px` : `${fontSizes.base}px`};
+  line-height: ${(props: any) => props.fontSize ? `${props.fontSize}px` : `${fontSizes.base}px`};
   font-weight: 400;
   white-space: nowrap;
   margin-left: 10px;
@@ -59,13 +59,13 @@ const List = styled.div`
   margin: 6px;
 `;
 
-const ListItem = styled.button`
+const ListItem: any = styled.button`
   flex: 1 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: ${colors.adminLightText};
-  font-size: ${fontSizes.base}px;
+  font-size: ${(props: any) => props.fontSize ? `${props.fontSize}px` : `${fontSizes.base}px`};
   font-weight: 400;
   white-space: nowrap;
   padding: 10px;
@@ -101,6 +101,7 @@ export interface Props {
   label?: string | JSX.Element;
   ariaLabel?: string;
   className?: string;
+  fontSize?: number;
 }
 
 interface State {
@@ -130,7 +131,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
   }
 
   render() {
-    const { actions, ariaLabel } = this.props;
+    const { actions, ariaLabel, fontSize } = this.props;
     const { visible } = this.state;
     const className = this.props.className;
 
@@ -139,7 +140,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     }
 
     return (
-      <Container className={className}>
+      <Container className={className} >
         <Popover
           content={
             <List>
@@ -151,7 +152,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
                 };
 
                 return (
-                  <ListItem key={index} onClick={onClick} className={`e2e-action-${name}`}>
+                  <ListItem key={index} onClick={onClick} className={`e2e-action-${name}`} fontSize={fontSize}>
                     {label}
                     {icon && <StyledIcon name={icon} />}
                   </ListItem>
@@ -171,7 +172,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
             onClick={this.toggleMenu}
           >
             <MoreOptionsIcon name="more-options" />
-            {this.props.label && <MoreOptionsLabel>{this.props.label}</MoreOptionsLabel>}
+            {this.props.label && <MoreOptionsLabel fontSize={fontSize}>{this.props.label}</MoreOptionsLabel>}
           </MoreOptions>
         </Popover>
       </Container>
