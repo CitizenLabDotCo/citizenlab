@@ -64,7 +64,7 @@ interface Props extends InputProps {
 export type GetIdeasChildProps = State & {
   onLoadMore: () => void;
   onChangePage: (pageNumber: number) => void;
-  onChangeProjects: (projectIds: string[]) => void;
+  onChangeProjects: (projectIds: string[] | undefined) => void;
   onChangePhase: (phaseId: string) => void;
   onChangeSearchTerm: (search: string) => void;
   onChangeSorting: (sort: string) => void;
@@ -312,7 +312,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
 
-  handleProjectsOnChange = (projects: string[]) => {
+  handleProjectsOnChange = (projects: string[] | undefined) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       projects,

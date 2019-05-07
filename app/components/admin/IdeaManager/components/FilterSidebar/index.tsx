@@ -25,12 +25,12 @@ interface Props {
   selectedPhase?: string;
   selectedProject?: string;
   selectedStatus?: string;
-  onChangePhaseFilter?: (string) => void;
+  onChangePhaseFilter?: (arg: string) => void;
   onChangeTopicsFilter?: (topics: string[]) => void;
   onChangeProjectFilter?: (projects: string[] | undefined) => void;
-  onChangeStatusFilter?: (string) => void;
+  onChangeStatusFilter?: (arg: string) => void;
   activeFilterMenu: string | null;
-  onChangeActiveFilterMenu: (string) => void;
+  onChangeActiveFilterMenu: (arg: string) => void;
   visibleFilterMenus: string[];
 }
 
