@@ -11,7 +11,7 @@ import { colors, media, ideaPageContentMaxWidth } from 'utils/styleUtils';
 // components
 import BreadCrumbs from './Breadcrumbs';
 import IdeaMoreActions from './IdeaMoreActions';
-import TranslateButton from './TranslateButton';
+import TranslateButton from '../TranslateButton';
 import FeatureFlag from 'components/FeatureFlag';
 
 // resource
