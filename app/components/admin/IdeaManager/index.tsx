@@ -13,7 +13,6 @@ import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/glob
 import { IProjectData } from 'services/projects';
 
 // resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
@@ -129,10 +128,13 @@ interface InputProps {
   // In this parent component, project gets loaded and passed to all childRoutes (child components), including admin/projects/edit/ideas
   // Search this parent component for 'React.cloneElement' to see how this project prop is passed.
   project?: IProjectData | null;
+
+  // When the IdeaManager is used in admin/ideas, the parent component passes
+  // down the array of projects the current user can moderate.
+  projects?: IProjectData[] | null;
 }
 
 interface DataProps {
-  projects: GetProjectsChildProps;
   ideas: GetIdeasChildProps;
   topics: GetTopicsChildProps;
   ideaStatuses: GetIdeaStatusesChildProps;
@@ -192,6 +194,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const prevAuthUser = prevProps.authUser;
     if (isNilOrError(prevAuthUser) && !isNilOrError(authUser) && !this.state.assignee) {
       this.props.ideas.onChangeAssignee(authUser.id);
+      console.log('changes assignee');
       this.setState({ assignee: authUser.id });
     }
 
@@ -199,11 +202,6 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const newProjectId = get(this.props.project, 'id', null);
 
     if (this.props.project && newProjectId !== oldProjectId) {
-      if (isFunction(this.props.ideas.onChangeProjects)) {
-        const projectIds = [newProjectId];
-        this.props.ideas.onChangeProjects(projectIds);
-      }
-
       this.setVisibleFilterMenus(this.props.project);
     }
   }
@@ -296,11 +294,23 @@ class IdeaManager extends React.PureComponent<Props, State> {
     }
   }
 
+  onChangeProjects = (projectIds: string[] | undefined) => {
+    const { project, projects, ideas } = this.props;
+    const { onChangeProjects } = ideas;
+
+    const accessibleProjectsIds = !isNilOrError(project) ? [project.id] : (projects ? projects.map(project => project.id) : null);
+
+    if (!projectIds || projectIds.length === 0) {
+      onChangeProjects(accessibleProjectsIds || undefined);
+    } else {
+      onChangeProjects(projectIds);
+    }
+  }
+
   render() {
     const { searchTerm } = this.state;
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
-    const { projectsList } = projects;
-    const { ideasList, onChangePhase, onChangeTopics, onChangeProjects, onChangeIdeaStatus } = ideas;
+    const { ideasList, onChangePhase, onChangeTopics, onChangeIdeaStatus } = ideas;
     const selectedTopics = ideas.queryParameters.topics;
     const selectedPhase = ideas.queryParameters.phase;
     const selectedProject = isArray(ideas.queryParameters.projects) ? ideas.queryParameters.projects[0] : undefined;
@@ -388,7 +398,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
                 project={!isNilOrError(project) ? project : undefined}
                 phases={!isNilOrError(phases) ? phases : undefined}
                 topics={!isNilOrError(topics) ? topics : undefined}
-                projects={!isNilOrError(projectsList) ? projectsList : undefined}
+                projects={!isNilOrError(projects) ? projects : undefined}
                 statuses={!isNilOrError(ideaStatuses) ? ideaStatuses : []}
                 selectedTopics={selectedTopics}
                 selectedPhase={selectedPhase}
@@ -396,7 +406,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
                 selectedStatus={selectedIdeaStatus}
                 onChangePhaseFilter={onChangePhase}
                 onChangeTopicsFilter={onChangeTopics}
-                onChangeProjectFilter={onChangeProjects}
+                onChangeProjectFilter={this.onChangeProjects}
                 onChangeStatusFilter={onChangeIdeaStatus}
               />
               {multipleIdeasSelected &&
@@ -448,8 +458,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  projects: <GetProjects pageSize={250} sort="new" publicationStatuses={['draft', 'published', 'archived']} />,
-  ideas: ({ project, render }) => <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={project ? [project.id] : undefined}>{render}</GetIdeas>,
+  ideas: ({ project, projects, render }) => <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={project ? [project.id] : (projects ? projects.map(project => project.id) : undefined)}>{render}</GetIdeas>,
   topics: <GetTopics />,
   tenant: <GetTenant />,
   ideaStatuses: <GetIdeaStatuses />,
