@@ -7,7 +7,7 @@ import Icon, { IconNames } from 'components/UI/Icon';
 
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Container = styled.div`
@@ -30,6 +30,10 @@ const MoreOptionsLabel: any = styled.div`
   white-space: nowrap;
   margin-left: 10px;
   transition: all 100ms ease-out;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const MoreOptions = styled.button`
