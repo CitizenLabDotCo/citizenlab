@@ -63,7 +63,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, ideaPageContentWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, ideaPageContentMaxWidth } from 'utils/styleUtils';
 import { darken } from 'polished';
 import TranslateButton from './TranslateButton';
 
@@ -141,7 +141,7 @@ const Container = styled.div`
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: ${ideaPageContentWidths.default};
+  max-width: ${ideaPageContentMaxWidth};
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -149,20 +149,12 @@ const IdeaContainer = styled.div`
   margin-right: auto;
   padding: 0;
   padding-top: 60px;
+  padding-left: 30px;
+  padding-right: 30px;
   position: relative;
-
-  ${media.smallerThan1200px`
-    max-width: ${ideaPageContentWidths.smallerThan1200px};
-  `}
-
-  ${media.smallerThan1100px`
-    max-width: ${ideaPageContentWidths.smallerThan1100px};
-  `}
 
   ${media.smallerThanMaxTablet`
     padding-top: 30px;
-    padding-left: 30px;
-    padding-right: 30px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -184,11 +176,7 @@ const LeftColumn = styled.div`
   flex: 2;
   margin: 0;
   padding: 0;
-  padding-right: 70px;
-
-  ${media.smallerThan1200px`
-    padding-right: 50px;
-  `}
+  padding-right: 100px;
 
   ${media.smallerThanMaxTablet`
     padding: 0;
@@ -219,7 +207,6 @@ const LocationLabel = styled.div`
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-right: 6px;
-  max-width: 200px;
   font-size: ${fontSizes.base}px;
   line-height: 19px;
   text-align: left;
@@ -329,6 +316,9 @@ const RightColumn = styled.div`
 `;
 
 const RightColumnDesktop = styled(RightColumn)`
+  flex: 0 0 385px;
+  width: 385px;
+
   ${media.smallerThanMaxTablet`
     display: none;
   `}
@@ -686,18 +676,17 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           <IdeaMeta ideaId={ideaId} />
           <ActionBar ideaId={ideaId} />
           <IdeaContainer id="e2e-idea-show">
-            <IdeaHeader
-              ideaId={ideaId}
-              statusId={statusId}
-              ideaTitle={ideaTitle}
-              projectId={projectId}
-              locale={locale}
-              translateButtonClicked={translateButtonClicked}
-              onTranslationLoaded={this.onTitleTranslationLoaded}
-            />
-
             <Content>
               <LeftColumn>
+                <IdeaHeader
+                  ideaId={ideaId}
+                  statusId={statusId}
+                  ideaTitle={ideaTitle}
+                  locale={locale}
+                  translateButtonClicked={translateButtonClicked}
+                  onTranslationLoaded={this.onTitleTranslationLoaded}
+                />
+
                 {!inModal && showVoteControl &&
                   <VoteControlMobile>
                     <VoteControl
