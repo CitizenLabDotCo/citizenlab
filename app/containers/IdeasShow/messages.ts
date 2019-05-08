@@ -365,5 +365,9 @@ export default defineMessages({
   ideaPostedBy: {
     id: 'app.components.IdeasShow.ideaPostedBy',
     defaultMessage: 'Idea posted by {userName}',
+  },
+  noComments: {
+    id: 'app.components.IdeasShow.noComments',
+    defaultMessage: 'There are no comments yet.'
   }
 });
