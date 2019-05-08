@@ -426,6 +426,7 @@ const AssignBudgetControlMobile = styled.div`
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 55px;
 `;
 
 const SharingMobile = styled(Sharing)`
@@ -886,9 +887,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                       />
                     </SharingWrapper>
                   </MetaButtons>
-                  <FeatureFlag name="similar_ideas">
+                  {/* <FeatureFlag name="similar_ideas"> */}
                     <SimilarIdeas ideaId={ideaId} />
-                  </FeatureFlag>
+                  {/* </FeatureFlag> */}
                 </MetaContent>
               </RightColumnDesktop>
             </Content>

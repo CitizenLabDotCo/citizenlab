@@ -70,7 +70,7 @@ const ActionBar = memo<Props>(({ ideaId, onTranslateIdea, translateButtonClicked
                               !isNilOrError(locale) &&
                               !idea.attributes.title_multiloc[locale];
 
- return (
+  return (
     <Container>
       <Inner>
         <Left>
