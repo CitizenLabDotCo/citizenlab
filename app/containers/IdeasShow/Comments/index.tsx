@@ -28,20 +28,14 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { ICommentSortOptions } from './CommentSorting';
 
 const Container = styled.div``;
 
-const NoComments = styled.div`
-  width: 100%;
-  color: ${colors.label};
-  font-size: ${fontSizes.large}px;
-  font-weight: 300;
-  margin-top: 10px;
-  margin-bottom: 35px;
+const StyledWarning = styled(Warning)`
+  margin-bottom: 20px;
 `;
 
 export interface InputProps {
@@ -79,10 +73,10 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
           Show warning messages when there are no comments and you're looged in as an admin.
           Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
           */}
-          {isModerator && comments && comments.length === 0 &&
-            <Warning>
+          {isModerator && comments && comments.length === 0 && !commentingDisabledReason &&
+            <StyledWarning>
               <FormattedMessage {...messages.noComments} />
-            </Warning>
+            </StyledWarning>
           }
 
           <CommentingDisabled

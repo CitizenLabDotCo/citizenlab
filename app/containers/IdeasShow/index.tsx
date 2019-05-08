@@ -31,6 +31,7 @@ import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
 import Icon from 'components/UI/Icon';
 import IdeaBody from './IdeaBody';
+import IdeaContentFooter from './IdeaContentFooter';
 import ActionBar from './ActionBar';
 import TranslateButton from './TranslateButton';
 
@@ -225,8 +226,8 @@ const IdeaImage = styled.img`
 `;
 
 const StyledIdeaAuthor = styled(IdeaAuthor)`
-  margin-top: -4px;
   margin-left: -4px;
+  margin-bottom: 50px;
 `;
 
 const MetaButtons = styled.div`
@@ -697,7 +698,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         !isNilOrError(locale) &&
         !idea.attributes.title_multiloc[locale]
       );
-
+      
       content = (
         <>
           <IdeaMeta ideaId={ideaId} />
@@ -731,6 +732,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   translateButtonClicked={translateButtonClicked}
                 />
 
+                <StyledIdeaAuthor
+                  ideaId={ideaId}
+                  authorId={authorId}
+                  ideaCreatedAt={createdAt}
+                  showLabel={true}
+                />
+
                 {!inModal && showVoteControl &&
                   <VoteControlMobile>
                     <VoteControl
@@ -748,13 +756,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     className="e2e-ideaImage"
                   />
                 }
-
-                <StyledIdeaAuthor
-                  ideaId={ideaId}
-                  authorId={authorId}
-                  ideaCreatedAt={createdAt}
-                  showLabel={true}
-                />
 
                 <IdeaBody
                   ideaId={ideaId}
@@ -809,6 +810,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
                   utmParams={utmParams}
                 />
+
+                <IdeaContentFooter ideaId={ideaId} commentsCount={idea.attributes.comments_count} />
               </LeftColumn>
 
               <RightColumnDesktop>
