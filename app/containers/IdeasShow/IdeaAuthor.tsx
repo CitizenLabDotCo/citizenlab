@@ -85,8 +85,6 @@ const IdeaAuthor = memo<Props>(({ ideaId, showLabel, ideaCreatedAt, authorId, au
     <UserName user={null} />
   );
 
-  console.log(userName);
-
   return (
     <Container className={className}>
       <Avatar
