@@ -86,8 +86,8 @@ const StyledLabel = styled.label`
 
 interface InputProps {
   value: boolean;
-  onChange: () => void;
-  assignee: string;
+  onChange: (feedbackNeeded: boolean | undefined) => void;
+  assignee: string | undefined;
   project?: string;
   phase?: string;
   topics?: string[];
@@ -114,7 +114,7 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
   }
 
   handleOnClick = () => {
-    this.props.onChange();
+    this.props.onChange(!this.props.value || undefined);
   }
 
   render() {
@@ -145,7 +145,7 @@ const Data = adopt({
     return (
       <GetIdeasCount
         feedbackNeeded={true}
-        assignee={assignee !== 'all' ? assignee : undefined}
+        assignee={assignee}
         projectIds={projectIds}
         phaseId={phase}
         topics={topics}

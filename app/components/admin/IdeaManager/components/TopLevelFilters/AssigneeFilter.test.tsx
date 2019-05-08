@@ -55,7 +55,7 @@ describe('<AssigneeFilter />', () => {
     expect(handleAssigneeFilterChange.mock.calls[0][0]).toBe('me');
   });
 
-  it('passes down keyword all if you select All ideas', () => {
+  it('passes down undefined if you select All ideas', () => {
     const authUser = makeUser({ roles: [{ type: 'admin' }] }, 'me').data;
     const prospectAssignees = ['admin1', 'admin2', 'admin3'].map(name => makeUser({ slug: name, first_name: name, roles: [{ type: 'admin' }] }, name).data);
     prospectAssignees.push(authUser);
@@ -71,8 +71,9 @@ describe('<AssigneeFilter />', () => {
       />
     );
     const options = wrapper.find('Dropdown').prop('options');
-    const all = options.find(option => option.text === 'All ideas');
+    const all = options.find(option => option.value === 'all');
     wrapper.instance().onAssigneeChange({}, all);
-    expect(handleAssigneeFilterChange.mock.calls[0][0]).toBe('all');
+    console.log(handleAssigneeFilterChange.mock.calls);
+    expect(handleAssigneeFilterChange.mock.calls[1][0]).toBe(undefined);
   });
 });
