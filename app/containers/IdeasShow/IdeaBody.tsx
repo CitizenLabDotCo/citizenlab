@@ -11,11 +11,10 @@ interface Props {
   ideaBody: string;
   locale?: Locale;
   translateButtonClicked?: boolean;
-  onTranslationLoaded?: () => void;
 }
 
 const IdeaBody = memo<Props>((props: Props) => {
-  const { ideaId, ideaBody, locale, translateButtonClicked, onTranslationLoaded } = props;
+  const { ideaId, ideaBody, locale, translateButtonClicked } = props;
 
   return (
     <Fragment name={`ideas/${ideaId}/body`}>
@@ -24,7 +23,6 @@ const IdeaBody = memo<Props>((props: Props) => {
           <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={ideaId}>
             {translation => {
               if (!isNilOrError(translation)) {
-                onTranslationLoaded && onTranslationLoaded();
                 return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }} />;
               }
 

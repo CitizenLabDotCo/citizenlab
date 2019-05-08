@@ -67,20 +67,18 @@ interface Props {
   ideaTitle: string;
   locale?: Locale;
   translateButtonClicked?: boolean;
-  onTranslationLoaded?: () => void;
 }
 
 const IdeaHeader = memo<Props>((props: Props) => {
-  const { ideaId, statusId, ideaTitle, locale, translateButtonClicked, onTranslationLoaded } = props;
+  const { ideaId, statusId, ideaTitle, locale, translateButtonClicked } = props;
 
   return (
     <HeaderWrapper>
       <Header>
-        {locale && onTranslationLoaded && translateButtonClicked ?
+        {locale && translateButtonClicked ?
           <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={ideaId}>
             {translation => {
               if (!isNilOrError(translation)) {
-                onTranslationLoaded();
                 return <IdeaTitle>{translation.attributes.translation}</IdeaTitle>;
               }
 

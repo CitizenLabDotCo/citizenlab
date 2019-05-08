@@ -1,70 +1,48 @@
 import React from 'react';
-import { Locale } from 'typings';
-import { GetIdeaChildProps } from 'resources/GetIdea';
-import { isNilOrError } from 'utils/helperUtils';
 
+// components
 import Button from 'components/UI/Button';
 
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-import { colors } from 'utils/styleUtils';
-import { lighten } from 'polished';
+// styles
+import { colors, fontSizes } from 'utils/styleUtils';
 
 interface Props {
-  locale: Locale;
-  idea: GetIdeaChildProps;
   translateButtonClicked: boolean;
-  translationsLoading: boolean;
-  translateIdea: () => void;
-  backToOriginalContent: () => void;
+  onClick: () => void;
   className?: string;
 }
 
 const TranslateButton = (props: Props) => {
   const {
-    locale,
-    idea,
     translateButtonClicked,
-    translationsLoading,
-    translateIdea,
-    backToOriginalContent,
-    className
-   } = props;
+    className,
+    onClick
+  } = props;
 
-  const showTranslateButton = !isNilOrError(idea) && !isNilOrError(locale)
-    && !idea.attributes.title_multiloc[locale];
-
-  if (showTranslateButton) {
-    if (!translateButtonClicked) {
-      return (
-        <Button
-          style="secondary-outlined"
-          onClick={translateIdea}
-          processing={translationsLoading}
-          spinnerColor={colors.label}
-          borderColor={lighten(.4, colors.label)}
-          className={className}
-        >
-          <FormattedMessage {...messages.translateIdea} />
-        </Button>
-      );
-    } else {
-      return (
-        <Button
-          style="secondary-outlined"
-          onClick={backToOriginalContent}
-          processing={translationsLoading}
-          spinnerColor={colors.label}
-          borderColor={lighten(.4, colors.label)}
-          className={className}
-        >
-          <FormattedMessage {...messages.backToOriginalContent} />
-        </Button>
-      );
-    }
-  }
-  return null;
+  return (
+    <Button
+      style="secondary-outlined"
+      onClick={onClick}
+      spinnerColor={colors.label}
+      className={className}
+      fontSize={`${fontSizes.small}px`}
+      padding="5px 10px"
+      fontWeight="600"
+      icon="translate"
+      borderColor={colors.separation}
+      width="fit-content"
+    >
+      {translateButtonClicked ?
+        <FormattedMessage {...messages.seeOriginal} />
+        :
+        <FormattedMessage {...messages.seeTranslation} />
+      }
+    </Button>
+  );
 };
 
 export default TranslateButton;
