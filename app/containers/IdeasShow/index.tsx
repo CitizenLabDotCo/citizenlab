@@ -738,6 +738,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   ideaId={ideaId}
                   authorId={authorId}
                   ideaCreatedAt={createdAt}
+                  showLabel={true}
                 />
 
                 <FeatureFlag name="machine_translations">

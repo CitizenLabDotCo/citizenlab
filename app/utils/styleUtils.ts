@@ -12,7 +12,7 @@ export const viewportWidths = {
   largeTablet: 1023
 };
 
-export const ideaPageContentMaxWidth = '1150px';
+export const ideaPageContentMaxWidth = '1210px';
 
 export const media = {
   smallPhone: (style: any, ...args) => css`

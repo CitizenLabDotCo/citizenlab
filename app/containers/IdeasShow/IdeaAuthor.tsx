@@ -7,9 +7,11 @@ import UserName from 'components/UI/UserName';
 import Activities from './Activities/Activities';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import styled from 'styled-components';
-import { fontSizes, media, colors } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 import { FormattedRelative } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -24,19 +26,15 @@ const AuthorMeta = styled.div`
 `;
 
 const AuthorNameWrapper = styled.div`
-  color: ${colors.label};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 20px;
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.small}px;
-    line-height: 18px;
-  `}
+  font-weight: 300;
+  line-height: normal;
 `;
 
-const AuthorName = styled(Link)`
+const UserNameLink = styled(Link)`
   color: ${({ theme }) => theme.colorText};
+  font-weight: 500;
   text-decoration: none;
   cursor: pointer;
 
@@ -52,16 +50,13 @@ const TimeAgo = styled.div`
   line-height: 17px;
   font-weight: 300;
   margin-top: 2px;
-
-  ${media.smallerThanMaxTablet`
-    margin-top: 0px;
-  `}
 `;
 
 interface InputProps {
   authorId: string | null;
   ideaCreatedAt: string;
   ideaId: string;
+  showLabel?: boolean;
   className?: string;
 }
 
@@ -71,8 +66,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author, className }) => {
-
+const IdeaAuthor = memo<Props>(({ ideaId, showLabel, ideaCreatedAt, authorId, author, className }) => {
   const goToUserProfile = () => {
     if (!isNilOrError(author)) {
       clHistory.push(`/profile/${author.attributes.slug}`);
@@ -80,6 +74,18 @@ const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author, class
   };
 
   const noop = () => {};
+
+  const showAuthorNameLabel = (showLabel || false);
+
+  const userName = !isNilOrError(author) ? (
+    <UserNameLink to={`/profile/${author.attributes.slug}`} className="e2e-author-link">
+      <UserName user={author} />
+    </UserNameLink>
+  ) : (
+    <UserName user={null} />
+  );
+
+  console.log(userName);
 
   return (
     <Container className={className}>
@@ -90,10 +96,11 @@ const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author, class
       />
       <AuthorMeta>
         <AuthorNameWrapper>
-          <AuthorName className="e2e-author-link" to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
-            <UserName user={!isNilOrError(author) ? author : null} />
-          </AuthorName>
+          {showAuthorNameLabel ? (
+            <FormattedMessage {...messages.ideaPostedBy} values={{ userName }} />
+          ) : userName}
         </AuthorNameWrapper>
+
         {ideaCreatedAt &&
           <TimeAgo>
             <FormattedRelative value={ideaCreatedAt} />
