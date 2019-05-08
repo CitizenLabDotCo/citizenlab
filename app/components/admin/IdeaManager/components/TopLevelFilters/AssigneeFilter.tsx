@@ -14,6 +14,8 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../tracks';
 
 interface DataProps {
   prospectAssignees: GetUsersChildProps;
@@ -21,9 +23,9 @@ interface DataProps {
 }
 
 interface InputProps {
-  assignee: string;
   handleAssigneeFilterChange: (value: string) => void;
   projectId: string | undefined;
+  assignee: string | undefined;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -45,14 +47,18 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { prospectAssignees, authUser, intl: { formatMessage } } = props;
+    const { prospectAssignees, authUser, intl: { formatMessage }, handleAssigneeFilterChange } = props;
     const { prevPropsProspectAssignees, prevPropsAuthUser } = state;
-    const nextState = { ...state };
+
+    if (authUser !== prevPropsAuthUser && !isNilOrError(authUser)) {
+      handleAssigneeFilterChange(authUser.id);
+    }
 
     if (prospectAssignees !== prevPropsProspectAssignees || authUser !== prevPropsAuthUser) {
+      let assigneeOptions;
 
       if (isNilOrError(prospectAssignees.usersList) || isNilOrError(authUser)) {
-        nextState.assigneeOptions = [];
+        assigneeOptions = [];
       } else {
         const assigneeOptionsWithoutCurrentUser = prospectAssignees.usersList.filter(assignee => assignee.id !== authUser.id)
           .map(assignee => ({
@@ -65,33 +71,37 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
 
         // Order of assignee filter options:
         // All ideas > Assigned to me > Unassigned > Assigned to X (other admins/mods)
-        nextState.assigneeOptions = assigneeOptionsWithoutCurrentUser;
-        nextState.assigneeOptions.unshift({ value: 'unassigned', text: formatMessage(messages.unassignedIdeas), id: 'e2e-assignee-filter-unassigned' });
-        nextState.assigneeOptions.unshift({ value: authUser.id, text: formatMessage(messages.assignedToMe), id: 'e2e-assignee-filter-assigned-to-user' });
-        nextState.assigneeOptions.unshift({ value: 'all', text: formatMessage(messages.anyAssignment), id: 'e2e-assignee-filter-all-ideas' });
+        assigneeOptions = assigneeOptionsWithoutCurrentUser;
+        assigneeOptions.unshift({ value: 'unassigned', text: formatMessage(messages.unassignedIdeas), id: 'e2e-assignee-filter-unassigned' });
+        assigneeOptions.unshift({ value: authUser.id, text: formatMessage(messages.assignedToMe), id: 'e2e-assignee-filter-assigned-to-user' });
+        assigneeOptions.unshift({ value: 'all', text: formatMessage(messages.anyAssignment), id: 'e2e-assignee-filter-all-ideas' });
       }
 
-      nextState.prevPropsProspectAssignees = prospectAssignees;
-      nextState.prevPropsAuthUser = authUser;
+      return { assigneeOptions, prevPropsAuthUser: authUser, prevPropsProspectAssignees: prospectAssignees };
     }
 
-    return nextState;
+    return null;
   }
 
   onAssigneeChange = (_event, assigneeOption) => {
-    this.props.handleAssigneeFilterChange(assigneeOption.value);
+    const realFiterParam = assigneeOption.value === 'all' ? undefined : assigneeOption.value;
+    trackEventByName(tracks.assigneeFilterUsed, {
+      assignee: realFiterParam,
+      adminAtWork: this.props.authUser && this.props.authUser.id
+    });
+    this.props.handleAssigneeFilterChange(realFiterParam);
   }
 
   render() {
-    const { assignee } = this.props;
     const { assigneeOptions } = this.state;
+    const { assignee } = this.props;
 
     return (
       <Dropdown
         id="e2e-idea-select-assignee-filter"
         options={assigneeOptions}
         onChange={this.onAssigneeChange}
-        value={assignee}
+        value={assignee || 'all'}
         search
         selection
       />

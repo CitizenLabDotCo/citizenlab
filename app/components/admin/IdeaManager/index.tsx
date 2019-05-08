@@ -6,7 +6,7 @@ import { media } from 'utils/styleUtils';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { isNilOrError, isAdminPage } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
@@ -36,10 +36,6 @@ import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;
@@ -152,8 +148,6 @@ interface State {
   activeFilterMenu: TFilterMenu | null;
   visibleFilterMenus: string[];
   contextRef: any;
-  assignee: string;
-  feedbackNeededFilterActive: boolean;
   searchTerm: string | undefined;
 }
 
@@ -167,8 +161,6 @@ class IdeaManager extends React.PureComponent<Props, State> {
       visibleFilterMenus: [],
       activeFilterMenu: null,
       contextRef: null,
-      assignee: !isNilOrError(props.authUser) ? props.authUser.id : '',
-      feedbackNeededFilterActive: false,
       searchTerm: undefined
     };
     this.globalState = globalState.init('AdminFullWidth');
@@ -176,11 +168,6 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.globalState.set({ enabled: true });
-
-    if (this.props.project && isFunction(this.props.ideas.onChangeProjects)) {
-      const projectIds = [this.props.project.id];
-      this.props.ideas.onChangeProjects(projectIds);
-    }
 
     this.setVisibleFilterMenus(this.props.project);
   }
@@ -190,14 +177,6 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { authUser } = this.props;
-    const prevAuthUser = prevProps.authUser;
-    if (isNilOrError(prevAuthUser) && !isNilOrError(authUser) && !this.state.assignee) {
-      this.props.ideas.onChangeAssignee(authUser.id);
-      console.log('changes assignee');
-      this.setState({ assignee: authUser.id });
-    }
-
     const oldProjectId = get(prevProps.project, 'id', null);
     const newProjectId = get(this.props.project, 'id', null);
 
@@ -258,42 +237,6 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.setState({ selectedIdeas: {} });
   }
 
-  handleAssigneeFilterChange = (assignee: string) => {
-    const { authUser, tenant } = this.props;
-    const adminAtWorkId = authUser && authUser.id;
-    const tenantId = !isNilOrError(tenant) && tenant.id;
-    this.props.ideas.onChangeAssignee(assignee !== 'all' ? assignee : undefined);
-    this.setState({ assignee });
-
-    // analytics
-    trackEventByName(tracks.assigneeFilterUsed, {
-      assignee,
-      tenant: tenantId,
-      adminAtWork: adminAtWorkId
-    });
-  }
-
-  handleToggleFeedbackNeededFilter = () => {
-    const { feedbackNeededFilterActive } = this.state;
-
-    // If toggle being turned ON, unselect all ideas
-    // feedbackNeededFilterActive should be false at this stage and will be changed to true later in this function
-    !feedbackNeededFilterActive && this.handleChangeIdeaSelection({});
-    this.props.ideas.onChangeFeedbackFilter(!feedbackNeededFilterActive);
-
-    this.setState({ feedbackNeededFilterActive: !feedbackNeededFilterActive });
-  }
-
-  handleSeeAllIdeas = () => {
-    this.setState({ feedbackNeededFilterActive: false, assignee: 'all' });
-    // If we're in admin/projects, we don't want to reset the project
-    if (isAdminPage(location.pathname, 'projects')) {
-      this.props.ideas.onResetParams(['projects']);
-    } else {
-      this.props.ideas.onResetParams();
-    }
-  }
-
   onChangeProjects = (projectIds: string[] | undefined) => {
     const { project, projects, ideas } = this.props;
     const { onChangeProjects } = ideas;
@@ -311,11 +254,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const { searchTerm } = this.state;
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
     const { ideasList, onChangePhase, onChangeTopics, onChangeIdeaStatus } = ideas;
-    const selectedTopics = ideas.queryParameters.topics;
-    const selectedPhase = ideas.queryParameters.phase;
-    const selectedProject = isArray(ideas.queryParameters.projects) ? ideas.queryParameters.projects[0] : undefined;
-    const selectedIdeaStatus = ideas.queryParameters.idea_status;
-    const { selectedIdeas, activeFilterMenu, visibleFilterMenus, assignee, feedbackNeededFilterActive } = this.state;
+    const selectedTopics = ideas.topics;
+    const selectedPhase = ideas.phase;
+    const selectedProject = isArray(ideas.projects) && ideas.projects.length === 1 ? ideas.projects[0] : undefined;
+    const selectedIdeaStatus = ideas.idea_status;
+    const { selectedIdeas, activeFilterMenu, visibleFilterMenus } = this.state;
     const selectedIdeaIds = keys(this.state.selectedIdeas);
     const showInfoSidebar = this.isAnyIdeaSelected();
     const multipleIdeasSelected = this.areMultipleIdeasSelected();
@@ -348,18 +291,18 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
         <TopActionBar>
           <AssigneeFilter
+            assignee={ideas.assignee}
             projectId={!isNilOrError(project) ? project.id : undefined}
-            assignee={assignee}
-            handleAssigneeFilterChange={this.handleAssigneeFilterChange}
+            handleAssigneeFilterChange={ideas.onChangeAssignee}
           />
           <FeedbackToggle
-            value={feedbackNeededFilterActive}
-            onChange={this.handleToggleFeedbackNeededFilter}
+            value={ideas.feedback_needed || false}
+            onChange={ideas.onChangeFeedbackFilter}
             project={selectedProject}
             phase={selectedPhase}
             topics={selectedTopics}
             ideaStatus={selectedIdeaStatus}
-            assignee={assignee}
+            assignee={ideas.assignee}
             searchTerm={searchTerm}
           />
           <StyledExportMenu
@@ -377,13 +320,13 @@ class IdeaManager extends React.PureComponent<Props, State> {
           </LeftColumn>
           <MiddleColumnTop>
             <IdeasCount
-              feedbackNeeded={feedbackNeededFilterActive}
+              feedbackNeeded={ideas.feedback_needed || false}
               project={selectedProject}
               phase={selectedPhase}
               topics={selectedTopics}
               ideaStatus={selectedIdeaStatus}
               searchTerm={searchTerm}
-              assignee={assignee}
+              assignee={ideas.assignee}
             />
             <StyledInput icon="search" onChange={this.handleSearchChange}/>
           </MiddleColumnTop>
@@ -433,7 +376,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
               ideaCurrentPageNumber={ideas.currentPage}
               ideaLastPageNumber={ideas.lastPage}
               onIdeaChangePage={ideas.onChangePage}
-              handleSeeAllIdeas={this.handleSeeAllIdeas}
+              handleSeeAllIdeas={this.props.ideas.onResetParams}
             />
           </MiddleColumn>
           <CSSTransition
