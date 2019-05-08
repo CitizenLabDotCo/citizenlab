@@ -236,7 +236,7 @@ export default defineMessages({
   },
   top10activeUsersDescription: {
     id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
-    defaultMessage: "A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote."
+    defaultMessage: 'A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote.'
   },
   mostActiveUsers: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
@@ -261,5 +261,17 @@ export default defineMessages({
   mapHelperText: {
     id: 'app.containers.AdminPage.DashboardPage.mapHelperText',
     defaultMessage: 'This map shows ideas at locations that are automatically detected from the idea text. Some locations can be inaccurate. Ideas for which no locations were found are not shown.',
+  },
+  startLoadingMessage: {
+    id: 'app.containers.AdminPage.DashboardPage.startLoadingMessage',
+    defaultMessage: 'Currently crunching all your data to spot locations. Bear with me, this might take some time.',
+  },
+  thenLoadingMessage: {
+    id: 'app.containers.AdminPage.DashboardPage.thenLoadingMessage',
+    defaultMessage: 'Fun Fact: it will probably be way faster the next time you come here !',
+  },
+  lastLoadingMessage: {
+    id: 'app.containers.AdminPage.DashboardPage.lastLoadingMessage',
+    defaultMessage: 'It should be almost ready, hang on !',
   },
 });
