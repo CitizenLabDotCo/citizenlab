@@ -884,9 +884,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                       />
                     </SharingWrapper>
                   </MetaButtons>
-                  {/* <FeatureFlag name="similar_ideas"> */}
+                  <FeatureFlag name="similar_ideas">
                     <SimilarIdeas ideaId={ideaId} />
-                  {/* </FeatureFlag> */}
+                  </FeatureFlag>
                 </MetaContent>
               </RightColumnDesktop>
             </Content>
