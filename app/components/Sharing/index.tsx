@@ -14,7 +14,7 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
@@ -32,7 +32,6 @@ const StyledIcon = styled(Icon)`
   width: 20px;
   height: 20px;
   fill: #fff;
-  margin-right: 12px;
 `;
 
 const Text = styled.div`
@@ -48,22 +47,47 @@ const Text = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const Title = styled.h3`
+  font-size: ${fontSizes.large}px;
+`;
+
+const ShareIcon = styled(Icon)`
+  margin-right: 14px;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+
+  ${media.largePhone`
+    flex-direction: column;
+  `}
 
   .sharingButton {
-    width: 100%;
-    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
+    flex: 1;
     padding: 10px 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
     transition: all 100ms ease-out;
+    margin-right: 5px;
 
     &.last {
-      margin-bottom: 0px;
+      margin-right: 0px;
     }
+
+    ${media.largePhone`
+      &:nth-child(odd) {
+        margin-right: 5px;
+      }
+
+      &:nth-child(even) {
+        margin-right: 0;
+      }
+    `}
 
     &.twitter {
       background: ${colors.twitter};
@@ -109,6 +133,17 @@ const Container = styled.div`
       }
     }
   }
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex: 1;
+
+  ${media.largePhone`
+    &:first-of-type {
+      margin-bottom: 5px;
+    }
+  `}
 `;
 
 interface ITracks {
@@ -172,17 +207,17 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       emailSubject,
       emailBody,
       className,
-      intl: { formatMessage },
+      // intl: { formatMessage },
       location
     } = this.props;
 
     if (!isNilOrError(tenant)) {
       const facebookSettings = (tenant && tenant.attributes.settings.facebook_login ? tenant.attributes.settings.facebook_login : null);
       const facebookAppId = (facebookSettings ? facebookSettings.app_id : null);
-      const facebookButtonText = formatMessage(messages.shareOnFacebook);
-      const messengerButtonText = formatMessage(messages.shareViaMessenger);
-      const twitterButtonText = formatMessage(messages.shareOnTwitter);
-      const emailButtonText = formatMessage(messages.shareByEmail);
+      // const facebookButtonText = formatMessage(messages.shareOnFacebook);
+      // const messengerButtonText = formatMessage(messages.shareViaMessenger);
+      // const twitterButtonText = formatMessage(messages.shareOnTwitter);
+      // const emailButtonText = formatMessage(messages.shareByEmail);
       let trackFbShare;
       let trackTwitterShare;
       let trackEmailShare;
@@ -209,7 +244,6 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           onClick={trackFbShare}
         >
           <StyledIcon name="facebook" />
-          <Text>{facebookButtonText}</Text>
         </FacebookButton>
       ) : null);
 
@@ -218,9 +252,9 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           className="sharingButton messenger"
           href={`fb-messenger://share/?link=${encodeURIComponent(this.buildUrl('messenger'))}&app_id=${facebookAppId}`}
           onClick={trackMessengerShare}
+          role="button"
         >
           <StyledIcon name="messenger" />
-          <Text>{messengerButtonText}</Text>
         </a>
       ) : null);
 
@@ -233,7 +267,6 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           onClick={trackTwitterShare}
         >
           <StyledIcon name="twitter" />
-          <Text>{twitterButtonText}</Text>
         </TwitterButton>
       );
 
@@ -242,18 +275,28 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           className="sharingButton last email"
           href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
           onClick={trackEmailShare}
+          role="button"
         >
           <StyledIcon name="email" />
-          <Text>{emailButtonText}</Text>
         </a>
       ) : null);
 
       return (
         <Container className={className}>
-          {facebook}
-          {messenger}
-          {twitter}
-          {email}
+          <Title>
+            <ShareIcon name="share" />
+            <FormattedMessage {...messages.shareThisInitiative} />
+          </Title>
+          <Buttons>
+            <Row>
+              {facebook}
+              {messenger}
+            </Row>
+            <Row>
+              {twitter}
+              {email}
+            </Row>
+          </Buttons>
         </Container>
       );
     }

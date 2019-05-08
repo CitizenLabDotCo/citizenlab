@@ -19,4 +19,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.shareByEmail',
     defaultMessage: 'Share by email',
   },
+  shareThisInitiative: {
+    id: 'app.containers.IdeasShow.shareThisInitiative',
+    defaultMessage: 'Share this initiative',
+  }
 });
