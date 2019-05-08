@@ -370,4 +370,8 @@ export default defineMessages({
     id: 'app.components.IdeasShow.mostUpvoted',
     defaultMessage: 'Most voted',
   },
+  ideaPostedBy: {
+    id: 'app.components.IdeasShow.ideaPostedBy',
+    defaultMessage: 'Idea posted by {userName}',
+  }
 });

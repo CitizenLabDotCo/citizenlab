@@ -19,7 +19,7 @@ const IdeaBody = memo<Props>((props: Props) => {
 
   return (
     <Fragment name={`ideas/${ideaId}/body`}>
-      <QuillEditedContent>
+      <QuillEditedContent fontSize="large" fontWeight={300}>
         {(translateButtonClicked && locale) ?
           <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={ideaId}>
             {translation => {
