@@ -89,7 +89,7 @@ const IdeaAuthor = memo<Props>(({ ideaId, showLabel, ideaCreatedAt, authorId, au
     <Container className={className}>
       <Avatar
         userId={authorId}
-        size="39px"
+        size="36px"
         onClick={authorId ? goToUserProfile : noop}
       />
       <AuthorMeta>

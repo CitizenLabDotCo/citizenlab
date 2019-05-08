@@ -15,21 +15,17 @@ const HeaderWrapper = styled.div`
 `;
 
 const Header = styled.div`
-  margin-bottom: 45px;
+  margin-bottom: 28px;
   display: flex;
   flex-direction: column;
-
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 25px;
-  `}
 `;
 
 const IdeaTitle = styled.h1`
   width: 100%;
-  color: #444;
-  font-size: ${fontSizes.xxxxl}px;
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.xxxl}px;
   font-weight: 500;
-  line-height: 38px;
+  line-height: 40px;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
