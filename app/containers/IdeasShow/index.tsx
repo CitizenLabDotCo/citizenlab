@@ -798,16 +798,16 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </AssignBudgetControlMobile>
                 }
 
+                <StyledOfficialFeedback
+                  ideaId={ideaId}
+                />
+
                 <SharingMobile
                   url={ideaUrl}
                   twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                   emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
                   emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
                   utmParams={utmParams}
-                />
-
-                <StyledOfficialFeedback
-                  ideaId={ideaId}
                 />
               </LeftColumn>
 

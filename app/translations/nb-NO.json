@@ -1136,6 +1136,7 @@
   "app.containers.IdeasShow.shareCTA": "Del denne idéen",
   "app.containers.IdeasShow.shareOnFacebook": "Del på Facebook",
   "app.containers.IdeasShow.shareOnTwitter": "Del på Twitter",
+  "app.containers.IdeasShow.shareThisInitiative": "",
   "app.containers.IdeasShow.shareViaMessenger": "Del via Messenger",
   "app.containers.IdeasShow.showMoreActions": "Show more actions",
   "app.containers.IdeasShow.signInLinkText": "logg inn",

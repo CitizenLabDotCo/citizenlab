@@ -14,7 +14,7 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
@@ -32,38 +32,55 @@ const StyledIcon = styled(Icon)`
   width: 20px;
   height: 20px;
   fill: #fff;
-  margin-right: 12px;
-`;
-
-const Text = styled.div`
-  max-width: 200px;
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
-  text-align: left;
-  font-weight: 400;
-  transition: all 100ms ease-out;
-  white-space: nowrap;
 `;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const Title = styled.h3`
+  font-size: ${fontSizes.large}px;
+`;
+
+const ShareIcon = styled(Icon)`
+  margin-right: 14px;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 
   .sharingButton {
-    width: 100%;
-    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
+    flex: 1;
     padding: 10px 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
     transition: all 100ms ease-out;
+    margin-right: 5px;
 
     &.last {
-      margin-bottom: 0px;
+      margin-right: 0px;
     }
+
+    ${media.largePhone`
+      flex-basis: calc(50% - 2.5px);
+
+      &:nth-child(odd) {
+        margin-right: 5px;
+      }
+
+      &:nth-child(-n+2) {
+        margin-bottom: 5px;
+      }
+
+      &:nth-child(even) {
+        margin-right: 0;
+      }
+    `}
 
     &.twitter {
       background: ${colors.twitter};
@@ -207,9 +224,9 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           className="sharingButton facebook first"
           sharer={true}
           onClick={trackFbShare}
+          aria-label={facebookButtonText}
         >
           <StyledIcon name="facebook" />
-          <Text>{facebookButtonText}</Text>
         </FacebookButton>
       ) : null);
 
@@ -218,9 +235,10 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           className="sharingButton messenger"
           href={`fb-messenger://share/?link=${encodeURIComponent(this.buildUrl('messenger'))}&app_id=${facebookAppId}`}
           onClick={trackMessengerShare}
+          role="button"
+          aria-label={messengerButtonText}
         >
           <StyledIcon name="messenger" />
-          <Text>{messengerButtonText}</Text>
         </a>
       ) : null);
 
@@ -231,9 +249,9 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           className="sharingButton twitter"
           sharer={true}
           onClick={trackTwitterShare}
+          aria-label={twitterButtonText}
         >
           <StyledIcon name="twitter" />
-          <Text>{twitterButtonText}</Text>
         </TwitterButton>
       );
 
@@ -242,18 +260,25 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           className="sharingButton last email"
           href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
           onClick={trackEmailShare}
+          role="button"
+          aria-label={emailButtonText}
         >
           <StyledIcon name="email" />
-          <Text>{emailButtonText}</Text>
         </a>
       ) : null);
 
       return (
         <Container className={className}>
-          {facebook}
-          {messenger}
-          {twitter}
-          {email}
+          <Title>
+            <ShareIcon name="share" />
+            <FormattedMessage {...messages.shareThisInitiative} />
+          </Title>
+          <Buttons>
+            {facebook}
+            {messenger}
+            {twitter}
+            {email}
+          </Buttons>
         </Container>
       );
     }
