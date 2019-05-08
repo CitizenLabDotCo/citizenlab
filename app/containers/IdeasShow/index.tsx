@@ -47,10 +47,12 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // services
 import { updateIdea } from 'services/ideas';
 import { authUserStream } from 'services/auth';
+import { ITopicData } from 'services/topics';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -65,7 +67,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes, ideaPageContentMaxWidth } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { darken, transparentize } from 'polished';
 
 const loadingSpinnerFadeInDuration = 300;
 const loadingSpinnerFadeInEasing = 'ease-out';
@@ -148,7 +150,7 @@ const IdeaContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  padding-top: 60px;
+  padding-top: 80px;
   padding-left: 30px;
   padding-right: 30px;
   position: relative;
@@ -161,6 +163,27 @@ const IdeaContainer = styled.div`
     padding-left: 15px;
     padding-right: 15px;
   `}
+`;
+
+const Topics = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding-right: 485px;
+  margin-bottom: 25px;
+
+  ${media.smallerThanMaxTablet`
+    padding-right: 0px;
+  `}
+`;
+
+const Topic = styled.div`
+  color: ${({ theme }) => theme.colorSecondary};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  padding: 6px 14px;
+  margin-right: 10px;
+  background: ${({ theme }) => transparentize(0.92, theme.colorSecondary)};
+  border-radius: 3;
 `;
 
 const Content = styled.div`
@@ -426,6 +449,7 @@ interface DataProps {
   ideaImages: GetIdeaImagesChildProps;
   ideaFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
+  topics: GetTopicsChildProps;
 }
 
 interface InputProps {
@@ -627,6 +651,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       localize,
       ideaImages,
       authUser,
+      topics,
       className
     } = this.props;
     const {
@@ -667,9 +692,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         source: 'share_idea',
         campaign: 'share_content'
       };
-      const showTranslateButton = !isNilOrError(idea) &&
-                              !isNilOrError(locale) &&
-                              !idea.attributes.title_multiloc[locale];
+      const showTranslateButton = (
+        !isNilOrError(idea) &&
+        !isNilOrError(locale) &&
+        !idea.attributes.title_multiloc[locale]
+      );
 
       content = (
         <>
@@ -680,6 +707,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             onTranslateIdea={this.onTranslateIdea}
           />
           <IdeaContainer id="e2e-idea-show">
+            {!isNilOrError(topics) && topics.length > 0 &&
+              <Topics>
+                {topics.map((topic: ITopicData) => <Topic key={topic.id}>{localize(topic.attributes.title_multiloc)}</Topic>)}
+              </Topics>
+            }
+
             <Content>
               <LeftColumn>
                 {/* <FeatureFlag name="machine_translations"> */}
@@ -720,6 +753,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   ideaId={ideaId}
                   authorId={authorId}
                   ideaCreatedAt={createdAt}
+                  showLabel={true}
                 />
 
                 <IdeaBody
@@ -918,7 +952,16 @@ const Data = adopt<DataProps, InputProps>({
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
-  phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>
+  phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>,
+  topics: ({ idea, render }) => {
+    let topicIds: string[] = [];
+
+    if (!isNilOrError(idea) && idea.relationships.topics.data && idea.relationships.topics.data.length > 0) {
+      topicIds = idea.relationships.topics.data.map(item => item.id);
+    }
+
+    return <GetTopics ids={topicIds}>{render}</GetTopics>;
+  }
 });
 
 export default (inputProps: InputProps) => (
