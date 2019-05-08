@@ -1,50 +1,65 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { isEmpty } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
-import GetSimilarIdeas, { GetSimilarIdeasChildProps } from 'resources/GetSimilarIdeas';
-
+// styles
 import { colors, fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
 
-import T from 'components/T';
+// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+// resources
+import GetSimilarIdeas, { GetSimilarIdeasChildProps } from 'resources/GetSimilarIdeas';
+
+// components
+import T from 'components/T';
+import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 
 // utils
+import { isEmpty } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
+
+// analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-const Container = styled.aside`
-  margin-top: 40px;
+const Container = styled.aside``;
+
+const Title = styled.h3`
+  display: flex;
+  align-items: center;
+  font-size: ${fontSizes.large}px;
+  color: ${({ theme }) => theme.colorText};
+  margin-bottom: 20px;
 `;
 
-const Title = styled.h4`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin: 0 0 15px 0;
-  padding: 0;
+const SimilarIdeasIcon = styled(Icon)`
+  margin-right: 10px;
 `;
 
-const Table = styled.div``;
+const IdeaList = styled.ul`
+  background-color: ${colors.background};
+  padding: 25px;
+  margin: 0;
+`;
 
-const Row = styled.div`
+const IdeaListItem = styled.li`
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
   color: ${colors.label};
   line-height: 1.5em;
+  margin-left: 25px;
+  font-size: ${fontSizes.small}px;
 `;
 
 const IdeaLink = styled(Link)`
   color: ${colors.label};
-  font-weight: 300;
   text-decoration: none;
 
   &:hover {
-    color: ${colors.clBlueDark};
+    color: ${darken(0.2, colors.label)};
     text-decoration: underline;
   }
 `;
@@ -71,19 +86,22 @@ class SimilarIdeas extends React.Component<Props> {
 
     return (
       <Container>
-        <Title><FormattedMessage {...messages.similarIdeas} /></Title>
-        <Table>
+        <Title>
+          <SimilarIdeasIcon name="similarIdeas" />
+          <FormattedMessage {...messages.similarIdeas} />
+        </Title>
+        <IdeaList>
           {ideas.map((idea, index) => (
-            <Row key={idea.id}>
+            <IdeaListItem key={idea.id}>
               <IdeaLink
                 to={`/ideas/${idea.attributes.slug}`}
                 onClick={this.onClickIdeaLink(index)}
               >
                 <T value={idea.attributes.title_multiloc} />
               </IdeaLink>
-            </Row>
+            </IdeaListItem>
           ))}
-        </Table>
+        </IdeaList>
       </Container>
     );
   }
