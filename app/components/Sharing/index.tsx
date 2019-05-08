@@ -34,16 +34,6 @@ const StyledIcon = styled(Icon)`
   fill: #fff;
 `;
 
-const Text = styled.div`
-  max-width: 200px;
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
-  text-align: left;
-  font-weight: 400;
-  transition: all 100ms ease-out;
-  white-space: nowrap;
-`;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -59,10 +49,7 @@ const ShareIcon = styled(Icon)`
 
 const Buttons = styled.div`
   display: flex;
-
-  ${media.largePhone`
-    flex-direction: column;
-  `}
+  flex-wrap: wrap;
 
   .sharingButton {
     display: flex;
@@ -80,8 +67,14 @@ const Buttons = styled.div`
     }
 
     ${media.largePhone`
+      flex-basis: calc(50% - 2.5px);
+
       &:nth-child(odd) {
         margin-right: 5px;
+      }
+
+      &:nth-child(-n+2) {
+        margin-bottom: 5px;
       }
 
       &:nth-child(even) {
@@ -288,14 +281,11 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
             <FormattedMessage {...messages.shareThisInitiative} />
           </Title>
           <Buttons>
-            <Row>
               {facebook}
               {messenger}
-            </Row>
-            <Row>
+
               {twitter}
               {email}
-            </Row>
           </Buttons>
         </Container>
       );
