@@ -326,14 +326,6 @@ export default defineMessages({
     id: 'app.components.IdeasShow.modalShareLabel',
     defaultMessage: 'Your idea was posted, share it now to reach more votes!',
   },
-  translateIdea: {
-    id: 'app.components.IdeasShow.translateIdea',
-    defaultMessage: 'Translate this idea',
-  },
-  backToOriginalContent: {
-    id: 'app.components.IdeasShow.backToOriginalContent',
-    defaultMessage: 'See original content again',
-  },
   seeTranslation: {
     id: 'app.components.IdeasShow.seeTranslation',
     defaultMessage: 'See translation',

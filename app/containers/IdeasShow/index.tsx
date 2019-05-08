@@ -16,8 +16,6 @@ import StatusBadge from 'components/StatusBadge';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
 import VoteControl from 'components/VoteControl';
 import VoteWrapper from './VoteWrapper';
@@ -26,7 +24,6 @@ import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
-import HasPermission from 'components/HasPermission';
 import IdeaHeader from './IdeaHeader';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
@@ -35,6 +32,7 @@ import OfficialFeedback from './OfficialFeedback';
 import Icon from 'components/UI/Icon';
 import IdeaBody from './IdeaBody';
 import ActionBar from './ActionBar';
+import TranslateButton from './TranslateButton';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -51,7 +49,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // services
-import { updateIdea, deleteIdea } from 'services/ideas';
+import { updateIdea } from 'services/ideas';
 import { authUserStream } from 'services/auth';
 
 // i18n
@@ -68,7 +66,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { media, colors, fontSizes, ideaPageContentMaxWidth } from 'utils/styleUtils';
 import { darken } from 'polished';
-import TranslateButton from './TranslateButton';
 
 const loadingSpinnerFadeInDuration = 300;
 const loadingSpinnerFadeInEasing = 'ease-out';
@@ -183,6 +180,16 @@ const LeftColumn = styled.div`
 
   ${media.smallerThanMaxTablet`
     padding: 0;
+  `}
+`;
+
+const StyledTranslateButton = styled(TranslateButton)`
+  display: none;
+  width: fit-content;
+  margin-bottom: 40px;
+
+  ${media.smallerThanMinTablet`
+    display: block;
   `}
 `;
 
@@ -308,10 +315,6 @@ const AddressWrapper = styled.div`
   z-index: 3;
 `;
 
-const StyledTranslateButton = styled(TranslateButton)`
-  margin-bottom: 30px;
-`;
-
 const RightColumn = styled.div`
   flex: 1;
   margin: 0;
@@ -411,10 +414,6 @@ const SharingMobile = styled(Sharing)`
   `}
 `;
 
-const MoreActionsMenuWrapper = styled.div`
-  margin-top: 40px;
-`;
-
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 85px;
 `;
@@ -453,8 +452,6 @@ interface State {
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
-  titleTranslationLoading: boolean;
-  bodyTranslationLoading: boolean;
   actionInfos: IActionInfos | null;
 }
 
@@ -475,8 +472,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
-      titleTranslationLoading: false,
-      bodyTranslationLoading: false,
       ideaBody: null,
       actionInfos: null
     };
@@ -599,27 +594,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.setState(({ showMap }) => ({ showMap: !showMap }));
   }
 
-  openSpamModal = () => {
-    this.setState({ spamModalVisible: true });
-  }
-
-  closeSpamModal = () => {
-    this.setState({ spamModalVisible: false });
-  }
-
-  editIdea = () => {
-    clHistory.push(`/ideas/edit/${this.props.ideaId}`);
-  }
-
-  deleteIdea = (ideaId) => () => {
-    const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
-
-    if (window.confirm(message)) {
-      deleteIdea(ideaId);
-      clHistory.goBack();
-    }
-  }
-
   unauthenticatedVoteClick = () => {
     clHistory.push('/sign-in');
   }
@@ -628,22 +602,19 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.setState({ ideaIdForSocialSharing: null });
   }
 
-  translateIdea = () => {
-    trackEvent(tracks.clickTranslateIdeaButton);
-    this.setState({ translateButtonClicked: true });
-  }
+  onTranslateIdea = () => {
+    this.setState(prevState => {
+      // analytics
+      if (prevState.translateButtonClicked === true) {
+        trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
+      } else if (prevState.translateButtonClicked === false) {
+        trackEvent(tracks.clickTranslateIdeaButton);
+      }
 
-  backToOriginalContent = () => {
-    trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
-    this.setState({ translateButtonClicked: false });
-  }
-
-  onTitleTranslationLoaded = () => {
-    this.setState({ titleTranslationLoading: false });
-  }
-
-  onBodyTranslationLoaded = () => {
-    this.setState({ bodyTranslationLoading: false });
+      return ({
+        translateButtonClicked: !prevState.translateButtonClicked
+      });
+    });
   }
 
   render() {
@@ -664,9 +635,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       showMap,
       ideaIdForSocialSharing,
       translateButtonClicked,
-      titleTranslationLoading,
-      bodyTranslationLoading,
-      spamModalVisible,
       actionInfos,
     } = this.state;
     const { formatMessage } = this.props.intl;
@@ -699,21 +667,35 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         source: 'share_idea',
         campaign: 'share_content'
       };
+      const showTranslateButton = !isNilOrError(idea) &&
+                              !isNilOrError(locale) &&
+                              !idea.attributes.title_multiloc[locale];
 
       content = (
         <>
           <IdeaMeta ideaId={ideaId} />
-          <ActionBar />
+          <ActionBar
+            ideaId={ideaId}
+            translateButtonClicked={translateButtonClicked}
+            onTranslateIdea={this.onTranslateIdea}
+          />
           <IdeaContainer id="e2e-idea-show">
             <Content>
               <LeftColumn>
+                {/* <FeatureFlag name="machine_translations"> */}
+                  {showTranslateButton &&
+                    <StyledTranslateButton
+                      translateButtonClicked={translateButtonClicked}
+                      onClick={this.onTranslateIdea}
+                    />
+                  }
+                {/* </FeatureFlag> */}
                 <IdeaHeader
                   ideaId={ideaId}
                   statusId={statusId}
                   ideaTitle={ideaTitle}
                   locale={locale}
                   translateButtonClicked={translateButtonClicked}
-                  onTranslationLoaded={this.onTitleTranslationLoaded}
                 />
 
                 {!inModal && showVoteControl &&
@@ -741,23 +723,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   showLabel={true}
                 />
 
-                <FeatureFlag name="machine_translations">
-                  <StyledTranslateButton
-                    idea={idea}
-                    locale={locale}
-                    translateButtonClicked={translateButtonClicked}
-                    translationsLoading={titleTranslationLoading || bodyTranslationLoading}
-                    translateIdea={this.translateIdea}
-                    backToOriginalContent={this.backToOriginalContent}
-                  />
-                </FeatureFlag>
-
                 <IdeaBody
                   ideaId={ideaId}
                   locale={locale}
                   ideaBody={ideaBody}
                   translateButtonClicked={translateButtonClicked}
-                  onTranslationLoaded={this.onTitleTranslationLoaded}
                 />
 
                 {ideaLocation &&
@@ -879,39 +849,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                         utmParams={utmParams}
                       />
                     </SharingWrapper>
-
-                    {!isNilOrError(authUser) &&
-                      <MoreActionsMenuWrapper>
-                        <HasPermission item={idea} action="edit" context={idea}>
-                          <MoreActionsMenu
-                            actions={[
-                              {
-                                label: <FormattedMessage {...messages.reportAsSpam} />,
-                                handler: this.openSpamModal,
-                              },
-                              {
-                                label: <FormattedMessage {...messages.editIdea} />,
-                                handler: this.editIdea,
-                              },
-                              {
-                                label: <FormattedMessage {...messages.deleteIdea} />,
-                                handler: this.deleteIdea(ideaId),
-                              }
-                            ]}
-                            label={<FormattedMessage {...messages.moreOptions} />}
-                          />
-                          <HasPermission.No>
-                            <MoreActionsMenu
-                              actions={[{
-                                label: <FormattedMessage {...messages.reportAsSpam} />,
-                                handler: this.openSpamModal,
-                              }]}
-                              label={<FormattedMessage {...messages.moreOptions} />}
-                            />
-                          </HasPermission.No>
-                        </HasPermission>
-                      </MoreActionsMenuWrapper>
-                    }
                   </MetaButtons>
                   <FeatureFlag name="similar_ideas">
                     <SimilarIdeas ideaId={ideaId} />
@@ -922,18 +859,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           </IdeaContainer>
 
           {loaded && <IdeaFooter ideaId={ideaId} />}
-
-          <Modal
-            opened={spamModalVisible}
-            close={this.closeSpamModal}
-            label={formatMessage(messages.spamModalLabelIdea)}
-            header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
-          >
-            <SpamReportForm
-              resourceId={ideaId}
-              resourceType="ideas"
-            />
-          </Modal>
         </>
       );
     }
