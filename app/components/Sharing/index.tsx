@@ -42,6 +42,7 @@ const Container = styled.div`
 const Title = styled.h3`
   font-size: ${fontSizes.large}px;
   color: ${({ theme }) => theme.colorText};
+  margin-bottom: 20px;
 `;
 
 const ShareIcon = styled(Icon)`
