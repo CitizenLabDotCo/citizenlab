@@ -1136,6 +1136,7 @@
   "app.containers.IdeasShow.shareCTA": "Partagez cette idée",
   "app.containers.IdeasShow.shareOnFacebook": "Partager sur Facebook",
   "app.containers.IdeasShow.shareOnTwitter": "Partager sur Twitter",
+  "app.containers.IdeasShow.shareThisInitiative": "",
   "app.containers.IdeasShow.shareViaMessenger": "Partager sur Messenger",
   "app.containers.IdeasShow.showMoreActions": "Voir plus d’actions",
   "app.containers.IdeasShow.signInLinkText": "connecter",

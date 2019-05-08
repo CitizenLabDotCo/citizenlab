@@ -1136,6 +1136,7 @@
   "app.containers.IdeasShow.shareCTA": "{orgName, select, München {Teilen Sie diese Meldung mit anderen} other {Teilen Sie diese Idee}}",
   "app.containers.IdeasShow.shareOnFacebook": "Auf Facebook teilen",
   "app.containers.IdeasShow.shareOnTwitter": "Auf Twitter teilen",
+  "app.containers.IdeasShow.shareThisInitiative": "",
   "app.containers.IdeasShow.shareViaMessenger": "Teilen auf Messenger",
   "app.containers.IdeasShow.showMoreActions": "Mehr Aktionen anzeigen",
   "app.containers.IdeasShow.signInLinkText": "anmelden",
