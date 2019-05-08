@@ -128,17 +128,6 @@ const Buttons = styled.div`
   }
 `;
 
-const Row = styled.div`
-  display: flex;
-  flex: 1;
-
-  ${media.largePhone`
-    &:first-of-type {
-      margin-bottom: 5px;
-    }
-  `}
-`;
-
 interface ITracks {
   clickFbShare: () => void;
   clickFbShareInModal: () => void;
@@ -200,17 +189,17 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       emailSubject,
       emailBody,
       className,
-      // intl: { formatMessage },
+      intl: { formatMessage },
       location
     } = this.props;
 
     if (!isNilOrError(tenant)) {
       const facebookSettings = (tenant && tenant.attributes.settings.facebook_login ? tenant.attributes.settings.facebook_login : null);
       const facebookAppId = (facebookSettings ? facebookSettings.app_id : null);
-      // const facebookButtonText = formatMessage(messages.shareOnFacebook);
-      // const messengerButtonText = formatMessage(messages.shareViaMessenger);
-      // const twitterButtonText = formatMessage(messages.shareOnTwitter);
-      // const emailButtonText = formatMessage(messages.shareByEmail);
+      const facebookButtonText = formatMessage(messages.shareOnFacebook);
+      const messengerButtonText = formatMessage(messages.shareViaMessenger);
+      const twitterButtonText = formatMessage(messages.shareOnTwitter);
+      const emailButtonText = formatMessage(messages.shareByEmail);
       let trackFbShare;
       let trackTwitterShare;
       let trackEmailShare;
@@ -235,6 +224,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           className="sharingButton facebook first"
           sharer={true}
           onClick={trackFbShare}
+          aria-label={facebookButtonText}
         >
           <StyledIcon name="facebook" />
         </FacebookButton>
@@ -246,6 +236,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           href={`fb-messenger://share/?link=${encodeURIComponent(this.buildUrl('messenger'))}&app_id=${facebookAppId}`}
           onClick={trackMessengerShare}
           role="button"
+          aria-label={messengerButtonText}
         >
           <StyledIcon name="messenger" />
         </a>
@@ -258,6 +249,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           className="sharingButton twitter"
           sharer={true}
           onClick={trackTwitterShare}
+          aria-label={twitterButtonText}
         >
           <StyledIcon name="twitter" />
         </TwitterButton>
@@ -269,6 +261,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
           onClick={trackEmailShare}
           role="button"
+          aria-label={emailButtonText}
         >
           <StyledIcon name="email" />
         </a>
@@ -281,11 +274,10 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
             <FormattedMessage {...messages.shareThisInitiative} />
           </Title>
           <Buttons>
-              {facebook}
-              {messenger}
-
-              {twitter}
-              {email}
+            {facebook}
+            {messenger}
+            {twitter}
+            {email}
           </Buttons>
         </Container>
       );
