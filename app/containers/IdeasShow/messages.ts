@@ -361,5 +361,9 @@ export default defineMessages({
   noComments: {
     id: 'app.components.IdeasShow.noComments',
     defaultMessage: 'There are no comments yet.'
+  },
+  createdTimeAgo: {
+    id: 'app.components.IdeasShow.createdTimeAgo',
+    defaultMessage: 'Created {timeAgo}'
   }
 });

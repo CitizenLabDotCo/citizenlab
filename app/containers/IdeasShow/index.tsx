@@ -665,7 +665,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
     if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
       const authorId: string | null = get(idea, 'relationships.author.data.id', null);
-      const createdAt = idea.attributes.created_at;
+      const ideaCreatedAt = idea.attributes.created_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
       // If you're not an admin/mod, statusId can be null
@@ -732,7 +732,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 <StyledIdeaAuthor
                   ideaId={ideaId}
                   authorId={authorId}
-                  ideaCreatedAt={createdAt}
+                  ideaCreatedAt={ideaCreatedAt}
                   showLabel={true}
                 />
 
@@ -812,6 +812,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <IdeaContentFooter
                   ideaId={ideaId}
+                  ideaCreatedAt={ideaCreatedAt}
                   commentsCount={idea.attributes.comments_count}
                 />
 
