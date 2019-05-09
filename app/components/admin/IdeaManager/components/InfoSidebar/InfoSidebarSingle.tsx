@@ -49,7 +49,7 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IModalInfo>('adminIdeas', 'cardClick', {
+      eventEmitter.emit<IModalInfo>('adminIdeas', 'ideaCardClick', {
         type: 'idea',
         id: idea.id,
         url: `/ideas/${idea.attributes.slug}`

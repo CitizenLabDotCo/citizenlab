@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
 
 // components
 import Button from 'components/UI/Button';
@@ -16,12 +17,16 @@ import { colors } from 'utils/styleUtils';
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps, FormattedDate } from 'react-intl';
-import { adopt } from 'react-adopt';
+
+const Container = styled.div`
+  &.hasTopMargin {
+    margin-top: 60px;
+  }
+`;
 
 const FeedbackHeader = styled.div`
   color: ${colors.clRedError};
-  margin-top: 50px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
 `;
@@ -35,16 +40,15 @@ const StyledSpan = styled.span`
   font-weight: 500;
 `;
 
-const Container = styled.div`
-  margin-bottom: 100px;
-`;
-
 const LoadMoreButton = styled(Button)`
+  margin-top: 10px;
 `;
 
 interface InputProps {
   ideaId: string;
+  permission: boolean | null;
   editingAllowed: boolean | null;
+  className?: string;
 }
 
 interface DataProps {
@@ -53,38 +57,45 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-}
-
 interface State {}
 
 class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { officialFeedbacks, editingAllowed } = this.props;
+    const { officialFeedbacks, editingAllowed, permission, className } = this.props;
 
     if (officialFeedbacks) {
       const { officialFeedbacksList, querying, hasMore, loadingMore, onLoadMore } = officialFeedbacks;
 
       if (!isNilOrError(officialFeedbacksList) && officialFeedbacksList.data && officialFeedbacksList.data.length > 0) {
         const updateDate = (officialFeedbacksList.data[0].attributes.updated_at || officialFeedbacksList.data[0].attributes.created_at);
+        const formattedDate = (
+          <FormattedDate
+            value={updateDate}
+            year="numeric"
+            month="long"
+            day="numeric"
+          />
+        );
 
         return (
-          <Container>
+          <Container className={`${className} ${permission ? 'hasTopMargin' : ''}`}>
             <FeedbackHeader>
               <FeedbackTitle>
                 <FormattedMessage {...messages.officialUpdates} />
               </FeedbackTitle>
                 <FormattedMessage
                   {...messages.lastUpdate}
-                  values={{ lastUpdateDate: (<StyledSpan><FormattedDate value={updateDate} /></StyledSpan>) }}
+                  values={{ lastUpdateDate: (<StyledSpan>{formattedDate}</StyledSpan>) }}
                 />
             </FeedbackHeader>
-            {officialFeedbacksList.data.map(officialFeedbackPost => {
+
+            {officialFeedbacksList.data.map((officialFeedbackPost, index) => {
               return (
                 <OfficialFeedbackPost
                   key={officialFeedbackPost.id}
                   editingAllowed={editingAllowed}
                   officialFeedbackPost={officialFeedbackPost}
+                  last={index === officialFeedbacksList.data.length - 1}
                 />
               );
             })}

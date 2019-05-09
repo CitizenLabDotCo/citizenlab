@@ -56,9 +56,10 @@ export const __setMockAuthUser = (user: IUser) => {
   mockAuthUser = user;
 };
 
+export const authUserObservable = new BehaviorSubject(mockAuthUser);
+
 export const authUserStream = jest.fn(() => {
-  const observable = new BehaviorSubject(mockAuthUser);
   return {
-    observable
+    observable: authUserObservable
   };
 });

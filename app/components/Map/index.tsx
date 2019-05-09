@@ -163,7 +163,7 @@ class CLMap extends React.PureComponent<Props, State> {
         ];
       }
 
-      let initZoom = 10;
+      let initZoom = 15;
 
       if (!isNilOrError(tenant) && tenant.attributes.settings.maps) {
         initZoom = tenant.attributes.settings.maps.zoom_level;

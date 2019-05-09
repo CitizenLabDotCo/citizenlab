@@ -36,7 +36,7 @@ const Container = styled.div`
   ${media.smallerThanMinTablet`
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 30px;
+    margin-top: 20px;
     margin-bottom: 80px;
   `}
 `;

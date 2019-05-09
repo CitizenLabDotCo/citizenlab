@@ -235,6 +235,8 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
     }
   }
 
+  descriptionLabel = <FormattedMessage {...messages.descriptionLabel} />;
+
   render() {
     const { locale, currentTenant, loaded, submitState } = this.state;
 
@@ -288,8 +290,8 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
               <SectionField className="fullWidth">
                 <QuillMultiloc
                   id="description"
-                  inAdmin
-                  label={<FormattedMessage {...messages.descriptionLabel} />}
+                  inAdmin={true}
+                  label={this.descriptionLabel}
                   valueMultiloc={eventAttrs.description_multiloc}
                   onChangeMultiloc={this.handleDescriptionMultilocOnChange}
                 />

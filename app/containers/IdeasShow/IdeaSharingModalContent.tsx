@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -125,7 +125,7 @@ interface Tracks {
   sharingModalOpened: Function;
 }
 
-class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlProps & InjectedLocalized & Tracks, State> {
+class IdeaSharingModalContent extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & Tracks, State> {
   componentDidMount() {
     this.props.sharingModalOpened();
   }
@@ -153,7 +153,7 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
               url={ideaUrl}
               twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
               emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-              emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
+              emailBody={formatMessage(messages.emailSharingBody, { ideaTitle, ideaUrl })}
               utmParams={{
                 source: 'share_idea',
                 campaign: 'ideaflow',

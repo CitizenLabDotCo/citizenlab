@@ -38,7 +38,7 @@ const LoadableFullscreenModal = Loadable.Map({
         url={modalUrl}
         headerChild={fullscreenModalHeaderChild}
       >
-        {modalId && <IdeasShow ideaId={modalId} inModal={true}/>}
+        {modalId ? <IdeasShow ideaId={modalId} inModal={true}/> : null}
       </FullscreenModal>
     );
   }

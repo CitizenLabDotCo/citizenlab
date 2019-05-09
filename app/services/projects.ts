@@ -82,6 +82,9 @@ export interface IProjectData {
     user_basket: {
       data: IRelationship | null;
     }
+    default_assignee: {
+      data: IRelationship | null
+    }
   };
 }
 
@@ -104,6 +107,7 @@ export interface IUpdatedProjectProperties {
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
+  default_assignee_id?: string | null;
 }
 
 export interface IProject {
@@ -126,12 +130,26 @@ export function projectByIdStream(projectId: string, streamParams: IStreamParams
   return streams.get<IProject>({ apiEndpoint: `${apiEndpoint}/${projectId}`, ...streamParams });
 }
 
-export function addProject(projectData: IUpdatedProjectProperties) {
-  return streams.add<IProject>(apiEndpoint, { project: projectData });
+export async function addProject(projectData: IUpdatedProjectProperties) {
+  const response = await streams.add<IProject>(apiEndpoint, { project: projectData });
+  const projectId = response.data.id;
+  streams.fetchAllWith({
+    dataId: [projectId],
+    apiEndpoint: [`${API_PATH}/projects`]
+  });
+  return response;
 }
 
-export function updateProject(projectId, projectData: IUpdatedProjectProperties) {
-  return streams.update<IProject>(`${apiEndpoint}/${projectId}`, projectId, { project: projectData });
+export async function updateProject(projectId, projectData: IUpdatedProjectProperties) {
+  const response = await streams.update<IProject>(`${apiEndpoint}/${projectId}`, projectId, { project: projectData });
+  streams.fetchAllWith({
+    dataId: [projectId],
+    apiEndpoint: [`${API_PATH}/projects`]
+  });
+
+  // TODO: clear partial cache
+
+  return response;
 }
 
 export function reorderProject(projectId: IProjectData['id'], newOrder: number) {

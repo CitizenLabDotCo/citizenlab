@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { ConsentManagerBuilder } from '@segment/consent-manager';
 import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
+import { integrations } from 'utils/analytics';
 
 import Container from './Container';
 
 import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 export interface IDestination {
   id: string;
@@ -24,7 +26,13 @@ const initialPreferences = {
   functional: null
 };
 
-export const handleMapCustomPreferences = ({ destinations, preferences }) => {
+interface InputProps {}
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+}
+interface Props extends InputProps, DataProps {}
+
+export const mapCustomPreferences = ({ destinations, preferences }) => {
   const destinationPreferences = {};
   const customPreferences = {} as CustomPreferences;
 
@@ -50,21 +58,43 @@ export const handleMapCustomPreferences = ({ destinations, preferences }) => {
     }
   }
 
-  return { destinationPreferences, customPreferences };
+  return {
+    destinationPreferences,
+    customPreferences,
+  };
 };
 
-const ConsentManager = () => {
-  return (
-    <ConsentManagerBuilder
-      writeKey={CL_SEGMENT_API_KEY}
-      mapCustomPreferences={handleMapCustomPreferences}
-      initialPreferences={initialPreferences}
-    >
-      {(ConsentManagerProps) => (
-        <Container {...ConsentManagerProps} />
-      )}
-    </ConsentManagerBuilder>
-  );
-};
+export class ConsentManager extends PureComponent<Props> {
 
-export default ConsentManager;
+  handleMapCustomPreferences = ({ destinations, preferences }) => {
+    const { destinationPreferences, customPreferences } = mapCustomPreferences({ destinations, preferences });
+
+    // We don't want to send everything to all destinations, depending on the user role
+    const { authUser } = this.props;
+    const guardedDestinationPreferences = integrations((authUser && { data: authUser }) || null);
+
+    return {
+      customPreferences,
+      destinationPreferences: { ...destinationPreferences, ...guardedDestinationPreferences } };
+  }
+
+  render() {
+    return (
+      <ConsentManagerBuilder
+        writeKey={CL_SEGMENT_API_KEY}
+        mapCustomPreferences={this.handleMapCustomPreferences}
+        initialPreferences={initialPreferences}
+      >
+        {(ConsentManagerProps) => (
+          <Container {...ConsentManagerProps} />
+        )}
+      </ConsentManagerBuilder>
+    );
+  }
+}
+
+export default () => (
+  <GetAuthUser>
+    {(authUser) => <ConsentManager authUser={authUser} />}
+  </GetAuthUser>
+);

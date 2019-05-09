@@ -29,7 +29,6 @@ import { fontSizes, colors } from 'utils/styleUtils';
 const Container = styled.div`
   &.bannerStyle {
     height: 100%;
-
   }
 `;
 
