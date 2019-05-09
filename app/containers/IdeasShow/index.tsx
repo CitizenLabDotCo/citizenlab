@@ -297,6 +297,7 @@ const MapContainer = styled.div`
 
 const ArrowIcon = styled(Icon)`
   width: 12px;
+  height: 7px;
   transform: rotate(90deg);
   transition: all .2s linear;
 
