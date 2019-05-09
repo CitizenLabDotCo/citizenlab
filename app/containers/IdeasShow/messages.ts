@@ -365,5 +365,9 @@ export default defineMessages({
   linkToHomePage: {
     id: 'app.components.IdeasShow.linkToHomePage',
     defaultMessage: 'Link to home page'
-  }
+  },
+  upvoteComment: {
+    id: 'app.components.IdeasShow.upvoteComment',
+    defaultMessage: 'Upvote this comment'
+  },
 });
