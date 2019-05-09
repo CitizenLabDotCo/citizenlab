@@ -33,6 +33,7 @@ const Container = styled.div`
 const HomeLink = styled(Link)``;
 
 const HomeIcon = styled(Icon)`
+  width: 16px;
   height: 14px;
   fill: ${colors.label};
   margin-top: -3px;
@@ -91,7 +92,7 @@ const Breadcrumbs = memo(({ project, localize, intl }: Props & InjectedLocalized
           <HomeIcon title={intl.formatMessage(messages.linkToHomePage)} name="homeFilled" />
         </HomeLink>
         <Separator>/</Separator>
-        <ProjectLink to={`/projects/${project.attributes.slug}`}>
+        <ProjectLink id="e2e-project-link" to={`/projects/${project.attributes.slug}`}>
           {/* If we're on a small screen, we show a truncated version of the project */}
           <LinkText>{localize(project.attributes.title_multiloc)}</LinkText>
           <TruncatedLinkText>
