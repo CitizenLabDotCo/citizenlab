@@ -124,8 +124,8 @@ const Spacer = styled.div`
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 26px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   fill: ${colors.label};
   margin-right: 6px;
   margin-top: 2px;
@@ -364,7 +364,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                 <Spacer />
 
                 <CommentInfo className={`${commentingEnabled && 'enabled'}`}>
-                  <CommentIcon name="comments2" />
+                  <CommentIcon name="comments" />
                   <CommentCount className="e2e-ideacard-comment-count">
                     <span>{idea.attributes.comments_count}</span>
                   </CommentCount>

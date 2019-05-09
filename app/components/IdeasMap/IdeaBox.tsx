@@ -94,10 +94,11 @@ const CommentsCount = styled.span`
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 30px;
-  height: 21px;
+  width: 25px;
+  height: 25px;
   fill: ${colors.label};
-  margin-right: 7px;
+  margin-right: 6px;
+  margin-top: 2px;
 `;
 
 const CloseIcon = styled(Icon)`
