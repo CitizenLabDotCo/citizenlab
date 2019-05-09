@@ -297,6 +297,12 @@ const MapContainer = styled.div`
 
 const ArrowIcon = styled(Icon)`
   width: 12px;
+  transform: rotate(90deg);
+  transition: all .2s linear;
+
+  &.open {
+    transform: rotate(0deg);
+  }
 `;
 
 const MapWrapper = styled.div`
@@ -765,7 +771,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                          {ideaAdress}
                         </LocationLabel>
                       </Location>
-                      <ArrowIcon name="dropdown" />
+                      <ArrowIcon name="dropdown" className={showMap ? 'open' : ''}/>
                     </LocationButton>
                     <CSSTransition
                       classNames="map"
