@@ -175,7 +175,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
             onMouseDown={this.removeFocus}
             onClick={this.toggleMenu}
           >
-            <MoreOptionsIcon name="more-options" />
+            <MoreOptionsIcon title={this.props.label} name="more-options" />
             {this.props.label && <MoreOptionsLabel fontSize={fontSize}>{this.props.label}</MoreOptionsLabel>}
           </MoreOptions>
         </Popover>
