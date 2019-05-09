@@ -7,7 +7,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Author from 'components/Author';
-import Warning from 'components/UI/Warning';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
