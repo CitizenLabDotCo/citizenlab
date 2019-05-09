@@ -230,12 +230,6 @@ const StyledIdeaAuthor = styled(IdeaAuthor)`
   margin-bottom: 50px;
 `;
 
-const MetaButtons = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-`;
-
 const LocationLabel = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
@@ -257,7 +251,7 @@ const LocationIconWrapper = styled.div`
   width: 22px;
   height: 36px;
   margin: 0;
-  margin-right: 3px;
+  margin-right: 20px;
   padding: 0;
   border: none;
   display: flex;
@@ -273,8 +267,11 @@ const LocationIcon = styled(Icon)`
 const LocationButton = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   cursor: pointer;
-  margin-bottom: 30px;
+  width: 100%;
+  height: 100%;
+  padding: 5px 20px;
 
   &:hover {
     ${LocationLabel} {
@@ -287,14 +284,28 @@ const LocationButton = styled.div`
   }
 `;
 
+const Location = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const MapContainer = styled.div`
+  border: 1px solid ${colors.separation};
+  border-radius: 3px;
+  margin-bottom: 40px;
+`;
+
+const ArrowIcon = styled(Icon)`
+  width: 12px;
+`;
+
 const MapWrapper = styled.div`
-  border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px solid ${colors.separation};
   height: 265px;
   position: relative;
   overflow: hidden;
   z-index: 2;
-  margin-top: 20px;
+  margin: 20px 20px 0;
 
   &.map-enter {
     height: 0;
@@ -321,22 +332,7 @@ const MapWrapper = styled.div`
 
 const MapPaddingBottom = styled.div`
   width: 100%;
-  height: 30px;
-`;
-
-const AddressWrapper = styled.div`
-  color: #fff;
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  background: rgba(0, 0, 0, 0.4);
-  border-top: 1px solid ${colors.separation};
-  margin: 0;
-  padding: 10px;
-  position: absolute;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 3;
+  height: 20px;
 `;
 
 const RightColumn = styled.div`
@@ -758,15 +754,19 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   />
                 }
 
-                <IdeaBody
-                  ideaId={ideaId}
-                  locale={locale}
-                  ideaBody={ideaBody}
-                  translateButtonClicked={translateButtonClicked}
-                />
-
                 {ideaLocation &&
-                  <>
+                  <MapContainer>
+                    <LocationButton onClick={this.handleMapToggle}>
+                      <Location>
+                        <LocationIconWrapper>
+                          <LocationIcon name="position" />
+                        </LocationIconWrapper>
+                        <LocationLabel>
+                         {ideaAdress}
+                        </LocationLabel>
+                      </Location>
+                      <ArrowIcon name="dropdown" />
+                    </LocationButton>
                     <CSSTransition
                       classNames="map"
                       in={showMap}
@@ -777,12 +777,18 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     >
                       <MapWrapper innerRef={this.handleMapWrapperSetRef}>
                         <IdeaMap location={ideaLocation} id={ideaId} />
-                        {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
                       </MapWrapper>
                     </CSSTransition>
                     {showMap &&  <MapPaddingBottom />}
-                  </>
+                  </MapContainer>
                 }
+
+                <IdeaBody
+                  ideaId={ideaId}
+                  locale={locale}
+                  ideaBody={ideaBody}
+                  translateButtonClicked={translateButtonClicked}
+                />
 
                 {!isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
                   <FileAttachments files={ideaFiles} />
@@ -857,42 +863,18 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     </ControlWrapper>
                   }
 
-                  <MetaButtons>
-                    {ideaLocation && !showMap &&
-                      <LocationButton onClick={this.handleMapToggle}>
-                        <LocationIconWrapper>
-                          <LocationIcon name="position" />
-                        </LocationIconWrapper>
-                        <LocationLabel>
-                          <FormattedMessage {...messages.openMap} />
-                        </LocationLabel>
-                      </LocationButton>
-                    }
-
-                    {ideaLocation && showMap &&
-                      <LocationButton onClick={this.handleMapToggle}>
-                        <LocationIconWrapper>
-                          <LocationIcon name="close" />
-                        </LocationIconWrapper>
-                        <LocationLabel>
-                          <FormattedMessage {...messages.closeMap} />
-                        </LocationLabel>
-                      </LocationButton>
-                    }
-
-                    <SharingWrapper>
-                      <Sharing
-                        url={ideaUrl}
-                        twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
-                        emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-                        emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
-                        utmParams={utmParams}
-                      />
-                    </SharingWrapper>
-                  </MetaButtons>
-                  {/* <FeatureFlag name="similar_ideas"> */}
+                  <SharingWrapper>
+                    <Sharing
+                      url={ideaUrl}
+                      twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
+                      emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
+                      emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
+                      utmParams={utmParams}
+                    />
+                  </SharingWrapper>
+                  <FeatureFlag name="similar_ideas">
                     <SimilarIdeas ideaId={ideaId} />
-                  {/* </FeatureFlag> */}
+                  </FeatureFlag>
                 </MetaContent>
               </RightColumnDesktop>
             </Content>
