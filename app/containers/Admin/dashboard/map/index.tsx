@@ -21,6 +21,7 @@ import messages from '../messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { colors } from 'utils/styleUtils';
+import ServerError from 'components/admin/ServerError';
 
 // styles
 const SpinnerContainer = styled.div`
@@ -138,7 +139,11 @@ class Map extends PureComponent<Props & InjectedLocalized, State> {
         </SpinnerContainer>
       );
     }
-    if (isNilOrError(ideas)) return null;
+    if (isNilOrError(ideas)) {
+      return (
+        <ServerError />
+      );
+    }
     return (
       <div>
         <StyledWarning
