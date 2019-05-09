@@ -124,8 +124,8 @@ const Spacer = styled.div`
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 25px;
-  height: 25px;
+  width: 24px;
+  height: 24px;
   fill: ${colors.label};
   margin-right: 6px;
   margin-top: 2px;
