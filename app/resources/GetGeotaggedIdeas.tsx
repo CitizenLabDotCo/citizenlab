@@ -3,6 +3,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IGeotaggedIdeaData, geotaggedIdeasStream } from 'services/ideas';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   phaseId?: string;
@@ -18,10 +19,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  geotaggedIdeas: IGeotaggedIdeaData[] | undefined | null;
+  geotaggedIdeas: GetGeotaggedIdeasChildProps;
 }
 
-export type GetGeotaggedIdeasChildProps = IGeotaggedIdeaData[] | undefined| null;
+export type GetGeotaggedIdeasChildProps = IGeotaggedIdeaData[] | undefined | null;
 
 export default class GetGeotaggedIdeas extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -54,7 +55,7 @@ export default class GetGeotaggedIdeas extends React.Component<Props, State> {
         })
       ).subscribe((geotaggedIdeas) => {
         this.setState({
-          geotaggedIdeas: (geotaggedIdeas ? geotaggedIdeas.data : null),
+          geotaggedIdeas: (!isNilOrError(geotaggedIdeas) ? geotaggedIdeas.data : null),
         });
       })
     ];
