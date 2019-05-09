@@ -1,13 +1,6 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// styles
-import styled from 'styled-components';
-import { colors, media, ideaPageContentMaxWidth } from 'utils/styleUtils';
-
 // components
 import BreadCrumbs from './Breadcrumbs';
 import IdeaMoreActions from './IdeaMoreActions';
@@ -17,6 +10,13 @@ import FeatureFlag from 'components/FeatureFlag';
 // resource
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
+// styles
+import styled from 'styled-components';
+import { colors, media, ideaPageContentMaxWidth } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -35,6 +35,11 @@ const Inner = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  ${media.smallerThanMinTablet`
+    padding-left: 15px;
+    padding-right: 15px;
+  `}
 `;
 
 const Left = styled.div``;
