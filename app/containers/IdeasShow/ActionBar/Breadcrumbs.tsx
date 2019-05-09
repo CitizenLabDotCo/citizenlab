@@ -13,6 +13,9 @@ import { darken } from 'polished';
 
 // i18n
 import localize, { InjectedLocalized } from 'utils/localize';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -79,13 +82,13 @@ interface InputProps {
 
 interface Props extends DataProps, InputProps {}
 
-const Breadcrumbs = memo(({ project, localize }: Props & InjectedLocalized) => {
+const Breadcrumbs = memo(({ project, localize, intl }: Props & InjectedLocalized & InjectedIntlProps) => {
 
   if (!isNilOrError(project)) {
     return (
       <Container>
         <HomeLink to="/">
-          <HomeIcon name="homeFilled" />
+          <HomeIcon title={intl.formatMessage(messages.linkToHomePage)} name="homeFilled" />
         </HomeLink>
         <Separator>/</Separator>
         <ProjectLink to={`/projects/${project.attributes.slug}`}>
@@ -102,7 +105,7 @@ const Breadcrumbs = memo(({ project, localize }: Props & InjectedLocalized) => {
   return null;
 });
 
-const BreadcrumbsWithHOCs = localize(Breadcrumbs);
+const BreadcrumbsWithHOCs = injectIntl(localize(Breadcrumbs));
 
 const Data = adopt({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
