@@ -1,9 +1,6 @@
 // Libraries
 import React, { PureComponent } from 'react';
 
-// services
-import { deleteUser } from 'services/users';
-
 // Styles
 import styled from 'styled-components';
 
@@ -19,8 +16,8 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // utils
-import { reportError } from 'utils/loggingUtils';
-import eventEmitter from 'utils/eventEmitter';
+import LoadableModal from 'components/Loadable/Modal';
+import DeletionDialog from './DeletionDialog';
 
 const Row = styled.div`
   display: flex;
@@ -36,36 +33,30 @@ interface Props {
 }
 
 interface State {
-  processing: boolean;
-  error: boolean;
+  dialogOpened: boolean;
 }
 
 class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      processing: false,
-      error: false
+      dialogOpened: true
     };
   }
 
-  deleteProfile = () => {
-    const { intl: { formatMessage } } = this.props;
-    if (window.confirm(formatMessage(messages.profileDeletionConfirmation))) {
-      this.setState({ processing: true, error: false });
-      deleteUser(this.props.userId)
-      .then(() => {
-        setTimeout(() => eventEmitter.emit('UserProfile', 'profileDeletedSuccessfuly', null), 2000);
-      }).catch(err => {
-        reportError(err);
-        this.setState({ error: true, processing: false });
-      });
-    }
+  onCloseDialog = () => {
+    this.setState({ dialogOpened: false });
+  }
+
+  openDialog = () => {
+    this.setState({ dialogOpened: true });
   }
 
   render() {
-    const { error, processing } = this.state;
+    const { dialogOpened } = this.state;
+
     return (
+      <>
       <ProfileSection>
         <SectionTitle><FormattedMessage {...messages.deletionSection} /></SectionTitle>
         <SectionSubtitle><FormattedMessage {...messages.deletionSubtitle} /></SectionSubtitle>
@@ -73,23 +64,26 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
           <Button
             style="delete"
             id="deletion"
-            onClick={this.deleteProfile}
+            onClick={this.openDialog}
             width="auto"
             justifyWrapper="left"
-            processing={processing}
-
             className="e2e-delete-profile"
           >
-            <FormattedMessage {...messages.deleteProfile} />
+            <FormattedMessage {...messages.deleteMyAccount} />
           </Button>
-          {error &&
-            <Error text={<FormattedMessage {...messages.deleteProfileError} />}/>
-          }
         </Row>
       </ProfileSection>
+      <LoadableModal
+        opened={dialogOpened}
+        close={this.onCloseDialog}
+      >
+        <DeletionDialog
+          closeDialog={this.onCloseDialog}
+        />
+      </LoadableModal>
+      </>
     );
   }
-
 }
 
 export default injectIntl(ProfileDeletion);

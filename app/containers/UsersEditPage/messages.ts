@@ -84,9 +84,13 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.deletionSubtitle',
     defaultMessage: 'This action can not be undone. The content you published on the platform will be anonymized. If you wish to delete all your content, you can contact us at support@citizenlab.co.',
   },
-  deleteProfile: {
-    id: 'app.containers.UsersEditPage.deleteProfile',
-    defaultMessage: 'Delete my profile',
+  deleteMyAccount: {
+    id: 'app.containers.UsersEditPage.deleteMyAccount',
+    defaultMessage: 'Delete my account',
+  },
+  deleteYourAccount: {
+    id: 'app.containers.UsersEditPage.deleteYourAccount',
+    defaultMessage: 'Delete your account',
   },
   profileDeletionConfirmation: {
     id: 'app.containers.UsersEditPage.profileDeletionConfirmation',
@@ -95,6 +99,38 @@ export default defineMessages({
   deleteProfileError: {
     id: 'app.containers.UsersEditPage.deleteProfileError',
     defaultMessage: 'There was an issue deleting your profile, please try again later.',
+  },
+  logoAltText: {
+    id: 'app.containers.UsersEditPage.logoAltText',
+    defaultMessage: 'Logo of {tenantName}',
+  },
+  deleteAccountSubtext: {
+    id: 'app.containers.UsersEditPage.deleteAccountSubtext',
+    defaultMessage: 'We are sorry to see you go.',
+  },
+  reasonsToStayListTitle: {
+    id: 'app.containers.UsersEditPage.reasonsToStayListTitle',
+    defaultMessage: 'Before you go...',
+  },
+  tooManyEmails: {
+    id: 'app.containers.UsersEditPage.tooManyEmails',
+    defaultMessage: 'Receiving too many emails? You can manage your email preferences.',
+  },
+  privacyReasons: {
+    id: 'app.containers.UsersEditPage.privacyReasons',
+    defaultMessage: 'If you are worried with your privacy, have you read our conditions?',
+  },
+  contactUs: {
+    id: 'app.containers.UsersEditPage.contactUs',
+    defaultMessage: 'You can reach out tu explain what\'s not going well by clicking here.',
+  },
+  noGoingBack: {
+    id: 'app.containers.UsersEditPage.noGoingBack',
+    defaultMessage: 'Once you click this button, we will have no way to restore your account.',
+  },
+  cancel: {
+    id: 'app.containers.UsersEditPage.cancel',
+    defaultMessage: 'Cancel',
   },
   /*
    * Details
