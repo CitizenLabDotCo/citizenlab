@@ -10,7 +10,7 @@ describe('Idea Content', () => {
   });
 
   it('shows the link to the project page', () => {
-    cy.get('.e2e-project-link');
+    cy.get('#e2e-project-link');
   });
 
   it('shows the idea Title', () => {
