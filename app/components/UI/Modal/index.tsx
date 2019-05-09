@@ -217,7 +217,7 @@ export const Spacer = styled.div`
   flex: 1;
 `;
 
-type Props = {
+ export type Props = {
   opened: boolean;
   fixedHeight?: boolean;
   width?: string;

@@ -32,6 +32,8 @@ import Meta from './Meta';
 import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableFullscreenModal from 'components/Loadable/FullscreenModal';
+import LoadableModal from 'components/Loadable/Modal';
+import UserDeletedModalContent from 'components/UserDeletedModalContent';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -51,8 +53,6 @@ import { media, getTheme } from 'utils/styleUtils';
 
 // typings
 import ErrorBoundary from 'components/ErrorBoundary';
-import Modal from 'components/UI/Modal';
-import UserDeletedModalContent from 'components/UserDeletedModalContent';
 
 const Container = styled.div`
   background: #fff;
@@ -236,12 +236,14 @@ class App extends PureComponent<Props & WithRouterProps, State> {
               <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                 <Meta />
 
-                <Modal
-                  opened={userDeletedModalOpened}
-                  close={this.closeUserDeletedModal}
-                >
-                  <UserDeletedModalContent />
-                </Modal>
+                <ErrorBoundary>
+                  <LoadableModal
+                    opened={userDeletedModalOpened}
+                    close={this.closeUserDeletedModal}
+                  >
+                    <UserDeletedModalContent />
+                  </LoadableModal>
+                </ErrorBoundary>
 
                 <ErrorBoundary>
                   <LoadableFullscreenModal
