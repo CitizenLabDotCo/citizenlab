@@ -87,15 +87,18 @@ const TextBlock = styled.div`
 const Time = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
+  font-weight: 300;
   margin-bottom: 8px;
 `;
 
 const Title = styled.div`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 20px;
+  font-weight: 500;
+  line-height: normal;
   overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const Location = styled.div`

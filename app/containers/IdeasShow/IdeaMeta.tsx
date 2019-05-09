@@ -90,7 +90,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps & InjectedLocalized> = ({
         item: {
           '@id': tenant.attributes.host,
           name: tenant.attributes.name,
-          image: tenant.attributes.logo.large
+          image: tenant.attributes.logo ? tenant.attributes.logo.large : null
         }
       },
       {

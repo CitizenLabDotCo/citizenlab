@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/browser';
+import { captureMessage, captureException, withScope } from '@sentry/browser';
 import { isEmpty } from 'lodash-es';
 
 function isErrorOrErrorEvent(wat: any) {
@@ -15,17 +15,17 @@ function isString(wat: any) {
 
 export function reportError(error: any) {
   if (isEmpty(error)) {
-    Sentry.captureMessage('An empty error has been thrown');
+    captureMessage('An empty error has been thrown');
   } else if (isErrorOrErrorEvent(error)) {
-    Sentry.captureException(error);
+    captureException(error);
   } else if (isObject(error)) {
-    Sentry.captureMessage(JSON.stringify(error, null, 4));
+    captureMessage(JSON.stringify(error, null, 4));
   } else if (isString(error)) {
-    Sentry.captureMessage(error);
+    captureMessage(error);
   } else {
-    Sentry.withScope(scope => {
+    withScope(scope => {
       scope.setExtra('error', error);
-      Sentry.captureMessage('Something wrong happened');
+      captureMessage('Something wrong happened');
     });
   }
 }

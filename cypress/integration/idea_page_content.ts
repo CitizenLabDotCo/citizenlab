@@ -9,8 +9,8 @@ describe('Idea Content', () => {
     cy.get('#e2e-idea-show');
   });
 
-  it('shows where you are', () => {
-    cy.get('.e2e-project-link').should('be.visible');
+  it('shows the link to the project page', () => {
+    cy.get('.e2e-project-link');
   });
 
   it('shows the idea Title', () => {

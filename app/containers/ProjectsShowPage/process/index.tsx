@@ -46,6 +46,10 @@ const StyledTimeline = styled(Timeline)`
 
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
   padding-bottom: 30px;
+
+  ${media.tablet`
+    margin-top: -30px;
+  `}
 `;
 
 const SecondRow = styled.div`

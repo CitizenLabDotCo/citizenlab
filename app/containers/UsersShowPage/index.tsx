@@ -143,8 +143,6 @@ class UsersShowPage extends PureComponent<Props, State> {
               <UserIdeas>
                 <IdeaCards
                   type="load-more"
-                  sort="trending"
-                  pageSize={12}
                   authorId={user.id}
                 />
               </UserIdeas>

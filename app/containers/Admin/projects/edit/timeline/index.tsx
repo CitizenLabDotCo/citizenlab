@@ -80,11 +80,11 @@ interface State {}
 
 class AdminProjectTimelineIndex extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
 
-  createDeleteClickHandler = (phaseId: string) => (event: React.FormEvent<any>) => {
+  createDeleteClickHandler = (projectId: string, phaseId: string) => (event: React.FormEvent<any>) => {
     event.preventDefault();
 
     if (window.confirm(this.props.intl.formatMessage(messages.deletePhaseConfirmation))) {
-      deletePhase(phaseId);
+      deletePhase(projectId, phaseId);
     }
   }
 
@@ -125,7 +125,7 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & WithRouterPr
                       <h1 className="e2e-phase-title"><T value={phase.attributes.title_multiloc} /></h1>
                       <p>{startAt}  →  {endAt}</p>
                     </div>
-                    <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
+                    <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(projectId, phase.id)}>
                       <FormattedMessage {...messages.deletePhaseButton} />
                     </Button>
                     <Button  circularCorners={false} className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}>

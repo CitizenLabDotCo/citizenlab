@@ -13,7 +13,7 @@ import 'moment/locale/fr';
 import 'moment/locale/de';
 import 'moment/locale/da';
 import 'moment/locale/nb';
-import * as Sentry from '@sentry/browser';
+import { configureScope } from '@sentry/browser';
 import WebFont from 'webfontloader';
 
 // context
@@ -25,7 +25,7 @@ import clHistory from 'utils/cl-router/history';
 
 // analytics
 import ConsentManager from 'components/ConsentManager';
-import { trackPage, trackIdentification } from 'utils/analytics';
+import { trackPage } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
@@ -147,12 +147,11 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           if (isNilOrError(authUser)) {
             signOut();
           } else {
-            Sentry.configureScope((scope) => {
+            configureScope((scope) => {
               scope.setUser({
                 id: authUser.data.id,
               });
             });
-            trackIdentification(authUser);
           }
         })),
         locale$.pipe(tap((locale) => {
@@ -186,7 +185,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         this.preloadIdeaModal();
       }),
 
-      eventEmitter.observeEvent<IModalInfo>('cardClick').subscribe(({ eventValue }) => {
+      eventEmitter.observeEvent<IModalInfo>('ideaCardClick').subscribe(({ eventValue }) => {
         const { type, id, url } = eventValue;
         this.openModal(type, id, url);
       }),

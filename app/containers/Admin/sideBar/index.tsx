@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
@@ -9,8 +10,8 @@ import { getUrlLocale } from 'services/locale';
 // components
 import Icon, { IconNames } from 'components/UI/Icon';
 import FeatureFlag from 'components/FeatureFlag';
-import { hasPermission } from 'services/permissions';
 import MenuItem from './MenuItem';
+import HasPermission from 'components/HasPermission';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -21,8 +22,11 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
+
+// resources
 import GetFeatureFlag from 'resources/GetFeatureFlag';
-import HasPermission from 'components/HasPermission';
+import GetIdeasCount, { GetIdeasCountChildProps } from 'resources/GetIdeasCount';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Menu = styled.div`
   flex: 0 0 auto;
@@ -30,6 +34,9 @@ const Menu = styled.div`
   @media print {
     display: none;
   }
+  ${media.smallerThan1200px`
+    width: 80px;
+  `}
 `;
 
 const MenuInner = styled.nav`
@@ -43,6 +50,10 @@ const MenuInner = styled.nav`
   bottom: 0;
   padding-top: 119px;
   background: ${colors.adminMenuBackground};
+
+  ${media.smallerThan1200px`
+    width: 80px;
+  `}
 `;
 
 const IconWrapper = styled.div`
@@ -92,15 +103,25 @@ const GetStartedLink = styled(Link)`
       color: #fff;
     };
   }
+  ${media.smallerThan1200px`
+    width: 70px;
+    ${Text} {
+      display: none;
+    };
+  `}
 `;
 
-type Props = {};
+interface InputProps {}
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+  ideasCount: GetIdeasCountChildProps;
+}
+interface Props extends InputProps, DataProps {}
 
-type State = {
+interface State {
   navItems: NavItem[];
-};
+}
 
-// message: keyof typeof messages
 export type NavItem = {
   id: string,
   link: string,
@@ -108,6 +129,7 @@ export type NavItem = {
   message: string,
   featureName?: string,
   isActive: (pathname: string) => boolean,
+  count?: number
 };
 
 type Tracks = {
@@ -115,15 +137,10 @@ type Tracks = {
 };
 
 class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps & Tracks, State> {
-  routes: NavItem[];
-  subscriptions: Subscription[];
-
   constructor(props: Props & InjectedIntlProps & WithRouterProps & Tracks) {
     super(props);
     this.state = {
-      navItems: [],
-    };
-    this.routes = [
+      navItems: [
       {
         id: 'insights',
         link: '/admin/dashboard',
@@ -173,32 +190,23 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
         message: 'settings',
         isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/settings`))
       },
-    ];
-    this.subscriptions = [];
+    ]};
   }
 
-  componentDidMount() {
-    this.subscriptions = [
-      combineLatest(
-        this.routes.map((route) => hasPermission({
-          item: { type: 'route', path: route.link },
-          action: 'access'
-        }))
-      ).subscribe((permissions) => {
-        this.setState({
-          navItems: this.routes.filter((_, index) => permissions[index])
-        });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { ideasCount } = nextProps;
+    if (!isNilOrError(ideasCount.count) && ideasCount.count !== prevState.navItems.find(item => item.id === 'ideas').count) {
+      const { navItems } = prevState;
+      const nextNavItems = navItems;
+      const ideasIndex = navItems.findIndex(item => item.id === 'ideas');
+      nextNavItems[ideasIndex].count = ideasCount.count;
+      return({ navItems: nextNavItems });
+    }
+    return prevState;
   }
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { pathname } = this.props.location;
     const { navItems } = this.state;
 
     if (!(navItems && navItems.length > 1)) {
@@ -215,7 +223,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
                   {(manualEmailing) => (
                     <GetFeatureFlag name="automated_emailing_control">
                       {(automatedEmailing) => manualEmailing || automatedEmailing ?
-                        <MenuItem route={route} pathname={pathname} key={route.id} />
+                        <MenuItem route={route} key={route.id} />
                       :
                         null
                       }
@@ -226,12 +234,12 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
             } else if (route.featureName) {
               return (
                 <FeatureFlag name={route.featureName}>
-                  <MenuItem route={route} key={route.id} pathname={pathname} />
+                  <MenuItem route={route} key={route.id} />
                 </FeatureFlag>
               );
             } else {
               return (
-                <MenuItem route={route} key={route.id} pathname={pathname} />
+                <MenuItem route={route} key={route.id} />
               );
             }
           })}
@@ -247,4 +255,16 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
     );
   }
 }
-export default withRouter<Props>(injectIntl(Sidebar));
+
+const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  ideasCount: ({ authUser, render }) => !isNilOrError(authUser) ? <GetIdeasCount feedbackNeeded={true} assignee={authUser.id}>{render}</GetIdeasCount> : null,
+});
+
+const SideBarWithHocs = withRouter<Props>(injectIntl(Sidebar));
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <SideBarWithHocs {...inputProps} {...dataProps} />}
+  </Data>
+);

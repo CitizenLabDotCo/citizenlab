@@ -17,6 +17,8 @@ export interface InputProps {
   search?: string;
   groupId?: string;
   cache?: boolean;
+  canModerateProject?: string;
+  canModerate?: boolean;
 }
 
 interface IQueryParameters {
@@ -25,6 +27,8 @@ interface IQueryParameters {
   sort: Sort;
   search?: string;
   group?: string;
+  can_moderate_project?: string;
+  can_moderate?: boolean;
 }
 
 type children = (obj: GetUsersChildProps) => JSX.Element | null;
@@ -62,7 +66,9 @@ export default class GetUsers extends React.Component<Props, State> {
         'page[size]': 20,
         sort: initialSort,
         search: undefined,
-        group: undefined
+        group: undefined,
+        can_moderate_project: undefined,
+        can_moderate: undefined
       },
       usersList: undefined,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
@@ -126,7 +132,9 @@ export default class GetUsers extends React.Component<Props, State> {
         'page[size]': props.pageSize,
         sort: props.sort,
         search: props.search,
-        group: props.groupId
+        group: props.groupId,
+        can_moderate_project: props.canModerateProject,
+        can_moderate: props.canModerate
       }, isNil)
     };
   }

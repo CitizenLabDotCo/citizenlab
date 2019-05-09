@@ -171,7 +171,7 @@ const Container: any = styled.div`
     }
     ${ButtonText} {
       opacity: ${(props: any) => props.processing ? 0 : 1};
-      font-size: ${(props: any) => getFontSize(props.size)};
+      font-size: ${(props: any) => props.fontSize ? props.fontSize : getFontSize(props.size)};
       line-height: ${(props: any) => getLineHeight(props.size)};
       font-weight: ${(props: any) => props.fontWeight || 'normal'}
     }
@@ -310,6 +310,7 @@ export type Props = {
   spinnerColor?: string;
   fullHeight?: boolean;
   ariaLabel?: string;
+  fontSize?: string;
 };
 
 type State = {};
@@ -382,9 +383,9 @@ class Button extends PureComponent<Props, State> {
       openInNewTab,
       fontWeight,
       fullHeight,
-      ariaLabel
+      ariaLabel,
+      fontSize
     } = this.props;
-
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -451,6 +452,7 @@ class Button extends PureComponent<Props, State> {
         borderThickness={borderThickness}
         fontWeight={fontWeight}
         minWidth={minWidth}
+        fontSize={fontSize}
       >
         {linkTo ? (
           (typeof (linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
@@ -472,7 +474,16 @@ class Button extends PureComponent<Props, State> {
               </StyledLink>
             )
         ) : (
-            <StyledButton aria-label={ariaLabel} disabled={disabled} innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form} type={type ? type : 'submit'}>{childContent}</StyledButton>
+            <StyledButton
+              aria-label={ariaLabel}
+              disabled={disabled}
+              innerRef={this.props.setSubmitButtonRef}
+              className={buttonClassnames}
+              form={form}
+              type={type ? type : 'submit'}
+            >
+              {childContent}
+            </StyledButton>
           )}
       </Container>
     );

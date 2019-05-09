@@ -49,8 +49,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // utils
 import { convertUrlToUploadFileObservable } from 'utils/imageTools';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 
 // style
 import styled from 'styled-components';
@@ -58,6 +56,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { CLError, IOption, Locale, Multiloc, UploadFile } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 const timeout = 350;
 
@@ -315,9 +314,9 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       ).subscribe(({ projectHeaderImage, projectFiles, projectImages }) => {
         if (!this.state.processingDelete) {
           this.setState({
-            projectFiles,
-            projectImages,
-            projectHeaderImage: (projectHeaderImage ? [projectHeaderImage] : null)
+            projectFiles: projectFiles ? projectFiles.filter((file) => !isNilOrError(file)) as UploadFile[] : [],
+            projectImages: projectImages ? projectImages.filter(image => !isNilOrError(image))  as UploadFile[] : [],
+            projectHeaderImage: projectHeaderImage ? [projectHeaderImage] : null
           });
         }
       }),
@@ -540,11 +539,6 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             projectId = project.data.id;
             redirect = true;
           }
-
-          streams.fetchAllWith({
-            apiEndpoint: [`${API_PATH}/projects`],
-            dataId: [projectId as string]
-          });
         }
 
         if (isString(projectId)) {

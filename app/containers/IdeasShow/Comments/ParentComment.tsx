@@ -1,301 +1,239 @@
-import React from 'react';
+import React, { PureComponent, FormEvent, MouseEvent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
 
 // components
-import ChildComment from './ChildComment';
+import Comment from './Comment';
 import ChildCommentForm from './ChildCommentForm';
-import CommentBody from './CommentBody';
-import clHistory from 'utils/cl-router/history';
-import Icon from 'components/UI/Icon';
-import FeatureFlag from 'components/FeatureFlag';
+import Spinner from 'components/UI/Spinner';
 
 // services
-import { updateComment } from 'services/comments';
-import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { childCommentsStream, IComments } from 'services/comments';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetUser from 'resources/GetUser';
-
-// analytics
-import { injectTracks } from 'utils/analytics';
-import tracks from '../tracks';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { CLErrorsJSON } from 'typings';
-import { OfficialHeader, Header, OfficialStyledAuthor, StyledAuthor, Extra, Badge, StyledMoreActionsMenu, TranslateButton } from './CommentsStyles';
-
-const DeletedIcon = styled(Icon)`
-  height: 1em;
-  margin-right: 1rem;
-  width: 1em;
-`;
+import { colors, fontSizes } from 'utils/styleUtils';
+import { darken, lighten } from 'polished';
 
 const Container = styled.div`
-  margin-top: 38px;
-`;
-
-const CommentsWithReplyBoxContainer = styled.div`
-  border-radius: ${(props: any) => props.theme.borderRadius};
-`;
-
-const CommentsContainer = styled.div`
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  margin-bottom: 40px;
   position: relative;
-  border: solid 1px #d0d0d0;
   background: #fff;
-
-  &.hasReplyBox {
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border-bottom: none;
-  }
+  box-sizing: border-box;
+  border: 1px solid #e8e8e8;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-const CommentContainerInner = styled.div`
-  padding: 20px;
+const ParentCommentContainer = styled.div`
   position: relative;
-
-  &.deleted {
-    align-items: center;
-    display: flex;
-    font-style: italic;
-    font-weight: 500;
-  }
 `;
 
-const ChildCommentsContainer = styled.div``;
+const LoadMoreText = styled.span`
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: underline;
+  border: none;
+  padding: 0;
+  padding: 12px;
+  margin: 0;
+  transition: all 150ms ease-out;
+`;
+
+const LoadMore = styled.button`
+  width: 100%;
+  min-height: 45px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-top: solid 1px #e8e8e8;
+  border-bottom: solid 1px #e8e8e8;
+  background: ${lighten(0.02, '#f0f0f1')};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 150ms ease-out;
+
+  &.clickable {
+    cursor: pointer;
+
+    &:hover {
+      background: ${darken(0.01, '#f0f0f1')};
+
+      ${LoadMoreText} {
+        color: ${darken(0.25, colors.label)};
+      }
+    }
+  }
+`;
 
 interface InputProps {
   ideaId: string;
   commentId: string;
-  last: boolean;
+  childCommentIds: string[] | false;
+  className?: string;
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
-  childComments: GetCommentsChildProps;
   idea: GetIdeaChildProps;
-  locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  showForm: boolean;
-  spamModalVisible: boolean;
-  editionMode: boolean;
-  translateButtonClicked: boolean;
+  canLoadMore: boolean;
+  isLoadingMore: boolean;
+  hasLoadedMore: boolean;
+  childComments: IComments | null;
 }
 
-interface ITracks {
-  clickReply: () => void;
-  clickTranslateCommentButton: () => void;
-  clickGoBackToOriginalCommentButton: () => void;
-}
+class ParentComment extends PureComponent<Props, State> {
+  private loadMore$: BehaviorSubject<boolean>;
+  private subscriptions: Subscription[];
 
-class ParentComment extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
-      showForm: false,
-      spamModalVisible: false,
-      editionMode: false,
-      translateButtonClicked: false,
+      canLoadMore: false,
+      isLoadingMore: false,
+      hasLoadedMore: false,
+      childComments: null
     };
   }
 
-  toggleForm = () => {
-    this.props.clickReply();
-    this.setState({ showForm: true });
+  componentDidMount() {
+    this.loadMore$ = new BehaviorSubject(false);
+
+    this.subscriptions = [
+      this.loadMore$.pipe(
+        distinctUntilChanged(),
+        filter((loadMore) => loadMore),
+        tap(() => this.setState({ isLoadingMore: true })),
+        switchMap(() => {
+          return childCommentsStream(this.props.commentId, {
+            queryParameters: {
+              'page[number]': 1,
+              'page[size]': 500
+            }
+          }).observable;
+        })
+      )
+      .subscribe((childComments) => {
+        this.setState({ childComments, isLoadingMore: false, hasLoadedMore: true });
+      })
+    ];
   }
 
-  captureClick = (event) => {
-    if (event.target.classList.contains('mention')) {
+  componentDidUpdate(_prevProps: Props) {
+    if (!isNilOrError(this.props.comment) && this.props.comment.attributes.children_count > 5 && !this.state.canLoadMore) {
+      this.setState({ canLoadMore: true });
+    }
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  loadMore = (event: FormEvent<any>) => {
+    if (!this.state.isLoadingMore) {
       event.preventDefault();
-      const link = event.target.getAttribute('data-link');
-      clHistory.push(link);
+      trackEventByName(tracks.clickParentCommentLoadMoreButton);
+      this.loadMore$.next(true);
     }
   }
 
-  onCommentEdit = () => {
-    this.setState({ editionMode: true });
-  }
-
-  onCancelEdition = () => {
-    this.setState({ editionMode: false });
-  }
-
-  onCommentSave = async (comment, formikActions) => {
-    const { setSubmitting, setErrors } = formikActions;
-
-    try {
-      await updateComment(this.props.commentId, comment);
-      this.setState({ editionMode: false });
-    } catch (error) {
-      if (error && error.json) {
-        const apiErrors = (error as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-        setSubmitting(false);
-      }
-    }
-  }
-
-  translateComment = () => {
-    const { clickTranslateCommentButton, clickGoBackToOriginalCommentButton } = this.props;
-    const { translateButtonClicked } = this.state;
-
-    // tracking
-    translateButtonClicked
-    ? clickGoBackToOriginalCommentButton()
-    : clickTranslateCommentButton();
-
-    this.setState(prevState => ({
-      translateButtonClicked: !prevState.translateButtonClicked,
-    }));
+  removeFocus = (event: MouseEvent) => {
+    event.preventDefault();
   }
 
   render() {
-    const { commentId, authUser, comment, childComments, idea, locale } = this.props;
-    const { translateButtonClicked } = this.state;
+    const { commentId, authUser, comment, idea, className } = this.props;
+    const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } = this.state;
 
-    if (!isNilOrError(comment) && !isNilOrError(idea) && !isNilOrError(locale)) {
+    if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const ideaId = comment.relationships.idea.data.id;
-      const projectId = idea.relationships.project.data.id;
-      const authorId = (comment.relationships.author.data ? comment.relationships.author.data.id : null);
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
-      const createdAt = comment.attributes.created_at;
-      const commentBodyMultiloc = comment.attributes.body_multiloc;
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
       const showCommentForm = (authUser && commentingEnabled && !commentDeleted);
-      const childCommentIds = (!isNilOrError(childComments) && childComments.filter((comment) => {
-        if (!comment.relationships.parent.data) return false;
-        if (comment.attributes.publication_status === 'deleted') return false;
-        if (comment.relationships.parent.data.id === commentId) return true;
-        return false;
-      }).map(comment => comment.id));
-      const showTranslateButton = commentBodyMultiloc && !commentBodyMultiloc[locale];
+      const hasChildComments = (this.props.childCommentIds && this.props.childCommentIds.length > 0);
+      const childCommentIds = (!isNilOrError(childComments) ? childComments.data.filter((comment) => comment.attributes.publication_status !== 'deleted').map(comment => comment.id) : this.props.childCommentIds);
+      const canReply = (comment.attributes.publication_status !== 'deleted');
 
-      // Hide parent comments that are deleted with no children
-      if (comment.attributes.publication_status === 'deleted' && (!childCommentIds || childCommentIds.length === 0)) {
+      // hide parent comments that are deleted when they have no children
+      if (comment.attributes.publication_status === 'deleted' && !hasChildComments) {
         return null;
       }
 
       return (
-        <Container className="e2e-comment-thread">
-          <CommentsWithReplyBoxContainer>
-            <CommentsContainer className={`${showCommentForm && 'hasReplyBox'}`}>
-              <CommentContainerInner className={`${commentDeleted && 'deleted'}`}>
-                {comment.attributes.publication_status === 'published' &&
-                  <>
-                    <GetUser id={authorId}>
-                      {author => {
-                        const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
-                        if (authorCanModerate) {
-                          return (
-                            <OfficialHeader>
-                              <OfficialStyledAuthor
-                                authorId={authorId}
-                                notALink={authorId ? false : true}
-                                createdAt={createdAt}
-                                size="40px"
-                                projectId={projectId}
-                                showModeration
-                              />
-                              <Extra>
-                                <Badge>
-                                  <FormattedMessage {...messages.official} />
-                                </Badge>
-                                <StyledMoreActionsMenu
-                                  ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
-                                  comment={comment}
-                                  onCommentEdit={this.onCommentEdit}
-                                  projectId={projectId}
-                                />
-                              </Extra>
-                            </OfficialHeader>
-                          );
-                        } else {
-                          return (
-                            <Header>
-                              <StyledAuthor
-                                authorId={authorId}
-                                notALink={authorId ? false : true}
-                                createdAt={createdAt}
-                                size="40px"
-                                projectId={projectId}
-                              />
-                              <StyledMoreActionsMenu
-                                ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
-                                comment={comment}
-                                onCommentEdit={this.onCommentEdit}
-                                projectId={projectId}
-                              />
-                            </Header>
-                          );
-                        }
-                      }}
-                    </GetUser>
-                    <CommentBody
-                      commentBody={comment.attributes.body_multiloc}
-                      editionMode={this.state.editionMode}
-                      onCommentSave={this.onCommentSave}
-                      onCancelEdition={this.onCancelEdition}
-                      last={this.props.last}
-                      translateButtonClicked={translateButtonClicked}
-                      commentId={commentId}
-                    />
-                    <FeatureFlag name="machine_translations">
-                      {showTranslateButton &&
-                        <TranslateButton
-                          onClick={this.translateComment}
-                        >
-                          {!this.state.translateButtonClicked
-                            ? <FormattedMessage {...messages.translateComment} />
-                            : <FormattedMessage {...messages.showOriginalComment} />
-                          }
-                        </TranslateButton>
-                      }
-                    </FeatureFlag>
-                  </>
-                }
+        <Container className={`e2e-parent-and-childcomments ${className}`}>
+          <ParentCommentContainer className={`${commentDeleted && 'deleted'}`}>
+            <Comment
+              ideaId={idea.id}
+              projectId={idea.relationships.project.data.id}
+              commentId={comment.id}
+              commentType="parent"
+              hasBottomBorder={!(canLoadMore && !hasLoadedMore)}
+              hasChildComments={hasChildComments}
+              canReply={canReply}
+            />
+          </ParentCommentContainer>
 
-                {commentDeleted &&
-                  <>
-                    <DeletedIcon name="delete" />
-                    <FormattedMessage {...messages.commentDeletedPlaceholder} />
-                  </>
-                }
-              </CommentContainerInner>
+          {canLoadMore && !hasLoadedMore &&
+            <LoadMore
+              onMouseDown={this.removeFocus}
+              onClick={this.loadMore}
+              className={!isLoadingMore ? 'clickable' : ''}
+            >
+              {!isLoadingMore ? (
+                <LoadMoreText>
+                  <FormattedMessage {...messages.loadMoreComments} />
+                </LoadMoreText>
+              ) : (
+                <Spinner size="25px" />
+              )}
+            </LoadMore>
+          }
 
-              {(childCommentIds && childCommentIds.length > 0) &&
-                <ChildCommentsContainer>
-                  {childCommentIds.map((childCommentId) => {
-                    return (<ChildComment key={childCommentId} commentId={childCommentId} />);
-                  })}
-                </ChildCommentsContainer>
-              }
-            </CommentsContainer>
+          {childCommentIds && childCommentIds.length > 0 && childCommentIds.map((childCommentId, index) => (
+            <Comment
+              ideaId={idea.id}
+              projectId={idea.relationships.project.data.id}
+              key={childCommentId}
+              commentId={childCommentId}
+              commentType="child"
+              last={index === childCommentIds.length - 1}
+              canReply={canReply}
+            />
+          ))}
 
-            {showCommentForm &&
-              <ChildCommentForm ideaId={ideaId} parentId={commentId} />
-            }
-          </CommentsWithReplyBoxContainer>
+          {showCommentForm &&
+            <ChildCommentForm
+              ideaId={ideaId}
+              projectId={idea.relationships.project.data.id}
+              parentId={commentId}
+              waitForChildCommentsRefetch={!isNilOrError(childComments)}
+            />
+          }
         </Container>
       );
     }
@@ -304,23 +242,14 @@ class ParentComment extends React.PureComponent<Props & ITracks & InjectedIntlPr
   }
 }
 
-const ParentCommentWithTracks = injectTracks<Props>({
-  clickReply: tracks.clickReply,
-  clickTranslateCommentButton: tracks.clickTranslateCommentButton,
-  clickGoBackToOriginalCommentButton: tracks.clickGoBackToOriginalCommentButton
-})(injectIntl<Props>(ParentComment));
-
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  childComments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
-  tenantLocales: <GetTenantLocales />,
-  locale: <GetLocale />,
+  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ParentCommentWithTracks {...inputProps} {...dataProps} />}
+    {dataProps => <ParentComment {...inputProps} {...dataProps} />}
   </Data>
 );

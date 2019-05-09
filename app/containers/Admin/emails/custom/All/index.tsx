@@ -59,25 +59,26 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
 
     if (campaigns.length === 0) {
       return (
-      <>
-        <NoCampaignsWrapper>
-          <Icon name="mailBig" />
-          <NoCampaignsHeader>
-            <FormattedMessage {...messages.noCampaignsHeader} />
-          </NoCampaignsHeader>
-          <NoCampaignsDescription>
-            <FormattedMessage {...messages.noCampaignsDescription} />
-          </NoCampaignsDescription>
-          <Button
-            style="cl-blue"
-            circularCorners={false}
-            icon="plus-circle"
-            linkTo="/admin/emails/custom/new"
-          >
-            <FormattedMessage {...messages.addCampaignButton} />
-          </Button>
-        </NoCampaignsWrapper>
-      </>);
+        <>
+          <NoCampaignsWrapper>
+            <Icon name="mailBig" />
+            <NoCampaignsHeader>
+              <FormattedMessage {...messages.noCampaignsHeader} />
+            </NoCampaignsHeader>
+            <NoCampaignsDescription>
+              <FormattedMessage {...messages.noCampaignsDescription} />
+            </NoCampaignsDescription>
+            <Button
+              style="cl-blue"
+              circularCorners={false}
+              icon="plus-circle"
+              linkTo="/admin/emails/custom/new"
+            >
+              <FormattedMessage {...messages.addCampaignButton} />
+            </Button>
+          </NoCampaignsWrapper>
+        </>
+      );
     } else {
       return (
         <>

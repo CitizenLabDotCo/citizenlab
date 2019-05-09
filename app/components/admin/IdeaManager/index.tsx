@@ -6,7 +6,7 @@ import { media } from 'utils/styleUtils';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isAdminPage } from 'utils/helperUtils';
 
 // services
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
@@ -18,26 +18,48 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
+import GetIdeasCount from 'resources/GetIdeasCount';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // components
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
+import ExportMenu from './components/ExportMenu';
+import IdeasCount from './components/IdeasCount';
 import { Input, Message } from 'semantic-ui-react';
-import ExportButtons from './components/ExportButtons';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
+import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-const Row = styled.div`
-  display: flex;
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
+const StyledDiv = styled.div`
   margin-bottom: 30px;
+`;
+
+const StyledExportMenu = styled(ExportMenu)`
+  margin-left: auto;
+`;
+
+const TopActionBar = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+`;
+
+const MiddleColumnTop = styled.div`
+  transition: 200ms;
+  display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
+  flex: 1;
 `;
 
 const ThreeColumns = styled.div`
@@ -50,6 +72,7 @@ const ThreeColumns = styled.div`
 
 const LeftColumn = styled.div`
   width: 260px;
+  min-width: 260px;
 `;
 
 const Sticky = styled.div`
@@ -64,7 +87,9 @@ const MiddleColumn = styled.div`
 `;
 
 const RightColumn = styled.div`
-  width: 260px;
+  max-width: 200px;
+  display: flex;
+
   ${media.smallerThan1280px`
     display: none;
   `}
@@ -92,7 +117,17 @@ const RightColumn = styled.div`
   }
 `;
 
+const StyledInput = styled(Input)`
+  max-width: 260px;
+  display: flex;
+  width: 100%;
+`;
+
 interface InputProps {
+  // When the IdeaManager is used in admin/projects,
+  // the project is loaded through the router inside the parent component (Admin/projects/edit/index.tsx)
+  // In this parent component, project gets loaded and passed to all childRoutes (child components), including admin/projects/edit/ideas
+  // Search this parent component for 'React.cloneElement' to see how this project prop is passed.
   project?: IProjectData | null;
 }
 
@@ -102,6 +137,8 @@ interface DataProps {
   topics: GetTopicsChildProps;
   ideaStatuses: GetIdeaStatusesChildProps;
   phases: GetPhasesChildProps;
+  authUser: GetAuthUserChildProps;
+  tenant: GetTenantChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -113,6 +150,9 @@ interface State {
   activeFilterMenu: TFilterMenu | null;
   visibleFilterMenus: string[];
   contextRef: any;
+  assignee: string;
+  feedbackNeededFilterActive: boolean;
+  searchTerm: string | undefined;
 }
 
 class IdeaManager extends React.PureComponent<Props, State> {
@@ -125,6 +165,9 @@ class IdeaManager extends React.PureComponent<Props, State> {
       visibleFilterMenus: [],
       activeFilterMenu: null,
       contextRef: null,
+      assignee: !isNilOrError(props.authUser) ? props.authUser.id : '',
+      feedbackNeededFilterActive: false,
+      searchTerm: undefined
     };
     this.globalState = globalState.init('AdminFullWidth');
   }
@@ -133,7 +176,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.globalState.set({ enabled: true });
 
     if (this.props.project && isFunction(this.props.ideas.onChangeProjects)) {
-      this.props.ideas.onChangeProjects([this.props.project.id]);
+      const projectIds = [this.props.project.id];
+      this.props.ideas.onChangeProjects(projectIds);
     }
 
     this.setVisibleFilterMenus(this.props.project);
@@ -144,12 +188,20 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
+    const { authUser } = this.props;
+    const prevAuthUser = prevProps.authUser;
+    if (isNilOrError(prevAuthUser) && !isNilOrError(authUser) && !this.state.assignee) {
+      this.props.ideas.onChangeAssignee(authUser.id);
+      this.setState({ assignee: authUser.id });
+    }
+
     const oldProjectId = get(prevProps.project, 'id', null);
     const newProjectId = get(this.props.project, 'id', null);
 
     if (this.props.project && newProjectId !== oldProjectId) {
       if (isFunction(this.props.ideas.onChangeProjects)) {
-        this.props.ideas.onChangeProjects([this.props.project.id]);
+        const projectIds = [newProjectId];
+        this.props.ideas.onChangeProjects(projectIds);
       }
 
       this.setVisibleFilterMenus(this.props.project);
@@ -174,11 +226,14 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   handleSearchChange = (event) => {
-    const term = event.target.value;
+    const searchTerm = event.target.value;
+
+    this.setState({ searchTerm });
 
     if (isFunction(this.props.ideas.onChangeSearchTerm)) {
-      this.props.ideas.onChangeSearchTerm(term);
+      this.props.ideas.onChangeSearchTerm(searchTerm);
     }
+
   }
 
   isAnyIdeaSelected = () => {
@@ -205,7 +260,44 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.setState({ selectedIdeas: {} });
   }
 
+  handleAssigneeFilterChange = (assignee: string) => {
+    const { authUser, tenant } = this.props;
+    const adminAtWorkId = authUser && authUser.id;
+    const tenantId = !isNilOrError(tenant) && tenant.id;
+    this.props.ideas.onChangeAssignee(assignee !== 'all' ? assignee : undefined);
+    this.setState({ assignee });
+
+    // analytics
+    trackEventByName(tracks.assigneeFilterUsed, {
+      assignee,
+      tenant: tenantId,
+      adminAtWork: adminAtWorkId
+    });
+  }
+
+  handleToggleFeedbackNeededFilter = () => {
+    const { feedbackNeededFilterActive } = this.state;
+
+    // If toggle being turned ON, unselect all ideas
+    // feedbackNeededFilterActive should be false at this stage and will be changed to true later in this function
+    !feedbackNeededFilterActive && this.handleChangeIdeaSelection({});
+    this.props.ideas.onChangeFeedbackFilter(!feedbackNeededFilterActive);
+
+    this.setState({ feedbackNeededFilterActive: !feedbackNeededFilterActive });
+  }
+
+  handleSeeAllIdeas = () => {
+    this.setState({ feedbackNeededFilterActive: false, assignee: 'all' });
+    // If we're in admin/projects, we don't want to reset the project
+    if (isAdminPage(location.pathname, 'projects')) {
+      this.props.ideas.onResetParams(['projects']);
+    } else {
+      this.props.ideas.onResetParams();
+    }
+  }
+
   render() {
+    const { searchTerm } = this.state;
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
     const { projectsList } = projects;
     const { ideasList, onChangePhase, onChangeTopics, onChangeProjects, onChangeIdeaStatus } = ideas;
@@ -213,7 +305,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const selectedPhase = ideas.queryParameters.phase;
     const selectedProject = isArray(ideas.queryParameters.projects) ? ideas.queryParameters.projects[0] : undefined;
     const selectedIdeaStatus = ideas.queryParameters.idea_status;
-    const { selectedIdeas, activeFilterMenu, visibleFilterMenus } = this.state;
+    const { selectedIdeas, activeFilterMenu, visibleFilterMenus, assignee, feedbackNeededFilterActive } = this.state;
     const selectedIdeaIds = keys(this.state.selectedIdeas);
     const showInfoSidebar = this.isAnyIdeaSelected();
     const multipleIdeasSelected = this.areMultipleIdeasSelected();
@@ -233,36 +325,58 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
     return (
       <div ref={this.handleContextRef}>
-        <Row>
-          {project !== undefined &&
-            <div>
-              <SectionTitle>
-                <FormattedMessage {...messages.titleIdeas} />
-              </SectionTitle>
-              <SectionSubtitle>
-                <FormattedMessage {...messages.subtitleIdeas} />
-              </SectionSubtitle>
-            </div>
-          }
-          {project === undefined &&
-            <div />
-          }
-          <ExportButtons
+        {project !== undefined &&
+          <StyledDiv>
+            <SectionTitle>
+              <FormattedMessage {...messages.titleIdeas} />
+            </SectionTitle>
+            <SectionSubtitle>
+              <FormattedMessage {...messages.subtitleIdeas} />
+            </SectionSubtitle>
+          </StyledDiv>
+        }
+
+        <TopActionBar>
+          <AssigneeFilter
+            projectId={!isNilOrError(project) ? project.id : undefined}
+            assignee={assignee}
+            handleAssigneeFilterChange={this.handleAssigneeFilterChange}
+          />
+          <FeedbackToggle
+            value={feedbackNeededFilterActive}
+            onChange={this.handleToggleFeedbackNeededFilter}
+            project={selectedProject}
+            phase={selectedPhase}
+            topics={selectedTopics}
+            ideaStatus={selectedIdeaStatus}
+            assignee={assignee}
+            searchTerm={searchTerm}
+          />
+          <StyledExportMenu
             exportType={exportType}
             exportQueryParameter={exportQueryParameter}
-            className={project === undefined ? 'all' : 'project'}
           />
-        </Row>
+        </TopActionBar>
+
         <ThreeColumns>
           <LeftColumn>
-            <Input icon="search" onChange={this.handleSearchChange} />
-          </LeftColumn>
-          <MiddleColumn>
             <ActionBar
               ideaIds={selectedIdeaIds}
               resetSelectedIdeas={this.resetSelectedIdeas}
             />
-          </MiddleColumn>
+          </LeftColumn>
+          <MiddleColumnTop>
+            <IdeasCount
+              feedbackNeeded={feedbackNeededFilterActive}
+              project={selectedProject}
+              phase={selectedPhase}
+              topics={selectedTopics}
+              ideaStatus={selectedIdeaStatus}
+              searchTerm={searchTerm}
+              assignee={assignee}
+            />
+            <StyledInput icon="search" onChange={this.handleSearchChange}/>
+          </MiddleColumnTop>
         </ThreeColumns>
         <ThreeColumns>
           <LeftColumn>
@@ -309,6 +423,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
               ideaCurrentPageNumber={ideas.currentPage}
               ideaLastPageNumber={ideas.lastPage}
               onIdeaChangePage={ideas.onChangePage}
+              handleSeeAllIdeas={this.handleSeeAllIdeas}
             />
           </MiddleColumn>
           <CSSTransition
@@ -334,10 +449,13 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} sort="new" publicationStatuses={['draft', 'published', 'archived']} />,
-  ideas: <GetIdeas type="paginated" pageSize={10} sort="new" />,
+  ideas: ({ project, render }) => <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={project ? [project.id] : 'all'}>{render}</GetIdeas>,
   topics: <GetTopics />,
+  tenant: <GetTenant />,
   ideaStatuses: <GetIdeaStatuses />,
+  authUser: <GetAuthUser />,
   phases: ({ project, render }) => <GetPhases projectId={get(project, 'id')}>{render}</GetPhases>,
+  ideasCount:  <GetIdeasCount feedbackNeeded={true} />
 });
 
 const IdeaManagerWithDragDropContext = DragDropContext(HTML5Backend)(IdeaManager);

@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IdeaPreview /> renders correctly closed 1`] = `
+<SideModal
+  close={[Function]}
+  opened={false}
+>
+  <WrappedIdeaContent
+    closeSideModal={[Function]}
+    handleClickEdit={[Function]}
+  />
+</SideModal>
+`;
+
+exports[`<IdeaPreview /> renders the idea content initially 1`] = `
+<SideModal
+  close={[Function]}
+  opened={true}
+>
+  <WrappedIdeaContent
+    closeSideModal={[Function]}
+    handleClickEdit={[Function]}
+    ideaId="greatIdea"
+  />
+</SideModal>
+`;
+
+exports[`<IdeaPreview /> renders the idea edit correctly when asked to 1`] = `
+<SideModal
+  close={[Function]}
+  opened={true}
+>
+  <WrappedIdeaEdit
+    goBack={[Function]}
+    ideaId="greatIdea"
+  />
+</SideModal>
+`;
