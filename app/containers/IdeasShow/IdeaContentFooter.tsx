@@ -40,12 +40,15 @@ const Right = styled.div`
   align-items: center;
 `;
 
+const StyledAvatarBubbles = styled(AvatarBubbles)`
+  margin-right: 12px;
+`;
+
 const TimeAgo = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
   font-weight: 300;
   line-height: normal;
-  margin-left: 12px;
   margin-right: 12px;
 `;
 
@@ -88,7 +91,7 @@ const IdeaContentFooter = memo<Props>(({ ideaCreatedAt, commentsCount, randomAva
     <Container className={className}>
       <Left>
         {!isEmpty(avatarIds) &&
-          <AvatarBubbles
+          <StyledAvatarBubbles
             size={26}
             limit={avatarLimit}
             avatarIds={avatarIds}
