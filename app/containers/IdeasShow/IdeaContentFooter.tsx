@@ -12,7 +12,7 @@ import GetRandomAvatars, { GetRandomAvatarsChildProps } from 'resources/GetRando
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
