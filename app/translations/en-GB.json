@@ -114,6 +114,7 @@
   "app.components.IdeasShow.commentingDisabledProjectInactive": "",
   "app.components.IdeasShow.commentingMaybeNotPermitted": "",
   "app.components.IdeasShow.commentingNotPermitted": "",
+  "app.components.IdeasShow.createdTimeAgo": "",
   "app.components.IdeasShow.deleteIdea": "",
   "app.components.IdeasShow.deleteIdeaConfirmation": "",
   "app.components.IdeasShow.editIdea": "",

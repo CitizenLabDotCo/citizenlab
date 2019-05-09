@@ -114,6 +114,7 @@
   "app.components.IdeasShow.commentingDisabledProjectInactive": "{orgName, select, München {Kommentare zu diesem Mangel sind nicht mehr möglich, weil '{projectName}' derzeit keine Meldungen zulässt.} other {Kommentare zu dieser Idee sind nicht mehr möglich, weil '{projectName}' noch nicht oder nicht mehr aktiv ist.}}",
   "app.components.IdeasShow.commentingMaybeNotPermitted": "Nicht alle Benutzer dürfen kommentieren. Bitte {signInLink} um festzustellen, ob Sie die Bedingungen erfüllen.",
   "app.components.IdeasShow.commentingNotPermitted": "Leider haben Sie keine Rechte um diese Idee zu kommentieren.",
+  "app.components.IdeasShow.createdTimeAgo": "",
   "app.components.IdeasShow.deleteIdea": "Idee löschen",
   "app.components.IdeasShow.deleteIdeaConfirmation": "Sind Sie sicher, dass Sie diese Idee löschen möchten?",
   "app.components.IdeasShow.editIdea": "{orgName, select, München {Mängelmeldung bearbeiten} other {Idee bearbeiten}}",

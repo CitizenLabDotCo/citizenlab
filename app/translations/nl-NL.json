@@ -114,6 +114,7 @@
   "app.components.IdeasShow.commentingDisabledProjectInactive": "Je kunt nu niet reageren op dit idee, omdat '{projectName}' voorlopig niet of niet langer actief is.",
   "app.components.IdeasShow.commentingMaybeNotPermitted": "Niet alle gebruikers zijn toegestaan om te reageren. {signInLink} om te zien of je aan de voorwaarden voldoet.",
   "app.components.IdeasShow.commentingNotPermitted": "Helaas, je hebt geen rechten om te reageren op dit idee.",
+  "app.components.IdeasShow.createdTimeAgo": "",
   "app.components.IdeasShow.deleteIdea": "Verwijder het idee",
   "app.components.IdeasShow.deleteIdeaConfirmation": "Ben je zeker dat je dit idee wil verwijderen?",
   "app.components.IdeasShow.editIdea": "Bewerk idee",
