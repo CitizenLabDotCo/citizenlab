@@ -21,6 +21,7 @@ RSpec.describe "Graphql user" do
           lastName
           email
           slug
+          locale
         }
       }
     |}
@@ -36,7 +37,8 @@ RSpec.describe "Graphql user" do
         "firstName" => user.first_name,
         "lastName" => user.last_name,
         "email" => user.email,
-        "slug" => user.slug
+        "slug" => user.slug,
+        "locale" => user.locale
       })
     end
 

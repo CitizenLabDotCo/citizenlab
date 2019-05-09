@@ -1,6 +1,7 @@
 module EmailCampaigns
   class Campaigns::InviteReceived < Campaign
     include ActivityTriggerable
+    include Trackable
 
     recipient_filter :filter_recipient
 

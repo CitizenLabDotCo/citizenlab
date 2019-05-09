@@ -7,5 +7,6 @@ module AdminApi
     field :last_name, String, null: true
     field :email, String, null: true
     field :slug, String, null: true
+    field :locale, String, null: true
   end
 end

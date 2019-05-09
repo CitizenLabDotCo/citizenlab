@@ -143,11 +143,7 @@ module EmailCampaigns
         event: "#{campaign.class.campaign_name} email command",
         timestamp: Time.now.iso8601,
         user_id: command[:recipient].id,
-        recipient: {
-          email: command[:recipient].email,
-          first_name: command[:recipient].first_name,
-          last_name: command[:recipient].last_name,
-        },
+        campaign_id: campaign.id,
         payload: command[:event_payload]
       }
 
