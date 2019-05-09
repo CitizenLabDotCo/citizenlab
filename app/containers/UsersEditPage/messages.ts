@@ -118,11 +118,23 @@ export default defineMessages({
   },
   privacyReasons: {
     id: 'app.containers.UsersEditPage.privacyReasons',
-    defaultMessage: 'If you are worried with your privacy, have you read our conditions?',
+    defaultMessage: 'If you are worried with your privacy, have you read {conditionsLink}?',
+  },
+  conditionsLinkText: {
+    id: 'app.containers.UsersEditPage.conditionsLinkText',
+    defaultMessage: 'our conditions',
   },
   contactUs: {
     id: 'app.containers.UsersEditPage.contactUs',
-    defaultMessage: 'You can reach out tu explain what\'s not going well by clicking here.',
+    defaultMessage: 'You can reach out to explain what\'s not going well by clicking {feedbackLink}.',
+  },
+  feedbackLinkText: {
+    id: 'app.containers.UsersEditPage.feedbackLinkText',
+    defaultMessage: 'here',
+  },
+  feedbackLinkUrl: {
+    id: 'app.containers.UsersEditPage.feedbackLinkUrl',
+    defaultMessage: 'https://citizenlabco.typeform.com/to/z7baRP?source={url}',
   },
   noGoingBack: {
     id: 'app.containers.UsersEditPage.noGoingBack',

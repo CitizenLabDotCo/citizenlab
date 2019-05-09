@@ -14,6 +14,8 @@ import { get } from 'lodash-es';
 import { fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import FormattedAnchor from 'components/FormattedAnchor';
+import Link from 'utils/cl-router/Link';
 
 const Container = styled.div`
   padding: 0px 10px;
@@ -42,6 +44,7 @@ const Styledh2 = styled.h2`
   font-weight: 500;
   line-height: 24px;
 `;
+
 const ButtonsContainer = styled.div`
   margin-top: 50px;
   display: flex;
@@ -100,15 +103,34 @@ class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
           <FormattedMessage {...messages.deleteYourAccount} />
         </Styledh1>
         <p>
-        <FormattedMessage {...messages.deleteAccountSubtext} />
+          <FormattedMessage {...messages.deleteAccountSubtext} />
         </p>
         <Styledh2>
-        <FormattedMessage {...messages.reasonsToStayListTitle} />
+          <FormattedMessage {...messages.reasonsToStayListTitle} />
         </Styledh2>
         <ul>
           <li><FormattedMessage {...messages.tooManyEmails} /></li>
-          <li><FormattedMessage {...messages.privacyReasons} /></li>
-          <li><FormattedMessage {...messages.contactUs} /></li>
+          <li>
+            <FormattedMessage
+              {...messages.privacyReasons}
+              values={{
+                conditionsLink: (
+                <Link to="/pages/cookie-policy" target="_blank">
+                  <FormattedMessage {...messages.conditionsLinkText}/>
+                </Link>
+              )}}
+            />
+          </li>
+          <li>
+            <FormattedAnchor
+              mainMessage={messages.contactUs}
+              mainMessageLinkKey="feedbackLink"
+              urlMessage={messages.feedbackLinkUrl}
+              urlMessageValues={{ url: location.href }}
+              linkTextMessage={messages.feedbackLinkText}
+              target="_blank"
+            />
+          </li>
           <li><FormattedMessage {...messages.noGoingBack} /></li>
         </ul>
         <ButtonsContainer>
