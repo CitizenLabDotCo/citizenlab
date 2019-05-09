@@ -361,5 +361,9 @@ export default defineMessages({
   noComments: {
     id: 'app.components.IdeasShow.noComments',
     defaultMessage: 'There are no comments yet.'
+  },
+  linkToHomePage: {
+    id: 'app.components.IdeasShow.linkToHomePage',
+    defaultMessage: 'Link to home page'
   }
 });
