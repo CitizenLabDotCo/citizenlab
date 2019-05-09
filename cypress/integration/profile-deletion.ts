@@ -5,7 +5,7 @@ const lastName = randomString();
 const peasantEmail = randomEmail();
 const peasantPassword = randomString();
 
-describe('Idea show page actions', () => {
+describe('profile deletion', () => {
   before(() => {
     cy.apiSignup(firstName, lastName, peasantEmail, peasantPassword);
   });
