@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import ProfileSection from './ProfileSection';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -40,7 +39,7 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      dialogOpened: true
+      dialogOpened: false
     };
   }
 
