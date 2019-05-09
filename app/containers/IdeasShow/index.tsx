@@ -434,7 +434,7 @@ const SharingWrapper = styled.div`
 const SharingMobile = styled(Sharing)`
   padding: 0;
   margin: 0;
-  margin-top: 30px;
+  margin-top: 40px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -442,7 +442,7 @@ const SharingMobile = styled(Sharing)`
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
-  margin-top: 85px;
+  margin-top: 80px;
 `;
 
 interface DataProps {
@@ -671,7 +671,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
     if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
       const authorId: string | null = get(idea, 'relationships.author.data.id', null);
-      const createdAt = idea.attributes.created_at;
+      const ideaCreatedAt = idea.attributes.created_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
       // If you're not an admin/mod, statusId can be null
@@ -738,7 +738,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 <StyledIdeaAuthor
                   ideaId={ideaId}
                   authorId={authorId}
-                  ideaCreatedAt={createdAt}
+                  ideaCreatedAt={ideaCreatedAt}
                   showLabel={true}
                 />
 
@@ -816,6 +816,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   ideaId={ideaId}
                 />
 
+                <IdeaContentFooter
+                  ideaId={ideaId}
+                  ideaCreatedAt={ideaCreatedAt}
+                  commentsCount={idea.attributes.comments_count}
+                />
+
                 <SharingMobile
                   url={ideaUrl}
                   twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
@@ -823,8 +829,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
                   utmParams={utmParams}
                 />
-
-                <IdeaContentFooter ideaId={ideaId} commentsCount={idea.attributes.comments_count} />
               </LeftColumn>
 
               <RightColumnDesktop>

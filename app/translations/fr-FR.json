@@ -114,6 +114,7 @@
   "app.components.IdeasShow.commentingDisabledProjectInactive": "Vous ne pouvez pas commenter sur cette idée car '{projectName}' n'est pas un projet actif.",
   "app.components.IdeasShow.commentingMaybeNotPermitted": "Tous les utilisateurs ne sont autorisés à commenter. Cliquez ici {signInLink} pour voir si vous avez accès.",
   "app.components.IdeasShow.commentingNotPermitted": "Malheureusement, vous n’avez pas le droit de commenter sur cette idée.",
+  "app.components.IdeasShow.createdTimeAgo": "",
   "app.components.IdeasShow.deleteIdea": "Supprimer l’idée",
   "app.components.IdeasShow.deleteIdeaConfirmation": "Êtes-vous sûr de vouloir supprimer cette idée ?",
   "app.components.IdeasShow.editIdea": "Modifier l’idée",
