@@ -17,23 +17,33 @@ import { colors, fontSizes } from 'utils/styleUtils';
 const Container = styled.div`
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: solid 1px ${colors.separation};
 `;
 
-const Left = styled.div``;
+const Left = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const Right = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const CommentsIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
-  fill: ${colors.label};
+  width: 23px;
+  height: 23px;
+  fill: ${colors.clIconSecondary};
+  margin-right: 6px;
 `;
 
 const CommentsCount = styled.div`
-  color: ${colors.label};
+  color: ${colors.secondaryText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;

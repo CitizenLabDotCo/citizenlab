@@ -432,7 +432,7 @@ const SharingWrapper = styled.div`
 const SharingMobile = styled(Sharing)`
   padding: 0;
   margin: 0;
-  margin-top: 30px;
+  margin-top: 40px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -440,7 +440,7 @@ const SharingMobile = styled(Sharing)`
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
-  margin-top: 85px;
+  margin-top: 80px;
 `;
 
 interface DataProps {
@@ -699,7 +699,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         !isNilOrError(locale) &&
         !idea.attributes.title_multiloc[locale]
       );
-      
+
       content = (
         <>
           <IdeaMeta ideaId={ideaId} />
@@ -804,6 +804,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   ideaId={ideaId}
                 />
 
+                <IdeaContentFooter
+                  ideaId={ideaId}
+                  commentsCount={idea.attributes.comments_count}
+                />
+
                 <SharingMobile
                   url={ideaUrl}
                   twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
@@ -811,8 +816,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
                   utmParams={utmParams}
                 />
-
-                <IdeaContentFooter ideaId={ideaId} commentsCount={idea.attributes.comments_count} />
               </LeftColumn>
 
               <RightColumnDesktop>
