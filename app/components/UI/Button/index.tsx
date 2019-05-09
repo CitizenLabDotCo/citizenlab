@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent, FormEvent, ButtonHTMLAttributes } from 'react';
 import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
@@ -94,9 +94,15 @@ function buttonTheme(
 
       &:not(.processing):hover,
       &:not(.processing):focus {
-        ${finalBgColor !== ('transparent' || '#fff' || 'white') && `background: ${finalBgHoverColor || darken(0.12, finalBgColor)};`}
-        ${finalBgColor === ('transparent' || '#fff' || 'white') && finalTextColor && (finalTextHoverColor || setFillColor(darken(0.2, finalTextColor)))}
-        ${finalBgColor === ('transparent' || '#fff' || 'white') && finalBorderColor !== 'transparent' && `border-color: ${finalBorderHoverColor || darken(0.2, finalBorderColor)};`}
+        ${finalBgColor !== ('transparent' || '#fff' || 'white')
+          && `background: ${finalBgHoverColor || darken(0.12, finalBgColor)};`}
+
+        ${finalBgColor === ('transparent' || '#fff' || 'white')
+          && finalTextColor && (finalTextHoverColor || setFillColor(darken(0.2, finalTextColor)))}
+
+        ${finalBgColor === ('transparent' || '#fff' || 'white')
+          && finalBorderColor !== 'transparent'
+          && `border-color: ${finalBorderHoverColor || darken(0.2, finalBorderColor)};`}
       }
     }
 
@@ -191,7 +197,8 @@ const Container: any = styled.div`
       )}
     }
     &.primary-outlined {
-      ${(props: any) => buttonTheme(props, 'transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
+      ${(props: any) => buttonTheme(props, 'transparent', props.theme.colorMain
+        || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
     }
     &.secondary-outlined {
       ${(props: any) => buttonTheme(props, 'transparent', colors.label, colors.label)}
@@ -250,7 +257,17 @@ const HiddenText = styled.span`
   ${invisibleA11yText()}
 `;
 
-export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'text' | 'cl-blue' | 'admin-dark' | 'delete';
+export type ButtonStyles =
+  'primary'
+  | 'primary-inverse'
+  | 'primary-outlined'
+  | 'secondary'
+  | 'secondary-outlined'
+  | 'success'
+  | 'text'
+  | 'cl-blue'
+  | 'admin-dark'
+  | 'delete';
 
 export type Props = {
   children?: any;
@@ -289,7 +306,7 @@ export type Props = {
   theme?: object | undefined;
   minWidth?: string;
   width?: string;
-  type?: string;
+  type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
   spinnerColor?: string;
   fullHeight?: boolean;
   ariaLabel?: string;
@@ -338,7 +355,36 @@ class Button extends PureComponent<Props, State> {
   }
 
   render() {
-    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, justifyWrapper, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab, fontWeight, fullHeight, ariaLabel } = this.props;
+    const {
+      type,
+      text,
+      form,
+      textColor,
+      textHoverColor,
+      bgColor,
+      bgHoverColor,
+      borderColor,
+      borderHoverColor,
+      borderThickness,
+      minWidth,
+      width,
+      height,
+      padding,
+      justify,
+      justifyWrapper,
+      icon,
+      iconSize,
+      iconTitle,
+      iconTheme,
+      hiddenText,
+      children,
+      linkTo,
+      openInNewTab,
+      fontWeight,
+      fullHeight,
+      ariaLabel
+    } = this.props;
+
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -357,10 +403,22 @@ class Button extends PureComponent<Props, State> {
     const hasText = (!isNil(text) || !isNil(children));
     const childContent = (
       <>
-        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme} />}
+        {icon && iconPos === 'left' &&
+          <StyledIcon
+            name={icon}
+            className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
+            title={iconTitle}
+            colorTheme={iconTheme}
+          />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
-        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme} />}
+        {icon && iconPos === 'right' &&
+        <StyledIcon
+          name={icon}
+          className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
+          title={iconTitle}
+          colorTheme={iconTheme}
+        />}
         {processing &&
           <SpinnerWrapper>
             <Spinner size={spinnerSize} color={spinnerColor} />
