@@ -90,7 +90,7 @@ export default defineMessages({
   },
   profileDeletionConfirmation: {
     id: 'app.containers.UsersEditPage.profileDeletionConfirmation',
-    defaultMessage: 'Are you sure you want to delete your profile ?',
+    defaultMessage: 'Are you sure you want to delete your profile?',
   },
   deleteProfileError: {
     id: 'app.containers.UsersEditPage.deleteProfileError',

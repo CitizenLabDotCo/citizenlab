@@ -1331,7 +1331,7 @@
   "app.containers.UsersEditPage.outside": "{orgType, select, city {Outside of {name}} generic {None of these}}",
   "app.containers.UsersEditPage.password": "Pick a new password",
   "app.containers.UsersEditPage.processing": "Sending...",
-  "app.containers.UsersEditPage.profileDeletionConfirmation": "Are you sure you want to delete your profile ?",
+  "app.containers.UsersEditPage.profileDeletionConfirmation": "Are you sure you want to delete your profile?",
   "app.containers.UsersEditPage.storeError": "Can't store updated profile",
   "app.containers.UsersEditPage.stored": "Profile stored",
   "app.containers.UsersEditPage.submit": "Update profile",
