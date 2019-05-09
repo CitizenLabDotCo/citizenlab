@@ -17,14 +17,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.imageAltText',
     defaultMessage: '{orgName} - main image for the ida {ideaTitle}',
   },
-  closeMap: {
-    id: 'app.containers.IdeasShow.closeMap',
-    defaultMessage: 'Close Map',
-  },
-  openMap: {
-    id: 'app.containers.IdeasShow.openMap',
-    defaultMessage: 'Show idea on map',
-  },
   Map: {
     id: 'app.containers.IdeasShow.Map',
     defaultMessage: 'Map',
