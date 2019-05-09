@@ -1,6 +1,6 @@
 import React from 'react';
 import { get, isString, isEmpty, isEqual, isBoolean, omit, pick, omitBy } from 'lodash-es';
-import { Subscription, BehaviorSubject, VirtualTimeScheduler } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { debounceTime, switchMap, delay, tap } from 'rxjs/operators';
 import { ideasStream, IIdeaData, IdeaPublicationStatus } from 'services/ideas';
 import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
@@ -10,8 +10,6 @@ import { isNilOrError } from 'utils/helperUtils';
 export type SortAttribute = 'new' | 'trending' | 'popular' | 'author_name' | 'upvotes_count' | 'downvotes_count' | 'baskets_count' | 'status';
 export type Sort = 'random' | 'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular' | 'author_name' | '-author_name' | 'upvotes_count' | '-upvotes_count' | 'downvotes_count' | '-downvotes_count' | 'baskets_count' | '-baskets_count' | 'status' | '-status';
 export type PublicationStatus = IdeaPublicationStatus;
-
-export const scheduler = new VirtualTimeScheduler();
 
 export interface InputProps {
   // pagination
@@ -140,7 +138,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       this.pageNumber$.pipe(
         // because methods change the state and push the new page value at the same time,
         // a small delay is needed so the state is updated when reading it.
-        delay(200, scheduler),
+        delay(200),
         switchMap(pageNumber => {
           const queryParameters = pick(this.state, [
             'projects',
