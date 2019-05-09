@@ -114,7 +114,7 @@ export default defineMessages({
   },
   tooManyEmails: {
     id: 'app.containers.UsersEditPage.tooManyEmails',
-    defaultMessage: 'Receiving too many emails? You can manage your email preferences.',
+    defaultMessage: 'Receiving too many emails? You can manage your email preferences in your profile settings.',
   },
   privacyReasons: {
     id: 'app.containers.UsersEditPage.privacyReasons',
