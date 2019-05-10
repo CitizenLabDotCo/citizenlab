@@ -7,6 +7,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
+import Illustration from './Illustration';
 
 const Container = styled.div`
   width: 100%;
@@ -57,6 +58,7 @@ const Subtitle = styled.h3`
 `;
 
 interface InputProps {
+  userActuallyDeleted: boolean;
 }
 
 interface DataProps {
@@ -64,8 +66,9 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-export default memo((_props: Props) => (
+export default memo(({ userActuallyDeleted }: Props) => userActuallyDeleted ? (
   <Container>
+    <Illustration />
     <Title className="e2e-user-deleted-success-modal-content">
       <FormattedMessage {...messages.userDeletedTitle} />
     </Title>
@@ -73,4 +76,6 @@ export default memo((_props: Props) => (
       <FormattedMessage {...messages.userDeletedSubtitle} />
     </Subtitle>
   </Container>
+) : (
+  <FormattedMessage {...messages.userDeletionFailed} />
 ));

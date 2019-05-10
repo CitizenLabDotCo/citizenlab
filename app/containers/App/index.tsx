@@ -41,7 +41,7 @@ import HasPermission from 'components/HasPermission';
 // services
 import { localeStream } from 'services/locale';
 import { IUser } from 'services/users';
-import { authUserStream, signOut } from 'services/auth';
+import { authUserStream, signOut, signOutAndDeleteAccountPart2 } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
 // utils
@@ -96,6 +96,7 @@ type State = {
   modalUrl: string | null;
   visible: boolean;
   userDeletedModalOpened: boolean;
+  userActuallyDeleted: boolean;
 };
 
 class App extends PureComponent<Props & WithRouterProps, State> {
@@ -113,7 +114,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       modalId: null,
       modalUrl: null,
       visible: true,
-      userDeletedModalOpened: false
+      userDeletedModalOpened: false,
+      userActuallyDeleted: false
     };
     this.subscriptions = [];
   }
@@ -191,8 +193,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       }),
     ];
     this.subscriptions.push(
-      eventEmitter.observeEvent('profileDeletedSuccessfuly').subscribe(() => {
-        this.setState({ userDeletedModalOpened: true });
+      eventEmitter.observeEvent('tryAndDeleteProfile').subscribe(() => {
+        signOutAndDeleteAccountPart2().then(success => {
+          if (success) {
+            this.setState({ userDeletedModalOpened: true, userActuallyDeleted: true });
+            // this.setState({ userDeletedModalOpened: true, userDeletedSuccessfully: true });
+          } else {
+            this.setState({ userDeletedModalOpened: true, userActuallyDeleted: false });
+          }
+        });
       })
     );
   }
@@ -217,13 +226,24 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   unauthenticatedVoteClick = () => {
     clHistory.push('/sign-in');
   }
-    closeUserDeletedModal = () => {
-      this.setState({ userDeletedModalOpened: false });
-    }
+
+  closeUserDeletedModal = () => {
+    this.setState({ userDeletedModalOpened: false });
+  }
 
   render() {
     const { location, children } = this.props;
-    const { previousPathname, tenant, modalOpened, modalType, modalId, modalUrl, visible , userDeletedModalOpened } = this.state;
+    const {
+      previousPathname,
+      tenant,
+      modalOpened,
+      modalType,
+      modalId,
+      modalUrl,
+      visible ,
+      userDeletedModalOpened,
+      userActuallyDeleted
+    } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
 
@@ -240,7 +260,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                     opened={userDeletedModalOpened}
                     close={this.closeUserDeletedModal}
                   >
-                    <UserDeletedModalContent />
+                    <UserDeletedModalContent userActuallyDeleted={userActuallyDeleted} />
                   </LoadableModal>
                 </ErrorBoundary>
 

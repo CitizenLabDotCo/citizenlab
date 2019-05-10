@@ -28,7 +28,6 @@ const Row = styled.div`
 `;
 
 interface Props {
-  userId: string;
 }
 
 interface State {

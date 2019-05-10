@@ -93,7 +93,7 @@ export default class ProfileEditor extends PureComponent<Props, State> {
               areas={areas.data}
               tenant={currentTenant.data}
             />
-            <ProfileDeletion userId={authUser.data.id}/>
+            <ProfileDeletion/>
             <CampaignsConsentForm />
           </Wrapper>
         </Container>
