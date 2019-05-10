@@ -229,7 +229,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
   onCardHover = (event: FormEvent<MouseEvent>) => {
     event.preventDefault();
-    eventEmitter.emit(componentName, 'cardHover', null);
   }
 
   onAuthorClick = (event: FormEvent<MouseEvent>) => {
