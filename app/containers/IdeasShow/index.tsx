@@ -17,7 +17,6 @@ import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
 import Modal from 'components/UI/Modal';
-import VoteControl from 'components/VoteControl';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
 import FileAttachments from 'components/UI/FileAttachments';
@@ -26,6 +25,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
 import IdeaHeader from './IdeaHeader';
 import IdeaAuthor from './IdeaAuthor';
+import IdeaVoteControlMobile from './IdeaVoteControlMobile';
 import IdeaFooter from './IdeaFooter';
 import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
@@ -91,7 +91,6 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  will-change: opacity;
 
   &.loading-enter {
     ${StyledSpinner} {
@@ -111,8 +110,7 @@ const Container = styled.div`
   flex-direction: column;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px);
   background: #fff;
-  transform: none;
-  will-change: transform, opacity;
+  /* transform: none; */
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
@@ -402,18 +400,6 @@ const StatusTitle = styled.h4`
   margin: 0;
   margin-bottom: 8px;
   padding: 0;
-`;
-
-const VoteControlMobile = styled.div`
-  border-top: solid 1px ${colors.separation};
-  border-bottom: solid 1px ${colors.separation};
-  padding-top: 15px;
-  padding-bottom: 15px;
-  margin-bottom: 30px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const AssignBudgetControlMobile = styled.div`
@@ -719,14 +705,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
             <Content>
               <LeftColumn>
-                {/* <FeatureFlag name="machine_translations"> */}
+                <FeatureFlag name="machine_translations">
                   {showTranslateButton &&
                     <StyledTranslateButton
                       translateButtonClicked={translateButtonClicked}
                       onClick={this.onTranslateIdea}
                     />
                   }
-                {/* </FeatureFlag> */}
+                </FeatureFlag>
                 <IdeaHeader
                   ideaId={ideaId}
                   statusId={statusId}
@@ -743,13 +729,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 />
 
                 {!inModal && showVoteControl &&
-                  <VoteControlMobile>
-                    <VoteControl
-                      ideaId={ideaId}
-                      unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                      size="1"
-                    />
-                  </VoteControlMobile>
+                  <IdeaVoteControlMobile
+                    ideaId={ideaId}
+                    unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                  />
                 }
 
                 {ideaImageLarge &&

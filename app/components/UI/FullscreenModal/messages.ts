@@ -1,8 +1,3 @@
-/*
- * Breadcrumbs Messages
- *
- * This contains all the text for the Breadcrumbs component.
- */
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
@@ -13,5 +8,9 @@ export default defineMessages({
   goBack: {
     id: 'app.components.FullscreenModal.goBack',
     defaultMessage: 'Go back',
+  },
+  home: {
+    id: 'app.components.FullscreenModal.home',
+    defaultMessage: 'Home',
   },
 });

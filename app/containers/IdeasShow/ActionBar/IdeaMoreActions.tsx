@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 
@@ -28,6 +28,8 @@ import { deleteIdea } from 'services/ideas';
 import clHistory from 'utils/cl-router/history';
 import { fontSizes } from 'utils/styleUtils';
 
+const Container = styled.div``;
+
 const MoreActionsMenuWrapper = styled.div``;
 
 interface DataProps {
@@ -37,6 +39,7 @@ interface DataProps {
 
 interface InputProps {
   ideaId: string;
+  className?: string;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -45,11 +48,10 @@ interface State {
   spamModalVisible: boolean;
 }
 
-class IdeaMoreActions extends React.PureComponent<Props & InjectedIntlProps, State>{
+class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
 
   constructor(props) {
     super(props);
-
     this.state = {
       spamModalVisible: false
     };
@@ -77,11 +79,11 @@ class IdeaMoreActions extends React.PureComponent<Props & InjectedIntlProps, Sta
   }
 
   render() {
-    const { authUser, idea, ideaId } = this.props;
+    const { authUser, idea, ideaId, className } = this.props;
     const { spamModalVisible } = this.state;
 
     return !isNilOrError(authUser) && !isNilOrError(idea) ? (
-      <>
+      <Container className={className}>
         <MoreActionsMenuWrapper>
           <HasPermission item={idea} action="edit" context={idea}>
             <MoreActionsMenu
@@ -125,7 +127,7 @@ class IdeaMoreActions extends React.PureComponent<Props & InjectedIntlProps, Sta
             resourceType="ideas"
           />
         </Modal>
-      </>
+      </Container>
     )
     :
     null;

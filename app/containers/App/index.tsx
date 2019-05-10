@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { isString, isObject } from 'lodash-es';
@@ -31,7 +31,6 @@ import { trackPage } from 'utils/analytics';
 import Meta from './Meta';
 import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import LoadableFullscreenModal from 'components/Loadable/FullscreenModal';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -94,6 +93,8 @@ type State = {
   modalUrl: string | null;
   visible: boolean;
 };
+
+const IdeaPageFullscreenModal = lazy(() => import('./IdeaPageFullscreenModal'));
 
 class App extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
@@ -177,10 +178,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         }
       }),
 
-      eventEmitter.observeEvent('cardHover').subscribe(() => {
-        this.preloadIdeaModal();
-      }),
-
       eventEmitter.observeEvent<IModalInfo>('ideaCardClick').subscribe(({ eventValue }) => {
         const { type, id, url } = eventValue;
         this.openModal(type, id, url);
@@ -191,10 +188,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentWillUnmount() {
     this.unlisten();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  preloadIdeaModal = () => {
-    LoadableFullscreenModal.preload();
   }
 
   openModal = (type: string, id: string | null, url: string | null) => {
@@ -224,14 +217,16 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                 <Meta />
 
                 <ErrorBoundary>
-                  <LoadableFullscreenModal
-                    modalOpened={modalOpened}
-                    close={this.closeModal}
-                    modalUrl={modalUrl}
-                    modalId={modalId}
-                    modalType={modalType}
-                    unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                  />
+                  <Suspense fallback={null}>
+                    <IdeaPageFullscreenModal
+                      modalOpened={modalOpened}
+                      close={this.closeModal}
+                      modalUrl={modalUrl}
+                      modalId={modalId}
+                      modalType={modalType}
+                      unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                    />
+                  </Suspense>
                 </ErrorBoundary>
 
                 <ErrorBoundary>

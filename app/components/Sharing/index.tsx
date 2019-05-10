@@ -41,10 +41,13 @@ const Container = styled.div`
 
 const Title = styled.h3`
   font-size: ${fontSizes.large}px;
+  font-weight: 500;
   color: ${({ theme }) => theme.colorText};
+  display: flex;
+  align-items: center;
   padding: 0;
   margin: 0;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 `;
 
 const ShareIcon = styled(Icon)`

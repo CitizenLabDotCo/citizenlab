@@ -8,16 +8,14 @@ import { Locale } from 'typings';
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
-const HeaderWrapper = styled.div`
+const Container = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Header = styled.div`
+  margin-top: -5px;
   margin-bottom: 28px;
-  display: flex;
-  flex-direction: column;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 0px;
+  `}
 `;
 
 const IdeaTitle = styled.h1`
@@ -34,7 +32,7 @@ const IdeaTitle = styled.h1`
 
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxxl}px;
-    line-height: 34px;
+    line-height: 35px;
     margin-right: 12px;
   `}
 `;
@@ -63,36 +61,35 @@ interface Props {
   ideaTitle: string;
   locale?: Locale;
   translateButtonClicked?: boolean;
+  className?: string;
 }
 
 const IdeaHeader = memo<Props>((props: Props) => {
-  const { ideaId, statusId, ideaTitle, locale, translateButtonClicked } = props;
+  const { ideaId, statusId, ideaTitle, locale, translateButtonClicked, className } = props;
 
   return (
-    <HeaderWrapper>
-      <Header>
-        {locale && translateButtonClicked ?
-          <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={ideaId}>
-            {translation => {
-              if (!isNilOrError(translation)) {
-                return <IdeaTitle>{translation.attributes.translation}</IdeaTitle>;
-              }
+    <Container className={className}>
+      {locale && translateButtonClicked ?
+        <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={ideaId}>
+          {translation => {
+            if (!isNilOrError(translation)) {
+              return <IdeaTitle>{translation.attributes.translation}</IdeaTitle>;
+            }
 
-              return <IdeaTitle>{ideaTitle}</IdeaTitle>;
-            }}
-          </GetMachineTranslation>
-          :
-          <IdeaTitle className="e2e-ideatitle">{ideaTitle}</IdeaTitle>
-        }
+            return <IdeaTitle>{ideaTitle}</IdeaTitle>;
+          }}
+        </GetMachineTranslation>
+        :
+        <IdeaTitle className="e2e-ideatitle">{ideaTitle}</IdeaTitle>
+      }
 
-        {statusId &&
-          <StatusContainer>
-            <StatusTitle><FormattedMessage {...messages.currentStatus} /></StatusTitle>
-            <StatusBadge statusId={statusId} />
-          </StatusContainer>
-        }
-      </Header>
-    </HeaderWrapper>
+      {statusId &&
+        <StatusContainer>
+          <StatusTitle><FormattedMessage {...messages.currentStatus} /></StatusTitle>
+          <StatusBadge statusId={statusId} />
+        </StatusContainer>
+      }
+    </Container>
   );
 });
 

@@ -1,7 +1,7 @@
-import * as React from 'react';
-import styled from 'styled-components';
+import React, { PureComponent } from 'react';
 
 // styles
+import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
@@ -28,11 +28,14 @@ import tracks from './tracks';
 const Container = styled.aside``;
 
 const Title = styled.h3`
+  font-size: ${fontSizes.large}px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colorText};
   display: flex;
   align-items: center;
-  font-size: ${fontSizes.large}px;
-  color: ${({ theme }) => theme.colorText};
-  margin-bottom: 20px;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 24px;
 `;
 
 const SimilarIdeasIcon = styled(Icon)`
@@ -74,7 +77,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-class SimilarIdeas extends React.Component<Props> {
+class SimilarIdeas extends PureComponent<Props> {
   onClickIdeaLink = (index: number) => () => {
     trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
   }

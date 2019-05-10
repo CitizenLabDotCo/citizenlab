@@ -20,7 +20,7 @@ import { colors, media, ideaPageContentMaxWidth } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  height: 52px;
+  height: 54px;
   background-color: rgba(132, 147, 158, 0.06);
   color: ${colors.label};
   border-bottom: 1px solid ${colors.adminSeparation};
@@ -50,11 +50,13 @@ const Right = styled.div`
 `;
 
 const StyledTranslateButton = styled(TranslateButton)`
-  margin-right: 25px;
-
   ${media.smallerThanMinTablet`
     display: none;
   `}
+`;
+
+const StyledIdeaMoreActions = styled(IdeaMoreActions)`
+  margin-left: 35px;
 `;
 
 interface InputProps {
@@ -70,10 +72,13 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const ActionBar = memo<Props>(({ ideaId, onTranslateIdea, translateButtonClicked, idea, locale }: Props) => {
-  const showTranslateButton = !isNilOrError(idea) &&
-                              !isNilOrError(locale) &&
-                              !idea.attributes.title_multiloc[locale];
+const ActionBar = memo<Props>(({ ideaId, onTranslateIdea, translateButtonClicked, idea, locale }) => {
+
+  const showTranslateButton = (
+    !isNilOrError(idea) &&
+    !isNilOrError(locale) &&
+    !idea.attributes.title_multiloc[locale]
+  );
 
   return (
     <Container>
@@ -82,15 +87,15 @@ const ActionBar = memo<Props>(({ ideaId, onTranslateIdea, translateButtonClicked
           <BreadCrumbs ideaId={ideaId} />
         </Left>
         <Right>
-          {/* <FeatureFlag name="machine_translations"> */}
+          <FeatureFlag name="machine_translations">
             {showTranslateButton &&
               <StyledTranslateButton
                 translateButtonClicked={translateButtonClicked}
                 onClick={onTranslateIdea}
               />
             }
-          {/* </FeatureFlag> */}
-          <IdeaMoreActions ideaId={ideaId} />
+          </FeatureFlag>
+          <StyledIdeaMoreActions ideaId={ideaId} />
         </Right>
       </Inner>
     </Container>

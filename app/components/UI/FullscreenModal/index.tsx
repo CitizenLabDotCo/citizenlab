@@ -4,15 +4,11 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Icon from 'components/UI/Icon';
+import TopBar from 'components/UI/Fullscreenmodal/TopBar';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // tracking
 import { trackEventByName, trackPage } from 'utils/analytics';
@@ -20,8 +16,7 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import { media } from 'utils/styleUtils';
 import { getUrlLocale } from 'services/locale';
 
 const timeout = 300;
@@ -34,16 +29,15 @@ const Container: any = styled.div`
   left: 0;
   right: 0;
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
   justify-content: center;
   overflow: hidden;
   background: #fff;
-  z-index: -10000;
-  transform: none;
-  will-change: opacity;
   display: none;
 
   &.opened {
-    z-index: 996;
+    z-index: 998;
     display: block;
   }
 
@@ -58,7 +52,6 @@ const Container: any = styled.div`
 
   ${media.smallerThanMaxTablet`
     top: 0;
-    will-change: opacity, transform;
 
     &.modal-enter {
       opacity: 0;
@@ -66,7 +59,7 @@ const Container: any = styled.div`
 
       &.modal-enter-active {
         opacity: 1;
-        transform: translateY(0);
+        transform: none;
         transition: all ${timeout}ms ${easing};
       }
     }
@@ -78,107 +71,18 @@ const Container: any = styled.div`
 `;
 
 const Content = styled.div`
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 100%;
   width: 100%;
   height: 100%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 997;
-  overflow: auto;
+  overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
     height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px - ${props => props.theme.mobileMenuHeight}px);
     margin-top: ${props => props.theme.mobileTopBarHeight}px;
   `}
-`;
-
-const ContentInner = styled.div`
-  width: 100%;
-`;
-
-const TopBar: any = styled.div`
-  height: ${props => props.theme.mobileTopBarHeight}px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border-bottom: solid 1px ${colors.separation};
-  z-index: 998;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
-const TopBarInner = styled.div`
-  height: 100%;
-  padding-left: 15px;
-  padding-right: 15px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const GoBackIcon = styled(Icon)`
-  height: 22px;
-  fill: ${colors.label};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: fill 100ms ease-out;
-`;
-
-const GoBackButton = styled.div`
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 6px;
-  margin-left: -2px;
-  cursor: pointer;
-  background: #fff;
-  border-radius: 50%;
-  border: solid 1px ${lighten(0.4, colors.label)};
-  transition: all 100ms ease-out;
-
-  &:hover {
-    border-color: #000;
-
-    ${GoBackIcon} {
-      fill: #000;
-    }
-  }
-`;
-
-const GoBackLabel = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  transition: fill 100ms ease-out;
-
-  ${media.phone`
-    display: none;
-  `}
-`;
-
-const GoBackButtonWrapper = styled.div`
-  height: 48px;
-  align-items: center;
-  display: none;
-
-  ${media.smallerThanMaxTablet`
-    display: flex;
-  `}
-`;
-
-const HeaderChildWrapper = styled.div`
-  display: inline-block;
 `;
 
 interface InputProps {
@@ -202,7 +106,7 @@ const useCapture = false;
 class Modal extends PureComponent<Props, State> {
   unlisten: Function | null;
   goBackUrl: string | null;
-  ModalContentInnerElement: HTMLDivElement | null;
+  ContentElement: HTMLDivElement | null;
 
   constructor(props) {
     super(props);
@@ -211,7 +115,7 @@ class Modal extends PureComponent<Props, State> {
     };
     this.unlisten = null;
     this.goBackUrl = null;
-    this.ModalContentInnerElement = null;
+    this.ContentElement = null;
   }
 
   componentWillUnmount() {
@@ -250,22 +154,21 @@ class Modal extends PureComponent<Props, State> {
       trackPage(localizedUrl, { modal: true });
     }
 
-    disableBodyScroll(this.ModalContentInnerElement);
+    disableBodyScroll(this.ContentElement);
   }
 
   handleKeypress = (event) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
-      this.manuallyCloseModal();
+      this.closeModal();
     }
   }
 
-  manuallyCloseModal = () => {
-    if (this.props.url && this.goBackUrl) {
+  closeModal = () => {
+    if (this.props.url && this.goBackUrl && this.goBackUrl !== this.props.url) {
       window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
+      this.props.close();
     }
-
-    this.props.close();
   }
 
   handlePopstateEvent = () => {
@@ -289,26 +192,25 @@ class Modal extends PureComponent<Props, State> {
       this.unlisten();
     }
 
-    if (this.ModalContentInnerElement) {
-      this.ModalContentInnerElement.scrollTop = 0;
+    if (this.ContentElement) {
+      this.ContentElement.scrollTop = 0;
     }
 
-    enableBodyScroll(this.ModalContentInnerElement);
+    enableBodyScroll(this.ContentElement);
   }
 
   clickOutsideModal = () => {
     trackEventByName(tracks.clickOutsideModal, { extra: { url: this.props.url } });
-    this.manuallyCloseModal();
+    this.closeModal();
   }
 
-  clickCloseButton = (event) => {
-    event.preventDefault();
+  clickGoBackButton = () => {
     trackEventByName(tracks.clickCloseButton, { extra: { url: this.props.url } });
-    this.manuallyCloseModal();
+    this.closeModal();
   }
 
   setRef = (element: HTMLDivElement) => {
-    this.ModalContentInnerElement = (element || null);
+    this.ContentElement = (element || null);
   }
 
   render() {
@@ -323,25 +225,13 @@ class Modal extends PureComponent<Props, State> {
         unmountOnExit={false}
         exit={true}
       >
-        <Container id="e2e-fullscreenmodal-content" className={`${opened && 'opened'}`}>
+        <Container id="e2e-fullscreenmodal-content" className={`${opened ? 'opened' : 'closed'}`}>
           <Content innerRef={this.setRef}>
-            <ContentInner>
-              {children}
-            </ContentInner>
+            {children}
           </Content>
 
-          <TopBar>
-            <TopBarInner>
-              <GoBackButtonWrapper>
-                <GoBackButton onClick={this.clickCloseButton}>
-                  <GoBackIcon name="arrow-back" />
-                </GoBackButton>
-                <GoBackLabel>
-                  <FormattedMessage {...messages.goBack} />
-                </GoBackLabel>
-              </GoBackButtonWrapper>
-              {headerChild && <HeaderChildWrapper>{headerChild}</HeaderChildWrapper>}
-            </TopBarInner>
+          <TopBar goBack={this.clickGoBackButton}>
+            {headerChild}
           </TopBar>
         </Container>
       </CSSTransition>
