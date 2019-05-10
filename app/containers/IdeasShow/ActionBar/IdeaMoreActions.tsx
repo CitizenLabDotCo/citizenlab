@@ -39,6 +39,7 @@ interface DataProps {
 
 interface InputProps {
   ideaId: string;
+  id: string;
   className?: string;
 }
 
@@ -79,12 +80,12 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
   }
 
   render() {
-    const { authUser, idea, ideaId, className } = this.props;
+    const { authUser, idea, ideaId, id, className } = this.props;
     const { spamModalVisible } = this.state;
 
     return !isNilOrError(authUser) && !isNilOrError(idea) ? (
       <Container className={className}>
-        <MoreActionsMenuWrapper>
+        <MoreActionsMenuWrapper id={id}>
           <HasPermission item={idea} action="edit" context={idea}>
             <MoreActionsMenu
               actions={[
@@ -103,6 +104,7 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
               ]}
               label={<FormattedMessage {...messages.moreOptions} />}
               fontSize={fontSizes.small}
+              id="e2e-idea-more-actions-menu"
             />
             <HasPermission.No>
               <MoreActionsMenu

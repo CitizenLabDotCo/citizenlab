@@ -86,7 +86,7 @@ const IdeaHeader = memo<Props>((props: Props) => {
       {statusId &&
         <StatusContainer>
           <StatusTitle><FormattedMessage {...messages.currentStatus} /></StatusTitle>
-          <StatusBadge statusId={statusId} />
+          <StatusBadge id="e2e-idea-status-badge" statusId={statusId} />
         </StatusContainer>
       }
     </Container>

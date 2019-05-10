@@ -295,6 +295,7 @@ const MapContainer = styled.div`
 
 const ArrowIcon = styled(Icon)`
   width: 12px;
+  height: 7px;
   transform: rotate(90deg);
   transition: all .2s linear;
 
@@ -745,7 +746,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 {ideaLocation &&
                   <MapContainer>
-                    <LocationButton onClick={this.handleMapToggle}>
+                    <LocationButton id="e2e-map-toggle" onClick={this.handleMapToggle}>
                       <Location>
                         <LocationIconWrapper>
                           <LocationIcon name="position" />

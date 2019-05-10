@@ -29,6 +29,7 @@ const Container = styled.div`
 type Props = {
   statusId: string;
   className?: string;
+  id?: string;
 };
 
 type State = {
@@ -61,13 +62,13 @@ export default class StatusBadge extends PureComponent<Props, State> {
 
   render() {
     const { ideaStatus } = this.state;
-    const { className } = this.props;
+    const { className, id } = this.props;
 
     if (ideaStatus !== null) {
       const color = (ideaStatus ? ideaStatus.data.attributes.color : '#bbb');
 
       return (
-        <Container className={className} color={color} >
+        <Container id={id} className={className} color={color} >
           <T value={ideaStatus.data.attributes.title_multiloc} />
         </Container>
       );

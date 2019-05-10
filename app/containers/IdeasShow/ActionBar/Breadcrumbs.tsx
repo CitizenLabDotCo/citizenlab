@@ -13,6 +13,9 @@ import { darken } from 'polished';
 
 // i18n
 import localize, { InjectedLocalized } from 'utils/localize';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -30,6 +33,7 @@ const Container = styled.div`
 const HomeLink = styled(Link)``;
 
 const HomeIcon = styled(Icon)`
+  width: 16px;
   height: 14px;
   fill: ${colors.label};
   margin-top: -3px;
@@ -79,16 +83,16 @@ interface InputProps {
 
 interface Props extends DataProps, InputProps {}
 
-const Breadcrumbs = memo(({ project, localize }: Props & InjectedLocalized) => {
+const Breadcrumbs = memo(({ project, localize, intl }: Props & InjectedLocalized & InjectedIntlProps) => {
 
   if (!isNilOrError(project)) {
     return (
       <Container>
-        <HomeLink to="/">
-          <HomeIcon name="homeFilled" />
+        <HomeLink id="e2e-home-page-link" to="/">
+          <HomeIcon title={intl.formatMessage(messages.linkToHomePage)} name="homeFilled" />
         </HomeLink>
         <Separator>/</Separator>
-        <ProjectLink to={`/projects/${project.attributes.slug}`}>
+        <ProjectLink id="e2e-project-link" to={`/projects/${project.attributes.slug}`}>
           {/* If we're on a small screen, we show a truncated version of the project */}
           <LinkText>{localize(project.attributes.title_multiloc)}</LinkText>
           <TruncatedLinkText>
@@ -102,7 +106,7 @@ const Breadcrumbs = memo(({ project, localize }: Props & InjectedLocalized) => {
   return null;
 });
 
-const BreadcrumbsWithHOCs = localize(Breadcrumbs);
+const BreadcrumbsWithHOCs = injectIntl(localize(Breadcrumbs));
 
 const Data = adopt({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,

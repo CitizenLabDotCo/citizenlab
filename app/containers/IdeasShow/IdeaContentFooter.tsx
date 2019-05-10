@@ -88,7 +88,7 @@ const IdeaContentFooter = memo<Props>(({ ideaCreatedAt, commentsCount, randomAva
   const userCount = !isNilOrError(randomAvatars) ? randomAvatars.meta.total : undefined;
 
   return (
-    <Container className={className}>
+    <Container id="e2e-idea-content-footer" className={className}>
       <Left>
         {!isEmpty(avatarIds) &&
           <StyledAvatarBubbles
