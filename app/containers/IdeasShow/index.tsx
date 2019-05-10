@@ -763,7 +763,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 {ideaLocation &&
                   <MapContainer>
-                    <LocationButton onClick={this.handleMapToggle}>
+                    <LocationButton id="e2e-map-toggle" onClick={this.handleMapToggle}>
                       <Location>
                         <LocationIconWrapper>
                           <LocationIcon name="position" />
