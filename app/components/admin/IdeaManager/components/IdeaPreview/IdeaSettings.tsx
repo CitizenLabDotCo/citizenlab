@@ -95,6 +95,7 @@ class IdeaSettings extends PureComponent<PropsWithHoCs, State> {
       if (isNilOrError(statuses)) {
         nextState.statusOptions = [];
       } else {
+        console.log(statuses, localize(statuses[0].attributes.title_multiloc));
         nextState.statusOptions = statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
       }
 
