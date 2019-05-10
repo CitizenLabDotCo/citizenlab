@@ -25,6 +25,19 @@ RSpec.describe Idea, type: :model do
 
   end
 
+  context "feedback_needed" do 
+    it "should select ideas with no official feedback or no idea status change" do
+      TenantTemplateService.new.resolve_and_apply_template('base')
+      i1 = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
+      create(:official_feedback, idea: i1)
+      i2 = create(:idea, idea_status: IdeaStatus.find_by(code: 'accepted'))
+      i3 = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
+      i4 = create(:idea, idea_status: IdeaStatus.find_by(code: 'viewed'))
+
+      expect(Idea.feedback_needed.ids).to match_array [i3.id]
+    end
+  end
+
   context "published at" do
     it "gets set immediately when creating a published idea" do
       t = Time.now
@@ -156,6 +169,36 @@ RSpec.describe Idea, type: :model do
       idea = create(:idea, title_multiloc: {'en' => ' my fantastic idea  '})
       expect(idea.title_multiloc['en']).to eq 'my fantastic idea'
     end
+  end
+
+  describe "assignee" do
+    let(:idea) { build(:idea) }
+
+    it "is invalid when it\'s not an admin or project moderator" do
+      idea.assignee = build_stubbed(:user)
+      expect(idea).to be_invalid
+    end
+
+    it "is invalid when it\'s a a project moderator of a different project" do
+      idea.assignee = build(:moderator)
+      expect(idea).to be_invalid
+    end
+
+    it "is valid when it\'s a an admin" do
+      idea.assignee = build(:admin)
+      expect(idea).to be_valid
+    end
+
+    it "is valid when it\'s a a project moderator of the same project" do
+      idea.assignee = build(:moderator, project: idea.project)
+      expect(idea).to be_valid
+    end
+
+    it "is valid when nil" do
+      idea.assignee = nil
+      expect(idea).to be_valid
+    end
+
   end
 
 

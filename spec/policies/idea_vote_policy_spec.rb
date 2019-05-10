@@ -1,8 +1,9 @@
 require 'rails_helper'
 
-describe VotePolicy do
-  subject { VotePolicy.new(user, vote) }
-  let(:scope) { VotePolicy::Scope.new(user, Vote) }
+describe IdeaVotePolicy do
+
+  subject { IdeaVotePolicy.new(user, vote) }
+  let(:scope) { IdeaVotePolicy::Scope.new(user, Vote) }
   let(:project) { create(:continuous_project, with_permissions: true) }
   let(:votable) { create(:idea, project: project)}
   let!(:vote) { create(:vote, votable: votable) }
@@ -21,7 +22,7 @@ describe VotePolicy do
     end
   end
 
-  context "for a mortal user" do 
+  context "for a mortal user on a vote of another user" do 
   	let(:user) { create(:user) }
 
     it { should_not permit(:show) }

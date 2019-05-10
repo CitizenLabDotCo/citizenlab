@@ -17,8 +17,9 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     @users = @users.active unless params[:include_inactive]
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
-
-
+    @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
+    @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
+    
     @users = case params[:sort]
       when "created_at"
         @users.order(created_at: :asc)

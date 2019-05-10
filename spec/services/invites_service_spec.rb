@@ -124,30 +124,15 @@ describe InvitesService do
       end
     end
 
-    context "with an email that is already used by an active user" do
-      before { create(:user, email: 'someuser@somedomain.com') }
+    context "with an email that is already used by an active user (case insensitive)" do
+      before { create(:user, email: 'someUser@somedomain.com') }
       let(:hash_array) {[
         {email: 'john@john.son'},
-        {email: 'someuser@somedomain.com'}
+        {email: 'Someuser@somedomain.com'}
       ]}
 
       it "doesn't send out invitations to the existing users" do
         expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(1)
-      end
-    end
-
-    context "with an email that is already used by an active user (case insensitive)" do
-      before { create(:user, email: 'someuser@somedomain.com') }
-      let(:hash_array) {[
-        {email: 'SomeUser@somedomain.com'}
-      ]}
-
-      it "fails with email_already_active error" do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
-        expect(service.errors.size).to eq 1
-        expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:email_already_active]
-        expect(service.errors.first.row).to eq 2
-        expect(service.errors.first.value).to eq 'SomeUser@somedomain.com'
       end
     end
 
