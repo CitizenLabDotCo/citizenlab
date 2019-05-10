@@ -88,7 +88,7 @@ const Breadcrumbs = memo(({ project, localize, intl }: Props & InjectedLocalized
   if (!isNilOrError(project)) {
     return (
       <Container>
-        <HomeLink to="/">
+        <HomeLink id="e2e-home-page-link" to="/">
           <HomeIcon title={intl.formatMessage(messages.linkToHomePage)} name="homeFilled" />
         </HomeLink>
         <Separator>/</Separator>

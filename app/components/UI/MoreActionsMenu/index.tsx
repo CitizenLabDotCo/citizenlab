@@ -106,6 +106,7 @@ export interface Props {
   ariaLabel?: string;
   className?: string;
   fontSize?: number;
+  id?: string;
 }
 
 interface State {
@@ -135,7 +136,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
   }
 
   render() {
-    const { actions, ariaLabel, fontSize } = this.props;
+    const { actions, ariaLabel, fontSize, id } = this.props;
     const { visible } = this.state;
     const className = this.props.className;
 
@@ -146,6 +147,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     return (
       <Container className={className} >
         <Popover
+          id={id}
           content={
             <List>
               {actions.map((action, index) => {
