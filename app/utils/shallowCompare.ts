@@ -4,6 +4,11 @@ export default function shallowCompare(a, b) {
       return false;
     }
   }
+  for (const key in b) {
+    if (b[key] !== a[key]) {
+      return false;
+    }
+  }
 
   return true;
 }
