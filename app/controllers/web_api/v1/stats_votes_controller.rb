@@ -2,6 +2,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
   def votes_count
     count = StatVotePolicy::Scope.new(current_user, Vote).resolve
+      .where(votable_type: 'Idea')
       .where(created_at: @start_at..@end_at)
       .group(:mode)
       .count

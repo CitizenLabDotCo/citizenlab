@@ -10,6 +10,7 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
   belongs_to :author
   belongs_to :project
   belongs_to :idea_status
+  belongs_to :assignee, if: :can_moderate?
 
   has_one :user_vote, if: :signed_in? do |serializer|
     serializer.cached_user_vote
@@ -20,6 +21,10 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
 
   def signed_in?
     scope
+  end
+
+  def can_moderate?
+    ProjectPolicy.new(scope, object.project).moderate?
   end
 
   def cached_user_vote
