@@ -131,8 +131,7 @@ class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
             width="auto"
             justifyWrapper="left"
             processing={processing}
-
-            className="e2e-delete-profile"
+            className="e2e-delete-profile-confirm"
           >
             <FormattedMessage {...messages.deleteMyAccount} />
           </Button>
