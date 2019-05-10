@@ -70,7 +70,6 @@ class IdeaSettings extends PureComponent<PropsWithHoCs> {
       if (isNilOrError(statuses)) {
         return [];
       } else {
-        console.log(statuses, localize(statuses[0].attributes.title_multiloc));
         return statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
       }
     }
