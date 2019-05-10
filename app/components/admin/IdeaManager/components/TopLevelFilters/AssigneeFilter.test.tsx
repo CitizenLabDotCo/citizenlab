@@ -73,7 +73,6 @@ describe('<AssigneeFilter />', () => {
     const options = wrapper.find('Dropdown').prop('options');
     const all = options.find(option => option.value === 'all');
     wrapper.instance().onAssigneeChange({}, all);
-    console.log(handleAssigneeFilterChange.mock.calls);
     expect(handleAssigneeFilterChange.mock.calls[1][0]).toBe(undefined);
   });
 });
