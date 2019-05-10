@@ -244,7 +244,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const accessibleProjectsIds = !isNilOrError(project) ? [project.id] : (projects ? projects.map(project => project.id) : null);
 
     if (!projectIds || projectIds.length === 0) {
-      onChangeProjects(accessibleProjectsIds || undefined);
+      accessibleProjectsIds && onChangeProjects(accessibleProjectsIds);
     } else {
       onChangeProjects(projectIds);
     }
@@ -253,11 +253,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
   render() {
     const { searchTerm } = this.state;
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
-    const { ideasList, onChangePhase, onChangeTopics, onChangeIdeaStatus } = ideas;
-    const selectedTopics = ideas.topics;
-    const selectedPhase = ideas.phase;
-    const selectedProject = isArray(ideas.projects) && ideas.projects.length === 1 ? ideas.projects[0] : undefined;
-    const selectedIdeaStatus = ideas.idea_status;
+    const { ideasList, onChangePhase, onChangeTopics, onChangeIdeaStatus, queryParameters } = ideas;
+    const selectedTopics = queryParameters.topics;
+    const selectedPhase = queryParameters.phase;
+    const selectedProject = isArray(queryParameters.projects) && queryParameters.projects.length === 1 ? queryParameters.projects[0] : undefined;
+    const selectedIdeaStatus = queryParameters.idea_status;
     const { selectedIdeas, activeFilterMenu, visibleFilterMenus } = this.state;
     const selectedIdeaIds = keys(this.state.selectedIdeas);
     const showInfoSidebar = this.isAnyIdeaSelected();
@@ -291,18 +291,18 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
         <TopActionBar>
           <AssigneeFilter
-            assignee={ideas.assignee}
+            assignee={queryParameters.assignee}
             projectId={!isNilOrError(project) ? project.id : undefined}
             handleAssigneeFilterChange={ideas.onChangeAssignee}
           />
           <FeedbackToggle
-            value={ideas.feedback_needed || false}
+            value={queryParameters.feedback_needed || false}
             onChange={ideas.onChangeFeedbackFilter}
             project={selectedProject}
             phase={selectedPhase}
             topics={selectedTopics}
             ideaStatus={selectedIdeaStatus}
-            assignee={ideas.assignee}
+            assignee={queryParameters.assignee}
             searchTerm={searchTerm}
           />
           <StyledExportMenu
@@ -320,13 +320,13 @@ class IdeaManager extends React.PureComponent<Props, State> {
           </LeftColumn>
           <MiddleColumnTop>
             <IdeasCount
-              feedbackNeeded={ideas.feedback_needed || false}
+              feedbackNeeded={queryParameters.feedback_needed || false}
               project={selectedProject}
               phase={selectedPhase}
               topics={selectedTopics}
               ideaStatus={selectedIdeaStatus}
               searchTerm={searchTerm}
-              assignee={ideas.assignee}
+              assignee={queryParameters.assignee}
             />
             <StyledInput icon="search" onChange={this.handleSearchChange}/>
           </MiddleColumnTop>
