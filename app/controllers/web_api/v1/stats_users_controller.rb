@@ -73,12 +73,15 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def active_users_by_time
+
     activities_scope = Activity
       .select(:user_id).distinct
       .where(user_id: StatUserPolicy::Scope.new(current_user, User.active).resolve)
 
+    ps = ParticipantsService.new
+    activities_scope = ps.filter_engaging_activities(activities_scope)
+
     if params[:project]
-      ps = ParticipantsService.new
       project = Project.find(params[:project])
       participants = ps.projects_participants([project])
       activities_scope = activities_scope.where(user_id: participants)
