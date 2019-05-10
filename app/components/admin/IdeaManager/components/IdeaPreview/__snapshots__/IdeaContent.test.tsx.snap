@@ -30,7 +30,6 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
     <Component
       ideaId="myIdeasiD"
       ideaTitle="Doloribus quam molestiae ut."
-      projectId="d2adf974-8e9b-4a3c-8f0e-ff307d53821f"
     />
     <IdeaContent__Row>
       <IdeaContent__Left>
