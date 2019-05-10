@@ -216,7 +216,6 @@ export default class GetIdeas extends React.Component<Props, State> {
       this.subscriptions = [
         queryParametersOutput$.pipe(
           switchMap((queryParameters) => {
-            console.log(queryParameters);
             const cacheStream = (isBoolean(this.props.cache) ? this.props.cache : true);
             const oldPageNumber = this.state.queryParameters['page[number]'];
             const newPageNumber = queryParameters['page[number]'];
