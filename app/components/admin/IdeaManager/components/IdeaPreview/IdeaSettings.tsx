@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
+import { get, memoize } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -60,86 +60,53 @@ interface IColoredOption extends IOption {
   color: string;
 }
 
-interface State {
-  statusOptions: IOption[];
-  assigneeOptions: IOption[];
-  ideaStatusOption: IColoredOption | null;
-  ideaAssigneeOption: string | null;
-  prevPropsStatuses: GetIdeaStatusesChildProps | null;
-  prevPropsProspectAssignees: GetUsersChildProps | null;
-  prevPropsIdea: GetIdeaChildProps;
-}
-
 interface PropsWithHoCs extends Props, InjectedLocalized, InjectedIntlProps {}
 
-class IdeaSettings extends PureComponent<PropsWithHoCs, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      statusOptions: [],
-      assigneeOptions: [],
-      ideaStatusOption: null,
-      ideaAssigneeOption: null,
-      prevPropsStatuses: null,
-      prevPropsProspectAssignees: null,
-      prevPropsIdea: null
-    };
-  }
+class IdeaSettings extends PureComponent<PropsWithHoCs> {
 
-  static getDerivedStateFromProps(props: PropsWithHoCs, prevProps: State) {
-    const { statuses, localize, idea, prospectAssignees, intl: { formatMessage } } = props;
-    const { prevPropsStatuses, prevPropsProspectAssignees, prevPropsIdea } = prevProps;
-    const nextState = {} as Partial<State>;
-
-    if (statuses !== prevPropsStatuses) {
+  getStatusOptions = memoize(
+    (statuses) => {
+      const { localize } = this.props;
       if (isNilOrError(statuses)) {
-        nextState.statusOptions = [];
+        return [];
       } else {
         console.log(statuses, localize(statuses[0].attributes.title_multiloc));
-        nextState.statusOptions = statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
+        return statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
       }
-
-      nextState.prevPropsStatuses = statuses;
     }
+  );
 
-    if (prospectAssignees !== prevPropsProspectAssignees) {
-      if (isNilOrError(prospectAssignees.usersList)) {
-        nextState.assigneeOptions = [];
-      } else {
-        nextState.assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, label: `${assignee.attributes.first_name} ${assignee.attributes.last_name}` }));
-        nextState.assigneeOptions.push({ value: 'unassigned', label: formatMessage(messages.noOne) });
-      }
-
-      nextState.prevPropsProspectAssignees = prospectAssignees;
-    }
-
-    if (idea !== prevPropsIdea && !isNilOrError(statuses)) {
-      if (isNilOrError(idea) || !idea.relationships.idea_status || !idea.relationships.idea_status.data) {
-        nextState.ideaStatusOption = null;
+  getIdeaStatusOption = memoize(
+    (idea, statuses) => {
+      const { localize } = this.props;
+      if (isNilOrError(idea) || !idea.relationships.idea_status || !idea.relationships.idea_status.data || isNilOrError(statuses)) {
+        return null;
       } else {
         const ideaStatus = statuses.find(status => status.id === get(idea, 'relationships.idea_status.data.id'));
         if (ideaStatus) {
-          nextState.ideaStatusOption = {
+          return {
             value: ideaStatus.id,
             label: localize(ideaStatus.attributes.title_multiloc),
             color: ideaStatus.attributes.color
           };
         }
+        return null;
       }
-
-      nextState.prevPropsIdea = idea;
     }
+  );
 
-    if (idea !== prevPropsIdea) {
-      if (isNilOrError(idea) || !idea.relationships.assignee || !idea.relationships.assignee.data) {
-        nextState.ideaAssigneeOption = 'unassigned';
+  getAssigneeOptions = memoize(
+    (prospectAssignees) => {
+      const {  intl: { formatMessage } } = this.props;
+      if (isNilOrError(prospectAssignees.usersList)) {
+        return [];
       } else {
-        nextState.ideaAssigneeOption = idea.relationships.assignee.data.id;
+        const assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, label: `${assignee.attributes.first_name} ${assignee.attributes.last_name}` }));
+        assigneeOptions.push({ value: 'unassigned', label: formatMessage(messages.noOne) });
+        return assigneeOptions;
       }
     }
-
-    return nextState;
-  }
+  );
 
   onStatusChange = (statusOption: IOption) => {
     const { tenant, ideaId, authUser }  = this.props;
@@ -178,8 +145,12 @@ class IdeaSettings extends PureComponent<PropsWithHoCs, State> {
   }
 
   render() {
-    const { idea, className } = this.props;
-    const { statusOptions, assigneeOptions, ideaStatusOption, ideaAssigneeOption } = this.state;
+    const { idea, className, statuses, prospectAssignees } = this.props;
+
+    const statusOptions = this.getStatusOptions(statuses);
+    const ideaStatusOption = this.getIdeaStatusOption(idea, statuses);
+    const assigneeOptions = this.getAssigneeOptions(prospectAssignees);
+    const ideaAssigneeOption = get(idea, 'relationships.assignee.data.id') || 'unassigned';
 
     if (!isNilOrError(idea)) {
       return (
