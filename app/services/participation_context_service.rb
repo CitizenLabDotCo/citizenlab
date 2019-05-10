@@ -63,11 +63,11 @@ class ParticipationContextService
   end
 
   def participation_possible_for_context? context, user
-    !( service.posting_disabled_reason_for_context(context, user)\
-    && service.commenting_disabled_reason_for_context(context, user)\
-    && service.voting_disabled_reason_for_context(context, user)\
-    && service.taking_survey_disabled_reason_for_context(context, user)\
-    && service.budgeting_disabled_reason_for_context(context, user) )
+    !( posting_disabled_reason_for_context(context, user)\
+    && commenting_disabled_reason_for_context(context, user)\
+    && voting_disabled_reason_for_context(context, user)\
+    && taking_survey_disabled_reason_for_context(context, user)\
+    && budgeting_disabled_reason_for_context(context, user) )
   end
 
   def posting_disabled_reason_for_project project, user
