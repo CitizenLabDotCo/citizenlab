@@ -278,7 +278,7 @@ resource "Stats - Users" do
     end
 
     get "web_api/v1/stats/active_users_by_time" do
-      explanation "Active users are that have generated some activity within the given interval window"
+      explanation "Active users are users that have generated some activity within the given interval window"
       time_series_parameters self
       group_filter_parameter self
       parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
@@ -293,6 +293,8 @@ resource "Stats - Users" do
             user = create(:user)
             create_list(:activity, 2, user: user)
             create(:activity)
+            non_active_user = create(:user)
+            create(:idea_changed_title_activity, user: non_active_user)
           end
           travel_to(start_at + 8.days) do
             create_list(:activity, 2)
