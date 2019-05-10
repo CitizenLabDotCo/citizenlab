@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import injectLocalize from 'utils/localize';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // typings
@@ -29,11 +29,11 @@ import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaSta
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { GetIdeasChildProps } from 'resources/GetIdeas';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
+import { InjectedIntlProps } from 'react-intl';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -65,12 +65,14 @@ interface State {
   assigneeOptions: IOption[];
   ideaStatusOption: IColoredOption | null;
   ideaAssigneeOption: string | null;
-  prevPropsStatuses: GetIdeasChildProps | null;
+  prevPropsStatuses: GetIdeaStatusesChildProps | null;
   prevPropsProspectAssignees: GetUsersChildProps | null;
   prevPropsIdea: GetIdeaChildProps;
 }
 
-class IdeaSettings extends PureComponent<Props, State> {
+interface PropsWithHoCs extends Props, InjectedLocalized, InjectedIntlProps {}
+
+class IdeaSettings extends PureComponent<PropsWithHoCs, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -84,15 +86,16 @@ class IdeaSettings extends PureComponent<Props, State> {
     };
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: PropsWithHoCs, prevProps: State) {
     const { statuses, localize, idea, prospectAssignees, intl: { formatMessage } } = props;
-    const { prevPropsStatuses, prevPropsProspectAssignees, prevPropsIdea } = state;
-    const nextState = { ...state };
+    const { prevPropsStatuses, prevPropsProspectAssignees, prevPropsIdea } = prevProps;
+    const nextState = {} as Partial<State>;
 
     if (statuses !== prevPropsStatuses) {
       if (isNilOrError(statuses)) {
         nextState.statusOptions = [];
       } else {
+        console.log(statuses, localize(statuses[0].attributes.title_multiloc));
         nextState.statusOptions = statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
       }
 
@@ -114,12 +117,14 @@ class IdeaSettings extends PureComponent<Props, State> {
       if (isNilOrError(idea) || !idea.relationships.idea_status || !idea.relationships.idea_status.data) {
         nextState.ideaStatusOption = null;
       } else {
-        const ideaStatus = statuses.find(status => status.id === idea.relationships.idea_status.data.id);
-        nextState.ideaStatusOption = {
-          value: ideaStatus.id,
-          label: localize(ideaStatus.attributes.title_multiloc),
-          color: ideaStatus.attributes.color
-        };
+        const ideaStatus = statuses.find(status => status.id === get(idea, 'relationships.idea_status.data.id'));
+        if (ideaStatus) {
+          nextState.ideaStatusOption = {
+            value: ideaStatus.id,
+            label: localize(ideaStatus.attributes.title_multiloc),
+            color: ideaStatus.attributes.color
+          };
+        }
       }
 
       nextState.prevPropsIdea = idea;
