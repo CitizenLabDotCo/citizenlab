@@ -2,9 +2,6 @@ import React, { PureComponent } from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { deleteUser } from 'services/users';
-import { reportError } from 'utils/loggingUtils';
-import eventEmitter from 'utils/eventEmitter';
 import { adopt } from 'react-adopt';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -16,6 +13,7 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import FormattedAnchor from 'components/FormattedAnchor';
 import Link from 'utils/cl-router/Link';
+import { signOutAndDeleteAccountPart1 } from 'services/auth';
 
 const Container = styled.div`
   padding: 0px 10px;
@@ -47,6 +45,7 @@ const Styledh2 = styled.h2`
 
 const ButtonsContainer = styled.div`
   margin-top: 50px;
+  margin-bottom: 20px;
   display: flex;
 `;
 
@@ -76,17 +75,8 @@ class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   deleteProfile = () => {
-    const { authUser } = this.props;
-    if (!isNilOrError(authUser)) {
-      this.setState({ processing: true, error: false });
-      deleteUser(authUser.id)
-      .then(() => {
-        setTimeout(() => eventEmitter.emit('UserProfile', 'profileDeletedSuccessfuly', null), 2000);
-      }).catch(err => {
-        reportError(err);
-        this.setState({ error: true, processing: false });
-      });
-    }
+    signOutAndDeleteAccountPart1();
+    this.props.closeDialog();
   }
 
   render() {

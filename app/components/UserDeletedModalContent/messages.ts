@@ -4,10 +4,14 @@ export default defineMessages({
   // Modal when a user just deleted its profile
   userDeletedTitle: {
     id: 'app.containers.landing.userDeletedTitle',
-    defaultMessage: 'Your profile has been deleted.'
+    defaultMessage: 'Your account has been deleted.'
   },
   userDeletedSubtitle: {
     id: 'app.containers.landing.userDeletedSubtitle',
-    defaultMessage: 'We\'re sorry to see you go'
+    defaultMessage: 'You can create a new account at any time !'
+  },
+  userDeletionFailed: {
+    id: 'app.containers.landing.userDeletedSubtitle',
+    defaultMessage: 'An error occured deleting your account, we have been notified of the isse and will do our best to fix it. Please try again later.'
   },
 });

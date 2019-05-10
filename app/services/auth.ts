@@ -1,4 +1,4 @@
-import { IUser } from 'services/users';
+import { IUser, deleteUser } from 'services/users';
 import { IHttpMethod, Locale } from 'typings';
 import { API_PATH, AUTH_PATH } from 'containers/App/constants';
 import { getJwt, setJwt, removeJwt, decode } from 'utils/auth/jwt';
@@ -6,6 +6,7 @@ import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import eventEmitter from 'utils/eventEmitter';
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
 export interface IUserToken {
@@ -89,6 +90,36 @@ export function signOut() {
     }
 
   }
+}
+export function signOutAndDeleteAccountPart1() {
+  setTimeout(() => eventEmitter.emit('UserProfile', 'tryAndDeleteProfile', null), 2000);
+  clHistory.push('/');
+}
+
+export function signOutAndDeleteAccountPart2() {
+  return new Promise((resolve, _reject) => {
+    const jwt = getJwt();
+
+    if (jwt) {
+      const decodedJwt = decode(jwt);
+
+      const { provider, sub } = decodedJwt;
+
+      deleteUser(sub).then((_res) => {
+        removeJwt();
+        if (decodedJwt.logout_supported) {
+          const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
+          window.location.href = url;
+        } else {
+          streams.reset(null);
+        }
+        clHistory.push('/');
+        resolve(true);
+      }).catch((_res) => {
+        resolve(false);
+      });
+    }
+  });
 }
 
 export async function getAuthUserAsync() {
