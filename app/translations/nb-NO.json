@@ -604,6 +604,7 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Liste over prosjekter på plattformen",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Kontrollpanel for prosjekter",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Create as many projects as you want and edit them at any time.",
+  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Prosjekter",
   "app.containers.AdminPage.ProjectDashboard.publishedTooltip": "Published projects are currently active project which are shown on the platform.",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Beskrivelse",

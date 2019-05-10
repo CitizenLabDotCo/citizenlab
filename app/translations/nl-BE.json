@@ -604,6 +604,7 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Lijst van projecten op het platform",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projecten dashboard",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Maak zoveel projecten aan als je wilt en bewerk ze op elk gewenst moment.",
+  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projecten",
   "app.containers.AdminPage.ProjectDashboard.publishedTooltip": "Gepubliceerde projecten zijn momenteel actieve project die worden weergegeven op het platform.",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Beschrijving",

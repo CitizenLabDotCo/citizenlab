@@ -604,6 +604,7 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Liste des {tenantName, select, frw {communes} other {projets}} sur la plateforme",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Gestion des {tenantName, select, frw {communes} other {projets}}",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Créez autant de projets que vous le voulez et modifiez les à tout moment.",
+  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.containers.AdminPage.ProjectDashboard.publishedTooltip": "Les projets publicés sont les projets qui sont actifs. Ils sont visibles sur la plateforme.",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Description",

@@ -604,6 +604,7 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "{orgName, select, München {Liste der Bezirke im Mängelmelder} other {Liste der Projekte auf der Plattform}}",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "{orgName, select, München {Bezirke-Dashboard} other {Projekte-Dashboard}}",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Create as many projects as you want and edit them at any time.",
+  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "{orgName, select, München {Bezirke} other {Projekte}}",
   "app.containers.AdminPage.ProjectDashboard.publishedTooltip": "Published projects are currently active projects which are shown on the platform.",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Beschreibung",
