@@ -56,10 +56,6 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface IColoredOption extends IOption {
-  color: string;
-}
-
 interface PropsWithHoCs extends Props, InjectedLocalized, InjectedIntlProps {}
 
 class IdeaSettings extends PureComponent<PropsWithHoCs> {
