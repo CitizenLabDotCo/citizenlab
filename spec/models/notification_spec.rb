@@ -102,7 +102,7 @@ RSpec.describe Notification, type: :model do
     end
 
     it "makes project_phase_started notifications on phase started" do
-      phase = create(:phase)
+      phase = create(:active_phase, with_permissions: true)
       project = phase.project
       project.visible_to = 'groups'
       project.groups << create(:smart_group)

@@ -26,6 +26,6 @@ class BasketPolicy < ApplicationPolicy
 
   def check_budgeting_allowed basket, user
     pcs = ParticipationContextService.new
-    !pcs.budgeting_disabled_reason_in_context pcs.get_participation_context(basket.participation_context.project), user
+    !pcs.budgeting_disabled_reason_for_context pcs.get_participation_context(basket.participation_context.project), user
   end
 end
