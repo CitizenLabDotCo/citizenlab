@@ -339,7 +339,8 @@ class IdeaCards extends PureComponent<Props, State> {
       showViewToggle
     } = this.props;
     const {
-      search,
+      queryParameters,
+      searchValue,
       ideasList,
       hasMore,
       querying,
@@ -353,7 +354,7 @@ class IdeaCards extends PureComponent<Props, State> {
       <Container id="e2e-ideas-container" className={className}>
         <FiltersArea id="e2e-ideas-filters" className={`${showMapView && 'mapView'}`}>
           <LeftFilterArea className={`${showMapView && 'hidden'}`}>
-            <StyledSearchInput value={(search || '')} onChange={this.handleSearchOnChange} className="e2e-search-ideas-input"/>
+            <StyledSearchInput value={(searchValue || '')} onChange={this.handleSearchOnChange} className="e2e-search-ideas-input"/>
           </LeftFilterArea>
 
           <RightFilterArea>
@@ -432,7 +433,7 @@ class IdeaCards extends PureComponent<Props, State> {
         }
 
         {showMapView && hasIdeas &&
-          <IdeasMap projectIds={ideas.projects} phaseId={ideas.phase} />
+          <IdeasMap projectIds={queryParameters.projects} phaseId={queryParameters.phase} />
         }
       </Container>
     );
@@ -440,7 +441,7 @@ class IdeaCards extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12}>{render}</GetIdeas>
+  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>
 });
 
 const IdeaCardsWithHoCs = withTheme<Props, State>(IdeaCards);
