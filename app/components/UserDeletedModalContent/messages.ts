@@ -11,7 +11,7 @@ export default defineMessages({
     defaultMessage: 'You can create a new account at any time !'
   },
   userDeletionFailed: {
-    id: 'app.containers.landing.userDeletedSubtitle',
+    id: 'app.containers.landing.userDeletionFailed',
     defaultMessage: 'An error occured deleting your account, we have been notified of the isse and will do our best to fix it. Please try again later.'
   },
 });
