@@ -1484,6 +1484,7 @@
   "app.containers.landing.twitterMessage": "Stem på {ideaTitle} på",
   "app.containers.landing.userDeletedSubtitle": "",
   "app.containers.landing.userDeletedTitle": "",
+  "app.containers.landing.userDeletionFailed": "",
   "app.errors.after_end_at": "Startdatoen ligger efter slutdatoen",
   "app.errors.email_already_active": "E-mailadressen {value} fundet i række {row} tilhører allerede en registreret bruger",
   "app.errors.email_already_invited": "E-mailadressen {value} fundet i række {row} er allerede inviteret",

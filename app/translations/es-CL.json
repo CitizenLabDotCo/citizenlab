@@ -1484,6 +1484,7 @@
   "app.containers.landing.twitterMessage": "Vota por {ideaTitle} en",
   "app.containers.landing.userDeletedSubtitle": "",
   "app.containers.landing.userDeletedTitle": "",
+  "app.containers.landing.userDeletionFailed": "",
   "app.errors.after_end_at": "La fecha de inicio es anterior a la fecha de término",
   "app.errors.email_already_active": "La direccion de correo {value} encontrada en {row} ya pertenece a un usuario registrado",
   "app.errors.email_already_invited": "El correo electrónico {value} en fila {row} ya fue invitado",
