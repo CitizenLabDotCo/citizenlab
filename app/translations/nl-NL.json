@@ -1484,6 +1484,7 @@
   "app.containers.landing.twitterMessage": "Stem voor {ideaTitle} op",
   "app.containers.landing.userDeletedSubtitle": "",
   "app.containers.landing.userDeletedTitle": "",
+  "app.containers.landing.userDeletionFailed": "",
   "app.errors.after_end_at": "De begindatum start na de einddatum",
   "app.errors.email_already_active": "Het e-mailadres {value} in rij {row} behoort tot een geregistreerde gebruiker\n\n",
   "app.errors.email_already_invited": "Het e-mailadres {value} in rij {row} kreeg eerder al een uitnodiging",

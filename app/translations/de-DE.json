@@ -1484,6 +1484,7 @@
   "app.containers.landing.twitterMessage": "Stimmen Sie für {ideaTitle} auf",
   "app.containers.landing.userDeletedSubtitle": "",
   "app.containers.landing.userDeletedTitle": "",
+  "app.containers.landing.userDeletionFailed": "",
   "app.errors.after_end_at": "Das Startdatum ist auf die Zeit nach dem Enddatum gesetzt worden",
   "app.errors.email_already_active": "Die E-Mail-Adresse {value} in der Zeile {row} gehört bereits einem registrierten Nutzer.",
   "app.errors.email_already_invited": "An die E-Mail-Adresse {value} in der Zeile {row} wurde bereits eine Einladung versandt.",

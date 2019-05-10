@@ -1484,6 +1484,7 @@
   "app.containers.landing.twitterMessage": "",
   "app.containers.landing.userDeletedSubtitle": "",
   "app.containers.landing.userDeletedTitle": "",
+  "app.containers.landing.userDeletionFailed": "",
   "app.errors.after_end_at": "",
   "app.errors.email_already_active": "",
   "app.errors.email_already_invited": "",

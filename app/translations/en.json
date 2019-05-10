@@ -1484,6 +1484,7 @@
   "app.containers.landing.twitterMessage": "Vote for {ideaTitle} on",
   "app.containers.landing.userDeletedSubtitle": "We're sorry to see you go",
   "app.containers.landing.userDeletedTitle": "Your profile has been deleted.",
+  "app.containers.landing.userDeletionFailed": "An error occured deleting your account, we have been notified of the isse and will do our best to fix it. Please try again later.",
   "app.errors.after_end_at": "The start date occurs after the end date",
   "app.errors.email_already_active": "The email address {value} found in row {row} already belongs to a registered user",
   "app.errors.email_already_invited": "The email address {value} found in row {row} was already invited",
