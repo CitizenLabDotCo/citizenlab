@@ -48,6 +48,7 @@ export function login(email: string, password: string) {
   cy.get('.e2e-submit-signin').click();
   cy.wait(1000);
   cy.visit('/');
+  cy.wait(1000);
   cy.get('#e2e-landing-page');
 }
 
@@ -181,6 +182,8 @@ export function apiCreateIdea(
   projectId: string,
   ideaTitle: string,
   ideaContent: string,
+  locationGeoJSON?: {'type': string, 'coordinates': number[]},
+  locationDescription?: string
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
@@ -204,6 +207,8 @@ export function apiCreateIdea(
             'en-GB': ideaContent,
             'nl-BE': ideaContent
           },
+          location_point_geojson: locationGeoJSON,
+          location_description: locationDescription
         }
       }
     });

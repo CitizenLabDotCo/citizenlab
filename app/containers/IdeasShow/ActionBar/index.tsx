@@ -95,7 +95,7 @@ const ActionBar = memo<Props>(({ ideaId, onTranslateIdea, translateButtonClicked
               />
             }
           </FeatureFlag>
-          <StyledIdeaMoreActions ideaId={ideaId} />
+          <StyledIdeaMoreActions id="e2e-idea-more-actions" ideaId={ideaId} />
         </Right>
       </Inner>
     </Container>

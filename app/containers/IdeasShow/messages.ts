@@ -362,6 +362,14 @@ export default defineMessages({
     id: 'app.components.IdeasShow.noComments',
     defaultMessage: 'There are no comments yet.'
   },
+  linkToHomePage: {
+    id: 'app.components.IdeasShow.linkToHomePage',
+    defaultMessage: 'Link to home page'
+  },
+  upvoteComment: {
+    id: 'app.components.IdeasShow.upvoteComment',
+    defaultMessage: 'Upvote this comment'
+  },
   createdTimeAgo: {
     id: 'app.components.IdeasShow.createdTimeAgo',
     defaultMessage: 'Created {timeAgo}'
