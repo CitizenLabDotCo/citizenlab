@@ -31,7 +31,7 @@ const TranslateButton = (props: Props) => {
       className={className}
       fontSize={`${fontSizes.small}px`}
       padding="5px 10px"
-      fontWeight="600"
+      fontWeight="500"
       icon="translate"
       borderColor={colors.separation}
       width="fit-content"

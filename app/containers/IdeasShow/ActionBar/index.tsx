@@ -37,12 +37,18 @@ const Inner = styled.div`
   justify-content: space-between;
 
   ${media.smallerThanMinTablet`
+    width: 100%;
+    max-width: auto;
     padding-left: 15px;
     padding-right: 15px;
   `}
 `;
 
-const Left = styled.div``;
+const Left = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+`;
 
 const Right = styled.div`
   display: flex;
