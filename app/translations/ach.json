@@ -53,6 +53,7 @@
   "app.components.FileUploader.fileUploadLabel": "",
   "app.components.FullscreenModal.closeButtonLabel": "",
   "app.components.FullscreenModal.goBack": "",
+  "app.components.FullscreenModal.home": "",
   "app.components.GoBackButton.group.edit.goBack": "",
   "app.components.IdeaCard.deletedUser": "",
   "app.components.IdeaCard.imageAltText": "",

@@ -53,6 +53,7 @@
   "app.components.FileUploader.fileUploadLabel": "Tilføj filer (max. 50MB)",
   "app.components.FullscreenModal.closeButtonLabel": "Luk",
   "app.components.FullscreenModal.goBack": "Gå tilbage",
+  "app.components.FullscreenModal.home": "",
   "app.components.GoBackButton.group.edit.goBack": "Gå tilbage",
   "app.components.IdeaCard.deletedUser": "slettet bruger",
   "app.components.IdeaCard.imageAltText": "{orgName} - hovedbillede for ideen '{ideaTitle}'",

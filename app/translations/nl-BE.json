@@ -53,6 +53,7 @@
   "app.components.FileUploader.fileUploadLabel": "Voeg bestanden toe (max. 50MB)",
   "app.components.FullscreenModal.closeButtonLabel": "Sluiten",
   "app.components.FullscreenModal.goBack": "Ga terug",
+  "app.components.FullscreenModal.home": "",
   "app.components.GoBackButton.group.edit.goBack": "Ga terug",
   "app.components.IdeaCard.deletedUser": "verwijderde gebruiker",
   "app.components.IdeaCard.imageAltText": "{orgName} - hoofdafbeelding voor het idee {ideaTitle}",
