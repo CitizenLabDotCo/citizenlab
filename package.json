@@ -11,7 +11,7 @@
     "npm": ">=5",
     "node": ">=7.6"
   },
-  "author": "David Cnoops",
+  "author": "Citizenlab",
   "license": "MIT",
   "scripts": {
     "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",

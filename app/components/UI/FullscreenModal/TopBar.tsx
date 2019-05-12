@@ -21,6 +21,7 @@ const Container = styled.div`
   right: 0;
   background: #fff;
   border-bottom: solid 1px ${colors.separation};
+  z-index: 1000;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -95,25 +96,15 @@ const GoBackLabel = styled.div`
 interface Props {
   children: JSX.Element | null | undefined;
   goBack?: () => void;
-  goHome?: () => void;
   className?: string;
 }
 
-const TopBar = memo<Props>(({ children, goBack, goHome, className }) => {
+const TopBar = memo<Props>(({ children, goBack, className }) => {
 
   const onGoBack = useCallback(
     (event: MouseEvent) => {
       event.preventDefault();
       goBack && goBack();
-    },
-    []
-  );
-
-  const onGoHome = useCallback(
-    (event: MouseEvent) => {
-      console.log(event);
-      event.preventDefault();
-      goHome && goHome();
     },
     []
   );
@@ -129,17 +120,6 @@ const TopBar = memo<Props>(({ children, goBack, goHome, className }) => {
               </GoBackButton>
               <GoBackLabel>
                 <FormattedMessage {...messages.goBack} />
-              </GoBackLabel>
-            </>
-          }
-
-          {!isNil(goHome) &&
-            <>
-              <GoBackButton onClick={onGoHome}>
-                <GoBackIcon name="home" />
-              </GoBackButton>
-              <GoBackLabel>
-                <FormattedMessage {...messages.home} />
               </GoBackLabel>
             </>
           }

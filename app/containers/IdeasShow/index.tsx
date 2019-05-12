@@ -23,6 +23,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
+import IdeaTopics from './IdeaTopics';
 import IdeaHeader from './IdeaHeader';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaVoteControlMobile from './IdeaVoteControlMobile';
@@ -48,12 +49,10 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // services
 import { updateIdea } from 'services/ideas';
 import { authUserStream } from 'services/auth';
-import { ITopicData } from 'services/topics';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -68,7 +67,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes, ideaPageContentMaxWidth } from 'utils/styleUtils';
-import { darken, transparentize } from 'polished';
+import { darken } from 'polished';
 
 const loadingSpinnerFadeInDuration = 300;
 const loadingSpinnerFadeInEasing = 'ease-out';
@@ -164,25 +163,13 @@ const IdeaContainer = styled.div`
   `}
 `;
 
-const Topics = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+const StyledIdeaTopics = styled(IdeaTopics)`
   padding-right: 485px;
   margin-bottom: 25px;
 
   ${media.smallerThanMaxTablet`
-    padding-right: 0px;
+    display: none;
   `}
-`;
-
-const Topic = styled.div`
-  color: ${({ theme }) => theme.colorSecondary};
-  font-size: ${fontSizes.small}px;
-  font-weight: 400;
-  padding: 6px 14px;
-  margin-right: 10px;
-  background: ${({ theme }) => transparentize(0.92, theme.colorSecondary)};
-  border-radius: 3;
 `;
 
 const Content = styled.div`
@@ -245,21 +232,11 @@ const LocationLabel = styled.div`
   `}
 `;
 
-const LocationIconWrapper = styled.div`
-  width: 22px;
-  height: 36px;
-  margin: 0;
-  margin-right: 20px;
-  padding: 0;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-`;
-
 const LocationIcon = styled(Icon)`
-  width: 18px;
+  width: 16px;
+  height: 23px;
   fill: ${colors.label};
+  margin-right: 13px;
 `;
 
 const LocationButton = styled.div`
@@ -269,7 +246,10 @@ const LocationButton = styled.div`
   cursor: pointer;
   width: 100%;
   height: 100%;
-  padding: 5px 20px;
+  padding-left: 18px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
   &:hover {
     ${LocationLabel} {
@@ -440,7 +420,6 @@ interface DataProps {
   ideaImages: GetIdeaImagesChildProps;
   ideaFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
-  topics: GetTopicsChildProps;
 }
 
 interface InputProps {
@@ -642,7 +621,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       localize,
       ideaImages,
       authUser,
-      topics,
       className
     } = this.props;
     const {
@@ -667,6 +645,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const ideaLocation = (idea.attributes.location_point_geojson || null);
       const ideaAdress = (idea.attributes.location_description || null);
       const projectId = idea.relationships.project.data.id;
+      const topicIds = (idea.relationships.topics.data ? idea.relationships.topics.data.map(item => item.id) : []);
       const ideaUrl = location.href;
       const ideaId = idea.id;
       const ideaBody = localize(idea.attributes.body_multiloc);
@@ -698,11 +677,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             onTranslateIdea={this.onTranslateIdea}
           />
           <IdeaContainer id="e2e-idea-show">
-            {!isNilOrError(topics) && topics.length > 0 &&
-              <Topics>
-                {topics.map((topic: ITopicData) => <Topic key={topic.id}>{localize(topic.attributes.title_multiloc)}</Topic>)}
-              </Topics>
-            }
+            <StyledIdeaTopics topicIds={topicIds} />
 
             <Content>
               <LeftColumn>
@@ -748,9 +723,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <MapContainer>
                     <LocationButton id="e2e-map-toggle" onClick={this.handleMapToggle}>
                       <Location>
-                        <LocationIconWrapper>
-                          <LocationIcon name="position" />
-                        </LocationIconWrapper>
+                        <LocationIcon name="position" />
                         <LocationLabel>
                          {ideaAdress}
                         </LocationLabel>
@@ -932,16 +905,7 @@ const Data = adopt<DataProps, InputProps>({
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
-  phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>,
-  topics: ({ idea, render }) => {
-    let topicIds: string[] = [];
-
-    if (!isNilOrError(idea) && idea.relationships.topics.data && idea.relationships.topics.data.length > 0) {
-      topicIds = idea.relationships.topics.data.map(item => item.id);
-    }
-
-    return <GetTopics ids={topicIds}>{render}</GetTopics>;
-  }
+  phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>
 });
 
 export default (inputProps: InputProps) => (

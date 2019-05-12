@@ -5,6 +5,9 @@ import ReactDOM from 'react-dom';
 import VoteControl from 'components/VoteControl';
 import TopBar from 'components/UI/Fullscreenmodal/TopBar';
 
+// utils
+import clHistory from 'utils/cl-router/history';
+
 interface Props {
   ideaId: string;
   unauthenticatedVoteClick: () => void;
@@ -12,18 +15,17 @@ interface Props {
 
 const IdeaVoteControlMobile = memo<Props>(({ ideaId, unauthenticatedVoteClick }) => {
 
-  const onGoHome = useCallback(() => {
-    console.log('go big or home');
+  const onGoBack = useCallback(() => {
+    clHistory.push('/');
   }, []);
 
   const onUnauthenticatedVoteClick = useCallback(() => {
-    console.log('onUnauthenticatedVoteClick');
     unauthenticatedVoteClick();
   }, []);
 
   return ReactDOM.createPortal(
     (
-      <TopBar goHome={onGoHome}>
+      <TopBar goBack={onGoBack}>
         <VoteControl
           ideaId={ideaId}
           unauthenticatedVoteClick={onUnauthenticatedVoteClick}

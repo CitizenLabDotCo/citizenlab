@@ -1,15 +1,9 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import styled from 'styled-components';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
-import { truncate } from 'utils/textUtils';
-
-// styles
-import { fontSizes, colors, media } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // i18n
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -25,15 +19,35 @@ import Link from 'utils/cl-router/Link';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
+// styles
+import styled from 'styled-components';
+import { fontSizes, colors, media, ideaPageContentMaxWidth } from 'utils/styleUtils';
+import { darken } from 'polished';
+
 const Container = styled.div`
+  width: calc(${ideaPageContentMaxWidth} - 400px);
   display: flex;
   align-items: center;
+
+  ${media.smallerThan1200px`
+    width: calc(100vw - 400px);
+  `}
+
+  ${media.smallerThanMaxTablet`
+    width: calc(100vw - 300px);
+  `}
+
+  ${media.smallerThanMinTablet`
+    width: calc(100vw - 100px);
+  `}
 `;
 
-const HomeLink = styled(Link)``;
+const HomeLink = styled(Link)`
+  width: 16px;
+`;
 
 const HomeIcon = styled(Icon)`
-  width: 16px;
+  width: 100%;
   height: 14px;
   fill: ${colors.label};
   margin-top: -3px;
@@ -46,58 +60,47 @@ const HomeIcon = styled(Icon)`
 const Separator = styled.div`
   margin: 0 15px;
   font-size: ${fontSizes.large}px;
+  font-weight: 300;
   line-height: normal;
 `;
 
 const ProjectLink = styled(Link)`
   font-size: ${fontSizes.small}px;
   color: ${colors.label};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
     color: ${darken(0.2, colors.label)};
   }
 `;
 
-const LinkText = styled.span`
-  ${media.largePhone`
-    display: none;
-  `}
-`;
+const LinkText = styled.span``;
 
-const TruncatedLinkText = styled.span`
-  display: none;
-
-  ${media.largePhone`
-    display: inline;
-  `}
-`;
+interface InputProps {
+  ideaId: string;
+  className?: string;
+}
 
 interface DataProps {
   idea: GetIdeaChildProps;
   project: GetProjectChildProps;
 }
 
-interface InputProps {
-  ideaId: string;
-}
-
 interface Props extends DataProps, InputProps {}
 
-const Breadcrumbs = memo(({ project, localize, intl }: Props & InjectedLocalized & InjectedIntlProps) => {
+const Breadcrumbs = memo(({ project, localize, intl, className }: Props & InjectedLocalized & InjectedIntlProps) => {
 
   if (!isNilOrError(project)) {
     return (
-      <Container>
+      <Container className={className}>
         <HomeLink id="e2e-home-page-link" to="/">
           <HomeIcon title={intl.formatMessage(messages.linkToHomePage)} name="homeFilled" />
         </HomeLink>
         <Separator>/</Separator>
         <ProjectLink id="e2e-project-link" to={`/projects/${project.attributes.slug}`}>
-          {/* If we're on a small screen, we show a truncated version of the project */}
           <LinkText>{localize(project.attributes.title_multiloc)}</LinkText>
-          <TruncatedLinkText>
-            {truncate(localize(project.attributes.title_multiloc), 28)}
-          </TruncatedLinkText>
         </ProjectLink>
       </Container>
     );
