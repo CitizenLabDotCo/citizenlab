@@ -53,6 +53,7 @@
   "app.components.FileUploader.fileUploadLabel": "Anhänge zufügen",
   "app.components.FullscreenModal.closeButtonLabel": "Schließen",
   "app.components.FullscreenModal.goBack": "Zurück",
+  "app.components.FullscreenModal.home": "",
   "app.components.GoBackButton.group.edit.goBack": "Zurück",
   "app.components.IdeaCard.deletedUser": "gelöschter Nutzer",
   "app.components.IdeaCard.imageAltText": "{orgName} - Hauptbild für die Idee {ideaTitle}",

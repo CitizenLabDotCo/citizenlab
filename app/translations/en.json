@@ -53,6 +53,7 @@
   "app.components.FileUploader.fileUploadLabel": "Add files (max. 50MB)",
   "app.components.FullscreenModal.closeButtonLabel": "Close",
   "app.components.FullscreenModal.goBack": "Go back",
+  "app.components.FullscreenModal.home": "Home",
   "app.components.GoBackButton.group.edit.goBack": "Go back",
   "app.components.IdeaCard.deletedUser": "deleted user",
   "app.components.IdeaCard.imageAltText": "{orgName} - main image for the idea '{ideaTitle}'",
