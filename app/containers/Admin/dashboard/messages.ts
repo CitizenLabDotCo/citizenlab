@@ -268,10 +268,10 @@ export default defineMessages({
   },
   thenLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.thenLoadingMessage',
-    defaultMessage: 'Fun Fact: it will probably be way faster the next time you come here !',
+    defaultMessage: 'Fun Fact: it will probably be way faster the next time you come here!',
   },
   lastLoadingMessage: {
     id: 'app.containers.AdminPage.DashboardPage.lastLoadingMessage',
-    defaultMessage: 'It should be almost ready, hang on !',
+    defaultMessage: 'It should be almost ready, hang on!',
   },
 });
