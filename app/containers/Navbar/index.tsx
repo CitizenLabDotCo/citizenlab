@@ -57,7 +57,7 @@ const Container = styled.div`
   z-index: 999;
   -webkit-transform: translateZ(0);
 
-  &.ideaPage {
+  &.hideNavbar {
     ${media.smallerThanMaxTablet`
       display: none;
     `}
@@ -65,7 +65,6 @@ const Container = styled.div`
 
   &.citizenPage {
     ${media.smallerThanMaxTablet`
-      z-index: auto;
       position: relative;
       top: auto;
     `}
@@ -350,7 +349,9 @@ const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
   `}
 `;
 
-interface InputProps {}
+interface InputProps {
+  fullscreenModalOpened: boolean;
+}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
@@ -398,6 +399,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
   render() {
     const {
+      fullscreenModalOpened,
       projects,
       location,
       locale,
@@ -416,7 +418,8 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const firstUrlSegment = urlSegments[0];
     const secondUrlSegment = urlSegments[1];
     const lastUrlSegment = urlSegments[urlSegments.length - 1];
-    const isIdeaPage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'ideas' && lastUrlSegment !== 'new');
+    const onIdeaPage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'ideas' && lastUrlSegment !== 'new');
+    const hideNavbar = (fullscreenModalOpened || onIdeaPage);
 
     return (
       <>
@@ -427,9 +430,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
         <Container
           role="navigation"
           id="navbar"
-          className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${isIdeaPage ? 'ideaPage' : ''}`}
+          className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${hideNavbar ? 'hideNavbar' : ''}`}
         >
-          <ContainerInner className={`${isIdeaPage ? 'ideaPage' : ''}`}>
+          <ContainerInner>
             <Left>
               {tenantLogo &&
                 <LogoLink to="/" onlyActiveOnIndex={true}>
