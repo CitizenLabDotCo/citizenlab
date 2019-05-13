@@ -11,18 +11,9 @@ import { Locale } from 'typings';
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div`
-  width: 100%;
-  margin-top: -5px;
-  margin-bottom: 28px;
+const Container = styled.div``;
 
-  ${media.smallerThanMaxTablet`
-    margin-top: 0px;
-    margin-bottom: 0px;
-  `}
-`;
-
-const IdeaTitle = styled.h1`
+const Title = styled.h1`
   width: 100%;
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxxl}px;
@@ -35,9 +26,8 @@ const IdeaTitle = styled.h1`
   padding: 0;
 
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl}px;
+    font-size: ${fontSizes.xxl}px;
     line-height: 35px;
-    margin-right: 12px;
   `}
 `;
 
@@ -49,26 +39,24 @@ interface Props {
   className?: string;
 }
 
-const IdeaHeader = memo<Props>((props: Props) => {
-  const { ideaId, ideaTitle, locale, translateButtonClicked, className } = props;
-
+const IdeaTitle = memo<Props>(({ ideaId, ideaTitle, locale, translateButtonClicked, className }) => {
   return (
     <Container className={className}>
       {(locale && translateButtonClicked) ? (
         <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={ideaId}>
           {translation => {
             if (!isNilOrError(translation)) {
-              return <IdeaTitle>{translation.attributes.translation}</IdeaTitle>;
+              return <Title>{translation.attributes.translation}</Title>;
             }
 
-            return <IdeaTitle>{ideaTitle}</IdeaTitle>;
+            return <Title>{ideaTitle}</Title>;
           }}
         </GetMachineTranslation>
       ) : (
-        <IdeaTitle className="e2e-ideatitle">{ideaTitle}</IdeaTitle>
+        <Title className="e2e-ideatitle">{ideaTitle}</Title>
       )}
     </Container>
   );
 });
 
-export default IdeaHeader;
+export default IdeaTitle;

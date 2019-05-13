@@ -16,13 +16,17 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
+
+  ${media.smallerThanMaxTablet`
+    font-size: ${fontSizes.small}px;
+  `}
 `;
 
 const UserNameLink = styled(Link)`
