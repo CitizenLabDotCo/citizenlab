@@ -90,10 +90,11 @@ export async function addCommentToIdea(ideaId: string,  projectId: string, autho
     }
   }, true);
 
-  streams.fetchAllWith({ dataId: [ideaId, projectId, comment.data.id] });
   // refetch commentsForUser and comments for user count
-  streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments`] });
-  streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments_count`] });
+  streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/users/${authorId}/comments`, `${API_PATH}/users/${authorId}/comments_count`],
+    dataId: [ideaId, projectId, comment.data.id]
+  });
 
   return comment;
 }
@@ -115,12 +116,15 @@ export async function addCommentToComment(
   }, true);
 
   // refetch commentsForUser and comments for user count
-  streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments`] });
-  streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments_count`] });
+  streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/users/${authorId}/comments`, `${API_PATH}/users/${authorId}/comments_count`]
+  });
 
   if (waitForChildCommentsRefetch) {
-    await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`] });
-    streams.fetchAllWith({ dataId: [ideaId, projectId, parentCommentId, comment.data.id] });
+    await streams.fetchAllWith({
+      apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`] ,
+      dataId: [ideaId, projectId, parentCommentId, comment.data.id]
+    });
   } else {
     streams.fetchAllWith({
       dataId: [ideaId, projectId, parentCommentId, comment.data.id],
@@ -148,8 +152,7 @@ export async function markForDeletion(projectId: string, commentId: string, reas
 
   // refetch commentsForUser and comments for user count
   if (authorId) {
-    streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments`] });
-    streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments_count`] });
+    streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments`, `${API_PATH}/users/${authorId}/comments_count`] });
   }
 
   streams.fetchAllWith({ dataId: [commentId, projectId] });
