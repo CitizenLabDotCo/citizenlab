@@ -421,7 +421,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
 
-  handleResetParams = (paramsToOmit?: (keyof IQueryParameters)[]) => {
+  handleResetParamsToProps = (paramsToOmit?: (keyof IQueryParameters)[]) => {
     const defaultQueryParameters = this.getQueryParametersFromProps();
 
     if (paramsToOmit && paramsToOmit.length > 0) {
@@ -453,7 +453,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeProjectPublicationStatus: this.handleProjectPublicationStatusOnChange,
       onChangeAssignee: this.handleAssigneeOnChange,
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
-      onResetParams: this.handleResetParams,
+      onResetParams: this.handleResetParamsToProps,
     });
   }
 }
