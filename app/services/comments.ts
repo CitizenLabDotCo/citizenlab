@@ -33,7 +33,7 @@ export interface ICommentData {
       data: IRelationship | null;
     };
     parent: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
     user_vote: {
       data: IRelationship | null;
@@ -78,6 +78,10 @@ export function commentsForIdeaStream(ideaId: string, streamParams: IStreamParam
   return streams.get<IComments>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/comments`, ...streamParams });
 }
 
+export function commentsForUserStream(userId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IComments>({ apiEndpoint: `${API_PATH}/users/${userId}/comments`, ...streamParams });
+}
+
 export async function addCommentToIdea(ideaId: string,  projectId: string, authorId: string, body: { [key: string]: string }) {
   const comment = await streams.add<IComment>(`${API_PATH}/ideas/${ideaId}/comments`, {
     comment: {
@@ -86,7 +90,11 @@ export async function addCommentToIdea(ideaId: string,  projectId: string, autho
     }
   }, true);
 
-  streams.fetchAllWith({ dataId: [ideaId, projectId, comment.data.id] });
+  // refetch commentsForUser and comments for user count
+  streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/users/${authorId}/comments`, `${API_PATH}/users/${authorId}/comments_count`],
+    dataId: [ideaId, projectId, comment.data.id]
+  });
 
   return comment;
 }
@@ -107,9 +115,16 @@ export async function addCommentToComment(
     }
   }, true);
 
+  // refetch commentsForUser and comments for user count
+  streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/users/${authorId}/comments`, `${API_PATH}/users/${authorId}/comments_count`]
+  });
+
   if (waitForChildCommentsRefetch) {
-    await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`] });
-    streams.fetchAllWith({ dataId: [ideaId, projectId, parentCommentId, comment.data.id] });
+    await streams.fetchAllWith({
+      apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`] ,
+      dataId: [ideaId, projectId, parentCommentId, comment.data.id]
+    });
   } else {
     streams.fetchAllWith({
       dataId: [ideaId, projectId, parentCommentId, comment.data.id],
@@ -120,13 +135,26 @@ export async function addCommentToComment(
   return comment;
 }
 
-export function updateComment(commentId: string, object: IUpdatedComment) {
-  return streams.update<IComment>(`${API_PATH}/comments/${commentId}`, commentId, { comment: object });
+export async function updateComment(commentId: string, object: IUpdatedComment) {
+  const response = await streams.update<IComment>(`${API_PATH}/comments/${commentId}`, commentId, { comment: object });
+
+  // refetch commentsForUser
+  if (object.author_id) {
+    streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${object.author_id}/comments`] });
+  }
+
+  return response;
 }
 
-export async function markForDeletion(projectId: string, commentId: string, reason?: DeleteReason) {
+export async function markForDeletion(projectId: string, commentId: string, reason?: DeleteReason, authorId?: string) {
   if (reason && reason.reason_code !== 'other') { delete reason.other_reason; }
   const response = await request(`${API_PATH}/comments/${commentId}/mark_as_deleted`, { comment: reason }, { method: 'POST' }, {});
+
+  // refetch commentsForUser and comments for user count
+  if (authorId) {
+    streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments`, `${API_PATH}/users/${authorId}/comments_count`] });
+  }
+
   streams.fetchAllWith({ dataId: [commentId, projectId] });
   return response;
 }

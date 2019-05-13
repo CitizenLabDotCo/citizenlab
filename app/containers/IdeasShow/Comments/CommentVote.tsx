@@ -126,7 +126,7 @@ const UpvoteLabel = styled.button`
 interface InputProps {
   ideaId: string;
   commentId: string;
-  commentType: 'parent' | 'child';
+  commentType: 'parent' | 'child' | undefined;
   votingEnabled: boolean;
   className?: string;
 }
@@ -207,6 +207,8 @@ class CommentVote extends PureComponent<Props, State> {
               trackEventByName(tracks.clickParentCommentUpvoteButton);
             } else if (commentType === 'child') {
               trackEventByName(tracks.clickChildCommentUpvoteButton);
+            } else {
+              trackEventByName(tracks.clickCommentUpvoteButton);
             }
           } catch (error) {
             this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
@@ -222,6 +224,8 @@ class CommentVote extends PureComponent<Props, State> {
               trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
             } else if (commentType === 'child') {
               trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
+            } else {
+              trackEventByName(tracks.clickCommentCancelUpvoteButton);
             }
           } catch (error) {
             this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });

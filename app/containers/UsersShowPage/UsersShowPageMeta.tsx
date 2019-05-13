@@ -86,8 +86,10 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
 });
 
-export default (inputProps: InputProps) => (
+const WrappedUsersShowPageMeta = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataprops => <UsersShowPageMetaWithHoc {...inputProps} {...dataprops} />}
   </Data>
 );
+
+export default WrappedUsersShowPageMeta;
