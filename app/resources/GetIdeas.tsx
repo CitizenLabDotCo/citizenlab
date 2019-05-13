@@ -276,14 +276,6 @@ export default class GetIdeas extends React.Component<Props, State> {
     search: undefined
   })
 
-  getNonUndefinedQueryParametersFromProps = () => {
-    // omits undefined params
-    const definedParams = omitBy(this.propsToQueryParamsShape(), prop => prop === undefined);
-    // set null params to undefined
-    Object.keys(definedParams).filter(key => definedParams[key] === null).forEach(key => definedParams[key] = undefined);
-    return definedParams;
-  }
-
   getQueryParametersFromProps = () => {
     const queryParamsShaped = this.propsToQueryParamsShape();
     Object.keys(queryParamsShaped).filter(key => queryParamsShaped[key] === null).forEach(key => queryParamsShaped[key] = undefined);
