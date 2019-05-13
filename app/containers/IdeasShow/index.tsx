@@ -12,7 +12,6 @@ import tracks from './tracks';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import StatusBadge from 'components/StatusBadge';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
@@ -25,6 +24,8 @@ import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
 import IdeaTopics from './IdeaTopics';
 import IdeaHeader from './IdeaHeader';
+import IdeaStatus from './IdeaStatus';
+import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaVoteControlMobile from './IdeaVoteControlMobile';
 import IdeaFooter from './IdeaFooter';
@@ -154,7 +155,7 @@ const IdeaContainer = styled.div`
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    padding-top: 30px;
+    padding-top: 25px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -206,13 +207,33 @@ const IdeaImage = styled.img`
   width: 100%;
   height: auto;
   margin-bottom: 25px;
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px solid ${colors.separation};
+`;
+
+const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
+  margin-bottom: 50px;
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
+const StyledMobileIdeaStatus = styled(IdeaStatus)`
+  margin-bottom: 25px;
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const StyledIdeaAuthor = styled(IdeaAuthor)`
   margin-left: -4px;
   margin-bottom: 50px;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const LocationLabel = styled.div`
@@ -269,8 +290,12 @@ const Location = styled.div`
 
 const MapContainer = styled.div`
   border: 1px solid ${colors.separation};
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   margin-bottom: 40px;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 20px;
+  `}
 `;
 
 const ArrowIcon = styled(Icon)`
@@ -349,7 +374,7 @@ const ControlWrapper = styled.div`
   padding: 35px;
   border: 1px solid #E0E0E0;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const ControlWrapperHorizontalRule: any = styled.hr`
@@ -370,17 +395,6 @@ const VoteLabel = styled.div`
   ${media.smallerThanMaxTablet`
     display: block;
   `}
-`;
-
-const StatusContainer = styled.div``;
-
-const StatusTitle = styled.h4`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin: 0;
-  margin-bottom: 8px;
-  padding: 0;
 `;
 
 const AssignBudgetControlMobile = styled.div`
@@ -689,19 +703,24 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     />
                   }
                 </FeatureFlag>
+
                 <IdeaHeader
                   ideaId={ideaId}
-                  statusId={statusId}
                   ideaTitle={ideaTitle}
                   locale={locale}
                   translateButtonClicked={translateButtonClicked}
                 />
 
+                <StyledMobileIdeaPostedBy authorId={authorId} />
+
+                {statusId &&
+                  <StyledMobileIdeaStatus statusId={statusId} />
+                }
+
                 <StyledIdeaAuthor
                   ideaId={ideaId}
                   authorId={authorId}
                   ideaCreatedAt={ideaCreatedAt}
-                  showLabel={true}
                 />
 
                 {!inModal && showVoteControl &&
@@ -818,12 +837,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                       <ControlWrapperHorizontalRule />
 
-                      {statusId &&
-                        <StatusContainer>
-                          <StatusTitle><FormattedMessage {...messages.currentStatus} /></StatusTitle>
-                          <StatusBadge statusId={statusId} />
-                        </StatusContainer>
-                      }
+                      {statusId && <IdeaStatus statusId={statusId} />}
                     </ControlWrapper>
                   }
 
