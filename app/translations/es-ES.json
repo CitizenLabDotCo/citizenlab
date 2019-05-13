@@ -1483,6 +1483,8 @@
   "app.containers.landing.trendingIdeas": "Descubre ideas",
   "app.containers.landing.twitterMessage": "Vota por {ideaTitle} en",
   "app.containers.landing.userDeletedSubtitle": "",
+  "app.containers.landing.userDeletedSubtitleLinkText": "",
+  "app.containers.landing.userDeletedSubtitleLinkUrl": "",
   "app.containers.landing.userDeletedTitle": "",
   "app.containers.landing.userDeletionFailed": "",
   "app.errors.after_end_at": "La fecha de inicio es anterior a la fecha de término",

@@ -1483,6 +1483,8 @@
   "app.containers.landing.trendingIdeas": "{orgName, select, München {Entdecken Sie die Mängelmeldungen} other {Entdecken Sie die Ideen}}",
   "app.containers.landing.twitterMessage": "Stimmen Sie für {ideaTitle} auf",
   "app.containers.landing.userDeletedSubtitle": "",
+  "app.containers.landing.userDeletedSubtitleLinkText": "",
+  "app.containers.landing.userDeletedSubtitleLinkUrl": "",
   "app.containers.landing.userDeletedTitle": "",
   "app.containers.landing.userDeletionFailed": "",
   "app.errors.after_end_at": "Das Startdatum ist auf die Zeit nach dem Enddatum gesetzt worden",
