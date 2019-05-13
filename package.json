@@ -111,8 +111,8 @@
     "rxjs": "6.5.1",
     "semantic-ui-react": "0.86.0",
     "uuid": "3.3.2",
-    "whatwg-fetch": "3.0.0",
-    "webfontloader": "1.6.28"
+    "webfontloader": "1.6.28",
+    "whatwg-fetch": "3.0.0"
   },
   "devDependencies": {
     "@babel/cli": "7.4.4",

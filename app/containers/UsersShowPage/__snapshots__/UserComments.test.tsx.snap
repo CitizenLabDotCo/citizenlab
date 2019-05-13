@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UserComments /> lets reducer splits the array returned  by the back-end into arrays of comments belonging to the same idea 1`] = `
+Array [
+  Array [
+    "idea1",
+    "idea1",
+    "idea1",
+  ],
+  Array [
+    "idea2",
+    "idea2",
+  ],
+]
+`;
+
+exports[`<UserComments /> renders correctly when empty 1`] = `
+<UserComments__MessageContainer>
+  <FormattedMessage
+    defaultMessage="This user has not posted any comment yet."
+    id="app.containers.UsersShowPage.noCommentsForUser"
+  />
+</UserComments__MessageContainer>
+`;
+
+exports[`<UserComments /> renders correctly when empty and own profile 1`] = `
+<UserComments__MessageContainer>
+  <FormattedMessage
+    defaultMessage="You have not posted any comment yet."
+    id="app.containers.UsersShowPage.noCommentsForYou"
+  />
+</UserComments__MessageContainer>
+`;
+
+exports[`<UserComments /> renders correctly when error 1`] = `
+<UserComments__MessageContainer>
+  <FormattedMessage
+    defaultMessage="An error has occured, please try again later."
+    id="app.containers.UsersShowPage.tryAgain"
+  />
+</UserComments__MessageContainer>
+`;
+
+exports[`<UserComments /> renders correctly with actual comments 1`] = `
+<UserComments__Container
+  className="e2e-profile-comments"
+>
+  <WrappedIdeaComments
+    commentsForIdea={
+      Array [
+        Object {
+          "attributes": Object {
+            "body_multiloc": Object {
+              "en": "Just a comment",
+            },
+            "children_count": 0,
+            "created_at": "2019-03-12T00: 00: 00.000Z",
+            "downvotes_count": 0,
+            "publication_status": "published",
+            "updated_at": "2019-03-26T14: 32: 32.000Z",
+            "upvotes_count": 0,
+          },
+          "id": "commentId",
+          "relationships": Object {
+            "author": Object {
+              "data": Object {
+                "id": "authorId",
+                "type": "users",
+              },
+            },
+            "idea": Object {
+              "data": Object {
+                "id": "idea1",
+                "type": "ideas",
+              },
+            },
+            "parent": Object {
+              "data": null,
+            },
+            "user_vote": Object {
+              "data": null,
+            },
+          },
+          "type": "comments",
+        },
+      ]
+    }
+    ideaId="idea1"
+    key="idea1"
+  />
+  <WrappedIdeaComments
+    commentsForIdea={
+      Array [
+        Object {
+          "attributes": Object {
+            "body_multiloc": Object {
+              "en": "Just a comment",
+            },
+            "children_count": 0,
+            "created_at": "2019-03-12T00: 00: 00.000Z",
+            "downvotes_count": 0,
+            "publication_status": "published",
+            "updated_at": "2019-03-26T14: 32: 32.000Z",
+            "upvotes_count": 0,
+          },
+          "id": "commentId",
+          "relationships": Object {
+            "author": Object {
+              "data": Object {
+                "id": "authorId",
+                "type": "users",
+              },
+            },
+            "idea": Object {
+              "data": Object {
+                "id": "idea2",
+                "type": "ideas",
+              },
+            },
+            "parent": Object {
+              "data": null,
+            },
+            "user_vote": Object {
+              "data": null,
+            },
+          },
+          "type": "comments",
+        },
+        Object {
+          "attributes": Object {
+            "body_multiloc": Object {
+              "en": "Just a comment",
+            },
+            "children_count": 0,
+            "created_at": "2019-03-12T00: 00: 00.000Z",
+            "downvotes_count": 0,
+            "publication_status": "published",
+            "updated_at": "2019-03-26T14: 32: 32.000Z",
+            "upvotes_count": 0,
+          },
+          "id": "commentId",
+          "relationships": Object {
+            "author": Object {
+              "data": Object {
+                "id": "authorId",
+                "type": "users",
+              },
+            },
+            "idea": Object {
+              "data": Object {
+                "id": "idea2",
+                "type": "ideas",
+              },
+            },
+            "parent": Object {
+              "data": null,
+            },
+            "user_vote": Object {
+              "data": null,
+            },
+          },
+          "type": "comments",
+        },
+      ]
+    }
+    ideaId="idea2"
+    key="idea2"
+  />
+</UserComments__Container>
+`;
+
+exports[`<UserComments /> renders correctly with actual comments and more 1`] = `
+<WithTheme(Button)
+  bgColor="rgba(230,143,81,0.08)"
+  bgHoverColor="rgba(230,143,81,0.12)"
+  height="50px"
+  icon="showMore"
+  onClick={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  }
+  textColor="#e68f51"
+  textHoverColor="#e07224"
+>
+  <FormattedMessage
+    defaultMessage="Load more comments"
+    id="app.containers.UsersShowPage.loadMoreComments"
+  />
+</WithTheme(Button)>
+`;

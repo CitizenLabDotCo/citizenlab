@@ -181,12 +181,20 @@ export function apiCreateIdea(
   projectId: string,
   ideaTitle: string,
   ideaContent: string,
+  jwt?: string
 ) {
+  let headers: { 'Content-Type': string; Authorization: string; } | null = null;
+  if (jwt) {
+    headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`
+    };
+  }
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
-      headers: {
+      headers: headers || {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${adminJwt}`
       },
@@ -241,14 +249,12 @@ export function apiCreateOfficialFeedback(
   });
 }
 
-export function apiAddComment(ideaId: string, commentContent: string, commentParentId?: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
-    const adminJwt = response.body.jwt;
-
+export function apiAddComment(ideaId: string, commentContent: string, commentParentId?: string, jwt?: string) {
+  if (jwt) {
     return cy.request({
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`
+        Authorization: `Bearer ${jwt}`
       },
       method: 'POST',
       url: `web_api/v1/ideas/${ideaId}/comments`,
@@ -262,7 +268,29 @@ export function apiAddComment(ideaId: string, commentContent: string, commentPar
         }
       }
     });
-  });
+  } else {
+    return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+      const adminJwt = response.body.jwt;
+
+      return cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`
+        },
+        method: 'POST',
+        url: `web_api/v1/ideas/${ideaId}/comments`,
+        body: {
+          comment: {
+            body_multiloc: {
+              'en-GB': commentContent,
+              'nl-BE': commentContent
+            },
+            parent_id: commentParentId
+          }
+        }
+      });
+    });
+  }
 }
 
 export function apiRemoveComment(commentId: string) {
