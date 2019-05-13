@@ -1483,6 +1483,8 @@
   "app.containers.landing.trendingIdeas": "Oppdag idéene",
   "app.containers.landing.twitterMessage": "Stem på {ideaTitle} på",
   "app.containers.landing.userDeletedSubtitle": "",
+  "app.containers.landing.userDeletedSubtitleLinkText": "",
+  "app.containers.landing.userDeletedSubtitleLinkUrl": "",
   "app.containers.landing.userDeletedTitle": "",
   "app.containers.landing.userDeletionFailed": "",
   "app.errors.after_end_at": "Startdatoen inntreffer etter sluttdatoen",
