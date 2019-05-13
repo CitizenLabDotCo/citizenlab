@@ -153,6 +153,8 @@ interface State {
   assignee: string;
   feedbackNeededFilterActive: boolean;
   searchTerm: string | undefined;
+  ideaModal: string | null;
+  ideaModalMode: 'view' | 'edit';
 }
 
 class IdeaManager extends React.PureComponent<Props, State> {
@@ -167,7 +169,9 @@ class IdeaManager extends React.PureComponent<Props, State> {
       contextRef: null,
       assignee: !isNilOrError(props.authUser) ? props.authUser.id : '',
       feedbackNeededFilterActive: false,
-      searchTerm: undefined
+      searchTerm: undefined,
+      ideaModal: null,
+      ideaModalMode: 'view'
     };
     this.globalState = globalState.init('AdminFullWidth');
   }
@@ -296,8 +300,28 @@ class IdeaManager extends React.PureComponent<Props, State> {
     }
   }
 
+  openIdeaPreview = (ideaId: string) => {
+    this.setState({ ideaModal: ideaId, ideaModalMode: 'view' });
+  }
+
+  openIdeaEdit = (ideaId: string) => {
+    this.setState({ ideaModal: ideaId, ideaModalMode: 'edit' });
+  }
+
+  switchModalMode = () => {
+    if (this.state.ideaModalMode === 'edit') {
+      this.setState({ ideaModalMode: 'view' });
+    } else {
+      this.setState({ ideaModalMode: 'edit' });
+    }
+  }
+
+  closeSideModal = () => {
+    this.setState({ ideaModal: null });
+  }
+
   render() {
-    const { searchTerm } = this.state;
+    const { searchTerm, ideaModal, ideaModalMode } = this.state;
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
     const { projectsList } = projects;
     const { ideasList, onChangePhase, onChangeTopics, onChangeProjects, onChangeIdeaStatus } = ideas;
@@ -363,6 +387,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
             <ActionBar
               ideaIds={selectedIdeaIds}
               resetSelectedIdeas={this.resetSelectedIdeas}
+              handleClickEdit={this.openIdeaEdit}
             />
           </LeftColumn>
           <MiddleColumnTop>
@@ -424,6 +449,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
               ideaLastPageNumber={ideas.lastPage}
               onIdeaChangePage={ideas.onChangePage}
               handleSeeAllIdeas={this.handleSeeAllIdeas}
+              switchModalMode={this.switchModalMode}
+              onCloseModal={this.closeSideModal}
+              onClickIdeaTitle={this.openIdeaPreview}
+              ideaModal={ideaModal}
+              ideaModalMode={ideaModalMode}
             />
           </MiddleColumn>
           <CSSTransition

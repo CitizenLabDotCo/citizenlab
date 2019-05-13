@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import SideModal from 'components/UI/SideModal';
 import IdeaEdit from './IdeaEdit';
@@ -10,15 +10,13 @@ import { colors } from 'utils/styleUtils';
 interface DataProps {}
 
 interface InputProps {
-  closeSideModal: () => void;
+  onCloseModal: () => void;
   ideaId: string | null;
+  onSwitchIdeaMode: () => void;
+  mode: 'edit' | 'view';
 }
 
 interface Props extends InputProps, DataProps {}
-
-interface State {
-  mode: 'view' | 'edit';
-}
 
 export const Container = styled.div`
   height: 100%;
@@ -43,41 +41,27 @@ export const Content = styled.div`
   margin-top: 50px;
 `;
 
-export default class IdeaPreview extends React.Component<Props, State> {
-  constructor (props) {
-    super(props);
-    this.state = {
-      mode: 'view',
-    };
-  }
-
-  onCloseModal = () => {
-    this.onSwitchIdeaMode('view')();
-    this.props.closeSideModal();
-  }
-
-  onSwitchIdeaMode = (mode: 'view' | 'edit') => () => this.setState({ mode });
+export default class IdeaPreview extends PureComponent<Props> {
 
   render() {
-    const { ideaId } = this.props;
-    const { mode } = this.state;
+    const { ideaId, onCloseModal, onSwitchIdeaMode, mode } = this.props;
 
     return (
       <SideModal
         opened={!!ideaId}
-        close={this.onCloseModal}
+        close={onCloseModal}
       >
         {mode === 'view' &&
           <IdeaContent
             ideaId={ideaId}
-            closeSideModal={this.onCloseModal}
-            handleClickEdit={this.onSwitchIdeaMode('edit')}
+            closeSideModal={onCloseModal}
+            handleClickEdit={onSwitchIdeaMode}
           />
         }
         {mode === 'edit' && ideaId &&
           <IdeaEdit
             ideaId={ideaId}
-            goBack={this.onSwitchIdeaMode('view')}
+            goBack={onSwitchIdeaMode}
           />
         }
       </SideModal>

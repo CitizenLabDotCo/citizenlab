@@ -1,6 +1,5 @@
 import React from 'react';
 import { deleteIdea } from 'services/ideas';
-import clHistory from 'utils/cl-router/history';
 
 import { Icon, Button } from 'semantic-ui-react';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -10,6 +9,7 @@ import messages from '../../messages';
 interface Props {
   ideaId: string;
   resetSelectedIdeas: () => void;
+  handleClickEdit: (ideaId: string) => void;
 }
 
 class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
@@ -26,8 +26,8 @@ class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
   }
 
   handleClickEdit = () => {
-    const { ideaId } = this.props;
-    clHistory.push(`/ideas/edit/${ideaId}`);
+    const { ideaId, handleClickEdit } = this.props;
+    handleClickEdit(ideaId);
   }
 
   render() {
