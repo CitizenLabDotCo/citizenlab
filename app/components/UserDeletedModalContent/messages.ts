@@ -8,7 +8,15 @@ export default defineMessages({
   },
   userDeletedSubtitle: {
     id: 'app.containers.landing.userDeletedSubtitle',
-    defaultMessage: 'You can create a new account at any time !'
+    defaultMessage: 'You can create a new account at any time or {contactLink} to let us know what we can improve.'
+  },
+  userDeletedSubtitleLinkText: {
+    id: 'app.containers.landing.userDeletedSubtitleLinkText',
+    defaultMessage: 'drop us a line'
+  },
+  userDeletedSubtitleLinkUrl: {
+    id: 'app.containers.landing.userDeletedSubtitleLinkUrl',
+    defaultMessage: 'https://citizenlabco.typeform.com/to/z7baRP?source={url}'
   },
   userDeletionFailed: {
     id: 'app.containers.landing.userDeletionFailed',
