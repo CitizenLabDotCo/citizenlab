@@ -17,7 +17,7 @@ const StatusTitle = styled.h4`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
-  font-weight: 400;
+  font-weight: 300;
   margin: 0;
   margin-bottom: 6px;
   padding: 0;

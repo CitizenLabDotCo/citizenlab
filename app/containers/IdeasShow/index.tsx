@@ -209,7 +209,7 @@ const IdeaHeader = styled.div`
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
-    margin-bottom: 50px;
+    margin-bottom: 45px;
   `}
 `;
 
