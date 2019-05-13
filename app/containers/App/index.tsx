@@ -32,6 +32,8 @@ import Meta from './Meta';
 import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableFullscreenModal from 'components/Loadable/FullscreenModal';
+import LoadableModal from 'components/Loadable/Modal';
+import UserDeletedModalContent from 'components/UserDeletedModalContent';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -39,7 +41,7 @@ import HasPermission from 'components/HasPermission';
 // services
 import { localeStream } from 'services/locale';
 import { IUser } from 'services/users';
-import { authUserStream, signOut } from 'services/auth';
+import { authUserStream, signOut, signOutAndDeleteAccountPart2 } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
 // utils
@@ -93,6 +95,8 @@ type State = {
   modalId: string | null;
   modalUrl: string | null;
   visible: boolean;
+  userDeletedModalOpened: boolean;
+  userActuallyDeleted: boolean;
 };
 
 class App extends PureComponent<Props & WithRouterProps, State> {
@@ -109,7 +113,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       modalType: null,
       modalId: null,
       modalUrl: null,
-      visible: true
+      visible: true,
+      userDeletedModalOpened: false,
+      userActuallyDeleted: false
     };
     this.subscriptions = [];
   }
@@ -186,6 +192,17 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         this.openModal(type, id, url);
       }),
     ];
+    this.subscriptions.push(
+      eventEmitter.observeEvent('tryAndDeleteProfile').subscribe(() => {
+        signOutAndDeleteAccountPart2().then(success => {
+          if (success) {
+            this.setState({ userDeletedModalOpened: true, userActuallyDeleted: true });
+          } else {
+            this.setState({ userDeletedModalOpened: true, userActuallyDeleted: false });
+          }
+        });
+      })
+    );
   }
 
   componentWillUnmount() {
@@ -209,9 +226,23 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     clHistory.push('/sign-in');
   }
 
+  closeUserDeletedModal = () => {
+    this.setState({ userDeletedModalOpened: false });
+  }
+
   render() {
     const { location, children } = this.props;
-    const { previousPathname, tenant, modalOpened, modalType, modalId, modalUrl, visible } = this.state;
+    const {
+      previousPathname,
+      tenant,
+      modalOpened,
+      modalType,
+      modalId,
+      modalUrl,
+      visible ,
+      userDeletedModalOpened,
+      userActuallyDeleted
+    } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
 
@@ -222,6 +253,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
             <ThemeProvider theme={theme}>
               <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                 <Meta />
+
+                <ErrorBoundary>
+                  <LoadableModal
+                    opened={userDeletedModalOpened}
+                    close={this.closeUserDeletedModal}
+                  >
+                    <UserDeletedModalContent userActuallyDeleted={userActuallyDeleted} />
+                  </LoadableModal>
+                </ErrorBoundary>
 
                 <ErrorBoundary>
                   <LoadableFullscreenModal
