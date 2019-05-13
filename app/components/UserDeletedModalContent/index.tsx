@@ -7,7 +7,9 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
-import Illustration from './Illustration';
+import FormattedAnchor from 'components/FormattedAnchor';
+
+const illustration = require('./illustration.png');
 
 const Container = styled.div`
   width: 100%;
@@ -20,7 +22,7 @@ const Title = styled.h1`
   flex-shrink: 0;
   width: 100%;
   color: ${colors.text};
-  font-size: ${fontSizes.xxxxl}px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 40px;
   font-weight: 500;
   text-align: center;
@@ -31,7 +33,6 @@ const Title = styled.h1`
 
   ${media.smallerThanMaxTablet`
     max-width: auto;
-    font-size: ${fontSizes.xxxl}px;
     line-height: 36px;
   `}
 `;
@@ -41,7 +42,7 @@ const Subtitle = styled.h3`
   width: 100%;
   max-width: 500px;
   color: ${colors.text};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.base}px;
   line-height: 25px;
   font-weight: 300;
   text-align: center;
@@ -55,6 +56,10 @@ const Subtitle = styled.h3`
     line-height: 21px;
     margin-bottom: 20px;
   `}
+  a {
+    text-decoration: underline;
+    color: ${colors.text};
+  }
 `;
 
 interface InputProps {
@@ -68,12 +73,19 @@ interface Props extends InputProps, DataProps {}
 
 export default memo(({ userActuallyDeleted }: Props) => userActuallyDeleted ? (
   <Container>
-    <Illustration />
+    <img src={illustration} alt="illu" />
     <Title className="e2e-user-deleted-success-modal-content">
       <FormattedMessage {...messages.userDeletedTitle} />
     </Title>
     <Subtitle>
-      <FormattedMessage {...messages.userDeletedSubtitle} />
+      <FormattedAnchor
+        mainMessage={messages.userDeletedSubtitle}
+        mainMessageLinkKey="contactLink"
+        linkTextMessage={messages.userDeletedSubtitleLinkText}
+        urlMessage={messages.userDeletedSubtitleLinkUrl}
+        urlMessageValues={{ url: window.location.href }}
+        target="_blank"
+      />
     </Subtitle>
   </Container>
 ) : (
