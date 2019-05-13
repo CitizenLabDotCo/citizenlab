@@ -85,6 +85,7 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
               ? newComments.data
               : [...(!isNilOrError(commentsList) ? commentsList : []), ...newComments.data]),
             loadingMore: false,
+            pageNumber: selfLink,
             querying: false
           });
         }
@@ -108,7 +109,7 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
     if (this.state.hasMore) {
       const incr = this.state.pageNumber + 1;
       this.pageNumber$.next(incr);
-      this.setState({ pageNumber: incr, loadingMore: true });
+      this.setState({ loadingMore: true });
     }
   }
 
