@@ -54,7 +54,6 @@ import ErrorBoundary from 'components/ErrorBoundary';
 const Container = styled.div`
   background: #fff;
   position: relative;
-  overflow: hidden;
 `;
 
 const InnerContainer = styled.div`

@@ -4,7 +4,7 @@ import { adopt } from 'react-adopt';
 
 // components
 import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
-import IdeaHeader from 'containers/IdeasShow/IdeaHeader';
+import IdeaTitle from 'containers/IdeasShow/IdeaTitle';
 import OfficialFeedback from 'containers/IdeasShow/OfficialFeedback';
 import Comments from 'containers/IdeasShow/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
@@ -277,7 +277,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             </Button>
           </Top>
           <Content>
-            <IdeaHeader
+            <IdeaTitle
               ideaId={idea.id}
               ideaTitle={ideaTitle}
             />

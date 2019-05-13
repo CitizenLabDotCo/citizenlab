@@ -23,7 +23,7 @@ import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
 import IdeaTopics from './IdeaTopics';
-import IdeaHeader from './IdeaHeader';
+import IdeaTitle from './IdeaTitle';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
@@ -203,6 +203,16 @@ const StyledTranslateButton = styled(TranslateButton)`
   `}
 `;
 
+const IdeaHeader = styled.div`
+  margin-top: -5px;
+  margin-bottom: 28px;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 0px;
+    margin-bottom: 50px;
+  `}
+`;
+
 const IdeaImage = styled.img`
   width: 100%;
   height: auto;
@@ -212,7 +222,7 @@ const IdeaImage = styled.img`
 `;
 
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
-  margin-bottom: 50px;
+  margin-top: 4px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -220,7 +230,7 @@ const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
 `;
 
 const StyledMobileIdeaStatus = styled(IdeaStatus)`
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -704,14 +714,16 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   }
                 </FeatureFlag>
 
-                <IdeaHeader
-                  ideaId={ideaId}
-                  ideaTitle={ideaTitle}
-                  locale={locale}
-                  translateButtonClicked={translateButtonClicked}
-                />
+                <IdeaHeader>
+                  <IdeaTitle
+                    ideaId={ideaId}
+                    ideaTitle={ideaTitle}
+                    locale={locale}
+                    translateButtonClicked={translateButtonClicked}
+                  />
 
-                <StyledMobileIdeaPostedBy authorId={authorId} />
+                  <StyledMobileIdeaPostedBy authorId={authorId} />
+                </IdeaHeader>
 
                 {statusId &&
                   <StyledMobileIdeaStatus statusId={statusId} />
