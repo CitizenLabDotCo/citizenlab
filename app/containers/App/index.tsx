@@ -197,7 +197,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         signOutAndDeleteAccountPart2().then(success => {
           if (success) {
             this.setState({ userDeletedModalOpened: true, userActuallyDeleted: true });
-            // this.setState({ userDeletedModalOpened: true, userDeletedSuccessfully: true });
           } else {
             this.setState({ userDeletedModalOpened: true, userActuallyDeleted: false });
           }
