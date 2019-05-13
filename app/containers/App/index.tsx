@@ -54,6 +54,7 @@ import ErrorBoundary from 'components/ErrorBoundary';
 const Container = styled.div`
   background: #fff;
   position: relative;
+  overflow: hidden;
 `;
 
 const InnerContainer = styled.div`
@@ -234,8 +235,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                 </ErrorBoundary>
 
                 <ErrorBoundary>
-                  <Navbar />
+                  <Navbar fullscreenModalOpened={modalOpened} />
                 </ErrorBoundary>
+
                 <ErrorBoundary>
                   <ConsentManager />
                 </ErrorBoundary>
