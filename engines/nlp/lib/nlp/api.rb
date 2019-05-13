@@ -61,7 +61,10 @@ module NLP
         body: body.to_json,
         headers: {'Content-Type' => 'application/json'} 
       )
-      return JSON.parse(resp.body)['data'] if resp.code == 200
+      if !resp.success?
+        raise ClErrors::TransactionError.new(error_key: resp['code'])
+      end
+      resp.parsed_response.dig('data')
     end
 
     def summarize texts, locale, options={}
