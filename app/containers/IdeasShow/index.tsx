@@ -29,7 +29,7 @@ import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaVoteControlMobile from './IdeaVoteControlMobile';
 import IdeaFooter from './IdeaFooter';
-import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
+import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
 import Icon from 'components/UI/Icon';
 import IdeaBody from './IdeaBody';
@@ -70,17 +70,9 @@ import styled from 'styled-components';
 import { media, colors, fontSizes, ideaPageContentMaxWidth } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const loadingSpinnerFadeInDuration = 300;
-const loadingSpinnerFadeInEasing = 'ease-out';
-const loadingSpinnerFadeInDelay = 100;
 const contentFadeInDuration = 400;
 const contentFadeInEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
 const contentFadeInDelay = 350;
-const contentTranslateDistance = '25px';
-
-const StyledSpinner = styled<SpinnerProps>(Spinner)`
-  transition: all ${loadingSpinnerFadeInDuration}ms ${loadingSpinnerFadeInEasing} ${loadingSpinnerFadeInDelay}ms;
-`;
 
 const Loading = styled.div`
   position: absolute;
@@ -91,18 +83,6 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  &.loading-enter {
-    ${StyledSpinner} {
-      opacity: 0;
-    }
-
-    &.loading-enter-active {
-      ${StyledSpinner} {
-        opacity: 1;
-      }
-    }
-  }
 `;
 
 const Container = styled.div`
@@ -110,7 +90,6 @@ const Container = styled.div`
   flex-direction: column;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px);
   background: #fff;
-  /* transform: none; */
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
@@ -124,16 +103,16 @@ const Container = styled.div`
     `}
   }
 
-  &.content-enter {
-    opacity: 0;
-    /* transform: translateY(${contentTranslateDistance}); */
+  ${media.smallerThanMaxTablet`
+    &.content-enter {
+      opacity: 0;
 
-    &.content-enter-active {
-      opacity: 1;
-      /* transform: translateY(0); */
-      transition: all ${contentFadeInDuration}ms ${contentFadeInEasing} ${contentFadeInDelay}ms;
+      &.content-enter-active {
+        opacity: 1;
+        transition: all ${contentFadeInDuration}ms ${contentFadeInEasing} ${contentFadeInDelay}ms;
+      }
     }
-  }
+  `}
 
   &.content-exit {
     display: none;
@@ -877,18 +856,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
     return (
       <>
-        <CSSTransition
-          classNames="loading"
-          in={(opened && !loaded)}
-          timeout={loadingSpinnerFadeInDuration}
-          mountOnEnter={false}
-          unmountOnExit={true}
-          exit={false}
-        >
+        {(opened && !loaded) &&
           <Loading>
-            <StyledSpinner />
+            <Spinner />
           </Loading>
-        </CSSTransition>
+        }
 
         <CSSTransition
           classNames="content"

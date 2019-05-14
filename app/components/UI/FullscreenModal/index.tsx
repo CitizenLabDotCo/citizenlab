@@ -5,7 +5,6 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import TopBar from 'components/UI/Fullscreenmodal/TopBar';
-import CSSTransition from 'react-transition-group/CSSTransition';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -18,9 +17,6 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { getUrlLocale } from 'services/locale';
-
-const timeout = 300;
-const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container: any = styled.div`
   position: fixed;
@@ -41,33 +37,9 @@ const Container: any = styled.div`
     display: block;
   }
 
-  &.modal-enter {
-    opacity: 0;
-
-    &.modal-enter-active {
-      opacity: 1;
-      transition: opacity ${timeout}ms ${easing};
-    }
-  }
-
   ${media.smallerThanMaxTablet`
     top: 0;
-
-    &.modal-enter {
-      opacity: 0;
-      transform: translateY(20px);
-
-      &.modal-enter-active {
-        opacity: 1;
-        transform: none;
-        transition: all ${timeout}ms ${easing};
-      }
-    }
   `}
-
-  &.modal-exit {
-    display: none;
-  }
 `;
 
 const Content = styled.div`
@@ -103,7 +75,7 @@ interface State {}
 
 const useCapture = false;
 
-class Modal extends PureComponent<Props, State> {
+class FullscreenModal extends PureComponent<Props, State> {
   unlisten: Function | null;
   goBackUrl: string | null;
   ContentElement: HTMLDivElement | null;
@@ -217,30 +189,21 @@ class Modal extends PureComponent<Props, State> {
     const { children, opened, headerChild } = this.props;
 
     return (
-      <CSSTransition
-        classNames="modal"
-        in={opened}
-        timeout={timeout}
-        mountOnEnter={false}
-        unmountOnExit={false}
-        exit={true}
-      >
-        <Container id="e2e-fullscreenmodal-content" className={`${opened ? 'opened' : 'closed'}`}>
-          <Content innerRef={this.setRef}>
-            {children}
-          </Content>
+      <Container id="e2e-fullscreenmodal-content" className={`${opened ? 'opened' : 'closed'}`}>
+        <Content innerRef={this.setRef}>
+          {children}
+        </Content>
 
-          <TopBar goBack={this.clickGoBackButton}>
-            {headerChild}
-          </TopBar>
-        </Container>
-      </CSSTransition>
+        <TopBar goBack={this.clickGoBackButton}>
+          {headerChild}
+        </TopBar>
+      </Container>
     );
   }
 }
 
 export default (inputProps: InputProps) => (
   <GetLocale>
-    {locale => <Modal {...inputProps} locale={locale} />}
+    {locale => <FullscreenModal {...inputProps} locale={locale} />}
   </GetLocale>
 );
