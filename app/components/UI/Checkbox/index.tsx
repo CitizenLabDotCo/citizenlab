@@ -113,11 +113,12 @@ export default class Checkbox extends PureComponent<Props, State> {
           onClick={this.toggleCheckbox}
           onKeyPress={this.handleKeyPress}
           role="button"
+          aria-labelledby="checkbox-label"
         >
           {value && <CheckmarkIcon name="checkmark" />}
         </CheckboxContainer>
         {label &&
-          <Label onClick={this.handleLabelOnClick}>
+          <Label id="checkbox-label" onClick={this.handleLabelOnClick}>
             {label}
           </Label>
         }
