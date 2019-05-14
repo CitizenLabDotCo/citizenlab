@@ -11,7 +11,7 @@ class WebApi::V1::UserCommentsController < ApplicationController
       .per(params.dig(:page, :size))
 
     @comments = @comments
-      .where(idea_id: @ideas.ids)
+      .where(idea: @ideas)
       .includes(:idea)
       .left_outer_joins(:idea)
     @comments = @comments.order('ideas.published_at DESC, ideas.id DESC, comments.created_at DESC')
