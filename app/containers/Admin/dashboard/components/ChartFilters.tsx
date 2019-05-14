@@ -57,7 +57,7 @@ export default class ChartFilters extends PureComponent<Props> {
         {showProjectFilter && onProjectFilter &&
           <FilterContainer>
             <HiddenLabel>
-              <FormattedMessage className="label-text" {...messages.hiddenLabelProjectFilter} />
+              <FormattedMessage {...messages.hiddenLabelProjectFilter} />
               <Select
                 id="projectFilter"
                 onChange={onProjectFilter}

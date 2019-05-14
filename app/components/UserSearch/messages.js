@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.UserSearch.searchUsers',
     defaultMessage: 'Type to search users...',
   },
+  noOptions: {
+    id: 'app.components.UserSearch.noOptions',
+    defaultMessage: 'No options',
+  },
 });

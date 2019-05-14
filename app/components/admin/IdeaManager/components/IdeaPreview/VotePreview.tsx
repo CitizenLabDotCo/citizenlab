@@ -35,8 +35,19 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   margin-right: 30px;
+  flex-wrap: wrap;
+`;
+
+const Block = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
   & > div {
     display: flex;
+    flex-wrap: nowrap;
+    margin-right: 7px;
+    :last-child {
+      margin-right: 0;
+    }
   }
 `;
 
@@ -66,22 +77,24 @@ const VotePreview = (props: Props) => {
     return (
       <Container className={className}>
         <Label value={<FormattedMessage {...messages.voteCounts} />}/>
-        <div>
-          <IconContainer>
-            <UpvoteIcon name="upvote-2"/>
-          </IconContainer>
-          <UpVotes>
-            {votesCount.up}
-          </UpVotes>
-        </div>
-        <div>
-          <IconContainer>
-            <VoteIcon name="downvote-2"/>
-          </IconContainer>
-          <Votes>
-            {votesCount.down}
-          </Votes>
-        </div>
+        <Block>
+          <div>
+            <IconContainer>
+              <UpvoteIcon name="upvote-2"/>
+            </IconContainer>
+            <UpVotes>
+              {votesCount.up}
+            </UpVotes>
+          </div>
+          <div>
+            <IconContainer>
+              <VoteIcon name="downvote-2"/>
+            </IconContainer>
+            <Votes>
+              {votesCount.down}
+            </Votes>
+          </div>
+        </Block>
       </Container>
     );
   }
