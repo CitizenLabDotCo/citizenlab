@@ -142,10 +142,17 @@ class IdeaEditPage extends PureComponent<Props, State> {
       idea$
     ).pipe(
       switchMap(([locale, currentTenantLocales, idea]) => {
+        let ideaImage$ = of(null) as Observable<UploadFile | null>;
+        let granted$ = of(false) as Observable<boolean>;
+        let selectedTopics$ = of(null) as Observable<{ label: string, value: string }[]| null>;
+
+        if (!isNilOrError(idea)) {
+
+        // ideaImage$
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
         const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
-        const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.pipe(
+        ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.pipe(
           first(),
           switchMap((ideaImage) => {
             if (ideaImage && ideaImage.data && ideaImage.data.attributes.versions.large) {
@@ -157,21 +164,15 @@ class IdeaEditPage extends PureComponent<Props, State> {
             return of(null);
         })) : of(null));
 
-        const granted$ = hasPermission({
-          item: idea.data,
-          action: 'edit',
-          context: idea.data
-        });
-
+        // selectedTopics$
         let topics$: Observable<null | ITopic[]> = of(null);
-
         if ((idea.data.relationships.topics && idea.data.relationships.topics.data && idea.data.relationships.topics.data.length > 0)) {
           topics$ = combineLatest(
             idea.data.relationships.topics.data.map(topic => topicByIdStream(topic.id).observable)
           );
         }
 
-        const selectedTopics$ = topics$.pipe(map((topics) => {
+        selectedTopics$ = topics$.pipe(map((topics) => {
           if (topics && topics.length > 0) {
             return topics.map((topic) => {
               return {
@@ -183,6 +184,14 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
           return null;
         }));
+
+        // granted$
+        granted$ = hasPermission({
+          item: idea.data,
+          action: 'edit',
+          context: idea.data
+        });
+      }
 
         return combineLatest(
           locale$,
@@ -196,7 +205,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
     this.subscriptions = [
       ideaWithRelationships$.subscribe(([locale, idea, ideaImage, selectedTopics, granted]) => {
-        if (granted) {
+        if (!isNilOrError(idea) && granted) {
           this.setState({
             locale,
             selectedTopics,
