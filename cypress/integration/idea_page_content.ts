@@ -12,13 +12,11 @@ describe('Idea Content', () => {
   });
 
   it('shows the home page link with correct href', () => {
-    cy.get('#e2e-home-page-link')
-          .should('have.attr', 'href').and('include', '/en-GB/');
+    cy.get('#e2e-home-page-link').should('have.attr', 'href').and('include', '/en-GB/');
   });
 
   it('shows the link to the project page with correct href', () => {
-    cy.get('#e2e-project-link')
-          .should('have.attr', 'href').and('include', '/en-GB/projects/an-idea-bring-it-to-your-council');
+    cy.get('#e2e-project-link').should('have.attr', 'href').and('include', '/en-GB/projects/an-idea-bring-it-to-your-council');
   });
 
   it('shows the idea Title', () => {
@@ -43,40 +41,39 @@ describe('Idea Content', () => {
     cy.get('.e2e-comments-container').contains('I\'ve never seen you riding a bicycle..');
     cy.get('.e2e-comments-container').contains('No no no no no');
   });
+
   it('shows the idea content footer', () => {
     cy.get('#e2e-idea-content-footer');
   });
 
-  it('shows the idea map component', () => {
+  describe('Idea Map', () => {
+    let projectId: string = null as any;
     const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
     const projectDescription = randomString();
-    // location data for Brussels
+    const ideaTitle = randomString();
+    const ideaContent = randomString();
     const locationGeoJSON = { type: 'Point', coordinates: [4.351710300000036, 50.8503396] };
     const locationDescription = 'Brussel, België';
 
-    cy.apiCreateProject(
-      'continuous',
-      projectTitle,
-      projectDescriptionPreview,
-      projectDescription,
-      'published'
-      ).then((project) => {
-      const projectId = project.body.data.id;
-      const ideaTitle = randomString();
-      const ideaContent = randomString();
-
-      cy.apiCreateIdea(
-        projectId,
-        ideaTitle,
-        ideaContent,
-        locationGeoJSON,
-        locationDescription
-      ).then(() => {
+    before(() => {
+      cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published').then((project) => {
+        projectId = project.body.data.id;
+        cy.apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription);
         cy.visit(`/ideas/${ideaTitle}`);
-        cy.get('#e2e-map-toggle').click();
-        cy.get('#e2e-map');
+        cy.wait(1000);
       });
+    });
+
+    it('shows the idea map component', () => {
+      cy.get('#e2e-map-toggle').click();
+      cy.get('#e2e-map');
+    });
+
+    after(() => {
+      // TODO:
+      // remove idea
+      // remove project
     });
   });
 
@@ -88,31 +85,31 @@ describe('Idea Content', () => {
     cy.get('#e2e-idea-more-actions-menu');
   });
 
-  it('has a correct initial idea status', () => {
+  describe('Idea Status', () => {
+    let projectId: string = null as any;
     const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
     const projectDescription = randomString();
+    const ideaTitle = randomString();
+    const ideaContent = randomString();
 
-    cy.apiCreateProject(
-      'continuous',
-      projectTitle,
-      projectDescriptionPreview,
-      projectDescription,
-      'published'
-      ).then((project) => {
-      const projectId = project.body.data.id;
-      const ideaTitle = randomString();
-      const ideaContent = randomString();
-
-      cy.apiCreateIdea(
-        projectId,
-        ideaTitle,
-        ideaContent
-      ).then(idea => {
+    before(() => {
+      cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published').then((project) => {
+        projectId = project.body.data.id;
+        cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
         cy.visit(`/ideas/${ideaTitle}`);
-        cy.wait(500);
-        cy.get('#e2e-idea-status-badge').contains('proposed');
+        cy.wait(1000);
       });
+    });
+
+    it('has a correct initial idea status', () => {
+      cy.get('#e2e-idea-status-badge').contains('proposed');
+    });
+
+    after(() => {
+      // TODO:
+      // remove idea
+      // remove project
     });
   });
 });
