@@ -9,10 +9,10 @@ GIT
 
 GIT
   remote: https://github.com/CitizenLabDotCo/omniauth-azure-activedirectory.git
-  revision: fccdd36ee9fa19be0d7d2fa0d1d8c1c4406ffad4
+  revision: 11de479589a43efac3d0703de3f6e651443701c5
   specs:
-    omniauth-azure-activedirectory (1.0.0)
-      jwt (~> 2.1)
+    omniauth-azure-activedirectory (1.1.0)
+      jwt (~> 2.0)
       omniauth (~> 1.1)
 
 GIT
@@ -404,7 +404,7 @@ GEM
     puma (3.12.0)
     pundit (2.0.0)
       activesupport (>= 3.0.0)
-    rack (2.0.6)
+    rack (2.0.7)
     rack-cors (1.0.2)
     rack-oauth2 (1.9.3)
       activesupport
