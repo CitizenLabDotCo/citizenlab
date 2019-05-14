@@ -62,8 +62,20 @@ class ParticipationContextService
     end
   end
 
-  def posting_disabled_reason project, user
+  def participation_possible_for_context? context, user
+    !( posting_disabled_reason_for_context(context, user)\
+    && commenting_disabled_reason_for_context(context, user)\
+    && voting_disabled_reason_for_context(context, user)\
+    && taking_survey_disabled_reason_for_context(context, user)\
+    && budgeting_disabled_reason_for_context(context, user) )
+  end
+
+  def posting_disabled_reason_for_project project, user
     context = project && get_participation_context(project)
+    posting_disabled_reason_for_context context, user
+  end
+
+  def posting_disabled_reason_for_context context, user
     if !context
       POSTING_DISABLED_REASONS[:project_inactive]
     elsif !context.ideation?
@@ -90,6 +102,10 @@ class ParticipationContextService
 
   def commenting_disabled_reason_for_project project, user
     context = get_participation_context project
+    commenting_disabled_reason_for_context context, user
+  end
+
+  def commenting_disabled_reason_for_context context, user
     if !context
       COMMENTING_DISABLED_REASONS[:project_inactive]
     elsif !context.can_contain_ideas?
@@ -116,6 +132,10 @@ class ParticipationContextService
 
   def voting_disabled_reason_for_project project, user
     context = get_participation_context project
+    voting_disabled_reason_for_context context, user
+  end
+
+  def voting_disabled_reason_for_context context, user
     if !context
       VOTING_DISABLED_REASONS[:project_inactive]
     elsif !context.ideation?
@@ -152,8 +172,12 @@ class ParticipationContextService
     end
   end
 
-  def taking_survey_disabled_reason project, user
+  def taking_survey_disabled_reason_for_project project, user
     context = get_participation_context project
+    taking_survey_disabled_reason_for_context context, user
+  end
+
+  def taking_survey_disabled_reason_for_context context, user
     if !context
       TAKING_SURVEY_DISABLED_REASONS[:project_inactive]
     elsif !context.survey?
@@ -165,16 +189,16 @@ class ParticipationContextService
     end
   end
 
-  def budgeting_disabled_reason idea, user
+  def budgeting_disabled_reason_for_idea idea, user
     context = get_participation_context idea.project
     if context && !in_current_context?(idea, context)
       BUDGETING_DISABLED_REASONS[:idea_not_in_current_phase]
     else
-      budgeting_disabled_reason_in_context context, user
+      budgeting_disabled_reason_for_context context, user
     end
   end
 
-  def budgeting_disabled_reason_in_context context, user
+  def budgeting_disabled_reason_for_context context, user
     if !context
       BUDGETING_DISABLED_REASONS[:project_inactive]
     elsif !context_permission(context, 'budgeting')&.granted_to?(user)

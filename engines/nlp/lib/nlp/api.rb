@@ -64,5 +64,19 @@ module NLP
       return JSON.parse(resp.body)['data'] if resp.code == 200
     end
 
+    def summarize texts, locale, options={}
+      body = {
+        **options,
+        texts: texts,
+        locale: locale
+      }
+      resp = self.class.post(
+        "/v1/summarization",
+        body: body.to_json,
+        headers: {'Content-Type' => 'application/json'}
+      )
+      return JSON.parse(resp.body)['data'] if resp.code == 200
+    end
+
   end
 end

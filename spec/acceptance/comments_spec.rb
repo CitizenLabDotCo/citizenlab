@@ -125,6 +125,41 @@ resource "Comments" do
     end
   end
 
+  get "web_api/v1/users/:user_id/comments" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of top-level comments per page. The response will include 2 to 5 child comments per top-level comment, so expect to receive more"
+    end
+
+    describe do
+      before do
+        @i1 = create(:idea, published_at: Time.now)
+        @i2 = create(:idea, published_at: Time.now  - 1.day)
+        @i3 = create(:idea, published_at: Time.now - 3.days)
+        @user = create(:user)
+        @c1 = create(:comment, idea: @i2, author: @user, created_at: Time.now - 1.hour)
+        @c2 = create(:comment, idea: @i1, author: @user)
+        @c3 = create(:comment, idea: @i2, author: @user, created_at: Time.now)
+        @c4 = create(:comment)
+        @c5 = create(:comment, idea: @i3, author: @user)
+      end
+
+      let(:user_id) { @user.id }
+      let(:size) { 2 }
+
+      example_request "List the comments of a user" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].map{|d| d[:id]}).to eq [@c2.id, @c3.id, @c1.id]
+        expect(json_response[:included].map{|d| d.dig(:attributes, :slug)}).to eq [@i1.slug, @i2.slug]
+        expect(json_response.dig(:meta, :total_count)).to eq 3
+        expect(json_response.dig(:meta, :total_pages)).to eq 2
+        expect(json_response.dig(:meta, :current_page)).to eq 1
+      end
+    end
+  end
+
   get "web_api/v1/comments/as_xlsx" do
     parameter :project, 'Filter by project', required: false
     parameter :ideas, 'Filter by a given list of idea ids', required: false

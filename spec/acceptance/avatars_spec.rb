@@ -15,7 +15,7 @@ resource "Avatars" do
   get "web_api/v1/avatars" do
 
     parameter :limit, "Number of avatars to return. Defaults to 5. Maximum 10.", default: false
-    parameter :context_type, "The context used to look for users. Either 'group' or 'project'. Don't specify to not limit the context.", required: false
+    parameter :context_type, "The context used to look for users. Either 'group', 'project' or 'idea'. Don't specify to not limit the context.", required: false
     parameter :context_id, "The context used to look for users. A valid ID for the given context_type", required: false
 
     response_field :total, "The total count of users in the given context, including those without avatar", scope: :meta
@@ -45,6 +45,25 @@ resource "Avatars" do
         expect(json_response.dig(:data).map{|d| d.dig(:attributes, :avatar).keys}).to all(eq [:small, :medium, :large])
         expect(json_response.dig(:data).flat_map{|d| d.dig(:attributes, :avatar).values}).to all(be_present)
         expect(json_response.dig(:data).map{|d| d.dig(:id)}).to all(satisfy{|id| author_ids.map{|id| "#{id}-avatar"}.include?(id)})
+        expect(json_response.dig(:meta, :total)).to eq 3
+      end
+    end
+
+    describe do
+      let(:idea) { create(:idea) }
+      let(:context_type) { 'idea' }
+      let(:context_id) { idea.id }
+      let(:author_id) { idea.author.id }
+      let!(:commenter_ids) { 2.times.map{create(:comment, idea: idea).author.id}}
+      let(:limit) { 2 }
+
+      example_request "List random user avatars on an idea (author and commenters)" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response.dig(:data).map{|d| d.dig(:attributes, :avatar).keys}).to all(eq [:small, :medium, :large])
+        expect(json_response.dig(:data).flat_map{|d| d.dig(:attributes, :avatar).values}).to all(be_present)
+        expect(json_response.dig(:data).map{|d| d.dig(:id)}).to all(satisfy{|id| (commenter_ids + [author_id]).map{|id| "#{id}-avatar"}.include?(id)})
         expect(json_response.dig(:meta, :total)).to eq 3
       end
     end
