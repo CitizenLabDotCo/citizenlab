@@ -18,9 +18,9 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { getUrlLocale } from 'services/locale';
 
-const Container: any = styled.div`
+const Container = styled.div`
   position: fixed;
-  top: ${props => props.theme.menuHeight}px;
+  top: ${({ theme }) => theme.menuHeight}px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -30,6 +30,7 @@ const Container: any = styled.div`
   justify-content: center;
   overflow: hidden;
   background: #fff;
+  z-index: -1000;
   display: none;
 
   &.opened {
@@ -76,19 +77,9 @@ interface State {}
 const useCapture = false;
 
 class FullscreenModal extends PureComponent<Props, State> {
-  unlisten: Function | null;
-  goBackUrl: string | null;
-  ContentElement: HTMLDivElement | null;
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      scrolled: false
-    };
-    this.unlisten = null;
-    this.goBackUrl = null;
-    this.ContentElement = null;
-  }
+  unlisten: Function | null = null;
+  goBackUrl: string | null = null;
+  ContentElement: HTMLDivElement | null = null;
 
   componentWillUnmount() {
     this.cleanup();
@@ -156,9 +147,6 @@ class FullscreenModal extends PureComponent<Props, State> {
 
     window.removeEventListener('popstate', this.handlePopstateEvent, useCapture);
     window.removeEventListener('keydown', this.handleKeypress, useCapture);
-
-    // reset state
-    this.setState({ scrolled: false });
 
     if (isFunction(this.unlisten)) {
       this.unlisten();
