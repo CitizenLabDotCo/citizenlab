@@ -12,10 +12,12 @@ declare global {
       getUserBySlug: typeof getUserBySlug;
       getAuthUser: typeof getAuthUser;
       apiCreateIdea: typeof apiCreateIdea;
+      apiRemoveIdea: typeof apiRemoveIdea;
       apiCreateOfficialFeedback: typeof apiCreateOfficialFeedback;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
+      apiRemoveProject: typeof apiRemoveProject;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
       apiRemoveCustomField: typeof apiRemoveCustomField;
@@ -215,6 +217,21 @@ export function apiCreateIdea(
   });
 }
 
+export function apiRemoveIdea(ideaId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'DELETE',
+      url: `web_api/v1/ideas/${ideaId}`,
+    });
+  });
+}
+
 export function apiCreateOfficialFeedback(
   ideaId: string,
   officialFeedbackContent: string,
@@ -326,6 +343,21 @@ export function apiCreateProject(
   });
 }
 
+export function apiRemoveProject(projectId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'DELETE',
+      url: `web_api/v1/projects/${projectId}`,
+    });
+  });
+}
+
 export function apiCreatePhase(
   projectId: string,
   title: string,
@@ -416,10 +448,12 @@ Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
 Cypress.Commands.add('getUserBySlug', getUserBySlug);
 Cypress.Commands.add('getAuthUser', getAuthUser);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
+Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateOfficialFeedback', apiCreateOfficialFeedback);
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
+Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
