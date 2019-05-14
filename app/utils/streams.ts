@@ -250,7 +250,7 @@ class Streams {
           from(promise).pipe(
             retry(3),
             catchError((error) => {
-              return of(new Error(error));
+              return of(error);
             })
           ).subscribe((response) => {
             if (!this.streams[streamId]) {
@@ -264,6 +264,7 @@ class Streams {
                   const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
                   this.streams[streamId].observer.next(response);
                   this.deleteStream(streamId, apiEndpoint);
+                  reportError(response);
                   reject(response);
                 } else {
                   this.streams[streamId].observer.next(null);
@@ -272,8 +273,6 @@ class Streams {
             }
           });
         }).catch((error) => {
-          reportError(error);
-
           return error;
         });
       };
