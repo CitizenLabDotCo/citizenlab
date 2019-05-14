@@ -200,15 +200,20 @@ class CommentBody extends PureComponent<Props, State> {
   onSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
 
-    const { locale, commentId } = this.props;
+    const { locale, commentId, comment } = this.props;
     const { editableCommentContent } = this.state;
 
-    if (!isNilOrError(locale)) {
+    if (!isNilOrError(locale) && !isNilOrError(comment)) {
       const updatedComment: IUpdatedComment = {
         body_multiloc: {
           [locale]: editableCommentContent.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2')
-        }
+        },
       };
+
+      const authorId = get(comment, 'relationships.author.data.id', false);
+      if (authorId) {
+        updatedComment.author_id = authorId;
+      }
 
       this.setState({ processing: true, apiErrors: null });
 

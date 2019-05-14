@@ -40,7 +40,7 @@ const ListHeader = styled.div`
   justify-content: flex-start;
   margin-bottom: 25px;
 
-  &.marginTop {
+  & ~ & {
     margin-top: 70px;
   }
 `;
@@ -202,7 +202,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
         <>
           {publishedProjects && publishedProjects.length > 0 &&
             <>
-              <ListHeader className="marginTop">
+              <ListHeader>
                 <ListHeaderTitle>
                   <FormattedMessage {...messages.published} />
                 </ListHeaderTitle>
@@ -210,18 +210,20 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
                 <Spacer />
 
-                <FeatureFlag name="manual_project_sorting" onlyCheckAllowed>
-                  <ToggleWrapper>
-                    <ToggleLabel htmlFor="manual-sorting-toggle">
-                      <FormattedMessage {...messages.manualSortingProjects} />
-                    </ToggleLabel>
-                    <Toggle
-                      id="manual-sorting-toggle"
-                      value={(tenant.attributes.settings.manual_project_sorting as any).enabled}
-                      onChange={this.handleToggleManualProjectSorting}
-                    />
-                  </ToggleWrapper>
-                </FeatureFlag>
+                <HasPermission item="projects" action="reorder">
+                  <FeatureFlag name="manual_project_sorting" onlyCheckAllowed>
+                    <ToggleWrapper>
+                      <ToggleLabel htmlFor="manual-sorting-toggle">
+                        <FormattedMessage {...messages.manualSortingProjects} />
+                      </ToggleLabel>
+                      <Toggle
+                        id="manual-sorting-toggle"
+                        value={(tenant.attributes.settings.manual_project_sorting as any).enabled}
+                        onChange={this.handleToggleManualProjectSorting}
+                      />
+                    </ToggleWrapper>
+                  </FeatureFlag>
+                </HasPermission>
               </ListHeader>
               <HasPermission item="projects" action="reorder">
                 {(tenant.attributes.settings.manual_project_sorting as any).enabled ?
@@ -269,7 +271,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
           {draftProjects && draftProjects.length > 0 &&
             <>
-              <ListHeader className="marginTop">
+              <ListHeader>
                 <ListHeaderTitle>
                   <FormattedMessage {...messages.draft} />
                 </ListHeaderTitle>
@@ -313,7 +315,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
           {archivedProjects && archivedProjects.length > 0 &&
             <>
-              <ListHeader className="marginTop">
+              <ListHeader>
                 <ListHeaderTitle>
                   <FormattedMessage {...messages.archived} />
                 </ListHeaderTitle>
@@ -341,11 +343,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
         <PageTitle>
           <FormattedMessage {...messages.overviewPageTitle} />
         </PageTitle>
-        <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
-          <SectionSubtitle>
+        <SectionSubtitle>
+          <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
             <FormattedMessage {...messages.overviewPageSubtitle} />
-          </SectionSubtitle>
-        </HasPermission>
+            <HasPermission.No>
+            <FormattedMessage {...messages.overviewPageSubtitleModerator} />
+            </HasPermission.No>
+          </HasPermission>
+        </SectionSubtitle>
 
         <PageWrapper>
           <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">

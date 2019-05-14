@@ -1,28 +1,23 @@
 import React, { PureComponent } from 'react';
-import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
-import moment from 'moment';
 
 // components
 import IdeaCards from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
-import Avatar from 'components/Avatar';
 import Footer from 'components/Footer';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 import UsersShowPageMeta from './UsersShowPageMeta';
 
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
-import messages from './messages';
-
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
+import UserHeader from './UserHeader';
+import UserNavbar from './UserNavbar';
+import UserComments from './UserComments';
+import { adopt } from 'react-adopt';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -39,59 +34,14 @@ const Container = styled.div`
 
 const StyledContentContainer = styled(ContentContainer)`
   flex: 1 1 auto;
-  padding-top: 40px;
+  padding-top: 70px;
   padding-bottom: 100px;
   background: ${colors.background};
+  align-items: center;
 
   ${media.phone`
-    padding-top: 0px;
+    padding-top: 50px;
   `}
-`;
-
-const UserAvatar = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-  margin-bottom: 40px;
-`;
-
-const UserInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 0px;
-  padding-bottom: 40px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-`;
-
-const FullName = styled.div`
-  width: 100%;
-  padding-top: 0px;
-  font-size: ${fontSizes.xxxl}px;
-  font-weight: 500;
-  text-align: center;
-  color: #333;
-`;
-
-const JoinedAt = styled.div`
-  width: 100%;
-  margin-top: 15px;
-  font-size: ${fontSizes.large}px;
-  font-weight: 400;
-  text-align: center;
-  color: ${colors.clGreyOnGreyBackground};
-`;
-
-const Bio = styled.div`
-  font-size: ${fontSizes.xl}px;
-  line-height: 1.25;
-  color: #6b6b6b;
-  max-width: 600px;
-  text-align: center;
-  font-weight: 300;
-  margin: 23px auto;
 `;
 
 const UserIdeas = styled.div`
@@ -108,44 +58,59 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+export type UserTab = 'ideas' | 'comments';
 
-class UsersShowPage extends PureComponent<Props, State> {
+interface State {
+  currentTab: UserTab;
+  savedScrollIndex: number;
+}
+
+export class UsersShowPage extends PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentTab: 'ideas',
+      savedScrollIndex: 0
+    };
+  }
+
+  changeTab = (toTab: UserTab) => () => {
+    const oldScroll = this.state.savedScrollIndex;
+    this.setState({ currentTab: toTab, savedScrollIndex: window.pageYOffset });
+    window.scrollTo(0, oldScroll);
+  }
+
   render() {
     const { user } = this.props;
+    const { currentTab } = this.state;
 
     if (!isNilOrError(user)) {
-      const memberSince = moment(user.attributes.created_at).format('LL');
-
       return (
         <>
           <UsersShowPageMeta user={user} />
           <Container id="e2e-usersshowpage" className={this.props['className']}>
+            <UserHeader userSlug={user.attributes.slug}/>
+
+            <UserNavbar
+              currentTab={currentTab}
+              selectTab={this.changeTab}
+              userId={user.id}
+            />
+
             <StyledContentContainer>
-              <UserAvatar>
-                <Avatar userId={user.id} size="180px" />
-              </UserAvatar>
-
-              <UserInfo>
-                <FullName id="e2e-usersshowpage-fullname">{user.attributes.first_name} {user.attributes.last_name}</FullName>
-                <JoinedAt>
-                  <FormattedMessage {...messages.memberSince} values={{ date: memberSince }} />
-                </JoinedAt>
-                {!isEmpty(user.attributes.bio_multiloc) &&
-                  <Bio>
-                    <QuillEditedContent>
-                      {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} supportHtml={true} />}
-                    </QuillEditedContent>
-                  </Bio>
-                }
-              </UserInfo>
-
+            {currentTab === 'ideas' &&
               <UserIdeas>
                 <IdeaCards
                   type="load-more"
                   authorId={user.id}
                 />
               </UserIdeas>
+            }
+            {currentTab === 'comments' &&
+              <UserComments
+                userId={user.id}
+              />
+            }
             </StyledContentContainer>
 
             <Footer showCityLogoSection={false} />
@@ -158,8 +123,12 @@ class UsersShowPage extends PureComponent<Props, State> {
   }
 }
 
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  user: ({ params, render }) =>  <GetUser slug={params.slug}>{render}</GetUser>
+});
+
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetUser slug={inputProps.params.slug}>
-    {user => <UsersShowPage user={user} />}
-  </GetUser>
+  <Data {...inputProps}>
+    {dataProps => <UsersShowPage {...inputProps} {...dataProps} />}
+  </Data>
 ));

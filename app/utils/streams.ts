@@ -466,7 +466,7 @@ class Streams {
         const stream = this.streams[streamId];
         const streamHasDataId = has(stream, `dataIds.${dataId}`);
 
-        if (!stream.cacheStream) {
+        if (stream && !stream.cacheStream) {
           promises.push(stream.fetch());
         } else if (streamHasDataId && stream.type === 'singleObject') {
           stream.observer.next(undefined);

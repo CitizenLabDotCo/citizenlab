@@ -172,7 +172,9 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
     } else {
       this.props.trackCtrlClickCluster({ extra: { type: node.type, id: node.id } });
     }
-    if (this.state.selectedNodes.length < 4) {
+    const { selectedNodes } = this.state;
+    // prevents selecting twice the same node by looking for [node] in the selected nodes array.
+    if (selectedNodes.length < 4 && selectedNodes.findIndex(item => item.length === 1 && item[0].id === node.id) < 0) {
       this.setState(({ selectedNodes }) => ({
         selectedNodes: [...selectedNodes, [node]],
         activeComparisonCount: selectedNodes.length

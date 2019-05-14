@@ -23,16 +23,20 @@ class FilterSidebarProjects extends React.PureComponent<Props> {
   }
 
   isActive = (id) => {
-    return this.props.selectedProject && this.props.selectedProject.indexOf(id) >= 0;
+    return this.props.selectedProject && this.props.selectedProject === id;
   }
 
   render() {
     return (
       <Menu secondary={true} vertical={true} fluid={true}>
-        <Menu.Item onClick={this.clearFilter} active={!this.props.selectedProject || this.props.selectedProject.length === 0}>
-          <FormattedMessage {...messages.allProjects} />
-        </Menu.Item>
-        <Divider />
+        {!(this.props.projects && this.props.projects.length === 1) &&
+          <>
+            <Menu.Item onClick={this.clearFilter} active={!this.props.selectedProject}>
+              <FormattedMessage {...messages.allProjects} />
+            </Menu.Item>
+            <Divider />
+          </>
+        }
         {this.props.projects && this.props.projects.map((project) => (
           <FilterSidebarProjectsItem
             key={project.id}
