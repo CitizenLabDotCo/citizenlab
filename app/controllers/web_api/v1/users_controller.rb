@@ -1,7 +1,7 @@
 class WebApi::V1::UsersController < ::ApplicationController
 
   # before_action :authenticate_user, except: [:create]
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy, :ideas_count, :comments_count]
   skip_after_action :verify_authorized, only: [:index_xlsx]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -145,6 +145,14 @@ class WebApi::V1::UsersController < ::ApplicationController
     else
       head 500
     end
+  end
+
+  def ideas_count
+    render json: {count: policy_scope(@user.ideas.published).count}, status: :ok
+  end
+
+  def comments_count
+    render json: {count: policy_scope(@user.comments.published).count}, status: :ok
   end
 
   private
