@@ -61,7 +61,7 @@ const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author, class
   const noop = () => {};
 
   return (
-    <Container className={className}>
+    <Container className={`e2e-idea-author ${className}`}>
       <Avatar
         userId={authorId}
         size="36px"
