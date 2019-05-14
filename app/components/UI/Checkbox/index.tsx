@@ -112,6 +112,7 @@ export default class Checkbox extends PureComponent<Props, State> {
           onMouseDown={this.removeFocus}
           onClick={this.toggleCheckbox}
           onKeyPress={this.handleKeyPress}
+          role="button"
         >
           {value && <CheckmarkIcon name="checkmark" />}
         </CheckboxContainer>
