@@ -11,18 +11,12 @@ namespace :carrierwave do
 
     each_tenant do |tenant|
       begin
-        puts("Seeding #{tenant} tenant")
+        puts("Enqueueing #{tenant} RecreateVersionsJobs")
         Apartment::Tenant.switch(tenant) do
           MODELS.each do |claz, attributes|
             claz.all.each do |instance|
               attributes.each do |attribute|
-                puts "Recreating #{tenant} #{claz.name} #{instance.id} #{attribute} versions"
-                begin
-                  instance.send(attribute).recreate_versions! if instance.send("#{attribute}?")
-                rescue NoMethodError
-                  # Needed to get past this bug https://github.com/carrierwaveuploader/carrierwave/issues/828
-                  puts "Something went wrong, recreate_version failed!"
-                end
+                RecreateVersionsJob.perform_later(instance, attribute)
               end
             end
           end

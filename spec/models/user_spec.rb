@@ -58,6 +58,12 @@ RSpec.describe User, type: :model do
       u2 = build(:user, email: 'kOeN@citizenlab.co')
       expect(u2).to be_invalid
     end
+
+    it 'is invalid if the domain is on our blacklist' do
+      u1 = build(:user, email: 'xwrknecgyq_1542135485@tfbnw.net')
+      expect(u1).to be_invalid
+      expect(u1.errors.details[:email]).to eq [{error: :domain_blacklisted, value: "tfbnw.net"}]
+    end
   end
 
   describe "roles" do

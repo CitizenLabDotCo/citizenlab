@@ -18,6 +18,10 @@ class WebApi::V1::AvatarsController < ApplicationController
       group = Group.find(params[:context_id])
       authorize group, :show?
       avatars_service.avatars_for_group(group, users: users, limit: limit)
+    when 'idea'
+      idea = Idea.find(params[:context_id])
+      authorize idea, :show?
+      avatars_service.avatars_for_idea(idea, users: users, limit: limit)
     when nil
       avatars_service.avatars_for_tenant(users: users, limit: limit)
     end

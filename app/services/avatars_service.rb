@@ -18,6 +18,14 @@ class AvatarsService
     end
   end
 
+  def avatars_for_idea idea, users: User.active, limit: 5
+    Rails.cache.fetch("#{idea.cache_key}/avatars", expires_in: 1.day) do
+      commenters = users.joins(:comments).where(comments: {idea: idea, publication_status: 'published'})
+      users_for_idea = users.where(id: idea.author).or(users.where(id: commenters))
+      add_count(users_for_idea, limit)
+    end
+  end
+
   def avatars_for_tenant users: User.active, limit: 5
     Rails.cache.fetch(users, expires_in: 1.day) do
       add_count(users, limit)

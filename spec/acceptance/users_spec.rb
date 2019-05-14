@@ -524,6 +524,35 @@ resource "Users" do
         expect{User.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    get "web_api/v1/users/:id/ideas_count" do
+      let(:id) { @user.id }
+
+      example "Get the number of ideas published by one user" do
+        create(:idea, author: @user)
+        create(:idea)
+        create(:idea, author: @user, publication_status: 'draft')
+        do_request
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:count)).to eq 1
+      end
+    end
+
+    get "web_api/v1/users/:id/comments_count" do
+      let(:id) { @user.id }
+
+      example "Get the number of comments posted by one user" do
+        create(:comment, author: @user)
+        create(:comment)
+        create(:comment, author: @user)
+        create(:comment, author: @user, publication_status: 'deleted')
+        do_request
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:count)).to eq 2
+      end
+    end
   end
 
 
