@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 // components
 import VoteControl from 'components/VoteControl';
-import TopBar from 'components/UI/Fullscreenmodal/TopBar';
+import TopBar from 'components/UI/TopBar';
 
 // utils
 import clHistory from 'utils/cl-router/history';

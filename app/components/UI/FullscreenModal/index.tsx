@@ -4,7 +4,7 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import TopBar from 'components/UI/Fullscreenmodal/TopBar';
+import TopBar from 'components/UI/TopBar';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
