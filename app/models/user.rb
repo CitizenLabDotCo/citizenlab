@@ -69,6 +69,9 @@ class User < ApplicationRecord
     end
   end
 
+  EMAIL_DOMAIN_BLACKLIST = File.readlines(Rails.root.join('config', 'domain_blacklist.txt')).map(&:strip)
+  validate :validate_email_domain_blacklist
+
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
   validates :roles, json: { schema: ROLES_JSON_SCHEMA, message: ->(errors) { errors } }
 
@@ -243,6 +246,15 @@ class User < ApplicationRecord
 
   def cl1_authenticate(unencrypted_password)
     original_authenticate(::Digest::SHA256.hexdigest(unencrypted_password))
+  end
+
+  def validate_email_domain_blacklist
+    if email.present?
+      domain = email.split('@')&.last
+      if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+        errors.add(:email, :domain_blacklisted, value: domain)
+      end
+    end
   end
 
 end

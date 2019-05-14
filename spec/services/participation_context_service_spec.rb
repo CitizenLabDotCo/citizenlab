@@ -44,12 +44,12 @@ describe ParticipationContextService do
       group = groups.first
       group.add_member user
       group.save!
-      expect(service.posting_disabled_reason(project, user)).to be_nil
+      expect(service.posting_disabled_reason_for_project(project, user)).to be_nil
     end
 
     it "returns `posting_disabled` when posting is disabled" do
       project = create(:project_with_current_phase, current_phase_attrs: {posting_enabled: false})
-      expect(service.posting_disabled_reason(project, create(:user))).to eq 'posting_disabled'
+      expect(service.posting_disabled_reason_for_project(project, create(:user))).to eq 'posting_disabled'
     end
 
     it "returns `not_permitted` when posting is not permitted" do
@@ -58,7 +58,7 @@ describe ParticipationContextService do
       permission.update!(permitted_by: 'groups', 
         group_ids: create_list(:group, 2).map(&:id)
         )
-      expect(service.posting_disabled_reason(project, create(:user))).to eq 'not_permitted'
+      expect(service.posting_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
     end
 
     it "returns `not_ideation` when we're not in an ideation context" do
@@ -66,7 +66,7 @@ describe ParticipationContextService do
         with_permissions: true, 
         current_phase_attrs: {participation_method: 'information'}
         )
-      expect(service.posting_disabled_reason(project, create(:user))).to eq 'not_ideation'
+      expect(service.posting_disabled_reason_for_project(project, create(:user))).to eq 'not_ideation'
     end
 
     it "returns `not_ideation` when we're in a participatory budgeting context" do
@@ -74,17 +74,17 @@ describe ParticipationContextService do
         with_permissions: true, 
         current_phase_attrs: {participation_method: 'budgeting', max_budget: 1200}
         )
-      expect(service.posting_disabled_reason(project, create(:user))).to eq 'not_ideation'
+      expect(service.posting_disabled_reason_for_project(project, create(:user))).to eq 'not_ideation'
     end
 
     it "returns `project_inactive` when the timeline is over" do
       project = create(:project_with_past_phases, with_permissions: true)
-      expect(service.posting_disabled_reason(project, create(:user))).to eq 'project_inactive'
+      expect(service.posting_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
 
     it "returns 'project_inactive' when the project is archived" do
       project = create(:continuous_project, publication_status: 'archived')
-      expect(service.posting_disabled_reason(project, create(:user))).to eq 'project_inactive'
+      expect(service.posting_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
   end
 
@@ -405,7 +405,7 @@ describe ParticipationContextService do
       group = groups.first
       group.add_member user
       group.save!
-      expect(service.taking_survey_disabled_reason(project, user)).to be_nil
+      expect(service.taking_survey_disabled_reason_for_project(project, user)).to be_nil
     end
 
     it "returns `not_permitted` when taking the survey is not permitted" do
@@ -414,7 +414,7 @@ describe ParticipationContextService do
       permission.update!(permitted_by: 'groups', 
         group_ids: create_list(:group, 2).map(&:id)
         )
-      expect(service.taking_survey_disabled_reason(project, create(:user))).to eq 'not_permitted'
+      expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
     end
 
     it "returns `not_survey` when the active context is not a survey" do
@@ -422,17 +422,17 @@ describe ParticipationContextService do
         with_permissions: true, 
         current_phase_attrs: {participation_method: 'ideation'}
         )
-      expect(service.taking_survey_disabled_reason(project, create(:user))).to eq 'not_survey'
+      expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'not_survey'
     end
 
     it "returns `project_inactive` when the timeline has past" do
       project = create(:project_with_past_phases, with_permissions: true)
-      expect(service.taking_survey_disabled_reason(project, create(:user))).to eq 'project_inactive'
+      expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
 
     it "returns `project_inactive` when the continuous project is archived" do
       project = create(:continuous_project, with_permissions: true, publication_status: 'archived')
-      expect(service.taking_survey_disabled_reason(project, create(:user))).to eq 'project_inactive'
+      expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
   end
 
@@ -444,7 +444,7 @@ describe ParticipationContextService do
           sequence: 'xxcxx'
         }, current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
         idea = create(:idea, project: project, phases: [project.phases[2]] )
-        expect(service.budgeting_disabled_reason(idea, create(:user))).to be_nil
+        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to be_nil
       end
 
       it "returns `idea_not_in_current_phase` when the idea is not in the current phase, budgeting is allowed in the current phase and was allowed in the last phase the idea was part of" do
@@ -452,7 +452,7 @@ describe ParticipationContextService do
           sequence: "xxcxx"
         }, current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
         idea = create(:idea, project: project, phases: [project.phases[1]])
-        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'idea_not_in_current_phase'
+        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'idea_not_in_current_phase'
       end
 
       it "returns `not_permitted` when the idea is in the current phase and budgeting is not permitted" do
@@ -463,7 +463,7 @@ describe ParticipationContextService do
         permission.update!(permitted_by: 'groups', 
           group_ids: create_list(:group, 2).map(&:id)
           )
-        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'not_permitted'
+        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_permitted'
       end
 
       it "returns 'idea_not_in_current_phase' when the idea is not in the current phase, budgeting is permitted but was not permitted in the last phase the idea was part of" do
@@ -477,13 +477,13 @@ describe ParticipationContextService do
             )
         end
         idea = create(:idea, project: project, phases: [project.phases[0], project.phases[1]])
-        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'idea_not_in_current_phase'
+        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'idea_not_in_current_phase'
       end
 
       it "returns 'project_inactive' when the timeline is over" do
         project = create(:project_with_past_phases, with_permissions: true)
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'project_inactive'
+        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
       end
     end
 
@@ -495,19 +495,19 @@ describe ParticipationContextService do
           group_ids: create_list(:group, 2).map(&:id)
           )
         idea = create(:idea, project: project)
-        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'not_permitted'
+        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_permitted'
       end
 
       it "returns nil when budgeting is permitted in a continuous project" do
         project = create(:continuous_budgeting_project, with_permissions: true)
         idea = create(:idea, project: project)
-        expect(service.budgeting_disabled_reason(idea, create(:user))).to be_nil
+        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to be_nil
       end
 
       it "returns 'project_inactive' when the project is archived" do
         project = create(:continuous_budgeting_project, publication_status: 'archived')
         idea = create(:idea, project: project)
-        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'project_inactive'
+        expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
       end
     end
   end
