@@ -1412,7 +1412,7 @@
   "app.containers.UsersEditPage.unspecified": "Onbepaald",
   "app.containers.UsersShowPage.commentsWithCount": "Reacties ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Bewerk mijn profiel",
-  "app.containers.UsersShowPage.ideasWithCount": "Ideas ({ideasCount})",
+  "app.containers.UsersShowPage.ideasWithCount": "Ideeën ({ideasCount})",
   "app.containers.UsersShowPage.loadMoreComments": "Meer reacties laden",
   "app.containers.UsersShowPage.loadUserError": "Gebruiker kan niet geladen worden",
   "app.containers.UsersShowPage.loadUserIdeasError": "De ideeën van de gebruiker konden niet worden geladen",
