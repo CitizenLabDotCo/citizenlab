@@ -1,8 +1,9 @@
 // Libraries
 import React from 'react';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { ideasCountForUser, commentsCountForUser } from 'services/stats';
 import { isNilOrError } from 'utils/helperUtils';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 interface InputProps {}
 
@@ -21,7 +22,9 @@ interface State {
 export type GetUserStatsChildProps = number | undefined | null | Error;
 
 export default class GetUserStats extends React.PureComponent<Props, State> {
-  private subscription: Subscription;
+  private subscription: Subscription[] = [];
+  private userId$: BehaviorSubject<string>;
+  private resourceType$: BehaviorSubject<'comments' | 'ideas'>;
 
   constructor(props) {
     super(props);
@@ -32,19 +35,40 @@ export default class GetUserStats extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const { resource, userId } = this.props;
-    if (resource === 'ideas') {
-      this.subscription = ideasCountForUser(userId).observable.subscribe((response) => {
-        this.setState({ count: !isNilOrError(response) ? response.count : response });
-      });
-    } else if (resource === 'comments') {
-      this.subscription = commentsCountForUser(userId).observable.subscribe((response) => {
-        this.setState({ count: !isNilOrError(response) ? response.count : response });
-      });
+
+    this.userId$ = new BehaviorSubject(userId);
+    this.resourceType$ = new BehaviorSubject(resource);
+
+    combineLatest(
+      this.resourceType$.pipe(distinctUntilChanged()),
+      this.userId$.pipe(distinctUntilChanged())
+    ).subscribe(([resourceType, userId]) => {
+      if (resourceType === 'ideas') {
+        this.subscription.push(ideasCountForUser(userId).observable.subscribe((response) => {
+          this.setState({ count: !isNilOrError(response) ? response.count : response });
+        }));
+      } else if (resourceType === 'comments') {
+        this.subscription.push(commentsCountForUser(userId).observable.subscribe((response) => {
+          this.setState({ count: !isNilOrError(response) ? response.count : response });
+        }));
+      }
+    });
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const { resource, userId } = this.props;
+
+    if (prevProps.resource !== resource) {
+      this.resourceType$.next(resource);
     }
+    if (prevProps.userId !== userId) {
+      this.userId$.next(resource);
+    }
+
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
+    this.subscription.forEach(sub => sub.unsubscribe());
   }
 
   render() {
