@@ -141,8 +141,9 @@ class User < ApplicationRecord
   def self.from_token_request request
     # This method is used by knock to get the user.
     # Default is by email, but we want to compare
-    # case insensitively.
-    find_by_cimail request.params["auth"]["email"]
+    # case insensitively and forbid login for 
+    # invitees.
+    where.not(invite_status: 'pending').find_by_cimail request.params["auth"]["email"]
   end
 
   def avatar_blank?
