@@ -190,8 +190,10 @@ const Data = adopt<DataProps, InputProps>({
 
 const AvatarWithHoc = injectIntl<Props>(Avatar);
 
-export default (inputProps: InputProps) => (
+const WrappedAvatar = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <AvatarWithHoc {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default WrappedAvatar;

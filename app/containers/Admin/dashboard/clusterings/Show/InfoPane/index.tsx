@@ -1,5 +1,5 @@
 // libraries
-import React, { PureComponent, MouseEvent } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { map, flatten, uniq } from 'lodash-es';
 
@@ -24,7 +24,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // analytics
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
 const Container = styled.div`
@@ -131,18 +131,14 @@ type Props = {
   onDeleteComparison: (index: number) => void;
 };
 
+type TabName = 'votes' | 'details' | 'options';
+
 type State = {
   normalization: 'absolute' | 'relative';
-  selectedTab: 'votes' | 'details' | 'options';
+  selectedTab: TabName;
 };
 
-interface TrackProps {
-  trackSwitchNormalization: Function;
-  trackChangeTab: Function;
-}
-
-class InfoPane extends PureComponent<Props & TrackProps, State> {
-
+class InfoPane extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -162,7 +158,7 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
   }
 
   handleOnChangeNormalization = (normalization: 'absolute' | 'relative') => {
-    this.props.trackSwitchNormalization({ extra: { normalization } });
+    trackEventByName(tracks.switchNormalization.name, { extra: { normalization } });
     this.setState({ normalization });
   }
 
@@ -170,11 +166,10 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
     return this.props.selectedNodes[this.props.activeComparison] || [];
   }
 
-  handleTabOnClick = (event: MouseEvent<HTMLElement>) => {
+  handleTabOnClick = (tabName: TabName) => (event: any) => {
     event.preventDefault();
-    const targetTab = event.target['dataset']['tab'];
-    this.props.trackChangeTab({ extra: { tab: targetTab } });
-    this.setState({ selectedTab: targetTab });
+    trackEventByName(tracks.changeTab.name, { extra: { tab: tabName } });
+    this.setState({ selectedTab: tabName });
   }
 
   render() {
@@ -185,10 +180,10 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
     return (
       <Container className={this.props['className']}>
         <TabbedNav>
-          <Tab onClick={this.handleTabOnClick} data-tab="votes" className={`${selectedTab === 'votes' && 'active'}`}>
+          <Tab onClick={this.handleTabOnClick('votes')} data-tab="votes" className={`${selectedTab === 'votes' && 'active'}`}>
             <FormattedMessage {...messages.votes} />
           </Tab>
-          <Tab onClick={this.handleTabOnClick} data-tab="details" className={`${selectedTab === 'details' && 'active'}`}>
+          <Tab onClick={this.handleTabOnClick('details')} data-tab="details" className={`${selectedTab === 'details' && 'active'}`}>
             <FormattedMessage {...messages.details} />
           </Tab>
         </TabbedNav>
@@ -244,7 +239,4 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
   }
 }
 
-export default injectTracks<Props>({
-  trackSwitchNormalization: tracks.switchNormalization,
-  trackChangeTab: tracks.changeTab,
-})(InfoPane);
+export default InfoPane;

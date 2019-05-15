@@ -16,7 +16,7 @@ import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
 
 // resources
-import GetIdeas, { GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
+import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -64,6 +64,8 @@ const FiltersArea = styled.div`
 
   ${media.smallerThanMaxTablet`
     margin-bottom: 30px;
+    flex-direction: column;
+    align-items: flex-start;
   `}
 `;
 
@@ -79,9 +81,11 @@ const LeftFilterArea = FilterArea.extend`
   &.hidden {
     display: none;
   }
-
   ${media.smallerThanMaxTablet`
-    display: none;
+    margin-bottom: 22px;
+  `}
+  ${media.largePhone`
+    width: 100%;
   `}
 `;
 
@@ -100,7 +104,7 @@ const RightFilterArea = FilterArea.extend`
     justify-content: space-between;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.largePhone`
     width: 100%;
     display: flex;
     flex-direction: column-reverse;
@@ -115,13 +119,14 @@ const DropdownFilters = styled.div`
 
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
+  margin-right: 30px;
 
   input {
     font-size: ${fontSizes.medium}px;
     font-weight: 400;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.largePhone`
     width: 100%;
   `}
 `;
@@ -312,7 +317,7 @@ class IdeaCards extends PureComponent<Props, State> {
     this.props.ideas.onChangeProjects(projects);
   }
 
-  handleSortOnChange = (sort: string) => {
+  handleSortOnChange = (sort: Sort) => {
     this.props.ideas.onChangeSorting(sort);
   }
 
@@ -441,13 +446,15 @@ class IdeaCards extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} sort="random">{render}</GetIdeas>
+  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>
 });
 
 const IdeaCardsWithHoCs = withTheme<Props, State>(IdeaCards);
 
-export default (inputProps: InputProps) => (
+const WrappedIdeaCards = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <IdeaCardsWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default WrappedIdeaCards;
