@@ -69,6 +69,7 @@ const IdeaLink = styled(Link)`
 
 interface InputProps {
   ideaId: string;
+  className?: string;
 }
 
 interface DataProps {
@@ -88,7 +89,7 @@ class SimilarIdeas extends PureComponent<Props> {
     if (isNilOrError(ideas) || isEmpty(ideas)) return null;
 
     return (
-      <Container>
+      <Container className={className}>
         <Title>
           <SimilarIdeasIcon name="similarIdeas" />
           <FormattedMessage {...messages.similarIdeas} />

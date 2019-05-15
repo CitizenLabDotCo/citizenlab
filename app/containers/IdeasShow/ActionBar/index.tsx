@@ -20,7 +20,7 @@ import { colors, media, ideaPageContentMaxWidth } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  height: 54px;
+  height: 50px;
   background-color: rgba(132, 147, 158, 0.06);
   color: ${colors.label};
   border-bottom: 1px solid ${colors.adminSeparation};

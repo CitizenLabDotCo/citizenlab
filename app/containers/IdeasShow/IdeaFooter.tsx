@@ -10,7 +10,7 @@ import { media, ideaPageContentMaxWidth } from 'utils/styleUtils';
 const Container = styled.div`
   flex: 1;
   width: 100%;
-  margin-top: 70px;
+  margin-top: 80px;
   background: #f8f8f9;
   border-top: solid 1px #e2e2e2;
 
