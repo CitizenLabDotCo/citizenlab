@@ -22,5 +22,13 @@ export default defineMessages({
   shareThisInitiative: {
     id: 'app.containers.IdeasShow.shareThisInitiative',
     defaultMessage: 'Share this initiative',
-  }
+  },
+  shareThisProject: {
+    id: 'app.containers.IdeasShow.shareThisProject',
+    defaultMessage: 'Share this project',
+  },
+  shareThisIdea: {
+    id: 'app.containers.IdeasShow.shareThisIdea',
+    defaultMessage: 'Share this idea',
+  },
 });

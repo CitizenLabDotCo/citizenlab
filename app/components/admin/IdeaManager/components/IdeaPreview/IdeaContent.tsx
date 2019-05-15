@@ -30,9 +30,6 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps, FormattedNumber } from 'react-intl';
 import messages from './messages';
 
-// animations
-import CSSTransition from 'react-transition-group/CSSTransition';
-
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -58,50 +55,8 @@ const IdeaImage = styled.img`
   border: 1px solid ${colors.separation};
 `;
 
-const MapWrapper = styled.div`
-  border-radius: 8px;
-  border: 1px solid ${colors.separation};
-  height: 265px;
-  position: relative;
-  overflow: hidden;
-  z-index: 2;
-
-  &.map-enter {
-    height: 0;
-    opacity: 0;
-
-    &.map-enter-active {
-      height: 265px;
-      opacity: 1;
-      transition: all 250ms ease-out;
-    }
-  }
-
-  &.map-exit {
-    height: 265px;
-    opacity: 1;
-
-    &.map-exit-active {
-      height: 0;
-      opacity: 0;
-      transition: all 250ms ease-out;
-    }
-  }
-`;
-
-const AddressWrapper = styled.div`
-  color: #fff;
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  background: rgba(0, 0, 0, 0.4);
-  border-top: 1px solid ${colors.separation};
-  margin: 0;
-  padding: 10px;
-  position: absolute;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 3;
+const StyledIdeaMap = styled(IdeaMap)`
+  margin-bottom: 40px;
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
@@ -295,22 +250,13 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   ideaId={idea.id}
                   ideaBody={localize(idea.attributes.body_multiloc)}
                 />
-                {ideaLocation &&
-                  <>
-                    <CSSTransition
-                      classNames="map"
-                      in={showMap}
-                      timeout={300}
-                      mountOnEnter={true}
-                      unmountOnExit={true}
-                      exit={true}
-                    >
-                      <MapWrapper innerRef={this.handleMapWrapperSetRef}>
-                        <IdeaMap location={ideaLocation} id={idea.id} />
-                        {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
-                      </MapWrapper>
-                    </CSSTransition>
-                  </>
+
+                {ideaLocation && ideaAdress &&
+                  <StyledIdeaMap
+                    adress={ideaAdress}
+                    location={ideaLocation}
+                    id={idea.id}
+                  />
                 }
 
                 {ideaFiles && !isNilOrError(ideaFiles) &&

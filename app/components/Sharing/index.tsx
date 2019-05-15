@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 
 // libraries
@@ -153,6 +153,7 @@ export type UtmParams = {
 };
 
 interface InputProps {
+  context: 'idea' | 'project' | 'initiative';
   location?: 'modal';
   className?: string;
   url: string;
@@ -166,9 +167,9 @@ interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
+class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
   buildUrl = (medium : string) => {
     const { utmParams, url } = this.props;
     let resUrl = url;
@@ -192,6 +193,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       clickEmailShare,
       clickEmailShareInModal,
       tenant,
+      context,
       twitterMessage,
       emailSubject,
       emailBody,
@@ -278,7 +280,9 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
         <Container className={className}>
           <Title>
             <ShareIcon name="share" />
-            <FormattedMessage {...messages.shareThisInitiative} />
+            {context === 'idea' && <FormattedMessage {...messages.shareThisIdea} />}
+            {context === 'project' && <FormattedMessage {...messages.shareThisProject} />}
+            {context === 'initiative' && <FormattedMessage {...messages.shareThisInitiative} />}
           </Title>
           <Buttons>
             {facebook}
