@@ -1412,7 +1412,7 @@
   "app.containers.UsersEditPage.unspecified": "Indéterminé",
   "app.containers.UsersShowPage.commentsWithCount": "Commentaires ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Modifier mon profil",
-  "app.containers.UsersShowPage.ideasWithCount": "Idée  ({ideasCount})",
+  "app.containers.UsersShowPage.ideasWithCount": "Idées  ({ideasCount})",
   "app.containers.UsersShowPage.loadMoreComments": "Afficher plus de commentaires",
   "app.containers.UsersShowPage.loadUserError": "Le profil de l'utilisateur n'a pas pu être chargé",
   "app.containers.UsersShowPage.loadUserIdeasError": "Les idées de l'utilisateur n'ont pas pu être chargées",
