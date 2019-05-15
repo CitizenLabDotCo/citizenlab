@@ -1,5 +1,42 @@
 # Changelog
 
+## 2019-05-15
+
+### Fixed
+
+- Opening the projects dropdown no longer shows all menu items hovered when opened
+- Users that can't contribute (post/comment/vote/survey) no longer get an email when a phase starts
+- When a project has an ideation and a PB phase, the voting buttons are now shown during the ideation phase
+- The admin navigation menu for moderators is now consistent with that for admins
+- Moderators that try to access pages only accessible for admins, now get redirected to the dashboard
+- The details tab in clustering doesn't cause the info panel to freeze anymore
+- When writing an official update, the sbumit button now only becomes active when submission is possible
+- The 'no options' copy in a dropdown without anything inside is now correctly translated
+- Making a field empty in Admin HQ now correctly saves the empty value
+- The active users graph no longer includes users that received an email as being active
+- The translation button in an idea is no longer shown when there's only one platform language
+- After changing granular permission, a refresh is no longer needed to see the results on ideas
+- The sideview in the idea manager now shows the status dropdown in the correct language
+- The layout of the sideview in the idea manager is now corrected
+- A digest email to idea assignees is no longer sent out when no ideas are assigned to the admin/moderator
+- Signing in with VUB Net ID works again
+- Loading the insights map can no longer be infinite, it will now show an error message when the request fails
+
+### Added
+
+- The profile page of a user now also shows the comments by that user
+- Users can now delete their own profile from their edit profile page
+- Similar ideas, clustering and location detection now work in Spanish, German, Danish and Norwegian
+- Facebooks bot coming from `tfbnw.net` are now blocked from signing up
+- Moderators now also have a global idea manager, showing all the ideas from the projects they're moderating
+- Loading the insights map, which can be slow, now shows a loading indicator
+
+### Changed
+
+- Voting buttons are no longer shown when voting is not enabled
+- Improved and more granular copy text for several voting and commenting disabled messages
+
+
 ## 2019-04-30
 
 ### Fixed
