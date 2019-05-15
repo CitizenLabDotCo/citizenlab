@@ -46,7 +46,6 @@ class Moderators extends PureComponent<Props & InjectedIntlProps>{
             }}
           />
         </SubSectionTitle>
-        {/* <StyledWarning text={<FormattedMessage {...messages.moderatorsRoleExplanation} />} /> */}
         <UserSearch projectId={projectId} moderators={moderators} />
         <ModeratorList moderators={moderators} projectId={projectId} />
       </Container>

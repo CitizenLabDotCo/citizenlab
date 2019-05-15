@@ -3,10 +3,12 @@ import { ThemeProvider } from 'styled-components';
 import { colors, fontSizes, stylingConsts } from 'utils/styleUtils';
 import { shallow, mount } from 'enzyme';
 
-const theme = {
+export const theme = {
   colors,
   fontSizes,
   colorMain: '#ef0071',
+  colorText: '#e68f51',
+  colorSecondary: '#f76901',
   menuStyle: 'light',
   menuHeight: 74,
   mobileMenuHeight: 72,
@@ -27,23 +29,23 @@ const theme = {
 //     }
 //   }) as ShallowWrapper<P, S, C>;
 // }
+//
+export const shallowWithTheme = (tree) => {
+  const context = (shallow(<ThemeProvider theme={theme} />).instance() as any).getChildContext();
+  return shallow(tree, { context });
+};
 
-// export const shallowWithTheme = (tree, theme) => {
-//   const context = (shallow(<ThemeProvider theme={theme} />).instance() as any).getChildContext();
-//   return shallow(tree, { context });
-// };
-
-// export const mountWithTheme = (tree) => {
-//   const context = shallow(<ThemeProvider theme={theme} />)
-//     .instance()
-//     // @ts-ignore: TODO type this well
-//     .getChildContext();
-//   return mount(tree, {
-//     context,
-//     childContextTypes: ThemeProvider.childContextTypes,
-//   });
-// };
-
-export const mountWithTheme = (children: any) => mount(<ThemeProvider theme={theme}>{children}</ThemeProvider>);
-
-export const shallowWithTheme = (children: any) => shallow(<ThemeProvider theme={theme}>{children}</ThemeProvider>);
+export const mountWithTheme = (tree) => {
+  const context = shallow(<ThemeProvider theme={theme} />)
+    .instance()
+    // @ts-ignore: TODO type this well
+    .getChildContext();
+  return mount(tree, {
+    context,
+    childContextTypes: ThemeProvider.childContextTypes,
+  });
+};
+//
+// export const mountWithTheme = (children: any) => mount(<ThemeProvider theme={theme}>{children}</ThemeProvider>);
+//
+// export const shallowWithTheme = (children: any) => shallow(<ThemeProvider theme={theme}>{children}</ThemeProvider>);

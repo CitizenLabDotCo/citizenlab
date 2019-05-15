@@ -218,7 +218,7 @@ export const Spacer = styled.div`
   flex: 1;
 `;
 
-type Props = {
+ export type Props = {
   opened: boolean;
   fixedHeight?: boolean;
   width?: string;
@@ -412,8 +412,14 @@ export default class Modal extends PureComponent<Props, State> {
       </CSSTransition>
     ) : undefined);
 
-    return ReactDOM.createPortal(
-      <TransitionGroup tabIndex="-1" component="aside">{element}</TransitionGroup>,
+    return ReactDOM.createPortal((
+      <TransitionGroup
+        tabIndex="-1"
+        component="aside"
+      >
+        {element}
+      </TransitionGroup>
+    ),
       document.body
     );
   }

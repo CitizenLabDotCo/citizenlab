@@ -45,6 +45,10 @@ export interface IIdeasCount {
   count: number;
 }
 
+export interface ICount {
+  count: number;
+}
+
 export function ideasByTimeStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/ideas_by_time`, ...streamParams });
 }
@@ -63,6 +67,10 @@ export function ideasByProjectStream(streamParams: IStreamParams | null = null) 
 
 export function ideasCount(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasCount>({ apiEndpoint: `${apiEndpoint}/ideas_count`, ...streamParams });
+}
+
+export function ideasCountForUser(userId: string) {
+  return streams.get<ICount>({ apiEndpoint: `${API_PATH}/users/${userId}/ideas_count` });
 }
 
 // Users
@@ -221,6 +229,10 @@ export function commentsByTopicStream(streamParams: IStreamParams | null = null)
 
 export function commentsByProjectStream(streamParams: IStreamParams | null = null) {
   return streams.get<ICommentsByProject>({ apiEndpoint: `${apiEndpoint}/comments_by_project`, ...streamParams });
+}
+
+export function commentsCountForUser(userId: string) {
+  return streams.get<ICount>({ apiEndpoint: `${API_PATH}/users/${userId}/comments_count` });
 }
 
 // Votes

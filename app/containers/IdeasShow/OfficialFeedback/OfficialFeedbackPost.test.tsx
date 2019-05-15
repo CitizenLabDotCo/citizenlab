@@ -1,7 +1,7 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import { mockOfficialFeedback } from 'services/officialFeedback';
-import { shallowWithTheme, mountWithTheme } from 'utils/testUtils/withTheme';
+import { mountWithTheme } from 'utils/testUtils/withTheme';
 
 jest.mock('services/officialFeedback');
 jest.mock('./Form/OfficialFeedbackEdit');
@@ -15,7 +15,7 @@ import { OfficialFeedbackPost } from './OfficialFeedbackPost';
 
 describe('<OfficialFeedbackPost />', () => {
   it('renders correctly for non-admin', () => {
-    const wrapper = shallowWithTheme(
+    const wrapper = shallow(
       <OfficialFeedbackPost
         editingAllowed={false}
         officialFeedbackPost={mockOfficialFeedbackPost}
@@ -23,11 +23,12 @@ describe('<OfficialFeedbackPost />', () => {
         locale="en"
         tenantLocales={['en', 'nl-BE']}
         intl={intl}
-      />);
+      />
+    );
     expect(wrapper).toMatchSnapshot();
   });
   it('renders correctly for admin', () => {
-    const wrapper = shallowWithTheme(
+    const wrapper = shallow(
       <OfficialFeedbackPost
         editingAllowed={true}
         officialFeedbackPost={mockOfficialFeedbackPost}
@@ -35,7 +36,8 @@ describe('<OfficialFeedbackPost />', () => {
         locale="en"
         tenantLocales={['en', 'nl-BE']}
         intl={intl}
-      />);
+      />
+    );
     expect(wrapper).toMatchSnapshot();
   });
   it('when admin clicks edit it reacts in an adequate manner', () => {
@@ -47,7 +49,8 @@ describe('<OfficialFeedbackPost />', () => {
         locale="en"
         tenantLocales={['en', 'nl-BE']}
         intl={intl}
-      />);
+      />
+    );
     wrapper.find('MoreActionsMenu').find('button').simulate('click');
     wrapper.find('.e2e-action-edit').find('button').simulate('click');
     expect(wrapper.find('OfficialFeedbackEdit').length).toEqual(1);

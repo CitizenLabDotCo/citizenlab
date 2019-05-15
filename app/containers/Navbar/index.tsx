@@ -223,7 +223,7 @@ const ProjectsListItem = styled(Link)`
   text-decoration: none;
   padding: 10px;
   margin-bottom: 4px;
-  background: #fff;
+  background: transparent;
   border-radius: ${(props: any) => props.theme.borderRadius};
   text-decoration: none;
 
@@ -394,6 +394,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
     const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
     let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
+    // Avoids caching issue when an admin changes platform logo (I guess)
     tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : undefined) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
     const secondUrlSegment = location.pathname.replace(/^\/+/g, '').split('/')[1];
 
