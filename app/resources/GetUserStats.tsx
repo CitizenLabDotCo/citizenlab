@@ -22,7 +22,7 @@ interface State {
 export type GetUserStatsChildProps = number | undefined | null | Error;
 
 export default class GetUserStats extends React.PureComponent<Props, State> {
-  private subscription: Subscription[] = [];
+  private subscription: Subscription;
   private userId$: BehaviorSubject<string>;
   private resourceType$: BehaviorSubject<'comments' | 'ideas'>;
 
@@ -44,13 +44,13 @@ export default class GetUserStats extends React.PureComponent<Props, State> {
       this.userId$.pipe(distinctUntilChanged())
     ).subscribe(([resourceType, userId]) => {
       if (resourceType === 'ideas') {
-        this.subscription.push(ideasCountForUser(userId).observable.subscribe((response) => {
+        this.subscription = ideasCountForUser(userId).observable.subscribe((response) => {
           this.setState({ count: !isNilOrError(response) ? response.count : response });
-        }));
+        });
       } else if (resourceType === 'comments') {
-        this.subscription.push(commentsCountForUser(userId).observable.subscribe((response) => {
+        this.subscription = commentsCountForUser(userId).observable.subscribe((response) => {
           this.setState({ count: !isNilOrError(response) ? response.count : response });
-        }));
+        });
       }
     });
   }
@@ -68,7 +68,7 @@ export default class GetUserStats extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscription.forEach(sub => sub.unsubscribe());
+    this.subscription.unsubscribe();
   }
 
   render() {
