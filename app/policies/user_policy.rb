@@ -44,6 +44,14 @@ class UserPolicy < ApplicationPolicy
     user&.active? && (record.id == user.id || user.admin?)
   end
 
+  def ideas_count?
+    true
+  end
+
+  def comments_count?
+    true
+  end
+
   def view_private_attributes?
     (user && (record.id == user.id || user.admin?)) || record.invite_pending?
   end
