@@ -185,13 +185,23 @@ export function apiCreateIdea(
   ideaTitle: string,
   ideaContent: string,
   locationGeoJSON?: {'type': string, 'coordinates': number[]},
-  locationDescription?: string
+  locationDescription?: string,
+  jwt?: string
 ) {
+  let headers: { 'Content-Type': string; Authorization: string; } | null = null;
+
+  if (jwt) {
+    headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`
+    };
+  }
+
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
-      headers: {
+      headers: headers || {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${adminJwt}`
       },
