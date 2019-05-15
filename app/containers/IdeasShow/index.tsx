@@ -94,14 +94,6 @@ const Container = styled.div`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 
-  &.inModal {
-    min-height: 100vh;
-
-    ${media.smallerThanMaxTablet`
-      min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
-    `}
-  }
-
   ${media.smallerThanMaxTablet`
     &.content-enter {
       opacity: 0;
@@ -127,7 +119,7 @@ const IdeaContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  padding-top: 80px;
+  padding-top: 60px;
   padding-left: 30px;
   padding-right: 30px;
   position: relative;
@@ -297,7 +289,10 @@ const AssignBudgetControlMobile = styled.div`
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 55px;
+`;
+
+const StyledSimilarIdeas = styled(SimilarIdeas)`
+  margin-top: 40px;
 `;
 
 const SharingMobile = styled(Sharing)`
@@ -345,7 +340,6 @@ interface IActionInfos {
 interface State {
   opened: boolean;
   loaded: boolean;
-  // showMap: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
@@ -365,7 +359,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     const initialState = {
       opened: false,
       loaded: false,
-      showMap: false,
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
@@ -725,7 +718,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                       />
                     </SharingWrapper>
                     <FeatureFlag name="similar_ideas">
-                      <SimilarIdeas ideaId={ideaId} />
+                      <StyledSimilarIdeas ideaId={ideaId} />
                     </FeatureFlag>
                   </MetaContent>
                 </RightColumnDesktop>
@@ -755,7 +748,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           enter={animatePageEnter}
           exit={true}
         >
-          <Container className={`${className} ${inModal ? 'inModal' : ''}`}>
+          <Container className={className}>
             {content}
           </Container>
         </CSSTransition>

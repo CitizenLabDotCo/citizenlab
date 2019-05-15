@@ -53,7 +53,7 @@ const HomeIcon = styled(Icon)`
   margin-top: -3px;
 
   &:hover {
-    fill: ${darken(0.2, colors.label)};
+    fill: ${darken(0.25, colors.label)};
   }
 `;
 
@@ -62,17 +62,23 @@ const Separator = styled.div`
   font-size: ${fontSizes.large}px;
   font-weight: 300;
   line-height: normal;
+
+  ${media.smallerThanMaxTablet`
+    margin: 0 10px;
+  `}
 `;
 
 const ProjectLink = styled(Link)`
   font-size: ${fontSizes.small}px;
   color: ${colors.label};
+  text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
   &:hover {
     color: ${darken(0.2, colors.label)};
+    text-decoration: underline;
   }
 `;
 
