@@ -9,7 +9,7 @@
 - When a project has an ideation and a PB phase, the voting buttons are now shown during the ideation phase
 - The admin navigation menu for moderators is now consistent with that for admins
 - Moderators that try to access pages only accessible for admins, now get redirected to the dashboard
-- The details tab in clustering now again shows the right content
+- The details tab in clustering doesn't cause the info panel to freeze anymore
 - When writing an official update, the sbumit button now only becomes active when submission is possible
 - The 'no options' copy in a dropdown without anything inside is now correctly translated
 - Making a field empty in Admin HQ now correctly saves the empty value
@@ -20,6 +20,7 @@
 - The layout of the sideview in the idea manager is now corrected
 - A digest email to idea assignees is no longer sent out when no ideas are assigned to the admin/moderator
 - Signing in with VUB Net ID works again
+- Loading the insights map can no longer be infinite, it will now show an error message when the request fails
 
 ### Added
 
