@@ -27,11 +27,10 @@ import IdeaTitle from './IdeaTitle';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
-import IdeaVoteControlMobile from './IdeaVoteControlMobile';
+import IdeaVoteControlTopBar from './IdeaVoteControlTopBar';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
-import Icon from 'components/UI/Icon';
 import IdeaBody from './IdeaBody';
 import IdeaContentFooter from './IdeaContentFooter';
 import ActionBar from './ActionBar';
@@ -50,6 +49,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // services
 import { updateIdea } from 'services/ideas';
@@ -67,8 +67,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, ideaPageContentMaxWidth } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { media, colors, fontSizes, ideaPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
 
 const contentFadeInDuration = 400;
 const contentFadeInEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
@@ -145,10 +144,11 @@ const IdeaContainer = styled.div`
 
 const StyledIdeaTopics = styled(IdeaTopics)`
   padding-right: 485px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
-    display: none;
+    padding-right: 0px;
+    margin-bottom: 15px;
   `}
 `;
 
@@ -172,7 +172,7 @@ const LeftColumn = styled.div`
   `}
 `;
 
-const StyledTranslateButton = styled(TranslateButton)`
+const StyledTranslateButtonMobile = styled(TranslateButton)`
   display: none;
   width: fit-content;
   margin-bottom: 40px;
@@ -225,113 +225,12 @@ const StyledIdeaAuthor = styled(IdeaAuthor)`
   `}
 `;
 
-const LocationLabel = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin-right: 6px;
-  font-size: ${fontSizes.base}px;
-  line-height: 19px;
-  text-align: left;
-  font-weight: 400;
-  transition: all 100ms ease-out;
-  white-space: nowrap;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
-`;
-
-const LocationIcon = styled(Icon)`
-  width: 16px;
-  height: 23px;
-  fill: ${colors.label};
-  margin-right: 13px;
-`;
-
-const LocationButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-  padding-left: 18px;
-  padding-right: 20px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-
-  &:hover {
-    ${LocationLabel} {
-      color: ${darken(0.2, colors.label)};
-    }
-
-    ${LocationIcon} {
-      fill: ${darken(0.2, colors.label)};
-    }
-  }
-`;
-
-const Location = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const MapContainer = styled.div`
-  border: 1px solid ${colors.separation};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+const StyledIdeaMap = styled(IdeaMap)`
   margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
     margin-bottom: 20px;
   `}
-`;
-
-const ArrowIcon = styled(Icon)`
-  width: 12px;
-  height: 7px;
-  transform: rotate(90deg);
-  transition: all .2s linear;
-
-  &.open {
-    transform: rotate(0deg);
-  }
-`;
-
-const MapWrapper = styled.div`
-  border: 1px solid ${colors.separation};
-  height: 265px;
-  position: relative;
-  overflow: hidden;
-  z-index: 2;
-  margin: 20px 20px 0;
-
-  &.map-enter {
-    height: 0;
-    opacity: 0;
-
-    &.map-enter-active {
-      height: 265px;
-      opacity: 1;
-      transition: all 250ms ease-out;
-    }
-  }
-
-  &.map-exit {
-    height: 265px;
-    opacity: 1;
-
-    &.map-exit-active {
-      height: 0;
-      opacity: 0;
-      transition: all 250ms ease-out;
-    }
-  }
-`;
-
-const MapPaddingBottom = styled.div`
-  width: 100%;
-  height: 20px;
 `;
 
 const RightColumn = styled.div`
@@ -423,6 +322,7 @@ interface DataProps {
   ideaImages: GetIdeaImagesChildProps;
   ideaFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface InputProps {
@@ -445,7 +345,7 @@ interface IActionInfos {
 interface State {
   opened: boolean;
   loaded: boolean;
-  showMap: boolean;
+  // showMap: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
@@ -577,20 +477,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleMapWrapperSetRef = (element: HTMLDivElement) => {
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'nearest'
-      });
-    }
-  }
-
-  handleMapToggle = () => {
-    this.setState(({ showMap }) => ({ showMap: !showMap }));
-  }
-
   unauthenticatedVoteClick = () => {
     clHistory.push('/sign-in');
   }
@@ -624,12 +510,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       localize,
       ideaImages,
       authUser,
+      windowSize,
       className
     } = this.props;
     const {
       opened,
       loaded,
-      showMap,
       ideaIdForSocialSharing,
       translateButtonClicked,
       actionInfos,
@@ -657,6 +543,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const budgetingDescriptor = get(actionInfos, 'budgetingDescriptor', null);
       const showBudgetControl = get(actionInfos, 'showBudgetControl', null);
       const showVoteControl = get(actionInfos, 'showVoteControl', null);
+      const biggerThanLargeTablet = windowSize ? windowSize > viewportWidths.largeTablet : false;
+      const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
+      const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_idea',
         campaign: 'share_content',
@@ -674,19 +563,28 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       content = (
         <>
           <IdeaMeta ideaId={ideaId} />
+
+          {!inModal && showVoteControl && smallerThanLargeTablet &&
+            <IdeaVoteControlTopBar
+              ideaId={ideaId}
+              unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+            />
+          }
+
           <ActionBar
             ideaId={ideaId}
             translateButtonClicked={translateButtonClicked}
             onTranslateIdea={this.onTranslateIdea}
           />
+
           <IdeaContainer id="e2e-idea-show">
             <StyledIdeaTopics topicIds={topicIds} />
 
             <Content>
               <LeftColumn>
                 <FeatureFlag name="machine_translations">
-                  {showTranslateButton &&
-                    <StyledTranslateButton
+                  {showTranslateButton && smallerThanSmallTablet &&
+                    <StyledTranslateButtonMobile
                       translateButtonClicked={translateButtonClicked}
                       onClick={this.onTranslateIdea}
                     />
@@ -701,23 +599,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     translateButtonClicked={translateButtonClicked}
                   />
 
-                  <StyledMobileIdeaPostedBy authorId={authorId} />
+                  {smallerThanLargeTablet &&
+                    <StyledMobileIdeaPostedBy authorId={authorId} />
+                  }
                 </IdeaHeader>
 
-                {statusId &&
+                {statusId && smallerThanLargeTablet &&
                   <StyledMobileIdeaStatus statusId={statusId} />
                 }
 
-                <StyledIdeaAuthor
-                  ideaId={ideaId}
-                  authorId={authorId}
-                  ideaCreatedAt={ideaCreatedAt}
-                />
-
-                {!inModal && showVoteControl &&
-                  <IdeaVoteControlMobile
+                {biggerThanLargeTablet &&
+                  <StyledIdeaAuthor
                     ideaId={ideaId}
-                    unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                    authorId={authorId}
+                    ideaCreatedAt={ideaCreatedAt}
                   />
                 }
 
@@ -729,31 +624,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   />
                 }
 
-                {ideaLocation &&
-                  <MapContainer>
-                    <LocationButton id="e2e-map-toggle" onClick={this.handleMapToggle}>
-                      <Location>
-                        <LocationIcon name="position" />
-                        <LocationLabel>
-                         {ideaAdress}
-                        </LocationLabel>
-                      </Location>
-                      <ArrowIcon name="dropdown" className={showMap ? 'open' : ''}/>
-                    </LocationButton>
-                    <CSSTransition
-                      classNames="map"
-                      in={showMap}
-                      timeout={300}
-                      mountOnEnter={true}
-                      unmountOnExit={true}
-                      exit={true}
-                    >
-                      <MapWrapper innerRef={this.handleMapWrapperSetRef}>
-                        <IdeaMap location={ideaLocation} id={ideaId} />
-                      </MapWrapper>
-                    </CSSTransition>
-                    {showMap &&  <MapPaddingBottom />}
-                  </MapContainer>
+                {ideaLocation && ideaAdress && biggerThanLargeTablet &&
+                  <StyledIdeaMap
+                    adress={ideaAdress}
+                    location={ideaLocation}
+                    id={ideaId}
+                  />
                 }
 
                 <IdeaBody
@@ -767,7 +643,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <FileAttachments files={ideaFiles} />
                 }
 
-                {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
+                {showBudgetControl &&
+                 participationContextId &&
+                 participationContextType &&
+                 budgetingDescriptor &&
+                 smallerThanLargeTablet &&
                   <AssignBudgetControlMobile>
                     <AssignBudgetWrapper
                       ideaId={ideaId}
@@ -789,63 +669,67 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   commentsCount={idea.attributes.comments_count}
                 />
 
-                <SharingMobile
-                  url={ideaUrl}
-                  twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
-                  emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-                  emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
-                  utmParams={utmParams}
-                />
+                {smallerThanLargeTablet &&
+                  <SharingMobile
+                    url={ideaUrl}
+                    twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
+                    emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
+                    emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
+                    utmParams={utmParams}
+                  />
+                }
               </LeftColumn>
 
-              <RightColumnDesktop>
-                <MetaContent>
-                  {(showVoteControl || showBudgetControl) &&
-                    <ControlWrapper className="e2e-vote-controls-desktop">
-                      {showVoteControl &&
-                        <>
-                          <VoteLabel>
-                            <FormattedMessage {...messages.voteOnThisIdea} />
-                          </VoteLabel>
+              {biggerThanLargeTablet &&
+                <RightColumnDesktop>
+                  <MetaContent>
+                    {(showVoteControl || showBudgetControl) &&
+                      <ControlWrapper className="e2e-vote-controls-desktop">
+                        {showVoteControl &&
+                          <>
+                            <VoteLabel>
+                              <FormattedMessage {...messages.voteOnThisIdea} />
+                            </VoteLabel>
 
-                          <VoteWrapper
+                            <VoteWrapper
+                              ideaId={ideaId}
+                              votingDescriptor={idea.relationships.action_descriptor.data.voting}
+                              projectId={projectId}
+                            />
+                          </>
+                        }
+
+                        {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
+                          <AssignBudgetWrapper
                             ideaId={ideaId}
-                            votingDescriptor={idea.relationships.action_descriptor.data.voting}
                             projectId={projectId}
+                            participationContextId={participationContextId}
+                            participationContextType={participationContextType}
+                            budgetingDescriptor={budgetingDescriptor}
                           />
-                        </>
-                      }
+                        }
 
-                      {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
-                        <AssignBudgetWrapper
-                          ideaId={ideaId}
-                          projectId={projectId}
-                          participationContextId={participationContextId}
-                          participationContextType={participationContextType}
-                          budgetingDescriptor={budgetingDescriptor}
-                        />
-                      }
+                        <ControlWrapperHorizontalRule />
 
-                      <ControlWrapperHorizontalRule />
+                        {statusId && <IdeaStatus statusId={statusId} />}
+                      </ControlWrapper>
+                    }
 
-                      {statusId && <IdeaStatus statusId={statusId} />}
-                    </ControlWrapper>
-                  }
-
-                  <SharingWrapper>
-                    <Sharing
-                      url={ideaUrl}
-                      twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
-                      emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-                      emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
-                      utmParams={utmParams}
-                    />
-                  </SharingWrapper>
-                  <FeatureFlag name="similar_ideas">
-                    <SimilarIdeas ideaId={ideaId} />
-                  </FeatureFlag>
-                </MetaContent>
-              </RightColumnDesktop>
+                    <SharingWrapper>
+                      <Sharing
+                        url={ideaUrl}
+                        twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
+                        emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
+                        emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
+                        utmParams={utmParams}
+                      />
+                    </SharingWrapper>
+                    <FeatureFlag name="similar_ideas">
+                      <SimilarIdeas ideaId={ideaId} />
+                    </FeatureFlag>
+                  </MetaContent>
+                </RightColumnDesktop>
+              }
             </Content>
           </IdeaContainer>
 
@@ -899,6 +783,7 @@ const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl<Props & InjectedLocal
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser/>,
+  windowSize: <GetWindowSize debounce={50} />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,

@@ -13,7 +13,7 @@ interface Props {
   unauthenticatedVoteClick: () => void;
 }
 
-const IdeaVoteControlMobile = memo<Props>(({ ideaId, unauthenticatedVoteClick }) => {
+const IdeaVoteControlTopBar = memo<Props>(({ ideaId, unauthenticatedVoteClick }) => {
 
   const onGoBack = useCallback(() => {
     clHistory.push('/');
@@ -37,4 +37,4 @@ const IdeaVoteControlMobile = memo<Props>(({ ideaId, unauthenticatedVoteClick })
   );
 });
 
-export default IdeaVoteControlMobile;
+export default IdeaVoteControlTopBar;

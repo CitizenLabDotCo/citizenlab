@@ -26,9 +26,10 @@ const Topic = styled.div`
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   padding: 6px 14px;
-  margin-right: 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
   background: ${({ theme }) => transparentize(0.92, theme.colorSecondary)};
-  border-radius: 3;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 interface InputProps {
