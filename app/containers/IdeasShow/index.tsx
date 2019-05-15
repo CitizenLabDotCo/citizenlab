@@ -664,6 +664,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 {smallerThanLargeTablet &&
                   <SharingMobile
+                    context="idea"
                     url={ideaUrl}
                     twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                     emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
@@ -710,6 +711,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                     <SharingWrapper>
                       <Sharing
+                        context="idea"
                         url={ideaUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                         emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}

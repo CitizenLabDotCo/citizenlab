@@ -150,6 +150,7 @@ class IdeaSharingModalContent extends PureComponent<Props & InjectedIntlProps & 
           </Subtitle>
           <SharingWrapper>
             <Sharing
+              context="idea"
               location="modal"
               url={ideaUrl}
               twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}

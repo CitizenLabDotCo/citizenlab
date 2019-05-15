@@ -84,7 +84,7 @@ class SimilarIdeas extends PureComponent<Props> {
   }
 
   render() {
-    const { ideas } = this.props;
+    const { ideas, className } = this.props;
 
     if (isNilOrError(ideas) || isEmpty(ideas)) return null;
 

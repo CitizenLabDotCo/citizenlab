@@ -24,19 +24,27 @@ const Content = styled.div`
   max-width: ${ideaPageContentMaxWidth};
   margin-left: auto;
   margin-right: auto;
-  margin-top: 40px;
+  margin-top: 80px;
   padding-left: 30px;
   padding-right: 30px;
   padding-bottom: 60px;
 
   ${media.smallerThanMaxTablet`
-    margin-top: 20px;
+    margin-top: 60px;
   `}
 
   ${media.smallerThanMinTablet`
     padding-left: 15px;
     padding-right: 15px;
     padding-top: 10px;
+  `}
+`;
+
+const ContentInner = styled.div`
+  padding-right: 485px;
+
+  ${media.smallerThanMaxTablet`
+    padding-right: 0px;
   `}
 `;
 
@@ -51,9 +59,11 @@ const IdeaFooter = memo<Props>(({ ideaId, className }) => {
   return (
     <Container className={className}>
       <Content>
-        <Suspense fallback={<LoadingComments />}>
-          <LazyComments ideaId={ideaId} />
-        </Suspense>
+        <ContentInner>
+          <Suspense fallback={<LoadingComments />}>
+            <LazyComments ideaId={ideaId} />
+          </Suspense>
+        </ContentInner>
       </Content>
     </Container>
   );
