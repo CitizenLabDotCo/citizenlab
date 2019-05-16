@@ -40,6 +40,7 @@ const Preview = styled(ImagesDropzone)`
 
 // typings
 import { CLError, UploadFile } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface IAttributesDiff {
   favicon?: string;
@@ -105,7 +106,11 @@ class Favicon extends PureComponent<Props, State> {
         await updateTenant(tenant.id, this.state.attributesDiff as IUpdatedTenantProperties);
         this.setState({ loading: false, saved: true, attributesDiff: {} });
       } catch (error) {
-        this.setState({ loading: false, errors: error.json.errors });
+        if (isCLErrorJSON(error)) {
+          this.setState({ loading: false, errors: error.json.errors });
+        } else {
+          this.setState({ loading: false, errors: error });
+        }
       }
     }
   }

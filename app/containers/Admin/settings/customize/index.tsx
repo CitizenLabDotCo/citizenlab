@@ -39,6 +39,7 @@ import { updatePage } from 'services/pages';
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
 import InfoTooltip from 'components/admin/InfoTooltip';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const ColorPickerSectionField = styled(SectionField)``;
 
@@ -130,8 +131,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         tenant$
       ).pipe(
         switchMap(([locale, tenant]) => {
-          const logoUrl = tenant.data.attributes.logo ? tenant.data.attributes.logo.large : null;
-          const headerUrl = tenant.data.attributes.header_bg ? tenant.data.attributes.header_bg.large : null;
+          const logoUrl = get(tenant, 'data.attributes.logo.large', null);
+          const headerUrl = get(tenant, 'data.attributes.header_bg.large', null);
           const logo$ = (logoUrl ? convertUrlToUploadFileObservable(logoUrl, null, null) : of(null));
           const headerBg$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl, null, null) : of(null));
 
@@ -308,7 +309,11 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         }
         this.setState({ loading: false, saved: true, attributesDiff: {} });
       } catch (error) {
-        this.setState({ loading: false, errors: error.json.errors });
+        if (isCLErrorJSON(error)) {
+          this.setState({ loading: false, errors: error.json.errors });
+        } else {
+          this.setState({ loading: false, errors: error });
+        }
       }
     }
   }

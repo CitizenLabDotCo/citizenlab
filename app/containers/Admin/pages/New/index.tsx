@@ -11,6 +11,7 @@ import { Formik } from 'formik';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { createPage } from 'services/pages';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -23,18 +24,21 @@ type Props = {};
 class New extends React.Component<Props> {
   // Still need to handle file saving if we'll use this form.
   // Also change typing of values parameter to something different (probably FormValues) than 'any'
-  handleSubmit = (values: any, { setErrors, setSubmitting }) => {
+  handleSubmit = (values: any, { setErrors, setSubmitting, setStatus }) => {
     createPage({
       ...values
     })
-      .then(() => {
-        clHistory.push('/admin/pages');
-      })
-      .catch((errorResponse) => {
+    .then(() => {
+      clHistory.push('/admin/pages');
+    }).catch((errorResponse) => {
+      if (isCLErrorJSON(errorResponse)) {
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
-        setSubmitting(false);
-      });
+      } else {
+        setStatus('error');
+      }
+      setSubmitting(false);
+    });
   }
 
   initialValues = () => {

@@ -15,22 +15,27 @@ import { Formik } from 'formik';
 import AreaForm, { FormValues } from '../AreaForm';
 
 import { CLErrorsJSON } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 type Props = {};
 
 export default class New extends React.Component<Props> {
 
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
+  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
     addArea({
       ...values
     })
-      .then(() => {
-        clHistory.push('/admin/settings/areas');
-      })
-      .catch((errorResponse) => {
+    .then(() => {
+      clHistory.push('/admin/settings/areas');
+    })
+    .catch((errorResponse) => {
+      if (isCLErrorJSON(errorResponse)) {
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
-        setSubmitting(false);
-      });
+      } else {
+        setStatus('error');
+      }
+      setSubmitting(false);
+    });
   }
 
   renderFn = (props) => {

@@ -44,7 +44,7 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
 
   render() {
 
-    const { mode, errors, onClickDelete, onClickCancel, isSubmitting, isValid, touched } = this.props;
+    const { mode, errors, onClickDelete, onClickCancel, isSubmitting, isValid, touched, status } = this.props;
 
     return (
       <Form>

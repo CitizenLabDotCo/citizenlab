@@ -164,6 +164,7 @@ const DropdownFooterButton = styled(Button)`
 
 // Typings
 import { CLErrorsJSON } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface InputProps {
   groupType?: MembershipType;
@@ -299,7 +300,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
         });
 
         // if error because users already part of group(s)
-        if (error && error.json && error.json.errors.user.filter(val => val.error !== 'taken').length === 0 && !error.json.errors.group) {
+        if (isCLErrorJSON(error) && error.json.errors.user.filter(val => val.error !== 'taken').length === 0 && !error.json.errors.group) {
           await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/groups`] });
           success();
           return true;

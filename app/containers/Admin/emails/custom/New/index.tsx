@@ -11,6 +11,7 @@ import { Formik } from 'formik';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -25,7 +26,7 @@ type Props = {
 
 class New extends React.Component<Props> {
 
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
+  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
     createCampaign({
       campaign_name: 'manual',
       ...values
@@ -34,8 +35,11 @@ class New extends React.Component<Props> {
         clHistory.push(`/admin/emails/custom/${response.data.id}`);
       })
       .catch((errorResponse) => {
-        const apiErrors = errorResponse.json.errors;
-        setErrors(apiErrors);
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = errorResponse.json.errors;
+          setErrors(apiErrors);
+        }
+        setStatus('error');
         setSubmitting(false);
       });
   }

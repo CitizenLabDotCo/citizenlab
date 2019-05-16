@@ -37,6 +37,7 @@ import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resour
 
 // typings
 import { Multiloc, CLError, Locale, UploadFile } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface DataProps {
   remoteEventFiles: GetResourceFileObjectsChildProps;
@@ -57,7 +58,7 @@ interface State {
   attributeDiff: IUpdatedEventProperties;
   errors: {
     [fieldName: string]: CLError[]
-  };
+  } | Error;
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
@@ -230,7 +231,11 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
           clHistory.push(`/admin/projects/${projectId}/events/`);
         }
       } catch (errors) {
-        this.setState({ saving: false, errors: errors.json.errors, submitState: 'error' });
+        if (isCLErrorJSON(errors)) {
+          this.setState({ saving: false, errors: errors.json.errors, submitState: 'error' });
+        } else {
+          this.setState({ saving: false, submitState: 'error' });
+        }
       }
     }
   }
