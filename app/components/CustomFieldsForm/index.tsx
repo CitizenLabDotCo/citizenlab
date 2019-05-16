@@ -205,11 +205,19 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
 
   CustomSelect = (props: FieldProps) => {
     if (props.schema.type === 'string' || props.schema.type === 'number') {
-      const selectedOption: IOption | null = (props.value ? {
+      const selectedOption: IOption & { role: string } | null = (props.value ? {
         value: props.value,
-        label: get(props.options.enumOptions.find(enumOption => enumOption.value === props.value), 'label', null)
+        label: get(props.options.enumOptions.find(enumOption => enumOption.value === props.value), 'label', null),
+        role: 'menuitem'
       } : null);
 
+      const options = props.options.enumOptions.map(option => {
+        return ({
+          value: option.value,
+          label: option.label,
+          role: 'menuitem'
+        });
+      });
       const onChange = (selectedOption: IOption) => {
         props.onChange((selectedOption ? selectedOption.value : null));
       };
@@ -219,7 +227,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
           clearable={true}
           searchable={false}
           value={selectedOption}
-          options={props.options.enumOptions}
+          options={options}
           onChange={onChange}
           key={props.id}
           inputId={props.id}
@@ -232,7 +240,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
     if (props.schema.type === 'array') {
       const selectedOptions: IOption[] | null = ((props.value && props.value.length > 0) ? props.value.map(value => ({
         value,
-        label: get(props.options.enumOptions.find(enumOption => enumOption.value === value), 'label', null)
+        label: get(props.options.enumOptions.find(enumOption => enumOption.value === value), 'label', null),
       })) : null);
 
       const onChange = (selectedOptions: IOption[]) => {
