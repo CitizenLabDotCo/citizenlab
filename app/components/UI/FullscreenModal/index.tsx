@@ -117,7 +117,19 @@ class FullscreenModal extends PureComponent<Props, State> {
       trackPage(localizedUrl, { modal: true });
     }
 
-    disableBodyScroll(this.ContentElement);
+    disableBodyScroll(this.ContentElement, {
+      // @ts-ignore
+      allowTouchMove: (element) => {
+        while (element && element !== document.body) {
+          if (element.className.includes('ignore-body-scroll-lock')) {
+            return true;
+          }
+
+          // tslint:disable-next-line
+          element = element.parentNode;
+        }
+      }
+    });
   }
 
   handleKeypress = (event) => {
