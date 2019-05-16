@@ -224,6 +224,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
           key={props.id}
           inputId={props.id}
           disabled={props.disabled}
+          aria-label={props.label}
         />
       );
     }
@@ -245,6 +246,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
           onChange={onChange}
           inputId={props.id}
           disabled={props.disabled}
+          aria-label={props.label}
         />
       );
     }

@@ -102,6 +102,7 @@ const Title = styled.h1`
   font-weight: 500;
   text-align: left;
   margin-bottom: 35px;
+  outline: none;
 `;
 
 const SignupHelperText = styled.p`
@@ -167,6 +168,14 @@ class SignUp extends React.PureComponent<Props, State> {
     clHistory.push('/sign-in');
   }
 
+  setRef = (el: HTMLElement) => {
+    el && this.focusElement(el);
+  }
+
+  focusElement = (el: HTMLElement) => {
+    el.focus();
+  }
+
   render() {
     const { visibleStep } = this.state;
     const { isInvitation, token, step1Title, step2Title, tenant } = this.props;
@@ -217,7 +226,7 @@ class SignUp extends React.PureComponent<Props, State> {
                 classNames="step"
               >
                 <StepContainer>
-                  <Title>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
+                  <Title tabIndex={0} innerRef={this.setRef}>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
                   <Step2 onCompleted={this.handleStep2Completed} />
                 </StepContainer>
               </CSSTransition>
