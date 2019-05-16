@@ -3,6 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
 export type IOnboardingCampaignNames = 'complete_profile' | 'custom_cta' | 'default';
+export const currentOnboardingCampaignsApiEndpoint = `${API_PATH}/onboarding_campaigns/current`;
 
 export type IOnboardingCampaigns = {
   name: IOnboardingCampaignNames;
@@ -19,7 +20,7 @@ export interface IOnboardingCampaignsData {
 }
 
 export function currentOnboardingCampaignsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IOnboardingCampaignsData>({ apiEndpoint: `${API_PATH}/onboarding_campaigns/current`, ...streamParams });
+  return streams.get<IOnboardingCampaignsData>({ apiEndpoint: currentOnboardingCampaignsApiEndpoint, ...streamParams });
 }
 
 export async function dismissOnboardingCampaign(name: IOnboardingCampaignNames) {
