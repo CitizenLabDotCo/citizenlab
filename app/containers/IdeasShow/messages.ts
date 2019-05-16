@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.loadVotesError',
     defaultMessage: 'Voting is not currently available',
   },
-  postedIn: {
-    id: 'app.containers.IdeasShow.postedIn',
-    defaultMessage: 'Posted in {projectLink}',
-  },
   imageAltText: {
     id: 'app.containers.IdeasShow.imageAltText',
     defaultMessage: '{orgName} - main image for the ida {ideaTitle}',

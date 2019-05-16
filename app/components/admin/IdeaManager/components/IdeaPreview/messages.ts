@@ -73,4 +73,8 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.IdeaPreview.submitError',
     defaultMessage: 'Error',
   },
+  postedIn: {
+    id: 'app.containers.IdeasShow.postedIn',
+    defaultMessage: 'Posted in {projectLink}',
+  },
 });
