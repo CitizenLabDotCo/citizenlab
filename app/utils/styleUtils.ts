@@ -2,6 +2,7 @@ import { isNil, get } from 'lodash-es';
 import { ITenant } from 'services/tenant';
 import { css } from 'styled-components';
 import { darken, transparentize } from 'polished';
+import { isNilOrError } from './helperUtils';
 
 // Media
 export const viewportWidths = {
@@ -348,7 +349,7 @@ export function quillEditedContent(
 
 // Main theme passed through any styled component
 export function getTheme(tenant: ITenant | null) {
-  const core = tenant && tenant.data.attributes.settings.core;
+  const core = !isNilOrError(tenant) && tenant.data.attributes.settings.core;
   const signedOutHeaderOverlayOpacity = get(tenant, 'data.attributes.style.signedOutHeaderOverlayOpacity');
   const signedInHeaderOverlayOpacity = get(tenant, 'data.attributes.style.signedInHeaderOverlayOpacity');
 
