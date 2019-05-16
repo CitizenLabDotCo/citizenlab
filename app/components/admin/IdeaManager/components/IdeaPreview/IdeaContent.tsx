@@ -5,23 +5,26 @@ import { adopt } from 'react-adopt';
 // components
 import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
 import IdeaTitle from 'containers/IdeasShow/IdeaTitle';
+import IdeaBody from 'containers/IdeasShow/IdeaBody';
+import IdeaMap from 'containers/IdeasShow/IdeaMap';
 import OfficialFeedback from 'containers/IdeasShow/OfficialFeedback';
 import Comments from 'containers/IdeasShow/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
-import Icon from 'components/UI/Icon';
 import IdeaSettings from './IdeaSettings';
 import VotePreview from './VotePreview';
 import InfoTooltip from 'components/admin/InfoTooltip';
 import Button from 'components/UI/Button';
+import Link from 'utils/cl-router/Link';
+import T from 'components/T';
 import { Top, Content, Container } from '.';
 
 // resources
-import IdeaBody from 'containers/IdeasShow/IdeaBody';
-import IdeaMap from 'containers/IdeasShow/IdeaMap';
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+
 import { deleteIdea } from 'services/ideas';
 
 // i18n
@@ -36,6 +39,10 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import { get } from 'lodash-es';
 
+const StyledIdeaTitle = styled(IdeaTitle)`
+  margin-bottom: 30px;
+`;
+
 const Row = styled.div`
   display: flex;
   width: 100%;
@@ -47,12 +54,40 @@ const Left = styled.div`
   height: 100%;
 `;
 
+const BelongsToProject = styled.p`
+  width: 100%;
+  color: ${colors.label};
+  font-weight: 300;
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  margin-bottom: 10px;
+`;
+
+const ProjectLink = styled(Link)`
+  color: inherit;
+  font-weight: 400;
+  font-size: inherit;
+  line-height: inherit;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+  margin-left: 4px;
+
+  &:hover {
+    color: ${darken(0.2, colors.label)};
+    text-decoration: underline;
+  }
+`;
+
 const IdeaImage = styled.img`
   width: 100%;
   margin: 0 0 2rem;
   padding: 0;
   border-radius: 8px;
   border: 1px solid ${colors.separation};
+`;
+
+const StyledIdeaBody = styled(IdeaBody)`
+  margin-bottom: 20px;
 `;
 
 const StyledIdeaMap = styled(IdeaMap)`
@@ -101,46 +136,7 @@ const Picks = styled.div`
   align-items: center;
 `;
 
-const LocationIconWrapper = styled.div`
-  width: 22px;
-  height: 36px;
-  margin: 0;
-  margin-right: 3px;
-  padding: 0;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-`;
-
-const LocationIcon = styled(Icon)`
-  width: 18px;
-  fill: ${colors.adminTextColor};
-`;
-
-const LocationButton = styled.button`
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-  margin-top: 20px;
-  margin-right: 6px;
-  text-align: left;
-  font-weight: 400;
-  transition: all 100ms ease-out;
-  white-space: nowrap;
-
-  &:hover {
-    color: ${darken(0.2, colors.adminTextColor)};
-
-    ${LocationIcon} {
-      fill: ${darken(0.2, colors.adminTextColor)};
-    }
-  }
-`;
-
-interface State {
-  showMap: boolean;
-}
+interface State {}
 
 interface InputProps {
   ideaId: string | null;
@@ -153,18 +149,12 @@ interface DataProps {
   ideaImages: GetIdeaImagesChildProps;
   ideaFiles: GetResourceFilesChildProps;
   tenant: GetTenantChildProps;
+  project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 export class IdeaContent extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showMap: false
-    };
-  }
-
   handleClickDelete = () => {
     const { idea, closeSideModal } = this.props;
     const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
@@ -177,26 +167,10 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
     }
   }
 
-  handleMapWrapperSetRef = (element: HTMLDivElement) => {
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'nearest'
-      });
-    }
-  }
-
-  handleMapToggle = () => {
-    this.setState((state) => {
-      const showMap = !state.showMap;
-      return { showMap };
-    });
-  }
-
   render() {
     const {
       idea,
+      project,
       localize,
       ideaImages,
       ideaFiles,
@@ -204,7 +178,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
       handleClickEdit,
       intl: { formatMessage }
     } = this.props;
-    const { showMap } = this.state;
+
     if (!isNilOrError(idea)) {
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const ideaImageLarge = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
@@ -232,7 +206,21 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             </Button>
           </Top>
           <Content>
-            <IdeaTitle
+            {!isNilOrError(project) &&
+              <BelongsToProject>
+                <FormattedMessage
+                  {...messages.postedIn}
+                  values={{
+                    projectLink:
+                      <ProjectLink className="e2e-project-link" to={`/projects/${project.attributes.slug}`}>
+                        <T value={project.attributes.title_multiloc} />
+                      </ProjectLink>
+                  }}
+                />
+              </BelongsToProject>
+            }
+
+            <StyledIdeaTitle
               ideaId={idea.id}
               ideaTitle={ideaTitle}
             />
@@ -246,7 +234,8 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   ideaCreatedAt={idea.attributes.created_at}
                   ideaId={idea.id}
                 />
-                <IdeaBody
+
+                <StyledIdeaBody
                   ideaId={idea.id}
                   ideaBody={localize(idea.attributes.body_multiloc)}
                 />
@@ -292,18 +281,6 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                 }
 
                 <IdeaSettings ideaId={idea.id}/>
-
-                {ideaLocation &&
-                  <LocationButton onClick={this.handleMapToggle}>
-                    <LocationIconWrapper>
-                      <LocationIcon name={!showMap ? 'position' : 'close'} />
-                    </LocationIconWrapper>
-                      {!showMap
-                        ? <FormattedMessage {...messages.openMap} />
-                        : <FormattedMessage {...messages.closeMap} />
-                      }
-                  </LocationButton>
-                }
               </Right>
             </Row>
           </Content>
@@ -316,6 +293,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   tenant: <GetTenant />,
