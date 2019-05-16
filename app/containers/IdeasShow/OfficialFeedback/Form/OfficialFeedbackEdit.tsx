@@ -5,6 +5,7 @@ import { updateOfficialFeedback, IOfficialFeedbackData } from 'services/official
 import { Formik } from 'formik';
 import OfficialFeedbackForm, { FormValues } from './OfficialFeedbackForm';
 import { CLErrorsJSON } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface Props {
   feedback: IOfficialFeedbackData;
@@ -13,7 +14,7 @@ interface Props {
 
 export default class OfficialFeedbackEdit extends React.Component<Props> {
 
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
+  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
     const { feedback: { id }, closeForm } = this.props;
     setSubmitting(true);
     updateOfficialFeedback(id, values)
@@ -21,9 +22,12 @@ export default class OfficialFeedbackEdit extends React.Component<Props> {
         setSubmitting(false);
         closeForm();
       }).catch((errorResponse) => {
-
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
         setSubmitting(false);
       });
   }

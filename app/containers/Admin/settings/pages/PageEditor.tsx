@@ -32,6 +32,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // Typings
 import { CLErrorsJSON, UploadFile } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const timeout = 350;
 
@@ -228,8 +229,12 @@ class PageEditor extends PureComponent<Props, State>{
           setStatus('success');
         }, 50);
       } catch (errorResponse) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
         setSubmitting(false);
       }
     }
