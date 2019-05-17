@@ -44,7 +44,7 @@ const CommentContainer = styled.div`
   border: 1px solid #E3E3E3;
   box-sizing: border-box;
   box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   transition: all 100ms ease;
 
   &.focused {

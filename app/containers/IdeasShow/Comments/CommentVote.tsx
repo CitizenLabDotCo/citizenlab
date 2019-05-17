@@ -20,7 +20,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // style
@@ -126,7 +127,7 @@ const UpvoteLabel = styled.button`
 interface InputProps {
   ideaId: string;
   commentId: string;
-  commentType: 'parent' | 'child';
+  commentType: 'parent' | 'child' | undefined;
   votingEnabled: boolean;
   className?: string;
 }
@@ -144,7 +145,7 @@ interface State {
   upvoteCount: number;
 }
 
-class CommentVote extends PureComponent<Props, State> {
+class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -207,6 +208,8 @@ class CommentVote extends PureComponent<Props, State> {
               trackEventByName(tracks.clickParentCommentUpvoteButton);
             } else if (commentType === 'child') {
               trackEventByName(tracks.clickChildCommentUpvoteButton);
+            } else {
+              trackEventByName(tracks.clickCommentUpvoteButton);
             }
           } catch (error) {
             this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
@@ -222,6 +225,8 @@ class CommentVote extends PureComponent<Props, State> {
               trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
             } else if (commentType === 'child') {
               trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
+            } else {
+              trackEventByName(tracks.clickCommentCancelUpvoteButton);
             }
           } catch (error) {
             this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
@@ -234,13 +239,14 @@ class CommentVote extends PureComponent<Props, State> {
   }
 
   render() {
-    const { votingEnabled, className, comment } = this.props;
+    const { votingEnabled, className, comment, intl } = this.props;
     const { voted, upvoteCount } = this.state;
 
     if (!isNilOrError(comment) && (votingEnabled || (!votingEnabled && upvoteCount > 0))) {
       return (
         <Container className={className}>
           <UpvoteIconWrapper
+            aria-label={intl.formatMessage(messages.upvoteComment)}
             onMouseDown={this.removeFocus}
             onClick={this.onVote}
             className={`${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'} ${votingEnabled ? 'enabled' : 'disabled'}`}
@@ -265,6 +271,8 @@ class CommentVote extends PureComponent<Props, State> {
   }
 }
 
+const CommentVoteWithHOCs = injectIntl(CommentVote);
+
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
@@ -273,6 +281,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <CommentVote {...inputProps} {...dataProps} />}
+    {dataProps => <CommentVoteWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

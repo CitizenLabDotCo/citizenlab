@@ -1,14 +1,14 @@
 import { BehaviorSubject } from 'rxjs';
 import { IIdeas } from 'services/ideas';
 
-let mockIdeas: IIdeas | null = null;
+const mockIdeas = new BehaviorSubject<IIdeas | null>(null);
 
 export const __setMockIdeas = (ideas: IIdeas) => {
-  mockIdeas = ideas;
+  mockIdeas.next(ideas);
 };
 
 export const ideasStream = jest.fn((_ideas) => {
-  const observable = new BehaviorSubject(mockIdeas);
+  const observable = mockIdeas;
   return {
     observable
   };
