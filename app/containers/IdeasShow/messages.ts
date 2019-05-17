@@ -9,21 +9,9 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.loadVotesError',
     defaultMessage: 'Voting is not currently available',
   },
-  postedIn: {
-    id: 'app.containers.IdeasShow.postedIn',
-    defaultMessage: 'Posted in {projectLink}',
-  },
   imageAltText: {
     id: 'app.containers.IdeasShow.imageAltText',
     defaultMessage: '{orgName} - main image for the ida {ideaTitle}',
-  },
-  closeMap: {
-    id: 'app.containers.IdeasShow.closeMap',
-    defaultMessage: 'Close Map',
-  },
-  openMap: {
-    id: 'app.containers.IdeasShow.openMap',
-    defaultMessage: 'Show idea on map',
   },
   Map: {
     id: 'app.containers.IdeasShow.Map',
@@ -197,9 +185,9 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentsWithCount',
     defaultMessage: 'Comments ({count})',
   },
-  ideaStatus: {
-    id: 'app.containers.IdeasShow.ideaStatus',
-    defaultMessage: 'Idea status',
+  currentStatus: {
+    id: 'app.containers.IdeasShow.currentStatus',
+    defaultMessage: 'Current status',
   },
   commentsTitle: {
     id: 'app.containers.IdeasShow.commentsTitle',
@@ -326,14 +314,6 @@ export default defineMessages({
     id: 'app.components.IdeasShow.modalShareLabel',
     defaultMessage: 'Your idea was posted, share it now to reach more votes!',
   },
-  translateIdea: {
-    id: 'app.components.IdeasShow.translateIdea',
-    defaultMessage: 'Translate this idea',
-  },
-  backToOriginalContent: {
-    id: 'app.components.IdeasShow.backToOriginalContent',
-    defaultMessage: 'See original content again',
-  },
   seeTranslation: {
     id: 'app.components.IdeasShow.seeTranslation',
     defaultMessage: 'See translation',
@@ -370,4 +350,24 @@ export default defineMessages({
     id: 'app.components.IdeasShow.mostUpvoted',
     defaultMessage: 'Most voted',
   },
+  ideaPostedBy: {
+    id: 'app.components.IdeasShow.ideaPostedBy',
+    defaultMessage: 'Idea posted by {userName}',
+  },
+  noComments: {
+    id: 'app.components.IdeasShow.noComments',
+    defaultMessage: 'There are no comments yet.'
+  },
+  linkToHomePage: {
+    id: 'app.components.IdeasShow.linkToHomePage',
+    defaultMessage: 'Link to home page'
+  },
+  upvoteComment: {
+    id: 'app.components.IdeasShow.upvoteComment',
+    defaultMessage: 'Upvote this comment'
+  },
+  createdTimeAgo: {
+    id: 'app.components.IdeasShow.createdTimeAgo',
+    defaultMessage: 'Created {timeAgo}'
+  }
 });

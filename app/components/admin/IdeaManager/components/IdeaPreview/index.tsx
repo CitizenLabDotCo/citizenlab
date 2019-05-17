@@ -1,9 +1,7 @@
-import React from 'react';
-
+import React, { PureComponent } from 'react';
 import SideModal from 'components/UI/SideModal';
 import IdeaEdit from './IdeaEdit';
 import IdeaContent from './IdeaContent';
-
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
@@ -43,7 +41,7 @@ export const Content = styled.div`
   margin-top: 50px;
 `;
 
-export default class IdeaPreview extends React.Component<Props, State> {
+export default class IdeaPreview extends PureComponent<Props, State> {
   constructor (props) {
     super(props);
     this.state = {

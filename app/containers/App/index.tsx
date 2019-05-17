@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { isString, isObject } from 'lodash-es';
@@ -31,7 +31,6 @@ import { trackPage } from 'utils/analytics';
 import Meta from './Meta';
 import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import LoadableFullscreenModal from 'components/Loadable/FullscreenModal';
 import LoadableModal from 'components/Loadable/Modal';
 import UserDeletedModalContent from 'components/UserDeletedModalContent';
 
@@ -98,6 +97,8 @@ type State = {
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
 };
+
+const IdeaPageFullscreenModal = lazy(() => import('./IdeaPageFullscreenModal'));
 
 class App extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
@@ -183,10 +184,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         }
       }),
 
-      eventEmitter.observeEvent('cardHover').subscribe(() => {
-        this.preloadIdeaModal();
-      }),
-
       eventEmitter.observeEvent<IModalInfo>('ideaCardClick').subscribe(({ eventValue }) => {
         const { type, id, url } = eventValue;
         this.openModal(type, id, url);
@@ -208,10 +205,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentWillUnmount() {
     this.unlisten();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  preloadIdeaModal = () => {
-    LoadableFullscreenModal.preload();
   }
 
   openModal = (type: string, id: string | null, url: string | null) => {
@@ -255,6 +248,19 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                 <Meta />
 
                 <ErrorBoundary>
+                  <Suspense fallback={null}>
+                    <IdeaPageFullscreenModal
+                      modalOpened={modalOpened}
+                      close={this.closeModal}
+                      modalUrl={modalUrl}
+                      modalId={modalId}
+                      modalType={modalType}
+                      unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                    />
+                  </Suspense>
+                </ErrorBoundary>
+
+                <ErrorBoundary>
                   <LoadableModal
                     opened={userDeletedModalOpened}
                     close={this.closeUserDeletedModal}
@@ -264,23 +270,13 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                 </ErrorBoundary>
 
                 <ErrorBoundary>
-                  <LoadableFullscreenModal
-                    modalOpened={modalOpened}
-                    close={this.closeModal}
-                    modalUrl={modalUrl}
-                    modalId={modalId}
-                    modalType={modalType}
-                    unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                  />
-                </ErrorBoundary>
-
-                <ErrorBoundary>
                   <div id="modal-portal" />
                 </ErrorBoundary>
 
                 <ErrorBoundary>
-                  <Navbar />
+                  <Navbar fullscreenModalOpened={modalOpened} />
                 </ErrorBoundary>
+
                 <ErrorBoundary>
                   <ConsentManager />
                 </ErrorBoundary>

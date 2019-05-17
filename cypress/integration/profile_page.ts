@@ -25,7 +25,7 @@ describe('Profile Page', () => {
       const ideaTitle = randomString();
       const ideaContent = randomString();
 
-      cy.apiCreateIdea(projectId, ideaTitle, ideaContent, jwt);
+      cy.apiCreateIdea(projectId, ideaTitle, ideaContent, undefined, undefined, jwt);
 
       cy.visit(`/profile/${newUserName}-${newUserSurname}`);
 
