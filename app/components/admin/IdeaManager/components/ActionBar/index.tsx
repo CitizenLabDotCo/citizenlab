@@ -10,14 +10,15 @@ const Container = styled.div`
 interface Props {
   ideaIds: string[];
   resetSelectedIdeas: () => void;
+  handleClickEdit: () => void;
 }
 
 export default (props: Props) => {
-  const { ideaIds, resetSelectedIdeas } = props;
+  const { ideaIds, resetSelectedIdeas, handleClickEdit } = props;
   return (
     <Container>
       {ideaIds.length > 1 && <ActionBarMulti ideaIds={ideaIds} resetSelectedIdeas={resetSelectedIdeas} />}
-      {ideaIds.length === 1 && <ActionBarSingle ideaId={ideaIds[0]} resetSelectedIdeas={resetSelectedIdeas} />}
+      {ideaIds.length === 1 && <ActionBarSingle ideaId={ideaIds[0]} resetSelectedIdeas={resetSelectedIdeas} handleClickEdit={handleClickEdit} />}
     </Container>
   );
 };

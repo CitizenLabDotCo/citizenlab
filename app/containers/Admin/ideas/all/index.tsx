@@ -101,7 +101,7 @@ class AllIdeas extends React.PureComponent<Props, State> {
         </HeaderContainer>
 
         <PageWrapper>
-          {projects &&
+          {projects && projects.projectsList !== undefined &&
             <IdeaManager projects={!isNilOrError(projects.projectsList) ? projects.projectsList : null} />
           }
         </PageWrapper>
