@@ -41,17 +41,17 @@ export const media = {
     }
   `,
   tablet: (style: any, ...args) => css`
-    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet}px) {
+    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet + 1}px) {
       ${css(style, ...args)}
     }
   `,
   tabletLandscape: (style: any, ...args) => css`
-    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet}px) and (orientation : landscape) {
+    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet + 1}px) and (orientation : landscape) {
       ${css(style, ...args)}
     }
   `,
   tabletPortrait: (style: any, ...args) => css`
-    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet}px) and (orientation : portrait) {
+    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet + 1}px) and (orientation : portrait) {
       ${css(style, ...args)}
     }
   `,
