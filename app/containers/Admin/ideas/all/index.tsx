@@ -16,6 +16,13 @@ import { requestBlob } from 'utils/request';
 
 // styling
 import styled from 'styled-components';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
+
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -30,11 +37,8 @@ const Left = styled.div`
   margin-right: 80px;
 `;
 
-export interface Props {}
-
-export interface ITracks {
-  clickExportAllIdeas: () => void;
-  clickExportAllComments: () => void;
+export interface Props {
+  projects: GetProjectsChildProps;
 }
 
 interface State {
@@ -42,8 +46,8 @@ interface State {
   exportingComments: boolean;
 }
 
-export default class AllIdeas extends React.PureComponent<Props & ITracks, State> {
-  constructor(props: Props & ITracks) {
+class AllIdeas extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       exportingIdeas: false,
@@ -53,7 +57,8 @@ export default class AllIdeas extends React.PureComponent<Props & ITracks, State
 
   handleExportIdeas = async () => {
     // track this click for user analytics
-    this.props.clickExportAllIdeas();
+      trackEventByName(tracks.clickExportAllIdeas.name);
+
     try {
       this.setState({ exportingIdeas: true });
       const blob = await requestBlob(`${API_PATH}/ideas/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -66,7 +71,7 @@ export default class AllIdeas extends React.PureComponent<Props & ITracks, State
 
   handleExportComments = async () => {
     // track this click for user analytics
-    this.props.clickExportAllComments();
+    trackEventByName(tracks.clickExportAllComments.name);
     try {
       this.setState({ exportingComments: true });
       const blob = await requestBlob(`${API_PATH}/comments/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -79,6 +84,8 @@ export default class AllIdeas extends React.PureComponent<Props & ITracks, State
   }
 
   render() {
+    const { projects } = this.props;
+
     return (
       <>
         <HeaderContainer>
@@ -94,9 +101,21 @@ export default class AllIdeas extends React.PureComponent<Props & ITracks, State
         </HeaderContainer>
 
         <PageWrapper>
-          <IdeaManager />
+          {projects &&
+            <IdeaManager projects={!isNilOrError(projects.projectsList) ? projects.projectsList : null} />
+          }
         </PageWrapper>
       </>
     );
   }
 }
+
+const Data = adopt<Props>({
+  projects: <GetProjects pageSize={250} sort="new" publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true} />,
+});
+
+export default () => (
+  <Data>
+    {dataProps => <AllIdeas{...dataProps} />}
+  </Data>
+);

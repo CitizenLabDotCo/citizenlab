@@ -57,17 +57,17 @@ const VoteIconContainer: any = styled.div`
   transition: all 60ms ease-out;
   will-change: transform;
 
-  ${(props: any) => props.size === '1' ? css`
+  ${(props: any) => props.size === '1' && props.votingEnabled ? css`
     width: 45px;
     height: 45px;
   ` : css``}
 
-  ${(props: any) => props.size === '2' ? css`
+  ${(props: any) => props.size === '2' && props.votingEnabled ? css`
     width: 48px;
     height: 48px;
   ` : css``}
 
-  ${(props: any) => props.size === '3' ? css`
+  ${(props: any) => props.size === '3' && props.votingEnabled ? css`
     width: 52px;
     height: 52px;
   ` : css``}
@@ -509,7 +509,7 @@ export default class VoteControl extends PureComponent<Props, State> {
           size={size}
           enabled={upvotingEnabled}
         >
-          <VoteIconContainer size={size}>
+          <VoteIconContainer size={size} votingEnabled={votingEnabled}>
             <VoteIcon name="upvote-2" size={size} enabled={upvotingEnabled} />
           </VoteIconContainer>
           <VoteCount className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
@@ -523,7 +523,7 @@ export default class VoteControl extends PureComponent<Props, State> {
           size={size}
           enabled={downvotingEnabled}
         >
-          <VoteIconContainer size={size}>
+          <VoteIconContainer size={size} votingEnabled={votingEnabled}>
             <VoteIcon name="downvote-2" size={size} enabled={downvotingEnabled} />
           </VoteIconContainer>
           <VoteCount className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>

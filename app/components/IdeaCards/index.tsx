@@ -64,6 +64,8 @@ const FiltersArea = styled.div`
 
   ${media.smallerThanMaxTablet`
     margin-bottom: 30px;
+    flex-direction: column;
+    align-items: flex-start;
   `}
 `;
 
@@ -79,9 +81,11 @@ const LeftFilterArea = FilterArea.extend`
   &.hidden {
     display: none;
   }
-
   ${media.smallerThanMaxTablet`
-    display: none;
+    margin-bottom: 22px;
+  `}
+  ${media.largePhone`
+    width: 100%;
   `}
 `;
 
@@ -100,7 +104,7 @@ const RightFilterArea = FilterArea.extend`
     justify-content: space-between;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.largePhone`
     width: 100%;
     display: flex;
     flex-direction: column-reverse;
@@ -115,13 +119,14 @@ const DropdownFilters = styled.div`
 
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
+  margin-right: 30px;
 
   input {
     font-size: ${fontSizes.medium}px;
     font-weight: 400;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.largePhone`
     width: 100%;
   `}
 `;
@@ -446,8 +451,10 @@ const Data = adopt<DataProps, InputProps>({
 
 const IdeaCardsWithHoCs = withTheme<Props, State>(IdeaCards);
 
-export default (inputProps: InputProps) => (
+const WrappedIdeaCards = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <IdeaCardsWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default WrappedIdeaCards;

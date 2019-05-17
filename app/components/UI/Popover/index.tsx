@@ -83,11 +83,12 @@ export interface Props {
   onClickOutside: (event) => void;
   dropdownOpened: boolean;
   className?: string;
+  id?: string;
 }
 
 export default class Popover extends PureComponent<Props> {
   render() {
-    const { onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, top, className } = this.props;
+    const { onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, top, className, id } = this.props;
 
     return (
       <Container className={className}>
@@ -102,7 +103,7 @@ export default class Popover extends PureComponent<Props> {
           exit={false}
         >
           <Content onClickOutside={onClickOutside} top={top} className="tooltip-container">
-            <ContentInner backgroundColor={backgroundColor} textColor={textColor} borderColor={borderColor} className="tooltip-content">
+            <ContentInner id={id} backgroundColor={backgroundColor} textColor={textColor} borderColor={borderColor} className="tooltip-content">
               {content}
             </ContentInner>
           </Content>

@@ -187,13 +187,13 @@ class UserMenu extends PureComponent<Props, State> {
                   linkTo={`/profile/${userSlug}`}
                   onClick={this.closeDropdown}
                   style="text"
-                  icon="ideas2"
+                  icon="profile1"
                   iconPos="right"
                   iconSize="20px"
                   padding="11px 11px"
                   justify="space-between"
                 >
-                  <FormattedMessage {...messages.myIdeas} />
+                  <FormattedMessage {...messages.myProfile} />
                 </DropdownListItem>
 
                 <DropdownListItem
