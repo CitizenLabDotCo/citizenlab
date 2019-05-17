@@ -105,7 +105,6 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
-  private title = React.createRef<HTMLHeadingElement>();
 
   redirect = () => {
     const { location, authUser, idea } = this.props;
@@ -124,12 +123,11 @@ class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
     }
   }
 
-  setRef = (el: HTMLElement) => {
-    el && this.focusElement(el);
-  }
-
-  focusElement = (el: HTMLElement) => {
-    el.focus();
+  focusTitle = (titleEl: HTMLHeadingElement) => {
+    // focus step 2 page title to make the custom field easily reachable with keyboard navigation
+    // hitting the tab key once should bring the user to the first custom field
+    // before the user had to navigate the entire navbar first
+    titleEl && titleEl.focus();
   }
 
   render() {
@@ -153,12 +151,12 @@ class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
             <RightInner>
               {!authError ? (
                 <>
-                  <Title tabIndex={0} innerRef={this.setRef}><FormattedMessage {...messages.title} /></Title>
+                  <Title tabIndex={0} innerRef={this.focusTitle}><FormattedMessage {...messages.title} /></Title>
                   <Step2 onCompleted={this.redirect} />
                 </>
               ) : (
                 <>
-                  <Title tabIndex={0} innerRef={this.setRef}><FormattedMessage {...messages.somethingWentWrong} /></Title>
+                  <Title tabIndex={0} innerRef={this.focusTitle}><FormattedMessage {...messages.somethingWentWrong} /></Title>
                   <Error text={<FormattedMessage {...messages.notSignedIn} />} />
                 </>
               )}
