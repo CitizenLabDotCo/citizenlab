@@ -3,7 +3,7 @@ import React from 'react';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { ideasCountForUser, commentsCountForUser } from 'services/stats';
 import { isNilOrError } from 'utils/helperUtils';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 interface InputProps {}
 
@@ -39,19 +39,19 @@ export default class GetUserStats extends React.PureComponent<Props, State> {
     this.userId$ = new BehaviorSubject(userId);
     this.resourceType$ = new BehaviorSubject(resource);
 
-    combineLatest(
+    this.subscription = combineLatest(
       this.resourceType$.pipe(distinctUntilChanged()),
       this.userId$.pipe(distinctUntilChanged())
-    ).subscribe(([resourceType, userId]) => {
-      if (resourceType === 'ideas') {
-        this.subscription = ideasCountForUser(userId).observable.subscribe((response) => {
-          this.setState({ count: !isNilOrError(response) ? response.count : response });
-        });
-      } else if (resourceType === 'comments') {
-        this.subscription = commentsCountForUser(userId).observable.subscribe((response) => {
-          this.setState({ count: !isNilOrError(response) ? response.count : response });
-        });
-      }
+    ).pipe(
+      switchMap(([resourceType, userId]) => {
+        if (resourceType === 'ideas') {
+          return ideasCountForUser(userId).observable;
+        }
+
+        return commentsCountForUser(userId).observable;
+      })
+    ).subscribe((response) => {
+      this.setState({ count: !isNilOrError(response) ? response.count : response });
     });
   }
 
