@@ -205,19 +205,11 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
 
   CustomSelect = (props: FieldProps) => {
     if (props.schema.type === 'string' || props.schema.type === 'number') {
-      const selectedOption: IOption & { role: string } | null = (props.value ? {
+      const selectedOption: IOption | null = (props.value ? {
         value: props.value,
         label: get(props.options.enumOptions.find(enumOption => enumOption.value === props.value), 'label', null),
-        role: 'menuitem'
       } : null);
 
-      const options = props.options.enumOptions.map(option => {
-        return ({
-          value: option.value,
-          label: option.label,
-          role: 'menuitem'
-        });
-      });
       const onChange = (selectedOption: IOption) => {
         props.onChange((selectedOption ? selectedOption.value : null));
       };
@@ -227,7 +219,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
           clearable={true}
           searchable={false}
           value={selectedOption}
-          options={options}
+          options={props.options.enumOptions}
           onChange={onChange}
           key={props.id}
           inputId={props.id}
