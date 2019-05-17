@@ -72,7 +72,7 @@ class IdeaSettings extends PureComponent<PropsWithHoCs> {
   );
 
   getIdeaStatusOption = memoize(
-    (idea, statuses) => {
+    (idea: GetIdeaChildProps, statuses) => {
       const { localize } = this.props;
       if (isNilOrError(idea) || !idea.relationships.idea_status || !idea.relationships.idea_status.data || isNilOrError(statuses)) {
         return null;
@@ -87,7 +87,10 @@ class IdeaSettings extends PureComponent<PropsWithHoCs> {
         }
         return null;
       }
-    }
+    }, (idea: GetIdeaChildProps, statuses) => (JSON.stringify({
+      ideaId: isNilOrError(idea) ? undefined : get(idea, 'relationships.idea_status.data.id'),
+      statusesId: isNilOrError(statuses) ? undefined : statuses.map(status => status.id)
+    }))
   );
 
   getAssigneeOptions = memoize(
