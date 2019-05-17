@@ -116,6 +116,10 @@ class User < ApplicationRecord
     where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
   }
 
+  scope :not_invited, -> {
+    where.not(invite_status: 'pending').or(where(invite_status: nil))
+  }
+
 
   scope :in_group, -> (group) {
     if group.rules?
@@ -143,7 +147,7 @@ class User < ApplicationRecord
     # Default is by email, but we want to compare
     # case insensitively and forbid login for 
     # invitees.
-    where.not(invite_status: 'pending').find_by_cimail request.params["auth"]["email"]
+    not_invited.find_by_cimail request.params["auth"]["email"]
   end
 
   def avatar_blank?
