@@ -80,21 +80,25 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
       size="22px"
     >
       <Checkbox__CheckboxContainer
+        aria-labelledby="checkbox-label"
         checked={true}
         className="e2e-checkbox checked"
         innerRef={[Function]}
         onClick={[Function]}
         onKeyPress={[Function]}
         onMouseDown={[Function]}
+        role="button"
         size="22px"
         tabIndex={0}
       >
         <div
+          aria-labelledby="checkbox-label"
           checked={true}
           className="e2e-checkbox checked c1"
           onClick={[Function]}
           onKeyPress={[Function]}
           onMouseDown={[Function]}
+          role="button"
           size="22px"
           tabIndex={0}
         >
@@ -120,10 +124,12 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
         </div>
       </Checkbox__CheckboxContainer>
       <Checkbox__Label
+        id="checkbox-label"
         onClick={[Function]}
       >
         <label
           className="c3"
+          id="checkbox-label"
           onClick={[Function]}
         >
           test
@@ -209,30 +215,36 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
       size="22px"
     >
       <Checkbox__CheckboxContainer
+        aria-labelledby="checkbox-label"
         checked={false}
         className="e2e-checkbox unchecked"
         innerRef={[Function]}
         onClick={[Function]}
         onKeyPress={[Function]}
         onMouseDown={[Function]}
+        role="button"
         size="22px"
         tabIndex={0}
       >
         <div
+          aria-labelledby="checkbox-label"
           checked={false}
           className="e2e-checkbox unchecked c1"
           onClick={[Function]}
           onKeyPress={[Function]}
           onMouseDown={[Function]}
+          role="button"
           size="22px"
           tabIndex={0}
         />
       </Checkbox__CheckboxContainer>
       <Checkbox__Label
+        id="checkbox-label"
         onClick={[Function]}
       >
         <label
           className="c2"
+          id="checkbox-label"
           onClick={[Function]}
         >
           test
