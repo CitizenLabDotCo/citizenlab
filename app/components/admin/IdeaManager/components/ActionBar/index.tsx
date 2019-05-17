@@ -10,7 +10,7 @@ const Container = styled.div`
 interface Props {
   ideaIds: string[];
   resetSelectedIdeas: () => void;
-  handleClickEdit: (ideaId: string) => void;
+  handleClickEdit: () => void;
 }
 
 export default (props: Props) => {

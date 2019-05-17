@@ -153,7 +153,7 @@ interface State {
   assignee: string;
   feedbackNeededFilterActive: boolean;
   searchTerm: string | undefined;
-  ideaModal: string | null;
+  modalIdeaId: string | null;
   ideaModalMode: 'view' | 'edit';
 }
 
@@ -170,7 +170,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
       assignee: !isNilOrError(props.authUser) ? props.authUser.id : '',
       feedbackNeededFilterActive: false,
       searchTerm: undefined,
-      ideaModal: null,
+      modalIdeaId: null,
       ideaModalMode: 'view'
     };
     this.globalState = globalState.init('AdminFullWidth');
@@ -301,11 +301,14 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   openIdeaPreview = (ideaId: string) => {
-    this.setState({ ideaModal: ideaId, ideaModalMode: 'view' });
+    this.setState({ modalIdeaId: ideaId, ideaModalMode: 'view' });
   }
 
-  openIdeaEdit = (ideaId: string) => {
-    this.setState({ ideaModal: ideaId, ideaModalMode: 'edit' });
+  openIdeaEdit = () => {
+    const selectedIdeaIds = keys(this.state.selectedIdeas);
+    if (selectedIdeaIds.length === 1) {
+      this.setState({ modalIdeaId: selectedIdeaIds[0], ideaModalMode: 'edit' });
+    }
   }
 
   switchModalMode = () => {
@@ -317,11 +320,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   closeSideModal = () => {
-    this.setState({ ideaModal: null });
+    this.setState({ modalIdeaId: null });
   }
 
   render() {
-    const { searchTerm, ideaModal, ideaModalMode } = this.state;
+    const { searchTerm, modalIdeaId, ideaModalMode } = this.state;
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
     const { projectsList } = projects;
     const { ideasList, onChangePhase, onChangeTopics, onChangeProjects, onChangeIdeaStatus } = ideas;
@@ -452,7 +455,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
               switchModalMode={this.switchModalMode}
               onCloseModal={this.closeSideModal}
               onClickIdeaTitle={this.openIdeaPreview}
-              ideaModal={ideaModal}
+              modalIdeaId={modalIdeaId}
               ideaModalMode={ideaModalMode}
             />
           </MiddleColumn>
