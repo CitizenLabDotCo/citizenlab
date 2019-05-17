@@ -56,10 +56,6 @@ export default class Select extends React.PureComponent<Props, State> {
     }
   }
 
-   formatOptionLabel = ({ label, role }) => {
-    return <div role={role}>{label}</div>;
-  }
-
   render() {
     const className = this.props['className'];
     const { id, borderColor } = this.props;
@@ -77,7 +73,6 @@ export default class Select extends React.PureComponent<Props, State> {
 
     return (
       <ReactSelect
-        // menuIsOpen={true}
         id={id}
         inputId={inputId}
         className={className}
@@ -93,8 +88,6 @@ export default class Select extends React.PureComponent<Props, State> {
         isDisabled={disabled}
         styles={styles}
         onMenuOpen={this.handleOpen}
-        formatOptionLabel={this.formatOptionLabel}
-        openMenuOnFocus={true}
       />
     );
   }
