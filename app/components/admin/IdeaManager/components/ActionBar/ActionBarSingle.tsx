@@ -9,7 +9,7 @@ import messages from '../../messages';
 interface Props {
   ideaId: string;
   resetSelectedIdeas: () => void;
-  handleClickEdit: (ideaId: string) => void;
+  handleClickEdit: () => void;
 }
 
 class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
@@ -26,8 +26,8 @@ class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
   }
 
   handleClickEdit = () => {
-    const { ideaId, handleClickEdit } = this.props;
-    handleClickEdit(ideaId);
+    const { handleClickEdit } = this.props;
+    handleClickEdit();
   }
 
   render() {

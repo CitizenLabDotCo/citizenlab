@@ -87,7 +87,7 @@ interface Props {
   handleSeeAllIdeas: () => void;
   onCloseModal: () => void;
   onClickIdeaTitle: (ideaId: string) => void;
-  ideaModal: string | null;
+  modalIdeaId: string | null;
   switchModalMode: () => void;
   ideaModalMode: 'edit' | 'view';
 }
@@ -159,7 +159,7 @@ export default class IdeaTable extends React.Component<Props> {
       activeFilterMenu,
       statuses,
       handleSeeAllIdeas,
-      ideaModal,
+      modalIdeaId,
       onCloseModal,
       onClickIdeaTitle,
       switchModalMode,
@@ -277,7 +277,7 @@ export default class IdeaTable extends React.Component<Props> {
         </TransitionGroup>
 
         <IdeaPreview
-          ideaId={ideaModal}
+          ideaId={modalIdeaId}
           mode={ideaModalMode}
           onCloseModal={onCloseModal}
           onSwitchIdeaMode={switchModalMode}
