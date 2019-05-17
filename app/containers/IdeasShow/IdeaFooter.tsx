@@ -6,6 +6,7 @@ import LoadingComments from './Comments/LoadingComments';
 // styling
 import styled from 'styled-components';
 import { media, ideaPageContentMaxWidth } from 'utils/styleUtils';
+import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const Container = styled.div`
   flex: 1;
@@ -41,7 +42,11 @@ const Content = styled.div`
 `;
 
 const ContentInner = styled.div`
-  padding-right: 485px;
+  padding-right: ${rightColumnWidthDesktop + columnsGapDesktop}px;
+
+  ${media.tablet`
+    padding-right: ${rightColumnWidthTablet + columnsGapTablet}px;
+  `}
 
   ${media.smallerThanMaxTablet`
     padding-right: 0px;

@@ -68,6 +68,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes, ideaPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 400;
 const contentFadeInEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
@@ -125,22 +126,27 @@ const IdeaContainer = styled.div`
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    padding-top: 25px;
+    padding-top: 35px;
   `}
 
   ${media.smallerThanMinTablet`
+    padding-top: 25px;
     padding-left: 15px;
     padding-right: 15px;
   `}
 `;
 
 const StyledIdeaTopics = styled(IdeaTopics)`
-  padding-right: 485px;
-  margin-bottom: 20px;
+  padding-right: ${rightColumnWidthDesktop + columnsGapDesktop}px;
+  margin-bottom: 10px;
+
+  ${media.tablet`
+    padding-right: ${rightColumnWidthTablet + columnsGapTablet}px;
+  `}
 
   ${media.smallerThanMaxTablet`
     padding-right: 0px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
   `}
 `;
 
@@ -157,7 +163,11 @@ const LeftColumn = styled.div`
   flex: 2;
   margin: 0;
   padding: 0;
-  padding-right: 100px;
+  padding-right: ${columnsGapDesktop}px;
+
+  ${media.tablet`
+    padding-right: ${columnsGapTablet}px;
+  `}
 
   ${media.smallerThanMaxTablet`
     padding: 0;
@@ -232,8 +242,13 @@ const RightColumn = styled.div`
 `;
 
 const RightColumnDesktop = styled(RightColumn)`
-  flex: 0 0 385px;
-  width: 385px;
+  flex: 0 0 ${rightColumnWidthDesktop}px;
+  width: ${rightColumnWidthDesktop}px;
+
+  ${media.tablet`
+    flex: 0 0 ${rightColumnWidthTablet}px;
+    width: ${rightColumnWidthTablet}px;
+  `}
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -617,7 +632,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   />
                 }
 
-                {ideaLocation && ideaAdress && biggerThanLargeTablet &&
+                {ideaLocation && ideaAdress &&
                   <StyledIdeaMap
                     adress={ideaAdress}
                     location={ideaLocation}

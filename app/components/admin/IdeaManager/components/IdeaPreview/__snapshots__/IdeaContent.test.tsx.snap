@@ -38,35 +38,10 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
           ideaCreatedAt="2019-03-12T00: 00: 00.000Z"
           ideaId="myIdeasiD"
         />
-        <Component
+        <IdeaContent__StyledIdeaBody
           ideaBody="<p>Ea ea aut. Quasi corrupti iste. Delectus eum voluptates.</p><p>Est harum voluptates. Et fugit enim. Suscipit inventore ullam.</p><p>Eos mollitia omnis. Laudantium porro perferendis. Minus in aut.</p>"
           ideaId="myIdeasiD"
         />
-        <CSSTransition
-          classNames="map"
-          exit={true}
-          in={false}
-          mountOnEnter={true}
-          timeout={300}
-          unmountOnExit={true}
-        >
-          <IdeaContent__MapWrapper
-            innerRef={[Function]}
-          >
-            <IdeaMap
-              id="myIdeasiD"
-              location={
-                Object {
-                  "coordinates": Array [
-                    4.418731568531502,
-                    50.86899604801978,
-                  ],
-                  "type": "Point",
-                }
-              }
-            />
-          </IdeaContent__MapWrapper>
-        </CSSTransition>
         <IdeaContent__StyledOfficialFeedback
           ideaId="myIdeasiD"
         />
@@ -81,19 +56,6 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         <Component
           ideaId="myIdeasiD"
         />
-        <IdeaContent__LocationButton
-          onClick={[Function]}
-        >
-          <IdeaContent__LocationIconWrapper>
-            <Component
-              name="position"
-            />
-          </IdeaContent__LocationIconWrapper>
-          <FormattedMessage
-            defaultMessage="Open Map"
-            id="app.components.admin.IdeaManager.IdeaPreview.openMap"
-          />
-        </IdeaContent__LocationButton>
       </IdeaContent__Right>
     </IdeaContent__Row>
   </Content>

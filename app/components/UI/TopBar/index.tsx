@@ -36,6 +36,11 @@ const TopBarInner = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  ${media.biggerThanMinTablet`
+    padding-left: 30px;
+    padding-right: 30px;
+  `}
 `;
 
 const Left = styled.div`
