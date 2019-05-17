@@ -38,7 +38,7 @@ resource "Users" do
         end
       end
 
-      example "[error] Request password reset of invitee" do
+      example "[error] Request password reset of an invitee" do
         do_request(user: {email: create(:invited_user).email})
         expect(status).to eq 404
       end
@@ -70,7 +70,7 @@ resource "Users" do
         expect(json_response.dig(:errors, :token)).to eq [{error: 'invalid', value: 'abcabcabc'}]
       end
 
-      example "[error] Reset password reset of invitee" do
+      example "[error] Reset password reset of an invitee" do
         invitee = create(:invited_user)
         token = ResetPasswordService.new.generate_reset_password_token invitee
         invitee.update!(reset_password_token: token)
