@@ -168,12 +168,12 @@ class SignUp extends React.PureComponent<Props, State> {
     clHistory.push('/sign-in');
   }
 
-  setRef = (el: HTMLElement) => {
-    el && this.focusElement(el);
-  }
+  focusTitle = (titleEl: HTMLHeadingElement | null) => {
 
-  focusElement = (el: HTMLElement) => {
-    el.focus();
+    // focus step 2 page title to make the custom field easily reachable with keyboard navigation
+    // hitting the tab key once should bring the user to the first custom field
+    // before the user had to navigate the entire navbar first
+    titleEl && titleEl.focus();
   }
 
   render() {
@@ -226,7 +226,7 @@ class SignUp extends React.PureComponent<Props, State> {
                 classNames="step"
               >
                 <StepContainer>
-                  <Title tabIndex={0} innerRef={this.setRef}>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
+                  <Title tabIndex={0} innerRef={this.focusTitle}>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
                   <Step2 onCompleted={this.handleStep2Completed} />
                 </StepContainer>
               </CSSTransition>
