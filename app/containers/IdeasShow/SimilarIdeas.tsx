@@ -35,7 +35,7 @@ const Title = styled.h3`
   align-items: center;
   padding: 0;
   margin: 0;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 `;
 
 const SimilarIdeasIcon = styled(Icon)`

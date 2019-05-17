@@ -35,13 +35,14 @@ const LocationLabel = styled.div`
 const LocationIcon = styled(Icon)`
   flex: 0 0 16px;
   width: 16px;
-  height: 100%;
+  height: 23px;
   fill: ${colors.label};
   margin-right: 13px;
 
   ${media.smallerThanMinTablet`
     flex: 0 0 14px;
     width: 14px;
+    height: 20px;
   `}
 `;
 
@@ -76,7 +77,7 @@ const Location = styled.div`
 const ArrowIcon = styled(Icon)`
   flex: 0 0 13px;
   width: 13px;
-  height: 100%;
+  height: 13px;
   fill: ${colors.label};
   transform: rotate(90deg);
   transition: all .2s linear;
@@ -84,11 +85,6 @@ const ArrowIcon = styled(Icon)`
   &.open {
     transform: rotate(0deg);
   }
-
-  ${media.smallerThanMinTablet`
-    flex: 0 0 12px;
-    width: 12px;
-  `}
 `;
 
 const MapWrapper = styled.div`
