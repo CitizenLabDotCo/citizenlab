@@ -4,10 +4,10 @@
 
 
     def reset_password_email
-      @user = User.where.not(invite_status: 'pending').find_by_cimail params[:user][:email]
+      @user = User.not_invited.find_by_cimail params[:user][:email]
       if !@user
         # throw active record not found error
-        User.where.not(invite_status: 'pending').find_by! email: params[:user][:email].downcase 
+        User.not_invited.find_by! email: params[:user][:email].downcase 
       end
       
       token = ResetPasswordService.new.generate_reset_password_token @user
@@ -17,7 +17,7 @@
     end
 
     def reset_password
-      @user = User.where.not(invite_status: 'pending')
+      @user = User.not_invited
         .find_by(reset_password_token: reset_password_params[:token])
       if @user && ResetPasswordService.new.token_valid?(@user, reset_password_params[:token])
         if @user.update(password: reset_password_params[:password], reset_password_token: nil)
