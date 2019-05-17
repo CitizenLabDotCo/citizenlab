@@ -14,11 +14,13 @@ describe('Profile Page', () => {
       jwt = response.body.jwt;
     });
   });
+
   it('shows the page, and main infos', () => {
     cy.visit('/profile/sylvester-kalinoski');
     cy.get('#e2e-usersshowpage');
     cy.get('#e2e-usersshowpage-fullname').contains('Sylvester Kalinoski');
   });
+
   it('shows the ideas the user posted', () => {
     cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
       const projectId  = project.body.data.id;
@@ -36,6 +38,7 @@ describe('Profile Page', () => {
       cy.get('#e2e-ideas-container').find('.e2e-idea-card').should('have.length', 1).contains(ideaTitle);
     });
   });
+
   it('shows the comments the user posted', () => {
     let ideaId: string;
     const commentContent = randomString();

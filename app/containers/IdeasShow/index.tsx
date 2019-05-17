@@ -585,7 +585,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             onTranslateIdea={this.onTranslateIdea}
           />
 
-          <IdeaContainer id="e2e-idea-show">
+          <IdeaContainer>
             <StyledIdeaTopics topicIds={topicIds} />
 
             <Content>
@@ -765,7 +765,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           enter={animatePageEnter}
           exit={true}
         >
-          <Container className={className}>
+          <Container id="e2e-idea-show" className={className}>
             {content}
           </Container>
         </CSSTransition>
