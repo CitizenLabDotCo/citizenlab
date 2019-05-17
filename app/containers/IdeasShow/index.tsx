@@ -155,7 +155,7 @@ const Content = styled.div`
   display: flex;
 
   ${media.smallerThanMaxTablet`
-    flex-direction: column;
+    display: block;
   `}
 `;
 
