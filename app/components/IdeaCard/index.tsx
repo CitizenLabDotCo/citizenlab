@@ -124,8 +124,8 @@ const Spacer = styled.div`
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 26px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   fill: ${colors.label};
   margin-right: 6px;
   margin-top: 2px;
@@ -229,7 +229,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
   onCardHover = (event: FormEvent<MouseEvent>) => {
     event.preventDefault();
-    eventEmitter.emit(componentName, 'cardHover', null);
   }
 
   onAuthorClick = (event: FormEvent<MouseEvent>) => {
@@ -364,7 +363,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                 <Spacer />
 
                 <CommentInfo className={`${commentingEnabled && 'enabled'}`}>
-                  <CommentIcon name="comments2" />
+                  <CommentIcon name="comments" />
                   <CommentCount className="e2e-ideacard-comment-count">
                     <span>{idea.attributes.comments_count}</span>
                   </CommentCount>

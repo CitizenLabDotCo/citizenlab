@@ -1,14 +1,21 @@
 import React, { memo } from 'react';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
+
+// components
 import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
 import Activities from './Activities/Activities';
+import IdeaPostedBy from './IdeaPostedBy';
+
+// resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
+
+// styling
 import styled from 'styled-components';
-import { fontSizes, media, colors } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { fontSizes, colors } from 'utils/styleUtils';
+
+// i18n
 import { FormattedRelative } from 'react-intl';
 
 const Container = styled.div`
@@ -23,39 +30,12 @@ const AuthorMeta = styled.div`
   margin-left: 7px;
 `;
 
-const AuthorNameWrapper = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 20px;
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.small}px;
-    line-height: 18px;
-  `}
-`;
-
-const AuthorName = styled(Link)`
-  color: ${({ theme }) => theme.colorText};
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => darken(0.15, theme.colorText)};
-    text-decoration: underline;
-  }
-`;
-
 const TimeAgo = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
   line-height: 17px;
   font-weight: 300;
   margin-top: 2px;
-
-  ${media.smallerThanMaxTablet`
-    margin-top: 0px;
-  `}
 `;
 
 interface InputProps {
@@ -72,7 +52,6 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author, className }) => {
-
   const goToUserProfile = () => {
     if (!isNilOrError(author)) {
       clHistory.push(`/profile/${author.attributes.slug}`);
@@ -82,18 +61,15 @@ const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author, class
   const noop = () => {};
 
   return (
-    <Container className={className}>
+    <Container className={`e2e-idea-author ${className}`}>
       <Avatar
         userId={authorId}
-        size="39px"
+        size="36px"
         onClick={authorId ? goToUserProfile : noop}
       />
       <AuthorMeta>
-        <AuthorNameWrapper>
-          <AuthorName className="e2e-author-link" to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
-            <UserName user={!isNilOrError(author) ? author : null} />
-          </AuthorName>
-        </AuthorNameWrapper>
+        <IdeaPostedBy authorId={authorId} />
+
         {ideaCreatedAt &&
           <TimeAgo>
             <FormattedRelative value={ideaCreatedAt} />
@@ -105,8 +81,12 @@ const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author, class
   );
 });
 
+const Data = adopt<DataProps, InputProps>({
+  author: ({ authorId, render }) => <GetUser id={authorId}>{render}</GetUser>
+});
+
 export default (inputProps: InputProps) => (
-  <GetUser id={inputProps.authorId}>
-    {author => <IdeaAuthor {...inputProps} author={author} />}
-  </GetUser>
+  <Data {...inputProps}>
+    {dataProps => <IdeaAuthor {...inputProps} {...dataProps} />}
+  </Data>
 );
