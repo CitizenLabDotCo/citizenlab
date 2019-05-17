@@ -15,10 +15,14 @@ import messages from './messages';
 // style
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   background: #fff;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: ${props => props.theme.mobileTopBarHeight}px;
+  `}
 `;
 
 const IdeaNotFoundWrapper = styled.div`

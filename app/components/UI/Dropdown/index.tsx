@@ -186,6 +186,7 @@ export default class Dropdown extends PureComponent<Props, State> {
               maxHeight={maxHeight}
               mobileMaxHeight={mobileMaxHeight}
               innerRef={this.setRef}
+              className="ignore-body-scroll-lock"
             >
               {content}
             </Content>

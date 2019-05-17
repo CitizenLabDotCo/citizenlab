@@ -1,56 +1,75 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
+
+// styles
 import styled from 'styled-components';
-import { isEmpty } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-import GetSimilarIdeas, { GetSimilarIdeasChildProps } from 'resources/GetSimilarIdeas';
-
 import { colors, fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
 
-import T from 'components/T';
+// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+// resources
+import GetSimilarIdeas, { GetSimilarIdeasChildProps } from 'resources/GetSimilarIdeas';
+
+// components
+import T from 'components/T';
+import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 
 // utils
+import { isEmpty } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
+
+// analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-const Container = styled.aside`
-  margin-top: 40px;
-`;
+const Container = styled.aside``;
 
-const Title = styled.h4`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin: 0 0 15px 0;
+const Title = styled.h3`
+  font-size: ${fontSizes.large}px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colorText};
+  display: flex;
+  align-items: center;
   padding: 0;
+  margin: 0;
+  margin-bottom: 24px;
 `;
 
-const Table = styled.div``;
+const SimilarIdeasIcon = styled(Icon)`
+  margin-right: 10px;
+`;
 
-const Row = styled.div`
+const IdeaList = styled.ul`
+  background-color: ${colors.background};
+  padding: 25px;
+  margin: 0;
+`;
+
+const IdeaListItem = styled.li`
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
   color: ${colors.label};
   line-height: 1.5em;
+  margin-left: 25px;
+  font-size: ${fontSizes.small}px;
 `;
 
 const IdeaLink = styled(Link)`
   color: ${colors.label};
-  font-weight: 300;
   text-decoration: none;
 
   &:hover {
-    color: ${colors.clBlueDark};
+    color: ${darken(0.2, colors.label)};
     text-decoration: underline;
   }
 `;
 
 interface InputProps {
   ideaId: string;
+  className?: string;
 }
 
 interface DataProps {
@@ -59,31 +78,34 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-class SimilarIdeas extends React.Component<Props> {
+class SimilarIdeas extends PureComponent<Props> {
   onClickIdeaLink = (index: number) => () => {
     trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
   }
 
   render() {
-    const { ideas } = this.props;
+    const { ideas, className } = this.props;
 
     if (isNilOrError(ideas) || isEmpty(ideas)) return null;
 
     return (
-      <Container>
-        <Title><FormattedMessage {...messages.similarIdeas} /></Title>
-        <Table>
+      <Container className={className}>
+        <Title>
+          <SimilarIdeasIcon name="similarIdeas" />
+          <FormattedMessage {...messages.similarIdeas} />
+        </Title>
+        <IdeaList>
           {ideas.map((idea, index) => (
-            <Row key={idea.id}>
+            <IdeaListItem key={idea.id}>
               <IdeaLink
                 to={`/ideas/${idea.attributes.slug}`}
                 onClick={this.onClickIdeaLink(index)}
               >
                 <T value={idea.attributes.title_multiloc} />
               </IdeaLink>
-            </Row>
+            </IdeaListItem>
           ))}
-        </Table>
+        </IdeaList>
       </Container>
     );
   }

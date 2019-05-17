@@ -29,9 +29,9 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.IdeaPreview.voteCounts',
     defaultMessage: 'Vote counts:',
   },
-  ideaStatus: {
-    id: 'app.components.admin.IdeaManager.IdeaPreview.ideaStatus',
-    defaultMessage: 'Idea status',
+  currentStatus: {
+    id: 'app.components.admin.IdeaManager.IdeaPreview.currentStatus',
+    defaultMessage: 'Current status',
   },
   assignee: {
     id: 'app.components.admin.IdeaManager.IdeaPreview.assignee',
@@ -72,5 +72,9 @@ export default defineMessages({
   submitError: {
     id: 'app.components.admin.IdeaManager.IdeaPreview.submitError',
     defaultMessage: 'Error',
+  },
+  postedIn: {
+    id: 'app.containers.IdeasShow.postedIn',
+    defaultMessage: 'Posted in {projectLink}',
   },
 });

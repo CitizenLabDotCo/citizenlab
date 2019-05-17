@@ -644,7 +644,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
                     {showCommentsCount &&
                       <MetaItem>
-                        <CommentIcon name="comment2" />
+                        <CommentIcon name="comments" />
                         <MetaItemText>
                           {commentsCount}
                         </MetaItemText>

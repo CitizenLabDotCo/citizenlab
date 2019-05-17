@@ -28,6 +28,10 @@ const Container = styled(clickOutside)`
     `}
   }
 
+  &.last {
+    margin-right: 0px;
+  }
+
   * {
     user-select: none;
   }
@@ -48,6 +52,7 @@ interface DefaultProps {
   mobileLeft?: string;
   right?: string;
   mobileRight?: string;
+  last?: boolean;
 }
 
 interface Props extends DefaultProps {
@@ -145,14 +150,14 @@ export default class FilterSelector extends PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { opened } = this.state;
-    const { id, values, multiple, selected, title, width, mobileWidth, maxHeight, mobileMaxHeight, top, left, mobileLeft, right, mobileRight } = this.props;
+    const { id, values, multiple, selected, title, width, mobileWidth, maxHeight, mobileMaxHeight, top, left, mobileLeft, right, mobileRight, last } = this.props;
     const currentTitle = this.getTitle(selected, values, multiple, title);
 
     return (
       <Container
         id={id}
         onClickOutside={this.handleClickOutside}
-        className={`e2e-filter-selector-${this.props.name} ${className}`}
+        className={`e2e-filter-selector-${this.props.name} ${className} ${last ? 'last' : ''}`}
       >
         <Title
           key={this.baseID}

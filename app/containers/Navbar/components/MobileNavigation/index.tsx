@@ -35,12 +35,12 @@ const Container = styled.div`
 `;
 
 const NavigationIcon = styled(Icon)`
-  fill: #999;
+  fill: ${colors.label};
   height: 24px;
   width: 24px;
 
   .cl-icon-primary, .cl-icon-accent, .cl-icon-secondary {
-    fill: #999;
+    fill: ${colors.label};
   }
 `;
 
@@ -59,7 +59,7 @@ const NavigationIconWrapper = styled.div`
 
 const NavigationLabel = styled.div`
   width: 100%;
-  color: #999;
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-left: 6px;

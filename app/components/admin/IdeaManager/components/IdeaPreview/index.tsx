@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
-
 import SideModal from 'components/UI/SideModal';
 import IdeaEdit from './IdeaEdit';
 import IdeaContent from './IdeaContent';
-
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
