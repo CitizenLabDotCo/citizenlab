@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import FocusTrap from 'focus-trap-react';
@@ -10,7 +10,6 @@ import Icon from 'components/UI/Icon';
 import clickOutside from 'utils/containers/clickOutside';
 
 // animations
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // Translation
@@ -23,11 +22,11 @@ import { media, colors } from 'utils/styleUtils';
 import { hideVisually } from 'polished';
 
 const timeout = 300;
-const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
+const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const ModalContainer = styled(clickOutside)`
   width: 920px;
-  height: 100%;
+  height: 100vh;
   background: white;
   display: flex;
   flex-direction: column;
@@ -36,6 +35,7 @@ const ModalContainer = styled(clickOutside)`
   position: absolute;
   top: 0;
   right: 0;
+  will-change: opacity, transform;
 `;
 
 const Overlay = styled(FocusTrap)`
@@ -46,21 +46,17 @@ const Overlay = styled(FocusTrap)`
   left: 0;
   right: 0;
   bottom: 0;
-  display: flex;
   background: rgba(0, 0, 0, 0.75);
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
   z-index: 1000000;
-  will-change: opacity, transform;
+  will-change: opacity;
 
   &.modal-enter {
     opacity: 0;
 
     ${ModalContainer} {
       opacity: 0;
-      width: 0px;
+      transform: translateX(920px);
     }
 
     &.modal-enter-active {
@@ -69,9 +65,9 @@ const Overlay = styled(FocusTrap)`
 
       ${ModalContainer} {
         opacity: 1;
-        width: 920px;
+        transform: translateX(0px);
         transition: opacity ${timeout}ms ${easing},
-                    width ${timeout}ms ${easing};
+                    transform ${timeout}ms ${easing};
       }
     }
   }
@@ -81,7 +77,7 @@ const Overlay = styled(FocusTrap)`
 
     ${ModalContainer} {
       opacity: 1;
-      width: 920px;
+      transform: translateX(0px);
     }
 
     &.modal-exit-active {
@@ -90,9 +86,9 @@ const Overlay = styled(FocusTrap)`
 
       ${ModalContainer} {
         opacity: 0;
-        width: 150px;
+        transform: translateX(920px);
         transition: opacity ${timeout}ms ${easing},
-                    width ${timeout}ms ${easing};
+                    transform ${timeout}ms ${easing};
       }
     }
   }
@@ -154,7 +150,7 @@ type State = {
   innerModalOpened: boolean
 };
 
-export default class SideModal extends React.PureComponent<Props, State> {
+export default class SideModal extends PureComponent<Props, State> {
   private el: HTMLDivElement;
   private ModalPortal = document.getElementById('modal-portal');
   private ModalContentElement: HTMLDivElement | null;
@@ -257,10 +253,11 @@ export default class SideModal extends React.PureComponent<Props, State> {
   render() {
     const { children, opened, label } = this.props;
 
-    const element = (opened ? (
+    return ReactDOM.createPortal((
       <CSSTransition
         classNames="modal"
         in={opened}
+        exit={true}
         timeout={timeout}
         mountOnEnter={true}
         unmountOnExit={true}
@@ -276,37 +273,23 @@ export default class SideModal extends React.PureComponent<Props, State> {
             onClickOutside={this.manuallyCloseModal}
             closeOnClickOutsideEnabled={!this.state.innerModalOpened}
           >
-            <CloseButton
-              className="e2e-modal-close-button"
-              onClick={this.clickCloseButton}
-              innerRef={this.setCloseButtonRef}
-            >
-              <HiddenSpan>
-                <FormattedMessage {...messages.closeButtonAria} />
-              </HiddenSpan>
-              <CloseIcon name="close3" />
-            </CloseButton >
-
-            <ModalContent
-              innerRef={this.setContentRef}
-            >
+            <ModalContent innerRef={this.setContentRef}>
               {children}
             </ModalContent>
           </ModalContainer>
+
+          <CloseButton
+            className="e2e-modal-close-button"
+            onClick={this.clickCloseButton}
+            innerRef={this.setCloseButtonRef}
+          >
+            <HiddenSpan>
+              <FormattedMessage {...messages.closeButtonAria} />
+            </HiddenSpan>
+            <CloseIcon name="close3" />
+          </CloseButton >
         </Overlay>
       </CSSTransition>
-    ) : undefined);
-
-    return ReactDOM.createPortal(
-      (
-        <TransitionGroup
-          tabIndex="-1"
-          component="aside"
-        >
-          {element}
-        </TransitionGroup>
-      ),
-      document.body
-    );
+    ), document.body);
   }
 }

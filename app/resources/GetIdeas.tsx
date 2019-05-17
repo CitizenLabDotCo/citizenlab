@@ -258,6 +258,30 @@ export default class GetIdeas extends React.Component<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  propsToQueryParamsShape = () => ({
+    projects: this.props.projectIds ,
+    'page[number]': this.props.pageNumber as number,
+    'page[size]': this.props.pageSize as number,
+    phase: this.props.phaseId,
+    author: this.props.authorId,
+    sort: this.props.sort as Sort,
+    topics: this.props.topics,
+    areas: this.props.areas,
+    idea_status: this.props.ideaStatusId,
+    publication_status: this.props.publicationStatus,
+    project_publication_status: this.props.projectPublicationStatus,
+    bounding_box: this.props.boundingBox,
+    assignee: this.props.assignee,
+    feedback_needed: this.props.feedbackNeeded,
+    search: undefined
+  })
+
+  getQueryParametersFromProps = () => {
+    const queryParamsShaped = this.propsToQueryParamsShape();
+    Object.keys(queryParamsShaped).filter(key => queryParamsShaped[key] === null).forEach(key => queryParamsShaped[key] = undefined);
+    return queryParamsShaped as IQueryParameters; // legal because last line changes null values to undefined
+  }
+
   getQueryParameters = (queryParameters: IQueryParameters, props: Props) => {
     let projects: string[] | undefined = undefined;
 
@@ -397,8 +421,8 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
 
-  handleResetParams = (paramsToOmit?: (keyof IQueryParameters)[]) => {
-    const defaultQueryParameters = cloneDeep(this.defaultQueryParameters);
+  handleResetParamsToProps = (paramsToOmit?: (keyof IQueryParameters)[]) => {
+    const defaultQueryParameters = this.getQueryParametersFromProps();
 
     if (paramsToOmit && paramsToOmit.length > 0) {
       this.queryParameters$.next({
@@ -429,7 +453,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeProjectPublicationStatus: this.handleProjectPublicationStatusOnChange,
       onChangeAssignee: this.handleAssigneeOnChange,
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
-      onResetParams: this.handleResetParams,
+      onResetParams: this.handleResetParamsToProps,
     });
   }
 }

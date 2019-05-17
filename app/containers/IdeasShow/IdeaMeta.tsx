@@ -1,5 +1,5 @@
 // libraries
-import React from 'react';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import Helmet from 'react-helmet';
@@ -40,9 +40,9 @@ interface DataProps {
   ideaImages: GetIdeaImagesChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-const IdeaMeta: React.SFC<Props & InjectedIntlProps & InjectedLocalized> = ({
+const IdeaMeta = memo<Props & InjectedIntlProps & InjectedLocalized>(({
   idea,
   locale,
   tenant,
@@ -55,7 +55,6 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps & InjectedLocalized> = ({
 }) => {
   if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(idea)) {
     const { title_multiloc, body_multiloc } = idea.attributes;
-
     const tenantLocales = tenant.attributes.settings.core.locales;
     const localizedTitle = localize(title_multiloc, 50);
     const ideaTitle = formatMessage(messages.metaTitle, { ideaTitle: localizedTitle });
@@ -64,9 +63,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps & InjectedLocalized> = ({
     const ideaUrl = window.location.href;
     const projectTitle = !isNilOrError(project) && localize(project.attributes.title_multiloc, 20);
     const projectSlug = !isNilOrError(project) && project.attributes.slug;
-
     const ideaOgTitle = formatMessage(messages.metaOgTitle, { ideaTitle: localizedTitle });
-
     const ideaAuthorName = !isNilOrError(author) ? `${author.attributes.first_name} ${author.attributes.last_name}` : 'anonymous';
 
     const articleJson = {
@@ -160,7 +157,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps & InjectedLocalized> = ({
   }
 
   return null;
-};
+});
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,

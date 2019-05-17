@@ -151,7 +151,7 @@ class IdeaSettings extends PureComponent<PropsWithHoCs> {
       return (
         <Container className={`${className} e2e-idea-settings`}>
 
-          <StyledLabel value={<FormattedMessage {...messages.ideaStatus}/>} htmlFor="idea-preview-select-status"/>
+          <StyledLabel value={<FormattedMessage {...messages.currentStatus}/>} htmlFor="idea-preview-select-status"/>
           <Select
             inputId="idea-preview-select-status"
             options={statusOptions}
