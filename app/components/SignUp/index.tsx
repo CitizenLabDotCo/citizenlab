@@ -102,6 +102,7 @@ const Title = styled.h1`
   font-weight: 500;
   text-align: left;
   margin-bottom: 35px;
+  outline: none;
 `;
 
 const SignupHelperText = styled.p`
@@ -167,6 +168,14 @@ class SignUp extends React.PureComponent<Props, State> {
     clHistory.push('/sign-in');
   }
 
+  focusTitle = (titleEl: HTMLHeadingElement | null) => {
+
+    // focus step 2 page title to make the custom field easily reachable with keyboard navigation
+    // hitting the tab key once should bring the user to the first custom field
+    // before the user had to navigate the entire navbar first
+    titleEl && titleEl.focus();
+  }
+
   render() {
     const { visibleStep } = this.state;
     const { isInvitation, token, step1Title, step2Title, tenant } = this.props;
@@ -217,7 +226,7 @@ class SignUp extends React.PureComponent<Props, State> {
                 classNames="step"
               >
                 <StepContainer>
-                  <Title>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
+                  <Title tabIndex={0} innerRef={this.focusTitle}>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
                   <Step2 onCompleted={this.handleStep2Completed} />
                 </StepContainer>
               </CSSTransition>
