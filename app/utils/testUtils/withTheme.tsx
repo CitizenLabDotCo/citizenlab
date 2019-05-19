@@ -6,6 +6,7 @@ import { shallow, mount } from 'enzyme';
 export const theme = {
   colors,
   fontSizes,
+  fontFamily: 'larsseit',
   colorMain: '#ef0071',
   colorText: '#e68f51',
   colorSecondary: '#f76901',
@@ -17,22 +18,6 @@ export const theme = {
   ...stylingConsts
 };
 
-export const shallowWithTheme = (tree) => {
-  const context = (shallow(<ThemeProvider theme={theme} />).instance() as any).getChildContext();
-  return shallow(tree, { context });
-};
+export const mountWithTheme = (children) => mount(<ThemeProvider theme={theme}>{children}</ThemeProvider>);
 
-export const mountWithTheme = (tree) => {
-  const context = shallow(<ThemeProvider theme={theme} />)
-    .instance()
-    // @ts-ignore: TODO type this well
-    .getChildContext();
-  return mount(tree, {
-    context,
-    childContextTypes: ThemeProvider.childContextTypes,
-  });
-};
-//
-// export const mountWithTheme = (children: any) => mount(<ThemeProvider theme={theme}>{children}</ThemeProvider>);
-//
-// export const shallowWithTheme = (children: any) => shallow(<ThemeProvider theme={theme}>{children}</ThemeProvider>);
+export const shallowWithTheme = (children) => shallow(<ThemeProvider theme={theme}>{children}</ThemeProvider>);

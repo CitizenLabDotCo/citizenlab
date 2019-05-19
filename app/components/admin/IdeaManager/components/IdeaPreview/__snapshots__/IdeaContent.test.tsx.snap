@@ -27,7 +27,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
     </WithTheme(Button)>
   </Top>
   <Content>
-    <Component
+    <IdeaContent__StyledIdeaTitle
       ideaId="myIdeasiD"
       ideaTitle="Doloribus quam molestiae ut."
     />
@@ -45,7 +45,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         <IdeaContent__StyledOfficialFeedback
           ideaId="myIdeasiD"
         />
-        <Component
+        <IdeaContent__StyledComments
           ideaId="myIdeasiD"
         />
       </IdeaContent__Left>
