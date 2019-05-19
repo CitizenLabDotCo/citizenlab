@@ -233,4 +233,4 @@ class UserMenu extends PureComponent<Props, State> {
   }
 }
 
-export default withTheme<Props, State>(UserMenu);
+export default withTheme(UserMenu);

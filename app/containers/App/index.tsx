@@ -14,6 +14,7 @@ import 'moment/locale/de';
 import 'moment/locale/da';
 import 'moment/locale/nb';
 import { configureScope } from '@sentry/browser';
+import GlobalStyle from 'global-styles';
 import WebFont from 'webfontloader';
 
 // context
@@ -47,7 +48,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import eventEmitter from 'utils/eventEmitter';
 
 // style
-import styled, { ThemeProvider, injectGlobal } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
@@ -172,14 +173,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           WebFont.load({
             typekit: {
               id: tenant.data.attributes.style.customFontAdobeId
-            },
-            fontactive: (familyName, _fvd) => {
-              injectGlobal`
-                html, body, h1, h2, h3, h4, h5, button, input, optgroup, select, textarea {
-                  font-family: ${familyName}, 'larsseit', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-                }
-              `;
-            },
+            }
           });
         }
       }),
@@ -244,54 +238,58 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         {tenant && visible && (
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider theme={theme}>
-              <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
-                <Meta />
+              <>
+                <GlobalStyle />
 
-                <ErrorBoundary>
-                  <Suspense fallback={null}>
-                    <IdeaPageFullscreenModal
-                      modalOpened={modalOpened}
-                      close={this.closeModal}
-                      modalUrl={modalUrl}
-                      modalId={modalId}
-                      modalType={modalType}
-                      unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                    />
-                  </Suspense>
-                </ErrorBoundary>
+                <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                  <Meta />
 
-                <ErrorBoundary>
-                  <LoadableModal
-                    opened={userDeletedModalOpened}
-                    close={this.closeUserDeletedModal}
-                  >
-                    <UserDeletedModalContent userActuallyDeleted={userActuallyDeleted} />
-                  </LoadableModal>
-                </ErrorBoundary>
+                  <ErrorBoundary>
+                    <Suspense fallback={null}>
+                      <IdeaPageFullscreenModal
+                        modalOpened={modalOpened}
+                        close={this.closeModal}
+                        modalUrl={modalUrl}
+                        modalId={modalId}
+                        modalType={modalType}
+                        unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                      />
+                    </Suspense>
+                  </ErrorBoundary>
 
-                <ErrorBoundary>
-                  <div id="modal-portal" />
-                </ErrorBoundary>
+                  <ErrorBoundary>
+                    <LoadableModal
+                      opened={userDeletedModalOpened}
+                      close={this.closeUserDeletedModal}
+                    >
+                      <UserDeletedModalContent userActuallyDeleted={userActuallyDeleted} />
+                    </LoadableModal>
+                  </ErrorBoundary>
 
-                <ErrorBoundary>
-                  <Navbar fullscreenModalOpened={modalOpened} />
-                </ErrorBoundary>
+                  <ErrorBoundary>
+                    <div id="modal-portal" />
+                  </ErrorBoundary>
 
-                <ErrorBoundary>
-                  <ConsentManager />
-                </ErrorBoundary>
+                  <ErrorBoundary>
+                    <Navbar fullscreenModalOpened={modalOpened} />
+                  </ErrorBoundary>
 
-                <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
-                  <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
-                    <ErrorBoundary>
-                      {children}
-                    </ErrorBoundary>
-                    <HasPermission.No>
-                      <ForbiddenRoute />
-                    </HasPermission.No>
-                  </HasPermission>
-                </InnerContainer>
-              </Container>
+                  <ErrorBoundary>
+                    <ConsentManager />
+                  </ErrorBoundary>
+
+                  <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                    <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
+                      <ErrorBoundary>
+                        {children}
+                      </ErrorBoundary>
+                      <HasPermission.No>
+                        <ForbiddenRoute />
+                      </HasPermission.No>
+                    </HasPermission>
+                  </InnerContainer>
+                </Container>
+              </>
             </ThemeProvider>
           </PreviousPathnameContext.Provider>
         )}

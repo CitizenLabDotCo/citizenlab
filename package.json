@@ -158,7 +158,7 @@
     "@types/react-select": "2.0.17",
     "@types/segment-analytics": "0.0.30",
     "@types/shelljs": "0.8.4",
-    "@types/styled-components": "4.1.14",
+    "@types/styled-components": "4.1.15",
     "@types/webfontloader": "1.6.29",
     "@types/webpack": "4.4.27",
     "babel-core": "7.0.0-bridge.0",
@@ -197,7 +197,7 @@
     "rimraf": "2.6.3",
     "shelljs": "0.8.3",
     "style-loader": "0.23.1",
-    "styled-components": "3.x",
+    "styled-components": "4.2.0",
     "ts-jest": "24.0.2",
     "ts-loader": "5.4.5",
     "tslint": "5.16.0",
@@ -207,7 +207,7 @@
     "tslint-microsoft-contrib": "6.1.1",
     "tslint-react": "4.0.0",
     "tsutils": "3.10.0",
-    "typescript": "3.4.5",
+    "typescript": "3.5.0-rc",
     "typescript-styled-plugin": "0.14.0",
     "url-loader": "1.1.2",
     "webpack": "4.28.4",
@@ -215,8 +215,8 @@
     "webpack-cli": "3.3.2",
     "webpack-dashboard": "3.0.7",
     "webpack-dev-middleware": "3.7.0",
-    "webpack-dev-server": "3.3.1",
-    "yargs": "13.2.2"
+    "webpack-dev-server": "3.4.1",
+    "yargs": "13.2.4"
   },
   "resolutions": {
     "react-test-renderer": "16.8.6"

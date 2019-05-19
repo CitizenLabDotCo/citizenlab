@@ -353,7 +353,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
             onSubmit={this.handleOnSubmit}
             onError={this.handleOnError}
           >
-            <InvisibleSubmitButton innerRef={this.setButtonRef} />
+            <InvisibleSubmitButton ref={this.setButtonRef} />
           </Form>
         }
       </Container>

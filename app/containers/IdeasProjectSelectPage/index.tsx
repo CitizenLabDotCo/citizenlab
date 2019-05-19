@@ -112,14 +112,14 @@ const Column = styled.div`
   `}
 `;
 
-const LeftColumn = Column.extend`
+const LeftColumn = styled(Column)`
   ${media.smallerThanMaxTablet`
     order: 2;
     margin-bottom: 30px;
   `}
 `;
 
-const RightColumn = Column.extend`
+const RightColumn = styled(Column)`
   ${media.smallerThanMaxTablet`
     order: 1;
     margin-bottom: 60px;

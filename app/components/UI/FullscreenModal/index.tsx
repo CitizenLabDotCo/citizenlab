@@ -190,7 +190,7 @@ class FullscreenModal extends PureComponent<Props, State> {
 
     return (
       <Container id="e2e-fullscreenmodal-content" className={`${opened ? 'opened' : 'closed'}`}>
-        <Content innerRef={this.setRef}>
+        <Content ref={this.setRef}>
           {children}
         </Content>
 

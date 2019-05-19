@@ -291,7 +291,7 @@ export type Props = {
   onClick?: (arg: FormEvent<HTMLButtonElement>) => void;
   padding?: string;
   processing?: boolean;
-  setSubmitButtonRef?: (value: HTMLInputElement) => void;
+  setSubmitButtonRef?: (value: any) => void;
   size?: '1' | '2' | '3' | '4';
   style?: ButtonStyles;
   text?: string | JSX.Element;
@@ -457,7 +457,7 @@ class Button extends PureComponent<Props, State> {
         {linkTo ? (
           (typeof (linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
             <StyledA
-              innerRef={this.props.setSubmitButtonRef}
+              ref={this.props.setSubmitButtonRef}
               href={(linkTo as string)}
               target={openInNewTab ? '_blank' : '_self'}
               className={buttonClassnames}
@@ -465,26 +465,26 @@ class Button extends PureComponent<Props, State> {
               {childContent}
             </StyledA>
           ) : (
-              <StyledLink
-                innerRef={this.props.setSubmitButtonRef}
-                to={linkTo}
-                className={buttonClassnames}
-              >
-                {childContent}
-              </StyledLink>
-            )
-        ) : (
-            <StyledButton
-              aria-label={ariaLabel}
-              disabled={disabled}
-              innerRef={this.props.setSubmitButtonRef}
+            <StyledLink
+              ref={this.props.setSubmitButtonRef}
+              to={linkTo}
               className={buttonClassnames}
-              form={form}
-              type={type ? type : 'submit'}
             >
               {childContent}
-            </StyledButton>
-          )}
+            </StyledLink>
+          )
+        ) : (
+          <StyledButton
+            aria-label={ariaLabel}
+            disabled={disabled}
+            ref={this.props.setSubmitButtonRef}
+            className={buttonClassnames}
+            form={form}
+            type={type ? type : 'submit'}
+          >
+            {childContent}
+          </StyledButton>
+        )}
       </Container>
     );
   }

@@ -273,7 +273,7 @@ export default class SideModal extends PureComponent<Props, State> {
             onClickOutside={this.manuallyCloseModal}
             closeOnClickOutsideEnabled={!this.state.innerModalOpened}
           >
-            <ModalContent innerRef={this.setContentRef}>
+            <ModalContent ref={this.setContentRef}>
               {children}
             </ModalContent>
           </ModalContainer>
@@ -281,7 +281,7 @@ export default class SideModal extends PureComponent<Props, State> {
           <CloseButton
             className="e2e-modal-close-button"
             onClick={this.clickCloseButton}
-            innerRef={this.setCloseButtonRef}
+            ref={this.setCloseButtonRef}
           >
             <HiddenSpan>
               <FormattedMessage {...messages.closeButtonAria} />

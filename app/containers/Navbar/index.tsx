@@ -300,7 +300,7 @@ const RightItem: any = styled.div`
   `}
 `;
 
-const LogInLink = NavigationItem.extend`
+const LogInLink = styled(NavigationItem)`
   &:focus,
   &:hover {
     border-top-color: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
@@ -311,7 +311,7 @@ const LogInLink = NavigationItem.extend`
   `}
 `;
 
-const SignUpLink = NavigationItem.extend`
+const SignUpLink = styled(NavigationItem)`
   height: calc(100% + 1px);
   color: #fff;
   background-color: ${({ theme }) => theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary};

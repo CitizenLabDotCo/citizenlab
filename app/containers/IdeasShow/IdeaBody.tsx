@@ -36,8 +36,6 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-interface State {}
-
 const IdeaBody = memo<Props>(({ ideaId, ideaBody, locale, translateButtonClicked, theme, windowSize, className }) => {
   const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
@@ -68,7 +66,7 @@ const IdeaBody = memo<Props>(({ ideaId, ideaBody, locale, translateButtonClicked
   );
 });
 
-const IdeaBodyWithHOCs = withTheme<Props, State>(IdeaBody);
+const IdeaBodyWithHOCs = withTheme(IdeaBody);
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize debounce={50} />
