@@ -137,6 +137,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
       trackPage(newLocation.pathname);
 
+      // If already created a user (step 1 of sign-up) and there's a required field in step 2,
+      // redirect to complete-signup page
       if (isObject(authUser) && !isString(registrationCompletedAt) && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')) {
         clHistory.replace({
           pathname: '/complete-signup',
