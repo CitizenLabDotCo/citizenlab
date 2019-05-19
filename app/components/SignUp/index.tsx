@@ -226,7 +226,7 @@ class SignUp extends React.PureComponent<Props, State> {
                 classNames="step"
               >
                 <StepContainer>
-                  <Title tabIndex={0} innerRef={this.focusTitle}>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
+                  <Title tabIndex={0} ref={this.focusTitle}>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
                   <Step2 onCompleted={this.handleStep2Completed} />
                 </StepContainer>
               </CSSTransition>

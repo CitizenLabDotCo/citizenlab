@@ -151,12 +151,12 @@ class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
             <RightInner>
               {!authError ? (
                 <>
-                  <Title tabIndex={0} innerRef={this.focusTitle}><FormattedMessage {...messages.title} /></Title>
+                  <Title tabIndex={0} ref={this.focusTitle}><FormattedMessage {...messages.title} /></Title>
                   <Step2 onCompleted={this.redirect} />
                 </>
               ) : (
                 <>
-                  <Title tabIndex={0} innerRef={this.focusTitle}><FormattedMessage {...messages.somethingWentWrong} /></Title>
+                  <Title tabIndex={0} ref={this.focusTitle}><FormattedMessage {...messages.somethingWentWrong} /></Title>
                   <Error text={<FormattedMessage {...messages.notSignedIn} />} />
                 </>
               )}
