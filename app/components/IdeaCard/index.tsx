@@ -15,7 +15,7 @@ import VoteControl from 'components/VoteControl';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Author from 'components/Author';
-import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
+import LazyImage from 'components/LazyImage';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -68,7 +68,7 @@ const IdeaImageContainer: any = styled.div`
  border-top-right-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-const IdeaImage = styled<LazyImageProps>(LazyImage)`
+const IdeaImage = styled(LazyImage)`
   width: 100%;
 `;
 

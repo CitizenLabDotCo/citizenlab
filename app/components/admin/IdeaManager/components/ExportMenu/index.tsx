@@ -58,8 +58,10 @@ const Container = styled.div`
   }
 `;
 
-interface Props {
-  exportType: 'selected_ideas' | 'project' | 'all';
+export type exportType = 'selected_ideas' | 'project' | 'all';
+
+export interface Props {
+  exportType: exportType;
   exportQueryParameter: 'all' | string | string[];
   className?: string;
 }

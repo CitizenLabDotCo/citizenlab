@@ -11,11 +11,11 @@ const ItemWrapper = styled.div`
   text-transform: capitalize;
 `;
 
-const ColorIndicator = styled<any, 'div'>('div')`
+const ColorIndicator = styled.div`
   width: 1rem;
   height: 1rem;
   background-color: ${props => props.color};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${props => props.theme.borderRadius};
   margin-right: 0.5rem;
 `;
 

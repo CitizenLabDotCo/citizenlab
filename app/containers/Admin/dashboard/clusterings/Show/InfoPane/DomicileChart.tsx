@@ -33,11 +33,10 @@ interface State {
 const Container = styled.div``;
 
 class DomicileChart extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
-
   subscription: Subscription;
 
-  constructor(props: Props & InjectedLocalized) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       series: [],
     };
@@ -136,7 +135,7 @@ class DomicileChart extends PureComponent<Props & InjectedIntlProps & InjectedLo
   }
 }
 
-const DomicileChartWithHOCs = withTheme<Props, State>(localize(injectIntl(DomicileChart)));
+const DomicileChartWithHOCs = withTheme(localize<Props>(injectIntl<Props & InjectedLocalized>(DomicileChart)));
 
 export default (inputProps: InputProps) => (
   <GetAreas>

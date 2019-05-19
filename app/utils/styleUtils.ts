@@ -356,11 +356,13 @@ export function quillEditedContent(
 // Main theme passed through any styled component
 export function getTheme(tenant: ITenant | null) {
   const core = tenant && tenant.data.attributes.settings.core;
+  const fontFamily = get(tenant, 'data.attributes.style.customFontName', 'larsseit');
   const signedOutHeaderOverlayOpacity = get(tenant, 'data.attributes.style.signedOutHeaderOverlayOpacity');
   const signedInHeaderOverlayOpacity = get(tenant, 'data.attributes.style.signedInHeaderOverlayOpacity');
 
   return ({
     colors,
+    fontFamily,
     fontSizes,
     colorMain: (core ? core.color_main : '#ef0071'),
     colorSecondary: (core ? core.color_secondary : '#000000'),

@@ -9,7 +9,7 @@ import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
 
 export type pureFn<T> = (arg: T) => T;
-type fetchFn = () => Promise<{}>;
+type fetchFn = () => Promise<any>;
 interface IObject{ [key: string]: any; }
 export type IObserver<T> = Observer<T | pureFn<T> | null>;
 export type IObservable<T> = Observable<T>;
@@ -87,7 +87,7 @@ class Streams {
       frozenObject = Object.freeze(object);
 
       for (propertyKey in frozenObject) {
-        if (frozenObject.hasOwnProperty(propertyKey)) {
+        if ((frozenObject as Object).hasOwnProperty(propertyKey)) {
           property = frozenObject[propertyKey];
 
           if (((typeof property !== 'object') || !(property instanceof Object)) || Object.isFrozen(property)) {

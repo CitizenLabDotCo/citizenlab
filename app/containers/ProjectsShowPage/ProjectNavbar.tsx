@@ -81,7 +81,7 @@ const ProjectNavbarIcon = styled(Icon)`
   `}
 `;
 
-const InfoIcon = ProjectNavbarIcon.extend`
+const InfoIcon = styled(ProjectNavbarIcon)`
   margin-right: 7px;
 `;
 
@@ -327,7 +327,7 @@ const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 
-const ProjectNavbarWithHoC = withTheme<Props, State>(ProjectNavbar);
+const ProjectNavbarWithHoC = withTheme(ProjectNavbar);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

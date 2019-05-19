@@ -33,7 +33,7 @@ class SurveymonekySurvey extends React.PureComponent<Props, State> {
   render() {
     return (
       <div>
-        <SurveyContainer innerRef={this.setRef} />
+        <SurveyContainer ref={this.setRef} />
       </div>
     );
   }

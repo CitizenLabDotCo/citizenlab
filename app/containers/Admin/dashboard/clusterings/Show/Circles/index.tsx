@@ -281,7 +281,7 @@ class Circles extends PureComponent<Props, State> {
       }
     });
     return (
-      <Container innerRef={this.setContainerRef} className={this.props['className']}>
+      <Container ref={this.setContainerRef} className={this.props['className']}>
         {svgSize &&
           <svg
             width={svgSize}

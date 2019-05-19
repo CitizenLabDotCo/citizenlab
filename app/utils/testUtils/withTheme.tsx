@@ -17,19 +17,6 @@ export const theme = {
   ...stylingConsts
 };
 
-// export function shallowWithTheme<C extends Component, P = C['props'], S = C['state']>(tree: ReactElement<P>, options?: ShallowRendererProps) {
-//   const context = shallow(<ThemeProvider theme={theme} />)
-//     .instance()
-//     .getChildContext();
-//   return shallow(tree, {
-//     ...options,
-//     context: {
-//       ...context,
-//       intl
-//     }
-//   }) as ShallowWrapper<P, S, C>;
-// }
-//
 export const shallowWithTheme = (tree) => {
   const context = (shallow(<ThemeProvider theme={theme} />).instance() as any).getChildContext();
   return shallow(tree, { context });

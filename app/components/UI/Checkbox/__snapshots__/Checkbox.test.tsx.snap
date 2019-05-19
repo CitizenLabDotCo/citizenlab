@@ -82,7 +82,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
       <Checkbox__CheckboxContainer
         checked={true}
         className="e2e-checkbox checked"
-        innerRef={[Function]}
+        ref={[Function]}
         onClick={[Function]}
         onKeyPress={[Function]}
         onMouseDown={[Function]}
@@ -211,7 +211,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
       <Checkbox__CheckboxContainer
         checked={false}
         className="e2e-checkbox unchecked"
-        innerRef={[Function]}
+        ref={[Function]}
         onClick={[Function]}
         onKeyPress={[Function]}
         onMouseDown={[Function]}

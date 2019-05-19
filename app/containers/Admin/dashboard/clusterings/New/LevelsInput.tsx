@@ -14,7 +14,7 @@ const Level = styled.div<{depth: number}>`
   align-items: center;
 `;
 
-const AddLevel = Level.extend`
+const AddLevel = styled(Level)`
   * {
     margin: 0 5px;
   }

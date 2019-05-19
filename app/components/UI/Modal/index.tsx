@@ -384,7 +384,7 @@ export default class Modal extends PureComponent<Props, State> {
             <CloseButton
               className="e2e-modal-close-button"
               onClick={this.clickCloseButton}
-              innerRef={this.setCloseButtonRef}
+              ref={this.setCloseButtonRef}
             >
               <CloseIcon name="close3" />
             </CloseButton >
@@ -396,7 +396,7 @@ export default class Modal extends PureComponent<Props, State> {
             }
 
             <ModalContent
-              innerRef={this.setContentRef}
+              ref={this.setContentRef}
             >
               {children}
             </ModalContent>

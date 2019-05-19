@@ -26,7 +26,7 @@ import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
-import ExportMenu from './components/ExportMenu';
+import ExportMenu, { exportType, Props as ExportMenuProps } from './components/ExportMenu';
 import IdeasCount from './components/IdeasCount';
 import { Input, Message } from 'semantic-ui-react';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
@@ -41,7 +41,7 @@ const StyledDiv = styled.div`
   margin-bottom: 30px;
 `;
 
-const StyledExportMenu = styled(ExportMenu)`
+const StyledExportMenu = styled(ExportMenu)<ExportMenuProps>`
   margin-left: auto;
 `;
 
@@ -291,7 +291,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const multipleIdeasSelected = this.areMultipleIdeasSelected();
 
     let exportQueryParameter;
-    let exportType: null | string = null;
+    let exportType: null | exportType = null;
     if (selectedIdeaIds.length > 0) {
       exportQueryParameter = [...selectedIdeaIds];
       exportType = 'selected_ideas';

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 const rotate = keyframes`
   0%    { transform: rotate(0deg); }
@@ -15,7 +15,7 @@ interface IStyledSpinner {
 const StyledSpinner: any = styled.div`
   width: ${(props: IStyledSpinner) => props.size};
   height: ${(props: IStyledSpinner) => props.size};
-  animation: ${rotate} 800ms infinite linear;
+  animation: ${css`${rotate} 800ms infinite linear`};
   border-style: solid;
   border-right-color: transparent !important;
   border-width: ${(props: IStyledSpinner) => props.thickness};

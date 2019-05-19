@@ -23,6 +23,11 @@ import styled, { css, keyframes } from 'styled-components';
 import { lighten } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
 
+interface IVoteComponent {
+  active: boolean;
+  enabled: boolean | null;
+}
+
 const vote = keyframes`
   from {
     transform: scale3d(1, 1, 1);
@@ -110,7 +115,7 @@ const VoteCount = styled.div`
   }
 `;
 
-const Vote: any = styled.button`
+const Vote = styled.button<IVoteComponent>`
   display: flex;
   align-items: center;
   padding: 0;
@@ -120,7 +125,7 @@ const Vote: any = styled.button`
   -moz-appearance: none;
 
   &.voteClick ${VoteIconContainer} {
-    animation: ${vote} 350ms;
+    animation: ${css`${vote} 350ms`};
   }
 
   &:not(.enabled) {
@@ -141,7 +146,7 @@ const Vote: any = styled.button`
   }
 `;
 
-const Upvote = Vote.extend`
+const Upvote = styled(Vote)`
   margin-right: 8px;
 
   &:not(.enabled) {
@@ -180,7 +185,7 @@ const Upvote = Vote.extend`
   }
 `;
 
-const Downvote = Vote.extend`
+const Downvote = styled(Vote)`
   ${VoteIconContainer} {
     ${props => props.active && `border-color: ${colors.clRed}; background: ${colors.clRed};`}
   }
@@ -238,8 +243,8 @@ export default class VoteControl extends PureComponent<Props, State> {
   voting$: BehaviorSubject<'up' | 'down' | null>;
   id$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
-  upvoteElement: HTMLDivElement | null;
-  downvoteElement: HTMLDivElement | null;
+  upvoteElement: HTMLButtonElement | null;
+  downvoteElement: HTMLButtonElement | null;
 
   constructor(props) {
     super(props);
@@ -468,11 +473,11 @@ export default class VoteControl extends PureComponent<Props, State> {
     }
   }
 
-  setUpvoteRef = (element: HTMLDivElement) => {
+  setUpvoteRef = (element: HTMLButtonElement) => {
     this.upvoteElement = element;
   }
 
-  setDownvoteRef = (element: HTMLDivElement) => {
+  setDownvoteRef = (element: HTMLButtonElement) => {
     this.downvoteElement = element;
   }
 
@@ -504,9 +509,8 @@ export default class VoteControl extends PureComponent<Props, State> {
           active={myVoteMode === 'up'}
           onMouseDown={this.removeFocus}
           onClick={this.onClickUpvote}
-          innerRef={this.setUpvoteRef}
+          ref={this.setUpvoteRef}
           className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'} e2e-ideacard-upvote-button`}
-          size={size}
           enabled={upvotingEnabled}
         >
           <VoteIconContainer size={size} votingEnabled={votingEnabled}>
@@ -518,9 +522,8 @@ export default class VoteControl extends PureComponent<Props, State> {
           active={myVoteMode === 'down'}
           onMouseDown={this.removeFocus}
           onClick={this.onClickDownvote}
-          innerRef={this.setDownvoteRef}
+          ref={this.setDownvoteRef}
           className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
-          size={size}
           enabled={downvotingEnabled}
         >
           <VoteIconContainer size={size} votingEnabled={votingEnabled}>
