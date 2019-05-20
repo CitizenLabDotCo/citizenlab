@@ -586,19 +586,19 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           />
 
           <IdeaContainer>
+            <FeatureFlag name="machine_translations">
+              {showTranslateButton && smallerThanSmallTablet &&
+                <StyledTranslateButtonMobile
+                  translateButtonClicked={translateButtonClicked}
+                  onClick={this.onTranslateIdea}
+                />
+              }
+            </FeatureFlag>
+
             <StyledIdeaTopics topicIds={topicIds} />
 
             <Content>
               <LeftColumn>
-                <FeatureFlag name="machine_translations">
-                  {showTranslateButton && smallerThanSmallTablet &&
-                    <StyledTranslateButtonMobile
-                      translateButtonClicked={translateButtonClicked}
-                      onClick={this.onTranslateIdea}
-                    />
-                  }
-                </FeatureFlag>
-
                 <IdeaHeader>
                   <IdeaTitle
                     ideaId={ideaId}
