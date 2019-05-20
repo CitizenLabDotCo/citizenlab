@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { isFunction } from 'lodash-es';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -24,19 +24,9 @@ const Container = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
   overflow: hidden;
   background: #fff;
-  z-index: -1000;
-  display: none;
-
-  &.opened {
-    z-index: 998;
-    display: block;
-  }
+  z-index: 998;
 
   ${media.smallerThanMaxTablet`
     top: 0;
@@ -116,20 +106,6 @@ class FullscreenModal extends PureComponent<Props, State> {
       window.history.pushState({ path: localizedUrl }, '', localizedUrl);
       trackPage(localizedUrl, { modal: true });
     }
-
-    disableBodyScroll(this.ContentElement, {
-      // @ts-ignore
-      allowTouchMove: (element) => {
-        while (element && element !== document.body) {
-          if (element.className.includes('ignore-body-scroll-lock')) {
-            return true;
-          }
-
-          // tslint:disable-next-line
-          element = element.parentNode;
-        }
-      }
-    });
   }
 
   handleKeypress = (event) => {
@@ -156,19 +132,17 @@ class FullscreenModal extends PureComponent<Props, State> {
 
   cleanup = () => {
     this.goBackUrl = null;
+    this.ContentElement = null;
 
     window.removeEventListener('popstate', this.handlePopstateEvent, useCapture);
     window.removeEventListener('keydown', this.handleKeypress, useCapture);
 
     if (isFunction(this.unlisten)) {
       this.unlisten();
+      this.unlisten = null;
     }
 
-    if (this.ContentElement) {
-      this.ContentElement.scrollTop = 0;
-    }
-
-    enableBodyScroll(this.ContentElement);
+    clearAllBodyScrollLocks();
   }
 
   clickOutsideModal = () => {
@@ -183,22 +157,42 @@ class FullscreenModal extends PureComponent<Props, State> {
 
   setRef = (element: HTMLDivElement) => {
     this.ContentElement = (element || null);
+
+    if (this.ContentElement) {
+      disableBodyScroll(this.ContentElement, {
+        // @ts-ignore
+        allowTouchMove: (element) => {
+          while (element && element !== document.body) {
+            if (element.className.includes('ignore-body-scroll-lock')) {
+              return true;
+            }
+
+            // tslint:disable-next-line
+            element = element.parentNode;
+          }
+        }
+      });
+    }
   }
 
   render() {
     const { children, opened, headerChild } = this.props;
 
-    return (
-      <Container id="e2e-fullscreenmodal-content" className={`${opened ? 'opened' : 'closed'}`}>
-        <Content ref={this.setRef}>
-          {children}
-        </Content>
+    if (opened) {
+      return (
+        <Container id="e2e-fullscreenmodal-content">
+          <Content ref={this.setRef}>
+            {children}
+          </Content>
 
-        <TopBar goBack={this.clickGoBackButton}>
-          {headerChild}
-        </TopBar>
-      </Container>
-    );
+          <TopBar goBack={this.clickGoBackButton}>
+            {headerChild}
+          </TopBar>
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
