@@ -26,7 +26,7 @@ import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
-import ExportMenu from './components/ExportMenu';
+import ExportMenu, { exportType, Props as ExportMenuProps } from './components/ExportMenu';
 import IdeasCount from './components/IdeasCount';
 import { Input, Message } from 'semantic-ui-react';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
@@ -41,7 +41,7 @@ const StyledDiv = styled.div`
   margin-bottom: 30px;
 `;
 
-const StyledExportMenu = styled(ExportMenu)`
+const StyledExportMenu = styled(ExportMenu)<ExportMenuProps>`
   margin-left: auto;
 `;
 
@@ -149,6 +149,8 @@ interface State {
   visibleFilterMenus: string[];
   contextRef: any;
   searchTerm: string | undefined;
+  modalIdeaId: string | null;
+  ideaModalMode: 'view' | 'edit';
 }
 
 class IdeaManager extends React.PureComponent<Props, State> {
@@ -161,7 +163,9 @@ class IdeaManager extends React.PureComponent<Props, State> {
       visibleFilterMenus: [],
       activeFilterMenu: null,
       contextRef: null,
-      searchTerm: undefined
+      searchTerm: undefined,
+      modalIdeaId: null,
+      ideaModalMode: 'view'
     };
     this.globalState = globalState.init('AdminFullWidth');
   }
@@ -250,8 +254,31 @@ class IdeaManager extends React.PureComponent<Props, State> {
     }
   }
 
+  openIdeaPreview = (ideaId: string) => {
+    this.setState({ modalIdeaId: ideaId, ideaModalMode: 'view' });
+  }
+
+  openIdeaEdit = () => {
+    const selectedIdeaIds = keys(this.state.selectedIdeas);
+    if (selectedIdeaIds.length === 1) {
+      this.setState({ modalIdeaId: selectedIdeaIds[0], ideaModalMode: 'edit' });
+    }
+  }
+
+  switchModalMode = () => {
+    if (this.state.ideaModalMode === 'edit') {
+      this.setState({ ideaModalMode: 'view' });
+    } else {
+      this.setState({ ideaModalMode: 'edit' });
+    }
+  }
+
+  closeSideModal = () => {
+    this.setState({ modalIdeaId: null });
+  }
+
   render() {
-    const { searchTerm } = this.state;
+    const { searchTerm, modalIdeaId, ideaModalMode } = this.state;
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
     const { ideasList, onChangePhase, onChangeTopics, onChangeIdeaStatus, queryParameters } = ideas;
     const selectedTopics = queryParameters.topics;
@@ -264,7 +291,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const multipleIdeasSelected = this.areMultipleIdeasSelected();
 
     let exportQueryParameter;
-    let exportType: null | string = null;
+    let exportType: null | exportType = null;
     if (selectedIdeaIds.length > 0) {
       exportQueryParameter = [...selectedIdeaIds];
       exportType = 'selected_ideas';
@@ -316,6 +343,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
             <ActionBar
               ideaIds={selectedIdeaIds}
               resetSelectedIdeas={this.resetSelectedIdeas}
+              handleClickEdit={this.openIdeaEdit}
             />
           </LeftColumn>
           <MiddleColumnTop>
@@ -377,6 +405,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
               ideaLastPageNumber={ideas.lastPage}
               onIdeaChangePage={ideas.onChangePage}
               handleSeeAllIdeas={this.props.ideas.onResetParams}
+              switchModalMode={this.switchModalMode}
+              onCloseModal={this.closeSideModal}
+              onClickIdeaTitle={this.openIdeaPreview}
+              modalIdeaId={modalIdeaId}
+              ideaModalMode={ideaModalMode}
             />
           </MiddleColumn>
           <CSSTransition

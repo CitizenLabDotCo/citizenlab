@@ -4,15 +4,10 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Icon from 'components/UI/Icon';
-import CSSTransition from 'react-transition-group/CSSTransition';
+import TopBar from 'components/UI/TopBar';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // tracking
 import { trackEventByName, trackPage } from 'utils/analytics';
@@ -20,202 +15,46 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import { media } from 'utils/styleUtils';
 import { getUrlLocale } from 'services/locale';
 
-const timeout = 300;
-const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
-
-const Container: any = styled.div`
+const Container = styled.div`
   position: fixed;
-  top: 0;
+  top: ${({ theme }) => theme.menuHeight}px;
   bottom: 0;
   left: 0;
   right: 0;
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
   justify-content: center;
   overflow: hidden;
   background: #fff;
-  z-index: -10000;
-  transform: none;
-  will-change: opacity;
+  z-index: -1000;
   display: none;
 
   &.opened {
-    z-index: 10000;
+    z-index: 998;
     display: block;
   }
 
-  &.modal-enter {
-    opacity: 0;
-
-    &.modal-enter-active {
-      opacity: 1;
-      transition: opacity ${timeout}ms ${easing};
-    }
-  }
-
   ${media.smallerThanMaxTablet`
-    will-change: opacity, transform;
-
-    &.modal-enter {
-      opacity: 0;
-      transform: translateY(20px);
-
-      &.modal-enter-active {
-        opacity: 1;
-        transform: translateY(0);
-        transition: all ${timeout}ms ${easing};
-      }
-    }
+    top: 0;
   `}
-
-  &.modal-exit {
-    display: none;
-  }
 `;
 
 const Content = styled.div`
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 100%;
   width: 100%;
   height: 100%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 10001;
-  overflow: auto;
+  overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
     height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px - ${props => props.theme.mobileMenuHeight}px);
     margin-top: ${props => props.theme.mobileTopBarHeight}px;
-  `}
-`;
-
-const ContentInner = styled.div`
-  width: 100%;
-`;
-
-const TopBar: any = styled.div`
-  height: ${props => props.theme.mobileTopBarHeight}px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border-bottom: solid 1px ${colors.separation};
-  z-index: 10002;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
-const TopBarInner = styled.div`
-  height: 100%;
-  padding-left: 15px;
-  padding-right: 15px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const GoBackIcon = styled(Icon)`
-  height: 22px;
-  fill: ${colors.label};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: fill 100ms ease-out;
-`;
-
-const GoBackButton = styled.div`
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 6px;
-  margin-left: -2px;
-  cursor: pointer;
-  background: #fff;
-  border-radius: 50%;
-  border: solid 1px ${lighten(0.4, colors.label)};
-  transition: all 100ms ease-out;
-
-  &:hover {
-    border-color: #000;
-
-    ${GoBackIcon} {
-      fill: #000;
-    }
-  }
-`;
-
-const GoBackLabel = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  transition: fill 100ms ease-out;
-
-  ${media.phone`
-    display: none;
-  `}
-`;
-
-const GoBackButtonWrapper = styled.div`
-  height: 48px;
-  align-items: center;
-  display: none;
-
-  ${media.smallerThanMaxTablet`
-    display: flex;
-  `}
-`;
-
-const HeaderChildWrapper = styled.div`
-  display: inline-block;
-`;
-
-const CloseIcon = styled(Icon)`
-  width: 13px;
-  height: 13px;
-  fill: ${colors.label};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: fill 100ms ease-out;
-`;
-
-const CloseButton = styled.div`
-  height: 52px;
-  width: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  cursor: pointer;
-  top: 20px;
-  right: 33px;
-  border-radius: 50%;
-  border: solid 1px ${lighten(0.35, colors.label)};
-  background: #fff;
-  z-index: 10002;
-  transition: border-color 100ms ease-out;
-
-  &:hover {
-    border-color: #000;
-
-    ${CloseIcon} {
-      fill: #000;
-    }
-  }
-
-  ${media.smallerThanMaxTablet`
-    display: none;
   `}
 `;
 
@@ -237,20 +76,10 @@ interface State {}
 
 const useCapture = false;
 
-class Modal extends PureComponent<Props, State> {
-  unlisten: Function | null;
-  goBackUrl: string | null;
-  ModalContentInnerElement: HTMLDivElement | null;
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      scrolled: false
-    };
-    this.unlisten = null;
-    this.goBackUrl = null;
-    this.ModalContentInnerElement = null;
-  }
+class FullscreenModal extends PureComponent<Props, State> {
+  unlisten: Function | null = null;
+  goBackUrl: string | null = null;
+  ContentElement: HTMLDivElement | null = null;
 
   componentWillUnmount() {
     this.cleanup();
@@ -288,22 +117,33 @@ class Modal extends PureComponent<Props, State> {
       trackPage(localizedUrl, { modal: true });
     }
 
-    disableBodyScroll(this.ModalContentInnerElement);
+    disableBodyScroll(this.ContentElement, {
+      // @ts-ignore
+      allowTouchMove: (element) => {
+        while (element && element !== document.body) {
+          if (element.className.includes('ignore-body-scroll-lock')) {
+            return true;
+          }
+
+          // tslint:disable-next-line
+          element = element.parentNode;
+        }
+      }
+    });
   }
 
   handleKeypress = (event) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
-      this.manuallyCloseModal();
+      this.closeModal();
     }
   }
 
-  manuallyCloseModal = () => {
-    if (this.props.url && this.goBackUrl) {
+  closeModal = () => {
+    if (this.props.url && this.goBackUrl && this.goBackUrl !== this.props.url) {
       window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
+      this.props.close();
     }
-
-    this.props.close();
   }
 
   handlePopstateEvent = () => {
@@ -320,79 +160,50 @@ class Modal extends PureComponent<Props, State> {
     window.removeEventListener('popstate', this.handlePopstateEvent, useCapture);
     window.removeEventListener('keydown', this.handleKeypress, useCapture);
 
-    // reset state
-    this.setState({ scrolled: false });
-
     if (isFunction(this.unlisten)) {
       this.unlisten();
     }
 
-    if (this.ModalContentInnerElement) {
-      this.ModalContentInnerElement.scrollTop = 0;
+    if (this.ContentElement) {
+      this.ContentElement.scrollTop = 0;
     }
 
-    enableBodyScroll(this.ModalContentInnerElement);
+    enableBodyScroll(this.ContentElement);
   }
 
   clickOutsideModal = () => {
     trackEventByName(tracks.clickOutsideModal, { extra: { url: this.props.url } });
-    this.manuallyCloseModal();
+    this.closeModal();
   }
 
-  clickCloseButton = (event) => {
-    event.preventDefault();
+  clickGoBackButton = () => {
     trackEventByName(tracks.clickCloseButton, { extra: { url: this.props.url } });
-    this.manuallyCloseModal();
+    this.closeModal();
   }
 
   setRef = (element: HTMLDivElement) => {
-    this.ModalContentInnerElement = (element || null);
+    this.ContentElement = (element || null);
   }
 
   render() {
     const { children, opened, headerChild } = this.props;
 
     return (
-      <CSSTransition
-        classNames="modal"
-        in={opened}
-        timeout={timeout}
-        mountOnEnter={false}
-        unmountOnExit={false}
-        exit={true}
-      >
-        <Container id="e2e-fullscreenmodal-content" className={`${opened && 'opened'}`}>
-          <Content innerRef={this.setRef}>
-            <ContentInner>
-              {children}
-            </ContentInner>
-          </Content>
+      <Container id="e2e-fullscreenmodal-content" className={`${opened ? 'opened' : 'closed'}`}>
+        <Content ref={this.setRef}>
+          {children}
+        </Content>
 
-          <CloseButton onClick={this.clickCloseButton}>
-            <CloseIcon name="close4" />
-          </CloseButton>
-
-          <TopBar>
-            <TopBarInner>
-              <GoBackButtonWrapper>
-                <GoBackButton onClick={this.clickCloseButton}>
-                  <GoBackIcon name="arrow-back" />
-                </GoBackButton>
-                <GoBackLabel>
-                  <FormattedMessage {...messages.goBack} />
-                </GoBackLabel>
-              </GoBackButtonWrapper>
-              {headerChild && <HeaderChildWrapper>{headerChild}</HeaderChildWrapper>}
-            </TopBarInner>
-          </TopBar>
-        </Container>
-      </CSSTransition>
+        <TopBar goBack={this.clickGoBackButton}>
+          {headerChild}
+        </TopBar>
+      </Container>
     );
   }
 }
 
 export default (inputProps: InputProps) => (
   <GetLocale>
-    {locale => <Modal {...inputProps} locale={locale} />}
+    {locale => <FullscreenModal {...inputProps} locale={locale} />}
   </GetLocale>
 );

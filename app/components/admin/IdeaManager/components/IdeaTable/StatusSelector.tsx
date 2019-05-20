@@ -8,11 +8,11 @@ const Container = styled.div`
   display: flex;
 `;
 
-const ColorIndicator = styled<any, 'div'>('div') `
+const ColorIndicator = styled.div<{ active: boolean }>`
   width: 1rem;
   height: 1rem;
   border: 1px solid ${props => props.color};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${props => props.theme.borderRadius};
   margin-right: 0.5rem;
   cursor: pointer;
   margin: 0 0.25rem;

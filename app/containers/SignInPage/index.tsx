@@ -38,7 +38,7 @@ const Section = styled.div`
   height: 100%;
 `;
 
-const Left = Section.extend`
+const Left = styled(Section)`
   width: 50vw;
   position: absolute;
   top: 0;
@@ -51,7 +51,7 @@ const Left = Section.extend`
   `}
 `;
 
-const Right = Section.extend`
+const Right = styled(Section)`
   width: 100%;
 
   ${media.biggerThanMaxTablet`

@@ -52,7 +52,7 @@ const Row = styled.div`
   flex-direction: row;
 `;
 
-const ToggleRow = Row.extend`
+const ToggleRow = styled(Row)`
   width: 100%;
   max-width: 288px;
   display: flex;

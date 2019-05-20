@@ -102,21 +102,23 @@ export default class Checkbox extends PureComponent<Props, State> {
     const { size, value, label } = this.props;
 
     return (
-      <Container className={`${className} ${label && 'hasLabel'}`} size={size}>
+      <Container className={`${className} ${label ? 'hasLabel' : ''}`} size={size}>
         <CheckboxContainer
           className={`e2e-checkbox ${value ? 'checked' : 'unchecked'}`}
-          innerRef={this.setRef}
+          ref={this.setRef}
           tabIndex={0}
           checked={value}
           size={size}
           onMouseDown={this.removeFocus}
           onClick={this.toggleCheckbox}
           onKeyPress={this.handleKeyPress}
+          role="button"
+          aria-labelledby="checkbox-label"
         >
           {value && <CheckmarkIcon name="checkmark" />}
         </CheckboxContainer>
         {label &&
-          <Label onClick={this.handleLabelOnClick}>
+          <Label id="checkbox-label" onClick={this.handleLabelOnClick}>
             {label}
           </Label>
         }

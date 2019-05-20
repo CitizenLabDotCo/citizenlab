@@ -15,6 +15,7 @@ describe('Ideas overview page', () => {
         cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
 
         cy.visit('/ideas');
+        cy.wait(1000);
 
         cy.get('#e2e-project-filter-selector').click();
         // select project in project filter list

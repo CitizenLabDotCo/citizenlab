@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { isString, isObject } from 'lodash-es';
@@ -14,6 +14,7 @@ import 'moment/locale/de';
 import 'moment/locale/da';
 import 'moment/locale/nb';
 import { configureScope } from '@sentry/browser';
+import GlobalStyle from 'global-styles';
 import WebFont from 'webfontloader';
 
 // context
@@ -31,7 +32,6 @@ import { trackPage } from 'utils/analytics';
 import Meta from './Meta';
 import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import LoadableFullscreenModal from 'components/Loadable/FullscreenModal';
 import LoadableModal from 'components/Loadable/Modal';
 import UserDeletedModalContent from 'components/UserDeletedModalContent';
 
@@ -48,7 +48,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import eventEmitter from 'utils/eventEmitter';
 
 // style
-import styled, { ThemeProvider, injectGlobal } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
@@ -99,6 +99,8 @@ type State = {
   userActuallyDeleted: boolean;
 };
 
+const IdeaPageFullscreenModal = lazy(() => import('./IdeaPageFullscreenModal'));
+
 class App extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
   unlisten: Function;
@@ -135,6 +137,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
       trackPage(newLocation.pathname);
 
+      // If already created a user (step 1 of sign-up) and there's a required field in step 2,
+      // redirect to complete-signup page
       if (isObject(authUser) && !isString(registrationCompletedAt) && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')) {
         clHistory.replace({
           pathname: '/complete-signup',
@@ -171,20 +175,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           WebFont.load({
             typekit: {
               id: tenant.data.attributes.style.customFontAdobeId
-            },
-            fontactive: (familyName, _fvd) => {
-              injectGlobal`
-                html, body, h1, h2, h3, h4, h5, button, input, optgroup, select, textarea {
-                  font-family: ${familyName}, 'larsseit', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-                }
-              `;
-            },
+            }
           });
         }
-      }),
-
-      eventEmitter.observeEvent('cardHover').subscribe(() => {
-        this.preloadIdeaModal();
       }),
 
       eventEmitter.observeEvent<IModalInfo>('ideaCardClick').subscribe(({ eventValue }) => {
@@ -208,10 +201,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentWillUnmount() {
     this.unlisten();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  preloadIdeaModal = () => {
-    LoadableFullscreenModal.preload();
   }
 
   openModal = (type: string, id: string | null, url: string | null) => {
@@ -251,51 +240,58 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         {tenant && visible && (
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider theme={theme}>
-              <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
-                <Meta />
+              <>
+                <GlobalStyle />
 
-                <ErrorBoundary>
-                  <LoadableModal
-                    opened={userDeletedModalOpened}
-                    close={this.closeUserDeletedModal}
-                  >
-                    <UserDeletedModalContent userActuallyDeleted={userActuallyDeleted} />
-                  </LoadableModal>
-                </ErrorBoundary>
+                <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                  <Meta />
 
-                <ErrorBoundary>
-                  <LoadableFullscreenModal
-                    modalOpened={modalOpened}
-                    close={this.closeModal}
-                    modalUrl={modalUrl}
-                    modalId={modalId}
-                    modalType={modalType}
-                    unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                  />
-                </ErrorBoundary>
+                  <ErrorBoundary>
+                    <Suspense fallback={null}>
+                      <IdeaPageFullscreenModal
+                        modalOpened={modalOpened}
+                        close={this.closeModal}
+                        modalUrl={modalUrl}
+                        modalId={modalId}
+                        modalType={modalType}
+                        unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                      />
+                    </Suspense>
+                  </ErrorBoundary>
 
-                <ErrorBoundary>
-                  <div id="modal-portal" />
-                </ErrorBoundary>
+                  <ErrorBoundary>
+                    <LoadableModal
+                      opened={userDeletedModalOpened}
+                      close={this.closeUserDeletedModal}
+                    >
+                      <UserDeletedModalContent userActuallyDeleted={userActuallyDeleted} />
+                    </LoadableModal>
+                  </ErrorBoundary>
 
-                <ErrorBoundary>
-                  <Navbar />
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <ConsentManager />
-                </ErrorBoundary>
+                  <ErrorBoundary>
+                    <div id="modal-portal" />
+                  </ErrorBoundary>
 
-                <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
-                  <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
-                    <ErrorBoundary>
-                      {children}
-                    </ErrorBoundary>
-                    <HasPermission.No>
-                      <ForbiddenRoute />
-                    </HasPermission.No>
-                  </HasPermission>
-                </InnerContainer>
-              </Container>
+                  <ErrorBoundary>
+                    <Navbar fullscreenModalOpened={modalOpened} />
+                  </ErrorBoundary>
+
+                  <ErrorBoundary>
+                    <ConsentManager />
+                  </ErrorBoundary>
+
+                  <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                    <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
+                      <ErrorBoundary>
+                        {children}
+                      </ErrorBoundary>
+                      <HasPermission.No>
+                        <ForbiddenRoute />
+                      </HasPermission.No>
+                    </HasPermission>
+                  </InnerContainer>
+                </Container>
+              </>
             </ThemeProvider>
           </PreviousPathnameContext.Provider>
         )}

@@ -77,9 +77,14 @@ const DeletedUserName = styled.span`
   font-style: italic;
 `;
 
-const UserScore = styled<any, 'div'>('div')`
-  background-color: ${props => props.theme.chartFill};
-  width: ${props => props.value * 50}%;
+interface IUserScoreComponent {
+  hoverColor: string;
+  value: number;
+}
+
+const UserScore = styled.div<IUserScoreComponent>`
+  background-color: ${(props) => props.theme.chartFill};
+  width: ${(props) => props.value * 50}%;
   color: #fff;
   padding: 10px;
   display: flex;
@@ -87,7 +92,7 @@ const UserScore = styled<any, 'div'>('div')`
   align-items: center;
 
   &:hover {
-    background-color: ${props => props.hoverColor};
+    background-color: ${(props: any) => props.hoverColor};
     color: ${props => props.theme.chartFill};
   }
 

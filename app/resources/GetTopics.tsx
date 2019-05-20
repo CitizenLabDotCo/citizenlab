@@ -53,8 +53,7 @@ export default class GetTopics extends React.Component<Props, State> {
 
           return topicsStream().observable.pipe(map(topics => topics.data));
         })
-      )
-      .subscribe((topics) => {
+      ).subscribe((topics) => {
         this.setState({ topics });
       })
     ];

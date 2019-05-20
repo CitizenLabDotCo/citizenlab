@@ -466,7 +466,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
   }
 }
 
-const ProjectCardsWithHOCs = withTheme<Props, State>(injectIntl<Props>(withRouter(ProjectCards)));
+const ProjectCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(ProjectCards)));
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,

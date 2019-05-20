@@ -2,7 +2,7 @@ import { randomString, randomEmail } from '../support/commands';
 
 describe('Idea show page actions', () => {
   describe('not logged in', () => {
-    beforeEach(() => {
+    before(() => {
       cy.visit('/ideas/controversial-idea');
       cy.acceptCookies();
       cy.get('#e2e-idea-show');
@@ -16,41 +16,39 @@ describe('Idea show page actions', () => {
   });
 
   describe('logged in as admin', () => {
-    beforeEach(() => {
+    before(() => {
       cy.login('admin@citizenlab.co', 'testtest');
       cy.visit('/ideas/controversial-idea');
       cy.acceptCookies();
       cy.get('#e2e-idea-show');
     });
 
-    describe('Feedback', () => {
-      it('saves a new feedback and deletes it', () => {
-        const commentBody = randomString(30);
-        // input
-        cy.get('input').first().type(commentBody);
-        cy.get('textarea').first().type(commentBody);
+    it('saves a new official feedback, shows it and deletes it', () => {
+      const commentBody = randomString(30);
+      // input
+      cy.get('input').first().type(commentBody);
+      cy.get('textarea').first().type(commentBody);
 
-        // save
-        cy.get('.e2e-submit-wrapper-button').click();
-        cy.get('.e2e-submit-wrapper-button').should('have.class', 'disabled');
-        cy.wait(1000);
+      // save
+      cy.get('.e2e-submit-wrapper-button').click();
+      cy.get('.e2e-submit-wrapper-button').should('have.class', 'disabled');
+      cy.wait(1000);
 
-        cy.get('.e2e-official-feedback-post').contains(commentBody);
-        cy.get('.e2e-official-feedback-post').contains(commentBody);
+      cy.get('.e2e-official-feedback-post').contains(commentBody);
+      cy.get('.e2e-official-feedback-post').contains(commentBody);
 
-        // delete
-        cy.get('.e2e-official-feedback-post').find('button').first().click();
-        cy.get('.e2e-official-feedback-post').find('.e2e-action-delete').click();
+      // delete
+      cy.get('.e2e-official-feedback-post').find('button').first().click();
+      cy.get('.e2e-official-feedback-post').find('.e2e-action-delete').click();
 
-        cy.wait(1000);
-        cy.get('.e2e-official-feedback-post').should('not.exist');
-      });
+      cy.wait(1000);
+      cy.get('.e2e-official-feedback-post').should('not.exist');
     });
   });
 
   describe('logged in as normal user', () => {
     describe('Vote', () => {
-      beforeEach(() => {
+      before(() => {
         const firstName = randomString();
         const lastName = randomString();
         const email = randomEmail();
@@ -64,9 +62,8 @@ describe('Idea show page actions', () => {
           cy.apiSignup(firstName, lastName, email, password);
           cy.login(email, password);
           cy.visit(`/ideas/${ideaTitle}`);
-          cy.wait(1000);
+          cy.wait(3000);
           cy.get('#e2e-idea-show');
-          cy.wait(1000);
         });
       });
 

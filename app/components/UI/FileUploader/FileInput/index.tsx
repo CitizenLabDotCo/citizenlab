@@ -97,7 +97,7 @@ export default class FileInput extends PureComponent<Props> {
           onChange={this.onChange}
           onClick={this.onClick}
           type="file"
-          innerRef={this.fileInput}
+          ref={this.fileInput}
           accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .sxw, .sxc, .sxi, .sdw, .sdc, .sdd, .csv, .mp3, .mp4, .mkv, .avi"
         />
         <Label htmlFor="project-attachment-uploader">
