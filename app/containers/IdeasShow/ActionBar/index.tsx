@@ -30,8 +30,8 @@ const Inner = styled.div`
   max-width: ${ideaPageContentMaxWidth};
   height: 100%;
   margin: 0 auto;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 60px;
+  padding-right: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;

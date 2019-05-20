@@ -41,7 +41,7 @@ export const media = {
     }
   `,
   tablet: (style: any, ...args) => css`
-    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet + 1}px) {
+    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: 1113px) {
       ${css(style, ...args)}
     }
   `,
@@ -87,6 +87,11 @@ export const media = {
   `,
   smallerThan1100px: (style: any, ...args) => css`
     @media (max-width: 1100px) {
+      ${css(style, ...args)}
+    }
+  `,
+  smallDesktop: (style: any, ...args) => css`
+    @media (min-height: 600px) and (max-width: 1280px) {
       ${css(style, ...args)}
     }
   `,
