@@ -37,11 +37,16 @@ resource "Users" do
           expect(status).to eq 404
         end
       end
+
+      example "[error] Request password reset of an invitee" do
+        do_request(user: {email: create(:invited_user).email})
+        expect(status).to eq 404
+      end
     end
 
     post "web_api/v1/users/reset_password" do
       before do
-        @user.update(reset_password_token: ResetPasswordService.new.generate_reset_password_token(@user))
+        @user.update!(reset_password_token: ResetPasswordService.new.generate_reset_password_token(@user))
       end
       with_options scope: :user do
         parameter :token, "The password reset token received through the params in the reset link", required: true
@@ -63,6 +68,15 @@ resource "Users" do
         expect(status).to be 401
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :token)).to eq [{error: 'invalid', value: 'abcabcabc'}]
+      end
+
+      example "[error] Reset password reset of an invitee" do
+        invitee = create(:invited_user)
+        token = ResetPasswordService.new.generate_reset_password_token invitee
+        invitee.update!(reset_password_token: token)
+
+        do_request(user: {password: password, token: token})
+        expect(status).to eq 401
       end
     end
   end

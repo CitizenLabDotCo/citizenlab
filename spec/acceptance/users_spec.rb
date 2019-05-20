@@ -29,6 +29,28 @@ resource "Users" do
         expect(json_response.dig(:data, :attributes, :email)).to be_nil
       end
     end
+
+    post "web_api/v1/user_token" do
+      before do
+        @user = create(:user, password: 'supersecret')
+      end
+      with_options scope: :auth do
+          parameter :email, "Email"
+          parameter :password, "Password"
+        end
+      let(:email) { @user.email }
+      let(:password) { 'supersecret' }
+
+      example_request "Authenticate a registered user" do
+        expect(status).to eq(201)
+      end
+
+      example "[error] Authenticate an invited user" do
+        @user.update! invite_status: 'pending'
+        do_request
+        expect(status).to eq(404)
+      end
+    end
   end
 
   context "when authenticated" do
