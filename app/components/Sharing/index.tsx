@@ -28,12 +28,6 @@ import { darken } from 'polished';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-const StyledIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
-  fill: #fff;
-`;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -52,6 +46,12 @@ const Title = styled.h3`
 
 const ShareIcon = styled(Icon)`
   margin-right: 14px;
+`;
+
+const StyledIcon = styled(Icon)`
+  width: 20px;
+  height: 20px;
+  fill: #fff;
 `;
 
 const Buttons = styled.div`
