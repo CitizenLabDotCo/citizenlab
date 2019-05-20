@@ -623,6 +623,19 @@
               'initiatives.default_eligibility_criteria',
               locales: CL2_SUPPORTED_LOCALES).to_json 
             %>
+          },
+          "success_stories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["page_slug", "location", "image_url"],
+              "properties": {
+                "page_slug": {"type": "string"},
+                "location": {"type": "string"},
+                "image_url": {"type": "string", "format": "uri"}
+              }
+            }
           }
         }
       }
