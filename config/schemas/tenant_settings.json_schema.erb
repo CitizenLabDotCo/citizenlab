@@ -586,6 +586,45 @@
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
         }
+      },
+      "initiatives": {
+        "type": "object",
+        "description":  "Initiatives are citizen-originating proposals that need to reach a number of votes in a limited time for the organization to take action",
+        "additionalProperties": false,
+        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": true},
+          "voting_threshold": {
+            "description": "The number of votes an initiative needs to reach to be accepted",
+            "type": "integer",
+            "minimum": 0,
+            "default": 300
+          },
+          "days_limit": {
+            "description": "Number of days a published initiative has to reach its voting_threshold",
+            "type": "integer",
+            "minimum": 1,
+            "default": 90
+          },
+          "threshold_reached_message": {
+            "description": "Message shown to users when an initiative reached the threshold. Supports HTML paragraphs and breaks",
+            "$ref": "#/definitions/multiloc_string",
+            "default": <%= MultilocService.new.i18n_to_multiloc(
+              'initiatives.default_threshold_reached_message',
+              locales: CL2_SUPPORTED_LOCALES).to_json
+            %>
+          },
+          "eligibility_criteria": {
+            "description": "Criteria to which an initiative should comply, shown to users when posting. Supports HTML paragraphs and breaks",
+            "$ref": "#/definitions/multiloc_string",
+            "default": <%= MultilocService.new.i18n_to_multiloc(
+              'initiatives.default_eligibility_criteria',
+              locales: CL2_SUPPORTED_LOCALES).to_json 
+            %>
+          }
+        }
       }
     },
   "dependencies": {

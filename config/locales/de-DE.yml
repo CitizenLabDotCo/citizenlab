@@ -319,3 +319,8 @@ de:
       ISCED6: Bachelor oder gleichwertiger Abschluss
       ISCED7: Master oder gleichwertiger Abschluss
       ISCED8: Doktortitel oder anderer gleichwertiger Abschluss
+  initiatives:
+    default_threshold_reached_message: >
+      <p>The initiators are invited to present their initiative on the next council meeting. We will provide an official update.</p>
+    default_eligibility_criteria: >
+      <p>The initiative should be within the city's competences</p>
