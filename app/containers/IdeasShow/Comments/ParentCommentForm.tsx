@@ -40,15 +40,15 @@ const CommentContainer = styled.div`
   padding-bottom: 20px;
   padding-left: 50px;
   padding-right: 50px;
-  background: #F1F2F4;
-  border: 1px solid #E3E3E3;
+  background: #fff;
+  border: 1px solid #e3e3e3;
   box-sizing: border-box;
   box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
   border-radius: ${(props: any) => props.theme.borderRadius};
   transition: all 100ms ease;
 
   &.focused {
-    border-color: ${darken(0.2, '#E3E3E3')};
+    border-color: ${darken(0.2, '#e3e3e3')};
   }
 
   ${media.smallerThanMinTablet`
