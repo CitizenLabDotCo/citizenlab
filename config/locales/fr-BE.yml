@@ -120,3 +120,8 @@ fr-BE:
       ISCED6: Licence, Bachelier ou équivalent
       ISCED7: Master ou équivalent
       ISCED8: Doctorat ou équivalent
+  initiatives:
+    default_threshold_reached_message: >
+      <p>The initiators are invited to present their initiative on the next council meeting. We will provide an official update.</p>
+    default_eligibility_criteria: >
+      <p>The initiative should be within the city's competences</p>

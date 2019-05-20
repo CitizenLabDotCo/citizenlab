@@ -19,7 +19,7 @@ resource "Tenants" do
         response_field attr[:name], attr[:description]
       end
     end
-    Tenant::SETTINGS_JSON_SCHEMA["properties"].each do |feature, feature_descriptor|
+    Tenant.settings_json_schema["properties"].each do |feature, feature_descriptor|
       parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:tenant, :settings, feature]
       parameter :enabled, "Is #{feature} enabled", scope: ['settings', feature]
       feature_descriptor["properties"].each do |setting, setting_descriptor|
@@ -44,7 +44,7 @@ resource "Tenants" do
       parameter :settings, "The changes to the\
       settings object. This will me merged with the existing settings. Arrays\
       will not be merged, but override their values.", extra: ""
-      Tenant::SETTINGS_JSON_SCHEMA["properties"].each do |feature, feature_descriptor|
+      Tenant.settings_json_schema["properties"].each do |feature, feature_descriptor|
         parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:tenant, :settings, feature]
         parameter :enabled, "Is #{feature} enabled", scope: ['settings', feature]
         feature_descriptor["properties"].each do |setting, setting_descriptor|

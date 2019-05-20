@@ -58,7 +58,7 @@ RSpec.describe Tenant, type: :model do
   describe "The settings JSON schema" do
     it "is a valid JSON schema" do
       metaschema = JSON::Validator.validator_for_name("draft4").metaschema
-      schema = Tenant::SETTINGS_JSON_SCHEMA
+      schema = Tenant.settings_json_schema
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
     end
   end
