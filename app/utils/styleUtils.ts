@@ -9,8 +9,10 @@ export const viewportWidths = {
   phone: 360,
   largePhone: 415,
   smallTablet: 767,
-  largeTablet: 1023,
+  largeTablet: 1023
 };
+
+export const ideaPageContentMaxWidth = '1210px';
 
 export const media = {
   smallPhone: (style: any, ...args) => css`
@@ -39,17 +41,17 @@ export const media = {
     }
   `,
   tablet: (style: any, ...args) => css`
-    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet}px) {
+    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: 1113px) {
       ${css(style, ...args)}
     }
   `,
   tabletLandscape: (style: any, ...args) => css`
-    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet}px) and (orientation : landscape) {
+    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet + 1}px) and (orientation : landscape) {
       ${css(style, ...args)}
     }
   `,
   tabletPortrait: (style: any, ...args) => css`
-    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet}px) and (orientation : portrait) {
+    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet + 1}px) and (orientation : portrait) {
       ${css(style, ...args)}
     }
   `,
@@ -80,6 +82,16 @@ export const media = {
   `,
   smallerThan1200px: (style: any, ...args) => css`
     @media (max-width: 1200px) {
+      ${css(style, ...args)}
+    }
+  `,
+  smallerThan1100px: (style: any, ...args) => css`
+    @media (max-width: 1100px) {
+      ${css(style, ...args)}
+    }
+  `,
+  smallDesktop: (style: any, ...args) => css`
+    @media (min-height: 600px) and (max-width: 1280px) {
       ${css(style, ...args)}
     }
   `,
@@ -349,11 +361,13 @@ export function quillEditedContent(
 // Main theme passed through any styled component
 export function getTheme(tenant: ITenant | null) {
   const core = tenant && tenant.data.attributes.settings.core;
+  const fontFamily = get(tenant, 'data.attributes.style.customFontName', 'larsseit');
   const signedOutHeaderOverlayOpacity = get(tenant, 'data.attributes.style.signedOutHeaderOverlayOpacity');
   const signedInHeaderOverlayOpacity = get(tenant, 'data.attributes.style.signedInHeaderOverlayOpacity');
 
   return ({
     colors,
+    fontFamily,
     fontSizes,
     colorMain: (core ? core.color_main : '#ef0071'),
     colorSecondary: (core ? core.color_secondary : '#000000'),

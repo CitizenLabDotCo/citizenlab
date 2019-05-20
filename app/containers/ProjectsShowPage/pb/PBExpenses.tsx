@@ -173,7 +173,7 @@ const Budgets = styled.div`
   flex-direction: column;
 `;
 
-const TotalBudgetDesktop = Budget.extend`
+const TotalBudgetDesktop = styled(Budget)`
   white-space: nowrap;
 
   ${media.smallerThanMinTablet`
@@ -181,7 +181,7 @@ const TotalBudgetDesktop = Budget.extend`
   `}
 `;
 
-const TotalBudgetMobile = Budget.extend`
+const TotalBudgetMobile = styled(Budget)`
   margin-top: 10px;
 
   ${media.biggerThanMinTablet`

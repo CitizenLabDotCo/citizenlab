@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import Icon, { IconNames } from 'components/UI/Icon';
 import { colors } from 'utils/styleUtils';
 
@@ -29,7 +29,7 @@ const doubleBounce = keyframes`
 
 const Container = styled.div`
   position: relative;
-  animation: ${doubleBounce} 500ms linear;
+  animation: ${css`${doubleBounce} 500ms linear`};
   transform-origin: bottom;
   border-top: solid 1px ${colors.separation};
   background: #fff;

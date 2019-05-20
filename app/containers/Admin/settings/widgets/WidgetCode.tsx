@@ -80,7 +80,7 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
           value={text}
           readOnly
           onFocus={this.handleFocus}
-          innerRef={this.snippetRef}
+          ref={this.snippetRef}
         />
         <Button onClick={this.copy(this.snippetRef)} style={this.state.copied ? 'success' : 'admin-dark'}>
           {this.state.copied

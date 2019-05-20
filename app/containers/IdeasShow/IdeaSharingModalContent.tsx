@@ -109,6 +109,7 @@ const SharingWrapper = styled.div`
 
 interface InputProps {
   ideaId: string | null;
+  className?: string;
 }
 
 interface DataProps {
@@ -131,7 +132,7 @@ class IdeaSharingModalContent extends PureComponent<Props & InjectedIntlProps & 
   }
 
   render() {
-    const { idea, authUser, localize, locale } = this.props;
+    const { idea, authUser, localize, locale, className } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (!isNilOrError(idea) && !isNilOrError(authUser)) {
@@ -139,7 +140,7 @@ class IdeaSharingModalContent extends PureComponent<Props & InjectedIntlProps & 
       const ideaUrl = `${location.origin}/${locale}/ideas/${idea.attributes.slug}`;
 
       return (
-        <Container>
+        <Container className={className}>
           <Rocket src={rocket} alt="rocket" />
           <Title className="e2e-idea-social-sharing-modal-title">
             <FormattedMessage {...messages.shareTitle} />
@@ -149,6 +150,7 @@ class IdeaSharingModalContent extends PureComponent<Props & InjectedIntlProps & 
           </Subtitle>
           <SharingWrapper>
             <Sharing
+              context="idea"
               location="modal"
               url={ideaUrl}
               twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}

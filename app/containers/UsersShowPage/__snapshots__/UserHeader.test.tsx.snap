@@ -50,7 +50,7 @@ exports[`<UserHeader /> renders correctly on your own profile 1`] = `
 <UserHeader__EditProfile
   to="/profile/edit"
 >
-  <Component
+  <UserHeader__EditIcon
     name="pencil"
   />
   <FormattedMessage

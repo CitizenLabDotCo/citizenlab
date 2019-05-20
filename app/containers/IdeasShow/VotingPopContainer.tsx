@@ -1,6 +1,6 @@
 
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import Icon, { IconNames } from 'components/UI/Icon';
 import { colors } from 'utils/styleUtils';
 
@@ -45,7 +45,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   background: #fff;
-  animation: ${enterAnimation} 450ms linear;
+  animation: ${css`${enterAnimation} 450ms linear`};
   transform-origin: center center;
 `;
 

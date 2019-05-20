@@ -11,16 +11,6 @@ import { IInviteError } from 'services/invites';
 import messages from './messages';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-interface IStyledErrorMessageInner {
-  showBackground: boolean;
-}
-
-interface IStyledErrorMessage {
-  size: string;
-  marginTop: string;
-  marginBottom: string;
-}
-
 const ErrorMessageText = styled.div`
   flex: 1 1 100%;
   color: ${colors.clRedError};
@@ -50,23 +40,23 @@ const IconWrapper = styled.div`
   }
 `;
 
-const StyledErrorMessageInner = styled.div`
+const StyledErrorMessageInner = styled.div<{ showBackground: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.clRedErrorBackground};
-  background: ${(props: IStyledErrorMessageInner) => (props.showBackground ? colors.clRedErrorBackground : 'transparent')};
+  background: ${(props) => (props.showBackground ? colors.clRedErrorBackground : 'transparent')};
 `;
 
-const StyledErrorMessage: any = styled.div`
+const StyledErrorMessage = styled.div<{ size: string; marginTop: string; marginBottom: string; }>`
   position: relative;
   overflow: hidden;
 
   ${StyledErrorMessageInner} {
-    margin-top: ${(props: IStyledErrorMessage) => props.marginTop};
-    margin-bottom: ${(props: IStyledErrorMessage) => props.marginBottom};
-    padding: ${(props: IStyledErrorMessage) => {
+    margin-top: ${(props) => props.marginTop};
+    margin-bottom: ${(props) => props.marginBottom};
+    padding: ${(props) => {
       switch (props.size) {
         case '2':
           return '11px';
@@ -81,7 +71,7 @@ const StyledErrorMessage: any = styled.div`
   }
 
   ${ErrorMessageText} {
-    font-size: ${(props: IStyledErrorMessage) => {
+    font-size: ${(props) => {
       switch (props.size) {
         case '2':
           return '17px';
@@ -96,7 +86,7 @@ const StyledErrorMessage: any = styled.div`
   }
 
   ${IconWrapper} {
-    width: ${(props: IStyledErrorMessage) => {
+    width: ${(props) => {
       switch (props.size) {
         case '2':
           return '23px';
@@ -108,7 +98,7 @@ const StyledErrorMessage: any = styled.div`
           return '22px';
       }
     }};
-    height: ${(props: IStyledErrorMessage) => {
+    height: ${(props) => {
       switch (props.size) {
         case '2':
           return '23px';
@@ -223,7 +213,7 @@ export default class Error extends PureComponent<Props, State> {
         enter={animate}
         exit={animate}
       >
-        <StyledErrorMessage className={`e2e-error-message ${className}`} size={size} marginTop={marginTop} marginBottom={marginBottom}>
+        <StyledErrorMessage tabIndex={0} className={`e2e-error-message ${className}`} size={size} marginTop={marginTop} marginBottom={marginBottom}>
           <StyledErrorMessageInner showBackground={showBackground} className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}>
             {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
 

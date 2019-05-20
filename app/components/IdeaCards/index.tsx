@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import IdeaCard, { InputProps as IdeaCardProps } from 'components/IdeaCard';
+import IdeaCard from 'components/IdeaCard';
 import IdeasMap from 'components/IdeasMap';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
@@ -77,7 +77,7 @@ const FilterArea = styled.div`
   `}
 `;
 
-const LeftFilterArea = FilterArea.extend`
+const LeftFilterArea = styled(FilterArea)`
   &.hidden {
     display: none;
   }
@@ -93,7 +93,7 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const RightFilterArea = FilterArea.extend`
+const RightFilterArea = styled(FilterArea)`
   &.hidden {
     display: none;
   }
@@ -181,13 +181,13 @@ const ViewButton = styled.div`
   }
 `;
 
-const CardsButton = ViewButton.extend`
+const CardsButton = styled(ViewButton)`
   border-top-left-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: ${(props: any) => props.theme.borderRadius};
   border-right: none;
 `;
 
-const MapButton = ViewButton.extend`
+const MapButton = styled(ViewButton)`
  border-top-right-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
 `;
@@ -199,7 +199,7 @@ const IdeasList: any = styled.div`
   flex-wrap: wrap;
 `;
 
-const StyledIdeaCard = styled<IdeaCardProps>(IdeaCard)`
+const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
   width: calc(100% * (1/3) - 26px);
   margin-left: 13px;
@@ -449,7 +449,7 @@ const Data = adopt<DataProps, InputProps>({
   ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>
 });
 
-const IdeaCardsWithHoCs = withTheme<Props, State>(IdeaCards);
+const IdeaCardsWithHoCs = withTheme(IdeaCards);
 
 const WrappedIdeaCards = (inputProps: InputProps) => (
   <Data {...inputProps}>

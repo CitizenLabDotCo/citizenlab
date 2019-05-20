@@ -5,9 +5,7 @@ import { render } from 'react-dom';
 // tslint:disable-next-line:no-vanilla-routing
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
-// Import CSS reset and Global Styles
 import 'assets/css/reset.min.css';
-import './global-styles';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import { init } from '@sentry/browser';

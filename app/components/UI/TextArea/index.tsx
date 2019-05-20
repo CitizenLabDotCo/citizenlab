@@ -163,7 +163,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
             onChange={this.handleOnChange}
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
-            innerRef={this.setRef}
+            ref={this.setRef}
             disabled={disabled}
           />
           {value && maxCharCount &&
