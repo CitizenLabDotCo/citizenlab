@@ -1,6 +1,8 @@
 namespace :carrierwave do
   desc "Recreate images when versions have changed"
-  task recreate_versions: :environment do
+  task :recreate_versions, [:models,:attributes] => [:environment] do |t, args|
+    models = args[:models]&.split
+    attributes = args[:attributes]&.split
     MODELS = {
       IdeaImage => ['image'],
       User => ['avatar'],
@@ -13,10 +15,13 @@ namespace :carrierwave do
       begin
         puts("Enqueueing #{tenant} RecreateVersionsJobs")
         Apartment::Tenant.switch(tenant) do
-          MODELS.each do |claz, attributes|
-            claz.all.each do |instance|
-              attributes.each do |attribute|
-                RecreateVersionsJob.perform_later(instance, attribute)
+          MODELS.each do |claz, attrs|
+            attrs = attrs.select{|attribute| attributes.include? attribute} if attributes
+            if !models || models.include?(claz.name)
+              claz.all.each do |instance|
+                attrs.each do |attribute|
+                  RecreateVersionsJob.perform_later(instance, attribute)
+                end
               end
             end
           end
