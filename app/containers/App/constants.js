@@ -66,3 +66,20 @@ exports.shortenedAppLocalePairs = {
     'es-CL': 'Español',
     ach: 'Acholi'
 };
+
+// the set of best corresponding moment locale for our supported locales
+// const momentDoesntSupport = ['fr-be', 'fr-fr', 'nl-nl', 'de-de', 'da-dk', 'nb-no', 'es-es', 'es-cl'];
+// en is built in, ach is obviously not supported.
+exports.appLocalesMomentPairs = {
+    'en-GB': 'en-gb',
+    'en-CA': 'en-ca',
+    'fr-BE': 'fr',
+    'fr-FR': 'fr',
+    'nl-BE': 'nl',
+    'nl-NL': 'nl',
+    'de-DE': 'de',
+    'da-DK': 'da',
+    'nb-NO': 'nb',
+    'es-ES': 'es',
+    'es-CL': 'es',
+};
