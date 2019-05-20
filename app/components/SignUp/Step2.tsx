@@ -156,9 +156,9 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  skipStep = (event: FormEvent) => {
+  skipStep = async (event: FormEvent) => {
     event.preventDefault();
-    completeRegistration({});
+    await completeRegistration({});
     this.props.onCompleted();
   }
 

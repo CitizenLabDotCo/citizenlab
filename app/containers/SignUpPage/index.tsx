@@ -1,8 +1,13 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import { get } from 'lodash-es';
+import { get, isString, isEmpty } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+
+// context
+import { PreviousPathnameContext } from 'context';
 
 // components
 import SignUp from 'components/SignUp';
@@ -12,8 +17,9 @@ import SignInUpBanner from 'components/SignInUpBanner';
 import eventEmitter from 'utils/eventEmitter';
 
 // analytics
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -81,21 +87,33 @@ const RightInner = styled.div`
   padding-right: 20px;
 `;
 
-interface Props {}
+interface InputProps {}
 
-interface ITracks {
-  successfulSignUp: () => void;
+interface DataProps {
+  previousPathName: string | null;
 }
 
-interface State {}
+interface Props extends InputProps, DataProps { }
 
-class SignUpPage extends PureComponent<Props & ITracks & WithRouterProps, State> {
+interface State {
+  goBackToUrl: string;
+}
+
+class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
 
-  constructor(props: Props & ITracks & WithRouterProps) {
+  constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      goBackToUrl: '/'
+    };
     this.subscriptions = [];
+  }
+
+  static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
+    const previousPathName = (nextProps.previousPathName ? removeLocale(nextProps.previousPathName).pathname : null);
+    const goBackToUrl = (isString(previousPathName) && !isEmpty(previousPathName) && previousPathName !== '/sign-in' ? previousPathName : '/');
+    return { goBackToUrl };
   }
 
   componentDidMount() {
@@ -111,9 +129,8 @@ class SignUpPage extends PureComponent<Props & ITracks & WithRouterProps, State>
   }
 
   onSignUpCompleted = () => {
-    clHistory.push('/');
-    // track signup for analytics
-    this.props.successfulSignUp();
+    trackEventByName(tracks.successfulSignUp);
+    clHistory.push(this.state.goBackToUrl);
   }
 
   render() {
@@ -142,5 +159,14 @@ class SignUpPage extends PureComponent<Props & ITracks & WithRouterProps, State>
   }
 }
 
-// Add router props and analytics (tracking) to the SignUpPage
-export default withRouter(injectTracks<Props>(tracks)(SignUpPage));
+const SignUpPageWithHoCs = withRouter(SignUpPage);
+
+const Data = adopt<DataProps, InputProps>({
+  previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <SignUpPageWithHoCs {...inputProps} {...dataProps} />}
+  </Data>
+);
