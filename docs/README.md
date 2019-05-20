@@ -1,5 +1,27 @@
 # Changelog
 
+## 2019-05-20
+
+### Fixed
+
+- Closing the notification menu after scrolling no longer results in a navbar error
+- When accessing the idea manager as a moderator, the assignee filter defaults to 'assigned to me'
+- The idea and comment counts on the profile page now update as expected
+- It's now possible to use a dropdown input in the 2nd registration step with a screen reader
+- An invited user can no longer request a password reset, thereby becoming an inconsistent user that resulted in lots of problems
+
+### Added
+
+- Restyle of the idea page
+  - Cleaner new style
+  - Opening an idea no longer appears to be a modal
+  - Properly styled similar ideas section
+  - Showing comment count and avatars of contributors
+
+### Changed
+
+- When clicking the edit button in the idea manager, the edit form now opens in the sidemodal
+
 ## 2019-05-15
 
 ### Fixed
