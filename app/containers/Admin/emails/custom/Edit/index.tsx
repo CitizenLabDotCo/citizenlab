@@ -12,6 +12,7 @@ import messages from '../../messages';
 import { withRouter, WithRouterProps } from 'react-router';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -30,7 +31,7 @@ interface Props extends InputProps, DataProps, WithRouterProps { }
 
 class Edit extends React.Component<Props> {
 
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
+  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
     updateCampaign(this.props.campaign.id, {
       ...values
     })
@@ -38,8 +39,12 @@ class Edit extends React.Component<Props> {
         clHistory.push(`/admin/emails/custom/${this.props.campaign.id}`);
       })
       .catch((errorResponse) => {
-        const apiErrors = errorResponse.json.errors;
-        setErrors(apiErrors);
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = errorResponse.json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
         setSubmitting(false);
       });
   }

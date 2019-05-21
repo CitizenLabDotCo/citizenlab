@@ -13,6 +13,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const Title = styled.h1`
   font-size: ${fontSizes.xxxl}px;
@@ -52,7 +53,7 @@ class EditPage extends React.Component<Props & WithRouterProps, State> {
 
   // Still need to handle file saving if we'll use this form.
   // Also change typing of values parameter to something different (probably FormValues) than 'any'
-  handleSubmit = (values: any, { setErrors, setSubmitting }) => {
+  handleSubmit = (values: any, { setErrors, setSubmitting, setStatus }) => {
     const { page } = this.props;
 
     if (isNilOrError(page)) return;
@@ -60,8 +61,12 @@ class EditPage extends React.Component<Props & WithRouterProps, State> {
     updatePage(page.id, { ...this.changedValues(this.initialValues(), values) }).then(() => {
       clHistory.push('/admin/pages');
     }).catch((errorResponse) => {
-      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-      setErrors(apiErrors);
+      if (isCLErrorJSON(errorResponse)) {
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+        setErrors(apiErrors);
+      } else {
+        setStatus('error');
+      }
       setSubmitting(false);
     });
   }

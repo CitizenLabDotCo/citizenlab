@@ -493,6 +493,7 @@
   "app.containers.Admin.emails.formTitleWhat": "Wat",
   "app.containers.Admin.emails.formTitleWhen": "Wanneer",
   "app.containers.Admin.emails.formTitleWho": "Wie",
+  "app.containers.Admin.emails.formUnexpectedErrorMessage": "",
   "app.containers.Admin.emails.helmetDescription": "Send out manual emails to certain citizen group and active automated campaigns",
   "app.containers.Admin.emails.helmetTitle": "E-mailcampagnes",
   "app.containers.Admin.emails.manageButtonLabel": "Beheren",

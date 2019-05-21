@@ -7,6 +7,7 @@ import { ICustomFieldData, updateCustomFieldForUsers, isBuiltInField } from 'ser
 
 import CustomFieldForm, { FormValues } from '../CustomFieldForm';
 import { Formik } from 'formik';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 type Props = {
   customField: ICustomFieldData;
@@ -34,7 +35,7 @@ class General extends React.Component<Props, State> {
     return pick(newValues, changedKeys);
   }
 
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
+  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
     const { customField } = this.props;
     if (!customField) return;
 
@@ -45,8 +46,12 @@ class General extends React.Component<Props, State> {
         clHistory.push('/admin/settings/registration');
       })
       .catch((errorResponse) => {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
         setSubmitting(false);
       });
   }
