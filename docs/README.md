@@ -5,6 +5,7 @@
 
 - The idea page does no longer retain its previous scroll position when closing and reopening it
 - The Similar Ideas box no longer has a problem with long idea titles not fitting inside of the box
+- The Similar Ideas box content did not update when directly navigating from one idea page to the next
 - The 'What were you looking for?' modal no longer gives an error when trying to open it
 
 ### Changed
