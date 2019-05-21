@@ -20,6 +20,17 @@ export function isEmptyMultiloc(multiloc: Multiloc) {
 
   return !validTranslation;
 }
+export function isFullMultiloc(multiloc: Multiloc) {
+  for (const lang in multiloc) {
+    if (Object.prototype.hasOwnProperty.call(multiloc, lang)) {
+      if (multiloc[lang].length === 0) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
 
 export function isNonEmptyString(str: string) {
   return isString(str) && trim(str) !== '';
