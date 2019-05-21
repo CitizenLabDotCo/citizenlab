@@ -391,13 +391,13 @@ resource "Ideas" do
     example_request "List idea counts per filter option" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      
-      expect(json_response[:idea_status_id][@s1.id]).to eq 1
-      expect(json_response[:idea_status_id][@s2.id]).to eq 3
-      expect(json_response[:area_id][@a1.id]).to eq 3
-      expect(json_response[:area_id][@a2.id]).to eq 1
-      expect(json_response[:topic_id][@t1.id]).to eq 2
-      expect(json_response[:topic_id][@t2.id]).to eq 2
+
+      expect(json_response[:idea_status_id][@s1.id.to_sym]).to eq 1
+      expect(json_response[:idea_status_id][@s2.id.to_sym]).to eq 3
+      expect(json_response[:area_id][@a1.id.to_sym]).to eq 3
+      expect(json_response[:area_id][@a2.id.to_sym]).to eq 1
+      expect(json_response[:topic_id][@t1.id.to_sym]).to eq 2
+      expect(json_response[:topic_id][@t2.id.to_sym]).to eq 2
     end
   end
 
