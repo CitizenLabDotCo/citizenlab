@@ -1,5 +1,8 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
+import shallowCompare from 'utils/shallowCompare';
+import { Subscription, BehaviorSubject, of } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { isString } from 'lodash-es';
 import { IMinimalIdeaData, similarIdeas } from 'services/ideas';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -20,8 +23,13 @@ interface State {
 
 export type GetSimilarIdeasChildProps = IMinimalIdeaData[] | undefined | null | Error;
 
-export default class GetAreas extends React.Component<Props, State> {
+export default class GetSimilarIdeas extends React.Component<Props, State> {
+  private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
+
+  static defaultProps = {
+    pageSize: 5
+  };
 
   constructor(props: Props) {
     super(props);
@@ -31,15 +39,33 @@ export default class GetAreas extends React.Component<Props, State> {
   }
 
   componentDidMount() {
+    const { ideaId, pageSize } = this.props;
+
+    this.inputProps$ = new BehaviorSubject({ ideaId, pageSize });
+
     this.subscriptions = [
-      similarIdeas(this.props.ideaId, { queryParameters: {
-        'page[size]': this.props.pageSize || 5,
-      }})
-        .observable
-        .subscribe(ideas => {
-          this.setState({ ideas: !isNilOrError(ideas) ? ideas.data : ideas });
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        switchMap(({ ideaId, pageSize }) => {
+          if (isString(ideaId)) {
+            return similarIdeas(ideaId, {
+              queryParameters: {
+                'page[size]': pageSize
+              }
+            }).observable;
+          }
+
+          return of(null);
         })
+      ).subscribe((ideas) => {
+        this.setState({ ideas: !isNilOrError(ideas) ? ideas.data : ideas });
+      })
     ];
+  }
+
+  componentDidUpdate() {
+    const { ideaId, pageSize } = this.props;
+    this.inputProps$.next({ ideaId, pageSize });
   }
 
   componentWillUnmount() {
