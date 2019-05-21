@@ -25,7 +25,7 @@ const Content = styled.div`
   max-width: ${ideaPageContentMaxWidth};
   margin-left: auto;
   margin-right: auto;
-  margin-top: 80px;
+  margin-top: 70px;
   padding-left: 60px;
   padding-right: 60px;
   padding-bottom: 60px;
