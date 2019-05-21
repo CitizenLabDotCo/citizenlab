@@ -1,7 +1,7 @@
 class WebApi::V1::IdeasController < ApplicationController
 
   before_action :set_idea, only: [:show, :update, :destroy]
-  skip_after_action :verify_authorized, only: [:index_xlsx, :index_idea_markers]
+  skip_after_action :verify_authorized, only: [:index_xlsx, :index_idea_markers, :filter_counts]
   
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
@@ -89,6 +89,26 @@ class WebApi::V1::IdeasController < ApplicationController
       xlsx = XlsxService.new.generate_ideas_xlsx @ideas
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
+  end
+
+  def filter_counts
+    @ideas = policy_scope(Idea).left_outer_joins(:idea_trending_info)
+    @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
+    counts = {
+      'idea_status_id' => {},
+      'area_id' => {},
+      'topic_id' => {}
+    } 
+    @ideas.joins(:ideas_topics).joins(:areas_ideas)
+      .select('idea_status_id, area_id, topic_id, COUNT(DISTINCT(ideas.id)) as count')
+      .group('GROUPING SETS (idea_status_id, area_id, topic_id)')
+      .each do |record|
+        %w(idea_status_id area_id topic_id).each do |attribute|
+          id = record.send attribute
+          counts[attribute][id] = record.count if id
+        end
+      end
+    render json: counts
   end
 
   def show
