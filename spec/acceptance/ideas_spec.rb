@@ -31,6 +31,7 @@ resource "Ideas" do
     parameter :publication_status, "Filter by publication status; returns all publlished ideas by default", required: false
     parameter :project_publication_status, "Filter by project publication_status. One of #{Project::PUBLICATION_STATUSES.join(", ")}", required: false
     parameter :feedback_needed, "Filter out ideas that need feedback", required: false
+    parameter :filter_trending, "Filter out truly trending ideas", required: false
 
     example_request "List all published ideas (default behaviour)" do
       expect(status).to eq(200)
@@ -275,12 +276,14 @@ resource "Ideas" do
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
-    parameter :author, 'Filter by author (user id)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
     parameter :bounding_box, "Given an [x1,y1,x2,y2] array of doubles (x being latitude and y being longitude), the idea markers are filtered to only retain those within the (x1,y1)-(x2,y2) box.", required: false
     parameter :project_publication_status, "Filter by project publication_status. One of #{Project::PUBLICATION_STATUSES.join(", ")}", required: false
+    parameter :feedback_needed, "Filter out ideas that need feedback", required: false
+    parameter :filter_trending, "Filter out truly trending ideas", required: false
 
     example "List all idea markers within a bounding box" do
       do_request(bounding_box: "[51.208758,3.224363,50.000667,5.715281]") # Bruges-Bastogne
@@ -342,6 +345,59 @@ resource "Ideas" do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq (@selected_ideas.size + 1)
       end
+    end
+  end
+
+
+  get "web_api/v1/ideas/filter_counts" do
+    before do
+      @project = create(:project)
+      
+      @t1 = create(:topic)
+      @t2 = create(:topic)
+      @a1 = create(:area)
+      @a2 = create(:area)
+      @s1 = create(:idea_status)
+      @s2 = create(:idea_status)
+      @i1 = create(:idea, project: @project, topics: [@t1, @t2], areas: [@a1], idea_status: @s1)
+      @i2 = create(:idea, project: @project, topics: [@t1], areas: [@a1, @a2], idea_status: @s2)
+      @i3 = create(:idea, project: @project, topics: [@t2], areas: [], idea_status: @s2)
+      @i4 = create(:idea, project: @project, topics: [], areas: [@a1], idea_status: @s2)
+      create(:idea, topics: [@t1, @t2], areas: [@a1, @a2], idea_status: @s1)
+
+      # a1 -> 3
+      # a2 -> 1
+      # t1 -> 2
+      # t2 -> 2
+      # s1 -> 1
+      # s2 -> 3
+    end
+
+    parameter :topics, 'Filter by topics (OR)', required: false
+    parameter :areas, 'Filter by areas (OR)', required: false
+    parameter :projects, 'Filter by projects (OR)', required: false
+    parameter :phase, 'Filter by project phase', required: false
+    parameter :author, 'Filter by author (user id)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false
+    parameter :idea_status, 'Filter by status (idea status id)', required: false
+    parameter :search, 'Filter by searching in title, body and author name', required: false
+    parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
+    parameter :project_publication_status, "Filter by project publication_status. One of #{Project::PUBLICATION_STATUSES.join(", ")}", required: false
+    parameter :feedback_needed, "Filter out ideas that need feedback", required: false
+    parameter :filter_trending, "Filter out truly trending ideas", required: false
+
+    let(:projects) {[@project.id]}
+
+    example_request "List idea counts per filter option" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      
+      expect(json_response[:idea_status_id][@s1.id]).to eq 1
+      expect(json_response[:idea_status_id][@s2.id]).to eq 3
+      expect(json_response[:area_id][@a1.id]).to eq 3
+      expect(json_response[:area_id][@a2.id]).to eq 1
+      expect(json_response[:topic_id][@t1.id]).to eq 2
+      expect(json_response[:topic_id][@t2.id]).to eq 2
     end
   end
 
