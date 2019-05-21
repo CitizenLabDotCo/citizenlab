@@ -9,14 +9,7 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-export type IGraphUnit = 'users' | 'ideas' | 'comments';
-
-export type IResolution = 'day' | 'week' | 'month';
-
-interface Props {
-}
-
-export class InitiativesPage extends React.PureComponent<Props & InjectedIntlProps> {
+export class InitiativesPage extends React.PureComponent<InjectedIntlProps> {
   private tabs = [
     { label: this.props.intl.formatMessage(messages.tabSettings), url: '/admin/initiatives' },
     // TODO  { label: this.props.intl.formatMessage(messages.tabManage), url: '/admin/initiatives/manage' },
