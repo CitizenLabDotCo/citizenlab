@@ -22,7 +22,7 @@ export interface InjectedLocalized {
 }
 
 export interface State {
-  locale: Locale;
+  locale: Locale | null;
   tenantLocales: Locale[];
 }
 
@@ -34,7 +34,7 @@ export default function injectLocalize<P>(Component: React.ComponentType<P & Inj
     constructor(props) {
       super(props);
       this.state = {
-        locale: 'en',
+        locale: null,
         tenantLocales: [],
       };
       this.subscriptions = [];
@@ -62,7 +62,10 @@ export default function injectLocalize<P>(Component: React.ComponentType<P & Inj
     }
 
     localize = (multiloc: Multiloc, maxChar?: number) => {
-      return getLocalized(multiloc, this.state.locale, this.state.tenantLocales, maxChar);
+      if (this.state.locale) {
+        return getLocalized(multiloc, this.state.locale, this.state.tenantLocales, maxChar);
+      }
+      return '';
     }
 
     render() {

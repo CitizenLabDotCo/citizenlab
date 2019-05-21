@@ -240,11 +240,11 @@ const PhaseButton = styled(Button)`
   }
 `;
 
-const PreviousPhaseButton = PhaseButton.extend`
+const PreviousPhaseButton = styled(PhaseButton)`
   margin-right: 8px;
 `;
 
-const NextPhaseButton = PhaseButton.extend``;
+const NextPhaseButton = styled(PhaseButton)``;
 
 const Phases = styled.div`
   width: 100%;

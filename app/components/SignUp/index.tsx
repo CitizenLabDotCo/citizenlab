@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 
 // libraries
@@ -102,6 +102,7 @@ const Title = styled.h1`
   font-weight: 500;
   text-align: left;
   margin-bottom: 35px;
+  outline: none;
 `;
 
 const SignupHelperText = styled.p`
@@ -126,15 +127,15 @@ interface DataProps {
   customFieldsSchema: GetCustomFieldsSchemaChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   visibleStep: 'step1' | 'step2';
   userId: string | null;
 }
 
-class SignUp extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+class SignUp extends PureComponent<Props, State> {
+  constructor(props) {
     super(props);
     this.state = {
       visibleStep: 'step1',
@@ -165,6 +166,14 @@ class SignUp extends React.PureComponent<Props, State> {
 
   goToSignIn = () => {
     clHistory.push('/sign-in');
+  }
+
+  focusTitle = (titleEl: HTMLHeadingElement | null) => {
+
+    // focus step 2 page title to make the custom field easily reachable with keyboard navigation
+    // hitting the tab key once should bring the user to the first custom field
+    // before the user had to navigate the entire navbar first
+    titleEl && titleEl.focus();
   }
 
   render() {
@@ -217,7 +226,7 @@ class SignUp extends React.PureComponent<Props, State> {
                 classNames="step"
               >
                 <StepContainer>
-                  <Title>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
+                  <Title tabIndex={0} ref={this.focusTitle}>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
                   <Step2 onCompleted={this.handleStep2Completed} />
                 </StepContainer>
               </CSSTransition>

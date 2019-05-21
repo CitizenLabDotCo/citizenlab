@@ -243,7 +243,7 @@ class CLMap extends React.PureComponent<Props, State> {
   render() {
     return (
       <Container className={this.props['className']}>
-        <div id="map-container" ref={this.bindMapContainer} />
+        <div id="e2e-map" ref={this.bindMapContainer} />
       </Container>
     );
   }

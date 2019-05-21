@@ -234,7 +234,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />
 });
 
-const SignedOutHeaderWithHoC = withTheme<Props, State>(SignedOutHeader);
+const SignedOutHeaderWithHoC = withTheme(SignedOutHeader);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

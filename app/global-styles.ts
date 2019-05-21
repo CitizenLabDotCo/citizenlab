@@ -1,4 +1,4 @@
-import { injectGlobal } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 import {
   larsseitThinTTF,
@@ -39,7 +39,7 @@ import {
   larsseitExtraBoldItalicWOFF2
 } from './fonts';
 
-export default injectGlobal`
+const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'larsseit';
     src:  url(${larsseitThinWOFF2}) format('woff2'),
@@ -161,11 +161,14 @@ export default injectGlobal`
   html,
   body {
     background-color: #fff;
-    font-family: 'larsseit', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: ${fontSizes.small}px;
     height: 100%;
     position: relative;
     width: 100%;
+  }
+
+  html, body, h1, h2, h3, h4, h5, button, input, optgroup, select, textarea {
+    font-family: ${(props: any) => props.theme.fontFamily}, 'larsseit', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   }
 
   h3 {
@@ -177,3 +180,5 @@ export default injectGlobal`
     line-height: 1.5em;
   }
 `;
+
+export default GlobalStyle;

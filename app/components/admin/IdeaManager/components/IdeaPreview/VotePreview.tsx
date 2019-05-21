@@ -1,52 +1,75 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-import GetIdeaVotesCount, { GetIdeaVotesCountChildProps } from 'resources/GetIdeaVotesCount';
-
+// components
 import Icon from 'components/UI/Icon';
 
-import styled from 'styled-components';
+// resources
+import GetIdeaVotesCount, { GetIdeaVotesCountChildProps } from 'resources/GetIdeaVotesCount';
+
+// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { colors, fontSizes } from 'utils/styleUtils';
-import Label from 'components/UI/Label';
 
-const VoteIcon: any = styled(Icon)`
-  height: 18px;
+// styling
+import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Label = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  margin-right: 20px;
+`;
+
+const Block = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const VotesContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const UpvotesContainer = styled(VotesContainer)`
+  margin-right: 20px;
+`;
+
+const DownvotesContainer = styled(VotesContainer)``;
+
+const VoteIcon = styled(Icon)`
   width: 20px;
-  fill: ${colors.clRed};
-  position: absolute;
-  top: 2px;
+  height: 18px;
+  margin-right: 5px;
 `;
 
 const UpvoteIcon = styled(VoteIcon)`
   fill: ${colors.clGreen};
-  position: absolute;
-  top: -1px;
+  margin-top: -2px;
 `;
 
-const IconContainer = styled.div`
-  position: relative;
-  width: 20px;
-  margin-right: 5px;
+const DownvoteIcon = styled(VoteIcon)`
+  fill: ${colors.clRed};
+  margin-top: 6px;
 `;
 
-const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-right: 30px;
-  & > div {
-    display: flex;
-  }
-`;
-
-const Votes = styled.div`
+const VotesCount = styled.div`
   font-size: ${fontSizes.large};
   font-weight: 600;
-  color: ${colors.clRed};
 `;
-const UpVotes = styled(Votes)`
+
+const UpvotesCount = styled(VotesCount)`
   color: ${colors.clGreen};
+`;
+
+const DownvotesCount = styled(VotesCount)`
+  color: ${colors.clRed};
 `;
 
 interface DataProps {
@@ -60,33 +83,33 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-const VotePreview = (props: Props) => {
-  const { votesCount, className } = props;
+const VotePreview = memo<Props>(({ votesCount, className }) => {
   if (!isNilOrError(votesCount)) {
     return (
       <Container className={className}>
-        <Label value={<FormattedMessage {...messages.voteCounts} />}/>
-        <div>
-          <IconContainer>
+        <Label>
+          <FormattedMessage {...messages.voteCounts} />
+        </Label>
+        <Block>
+          <UpvotesContainer>
             <UpvoteIcon name="upvote-2"/>
-          </IconContainer>
-          <UpVotes>
-            {votesCount.up}
-          </UpVotes>
-        </div>
-        <div>
-          <IconContainer>
-            <VoteIcon name="downvote-2"/>
-          </IconContainer>
-          <Votes>
-            {votesCount.down}
-          </Votes>
-        </div>
+            <UpvotesCount>
+              {votesCount.up}
+            </UpvotesCount>
+          </UpvotesContainer>
+          <DownvotesContainer>
+            <DownvoteIcon name="downvote-2"/>
+            <DownvotesCount>
+              {votesCount.down}
+            </DownvotesCount>
+          </DownvotesContainer>
+        </Block>
       </Container>
     );
   }
+
   return null;
-};
+});
 
 export default (inputProps: InputProps) => (
   <GetIdeaVotesCount ideaId={inputProps.ideaId}>

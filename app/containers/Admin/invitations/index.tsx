@@ -81,12 +81,12 @@ const ViewButton = styled.button`
   }
 `;
 
-const LeftButton = ViewButton.extend`
+const LeftButton = styled(ViewButton)`
   border-top-left-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-const RightButton = ViewButton.extend`
+const RightButton = styled(ViewButton)`
   border-top-right-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
 `;

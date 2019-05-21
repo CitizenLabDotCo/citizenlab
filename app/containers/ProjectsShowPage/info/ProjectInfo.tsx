@@ -151,6 +151,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
             {(title) => {
               return (
                 <Sharing
+                  context="project"
                   url={projectUrl}
                   twitterMessage={formatMessage(messages.twitterMessage, { title })}
                   utmParams={utmParams}

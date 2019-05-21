@@ -38,4 +38,4 @@ class QuillEditedContent extends PureComponent<Props, State> {
   }
 }
 
-export default withTheme<Props, State>(QuillEditedContent);
+export default withTheme(QuillEditedContent);

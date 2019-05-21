@@ -90,6 +90,7 @@ export default class SelectTopic extends PureComponent<Props, State> {
             values={options}
             onChange={this.handleOnChange}
             multiple={true}
+            last={true}
             right="-10px"
             mobileLeft="-5px"
           />

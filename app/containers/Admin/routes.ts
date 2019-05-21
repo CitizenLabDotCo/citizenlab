@@ -20,6 +20,8 @@ import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 import { currentTenantStream } from 'services/tenant';
 import { combineLatest } from 'rxjs';
+import { authUserStream } from 'services/auth';
+import { isModerator } from 'services/permissions/roles';
 
 const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
@@ -29,11 +31,14 @@ const isUserAuthorized = (nextState, replace) => {
       item: { type: 'route', path: pathname },
       action: 'access'
     }),
-    currentTenantStream().observable
-  ).subscribe(([accessAthorized, tenant]) => {
+    currentTenantStream().observable,
+    authUserStream().observable,
+  ).subscribe(([accessAthorized, tenant, authUser]) => {
     if (!accessAthorized) {
       if (tenant.data.attributes.settings.core.lifecycle_stage === 'churned') {
         replace(`${urlLocale && `/${urlLocale}`}/subscription-ended`);
+      } else if (isModerator(authUser)) {
+        replace(`${urlLocale && `/${urlLocale}`}/`);
       } else {
         replace(`${urlLocale && `/${urlLocale}`}/sign-in/`);
       }

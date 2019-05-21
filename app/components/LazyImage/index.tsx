@@ -18,7 +18,7 @@ const Image = styled.img`
   }
 `;
 
-export interface Props {
+interface Props {
   src: HTMLImageElement['src'];
   alt?: HTMLImageElement['alt'];
   role?: string;

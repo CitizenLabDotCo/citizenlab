@@ -21,7 +21,7 @@ const Container = styled.div`
 `;
 
 interface InputProps {
-  assignee: string;
+  assignee: string | undefined;
   project?: string;
   phase?: string;
   topics?: string[];

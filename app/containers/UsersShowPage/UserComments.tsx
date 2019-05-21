@@ -4,21 +4,23 @@ import { adopt } from 'react-adopt';
 
 // components
 import IdeaCommentGroup from './IdeaCommentGroup';
+import Button from 'components/UI/Button';
 
 // resources
 import GetCommentsForUser, { GetCommentsForUserChildProps } from 'resources/GetCommentsForUser';
-import { ICommentData } from 'services/comments';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import Button from 'components/UI/Button';
 
-// intl
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { darken, rgba } from 'polished';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
+// typings
+import { ICommentData } from 'services/comments';
 
 const Container = styled.div`
   display: flex;
@@ -138,7 +140,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />
 });
 
-const UserCommentsWithHocs = withTheme<Props, {}>(UserComments);
+const UserCommentsWithHocs = withTheme(UserComments);
 
 const WrappedUserComments = (inputProps: InputProps) => (
   <Data {...inputProps}>

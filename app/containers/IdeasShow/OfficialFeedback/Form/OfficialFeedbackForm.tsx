@@ -1,6 +1,7 @@
 // libraries
 import React, { Component } from 'react';
-import { values as getValues, every } from 'lodash-es';
+import { isEmpty, uniq } from 'lodash-es';
+import { adopt } from 'react-adopt';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -22,10 +23,9 @@ import { Multiloc, Locale, MultilocFormValues } from 'typings';
 // stylings
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
-import GetLocale from 'resources/GetLocale';
 
-// utils
-import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 const ButtonContainer = styled.div`
   >:not(:last-child) {
@@ -37,11 +37,16 @@ const CancelButton = styled(Button)`
   margin-top: 10px;
 `;
 
-export interface Props {
-  locale: Locale;
+interface DataProps {
+  locale: GetLocaleChildProps;
+}
+
+interface InputProps {
   onCancel?: () => void;
   editForm?: boolean;
 }
+
+export interface Props extends DataProps, InputProps {}
 
 export interface FormValues extends MultilocFormValues {
   author_multiloc: Multiloc;
@@ -49,7 +54,7 @@ export interface FormValues extends MultilocFormValues {
 }
 
 interface State {
-  selectedLocale: Locale;
+  selectedLocale: GetLocaleChildProps;
 }
 
 class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikProps<FormValues>, State> {
@@ -90,6 +95,8 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
   render() {
     const { isSubmitting, isValid, touched, values, onCancel, editForm, status } = this.props;
     const { selectedLocale } = this.state;
+
+    if (!selectedLocale) return null;
 
     return (
       <Form>
@@ -139,16 +146,57 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
   }
 }
 
-const OfficialFeedbackFormWithIntl = injectIntl(OfficialFeedbackForm);
-class OfficialFeedbackFormWithHoCs extends Component<Props & FormikProps<FormValues>> {
+const OfficialFeedbackFormWithIntl = injectIntl<Props>(OfficialFeedbackForm);
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />
+});
+
+export default class OfficialFeedbackFormWithHoCs extends Component<Props & FormikProps<FormValues>> {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
 
-    if (!every(getValues(values.author_multiloc), isNonEmptyString)) {
-      errors.author_multiloc = [{ error: 'blank' }] as any;
-    }
-    if (!every(getValues(values.body_multiloc), isNonEmptyString)) {
-      errors.body_multiloc = [{ error: 'blank' }] as any;
+    // Get array of locales that has an author and/or body content based on the combined keys of both the author and body objects
+    const locales: string[] = uniq([...Object.keys(values.author_multiloc), ...Object.keys(values.body_multiloc)]);
+
+    // First loop over both the author and body content values for each locale
+    // and determine whether or not one of them is empty while the other is not.
+    // If that's the case, set the error for the value (author or body) that's empty.
+    locales.forEach((locale) => {
+      if ((isEmpty(values.author_multiloc[locale]) && !isEmpty(values.body_multiloc[locale])) || (!isEmpty(values.author_multiloc[locale]) && isEmpty(values.body_multiloc[locale]))) {
+        if (isEmpty(values.author_multiloc[locale])) {
+          errors.author_multiloc = [{ error: 'blank' }] as any;
+        }
+
+        if (isEmpty(values.body_multiloc[locale])) {
+          errors.body_multiloc = [{ error: 'blank' }] as any;
+        }
+      }
+    });
+
+    // If the errors object is still empty after the previous loop do a secondary check
+    // to see if there is at least one locale that has both author and body text.
+    if (isEmpty(errors)) {
+      let hasOneOrMoreValidatedLocales = false;
+
+      locales.forEach((locale) => {
+        if (!isEmpty(values.author_multiloc[locale]) && !isEmpty(values.body_multiloc[locale])) {
+          hasOneOrMoreValidatedLocales = true;
+        }
+      });
+
+      // If there are no valid locales, than loop through them again and set error where the value is empty
+      if (!hasOneOrMoreValidatedLocales) {
+        locales.forEach((locale) => {
+          if (isEmpty(values.author_multiloc[locale])) {
+            errors.author_multiloc = [{ error: 'blank' }] as any;
+          }
+
+          if (isEmpty(values.body_multiloc[locale])) {
+            errors.body_multiloc = [{ error: 'blank' }] as any;
+          }
+        });
+      }
     }
 
     return errors;
@@ -156,9 +204,9 @@ class OfficialFeedbackFormWithHoCs extends Component<Props & FormikProps<FormVal
 
   render() {
     return (
-      <GetLocale>
-        {locale => isNilOrError(locale) ? null :  <OfficialFeedbackFormWithIntl {...this.props} locale={locale} />}
-      </GetLocale>
+      <Data {...this.props}>
+        {dataProps => <OfficialFeedbackFormWithIntl {...this.props} {...dataProps} />}
+      </Data>
     );
   }
 }
@@ -173,5 +221,3 @@ export const formatMentionsBodyMultiloc = (bodyMultiloc: Multiloc): Multiloc => 
 
   return formattedMentionsBodyMultiloc;
 };
-
-export default OfficialFeedbackFormWithHoCs;
