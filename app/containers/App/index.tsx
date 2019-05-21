@@ -8,7 +8,7 @@ import 'moment-timezone';
 import { configureScope } from '@sentry/browser';
 import WebFont from 'webfontloader';
 
-const localesMomentPairs = require('containers/App/constants.js').appLocalesMomentPairs;
+import { appLocalesMomentPairs } from 'containers/App/constants';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -153,11 +153,14 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         })),
         locale$,
         tenant$.pipe(tap((tenant) => {
-          uniq(tenant.data.attributes.settings.core.locales.filter(locale => locale !== 'en', 'ach').map(locale => localesMomentPairs[locale])).forEach(locale => require(`moment/locale/${locale}.js`));
+          uniq(tenant.data.attributes.settings.core.locales
+            .filter(locale => locale !== 'en' && locale !== 'ach')
+            .map(locale => appLocalesMomentPairs[locale]))
+            .forEach(locale => require(`moment/locale/${locale}.js`));
           moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
         }))
       ).subscribe(([authUser, locale, tenant]) => {
-        const momenLoc = localesMomentPairs[locale] || 'en';
+        const momenLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momenLoc);
         this.setState({ tenant, authUser });
       }),
