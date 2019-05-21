@@ -54,8 +54,8 @@ services:
     stdin_open: true
 
   rabbitmq:
+    container_name: cl2-back-rabbit
     image: 'rabbitmq:3.7-alpine'
-    hostname: cl2-rabbit
 
   mailcatcher:
     image: 'schickling/mailcatcher'
