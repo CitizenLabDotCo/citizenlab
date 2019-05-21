@@ -5,6 +5,7 @@ import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 import { currentTenantStream } from 'services/tenant';
 import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
+import { isNilOrError } from 'utils/helperUtils';
 
 type State = {
   tenantName: string | null;
@@ -37,11 +38,13 @@ export default class FormattedMessage extends React.PureComponent<Props, State> 
         locale$,
         currentTenant$
       ).subscribe(([locale, tenant]) => {
-        const tenantLocales = tenant.data.attributes.settings.core.locales;
-        const tenantName = tenant.data.attributes.name;
-        const orgName = getLocalized(tenant.data.attributes.settings.core.organization_name, locale, tenantLocales);
-        const orgType = tenant.data.attributes.settings.core.organization_type;
-        this.setState({ tenantName, orgName, orgType, loaded: true });
+        if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+          const tenantLocales = tenant.data.attributes.settings.core.locales;
+          const tenantName = tenant.data.attributes.name;
+          const orgName = getLocalized(tenant.data.attributes.settings.core.organization_name, locale, tenantLocales);
+          const orgType = tenant.data.attributes.settings.core.organization_type;
+          this.setState({ tenantName, orgName, orgType, loaded: true });
+        }
       })
     ];
   }

@@ -55,7 +55,7 @@ export default class NormalGroupForm extends React.Component<InjectedFormikProps
   }
 
   render() {
-    const { isSubmitting, errors, isValid, touched } = this.props;
+    const { isSubmitting, errors, isValid, touched, status } = this.props;
 
     return (
       <Form>

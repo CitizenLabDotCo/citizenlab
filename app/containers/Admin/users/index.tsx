@@ -48,6 +48,7 @@ import { IGroupData, addGroup } from 'services/groups';
 
 // Typings
 import { CLErrorsJSON } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 export interface Props {}
 
@@ -92,12 +93,16 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
     return null;
   }
 
-  handleSubmitForm = (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting }) => {
+  handleSubmitForm = (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting, setStatus }) => {
     addGroup({ ...values }).then(() => {
       this.closeGroupCreationModal();
     }).catch((errorResponse) => {
-      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-      setErrors(apiErrors);
+      if (isCLErrorJSON(errorResponse)) {
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+        setErrors(apiErrors);
+      } else {
+        setStatus('error');
+      }
       setSubmitting(false);
     });
   }

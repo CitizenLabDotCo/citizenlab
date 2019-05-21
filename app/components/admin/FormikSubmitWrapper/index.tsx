@@ -34,6 +34,8 @@ class FormikSubmitWrapper extends React.PureComponent<Props, State> {
       return 'disabled';
     }
 
+    if (status === 'error') return 'error';
+
     return 'enabled';
   }
 

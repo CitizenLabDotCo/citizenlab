@@ -19,6 +19,7 @@ import messages from './messages';
 
 // Typing
 import { CLErrorsJSON } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 export interface InputProps { }
 
@@ -38,15 +39,19 @@ class ProjectDescription extends React.PureComponent<Props> {
       setStatus(null);
 
       // Send the values to the API
-      updateProject(project.id, values).catch((errorResponse) => {
-        // Process errors from the API and push them to the Formik context
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-        setSubmitting(false);
-      }).then(() => {
+      updateProject(project.id, values).then(() => {
         // Reset the Formik context for touched and errors tracking
         resetForm();
         setStatus('success');
+      }).catch((errorResponse) => {
+        // Process errors from the API and push them to the Formik context
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
+        setSubmitting(false);
       });
     }
   }
@@ -56,12 +61,12 @@ class ProjectDescription extends React.PureComponent<Props> {
 
     return (
       <>
-      <SectionTitle>
-        <FormattedMessage {...messages.titleDescription} />
-      </SectionTitle>
-      <SectionSubtitle>
-        <FormattedMessage {...messages.subtitleDescription} />
-      </SectionSubtitle>
+        <SectionTitle>
+          <FormattedMessage {...messages.titleDescription} />
+        </SectionTitle>
+        <SectionSubtitle>
+          <FormattedMessage {...messages.subtitleDescription} />
+        </SectionSubtitle>
         <Formik
           onSubmit={this.saveProject}
           initialValues={{
@@ -73,13 +78,13 @@ class ProjectDescription extends React.PureComponent<Props> {
             <DescriptionEditionForm {...formikProps} />
           )}
         </Formik>
-        </>
+      </>
     );
   }
 }
 
 export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
   <GetProject id={inputProps.params.projectId}>
-    {project => !isNilOrError(project) ? < ProjectDescription {...inputProps} project={project} /> : null}
+    {project => !isNilOrError(project) ? <ProjectDescription {...inputProps} project={project} /> : null}
   </GetProject>
 ));

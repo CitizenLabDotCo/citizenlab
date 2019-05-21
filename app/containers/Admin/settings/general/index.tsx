@@ -29,6 +29,7 @@ import {
 // Utils
 import getSubmitState from 'utils/getSubmitState';
 import InfoTooltip from 'components/admin/InfoTooltip';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface Props {}
 
@@ -129,6 +130,7 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
       updateTenant(tenant.id, attributesDiff).then(() => {
         this.setState({ saved: true, attributesDiff: {}, loading: false });
       }).catch((e) => {
+        if (isCLErrorJSON(e)) {
         const errors = e.json.errors;
         this.setState({ errors, loading: false });
         // This error check uses an undocumented API from the backend.
@@ -139,7 +141,9 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
             this.setState({ hasUrlError: true });
           }
         }
-
+      } else {
+        this.setState({ errors: e, loading: false });
+      }
       });
     }
   }
