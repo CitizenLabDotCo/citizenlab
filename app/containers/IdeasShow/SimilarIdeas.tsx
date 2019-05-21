@@ -49,12 +49,18 @@ const IdeaList = styled.ul`
 `;
 
 const IdeaListItem = styled.li`
-  white-space: nowrap;
-  text-overflow: ellipsis;
   color: ${colors.label};
-  line-height: 1.5em;
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   margin-left: 25px;
-  font-size: ${fontSizes.small}px;
+  margin-bottom: 15px;
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
 `;
 
 const IdeaLink = styled(Link)`

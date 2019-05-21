@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 
 // libraries
@@ -127,15 +127,15 @@ interface DataProps {
   customFieldsSchema: GetCustomFieldsSchemaChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   visibleStep: 'step1' | 'step2';
   userId: string | null;
 }
 
-class SignUp extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+class SignUp extends PureComponent<Props, State> {
+  constructor(props) {
     super(props);
     this.state = {
       visibleStep: 'step1',

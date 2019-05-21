@@ -1,4 +1,16 @@
 # Changelog
+## 2019-05-21
+
+### Fixed
+
+- The idea page does no longer retain its previous scroll position when closing and reopening it
+- The Similar Ideas box no longer has a problem with long idea titles not fitting inside of the box
+- The Similar Ideas box content did not update when directly navigating from one idea page to the next
+- The 'What were you looking for?' modal no longer gives an error when trying to open it
+
+### Changed
+
+- You now get redirected to the previosuly visited page instead of the landing page after you've completed the signup process
 
 ## 2019-05-20
 
