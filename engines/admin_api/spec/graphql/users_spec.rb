@@ -1,15 +1,11 @@
 RSpec.describe "Graphql user" do
   let(:context) { {} }
   let(:result) {
-    res = AdminApi::Schema.execute(
+    AdminApi::Schema.execute(
       query_string,
       context: context,
       variables: variables
     )
-    if res["errors"]
-      pp res
-    end
-    res
   }
 
   describe "user" do
