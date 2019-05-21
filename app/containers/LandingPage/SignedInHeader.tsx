@@ -157,9 +157,9 @@ const HeaderContent = styled.div`
   `}
 `;
 
-const HeaderContentCompleteProfile = HeaderContent.extend``;
-const HeaderContentCustomCta = HeaderContent.extend``;
-const HeaderContentDefault = HeaderContent.extend`
+const HeaderContentCompleteProfile = styled(HeaderContent)``;
+const HeaderContentCustomCta = styled(HeaderContent)``;
+const HeaderContentDefault = styled(HeaderContent)`
   justify-content: center;
 
   p {
@@ -384,7 +384,7 @@ const Data = adopt<DataProps, InputProps>({
   onboardingCampaigns: <GetOnboardingCampaigns />
 });
 
-const SignedInHeaderWithHoC = withTheme<Props, State>(SignedInHeader);
+const SignedInHeaderWithHoC = withTheme(SignedInHeader);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

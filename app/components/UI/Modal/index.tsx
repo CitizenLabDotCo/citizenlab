@@ -218,7 +218,7 @@ export const Spacer = styled.div`
   flex: 1;
 `;
 
-type Props = {
+ export type Props = {
   opened: boolean;
   fixedHeight?: boolean;
   width?: string;
@@ -384,7 +384,7 @@ export default class Modal extends PureComponent<Props, State> {
             <CloseButton
               className="e2e-modal-close-button"
               onClick={this.clickCloseButton}
-              innerRef={this.setCloseButtonRef}
+              ref={this.setCloseButtonRef}
             >
               <CloseIcon name="close3" />
             </CloseButton >
@@ -396,7 +396,7 @@ export default class Modal extends PureComponent<Props, State> {
             }
 
             <ModalContent
-              innerRef={this.setContentRef}
+              ref={this.setContentRef}
             >
               {children}
             </ModalContent>

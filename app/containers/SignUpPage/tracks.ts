@@ -1,5 +1,3 @@
 export default {
-  successfulSignUp: {
-    name: 'User signed up successfully'
-  },
+  successfulSignUp: 'User signed up successfully',
 };

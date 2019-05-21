@@ -12,10 +12,12 @@ declare global {
       getUserBySlug: typeof getUserBySlug;
       getAuthUser: typeof getAuthUser;
       apiCreateIdea: typeof apiCreateIdea;
+      apiRemoveIdea: typeof apiRemoveIdea;
       apiCreateOfficialFeedback: typeof apiCreateOfficialFeedback;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
+      apiRemoveProject: typeof apiRemoveProject;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
       apiRemoveCustomField: typeof apiRemoveCustomField;
@@ -48,6 +50,7 @@ export function login(email: string, password: string) {
   cy.get('.e2e-submit-signin').click();
   cy.wait(1000);
   cy.visit('/');
+  cy.wait(1000);
   cy.get('#e2e-landing-page');
 }
 
@@ -181,15 +184,19 @@ export function apiCreateIdea(
   projectId: string,
   ideaTitle: string,
   ideaContent: string,
+  locationGeoJSON?: {'type': string, 'coordinates': number[]},
+  locationDescription?: string,
   jwt?: string
 ) {
   let headers: { 'Content-Type': string; Authorization: string; } | null = null;
+
   if (jwt) {
     headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${jwt}`
     };
   }
+
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -212,8 +219,25 @@ export function apiCreateIdea(
             'en-GB': ideaContent,
             'nl-BE': ideaContent
           },
+          location_point_geojson: locationGeoJSON,
+          location_description: locationDescription
         }
       }
+    });
+  });
+}
+
+export function apiRemoveIdea(ideaId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'DELETE',
+      url: `web_api/v1/ideas/${ideaId}`,
     });
   });
 }
@@ -349,6 +373,21 @@ export function apiCreateProject(
   });
 }
 
+export function apiRemoveProject(projectId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'DELETE',
+      url: `web_api/v1/projects/${projectId}`,
+    });
+  });
+}
+
 export function apiCreatePhase(
   projectId: string,
   title: string,
@@ -439,10 +478,12 @@ Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
 Cypress.Commands.add('getUserBySlug', getUserBySlug);
 Cypress.Commands.add('getAuthUser', getAuthUser);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
+Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateOfficialFeedback', apiCreateOfficialFeedback);
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
+Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);

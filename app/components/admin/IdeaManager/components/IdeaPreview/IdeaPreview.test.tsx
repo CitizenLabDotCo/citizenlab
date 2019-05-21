@@ -9,15 +9,19 @@ jest.mock('services/permissions', () => {});
 
 describe('<IdeaPreview />', () => {
   let closeSideModal: jest.Mock;
+  let onSwitchIdeaMode: jest.Mock;
   beforeEach(() => {
     closeSideModal = jest.fn();
+    onSwitchIdeaMode = jest.fn();
   });
 
   it('renders correctly closed', () => {
     const wrapper = shallow(
       <IdeaPreview
-        closeSideModal={closeSideModal}
-        ideaId={undefined}
+        onCloseModal={closeSideModal}
+        ideaId={null}
+        onSwitchIdeaMode={onSwitchIdeaMode}
+        mode="view"
       />
     );
 
@@ -27,34 +31,51 @@ describe('<IdeaPreview />', () => {
   it('renders the idea content initially', () => {
     const wrapper = shallow(
       <IdeaPreview
-        closeSideModal={closeSideModal}
-        ideaId="greatIdea"
+        onCloseModal={closeSideModal}
+        ideaId="GreatIdea"
+        onSwitchIdeaMode={onSwitchIdeaMode}
+        mode="view"
       />
     );
 
     expect(wrapper).toMatchSnapshot();
   });
 
-  it('renders the idea edit correctly when asked to', () => {
+  it('renders the idea edit correctly', () => {
     const wrapper = shallow(
       <IdeaPreview
-        closeSideModal={closeSideModal}
-        ideaId="greatIdea"
+        onCloseModal={closeSideModal}
+        ideaId="GreatIdea"
+        onSwitchIdeaMode={onSwitchIdeaMode}
+        mode="edit"
       />
     );
-    wrapper.find('WrappedIdeaContent').prop('handleClickEdit')();
     expect(wrapper).toMatchSnapshot();
   });
 
-  it('changes back to content when asked to', () => {
+  it('calls the correct handler to switch to edit mode', () => {
     const wrapper = shallow(
       <IdeaPreview
-        closeSideModal={closeSideModal}
-        ideaId="greatIdea"
+        onCloseModal={closeSideModal}
+        ideaId="GreatIdea"
+        onSwitchIdeaMode={onSwitchIdeaMode}
+        mode="view"
       />
     );
     wrapper.find('WrappedIdeaContent').prop('handleClickEdit')();
+    expect(onSwitchIdeaMode).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls the correct handler to switch to view mode', () => {
+    const wrapper = shallow(
+      <IdeaPreview
+        onCloseModal={closeSideModal}
+        ideaId="GreatIdea"
+        onSwitchIdeaMode={onSwitchIdeaMode}
+        mode="edit"
+      />
+    );
     wrapper.find('WrappedIdeaEdit').prop('goBack')();
-    expect(wrapper.find('WrappedIdeaContent')).toHaveLength(1);
+    expect(onSwitchIdeaMode).toHaveBeenCalledTimes(1);
   });
 });

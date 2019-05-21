@@ -85,23 +85,14 @@ interface Props {
   onIdeaChangePage?: (number: number) => void;
   activeFilterMenu: string | null;
   handleSeeAllIdeas: () => void;
+  onCloseModal: () => void;
+  onClickIdeaTitle: (ideaId: string) => void;
+  modalIdeaId: string | null;
+  switchModalMode: () => void;
+  ideaModalMode: 'edit' | 'view';
 }
 
-type State = {
-  ideaModal: string | null;
-};
-
-export default class IdeaTable extends React.Component<Props, State> {
-  constructor (props) {
-    super(props);
-    this.state = {
-      ideaModal: null,
-    };
-  }
-
-  onClickIdeaTitle = (ideaId: string) => this.setState({ ideaModal: ideaId });
-
-  onCloseModal = () => this.setState({ ideaModal: null });
+export default class IdeaTable extends React.Component<Props> {
 
   handleSortClick = (newSortAttribute: SortAttribute) => () => {
     const { ideaSortAttribute: oldSortAttribute, ideaSortDirection: oldSortDirection, onChangeIdeaSort } = this.props;
@@ -159,8 +150,21 @@ export default class IdeaTable extends React.Component<Props, State> {
   }
 
   render() {
-    const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu, statuses, handleSeeAllIdeas } = this.props;
-    const { ideaModal } = this.state;
+    const {
+      ideaSortAttribute,
+      ideaSortDirection,
+      ideas,
+      selectedIdeas,
+      phases,
+      activeFilterMenu,
+      statuses,
+      handleSeeAllIdeas,
+      modalIdeaId,
+      onCloseModal,
+      onClickIdeaTitle,
+      switchModalMode,
+      ideaModalMode
+    } = this.props;
 
     return (
       <Container>
@@ -243,7 +247,7 @@ export default class IdeaTable extends React.Component<Props, State> {
                       selected={selectedIdeas[idea.id]}
                       selectedIdeas={selectedIdeas}
                       activeFilterMenu={activeFilterMenu}
-                      openIdea={this.onClickIdeaTitle}
+                      openIdea={onClickIdeaTitle}
                     />
                   </CSSTransition>
                 )}
@@ -273,8 +277,10 @@ export default class IdeaTable extends React.Component<Props, State> {
         </TransitionGroup>
 
         <IdeaPreview
-          ideaId={ideaModal}
-          closeSideModal={this.onCloseModal}
+          ideaId={modalIdeaId}
+          mode={ideaModalMode}
+          onCloseModal={onCloseModal}
+          onSwitchIdeaMode={switchModalMode}
         />
       </Container>
     );

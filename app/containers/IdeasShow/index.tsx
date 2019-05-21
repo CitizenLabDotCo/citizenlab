@@ -12,28 +12,29 @@ import tracks from './tracks';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import StatusBadge from 'components/StatusBadge';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
-import VoteControl from 'components/VoteControl';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
-import HasPermission from 'components/HasPermission';
-import IdeaHeader from './IdeaHeader';
+import IdeaTopics from './IdeaTopics';
+import IdeaTitle from './IdeaTitle';
+import IdeaStatus from './IdeaStatus';
+import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
+import IdeaVoteControlTopBar from './IdeaVoteControlTopBar';
 import IdeaFooter from './IdeaFooter';
-import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
+import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
-import Icon from 'components/UI/Icon';
 import IdeaBody from './IdeaBody';
+import IdeaContentFooter from './IdeaContentFooter';
+import ActionBar from './ActionBar';
+import TranslateButton from './TranslateButton';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -48,9 +49,10 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // services
-import { updateIdea, deleteIdea } from 'services/ideas';
+import { updateIdea } from 'services/ideas';
 import { authUserStream } from 'services/auth';
 
 // i18n
@@ -65,22 +67,12 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
-import TranslateButton from './TranslateButton';
+import { media, colors, fontSizes, ideaPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
-const maxPageWidth = '810px';
-const loadingSpinnerFadeInDuration = 300;
-const loadingSpinnerFadeInEasing = 'ease-out';
-const loadingSpinnerFadeInDelay = 100;
 const contentFadeInDuration = 400;
 const contentFadeInEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
 const contentFadeInDelay = 350;
-const contentTranslateDistance = '25px';
-
-const StyledSpinner = styled<SpinnerProps>(Spinner)`
-  transition: all ${loadingSpinnerFadeInDuration}ms ${loadingSpinnerFadeInEasing} ${loadingSpinnerFadeInDelay}ms;
-`;
 
 const Loading = styled.div`
   position: absolute;
@@ -91,19 +83,6 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  will-change: opacity;
-
-  &.loading-enter {
-    ${StyledSpinner} {
-      opacity: 0;
-    }
-
-    &.loading-enter-active {
-      ${StyledSpinner} {
-        opacity: 1;
-      }
-    }
-  }
 `;
 
 const Container = styled.div`
@@ -111,31 +90,21 @@ const Container = styled.div`
   flex-direction: column;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px);
   background: #fff;
-  transform: none;
-  will-change: transform, opacity;
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 
-  &.inModal {
-    min-height: 100vh;
+  ${media.smallerThanMaxTablet`
+    &.content-enter {
+      opacity: 0;
 
-    ${media.smallerThanMaxTablet`
-      min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
-    `}
-  }
-
-  &.content-enter {
-    opacity: 0;
-    transform: translateY(${contentTranslateDistance});
-
-    &.content-enter-active {
-      opacity: 1;
-      transform: translateY(0);
-      transition: all ${contentFadeInDuration}ms ${contentFadeInEasing} ${contentFadeInDelay}ms;
+      &.content-enter-active {
+        opacity: 1;
+        transition: all ${contentFadeInDuration}ms ${contentFadeInEasing} ${contentFadeInDelay}ms;
+      }
     }
-  }
+  `}
 
   &.content-exit {
     display: none;
@@ -144,7 +113,7 @@ const Container = styled.div`
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: ${maxPageWidth};
+  max-width: ${ideaPageContentMaxWidth};
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -152,17 +121,32 @@ const IdeaContainer = styled.div`
   margin-right: auto;
   padding: 0;
   padding-top: 60px;
+  padding-left: 60px;
+  padding-right: 60px;
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    padding-top: 30px;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-top: 35px;
   `}
 
   ${media.smallerThanMinTablet`
+    padding-top: 25px;
     padding-left: 15px;
     padding-right: 15px;
+  `}
+`;
+
+const StyledIdeaTopics = styled(IdeaTopics)`
+  padding-right: ${rightColumnWidthDesktop + columnsGapDesktop}px;
+  margin-bottom: 10px;
+
+  ${media.tablet`
+    padding-right: ${rightColumnWidthTablet + columnsGapTablet}px;
+  `}
+
+  ${media.smallerThanMaxTablet`
+    padding-right: 0px;
+    margin-bottom: 5px;
   `}
 `;
 
@@ -171,20 +155,42 @@ const Content = styled.div`
   display: flex;
 
   ${media.smallerThanMaxTablet`
-    flex-direction: column;
+    display: block;
   `}
 `;
 
 const LeftColumn = styled.div`
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: 0;
+  flex: 2;
   margin: 0;
   padding: 0;
-  padding-right: 70px;
+  padding-right: ${columnsGapDesktop}px;
+
+  ${media.tablet`
+    padding-right: ${columnsGapTablet}px;
+  `}
 
   ${media.smallerThanMaxTablet`
     padding: 0;
+  `}
+`;
+
+const StyledTranslateButtonMobile = styled(TranslateButton)`
+  display: none;
+  width: fit-content;
+  margin-bottom: 40px;
+
+  ${media.smallerThanMinTablet`
+    display: block;
+  `}
+`;
+
+const IdeaHeader = styled.div`
+  margin-top: -5px;
+  margin-bottom: 28px;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 0px;
+    margin-bottom: 45px;
   `}
 `;
 
@@ -192,142 +198,57 @@ const IdeaImage = styled.img`
   width: 100%;
   height: auto;
   margin-bottom: 25px;
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px solid ${colors.separation};
 `;
 
-const StyledIdeaAuthor = styled(IdeaAuthor)`
-  margin-top: -4px;
-  margin-left: -4px;
-`;
+const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
+  margin-top: 4px;
 
-const MetaButtons = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-`;
-
-const LocationLabel = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin-right: 6px;
-  max-width: 200px;
-  font-size: ${fontSizes.base}px;
-  line-height: 19px;
-  text-align: left;
-  font-weight: 400;
-  transition: all 100ms ease-out;
-  white-space: nowrap;
-
-  ${media.smallerThanMinTablet`
+  ${media.biggerThanMaxTablet`
     display: none;
   `}
 `;
 
-const LocationIconWrapper = styled.div`
-  width: 22px;
-  height: 36px;
-  margin: 0;
-  margin-right: 3px;
-  padding: 0;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-`;
-
-const LocationIcon = styled(Icon)`
-  width: 18px;
-  fill: ${colors.label};
-`;
-
-const LocationButton = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
+const StyledMobileIdeaStatus = styled(IdeaStatus)`
   margin-bottom: 30px;
 
-  &:hover {
-    ${LocationLabel} {
-      color: ${darken(0.2, colors.label)};
-    }
-
-    ${LocationIcon} {
-      fill: ${darken(0.2, colors.label)};
-    }
-  }
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
 `;
 
-const MapWrapper = styled.div`
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${colors.separation};
-  height: 265px;
-  position: relative;
-  overflow: hidden;
-  z-index: 2;
-  margin-top: 20px;
+const StyledIdeaAuthor = styled(IdeaAuthor)`
+  margin-left: -4px;
+  margin-bottom: 50px;
 
-  &.map-enter {
-    height: 0;
-    opacity: 0;
-
-    &.map-enter-active {
-      height: 265px;
-      opacity: 1;
-      transition: all 250ms ease-out;
-    }
-  }
-
-  &.map-exit {
-    height: 265px;
-    opacity: 1;
-
-    &.map-exit-active {
-      height: 0;
-      opacity: 0;
-      transition: all 250ms ease-out;
-    }
-  }
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
-const MapPaddingBottom = styled.div`
-  width: 100%;
-  height: 30px;
-`;
+const StyledIdeaMap = styled(IdeaMap)`
+  margin-bottom: 40px;
 
-const AddressWrapper = styled.div`
-  color: #fff;
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  background: rgba(0, 0, 0, 0.4);
-  border-top: 1px solid ${colors.separation};
-  margin: 0;
-  padding: 10px;
-  position: absolute;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 1000;
-`;
-
-const StyledTranslateButton = styled(TranslateButton)`
-  margin-bottom: 30px;
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 20px;
+  `}
 `;
 
 const RightColumn = styled.div`
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: 200px;
-  width: 200px;
+  flex: 1;
   margin: 0;
   padding: 0;
 `;
 
 const RightColumnDesktop = styled(RightColumn)`
-  position: sticky;
-  top: 95px;
-  align-self: flex-start;
+  flex: 0 0 ${rightColumnWidthDesktop}px;
+  width: ${rightColumnWidthDesktop}px;
+
+  ${media.tablet`
+    flex: 0 0 ${rightColumnWidthTablet}px;
+    width: ${rightColumnWidthTablet}px;
+  `}
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -344,7 +265,19 @@ const ControlWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-bottom: 35px;
+  margin-bottom: 45px;
+  padding: 35px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
+  border-radius: ${(props: any) => props.theme.borderRadius};
+`;
+
+const ControlWrapperHorizontalRule: any = styled.hr`
+  width: 100%;
+  border: none;
+  height: 1px;
+  background-color: ${colors.separation};
+  margin: 35px 0;
 `;
 
 const VoteLabel = styled.div`
@@ -356,29 +289,6 @@ const VoteLabel = styled.div`
 
   ${media.smallerThanMaxTablet`
     display: block;
-  `}
-`;
-
-const StatusContainer = styled.div``;
-
-const StatusTitle = styled.h4`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin: 0;
-  margin-bottom: 8px;
-  padding: 0;
-`;
-
-const VoteControlMobile = styled.div`
-  border-top: solid 1px ${colors.separation};
-  border-bottom: solid 1px ${colors.separation};
-  padding-top: 15px;
-  padding-bottom: 15px;
-  margin-bottom: 30px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
   `}
 `;
 
@@ -396,22 +306,22 @@ const SharingWrapper = styled.div`
   flex-direction: column;
 `;
 
+const StyledSimilarIdeas = styled(SimilarIdeas)`
+  margin-top: 45px;
+`;
+
 const SharingMobile = styled(Sharing)`
   padding: 0;
   margin: 0;
-  margin-top: 30px;
+  margin-top: 40px;
 
   ${media.biggerThanMaxTablet`
     display: none;
   `}
 `;
 
-const MoreActionsMenuWrapper = styled.div`
-  margin-top: 40px;
-`;
-
 const StyledOfficialFeedback = styled(OfficialFeedback)`
-  margin-top: 85px;
+  margin-top: 80px;
 `;
 
 interface DataProps {
@@ -422,6 +332,7 @@ interface DataProps {
   ideaImages: GetIdeaImagesChildProps;
   ideaFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface InputProps {
@@ -444,12 +355,9 @@ interface IActionInfos {
 interface State {
   opened: boolean;
   loaded: boolean;
-  showMap: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
-  titleTranslationLoading: boolean;
-  bodyTranslationLoading: boolean;
   actionInfos: IActionInfos | null;
 }
 
@@ -466,12 +374,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     const initialState = {
       opened: false,
       loaded: false,
-      showMap: false,
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
-      titleTranslationLoading: false,
-      bodyTranslationLoading: false,
       ideaBody: null,
       actionInfos: null
     };
@@ -580,41 +485,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleMapWrapperSetRef = (element: HTMLDivElement) => {
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'nearest'
-      });
-    }
-  }
-
-  handleMapToggle = () => {
-    this.setState(({ showMap }) => ({ showMap: !showMap }));
-  }
-
-  openSpamModal = () => {
-    this.setState({ spamModalVisible: true });
-  }
-
-  closeSpamModal = () => {
-    this.setState({ spamModalVisible: false });
-  }
-
-  editIdea = () => {
-    clHistory.push(`/ideas/edit/${this.props.ideaId}`);
-  }
-
-  deleteIdea = (ideaId) => () => {
-    const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
-
-    if (window.confirm(message)) {
-      deleteIdea(ideaId);
-      clHistory.goBack();
-    }
-  }
-
   unauthenticatedVoteClick = () => {
     clHistory.push('/sign-in');
   }
@@ -623,22 +493,19 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.setState({ ideaIdForSocialSharing: null });
   }
 
-  translateIdea = () => {
-    trackEvent(tracks.clickTranslateIdeaButton);
-    this.setState({ translateButtonClicked: true });
-  }
+  onTranslateIdea = () => {
+    this.setState(prevState => {
+      // analytics
+      if (prevState.translateButtonClicked === true) {
+        trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
+      } else if (prevState.translateButtonClicked === false) {
+        trackEvent(tracks.clickTranslateIdeaButton);
+      }
 
-  backToOriginalContent = () => {
-    trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
-    this.setState({ translateButtonClicked: false });
-  }
-
-  onTitleTranslationLoaded = () => {
-    this.setState({ titleTranslationLoading: false });
-  }
-
-  onBodyTranslationLoaded = () => {
-    this.setState({ bodyTranslationLoading: false });
+      return ({
+        translateButtonClicked: !prevState.translateButtonClicked
+      });
+    });
   }
 
   render() {
@@ -651,25 +518,22 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       localize,
       ideaImages,
       authUser,
+      windowSize,
       className
     } = this.props;
     const {
       opened,
       loaded,
-      showMap,
       ideaIdForSocialSharing,
       translateButtonClicked,
-      titleTranslationLoading,
-      bodyTranslationLoading,
-      spamModalVisible,
-      actionInfos
+      actionInfos,
     } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
     if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
       const authorId: string | null = get(idea, 'relationships.author.data.id', null);
-      const createdAt = idea.attributes.created_at;
+      const ideaCreatedAt = idea.attributes.created_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
       // If you're not an admin/mod, statusId can be null
@@ -678,6 +542,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const ideaLocation = (idea.attributes.location_point_geojson || null);
       const ideaAdress = (idea.attributes.location_description || null);
       const projectId = idea.relationships.project.data.id;
+      const topicIds = (idea.relationships.topics.data ? idea.relationships.topics.data.map(item => item.id) : []);
       const ideaUrl = location.href;
       const ideaId = idea.id;
       const ideaBody = localize(idea.attributes.body_multiloc);
@@ -686,6 +551,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const budgetingDescriptor = get(actionInfos, 'budgetingDescriptor', null);
       const showBudgetControl = get(actionInfos, 'showBudgetControl', null);
       const showVoteControl = get(actionInfos, 'showVoteControl', null);
+      const biggerThanLargeTablet = windowSize ? windowSize > viewportWidths.largeTablet : false;
+      const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
+      const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_idea',
         campaign: 'share_content',
@@ -694,31 +562,66 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         source: 'share_idea',
         campaign: 'share_content'
       };
+      const showTranslateButton = (
+        !isNilOrError(idea) &&
+        !isNilOrError(locale) &&
+        !idea.attributes.title_multiloc[locale]
+      );
 
       content = (
         <>
           <IdeaMeta ideaId={ideaId} />
-          <IdeaContainer id="e2e-idea-show">
-            <IdeaHeader
+
+          {!inModal && showVoteControl && smallerThanLargeTablet &&
+            <IdeaVoteControlTopBar
               ideaId={ideaId}
-              statusId={statusId}
-              ideaTitle={ideaTitle}
-              projectId={projectId}
-              locale={locale}
-              translateButtonClicked={translateButtonClicked}
-              onTranslationLoaded={this.onTitleTranslationLoaded}
+              unauthenticatedVoteClick={this.unauthenticatedVoteClick}
             />
+          }
+
+          <ActionBar
+            ideaId={ideaId}
+            translateButtonClicked={translateButtonClicked}
+            onTranslateIdea={this.onTranslateIdea}
+          />
+
+          <IdeaContainer>
+            <FeatureFlag name="machine_translations">
+              {showTranslateButton && smallerThanSmallTablet &&
+                <StyledTranslateButtonMobile
+                  translateButtonClicked={translateButtonClicked}
+                  onClick={this.onTranslateIdea}
+                />
+              }
+            </FeatureFlag>
+
+            <StyledIdeaTopics topicIds={topicIds} />
 
             <Content>
               <LeftColumn>
-                {!inModal && showVoteControl &&
-                  <VoteControlMobile>
-                    <VoteControl
-                      ideaId={ideaId}
-                      unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                      size="1"
-                    />
-                  </VoteControlMobile>
+                <IdeaHeader>
+                  <IdeaTitle
+                    ideaId={ideaId}
+                    ideaTitle={ideaTitle}
+                    locale={locale}
+                    translateButtonClicked={translateButtonClicked}
+                  />
+
+                  {smallerThanLargeTablet &&
+                    <StyledMobileIdeaPostedBy authorId={authorId} />
+                  }
+                </IdeaHeader>
+
+                {statusId && smallerThanLargeTablet &&
+                  <StyledMobileIdeaStatus statusId={statusId} />
+                }
+
+                {biggerThanLargeTablet &&
+                  <StyledIdeaAuthor
+                    ideaId={ideaId}
+                    authorId={authorId}
+                    ideaCreatedAt={ideaCreatedAt}
+                  />
                 }
 
                 {ideaImageLarge &&
@@ -729,55 +632,30 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   />
                 }
 
-                <StyledIdeaAuthor
-                  ideaId={ideaId}
-                  authorId={authorId}
-                  ideaCreatedAt={createdAt}
-                />
-
-                <FeatureFlag name="machine_translations">
-                  <StyledTranslateButton
-                    idea={idea}
-                    locale={locale}
-                    translateButtonClicked={translateButtonClicked}
-                    translationsLoading={titleTranslationLoading || bodyTranslationLoading}
-                    translateIdea={this.translateIdea}
-                    backToOriginalContent={this.backToOriginalContent}
+                {ideaLocation && ideaAdress &&
+                  <StyledIdeaMap
+                    adress={ideaAdress}
+                    location={ideaLocation}
+                    id={ideaId}
                   />
-                </FeatureFlag>
+                }
 
                 <IdeaBody
                   ideaId={ideaId}
                   locale={locale}
                   ideaBody={ideaBody}
                   translateButtonClicked={translateButtonClicked}
-                  onTranslationLoaded={this.onTitleTranslationLoaded}
                 />
-
-                {ideaLocation &&
-                  <>
-                    <CSSTransition
-                      classNames="map"
-                      in={showMap}
-                      timeout={300}
-                      mountOnEnter={true}
-                      unmountOnExit={true}
-                      exit={true}
-                    >
-                      <MapWrapper innerRef={this.handleMapWrapperSetRef}>
-                        <IdeaMap location={ideaLocation} id={ideaId} />
-                        {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
-                      </MapWrapper>
-                    </CSSTransition>
-                    {showMap &&  <MapPaddingBottom />}
-                  </>
-                }
 
                 {!isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
                   <FileAttachments files={ideaFiles} />
                 }
 
-                {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
+                {showBudgetControl &&
+                 participationContextId &&
+                 participationContextType &&
+                 budgetingDescriptor &&
+                 smallerThanLargeTablet &&
                   <AssignBudgetControlMobile>
                     <AssignBudgetWrapper
                       ideaId={ideaId}
@@ -789,81 +667,66 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </AssignBudgetControlMobile>
                 }
 
-                <SharingMobile
-                  url={ideaUrl}
-                  twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
-                  emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-                  emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
-                  utmParams={utmParams}
-                />
-
                 <StyledOfficialFeedback
                   ideaId={ideaId}
                 />
+
+                <IdeaContentFooter
+                  ideaId={ideaId}
+                  ideaCreatedAt={ideaCreatedAt}
+                  commentsCount={idea.attributes.comments_count}
+                />
+
+                {smallerThanLargeTablet &&
+                  <SharingMobile
+                    context="idea"
+                    url={ideaUrl}
+                    twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
+                    emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
+                    emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
+                    utmParams={utmParams}
+                  />
+                }
               </LeftColumn>
 
-              <RightColumnDesktop>
-                <MetaContent>
-                  {(showVoteControl || showBudgetControl) &&
-                    <ControlWrapper className="e2e-vote-controls-desktop">
-                      {showVoteControl &&
-                        <>
-                          <VoteLabel>
-                            <FormattedMessage {...messages.voteOnThisIdea} />
-                          </VoteLabel>
+              {biggerThanLargeTablet &&
+                <RightColumnDesktop>
+                  <MetaContent>
+                    {(showVoteControl || showBudgetControl) &&
+                      <ControlWrapper className="e2e-vote-controls-desktop">
+                        {showVoteControl &&
+                          <>
+                            <VoteLabel>
+                              <FormattedMessage {...messages.voteOnThisIdea} />
+                            </VoteLabel>
 
-                          <VoteWrapper
+                            <VoteWrapper
+                              ideaId={ideaId}
+                              votingDescriptor={idea.relationships.action_descriptor.data.voting}
+                              projectId={projectId}
+                            />
+                          </>
+                        }
+
+                        {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
+                          <AssignBudgetWrapper
                             ideaId={ideaId}
-                            votingDescriptor={idea.relationships.action_descriptor.data.voting}
                             projectId={projectId}
+                            participationContextId={participationContextId}
+                            participationContextType={participationContextType}
+                            budgetingDescriptor={budgetingDescriptor}
                           />
-                        </>
-                      }
+                        }
 
-                      {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
-                        <AssignBudgetWrapper
-                          ideaId={ideaId}
-                          projectId={projectId}
-                          participationContextId={participationContextId}
-                          participationContextType={participationContextType}
-                          budgetingDescriptor={budgetingDescriptor}
-                        />
-                      }
-                    </ControlWrapper>
-                  }
+                        <ControlWrapperHorizontalRule />
 
-                  {statusId &&
-                    <StatusContainer>
-                      <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle>
-                      <StatusBadge statusId={statusId} />
-                    </StatusContainer>
-                  }
-
-                  <MetaButtons>
-                    {ideaLocation && !showMap &&
-                      <LocationButton onClick={this.handleMapToggle}>
-                        <LocationIconWrapper>
-                          <LocationIcon name="position" />
-                        </LocationIconWrapper>
-                        <LocationLabel>
-                          <FormattedMessage {...messages.openMap} />
-                        </LocationLabel>
-                      </LocationButton>
-                    }
-
-                    {ideaLocation && showMap &&
-                      <LocationButton onClick={this.handleMapToggle}>
-                        <LocationIconWrapper>
-                          <LocationIcon name="close" />
-                        </LocationIconWrapper>
-                        <LocationLabel>
-                          <FormattedMessage {...messages.closeMap} />
-                        </LocationLabel>
-                      </LocationButton>
+                        {statusId && <IdeaStatus statusId={statusId} />}
+                      </ControlWrapper>
                     }
 
                     <SharingWrapper>
                       <Sharing
+                        context="idea"
                         url={ideaUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                         emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
@@ -872,83 +735,28 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                       />
                     </SharingWrapper>
 
-                    {!isNilOrError(authUser) &&
-                      <MoreActionsMenuWrapper>
-                        <HasPermission item={idea} action="edit" context={idea}>
-                          <MoreActionsMenu
-                            actions={[
-                              {
-                                label: <FormattedMessage {...messages.reportAsSpam} />,
-                                handler: this.openSpamModal,
-                              },
-                              {
-                                label: <FormattedMessage {...messages.editIdea} />,
-                                handler: this.editIdea,
-                              },
-                              {
-                                label: <FormattedMessage {...messages.deleteIdea} />,
-                                handler: this.deleteIdea(ideaId),
-                              }
-                            ]}
-                            label={<FormattedMessage {...messages.moreOptions} />}
-                          />
-                          <HasPermission.No>
-                            <MoreActionsMenu
-                              actions={[{
-                                label: <FormattedMessage {...messages.reportAsSpam} />,
-                                handler: this.openSpamModal,
-                              }]}
-                              label={<FormattedMessage {...messages.moreOptions} />}
-                            />
-                          </HasPermission.No>
-                        </HasPermission>
-                      </MoreActionsMenuWrapper>
-                    }
-                  </MetaButtons>
-                  <FeatureFlag name="similar_ideas">
-                    <SimilarIdeas ideaId={ideaId} />
-                  </FeatureFlag>
-                </MetaContent>
-              </RightColumnDesktop>
+                    <FeatureFlag name="similar_ideas">
+                      <StyledSimilarIdeas ideaId={ideaId} />
+                    </FeatureFlag>
+
+                  </MetaContent>
+                </RightColumnDesktop>
+              }
             </Content>
           </IdeaContainer>
 
-          {loaded &&
-            <IdeaFooter
-              ideaId={ideaId}
-              commentsCount={idea.attributes.comments_count}
-            />
-          }
-
-          <Modal
-            opened={spamModalVisible}
-            close={this.closeSpamModal}
-            label={formatMessage(messages.spamModalLabelIdea)}
-            header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
-          >
-            <SpamReportForm
-              resourceId={ideaId}
-              resourceType="ideas"
-            />
-          </Modal>
+          {loaded && <IdeaFooter ideaId={ideaId} />}
         </>
       );
     }
 
     return (
       <>
-        <CSSTransition
-          classNames="loading"
-          in={(opened && !loaded)}
-          timeout={loadingSpinnerFadeInDuration}
-          mountOnEnter={false}
-          unmountOnExit={true}
-          exit={false}
-        >
+        {(opened && !loaded) &&
           <Loading>
-            <StyledSpinner />
+            <Spinner />
           </Loading>
-        </CSSTransition>
+        }
 
         <CSSTransition
           classNames="content"
@@ -959,7 +767,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           enter={animatePageEnter}
           exit={true}
         >
-          <Container className={`${className} ${inModal ? 'inModal' : ''}`}>
+          <Container id="e2e-idea-show" className={className}>
             {content}
           </Container>
         </CSSTransition>
@@ -987,6 +795,7 @@ const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl<Props & InjectedLocal
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser/>,
+  windowSize: <GetWindowSize debounce={50} />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,

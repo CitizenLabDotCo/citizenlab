@@ -11,7 +11,7 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import Icon from 'components/UI/Icon';
-import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
+import LazyImage from 'components/LazyImage';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
@@ -151,7 +151,7 @@ const ProjectImagePlaceholderIcon = styled(Icon) `
   fill: #fff;
 `;
 
-const ProjectImage = styled<LazyImageProps>(LazyImage)`
+const ProjectImage = styled(LazyImage)`
   width: 100%;
   height: 100%;
   position: absolute;
@@ -366,9 +366,9 @@ const ContentFooterSection = styled.div`
   align-items: center;
 `;
 
-const ContentFooterLeft = ContentFooterSection.extend``;
+const ContentFooterLeft = styled(ContentFooterSection)``;
 
-const ContentFooterRight = ContentFooterSection.extend``;
+const ContentFooterRight = styled(ContentFooterSection)``;
 
 const ContentHeaderLabel = styled.span`
   height: ${ContentHeaderHeight}px;
@@ -410,7 +410,7 @@ const MetaItemIcon = styled(Icon)`
   fill: ${({ theme }) => theme.colorMain};
 `;
 
-const CommentIcon = MetaItemIcon.extend`
+const CommentIcon = styled(MetaItemIcon)`
   width: 23px;
   height: 23px;
 `;
@@ -644,7 +644,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
                     {showCommentsCount &&
                       <MetaItem>
-                        <CommentIcon name="comment2" />
+                        <CommentIcon name="comments" />
                         <MetaItemText>
                           {commentsCount}
                         </MetaItemText>
@@ -669,7 +669,7 @@ const Data = adopt<DataProps, InputProps>({
   phase: ({ project, render }) => <GetPhase id={get(project, 'relationships.current_phase.data.id')}>{render}</GetPhase>
 });
 
-const ProjectCardWithHoC = withTheme<Props, State>(injectIntl<Props>(ProjectCard));
+const ProjectCardWithHoC = withTheme(injectIntl<Props>(ProjectCard));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

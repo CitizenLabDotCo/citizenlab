@@ -14,6 +14,7 @@ describe('Project card component', () => {
 
       // navigate to the landing page
       cy.visit('/');
+      cy.wait(1000);
       cy.get('#e2e-landing-page');
     });
   });

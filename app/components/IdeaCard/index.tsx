@@ -15,7 +15,7 @@ import VoteControl from 'components/VoteControl';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Author from 'components/Author';
-import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
+import LazyImage from 'components/LazyImage';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -68,7 +68,7 @@ const IdeaImageContainer: any = styled.div`
  border-top-right-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-const IdeaImage = styled<LazyImageProps>(LazyImage)`
+const IdeaImage = styled(LazyImage)`
   width: 100%;
 `;
 
@@ -124,8 +124,8 @@ const Spacer = styled.div`
 `;
 
 const CommentIcon = styled(Icon)`
-  width: 26px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   fill: ${colors.label};
   margin-right: 6px;
   margin-top: 2px;
@@ -229,7 +229,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
   onCardHover = (event: FormEvent<MouseEvent>) => {
     event.preventDefault();
-    eventEmitter.emit(componentName, 'cardHover', null);
   }
 
   onAuthorClick = (event: FormEvent<MouseEvent>) => {
@@ -364,7 +363,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                 <Spacer />
 
                 <CommentInfo className={`${commentingEnabled && 'enabled'}`}>
-                  <CommentIcon name="comments2" />
+                  <CommentIcon name="comments" />
                   <CommentCount className="e2e-ideacard-comment-count">
                     <span>{idea.attributes.comments_count}</span>
                   </CommentCount>

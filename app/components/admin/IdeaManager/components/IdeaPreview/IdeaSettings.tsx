@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
+import { get, memoize } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import injectLocalize from 'utils/localize';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // typings
@@ -29,11 +29,11 @@ import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaSta
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { GetIdeasChildProps } from 'resources/GetIdeas';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
+import { InjectedIntlProps } from 'react-intl';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -56,85 +56,55 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface IColoredOption extends IOption {
-  color: string;
-}
+interface PropsWithHoCs extends Props, InjectedLocalized, InjectedIntlProps {}
 
-interface State {
-  statusOptions: IOption[];
-  assigneeOptions: IOption[];
-  ideaStatusOption: IColoredOption | null;
-  ideaAssigneeOption: string | null;
-  prevPropsStatuses: GetIdeasChildProps | null;
-  prevPropsProspectAssignees: GetUsersChildProps | null;
-  prevPropsIdea: GetIdeaChildProps;
-}
+class IdeaSettings extends PureComponent<PropsWithHoCs> {
 
-class IdeaSettings extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      statusOptions: [],
-      assigneeOptions: [],
-      ideaStatusOption: null,
-      ideaAssigneeOption: null,
-      prevPropsStatuses: null,
-      prevPropsProspectAssignees: null,
-      prevPropsIdea: null
-    };
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    const { statuses, localize, idea, prospectAssignees, intl: { formatMessage } } = props;
-    const { prevPropsStatuses, prevPropsProspectAssignees, prevPropsIdea } = state;
-    const nextState = { ...state };
-
-    if (statuses !== prevPropsStatuses) {
+  getStatusOptions = memoize(
+    (statuses) => {
+      const { localize } = this.props;
       if (isNilOrError(statuses)) {
-        nextState.statusOptions = [];
+        return [];
       } else {
-        nextState.statusOptions = statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
+        return statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
       }
-
-      nextState.prevPropsStatuses = statuses;
     }
+  );
 
-    if (prospectAssignees !== prevPropsProspectAssignees) {
+  getIdeaStatusOption = memoize(
+    (idea: GetIdeaChildProps, statuses) => {
+      const { localize } = this.props;
+      if (isNilOrError(idea) || !idea.relationships.idea_status || !idea.relationships.idea_status.data || isNilOrError(statuses)) {
+        return null;
+      } else {
+        const ideaStatus = statuses.find(status => status.id === get(idea, 'relationships.idea_status.data.id'));
+        if (ideaStatus) {
+          return {
+            value: ideaStatus.id,
+            label: localize(ideaStatus.attributes.title_multiloc),
+            color: ideaStatus.attributes.color
+          };
+        }
+        return null;
+      }
+    }, (idea: GetIdeaChildProps, statuses) => (JSON.stringify({
+      ideaId: isNilOrError(idea) ? undefined : get(idea, 'relationships.idea_status.data.id'),
+      statusesId: isNilOrError(statuses) ? undefined : statuses.map(status => status.id)
+    }))
+  );
+
+  getAssigneeOptions = memoize(
+    (prospectAssignees) => {
+      const {  intl: { formatMessage } } = this.props;
       if (isNilOrError(prospectAssignees.usersList)) {
-        nextState.assigneeOptions = [];
+        return [];
       } else {
-        nextState.assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, label: `${assignee.attributes.first_name} ${assignee.attributes.last_name}` }));
-        nextState.assigneeOptions.push({ value: 'unassigned', label: formatMessage(messages.noOne) });
-      }
-
-      nextState.prevPropsProspectAssignees = prospectAssignees;
-    }
-
-    if (idea !== prevPropsIdea && !isNilOrError(statuses)) {
-      if (isNilOrError(idea) || !idea.relationships.idea_status || !idea.relationships.idea_status.data) {
-        nextState.ideaStatusOption = null;
-      } else {
-        const ideaStatus = statuses.find(status => status.id === idea.relationships.idea_status.data.id);
-        nextState.ideaStatusOption = {
-          value: ideaStatus.id,
-          label: localize(ideaStatus.attributes.title_multiloc),
-          color: ideaStatus.attributes.color
-        };
-      }
-
-      nextState.prevPropsIdea = idea;
-    }
-
-    if (idea !== prevPropsIdea) {
-      if (isNilOrError(idea) || !idea.relationships.assignee || !idea.relationships.assignee.data) {
-        nextState.ideaAssigneeOption = 'unassigned';
-      } else {
-        nextState.ideaAssigneeOption = idea.relationships.assignee.data.id;
+        const assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, label: `${assignee.attributes.first_name} ${assignee.attributes.last_name}` }));
+        assigneeOptions.push({ value: 'unassigned', label: formatMessage(messages.noOne) });
+        return assigneeOptions;
       }
     }
-
-    return nextState;
-  }
+  );
 
   onStatusChange = (statusOption: IOption) => {
     const { tenant, ideaId, authUser }  = this.props;
@@ -173,14 +143,18 @@ class IdeaSettings extends PureComponent<Props, State> {
   }
 
   render() {
-    const { idea, className } = this.props;
-    const { statusOptions, assigneeOptions, ideaStatusOption, ideaAssigneeOption } = this.state;
+    const { idea, className, statuses, prospectAssignees } = this.props;
+
+    const statusOptions = this.getStatusOptions(statuses);
+    const ideaStatusOption = this.getIdeaStatusOption(idea, statuses);
+    const assigneeOptions = this.getAssigneeOptions(prospectAssignees);
+    const ideaAssigneeOption = get(idea, 'relationships.assignee.data.id') || 'unassigned';
 
     if (!isNilOrError(idea)) {
       return (
         <Container className={`${className} e2e-idea-settings`}>
 
-          <StyledLabel value={<FormattedMessage {...messages.ideaStatus}/>} htmlFor="idea-preview-select-status"/>
+          <StyledLabel value={<FormattedMessage {...messages.currentStatus}/>} htmlFor="idea-preview-select-status"/>
           <Select
             inputId="idea-preview-select-status"
             options={statusOptions}

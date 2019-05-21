@@ -96,7 +96,7 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 10px;
 `;
 
-const ProjectsStyledContentContainer: any = StyledContentContainer.extend`
+const ProjectsStyledContentContainer: any = styled(StyledContentContainer)`
   padding-bottom: 30px;
   background: ${colors.background};
   border-bottom: solid 1px #eaeaea;
@@ -132,7 +132,7 @@ const Section = styled.div`
   `}
 `;
 
-const ProjectSection = Section.extend`
+const ProjectSection = styled(Section)`
   padding-top: 65px;
   padding-bottom: 100px;
 
@@ -273,7 +273,7 @@ const Data = adopt<DataProps, InputProps>({
   homepageInfoPage: <GetPage slug="homepage-info" />
 });
 
-const LandingPageWithHoC = withTheme<Props, State>(LandingPage);
+const LandingPageWithHoC = withTheme(LandingPage);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

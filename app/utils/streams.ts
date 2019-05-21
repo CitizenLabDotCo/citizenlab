@@ -7,11 +7,10 @@ import { currentTenantApiEndpoint } from 'services/tenant';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
-import { API_PATH } from 'containers/App/constants';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 
 export type pureFn<T> = (arg: T) => T;
-type fetchFn = () => Promise<{}>;
+type fetchFn = () => Promise<any>;
 interface IObject{ [key: string]: any; }
 export type IObserver<T> = Observer<T | pureFn<T> | null>;
 export type IObservable<T> = Observable<T>;
@@ -91,7 +90,7 @@ class Streams {
       frozenObject = Object.freeze(object);
 
       for (propertyKey in frozenObject) {
-        if (frozenObject.hasOwnProperty(propertyKey)) {
+        if ((frozenObject as Object).hasOwnProperty(propertyKey)) {
           property = frozenObject[propertyKey];
 
           if (((typeof property !== 'object') || !(property instanceof Object)) || Object.isFrozen(property)) {
@@ -469,7 +468,7 @@ class Streams {
         const stream = this.streams[streamId];
         const streamHasDataId = has(stream, `dataIds.${dataId}`);
 
-        if (!stream.cacheStream) {
+        if (stream && !stream.cacheStream) {
           promises.push(stream.fetch());
         } else if (streamHasDataId && stream.type === 'singleObject') {
           stream.observer.next(undefined);

@@ -180,7 +180,7 @@ const Data = adopt<DataProps, InputProps>({
   events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
-const ProjectsShowPageWithHoC = withTheme<Props, State>(ProjectsShowPage);
+const ProjectsShowPageWithHoC = withTheme(ProjectsShowPage);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

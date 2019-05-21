@@ -72,7 +72,7 @@ class Fragment extends React.Component<Props, State> {
       return (
         <StyledIframe
           title={title}
-          innerRef={this.setIframeRef}
+          ref={this.setIframeRef}
           src={this.fragmentUrl()}
           height={iframeHeight}
           onLoad={this.setIframeHeight}

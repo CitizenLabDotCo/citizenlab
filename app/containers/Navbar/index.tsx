@@ -1,8 +1,9 @@
 // libraries
 import React, { PureComponent, MouseEvent, FormEvent } from 'react';
-import { get } from 'lodash-es';
+import { get, includes } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
+import { locales } from 'containers/App/constants';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -47,33 +48,47 @@ const Container = styled.div`
   width: 100%;
   height: ${({ theme }) => theme.menuHeight}px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 20px;
-  padding-right: 20px;
+  align-items: stretch;
   position: fixed;
   top: 0;
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
   border-bottom: solid 1px ${({ theme }) => theme.navbarBorderColor || '#eaeaea'};;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
   z-index: 999;
-  -webkit-transform: translateZ(0);
 
-  &.citizen {
+  &.hideNavbar {
+    ${media.smallerThanMaxTablet`
+      display: none;
+    `}
+  }
+
+  &.citizenPage {
     ${media.smallerThanMaxTablet`
       position: relative;
       top: auto;
     `}
   }
 
+  @media print {
+    display: none;
+  }
+`;
+
+const ContainerInner = styled.div`
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 20px;
+  padding-right: 20px;
+  position: relative;
+
   ${media.smallerThanMinTablet`
     padding-left: 15px;
     padding-right: 10px;
   `}
-
-  @media print {
-    display: none;
-  }
 `;
 
 const Left = styled.div`
@@ -285,7 +300,7 @@ const RightItem: any = styled.div`
   `}
 `;
 
-const LogInLink = NavigationItem.extend`
+const LogInLink = styled(NavigationItem)`
   &:focus,
   &:hover {
     border-top-color: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
@@ -296,7 +311,7 @@ const LogInLink = NavigationItem.extend`
   `}
 `;
 
-const SignUpLink = NavigationItem.extend`
+const SignUpLink = styled(NavigationItem)`
   height: calc(100% + 1px);
   color: #fff;
   background-color: ${({ theme }) => theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary};
@@ -333,7 +348,9 @@ const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
   `}
 `;
 
-interface InputProps {}
+interface InputProps {
+  fullscreenModalOpened: boolean;
+}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
@@ -381,6 +398,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
   render() {
     const {
+      fullscreenModalOpened,
       projects,
       location,
       locale,
@@ -394,8 +412,14 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
     const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
     let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
+    // Avoids caching issue when an admin changes platform logo (I guess)
     tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : undefined) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
-    const secondUrlSegment = location.pathname.replace(/^\/+/g, '').split('/')[1];
+    const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+    const firstUrlSegment = urlSegments[0];
+    const secondUrlSegment = urlSegments[1];
+    const lastUrlSegment = urlSegments[urlSegments.length - 1];
+    const onIdeaPage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'ideas' && lastUrlSegment !== 'new');
+    const hideNavbar = (fullscreenModalOpened || onIdeaPage);
 
     return (
       <>
@@ -403,126 +427,132 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
           <MobileNavigation />
         }
 
-        <Container role="navigation" className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
-          <Left>
-            {tenantLogo &&
-              <LogoLink to="/" onlyActiveOnIndex={true}>
-                <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText, { tenantName })} />
-              </LogoLink>
-            }
-
-            <NavigationItems>
-              <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex={true}>
-                <NavigationItemText>
-                  <FormattedMessage {...messages.pageOverview} />
-                </NavigationItemText>
-              </NavigationItem>
-
-              {tenantLocales && projectsList && projectsList.length > 0 &&
-                <NavigationDropdown>
-                  <NavigationDropdownItem
-                    className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' ? 'active' : ''}`}
-                    aria-haspopup="true"
-                    onMouseDown={this.removeFocus}
-                    onClick={this.toggleProjectsDropdown}
-                  >
-                    <NavigationItemText>
-                      <FormattedMessage {...messages.pageProjects} />
-                    </NavigationItemText>
-                    <NavigationDropdownItemIcon name="dropdown" />
-                  </NavigationDropdownItem>
-                  <Dropdown
-                    top="68px"
-                    left="10px"
-                    opened={projectsDropdownOpened}
-                    onClickOutside={this.toggleProjectsDropdown}
-                    content={(
-                      <>
-                        {projectsList.map((project, index) => (
-                          <ProjectsListItem
-                            key={project.id}
-                            to={getProjectUrl(project)}
-                            className={`${index === projectsList.length - 1} ? 'last' : ''`}
-                          >
-                            {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
-                          </ProjectsListItem>
-                        ))}
-                      </>
-                    )}
-                    footer={
-                      <>
-                        {projectsList.length > 9 &&
-                          <ProjectsListFooter to={'/projects'}>
-                            <FormattedMessage {...messages.allProjects} />
-                          </ProjectsListFooter>
-                        }
-                      </>
-                    }
-                  />
-                </NavigationDropdown>
+        <Container
+          role="navigation"
+          id="navbar"
+          className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${hideNavbar ? 'hideNavbar' : ''}`}
+        >
+          <ContainerInner>
+            <Left>
+              {tenantLogo &&
+                <LogoLink to="/" onlyActiveOnIndex={true}>
+                  <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText, { tenantName })} />
+                </LogoLink>
               }
 
-              <FeatureFlag name="ideas_overview">
-                <NavigationItem to="/ideas" activeClassName="active">
+              <NavigationItems>
+                <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex={true}>
                   <NavigationItemText>
-                    <FormattedMessage {...messages.pageIdeas} />
+                    <FormattedMessage {...messages.pageOverview} />
                   </NavigationItemText>
                 </NavigationItem>
-              </FeatureFlag>
 
-              <NavigationItem to="/pages/information" activeClassName="active">
-                <NavigationItemText>
-                  <FormattedMessage {...messages.pageInformation} />
-                </NavigationItemText>
-              </NavigationItem>
-            </NavigationItems>
-          </Left>
+                {tenantLocales && projectsList && projectsList.length > 0 &&
+                  <NavigationDropdown>
+                    <NavigationDropdownItem
+                      className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' ? 'active' : ''}`}
+                      aria-haspopup="true"
+                      onMouseDown={this.removeFocus}
+                      onClick={this.toggleProjectsDropdown}
+                    >
+                      <NavigationItemText>
+                        <FormattedMessage {...messages.pageProjects} />
+                      </NavigationItemText>
+                      <NavigationDropdownItemIcon name="dropdown" />
+                    </NavigationDropdownItem>
+                    <Dropdown
+                      top="68px"
+                      left="10px"
+                      opened={projectsDropdownOpened}
+                      onClickOutside={this.toggleProjectsDropdown}
+                      content={(
+                        <>
+                          {projectsList.map((project, index) => (
+                            <ProjectsListItem
+                              key={project.id}
+                              to={getProjectUrl(project)}
+                              className={`${index === projectsList.length - 1} ? 'last' : ''`}
+                            >
+                              {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
+                            </ProjectsListItem>
+                          ))}
+                        </>
+                      )}
+                      footer={
+                        <>
+                          {projectsList.length > 9 &&
+                            <ProjectsListFooter to={'/projects'}>
+                              <FormattedMessage {...messages.allProjects} />
+                            </ProjectsListFooter>
+                          }
+                        </>
+                      }
+                    />
+                  </NavigationDropdown>
+                }
 
-          <Right>
-            {!authUser &&
+                <FeatureFlag name="ideas_overview">
+                  <NavigationItem to="/ideas" activeClassName="active">
+                    <NavigationItemText>
+                      <FormattedMessage {...messages.pageIdeas} />
+                    </NavigationItemText>
+                  </NavigationItem>
+                </FeatureFlag>
 
-              <RightItem className="login noLeftMargin">
-                <LogInLink
-                  id="e2e-login-link"
-                  to="/sign-in"
-                >
+                <NavigationItem to="/pages/information" activeClassName="active">
                   <NavigationItemText>
-                    <FormattedMessage {...messages.logIn} />
+                    <FormattedMessage {...messages.pageInformation} />
                   </NavigationItemText>
-                </LogInLink>
-              </RightItem>
-            }
+                </NavigationItem>
+              </NavigationItems>
+            </Left>
 
-            {!authUser &&
-              <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
-                <SignUpLink
-                  to="/sign-up"
-                >
-                  <NavigationItemText className="sign-up-span">
-                    <FormattedMessage {...messages.signUp} />
-                  </NavigationItemText>
-                </SignUpLink>
-              </RightItem>
-            }
+            <Right>
+              {!authUser &&
 
-            {authUser &&
-              <RightItem className="notification">
-                <NotificationMenu />
-              </RightItem>
-            }
+                <RightItem className="login noLeftMargin">
+                  <LogInLink
+                    id="e2e-login-link"
+                    to="/sign-in"
+                  >
+                    <NavigationItemText>
+                      <FormattedMessage {...messages.logIn} />
+                    </NavigationItemText>
+                  </LogInLink>
+                </RightItem>
+              }
 
-            {authUser &&
-              <RightItem className="usermenu">
-                <UserMenu />
-              </RightItem>
-            }
+              {!authUser &&
+                <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
+                  <SignUpLink
+                    to="/sign-up"
+                  >
+                    <NavigationItemText className="sign-up-span">
+                      <FormattedMessage {...messages.signUp} />
+                    </NavigationItemText>
+                  </SignUpLink>
+                </RightItem>
+              }
 
-            {tenantLocales.length > 1 && locale &&
-              <RightItem onMouseOver={this.preloadLanguageSelector} className="noLeftMargin">
-                <StyledLoadableLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
-              </RightItem>
-            }
-          </Right>
+              {authUser &&
+                <RightItem className="notification">
+                  <NotificationMenu />
+                </RightItem>
+              }
+
+              {authUser &&
+                <RightItem className="usermenu">
+                  <UserMenu />
+                </RightItem>
+              }
+
+              {tenantLocales.length > 1 && locale &&
+                <RightItem onMouseOver={this.preloadLanguageSelector} className="noLeftMargin">
+                  <StyledLoadableLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
+                </RightItem>
+              }
+            </Right>
+          </ContainerInner>
         </Container>
       </>
     );

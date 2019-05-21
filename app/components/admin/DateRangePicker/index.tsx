@@ -13,6 +13,7 @@ import { fontSizes } from 'utils/styleUtils';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import { omit } from 'lodash-es';
 
 interface Props extends Omit<DateRangePickerShape, 'focusedInput' | 'onFocusChange'> {
   className?: string;
@@ -63,7 +64,7 @@ class OurDateRangePicker extends PureComponent<Props & InjectedIntlProps, State>
           focusedInput={this.state.focusedInput}
           onFocusChange={this.handleFocusChange}
           startDatePlaceholderText={this.props.intl.formatMessage(messages.startDatePlaceholder)}
-          {...this.props}
+          {...omit(this.props, 'intl')}
         />
       </StylingWrapper>
     );
