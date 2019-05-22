@@ -16,7 +16,6 @@ export class InitiativesPage extends React.PureComponent<InjectedIntlProps> {
   ];
   private resource = {
     title: this.props.intl.formatMessage(messages.titleInitiatives),
-    subtitle: this.props.intl.formatMessage(messages.subtitleInitiatives)
   };
 
   render() {
