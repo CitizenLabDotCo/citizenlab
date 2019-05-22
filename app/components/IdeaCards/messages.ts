@@ -38,6 +38,10 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.topicsTitle',
     defaultMessage: 'Topics',
   },
+  statusTitle: {
+    id: 'app.containers.IdeaCards.statusTitle',
+    defaultMessage: 'Status',
+  },
   sortTitle: {
     id: 'app.containers.IdeaCards.sortTitle',
     defaultMessage: 'Sorting',
