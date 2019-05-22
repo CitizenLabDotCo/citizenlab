@@ -5,6 +5,9 @@ module NLP
     include HTTParty
     debug_output $stdout 
 
+    LONG_TIMEOUT = 2 * 60 # 2 minutes
+
+
     def initialize base_uri
       self.class.base_uri(base_uri)
     end
@@ -13,7 +16,8 @@ module NLP
       self.class.post(
         '/v1/tenants',
         body: dump.to_json,
-        headers: {'Content-Type' => 'application/json'} 
+        headers: {'Content-Type' => 'application/json'},
+        timeout: LONG_TIMEOUT
       )
     end
 
@@ -22,7 +26,8 @@ module NLP
       resp = self.class.get(
         "/v1/tenants/#{tenant_id}/ideas/#{idea_id}/similarity",
         body: options.to_json,
-        headers: {'Content-Type' => 'application/json'} 
+        headers: {'Content-Type' => 'application/json'},
+        timeout: LONG_TIMEOUT
       )
       return JSON.parse(resp.body)['data'] if resp.code == 200
     end
@@ -36,7 +41,8 @@ module NLP
       resp = self.class.post(
         "/v1/tenants/#{tenant_id}/ideas/clustering",
         body: body.to_json,
-        headers: {'Content-Type' => 'application/json'} 
+        headers: {'Content-Type' => 'application/json'},
+        timeout: LONG_TIMEOUT 
       )
       if !resp.success?
         raise ClErrors::TransactionError.new(error_key: resp['code'])
@@ -46,7 +52,8 @@ module NLP
 
     def ideas_classification tenant_id, locale
       self.class.get(
-        "/v1/tenants/#{tenant_id}/#{locale}/ideas/classification"
+        "/v1/tenants/#{tenant_id}/#{locale}/ideas/classification",
+        timeout: LONG_TIMEOUT
       )
     end
 
@@ -59,7 +66,8 @@ module NLP
       resp = self.class.post(
         "/v1/tenants/#{tenant_id}/geotagging",
         body: body.to_json,
-        headers: {'Content-Type' => 'application/json'} 
+        headers: {'Content-Type' => 'application/json'},
+        timeout: LONG_TIMEOUT
       )
       if !resp.success?
         raise ClErrors::TransactionError.new(error_key: resp['code'])
@@ -76,7 +84,8 @@ module NLP
       resp = self.class.post(
         "/v1/summarization",
         body: body.to_json,
-        headers: {'Content-Type' => 'application/json'}
+        headers: {'Content-Type' => 'application/json'},
+        timeout: LONG_TIMEOUT
       )
       return JSON.parse(resp.body)['data'] if resp.code == 200
     end
