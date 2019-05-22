@@ -4,6 +4,7 @@ import { isString, isEmpty } from 'lodash-es';
 // components
 import Icon from 'components/UI/Icon';
 import Input from 'components/UI/Input';
+import Label from 'components/UI/Label';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -12,14 +13,10 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import Label from 'components/UI/Label';
+import { colors } from 'utils/styleUtils';
 
-const SearchForm = styled.form`
-  flex: 1 0 auto;
-  width: 200px;
-  display: flex;
-  align-items: center;
-  align-self: stretch;
+const Container = styled.form`
+  width: 100%;
   margin: 0;
   padding: 0;
   position: relative;
@@ -31,25 +28,35 @@ const StyledInput = styled(Input)`
   input {
     width: 100%;
     padding-right: 45px;
+
+    &::-ms-clear {
+      display: none;
+    }
   }
 `;
 
 const StyledIcon = styled(Icon)`
-  fill: #84939E;
+  width: 100%;
   height: 100%;
+  fill: ${colors.clIconSecondary};
 `;
 
 const IconWrapper = styled.div`
   width: 21px;
   height: 21px;
-  margin: 0 0 0 -36px;
-  margin-top: -1px;
+  position: absolute;
+  top: 14px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 2;
 
   &.clear {
     cursor: pointer;
 
     ${StyledIcon} {
+      width: 13px;
       height: 13px;
     }
 
@@ -98,7 +105,7 @@ class SearchInput extends PureComponent<Props & InjectedIntlProps, State> {
     const placeholder = formatMessage(messages.searchPlaceholder);
 
     return (
-      <SearchForm className={className} onSubmit={this.handleSubmit}>
+      <Container className={className} onSubmit={this.handleSubmit}>
         <Label htmlFor="e2e-ideas-search" hidden value={placeholder} />
         <StyledInput
           id="e2e-ideas-search"
@@ -111,7 +118,7 @@ class SearchInput extends PureComponent<Props & InjectedIntlProps, State> {
         <IconWrapper onClick={this.handleOnClick} className={canClear ? 'clear' : ''}>
           <StyledIcon name={iconName} />
         </IconWrapper>
-      </SearchForm>
+      </Container>
     );
   }
 }

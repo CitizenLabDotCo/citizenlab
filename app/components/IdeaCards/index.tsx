@@ -10,7 +10,9 @@ import Spinner from 'components/UI/Spinner';
 import SelectTopics from './SelectTopics';
 import SelectSort from './SelectSort';
 import SelectProjects from './SelectProjects';
-
+import StatusFilter from './StatusFilter';
+import TopicsFilter from './TopicsFilter';
+import AreaFilter from './AreaFilter';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
@@ -34,8 +36,14 @@ import { darken, rgba } from 'polished';
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
 
+const filterColumnWidth = 352;
+const gapWidth = 35;
+
 const Container = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 `;
 
 const Loading = styled.div`
@@ -50,23 +58,33 @@ const Loading = styled.div`
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 `;
 
-const FiltersArea = styled.div`
-  width: 100%;
+const AboveContent = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  margin-right: ${filterColumnWidth + gapWidth}px;
   margin-bottom: 20px;
+`;
 
-  &.mapView {
-    justify-content: flex-end;
-  }
+const Content = styled.div`
+  display: flex;
+`;
 
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 30px;
-    flex-direction: column;
-    align-items: flex-start;
-  `}
+const Left = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const Right = styled.div`
+  flex: 0 0 ${filterColumnWidth}px;
+  width: ${filterColumnWidth}px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  margin-left: ${gapWidth}px;;
 `;
 
 const FilterArea = styled.div`
@@ -74,18 +92,6 @@ const FilterArea = styled.div`
 
   ${media.biggerThanMinTablet`
     align-items: center;
-  `}
-`;
-
-const LeftFilterArea = styled(FilterArea)`
-  &.hidden {
-    display: none;
-  }
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 22px;
-  `}
-  ${media.largePhone`
-    width: 100%;
   `}
 `;
 
@@ -118,25 +124,29 @@ const DropdownFilters = styled.div`
 `;
 
 const StyledSearchInput = styled(SearchInput)`
-  width: 300px;
-  margin-right: 30px;
+  width: 100%;
+  margin-bottom: 20px;
 
   input {
     font-size: ${fontSizes.medium}px;
     font-weight: 400;
   }
-
-  ${media.largePhone`
-    width: 100%;
-  `}
 `;
+
+const StyledStatusFilter = styled(StatusFilter)`
+  margin-bottom: 20px;
+`;
+
+const StyledTopicsFilter = styled(TopicsFilter)`
+  margin-bottom: 20px;
+`;
+
+const StyledAreaFilter = styled(AreaFilter)``;
 
 const ViewButtons = styled.div`
   display: flex;
 
   &.cardView {
-    margin-left: 35px;
-
     ${media.smallerThanMinTablet`
       margin-left: 0px;
       margin-bottom: 15px;
@@ -309,7 +319,6 @@ class IdeaCards extends PureComponent<Props, State> {
   }
 
   handleSearchOnChange = (search: string) => {
-    // track
     this.props.ideas.onChangeSearchTerm(search);
   }
 
@@ -357,35 +366,84 @@ class IdeaCards extends PureComponent<Props, State> {
 
     return (
       <Container id="e2e-ideas-container" className={className}>
-        <FiltersArea id="e2e-ideas-filters" className={`${showMapView && 'mapView'}`}>
-          <LeftFilterArea className={`${showMapView && 'hidden'}`}>
-            <StyledSearchInput value={(searchValue || '')} onChange={this.handleSearchOnChange} className="e2e-search-ideas-input"/>
-          </LeftFilterArea>
+        <AboveContent>
+          {showViewToggle &&
+            <FeatureFlag name="maps">
+              <ViewButtons className={`${showCardView && 'cardView'}`}>
+                <CardsButton onClick={this.selectView('card')} className={`${showCardView && 'active'}`}>
+                  <FormattedMessage {...messages.cards} />
+                </CardsButton>
+                <MapButton onClick={this.selectView('map')} className={`${showMapView && 'active'}`}>
+                  <FormattedMessage {...messages.map} />
+                </MapButton>
+              </ViewButtons>
+            </FeatureFlag>
+          }
 
-          <RightFilterArea>
-            <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'}`}>
-              <SelectSort onChange={this.handleSortOnChange} />
-              {allowProjectsFilter && <SelectProjects onChange={this.handleProjectsOnChange} />}
-              <SelectTopics onChange={this.handleTopicsOnChange} />
-            </DropdownFilters>
+          <SelectTopics onChange={this.handleTopicsOnChange} />
 
-            <Spacer />
+          {/*
+          <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'}`}>
+            <SelectSort onChange={this.handleSortOnChange} />
+            {allowProjectsFilter && <SelectProjects onChange={this.handleProjectsOnChange} />}
+            <SelectTopics onChange={this.handleTopicsOnChange} />
+          </DropdownFilters>
+          */}
+        </AboveContent>
 
-            {showViewToggle &&
-              <FeatureFlag name="maps">
-                <ViewButtons className={`${showCardView && 'cardView'}`}>
-                  <CardsButton onClick={this.selectView('card')} className={`${showCardView && 'active'}`}>
-                    <FormattedMessage {...messages.cards} />
-                  </CardsButton>
-                  <MapButton onClick={this.selectView('map')} className={`${showMapView && 'active'}`}>
-                    <FormattedMessage {...messages.map} />
-                  </MapButton>
-                </ViewButtons>
-              </FeatureFlag>
+        <Content>
+          <Left>
+            {showCardView && !querying && hasIdeas && ideasList &&
+              <IdeasList id="e2e-ideas-list">
+                {ideasList.map((idea) => (
+                  <StyledIdeaCard
+                    key={idea.id}
+                    ideaId={idea.id}
+                    participationMethod={participationMethod}
+                    participationContextId={participationContextId}
+                    participationContextType={participationContextType}
+                  />
+                ))}
+              </IdeasList>
             }
-          </RightFilterArea>
-        </FiltersArea>
 
+            {showCardView && !querying && hasMore &&
+              <Footer>
+                <ShowMoreButton
+                  onClick={this.loadMore}
+                  size="1"
+                  style="secondary"
+                  text={<FormattedMessage {...messages.showMore} />}
+                  processing={loadingMore}
+                  height="50px"
+                  icon="showMore"
+                  iconPos="left"
+                  textColor={theme.colorText}
+                  textHoverColor={darken(0.1, theme.colorText)}
+                  bgColor={rgba(theme.colorText, 0.08)}
+                  bgHoverColor={rgba(theme.colorText, 0.12)}
+                  fontWeight="500"
+                />
+              </Footer>
+            }
+          </Left>
+
+          <Right id="e2e-ideas-filters">
+            <StyledSearchInput
+              value={(searchValue || '')}
+              onChange={this.handleSearchOnChange}
+              className="e2e-search-ideas-input"
+            />
+
+            <StyledStatusFilter />
+
+            <StyledTopicsFilter />
+
+            <StyledAreaFilter />
+          </Right>
+        </Content>
+
+        {/*
         {showCardView && querying &&
           <Loading id="ideas-loading">
             <Spinner />
@@ -402,44 +460,13 @@ class IdeaCards extends PureComponent<Props, State> {
             </EmptyMessage>
           </EmptyContainer>
         }
+        */}
 
-        {showCardView && !querying && hasIdeas && ideasList &&
-          <IdeasList id="e2e-ideas-list">
-            {ideasList.map((idea) => (
-              <StyledIdeaCard
-                key={idea.id}
-                ideaId={idea.id}
-                participationMethod={participationMethod}
-                participationContextId={participationContextId}
-                participationContextType={participationContextType}
-              />
-            ))}
-          </IdeasList>
-        }
-
-        {showCardView && !querying && hasMore &&
-          <Footer>
-            <ShowMoreButton
-              onClick={this.loadMore}
-              size="1"
-              style="secondary"
-              text={<FormattedMessage {...messages.showMore} />}
-              processing={loadingMore}
-              height="50px"
-              icon="showMore"
-              iconPos="left"
-              textColor={theme.colorText}
-              textHoverColor={darken(0.1, theme.colorText)}
-              bgColor={rgba(theme.colorText, 0.08)}
-              bgHoverColor={rgba(theme.colorText, 0.12)}
-              fontWeight="500"
-            />
-          </Footer>
-        }
-
+        {/* 
         {showMapView && hasIdeas &&
           <IdeasMap projectIds={queryParameters.projects} phaseId={queryParameters.phase} />
         }
+        */}
       </Container>
     );
   }
