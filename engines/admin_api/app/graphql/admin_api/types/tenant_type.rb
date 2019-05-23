@@ -54,6 +54,16 @@ module AdminApi
       def core_locales
         object.dig('core', 'locales')
       end
+
+      field :core_organization_name, Types::MultilocType, null: false
+      def core_organization_name
+        object.dig('core','organization_name')
+      end
+
+      field :core_color_main, String, null: false
+      def core_color_main
+        object.dig('core','color_main')
+      end
     end
 
     field :id, ID, null: false

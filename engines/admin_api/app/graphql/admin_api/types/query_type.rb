@@ -71,6 +71,14 @@ module AdminApi
       ideas
     end
 
+    field :user, Types::UserType, null: false do
+      argument :id, ID, required: true
+    end
+
+    def user args
+      User.find(args[:id])
+    end
+
     field :project, Types::ProjectType, null: false do
       argument :id, ID, required: true
     end
