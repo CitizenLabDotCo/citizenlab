@@ -4,7 +4,7 @@ describe SmartGroupRules::ParticipatedInTopic do
 
   let(:valid_json_rule) {{
     'ruleType' => 'participated_in_topic',
-    'predicate' => 'is',
+    'predicate' => 'in',
     'value' => create(:topic).id
   }}
   let(:valid_rule) { SmartGroupRules::ParticipatedInTopic.from_json(valid_json_rule) }
@@ -40,13 +40,13 @@ describe SmartGroupRules::ParticipatedInTopic do
 
     end
 
-    it "correctly filters on 'is' predicate" do
-      rule = SmartGroupRules::ParticipatedInTopic.new('is', @topic1.id)
+    it "correctly filters on 'in' predicate" do
+      rule = SmartGroupRules::ParticipatedInTopic.new('in', @topic1.id)
       expect(rule.filter(User)).to match_array [@user1, @user2, @user3]
     end
 
-    it "correctly filters on 'not_is' predicate" do
-      rule = SmartGroupRules::ParticipatedInTopic.new('not_is', @topic2.id)
+    it "correctly filters on 'not_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInTopic.new('not_in', @topic2.id)
       expect(rule.filter(User)).to match_array [@user1, @user2, @user4]
     end
 
