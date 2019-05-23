@@ -4,7 +4,7 @@ describe SmartGroupRules::ParticipatedInIdeaStatus do
 
   let(:valid_json_rule) {{
     'ruleType' => 'participated_in_idea_status',
-    'predicate' => 'is',
+    'predicate' => 'in',
     'value' => create(:idea_status).id
   }}
   let(:valid_rule) { SmartGroupRules::ParticipatedInIdeaStatus.from_json(valid_json_rule) }
@@ -40,13 +40,13 @@ describe SmartGroupRules::ParticipatedInIdeaStatus do
 
     end
 
-    it "correctly filters on 'is' predicate" do
-      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('is', @idea_status1.id)
+    it "correctly filters on 'in' predicate" do
+      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('in', @idea_status1.id)
       expect(rule.filter(User)).to match_array [@user1, @user2, @user3]
     end
 
-    it "correctly filters on 'not_is' predicate" do
-      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('not_is', @idea_status2.id)
+    it "correctly filters on 'not_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('not_in', @idea_status2.id)
       expect(rule.filter(User)).to match_array [@user1, @user2, @user4]
     end
 
