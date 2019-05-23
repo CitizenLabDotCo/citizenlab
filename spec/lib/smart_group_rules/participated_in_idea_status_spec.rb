@@ -50,6 +50,46 @@ describe SmartGroupRules::ParticipatedInIdeaStatus do
       expect(rule.filter(User)).to match_array [@user1, @user2, @user4]
     end
 
+    it "correctly filters on 'posted_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('posted_in', @idea_status1.id)
+      expect(rule.filter(User)).to match_array [@user1]
+    end
+
+    it "correctly filters on 'not_posted_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('not_posted_in', @idea_status1.id)
+      expect(rule.filter(User)).to match_array [@user2, @user3, @user4]
+    end
+
+    it "correctly filters on 'commented_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('commented_in', @idea_status1.id)
+      expect(rule.filter(User)).to match_array [@user3]
+    end
+
+    it "correctly filters on 'not_commented_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('not_commented_in', @idea_status1.id)
+      expect(rule.filter(User)).to match_array [@user1, @user2, @user4]
+    end
+
+    it "correctly filters on 'voted_idea_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('voted_idea_in', @idea_status1.id)
+      expect(rule.filter(User)).to match_array [@user2]
+    end
+
+    it "correctly filters on 'not_voted_idea_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('not_voted_idea_in', @idea_status1.id)
+      expect(rule.filter(User)).to match_array [@user1, @user3, @user4]
+    end
+
+    it "correctly filters on 'voted_comment_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('voted_comment_in', @idea_status1.id)
+      expect(rule.filter(User)).to match_array []
+    end
+
+    it "correctly filters on 'not_voted_comment_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInIdeaStatus.new('not_voted_comment_in', @idea_status2.id)
+      expect(rule.filter(User)).to match_array [@user1, @user2, @user3, @user4]
+    end
+
   end
 
 end
