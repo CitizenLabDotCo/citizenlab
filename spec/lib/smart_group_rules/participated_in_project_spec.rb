@@ -49,6 +49,56 @@ describe SmartGroupRules::ParticipatedInProject do
       expect(rule.filter(User)).to match_array [@user1, @user2]
     end
 
+    it "correctly filters on 'posted_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInProject.new('posted_in', @project1.id)
+      expect(rule.filter(User)).to match_array [@user1]
+    end
+
+    it "correctly filters on 'not_posted_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInProject.new('not_posted_in', @project1.id)
+      expect(rule.filter(User)).to match_array [@user2, @user3]
+    end
+
+    it "correctly filters on 'commented_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInProject.new('commented_in', @project1.id)
+      expect(rule.filter(User)).to match_array [@user3]
+    end
+
+    it "correctly filters on 'not_commented_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInProject.new('not_commented_in', @project1.id)
+      expect(rule.filter(User)).to match_array [@user1, @user2]
+    end
+
+    it "correctly filters on 'voted_idea_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInProject.new('voted_idea_in', @project1.id)
+      expect(rule.filter(User)).to match_array [@user2]
+    end
+
+    it "correctly filters on 'not_voted_idea_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInProject.new('not_voted_idea_in', @project1.id)
+      expect(rule.filter(User)).to match_array [@user1, @user3]
+    end
+
+    it "correctly filters on 'voted_comment_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInProject.new('voted_comment_in', @project1.id)
+      expect(rule.filter(User)).to match_array []
+    end
+
+    it "correctly filters on 'not_voted_comment_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInProject.new('not_voted_comment_in', @project2.id)
+      expect(rule.filter(User)).to match_array [@user1, @user2, @user3]
+    end
+
+    it "correctly filters on 'budgeted_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInProject.new('budgeted_in', @project1.id)
+      expect(rule.filter(User)).to match_array []
+    end
+
+    it "correctly filters on 'not_budgeted_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInProject.new('not_budgeted_in', @project2.id)
+      expect(rule.filter(User)).to match_array [@user1, @user2, @user3]
+    end
+
   end
 
 end
