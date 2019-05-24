@@ -41,11 +41,6 @@ class IdeaFileUploader < CarrierWave::Uploader::Base
     %w(pdf doc docx xls xlsx ppt pptx txt sxw sxc sxi sdw sdc sdd csv mp3 mp4 mkv avi)
   end
 
-  # Override the filename of the uploaded files:
-  # Avoid using model.id or version_name here, see uploader/store.rb for details.
-  # def filename
-  #   "something.jpg" if original_filename
-  # end
 
   def fog_attributes
     # Deleting consecutive whitespaces in filename because of
