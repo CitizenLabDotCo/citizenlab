@@ -18,6 +18,8 @@ module BaseUploader
     end
   end
 
+  # from https://github.com/carrierwaveuploader/carrierwave/wiki/how-to:-create-random-and-unique-filenames-for-all-versioned-files#unique-filenames
+
   def filename
     "#{secure_token}.#{file.extension}" if original_filename.present?
   end
