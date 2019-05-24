@@ -66,3 +66,16 @@ export const shortenedAppLocalePairs = {
   'es-CL': 'Español',
   ach: 'Acholi',
 };
+export const appLocalesMomentPairs = {
+    'en-GB': 'en-gb',
+    'en-CA': 'en-ca',
+    'fr-BE': 'fr',
+    'fr-FR': 'fr',
+    'nl-BE': 'nl',
+    'nl-NL': 'nl',
+    'de-DE': 'de',
+    'da-DK': 'da',
+    'nb-NO': 'nb',
+    'es-ES': 'es',
+    'es-CL': 'es',
+};
