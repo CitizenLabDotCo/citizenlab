@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useCallback, useEffect, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { isError } from 'lodash-es';
+import { isError, isEmpty, includes } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -28,6 +28,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: stretch;
   padding: 20px;
+  padding-top: 25px;
   background: #fff;
   border: 1px solid #ececec;
   border-radius: ${(props: any) => props.theme.borderRadius};
@@ -48,21 +49,21 @@ const Topics = styled.div``;
 const Topic = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: normal;
   display: inline-block;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-right: 6px;
+  margin-bottom: 8px;
   cursor: pointer;
   border: solid 1px ${colors.separation};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
   &:hover,
-  &.active {
+  &.selected {
     color: #fff;
     background: #448943;
     border-color: #448943;
@@ -70,6 +71,7 @@ const Topic = styled.div`
 `;
 
 interface InputProps {
+  onChange: (arg: string[]) => void;
   className?: string;
 }
 
@@ -79,7 +81,24 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const TopicsFilter = memo<Props>(({ topics, className }) => {
+const TopicsFilter = memo<Props>(({ topics, onChange, className }) => {
+
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+
+  const handleOnClick = useCallback((event: MouseEvent<HTMLInputElement>) => {
+    const topicId = event.currentTarget.dataset.id as string;
+
+    if (includes(selectedTopics, topicId)) {
+      setSelectedTopics(selectedTopics.filter(selectedTopicId => selectedTopicId !== topicId));
+    } else {
+      setSelectedTopics([...selectedTopics, topicId]);
+    }
+  }, [selectedTopics]);
+
+  useEffect(() => {
+    onChange(selectedTopics);
+  }, [selectedTopics]);
+
   if (!isNilOrError(topics) && topics.length > 0) {
     return (
       <Container className={className}>
@@ -89,7 +108,12 @@ const TopicsFilter = memo<Props>(({ topics, className }) => {
 
         <Topics>
           {topics.filter(topic => !isError(topic)).map((topic: ITopicData) => (
-            <Topic key={topic.id}>
+            <Topic
+              key={topic.id}
+              data-id={topic.id}
+              onClick={handleOnClick}
+              className={includes(selectedTopics, topic.id) ? 'selected' : ''}
+            >
               <T value={topic.attributes.title_multiloc} />
             </Topic>
           ))}

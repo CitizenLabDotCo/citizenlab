@@ -328,8 +328,8 @@ class IdeaCards extends PureComponent<Props, State> {
     this.props.ideas.onChangeSearchTerm(search);
   }
 
-  handleAreaOnChange = (area: IOption) => {
-    console.log(area);
+  handleAreasOnChange = (areas: string[]) => {
+    this.props.ideas.onChangeAreas(areas);
   }
 
   handleProjectsOnChange = (projects: string[]) => {
@@ -390,7 +390,7 @@ class IdeaCards extends PureComponent<Props, State> {
             </FeatureFlag>
           }
 
-          <SelectTopics onChange={this.handleTopicsOnChange} />
+          {/* <SelectTopics onChange={this.handleTopicsOnChange} /> */}
 
           {/*
           <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'}`}>
@@ -441,8 +441,8 @@ class IdeaCards extends PureComponent<Props, State> {
           <Right id="e2e-ideas-filters">
             <StyledSearchFilter onChange={this.handleSearchOnChange} />
             <StyledStatusFilter />
-            <StyledTopicsFilter />
-            <StyledAreaFilter onChange={this.handleAreaOnChange}/>
+            <StyledTopicsFilter onChange={this.handleTopicsOnChange} />
+            <StyledAreaFilter onChange={this.handleAreasOnChange}/>
           </Right>
         </Content>
 

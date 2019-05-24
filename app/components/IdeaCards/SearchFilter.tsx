@@ -33,7 +33,7 @@ const Input = styled.input`
   height: 59px;
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
-  font-weight: 300;
+  font-weight: 400;
   padding: 0px;
   padding-left: 20px;
   margin: 0px;
@@ -45,7 +45,7 @@ const Input = styled.input`
   &::placeholder {
     color: ${colors.secondaryText};
     font-size: ${fontSizes.base}px;
-    font-weight: 300;
+    font-weight: 400;
     opacity: 1;
   }
 `;
