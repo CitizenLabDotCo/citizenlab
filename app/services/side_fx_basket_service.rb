@@ -21,15 +21,31 @@ class SideFxBasketService
     )
   end
 
-  def update_basket_counts
-    baskets_counts = BasketsIdea
-      .left_outer_joins(:basket).where.not(baskets: {submitted_at: nil})
-      .group(:idea_id).count
-    update_hash = baskets_counts.map do |id, count|
-      [id, {baskets_count: count}]
-    end.to_h
-    Idea.update(update_hash.keys, update_hash.values)
-    Idea.where(id: (Idea.ids - baskets_counts.keys)).in_batches.update_all(baskets_count: 0)
-  end
+  # def update_basket_counts
+  #   baskets_counts = BasketsIdea
+  #     .left_outer_joins(:basket).where.not(baskets: {submitted_at: nil})
+  #     .group(:idea_id).count
+  #   update_hash = baskets_counts.map do |id, count|
+  #     [id, {baskets_count: count}]
+  #   end.to_h
+  #   Idea.update(update_hash.keys, update_hash.values)
+  #   Idea.where(id: (Idea.ids - baskets_counts.keys)).in_batches.update_all(baskets_count: 0)
+  # end
 
+  def update_basket_counts
+    query =
+    """
+      UPDATE ideas
+      SET baskets_count = counts.count
+      FROM (
+        SELECT ideas.id as idea_id, count(submitted_baskets.id) as count
+        FROM ideas
+          LEFT OUTER JOIN baskets_ideas ON ideas.id = baskets_ideas.idea_id
+          LEFT OUTER JOIN (SELECT * FROM baskets WHERE submitted_at IS NOT NULL) as submitted_baskets ON baskets_ideas.basket_id = submitted_baskets.id
+        GROUP BY ideas.id
+      ) as counts
+      WHERE ideas.id = counts.idea_id
+    """
+    ActiveRecord::Base.connection.execute(query)
+  end
 end
