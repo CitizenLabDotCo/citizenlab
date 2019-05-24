@@ -2,7 +2,7 @@ import React, { memo, useMemo, useCallback, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Select from 'components/UI/Select';
+import MultipleSelect from 'components/UI/MultipleSelect';
 
 // resources
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
@@ -23,6 +23,7 @@ import { IOption } from 'typings';
 const Container = styled.div`
   width: 100%;
   padding: 20px;
+  padding-top: 25px;
   background: #fff;
   border: 1px solid #ececec;
   border-radius: ${(props: any) => props.theme.borderRadius};
@@ -39,7 +40,7 @@ const Title = styled.div`
 `;
 
 interface InputProps {
-  onChange: (arg: IOption | null) => void;
+  onChange: (arg: string[]) => void;
   className?: string;
 }
 
@@ -51,7 +52,7 @@ interface Props extends InputProps, DataProps {}
 
 const AreaFilter = memo<Props & InjectedIntlProps & InjectedLocalized>(({ onChange, className, localize, intl, areas }) => {
 
-  const [selectedOption, setSelectedOption] = useState<IOption | null>(null);
+  const [selectedOptions, setSelectedOptions] = useState<IOption[] | null>(null);
 
   const options = useMemo(() => {
     if (!isNilOrError(areas)) {
@@ -64,14 +65,19 @@ const AreaFilter = memo<Props & InjectedIntlProps & InjectedLocalized>(({ onChan
     return [];
   }, [areas]);
 
-  const handleOnChange = useCallback((option: IOption) => {
-    setSelectedOption(option);
+  const handleOnChange = useCallback((options: IOption[]) => {
+    setSelectedOptions(options);
   }, []);
 
   useEffect(() => {
-    console.log(selectedOption);
-    onChange(selectedOption);
-  }, [selectedOption]);
+    let areaIds: string[] = [];
+
+    if (selectedOptions && selectedOptions.length > 0) {
+      areaIds = selectedOptions.map(area => area.value);
+    }
+
+    onChange(areaIds);
+  }, [selectedOptions]);
 
   const placeholder = intl.formatMessage(messages.selectYourArea);
 
@@ -81,11 +87,10 @@ const AreaFilter = memo<Props & InjectedIntlProps & InjectedLocalized>(({ onChan
         <FormattedMessage {...messages.filterPerArea} />
       </Title>
 
-      <Select
-        value={selectedOption}
+      <MultipleSelect
+        value={selectedOptions}
         options={options}
         onChange={handleOnChange}
-        clearable={false}
         placeholder={placeholder}
       />
     </Container>

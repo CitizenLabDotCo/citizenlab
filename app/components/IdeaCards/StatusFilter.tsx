@@ -52,7 +52,7 @@ const Count = styled.span`
 const Status = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: normal;
   display: flex;
   align-items: center;
