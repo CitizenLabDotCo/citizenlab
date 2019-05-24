@@ -1,34 +1,28 @@
-import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
-import { capitalize } from 'lodash-es';
+import React, { memo, useMemo, useCallback, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// styling
-import { fontSizes, colors } from 'utils/styleUtils';
-
 // components
-import T from 'components/T';
+import Select from 'components/UI/Select';
 
 // resources
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
-import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
+
+// i18n
+import messages from './messages';
+import localize, { InjectedLocalized } from 'utils/localize';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
+
+// typings
+import { IOption } from 'typings';
 
 const Container = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding-top: 25px;
-  padding-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 20px;
   background: #fff;
   border: 1px solid #ececec;
   border-radius: ${(props: any) => props.theme.borderRadius};
@@ -44,76 +38,64 @@ const Title = styled.div`
   margin-left: 18px;
 `;
 
-const Count = styled.span`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-`;
-
-const Status = styled.div`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  line-height: normal;
-  padding-left: 18px;
-  padding-right: 18px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-
-  &:hover,
-  &.active {
-    color: #fff;
-    background: #448943;
-
-    ${Count} {
-      color: #fff;
-    }
-  }
-`;
-
 interface InputProps {
+  onChange: (arg: IOption | null) => void;
   className?: string;
 }
 
 interface DataProps {
-  ideaStatuses: GetIdeaStatusesChildProps;
+  areas: GetAreasChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const AreaFilter = memo<Props>(({ ideaStatuses, className }) => {
-  if (!isNilOrError(ideaStatuses) && ideaStatuses.length > 0) {
-    return (
-      <Container className={className}>
-        <Title>
-          <FormattedMessage {...messages.statusTitle} />
-        </Title>
+const AreaFilter = memo<Props & InjectedIntlProps & InjectedLocalized>(({ onChange, className, localize, intl, areas }) => {
 
-        {ideaStatuses.map((ideaStatus) => (
-          <Status key={ideaStatus.id}>
-            <T value={ideaStatus.attributes.title_multiloc}>
-              {ideaStatusTitle => <>{capitalize(ideaStatusTitle)}</>}
-            </T>
-            <Count>244</Count>
-          </Status>
-        ))}
-      </Container>
-    );
-  }
+  const [selectedOption, setSelectedOption] = useState<IOption | null>(null);
 
-  return null;
+  const options = useMemo(() => {
+    if (!isNilOrError(areas)) {
+      return areas.map((area) => ({
+        value: area.id,
+        label: localize(area.attributes.title_multiloc)
+      }));
+    }
+
+    return [];
+  }, [areas]);
+
+  const handleOnChange = useCallback((option: IOption) => {
+    setSelectedOption(option);
+  }, []);
+
+  useEffect(() => {
+    console.log(selectedOption);
+    onChange(selectedOption);
+  }, [selectedOption]);
+
+  const placeholder = intl.formatMessage(messages.selectYourArea);
+
+  return (
+    <Container className={className}>
+      <Title>
+        <FormattedMessage {...messages.filterPerArea} />
+      </Title>
+
+      <Select
+        value={selectedOption}
+        options={options}
+        onChange={handleOnChange}
+        clearable={false}
+        placeholder={placeholder}
+      />
+    </Container>
+  );
 });
 
-const Data = adopt<DataProps, InputProps>({
-  ideaStatuses: <GetIdeaStatuses/>
-});
+const AreaFilterWithHoC = injectIntl(localize(AreaFilter));
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <AreaFilter {...inputProps} {...dataProps} />}
-  </Data>
+export default (inputProps) => (
+  <GetAreas>
+    {(areas) => <AreaFilterWithHoC {...inputProps} areas={areas} />}
+  </GetAreas>
 );

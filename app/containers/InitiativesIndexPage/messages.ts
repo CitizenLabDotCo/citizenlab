@@ -7,10 +7,6 @@ export default defineMessages({
   },
   metaDescription: {
     id: 'app.containers.InitiativesIndexPage.metaDescription',
-<<<<<<< HEAD
-    defaultMessage: 'TODO'
-=======
     defaultMessage: 'Explore and support initiatives conducted in {orgName}'
->>>>>>> 49fd54641ebf192a648d5a2c03dee0ef0909da51
   },
 });

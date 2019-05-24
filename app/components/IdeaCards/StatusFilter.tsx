@@ -54,6 +54,9 @@ const Status = styled.div`
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding-left: 18px;
   padding-right: 18px;
   padding-top: 10px;
