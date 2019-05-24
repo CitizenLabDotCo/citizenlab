@@ -21,17 +21,6 @@ class SideFxBasketService
     )
   end
 
-  # def update_basket_counts
-  #   baskets_counts = BasketsIdea
-  #     .left_outer_joins(:basket).where.not(baskets: {submitted_at: nil})
-  #     .group(:idea_id).count
-  #   update_hash = baskets_counts.map do |id, count|
-  #     [id, {baskets_count: count}]
-  #   end.to_h
-  #   Idea.update(update_hash.keys, update_hash.values)
-  #   Idea.where(id: (Idea.ids - baskets_counts.keys)).in_batches.update_all(baskets_count: 0)
-  # end
-
   def update_basket_counts
     query =
     """
