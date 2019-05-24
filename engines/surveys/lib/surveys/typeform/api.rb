@@ -54,7 +54,7 @@ module Surveys
           page_params = before ? params.merge(before: before) : params
           responses_page = responses(form_id: form_id, **page_params.merge(page_size: page_size))
           output += responses_page.parsed_response['items']
-          before = output.last['token']
+          before = output.last&.dig('token')
           break if responses_page['page_count'] <= 1
         end
         output
