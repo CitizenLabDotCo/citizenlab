@@ -4,7 +4,10 @@ class RecreateVersionsJob < ApplicationJob
   def perform(instance, attribute)
     puts "Recreating #{Tenant.current.name} #{instance.class.name} #{instance.id} #{attribute} versions"
     begin
-      instance.send(attribute).recreate_versions! if instance.send("#{attribute}?")
+      if instance.valid? && instance.send("#{attribute}?")
+        instance.send(attribute).recreate_versions!
+        instance.save!
+      end
     rescue NoMethodError
       # Needed to get past this bug https://github.com/carrierwaveuploader/carrierwave/issues/828
       puts "Something went wrong, recreate_version failed!"
