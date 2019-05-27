@@ -5,6 +5,9 @@ export function getSelectStyles(borderColor = '#ccc') {
     container: (base) => ({
       ...base,
     }),
+    input: (base) => ({
+      ...base,
+    }),
     control: (base, { isFocused }) => ({
       ...base,
       fontSize: `${fontSizes.base}px`,

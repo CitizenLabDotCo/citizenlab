@@ -328,6 +328,10 @@ class IdeaCards extends PureComponent<Props, State> {
     this.props.ideas.onChangeSearchTerm(search);
   }
 
+  handleStatusOnChange = (status: string | null) => {
+    this.props.ideas.onChangeIdeaStatus(status);
+  }
+
   handleAreasOnChange = (areas: string[]) => {
     this.props.ideas.onChangeAreas(areas);
   }
@@ -440,7 +444,7 @@ class IdeaCards extends PureComponent<Props, State> {
 
           <Right id="e2e-ideas-filters">
             <StyledSearchFilter onChange={this.handleSearchOnChange} />
-            <StyledStatusFilter />
+            <StyledStatusFilter onChange={this.handleStatusOnChange} />
             <StyledTopicsFilter onChange={this.handleTopicsOnChange} />
             <StyledAreaFilter onChange={this.handleAreasOnChange}/>
           </Right>

@@ -85,4 +85,8 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.searchAriaLabel',
     defaultMessage: 'Search for an idea',
   },
+  clear: {
+    id: 'app.containers.IdeaCards.clear',
+    defaultMessage: 'Clear',
+  },
 });
