@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React,{ memo, useState, useCallback, useEffect, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { capitalize } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -18,6 +18,7 @@ import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaSta
 
 // styling
 import styled from 'styled-components';
+import { Header, Title, ClearButtonWrapper, ClearButtonIcon, ClearButtonText } from './styles';
 
 const Container = styled.div`
   width: 100%;
@@ -32,15 +33,6 @@ const Container = styled.div`
   border: 1px solid #ececec;
   border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
-`;
-
-const Title = styled.div`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 15px;
-  margin-left: 18px;
 `;
 
 const Count = styled.span`
@@ -62,12 +54,16 @@ const Status = styled.div`
   padding-top: 10px;
   padding-bottom: 10px;
   margin-right: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   cursor: pointer;
   border-radius: ${(props: any) => props.theme.borderRadius};
+  user-select: none;
 
-  &:hover,
-  &.active {
+  &:not(.selected):hover {
+    background: #eee;
+  }
+
+  &.selected {
     color: #fff;
     background: #448943;
 
@@ -78,6 +74,7 @@ const Status = styled.div`
 `;
 
 interface InputProps {
+  onChange: (arg: string | null) => void;
   className?: string;
 }
 
@@ -87,16 +84,56 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const StatusFilter = memo<Props>(({ ideaStatuses, className }) => {
+const StatusFilter = memo<Props>(({ ideaStatuses, onChange, className }) => {
+
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+
+  const handleOnClick = useCallback((event: MouseEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const statusId = event.currentTarget.dataset.id as string;
+
+    if (selectedStatus !== statusId) {
+      setSelectedStatus(statusId);
+    } else {
+      setSelectedStatus(null);
+    }
+  }, [selectedStatus]);
+
+  const handleOnClear = useCallback((event: MouseEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setSelectedStatus(null);
+  }, []);
+
+  useEffect(() => {
+    onChange(selectedStatus);
+  }, [selectedStatus]);
+
   if (!isNilOrError(ideaStatuses) && ideaStatuses.length > 0) {
     return (
       <Container className={className}>
-        <Title>
-          <FormattedMessage {...messages.statusTitle} />
-        </Title>
+        <Header>
+          <Title>
+            <FormattedMessage {...messages.statusTitle} />
+          </Title>
+          <ClearButtonWrapper
+            role="button"
+            onClick={handleOnClear}
+            className={selectedStatus ? 'visible' : 'hidden'}
+          >
+            <ClearButtonIcon name="close4" />
+            <ClearButtonText>
+              <FormattedMessage {...messages.clear} />
+            </ClearButtonText>
+          </ClearButtonWrapper>
+        </Header>
 
         {ideaStatuses.map((ideaStatus) => (
-          <Status key={ideaStatus.id}>
+          <Status
+            key={ideaStatus.id}
+            data-id={ideaStatus.id}
+            onClick={handleOnClick}
+            className={selectedStatus === ideaStatus.id ? 'selected' : ''}
+          >
             <T value={ideaStatus.attributes.title_multiloc}>
               {ideaStatusTitle => <>{capitalize(ideaStatusTitle)}</>}
             </T>

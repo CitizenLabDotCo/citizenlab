@@ -18,6 +18,7 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // styling
 import styled from 'styled-components';
+import { Header, Title, ClearButtonWrapper, ClearButtonIcon, ClearButtonText } from './styles';
 
 // typings
 import { ITopicData } from 'services/topics';
@@ -35,15 +36,6 @@ const Container = styled.div`
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
 `;
 
-const Title = styled.div`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 15px;
-  margin-left: 18px;
-`;
-
 const Topics = styled.div``;
 
 const Topic = styled.div`
@@ -59,10 +51,16 @@ const Topic = styled.div`
   margin-right: 6px;
   margin-bottom: 8px;
   cursor: pointer;
+  user-select: none;
   border: solid 1px ${colors.separation};
   border-radius: ${(props: any) => props.theme.borderRadius};
+  transition: all 100ms ease-out;
 
-  &:hover,
+  &:hover {
+    color: #448943;
+    border-color: #448943;
+  }
+
   &.selected {
     color: #fff;
     background: #448943;
@@ -95,6 +93,11 @@ const TopicsFilter = memo<Props>(({ topics, onChange, className }) => {
     }
   }, [selectedTopics]);
 
+  const handleOnClear = useCallback((event: MouseEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setSelectedTopics([]);
+  }, []);
+
   useEffect(() => {
     onChange(selectedTopics);
   }, [selectedTopics]);
@@ -102,9 +105,21 @@ const TopicsFilter = memo<Props>(({ topics, onChange, className }) => {
   if (!isNilOrError(topics) && topics.length > 0) {
     return (
       <Container className={className}>
-        <Title>
-          <FormattedMessage {...messages.topicsTitle} />
-        </Title>
+        <Header>
+          <Title>
+            <FormattedMessage {...messages.topicsTitle} />
+          </Title>
+          <ClearButtonWrapper
+            role="button"
+            onClick={handleOnClear}
+            className={selectedTopics.length > 0 ? 'visible' : 'hidden'}
+          >
+            <ClearButtonIcon name="close4" />
+            <ClearButtonText>
+              <FormattedMessage {...messages.clear} />
+            </ClearButtonText>
+          </ClearButtonWrapper>
+        </Header>
 
         <Topics>
           {topics.filter(topic => !isError(topic)).map((topic: ITopicData) => (
