@@ -1,6 +1,6 @@
 class Idea < ApplicationRecord
   include PgSearch
-  include ParticipationContext
+  include Post
 
 
   pg_search_scope :search_by_all, 
