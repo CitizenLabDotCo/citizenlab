@@ -444,7 +444,7 @@ resource "Ideas" do
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
       parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Set automatically if not provided. Only allowed for admins/moderators."
       parameter :idea_status_id, "The status of the idea, only allowed for admins", extra: "Defaults to status with code 'proposed'"
-      parameter :publication_status, "Password", required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
+      parameter :publication_status, "Publication status", required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
       parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
       parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
       parameter :topic_ids, "Array of ids of the associated topics"
