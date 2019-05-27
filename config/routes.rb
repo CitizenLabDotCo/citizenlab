@@ -44,6 +44,13 @@ Rails.application.routes.draw do
         get :filter_counts, on: :collection
       end
 
+      resources :initiatives, 
+        concerns: [:votable, :spam_reportable], 
+        defaults: { votable: 'Initiative', spam_reportable: 'Initiative' } do
+        get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
+        get :as_markers, on: :collection, action: 'index_initiative_markers'
+      end
+
       resources :idea_statuses, only: [:index, :show]
 
       # auth

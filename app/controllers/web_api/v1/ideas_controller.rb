@@ -76,7 +76,7 @@ class WebApi::V1::IdeasController < ApplicationController
     @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
-    render json: @ideas, each_serializer: WebApi::V1::IdeaMarkerSerializer
+    render json: @ideas, each_serializer: WebApi::V1::PostMarkerSerializer
   end
 
   def index_xlsx
