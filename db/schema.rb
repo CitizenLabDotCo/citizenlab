@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_25_155516) do
+ActiveRecord::Schema.define(version: 2019_05_27_091133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -331,6 +331,25 @@ ActiveRecord::Schema.define(version: 2019_03_25_155516) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_identities_on_user_id"
+  end
+
+  create_table "initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc"
+    t.jsonb "body_multiloc"
+    t.string "publication_status"
+    t.datetime "published_at"
+    t.uuid "author_id", null: false
+    t.string "author_name"
+    t.integer "upvotes_count", default: 0, null: false
+    t.integer "downvotes_count", default: 0, null: false
+    t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
+    t.string "location_description"
+    t.string "slug", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_initiatives_on_author_id"
+    t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
+    t.index ["slug"], name: "index_initiatives_on_slug"
   end
 
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -678,6 +697,7 @@ ActiveRecord::Schema.define(version: 2019_03_25_155516) do
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
   add_foreign_key "identities", "users"
+  add_foreign_key "initiatives", "users", column: "author_id"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "memberships", "groups"
