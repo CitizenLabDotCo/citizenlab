@@ -30,6 +30,9 @@ const StyledContentContainer: any = styled(ContentContainer)`
   background: ${colors.background};
   padding-top: 80px;
   padding-bottom: 80px;
+  ${media.smallerThanMinTablet`
+    display: none !important;
+  `}
 `;
 
 const SuccessIcon = styled(Icon)`
@@ -53,7 +56,6 @@ const StoriesContainer = styled.div`
 
 const ShouldBeInitiatives = memo(({ tenant }: Props) => {
   if (isNilOrError(tenant)) return null;
-  console.log(get(tenant, 'attributes.settings.initiatives.success_stories'));
   const successStories = get(tenant, 'attributes.settings.initiatives.success_stories');
 
   if (successStories && successStories.length === 3) {

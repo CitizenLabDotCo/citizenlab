@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { get } from 'lodash-es';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -11,7 +10,6 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // intl
 import messages from './messages';
-// import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -43,9 +41,14 @@ const Container: any = styled(Link)`
   }
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05);
 
-  &:hover, &:focus {
-    box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.06);
-  }
+  ${media.biggerThanMinTablet`
+    transition: all 200ms ease;
+
+    &:hover, &:focus {
+      box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
+      transform: translate(0px, -2px);
+    }
+  `}
 `;
 
 const LocationIcon = styled(Icon)`
