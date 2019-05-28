@@ -6,7 +6,7 @@ describe CommentVotePolicy do
   let(:scope) { CommentVotePolicy::Scope.new(user, Vote) }
   let(:project) { create(:continuous_project, with_permissions: true) }
   let(:idea) { create(:idea, project: project)}
-  let(:comment) { create(:comment, idea: idea)}
+  let(:comment) { create(:comment, post: idea)}
 
   context "for a visitor" do 
     let!(:vote) { create(:vote, votable: comment) }
