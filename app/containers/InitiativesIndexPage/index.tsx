@@ -3,8 +3,9 @@ import React, { memo } from 'react';
 // components
 import Footer from 'components/Footer';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
-import ShouldBeInitiatives from './ShouldBeInitiatives';
+import InitiativesHeader from './InitiativesHeader';
 import SuccessStories from './SuccessStories';
+import ShouldBeInitiatives from './ShouldBeInitiatives';
 
 // i18n
 // import { FormattedMessage } from 'utils/cl-intl';
@@ -17,6 +18,7 @@ import SuccessStories from './SuccessStories';
 export default memo(() => (
   <>
     <InitiativesIndexMeta />
+    <InitiativesHeader />
     <SuccessStories />
     <ShouldBeInitiatives />
     <Footer />
