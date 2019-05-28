@@ -347,6 +347,7 @@ ActiveRecord::Schema.define(version: 2019_05_28_101954) do
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "location_description"
     t.string "slug", null: false
+    t.integer "comments_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_initiatives_on_author_id"

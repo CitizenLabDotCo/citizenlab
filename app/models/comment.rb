@@ -42,10 +42,6 @@ class Comment < ApplicationRecord
     self.author_name = self.author.display_name if self.author
   end
 
-  def project
-    self.post&.project
-  end
-
   def published?
     self.publication_status == 'published'
   end
