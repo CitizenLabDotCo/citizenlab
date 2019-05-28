@@ -31,7 +31,7 @@ export interface InputProps {
   feedbackNeeded?: boolean;
 }
 
-interface IQueryParameters {
+export interface IQueryParameters {
   'page[number]': number;
   'page[size]': number;
   projects: string[] | undefined;

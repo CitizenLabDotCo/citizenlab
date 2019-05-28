@@ -89,4 +89,16 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.clear',
     defaultMessage: 'Clear',
   },
+  xIdeas: {
+    id: 'app.containers.IdeaCards.xIdeas',
+    defaultMessage: '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+  },
+  all: {
+    id: 'app.containers.IdeaCards.all',
+    defaultMessage: 'All',
+  },
+  filter: {
+    id: 'app.containers.IdeaCards.filter',
+    defaultMessage: 'Filter',
+  }
 });
