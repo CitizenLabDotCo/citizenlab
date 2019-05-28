@@ -31,8 +31,6 @@ const StyledContentContainer: any = styled(ContentContainer)`
   `}
 `;
 
-const Filters = styled.div``;
-
 const ShouldBeInitiatives = memo(({ projects }: Props) => {
   if (isNilOrError(projects.projectsList)) return null;
 
@@ -41,13 +39,12 @@ const ShouldBeInitiatives = memo(({ projects }: Props) => {
 
   if (!!openIdeaProject) {
     return (
-      <StyledContentContainer>
-      <IdeaCards
-        type="load-more"
-        allowProjectsFilter={true}
-        projectIds={[openIdeaProject.id]}
-      />
-      <Filters />
+      <StyledContentContainer mode="page">
+        <IdeaCards
+          type="load-more"
+          allowProjectsFilter={true}
+          projectIds={[openIdeaProject.id]}
+        />
       </StyledContentContainer>
     );
   }
