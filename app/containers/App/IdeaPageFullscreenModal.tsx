@@ -16,21 +16,15 @@ interface Props {
 
 const IdeaPageFullscreenModal = memo<Props>(({ modalOpened, close, modalUrl, modalId, modalType, unauthenticatedVoteClick }) => {
 
-  const onClose = useCallback(
-    () => {
-      close();
-    },
-    []
-  );
+  const onClose = useCallback(() => {
+    close();
+  }, []);
 
-  const onUnauthenticatedVoteClick = useCallback(
-    () => {
-      unauthenticatedVoteClick();
-    },
-    []
-  );
+  const onUnauthenticatedVoteClick = useCallback(() => {
+    unauthenticatedVoteClick();
+  }, []);
 
-  const fullscreenModalHeaderChild = ((modalOpened && modalType === 'idea' && modalId) ? (
+  const topbarContent = ((modalOpened && modalType === 'idea' && modalId) ? (
     <VoteControl
       ideaId={modalId}
       unauthenticatedVoteClick={onUnauthenticatedVoteClick}
@@ -43,9 +37,9 @@ const IdeaPageFullscreenModal = memo<Props>(({ modalOpened, close, modalUrl, mod
       opened={modalOpened}
       close={onClose}
       url={modalUrl}
-      headerChild={fullscreenModalHeaderChild}
+      topbarContent={topbarContent}
     >
-      {modalId ? <IdeasShow ideaId={modalId} inModal={true}/> : null}
+      {modalId ? <IdeasShow ideaId={modalId} inModal={true} /> : null}
     </FullscreenModal>
   );
 });

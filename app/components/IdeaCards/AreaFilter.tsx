@@ -15,7 +15,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { Header, Title } from './styles';
 
 // typings
 import { IOption } from 'typings';
@@ -24,19 +24,11 @@ const Container = styled.div`
   width: 100%;
   padding: 20px;
   padding-top: 25px;
+  padding-bottom: 25px;
   background: #fff;
   border: 1px solid #ececec;
   border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
-`;
-
-const Title = styled.div`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 15px;
-  margin-left: 18px;
 `;
 
 interface InputProps {
@@ -83,9 +75,11 @@ const AreaFilter = memo<Props & InjectedIntlProps & InjectedLocalized>(({ onChan
 
   return (
     <Container className={className}>
-      <Title>
-        <FormattedMessage {...messages.filterPerArea} />
-      </Title>
+      <Header>
+        <Title>
+          <FormattedMessage {...messages.areas} />
+        </Title>
+      </Header>
 
       <MultipleSelect
         value={selectedOptions}

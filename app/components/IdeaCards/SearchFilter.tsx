@@ -12,6 +12,7 @@ import { injectIntl } from 'utils/cl-intl';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import { transparentize } from 'polished';
 
 const Container = styled.div`
   width: 100%;
@@ -24,7 +25,8 @@ const Container = styled.div`
   transition: box-shadow 100ms ease-out;
 
   &.focussed {
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    border-color: ${({ theme }) => theme.colorMain};
+    box-shadow: 0px 0px 0px 3px ${({ theme }) => transparentize(0.8, theme.colorMain)};
   }
 `;
 
@@ -57,8 +59,8 @@ const SearchIcon = styled(Icon)`
 `;
 
 const CloseIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   fill: ${colors.label};
 `;
 
