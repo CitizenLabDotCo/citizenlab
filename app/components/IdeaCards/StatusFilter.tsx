@@ -1,24 +1,28 @@
-import React,{ memo, useState, useCallback, useEffect, MouseEvent } from 'react';
+import React, { memo, useState, useCallback, useEffect, useMemo, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { capitalize } from 'lodash-es';
+import { capitalize, omit, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// styling
-import { fontSizes, colors } from 'utils/styleUtils';
-
 // components
 import T from 'components/T';
+import Icon from 'components/UI/Icon';
 
 // resources
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
+import GetIdeasFilterCounts from 'resources/GetIdeasFilterCounts';
 
 // styling
 import styled from 'styled-components';
-import { Header, Title, ClearButtonWrapper, ClearButtonIcon, ClearButtonText } from './styles';
+import { fontSizes, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
+import { Header, Title } from './styles';
+
+// typings
+import { IQueryParameters } from 'resources/GetIdeas';
 
 const Container = styled.div`
   width: 100%;
@@ -39,9 +43,16 @@ const Count = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
+  transition: all 80ms ease-out;
 `;
 
-const Status = styled.div`
+const CloseIcon = styled(Icon)`
+  width: 12px;
+  height: 12px;
+  fill: #fff;
+`;
+
+const Status = styled.button`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -51,21 +62,27 @@ const Status = styled.div`
   justify-content: space-between;
   padding-left: 18px;
   padding-right: 18px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin: 0px;
   margin-right: 10px;
   margin-bottom: 6px;
   cursor: pointer;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: 5px;
   user-select: none;
+  transition: all 80ms ease-out;
 
   &:not(.selected):hover {
-    background: #eee;
+    background: rgba(132, 147, 158, 0.15);
   }
 
   &.selected {
     color: #fff;
-    background: #448943;
+    background: ${({ theme }) => theme.colorMain};
+
+    &:hover {
+      background: ${({ theme }) => darken(0.15, theme.colorMain)};
+    }
 
     ${Count} {
       color: #fff;
@@ -74,6 +91,7 @@ const Status = styled.div`
 `;
 
 interface InputProps {
+  queryParameters: IQueryParameters;
   onChange: (arg: string | null) => void;
   className?: string;
 }
@@ -84,24 +102,26 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const StatusFilter = memo<Props>(({ ideaStatuses, onChange, className }) => {
+const StatusFilter = memo<Props>(({ ideaStatuses, onChange, className, queryParameters }) => {
+
+  const modifiedQueryParameters = useMemo(() => {
+    return {
+      ...omit(queryParameters, ['page[number]', 'idea_status']),
+      'page[size]': queryParameters['page[number]'] * queryParameters['page[size]']
+    };
+  }, [queryParameters]);
 
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
 
-  const handleOnClick = useCallback((event: MouseEvent<HTMLInputElement>) => {
+  const handleOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
     const statusId = event.currentTarget.dataset.id as string;
-
-    if (selectedStatus !== statusId) {
-      setSelectedStatus(statusId);
-    } else {
-      setSelectedStatus(null);
-    }
+    const nextSelectedStatus = (selectedStatus !== statusId ? statusId : null);
+    setSelectedStatus(nextSelectedStatus);
   }, [selectedStatus]);
 
-  const handleOnClear = useCallback((event: MouseEvent<HTMLInputElement>) => {
+  const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    setSelectedStatus(null);
   }, []);
 
   useEffect(() => {
@@ -115,29 +135,38 @@ const StatusFilter = memo<Props>(({ ideaStatuses, onChange, className }) => {
           <Title>
             <FormattedMessage {...messages.statusTitle} />
           </Title>
-          <ClearButtonWrapper
-            role="button"
-            onClick={handleOnClear}
-            className={selectedStatus ? 'visible' : 'hidden'}
-          >
-            <ClearButtonIcon name="close4" />
-            <ClearButtonText>
-              <FormattedMessage {...messages.clear} />
-            </ClearButtonText>
-          </ClearButtonWrapper>
         </Header>
+
+        <Status
+          data-id={null}
+          onMouseDown={removeFocus}
+          onClick={handleOnClick}
+          className={!selectedStatus ? 'selected' : ''}
+        >
+          <FormattedMessage {...messages.all} />
+          <Count>1000</Count>
+        </Status>
 
         {ideaStatuses.map((ideaStatus) => (
           <Status
             key={ideaStatus.id}
             data-id={ideaStatus.id}
+            onMouseDown={removeFocus}
             onClick={handleOnClick}
             className={selectedStatus === ideaStatus.id ? 'selected' : ''}
           >
             <T value={ideaStatus.attributes.title_multiloc}>
               {ideaStatusTitle => <>{capitalize(ideaStatusTitle)}</>}
             </T>
-            <Count>244</Count>
+            {selectedStatus !== ideaStatus.id ? (
+              <Count>
+                <GetIdeasFilterCounts queryParameters={modifiedQueryParameters}>
+                  {data => <>{get(data, `idea_status_id.${ideaStatus.id}`, 0)}</>}
+                </GetIdeasFilterCounts>
+              </Count>
+            ) : (
+              <CloseIcon name="close2" />
+            )}
           </Status>
         ))}
       </Container>

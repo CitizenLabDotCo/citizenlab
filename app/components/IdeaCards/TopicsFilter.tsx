@@ -1,6 +1,6 @@
 import React, { memo, useState, useCallback, useEffect, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { isError, isEmpty, includes } from 'lodash-es';
+import { isError, includes } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -18,7 +18,8 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // styling
 import styled from 'styled-components';
-import { Header, Title, ClearButtonWrapper, ClearButtonIcon, ClearButtonText } from './styles';
+import { darken } from 'polished';
+import { Header, Title } from './styles';
 
 // typings
 import { ITopicData } from 'services/topics';
@@ -38,7 +39,7 @@ const Container = styled.div`
 
 const Topics = styled.div``;
 
-const Topic = styled.div`
+const Topic = styled.button`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
@@ -46,25 +47,33 @@ const Topic = styled.div`
   display: inline-block;
   padding-left: 18px;
   padding-right: 18px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  margin: 0px;
   margin-right: 6px;
   margin-bottom: 8px;
   cursor: pointer;
   user-select: none;
   border: solid 1px ${colors.separation};
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  transition: all 100ms ease-out;
+  border-radius: 5px;
+  transition: all 80ms ease-out;
 
-  &:hover {
-    color: #448943;
-    border-color: #448943;
+  &:not(.selected) {
+    &:hover {
+      color: ${({ theme }) => theme.colorMain};
+      border-color: ${({ theme }) => theme.colorMain};
+    }
   }
 
   &.selected {
     color: #fff;
-    background: #448943;
-    border-color: #448943;
+    background: ${({ theme }) => theme.colorMain};
+    border-color: ${({ theme }) => theme.colorMain};
+
+    &:hover {
+      background: ${({ theme }) => darken(0.15, theme.colorMain)};
+      border-color: ${({ theme }) => darken(0.15, theme.colorMain)};
+    }
   }
 `;
 
@@ -83,7 +92,7 @@ const TopicsFilter = memo<Props>(({ topics, onChange, className }) => {
 
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
 
-  const handleOnClick = useCallback((event: MouseEvent<HTMLInputElement>) => {
+  const handleOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
     const topicId = event.currentTarget.dataset.id as string;
 
     if (includes(selectedTopics, topicId)) {
@@ -93,9 +102,8 @@ const TopicsFilter = memo<Props>(({ topics, onChange, className }) => {
     }
   }, [selectedTopics]);
 
-  const handleOnClear = useCallback((event: MouseEvent<HTMLInputElement>) => {
+  const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    setSelectedTopics([]);
   }, []);
 
   useEffect(() => {
@@ -109,16 +117,6 @@ const TopicsFilter = memo<Props>(({ topics, onChange, className }) => {
           <Title>
             <FormattedMessage {...messages.topicsTitle} />
           </Title>
-          <ClearButtonWrapper
-            role="button"
-            onClick={handleOnClear}
-            className={selectedTopics.length > 0 ? 'visible' : 'hidden'}
-          >
-            <ClearButtonIcon name="close4" />
-            <ClearButtonText>
-              <FormattedMessage {...messages.clear} />
-            </ClearButtonText>
-          </ClearButtonWrapper>
         </Header>
 
         <Topics>
@@ -126,6 +124,7 @@ const TopicsFilter = memo<Props>(({ topics, onChange, className }) => {
             <Topic
               key={topic.id}
               data-id={topic.id}
+              onMouseDown={removeFocus}
               onClick={handleOnClick}
               className={includes(selectedTopics, topic.id) ? 'selected' : ''}
             >
