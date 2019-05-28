@@ -10,6 +10,7 @@ import Spinner from 'components/UI/Spinner';
 import SelectTopics from './SelectTopics';
 import SelectSort from './SelectSort';
 import SelectProjects from './SelectProjects';
+import SearchFilter from './SearchFilter';
 import StatusFilter from './StatusFilter';
 import TopicsFilter from './TopicsFilter';
 import AreaFilter from './AreaFilter';
@@ -35,6 +36,7 @@ import { darken, rgba } from 'polished';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
+import { IOption } from 'typings';
 
 const filterColumnWidth = 352;
 const gapWidth = 35;
@@ -131,6 +133,10 @@ const StyledSearchInput = styled(SearchInput)`
     font-size: ${fontSizes.medium}px;
     font-weight: 400;
   }
+`;
+
+const StyledSearchFilter = styled(SearchFilter)`
+  margin-bottom: 20px;
 `;
 
 const StyledStatusFilter = styled(StatusFilter)`
@@ -322,6 +328,14 @@ class IdeaCards extends PureComponent<Props, State> {
     this.props.ideas.onChangeSearchTerm(search);
   }
 
+  handleStatusOnChange = (status: string | null) => {
+    this.props.ideas.onChangeIdeaStatus(status);
+  }
+
+  handleAreasOnChange = (areas: string[]) => {
+    this.props.ideas.onChangeAreas(areas);
+  }
+
   handleProjectsOnChange = (projects: string[]) => {
     this.props.ideas.onChangeProjects(projects);
   }
@@ -380,7 +394,7 @@ class IdeaCards extends PureComponent<Props, State> {
             </FeatureFlag>
           }
 
-          <SelectTopics onChange={this.handleTopicsOnChange} />
+          {/* <SelectTopics onChange={this.handleTopicsOnChange} /> */}
 
           {/*
           <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'}`}>
@@ -429,17 +443,10 @@ class IdeaCards extends PureComponent<Props, State> {
           </Left>
 
           <Right id="e2e-ideas-filters">
-            <StyledSearchInput
-              value={(searchValue || '')}
-              onChange={this.handleSearchOnChange}
-              className="e2e-search-ideas-input"
-            />
-
-            <StyledStatusFilter />
-
-            <StyledTopicsFilter />
-
-            <StyledAreaFilter />
+            <StyledSearchFilter onChange={this.handleSearchOnChange} />
+            <StyledStatusFilter onChange={this.handleStatusOnChange} />
+            <StyledTopicsFilter onChange={this.handleTopicsOnChange} />
+            <StyledAreaFilter onChange={this.handleAreasOnChange}/>
           </Right>
         </Content>
 

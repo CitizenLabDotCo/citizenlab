@@ -87,7 +87,6 @@ const IdeaTitle: any = styled.h3`
   display: block;
   display: -webkit-box;
   max-width: 400px;
-  max-height: 60px;
   margin: 0;
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
