@@ -70,7 +70,7 @@ export type GetIdeasChildProps = State & {
   onChangeSorting: (sort: Sort) => void;
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
-  onChangeIdeaStatus: (ideaStatus: string) => void;
+  onChangeIdeaStatus: (ideaStatus: string | null) => void;
   onChangePublicationStatus: (publicationStatus: PublicationStatus) => void;
   onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
   onChangeAssignee: (assignee: string | undefined) => void;
@@ -381,10 +381,10 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
 
-  handleIdeaStatusOnChange = (ideaStatus: string) => {
+  handleIdeaStatusOnChange = (ideaStatus: string | null) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      idea_status: ideaStatus,
+      idea_status: (ideaStatus || undefined),
       'page[number]': 1
     });
   }

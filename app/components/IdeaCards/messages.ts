@@ -1,8 +1,3 @@
-/*
- * IdeaCards Messages
- *
- * This contains all the text for the IdeaCards component.
- */
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
@@ -73,5 +68,25 @@ export default defineMessages({
   cards: {
     id: 'app.containers.IdeaCards.cards',
     defaultMessage: 'Cards',
+  },
+  selectYourArea: {
+    id: 'app.containers.IdeaCards.selectYourArea',
+    defaultMessage: 'Select your area',
+  },
+  filterPerArea: {
+    id: 'app.containers.IdeaCards.filterPerArea',
+    defaultMessage: 'Filter per area',
+  },
+  searchPlaceholder: {
+    id: 'app.containers.IdeaCards.searchPlaceholder',
+    defaultMessage: 'Search for an idea',
+  },
+  searchAriaLabel: {
+    id: 'app.containers.IdeaCards.searchAriaLabel',
+    defaultMessage: 'Search for an idea',
+  },
+  clear: {
+    id: 'app.containers.IdeaCards.clear',
+    defaultMessage: 'Clear',
   },
 });
