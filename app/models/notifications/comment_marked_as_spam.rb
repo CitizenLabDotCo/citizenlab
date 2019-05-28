@@ -14,14 +14,14 @@ module Notifications
       spam_report = activity.item
       initiating_user = User.find(spam_report&.user_id)
       if spam_report.spam_reportable_type == 'Comment'
-        project_id = spam_report.spam_reportable&.idea&.project_id
+        project_id = spam_report.spam_reportable&.post&.project_id
         self.recipient_ids(initiating_user, project_id).map do |recipient_id|
           self.create(
             recipient_id: recipient_id,
             initiating_user: initiating_user,
             spam_report: spam_report,
             comment_id: spam_report.spam_reportable&.id,
-            idea_id: spam_report.spam_reportable&.idea_id,
+            idea_id: ((spam_report.spam_reportable&.post_type == 'Idea') && spam_report.spam_reportable&.post_id),
             project_id: project_id
           )
         end

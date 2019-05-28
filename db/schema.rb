@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_27_091133) do
+ActiveRecord::Schema.define(version: 2019_05_28_101954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 2019_05_27_091133) do
 
   create_table "comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "author_id"
-    t.uuid "idea_id"
+    t.uuid "post_id"
     t.uuid "parent_id"
     t.integer "lft", null: false
     t.integer "rgt", null: false
@@ -94,10 +94,11 @@ ActiveRecord::Schema.define(version: 2019_05_27_091133) do
     t.string "publication_status", default: "published", null: false
     t.datetime "body_updated_at"
     t.integer "children_count", default: 0, null: false
+    t.string "post_type"
     t.index ["author_id"], name: "index_comments_on_author_id"
-    t.index ["idea_id"], name: "index_comments_on_idea_id"
     t.index ["lft"], name: "index_comments_on_lft"
     t.index ["parent_id"], name: "index_comments_on_parent_id"
+    t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["rgt"], name: "index_comments_on_rgt"
   end
 
@@ -673,7 +674,7 @@ ActiveRecord::Schema.define(version: 2019_05_27_091133) do
   add_foreign_key "baskets", "users"
   add_foreign_key "baskets_ideas", "baskets"
   add_foreign_key "baskets_ideas", "ideas"
-  add_foreign_key "comments", "ideas"
+  add_foreign_key "comments", "ideas", column: "post_id"
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "custom_field_options", "custom_fields"
   add_foreign_key "email_campaigns_campaign_email_commands", "users", column: "recipient_id"
@@ -734,12 +735,12 @@ ActiveRecord::Schema.define(version: 2019_05_27_091133) do
       GREATEST(comments_at.last_comment_at, upvotes_at.last_upvoted_at, ideas.published_at) AS last_activity_at,
       to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((upvotes_at.upvotes_count)::double precision * upvotes_at.mean_upvoted_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((upvotes_at.upvotes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
      FROM ((ideas
-       FULL JOIN ( SELECT comments.idea_id,
+       FULL JOIN ( SELECT comments.post_id AS idea_id,
               max(comments.created_at) AS last_comment_at,
               avg(date_part('epoch'::text, comments.created_at)) AS mean_comment_at,
-              count(comments.idea_id) AS comments_count
+              count(comments.post_id) AS comments_count
              FROM comments
-            GROUP BY comments.idea_id) comments_at ON ((ideas.id = comments_at.idea_id)))
+            GROUP BY comments.post_id) comments_at ON ((ideas.id = comments_at.idea_id)))
        FULL JOIN ( SELECT votes.votable_id,
               max(votes.created_at) AS last_upvoted_at,
               avg(date_part('epoch'::text, votes.created_at)) AS mean_upvoted_at,

@@ -21,23 +21,27 @@ SEED_SIZE = ENV.fetch('SEED_SIZE','medium')
 num_users = 10
 num_projects = 4
 num_ideas = 5
+num_initiatives = 4
 case SEED_SIZE
   when 'small'
     num_users = 5
     num_projects = 1
     num_ideas = 4
+    num_initiatives = 3
   when 'medium'
     num_users = 20
     num_projects = 5
     num_ideas = 35
+    num_initiatives = 20
   when 'large'
     num_users = 50
     num_projects = 20
     num_ideas = 100
+    num_initiatives = 60
 end
 
 
-def create_comment_tree(idea, parent, depth=0)
+def create_comment_tree(post, parent, depth=0)
   amount = rand(5/(depth+1))
   amount.times do |i|
     c = Comment.create!({
@@ -46,9 +50,9 @@ def create_comment_tree(idea, parent, depth=0)
         "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
       },
       author: User.normal_user.offset(rand(User.normal_user.count)).first,
-      idea: idea,
+      post: post,
       parent: parent,
-      created_at: Faker::Date.between((parent ? parent.created_at : idea.published_at), Time.now)
+      created_at: Faker::Date.between((parent ? parent.created_at : post.published_at), Time.now)
     })
     User.all.each do |u|
       if rand(5) < 2
@@ -57,7 +61,7 @@ def create_comment_tree(idea, parent, depth=0)
     end
     LogActivityJob.perform_later(c, 'created', c.author, c.created_at.to_i)
     MakeNotificationsJob.perform_now(Activity.new(item: c, action: 'created', user: c.author, acted_at: Time.now))
-    create_comment_tree(idea, c, depth+1)
+    create_comment_tree(post, c, depth+1)
   end
 end
 
@@ -588,6 +592,49 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       create_comment_tree(idea, nil)
+    end
+
+    num_initiatives.times do 
+      created_at = Faker::Date.between(Tenant.current.created_at, Time.now)
+      initiative = Idea.create!({
+        title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
+        body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
+        author: User.offset(rand(User.count)).first,
+        publication_status: 'published',
+        published_at: Faker::Date.between(created_at, Time.now),
+        created_at: created_at,
+        location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
+        location_description: rand(2) == 0 ? nil : Faker::Address.street_address
+      })
+
+      LogActivityJob.perform_later(initiative, 'created', initiative.author, initiative.created_at.to_i)
+
+      # [0,0,1,1,2][rand(5)].times do |i|
+      #   initiative.initiative_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+      # end
+      # if rand(5) == 0
+      #   (rand(3)+1).times do
+      #     initiative.initiative_files.create!(generate_file_attributes)
+      #   end
+      # end
+
+      User.all.each do |u|
+        r = rand(5)
+        if r < 2
+          Vote.create!(votable: initiative, user: u, mode: "up", created_at: Faker::Date.between(initiative.published_at, Time.now))
+        end
+      end
+
+      # rand(5).times do
+      #   official_feedback = initiative.official_feedbacks.create!(
+      #     body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join}, 
+      #     author_multiloc: create_for_some_locales{Faker::FunnyName.name},
+      #     user: User.admin.shuffle.first
+      #     )
+      #   LogActivityJob.perform_later(official_feedback, 'created', official_feedback.user, official_feedback.created_at.to_i)
+      # end
+
+      create_comment_tree(initiative, nil)
     end
 
     Phase.where(participation_method: 'budgeting').each do |phase|
