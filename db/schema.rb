@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 2019_05_28_101954) do
     t.index ["author_id"], name: "index_comments_on_author_id"
     t.index ["lft"], name: "index_comments_on_lft"
     t.index ["parent_id"], name: "index_comments_on_parent_id"
+    t.index ["post_id", "post_type"], name: "index_comments_on_post_id_and_post_type"
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["rgt"], name: "index_comments_on_rgt"
   end
@@ -674,7 +675,6 @@ ActiveRecord::Schema.define(version: 2019_05_28_101954) do
   add_foreign_key "baskets", "users"
   add_foreign_key "baskets_ideas", "baskets"
   add_foreign_key "baskets_ideas", "ideas"
-  add_foreign_key "comments", "ideas", column: "post_id"
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "custom_field_options", "custom_fields"
   add_foreign_key "email_campaigns_campaign_email_commands", "users", column: "recipient_id"
