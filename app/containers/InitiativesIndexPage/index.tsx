@@ -6,21 +6,70 @@ import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
 import SuccessStories from './SuccessStories';
 import ShouldBeInitiatives from './ShouldBeInitiatives';
+// import InitiativesFooter from './InitiativesFooter';
 
 // i18n
-// import { FormattedMessage } from 'utils/cl-intl';
-// import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
-// import styled from 'styled-components';
-// import { media, fontSizes, colors } from 'utils/styleUtils';
+import styled, { withTheme } from 'styled-components';
+import { media, fontSizes, colors } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
 
-export default memo(() => (
+const FooterBanner: any = styled.div`
+  background: ${({ theme }) => theme.colorMain};
+  width: 100%;
+  min-height: 300px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 50px;
+  padding-bottom: 60px;
+
+  p {
+    color: #fff;
+    font-size: ${fontSizes.xxxl}px;
+    line-height: normal;
+    font-weight: 600;
+    margin-bottom: 30px;
+    max-width: 500px;
+    text-align: center;
+
+    ${media.smallerThanMaxTablet`
+      font-size: ${fontSizes.xxxl}px;
+    `}
+  }
+`;
+
+export default withTheme(memo(({ theme } : any) => (
   <>
     <InitiativesIndexMeta />
     <InitiativesHeader />
     <SuccessStories />
     <ShouldBeInitiatives />
+    <FooterBanner>
+      <p>
+        <FormattedMessage {...messages.footer}/>
+      </p>
+
+      <Button
+        fontWeight="500"
+        padding="13px 22px"
+        bgColor="#fff"
+        textColor={theme.colorText}
+        linkTo="/projects/an-idea-bring-it-to-your-council/ideas/new"
+        icon="arrowLeft"
+        iconPos="right"
+        text={<FormattedMessage {...messages.startInitiative} />}
+      />
+    </FooterBanner>
     <Footer />
   </>
-));
+)));

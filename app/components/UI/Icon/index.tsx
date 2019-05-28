@@ -452,8 +452,8 @@ const icons = {
     <svg className={className} width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
       <g className="Arrow-Left-icon">
-        <path d="M13.8547 5.10446H0V6.89551H13.8547V5.10446Z" fill="white" />
-        <path d="M10.0112 12L8.75977 10.7463L13.4972 6L8.75977 1.25373L10.0112 0L16 6L10.0112 12Z" fill="white" />
+        <path d="M13.8547 5.10446H0V6.89551H13.8547V5.10446Z" />
+        <path d="M10.0112 12L8.75977 10.7463L13.4972 6L8.75977 1.25373L10.0112 0L16 6L10.0112 12Z" />
       </g>
     </svg>
   ),

@@ -188,7 +188,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
   }
   startInitiative = () => {
     trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'initiatives signed-out header' } });
-    clHistory.push('/initiatives/new');
+    clHistory.push('/projects/an-idea-bring-it-to-your-council/ideas/new');
   }
 
   handleAvatarBubblesOnClick = () => {
