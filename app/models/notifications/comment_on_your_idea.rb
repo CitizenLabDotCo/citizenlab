@@ -19,8 +19,8 @@ module Notifications
       comment = activity.item
 
       comment_id = comment&.id
-      idea = comment&.idea
-      idea_id = comment&.idea_id
+      idea = (comment.post_type == 'Idea') && comment&.post
+      idea_id = idea&.id
       recipient_id = idea&.author_id
       initiator_id = comment&.author_id
       project_id = idea&.project_id

@@ -19,7 +19,7 @@ module Notifications
            recipient_id: recipient.id,
            initiating_user: initiator,
            comment_id: comment.id,
-           idea_id: comment.idea_id,
+           idea_id: comment.post_id,
            project_id: comment.project.id
          )
         end
