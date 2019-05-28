@@ -52,7 +52,7 @@ interface InputProps {
   opened: boolean;
   close: () => void;
   url: string | null;
-  headerChild?: JSX.Element | undefined;
+  topbarContent?: JSX.Element | undefined;
   children: JSX.Element | null | undefined;
 }
 
@@ -176,7 +176,7 @@ class FullscreenModal extends PureComponent<Props, State> {
   }
 
   render() {
-    const { children, opened, headerChild } = this.props;
+    const { children, opened, topbarContent } = this.props;
 
     if (opened) {
       return (
@@ -186,7 +186,7 @@ class FullscreenModal extends PureComponent<Props, State> {
           </Content>
 
           <TopBar goBack={this.clickGoBackButton}>
-            {headerChild}
+            {topbarContent}
           </TopBar>
         </Container>
       );

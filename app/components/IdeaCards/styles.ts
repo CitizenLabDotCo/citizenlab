@@ -16,15 +16,14 @@ export const Title = styled.div`
   font-size: ${fontSizes.small}px;
   font-weight: 600;
   text-transform: uppercase;
-  margin-right: 20px;
+  margin-right: 15px;
 `;
 
 export const ClearButtonIcon = styled(Icon)`
   width: 10px;
   height: 10px;
   fill: ${colors.label};
-  margin-right: 3px;
-  margin-top: 1px;
+  margin-right: 4px;
 `;
 
 export const ClearButtonText = styled.div`
@@ -34,16 +33,22 @@ export const ClearButtonText = styled.div`
   line-height: 14px;
 `;
 
-export const ClearButtonWrapper = styled.div`
+export const ClearButtonWrapper = styled.button`
   display: flex;
   align-items: center;
   cursor: pointer;
+  margin: 0px;
+  padding: 6px 10px;
+  background: #eee;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 
   &.hidden {
     opacity: 0;
   }
 
   &:hover {
+    background: #e0e0e0;
+
     ${ClearButtonIcon} {
       fill: #000;
     }
