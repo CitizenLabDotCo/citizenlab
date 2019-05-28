@@ -6,7 +6,6 @@ import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
 import SuccessStories from './SuccessStories';
 import ShouldBeInitiatives from './ShouldBeInitiatives';
-// import InitiativesFooter from './InitiativesFooter';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -14,7 +13,7 @@ import messages from './messages';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 
 const FooterBanner: any = styled.div`
