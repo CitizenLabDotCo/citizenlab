@@ -64,10 +64,6 @@ module Post
       upvotes_count - downvotes_count
     end
 
-    def project
-      nil
-    end
-
     
     private
 
