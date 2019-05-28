@@ -19,12 +19,12 @@ module Notifications
       recipient_id = activity.payload["mentioned_user"]
 
       comment_id = comment&.id
-      idea = (comment.post_type == 'Idea') && comment&.post
+      idea = comment&.post
       idea_id = idea&.id
       initiator_id = comment&.author_id
       project_id = idea&.project_id
 
-      if comment_id && recipient_id && initiator_id && (recipient_id != initiator_id)
+      if comment_id && (comment.post_type == 'Idea') && recipient_id && initiator_id && (recipient_id != initiator_id)
         [self.create(
            recipient_id: recipient_id,
            initiating_user: User.find(initiator_id),

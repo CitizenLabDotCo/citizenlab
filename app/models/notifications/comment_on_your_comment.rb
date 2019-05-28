@@ -19,13 +19,13 @@ module Notifications
       return [] unless parent_comment
 
       child_comment_id = child_comment&.id
-      idea = (parent_comment.post_type == 'Idea') && parent_comment&.post
+      idea = parent_comment&.post
       idea_id = idea&.id
       recipient_id = parent_comment&.author_id
       initiator_id = child_comment&.author_id
-      project_id = idea&.project_id
 
-      if child_comment_id && recipient_id && initiator_id && (recipient_id != initiator_id)
+      if child_comment_id && (parent_comment.post_type == 'Idea') && recipient_id && initiator_id && (recipient_id != initiator_id)
+        project_id = idea&.project_id
         [self.create(
            recipient_id: recipient_id,
            initiating_user: User.find(initiator_id),
