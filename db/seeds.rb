@@ -596,7 +596,7 @@ if Apartment::Tenant.current == 'localhost'
 
     num_initiatives.times do 
       created_at = Faker::Date.between(Tenant.current.created_at, Time.now)
-      initiative = Idea.create!({
+      initiative = Initiative.create!({
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
         author: User.offset(rand(User.count)).first,
