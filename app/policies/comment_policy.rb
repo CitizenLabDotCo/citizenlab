@@ -8,7 +8,8 @@ class CommentPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(idea: Pundit.policy_scope(user, Idea))
+      scope.where(post_id: Pundit.policy_scope(user, Idea))
+        .or(scope.where(post_type: 'Initiave'))
     end
   end
 
@@ -55,7 +56,7 @@ class CommentPolicy < ApplicationPolicy
 
   def check_commenting_allowed comment, user
     pcs = ParticipationContextService.new
-    !pcs.commenting_disabled_reason_for_idea comment.idea, user
+    !pcs.commenting_disabled_reason_for_idea comment.post, user
   end
 
 end
