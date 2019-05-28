@@ -25,7 +25,13 @@ class LogActivityJob < ApplicationJob
     MakeNotificationsJob.perform_later(activity)
     EmailCampaigns::TriggerOnActivityJob.perform_later(activity)
     LogToEventbusJob.perform_later(activity) if BUNNY_CON
-    LogToSegmentJob.perform_later(activity) if Analytics
+
+    # We're nog longer logging notifications to segment, as there are mass
+    # notifications that count as segment's monthly active users, which is too
+    # expensive
+    if Analytics && !item.kind_of?(Notification)
+      LogToSegmentJob.perform_later(activity)
+    end
   end
 
 end
