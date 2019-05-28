@@ -57,4 +57,8 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.success',
     defaultMessage: 'success'
   },
+  footer: {
+    id: 'app.containers.InitiativesIndexPage.footer',
+    defaultMessage: 'Start your own initiative and make your voice heard'
+  },
 });
