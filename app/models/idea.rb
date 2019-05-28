@@ -29,11 +29,9 @@ class Idea < ApplicationRecord
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
 
-  has_many :comments, dependent: :destroy
   has_many :official_feedbacks, dependent: :destroy
   belongs_to :idea_status
   has_many :notifications, foreign_key: :idea_id, dependent: :nullify
-  has_many :activities, as: :item
 
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy

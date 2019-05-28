@@ -9,6 +9,10 @@ module Post
   included do
     belongs_to :author, class_name: 'User', optional: true
 
+    has_many :activities, as: :item
+
+    has_many :comments, as: :post, dependent: :destroy
+
     has_many :votes, as: :votable, dependent: :destroy
     has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
     has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
@@ -58,6 +62,10 @@ module Post
 
     def score 
       upvotes_count - downvotes_count
+    end
+
+    def project
+      nil
     end
 
     

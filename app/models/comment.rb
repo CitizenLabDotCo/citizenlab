@@ -1,27 +1,30 @@
 class Comment < ApplicationRecord
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
+
   belongs_to :author, class_name: 'User'
-  belongs_to :idea
-  has_many :votes, as: :votable, dependent: :destroy
-  has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
-  has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
-  has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
-  has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
-  has_many :notifications, foreign_key: :comment_id, dependent: :nullify
-  
-  counter_culture :idea,
+
+  belongs_to :post, polymorphic: true
+  counter_culture :post, 
     column_name: proc {|model| model.published? ? 'comments_count' : nil },
     column_names: {
       ["comments.publication_status = ?", "published"] => "comments_count"
     },
     touch: true
 
-  counter_culture [:idea, :project],
-    column_name: proc {|model| model.published? ? 'comments_count' : nil },
-    column_names: {
-      ["comments.publication_status = ?", "published"] => "comments_count"
-    },
-    touch: true
+  # counter_culture [:idea, :project],
+  #   column_name: proc {|model| model.published? ? 'comments_count' : nil },
+  #   column_names: {
+  #     ["comments.publication_status = ?", "published"] => "comments_count"
+  #   },
+  #   touch: true
+
+  has_many :votes, as: :votable, dependent: :destroy
+  has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
+  has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
+  has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
+
+  has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
+  has_many :notifications, foreign_key: :comment_id, dependent: :nullify
 
   PUBLICATION_STATUSES = %w(published deleted)
 
@@ -40,7 +43,7 @@ class Comment < ApplicationRecord
   end
 
   def project
-    self.idea&.project
+    self.post&.project
   end
 
   def published?
