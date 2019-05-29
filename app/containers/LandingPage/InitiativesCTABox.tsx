@@ -1,11 +1,16 @@
 import React, { memo } from 'react';
 
+// styling
 import styled, { withTheme } from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+
+// components
 import Button from 'components/UI/Button';
+import Icon from 'components/UI/Icon';
+
+// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import Icon from 'components/UI/Icon';
 
 interface InputProps {
   className?: string;

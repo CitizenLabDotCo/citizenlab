@@ -1,4 +1,4 @@
 export default {
-  clickCreateAccountCTA: 'Landingpage Create An Account CTA button clicked',
-  clickAvatarBubbles: 'Landingpage avatar bubbles clicked',
+  clickStartInitiativesCTA: 'Initiatives index Start an initiative CTA button clicked',
+  clickAvatarBubbles: 'Initiatives index avatar bubbles clicked',
 };
