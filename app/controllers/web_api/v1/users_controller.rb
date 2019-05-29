@@ -152,7 +152,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def comments_count
-    render json: {count: policy_scope(@user.comments.published).count}, status: :ok
+    render json: {count: policy_scope(@user.comments.where(post_type: 'Idea').published, policy_scope_class: IdeaCommentPolicy::Scope).count}, status: :ok
   end
 
   private
