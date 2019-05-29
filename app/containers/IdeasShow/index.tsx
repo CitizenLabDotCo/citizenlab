@@ -27,7 +27,6 @@ import IdeaTitle from './IdeaTitle';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
-import IdeaVoteControlTopBar from './IdeaVoteControlTopBar';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
@@ -485,10 +484,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  unauthenticatedVoteClick = () => {
-    clHistory.push('/sign-in');
-  }
-
   closeIdeaSocialSharingModal = () => {
     this.setState({ ideaIdForSocialSharing: null });
   }
@@ -510,7 +505,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
   render() {
     const {
-      inModal,
       animatePageEnter,
       ideaFiles,
       locale,
@@ -571,13 +565,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       content = (
         <>
           <IdeaMeta ideaId={ideaId} />
-
-          {!inModal && showVoteControl && smallerThanLargeTablet &&
-            <IdeaVoteControlTopBar
-              ideaId={ideaId}
-              unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-            />
-          }
 
           <ActionBar
             ideaId={ideaId}

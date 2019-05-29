@@ -1,7 +1,8 @@
-import React, { memo, useCallback, MouseEvent } from 'react';
-import { isNil } from 'lodash-es';
+import React, { memo, useCallback } from 'react';
+import clHistory from 'utils/cl-router/history';
 
 // components
+import VoteControl from 'components/VoteControl';
 import Icon from 'components/UI/Icon';
 
 // i18n
@@ -94,41 +95,41 @@ const GoBackLabel = styled.div`
 `;
 
 interface Props {
-  children: JSX.Element | null | undefined;
-  goBack?: () => void;
+  ideaId: string;
   className?: string;
 }
 
-const TopBar = memo<Props>(({ children, goBack, className }) => {
+const IdeaShowPageTopBar = memo<Props>(({ ideaId, className }) => {
 
-  const onGoBack = useCallback((event: MouseEvent) => {
-    event.preventDefault();
-    goBack && goBack();
+  const onGoBack = useCallback(() => {
+    clHistory.push('/');
+  }, []);
+
+  const onUnauthenticatedVoteClick = useCallback(() => {
+    clHistory.push('/sign-in');
   }, []);
 
   return (
     <Container className={className}>
       <TopBarInner>
         <Left>
-          {!isNil(goBack) &&
-            <>
-              <GoBackButton onClick={onGoBack}>
-                <GoBackIcon name="arrow-back" />
-              </GoBackButton>
-              <GoBackLabel>
-                <FormattedMessage {...messages.goBack} />
-              </GoBackLabel>
-            </>
-          }
+          <GoBackButton onClick={onGoBack}>
+            <GoBackIcon name="arrow-back" />
+          </GoBackButton>
+          <GoBackLabel>
+            <FormattedMessage {...messages.goBack} />
+          </GoBackLabel>
         </Left>
-        {!isNil(children) &&
-          <Right>
-            {children}
-          </Right>
-        }
+        <Right>
+          <VoteControl
+            ideaId={ideaId}
+            unauthenticatedVoteClick={onUnauthenticatedVoteClick}
+            size="1"
+          />
+        </Right>
       </TopBarInner>
     </Container>
   );
 });
 
-export default TopBar;
+export default IdeaShowPageTopBar;

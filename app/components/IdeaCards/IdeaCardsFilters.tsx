@@ -5,10 +5,9 @@ import SearchFilter from './SearchFilter';
 import StatusFilter from './StatusFilter';
 import TopicsFilter from './TopicsFilter';
 import AreaFilter from './AreaFilter';
-import SearchInput from 'components/UI/SearchInput';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
@@ -16,27 +15,45 @@ import { IQueryParameters } from 'resources/GetIdeas';
 
 const Container = styled.div``;
 
+const StyledSearchFilter = styled(SearchFilter)`
+  margin-bottom: 20px;
+`;
+
+const StyledStatusFilter = styled(StatusFilter)`
+  margin-bottom: 20px;
+`;
+
+const StyledTopicsFilter = styled(TopicsFilter)`
+  margin-bottom: 20px;
+`;
+
+const StyledAreaFilter = styled(AreaFilter)``;
+
 interface Props {
   queryParameters: IQueryParameters;
   className?: string;
+  onSearchChange: (arg: string) => void;
+  onStatusChange: (arg: string | null) => void;
+  onAreasChange: (arg: string[]) => void;
+  onTopicsChange: (arg: string[]) => void;
 }
 
-const IdeaCardsFilters = memo<Props>(({ queryParameters, className }) => {
+const IdeaCardsFilters = memo<Props>(({ queryParameters, className, onSearchChange, onStatusChange, onAreasChange, onTopicsChange }) => {
 
-  handleSearchOnChange = useCallback((search: string) => {
-    // this.props.ideas.onChangeSearchTerm(search);
+  const handleSearchOnChange = useCallback((search: string) => {
+    onSearchChange(search);
   }, []);
 
-  handleStatusOnChange = useCallback((status: string | null) => {
-    // this.props.ideas.onChangeIdeaStatus(status);
+  const handleStatusOnChange = useCallback((status: string | null) => {
+    onStatusChange(status);
   }, []);
 
-  handleAreasOnChange = useCallback((areas: string[]) => {
-    // this.props.ideas.onChangeAreas(areas);
+  const handleAreasOnChange = useCallback((areas: string[]) => {
+    onAreasChange(areas);
   }, []);
 
-  handleTopicsOnChange = useCallback((topics: string[]) => {
-    // this.props.ideas.onChangeTopics(topics);
+  const handleTopicsOnChange = useCallback((topics: string[]) => {
+    onTopicsChange(topics);
   }, []);
 
   return (
