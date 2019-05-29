@@ -211,10 +211,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ modalOpened: false, modalType: null, modalId: null, modalUrl: null });
   }
 
-  unauthenticatedVoteClick = () => {
-    clHistory.push('/sign-in');
-  }
-
   closeUserDeletedModal = () => {
     this.setState({ userDeletedModalOpened: false });
   }
@@ -254,7 +250,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                         modalUrl={modalUrl}
                         modalId={modalId}
                         modalType={modalType}
-                        unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                       />
                     </Suspense>
                   </ErrorBoundary>
@@ -273,7 +268,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <Navbar fullscreenModalOpened={modalOpened} />
+                    <Navbar />
                   </ErrorBoundary>
 
                   <ErrorBoundary>

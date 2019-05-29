@@ -1,4 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
+import ReactDOM from 'react-dom';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -16,6 +17,8 @@ import StatusFilter from './StatusFilter';
 import TopicsFilter from './TopicsFilter';
 import AreaFilter from './AreaFilter';
 import SearchInput from 'components/UI/SearchInput';
+import IdeaCardFilters from './IdeaCardsFilters';
+import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
 
@@ -48,6 +51,26 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+`;
+
+const TopBar = styled.div`
+  height: ${props => props.theme.mobileTopBarHeight}px;
+  background: #fff;
+  border-bottom: solid 1px ${colors.separation};
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
+const BottomBar = styled.div`
+  height: ${props => props.theme.mobileTopBarHeight}px;
+  background: #fff;
+  border-top: solid 1px ${colors.separation};
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const MobileFilterButton = styled(Button)``;
@@ -110,6 +133,8 @@ const ContentRight = styled.div`
   align-items: stretch;
   margin-left: ${gapWidth}px;;
 `;
+
+const StyledIdeaCardFilters = styled(IdeaCardFilters)``;
 
 const FilterArea = styled.div`
   display: flex;
@@ -316,6 +341,7 @@ interface Props extends InputProps, DataProps {
 
 interface State {
   selectedView: 'card' | 'map';
+  filtersModalOpened: boolean;
 }
 
 class IdeaCards extends PureComponent<Props, State> {
@@ -326,7 +352,8 @@ class IdeaCards extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedView: (props.defaultView || 'card')
+      selectedView: (props.defaultView || 'card'),
+      filtersModalOpened: false
     };
   }
 
@@ -334,6 +361,14 @@ class IdeaCards extends PureComponent<Props, State> {
     if (this.props.phaseId !== prevProps.phaseId) {
       this.setState({ selectedView: this.props.defaultView || 'card' });
     }
+  }
+
+  openFiltersModal = () => {
+    this.setState({ filtersModalOpened: true });
+  }
+
+  closeFiltersModal = () => {
+    this.setState({ filtersModalOpened: false });
   }
 
   loadMore = () => {
@@ -370,14 +405,10 @@ class IdeaCards extends PureComponent<Props, State> {
     this.setState({ selectedView });
   }
 
-  openFiltersModal = () => {
-
-  }
-
   filterMessage = <FormattedMessage {...messages.filter} />;
 
   render() {
-    const { selectedView } = this.state;
+    const { selectedView, filtersModalOpened } = this.state;
     const {
       participationMethod,
       participationContextId,
@@ -390,7 +421,6 @@ class IdeaCards extends PureComponent<Props, State> {
     } = this.props;
     const {
       queryParameters,
-      searchValue,
       ideasList,
       hasMore,
       querying,
@@ -402,6 +432,21 @@ class IdeaCards extends PureComponent<Props, State> {
 
     return (
       <Container id="e2e-ideas-container" className={className}>
+        <FullscreenModal
+          opened={filtersModalOpened}
+          close={this.closeFiltersModal}
+          topBar={<TopBar />}
+          bottomBar={<BottomBar />}
+        >
+          <IdeaCardFilters
+            queryParameters={queryParameters}
+            onSearchChange={this.handleSearchOnChange}
+            onStatusChange={this.handleStatusOnChange}
+            onTopicsChange={this.handleTopicsOnChange}
+            onAreasChange={this.handleAreasOnChange}
+          />
+        </FullscreenModal>
+
         <MobileFilterButton
           style="secondary-outlined"
           onClick={this.openFiltersModal}
@@ -424,12 +469,14 @@ class IdeaCards extends PureComponent<Props, State> {
               </FeatureFlag>
             }
             <IdeasCount>
-              {/* <GetIdeasFilterCounts queryParameters={queryParameters}>
+              {/*
+              <GetIdeasFilterCounts queryParameters={queryParameters}>
                 {(data) => {
                   const ideasCount = get(data, `idea_status_id.${ideaStatus.id}`, 0);
                   return <FormattedMessage {...messages.xIdeas} values={{ ideasCount }} />;
                 }}
-              </GetIdeasFilterCounts> */}
+              </GetIdeasFilterCounts>
+              */}
 
               <FormattedMessage {...messages.xIdeas} values={{ ideasCount: 195 }} />
             </IdeasCount>
@@ -440,6 +487,9 @@ class IdeaCards extends PureComponent<Props, State> {
           {!showMapView &&
             <AboveContentRight>
               <SelectSort onChange={this.handleSortOnChange} />
+              {allowProjectsFilter &&
+                <SelectProjects onChange={this.handleProjectsOnChange} />
+              }
             </AboveContentRight>
           }
         </AboveContent>
@@ -481,12 +531,17 @@ class IdeaCards extends PureComponent<Props, State> {
             }
           </ContentLeft>
 
+          {/*
           <ContentRight id="e2e-ideas-filters">
-            <StyledSearchFilter onChange={this.handleSearchOnChange} />
-            <StyledStatusFilter queryParameters={ideas.queryParameters} onChange={this.handleStatusOnChange} />
-            <StyledTopicsFilter onChange={this.handleTopicsOnChange} />
-            <StyledAreaFilter onChange={this.handleAreasOnChange}/>
+            <StyledIdeaCardFilters
+              queryParameters={queryParameters}
+              onSearchChange={this.handleSearchOnChange}
+              onStatusChange={this.handleStatusOnChange}
+              onTopicsChange={this.handleTopicsOnChange}
+              onAreasChange={this.handleAreasOnChange}
+            />
           </ContentRight>
+          */}
         </Content>
 
         {/*
@@ -495,7 +550,9 @@ class IdeaCards extends PureComponent<Props, State> {
             <Spinner />
           </Loading>
         }
+        */}
 
+        {/*
         {!querying && !hasIdeas &&
           <EmptyContainer id="ideas-empty">
             <IdeaIcon name="idea" />
@@ -508,7 +565,7 @@ class IdeaCards extends PureComponent<Props, State> {
         }
         */}
 
-        {/* 
+        {/*
         {showMapView && hasIdeas &&
           <IdeasMap projectIds={queryParameters.projects} phaseId={queryParameters.phase} />
         }

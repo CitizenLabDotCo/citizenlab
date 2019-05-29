@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
 import { isFunction } from 'lodash-es';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import clHistory from 'utils/cl-router/history';
-
-// components
-import TopBar from 'components/UI/TopBar';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -25,34 +23,35 @@ const Container = styled.div`
   left: 0;
   right: 0;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   background: #fff;
-  z-index: 998;
+  z-index: 997;
 
   ${media.smallerThanMaxTablet`
     top: 0;
+    bottom: ${props => props.theme.mobileMenuHeight}px;
+    z-index: 999;
+
+    &.hasBottomBar {
+      bottom: 0;
+    }
   `}
 `;
 
 const Content = styled.div`
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: 100%;
-  width: 100%;
-  height: 100%;
+  flex: 1;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-
-  ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px - ${props => props.theme.mobileMenuHeight}px);
-    margin-top: ${props => props.theme.mobileTopBarHeight}px;
-  `}
 `;
 
 interface InputProps {
   opened: boolean;
   close: () => void;
-  url: string | null;
-  topbarContent?: JSX.Element | undefined;
+  url?: string | null;
+  topBar?: JSX.Element;
+  bottomBar?: JSX.Element;
   children: JSX.Element | null | undefined;
 }
 
@@ -83,7 +82,7 @@ class FullscreenModal extends PureComponent<Props, State> {
     }
   }
 
-  openModal = (url: string | null) => {
+  openModal = (url?: string | null) => {
     this.goBackUrl = window.location.href;
 
     window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
@@ -95,12 +94,8 @@ class FullscreenModal extends PureComponent<Props, State> {
     });
 
     // Add locale to the URL if it's not present yet
-    let localizedUrl = url;
-    const urlLocale = url && getUrlLocale(url);
-
-    if (!urlLocale) {
-      localizedUrl = `/${this.props.locale}${url}`;
-    }
+    const urlLocale = (url ? getUrlLocale(url) : null);
+    const localizedUrl = (url && !urlLocale ? `/${this.props.locale}${url}` : url);
 
     if (localizedUrl) {
       window.history.pushState({ path: localizedUrl }, '', localizedUrl);
@@ -118,8 +113,9 @@ class FullscreenModal extends PureComponent<Props, State> {
   closeModal = () => {
     if (this.props.url && this.goBackUrl && this.goBackUrl !== this.props.url) {
       window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
-      this.props.close();
     }
+
+    this.props.close();
   }
 
   handlePopstateEvent = () => {
@@ -145,16 +141,6 @@ class FullscreenModal extends PureComponent<Props, State> {
     clearAllBodyScrollLocks();
   }
 
-  clickOutsideModal = () => {
-    trackEventByName(tracks.clickOutsideModal, { extra: { url: this.props.url } });
-    this.closeModal();
-  }
-
-  clickGoBackButton = () => {
-    trackEventByName(tracks.clickCloseButton, { extra: { url: this.props.url } });
-    this.closeModal();
-  }
-
   setRef = (element: HTMLDivElement) => {
     this.ContentElement = (element || null);
 
@@ -176,20 +162,20 @@ class FullscreenModal extends PureComponent<Props, State> {
   }
 
   render() {
-    const { children, opened, topbarContent } = this.props;
+    const { children, opened, topBar, bottomBar } = this.props;
 
     if (opened) {
-      return (
-        <Container id="e2e-fullscreenmodal-content">
-          <Content ref={this.setRef}>
-            {children}
-          </Content>
-
-          <TopBar goBack={this.clickGoBackButton}>
-            {topbarContent}
-          </TopBar>
-        </Container>
-      );
+      return ReactDOM.createPortal((
+        <>
+          <Container id="e2e-fullscreenmodal-content" className={bottomBar ? 'hasBottomBar' : ''}>
+            {topBar}
+            <Content ref={this.setRef}>
+              {children}
+            </Content>
+            {bottomBar}
+          </Container>
+        </>
+      ), document.getElementById('modal-portal') as HTMLElement);
     }
 
     return null;
