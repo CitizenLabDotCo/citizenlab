@@ -31,7 +31,7 @@ class ParticipantsService
 
   def ideas_participants ideas, options={}
     since = options[:since]
-    comments = Comment.where(idea_id: ideas)
+    comments = Comment.where(post_id: ideas)
     votes = Vote.where(votable_id: ideas).or(Vote.where(votable_id: comments))
     if since
       ideas = ideas.where('created_at::date >= (?)::date', since)
