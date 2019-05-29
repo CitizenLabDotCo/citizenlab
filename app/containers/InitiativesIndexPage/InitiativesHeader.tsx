@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { get } from 'lodash-es';
 
 // components
 import Button from 'components/UI/Button';
@@ -9,6 +10,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -23,8 +25,6 @@ import messages from './messages';
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import { get } from 'lodash-es';
 
 const illustration = require('./illustration.png');
 
@@ -182,12 +182,8 @@ interface Props extends InputProps, DataProps {
 interface State {}
 
 class SignedOutHeader extends PureComponent<Props, State> {
-  goToSignUpPage = () => {
-    trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'initiatives signed-out header' } });
-    clHistory.push('/sign-up');
-  }
   startInitiative = () => {
-    trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'initiatives signed-out header' } });
+    trackEventByName(tracks.clickStartInitiativesCTA, { extra: { location: 'initiatives header' } });
     clHistory.push('/projects/an-idea-bring-it-to-your-council/ideas/new');
   }
 

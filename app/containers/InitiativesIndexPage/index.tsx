@@ -16,6 +16,10 @@ import styled, { withTheme } from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 
+// tracks
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 const FooterBanner: any = styled.div`
   background: ${({ theme }) => theme.colorMain};
   width: 100%;
@@ -47,6 +51,10 @@ const FooterBanner: any = styled.div`
     `}
 `;
 
+const trackInitiative = () => {
+  trackEventByName(tracks.clickStartInitiativesCTA, { extra: { location: 'initiatives footer' } });
+};
+
 export default withTheme(memo(({ theme } : any) => (
   <>
     <InitiativesIndexMeta />
@@ -64,6 +72,7 @@ export default withTheme(memo(({ theme } : any) => (
         bgColor="#fff"
         textColor={theme.colorText}
         linkTo="/projects/an-idea-bring-it-to-your-council/ideas/new"
+        onClick={trackInitiative}
         icon="arrowLeft"
         iconPos="right"
         text={<FormattedMessage {...messages.startInitiative} />}
