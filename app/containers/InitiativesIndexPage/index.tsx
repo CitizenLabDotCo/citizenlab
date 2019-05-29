@@ -31,8 +31,9 @@ const FooterBanner: any = styled.div`
   padding-right: 30px;
   padding-top: 50px;
   padding-bottom: 60px;
+`;
 
-  p {
+ const FooterMessage = styled.p`
     color: #fff;
     font-size: ${fontSizes.xxxl}px;
     line-height: normal;
@@ -44,7 +45,6 @@ const FooterBanner: any = styled.div`
     ${media.smallerThanMaxTablet`
       font-size: ${fontSizes.xxxl}px;
     `}
-  }
 `;
 
 export default withTheme(memo(({ theme } : any) => (
@@ -54,9 +54,9 @@ export default withTheme(memo(({ theme } : any) => (
     <SuccessStories />
     <ShouldBeInitiatives />
     <FooterBanner>
-      <p>
+      <FooterMessage>
         <FormattedMessage {...messages.footer}/>
-      </p>
+      </FooterMessage>
 
       <Button
         fontWeight="500"

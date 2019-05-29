@@ -213,21 +213,6 @@ class SignedOutHeader extends PureComponent<Props, State> {
 
             <StyledAvatarBubbles onClick={this.handleAvatarBubblesOnClick} />
 
-            {isNilOrError(authUser) &&
-              <SignUpButton
-                fontWeight="500"
-                padding="13px 22px"
-                bgColor={theme.colorMain}
-                textColor="#FFF"
-                icon="arrowLeft"
-                iconPos="right"
-                onClick={this.goToSignUpPage}
-                text={<FormattedMessage {...messages.createAccount} />}
-                className="e2e-initiatives-signed-out-header-cta-button"
-              />
-            }
-
-            {!isNilOrError(authUser) &&
               <SignUpButton
                 fontWeight="500"
                 padding="13px 22px"
@@ -237,9 +222,9 @@ class SignedOutHeader extends PureComponent<Props, State> {
                 iconPos="right"
                 onClick={this.startInitiative}
                 text={<FormattedMessage {...messages.startInitiative} />}
-                className="e2e-initiatives-signed-in-header-cta-button"
+                className="e2e-initiatives-header-cta-button"
               />
-            }
+
           </HeaderContent>
         </Header>
         <Manual>

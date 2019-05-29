@@ -37,10 +37,6 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.explanationContent',
     defaultMessage: 'You have an idea to improve or change Vancouver, but it doesn’t fit one of the existing consultations? Start your own initiative, get {constraints} and Vancouver will get back to you. {link}'
   },
-  createAccount: {
-    id: 'app.containers.InitiativesIndexPage.createAccount',
-    defaultMessage: 'Create an account'
-  },
   startInitiative: {
     id: 'app.containers.InitiativesIndexPage.startInitiative',
     defaultMessage: 'Start an initiative'
