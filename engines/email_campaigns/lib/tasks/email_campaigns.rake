@@ -20,4 +20,27 @@ namespace :email_campaigns do
     end
   end
 
+  desc "Given a list of email addresses, remove these users' consent from all consentable campaigns"
+  task :remove_consents, [:emails_url] => [:environment] do |t, args|
+
+    emails = open(args[:emails_url]).readlines.map(&:strip).map(&:downcase)
+    puts "Found #{emails.size} emails"
+
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        users = User.where(email: emails).all
+        puts "Found #{users.size} users in #{tenant.name}"
+
+        users.each do |user|
+          consentable_campaign_types = EmailCampaigns::DeliveryService.new.consentable_campaign_types_for(user)
+          consentable_campaign_types.each do |campaign_type|
+            EmailCampaigns::Consent
+              .find_or_initialize_by(user_id: user.id, campaign_type: campaign_type)
+              .update_attributes!(consented: false)
+          end
+        end
+      end
+    end
+  end
+
 end
