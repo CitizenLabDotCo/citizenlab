@@ -28,6 +28,7 @@ const Container = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   position: relative;
   overflow: hidden;
+  margin-bottom: 50px;
 
   &::before,
   &::after {
@@ -50,8 +51,10 @@ const Container = styled.div`
     flex-direction: column;
     align-items: flex-start;
     padding: 30px 40px;
+    margin-bottom: 20px;
   `}
 `;
+
 const BackgroundIcon = styled(Icon)`
   height: 500px;
   width: auto;
@@ -74,8 +77,9 @@ const NewLabel = styled.div`
 
 const Title = styled.div`
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.large}px;
-  font-weight: 700;
+  font-size: ${fontSizes.xxl}px;
+  line-height: 33px;
+  font-weight: 600;
   margin-bottom: 10px;
   max-width: 400px;
 `;
@@ -107,6 +111,7 @@ const ButtonContainer = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
     flex-wrap: wrap;
+    margin-top: 20px;
     & > {
       margin: 5px;
     }
@@ -144,6 +149,7 @@ const InitiativesCTABox = withTheme(memo((props: Props) => {
           fontWeight="500"
           padding="13px 22px"
           bgColor={theme.colorMain}
+          linkTo="/projects/an-idea-bring-it-to-your-council/ideas/new"
           textColor="#FFF"
           text={<FormattedMessage {...messages.startInitiative} />}
           className=""
