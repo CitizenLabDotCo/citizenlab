@@ -47,15 +47,15 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
     };
   }
 
-  renderFormikTresholdField = (props) => (
+  renderFormikThresholdField = (props) => (
     <FormikTextAreaMultiloc
       shownLocale={this.state.selectedLocale}
       label={(
         <Label>
-          <FormattedMessage {...messages.fieldTresholdReachedMessage} />
+          <FormattedMessage {...messages.fieldThresholdReachedMessage} />
         </Label>
       )}
-      labelTooltip={<InfoTooltip {...messages.fieldTresholdReachedMessageInfo} />}
+      labelTooltip={<InfoTooltip {...messages.fieldThresholdReachedMessageInfo} />}
       {...props}
     />
   )
@@ -94,10 +94,10 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
           </SectionField>
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.fieldVotingTreshold} />
+              <FormattedMessage {...messages.fieldVotingThreshold} />
             </Label>
             <Field
-              className="e2e-voting-treshold"
+              className="e2e-voting-threshold"
               name="voting_threshold"
               type="number"
               component={FormikInput}
@@ -127,7 +127,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
           <SectionField>
             <Field
               name="threshold_reached_message"
-              render={this.renderFormikTresholdField}
+              render={this.renderFormikThresholdField}
             />
           </SectionField>
           <SectionField>

@@ -495,6 +495,14 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   </NavigationItem>
                 </FeatureFlag>
 
+                <FeatureFlag name="initiatives">
+                  <NavigationItem to="/initiatives" activeClassName="active">
+                    <NavigationItemText>
+                      <FormattedMessage {...messages.pageInitiatives} />
+                    </NavigationItemText>
+                  </NavigationItem>
+                </FeatureFlag>
+
                 <NavigationItem to="/pages/information" activeClassName="active">
                   <NavigationItemText>
                     <FormattedMessage {...messages.pageInformation} />
