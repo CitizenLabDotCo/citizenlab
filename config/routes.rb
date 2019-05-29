@@ -12,12 +12,19 @@ Rails.application.routes.draw do
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
 
-      get 'comments/as_xlsx' => 'comments#index_xlsx'
-
       concern :votable do
         resources :votes, except: [:update], shallow: true do
           post :up, on: :collection
           post :down, on: :collection
+        end
+      end
+      concern :post do
+        resources :comments, shallow: true, 
+          concerns: [:votable, :spam_reportable], 
+          defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
+         
+          get :children, on: :member
+          post :mark_as_deleted, on: :member
         end
       end
       concern :spam_reportable do
@@ -25,15 +32,11 @@ Rails.application.routes.draw do
       end
 
       resources :ideas, 
-        concerns: [:votable, :spam_reportable], 
-        defaults: { votable: 'Idea', spam_reportable: 'Idea' } do
+        concerns: [:votable, :spam_reportable, :post], 
+        defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
 
-        resources :comments, shallow: true, 
-          concerns: [:votable, :spam_reportable], 
-          defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
-          get :children, on: :member
-          post :mark_as_deleted, on: :member
-        end
+        get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx' # , action: 'index_xlsx'
+        
         resources :official_feedback, shallow: true
         resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
         resources :files, defaults: {container_class: Idea, file_class: IdeaFile}
@@ -45,8 +48,8 @@ Rails.application.routes.draw do
       end
 
       resources :initiatives, 
-        concerns: [:votable, :spam_reportable], 
-        defaults: { votable: 'Initiative', spam_reportable: 'Initiative' } do
+        concerns: [:votable, :spam_reportable, :post], 
+        defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiavtive' } do
         get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
         get :as_markers, on: :collection, action: 'index_initiative_markers'
       end

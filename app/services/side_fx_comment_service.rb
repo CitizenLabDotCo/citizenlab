@@ -49,7 +49,7 @@ class SideFxCommentService
 
   def check_participation_context comment, user
     pcs = ParticipationContextService.new
-    idea = comment.idea
+    idea = comment.post if comment.post_type == 'Idea'
     if idea
       disallowed_reason = pcs.commenting_disabled_reason_for_idea(idea, user)
       if disallowed_reason
