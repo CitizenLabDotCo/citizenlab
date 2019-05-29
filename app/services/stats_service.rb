@@ -33,7 +33,7 @@ class StatsService
       .where(ideas_topics: {topic_id: topic_id})
 
     idea_authors = ideas.pluck(:author_id)
-    comment_authors = Comment.where(idea_id: ideas).pluck(:author_id)
+    comment_authors = Comment.where(post_id: ideas).pluck(:author_id)
     voters = Vote.where(votable_type: 'Idea', votable_id: ideas).pluck(:user_id)
 
     users_scope.where(id: idea_authors + comment_authors + voters)
