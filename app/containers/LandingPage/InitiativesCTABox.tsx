@@ -47,11 +47,15 @@ const Container = styled.div`
     border-top-color: ${colors.clGreen};
   }
 
+  ${media.smallerThanMaxTablet`
+    padding: 60px 50px 50px;
+    margin-bottom: 20px;
+  `}
+
   ${media.smallerThanMinTablet`
     flex-direction: column;
     align-items: flex-start;
-    padding: 30px 40px;
-    margin-bottom: 20px;
+    padding: 60px 30px 40px;
   `}
 `;
 
@@ -82,39 +86,46 @@ const Title = styled.div`
   font-weight: 600;
   margin-bottom: 10px;
   max-width: 400px;
+  ${media.smallerThanMinTablet`
+    max-width: none;
+  `}
 `;
 const Text = styled.div`
   max-width: 400px;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
+  ${media.smallerThanMinTablet`
+    max-width: none;
+  `}
 `;
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
-  & > {
-    margin-left: 20px;
-  }
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     margin-left: 20px;
-    & > {
-      margin-top: 20px;
-      margin-left: 0;
-    }
   `}
   ${media.smallerThanMinTablet`
-    margin-left: 0px;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-wrap: wrap;
+    margin-left: 0;
+    width: 100%;
     margin-top: 20px;
-    & > {
-      margin: 5px;
+  `}
+`;
+
+const CTAButton = styled(Button)`
+  margin-left: 20px;
+  ${media.smallerThanMaxTablet`
+    &:not(:first-child) {
+      margin-top: 20px;
     }
+    margin-left: 0;
+  `}
+  ${media.smallerThanMinTablet`
+    margin-top: 20px;
+    width: 100%;
   `}
 `;
 
@@ -136,23 +147,23 @@ const InitiativesCTABox = withTheme(memo((props: Props) => {
         </Text>
       </div>
       <ButtonContainer>
-        <Button
+        <CTAButton
           fontWeight="500"
           padding="13px 22px"
           bgColor="rgba(100, 100, 100, 0)"
           textColor={theme.colorMain}
           linkTo="/initiatives"
           text={<FormattedMessage {...messages.browseInitiative} />}
-          className=""
+          className="e2e-initiatives-landing-CTA-browse"
         />
-        <Button
+        <CTAButton
           fontWeight="500"
           padding="13px 22px"
           bgColor={theme.colorMain}
           linkTo="/projects/an-idea-bring-it-to-your-council/ideas/new"
           textColor="#FFF"
           text={<FormattedMessage {...messages.startInitiative} />}
-          className=""
+          className="e2e-initiatives-landing-CTA-new"
         />
       </ButtonContainer>
 
