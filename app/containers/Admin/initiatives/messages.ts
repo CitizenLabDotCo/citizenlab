@@ -29,20 +29,20 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.subtitleSettingsTab',
     defaultMessage: 'Be careful as you change these settings, they will apply to all active initiatives.'
   },
-  fieldVotingTreshold: {
-    id: 'app.containers.Admin.initiatives.fieldVotingTreshold',
+  fieldVotingThreshold: {
+    id: 'app.containers.Admin.initiatives.fieldVotingThreshold',
     defaultMessage: 'Voting threshold'
   },
   fieldDaysLimit: {
     id: 'app.containers.Admin.initiatives.fieldDaysLimit',
-    defaultMessage: 'Days to reach treshold'
+    defaultMessage: 'Days to reach threshold'
   },
-  fieldTresholdReachedMessage: {
-    id: 'app.containers.Admin.initiatives.fieldTresholdReachedMessage',
-    defaultMessage: 'When treshold is reached'
+  fieldThresholdReachedMessage: {
+    id: 'app.containers.Admin.initiatives.fieldThresholdReachedMessage',
+    defaultMessage: 'When threshold is reached'
   },
-  fieldTresholdReachedMessageInfo: {
-    id: 'app.containers.Admin.initiatives.fieldTresholdReachedMessageInfo',
+  fieldThresholdReachedMessageInfo: {
+    id: 'app.containers.Admin.initiatives.fieldThresholdReachedMessageInfo',
     defaultMessage: 'This will be shown to all users on the initiatives page.'
   },
   fieldEligibilityCriteria: {

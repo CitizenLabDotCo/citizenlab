@@ -98,6 +98,9 @@ const SuccessImageContainer = styled.div`
   overflow: hidden;
   position: relative;
   border-radius: ${({ theme }) => theme.borderRadius};
+  ${media.smallerThanMaxTablet`
+    height: 100px;
+  `}
 `;
 
 const SuccessImagePlaceholder = styled.div`
