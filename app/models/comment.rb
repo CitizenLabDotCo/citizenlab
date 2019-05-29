@@ -10,7 +10,14 @@ class Comment < ApplicationRecord
       ["comments.publication_status = ?", "published"] => "comments_count"
     },
     touch: true
+  counter_culture [:idea, :project],
+    column_name: proc {|model| model.published? ? 'comments_count' : nil },
+    column_names: {
+      ["comments.publication_status = ?", "published"] => "comments_count"
+    },
+    touch: true
 
+  # This code allows us to do something like comments.include(:idea)
   # After https://stackoverflow.com/a/16124295/3585671
   belongs_to :idea, -> { joins(:comments).where(comments: {post_type: 'Idea'}) }, foreign_key: 'post_id', optional: true, class_name: 'Idea'
   def idea
@@ -22,13 +29,6 @@ class Comment < ApplicationRecord
     return unless post_type == 'Initiative'
     super
   end
-
-  # counter_culture [:idea, :project],
-  #   column_name: proc {|model| model.published? ? 'comments_count' : nil },
-  #   column_names: {
-  #     ["comments.publication_status = ?", "published"] => "comments_count"
-  #   },
-  #   touch: true
 
   has_many :votes, as: :votable, dependent: :destroy
   has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
