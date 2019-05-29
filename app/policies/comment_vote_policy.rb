@@ -42,7 +42,10 @@ class CommentVotePolicy < ApplicationPolicy
   private
 
   def can_create_comment?
-    Pundit.policy!(user, Comment.new(author: user, post: record.votable.post)).create?
+    "#{record.votable.post_type}CommentPolicy".constantize.new(
+      user, 
+      Comment.new(author: user, post: record.votable.post)
+      ).create?
   end
 
 end

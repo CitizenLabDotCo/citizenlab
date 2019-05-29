@@ -1,5 +1,5 @@
 class WebApi::V1::CommentsController < ApplicationController
-
+  before_action :set_post_type_and_id, only: [:index, :index_xlsx, :create]
   before_action :set_comment, only: [:children, :show, :update, :mark_as_deleted, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx]
 
@@ -7,9 +7,8 @@ class WebApi::V1::CommentsController < ApplicationController
   MINIMAL_SUBCOMMENTS = 2
 
   def index
-
-    root_comments = policy_scope(Comment)
-      .where(idea: params[:idea_id])
+    root_comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
+      .where(post_type: @post_type, post_id: @post_id)
       .where(parent: nil)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
@@ -52,8 +51,8 @@ class WebApi::V1::CommentsController < ApplicationController
     # one SQL query
     @comments = merge_comments(root_comments.to_a, child_comments.to_a)
 
-    total_root_comments_count = policy_scope(Comment)
-      .where(idea: params[:idea_id])
+    total_root_comments_count = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
+      .where(post_id: @post_id)
       .where(parent: nil)
       .count
 
@@ -68,18 +67,22 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user&.locale) do
-      @comments = policy_scope(Comment)
-        .includes(:author, :idea)
+      post_ids = params[:"#{@post_type.underscore.pluralize}"]
+      @comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
+        .where(post_type: @post_type)
+        .includes(:author, :"#{@post_type.underscore}")
         .order(:lft)
-      @comments = @comments.where(ideas: {project_id: params[:project]}) if params[:project].present?
-      @comments = @comments.where(idea_id: params[:ideas]) if params[:ideas].present?
+      if (@post_type == 'Idea') && params[:project].present?
+        @comments = @comments.where(ideas: {project_id: params[:project]}) 
+      end
+      @comments = @comments.where(post_id: post_ids) if post_ids.present?
       xlsx = XlsxService.new.generate_comments_xlsx @comments
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
     end
   end
 
   def children
-    @comments = policy_scope(Comment)
+    @comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
       .where(parent: params[:id])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
@@ -99,10 +102,11 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def create
-    @comment = Comment.new comment_params
-    @comment.idea_id = params[:idea_id]
+    @comment = Comment.new comment_create_params
+    @comment.post_type = @post_type
+    @comment.post_id = @post_id
     @comment.author ||= current_user
-    authorize @comment
+    authorize @comment, policy_class: @policy_class
     SideFxCommentService.new.before_create @comment, current_user
     if @comment.save
       SideFxCommentService.new.after_create @comment, current_user
@@ -113,8 +117,10 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def update
-    @comment.attributes = permitted_attributes @comment
-    authorize @comment
+    @comment.attributes = comment_update_params
+    # We cannot pass policy class to permitted_attributes
+    # @comment.attributes = pundit_params_for(@comment).permit(@policy_class.new(current_user, @comment).permitted_attributes_for_update)
+    authorize @comment, policy_class: @policy_class
     SideFxCommentService.new.before_update @comment, current_user
     if @comment.save
       SideFxCommentService.new.after_update @comment, current_user
@@ -153,22 +159,42 @@ class WebApi::V1::CommentsController < ApplicationController
     end
   end
 
+
   private
 
   def set_comment
+    set_post_type_and_id
     @comment = Comment.find_by(id: params[:id])
-    authorize @comment
+    authorize @comment, policy_class: @policy_class
   end
 
-  def comment_params
+  def set_post_type_and_id
+    @post_type = params[:post]
+    @post_id = params[:"#{@post_type.underscore}_id"]
+    @policy_class = case @post_type
+      when 'Idea' then IdeaCommentPolicy
+      when 'Initiative' then InitiativeCommentPolicy
+      else raise "#{@post_type} has no comment policy defined"
+    end
+    raise RuntimeError, "must not be blank" if @post_type.blank?
+  end
+
+  def comment_create_params
     # no one is allowed to modify someone else's comment, 
     # so no one is allowed to write a comment in someone
     # else's name
     params.require(:comment).permit(
       :parent_id,
-      # :author_id
       body_multiloc: CL2_SUPPORTED_LOCALES
     )
+  end
+
+  def comment_update_params
+    attrs = []
+    if @comment.author_id == current_user&.id
+      attrs += [body_multiloc: CL2_SUPPORTED_LOCALES]
+    end
+    params.require(:comment).permit(attrs)
   end
 
   def secure_controller?
