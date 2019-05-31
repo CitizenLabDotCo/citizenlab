@@ -398,6 +398,17 @@ resource "Ideas" do
       expect(json_response[:area_id][@a2.id.to_sym]).to eq 1
       expect(json_response[:topic_id][@t1.id.to_sym]).to eq 2
       expect(json_response[:topic_id][@t2.id.to_sym]).to eq 2
+      expect(json_response[:total]).to eq 4
+    end
+
+    example "List idea counts per filter option on topic" do
+      do_request topics: [@t1.id], projects: nil
+      expect(status).to eq 200
+    end
+
+    example "List idea counts per filter option on area" do
+      do_request areas: [@a1.id], projects: nil
+      expect(status).to eq 200
     end
   end
 

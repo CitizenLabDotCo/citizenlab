@@ -102,14 +102,15 @@ class WebApi::V1::IdeasController < ApplicationController
     @ideas
       .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
       .joins('FULL OUTER JOIN areas_ideas ON areas_ideas.idea_id = ideas.id')
-      .select('idea_status_id, area_id, topic_id, COUNT(DISTINCT(ideas.id)) as count')
-      .group('GROUPING SETS (idea_status_id, area_id, topic_id)')
+      .select('idea_status_id, areas_ideas.area_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
+      .group('GROUPING SETS (idea_status_id, areas_ideas.area_id, ideas_topics.topic_id)')
       .each do |record|
         %w(idea_status_id area_id topic_id).each do |attribute|
           id = record.send attribute
           counts[attribute][id] = record.count if id
         end
       end
+    counts['total'] = @ideas.count
     render json: counts
   end
 
