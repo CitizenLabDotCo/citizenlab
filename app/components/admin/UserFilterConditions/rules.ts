@@ -175,7 +175,19 @@ export type TRule = (
     }
   | {
       ruleType?: 'participated_in_project';
-      predicate?: 'is' | 'not_is';
+      predicate?:
+        | 'in'
+        | 'not_in'
+        | 'posted_in'
+        | 'not_posted_in'
+        | 'commented_in'
+        | 'not_commented_in'
+        | 'voted_idea_in'
+        | 'not_voted_idea_in'
+        | 'voted_comment_in'
+        | 'not_voted_comment_in'
+        | 'budgeted_in'
+        | 'not_budgeted_in'
       /**
        * The id of a project
        */
@@ -183,7 +195,17 @@ export type TRule = (
     }
   | {
       ruleType?: 'participated_in_topic';
-      predicate?: 'is' | 'not_is';
+      predicate?:
+        | 'in'
+        | 'not_in'
+        | 'posted_in'
+        | 'not_posted_in'
+        | 'commented_in'
+        | 'not_commented_in'
+        | 'voted_idea_in'
+        | 'not_voted_idea_in'
+        | 'voted_comment_in'
+        | 'not_voted_comment_in'
       /**
        * The id of a topic
        */
@@ -191,7 +213,17 @@ export type TRule = (
     }
   | {
       ruleType?: 'participated_in_idea_status';
-      predicate?: 'is' | 'not_is';
+      predicate?:
+        | 'in'
+        | 'not_in'
+        | 'posted_in'
+        | 'not_posted_in'
+        | 'commented_in'
+        | 'not_commented_in'
+        | 'voted_idea_in'
+        | 'not_voted_idea_in'
+        | 'voted_comment_in'
+        | 'not_voted_comment_in'
       /**
        * The id of an idea status
        */
@@ -270,15 +302,41 @@ export const ruleTypeConstraints = {
     not_is_normal_user: null,
   },
   participated_in_project: {
-    is: ProjectValueSelector,
-    not_is: ProjectValueSelector,
+    in: ProjectValueSelector,
+    not_in: ProjectValueSelector,
+    posted_in: ProjectValueSelector,
+    not_posted_in: ProjectValueSelector,
+    commented_in: ProjectValueSelector,
+    not_commented_in: ProjectValueSelector,
+    voted_idea_in: ProjectValueSelector,
+    not_voted_idea_in: ProjectValueSelector,
+    voted_comment_in: ProjectValueSelector,
+    not_voted_comment_in: ProjectValueSelector,
+    budgeted_in: ProjectValueSelector,
+    not_budgeted_in: ProjectValueSelector,
   },
   participated_in_topic: {
-    is: TopicValueSelector,
-    not_is: TopicValueSelector,
+    in: TopicValueSelector,
+    not_in: TopicValueSelector,
+    posted_in: TopicValueSelector,
+    not_posted_in: TopicValueSelector,
+    commented_in: TopicValueSelector,
+    not_commented_in: TopicValueSelector,
+    voted_idea_in: TopicValueSelector,
+    not_voted_idea_in: TopicValueSelector,
+    voted_comment_in: TopicValueSelector,
+    not_voted_comment_in: TopicValueSelector,
   },
   participated_in_idea_status: {
-    is: IdeaStatusValueSelector,
-    not_is: IdeaStatusValueSelector,
+    in: IdeaStatusValueSelector,
+    not_in: IdeaStatusValueSelector,
+    posted_in: IdeaStatusValueSelector,
+    not_posted_in: IdeaStatusValueSelector,
+    commented_in: IdeaStatusValueSelector,
+    not_commented_in: IdeaStatusValueSelector,
+    voted_idea_in: IdeaStatusValueSelector,
+    not_voted_idea_in: IdeaStatusValueSelector,
+    voted_comment_in: IdeaStatusValueSelector,
+    not_voted_comment_in: IdeaStatusValueSelector,
   },
 };

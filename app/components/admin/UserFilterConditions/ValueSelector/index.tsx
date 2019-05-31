@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { TRule, ruleTypeConstraints } from '../rules';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 
 type State = {};
 
-class ValueSelector extends PureComponent<Props, State> {
+class ValueSelector extends Component<Props, State> {
 
   ruleToValueSelector = (rule: TRule) => {
     if (rule.ruleType) {
