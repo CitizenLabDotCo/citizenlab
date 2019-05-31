@@ -5,6 +5,8 @@ module EmailCampaigns
     include Schedulable
     include RecipientConfigurable
     include Trackable
+    include LifecycleStageRestrictable
+    allow_lifecycle_stages only: ['active']
 
     recipient_filter :user_filter_admins_moderators_only
 
