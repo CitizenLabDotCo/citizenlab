@@ -1,5 +1,5 @@
 class WebApi::V1::CommentsController < ApplicationController
-  before_action :set_post_type_and_id, only: [:index, :index_xlsx, :create]
+  before_action :set_post_type_id_and_policy, only: [:index, :index_xlsx, :create]
   before_action :set_comment, only: [:children, :show, :update, :mark_as_deleted, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx]
 
@@ -163,14 +163,19 @@ class WebApi::V1::CommentsController < ApplicationController
   private
 
   def set_comment
-    set_post_type_and_id
     @comment = Comment.find_by(id: params[:id])
+    @post_type = @comment.post_type
+    set_policy_class
     authorize @comment, policy_class: @policy_class
   end
 
-  def set_post_type_and_id
+  def set_post_type_id_and_policy
     @post_type = params[:post]
     @post_id = params[:"#{@post_type.underscore}_id"]
+    set_policy_class
+  end
+
+  def set_policy_class
     @policy_class = case @post_type
       when 'Idea' then IdeaCommentPolicy
       when 'Initiative' then InitiativeCommentPolicy

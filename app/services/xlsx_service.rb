@@ -117,12 +117,12 @@ class XlsxService
           sheet.add_row [
             comment.id,
             convert_to_text(@@multiloc_service.t(comment.body_multiloc)),
-            @@multiloc_service.t(comment&.idea.title_multiloc),
+            @@multiloc_service.t(comment&.post.title_multiloc),
             comment.author_name,
             comment.author&.email,
             comment.created_at,
             comment.parent_id,
-            @@multiloc_service.t(comment&.idea&.project&.title_multiloc)
+            ((comment&.post_type == 'Idea') && @@multiloc_service.t(comment&.idea&.project&.title_multiloc))
           ]
         end
         sheet.column_info[1].width = 65
