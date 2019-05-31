@@ -98,6 +98,7 @@ class WebApi::V1::VotesController < ApplicationController
     @policy_class = case @votable_type
       when 'Idea' then IdeaVotePolicy
       when 'Comment' then CommentVotePolicy
+      when 'Initiative' then InitiativeVotePolicy
       else raise "#{@votable_type} has no voting policy defined"
     end
     raise RuntimeError, "must not be blank" if @votable_type.blank? or @votable_id.blank?
@@ -108,6 +109,8 @@ class WebApi::V1::VotesController < ApplicationController
       IdeaVotePolicy
     elsif votable.kind_of? Comment
       CommentVotePolicy
+    elsif votable.kind_of? Initiative
+      InitiativeVotePolicy
     else
       raise "Votable #{votable.class} has no voting policy defined"
     end
@@ -132,7 +135,7 @@ class WebApi::V1::VotesController < ApplicationController
 
   def user_not_authorized exception
     pcs = ParticipationContextService.new
-    reason = pcs.voting_disabled_reason_for_idea(exception.record.votable, exception.record.user) || pcs.cancelling_votes_disabled_reason(exception.record.votable, exception.record.user)
+    reason = (exception.record.votable_type == 'Idea') && (pcs.voting_disabled_reason_for_idea(exception.record.votable, exception.record.user) || pcs.cancelling_votes_disabled_reason(exception.record.votable, exception.record.user))
     if reason
       render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
       return
