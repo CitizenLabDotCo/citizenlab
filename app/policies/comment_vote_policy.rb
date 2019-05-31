@@ -32,7 +32,7 @@ class CommentVotePolicy < ApplicationPolicy
   end
 
   def down?
-    create?
+    false
   end
 
   def destroy?
