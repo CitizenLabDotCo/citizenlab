@@ -110,6 +110,7 @@ class WebApi::V1::IdeasController < ApplicationController
           counts[attribute][id] = record.count if id
         end
       end
+    counts['total'] = @ideas.count
     render json: counts
   end
 

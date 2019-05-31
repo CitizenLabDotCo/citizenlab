@@ -398,6 +398,7 @@ resource "Ideas" do
       expect(json_response[:area_id][@a2.id.to_sym]).to eq 1
       expect(json_response[:topic_id][@t1.id.to_sym]).to eq 2
       expect(json_response[:topic_id][@t2.id.to_sym]).to eq 2
+      expect(json_response[:total]).to eq 4
     end
 
     example "List idea counts per filter option on topic" do
