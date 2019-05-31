@@ -98,6 +98,22 @@ describe ParticipantsService do
 
       expect(service.projects_participants([project], since: (Time.now-5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
     end
+
+    it "returns only participants for specific actions" do
+      project = create(:continuous_budgeting_project)
+      other_project = create(:project)
+      participants = create_list(:user, 4)
+      pp1, pp2, pp3, pp4 = participants
+      other = create(:user)
+
+      i = create(:idea, project: project, author: pp1)
+      c = create(:comment, idea: i, author: pp2)
+      v = create(:vote, votable: i, user: pp3)
+      b = create(:basket, ideas: [i], participation_context: project, user: pp4)
+      create(:idea, author: other)
+
+      expect(service.projects_participants([project], actions: [:posting, :budgeting]).map(&:id)).to match_array [pp1.id, pp4.id]
+    end
   end
 
   describe "topics_participants" do
@@ -115,6 +131,22 @@ describe ParticipantsService do
 
       expect(service.topics_participants([t1,t2]).map(&:id)).to match_array participants.map(&:id)
     end
+
+    it "returns only participants for specific actions" do
+      project = create(:project)
+      other_project = create(:project)
+      participants = create_list(:user, 4)
+      pp1, pp2, pp3, pp4 = participants
+      other = create(:user)
+
+      i = create(:idea, project: project, author: pp1)
+      c = create(:comment, idea: i, author: pp2)
+      v1 = create(:vote, votable: i, user: pp3)
+      v2 = create(:vote, votable: c, user: pp4)
+      create(:idea, author: other)
+
+      expect(service.projects_participants([project], actions: [:comment_voting]).map(&:id)).to match_array [pp4.id]
+    end
   end
 
   describe "idea_statuses_participants" do
@@ -130,6 +162,22 @@ describe ParticipantsService do
       create(:comment, idea: i1, author: pp3)
 
       expect(service.idea_statuses_participants([s1,s2]).map(&:id)).to match_array participants.map(&:id)
+    end
+
+    it "returns only participants for specific actions" do
+      project = create(:continuous_budgeting_project)
+      other_project = create(:project)
+      participants = create_list(:user, 4)
+      pp1, pp2, pp3, pp4 = participants
+      other = create(:user)
+
+      i = create(:idea, project: project, author: pp1)
+      c = create(:comment, idea: i, author: pp2)
+      v = create(:vote, votable: i, user: pp3)
+      b = create(:basket, ideas: [i], participation_context: project, user: pp4)
+      create(:idea, author: other)
+
+      expect(service.projects_participants([project], actions: [:commenting]).map(&:id)).to match_array [pp2.id]
     end
   end
 
