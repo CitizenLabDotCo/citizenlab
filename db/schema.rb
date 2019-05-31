@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_28_101954) do
+ActiveRecord::Schema.define(version: 2019_05_31_143638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -335,6 +335,25 @@ ActiveRecord::Schema.define(version: 2019_05_28_101954) do
     t.index ["user_id"], name: "index_identities_on_user_id"
   end
 
+  create_table "initiative_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "initiative_id"
+    t.string "file"
+    t.string "name"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["initiative_id"], name: "index_initiative_files_on_initiative_id"
+  end
+
+  create_table "initiative_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "initiative_id"
+    t.string "image"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["initiative_id"], name: "index_initiative_images_on_initiative_id"
+  end
+
   create_table "initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc"
     t.jsonb "body_multiloc"
@@ -350,6 +369,7 @@ ActiveRecord::Schema.define(version: 2019_05_28_101954) do
     t.integer "comments_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "header_bg"
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
     t.index ["slug"], name: "index_initiatives_on_slug"
@@ -699,6 +719,8 @@ ActiveRecord::Schema.define(version: 2019_05_28_101954) do
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
   add_foreign_key "identities", "users"
+  add_foreign_key "initiative_files", "initiatives"
+  add_foreign_key "initiative_images", "initiatives"
   add_foreign_key "initiatives", "users", column: "author_id"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
