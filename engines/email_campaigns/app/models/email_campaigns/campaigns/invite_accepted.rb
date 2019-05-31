@@ -4,6 +4,8 @@ module EmailCampaigns
     include ActivityTriggerable
     include RecipientConfigurable
     include Disableable
+    include LifecycleStageRestrictable
+    allow_lifecycle_stages except: ['churned']
 
     recipient_filter :filter_notification_recipient
 
