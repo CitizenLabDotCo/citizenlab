@@ -4,7 +4,7 @@ describe SmartGroupRules::ParticipatedInTopic do
 
   let(:valid_json_rule) {{
     'ruleType' => 'participated_in_topic',
-    'predicate' => 'is',
+    'predicate' => 'in',
     'value' => create(:topic).id
   }}
   let(:valid_rule) { SmartGroupRules::ParticipatedInTopic.from_json(valid_json_rule) }
@@ -34,20 +34,60 @@ describe SmartGroupRules::ParticipatedInTopic do
       @user3 = create(:user)
       @user4 = create(:user)
       @idea1 = create(:idea, topics: [@topic1], author: @user1)
-      @vote = create(:vote, votable: @idea1, user: @user2)
       @comment = create(:comment, idea: @idea1, author: @user3)
+      @vote = create(:vote, votable: @comment, user: @user2)
       @idea2 = create(:idea, topics: [@topic2], author: @user3)
 
     end
 
-    it "correctly filters on 'is' predicate" do
-      rule = SmartGroupRules::ParticipatedInTopic.new('is', @topic1.id)
+    it "correctly filters on 'in' predicate" do
+      rule = SmartGroupRules::ParticipatedInTopic.new('in', @topic1.id)
       expect(rule.filter(User)).to match_array [@user1, @user2, @user3]
     end
 
-    it "correctly filters on 'not_is' predicate" do
-      rule = SmartGroupRules::ParticipatedInTopic.new('not_is', @topic2.id)
+    it "correctly filters on 'not_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInTopic.new('not_in', @topic2.id)
       expect(rule.filter(User)).to match_array [@user1, @user2, @user4]
+    end
+
+    it "correctly filters on 'posted_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInTopic.new('posted_in', @topic1.id)
+      expect(rule.filter(User)).to match_array [@user1]
+    end
+
+    it "correctly filters on 'not_posted_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInTopic.new('not_posted_in', @topic1.id)
+      expect(rule.filter(User)).to match_array [@user2, @user3, @user4]
+    end
+
+    it "correctly filters on 'commented_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInTopic.new('commented_in', @topic1.id)
+      expect(rule.filter(User)).to match_array [@user3]
+    end
+
+    it "correctly filters on 'not_commented_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInTopic.new('not_commented_in', @topic1.id)
+      expect(rule.filter(User)).to match_array [@user1, @user2, @user4]
+    end
+
+    it "correctly filters on 'voted_idea_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInTopic.new('voted_idea_in', @topic1.id)
+      expect(rule.filter(User)).to match_array []
+    end
+
+    it "correctly filters on 'not_voted_idea_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInTopic.new('not_voted_idea_in', @topic1.id)
+      expect(rule.filter(User)).to match_array [@user1, @user2, @user3, @user4]
+    end
+
+    it "correctly filters on 'voted_comment_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInTopic.new('voted_comment_in', @topic1.id)
+      expect(rule.filter(User)).to match_array [@user2]
+    end
+
+    it "correctly filters on 'not_voted_comment_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInTopic.new('not_voted_comment_in', @topic1.id)
+      expect(rule.filter(User)).to match_array [@user1, @user3, @user4]
     end
 
   end
