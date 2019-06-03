@@ -147,6 +147,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.formErrorMessage',
     defaultMessage: 'Please correct the errors above to continue',
   },
+  formUnexpectedErrorMessage: {
+    id: 'app.containers.Admin.emails.formUnexpectedErrorMessage',
+    defaultMessage: 'Something went wrong, please try again later',
+  },
   previewTitle: {
     id: 'app.containers.Admin.emails.previewTitle',
     defaultMessage: 'Preview',

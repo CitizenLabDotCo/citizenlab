@@ -21,13 +21,15 @@ type State = {};
 class PredicateSelector extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   generateOptions = (): IOption[] => {
-    if (this.props.ruleType) {
-      return keys(ruleTypeConstraints[this.props.ruleType]).map((predicate) => (
-        {
+    const { ruleType, intl: { formatMessage } } = this.props;
+    if (ruleType) {
+      return keys(ruleTypeConstraints[ruleType]).map((predicate) => {
+        const message = messages[`predicate_${ruleType}_${predicate}`] || messages[`predicate_${predicate}`];
+        return {
           value: predicate,
-          label: this.props.intl.formatMessage(messages[`predicate_${predicate}`]),
-        }
-      ));
+          label: formatMessage(message),
+        };
+      });
     } else {
       return [];
     }

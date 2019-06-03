@@ -7,6 +7,7 @@ import { currentTenantApiEndpoint } from 'services/tenant';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
+import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<any>;
@@ -69,7 +70,9 @@ class Streams {
     this.streams[authApiEndpoint].observer.next(authUser);
 
     Object.keys(this.streams).forEach((streamId) => {
-      if (streamId === authApiEndpoint || streamId === currentTenantApiEndpoint || this.isActiveStream(streamId)) {
+      if (streamId === currentOnboardingCampaignsApiEndpoint) {
+        this.deleteStream(streamId, this.streams[streamId].params.apiEndpoint);
+      } else if (streamId === authApiEndpoint || streamId === currentTenantApiEndpoint || this.isActiveStream(streamId)) {
         this.streams[streamId].fetch();
       } else {
         this.deleteStream(streamId, this.streams[streamId].params.apiEndpoint);
@@ -250,7 +253,7 @@ class Streams {
           from(promise).pipe(
             retry(3),
             catchError((error) => {
-              return of(new Error(error));
+              return of(error);
             })
           ).subscribe((response) => {
             if (!this.streams[streamId]) {
@@ -264,6 +267,7 @@ class Streams {
                   const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
                   this.streams[streamId].observer.next(response);
                   this.deleteStream(streamId, apiEndpoint);
+                  reportError(response);
                   reject(response);
                 } else {
                   this.streams[streamId].observer.next(null);
@@ -272,8 +276,6 @@ class Streams {
             }
           });
         }).catch((error) => {
-          reportError(error);
-
           return error;
         });
       };
@@ -398,10 +400,10 @@ class Streams {
 
       return response;
     } catch (error) {
-      if (error.json && error.json.errors) {
-        return Promise.reject(error);
+      if (!error.json || !error.json.errors) {
+        reportError(error);
       }
-      throw `error for add() of Streams for api endpoint ${apiEndpoint}`;
+      return Promise.reject(error);
     }
   }
 
@@ -444,10 +446,10 @@ class Streams {
 
       return response;
     } catch (error) {
-      if (error.json && error.json.errors) {
-        return Promise.reject(error);
+      if (!error.json || !error.json.errors) {
+        reportError(error);
       }
-      throw `error for update() of Streams for api endpoint ${apiEndpoint}`;
+      return Promise.reject(error);
     }
   }
 
@@ -495,11 +497,11 @@ class Streams {
         console.log(error);
       }
 
-      if (error.json && error.json.errors) {
-        return Promise.reject(error);
+      if (!error.json || !error.json.errors) {
+        reportError(error);
       }
 
-      throw `error for delete() of Streams for api endpoint ${apiEndpoint}`;
+      return Promise.reject(error);
     }
   }
 

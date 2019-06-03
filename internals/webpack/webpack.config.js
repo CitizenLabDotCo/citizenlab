@@ -111,6 +111,8 @@ const config = {
       },
     }),
 
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
     new ForkTsCheckerWebpackPlugin({
       checkSyntacticErrors: true,
       tsconfig: path.join(process.cwd(), 'app/tsconfig.json'),

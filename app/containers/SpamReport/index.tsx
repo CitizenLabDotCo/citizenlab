@@ -8,10 +8,11 @@ import { sendSpamReport, Report } from 'services/spamReports';
 import ReportForm from './SpamReportForm';
 
 // Typings
-import { CRUDParams } from 'typings';
+import { CRUDParams, CLErrorsJSON } from 'typings';
 
 // style
 import styled from 'styled-components';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const Container = styled.div`
   padding: 30px;
@@ -25,6 +26,9 @@ interface Props {
 
 interface State {
   diff: Report | null;
+  loading: boolean;
+  errors: CLErrorsJSON | Error | null;
+  saved: boolean;
 }
 
 class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
@@ -51,11 +55,11 @@ class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
       delete diff.other_reason;
     }
 
-    this.setState({ diff });
+    this.setState({ diff, errors: null });
   }
 
   handleReasonTextUpdate = (other_reason) => {
-    this.setState({ diff: { ...this.state.diff, other_reason } as Report });
+    this.setState({ diff: { ...this.state.diff, other_reason } as Report, errors: null });
   }
 
   handleSubmit = (event) => {
@@ -70,12 +74,11 @@ class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
     sendSpamReport(this.props.resourceType, this.props.resourceId, this.state.diff).then(() => {
       this.setState({ loading: false, saved: true, errors: null, diff: null });
     }).catch((e) => {
-      let errors = this.state.errors;
-      if (e.json && e.json.errors) {
-        errors = e.json.errors;
+      if (isCLErrorJSON(e)) {
+        this.setState({ errors: e.json.errors, loading: false });
+      } else {
+        this.setState({ errors: e, loading: false });
       }
-
-      this.setState({ errors, loading: false });
     });
   }
 

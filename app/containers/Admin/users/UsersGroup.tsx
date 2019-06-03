@@ -39,6 +39,7 @@ import tracks from './tracks';
 
 // Typings
 import { CLErrorsJSON } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 interface InputProps { }
 
 interface DataProps {
@@ -89,7 +90,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
     }
   }
 
-  handleSubmitForm = (groupId: string) => (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting }) => {
+  handleSubmitForm = (groupId: string) => (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting, setStatus }) => {
     updateGroup(groupId, { ...values }).then(() => {
       streams.fetchAllWith({
         dataId: [groupId],
@@ -98,8 +99,12 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
       });
       this.closeGroupEditionModal();
     }).catch((errorResponse) => {
-      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-      setErrors(apiErrors);
+      if (isCLErrorJSON(errorResponse)) {
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+        setErrors(apiErrors);
+      } else {
+        setStatus('error');
+      }
       setSubmitting(false);
     });
   }

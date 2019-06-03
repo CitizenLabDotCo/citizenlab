@@ -40,6 +40,7 @@ import { colors, media } from 'utils/styleUtils';
 
 // Typings
 import { CLErrorsJSON, CLErrors } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const Container = styled.div``;
 
@@ -221,7 +222,7 @@ class CommentBody extends PureComponent<Props, State> {
         await updateComment(commentId, updatedComment);
         this.props.onCommentSaved();
       } catch (error) {
-        if (error && error.json) {
+        if (isCLErrorJSON(error)) {
           const apiErrors = (error as CLErrorsJSON).json.errors;
           this.setState({ apiErrors });
         }
