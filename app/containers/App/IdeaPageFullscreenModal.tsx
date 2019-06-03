@@ -1,36 +1,55 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FullscreenModal from 'components/UI/FullscreenModal';
 import IdeasShow from 'containers/IdeasShow';
-import IdeaShowPageTopBar from 'containers/IdeasShowPage//IdeaShowPageTopBar';
+import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 
-interface Props {
-  modalOpened: boolean;
-  modalUrl: string | null;
-  modalId: string | null;
-  modalType: string | null;
+// resources
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+
+interface InputProps {
+  ideaId: string | null;
   close: () => void;
 }
 
-const IdeaPageFullscreenModal = memo<Props>(({ modalOpened, close, modalUrl, modalId, modalType }) => {
+interface DataProps {
+  idea: GetIdeaChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+const IdeaPageFullscreenModal = memo<Props>(({ ideaId, close, idea }) => {
 
   const onClose = useCallback(() => {
     close();
   }, []);
 
-  const topBar = ((modalOpened && modalType === 'idea' && modalId) ? <IdeaShowPageTopBar ideaId={modalId} /> : undefined);
+  const url = (!isNilOrError(idea) ? `/ideas/${idea.attributes.slug}` : null);
+
+  const topBar = useMemo(() => {
+    return (ideaId ? <IdeaShowPageTopBar ideaId={ideaId} insideModal={true} /> : null);
+  }, [ideaId]);
+
+  const content = useMemo(() => {
+    return (ideaId ? <IdeasShow ideaId={ideaId} inModal={true} /> : null);
+  }, [ideaId]);
 
   return (
     <FullscreenModal
-      opened={modalOpened}
+      opened={ideaId !== null}
       close={onClose}
-      url={modalUrl}
+      url={url}
       topBar={topBar}
     >
-      {modalId ? <IdeasShow ideaId={modalId} inModal={true} /> : null}
+      {content}
     </FullscreenModal>
   );
 });
 
-export default IdeaPageFullscreenModal;
+export default (inputProps: InputProps) => (
+  <GetIdea id={inputProps.ideaId}>
+    {idea => <IdeaPageFullscreenModal {...inputProps} idea={idea} />}
+  </GetIdea>
+);

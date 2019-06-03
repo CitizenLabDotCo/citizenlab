@@ -12,12 +12,14 @@ import Spinner from 'components/UI/Spinner';
 import SelectTopics from './SelectTopics';
 import SelectSort from './SelectSort';
 import SelectProjects from './SelectProjects';
-import SearchFilter from './SearchFilter';
-import StatusFilter from './StatusFilter';
-import TopicsFilter from './TopicsFilter';
-import AreaFilter from './AreaFilter';
+import SearchFilter from './filters/SearchFilter';
+import StatusFilter from './filters/StatusFilter';
+import TopicsFilter from './filters/TopicsFilter';
+import AreaFilter from './filters/AreaFilter';
 import SearchInput from 'components/UI/SearchInput';
-import IdeaCardFilters from './IdeaCardsFilters';
+import IdeaFilters from './filters';
+import IdeaFiltersTopBar from './filters/TopBar';
+import IdeaFiltersBottomBar from './filters/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
@@ -41,6 +43,7 @@ import { darken, rgba } from 'polished';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
+import { IIdeaFilters } from './filters';
 import { IOption } from 'typings';
 
 const filterColumnWidth = 352;
@@ -51,26 +54,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-`;
-
-const TopBar = styled.div`
-  height: ${props => props.theme.mobileTopBarHeight}px;
-  background: #fff;
-  border-bottom: solid 1px ${colors.separation};
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
-const BottomBar = styled.div`
-  height: ${props => props.theme.mobileTopBarHeight}px;
-  background: #fff;
-  border-top: solid 1px ${colors.separation};
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const MobileFilterButton = styled(Button)``;
@@ -134,7 +117,7 @@ const ContentRight = styled.div`
   margin-left: ${gapWidth}px;;
 `;
 
-const StyledIdeaCardFilters = styled(IdeaCardFilters)``;
+const StyledIdeaCardFilters = styled(IdeaFilters)``;
 
 const FilterArea = styled.div`
   display: flex;
@@ -375,18 +358,6 @@ class IdeaCards extends PureComponent<Props, State> {
     this.props.ideas.onLoadMore();
   }
 
-  handleSearchOnChange = (search: string) => {
-    this.props.ideas.onChangeSearchTerm(search);
-  }
-
-  handleStatusOnChange = (status: string | null) => {
-    this.props.ideas.onChangeIdeaStatus(status);
-  }
-
-  handleAreasOnChange = (areas: string[]) => {
-    this.props.ideas.onChangeAreas(areas);
-  }
-
   handleProjectsOnChange = (projects: string[]) => {
     this.props.ideas.onChangeProjects(projects);
   }
@@ -395,9 +366,30 @@ class IdeaCards extends PureComponent<Props, State> {
     this.props.ideas.onChangeSorting(sort);
   }
 
-  handleTopicsOnChange = (topics: string[]) => {
-    this.props.ideas.onChangeTopics(topics);
+  handleIdeaFiltersOnApply = (ideaFilters: IIdeaFilters) => {
+    this.props.ideas.onIdeaFiltering(ideaFilters);
+    this.closeFiltersModal();
   }
+
+  handleIdeaFiltersOnClose = () => {
+    this.closeFiltersModal();
+  }
+
+  // handleSearchOnChange = (search: string) => {
+  //   this.props.ideas.onChangeSearchTerm(search);
+  // }
+
+  // handleStatusOnChange = (status: string | null) => {
+  //   this.props.ideas.onChangeIdeaStatus(status);
+  // }
+
+  // handleAreasOnChange = (areas: string[]) => {
+  //   this.props.ideas.onChangeAreas(areas);
+  // }
+
+  // handleTopicsOnChange = (topics: string[]) => {
+  //   this.props.ideas.onChangeTopics(topics);
+  // }
 
   selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
     event.preventDefault();
@@ -435,15 +427,13 @@ class IdeaCards extends PureComponent<Props, State> {
         <FullscreenModal
           opened={filtersModalOpened}
           close={this.closeFiltersModal}
-          topBar={<TopBar />}
-          bottomBar={<BottomBar />}
+          topBar={<IdeaFiltersTopBar />}
+          bottomBar={<IdeaFiltersBottomBar />}
         >
-          <IdeaCardFilters
+          <IdeaFilters
             queryParameters={queryParameters}
-            onSearchChange={this.handleSearchOnChange}
-            onStatusChange={this.handleStatusOnChange}
-            onTopicsChange={this.handleTopicsOnChange}
-            onAreasChange={this.handleAreasOnChange}
+            onApply={this.handleIdeaFiltersOnApply}
+            onClose={this.handleIdeaFiltersOnClose}
           />
         </FullscreenModal>
 

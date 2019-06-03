@@ -1,16 +1,14 @@
-import React, { memo, useCallback, MouseEvent } from 'react';
-import clHistory from 'utils/cl-router/history';
+import React, { memo, useCallback } from 'react';
 
 // components
-import VoteControl from 'components/VoteControl';
 import Icon from 'components/UI/Icon';
+
+// i18n
+// import { FormattedMessage } from 'utils/cl-intl';
+// import messages from './messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // styling
 import styled from 'styled-components';
@@ -21,10 +19,6 @@ const Container = styled.div`
   height: ${props => props.theme.mobileTopBarHeight}px;
   background: #fff;
   border-bottom: solid 1px ${colors.separation};
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const TopBarInner = styled.div`
@@ -45,16 +39,12 @@ const TopBarInner = styled.div`
 const Left = styled.div`
   height: 48px;
   align-items: center;
-  display: none;
-
-  ${media.smallerThanMaxTablet`
-    display: flex;
-  `}
+  display: flex;
 `;
 
 const Right = styled.div``;
 
-const GoBackIcon = styled(Icon)`
+const CloseIcon = styled(Icon)`
   height: 22px;
   fill: ${colors.label};
   display: flex;
@@ -63,7 +53,7 @@ const GoBackIcon = styled(Icon)`
   transition: fill 100ms ease-out;
 `;
 
-const GoBackButton = styled.button`
+const CloseButton = styled.button`
   width: 45px;
   height: 45px;
   display: flex;
@@ -82,66 +72,40 @@ const GoBackButton = styled.button`
   &:hover {
     border-color: #000;
 
-    ${GoBackIcon} {
+    ${CloseIcon} {
       fill: #000;
     }
   }
 `;
 
-const GoBackLabel = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  transition: fill 100ms ease-out;
-
-  ${media.phone`
-    display: none;
-  `}
-`;
-
 interface Props {
-  ideaId: string;
-  insideModal?: boolean;
   className?: string;
 }
 
-const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className }) => {
+const IdeaFiltersTopBar = memo<Props>(({ className }) => {
 
-  const onGoBack = useCallback((event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-
-    if (insideModal) {
-      eventEmitter.emit('IdeaShowPageTopBar', 'closeIdeaModal', null);
-    } else {
-      clHistory.push('/');
-    }
+  const onClose = useCallback(() => {
+    eventEmitter.emit('IdeaFiltersTopBar', 'closeIdeaFilters', null);
   }, []);
 
-  const onUnauthenticatedVoteClick = useCallback(() => {
-    clHistory.push('/sign-in');
+  const onClear = useCallback(() => {
+    eventEmitter.emit('IdeaFiltersTopBar', 'clearIdeaFilters', null);
   }, []);
 
   return (
     <Container className={className}>
       <TopBarInner>
         <Left>
-          <GoBackButton onClick={onGoBack}>
-            <GoBackIcon name="arrow-back" />
-          </GoBackButton>
-          <GoBackLabel>
-            <FormattedMessage {...messages.goBack} />
-          </GoBackLabel>
+          <CloseButton onClick={onClose}>
+            <CloseIcon name="close4" />
+          </CloseButton>
         </Left>
         <Right>
-          <VoteControl
-            ideaId={ideaId}
-            unauthenticatedVoteClick={onUnauthenticatedVoteClick}
-            size="1"
-          />
+          <button onClick={onClear}>Clear all</button>
         </Right>
       </TopBarInner>
     </Container>
   );
 });
 
-export default IdeaShowPageTopBar;
+export default IdeaFiltersTopBar;

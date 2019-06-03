@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { IModalInfo } from 'containers/App';
+import { IIdeaCardClickEvent } from 'containers/App';
 
 // components
 import T from 'components/T';
@@ -167,12 +167,7 @@ class IdeaBox extends React.PureComponent<Props, State> {
   createIdeaClickHandler = (idea) => (event) => {
     event.preventDefault();
     event.stopPropagation();
-
-    eventEmitter.emit<IModalInfo>('projectIdeasMap', 'ideaCardClick', {
-      type: 'idea',
-      id: idea.id,
-      url: `/ideas/${idea.attributes.slug}`
-    });
+    eventEmitter.emit<IIdeaCardClickEvent>('IdeaBox', 'ideaCardClick', { ideaId: idea.id });
   }
 
   handleUnauthenticatedVoteClick = () => {

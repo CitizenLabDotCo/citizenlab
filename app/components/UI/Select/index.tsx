@@ -84,6 +84,7 @@ export default class Select extends PureComponent<Props, State> {
         isDisabled={disabled}
         styles={styles}
         onMenuOpen={this.handleOpen}
+        menuPlacement="auto"
       />
     );
   }
