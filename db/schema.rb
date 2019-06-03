@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_28_101954) do
+ActiveRecord::Schema.define(version: 2019_06_03_100803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -44,6 +44,14 @@ ActiveRecord::Schema.define(version: 2019_05_28_101954) do
     t.index ["area_id"], name: "index_areas_ideas_on_area_id"
     t.index ["idea_id", "area_id"], name: "index_areas_ideas_on_idea_id_and_area_id", unique: true
     t.index ["idea_id"], name: "index_areas_ideas_on_idea_id"
+  end
+
+  create_table "areas_initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "area_id"
+    t.uuid "initiative_id"
+    t.index ["area_id"], name: "index_areas_initiatives_on_area_id"
+    t.index ["initiative_id", "area_id"], name: "index_areas_initiatives_on_initiative_id_and_area_id", unique: true
+    t.index ["initiative_id"], name: "index_areas_initiatives_on_initiative_id"
   end
 
   create_table "areas_projects", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -353,6 +361,14 @@ ActiveRecord::Schema.define(version: 2019_05_28_101954) do
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
     t.index ["slug"], name: "index_initiatives_on_slug"
+  end
+
+  create_table "initiatives_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "initiative_id"
+    t.uuid "topic_id"
+    t.index ["initiative_id", "topic_id"], name: "index_initiatives_topics_on_initiative_id_and_topic_id", unique: true
+    t.index ["initiative_id"], name: "index_initiatives_topics_on_initiative_id"
+    t.index ["topic_id"], name: "index_initiatives_topics_on_topic_id"
   end
 
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -671,6 +687,8 @@ ActiveRecord::Schema.define(version: 2019_05_28_101954) do
   add_foreign_key "activities", "users"
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"
+  add_foreign_key "areas_initiatives", "areas"
+  add_foreign_key "areas_initiatives", "initiatives"
   add_foreign_key "areas_projects", "areas"
   add_foreign_key "areas_projects", "projects"
   add_foreign_key "baskets", "users"
@@ -700,6 +718,8 @@ ActiveRecord::Schema.define(version: 2019_05_28_101954) do
   add_foreign_key "ideas_topics", "topics"
   add_foreign_key "identities", "users"
   add_foreign_key "initiatives", "users", column: "author_id"
+  add_foreign_key "initiatives_topics", "initiatives"
+  add_foreign_key "initiatives_topics", "topics"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "memberships", "groups"

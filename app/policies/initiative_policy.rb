@@ -46,7 +46,9 @@ class InitiativePolicy < ApplicationPolicy
       :location_description,
       location_point_geojson: [:type, coordinates: []],
       title_multiloc: CL2_SUPPORTED_LOCALES,
-      body_multiloc: CL2_SUPPORTED_LOCALES
+      body_multiloc: CL2_SUPPORTED_LOCALES,
+      topic_ids: [],
+      area_ids: []
     ]
   end
 end
