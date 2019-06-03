@@ -1,21 +1,15 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
-import { isString, isObject } from 'lodash-es';
+import { isString, isObject, uniq } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import 'moment-timezone';
-import 'moment/locale/en-gb';
-import 'moment/locale/en-ca';
-import 'moment/locale/nl';
-import 'moment/locale/nl-be';
-import 'moment/locale/fr';
-import 'moment/locale/de';
-import 'moment/locale/da';
-import 'moment/locale/nb';
 import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
 import WebFont from 'webfontloader';
+
+import { appLocalesMomentPairs } from 'containers/App/constants';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -160,13 +154,17 @@ class App extends PureComponent<Props & WithRouterProps, State> {
             });
           }
         })),
-        locale$.pipe(tap((locale) => {
-          moment.locale(locale);
-        })),
+        locale$,
         tenant$.pipe(tap((tenant) => {
+          uniq(tenant.data.attributes.settings.core.locales
+            .filter(locale => locale !== 'en' && locale !== 'ach')
+            .map(locale => appLocalesMomentPairs[locale]))
+            .forEach(locale => require(`moment/locale/${locale}.js`));
           moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
         }))
-      ).subscribe(([authUser, _locale, tenant]) => {
+      ).subscribe(([authUser, locale, tenant]) => {
+        const momenLoc = appLocalesMomentPairs[locale] || 'en';
+        moment.locale(momenLoc);
         this.setState({ tenant, authUser });
       }),
 

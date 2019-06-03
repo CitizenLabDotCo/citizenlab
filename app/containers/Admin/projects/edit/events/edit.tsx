@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of } from 'rxjs';
 import moment from 'moment';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, get, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
@@ -37,6 +37,7 @@ import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resour
 
 // typings
 import { Multiloc, CLError, Locale, UploadFile } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface DataProps {
   remoteEventFiles: GetResourceFileObjectsChildProps;
@@ -57,7 +58,7 @@ interface State {
   attributeDiff: IUpdatedEventProperties;
   errors: {
     [fieldName: string]: CLError[]
-  };
+  } | Error;
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
@@ -230,7 +231,11 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
           clHistory.push(`/admin/projects/${projectId}/events/`);
         }
       } catch (errors) {
-        this.setState({ saving: false, errors: errors.json.errors, submitState: 'error' });
+        if (isCLErrorJSON(errors)) {
+          this.setState({ saving: false, errors: errors.json.errors, submitState: 'error' });
+        } else {
+          this.setState({ saving: false, submitState: 'error' });
+        }
       }
     }
   }
@@ -261,7 +266,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
                   valueMultiloc={eventAttrs.title_multiloc}
                   onChange={this.handleTitleMultilocOnChange}
                 />
-                <ErrorComponent apiErrors={errors.title_multiloc} />
+                <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
               </SectionField>
 
               <SectionField>
@@ -272,19 +277,19 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
                   valueMultiloc={eventAttrs.location_multiloc}
                   onChange={this.handleLocationMultilocOnChange}
                 />
-                <ErrorComponent apiErrors={errors.location_multiloc} />
+                <ErrorComponent apiErrors={get(errors, 'location_multiloc')} />
               </SectionField>
 
               <SectionField>
                 <Label><FormattedMessage {...messages.dateStartLabel} /></Label>
                 <DateTimePicker value={eventAttrs.start_at} onChange={this.handleDateTimePickerOnChange('start_at')} />
-                <ErrorComponent apiErrors={errors.start_at} />
+                <ErrorComponent apiErrors={get(errors, 'start_at')} />
               </SectionField>
 
               <SectionField>
                 <Label><FormattedMessage {...messages.datesEndLabel} /></Label>
                 <DateTimePicker value={eventAttrs.end_at} onChange={this.handleDateTimePickerOnChange('end_at')} />
-                <ErrorComponent apiErrors={errors.end_at} />
+                <ErrorComponent apiErrors={get(errors, 'end_at')} />
               </SectionField>
 
               <SectionField className="fullWidth">
@@ -295,7 +300,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
                   valueMultiloc={eventAttrs.description_multiloc}
                   onChangeMultiloc={this.handleDescriptionMultilocOnChange}
                 />
-                <ErrorComponent apiErrors={errors.description_multiloc} />
+                <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
               </SectionField>
 
               <SectionField>
@@ -307,7 +312,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
                   onFileAdd={this.handleEventFileOnAdd}
                   onFileRemove={this.handleEventFileOnRemove}
                   files={eventFiles}
-                  errors={errors}
+                  errors={isError(errors) ? undefined : errors}
                 />
               </SectionField>
             </Section>

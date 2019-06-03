@@ -43,6 +43,7 @@ import { hideVisually } from 'polished';
 
 // typings
 import { IOption, UploadFile, CLErrorsJSON } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const HiddenLabel = styled.span`
   ${hideVisually() as any}
@@ -161,11 +162,13 @@ class ProfileForm extends PureComponent<Props, State> {
       resetForm();
       setStatus('success');
     } catch (errorResponse) {
-      if (errorResponse.json) {
+      if (isCLErrorJSON(errorResponse)) {
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
-        setSubmitting(false);
+      } else {
+        setStatus('error');
       }
+      setSubmitting(false);
     }
   }
 
@@ -184,7 +187,7 @@ class ProfileForm extends PureComponent<Props, State> {
 
       if (isSubmitting) {
         returnValue = 'disabled';
-      } else if (!isEmpty(touched) && !isValid) {
+      } else if (!isEmpty(touched) && !isValid || status === 'error') {
         returnValue = 'error';
       } else if (isEmpty(touched) && status === 'success') {
         returnValue = 'success';

@@ -11,6 +11,7 @@ import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -22,7 +23,7 @@ type Props = {};
 
 class New extends React.Component<Props> {
 
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
+  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
     addCustomFieldForUsers({
       ...values
     })
@@ -34,8 +35,12 @@ class New extends React.Component<Props> {
         }
       })
       .catch((errorResponse) => {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
         setSubmitting(false);
       });
   }
