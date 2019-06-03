@@ -2,7 +2,7 @@ module SmartGroupRules
   class ParticipatedInProject
     include ActiveModel::Validations
 
-    PREDICATE_VALUES = %w(is not_is)
+    PREDICATE_VALUES = %w(in not_in posted_in not_posted_in commented_in not_commented_in voted_idea_in not_voted_idea_in voted_comment_in not_voted_comment_in budgeted_in not_budgeted_in)
     VALUELESS_PREDICATES = []
     RULE_TYPE = 'participated_in_project'
 
@@ -47,12 +47,43 @@ module SmartGroupRules
 
     def filter users_scope
       participants_service = ParticipantsService.new
-      participants = participants_service.projects_participants([Project.find(value)])
 
       case predicate
-      when 'is'
+      when 'in'
+        participants = participants_service.projects_participants([Project.find(value)])
         users_scope.where(id: participants)
-      when 'not_is'
+      when 'not_in'
+        participants = participants_service.projects_participants([Project.find(value)])
+        users_scope.where.not(id: participants)
+      when 'posted_in'
+        participants = participants_service.projects_participants([Project.find(value)], actions: [:posting])
+        users_scope.where(id: participants)
+      when 'not_posted_in'
+        participants = participants_service.projects_participants([Project.find(value)], actions: [:posting])
+        users_scope.where.not(id: participants)
+      when 'commented_in'
+        participants = participants_service.projects_participants([Project.find(value)], actions: [:commenting])
+        users_scope.where(id: participants)
+      when 'not_commented_in'
+        participants = participants_service.projects_participants([Project.find(value)], actions: [:commenting])
+        users_scope.where.not(id: participants)
+      when 'voted_idea_in'
+        participants = participants_service.projects_participants([Project.find(value)], actions: [:idea_voting])
+        users_scope.where(id: participants)
+      when 'not_voted_idea_in'
+        participants = participants_service.projects_participants([Project.find(value)], actions: [:idea_voting])
+        users_scope.where.not(id: participants)
+      when 'voted_comment_in'
+        participants = participants_service.projects_participants([Project.find(value)], actions: [:comment_voting])
+        users_scope.where(id: participants)
+      when 'not_voted_comment_in'
+        participants = participants_service.projects_participants([Project.find(value)], actions: [:comment_voting])
+        users_scope.where.not(id: participants)
+      when 'budgeted_in'
+        participants = participants_service.projects_participants([Project.find(value)], actions: [:budgeting])
+        users_scope.where(id: participants)
+      when 'not_budgeted_in'
+        participants = participants_service.projects_participants([Project.find(value)], actions: [:budgeting])
         users_scope.where.not(id: participants)
       else
         raise "Unsupported predicate #{predicate}"

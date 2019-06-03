@@ -147,7 +147,9 @@ module EmailCampaigns
         payload: command[:event_payload]
       }
 
-      PublishRawEventToSegmentJob.perform_later segment_event
+      if [Campaigns::UserDigest, Campaigns::ProjectPhaseStarted].exclude?(campaign.class)
+        PublishRawEventToSegmentJob.perform_later segment_event
+      end
       PublishRawEventToRabbitJob.perform_later rabbit_event, "campaigns.command.#{campaign.class.campaign_name}"
     end
 
