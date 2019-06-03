@@ -59,9 +59,9 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeasShowPage = memo<Props>(({ idea }) => {
+const goBackToListMessage = <FormattedMessage {...messages.goBackToList} />;
 
-  const goBackToListMessage = <FormattedMessage {...messages.goBackToList} />;
+const IdeasShowPage = memo<Props>(({ idea }) => {
 
   if (isError(idea)) {
     return (

@@ -50,8 +50,8 @@ interface InputProps {
   opened: boolean;
   close: () => void;
   url?: string | null;
-  topBar?: JSX.Element;
-  bottomBar?: JSX.Element;
+  topBar?: JSX.Element | null;
+  bottomBar?: JSX.Element | null;
   children: JSX.Element | null | undefined;
 }
 

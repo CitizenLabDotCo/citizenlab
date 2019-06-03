@@ -1,11 +1,11 @@
-import React, { memo, useState, useCallback, useEffect, ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
+import React, { memo, useState, useCallback, ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
 import { isEmpty } from 'lodash-es';
 
 // components
 import Icon from 'components/UI/Icon';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
@@ -86,18 +86,19 @@ const IconWrapper = styled.div`
 `;
 
 interface Props {
-  onChange: (arg: string) => void;
+  value: string | null;
+  onChange: (arg: string | null) => void;
   className?: string;
 }
 
-const SearchFilter = memo<Props & InjectedIntlProps>(({ onChange, className, intl }) => {
+const SearchFilter = memo<Props & InjectedIntlProps>(({ value, onChange, className, intl }) => {
 
-  const [value, setValue] = useState('');
   const [focussed, setFocussed] = useState(false);
 
   const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    setValue(event.currentTarget.value);
+    const newValue = !isEmpty(event.currentTarget.value) ? event.currentTarget.value : null;
+    onChange(newValue);
   }, []);
 
   const handleOnFocus = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -113,7 +114,7 @@ const SearchFilter = memo<Props & InjectedIntlProps>(({ onChange, className, int
   const handleOnKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Escape') {
       event.preventDefault();
-      setValue('');
+      onChange(null);
       setFocussed(false);
     }
   }, []);
@@ -121,12 +122,8 @@ const SearchFilter = memo<Props & InjectedIntlProps>(({ onChange, className, int
   const handleOnReset = useCallback((event: MouseEvent<HTMLDivElement>) => {
     if (!isEmpty(value)) {
       event.preventDefault();
-      setValue('');
+      onChange(null);
     }
-  }, [value]);
-
-  useEffect(() => {
-    onChange(value);
   }, [value]);
 
   const ariaLabel = intl.formatMessage(messages.searchAriaLabel);
@@ -138,7 +135,7 @@ const SearchFilter = memo<Props & InjectedIntlProps>(({ onChange, className, int
         type="text"
         aria-label={ariaLabel}
         placeholder={placeholder}
-        value={value}
+        value={value || ''}
         onChange={handleOnChange}
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}

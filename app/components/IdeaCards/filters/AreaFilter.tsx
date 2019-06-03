@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useCallback, useState, useEffect } from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -8,17 +8,18 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import localize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { Header, Title } from './styles';
+import { Header, Title } from '../styles';
 
 // typings
 import { IOption } from 'typings';
+import { IAreaData } from 'services/areas';
 
 const Container = styled.div`
   width: 100%;
@@ -32,7 +33,8 @@ const Container = styled.div`
 `;
 
 interface InputProps {
-  onChange: (arg: string[]) => void;
+  selectedAreaIds: string[] | null;
+  onChange: (arg: string[] | null) => void;
   className?: string;
 }
 
@@ -42,9 +44,22 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const AreaFilter = memo<Props & InjectedIntlProps & InjectedLocalized>(({ onChange, className, localize, intl, areas }) => {
+const AreaFilter = memo<Props & InjectedIntlProps & InjectedLocalized>(({ selectedAreaIds, onChange, className, localize, intl, areas }) => {
 
-  const [selectedOptions, setSelectedOptions] = useState<IOption[] | null>(null);
+  const selectedOptions = useMemo(() => {
+    if (!isNilOrError(areas) && selectedAreaIds) {
+      return selectedAreaIds.map((selectedAreaId) => {
+        const area = areas.find(area => area.id === selectedAreaId) as IAreaData;
+
+        return {
+          value: selectedAreaId,
+          label: localize(area.attributes.title_multiloc)
+        };
+      });
+    }
+
+    return [];
+  }, [areas, selectedAreaIds]);
 
   const options = useMemo(() => {
     if (!isNilOrError(areas)) {
@@ -58,18 +73,9 @@ const AreaFilter = memo<Props & InjectedIntlProps & InjectedLocalized>(({ onChan
   }, [areas]);
 
   const handleOnChange = useCallback((options: IOption[]) => {
-    setSelectedOptions(options);
+    const output = options.map(area => area.value);
+    onChange(output.length > 0 ? output : null);
   }, []);
-
-  useEffect(() => {
-    let areaIds: string[] = [];
-
-    if (selectedOptions && selectedOptions.length > 0) {
-      areaIds = selectedOptions.map(area => area.value);
-    }
-
-    onChange(areaIds);
-  }, [selectedOptions]);
 
   const placeholder = intl.formatMessage(messages.selectYourArea);
 
@@ -93,7 +99,7 @@ const AreaFilter = memo<Props & InjectedIntlProps & InjectedLocalized>(({ onChan
 
 const AreaFilterWithHoC = injectIntl(localize(AreaFilter));
 
-export default (inputProps) => (
+export default (inputProps: InputProps) => (
   <GetAreas>
     {(areas) => <AreaFilterWithHoC {...inputProps} areas={areas} />}
   </GetAreas>

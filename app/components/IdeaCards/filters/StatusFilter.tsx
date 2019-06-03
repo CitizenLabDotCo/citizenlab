@@ -1,11 +1,11 @@
-import React, { memo, useState, useCallback, useEffect, useMemo, MouseEvent } from 'react';
+import React, { memo, useCallback, useMemo, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { capitalize, omit, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // components
 import T from 'components/T';
@@ -19,7 +19,7 @@ import GetIdeasFilterCounts from 'resources/GetIdeasFilterCounts';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
-import { Header, Title } from './styles';
+import { Header, Title } from '../styles';
 
 // typings
 import { IQueryParameters } from 'resources/GetIdeas';
@@ -91,6 +91,7 @@ const Status = styled.button`
 `;
 
 interface InputProps {
+  selectedStatusId: string | null;
   queryParameters: IQueryParameters;
   onChange: (arg: string | null) => void;
   className?: string;
@@ -102,7 +103,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const StatusFilter = memo<Props>(({ ideaStatuses, onChange, className, queryParameters }) => {
+const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, onChange, className, queryParameters }) => {
 
   const modifiedQueryParameters = useMemo(() => {
     return {
@@ -111,22 +112,16 @@ const StatusFilter = memo<Props>(({ ideaStatuses, onChange, className, queryPara
     };
   }, [queryParameters]);
 
-  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-
   const handleOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
     const statusId = event.currentTarget.dataset.id as string;
-    const nextSelectedStatus = (selectedStatus !== statusId ? statusId : null);
-    setSelectedStatus(nextSelectedStatus);
-  }, [selectedStatus]);
+    const nextSelectedStatusId = (selectedStatusId !== statusId ? statusId : null);
+    onChange(nextSelectedStatusId);
+  }, [selectedStatusId]);
 
   const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
   }, []);
-
-  useEffect(() => {
-    onChange(selectedStatus);
-  }, [selectedStatus]);
 
   if (!isNilOrError(ideaStatuses) && ideaStatuses.length > 0) {
     return (
@@ -141,7 +136,7 @@ const StatusFilter = memo<Props>(({ ideaStatuses, onChange, className, queryPara
           data-id={null}
           onMouseDown={removeFocus}
           onClick={handleOnClick}
-          className={!selectedStatus ? 'selected' : ''}
+          className={!selectedStatusId ? 'selected' : ''}
         >
           <FormattedMessage {...messages.all} />
           <Count>1000</Count>
@@ -153,12 +148,12 @@ const StatusFilter = memo<Props>(({ ideaStatuses, onChange, className, queryPara
             data-id={ideaStatus.id}
             onMouseDown={removeFocus}
             onClick={handleOnClick}
-            className={selectedStatus === ideaStatus.id ? 'selected' : ''}
+            className={selectedStatusId === ideaStatus.id ? 'selected' : ''}
           >
             <T value={ideaStatus.attributes.title_multiloc}>
               {ideaStatusTitle => <>{capitalize(ideaStatusTitle)}</>}
             </T>
-            {selectedStatus !== ideaStatus.id ? (
+            {selectedStatusId !== ideaStatus.id ? (
               <Count>
                 <GetIdeasFilterCounts queryParameters={modifiedQueryParameters}>
                   {data => <>{get(data, `idea_status_id.${ideaStatus.id}`, 0)}</>}

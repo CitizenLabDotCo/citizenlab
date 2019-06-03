@@ -1,11 +1,11 @@
-import React, { memo, useState, useCallback, useEffect, MouseEvent } from 'react';
+import React, { memo, useCallback, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { isError, includes } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // styling
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -19,7 +19,7 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { Header, Title } from './styles';
+import { Header, Title } from '../styles';
 
 // typings
 import { ITopicData } from 'services/topics';
@@ -78,7 +78,8 @@ const Topic = styled.button`
 `;
 
 interface InputProps {
-  onChange: (arg: string[]) => void;
+  selectedTopicIds: string[] | null;
+  onChange: (arg: string[] | null) => void;
   className?: string;
 }
 
@@ -88,27 +89,24 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const TopicsFilter = memo<Props>(({ topics, onChange, className }) => {
-
-  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+const TopicsFilter = memo<Props>(({ selectedTopicIds, topics, onChange, className }) => {
 
   const handleOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
     const topicId = event.currentTarget.dataset.id as string;
+    let output: string[] = [];
 
-    if (includes(selectedTopics, topicId)) {
-      setSelectedTopics(selectedTopics.filter(selectedTopicId => selectedTopicId !== topicId));
+    if (selectedTopicIds && includes(selectedTopicIds, topicId)) {
+      output = selectedTopicIds.filter(selectedTopicId => selectedTopicId !== topicId);
     } else {
-      setSelectedTopics([...selectedTopics, topicId]);
+      output = [...(selectedTopicIds || []), topicId];
     }
-  }, [selectedTopics]);
+
+    onChange(output.length > 0 ? output : null);
+  }, [selectedTopicIds]);
 
   const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
   }, []);
-
-  useEffect(() => {
-    onChange(selectedTopics);
-  }, [selectedTopics]);
 
   if (!isNilOrError(topics) && topics.length > 0) {
     return (
@@ -126,7 +124,7 @@ const TopicsFilter = memo<Props>(({ topics, onChange, className }) => {
               data-id={topic.id}
               onMouseDown={removeFocus}
               onClick={handleOnClick}
-              className={includes(selectedTopics, topic.id) ? 'selected' : ''}
+              className={includes(selectedTopicIds, topic.id) ? 'selected' : ''}
             >
               <T value={topic.attributes.title_multiloc} />
             </Topic>

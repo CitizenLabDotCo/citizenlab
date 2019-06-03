@@ -6,6 +6,7 @@ import { ideasStream, IIdeaData, IdeaPublicationStatus } from 'services/ideas';
 import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
 import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
+import { IIdeaFilters } from 'components/IdeaCards/filters';
 
 export type SortAttribute = 'new' | 'trending' | 'popular' | 'author_name' | 'upvotes_count' | 'downvotes_count' | 'baskets_count' | 'status';
 export type Sort = 'random' | 'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular' | 'author_name' | '-author_name' | 'upvotes_count' | '-upvotes_count' | 'downvotes_count' | '-downvotes_count' | 'baskets_count' | '-baskets_count' | 'status' | '-status';
@@ -34,19 +35,19 @@ export interface InputProps {
 export interface IQueryParameters {
   'page[number]': number;
   'page[size]': number;
-  projects: string[] | undefined;
-  phase: string | undefined;
-  author: string | undefined;
+  projects: string[] | undefined | null;
+  phase: string | undefined | null;
+  author: string | undefined | null;
   sort: Sort;
-  search: string | undefined;
-  topics: string[] | undefined;
-  areas: string[] | undefined;
-  idea_status: string | undefined;
-  publication_status: PublicationStatus | undefined;
-  project_publication_status: ProjectPublicationStatus | undefined;
-  bounding_box: number[] | undefined;
-  assignee: string | undefined;
-  feedback_needed: boolean | undefined;
+  search: string | undefined | null;
+  topics: string[] | undefined | null;
+  areas: string[] | undefined | null;
+  idea_status: string | undefined | null;
+  publication_status: PublicationStatus | undefined | null;
+  project_publication_status: ProjectPublicationStatus | undefined | null;
+  bounding_box: number[] | undefined | null;
+  assignee: string | undefined | null;
+  feedback_needed: boolean | undefined | null;
 }
 
 interface IAccumulator {
@@ -75,12 +76,13 @@ export type GetIdeasChildProps = State & {
   onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
   onChangeAssignee: (assignee: string | undefined) => void;
   onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
+  onIdeaFiltering: (partialQueryParameters: Partial<IQueryParameters>) => void;
   onResetParams: (paramsToOmit?: (keyof IQueryParameters)[]) => void;
 };
 
 interface State {
   queryParameters: IQueryParameters;
-  searchValue: string | undefined;
+  searchValue: string | undefined | null;
   ideasList: IIdeaData[] | undefined | null;
   hasMore: boolean;
   querying: boolean;
@@ -192,12 +194,20 @@ export default class GetIdeas extends React.Component<Props, State> {
               loadingMore: isLoadingMore,
             });
 
+            console.log('queryParameters:');
+            console.log(queryParameters);
+
             return ideasStream({ queryParameters }).observable.pipe(
               map((ideas) => {
                 const cacheStream = (isBoolean(this.props.cache) ? this.props.cache : true);
                 const selfLink = get(ideas, 'links.self');
                 const lastLink = get(ideas, 'links.last');
                 const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
+
+                console.log('isLoadingMore:');
+                console.log(isLoadingMore);
+                console.log('ideas:');
+                console.log(ideas);
 
                 return {
                   queryParameters,
@@ -283,7 +293,7 @@ export default class GetIdeas extends React.Component<Props, State> {
   }
 
   getQueryParameters = (queryParameters: IQueryParameters, props: Props) => {
-    let projects: string[] | undefined = undefined;
+    let projects: string[] | undefined | null = undefined;
 
     if (isNil(props.projectIds)) {
       projects = queryParameters.projects;
@@ -421,6 +431,14 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
 
+  handleIdeaFiltering = (ideaFilters: IIdeaFilters) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      ...ideaFilters,
+      'page[number]': 1
+    });
+  }
+
   handleResetParamsToProps = (paramsToOmit?: (keyof IQueryParameters)[]) => {
     const defaultQueryParameters = this.getQueryParametersFromProps();
 
@@ -453,6 +471,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeProjectPublicationStatus: this.handleProjectPublicationStatusOnChange,
       onChangeAssignee: this.handleAssigneeOnChange,
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
+      onIdeaFiltering: this.handleIdeaFiltering,
       onResetParams: this.handleResetParamsToProps,
     });
   }

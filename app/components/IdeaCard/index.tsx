@@ -39,7 +39,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { IModalInfo } from 'containers/App';
+import { IIdeaCardClickEvent } from 'containers/App';
 import { ParticipationMethod } from 'services/participationContexts';
 
 const IdeaBudget = styled.div`
@@ -218,11 +218,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IModalInfo>(componentName, 'ideaCardClick', {
-        type: 'idea',
-        id: idea.id,
-        url: `/ideas/${idea.attributes.slug}`
-      });
+      eventEmitter.emit<IIdeaCardClickEvent>('IdeaCard', 'ideaCardClick', { ideaId: idea.id });
     }
   }
 
