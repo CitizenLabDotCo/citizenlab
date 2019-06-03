@@ -56,7 +56,7 @@ class ParticipantsService
     end
     # Idea voting
     if actions.include? :idea_voting 
-      votes = Vote.where(votable_id: ideas).or(Vote.where(votable_id: comments))
+      votes = Vote.where(votable_id: ideas)
       votes = votes.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: votes.select(:user_id)))
     end
