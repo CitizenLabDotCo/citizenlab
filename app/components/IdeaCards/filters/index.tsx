@@ -88,32 +88,32 @@ const IdeaFilters = memo<Props>(({ queryParameters, className, onApply, onClose 
   }, [ideaFilters]);
 
   const handleSearchOnChange = useCallback((search: string | null) => {
-    setIdeaFilters({
+    setIdeaFilters(ideaFilters => ({
       ...ideaFilters,
       search
-    });
-  }, [ideaFilters]);
+    }));
+  }, []);
 
   const handleStatusOnChange = useCallback((idea_status: string | null) => {
-    setIdeaFilters({
+    setIdeaFilters(ideaFilters => ({
       ...ideaFilters,
       idea_status
-    });
-  }, [ideaFilters]);
+    }));
+  }, []);
 
   const handleAreasOnChange = useCallback((areas: string[] | null) => {
-    setIdeaFilters({
+    setIdeaFilters(ideaFilters => ({
       ...ideaFilters,
       areas
-    });
-  }, [ideaFilters]);
+    }));
+  }, []);
 
   const handleTopicsOnChange = useCallback((topics: string[] | null) => {
-    setIdeaFilters({
+    setIdeaFilters(ideaFilters => ({
       ...ideaFilters,
       topics
-    });
-  }, [ideaFilters]);
+    }));
+  }, []);
 
   return (
     <Container className={className}>
