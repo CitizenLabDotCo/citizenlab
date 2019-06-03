@@ -152,9 +152,9 @@ RSpec.describe Group, type: :model do
       {ruleType: 'custom_field_date', customFieldId: create(:custom_field_date).id, predicate: 'is_before', value: (Date.today - 1.day)},
       {ruleType: 'registration_completed_at', predicate: 'is_before', value: (Date.today - 1.day)},
       {ruleType: 'custom_field_number', customFieldId: create(:custom_field_number).id, predicate: 'is_smaller_than', value: 42},
-      {ruleType: 'participated_in_project', predicate: 'is', value: create(:project).id},
-      {ruleType: 'participated_in_topic', predicate: 'is', value: create(:topic).id},
-      {ruleType: 'participated_in_idea_status', predicate: 'is', value: create(:idea_status).id}
+      {ruleType: 'participated_in_project', predicate: 'in', value: create(:project).id},
+      {ruleType: 'participated_in_topic', predicate: 'in', value: create(:topic).id},
+      {ruleType: 'participated_in_idea_status', predicate: 'in', value: create(:idea_status).id}
     ])}
     let!(:user) { create(:user) }
 

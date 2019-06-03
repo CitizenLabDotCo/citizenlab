@@ -5,6 +5,8 @@ module EmailCampaigns
     include SenderConfigurable
     include RecipientConfigurable
     include Trackable
+    include LifecycleStageRestrictable
+    allow_lifecycle_stages except: ['churned']
 
     def mailer_class
       CampaignMailer

@@ -3,6 +3,8 @@ module EmailCampaigns
     include ActivityTriggerable
     include RecipientConfigurable
     include Disableable
+    include LifecycleStageRestrictable
+    allow_lifecycle_stages only: ['active']
 
     recipient_filter :filter_recipient
 
