@@ -2,6 +2,8 @@ module EmailCampaigns
   class Campaigns::InviteReceived < Campaign
     include ActivityTriggerable
     include Trackable
+    include LifecycleStageRestrictable
+    allow_lifecycle_stages except: ['churned']
 
     recipient_filter :filter_recipient
 
