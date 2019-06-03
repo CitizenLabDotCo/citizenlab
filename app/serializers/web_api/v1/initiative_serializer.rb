@@ -2,6 +2,9 @@ class WebApi::V1::InitiativeSerializer < ActiveModel::Serializer
 
   attributes :id, :title_multiloc, :body_multiloc, :author_name, :slug, :publication_status, :upvotes_count, :downvotes_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at
 
+  has_many :topics
+  has_many :areas
+
   belongs_to :author
 
   has_one :user_vote, if: :signed_in? do |serializer|

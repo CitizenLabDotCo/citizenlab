@@ -124,6 +124,8 @@ resource "Ideas" do
       parameter :body_multiloc, "Multi-locale field with the initiative body", extra: "Required if not draft"
       parameter :location_point_geojson, "A GeoJSON point that situates the location the initiative applies to"
       parameter :location_description, "A human readable description of the location the initiative applies to"
+      parameter :topic_ids, "Array of ids of the associated topics"
+      parameter :area_ids, "Array of ids of the associated areas"
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
@@ -133,6 +135,8 @@ resource "Ideas" do
     let(:body_multiloc) { initiative.body_multiloc }
     let(:location_point_geojson) { {type: "Point", coordinates: [51.11520776293035, 3.921154106874878]} }
     let(:location_description) { "Stanley Road 4" }
+    let(:topic_ids) { create_list(:topic, 2).map(&:id) }
+    let(:area_ids) { create_list(:area, 2).map(&:id) }
 
     describe do
       example_request "Create an initiative" do
@@ -140,6 +144,8 @@ resource "Ideas" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
       end
 
       example "Check for the automatic creation of an upvote by the author when an initiative is created", document: false do
@@ -178,12 +184,16 @@ resource "Ideas" do
       parameter :body_multiloc, "Multi-locale field with the initiative body", extra: "Required if not draft"
       parameter :location_point_geojson, "A GeoJSON point that situates the location the initiative applies to"
       parameter :location_description, "A human readable description of the location the initiative applies to"
+      parameter :topic_ids, "Array of ids of the associated topics"
+      parameter :area_ids, "Array of ids of the associated areas"
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
     let(:id) { @initiative.id }
     let(:location_point_geojson) { {type: "Point", coordinates: [51.4365635, 3.825930459]} }
     let(:location_description) { "Watkins Road 8" }
+    let(:topic_ids) { create_list(:topic, 2).map(&:id) }
+    let(:area_ids) { create_list(:area, 2).map(&:id) }
 
     describe do
       let(:title_multiloc) { {"en" => "Changed title" } }
@@ -194,6 +204,8 @@ resource "Ideas" do
         expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
       end
 
       example "Check for the automatic creation of an upvote by the author when the publication status of an initiative is updated from draft to published", document: false do
@@ -205,6 +217,21 @@ resource "Ideas" do
         expect(new_initiative.votes[0].mode).to eq 'up'
         expect(new_initiative.votes[0].user.id).to eq @user.id
         expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
+      end
+    end
+
+    describe do
+      let(:topic_ids) { [] }
+      let(:area_ids) { [] }
+
+      example "Remove the topics/areas", document: false do
+        @initiative.topics = create_list(:topic, 2)
+        @initiative.areas = create_list(:area, 2)
+        do_request
+        expect(status).to be 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
       end
     end
   end
@@ -227,7 +254,7 @@ resource "Ideas" do
 
   delete "web_api/v1/initiatives/:id" do
     before do
-      @initiative = create(:initiative, author: @user, publication_status: 'published')
+      @initiative = create(:initiative_with_topics, author: @user, publication_status: 'published')
     end
     let(:id) { @initiative.id }
 

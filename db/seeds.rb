@@ -604,7 +604,9 @@ if Apartment::Tenant.current == 'localhost'
         published_at: Faker::Date.between(created_at, Time.now),
         created_at: created_at,
         location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
-        location_description: rand(2) == 0 ? nil : Faker::Address.street_address
+        location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
+        topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
+        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first }
       })
 
       LogActivityJob.perform_later(initiative, 'created', initiative.author, initiative.created_at.to_i)

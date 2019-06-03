@@ -6,7 +6,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   def index
-    @initiatives = policy_scope(Initiative).includes(:author)
+    @initiatives = policy_scope(Initiative).includes(:author, :topics, :areas)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
@@ -48,7 +48,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   end
 
   def show
-    render json: @initiative, include: ['author','user_vote'], serializer: WebApi::V1::InitiativeSerializer
+    render json: @initiative, include: ['author','topics','areas','user_vote'], serializer: WebApi::V1::InitiativeSerializer
   end
 
   def by_slug
@@ -69,7 +69,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     ActiveRecord::Base.transaction do
       if @initiative.save
         service.after_create(@initiative, current_user)
-        render json: @initiative.reload, status: :created, include: ['author','user_vote']
+        render json: @initiative.reload, status: :created, include: ['author','topics','areas','user_vote']
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
       end
@@ -88,7 +88,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       if @initiative.save
         authorize @initiative
         service.after_update(@initiative, current_user)
-        render json: @initiative.reload, status: :ok, include: ['author','user_vote']
+        render json: @initiative.reload, status: :ok, include: ['author','topics','areas','user_vote']
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
       end

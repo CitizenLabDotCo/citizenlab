@@ -11,5 +11,27 @@ FactoryBot.define do
     sequence(:slug) {|n| "turbines-on-kanals-#{n}"}
     publication_status { "published" }
     author
+
+    factory :initiative_with_topics do
+      transient do
+        topics_count { 2 }
+      end
+      after(:create) do |initiative, evaluator|
+        evaluator.topics_count.times do |i|
+          initiative.topics << create(:topic)
+        end
+      end
+    end
+
+    factory :initiative_with_areas do
+      transient do
+        areas_count { 2 }
+      end
+      after(:create) do |initiative, evaluator|
+        evaluator.areas_count.times do |i|
+          initiative.areas << create(:area)
+        end
+      end
+    end
   end
 end
