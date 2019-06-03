@@ -71,12 +71,12 @@ describe SmartGroupRules::ParticipatedInTopic do
 
     it "correctly filters on 'voted_idea_in' predicate" do
       rule = SmartGroupRules::ParticipatedInTopic.new('voted_idea_in', @topic1.id)
-      expect(rule.filter(User)).to match_array [@user2]
+      expect(rule.filter(User)).to match_array []
     end
 
     it "correctly filters on 'not_voted_idea_in' predicate" do
       rule = SmartGroupRules::ParticipatedInTopic.new('not_voted_idea_in', @topic1.id)
-      expect(rule.filter(User)).to match_array [@user1, @user3, @user4]
+      expect(rule.filter(User)).to match_array [@user1, @user2, @user3, @user4]
     end
 
     it "correctly filters on 'voted_comment_in' predicate" do
