@@ -28,15 +28,17 @@ Rails.application.routes.draw do
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
       end
+      concern :vettable do
+        resources :official_feedback, shallow: true
+      end
       concern :spam_reportable do
         resources :spam_reports, shallow: true
       end
 
       resources :ideas, 
-        concerns: [:votable, :spam_reportable, :post], 
-        defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
+        concerns: [:votable, :spam_reportable, :post, :vettable], 
+        defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea', vettable: 'Idea' } do
         
-        resources :official_feedback, shallow: true
         resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
         resources :files, defaults: {container_class: Idea, file_class: IdeaFile}
         resources :activities, only: [:index]
@@ -47,8 +49,8 @@ Rails.application.routes.draw do
       end
 
       resources :initiatives, 
-        concerns: [:votable, :spam_reportable, :post], 
-        defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
+        concerns: [:votable, :spam_reportable, :post, :vettable], 
+        defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative', vettable: 'Initiative' } do
         get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
         get :as_markers, on: :collection, action: 'index_initiative_markers'
       end

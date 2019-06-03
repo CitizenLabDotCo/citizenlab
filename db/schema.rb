@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_03_100803) do
+ActiveRecord::Schema.define(version: 2019_06_03_142853) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -358,6 +358,8 @@ ActiveRecord::Schema.define(version: 2019_06_03_100803) do
     t.integer "comments_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "assignee_id"
+    t.integer "official_feedbacks_count", default: 0, null: false
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
     t.index ["slug"], name: "index_initiatives_on_slug"
@@ -438,11 +440,13 @@ ActiveRecord::Schema.define(version: 2019_06_03_100803) do
     t.jsonb "body_multiloc", default: {}
     t.jsonb "author_multiloc", default: {}
     t.uuid "user_id"
-    t.uuid "idea_id"
+    t.uuid "vettable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["idea_id"], name: "index_official_feedbacks_on_idea_id"
+    t.string "vettable_type"
     t.index ["user_id"], name: "index_official_feedbacks_on_user_id"
+    t.index ["vettable_id", "vettable_type"], name: "index_official_feedbacks_on_vettable_id_and_vettable_type"
+    t.index ["vettable_id"], name: "index_official_feedbacks_on_vettable_id"
   end
 
   create_table "onboarding_campaign_dismissals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -717,6 +721,7 @@ ActiveRecord::Schema.define(version: 2019_06_03_100803) do
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
   add_foreign_key "identities", "users"
+  add_foreign_key "initiatives", "users", column: "assignee_id"
   add_foreign_key "initiatives", "users", column: "author_id"
   add_foreign_key "initiatives_topics", "initiatives"
   add_foreign_key "initiatives_topics", "topics"
@@ -734,7 +739,6 @@ ActiveRecord::Schema.define(version: 2019_06_03_100803) do
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
-  add_foreign_key "official_feedbacks", "ideas"
   add_foreign_key "official_feedbacks", "users"
   add_foreign_key "page_files", "pages"
   add_foreign_key "page_links", "pages", column: "linked_page_id"

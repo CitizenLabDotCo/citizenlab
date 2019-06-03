@@ -29,7 +29,7 @@ class Idea < ApplicationRecord
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
 
-  has_many :official_feedbacks, dependent: :destroy
+  has_many :official_feedbacks, as: :vettable, dependent: :destroy
   belongs_to :idea_status
   has_many :notifications, foreign_key: :idea_id, dependent: :nullify
 
