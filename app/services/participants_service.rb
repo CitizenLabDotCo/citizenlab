@@ -10,6 +10,8 @@ class ParticipantsService
     {item_type: 'Basket', action: 'created', score: 3},
   ]
 
+  PARTICIPANT_ACTIONS = [:posting, :commenting, :idea_voting, :comment_voting, :budgeting]
+
 
   def participants options={}
     since = options[:since]
@@ -31,28 +33,55 @@ class ParticipantsService
 
   def ideas_participants ideas, options={}
     since = options[:since]
-    comments = Comment.where(post_id: ideas)
-    votes = Vote.where(votable_id: ideas).or(Vote.where(votable_id: comments))
-    if since
-      ideas = ideas.where('created_at::date >= (?)::date', since)
-      comments = comments.where('created_at::date >= (?)::date', since)
-      votes = votes.where('created_at::date >= (?)::date', since)
+    actions = options[:actions] || PARTICIPANT_ACTIONS
+    participants = User.none
+    # Posting
+    if actions.include? :posting
+      ideas_since = if since 
+        ideas.where('created_at::date >= (?)::date', since)  
+      else 
+        ideas
+      end
+      participants = participants.or(User.where(id: ideas_since.select(:author_id)))
     end
-    User
-      .where(id: ideas.select(:author_id))
-      .or(User.where(id: comments.select(:author_id)))
-      .or(User.where(id: votes.select(:user_id)))
+    # Commenting
+    comments = Comment.where(post_id: ideas)
+    if actions.include? :commenting 
+      comments_since = if since
+        comments.where('created_at::date >= (?)::date', since) 
+      else
+        comments
+      end
+      participants = participants.or(User.where(id: comments_since.select(:author_id)))
+    end
+    # Idea voting
+    if actions.include? :idea_voting 
+      votes = Vote.where(votable_id: ideas)
+      votes = votes.where('created_at::date >= (?)::date', since) if since
+      participants = participants.or(User.where(id: votes.select(:user_id)))
+    end
+    # Comment voting
+    if actions.include? :comment_voting 
+      votes = Vote.where(votable_id: comments)
+      votes = votes.where('created_at::date >= (?)::date', since) if since
+      participants = participants.or(User.where(id: votes.select(:user_id)))
+    end
+    participants
   end
 
   def projects_participants projects, options={}
     since = options[:since]
+    actions = options[:actions] || PARTICIPANT_ACTIONS
     ideas = Idea.where(project: projects)
-    baskets = Basket.submitted.where(participation_context_id: (projects.map(&:id)+Phase.where(project: projects).ids))
-    if since
-      baskets = baskets.where('created_at::date >= (?)::date', since)
+    participants = ideas_participants(ideas, options)
+    # Budgeting
+    if actions.include? :budgeting 
+      participation_context_ids = projects.map(&:id) + Phase.where(project: projects).ids
+      baskets = Basket.submitted.where(participation_context_id: participation_context_ids)
+      baskets = baskets.where('created_at::date >= (?)::date', since) if since
+      participants = participants.or(User.where(id: baskets.select(:user_id)))
     end
-    ideas_participants(ideas, options)
-      .or(User.where(id: baskets.select(:user_id)))
+    participants
   end
 
   def topics_participants topics, options={}
