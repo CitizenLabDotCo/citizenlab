@@ -204,11 +204,6 @@ export default class GetIdeas extends React.Component<Props, State> {
                 const lastLink = get(ideas, 'links.last');
                 const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
 
-                console.log('isLoadingMore:');
-                console.log(isLoadingMore);
-                console.log('ideas:');
-                console.log(ideas);
-
                 return {
                   queryParameters,
                   cacheStream,
