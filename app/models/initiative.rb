@@ -9,7 +9,7 @@ class Initiative < ApplicationRecord
   has_many :official_feedbacks, as: :vettable, dependent: :destroy
   belongs_to :assignee, class_name: 'User', optional: true
 
-  validate :assignee_can_moderate_initiatives, unless: :draft?
+  # validate :assignee_can_moderate_initiatives, unless: :draft?
 
 
   scope :with_all_topics, (Proc.new do |topic_ids|
@@ -39,14 +39,14 @@ class Initiative < ApplicationRecord
 
   private
 
-  def assignee_can_moderate_initiatives
-    if self.assignee && !self.assignee.admin?
-      self.errors.add(
-        :assignee_id,
-        :assignee_can_not_moderate_initiatives,
-        message: 'The assignee can not moderate citizen initiatives'
-      )
-    end
-  end
+  # def assignee_can_moderate_initiatives
+  #   if self.assignee && !self.assignee.admin?
+  #     self.errors.add(
+  #       :assignee_id,
+  #       :assignee_can_not_moderate_initiatives,
+  #       message: 'The assignee can not moderate citizen initiatives'
+  #     )
+  #   end
+  # end
 
 end
