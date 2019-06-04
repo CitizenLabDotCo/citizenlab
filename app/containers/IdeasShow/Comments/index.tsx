@@ -30,8 +30,8 @@ import messages from '../messages';
 import styled from 'styled-components';
 
 // typings
-import { ICommentSortOptions } from './CommentSorting';
 import Button from 'components/UI/Button';
+import { CommentsSort } from 'services/comments';
 
 const Container = styled.div``;
 
@@ -54,11 +54,12 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project, className }) => {
-  const [sortOrder, setSortOrder] = useState<ICommentSortOptions>('oldest_to_newest');
-  const { commentsList, hasMore, onLoadMore, loadingMore } = comments;
+  const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
+  const { commentsList, hasMore, onLoadMore, loadingMore, onChangeSort } = comments;
 
   const handleSortOrderChange = useCallback(
-    (sortOrder: ICommentSortOptions) => {
+    (sortOrder: CommentsSort) => {
+      onChangeSort(sortOrder);
       setSortOrder(sortOrder);
     }, []
   );
