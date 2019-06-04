@@ -8,7 +8,7 @@ class InitiativeOfficialFeedbackPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(feedback_item: Pundit.policy_scope(user, Initiative))
+      scope.where(post: Pundit.policy_scope(user, Initiative))
     end
   end
 
@@ -17,7 +17,7 @@ class InitiativeOfficialFeedbackPolicy < ApplicationPolicy
   end
 
   def show?
-    InitiativePolicy.new(user, record.feedback_item).show?
+    InitiativePolicy.new(user, record.post).show?
   end
 
   def update?
