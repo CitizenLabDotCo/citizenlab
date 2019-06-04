@@ -39,10 +39,7 @@ class Idea < ApplicationRecord
 
   validates :project, presence: true, unless: :draft?
   validates :idea_status, presence: true, unless: :draft?
-  # It is proposed to drop this validation for two reasons:
-  #   1) This case is covered by the policies.
-  #   2) The feedback of an un-admined user should remain valid. 
-  # validate :assignee_can_moderate_project, unless: :draft?
+  validate :assignee_can_moderate_project, unless: :draft?
 
   before_validation :set_idea_status, on: :create
   after_update :fix_comments_count_on_projects
@@ -97,7 +94,7 @@ class Idea < ApplicationRecord
 
   scope :feedback_needed, -> {
     joins(:idea_status).where(idea_statuses: {code: 'proposed'})
-      .where('ideas.id NOT IN (SELECT DISTINCT(idea_id) FROM official_feedbacks)')
+      .where('ideas.id NOT IN (SELECT DISTINCT(vettable_id) FROM official_feedbacks)')
   }
 
   
@@ -107,16 +104,16 @@ class Idea < ApplicationRecord
     self.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
   end
 
-  # def assignee_can_moderate_project
-  #   if self.assignee && self.project &&
-  #     !ProjectPolicy.new(self.assignee, self.project).moderate?
-  #     self.errors.add(
-  #       :assignee_id,
-  #       :assignee_can_not_moderate_project,
-  #       message: 'The assignee can not moderate the project of this idea'
-  #     )
-  #   end
-  # end
+  def assignee_can_moderate_project
+    if self.assignee && self.project &&
+      !ProjectPolicy.new(self.assignee, self.project).moderate?
+      self.errors.add(
+        :assignee_id,
+        :assignee_can_not_moderate_project,
+        message: 'The assignee can not moderate the project of this idea'
+      )
+    end
+  end
 
   def fix_comments_count_on_projects
     if project_id_previously_changed?
