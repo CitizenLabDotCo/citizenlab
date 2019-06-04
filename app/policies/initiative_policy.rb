@@ -40,8 +40,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    # TODO add assignee
-    [
+    shared = [
       :publication_status,
       :author_id,
       :location_description,
@@ -51,5 +50,10 @@ class InitiativePolicy < ApplicationPolicy
       topic_ids: [],
       area_ids: []
     ]
+    if user&.admin?
+      [:assignee_id, *shared]
+    else
+      shared
+    end
   end
 end

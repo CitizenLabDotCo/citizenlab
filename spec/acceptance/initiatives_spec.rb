@@ -8,6 +8,7 @@ resource "Ideas" do
 
   before do
     header "Content-Type", "application/json"
+    @first_admin = create(:admin)
     @initiatives = ['published','published','draft','published','spam','published','published'].map { |ps|  create(:initiative, publication_status: ps)}
     @user = create(:user)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
@@ -126,6 +127,7 @@ resource "Ideas" do
       parameter :location_description, "A human readable description of the location the initiative applies to"
       parameter :topic_ids, "Array of ids of the associated topics"
       parameter :area_ids, "Array of ids of the associated areas"
+      parameter :assignee_id, "The user id of the admin that takes ownership. Set automatically if not provided. Only allowed for admins."
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
@@ -137,8 +139,14 @@ resource "Ideas" do
     let(:location_description) { "Stanley Road 4" }
     let(:topic_ids) { create_list(:topic, 2).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
+    let(:assignee_id) { create(:admin).id }
 
     describe do
+      before do
+        @user.add_role 'admin'
+        @user.save!
+      end
+
       example_request "Create an initiative" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
@@ -146,6 +154,7 @@ resource "Ideas" do
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
         expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+        expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
       end
 
       example "Check for the automatic creation of an upvote by the author when an initiative is created", document: false do
@@ -156,6 +165,12 @@ resource "Ideas" do
         expect(new_initiative.votes[0].mode).to eq 'up'
         expect(new_initiative.votes[0].user.id).to eq @user.id
         expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
+      end
+
+      example "Check for the automatic assignement of the default assignee", document: false do
+        do_request(initiative: {assignee_id: nil})
+        json_response = json_parse(response_body) 
+        expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq @first_admin.id
       end
     end
 
@@ -186,6 +201,7 @@ resource "Ideas" do
       parameter :location_description, "A human readable description of the location the initiative applies to"
       parameter :topic_ids, "Array of ids of the associated topics"
       parameter :area_ids, "Array of ids of the associated areas"
+      parameter :assignee_id, "The user id of the admin that takes ownership. Only allowed for admins."
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
@@ -232,6 +248,17 @@ resource "Ideas" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+      end
+    end
+
+    describe do
+      let(:assignee_id) { create(:admin).id }
+
+      example "Changing the assignee as a non-admin does not work", document: false do
+        do_request
+        expect(status).to be 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:assignee)).to be_nil
       end
     end
   end
