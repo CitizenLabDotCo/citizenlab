@@ -17,9 +17,9 @@ class WebApi::V1::CommentsController < ApplicationController
 
     root_comments = case params[:sort]
       when "new"
-        root_comments.order(lft: :desc)
+        root_comments.order(created_at: :desc)
       when "-new"
-        root_comments.order(lft: :asc)
+        root_comments.order(created_at: :asc)
       when "upvotes_count"
         root_comments.order(upvotes_count: :asc, lft: :asc)
       when "-upvotes_count"
@@ -44,7 +44,7 @@ class WebApi::V1::CommentsController < ApplicationController
     child_comments = Comment
       .where(parent: fully_expanded_root_comments)
       .or(Comment.where(id: partially_expanded_child_comments))
-      .order(:lft)
+      .order(:created_at)
       .includes(:author)
 
     # We're doing this merge in ruby, since the combination of a self-join
