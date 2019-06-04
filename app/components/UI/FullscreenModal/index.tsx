@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { isFunction } from 'lodash-es';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import clHistory from 'utils/cl-router/history';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -16,6 +17,9 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { getUrlLocale } from 'services/locale';
 
+const timeout = 400;
+const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+
 const Container = styled.div`
   position: fixed;
   top: ${({ theme }) => theme.menuHeight}px;
@@ -28,6 +32,24 @@ const Container = styled.div`
   align-items: stretch;
   background: #fff;
   z-index: 997;
+
+  &.modal-enter {
+    transform: translateY(100vh);
+
+    &.modal-enter-active {
+      transform: translateY(0px);
+      transition: all ${timeout}ms ${easing};
+    }
+  }
+
+  &.modal-exit {
+    transform: translateY(0px);
+
+    &.modal-exit-active {
+      transform: translateY(100vh);
+      transition: all ${timeout}ms ${easing};
+    }
+  }
 
   ${media.smallerThanMaxTablet`
     top: 0;
@@ -52,6 +74,7 @@ interface InputProps {
   url?: string | null;
   topBar?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
+  animateInOut?: boolean;
   children: JSX.Element | null | undefined;
 }
 
@@ -106,16 +129,8 @@ class FullscreenModal extends PureComponent<Props, State> {
   handleKeypress = (event) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
-      this.closeModal();
+      this.props.close();
     }
-  }
-
-  closeModal = () => {
-    if (this.props.url && this.goBackUrl && this.goBackUrl !== this.props.url) {
-      window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
-    }
-
-    this.props.close();
   }
 
   handlePopstateEvent = () => {
@@ -127,6 +142,10 @@ class FullscreenModal extends PureComponent<Props, State> {
   }
 
   cleanup = () => {
+    if (this.props.url && this.goBackUrl && this.goBackUrl !== this.props.url) {
+      window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
+    }
+
     this.goBackUrl = null;
     this.ContentElement = null;
 
@@ -162,11 +181,22 @@ class FullscreenModal extends PureComponent<Props, State> {
   }
 
   render() {
-    const { children, opened, topBar, bottomBar } = this.props;
+    const { children, opened, topBar, bottomBar, animateInOut } = this.props;
 
-    if (opened) {
+    if (animateInOut) {
       return ReactDOM.createPortal((
-        <>
+        <CSSTransition
+          classNames="modal"
+          in={opened}
+          timeout={{
+            enter: timeout,
+            exit: timeout
+          }}
+          mountOnEnter={true}
+          unmountOnExit={true}
+          enter={true}
+          exit={true}
+        >
           <Container id="e2e-fullscreenmodal-content" className={bottomBar ? 'hasBottomBar' : ''}>
             {topBar}
             <Content ref={this.setRef}>
@@ -174,7 +204,19 @@ class FullscreenModal extends PureComponent<Props, State> {
             </Content>
             {bottomBar}
           </Container>
-        </>
+        </CSSTransition>
+      ), document.getElementById('modal-portal') as HTMLElement);
+    }
+
+    if (!animateInOut && opened) {
+      return ReactDOM.createPortal((
+        <Container id="e2e-fullscreenmodal-content" className={bottomBar ? 'hasBottomBar' : ''}>
+          {topBar}
+          <Content ref={this.setRef}>
+            {children}
+          </Content>
+          {bottomBar}
+        </Container>
       ), document.getElementById('modal-portal') as HTMLElement);
     }
 

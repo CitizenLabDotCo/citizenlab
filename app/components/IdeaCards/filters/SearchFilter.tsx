@@ -1,4 +1,5 @@
-import React, { memo, useState, useCallback, ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
+import React, { memo, useState, useCallback, useEffect, ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
+import useDebounce from 'hooks/useDebounce';
 import { isEmpty } from 'lodash-es';
 
 // components
@@ -94,11 +95,13 @@ interface Props {
 const SearchFilter = memo<Props & InjectedIntlProps>(({ value, onChange, className, intl }) => {
 
   const [focussed, setFocussed] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string | null>(value);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const newValue = !isEmpty(event.currentTarget.value) ? event.currentTarget.value : null;
-    onChange(newValue);
+    setSearchTerm(newValue);
   }, []);
 
   const handleOnFocus = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -114,17 +117,19 @@ const SearchFilter = memo<Props & InjectedIntlProps>(({ value, onChange, classNa
   const handleOnKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Escape') {
       event.preventDefault();
-      onChange(null);
+      setSearchTerm(null);
       setFocussed(false);
     }
   }, []);
 
   const handleOnReset = useCallback((event: MouseEvent<HTMLDivElement>) => {
-    if (!isEmpty(value)) {
-      event.preventDefault();
-      onChange(null);
-    }
-  }, [value]);
+    event.preventDefault();
+    setSearchTerm(null);
+  }, []);
+
+  useEffect(() => {
+    onChange(debouncedSearchTerm)
+  }, [debouncedSearchTerm]);
 
   const ariaLabel = intl.formatMessage(messages.searchAriaLabel);
   const placeholder = intl.formatMessage(messages.searchPlaceholder);
@@ -135,14 +140,14 @@ const SearchFilter = memo<Props & InjectedIntlProps>(({ value, onChange, classNa
         type="text"
         aria-label={ariaLabel}
         placeholder={placeholder}
-        value={value || ''}
+        value={searchTerm || ''}
         onChange={handleOnChange}
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         onKeyDown={handleOnKeyDown}
       />
-      <IconWrapper onClick={handleOnReset} className={!isEmpty(value) ? 'clickable' : ''}>
-        {isEmpty(value) ? <SearchIcon name="search2" /> : <CloseIcon name="close3" />}
+      <IconWrapper onClick={handleOnReset} className={!isEmpty(searchTerm) ? 'clickable' : ''}>
+        {isEmpty(searchTerm) ? <SearchIcon name="search2" /> : <CloseIcon name="close3" />}
       </IconWrapper>
     </Container>
   );

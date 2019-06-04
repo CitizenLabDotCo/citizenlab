@@ -4,25 +4,26 @@ import React, { memo, useCallback } from 'react';
 import Button from 'components/UI/Button';
 
 // i18n
-// import { FormattedMessage } from 'utils/cl-intl';
-// import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   height: ${props => props.theme.mobileTopBarHeight}px;
   background: #fff;
   border-top: solid 1px ${colors.separation};
-
-  /* ${media.biggerThanMaxTablet`
-    display: none;
-  `} */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
 `;
 
 interface Props {
@@ -37,8 +38,8 @@ const IdeaFiltersBottomBar = memo<Props>(({ className }) => {
 
   return (
     <Container className={className}>
-      <Button onClick={onApplyFilters}>
-        Apply filters
+      <Button onClick={onApplyFilters} fullWidth={true}>
+      <FormattedMessage {...messages.showIdeas} />
       </Button>
     </Container>
   );

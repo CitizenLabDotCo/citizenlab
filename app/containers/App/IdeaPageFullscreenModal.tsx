@@ -38,7 +38,7 @@ const IdeaPageFullscreenModal = memo<Props>(({ ideaId, close, idea }) => {
 
   return (
     <FullscreenModal
-      opened={ideaId !== null}
+      opened={!isNilOrError(idea)}
       close={onClose}
       url={url}
       topBar={topBar}

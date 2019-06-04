@@ -17,9 +17,9 @@ import GetIdeasFilterCounts from 'resources/GetIdeasFilterCounts';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
-import { Header, Title } from '../styles';
+import { Header, Title } from './styles';
 
 // typings
 import { IQueryParameters } from 'resources/GetIdeas';
@@ -90,6 +90,12 @@ const Status = styled.button`
   }
 `;
 
+const AllStatus = styled(Status)`
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
+`;
+
 interface InputProps {
   selectedStatusId: string | null;
   queryParameters: IQueryParameters;
@@ -132,15 +138,19 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, onChange, cl
           </Title>
         </Header>
 
-        <Status
+        <AllStatus
           data-id={null}
           onMouseDown={removeFocus}
           onClick={handleOnClick}
           className={!selectedStatusId ? 'selected' : ''}
         >
           <FormattedMessage {...messages.all} />
-          <Count>1000</Count>
-        </Status>
+          <Count>
+            <GetIdeasFilterCounts queryParameters={modifiedQueryParameters}>
+              {data => <>{get(data, 'total', 0)}</>}
+            </GetIdeasFilterCounts>
+          </Count>
+        </AllStatus>
 
         {ideaStatuses.map((ideaStatus) => (
           <Status
@@ -156,7 +166,7 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, onChange, cl
             {selectedStatusId !== ideaStatus.id ? (
               <Count>
                 <GetIdeasFilterCounts queryParameters={modifiedQueryParameters}>
-                  {data => <>{get(data, `idea_status_id.${ideaStatus.id}`, 0)}</>}
+                  {data => get(data, `idea_status_id.${ideaStatus.id}`, 0)}
                 </GetIdeasFilterCounts>
               </Count>
             ) : (

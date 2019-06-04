@@ -11,7 +11,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { IQueryParameters } from 'resources/GetIdeas';
@@ -42,11 +41,12 @@ export interface IIdeaFilters {
 interface Props {
   queryParameters: IQueryParameters;
   className?: string;
-  onApply: (arg: IIdeaFilters) => void;
+  onApply?: (arg: IIdeaFilters) => void;
+  onChange?: (arg: IIdeaFilters) => void;
   onClose: () => void;
 }
 
-const IdeaFilters = memo<Props>(({ queryParameters, className, onApply, onClose }) => {
+const IdeaFilters = memo<Props>(({ queryParameters, className, onApply, onChange, onClose }) => {
 
   const [ideaFilters, setIdeaFilters] = useState<IIdeaFilters>({
     search: queryParameters.search || null,
@@ -80,12 +80,14 @@ const IdeaFilters = memo<Props>(({ queryParameters, className, onApply, onClose 
       }),
 
       eventEmitter.observeEvent('applyIdeaFilters').subscribe(() => {
-        onApply(ideaFilters);
+        if (onApply) {
+          onApply(ideaFilters);
+        }
       })
     ];
 
     return () => subscriptions.forEach(subscription => subscription.unsubscribe());
-  }, [ideaFilters]);
+  }, [ideaFilters, onApply]);
 
   const handleSearchOnChange = useCallback((search: string | null) => {
     setIdeaFilters(ideaFilters => ({
@@ -115,12 +117,18 @@ const IdeaFilters = memo<Props>(({ queryParameters, className, onApply, onClose 
     }));
   }, []);
 
+  useEffect(() => {
+    if (onChange) {
+      onChange(ideaFilters);
+    }
+  }, [ideaFilters, onChange]);
+
   return (
     <Container className={className}>
-      <StyledSearchFilter value={ideaFilters.search || null} onChange={handleSearchOnChange} />
-      <StyledStatusFilter selectedStatusId={ideaFilters.idea_status || null} queryParameters={queryParameters} onChange={handleStatusOnChange} />
-      <StyledTopicsFilter selectedTopicIds={ideaFilters.topics || null} onChange={handleTopicsOnChange} />
-      <StyledAreaFilter selectedAreaIds={ideaFilters.areas || null} onChange={handleAreasOnChange}/>
+      <StyledSearchFilter value={ideaFilters.search} onChange={handleSearchOnChange} />
+      <StyledStatusFilter selectedStatusId={ideaFilters.idea_status} queryParameters={queryParameters} onChange={handleStatusOnChange} />
+      <StyledTopicsFilter selectedTopicIds={ideaFilters.topics} onChange={handleTopicsOnChange} />
+      <StyledAreaFilter selectedAreaIds={ideaFilters.areas} onChange={handleAreasOnChange}/>
     </Container>
   );
 });

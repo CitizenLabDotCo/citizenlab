@@ -15,7 +15,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { Header, Title } from '../styles';
+import { Header, Title } from './styles';
 
 // typings
 import { IOption } from 'typings';
