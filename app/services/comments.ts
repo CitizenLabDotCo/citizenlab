@@ -66,6 +66,8 @@ export interface DeleteReason {
   other_reason: string | null;
 }
 
+export type CommentsSort = '-new' | 'upvotes_count' | 'new' | 'upvotes_count';
+
 export function commentStream(commentId: string) {
   return streams.get<IComment>({ apiEndpoint: `${API_PATH}/comments/${commentId}` });
 }

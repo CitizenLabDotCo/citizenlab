@@ -2,13 +2,14 @@ import React from 'react';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, tap, mergeScan, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { ICommentData, commentsForIdeaStream } from 'services/comments';
-import { isString, get } from 'lodash-es';
+import { ICommentData, commentsForIdeaStream, CommentsSort } from 'services/comments';
+import { isString, get, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   ideaId: string;
-  pageSize?: number; // will default to 10
+  pageSize: number; // can be undefined, will default to 10
+  sort: CommentsSort; // can be undefined, will default to '-new' ie oldest to newest
 }
 
 type children = (renderProps: GetCommentsChildProps) => JSX.Element | null;
@@ -26,11 +27,12 @@ interface State {
 
 export interface GetCommentsChildProps extends State {
   onLoadMore: () => void;
+  onChangeSort: (sort: CommentsSort) => void;
 }
 
 interface IAccumulator {
   commentsList: ICommentData[] | undefined | null | Error;
-  ideaId: string;
+  inputProps: InputProps;
   pageNumber: number;
   hasMore: boolean;
 }
@@ -39,6 +41,11 @@ export default class GetComments extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private pageNumber$: BehaviorSubject<number>;
   private subscriptions: Subscription[];
+
+  static defaultProps = {
+    pageSize: 10,
+    sort: '-new'
+  };
 
   constructor(props: Props) {
     super(props);
@@ -51,29 +58,31 @@ export default class GetComments extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { ideaId, pageSize } = this.props;
+    const { children, ...didMountInputProps } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ ideaId });
+    this.inputProps$ = new BehaviorSubject(didMountInputProps);
     this.pageNumber$ = new BehaviorSubject(1);
 
-    const startAccumulatorValue: IAccumulator = { ideaId, pageNumber: 1, commentsList: undefined, hasMore: false };
+    const startAccumulatorValue: IAccumulator = {
+      inputProps: didMountInputProps,
+      pageNumber: 1,
+      commentsList: undefined,
+      hasMore: false
+    };
 
     const parsedInputProps$ = this.inputProps$.pipe(
       distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
       filter(({ ideaId }) => isString(ideaId)),
       tap(() => this.pageNumber$.next(1))
     );
-    const parsedPageNumber$ = this.pageNumber$.pipe(
-      distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-    );
 
     this.subscriptions = [
       combineLatest([
         parsedInputProps$,
-        parsedPageNumber$
+        this.pageNumber$
       ]).pipe(
         mergeScan<[InputProps, number], IAccumulator>((acc, [inputProps, pageNumber]) => {
-          const isLoadingMore = acc.ideaId === inputProps.ideaId && acc.pageNumber !== acc.pageNumber;
+          const isLoadingMore = isEqual(acc.inputProps, inputProps) && acc.pageNumber !== pageNumber;
 
           this.setState({
             querying: !isLoadingMore,
@@ -83,31 +92,50 @@ export default class GetComments extends React.Component<Props, State> {
           return commentsForIdeaStream(inputProps.ideaId, {
             queryParameters: {
               'page[number]': pageNumber,
-              'page[size]': pageSize || 10
+              'page[size]': inputProps.pageSize,
+              sort: inputProps.sort
             }
           }).observable.pipe(
             map(commentsList => {
               const { loadingMore } = this.state;
 
-              const currentPage = get(commentsList, 'meta.current_page');
-              const totalPages = get(commentsList, 'meta.total_pages');
-              const hasMore = (Number.isInteger(currentPage) && Number.isInteger(totalPages) && currentPage !== totalPages);
+              const totalTopComments = get(commentsList, 'meta.total');
+              const hasMore = (Number.isInteger(totalTopComments) && (pageNumber * inputProps.pageSize) < totalTopComments);
 
               return {
-                ideaId,
+                inputProps,
                 pageNumber,
                 hasMore,
-                commentsList: (!loadingMore || isNilOrError(acc.commentsList) ? commentsList.data : [...(acc.commentsList || []), ...commentsList.data])
+                commentsList: !loadingMore || isNilOrError(acc.commentsList)
+                  ? commentsList.data
+                  : [...(acc.commentsList), ...commentsList.data]
               };
           }));
         }, startAccumulatorValue)
-      ).subscribe(({ commentsList, hasMore }) => this.setState({ hasMore, commentsList }))
+      ).subscribe(({ commentsList, hasMore }) => this.setState({ hasMore, commentsList, loadingMore: false, querying: false }))
     ];
   }
 
-  componentDidUpdate() {
-    const { ideaId } = this.props;
-    this.inputProps$.next({ ideaId });
+  componentDidUpdate(prevProps) {
+    const { ideaId: nextIdeaId, pageSize: nextPageSize, sort: nextSort } = this.props;
+    const { ideaId: prevIdeaId, pageSize: prevPageSize, sort: prevSort } = prevProps;
+
+    const changedProps = {} as Partial<InputProps>;
+
+    if (prevIdeaId !== nextIdeaId) {
+      changedProps.ideaId = nextIdeaId;
+    }
+    if (prevPageSize !== nextPageSize) {
+      changedProps.pageSize = nextPageSize;
+    }
+    if (prevSort !== nextSort) {
+      changedProps.sort = nextSort;
+    }
+
+    if (Object.keys(changedProps).length > 0) {
+      const propsInStream = this.inputProps$.getValue();
+      this.inputProps$.next({ ...propsInStream, ...changedProps });
+    }
   }
 
   componentWillUnmount() {
@@ -118,11 +146,16 @@ export default class GetComments extends React.Component<Props, State> {
     this.pageNumber$.next(this.pageNumber$.getValue() + 1);
   }
 
+  changeSort = (sort: CommentsSort) => {
+    this.inputProps$.next({ ...this.props, sort });
+  }
+
   render() {
     const { children } = this.props;
     return (children as children)({
       ...this.state,
-      onLoadMore: this.loadMore
+      onLoadMore: this.loadMore,
+      onChangeSort: this.changeSort
     });
   }
 }
