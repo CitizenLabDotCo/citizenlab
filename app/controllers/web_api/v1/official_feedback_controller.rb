@@ -1,10 +1,10 @@
 class WebApi::V1::OfficialFeedbackController < ApplicationController
-  before_action :set_vettable_type_id_and_policy, only: [:index, :create]
+  before_action :set_feedback_item_type_id_and_policy, only: [:index, :create]
   before_action :set_feedback, only: [:show, :update, :destroy]
 
   def index
     @feedbacks = policy_scope(OfficialFeedback, policy_scope_class: @policy_class::Scope)
-      .where(vettable_type: @vettable_type, vettable_id: @vettable_id)
+      .where(feedback_item_type: @feedback_item_type, feedback_item_id: @feedback_item_id)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
       .order(created_at: :desc)
@@ -18,8 +18,8 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
 
   def create
     @feedback = OfficialFeedback.new official_feedback_params
-    @feedback.vettable_type = @vettable_type
-    @feedback.vettable_id = @vettable_id
+    @feedback.feedback_item_type = @feedback_item_type
+    @feedback.feedback_item_id = @feedback_item_id
     @feedback.user ||= current_user
     authorize @feedback, policy_class: @policy_class
     SideFxOfficialFeedbackService.new.before_create @feedback, current_user
@@ -59,24 +59,24 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
 
   def set_feedback
     @feedback = OfficialFeedback.find_by(id: params[:id])
-    @vettable_type = @feedback.vettable_type
+    @feedback_item_type = @feedback.feedback_item_type
     set_policy_class
     authorize @feedback, policy_class: @policy_class
   end
 
-  def set_vettable_type_id_and_policy
-    @vettable_type = params[:vettable]
-    @vettable_id = params[:"#{@vettable_type.underscore}_id"]
+  def set_feedback_item_type_id_and_policy
+    @feedback_item_type = params[:feedback_item]
+    @feedback_item_id = params[:"#{@feedback_item_type.underscore}_id"]
     set_policy_class
   end
 
   def set_policy_class
-    @policy_class = case @vettable_type
+    @policy_class = case @feedback_item_type
       when 'Idea' then IdeaOfficialFeedbackPolicy
       when 'Initiative' then InitiativeOfficialFeedbackPolicy
-      else raise "#{@vettable_type} has no official feedback policy defined"
+      else raise "#{@feedback_item_type} has no official feedback policy defined"
     end
-    raise RuntimeError, "must not be blank" if @vettable_type.blank?
+    raise RuntimeError, "must not be blank" if @feedback_item_type.blank?
   end
 
   def official_feedback_params

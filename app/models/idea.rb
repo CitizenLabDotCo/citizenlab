@@ -29,7 +29,7 @@ class Idea < ApplicationRecord
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
 
-  has_many :official_feedbacks, as: :vettable, dependent: :destroy
+  has_many :official_feedbacks, as: :feedback_item, dependent: :destroy
   belongs_to :idea_status
   has_many :notifications, foreign_key: :idea_id, dependent: :nullify
 
@@ -94,7 +94,7 @@ class Idea < ApplicationRecord
 
   scope :feedback_needed, -> {
     joins(:idea_status).where(idea_statuses: {code: 'proposed'})
-      .where('ideas.id NOT IN (SELECT DISTINCT(vettable_id) FROM official_feedbacks)')
+      .where('ideas.id NOT IN (SELECT DISTINCT(feedback_item_id) FROM official_feedbacks)')
   }
 
   
