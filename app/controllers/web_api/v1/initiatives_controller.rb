@@ -6,16 +6,33 @@ class WebApi::V1::InitiativesController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   def index
-    @initiatives = policy_scope(Initiative).includes(:author, :topics, :areas)
+    @initiatives = policy_scope(Initiative).includes(:author, :assignee, :topics, :areas)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    # TODO Generalize post filters?
-    @initiatives = @initiatives.where(author_id: params[:author]) if params[:author].present?
-    if params[:publication_status].present?
-      @initiatives = @initiatives.where(publication_status: params[:publication_status])
-    else
-      @initiatives = @initiatives.where(publication_status: 'published')
+    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params
+
+    if params[:sort].present? && !params[:search].present?
+      @initiatives = case params[:sort]
+        when "new"
+          @initiatives.order_new
+        when "-new"
+          @initiatives.order_new(:asc)
+        when "author_name"
+          @initiatives.order(author_name: :asc)
+        when "-author_name"
+          @initiatives.order(author_name: :desc)
+        when "upvotes_count"
+          @initiatives.order(upvotes_count: :asc)
+        when "-upvotes_count"
+          @initiatives.order(upvotes_count: :desc)
+        when "random"
+          @initiatives.order_random
+        when nil
+          @initiatives
+        else
+          raise "Unsupported sort method"
+        end
     end
 
     @initiative_ids = @initiatives.map(&:id)
@@ -34,14 +51,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    # TODO Generalize post filters?
-    @initiatives = @initiatives.where(author_id: params[:author]) if params[:author].present?
-    if params[:publication_status].present?
-      @initiatives = @initiatives.where(publication_status: params[:publication_status])
-    else
-      @initiatives = @initiatives.where(publication_status: 'published')
-    end
-
+    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params
     @initiatives = @initiatives.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
     render json: @initiatives, each_serializer: WebApi::V1::PostMarkerSerializer

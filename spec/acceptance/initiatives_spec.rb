@@ -22,6 +22,11 @@ resource "Ideas" do
     end
     parameter :author, 'Filter by author (user id)', required: false
     parameter :publication_status, "Filter by publication status; returns all publlished initiatives by default", required: false
+    parameter :topics, 'Filter by topics (OR)', required: false
+    parameter :areas, 'Filter by areas (OR)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false
+    parameter :search, 'Filter by searching in title, body and author name', required: false
+    parameter :sort, "Either 'new', '-new', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'random'", required: false
 
     example_request "List all published initiatives (default behaviour)" do
       expect(status).to eq(200)
@@ -36,6 +41,40 @@ resource "Ideas" do
       expect(json_response[:data].size).to eq 0
     end
 
+    example "List all initiatives which match one of the given topics" do
+      t1 = create(:topic)
+      t2 = create(:topic)
+
+      i1 = @initiatives[0]
+      i1.topics = [t1]
+      i1.save
+      i2 = @initiatives[1]
+      i2.topics = [t2]
+      i2.save
+
+      do_request topics: [t1.id, t2.id]
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id]
+    end
+
+    example "List all initiatives which match one of the given areas" do
+      a1 = create(:area)
+      a2 = create(:area)
+
+      i1 = @initiatives.first
+      i1.areas = [a1]
+      i1.save
+      i2 = @initiatives.second
+      i2.areas = [a2]
+      i2.save
+
+      do_request areas: [a1.id, a2.id]
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id]
+    end
+
     example "List all initiatives for a user" do
       u = create(:user)
       i = create(:initiative, author: u)
@@ -44,6 +83,46 @@ resource "Ideas" do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
+    end
+
+    example "List all initiatives for an assignee" do
+      a = create(:admin)
+      i = create(:initiative, assignee: a)
+
+      do_request assignee: a.id
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq i.id
+    end
+
+    example "Search for initiatives" do
+      u = create(:user)
+      i1 = create(:initiative, title_multiloc: {en: "This initiative is uniqque"})
+      i2 = create(:initiative, title_multiloc: {en: "This one origiinal"})
+
+      do_request search: "uniqque"
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq i1.id
+    end
+
+    example "List all initiatives sorted by new" do
+      u = create(:user)
+      i1 = create(:initiative)
+
+      do_request sort: "new"
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 6
+      expect(json_response[:data][0][:id]).to eq i1.id
+    end
+
+    example "List all initiatives by random ordering", document: false do
+      u = create(:user)
+      i1 = create(:initiative)
+
+      do_request sort: "random"
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 6
     end
 
     example "List all initiatives includes the user_vote", document: false do
@@ -76,6 +155,10 @@ resource "Ideas" do
     parameter :author, 'Filter by author (user id)', required: false
     parameter :publication_status, "Return only initiatives with the specified publication status; returns all pusblished initiatives by default", required: false
     parameter :bounding_box, "Given an [x1,y1,x2,y2] array of doubles (x being latitude and y being longitude), the markers are filtered to only retain those within the (x1,y1)-(x2,y2) box.", required: false
+    parameter :topics, 'Filter by topics (OR)', required: false
+    parameter :areas, 'Filter by areas (OR)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false
+    parameter :search, 'Filter by searching in title, body and author name', required: false
 
     example "List all markers within a bounding box" do
       do_request(bounding_box: "[51.208758,3.224363,50.000667,5.715281]") # Bruges-Bastogne
