@@ -17,6 +17,7 @@ module Post
     has_many :activities, as: :item
 
     has_many :comments, as: :post, dependent: :destroy
+    has_many :official_feedbacks, as: :post, dependent: :destroy
 
     has_many :votes, as: :votable, dependent: :destroy
     has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'

@@ -6,7 +6,6 @@ class Initiative < ApplicationRecord
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
 
-  has_many :official_feedbacks, as: :feedback_item, dependent: :destroy
   belongs_to :assignee, class_name: 'User', optional: true
 
   validate :assignee_can_moderate_initiatives, unless: :draft?

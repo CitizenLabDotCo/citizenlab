@@ -9,7 +9,7 @@ resource "OfficialFeedback" do
   before do
     header "Content-Type", "application/json"
     @initiative = create(:initiative)
-    @feedbacks = create_list(:official_feedback, 2, feedback_item: @initiative)
+    @feedbacks = create_list(:official_feedback, 2, post: @initiative)
   end
 
   get "web_api/v1/initiatives/:initiative_id/official_feedback" do
@@ -64,7 +64,7 @@ resource "OfficialFeedback" do
         expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
         expect(json_response.dig(:data,:attributes,:author_multiloc).stringify_keys).to match author_multiloc
-        expect(json_response.dig(:data,:relationships,:feedback_item,:data,:id)).to eq initiative_id
+        expect(json_response.dig(:data,:relationships,:post,:data,:id)).to eq initiative_id
         expect(@initiative.reload.official_feedbacks_count).to eq 3
       end
 
@@ -86,7 +86,7 @@ resource "OfficialFeedback" do
       end
       ValidationErrorHelper.new.error_fields(self, OfficialFeedback)
 
-      let(:official_feedback) { create(:official_feedback, user: @user, feedback_item: @initiative) }
+      let(:official_feedback) { create(:official_feedback, user: @user, post: @initiative) }
       let(:id) { official_feedback.id }
       let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
 
@@ -99,7 +99,7 @@ resource "OfficialFeedback" do
     end
 
     delete "web_api/v1/official_feedback/:id" do
-      let(:official_feedback) { create(:official_feedback, user: @user, feedback_item: @initiative) }
+      let(:official_feedback) { create(:official_feedback, user: @user, post: @initiative) }
       let(:id) { official_feedback.id }
       example_request "Delete an official feedback" do
         expect(response_status).to eq 200
