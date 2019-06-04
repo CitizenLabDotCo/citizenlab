@@ -43,7 +43,7 @@ export default class GetComments extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    pageSize: 10,
+    pageSize: 15,
     sort: '-new'
   };
 
