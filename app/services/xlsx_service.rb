@@ -116,8 +116,9 @@ class XlsxService
         comments.each do |comment|
           sheet.add_row [
             comment.id,
-            convert_to_text(@@multiloc_service.t(comment.body_multiloc)),
             @@multiloc_service.t(comment&.idea.title_multiloc),
+            convert_to_text(@@multiloc_service.t(comment.body_multiloc)),
+            comment.upvotes_count,
             comment.author_name,
             comment.author&.email,
             comment.created_at,
