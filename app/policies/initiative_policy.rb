@@ -40,6 +40,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def permitted_attributes
+    # TODO add assignee
     [
       :publication_status,
       :author_id,
