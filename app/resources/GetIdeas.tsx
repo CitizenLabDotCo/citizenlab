@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, isString, isEmpty, isEqual, isBoolean, omit, cloneDeep, omitBy, isNil, isArray } from 'lodash-es';
+import { get, isString, isEmpty, isEqual, isBoolean, omit, cloneDeep, omitBy, isNil, isArray , unionBy} from 'lodash-es';
 import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { map, startWith, distinctUntilChanged, tap, debounceTime, mergeScan, switchMap } from 'rxjs/operators';
 import { ideasStream, IIdeaData, IdeaPublicationStatus } from 'services/ideas';
@@ -208,7 +208,8 @@ export default class GetIdeas extends React.Component<Props, State> {
                   queryParameters,
                   cacheStream,
                   hasMore,
-                  ideas: (!isLoadingMore ? ideas.data : [...(acc.ideas || []), ...ideas.data])
+                  // ideas: (!isLoadingMore ? ideas.data : [...(acc.ideas || []), ...ideas.data])
+                  ideas: (!isLoadingMore ? ideas.data : unionBy((acc.ideas || []), ideas.data))
                 };
               })
             );
