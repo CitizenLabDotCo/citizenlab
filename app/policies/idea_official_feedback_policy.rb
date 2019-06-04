@@ -8,16 +8,16 @@ class IdeaOfficialFeedbackPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(vettable: Pundit.policy_scope(user, Idea))
+      scope.where(feedback_item: Pundit.policy_scope(user, Idea))
     end
   end
 
   def create? 
-    user&.active_admin_or_moderator?(record.vettable.project.id)
+    user&.active_admin_or_moderator?(record.feedback_item.project.id)
   end
 
   def show?
-    IdeaPolicy.new(user, record.vettable).show?
+    IdeaPolicy.new(user, record.feedback_item).show?
   end
 
   def update?

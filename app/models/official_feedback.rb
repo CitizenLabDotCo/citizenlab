@@ -1,6 +1,6 @@
 class OfficialFeedback < ApplicationRecord
-  belongs_to :vettable, polymorphic: true  # After https://english.stackexchange.com/a/421858/350478
-  counter_culture :vettable
+  belongs_to :feedback_item, polymorphic: true  # After https://english.stackexchange.com/a/421858/350478
+  counter_culture :feedback_item
   
   belongs_to :user
   has_many :notifications, foreign_key: :official_feedback_id, dependent: :nullify

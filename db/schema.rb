@@ -440,13 +440,13 @@ ActiveRecord::Schema.define(version: 2019_06_03_142853) do
     t.jsonb "body_multiloc", default: {}
     t.jsonb "author_multiloc", default: {}
     t.uuid "user_id"
-    t.uuid "vettable_id"
+    t.uuid "feedback_item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "vettable_type"
+    t.string "feedback_item_type"
+    t.index ["feedback_item_id", "feedback_item_type"], name: "index_official_feedbacks_on_feedback_item"
+    t.index ["feedback_item_id"], name: "index_official_feedbacks_on_feedback_item_id"
     t.index ["user_id"], name: "index_official_feedbacks_on_user_id"
-    t.index ["vettable_id", "vettable_type"], name: "index_official_feedbacks_on_vettable_id_and_vettable_type"
-    t.index ["vettable_id"], name: "index_official_feedbacks_on_vettable_id"
   end
 
   create_table "onboarding_campaign_dismissals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
