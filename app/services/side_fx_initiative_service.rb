@@ -1,6 +1,10 @@
 class SideFxInitiativeService
   include SideFxHelper
 
+  def initialize
+    @automatic_assignment = false
+  end
+
   def before_create initiative, user
     before_publish initiative, user if initiative.published?
   end
@@ -22,6 +26,11 @@ class SideFxInitiativeService
       after_publish initiative, user
     elsif initiative.published?
       LogActivityJob.perform_later(initiative, 'changed', user, initiative.updated_at.to_i)
+    end
+
+    if initiative.assignee_id_previously_changed?
+      initiating_user = @automatic_assignment ? nil : user
+      LogActivityJob.perform_later(initiative, 'changed_assignee', initiating_user, initiative.updated_at.to_i, payload: {change: initiative.assignee_id_previous_change})
     end
 
     if initiative.title_multiloc_previously_changed?
@@ -46,12 +55,20 @@ class SideFxInitiativeService
   private
 
   def before_publish initiative, user
-    
+    set_assignee initiative
   end
 
   def after_publish initiative, user
     add_autovote initiative
     log_activity_jobs_after_published initiative, user
+  end
+
+  def set_assignee initiative
+    default_assignee = User.active.admin.order(:created_at).reject(&:super_admin?).first
+    if !initiative.assignee && default_assignee
+      initiative.assignee = default_assignee
+      @automatic_assignment = true
+    end
   end
 
   def add_autovote initiative
