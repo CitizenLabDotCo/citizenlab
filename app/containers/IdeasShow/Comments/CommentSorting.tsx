@@ -28,7 +28,7 @@ export default class CommentSorting extends PureComponent<Props, State> {
 
   sortOptions = [
     { text: <FormattedMessage {...messages.oldestToNewest} />, value: '-new' },
-    { text: <FormattedMessage {...messages.mostUpvoted} />, value: 'upvotes_count' },
+    { text: <FormattedMessage {...messages.mostUpvoted} />, value: '-upvotes_count' },
   ];
 
   render() {
