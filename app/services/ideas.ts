@@ -152,6 +152,7 @@ export interface IIdeasFilterCounts {
   topic_id: {
     [key: string]: number;
   };
+  total: number;
 }
 
 export function ideaByIdStream(ideaId: string) {
@@ -167,7 +168,7 @@ export function ideasStream(streamParams: IStreamParams | null = null) {
 }
 
 export function ideasFilterCountsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasFilterCounts>({ apiEndpoint: `${API_PATH}/ideas/filter_counts`, ...streamParams });
+  return streams.get<IIdeasFilterCounts>({ apiEndpoint: `${API_PATH}/ideas/filter_counts`, ...streamParams, cacheStream: false });
 }
 
 export function ideasMarkersStream(streamParams: IStreamParams | null = null) {

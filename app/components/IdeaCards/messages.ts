@@ -100,5 +100,17 @@ export default defineMessages({
   filter: {
     id: 'app.containers.IdeaCards.filter',
     defaultMessage: 'Filter',
-  }
+  },
+  filters: {
+    id: 'app.containers.IdeaCards.filters',
+    defaultMessage: 'Filters',
+  },
+  showIdeas: {
+    id: 'app.containers.IdeaCards.showIdeas',
+    defaultMessage: 'Show ideas',
+  },
+  clearAll: {
+    id: 'app.containers.IdeaCards.clearAll',
+    defaultMessage: 'Clear all',
+  },
 });

@@ -4,8 +4,8 @@ import React, { memo, useCallback } from 'react';
 import Icon from 'components/UI/Icon';
 
 // i18n
-// import { FormattedMessage } from 'utils/cl-intl';
-// import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -42,10 +42,17 @@ const Left = styled.div`
   display: flex;
 `;
 
+const Center = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Right = styled.div``;
 
 const CloseIcon = styled(Icon)`
-  height: 22px;
+  height: 14px;
   fill: ${colors.label};
   display: flex;
   align-items: center;
@@ -97,11 +104,16 @@ const IdeaFiltersTopBar = memo<Props>(({ className }) => {
       <TopBarInner>
         <Left>
           <CloseButton onClick={onClose}>
-            <CloseIcon name="close4" />
+            <CloseIcon name="close3" />
           </CloseButton>
         </Left>
+        <Center>
+          <FormattedMessage {...messages.filters} />
+        </Center>
         <Right>
-          <button onClick={onClear}>Clear all</button>
+          <button onClick={onClear}>
+            <FormattedMessage {...messages.clearAll} />
+          </button>
         </Right>
       </TopBarInner>
     </Container>

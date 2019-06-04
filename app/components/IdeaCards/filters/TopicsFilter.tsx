@@ -19,7 +19,7 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { Header, Title } from '../styles';
+import { Header, Title } from './styles';
 
 // typings
 import { ITopicData } from 'services/topics';

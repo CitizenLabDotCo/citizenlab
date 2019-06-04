@@ -27,6 +27,7 @@ import FeatureFlag from 'components/FeatureFlag';
 // resources
 import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 import GetIdeasFilterCounts from 'resources/GetIdeasFilterCounts';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -38,7 +39,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { darken, rgba } from 'polished';
 
 // typings
@@ -76,6 +77,11 @@ const AboveContent = styled.div`
   justify-content: space-between;
   margin-right: ${filterColumnWidth + gapWidth}px;
   margin-bottom: 20px;
+
+  ${media.smallerThanMaxTablet`
+    margin-right: 0;
+    margin-top: 20px;
+  `}
 `;
 
 const AboveContentLeft = styled.div`
@@ -92,6 +98,7 @@ const IdeasCount = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: 21px;
+  white-space: nowrap;
   display: flex;
   align-items: center;
 `;
@@ -316,6 +323,7 @@ interface InputProps extends GetIdeasInputProps  {
 
 interface DataProps {
   ideas: GetIdeasChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -406,6 +414,7 @@ class IdeaCards extends PureComponent<Props, State> {
       participationContextId,
       participationContextType,
       ideas,
+      windowSize,
       className,
       theme,
       allowProjectsFilter,
@@ -421,28 +430,37 @@ class IdeaCards extends PureComponent<Props, State> {
     const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
+    // const smallerThanSmallTablet = (windowSize && windowSize < viewportWidths.smallTablet);
+    // const smallerThanLargeTablet = (windowSize && windowSize < viewportWidths.largeTablet);
+    const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
 
     return (
       <Container id="e2e-ideas-container" className={className}>
-        <FullscreenModal
-          opened={filtersModalOpened}
-          close={this.closeFiltersModal}
-          topBar={<IdeaFiltersTopBar />}
-          bottomBar={<IdeaFiltersBottomBar />}
-        >
-          <IdeaFilters
-            queryParameters={queryParameters}
-            onApply={this.handleIdeaFiltersOnApply}
-            onClose={this.handleIdeaFiltersOnClose}
-          />
-        </FullscreenModal>
+        {!biggerThanLargeTablet &&
+          <>
+            <FullscreenModal
+              opened={filtersModalOpened}
+              close={this.closeFiltersModal}
+              url="ideas/filters/"
+              animateInOut={true}
+              topBar={<IdeaFiltersTopBar />}
+              bottomBar={<IdeaFiltersBottomBar />}
+            >
+              <IdeaFilters
+                queryParameters={queryParameters}
+                onApply={this.handleIdeaFiltersOnApply}
+                onClose={this.handleIdeaFiltersOnClose}
+              />
+            </FullscreenModal>
 
-        <MobileFilterButton
-          style="secondary-outlined"
-          onClick={this.openFiltersModal}
-          icon="filter"
-          text={this.filterMessage}
-        />
+            <MobileFilterButton
+              style="secondary-outlined"
+              onClick={this.openFiltersModal}
+              icon="filter"
+              text={this.filterMessage}
+            />
+          </>
+        }
 
         <AboveContent>
           <AboveContentLeft>
@@ -459,16 +477,9 @@ class IdeaCards extends PureComponent<Props, State> {
               </FeatureFlag>
             }
             <IdeasCount>
-              {/*
               <GetIdeasFilterCounts queryParameters={queryParameters}>
-                {(data) => {
-                  const ideasCount = get(data, `idea_status_id.${ideaStatus.id}`, 0);
-                  return <FormattedMessage {...messages.xIdeas} values={{ ideasCount }} />;
-                }}
+                {data => !isNilOrError(data) ? <FormattedMessage {...messages.xIdeas} values={{ ideasCount: data.total }} /> : null}
               </GetIdeasFilterCounts>
-              */}
-
-              <FormattedMessage {...messages.xIdeas} values={{ ideasCount: 195 }} />
             </IdeasCount>
           </AboveContentLeft>
 
@@ -477,9 +488,7 @@ class IdeaCards extends PureComponent<Props, State> {
           {!showMapView &&
             <AboveContentRight>
               <SelectSort onChange={this.handleSortOnChange} />
-              {allowProjectsFilter &&
-                <SelectProjects onChange={this.handleProjectsOnChange} />
-              }
+              {/* {allowProjectsFilter && <SelectProjects onChange={this.handleProjectsOnChange} />} */}
             </AboveContentRight>
           }
         </AboveContent>
@@ -521,17 +530,15 @@ class IdeaCards extends PureComponent<Props, State> {
             }
           </ContentLeft>
 
-          {/*
-          <ContentRight id="e2e-ideas-filters">
-            <StyledIdeaCardFilters
-              queryParameters={queryParameters}
-              onSearchChange={this.handleSearchOnChange}
-              onStatusChange={this.handleStatusOnChange}
-              onTopicsChange={this.handleTopicsOnChange}
-              onAreasChange={this.handleAreasOnChange}
-            />
-          </ContentRight>
-          */}
+          {biggerThanLargeTablet &&
+            <ContentRight id="e2e-ideas-filters">
+              <IdeaFilters
+                queryParameters={queryParameters}
+                onChange={this.handleIdeaFiltersOnApply}
+                onClose={this.handleIdeaFiltersOnClose}
+              />
+            </ContentRight>
+          }
         </Content>
 
         {/*
@@ -566,7 +573,8 @@ class IdeaCards extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>
+  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
+  windowSize: <GetWindowSize debounce={50} />
 });
 
 const IdeaCardsWithHoCs = withTheme(IdeaCards);
