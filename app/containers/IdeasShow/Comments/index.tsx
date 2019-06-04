@@ -31,6 +31,7 @@ import styled from 'styled-components';
 
 // typings
 import { ICommentSortOptions } from './CommentSorting';
+import Button from 'components/UI/Button';
 
 const Container = styled.div``;
 
@@ -54,6 +55,7 @@ interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project, className }) => {
   const [sortOrder, setSortOrder] = useState<ICommentSortOptions>('oldest_to_newest');
+  const { commentsList, hasMore, onLoadMore, loadingMore } = comments;
 
   const handleSortOrderChange = useCallback(
     (sortOrder: ICommentSortOptions) => {
@@ -67,13 +69,13 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
 
   return (
     <Container className={className}>
-      {(!isNilOrError(idea) && !isNilOrError(comments) && !isNilOrError(project)) ? (
+      {(!isNilOrError(idea) && !isNilOrError(commentsList) && !isNilOrError(project)) ? (
         <>
           {/*
           Show warning messages when there are no comments and you're looged in as an admin.
           Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
           */}
-          {isModerator && comments && comments.length === 0 && !commentingDisabledReason &&
+          {isModerator && commentsList && commentsList.length === 0 && !commentingDisabledReason &&
             <StyledWarning>
               <FormattedMessage {...messages.noComments} />
             </StyledWarning>
@@ -88,10 +90,21 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
 
           <Comments
             ideaId={ideaId}
-            comments={comments}
+            comments={commentsList}
             sortOrder={sortOrder}
             onSortOrderChange={handleSortOrderChange}
           />
+
+          {hasMore &&
+            <Button
+              onClick={onLoadMore}
+              processing={loadingMore}
+              icon="showMore"
+              height="50px"
+            >
+              <FormattedMessage {...messages.loadMoreComments} />
+            </Button>
+          }
 
           <ParentCommentForm ideaId={ideaId} />
         </>

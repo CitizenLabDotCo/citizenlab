@@ -1,13 +1,14 @@
 import React from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { distinctUntilChanged, filter, tap, mergeScan, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { ICommentData, commentsForIdeaStream } from 'services/comments';
-import { isString } from 'lodash-es';
+import { isString, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
-  ideaId: string | null | undefined;
+  ideaId: string;
+  pageSize?: number; // will default to 10
 }
 
 type children = (renderProps: GetCommentsChildProps) => JSX.Element | null;
@@ -17,41 +18,90 @@ interface Props extends InputProps {
 }
 
 interface State {
-  comments: ICommentData[] | undefined | null | Error;
+  commentsList: ICommentData[] | undefined | null | Error;
+  querying: boolean;
+  loadingMore: boolean;
+  hasMore: boolean;
 }
 
-export type GetCommentsChildProps = ICommentData[] | undefined | null | Error;
+export interface GetCommentsChildProps extends State {
+  onLoadMore: () => void;
+}
+
+interface IAccumulator {
+  commentsList: ICommentData[] | undefined | null | Error;
+  ideaId: string;
+  pageNumber: number;
+  hasMore: boolean;
+}
 
 export default class GetComments extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
+  private pageNumber$: BehaviorSubject<number>;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      comments: undefined
+      commentsList: undefined,
+      querying: true,
+      loadingMore: false,
+      hasMore: true
     };
   }
 
   componentDidMount() {
-    const { ideaId } = this.props;
+    const { ideaId, pageSize } = this.props;
 
     this.inputProps$ = new BehaviorSubject({ ideaId });
+    this.pageNumber$ = new BehaviorSubject(1);
+
+    const startAccumulatorValue: IAccumulator = { ideaId, pageNumber: 1, commentsList: undefined, hasMore: false };
+
+    const parsedInputProps$ = this.inputProps$.pipe(
+      distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+      filter(({ ideaId }) => isString(ideaId)),
+      tap(() => this.pageNumber$.next(1))
+    );
+    const parsedPageNumber$ = this.pageNumber$.pipe(
+      distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+    );
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        filter(({ ideaId }) => isString(ideaId)),
-        switchMap(({ ideaId }: { ideaId: string }) => {
-          return commentsForIdeaStream(ideaId, {
+      combineLatest([
+        parsedInputProps$,
+        parsedPageNumber$
+      ]).pipe(
+        mergeScan<[InputProps, number], IAccumulator>((acc, [inputProps, pageNumber]) => {
+          const isLoadingMore = acc.ideaId === inputProps.ideaId && acc.pageNumber !== acc.pageNumber;
+
+          this.setState({
+            querying: !isLoadingMore,
+            loadingMore: isLoadingMore,
+          });
+
+          return commentsForIdeaStream(inputProps.ideaId, {
             queryParameters: {
-              'page[number]': 1,
-              'page[size]': 500
+              'page[number]': pageNumber,
+              'page[size]': pageSize || 10
             }
-          }).observable;
-        })
-      )
-      .subscribe((comments) => this.setState({ comments: !isNilOrError(comments) ? comments.data : comments }))
+          }).observable.pipe(
+            map(commentsList => {
+              const { loadingMore } = this.state;
+
+              const currentPage = get(commentsList, 'meta.current_page');
+              const totalPages = get(commentsList, 'meta.total_pages');
+              const hasMore = (Number.isInteger(currentPage) && Number.isInteger(totalPages) && currentPage !== totalPages);
+
+              return {
+                ideaId,
+                pageNumber,
+                hasMore,
+                commentsList: (!loadingMore || isNilOrError(acc.commentsList) ? commentsList.data : [...(acc.commentsList || []), ...commentsList.data])
+              };
+          }));
+        }, startAccumulatorValue)
+      ).subscribe(({ commentsList, hasMore }) => this.setState({ hasMore, commentsList }))
     ];
   }
 
@@ -64,9 +114,15 @@ export default class GetComments extends React.Component<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  loadMore = () => {
+    this.pageNumber$.next(this.pageNumber$.getValue() + 1);
+  }
+
   render() {
     const { children } = this.props;
-    const { comments } = this.state;
-    return (children as children)(comments);
+    return (children as children)({
+      ...this.state,
+      onLoadMore: this.loadMore
+    });
   }
 }
