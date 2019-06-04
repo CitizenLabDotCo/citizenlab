@@ -11,7 +11,7 @@ class WebApi::V1::IdeasController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
+    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
 
     if params[:sort].present? && !params[:search].present?
       @ideas = case params[:sort]
@@ -73,7 +73,7 @@ class WebApi::V1::IdeasController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
+    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
     render json: @ideas, each_serializer: WebApi::V1::PostMarkerSerializer
@@ -93,7 +93,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def filter_counts
     @ideas = policy_scope(Idea).left_outer_joins(:idea_trending_info)
-    @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
+    @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
     counts = {
       'idea_status_id' => {},
       'area_id' => {},
