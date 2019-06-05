@@ -181,6 +181,60 @@ resource "Ideas" do
     end
   end
 
+  get "web_api/v1/initiatives/filter_counts" do
+    before do
+      Initiative.all.each(&:destroy!)
+      @t1 = create(:topic)
+      @t2 = create(:topic)
+      @a1 = create(:area)
+      @a2 = create(:area)
+      @s1 = create(:initiative_status)
+      @s2 = create(:initiative_status)
+      @i1 = create(:initiative, topics: [@t1, @t2], areas: [@a1], initiative_status: @s1)
+      @i2 = create(:initiative, topics: [@t1], areas: [@a1, @a2], initiative_status: @s2)
+      @i3 = create(:initiative, topics: [@t2], areas: [], initiative_status: @s2)
+      @i4 = create(:initiative, topics: [], areas: [@a1], initiative_status: @s2)
+
+      # a1 -> 3
+      # a2 -> 1
+      # t1 -> 2
+      # t2 -> 2
+      # s1 -> 1
+      # s2 -> 3
+    end
+
+    parameter :topics, 'Filter by topics (OR)', required: false
+    parameter :areas, 'Filter by areas (OR)', required: false
+    parameter :author, 'Filter by author (user id)', required: false
+    parameter :assignee, 'Filter by assignee (user id)', required: false
+    parameter :initiative_status, 'Filter by status (initiative status id)', required: false
+    parameter :search, 'Filter by searching in title, body and author name', required: false
+    parameter :publication_status, "Return only initiatives with the specified publication status; returns all pusblished initiatives by default", required: false
+
+    example_request "List initiative counts per filter option" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+
+      expect(json_response[:initiative_status_id][@s1.id.to_sym]).to eq 1
+      expect(json_response[:initiative_status_id][@s2.id.to_sym]).to eq 3
+      expect(json_response[:area_id][@a1.id.to_sym]).to eq 3
+      expect(json_response[:area_id][@a2.id.to_sym]).to eq 1
+      expect(json_response[:topic_id][@t1.id.to_sym]).to eq 2
+      expect(json_response[:topic_id][@t2.id.to_sym]).to eq 2
+      expect(json_response[:total]).to eq 4
+    end
+
+    example "List initiative counts per filter option on topic" do
+      do_request topics: [@t1.id]
+      expect(status).to eq 200
+    end
+
+    example "List initiative counts per filter option on area" do
+      do_request areas: [@a1.id]
+      expect(status).to eq 200
+    end
+  end
+
   get "web_api/v1/initiatives/:id" do
     let(:initiative) {@initiatives.first}
     let(:id) {initiative.id}
