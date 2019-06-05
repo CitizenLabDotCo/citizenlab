@@ -1,5 +1,5 @@
 nl:
-  statuses:
+  idea_statuses:
     proposed: voorgesteld
     proposed_description: Dit idee is voorgesteld
     viewed: gezien
@@ -12,6 +12,17 @@ nl:
     implemented_description: Dit idee is uitgevoerd
     rejected: afgewezen
     rejected_description: Dit idee is afgewezen
+  initiative_statuses:
+    published: published
+    published_description: published
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   topics:
     infrastructure: Straten en pleinen
     infrastructure_description: Straten en pleinen

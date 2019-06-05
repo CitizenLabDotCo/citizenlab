@@ -24,9 +24,10 @@ resource "Ideas" do
     parameter :publication_status, "Filter by publication status; returns all publlished initiatives by default", required: false
     parameter :topics, 'Filter by topics (OR)', required: false
     parameter :areas, 'Filter by areas (OR)', required: false
+    parameter :initiative_status, 'Filter by status (initiative status id)', required: false
     parameter :assignee, 'Filter by assignee (user id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
-    parameter :sort, "Either 'new', '-new', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'random'", required: false
+    parameter :sort, "Either 'new', '-new', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'status', '-status', 'random'", required: false
 
     example_request "List all published initiatives (default behaviour)" do
       expect(status).to eq(200)
@@ -80,6 +81,16 @@ resource "Ideas" do
       i = create(:initiative, author: u)
 
       do_request author: u.id
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq i.id
+    end
+
+    example "List all initiatives for an initiative status" do
+      status = create(:initiative_status)
+      i = create(:initiative, initiative_status: status)
+
+      do_request initiative_status: status.id
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
@@ -201,6 +212,10 @@ resource "Ideas" do
   end
 
   post "web_api/v1/initiatives" do
+    before do
+      create(:initiative_status, code: 'published')
+    end
+
     with_options scope: :initiative do
       parameter :author_id, "The user id of the user owning the initiative", extra: "Required if not draft"
       parameter :publication_status, "Publication status", required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
@@ -274,6 +289,7 @@ resource "Ideas" do
 
   patch "web_api/v1/initiatives/:id" do
     before do
+      create(:initiative_status, code: 'published')
       @initiative =  create(:initiative, author: @user)
     end
 

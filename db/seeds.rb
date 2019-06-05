@@ -608,7 +608,9 @@ if Apartment::Tenant.current == 'localhost'
         header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
         topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
-        assignee: rand(5) == 0 ? User.admin.shuffle.first : nil
+        assignee: rand(5) == 0 ? User.admin.shuffle.first : nil,
+        # TODO make initiative statuses correspond with required votes reached
+        initiative_status: InitiativeStatus.offset(rand(InitiativeStatus.count)).first  
       })
 
       LogActivityJob.perform_later(initiative, 'created', initiative.author, initiative.created_at.to_i)
