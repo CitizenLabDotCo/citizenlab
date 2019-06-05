@@ -5,6 +5,7 @@ import shallowCompare from 'utils/shallowCompare';
 import { ICommentData, commentsForIdeaStream, CommentsSort } from 'services/comments';
 import { isString, get, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import eventEmitter from 'utils/eventEmitter';
 
 interface InputProps {
   ideaId: string;
@@ -28,6 +29,7 @@ interface State {
 export interface GetCommentsChildProps extends State {
   onLoadMore: () => void;
   onChangeSort: (sort: CommentsSort) => void;
+  onChangePageSize: (pageSize: number) => void;
 }
 
 interface IAccumulator {
@@ -43,7 +45,7 @@ export default class GetComments extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    pageSize: 15,
+    pageSize: 5,
     sort: '-new'
   };
 
@@ -112,7 +114,12 @@ export default class GetComments extends React.Component<Props, State> {
               };
           }));
         }, startAccumulatorValue)
-      ).subscribe(({ commentsList, hasMore }) => this.setState({ hasMore, commentsList, loadingMore: false, querying: false }))
+      ).subscribe(({ commentsList, hasMore }) => {
+        if (!hasMore) {
+          eventEmitter.emit('GetComments', 'LoadedAllComments', null);
+        }
+        this.setState({ hasMore, commentsList, loadingMore: false, querying: false });
+      })
     ];
   }
 
@@ -150,12 +157,17 @@ export default class GetComments extends React.Component<Props, State> {
     this.inputProps$.next({ ...this.props, sort });
   }
 
+  changePageSize = (pageSize: number) => {
+    this.inputProps$.next({ ...this.props, pageSize });
+  }
+
   render() {
     const { children } = this.props;
     return (children as children)({
       ...this.state,
       onLoadMore: this.loadMore,
-      onChangeSort: this.changeSort
+      onChangeSort: this.changeSort,
+      onChangePageSize: this.changePageSize
     });
   }
 }

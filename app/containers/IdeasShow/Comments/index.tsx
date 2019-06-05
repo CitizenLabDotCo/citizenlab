@@ -55,7 +55,7 @@ interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project, className }) => {
   const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
-  const { commentsList, hasMore, onLoadMore, loadingMore, onChangeSort } = comments;
+  const { commentsList, hasMore, onLoadMore, loadingMore, onChangeSort, onChangePageSize } = comments;
 
   const handleSortOrderChange = useCallback(
     (sortOrder: CommentsSort) => {
@@ -68,13 +68,19 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
   const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
   const commentingDisabledReason = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
 
+  const loadAllComments = () => {
+    if (hasMore) {
+      onChangePageSize(500);
+    }
+  };
+
   return (
     <Container className={className}>
       {(!isNilOrError(idea) && !isNilOrError(commentsList) && !isNilOrError(project)) ? (
         <>
           {/*
-          Show warning messages when there are no comments and you're looged in as an admin.
-          Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
+            Show warning messages when there are no comments and you're looged in as an admin.
+            Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
           */}
           {isModerator && commentsList && commentsList.length === 0 && !commentingDisabledReason &&
             <StyledWarning>
@@ -107,7 +113,10 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
             </Button>
           }
 
-          <ParentCommentForm ideaId={ideaId} />
+          <ParentCommentForm
+            ideaId={ideaId}
+            loadAllComments={loadAllComments}
+          />
         </>
       ) : (
         <LoadingComments />
