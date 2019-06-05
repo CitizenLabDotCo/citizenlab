@@ -61,6 +61,17 @@ class WebApi::V1::InitiativesController < ApplicationController
     render json: @initiatives, each_serializer: WebApi::V1::PostMarkerSerializer
   end
 
+  def index_xlsx
+    I18n.with_locale(current_user&.locale) do
+      @initiatives = policy_scope(Initiative)
+        .includes(:author, :topics, :areas, :initiative_status)
+        .where(publication_status: 'published')
+      @initiatives = @initiatives.where(id: params[:initiatives]) if params[:initiatives].present?
+      xlsx = XlsxService.new.generate_initiatives_xlsx @initiatives
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'initiatives.xlsx'
+    end
+  end
+
   def filter_counts
     @initiatives = policy_scope(Initiative)
     @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params

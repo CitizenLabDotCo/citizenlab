@@ -181,6 +181,27 @@ resource "Ideas" do
     end
   end
 
+  get "web_api/v1/initiatives/as_xlsx" do
+    parameter :initiatives, 'Filter by a given list of initiative ids', required: false
+
+    example_request "XLSX export" do
+      expect(status).to eq 200
+    end
+
+    describe do
+      before do 
+        @selected_initiatives = @initiatives.select(&:published?).shuffle.take 2
+      end
+      let(:initiatives) { @selected_initiatives.map(&:id) }
+      
+      example_request 'XLSX export by initiative ids' do
+        expect(status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq (@selected_initiatives.size + 1)
+      end
+    end
+  end
+
   get "web_api/v1/initiatives/filter_counts" do
     before do
       Initiative.all.each(&:destroy!)

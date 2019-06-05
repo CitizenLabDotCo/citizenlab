@@ -76,7 +76,7 @@ class WebApi::V1::CommentsController < ApplicationController
         @comments = @comments.where(ideas: {project_id: params[:project]}) 
       end
       @comments = @comments.where(post_id: post_ids) if post_ids.present?
-      xlsx = XlsxService.new.generate_comments_xlsx @comments
+      xlsx = XlsxService.new.send "generate_#{@post_type.underscore}_comments_xlsx", @comments
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
     end
   end
