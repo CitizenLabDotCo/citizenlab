@@ -1,7 +1,7 @@
 class WebApi::V1::InitiativesController < ApplicationController
 
   before_action :set_initiative, only: [:show, :update, :destroy]
-  skip_after_action :verify_authorized, only: [:index_xlsx, :index_initiative_markers]
+  skip_after_action :verify_authorized, only: [:index_xlsx, :index_initiative_markers, :filter_counts]
   
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
@@ -69,18 +69,18 @@ class WebApi::V1::InitiativesController < ApplicationController
       'area_id' => {},
       'topic_id' => {}
     } 
-    @ideas
-      .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
-      .joins('FULL OUTER JOIN areas_ideas ON areas_ideas.idea_id = ideas.id')
-      .select('idea_status_id, areas_ideas.area_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
-      .group('GROUPING SETS (idea_status_id, areas_ideas.area_id, ideas_topics.topic_id)')
+    @initiatives
+      .joins('FULL OUTER JOIN initiatives_topics ON initiatives_topics.initiative_id = initiatives.id')
+      .joins('FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id')
+      .select('initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) as count')
+      .group('GROUPING SETS (initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id)')
       .each do |record|
-        %w(idea_status_id area_id topic_id).each do |attribute|
+        %w(initiative_status_id area_id topic_id).each do |attribute|
           id = record.send attribute
           counts[attribute][id] = record.count if id
         end
       end
-    counts['total'] = @ideas.count
+    counts['total'] = @initiatives.count
     render json: counts
   end
 

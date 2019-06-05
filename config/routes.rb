@@ -54,6 +54,7 @@ Rails.application.routes.draw do
         resources :files, defaults: {container_class: Initiative, file_class: InitiativeFile}
         get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
         get :as_markers, on: :collection, action: 'index_initiative_markers'
+        get :filter_counts, on: :collection
       end
 
       resources :idea_statuses, only: [:index, :show]
