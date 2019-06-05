@@ -124,6 +124,7 @@ resource "Ideas" do
       parameter :body_multiloc, "Multi-locale field with the initiative body", extra: "Required if not draft"
       parameter :location_point_geojson, "A GeoJSON point that situates the location the initiative applies to"
       parameter :location_description, "A human readable description of the location the initiative applies to"
+      parameter :header_bg, "Base64 encoded header image"
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
@@ -133,6 +134,7 @@ resource "Ideas" do
     let(:body_multiloc) { initiative.body_multiloc }
     let(:location_point_geojson) { {type: "Point", coordinates: [51.11520776293035, 3.921154106874878]} }
     let(:location_description) { "Stanley Road 4" }
+    let(:header_bg) { encode_image_as_base64("header.jpg")}
 
     describe do
       example_request "Create an initiative" do
@@ -178,12 +180,14 @@ resource "Ideas" do
       parameter :body_multiloc, "Multi-locale field with the initiative body", extra: "Required if not draft"
       parameter :location_point_geojson, "A GeoJSON point that situates the location the initiative applies to"
       parameter :location_description, "A human readable description of the location the initiative applies to"
+      parameter :header_bg, "Base64 encoded header image"
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
     let(:id) { @initiative.id }
     let(:location_point_geojson) { {type: "Point", coordinates: [51.4365635, 3.825930459]} }
     let(:location_description) { "Watkins Road 8" }
+    let(:header_bg) { encode_image_as_base64("header.jpg")}
 
     describe do
       let(:title_multiloc) { {"en" => "Changed title" } }
@@ -205,6 +209,15 @@ resource "Ideas" do
         expect(new_initiative.votes[0].mode).to eq 'up'
         expect(new_initiative.votes[0].user.id).to eq @user.id
         expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
+      end
+
+      describe do
+        example "The header image can be removed" do
+          @initiative.update(header_bg: Rails.root.join("spec/fixtures/header.jpg").open)
+          expect(@initiative.reload.header_bg_url).to be_present
+          do_request initiative: {header_bg: nil}
+          expect(@initiative.reload.header_bg_url).to be nil
+        end
       end
     end
   end
@@ -237,4 +250,8 @@ resource "Ideas" do
     end
   end
 
+end
+
+def encode_image_as_base64 filename
+  "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
 end

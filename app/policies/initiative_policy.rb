@@ -44,6 +44,7 @@ class InitiativePolicy < ApplicationPolicy
       :publication_status,
       :author_id,
       :location_description,
+      :header_bg,
       location_point_geojson: [:type, coordinates: []],
       title_multiloc: CL2_SUPPORTED_LOCALES,
       body_multiloc: CL2_SUPPORTED_LOCALES
