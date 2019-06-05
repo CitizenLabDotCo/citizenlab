@@ -85,6 +85,8 @@ interface InputProps {
   ideaId: string;
   className?: string;
   loadAllComments: () => void;
+  setSendingNew: (boolean) => void;
+  hasMore: boolean;
 }
 
 interface DataProps {
@@ -117,12 +119,15 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
   }
 
   componentDidMount() {
+    const { setSendingNew } = this.props;
     this.subscriptions = [
-      eventEmitter.observeEvent('LoadedAllComments').subscribe(() =>
+      eventEmitter.observeEvent('LoadedAllComments').subscribe(() => {
+        this.setState({ inputValue: '', processing: false });
+        setSendingNew(false);
         setTimeout(() =>
           scrollToComponent(this.newCommentElement, { align: 'bottom', offset: -240, duration: 300 })
-        , 20)
-      )
+        , 20);
+      })
     ];
   }
 
@@ -155,16 +160,18 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
   onSubmit = async (event: MouseEvent<any>) => {
     event.preventDefault();
 
-    const { locale, authUser, ideaId, idea, loadAllComments } = this.props;
+    const { locale, authUser, ideaId, idea, loadAllComments, hasMore, setSendingNew } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue } = this.state;
     const projectId = (!isNilOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
 
     this.setState({
       focused: false,
-      processing: false,
+      processing: true,
       errorMessage: null
     });
+
+    setSendingNew(true);
 
     if (locale && authUser && projectId && isString(inputValue) && trim(inputValue) !== '') {
       trackEventByName(tracks.clickParentCommentPublish, {
@@ -177,16 +184,23 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
       try {
         this.setState({ processing: true });
         await addCommentToIdea(ideaId, projectId, authUser.id, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
-        loadAllComments(); // if loading was necessary, will load fire LoadedAllComments event that will scroll to bottom
-        this.setState({ inputValue: '', processing: false });
+
+        if (hasMore) {
+          loadAllComments(); // if loading was necessary, will load fire LoadedAllComments event that will scroll to bottom
+        } else {
+          this.setState({ inputValue: '', processing: false });
+          setSendingNew(false);
+        }
       } catch (error) {
         const errorMessage = formatMessage(messages.addCommentError);
         this.setState({ errorMessage, processing: false });
+        setSendingNew(false);
         throw error;
       }
     } else if (locale && authUser && (!inputValue || inputValue === '')) {
       const errorMessage = formatMessage(messages.emptyCommentError);
       this.setState({ errorMessage, processing: false });
+      setSendingNew(false);
     }
   }
 
