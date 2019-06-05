@@ -39,7 +39,7 @@ module Post
 
     before_validation :sanitize_body_multiloc, if: :body_multiloc
     before_validation :strip_title
-    after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
+    after_validation :set_published_at, if: ->(post){ post.published? && post.publication_status_changed? }
 
 
     scope :with_bounding_box, (Proc.new do |coordinates|

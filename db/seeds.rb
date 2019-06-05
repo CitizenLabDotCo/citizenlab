@@ -605,6 +605,7 @@ if Apartment::Tenant.current == 'localhost'
         created_at: created_at,
         location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
+        header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
         topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
         assignee: rand(5) == 0 ? User.admin.shuffle.first : nil
@@ -612,14 +613,14 @@ if Apartment::Tenant.current == 'localhost'
 
       LogActivityJob.perform_later(initiative, 'created', initiative.author, initiative.created_at.to_i)
 
-      # [0,0,1,1,2][rand(5)].times do |i|
-      #   initiative.initiative_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
-      # end
-      # if rand(5) == 0
-      #   (rand(3)+1).times do
-      #     initiative.initiative_files.create!(generate_file_attributes)
-      #   end
-      # end
+      [0,0,1,1,2][rand(5)].times do |i|
+        initiative.initiative_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+      end
+      if rand(5) == 0
+        (rand(3)+1).times do
+          initiative.initiative_files.create!(generate_file_attributes)
+        end
+      end
 
       User.all.each do |u|
         r = rand(5)
