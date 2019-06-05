@@ -1,4 +1,9 @@
 # Changelog
+## 2019-06-05
+
+### Fixed
+- Fix an issue that when showing some ideas in an idea card would make the application crash
+
 ## 2019-05-21
 
 ### Fixed
@@ -10,7 +15,7 @@
 
 ### Changed
 
-- You now get redirected to the previosuly visited page instead of the landing page after you've completed the signup process
+- You now get redirected to the previously visited page instead of the landing page after you've completed the signup process
 
 ## 2019-05-20
 
