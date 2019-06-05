@@ -55,6 +55,8 @@ interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project, className }) => {
   const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
+  const [sendingNew, setSendingNew] = useState(false);
+
   const { commentsList, hasMore, onLoadMore, loadingMore, onChangeSort, onChangePageSize } = comments;
 
   const handleSortOrderChange = useCallback(
@@ -68,11 +70,11 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
   const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
   const commentingDisabledReason = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
 
-  const loadAllComments = () => {
-    if (hasMore) {
+  const loadAllComments = useCallback(
+    () => {
       onChangePageSize(500);
-    }
-  };
+    }, []
+  );
 
   return (
     <Container className={className}>
@@ -102,7 +104,7 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
             onSortOrderChange={handleSortOrderChange}
           />
 
-          {hasMore &&
+          {hasMore && !sendingNew &&
             <Button
               onClick={onLoadMore}
               processing={loadingMore}
@@ -115,7 +117,7 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
 
           <ParentCommentForm
             ideaId={ideaId}
-            loadAllComments={loadAllComments}
+            {...{ hasMore, loadAllComments, setSendingNew }}
           />
         </>
       ) : (
