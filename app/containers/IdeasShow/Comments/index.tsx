@@ -39,6 +39,10 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
 `;
 
+const LoadMoreButton = styled(Button)`
+  margin-bottom: 50px;
+`;
+
 export interface InputProps {
   ideaId: string;
   className?: string;
@@ -105,14 +109,14 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
           />
 
           {hasMore && !sendingNew &&
-            <Button
+            <LoadMoreButton
               onClick={onLoadMore}
               processing={loadingMore}
               icon="showMore"
               height="50px"
             >
               <FormattedMessage {...messages.loadMoreComments} />
-            </Button>
+            </LoadMoreButton>
           }
 
           <ParentCommentForm
