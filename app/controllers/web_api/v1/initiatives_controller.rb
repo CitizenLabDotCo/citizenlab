@@ -14,24 +14,28 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     if params[:sort].present? && !params[:search].present?
       @initiatives = case params[:sort]
-        when "new"
+        when 'new'
           @initiatives.order_new
-        when "-new"
+        when '-new'
           @initiatives.order_new(:asc)
-        when "author_name"
+        when 'author_name'
           @initiatives.order(author_name: :asc)
-        when "-author_name"
+        when '-author_name'
           @initiatives.order(author_name: :desc)
-        when "upvotes_count"
+        when 'upvotes_count'
           @initiatives.order(upvotes_count: :asc)
-        when "-upvotes_count"
+        when '-upvotes_count'
           @initiatives.order(upvotes_count: :desc)
-        when "random"
+        when 'status'
+          @initiatives.order_status(:asc)
+        when '-status'
+          @initiatives.order_status(:desc)
+        when 'random'
           @initiatives.order_random
         when nil
           @initiatives
         else
-          raise "Unsupported sort method"
+          raise 'Unsupported sort method'
         end
     end
 
@@ -39,10 +43,10 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     if current_user
       votes = Vote.where(user: current_user, votable_id: @initiative_ids, votable_type: 'Initiative')
-      votes_by_idea_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @initiatives, include: ['author', 'user_vote'], vbii: votes_by_idea_id
+      votes_by_initiative_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
+      render json: @initiatives, include: ['author','user_vote','initiative_images','assignee'], vbii: votes_by_initiative_id
     else
-      render json: @initiatives, include: ['author']
+      render json: @initiatives, include: ['author','initiative_images','assignee']
     end
   end
 
@@ -57,8 +61,31 @@ class WebApi::V1::InitiativesController < ApplicationController
     render json: @initiatives, each_serializer: WebApi::V1::PostMarkerSerializer
   end
 
+  def filter_counts
+    @initiatives = policy_scope(Initiative)
+    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params
+    counts = {
+      'initiative_status_id' => {},
+      'area_id' => {},
+      'topic_id' => {}
+    } 
+    @ideas
+      .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
+      .joins('FULL OUTER JOIN areas_ideas ON areas_ideas.idea_id = ideas.id')
+      .select('idea_status_id, areas_ideas.area_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
+      .group('GROUPING SETS (idea_status_id, areas_ideas.area_id, ideas_topics.topic_id)')
+      .each do |record|
+        %w(idea_status_id area_id topic_id).each do |attribute|
+          id = record.send attribute
+          counts[attribute][id] = record.count if id
+        end
+      end
+    counts['total'] = @ideas.count
+    render json: counts
+  end
+
   def show
-    render json: @initiative, include: ['author','topics','areas','user_vote'], serializer: WebApi::V1::InitiativeSerializer
+    render json: @initiative, include: ['author','topics','areas','user_vote','initiative_images'], serializer: WebApi::V1::InitiativeSerializer
   end
 
   def by_slug
@@ -79,7 +106,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     ActiveRecord::Base.transaction do
       if @initiative.save
         service.after_create(@initiative, current_user)
-        render json: @initiative.reload, status: :created, include: ['author','topics','areas','user_vote']
+        render json: @initiative.reload, status: :created, include: ['author','topics','areas','user_vote','initiative_images']
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
       end
@@ -103,7 +130,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       if @initiative.save
         authorize @initiative
         service.after_update(@initiative, current_user)
-        render json: @initiative.reload, status: :ok, include: ['author','topics','areas','user_vote']
+        render json: @initiative.reload, status: :ok, include: ['author','topics','areas','user_vote','initiative_images']
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
       end

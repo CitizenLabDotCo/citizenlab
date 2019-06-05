@@ -8,6 +8,7 @@ class WebApi::V1::InitiativeSerializer < ActiveModel::Serializer
   has_many :areas
 
   belongs_to :author
+  belongs_to :initiative_status
   belongs_to :assignee, if: :can_moderate?
 
   has_one :user_vote, if: :signed_in? do |serializer|

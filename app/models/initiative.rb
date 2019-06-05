@@ -11,9 +11,14 @@ class Initiative < ApplicationRecord
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
 
+  belongs_to :initiative_status
+
   belongs_to :assignee, class_name: 'User', optional: true
 
+  validates :initiative_status, presence: true, unless: :draft?
   validate :assignee_can_moderate_initiatives, unless: :draft?
+
+  before_validation :set_initiative_status
 
 
   scope :with_all_topics, (Proc.new do |topic_ids|
@@ -40,6 +45,11 @@ class Initiative < ApplicationRecord
       .where(areas_initiatives: {area_id: area_ids})
   end)
 
+  scope :order_status, -> (direction=:desc) {
+    joins(:initiative_status)
+    .order("initiative_statuses.ordering #{direction}")
+  }
+
 
   private
 
@@ -51,6 +61,10 @@ class Initiative < ApplicationRecord
         message: 'The assignee can not moderate citizen initiatives'
       )
     end
+  end
+
+  def set_initiative_status
+    self.initiative_status ||= InitiativeStatus.find_by!(code: 'published') unless self.draft?
   end
 
 end
