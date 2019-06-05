@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_28_101954) do
+ActiveRecord::Schema.define(version: 2019_06_04_135000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 2019_05_28_101954) do
     t.integer "children_count", default: 0, null: false
     t.string "post_type"
     t.index ["author_id"], name: "index_comments_on_author_id"
+    t.index ["created_at"], name: "index_comments_on_created_at"
     t.index ["lft"], name: "index_comments_on_lft"
     t.index ["parent_id"], name: "index_comments_on_parent_id"
     t.index ["post_id", "post_type"], name: "index_comments_on_post_id_and_post_type"
