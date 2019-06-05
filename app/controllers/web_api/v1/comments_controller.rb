@@ -16,9 +16,9 @@ class WebApi::V1::CommentsController < ApplicationController
 
     root_comments = case params[:sort]
       when "new"
-        root_comments.order(lft: :desc)
+        root_comments.order(created_at: :desc)
       when "-new"
-        root_comments.order(lft: :asc)
+        root_comments.order(created_at: :asc)
       when "upvotes_count"
         root_comments.order(upvotes_count: :asc, lft: :asc)
       when "-upvotes_count"
@@ -43,7 +43,7 @@ class WebApi::V1::CommentsController < ApplicationController
     child_comments = Comment
       .where(parent: fully_expanded_root_comments)
       .or(Comment.where(id: partially_expanded_child_comments))
-      .order(:lft)
+      .order(:created_at)
       .includes(:author)
 
     # We're doing this merge in ruby, since the combination of a self-join
@@ -67,7 +67,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user&.locale) do
-      post_ids = params[:"#{@post_type.underscore.pluralize}"]
+      post_ids = params[@post_type.underscore.pluralize.to_sym]
       @comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
         .where(post_type: @post_type)
         .includes(:author, :"#{@post_type.underscore}")
