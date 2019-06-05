@@ -8,8 +8,7 @@ class InitiativeFilePolicy < ApplicationPolicy
     end
 
     def resolve
-      initiative_ids = Pundit.policy_scope(user, Initiative).pluck(:id)
-      scope.where(initiative_id: initiative_ids)
+      scope.where(initiative: Pundit.policy_scope(user, Initiative))
     end
   end
 
