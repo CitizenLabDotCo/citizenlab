@@ -67,7 +67,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user&.locale) do
-      post_ids = params[:"#{@post_type.underscore.pluralize}"]
+      post_ids = params[@post_type.underscore.pluralize.to_sym]
       @comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
         .where(post_type: @post_type)
         .includes(:author, :"#{@post_type.underscore}")
