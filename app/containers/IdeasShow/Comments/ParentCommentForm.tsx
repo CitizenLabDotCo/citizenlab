@@ -2,6 +2,7 @@ import React, { PureComponent, MouseEvent } from 'react';
 import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import scrollToComponent from 'react-scroll-to-component';
 
 // components
 import Button from 'components/UI/Button';
@@ -30,6 +31,7 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import styled from 'styled-components';
 import { hideVisually, darken } from 'polished';
 import { media } from 'utils/styleUtils';
+import eventEmitter from 'utils/eventEmitter';
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -82,6 +84,7 @@ const ButtonWrapper = styled.div`
 interface InputProps {
   ideaId: string;
   className?: string;
+  loadAllComments: () => void;
 }
 
 interface DataProps {
@@ -100,6 +103,9 @@ interface State {
 }
 
 class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
+  private subscriptions;
+  newCommentElement: any;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -108,6 +114,20 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
       processing: false,
       errorMessage: null
     };
+  }
+
+  componentDidMount() {
+    this.subscriptions = [
+      eventEmitter.observeEvent('LoadedAllComments').subscribe(() =>
+        setTimeout(() =>
+          scrollToComponent(this.newCommentElement, { align: 'bottom', offset: -240, duration: 300 })
+        , 20)
+      )
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   onChange = (inputValue: string) => {
@@ -135,7 +155,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
   onSubmit = async (event: MouseEvent<any>) => {
     event.preventDefault();
 
-    const { locale, authUser, ideaId, idea } = this.props;
+    const { locale, authUser, ideaId, idea, loadAllComments } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue } = this.state;
     const projectId = (!isNilOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
@@ -157,6 +177,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
       try {
         this.setState({ processing: true });
         await addCommentToIdea(ideaId, projectId, authUser.id, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
+        loadAllComments(); // if loading was necessary, will load fire LoadedAllComments event that will scroll to bottom
         this.setState({ inputValue: '', processing: false });
       } catch (error) {
         const errorMessage = formatMessage(messages.addCommentError);
@@ -170,6 +191,10 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
   }
 
   placeholder = this.props.intl.formatMessage(messages.commentBodyPlaceholder);
+
+  handleNewCommentSetRef = (element) => {
+    this.newCommentElement = element;
+  }
 
   render() {
     const { authUser, idea, ideaId, className } = this.props;
@@ -194,7 +219,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
               />
             </AuthorWrapper>
 
-            <Form onSubmit={this.onSubmit}>
+            <Form onSubmit={this.onSubmit} ref={this.handleNewCommentSetRef}>
               <label htmlFor="submit-comment">
                 <HiddenLabel>
                   <FormattedMessage {...messages.yourComment} />
