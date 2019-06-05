@@ -125,7 +125,6 @@ resource "Comments" do
   end
 
   get "web_api/v1/initiatives/comments/as_xlsx" do
-    parameter :project, 'Filter by project', required: false
     parameter :initiatives, 'Filter by a given list of initiative ids', required: false
 
     describe do
