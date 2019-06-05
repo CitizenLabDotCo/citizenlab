@@ -427,7 +427,7 @@ const Data = adopt<DataProps, InputProps>({
       </GetIdeaImage>
     );
   },
-  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>
+  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea, 'relationships.author.data.id', null) : null}>{render}</GetUser>
 });
 
 const IdeaCardWithHoC = injectIntl(IdeaCard);
