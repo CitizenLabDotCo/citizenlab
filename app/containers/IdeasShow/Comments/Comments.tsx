@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo, useCallback } from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
