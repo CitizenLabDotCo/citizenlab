@@ -9,7 +9,6 @@ import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // tracking
@@ -26,7 +25,7 @@ import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
-const illustration = require('./illustration.png');
+const illustration = require('assets/img/initiativesHeaderImage.png');
 
 const Container = styled.div`
   width: 100%;
@@ -100,7 +99,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-top: 18px;
 `;
 
-const SignUpButton = styled(Button)`
+const StartInitiative = styled(Button)`
   margin-top: 38px;
 
   ${media.smallerThanMinTablet`
@@ -171,7 +170,6 @@ export interface InputProps {
 }
 
 interface DataProps {
-  authUser: GetAuthUserChildProps;
   tenant: GetTenantChildProps;
 }
 
@@ -192,7 +190,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
   }
 
   render() {
-    const { authUser, className, theme, tenant } = this.props;
+    const { className, theme, tenant } = this.props;
 
     if (isNilOrError(tenant)) return null;
 
@@ -209,7 +207,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
 
             <StyledAvatarBubbles onClick={this.handleAvatarBubblesOnClick} />
 
-              <SignUpButton
+              <StartInitiative
                 fontWeight="500"
                 padding="13px 22px"
                 bgColor={theme.colorMain}
@@ -257,7 +255,6 @@ class SignedOutHeader extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
   tenant: <GetTenant />
 });
 
