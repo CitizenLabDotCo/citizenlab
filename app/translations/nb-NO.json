@@ -1144,6 +1144,7 @@
   "app.containers.IdeasShow.loadVotesError": "Stemmegiving er ikke tilgjengelig for øyeblikket",
   "app.containers.IdeasShow.loadingComments": "Laster inn kommentarer...",
   "app.containers.IdeasShow.loadingIdea": "Laster inn idé...",
+  "app.containers.IdeasShow.loadingMoreComments": "",
   "app.containers.IdeasShow.metaOgTitle": "Støtt min ide: {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Idé  • {ideaTitle}",
   "app.containers.IdeasShow.oneSecond": "Bare et øyeblikk...",

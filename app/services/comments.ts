@@ -47,6 +47,9 @@ export interface IComment {
 
 export interface IComments {
   data: ICommentData[];
+  meta: {
+    total: number;
+  };
 }
 
 export interface IUpdatedComment {
@@ -65,6 +68,8 @@ export interface DeleteReason {
   reason_code: keyof typeof DeleteReasonCode;
   other_reason: string | null;
 }
+
+export type CommentsSort = '-new' | 'upvotes_count' | 'new' | '-upvotes_count';
 
 export function commentStream(commentId: string) {
   return streams.get<IComment>({ apiEndpoint: `${API_PATH}/comments/${commentId}` });

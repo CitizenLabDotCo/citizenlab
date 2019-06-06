@@ -1144,6 +1144,7 @@
   "app.containers.IdeasShow.loadVotesError": "Le vote est temporairement indisponible",
   "app.containers.IdeasShow.loadingComments": "Afficher les commentaires...",
   "app.containers.IdeasShow.loadingIdea": "Chargement des idées...",
+  "app.containers.IdeasShow.loadingMoreComments": "",
   "app.containers.IdeasShow.metaOgTitle": "Soutenir cette idée : {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Idée  • {ideaTitle}",
   "app.containers.IdeasShow.oneSecond": "Juste un instant...",

@@ -1144,6 +1144,7 @@
   "app.containers.IdeasShow.loadVotesError": "{orgName, select, München {Abgabe von Bewertungen derzeit nicht möglich} other {Stimmabgabe ist derzeit nicht verfügbar}}",
   "app.containers.IdeasShow.loadingComments": "Kommentare werden geladen...",
   "app.containers.IdeasShow.loadingIdea": "{orgName, select, München {Mängelmeldung wird geladen...} other {Idee wird geladen...}}",
+  "app.containers.IdeasShow.loadingMoreComments": "",
   "app.containers.IdeasShow.metaOgTitle": "Meine Idee unterstützen: {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Idee • {ideaTitle}",
   "app.containers.IdeasShow.oneSecond": "Einen Moment bitte...",
