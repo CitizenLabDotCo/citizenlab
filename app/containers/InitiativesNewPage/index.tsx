@@ -11,6 +11,8 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
+import TipsBox from './TipsBox';
+import ContentContainer from 'components/ContentContainer';
 
 // services
 // import { addInitiative, updateInitiative, IInitiativeAdd } from 'services/initiatives';
@@ -19,9 +21,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { IOption, UploadFile } from 'typings';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // utils
 // import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
@@ -34,10 +34,6 @@ import { lighten } from 'polished';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import ContentContainer from 'components/ContentContainer';
-import { get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import T from 'components/T';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -50,7 +46,7 @@ const TopLine = styled.div`
   position: fixed; /* IE11 fallback */
   position: sticky;
   top: ${({ theme }) => theme.menuHeight}px;
-  padding: 35px 50px 0;
+  padding: 30px 40px 0;
 `;
 
 const Header = styled.div`
@@ -94,39 +90,27 @@ const ColoredText = styled.span`
 const TwoColumns = styled.div`
   display: flex;
   flex-direction: row;
+  margin: 30px 0;
 `;
 
 const TipsContainer = styled.div`
-  background: ${colors.lightGreyishBlue};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  color: ${({ theme }) => theme.colorText};
-  width: 550px;
-  padding: 40px 50px;
+  position: relative;
+`;
+const StyledTipsBox = styled(TipsBox)`
+  position: sticky;
+  top: calc(${({ theme }) => theme.menuHeight}px + 50px);
 `;
 
-const TipsTitle = styled.div`
-  margin-bottom: 12px;
-  font-size: ${fontSizes.large}px;
-  line-height: 24px;
-  font-weight: 600;
-`;
-
-const SubP = styled.p`
-  &:not(:last-child) {
-    margin-bottom: 20px;
-  }
-`;
 const FormContainer = styled.div`
   width: 100%;
   margin-right: 25px;
+  height: 900px;
 `;
 
 interface InputProps {}
 
 interface DataProps {
-  locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -200,11 +184,6 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
   }
 
   render() {
-    const { tenant } = this.props;
-
-    if (isNilOrError(tenant)) return null;
-
-    const eligibilityCriteriaMultiloc = get(tenant, 'attributes.settings.initiatives.eligibility_criteria');
 
     return (
       <Container className="e2e-initiatives-form-page">
@@ -225,43 +204,7 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
               I've got a tip for you
             </FormContainer>
             <TipsContainer>
-              <TipsTitle>
-                <FormattedMessage {...messages.tipsTitle} />
-              </TipsTitle>
-              <p>
-                <FormattedMessage {...messages.tipsExplanation} />
-              </p>
-              <SubP>
-                <FormattedMessage {...messages.requirmentsListTitle} />
-                <ul>
-                  <li>
-                    <FormattedMessage
-                      {...messages.requirmentVoteTreshold}
-                      values={{
-                        voteThreshold: get(tenant, 'attributes.settings.initiatives.voting_threshold'),
-                      }}
-                    />
-                  </li>
-                  <li>
-                    <FormattedMessage
-                      {...messages.requirmentDaysLimit}
-                      values={{
-                        daysLimit: get(tenant, 'attributes.settings.initiatives.days_limit'),
-                      }}
-                    />
-                  </li>
-                </ul>
-              </SubP>
-              {eligibilityCriteriaMultiloc &&
-                <>
-                  <p>
-                    <FormattedMessage {...messages.eligibility} />
-                  </p>
-                  <SubP>
-                    <T value={eligibilityCriteriaMultiloc}/>
-                  </SubP>
-                </>
-              }
+              <StyledTipsBox />
             </TipsContainer>
           </TwoColumns>
         </ContentContainer>
@@ -271,9 +214,7 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
 }
 
 const Data = adopt<DataProps,  InputProps & WithRouterProps>({
-  locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  tenant: <GetTenant/>
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
