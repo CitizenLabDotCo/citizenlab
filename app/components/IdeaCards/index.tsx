@@ -12,14 +12,14 @@ import Spinner from 'components/UI/Spinner';
 import SelectTopics from './SelectTopics';
 import SelectSort from './SelectSort';
 import SelectProjects from './SelectProjects';
-import SearchFilter from './Filters/SearchFilter';
-import StatusFilter from './Filters/StatusFilter';
-import TopicsFilter from './Filters/TopicsFilter';
-import AreaFilter from './Filters/AreaFilter';
+import SearchFilter from './IdeaFilters/SearchFilter';
+import StatusFilter from './IdeaFilters/StatusFilter';
+import TopicsFilter from './IdeaFilters/TopicsFilter';
+import AreaFilter from './IdeaFilters/AreaFilter';
 import SearchInput from 'components/UI/SearchInput';
-import IdeaFilters from './Filters';
-import IdeaFiltersTopBar from './Filters/TopBar';
-import IdeaFiltersBottomBar from './Filters/BottomBar';
+import IdeaFilters from './IdeaFilters';
+import IdeaFiltersTopBar from './IdeaFilters/TopBar';
+import IdeaFiltersBottomBar from './IdeaFilters/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
@@ -44,7 +44,7 @@ import { darken, rgba } from 'polished';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
-import { IIdeaFilters } from './filters';
+import { IIdeaFilters } from './IdeaFilters';
 import { IOption } from 'typings';
 
 const filterColumnWidth = 352;
