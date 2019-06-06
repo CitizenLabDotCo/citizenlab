@@ -39,7 +39,7 @@ RSpec.describe Project, type: :model do
       p1 = create(:project)
       p2 = create(:project)
       i = create(:idea, project: p1)
-      c = create(:comment, idea: i)
+      c = create(:comment, post: i)
 
       expect(p1.reload.comments_count).to eq 1
       i.update! project: p2

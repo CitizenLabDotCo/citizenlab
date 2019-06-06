@@ -15,7 +15,9 @@ resource "Mentions" do
 
   get "web_api/v1/mentions/users" do
     parameter :mention, "The (partial) search string for the mention (without the @)", required: true
-    parameter :idea_id, "An idea that is used as a context to return related users first", required: false
+    parameter :post_id, "An post that is used as a context to return related users first", required: false
+    parameter :post_type, "The type of post, either 'Idea' or 'Initiative'", required: false
+    parameter :limit, "The number of results to return", required: false
 
     let(:users) { [create(:user, first_name: 'Flupke')] + create_list(:user, 9, last_name: 'Smith') }
     let(:mention) { users.first.first_name[0..3] }
@@ -32,14 +34,14 @@ resource "Mentions" do
       idea = create(:idea)
       comments = 3.times.map do
         user = create(:user, first_name: first_name)
-        create(:comment, idea: idea, author: user)
+        create(:comment, post: idea, author: user)
       end
-      comment = create(:comment, idea: idea)
+      comment = create(:comment, post: idea)
       author_not_mentioned = comment.author
 
       idea_related = comments.map(&:author)
       
-      do_request idea_id: idea.id, mention: first_name
+      do_request post_id: idea.id, post_type: 'Idea', mention: first_name
 
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq idea_related.size

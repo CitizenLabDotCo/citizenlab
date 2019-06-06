@@ -11,7 +11,7 @@ describe AvatarsService do
       idea = create(:idea, project: project, author: u1)
       create(:idea, project: project, author: u2)
       create(:vote, votable: idea, user: u3)
-      create(:comment, idea: idea, author: u4)
+      create(:comment, post: idea, author: u4)
       create(:idea, author: u5)
 
       result = service.avatars_for_project(project, limit: 2)
@@ -38,8 +38,8 @@ describe AvatarsService do
 
     it "returns the idea and comments authors" do
       idea1, idea2 = create_list(:idea, 2)
-      comment1, comment2 = create_list(:comment, 2, idea: idea1)
-      create(:comment, idea: idea2)
+      comment1, comment2 = create_list(:comment, 2, post: idea1)
+      create(:comment, post: idea2)
 
       result = service.avatars_for_idea(idea1)
 
@@ -49,7 +49,7 @@ describe AvatarsService do
 
     it "does not include authors from deleted comments" do
       idea = create(:idea)
-      comments = create(:comment, idea: idea, publication_status: 'deleted')
+      comments = create(:comment, post: idea, publication_status: 'deleted')
 
       result = service.avatars_for_idea(idea)
 
@@ -60,7 +60,7 @@ describe AvatarsService do
     it "does not return the voters" do
       idea = create(:idea)
       idea_vote = create(:vote, votable: idea)
-      comment = create(:comment, idea: idea)
+      comment = create(:comment, post: idea)
       comment_vote = create(:vote, votable: comment)
 
       result = service.avatars_for_idea(idea)
@@ -72,7 +72,7 @@ describe AvatarsService do
     it "doesn't return the same user twice" do
       u1 = create(:user)
       idea = create(:idea, author: u1)
-      comments = create_list(:comment, 2, author: u1, idea: idea)
+      comments = create_list(:comment, 2, author: u1, post: idea)
 
       result = service.avatars_for_idea(idea)
 

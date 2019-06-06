@@ -26,7 +26,7 @@ RSpec.describe Notification, type: :model do
   describe "make_notifications_on" do
     it "makes a comment on your comment and comment on your idea notification on created comment activity" do
       idea = create(:idea)
-      parent_comment = create(:comment, idea: idea)
+      parent_comment = create(:comment, post: idea)
       child_comment = create(:comment, parent: parent_comment)
       activity = create(:activity, item: child_comment, action: 'created')
 

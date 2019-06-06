@@ -60,16 +60,16 @@ describe ParticipantsService do
         idea = create(:idea, project: project, author: pp1)
       end
       travel_to Time.now - 6.days do
-        create(:comment, idea: idea, author: pp2)
+        create(:comment, post: idea, author: pp2)
         other_idea = create(:idea, project: other_project, author: others.first)
       end
       travel_to Time.now - 2.days do
         create(:vote, votable: idea, mode: 'up', user: pp3)
-        create(:comment, idea: idea, author: pp2)
-        create(:comment, idea: other_idea, author: others.last)
+        create(:comment, post: idea, author: pp2)
+        create(:comment, post: other_idea, author: others.last)
         create(:basket, ideas: [idea], participation_context: project, user: pp5)
       end
-      create(:comment, idea: idea, author: pp4)
+      create(:comment, post: idea, author: pp4)
 
       expect(service.projects_participants([project]).map(&:id)).to match_array participants.map(&:id)
     end
@@ -86,15 +86,15 @@ describe ParticipantsService do
         idea = create(:idea, project: project, author: pp1)
       end
       travel_to Time.now - 6.days do
-        create(:comment, idea: idea, author: pp2)
+        create(:comment, post: idea, author: pp2)
         create(:idea, project: project, author: others.first)
       end
       travel_to Time.now - 2.days do
         create(:vote, votable: idea, mode: 'up', user: pp3)
-        create(:comment, idea: idea, author: pp2)
+        create(:comment, post: idea, author: pp2)
         create(:comment, author: others.last)
       end
-      create(:comment, idea: idea, author: pp4)
+      create(:comment, post: idea, author: pp4)
 
       expect(service.projects_participants([project], since: (Time.now-5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
     end
@@ -107,7 +107,7 @@ describe ParticipantsService do
       other = create(:user)
 
       i = create(:idea, project: project, author: pp1)
-      c = create(:comment, idea: i, author: pp2)
+      c = create(:comment, post: i, author: pp2)
       v = create(:vote, votable: i, user: pp3)
       b = create(:basket, ideas: [i], participation_context: project, user: pp4)
       create(:idea, author: other)
@@ -127,7 +127,7 @@ describe ParticipantsService do
       i2 = create(:idea, topics: [t2,t3], author: pp2)
       i3 = create(:idea, topics: [t3], author: pp1)
       i4 = create(:idea, topics: [], author: others.first)
-      create(:comment, idea: i1, author: pp3)
+      create(:comment, post: i1, author: pp3)
 
       expect(service.topics_participants([t1,t2]).map(&:id)).to match_array participants.map(&:id)
     end
@@ -140,7 +140,7 @@ describe ParticipantsService do
       other = create(:user)
 
       i = create(:idea, project: project, author: pp1)
-      c = create(:comment, idea: i, author: pp2)
+      c = create(:comment, post: i, author: pp2)
       v1 = create(:vote, votable: i, user: pp3)
       v2 = create(:vote, votable: c, user: pp4)
       create(:idea, author: other)
@@ -159,7 +159,7 @@ describe ParticipantsService do
       i1 = create(:idea, idea_status: s1, author: pp1)
       i2 = create(:idea, idea_status: s2, author: pp2)
       i3 = create(:idea, idea_status: s3, author: others.first)
-      create(:comment, idea: i1, author: pp3)
+      create(:comment, post: i1, author: pp3)
 
       expect(service.idea_statuses_participants([s1,s2]).map(&:id)).to match_array participants.map(&:id)
     end
@@ -172,7 +172,7 @@ describe ParticipantsService do
       other = create(:user)
 
       i = create(:idea, project: project, author: pp1)
-      c = create(:comment, idea: i, author: pp2)
+      c = create(:comment, post: i, author: pp2)
       v = create(:vote, votable: i, user: pp3)
       b = create(:basket, ideas: [i], participation_context: project, user: pp4)
       create(:idea, author: other)

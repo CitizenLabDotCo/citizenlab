@@ -156,7 +156,7 @@ resource "Stats - Users" do
             @idea2 = create(:idea, topics: [@topic2])
             @idea3 = create(:idea)
             @comment1 = create(:comment, author: @user2, idea: @idea1)
-            @comment2 = create(:comment, idea: @idea2)
+            @comment2 = create(:comment, post: @idea2)
             create(:vote, votable: @idea1)
           end
         end
@@ -259,7 +259,7 @@ resource "Stats - Users" do
             @idea2 = create(:idea, topics: [@topic2])
             @idea3 = create(:idea)
             @comment1 = create(:comment, author: @user2, idea: @idea1)
-            @comment2 = create(:comment, idea: @idea2)
+            @comment2 = create(:comment, post: @idea2)
             create(:vote, votable: @idea1)
           end
         end
@@ -378,7 +378,7 @@ resource "Stats - Users" do
             @idea2 = create(:idea, topics: [@topic2])
             @idea3 = create(:idea)
             @comment1 = create(:comment, author: @user2, idea: @idea1)
-            @comment2 = create(:comment, idea: @idea2)
+            @comment2 = create(:comment, post: @idea2)
             create(:vote, votable: @idea1)
             create(:activity, user: @user1)
             create(:activity, user: @user2)
