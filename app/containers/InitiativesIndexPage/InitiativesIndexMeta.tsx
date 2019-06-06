@@ -27,7 +27,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-const InitiativesMeta = React.memo<Props & InjectedIntlProps>(({ intl, authUser, tenantLocales }) => {
+const InitiativesIndexMeta = React.memo<Props & InjectedIntlProps>(({ intl, authUser, tenantLocales }) => {
   const { formatMessage } = intl;
   const { location } = window;
   const initiativesIndexTitle = formatMessage(messages.metaTitle);
@@ -52,7 +52,7 @@ const InitiativesMeta = React.memo<Props & InjectedIntlProps>(({ intl, authUser,
   );
 });
 
-const InitiativesMetaWithHoc = injectIntl<Props>(InitiativesMeta);
+const InitiativesIndexMetaWithHoc = injectIntl<Props>(InitiativesIndexMeta);
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetTenantLocales />,
@@ -61,6 +61,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <InitiativesMetaWithHoc {...inputProps} {...dataprops} />}
+    {dataprops => <InitiativesIndexMetaWithHoc {...inputProps} {...dataprops} />}
   </Data>
 );
