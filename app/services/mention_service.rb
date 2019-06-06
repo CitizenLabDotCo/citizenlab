@@ -73,13 +73,13 @@ class MentionService
     new_users - old_users
   end
 
-  def users_from_idea slug, idea, limit
-    author = idea.author
+  def users_from_post slug, post, limit
+    author = post.author
     cleaned_slug = SlugService.new.slugify(slug)
     commenters = User
       .joins(:comments)
       .where("users.slug LIKE ?", "#{cleaned_slug}%")
-      .where(comments: {post_id: idea.id})
+      .where(comments: {post_id: post.id})
       .limit(limit)
     [author.slug =~ /^#{cleaned_slug}/ && author, *commenters].compact.uniq
   end

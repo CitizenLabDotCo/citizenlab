@@ -6,21 +6,22 @@ class WebApi::V1::MentionsController < ApplicationController
   def users
     service = MentionService.new
     slug_service = SlugService.new
-    limit = 5
+    limit = params[:limit]&.to_i || 5
 
     mention_pattern = slug_service.slugify(params[:mention])
 
     @users = []
-    if (params[:idea_id])
-      idea = Idea.find(params[:idea_id])
-      @users = service.users_from_idea mention_pattern, idea, limit
+    if params[:post_id] && params[:post_type]
+      post_class = params[:post_type].constantize
+      post = post_class.find(params[:post_id])
+      @users = service.users_from_post mention_pattern, post, limit
     end
 
-    if @users.size < limit
+    if @users.count < limit
       @users += User
         .where("slug ILIKE ?", "#{mention_pattern}%")
-        .limit(limit - @users.size)
-        .where.not(id: @users.map(&:id))
+        .limit(limit - @users.count)
+        .where.not(id: @users)
         .all
     end
 
