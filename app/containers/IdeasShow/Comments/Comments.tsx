@@ -1,13 +1,13 @@
-import React, { memo, useState, useMemo, useCallback } from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ParentComment from './ParentComment';
-import CommentSorting, { ICommentSortOptions } from './CommentSorting';
+import CommentSorting from './CommentSorting';
 import Spinner from 'components/UI/Spinner';
 
 // services
-import { ICommentData } from 'services/comments';
+import { ICommentData, CommentsSort } from 'services/comments';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -54,41 +54,25 @@ const StyledParentComment = styled(ParentComment)`
 interface Props {
   ideaId: string;
   comments: ICommentData[];
-  sortOrder: ICommentSortOptions;
-  onSortOrderChange: (sortOrder: ICommentSortOptions) => void;
+  sortOrder: CommentsSort;
+  loading: boolean;
+  onSortOrderChange: (sortOrder: CommentsSort) => void;
   className?: string;
 }
 
-const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, onSortOrderChange, className }) => {
-
-  const [loading, setLoading] = useState(false);
+const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, loading, onSortOrderChange, className }) => {
 
   const sortedParentComments = useMemo(() => {
-    const sortByDate = (commentA: ICommentData, commentB: ICommentData) => new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
-    const sortByUpvoteCount = (commentA: ICommentData, commentB: ICommentData) => commentB.attributes.upvotes_count - commentA.attributes.upvotes_count;
-    let sortedParentComments: ICommentData[] = [];
-
     if (!isNilOrError(comments) && comments.length > 0) {
-      const parentComments = comments.filter(comment => comment.relationships.parent.data === null);
-
-      sortedParentComments = parentComments.sort((commentA, commentB) => {
-        if (sortOrder === 'oldest_to_newest' || commentB.attributes.upvotes_count === commentA.attributes.upvotes_count) {
-          return sortByDate(commentA, commentB);
-        }
-
-        return sortByUpvoteCount(commentA, commentB);
-      });
+      return comments.filter(comment => comment.relationships.parent.data === null);
     }
-
-    return sortedParentComments;
+    return null;
   }, [sortOrder, comments]);
 
   const handleSortOrderChange = useCallback(
-    (sortOrder: 'oldest_to_newest' | 'most_upvoted') => {
-      setLoading(true);
+    (sortOrder: CommentsSort) => {
       trackEventByName(tracks.clickCommentsSortOrder);
       onSortOrderChange(sortOrder);
-      setTimeout(() => setLoading(false), 300);
     }, []
   );
 
@@ -101,7 +85,10 @@ const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, onSortOrderC
           </SpinnerWrapper>
         }
 
-        <StyledCommentSorting onChange={handleSortOrderChange} />
+        <StyledCommentSorting
+          onChange={handleSortOrderChange}
+          selectedValue={[sortOrder]}
+        />
 
         {sortedParentComments.map((parentComment, _index) => {
           const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {

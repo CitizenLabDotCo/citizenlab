@@ -1144,6 +1144,7 @@
   "app.containers.IdeasShow.loadVotesError": "Stemmen is momenteel niet beschikbaar",
   "app.containers.IdeasShow.loadingComments": "Reacties laden...",
   "app.containers.IdeasShow.loadingIdea": "Idea wordt geladen...",
+  "app.containers.IdeasShow.loadingMoreComments": "",
   "app.containers.IdeasShow.metaOgTitle": "Steun dit idee: {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Idee  • {ideaTitle}",
   "app.containers.IdeasShow.oneSecond": "Een secondje...",

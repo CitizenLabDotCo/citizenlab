@@ -2,6 +2,7 @@
 import React, { memo, useState, useCallback } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
+import Observer from '@researchgate/react-intersection-observer';
 
 // services
 import { canModerate } from 'services/permissions/rules/projectPermissions';
@@ -28,14 +29,34 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { ICommentSortOptions } from './CommentSorting';
+import { CommentsSort } from 'services/comments';
 
 const Container = styled.div``;
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
+`;
+
+const LoadMore = styled.div`
+  width: 100%;
+  height: 0px;
+`;
+
+const LoadingMore = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+`;
+
+const LoadingMoreMessage = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.medium}px;
+  font-weight: 400;
 `;
 
 export interface InputProps {
@@ -53,11 +74,29 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project, className }) => {
-  const [sortOrder, setSortOrder] = useState<ICommentSortOptions>('oldest_to_newest');
+  const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
+  const [posting, setPosting] = useState(false);
+  const { commentsList, hasMore, onLoadMore, loadingInital, loadingMore, onChangeSort } = comments;
 
   const handleSortOrderChange = useCallback(
-    (sortOrder: ICommentSortOptions) => {
+    (sortOrder: CommentsSort) => {
+      onChangeSort(sortOrder);
       setSortOrder(sortOrder);
+    }, []
+  );
+
+  const handleIntersection = useCallback(
+    (event: IntersectionObserverEntry, unobserve: () => void) => {
+      if (event.isIntersecting) {
+        onLoadMore();
+        unobserve();
+      }
+    }, []
+  );
+
+  const handleCommentPosting = useCallback(
+    (isPosting: boolean) => {
+      setPosting(isPosting);
     }, []
   );
 
@@ -67,13 +106,13 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
 
   return (
     <Container className={className}>
-      {(!isNilOrError(idea) && !isNilOrError(comments) && !isNilOrError(project)) ? (
+      {(!isNilOrError(idea) && !isNilOrError(commentsList) && !isNilOrError(project)) ? (
         <>
           {/*
-          Show warning messages when there are no comments and you're looged in as an admin.
-          Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
+            Show warning messages when there are no comments and you're looged in as an admin.
+            Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
           */}
-          {isModerator && comments && comments.length === 0 && !commentingDisabledReason &&
+          {isModerator && commentsList && commentsList.length === 0 && !commentingDisabledReason &&
             <StyledWarning>
               <FormattedMessage {...messages.noComments} />
             </StyledWarning>
@@ -88,12 +127,30 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
 
           <Comments
             ideaId={ideaId}
-            comments={comments}
+            comments={commentsList}
             sortOrder={sortOrder}
+            loading={loadingInital}
             onSortOrderChange={handleSortOrderChange}
           />
 
-          <ParentCommentForm ideaId={ideaId} />
+          {hasMore && !loadingMore &&
+            <Observer onChange={handleIntersection} rootMargin="3000px">
+              <LoadMore />
+            </Observer>
+          }
+
+          {loadingMore && !posting &&
+            <LoadingMore>
+              <LoadingMoreMessage>
+                <FormattedMessage {...messages.loadingMoreComments} />
+              </LoadingMoreMessage>
+            </LoadingMore>
+          }
+
+          <ParentCommentForm
+            ideaId={ideaId}
+            postingComment={handleCommentPosting}
+          />
         </>
       ) : (
         <LoadingComments />
