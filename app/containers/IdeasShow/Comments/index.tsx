@@ -2,6 +2,7 @@
 import React, { memo, useState, useCallback } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
+import Observer from '@researchgate/react-intersection-observer';
 
 // services
 import { canModerate } from 'services/permissions/rules/projectPermissions';
@@ -28,9 +29,9 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import Button from 'components/UI/Button';
 import { CommentsSort } from 'services/comments';
 
 const Container = styled.div``;
@@ -39,8 +40,23 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
 `;
 
-const LoadMoreButton = styled(Button)`
-  margin-bottom: 50px;
+const LoadMore = styled.div`
+  width: 100%;
+  height: 0px;
+`;
+
+const LoadingMore = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+`;
+
+const LoadingMoreMessage = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.medium}px;
+  font-weight: 400;
 `;
 
 export interface InputProps {
@@ -59,9 +75,7 @@ interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project, className }) => {
   const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
-  const [sendingNew, setSendingNew] = useState(false);
-
-  const { commentsList, hasMore, onLoadMore, loadingMore, onChangeSort, onChangePageSize } = comments;
+  const { commentsList, hasMore, onLoadMore, loadingMore, onChangeSort } = comments;
 
   const handleSortOrderChange = useCallback(
     (sortOrder: CommentsSort) => {
@@ -70,15 +84,18 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
     }, []
   );
 
+  const handleIntersection = useCallback(
+    (event: IntersectionObserverEntry, unobserve: () => void) => {
+      if (event.isIntersecting) {
+        onLoadMore();
+        unobserve();
+      }
+    }, []
+  );
+
   const isModerator = !isNilOrError(authUser) && canModerate(get(project, 'id'), { data: authUser });
   const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
   const commentingDisabledReason = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
-
-  const loadAllComments = useCallback(
-    () => {
-      onChangePageSize(500);
-    }, []
-  );
 
   return (
     <Container className={className}>
@@ -108,7 +125,7 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
             onSortOrderChange={handleSortOrderChange}
           />
 
-          {hasMore && !sendingNew &&
+          {/* {hasMore && !sendingNew &&
             <LoadMoreButton
               onClick={onLoadMore}
               processing={loadingMore}
@@ -117,11 +134,24 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
             >
               <FormattedMessage {...messages.loadMoreComments} />
             </LoadMoreButton>
+          } */}
+
+          {hasMore && !loadingMore &&
+            <Observer onChange={handleIntersection}>
+              <LoadMore />
+            </Observer>
+          }
+
+          {loadingMore &&
+            <LoadingMore>
+              <LoadingMoreMessage>
+                <FormattedMessage {...messages.loadingMoreComments} />
+              </LoadingMoreMessage>
+            </LoadingMore>
           }
 
           <ParentCommentForm
             ideaId={ideaId}
-            {...{ hasMore, loadAllComments, setSendingNew }}
           />
         </>
       ) : (

@@ -37,7 +37,7 @@ export default class GetComments extends React.Component<Props, State> {
   private subscription: Subscription;
   private initialQueryParameters: IQueryParameters = {
     pageNumber: 0,
-    pageSize: 15,
+    pageSize: 1,
     sort: '-new'
   };
 
@@ -80,7 +80,7 @@ export default class GetComments extends React.Component<Props, State> {
               }
             }).observable.pipe(
               map((comments) => {
-                hasMore = ((pageNumber * pageSize) < comments.meta.total);
+                hasMore = ((pageNumber * pageSize) < (comments.meta.total));
                 commentsList = !isNilOrError(commentsList) ? unionBy(commentsList, comments.data, 'id') : comments.data;
                 return null;
             }));
