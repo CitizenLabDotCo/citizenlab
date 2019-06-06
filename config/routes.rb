@@ -84,6 +84,7 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
+        get 'initiatives_count', on: :member
         get 'comments_count', on: :member
       end
 

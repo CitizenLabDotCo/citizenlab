@@ -48,6 +48,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def initiatives_count?
+    true
+  end
+
   def comments_count?
     true
   end
