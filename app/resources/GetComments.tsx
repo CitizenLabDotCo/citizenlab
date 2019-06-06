@@ -14,7 +14,6 @@ interface Props {
 
 interface State {
   commentsList: ICommentData[] | undefined | null | Error;
-  querying: boolean;
   loadingMore: boolean;
   hasMore: boolean;
 }
@@ -37,7 +36,7 @@ export default class GetComments extends React.Component<Props, State> {
   private subscription: Subscription;
   private initialQueryParameters: IQueryParameters = {
     pageNumber: 0,
-    pageSize: 1,
+    pageSize: 15,
     sort: '-new'
   };
 
@@ -45,7 +44,6 @@ export default class GetComments extends React.Component<Props, State> {
     super(props);
     this.state = {
       commentsList: undefined,
-      querying: true,
       loadingMore: false,
       hasMore: true
     };
@@ -60,7 +58,6 @@ export default class GetComments extends React.Component<Props, State> {
       this.ideaId$.pipe(distinctUntilChanged()),
       this.sort$.pipe(distinctUntilChanged())
     ).pipe(
-      tap(() => this.setState({ loadingMore: false, querying: true })),
       switchMap(([ideaId, sort]) => {
         let commentsList: ICommentData[] | undefined | null | Error = undefined;
         let pageNumber = this.initialQueryParameters.pageNumber;
@@ -68,7 +65,7 @@ export default class GetComments extends React.Component<Props, State> {
         let hasMore = true;
 
         return this.loadMore$.pipe(
-          tap(() => this.setState({ loadingMore: true, querying: false })),
+          tap(() => this.setState({ loadingMore: true })),
           mergeScan(() => {
             pageNumber = pageNumber + 1;
 
@@ -80,7 +77,7 @@ export default class GetComments extends React.Component<Props, State> {
               }
             }).observable.pipe(
               map((comments) => {
-                hasMore = ((pageNumber * pageSize) < (comments.meta.total));
+                hasMore = ((pageNumber * pageSize) < comments.meta.total);
                 commentsList = !isNilOrError(commentsList) ? unionBy(commentsList, comments.data, 'id') : comments.data;
                 return null;
             }));
@@ -92,7 +89,6 @@ export default class GetComments extends React.Component<Props, State> {
       this.setState({
         commentsList,
         hasMore,
-        querying: false,
         loadingMore: false
       });
     });
