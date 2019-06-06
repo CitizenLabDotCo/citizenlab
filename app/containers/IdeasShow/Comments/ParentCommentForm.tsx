@@ -2,7 +2,6 @@ import React, { PureComponent, MouseEvent } from 'react';
 import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import scrollToComponent from 'react-scroll-to-component';
 
 // components
 import Button from 'components/UI/Button';
@@ -31,7 +30,6 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import styled from 'styled-components';
 import { hideVisually, darken } from 'polished';
 import { media } from 'utils/styleUtils';
-import eventEmitter from 'utils/eventEmitter';
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -83,6 +81,7 @@ const ButtonWrapper = styled.div`
 
 interface InputProps {
   ideaId: string;
+  postingComment: (arg: boolean) => void;
   className?: string;
 }
 
@@ -102,9 +101,6 @@ interface State {
 }
 
 class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
-  private subscriptions;
-  newCommentElement: any;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -115,19 +111,10 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     };
   }
 
-  componentDidMount() {
-    this.subscriptions = [
-      eventEmitter.observeEvent('LoadedAllComments').subscribe(() => {
-        this.setState({ inputValue: '', processing: false });
-        setTimeout(() =>
-          scrollToComponent(this.newCommentElement, { align: 'bottom', offset: -240, duration: 300 })
-        , 20);
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    if (prevState.processing !== this.state.processing) {
+      this.props.postingComment(this.state.processing);
+    }
   }
 
   onChange = (inputValue: string) => {
@@ -191,10 +178,6 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
 
   placeholder = this.props.intl.formatMessage(messages.commentBodyPlaceholder);
 
-  handleNewCommentSetRef = (element) => {
-    this.newCommentElement = element;
-  }
-
   render() {
     const { authUser, idea, ideaId, className } = this.props;
     const { inputValue, focused, processing, errorMessage } = this.state;
@@ -218,7 +201,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
               />
             </AuthorWrapper>
 
-            <Form onSubmit={this.onSubmit} ref={this.handleNewCommentSetRef}>
+            <Form onSubmit={this.onSubmit}>
               <label htmlFor="submit-comment">
                 <HiddenLabel>
                   <FormattedMessage {...messages.yourComment} />

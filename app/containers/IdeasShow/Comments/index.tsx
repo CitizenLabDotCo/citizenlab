@@ -75,6 +75,7 @@ interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project, className }) => {
   const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
+  const [posting, setPosting] = useState(false);
   const { commentsList, hasMore, onLoadMore, loadingMore, onChangeSort } = comments;
 
   const handleSortOrderChange = useCallback(
@@ -90,6 +91,12 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
         onLoadMore();
         unobserve();
       }
+    }, []
+  );
+
+  const handleCommentPosting = useCallback(
+    (isPosting: boolean) => {
+      setPosting(isPosting);
     }, []
   );
 
@@ -125,24 +132,13 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
             onSortOrderChange={handleSortOrderChange}
           />
 
-          {/* {hasMore && !sendingNew &&
-            <LoadMoreButton
-              onClick={onLoadMore}
-              processing={loadingMore}
-              icon="showMore"
-              height="50px"
-            >
-              <FormattedMessage {...messages.loadMoreComments} />
-            </LoadMoreButton>
-          } */}
-
           {hasMore && !loadingMore &&
-            <Observer onChange={handleIntersection}>
+            <Observer onChange={handleIntersection} rootMargin="3000px">
               <LoadMore />
             </Observer>
           }
 
-          {loadingMore &&
+          {loadingMore && !posting &&
             <LoadingMore>
               <LoadingMoreMessage>
                 <FormattedMessage {...messages.loadingMoreComments} />
@@ -152,6 +148,7 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
 
           <ParentCommentForm
             ideaId={ideaId}
+            postingComment={handleCommentPosting}
           />
         </>
       ) : (
