@@ -1132,6 +1132,7 @@
   "app.containers.IdeasShow.loadVotesError": "Afstemning er ikke tilgængelig i øjeblikket",
   "app.containers.IdeasShow.loadingComments": "Indlæser kommentarer...",
   "app.containers.IdeasShow.loadingIdea": "Indlæser idé...",
+  "app.containers.IdeasShow.loadingMoreComments": "",
   "app.containers.IdeasShow.metaOgTitle": "Støt min idé: {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Idé  • {ideaTitle}",
   "app.containers.IdeasShow.oneSecond": "Bare et sekund...",
