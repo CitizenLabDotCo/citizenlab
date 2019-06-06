@@ -1132,6 +1132,7 @@
   "app.containers.IdeasShow.loadVotesError": "",
   "app.containers.IdeasShow.loadingComments": "",
   "app.containers.IdeasShow.loadingIdea": "",
+  "app.containers.IdeasShow.loadingMoreComments": "",
   "app.containers.IdeasShow.metaOgTitle": "",
   "app.containers.IdeasShow.metaTitle": "",
   "app.containers.IdeasShow.oneSecond": "",
