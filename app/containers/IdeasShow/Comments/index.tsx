@@ -76,7 +76,7 @@ interface Props extends InputProps, DataProps {}
 const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project, className }) => {
   const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
   const [posting, setPosting] = useState(false);
-  const { commentsList, hasMore, onLoadMore, loadingMore, onChangeSort } = comments;
+  const { commentsList, hasMore, onLoadMore, loadingInital, loadingMore, onChangeSort } = comments;
 
   const handleSortOrderChange = useCallback(
     (sortOrder: CommentsSort) => {
@@ -129,6 +129,7 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
             ideaId={ideaId}
             comments={commentsList}
             sortOrder={sortOrder}
+            loading={loadingInital}
             onSortOrderChange={handleSortOrderChange}
           />
 

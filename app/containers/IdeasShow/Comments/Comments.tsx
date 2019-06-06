@@ -55,13 +55,12 @@ interface Props {
   ideaId: string;
   comments: ICommentData[];
   sortOrder: CommentsSort;
+  loading: boolean;
   onSortOrderChange: (sortOrder: CommentsSort) => void;
   className?: string;
 }
 
-const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, onSortOrderChange, className }) => {
-
-  const [loading, setLoading] = useState(false);
+const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, loading, onSortOrderChange, className }) => {
 
   const sortedParentComments = useMemo(() => {
     if (!isNilOrError(comments) && comments.length > 0) {
@@ -72,10 +71,8 @@ const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, onSortOrderC
 
   const handleSortOrderChange = useCallback(
     (sortOrder: CommentsSort) => {
-      setLoading(true);
       trackEventByName(tracks.clickCommentsSortOrder);
       onSortOrderChange(sortOrder);
-      setTimeout(() => setLoading(false), 300); // TODO
     }, []
   );
 
