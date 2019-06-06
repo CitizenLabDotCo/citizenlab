@@ -1,20 +1,14 @@
 import React from 'react';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, tap, mergeScan, map } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
+import { distinctUntilChanged, mergeScan, map, switchMap, tap } from 'rxjs/operators';
 import { ICommentData, commentsForIdeaStream, CommentsSort } from 'services/comments';
-import { isString, get, isEqual } from 'lodash-es';
+import { unionBy } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-
-interface InputProps {
-  ideaId: string;
-  pageSize: number; // can be undefined, will default to 10
-  sort: CommentsSort; // can be undefined, will default to '-new' ie oldest to newest
-}
 
 type children = (renderProps: GetCommentsChildProps) => JSX.Element | null;
 
-interface Props extends InputProps {
+interface Props {
+  ideaId: string;
   children?: children;
 }
 
@@ -25,24 +19,24 @@ interface State {
   hasMore: boolean;
 }
 
+interface IQueryParameters {
+  pageNumber: number;
+  pageSize: number;
+  sort: CommentsSort;
+}
+
 export interface GetCommentsChildProps extends State {
   onLoadMore: () => void;
   onChangeSort: (sort: CommentsSort) => void;
 }
 
-interface IAccumulator {
-  commentsList: ICommentData[] | undefined | null | Error;
-  inputProps: InputProps;
-  pageNumber: number;
-  hasMore: boolean;
-}
-
 export default class GetComments extends React.Component<Props, State> {
-  private inputProps$: BehaviorSubject<InputProps>;
-  private pageNumber$: BehaviorSubject<number>;
-  private subscriptions: Subscription[];
-
-  static defaultProps = {
+  private ideaId$: BehaviorSubject<string>;
+  private sort$: BehaviorSubject<CommentsSort>;
+  private loadMore$: BehaviorSubject<null>;
+  private subscription: Subscription;
+  private initialQueryParameters: IQueryParameters = {
+    pageNumber: 0,
     pageSize: 15,
     sort: '-new'
   };
@@ -58,96 +52,66 @@ export default class GetComments extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { children, ...didMountInputProps } = this.props;
+    this.ideaId$ = new BehaviorSubject(this.props.ideaId);
+    this.sort$ = new BehaviorSubject(this.initialQueryParameters.sort);
+    this.loadMore$ = new BehaviorSubject(null);
 
-    this.inputProps$ = new BehaviorSubject(didMountInputProps);
-    this.pageNumber$ = new BehaviorSubject(1);
+    this.subscription = combineLatest(
+      this.ideaId$.pipe(distinctUntilChanged()),
+      this.sort$.pipe(distinctUntilChanged())
+    ).pipe(
+      tap(() => this.setState({ loadingMore: false, querying: true })),
+      switchMap(([ideaId, sort]) => {
+        let commentsList: ICommentData[] | undefined | null | Error = undefined;
+        let pageNumber = this.initialQueryParameters.pageNumber;
+        const pageSize = this.initialQueryParameters.pageSize;
+        let hasMore = true;
 
-    const startAccumulatorValue: IAccumulator = {
-      inputProps: didMountInputProps,
-      pageNumber: 1,
-      commentsList: undefined,
-      hasMore: false
-    };
+        return this.loadMore$.pipe(
+          tap(() => this.setState({ loadingMore: true, querying: false })),
+          mergeScan(() => {
+            pageNumber = pageNumber + 1;
 
-    const parsedInputProps$ = this.inputProps$.pipe(
-      distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-      filter(({ ideaId }) => isString(ideaId)),
-      tap(() => this.pageNumber$.next(1))
-    );
-
-    this.subscriptions = [
-      combineLatest([
-        parsedInputProps$,
-        this.pageNumber$
-      ]).pipe(
-        mergeScan<[InputProps, number], IAccumulator>((acc, [inputProps, pageNumber]) => {
-          const isLoadingMore = isEqual(acc.inputProps, inputProps) && acc.pageNumber !== pageNumber;
-
-          this.setState({
-            querying: !isLoadingMore,
-            loadingMore: isLoadingMore,
-          });
-
-          return commentsForIdeaStream(inputProps.ideaId, {
-            queryParameters: {
-              'page[number]': pageNumber,
-              'page[size]': inputProps.pageSize,
-              sort: inputProps.sort
-            }
-          }).observable.pipe(
-            map(commentsList => {
-              const { loadingMore } = this.state;
-
-              const totalTopComments = get(commentsList, 'meta.total');
-              const hasMore = (Number.isInteger(totalTopComments) && (pageNumber * inputProps.pageSize) < totalTopComments);
-
-              return {
-                inputProps,
-                pageNumber,
-                hasMore,
-                commentsList: !loadingMore || isNilOrError(acc.commentsList)
-                  ? commentsList.data
-                  : [...(acc.commentsList), ...commentsList.data]
-              };
-          }));
-        }, startAccumulatorValue)
-      ).subscribe(({ commentsList, hasMore }) => this.setState({ hasMore, commentsList, loadingMore: false, querying: false }))
-    ];
+            return commentsForIdeaStream(ideaId, {
+              queryParameters: {
+                sort,
+                'page[number]': pageNumber,
+                'page[size]': pageSize
+              }
+            }).observable.pipe(
+              map((comments) => {
+                hasMore = ((pageNumber * pageSize) < comments.meta.total);
+                commentsList = !isNilOrError(commentsList) ? unionBy(commentsList, comments.data, 'id') : comments.data;
+                return null;
+            }));
+          }, null),
+          map(() => ({ pageNumber, commentsList, hasMore }))
+        );
+      })
+    ).subscribe(({ commentsList, hasMore }) => {
+      this.setState({
+        commentsList,
+        hasMore,
+        querying: false,
+        loadingMore: false
+      });
+    });
   }
 
-  componentDidUpdate(prevProps) {
-    const { ideaId: nextIdeaId, pageSize: nextPageSize, sort: nextSort } = this.props;
-    const { ideaId: prevIdeaId, pageSize: prevPageSize, sort: prevSort } = prevProps;
-
-    const changedProps = {} as Partial<InputProps>;
-
-    if (prevIdeaId !== nextIdeaId) {
-      changedProps.ideaId = nextIdeaId;
-    }
-    if (prevPageSize !== nextPageSize) {
-      changedProps.pageSize = nextPageSize;
-    }
-    if (prevSort !== nextSort) {
-      changedProps.sort = nextSort;
-    }
-
-    if (Object.keys(changedProps).length > 0) {
-      const propsInStream = this.inputProps$.getValue();
-      this.inputProps$.next({ ...propsInStream, ...changedProps });
-    }
+  componentDidUpdate() {
+    this.ideaId$.next(this.props.ideaId);
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscription.unsubscribe();
   }
 
   loadMore = () => {
-    this.pageNumber$.next(this.pageNumber$.getValue() + 1);
+    this.loadMore$.next(null);
   }
 
   changeSort = (sort: CommentsSort) => {
-    this.inputProps$.next({ ...this.props, sort });
+    this.sort$.next(sort);
   }
 
   render() {

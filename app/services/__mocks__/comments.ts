@@ -41,11 +41,14 @@ export const makeCommentData = (id = 'commentId', attributes = {}, ideaId?: stri
 });
 
 export const makeComment = (id = 'commentId', attributes = {}, ideaId?: string, authorId?: string, parentId?: string) : IComment => ({
-  data: makeCommentData(id, attributes,  ideaId, authorId, parentId)
+  data: makeCommentData(id, attributes,  ideaId, authorId, parentId),
 });
 
 export const makeComments = (argumentsArray = [{ id: undefined, attributes: {}, ideaId: undefined, authorId: undefined, parentId: undefined }]) : IComments => ({
-  data: argumentsArray.map(args => makeCommentData(args.id, args.attributes, args.ideaId, args.authorId, args.parentId))
+  data: argumentsArray.map(args => makeCommentData(args.id, args.attributes, args.ideaId, args.authorId, args.parentId)),
+  meta: {
+    total: 10
+  }
 });
 
 const mockCommentsForUser = new BehaviorSubject<undefined | IComments>(undefined);
