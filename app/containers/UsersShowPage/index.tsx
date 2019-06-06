@@ -98,19 +98,20 @@ export class UsersShowPage extends PureComponent<Props, State> {
             />
 
             <StyledContentContainer>
-            {currentTab === 'ideas' &&
-              <UserIdeas>
-                <IdeaCards
-                  type="load-more"
-                  authorId={user.id}
+              {currentTab === 'ideas' &&
+                <UserIdeas>
+                  <IdeaCards
+                    type="load-more"
+                    authorId={user.id}
+                  />
+                </UserIdeas>
+              }
+
+              {currentTab === 'comments' &&
+                <UserComments
+                  userId={user.id}
                 />
-              </UserIdeas>
-            }
-            {currentTab === 'comments' &&
-              <UserComments
-                userId={user.id}
-              />
-            }
+              }
             </StyledContentContainer>
 
             <Footer showCityLogoSection={false} />
