@@ -15,13 +15,13 @@ resource "Comments" do
   get "web_api/v1/users/:user_id/comments" do
     with_options scope: :page do
       parameter :number, "Page number"
-      parameter :size, "Number of top-level comments per page. The response will include 2 to 5 child comments per top-level comment, so expect to receive more"
+      parameter :size, "Number of top-level posts per page by which the comments are grouped"
     end
 
     describe do
       before do
         @i1 = create(:idea, published_at: Time.now)
-        @i2 = create(:idea, published_at: Time.now  - 1.day)
+        @i2 = create(:initiative, published_at: Time.now  - 1.day)
         @i3 = create(:idea, published_at: Time.now - 3.days)
         @user = create(:user)
         @c1 = create(:comment, post: @i2, author: @user, created_at: Time.now - 1.hour)
