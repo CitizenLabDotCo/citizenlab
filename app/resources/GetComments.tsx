@@ -14,6 +14,7 @@ interface Props {
 
 interface State {
   commentsList: ICommentData[] | undefined | null | Error;
+  loadingInital: boolean;
   loadingMore: boolean;
   hasMore: boolean;
 }
@@ -44,6 +45,7 @@ export default class GetComments extends React.Component<Props, State> {
     super(props);
     this.state = {
       commentsList: undefined,
+      loadingInital: false,
       loadingMore: false,
       hasMore: true
     };
@@ -65,7 +67,10 @@ export default class GetComments extends React.Component<Props, State> {
         let hasMore = true;
 
         return this.loadMore$.pipe(
-          tap(() => this.setState({ loadingMore: true })),
+          tap(() => this.setState({
+            loadingInital: (pageNumber === 0),
+            loadingMore: (pageNumber > 0)
+           })),
           mergeScan(() => {
             pageNumber = pageNumber + 1;
 
@@ -89,6 +94,7 @@ export default class GetComments extends React.Component<Props, State> {
       this.setState({
         commentsList,
         hasMore,
+        loadingInital: false,
         loadingMore: false
       });
     });
@@ -103,7 +109,9 @@ export default class GetComments extends React.Component<Props, State> {
   }
 
   loadMore = () => {
-    this.loadMore$.next(null);
+    if (this.state.hasMore) {
+      this.loadMore$.next(null);
+    }
   }
 
   changeSort = (sort: CommentsSort) => {
