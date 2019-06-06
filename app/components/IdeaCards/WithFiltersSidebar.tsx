@@ -1,7 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import ReactDOM from 'react-dom';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -9,15 +7,8 @@ import IdeaCard from 'components/IdeaCard';
 import IdeasMap from 'components/IdeasMap';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
-import SelectTopics from './SelectTopics';
 import SelectSort from './SelectSort';
-import SelectProjects from './SelectProjects';
-import SearchFilter from './FiltersSidebar/SearchFilter';
-import StatusFilter from './FiltersSidebar/StatusFilter';
-import TopicsFilter from './FiltersSidebar/TopicsFilter';
-import AreaFilter from './FiltersSidebar/AreaFilter';
-import SearchInput from 'components/UI/SearchInput';
-import FiltersSidebar from './FiltersSidebar';
+import FiltersSidebar, { IIdeaFilters } from './FiltersSidebar';
 import FiltersSidebarTopBar from './FiltersSidebar/TopBar';
 import FiltersSidebarBottomBar from './FiltersSidebar/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
@@ -44,10 +35,7 @@ import { darken, rgba } from 'polished';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
-import { IIdeaFilters } from './FiltersSidebar';
-import { IOption } from 'typings';
 
-const filterColumnWidth = 352;
 const gapWidth = 35;
 
 const Container = styled.div`
@@ -59,23 +47,68 @@ const Container = styled.div`
 
 const MobileFilterButton = styled(Button)``;
 
-const Loading = styled.div`
-  width: 100%;
-  height: 300px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+const MobileFiltersSidebarWrapper = styled.div`
+  background: ${colors.background};
+  padding: 15px;
 `;
 
-const AboveContent = styled.div`
+const StyledFiltersSidebar = styled(FiltersSidebar)``;
+
+const Loading = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /*
+  background: #fff;
+  border: solid 1px ${colors.separation};
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  */
+`;
+
+const EmptyContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  /*
+  background: #fff;
+  border: solid 1px ${colors.separation};
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  */
+`;
+
+const IdeaIcon = styled(Icon)`
+  width: 43px;
+  height: 43px;
+  fill: ${colors.label};
+`;
+
+const EmptyMessage = styled.div`
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+`;
+
+const EmptyMessageLine = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+`;
+
+const AboveContent = styled.div<{ filterColumnWidth: number }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-right: ${filterColumnWidth + gapWidth}px;
+  margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
   margin-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
@@ -114,77 +147,19 @@ const ContentLeft = styled.div`
   align-items: stretch;
 `;
 
-const ContentRight = styled.div`
-  flex: 0 0 ${filterColumnWidth}px;
-  width: ${filterColumnWidth}px;
+const ContentRight = styled.div<{ filterColumnWidth: number }>`
+  flex: 0 0 ${({ filterColumnWidth }) => filterColumnWidth}px;
+  width: ${({ filterColumnWidth }) => filterColumnWidth}px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  margin-left: ${gapWidth}px;;
-`;
-
-const StyledIdeaCardFilters = styled(FiltersSidebar)``;
-
-const FilterArea = styled.div`
-  display: flex;
-
-  ${media.biggerThanMinTablet`
-    align-items: center;
-  `}
+  margin-left: ${gapWidth}px;
 `;
 
 const Spacer = styled.div`
   flex: 1;
 `;
-
-const RightFilterArea = styled(FilterArea)`
-  &.hidden {
-    display: none;
-  }
-
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  `}
-
-  ${media.largePhone`
-    width: 100%;
-    display: flex;
-    flex-direction: column-reverse;
-  `}
-`;
-
-const DropdownFilters = styled.div`
-  &.hidden {
-    display: none;
-  }
-`;
-
-const StyledSearchInput = styled(SearchInput)`
-  width: 100%;
-  margin-bottom: 20px;
-
-  input {
-    font-size: ${fontSizes.medium}px;
-    font-weight: 400;
-  }
-`;
-
-const StyledSearchFilter = styled(SearchFilter)`
-  margin-bottom: 20px;
-`;
-
-const StyledStatusFilter = styled(StatusFilter)`
-  margin-bottom: 20px;
-`;
-
-const StyledTopicsFilter = styled(TopicsFilter)`
-  margin-bottom: 20px;
-`;
-
-const StyledAreaFilter = styled(AreaFilter)``;
 
 const ViewButtons = styled.div`
   display: flex;
@@ -252,6 +227,10 @@ const StyledIdeaCard = styled(IdeaCard)`
   margin-left: 13px;
   margin-right: 13px;
 
+  @media (max-width: 1400px) {
+    width: calc(100% * (1/2) - 26px);
+  }
+
   ${media.smallerThanMaxTablet`
     width: calc(100% * (1/2) - 26px);
   `};
@@ -259,41 +238,6 @@ const StyledIdeaCard = styled(IdeaCard)`
   ${media.smallerThanMinTablet`
     width: 100%;
   `};
-`;
-
-const EmptyContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding-top: 100px;
-  padding-bottom: 100px;
-  background: #fff;
-  border: solid 1px ${colors.separation};
-  border-radius: ${(props: any) => props.theme.borderRadius};
-`;
-
-const IdeaIcon = styled(Icon)`
-  width: 43px;
-  height: 43px;
-  fill: ${colors.label};
-`;
-
-const EmptyMessage = styled.div`
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 20px;
-  margin-bottom: 30px;
-`;
-
-const EmptyMessageLine = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  text-align: center;
 `;
 
 const Footer = styled.div`
@@ -318,7 +262,6 @@ interface InputProps extends GetIdeasInputProps  {
   participationContextId?: string | null;
   participationContextType?: 'Phase' | 'Project' | null;
   className?: string;
-  allowProjectsFilter?: boolean;
 }
 
 interface DataProps {
@@ -383,22 +326,6 @@ class IdeaCards extends PureComponent<Props, State> {
     this.closeFiltersModal();
   }
 
-  // handleSearchOnChange = (search: string) => {
-  //   this.props.ideas.onChangeSearchTerm(search);
-  // }
-
-  // handleStatusOnChange = (status: string | null) => {
-  //   this.props.ideas.onChangeIdeaStatus(status);
-  // }
-
-  // handleAreasOnChange = (areas: string[]) => {
-  //   this.props.ideas.onChangeAreas(areas);
-  // }
-
-  // handleTopicsOnChange = (topics: string[]) => {
-  //   this.props.ideas.onChangeTopics(topics);
-  // }
-
   selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
     event.preventDefault();
     trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
@@ -417,7 +344,6 @@ class IdeaCards extends PureComponent<Props, State> {
       windowSize,
       className,
       theme,
-      allowProjectsFilter,
       showViewToggle
     } = this.props;
     const {
@@ -430,9 +356,8 @@ class IdeaCards extends PureComponent<Props, State> {
     const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
-    // const smallerThanSmallTablet = (windowSize && windowSize < viewportWidths.smallTablet);
-    // const smallerThanLargeTablet = (windowSize && windowSize < viewportWidths.largeTablet);
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
+    const filterColumnWidth = (windowSize && windowSize < 1400 ? 300 : 352);
 
     return (
       <Container id="e2e-ideas-container" className={className}>
@@ -441,16 +366,18 @@ class IdeaCards extends PureComponent<Props, State> {
             <FullscreenModal
               opened={filtersModalOpened}
               close={this.closeFiltersModal}
-              url="ideas/filters/"
+              url="/ideas/filters/"
               animateInOut={true}
               topBar={<FiltersSidebarTopBar />}
               bottomBar={<FiltersSidebarBottomBar />}
             >
-              <FiltersSidebar
-                queryParameters={queryParameters}
-                onApply={this.handleIdeaFiltersOnApply}
-                onClose={this.handleIdeaFiltersOnClose}
-              />
+              <MobileFiltersSidebarWrapper>
+                <StyledFiltersSidebar
+                  queryParameters={queryParameters}
+                  onApply={this.handleIdeaFiltersOnApply}
+                  onClose={this.handleIdeaFiltersOnClose}
+                />
+              </MobileFiltersSidebarWrapper>
             </FullscreenModal>
 
             <MobileFilterButton
@@ -462,7 +389,7 @@ class IdeaCards extends PureComponent<Props, State> {
           </>
         }
 
-        <AboveContent>
+        <AboveContent filterColumnWidth={filterColumnWidth}>
           <AboveContentLeft>
             {showViewToggle &&
               <FeatureFlag name="maps">
@@ -488,7 +415,6 @@ class IdeaCards extends PureComponent<Props, State> {
           {!showMapView &&
             <AboveContentRight>
               <SelectSort onChange={this.handleSortOnChange} />
-              {/* {allowProjectsFilter && <SelectProjects onChange={this.handleProjectsOnChange} />} */}
             </AboveContentRight>
           }
         </AboveContent>
@@ -530,8 +456,35 @@ class IdeaCards extends PureComponent<Props, State> {
             }
           </ContentLeft>
 
+          {showCardView && querying &&
+            <Loading id="ideas-loading">
+              <Spinner />
+            </Loading>
+          }
+
+          {!querying && !hasIdeas &&
+            <EmptyContainer id="ideas-empty">
+              <IdeaIcon name="idea" />
+              <EmptyMessage>
+                <EmptyMessageLine>
+                  <FormattedMessage {...messages.noIdea} />
+                </EmptyMessageLine>
+              </EmptyMessage>
+            </EmptyContainer>
+          }
+
+          {showMapView && hasIdeas &&
+            <IdeasMap
+              projectIds={queryParameters.projects}
+              phaseId={queryParameters.phase}
+            />
+          }
+
           {biggerThanLargeTablet &&
-            <ContentRight id="e2e-ideas-filters">
+            <ContentRight
+              id="e2e-ideas-filters"
+              filterColumnWidth={filterColumnWidth}
+            >
               <FiltersSidebar
                 queryParameters={queryParameters}
                 onChange={this.handleIdeaFiltersOnApply}
@@ -540,49 +493,20 @@ class IdeaCards extends PureComponent<Props, State> {
             </ContentRight>
           }
         </Content>
-
-        {/*
-        {showCardView && querying &&
-          <Loading id="ideas-loading">
-            <Spinner />
-          </Loading>
-        }
-        */}
-
-        {/*
-        {!querying && !hasIdeas &&
-          <EmptyContainer id="ideas-empty">
-            <IdeaIcon name="idea" />
-            <EmptyMessage>
-              <EmptyMessageLine>
-                <FormattedMessage {...messages.noIdea} />
-              </EmptyMessageLine>
-            </EmptyMessage>
-          </EmptyContainer>
-        }
-        */}
-
-        {/*
-        {showMapView && hasIdeas &&
-          <IdeasMap projectIds={queryParameters.projects} phaseId={queryParameters.phase} />
-        }
-        */}
       </Container>
     );
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
-  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
-  windowSize: <GetWindowSize debounce={50} />
+  windowSize: <GetWindowSize debounce={50} />,
+  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>
 });
 
-const IdeaCardsWithHoCs = withTheme(IdeaCards);
+const WithFiltersSidebarWithHoCs = withTheme(IdeaCards);
 
-const WrappedIdeaCards = (inputProps: InputProps) => (
+export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaCardsWithHoCs {...inputProps} {...dataProps} />}
+    {dataProps => <WithFiltersSidebarWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );
-
-export default WrappedIdeaCards;

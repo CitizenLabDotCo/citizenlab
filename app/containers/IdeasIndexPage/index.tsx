@@ -69,6 +69,7 @@ export default memo(() => (
           type="load-more"
           allowProjectsFilter={true}
           projectPublicationStatus="published"
+          showViewToggle={false}
           showFiltersSidebar={true}
         />
       </StyledContentContainer>

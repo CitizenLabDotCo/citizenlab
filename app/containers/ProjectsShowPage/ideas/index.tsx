@@ -66,7 +66,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
         return (
           <>
             <StyledProjectArchivedIndicator projectId={projectId} />
-            <StyledContentContainer maxWidth={1345}>
+            <StyledContentContainer>
               {isPBProject &&
                 <StyledPBExpenses
                   participationContextId={projectId}
