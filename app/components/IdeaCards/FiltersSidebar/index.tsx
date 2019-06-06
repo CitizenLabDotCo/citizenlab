@@ -46,7 +46,7 @@ interface Props {
   onClose: () => void;
 }
 
-const IdeaFilters = memo<Props>(({ queryParameters, className, onApply, onChange, onClose }) => {
+const FiltersSidebar = memo<Props>(({ queryParameters, className, onApply, onChange, onClose }) => {
 
   const [ideaFilters, setIdeaFilters] = useState<IIdeaFilters>({
     search: queryParameters.search || null,
@@ -133,4 +133,4 @@ const IdeaFilters = memo<Props>(({ queryParameters, className, onApply, onChange
   );
 });
 
-export default IdeaFilters;
+export default FiltersSidebar;

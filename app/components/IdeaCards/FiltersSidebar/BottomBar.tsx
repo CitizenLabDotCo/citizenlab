@@ -30,7 +30,7 @@ interface Props {
   className?: string;
 }
 
-const IdeaFiltersBottomBar = memo<Props>(({ className }) => {
+const BottomBar = memo<Props>(({ className }) => {
 
   const onApplyFilters = useCallback(() => {
     eventEmitter.emit('IdeaFiltersBottomBar', 'applyIdeaFilters', null);
@@ -45,4 +45,4 @@ const IdeaFiltersBottomBar = memo<Props>(({ className }) => {
   );
 });
 
-export default IdeaFiltersBottomBar;
+export default BottomBar;
