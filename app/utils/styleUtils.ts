@@ -1,4 +1,4 @@
-import { isNil, get } from 'lodash-es';
+import { isNil, get, isString } from 'lodash-es';
 import { ITenant } from 'services/tenant';
 import { css } from 'styled-components';
 import { darken, transparentize } from 'polished';
@@ -380,8 +380,8 @@ export function getTheme(tenant: ITenant | null) {
 }
 
 // Utils
-export function booleanClass(value: any, className: string) {
-  if (!!value) {
+export function booleanClass(value: any, className: string | undefined) {
+  if (!!value && isString(className)) {
     return ` ${className}`;
   }
 
