@@ -1,11 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-// import { isString, isEmpty } from 'lodash-es';
-// import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
-// import CSSTransition from 'react-transition-group/CSSTransition';
-// import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
@@ -15,9 +11,6 @@ import TipsBox from './TipsBox';
 import ContentContainer from 'components/ContentContainer';
 
 // services
-// import { addInitiative, updateInitiative, IInitiativeAdd } from 'services/initiatives';
-// import { addInitiativeFile, deleteInitiativeFile } from 'services/initiativeFiles';
-// import { addInitiativeImage, deleteInitiativeImage } from 'services/initiativeImages';
 import { IOption, UploadFile } from 'typings';
 
 // resources
@@ -34,6 +27,8 @@ import { lighten } from 'polished';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import InitiativeForm from 'components/InitiativeForm';
+import { Formik } from 'formik';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -174,13 +169,17 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
     // }
   }
 
-  handleOnIdeaSubmit = async () => {
+  handleSubmit = async () => {
     const { authUser } = this.props;
     console.log('submit', authUser);
   }
 
   goBack = () => {
     clHistory.goBack();
+  }
+
+  renderFn = (props) => {
+    return <InitiativeForm {...props} />;
   }
 
   render() {
@@ -201,7 +200,15 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
         <ContentContainer mode="page">
           <TwoColumns>
             <FormContainer>
-              I've got a tip for you
+              <Formik
+                initialValues={{
+                  title_multiloc: {},
+                  description_multiloc: {}
+                }}
+                render={this.renderFn}
+                onSubmit={this.handleSubmit}
+                validate={InitiativeForm.validate}
+              />
             </FormContainer>
             <TipsContainer>
               <StyledTipsBox />
