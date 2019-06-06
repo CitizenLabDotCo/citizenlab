@@ -1132,6 +1132,7 @@
   "app.containers.IdeasShow.loadVotesError": "La votación no está disponible actualmente",
   "app.containers.IdeasShow.loadingComments": "Cargar más comentarios...",
   "app.containers.IdeasShow.loadingIdea": "Cargando la idea...",
+  "app.containers.IdeasShow.loadingMoreComments": "",
   "app.containers.IdeasShow.metaOgTitle": "Vota por mi idea: {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Idea • {ideaTitle}",
   "app.containers.IdeasShow.oneSecond": "Un segundo...",
