@@ -47,6 +47,9 @@ export interface IComment {
 
 export interface IComments {
   data: ICommentData[];
+  meta: {
+    total: number;
+  };
 }
 
 export interface IUpdatedComment {
