@@ -73,8 +73,8 @@ const StyledMap = styled(Map)`
 `;
 
 interface InputProps {
-  projectIds?: string[];
-  phaseId?: string;
+  projectIds?: string[] | null;
+  phaseId?: string | null;
 }
 
 interface DataProps {

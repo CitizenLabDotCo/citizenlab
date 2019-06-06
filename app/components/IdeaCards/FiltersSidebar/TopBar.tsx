@@ -89,7 +89,7 @@ interface Props {
   className?: string;
 }
 
-const IdeaFiltersTopBar = memo<Props>(({ className }) => {
+const TopBar = memo<Props>(({ className }) => {
 
   const onClose = useCallback(() => {
     eventEmitter.emit('IdeaFiltersTopBar', 'closeIdeaFilters', null);
@@ -120,4 +120,4 @@ const IdeaFiltersTopBar = memo<Props>(({ className }) => {
   );
 });
 
-export default IdeaFiltersTopBar;
+export default TopBar;
