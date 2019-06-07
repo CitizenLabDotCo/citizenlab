@@ -97,12 +97,26 @@ const TipsContainer = styled.div`
 const StyledTipsBox = styled(TipsBox)`
   position: sticky;
   top: calc(${({ theme }) => theme.menuHeight}px + 50px);
+  max-width: 550px;
+  padding: 40px 50px;
+  ${media.smallerThanMaxTablet`
+    padding: 30px 35px;
+    top: 50px;
+    min-width: 230px;
+  `}
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const FormContainer = styled.div`
   width: 100%;
   margin-right: 25px;
+  min-width: 530px;
   height: 900px;
+  ${media.smallerThanMaxTablet`
+    min-width: 230px;
+  `}
 `;
 
 interface InputProps {}
