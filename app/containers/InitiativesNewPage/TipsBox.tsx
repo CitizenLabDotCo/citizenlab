@@ -26,15 +26,6 @@ const Container = styled.div`
   background: ${colors.lightGreyishBlue};
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.colorText};
-  max-width: 550px;
-  padding: 40px 50px;
-  ${media.smallerThanMaxTablet`
-    padding: 32px 40px;
-    min-width: 230px;
-  `}
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
 `;
 
 const TipsTitle = styled.div`
