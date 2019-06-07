@@ -25,7 +25,6 @@ class WebApi::V1::MentionsController < ApplicationController
         .all
     end
 
-
     render json: @users, each_serializer: WebApi::V1::External::UserSerializer
   end
 
