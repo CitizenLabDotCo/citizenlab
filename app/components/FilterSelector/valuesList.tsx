@@ -35,7 +35,6 @@ const ListItem = styled.button`
   padding: 10px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;
 
@@ -102,6 +101,10 @@ export default class ValuesList extends PureComponent<Props, State> {
     mobileRight:undefined
   };
 
+  removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  }
+
   handleOnToggle = (entry, index) => (event: FormEvent) => {
     event.preventDefault();
     this.setState({ currentFocus: index });
@@ -136,6 +139,7 @@ export default class ValuesList extends PureComponent<Props, State> {
                   aria-posinset={index + 1}
                   aria-selected={checked}
                   key={entry.value}
+                  onMouseDown={this.removeFocus}
                   onClick={this.handleOnToggle(entry, index)}
                   className={`
                     e2e-filter-list-item

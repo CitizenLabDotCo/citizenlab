@@ -1,5 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
+import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -17,7 +18,7 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // resources
 import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
-import GetIdeasFilterCounts from 'resources/GetIdeasFilterCounts';
+import GetIdeasFilterCounts, { GetIdeasFilterCountsChildProps } from 'resources/GetIdeasFilterCounts';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // i18n
@@ -60,11 +61,10 @@ const Loading = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /*
-  background: #fff;
-  border: solid 1px ${colors.separation};
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  */
+
+  ${media.biggerThanMinTablet`
+    max-height: calc(100vh - 265px);
+  `}
 `;
 
 const EmptyContainer = styled.div`
@@ -76,14 +76,14 @@ const EmptyContainer = styled.div`
   margin: 0;
   padding-top: 100px;
   padding-bottom: 100px;
-  /*
-  background: #fff;
-  border: solid 1px ${colors.separation};
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  */
+
+  ${media.biggerThanMinTablet`
+    max-height: calc(100vh - 265px);
+  `}
 `;
 
 const IdeaIcon = styled(Icon)`
+  flex: 0 0 43px;
   width: 43px;
   height: 43px;
   fill: ${colors.label};
@@ -92,7 +92,7 @@ const IdeaIcon = styled(Icon)`
 const EmptyMessage = styled.div`
   padding-left: 20px;
   padding-right: 20px;
-  margin-top: 20px;
+  margin-top: 15px;
   margin-bottom: 30px;
 `;
 
@@ -265,8 +265,9 @@ interface InputProps extends GetIdeasInputProps  {
 }
 
 interface DataProps {
-  ideas: GetIdeasChildProps;
   windowSize: GetWindowSizeChildProps;
+  ideas: GetIdeasChildProps;
+  ideasFilterCounts: GetIdeasFilterCountsChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -341,6 +342,7 @@ class IdeaCards extends PureComponent<Props, State> {
       participationContextId,
       participationContextType,
       ideas,
+      ideasFilterCounts,
       windowSize,
       className,
       theme,
@@ -403,11 +405,11 @@ class IdeaCards extends PureComponent<Props, State> {
                 </ViewButtons>
               </FeatureFlag>
             }
-            <IdeasCount>
-              <GetIdeasFilterCounts queryParameters={queryParameters}>
-                {data => !isNilOrError(data) ? <FormattedMessage {...messages.xIdeas} values={{ ideasCount: data.total }} /> : null}
-              </GetIdeasFilterCounts>
-            </IdeasCount>
+            {!isNilOrError(ideasFilterCounts) &&
+              <IdeasCount>
+                <FormattedMessage {...messages.xIdeas} values={{ ideasCount: ideasFilterCounts.total }} />
+              </IdeasCount>
+            }
           </AboveContentLeft>
 
           <Spacer />
@@ -500,7 +502,8 @@ class IdeaCards extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize debounce={50} />,
-  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>
+  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
+  ideasFilterCounts: ({ ideas, render }) => <GetIdeasFilterCounts queryParameters={get(ideas, 'queryParameters', null)}>{render}</GetIdeasFilterCounts>
 });
 
 const WithFiltersSidebarWithHoCs = withTheme(IdeaCards);
