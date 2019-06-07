@@ -12,7 +12,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Container = styled.div`

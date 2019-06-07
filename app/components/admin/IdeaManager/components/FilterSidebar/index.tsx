@@ -21,10 +21,10 @@ interface Props {
   topics?: (ITopicData | Error)[];
   projects?: IProjectData[];
   statuses: IIdeaStatusData[];
-  selectedTopics?: string[];
-  selectedPhase?: string;
-  selectedProject?: string;
-  selectedStatus?: string;
+  selectedTopics?: string[] | null;
+  selectedPhase?: string | null;
+  selectedProject?: string | null;
+  selectedStatus?: string | null;
   onChangePhaseFilter?: (arg: string) => void;
   onChangeTopicsFilter?: (topics: string[]) => void;
   onChangeProjectFilter?: (projects: string[] | undefined) => void;
