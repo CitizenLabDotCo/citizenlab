@@ -61,7 +61,7 @@ export default memo(() => (
   <>
     <IdeasIndexMeta />
     <Container>
-      <StyledContentContainer maxWidth={1345}>
+      <StyledContentContainer maxWidth="100%">
         <PageTitle>
           <FormattedMessage {...messages.pageTitle} />
         </PageTitle>
