@@ -2,9 +2,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "Ideas" do
+resource "Initiatives" do
 
-  explanation "Proposals from citizens to the city."
+  explanation "Proposals from citizens (but more spontaneous than ideas) to the city."
 
   before do
     header "Content-Type", "application/json"
