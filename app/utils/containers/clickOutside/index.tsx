@@ -7,6 +7,7 @@ type Props = {
   onClick?: () => void;
   id?: string;
   setRef?: (arg: HTMLElement) => void;
+  role?: string;
   closeOnClickOutsideEnabled?: boolean;
 };
 
@@ -76,8 +77,18 @@ export default class ClickOutside extends PureComponent<Props, State> {
   }
 
   render() {
-    const { children, className, onClick } = this.props;
-    // tslint:disable-next-line:react-a11y-event-has-role
-    return (<div id={this.props.id} ref={this.handleRef} className={className} onClick={onClick}>{children}</div>);
+    const { id, role, children, className, onClick } = this.props;
+
+    return (
+      <div
+        id={id}
+        ref={this.handleRef}
+        className={className}
+        onClick={onClick}
+        role={role}
+      >
+        {children}
+      </div>
+    );
   }
 }

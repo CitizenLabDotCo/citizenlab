@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, MouseEvent } from 'react';
+import React, { memo, useCallback, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { capitalize, omit, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -13,7 +13,7 @@ import Icon from 'components/UI/Icon';
 
 // resources
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
-import GetIdeasFilterCounts from 'resources/GetIdeasFilterCounts';
+import GetIdeasFilterCounts, { GetIdeasFilterCountsChildProps } from 'resources/GetIdeasFilterCounts';
 
 // styling
 import styled from 'styled-components';
@@ -105,18 +105,12 @@ interface InputProps {
 
 interface DataProps {
   ideaStatuses: GetIdeaStatusesChildProps;
+  ideasFilterCounts: GetIdeasFilterCountsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, onChange, className, queryParameters }) => {
-
-  const modifiedQueryParameters = useMemo(() => {
-    return {
-      ...omit(queryParameters, ['page[number]', 'idea_status']),
-      'page[size]': queryParameters['page[number]'] * queryParameters['page[size]']
-    };
-  }, [queryParameters]);
+const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, ideasFilterCounts, onChange, className }) => {
 
   const handleOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -146,9 +140,7 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, onChange, cl
         >
           <FormattedMessage {...messages.all} />
           <Count>
-            <GetIdeasFilterCounts queryParameters={modifiedQueryParameters}>
-              {data => <>{get(data, 'total', 0)}</>}
-            </GetIdeasFilterCounts>
+            {get(ideasFilterCounts, 'total', 0)}
           </Count>
         </AllStatus>
 
@@ -165,9 +157,7 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, onChange, cl
             </T>
             {selectedStatusId !== ideaStatus.id ? (
               <Count>
-                <GetIdeasFilterCounts queryParameters={modifiedQueryParameters}>
-                  {data => get(data, `idea_status_id.${ideaStatus.id}`, 0)}
-                </GetIdeasFilterCounts>
+                {get(ideasFilterCounts, `idea_status_id.${ideaStatus.id}`, 0)}
               </Count>
             ) : (
               <CloseIcon name="close2" />
@@ -182,7 +172,15 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, onChange, cl
 });
 
 const Data = adopt<DataProps, InputProps>({
-  ideaStatuses: <GetIdeaStatuses/>
+  ideaStatuses: <GetIdeaStatuses/>,
+  ideasFilterCounts: ({ queryParameters, render }) => {
+    const modifiedQueryParameters = {
+      ...omit(queryParameters, ['page[number]', 'idea_status']),
+      'page[size]': queryParameters['page[number]'] * queryParameters['page[size]']
+    };
+
+    return <GetIdeasFilterCounts queryParameters={modifiedQueryParameters}>{render}</GetIdeasFilterCounts>;
+  }
 });
 
 export default (inputProps: InputProps) => (

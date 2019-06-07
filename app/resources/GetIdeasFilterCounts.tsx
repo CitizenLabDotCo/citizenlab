@@ -1,14 +1,15 @@
 import React from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { isEqual } from 'lodash-es';
+import { BehaviorSubject, Subscription, of } from 'rxjs';
+import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { isEqual, omitBy, isNil } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 import { IIdeasFilterCounts, ideasFilterCountsStream } from 'services/ideas';
 import { IQueryParameters } from './GetIdeas';
 
 type children = (renderProps: GetIdeasFilterCountsChildProps) => JSX.Element | null;
 
 interface Props {
-  queryParameters: Partial<IQueryParameters>;
+  queryParameters: Partial<IQueryParameters> | null;
   children?: children;
 }
 
@@ -19,7 +20,7 @@ interface State {
 export type GetIdeasFilterCountsChildProps = IIdeasFilterCounts | undefined| null;
 
 export default class GetIdeasFilterCounts extends React.Component<Props, State> {
-  private queryParameters$: BehaviorSubject<Partial<IQueryParameters>>;
+  private queryParameters$: BehaviorSubject<Partial<IQueryParameters> | null>;
   private subscriptions: Subscription[];
 
   constructor(props) {
@@ -34,19 +35,29 @@ export default class GetIdeasFilterCounts extends React.Component<Props, State> 
 
     this.subscriptions = [
       this.queryParameters$.pipe(
+        map(queryParameters => queryParameters ? omitBy(queryParameters, isNil) : queryParameters),
         distinctUntilChanged((prev, next) => isEqual(prev, next)),
         switchMap((queryParameters) => {
-          return ideasFilterCountsStream({ queryParameters }).observable;
+          if (queryParameters) {
+            console.log('queryParameters');
+            console.log(queryParameters);
+            return ideasFilterCountsStream({ queryParameters }).observable;
+          }
+
+          return of(null);
         })
       ).subscribe((ideasFilterCounts) => {
+        console.log('ideasFilterCounts:');
+        console.log(ideasFilterCounts);
+
         this.setState({
-          ideasFilterCounts: (ideasFilterCounts ? ideasFilterCounts : null),
+          ideasFilterCounts: (!isNilOrError(ideasFilterCounts) ? ideasFilterCounts : null),
         });
       })
     ];
   }
 
-  componentDidUpdate(_prevProps: Props, _prevState: State) {
+  componentDidUpdate() {
     this.queryParameters$.next(this.props.queryParameters);
   }
 
