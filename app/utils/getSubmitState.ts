@@ -1,16 +1,16 @@
 import { CLError } from 'typings';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, isError } from 'lodash-es';
 
 interface Options {
   errors: {
     [fieldName: string]: CLError[]
-  } | null;
+  } | null | {} | Error;
   saved: boolean;
   diff: object | null;
 }
 
 export default function getSubmitState({ errors, saved, diff }: Options) {
-  if (errors && !isEmpty(errors)) {
+  if (errors && (!isEmpty(errors) || isError(errors))) {
     return 'error';
   }
 

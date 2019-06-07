@@ -5,6 +5,7 @@ import { Formik, FormikErrors } from 'formik';
 import ClusteringForm, { FormValues } from './ClusteringForm';
 import { CLErrorsJSON } from 'typings';
 import { isEmpty, values as getValues, every } from 'lodash-es';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 type Props = {};
 
@@ -18,7 +19,7 @@ export default class New extends PureComponent<Props> {
     }
     return errors;
   }
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
+  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
     addClustering({
       ...values
     })
@@ -26,8 +27,12 @@ export default class New extends PureComponent<Props> {
         clHistory.push(`/admin/dashboard/insights/${clustering.data.id}`);
       })
       .catch((errorResponse) => {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
         setSubmitting(false);
       });
   }

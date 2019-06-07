@@ -37,6 +37,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { CLErrorsJSON, Locale } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const Form = styled.form`
   width: 100%;
@@ -122,7 +123,7 @@ type State = {
   tacError: string | null;
   localeError: string | null;
   unknownError: string | null;
-  apiErrors: CLErrorsJSON | null;
+  apiErrors: CLErrorsJSON | null | Error;
   emailInvitationTokenInvalid: boolean;
 };
 
@@ -320,10 +321,15 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     let unknownApiError: string | null = null;
 
-    if (apiErrors && apiErrors.json.errors) {
-      const fieldKeys = keys(apiErrors.json.errors);
+    if (apiErrors) {
+      if (isCLErrorJSON(apiErrors)) {
+        // weirdly TS doesn't understand my typeguard.
+        const fieldKeys = keys((apiErrors as any).json.errors);
 
-      if (difference(fieldKeys, ['first_name', 'last_name', 'email', 'password', 'locale', 'base']).length > 0) {
+        if (difference(fieldKeys, ['first_name', 'last_name', 'email', 'password', 'locale', 'base']).length > 0) {
+          unknownApiError = formatMessage(messages.unknownError);
+        }
+      } else {
         unknownApiError = formatMessage(messages.unknownError);
       }
     }

@@ -406,8 +406,23 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNilOrError(idea) ? get(idea.relationships.idea_images.data[0], 'id', null) : null}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>
+  ideaImage: ({ ideaId, idea, render }) => {
+    const ideaImageData = get(idea, 'relationships.idea_images.data');
+    const ideaImageImage = Array.isArray(ideaImageData) && ideaImageData.length > 0
+      ? ideaImageData[0]
+      : null;
+    const ideaImageId = ideaImageImage && ideaImageImage.id;
+
+    return (
+      <GetIdeaImage
+        ideaId={ideaId}
+        ideaImageId={ideaImageId ? ideaImageId : null}
+      >
+        {render}
+      </GetIdeaImage>
+    );
+  },
+  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea, 'relationships.author.data.id', null) : null}>{render}</GetUser>
 });
 
 const IdeaCardWithHoC = injectIntl(IdeaCard);

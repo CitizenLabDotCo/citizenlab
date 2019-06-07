@@ -27,6 +27,7 @@ import { CLError } from 'typings';
 // styling
 import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const Container = styled.div``;
 
@@ -126,7 +127,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
         this.props.submitting(false);
         this.props.successfullySubmitted();
       } catch (error) {
-        if (error && error.json) {
+        if (isCLErrorJSON(error)) {
           this.props.submitting(false);
           this.setState({
             submitted: false,

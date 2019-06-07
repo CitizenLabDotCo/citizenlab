@@ -13,6 +13,7 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const OptionContainer = styled.div``;
 
@@ -81,23 +82,31 @@ class OptionsForm extends React.Component<Props, State> {
     });
   }
 
-  handleUpdateSubmit = (option) => (values, { setErrors, setSubmitting, resetForm }) => {
+  handleUpdateSubmit = (option) => (values, { setErrors, setSubmitting, resetForm, setStatus }) => {
     updateCustomFieldOption(this.props.customField.id, option.id, values).then(() => {
       resetForm();
     }).catch((errorResponse) => {
-      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-      setErrors(apiErrors);
+      if (isCLErrorJSON(errorResponse)) {
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+        setErrors(apiErrors);
+      } else {
+        setStatus('error');
+      }
       setSubmitting(false);
     });
   }
 
-  handleCreateSubmit = (values, { setErrors, setSubmitting }) => {
+  handleCreateSubmit = (values, { setErrors, setSubmitting, setStatus }) => {
     addCustomFieldOption(this.props.customField.id, values).then(() => {
       setSubmitting(false);
       this.setState({ addingOption: false });
     }).catch((errorResponse) => {
-      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-      setErrors(apiErrors);
+      if (isCLErrorJSON(errorResponse)) {
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+        setErrors(apiErrors);
+      } else {
+        setStatus('error');
+      }
       setSubmitting(false);
     });
   }

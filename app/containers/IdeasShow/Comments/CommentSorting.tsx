@@ -3,30 +3,23 @@ import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import styled from 'styled-components';
+import { CommentsSort } from 'services/comments';
 
 const Container = styled.div``;
 
-export type ICommentSortOptions = 'oldest_to_newest' | 'most_upvoted';
-
 interface Props {
   id?: string | undefined;
-  onChange: (value: ICommentSortOptions) => void;
+  onChange: (value: CommentsSort) => void;
+  selectedValue: CommentsSort[];
   className?: string;
 }
 
 interface State {
-  selectedValue: string[];
 }
 
 export default class CommentSorting extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      selectedValue: ['oldest_to_newest']
-    };
-  }
 
-  handleOnChange = (selectedValue: [ICommentSortOptions]) => {
+  handleOnChange = (selectedValue: [CommentsSort]) => {
     this.setState({ selectedValue });
     this.props.onChange(selectedValue[0]);
   }
@@ -34,13 +27,12 @@ export default class CommentSorting extends PureComponent<Props, State> {
   title = <FormattedMessage {...messages.commentsSortTitle} />;
 
   sortOptions = [
-    { text: <FormattedMessage {...messages.oldestToNewest} />, value: 'oldest_to_newest' },
-    { text: <FormattedMessage {...messages.mostUpvoted} />, value: 'most_upvoted' },
+    { text: <FormattedMessage {...messages.oldestToNewest} />, value: '-new' },
+    { text: <FormattedMessage {...messages.mostUpvoted} />, value: '-upvotes_count' },
   ];
 
   render() {
-    const { className } = this.props;
-    const { selectedValue } = this.state;
+    const { className, selectedValue } = this.props;
 
     return (
       <Container className={className}>

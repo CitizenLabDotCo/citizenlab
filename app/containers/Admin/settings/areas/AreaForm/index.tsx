@@ -33,7 +33,7 @@ export default class AreaForm extends React.Component<InjectedFormikProps<Props,
   }
 
   render() {
-    const { isSubmitting, errors, isValid, touched } = this.props;
+    const { isSubmitting, errors, isValid, touched, status } = this.props;
 
     return (
       <Form>
