@@ -93,6 +93,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.loadingComments',
     defaultMessage: 'Loading comments...',
   },
+  loadingMoreComments: {
+    id: 'app.containers.IdeasShow.loadingMoreComments',
+    defaultMessage: 'Loading more comments...',
+  },
   placeholderComment: {
     id: 'app.containers.IdeasShow.placeholderComment',
     defaultMessage: 'Tell us your thoughts!',

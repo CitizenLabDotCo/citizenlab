@@ -121,7 +121,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
     if (!isNilOrError(tenant) && tenant.attributes.settings.manual_project_sorting && isBoolean(tenant.attributes.settings.manual_project_sorting.enabled)) {
       const manualProjectSorting = !tenant.attributes.settings.manual_project_sorting.enabled;
 
-      await updateTenant(tenant.id,     {
+      await updateTenant(tenant.id, {
         settings: {
           manual_project_sorting: {
             allowed: true,

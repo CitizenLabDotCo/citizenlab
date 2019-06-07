@@ -10,6 +10,7 @@ import tracks from '../tracks';
 
 // utils
 import { isAdminPage } from 'utils/helperUtils';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface Props {
   ideaId: string;
@@ -32,8 +33,12 @@ export default class OfficialFeedbackNew extends PureComponent<Props, State> {
       resetForm();
       setStatus('success');
     } catch (errorResponse) {
-      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-      setErrors(apiErrors);
+      if (isCLErrorJSON(errorResponse)) {
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+        setErrors(apiErrors);
+      } else {
+        setStatus('error');
+      }
       setSubmitting(false);
     }
 

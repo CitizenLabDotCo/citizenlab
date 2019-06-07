@@ -23,7 +23,7 @@ export default defineMessages({
   },
   field_participated_in_project: {
     id: 'app.components.admin.UserFilterConditions.field_participated_in_project',
-    defaultMessage: 'Participated in project',
+    defaultMessage: 'Contributed to project',
   },
   field_participated_in_topic: {
     id: 'app.components.admin.UserFilterConditions.field_topic',
@@ -149,6 +149,57 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_is_normal_user',
     defaultMessage: 'is not a normal user',
   },
+
+  predicate_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_in',
+    defaultMessage: 'performed any action',
+  },
+  predicate_not_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_in',
+    defaultMessage: 'didn\'t contribute',
+  },
+  predicate_posted_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_posted_in',
+    defaultMessage: 'posted',
+  },
+  predicate_not_posted_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_posted_in',
+    defaultMessage: 'didn\'t post',
+  },
+  predicate_commented_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_commented_in',
+    defaultMessage: 'commented',
+  },
+  predicate_not_commented_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_commented_in',
+    defaultMessage: 'didn\'t comment',
+  },
+  predicate_voted_idea_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_voted_idea_in',
+    defaultMessage: 'voted on idea',
+  },
+  predicate_not_voted_idea_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_idea_in',
+    defaultMessage: 'didn\'t vote on idea',
+  },
+  predicate_voted_comment_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_voted_comment_in',
+    defaultMessage: 'voted on comment',
+  },
+  predicate_not_voted_comment_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_comment_in',
+    defaultMessage: 'didn\'t vote on comment',
+  },
+  predicate_budgeted_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_budgeted_in',
+    defaultMessage: 'spent budget',
+  },
+  predicate_not_budgeted_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_budgeted_in',
+    defaultMessage: 'didn\'t spend budget',
+  },
+
+
   rulesFormLabelField: {
     id: 'app.components.admin.UserFilterConditions.rulesFormLabelField',
     defaultMessage: 'Attribute',

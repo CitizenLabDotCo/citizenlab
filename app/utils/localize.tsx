@@ -11,6 +11,7 @@ import { getLocalized } from 'utils/i18n';
 
 // Typing
 import { Multiloc, Locale } from 'typings';
+import { isNilOrError } from './helperUtils';
 
 export interface InjectedLocalized {
   localize: {
@@ -48,8 +49,10 @@ export default function injectLocalize<P>(Component: React.ComponentType<P & Inj
           locale$,
           currentTenant$
         ).subscribe(([locale, currentTenant]) => {
-          const tenantLocales = currentTenant.data.attributes.settings.core.locales;
-          this.setState({ locale, tenantLocales });
+          if (!isNilOrError(locale) && !isNilOrError(currentTenant)) {
+            const tenantLocales = currentTenant.data.attributes.settings.core.locales;
+            this.setState({ locale, tenantLocales });
+          }
         })
       ];
     }

@@ -16,6 +16,7 @@ import { Formik } from 'formik';
 import AreaForm, { FormValues } from '../AreaForm';
 
 import { CLErrorsJSON } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 interface InputProps {}
 interface DataProps {
   area: GetAreaChildProps;
@@ -25,7 +26,7 @@ interface Props extends InputProps, DataProps {}
 
 class Edit extends React.PureComponent<Props> {
 
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
+  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
     const { area } = this.props;
 
     if (isNilOrError(area)) return;
@@ -33,14 +34,18 @@ class Edit extends React.PureComponent<Props> {
     updateArea(area.id, {
       ...values
     })
-      .then(() => {
-        clHistory.push('/admin/settings/areas');
-      })
-      .catch((errorResponse) => {
+    .then(() => {
+      clHistory.push('/admin/settings/areas');
+    })
+    .catch((errorResponse) => {
+      if (isCLErrorJSON(errorResponse)) {
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
-        setSubmitting(false);
-      });
+      } else {
+        setStatus('error');
+      }
+      setSubmitting(false);
+    });
   }
 
   renderFn = (props) => {

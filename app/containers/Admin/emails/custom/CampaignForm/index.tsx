@@ -100,8 +100,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
   }
 
   render() {
-    const { isSubmitting, errors, isValid, touched } = this.props;
-
+    const { isSubmitting, errors, isValid, touched, status } = this.props;
     return (
       <Form>
         <StyledSection>
@@ -195,13 +194,13 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
         </StyledSection>
 
         <FormikSubmitWrapper
-          {...{ isValid, isSubmitting, status, touched }}
+          {...{ isValid, isSubmitting, status, touched, errors }}
           messages={{
             buttonSave: messages.formSaveButton,
             buttonError: messages.formErrorButton,
             buttonSuccess: messages.formSuccessButton,
             messageSuccess: messages.formSuccessMessage,
-            messageError: messages.formErrorMessage,
+            messageError: Object.keys(errors).length > 0 ? messages.formErrorMessage : messages.formUnexpectedErrorMessage,
           }}
         />
 
