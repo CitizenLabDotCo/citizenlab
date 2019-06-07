@@ -102,7 +102,7 @@ const StyledTipsBox = styled(TipsBox)`
   ${media.smallerThanMaxTablet`
     padding: 30px 35px;
     top: 50px;
-    min-width: 230px;
+    min-width: 250px;
   `}
   ${media.smallerThanMinTablet`
     display: none;
