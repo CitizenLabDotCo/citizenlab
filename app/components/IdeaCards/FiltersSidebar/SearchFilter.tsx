@@ -128,7 +128,7 @@ const SearchFilter = memo<Props & InjectedIntlProps>(({ value, onChange, classNa
   }, []);
 
   useEffect(() => {
-    onChange(debouncedSearchTerm)
+    onChange(debouncedSearchTerm);
   }, [debouncedSearchTerm]);
 
   const ariaLabel = intl.formatMessage(messages.searchAriaLabel);
