@@ -168,7 +168,7 @@ class FullscreenModal extends PureComponent<Props, State> {
         // @ts-ignore
         allowTouchMove: (element) => {
           while (element && element !== document.body) {
-            if (element.className.includes('ignore-body-scroll-lock')) {
+            if (element && element.className && element.className.includes('ignore-body-scroll-lock')) {
               return true;
             }
 
