@@ -1,23 +1,28 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 
 // libraries
+import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
+import { Formik } from 'formik';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import TipsBox from './TipsBox';
 import ContentContainer from 'components/ContentContainer';
+import InitiativeForm, { FormValues } from 'components/InitiativeForm';
 
 // services
-import { IOption, UploadFile } from 'typings';
+import { CLErrorsJSON } from 'typings';
+import { addInitiative, InitiativePublicationStatus } from 'services/initiatives';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
 // import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
+import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import { media, colors, fontSizes } from 'utils/styleUtils';
@@ -27,8 +32,6 @@ import { lighten } from 'polished';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import InitiativeForm from 'components/InitiativeForm';
-import { Formik } from 'formik';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -106,27 +109,13 @@ interface InputProps {}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
+  locale: GetLocaleChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {
   publishing: boolean;
-  title: string | null;
-  description: string | null;
-  selectedTopics: IOption[] | null;
-  budget: number | null;
-  position: string;
-  position_coordinates: GeoJSON.Point | null;
-  submitError: boolean;
-  processing: boolean;
-  ideaId: string | null;
-  ideaSlug: string | null;
-  imageFile: UploadFile[];
-  imageId: string | null;
-  imageChanged: boolean;
-  ideaFiles: UploadFile[];
-  ideaFilesToRemove: UploadFile[];
 }
 
 class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, State> {
@@ -135,21 +124,6 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
 
     this.state = {
       publishing: false,
-      title: null,
-      description: null,
-      selectedTopics: null,
-      budget: null,
-      position: '',
-      position_coordinates: null,
-      submitError: false,
-      processing: false,
-      ideaId: null,
-      ideaSlug: null,
-      imageFile: [],
-      imageId: null,
-      imageChanged: false,
-      ideaFiles: [],
-      ideaFilesToRemove: []
     };
   }
 
@@ -169,9 +143,19 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
     // }
   }
 
-  handleSubmit = async () => {
-    const { authUser } = this.props;
-    console.log('submit', authUser);
+  handleSubmit = async (values: FormValues, { setSubmitting, setErrors, setStatus }) => {
+    const { authUser, locale } = this.props;
+    if (isNilOrError(authUser) || isNilOrError(locale)) return;
+    try {
+      const {  title, body  } = values;
+      const fieldValues = { title_multiloc: { [locale]: title }, body_multiloc: { [locale]: body }, author_id: authUser.id, publication_status: 'draft' as InitiativePublicationStatus };
+      await addInitiative(fieldValues);
+      setStatus('success');
+    } catch (errorResponse) {
+      const apiErrors = (errorResponse as CLErrorsJSON).json.errors; // TODO merge master and update this.
+      setErrors(apiErrors);
+      setSubmitting(false);
+    }
   }
 
   goBack = () => {
@@ -202,8 +186,8 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
             <FormContainer>
               <Formik
                 initialValues={{
-                  title_multiloc: {},
-                  description_multiloc: {}
+                  title: '',
+                  body: ''
                 }}
                 render={this.renderFn}
                 onSubmit={this.handleSubmit}
@@ -222,6 +206,7 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
 
 const Data = adopt<DataProps,  InputProps & WithRouterProps>({
   authUser: <GetAuthUser />,
+  locale: <GetLocale />
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
