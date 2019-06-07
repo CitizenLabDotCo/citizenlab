@@ -21,13 +21,13 @@ const Container = styled.div`
 `;
 
 interface InputProps {
-  assignee: string | undefined;
-  project?: string;
-  phase?: string;
-  topics?: string[];
-  ideaStatus?: string;
+  assignee?: string | null;
+  project?: string | null;
+  phase?: string | null;
+  topics?: string[] | null;
+  ideaStatus?: string | null;
   feedbackNeeded: boolean;
-  searchTerm?: string;
+  searchTerm?: string | null;
 }
 
 interface DataProps {

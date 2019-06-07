@@ -8,7 +8,7 @@ import messages from '../../messages';
 
 type Props  = {
   phases?: IPhaseData[];
-  selectedPhase?: string;
+  selectedPhase?: string | null;
   onChangePhaseFilter?: (string) => void;
 };
 

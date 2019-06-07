@@ -23,8 +23,8 @@ interface DataProps {
 
 interface InputProps {
   handleAssigneeFilterChange: (value: string) => void;
-  projectId: string | undefined;
-  assignee: string | undefined;
+  projectId?: string | null;
+  assignee?: string | null;
 }
 
 interface Props extends InputProps, DataProps {}
