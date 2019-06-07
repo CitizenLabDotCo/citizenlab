@@ -1,6 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { get, isNumber } from 'lodash-es';
+import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -41,9 +41,16 @@ const gapWidth = 35;
 
 const Container = styled.div`
   width: 100%;
+  max-width: 1345px;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+
+  @media (max-width: 1400px) {
+    max-width: 1015px;
+  }
 `;
 
 const MobileFilterButton = styled(Button)``;
@@ -284,7 +291,7 @@ class IdeaCards extends PureComponent<Props, State> {
     showViewToggle: false
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       selectedView: (props.defaultView || 'card'),

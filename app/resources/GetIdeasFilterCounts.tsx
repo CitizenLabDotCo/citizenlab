@@ -39,17 +39,12 @@ export default class GetIdeasFilterCounts extends React.Component<Props, State> 
         distinctUntilChanged((prev, next) => isEqual(prev, next)),
         switchMap((queryParameters) => {
           if (queryParameters) {
-            console.log('queryParameters');
-            console.log(queryParameters);
             return ideasFilterCountsStream({ queryParameters }).observable;
           }
 
           return of(null);
         })
       ).subscribe((ideasFilterCounts) => {
-        console.log('ideasFilterCounts:');
-        console.log(ideasFilterCounts);
-
         this.setState({
           ideasFilterCounts: (!isNilOrError(ideasFilterCounts) ? ideasFilterCounts : null),
         });
