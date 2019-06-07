@@ -34,7 +34,7 @@ Rails.application.routes.draw do
       end
 
       resources :ideas, 
-        concerns: [:votable, :spam_reportable, :post, :post], 
+        concerns: [:votable, :spam_reportable, :post], 
         defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
         
         resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
@@ -47,7 +47,7 @@ Rails.application.routes.draw do
       end
 
       resources :initiatives, 
-        concerns: [:votable, :spam_reportable, :post, :post], 
+        concerns: [:votable, :spam_reportable, :post], 
         defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
 
         resources :images, defaults: {container_class: Initiative, image_class: InitiativeImage}
