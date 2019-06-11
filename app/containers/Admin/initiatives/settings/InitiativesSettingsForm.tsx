@@ -20,6 +20,8 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc, Locale } from 'typings';
 import messages from '../messages';
+import Warning from 'components/UI/Warning';
+import styled from 'styled-components';
 
 export interface FormValues {
   days_limit: number;
@@ -38,6 +40,10 @@ interface Props extends DataProps, InputProps {}
 export interface State {
   selectedLocale: Locale;
 }
+
+const StyledWarning = styled(Warning)`
+  margin-bottom: 7px;
+`;
 
 class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props, FormValues>, State> {
   constructor(props) {
@@ -96,6 +102,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
             <Label>
               <FormattedMessage {...messages.fieldVotingThreshold} />
             </Label>
+            <StyledWarning><FormattedMessage {...messages.warningTresholdSettings}/></StyledWarning>
             <Field
               className="e2e-voting-threshold"
               name="voting_threshold"
@@ -112,6 +119,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
             <Label>
               <FormattedMessage {...messages.fieldDaysLimit} />
             </Label>
+            <StyledWarning><FormattedMessage {...messages.warningTresholdSettings}/></StyledWarning>
             <Field
               className="e2e-days-limit"
               name="days_limit"
