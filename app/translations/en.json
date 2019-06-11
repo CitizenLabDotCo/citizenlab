@@ -1092,6 +1092,7 @@
   "app.containers.IdeaCards.searchPlaceholder": "Search for an idea",
   "app.containers.IdeaCards.selectYourArea": "Select your area",
   "app.containers.IdeaCards.showIdeas": "Show ideas",
+  "app.containers.IdeaCards.showXIdeas": "Show {ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}",
   "app.containers.IdeaCards.sortTitle": "Sorting",
   "app.containers.IdeaCards.statusTitle": "Status",
   "app.containers.IdeaCards.topics": "Topics",
