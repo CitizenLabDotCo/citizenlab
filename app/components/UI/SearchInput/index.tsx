@@ -1,67 +1,84 @@
-import React, { PureComponent } from 'react';
-import { isString, isEmpty } from 'lodash-es';
+import React, { memo, useState, useCallback, useEffect, useMemo, ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
+import { isEmpty } from 'lodash-es';
 
 // components
 import Icon from 'components/UI/Icon';
-import Input from 'components/UI/Input';
-import Label from 'components/UI/Label';
 
 // i18n
+import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
 
-// style
+// styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { transparentize } from 'polished';
 
-const Container = styled.form`
+const Container = styled.div`
   width: 100%;
-  margin: 0;
-  padding: 0;
-  position: relative;
-`;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px #ececec;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 100ms ease-out;
 
-const StyledInput = styled(Input)`
-  width: 100%;
-
-  input {
-    width: 100%;
-    padding-right: 45px;
-
-    &::-ms-clear {
-      display: none;
-    }
+  &.focussed {
+    border-color: ${({ theme }) => theme.colorSecondary};
+    box-shadow: 0px 0px 0px 3px ${({ theme }) => transparentize(0.8, theme.colorSecondary)};
   }
 `;
 
-const StyledIcon = styled(Icon)`
-  width: 100%;
-  height: 100%;
-  fill: ${colors.clIconSecondary};
+const Input = styled.input`
+  flex: 1;
+  height: 52px;
+  color: ${colors.text};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  padding: 0px;
+  padding-left: 20px;
+  margin: 0px;
+  background: transparent;
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+
+  &::placeholder {
+    color: ${colors.secondaryText};
+    font-size: ${fontSizes.base}px;
+    font-weight: 400;
+    opacity: 1;
+  }
+`;
+
+const SearchIcon = styled(Icon)`
+  width: 20px;
+  height: 20px;
+  fill: ${colors.label};
+`;
+
+const CloseIcon = styled(Icon)`
+  width: 14px;
+  height: 14px;
+  fill: ${colors.label};
 `;
 
 const IconWrapper = styled.div`
-  width: 21px;
-  height: 21px;
-  position: absolute;
-  top: 14px;
-  right: 10px;
+  flex:  0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  margin-right: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
 
-  &.clear {
+  &.clickable {
     cursor: pointer;
 
-    ${StyledIcon} {
-      width: 13px;
-      height: 13px;
-    }
-
     &:hover {
-      ${StyledIcon} {
+      ${CloseIcon} {
         fill: #000;
       }
     }
@@ -69,58 +86,87 @@ const IconWrapper = styled.div`
 `;
 
 interface Props {
-  value: string;
-  onChange: (arg: string) => void;
-  onFocus?: () => void;
+  value: string | null;
+  onChange: (arg: string | null) => void;
+  placeholder?: string;
+  ariaLabel?: string;
   className?: string;
 }
 
-type State = {};
+const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placeholder, ariaLabel, className, intl }) => {
 
-class SearchInput extends PureComponent<Props & InjectedIntlProps, State> {
-  handleOnChange = (value: string) => {
-    this.props.onChange(value);
-  }
+  const [focussed, setFocussed] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string | null>(value || null);
 
-  handleOnClick = (event) => {
+  const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
+    const newValue = !isEmpty(event.currentTarget.value) ? event.currentTarget.value : null;
+    setSearchTerm(newValue);
+  }, []);
 
-    const { value } = this.props;
+  const handleOnFocus = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setFocussed(true);
+  }, []);
 
-    if (isString(value) && !isEmpty(value)) {
-      this.props.onChange('');
+  const handleOnBlur = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setFocussed(false);
+  }, []);
+
+  const handleOnKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setSearchTerm(null);
+      setFocussed(false);
     }
-  }
+  }, []);
 
-  handleSubmit = (event) => {
+  const handleOnReset = useCallback((event: MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-  }
+    setSearchTerm(null);
+  }, []);
 
-  render() {
-    const className = this.props['className'];
-    const { value, onFocus } = this.props;
-    const { formatMessage } = this.props.intl;
-    const iconName = (isString(value) && !isEmpty(value) ? 'close2' : 'search');
-    const canClear = (isString(value) && !isEmpty(value));
-    const placeholder = formatMessage(messages.searchPlaceholder);
+  useEffect(() => {
+    if (value !== searchTerm) {
+      setSearchTerm(value);
+    }
+  }, [value]);
 
-    return (
-      <Container className={className} onSubmit={this.handleSubmit}>
-        <Label htmlFor="e2e-ideas-search" hidden value={placeholder} />
-        <StyledInput
-          id="e2e-ideas-search"
-          value={value}
-          type="text"
-          placeholder={placeholder}
-          onChange={this.handleOnChange}
-          onFocus={onFocus}
-        />
-        <IconWrapper onClick={this.handleOnClick} className={canClear ? 'clear' : ''}>
-          <StyledIcon name={iconName} />
-        </IconWrapper>
-      </Container>
-    );
-  }
-}
+  useEffect(() => {
+    // debounce input
+    const handler = setTimeout(() => {
+      onChange(searchTerm);
+    }, 500);
 
-export default injectIntl<Props>(SearchInput);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
+  const searchPlaceholder = useMemo(() => {
+    return (placeholder || intl.formatMessage(messages.searchPlaceholder));
+  }, [placeholder]);
+
+  const searchAriaLabel = useMemo(() => {
+    return (ariaLabel || intl.formatMessage(messages.searchAriaLabel));
+  }, [ariaLabel]);
+
+  return (
+    <Container className={`${className} ${focussed ? 'focussed' : 'blurred'}`}>
+      <Input
+        type="text"
+        aria-label={searchAriaLabel}
+        placeholder={searchPlaceholder}
+        value={searchTerm || ''}
+        onChange={handleOnChange}
+        onFocus={handleOnFocus}
+        onBlur={handleOnBlur}
+        onKeyDown={handleOnKeyDown}
+      />
+      <IconWrapper onClick={handleOnReset} className={!isEmpty(searchTerm) ? 'clickable' : ''}>
+        {isEmpty(searchTerm) ? <SearchIcon name="search2" /> : <CloseIcon name="close3" />}
+      </IconWrapper>
+    </Container>
+  );
+});
+
+export default injectIntl(SearchInput);

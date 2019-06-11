@@ -9,7 +9,7 @@ import IdeasMap from 'components/IdeasMap';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import SelectSort from './SelectSort';
-import SearchFilter from './FiltersSidebar/SearchFilter';
+import SearchInput from 'components/UI/SearchInput';
 import FiltersSidebar from './FiltersSidebar';
 import FiltersSidebarTopBar from './FiltersSidebar/TopBar';
 import FiltersSidebarBottomBar from './FiltersSidebar/BottomBar';
@@ -23,8 +23,9 @@ import GetIdeasFilterCounts, { GetIdeasFilterCountsChildProps } from 'resources/
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // utils
 import { trackEventByName } from 'utils/analytics';
@@ -54,7 +55,7 @@ const Container = styled.div`
   }
 `;
 
-const MobileSearchFilter = styled(SearchFilter)`
+const MobileSearchFilter = styled(SearchInput)`
   margin-bottom: 20px;
 `;
 
@@ -175,17 +176,18 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
 `;
 
 const ClearAllIcon = styled(Icon)`
-  flex:  0 0 10px;
-  width: 10px;
-  height: 10px;
+  flex:  0 0 16px;
+  width: 16px;
+  height: 16px;
   fill: ${colors.label};
   margin-right: 6px;
-  display: none;
+  margin-top: -2px;
 `;
 
 const ClearAllText = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
+  line-height: auto;
 `;
 
 const ClearAllButton = styled.button`
@@ -333,12 +335,12 @@ interface State {
   selectedIdeaFilters: Partial<IQueryParameters>;
 }
 
-class IdeaCards extends PureComponent<Props, State> {
+class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
     showViewToggle: false
   };
 
-  constructor(props: Props) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       selectedView: (props.defaultView || 'card'),
@@ -443,6 +445,8 @@ class IdeaCards extends PureComponent<Props, State> {
   }
 
   filterMessage = <FormattedMessage {...messages.filter} />;
+  searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
+  searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
 
   render() {
     const { selectedView, selectedIdeaFilters, filtersModalOpened } = this.state;
@@ -476,7 +480,12 @@ class IdeaCards extends PureComponent<Props, State> {
               </MobileFiltersSidebarWrapper>
             </FullscreenModal>
 
-            <MobileSearchFilter value={selectedIdeaFilters.search || null} onChange={this.handleSearchOnChange} />
+            <MobileSearchFilter
+              placeholder={this.searchPlaceholder}
+              ariaLabel={this.searchAriaLabel}
+              value={selectedIdeaFilters.search || null}
+              onChange={this.handleSearchOnChange}
+            />
 
             <MobileFilterButton
               style="secondary-outlined"
@@ -587,7 +596,7 @@ class IdeaCards extends PureComponent<Props, State> {
             >
               {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
                 <ClearAllButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnClear}>
-                  <ClearAllIcon name="close4" />
+                  <ClearAllIcon name="close" />
                   <ClearAllText>
                     <FormattedMessage {...messages.clearAll} />
                   </ClearAllText>
@@ -619,7 +628,7 @@ const Data = adopt<DataProps, InputProps>({
   }
 });
 
-const WithFiltersSidebarWithHoCs = withTheme(IdeaCards);
+const WithFiltersSidebarWithHoCs = withTheme(injectIntl(IdeaCards));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
