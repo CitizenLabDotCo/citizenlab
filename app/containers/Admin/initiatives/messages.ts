@@ -25,9 +25,9 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.titleSettingsTab',
     defaultMessage: 'Define how initiatives should work in your context.'
   },
-  subtitleSettingsTab: {
-    id: 'app.containers.Admin.initiatives.subtitleSettingsTab',
-    defaultMessage: 'Be careful as you change these settings, they will apply to all active initiatives.'
+  warningTresholdSettings: {
+    id: 'app.containers.Admin.initiatives.warningTresholdSettings',
+    defaultMessage: 'Changing this will immediately impact all active initiatives!'
   },
   fieldVotingThreshold: {
     id: 'app.containers.Admin.initiatives.fieldVotingThreshold',
