@@ -60,25 +60,25 @@ const Topic = styled.button`
 
   &:not(.selected) {
     &:hover {
-      color: ${({ theme }) => theme.colorMain};
-      border-color: ${({ theme }) => theme.colorMain};
+      color: ${({ theme }) => theme.colorSecondary};
+      border-color: ${({ theme }) => theme.colorSecondary};
     }
   }
 
   &.selected {
     color: #fff;
-    background: ${({ theme }) => theme.colorMain};
-    border-color: ${({ theme }) => theme.colorMain};
+    background: ${({ theme }) => theme.colorSecondary};
+    border-color: ${({ theme }) => theme.colorSecondary};
 
     &:hover {
-      background: ${({ theme }) => darken(0.15, theme.colorMain)};
-      border-color: ${({ theme }) => darken(0.15, theme.colorMain)};
+      background: ${({ theme }) => darken(0.15, theme.colorSecondary)};
+      border-color: ${({ theme }) => darken(0.15, theme.colorSecondary)};
     }
   }
 `;
 
 interface InputProps {
-  selectedTopicIds: string[] | null;
+  selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
   className?: string;
 }

@@ -109,6 +109,10 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.showIdeas',
     defaultMessage: 'Show ideas',
   },
+  showXIdeas: {
+    id: 'app.containers.IdeaCards.showXIdeas',
+    defaultMessage: 'Show {ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+  },
   clearAll: {
     id: 'app.containers.IdeaCards.clearAll',
     defaultMessage: 'Clear all',

@@ -52,7 +52,9 @@ const Center = styled.div`
 const Right = styled.div``;
 
 const CloseIcon = styled(Icon)`
-  height: 14px;
+  flex:  0 0 12px;
+  width: 12px;
+  height: 12px;
   fill: ${colors.label};
   display: flex;
   align-items: center;
@@ -61,8 +63,8 @@ const CloseIcon = styled(Icon)`
 `;
 
 const CloseButton = styled.button`
-  width: 45px;
-  height: 45px;
+  width: 41px;
+  height: 41px;
   display: flex;
   align-items: center;
   justify-content: center;
