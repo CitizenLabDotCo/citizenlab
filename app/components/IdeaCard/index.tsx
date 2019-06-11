@@ -412,7 +412,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => {
-    const ideaImageData = get(idea, 'relationships.idea_images.data');
+    const ideaImageData = !isNilOrError(idea) ? get(idea, 'relationships.idea_images.data') : null;
     const ideaImageImage = Array.isArray(ideaImageData) && ideaImageData.length > 0
       ? ideaImageData[0]
       : null;
