@@ -32,6 +32,10 @@ import { darken, lighten } from 'polished';
 const Container = styled.div`
   display: flex;
   align-items: center;
+
+  ${media.smallerThanMinTablet`
+    margin-right: 5px;
+  `}
 `;
 
 const UpvoteIcon = styled(Icon)`
