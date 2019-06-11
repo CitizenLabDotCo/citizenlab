@@ -1,0 +1,3 @@
+SELECT id, title_multiloc, body_multiloc, publication_status, published_at, author_id, author_name, created_at, updated_at, upvotes_count, location_point, location_description, comments_count, slug, official_feedbacks_count FROM Ideas
+UNION ALL
+SELECT id, title_multiloc, body_multiloc, publication_status, published_at, author_id, author_name, created_at, updated_at, upvotes_count, location_point, location_description, comments_count, slug, official_feedbacks_count FROM Initiatives;
