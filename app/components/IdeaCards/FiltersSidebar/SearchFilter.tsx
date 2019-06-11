@@ -26,8 +26,8 @@ const Container = styled.div`
   transition: box-shadow 100ms ease-out;
 
   &.focussed {
-    border-color: ${({ theme }) => theme.colorMain};
-    box-shadow: 0px 0px 0px 3px ${({ theme }) => transparentize(0.8, theme.colorMain)};
+    border-color: ${({ theme }) => theme.colorSecondary};
+    box-shadow: 0px 0px 0px 3px ${({ theme }) => transparentize(0.8, theme.colorSecondary)};
   }
 `;
 
@@ -87,7 +87,7 @@ const IconWrapper = styled.div`
 `;
 
 interface Props {
-  value: string | null;
+  value?: string | null;
   onChange: (arg: string | null) => void;
   className?: string;
 }
@@ -95,7 +95,7 @@ interface Props {
 const SearchFilter = memo<Props & InjectedIntlProps>(({ value, onChange, className, intl }) => {
 
   const [focussed, setFocussed] = useState(false);
-  const [searchTerm, setSearchTerm] = useState<string | null>(value);
+  const [searchTerm, setSearchTerm] = useState<string | null>(value || null);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {

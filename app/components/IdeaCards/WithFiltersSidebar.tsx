@@ -9,7 +9,8 @@ import IdeasMap from 'components/IdeasMap';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import SelectSort from './SelectSort';
-import FiltersSidebar, { IIdeaFilters } from './FiltersSidebar';
+import SearchFilter from './FiltersSidebar/SearchFilter';
+import FiltersSidebar from './FiltersSidebar';
 import FiltersSidebarTopBar from './FiltersSidebar/TopBar';
 import FiltersSidebarBottomBar from './FiltersSidebar/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
@@ -17,7 +18,7 @@ import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
 
 // resources
-import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
+import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps, IQueryParameters } from 'resources/GetIdeas';
 import GetIdeasFilterCounts, { GetIdeasFilterCountsChildProps } from 'resources/GetIdeasFilterCounts';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
@@ -53,6 +54,10 @@ const Container = styled.div`
   }
 `;
 
+const MobileSearchFilter = styled(SearchFilter)`
+  margin-bottom: 20px;
+`;
+
 const MobileFilterButton = styled(Button)``;
 
 const MobileFiltersSidebarWrapper = styled.div`
@@ -76,6 +81,8 @@ const Loading = styled.div`
 
 const EmptyContainer = styled.div`
   width: 100%;
+  height: 100%;
+  max-height: calc(100vh - 265px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -84,22 +91,24 @@ const EmptyContainer = styled.div`
   padding-top: 100px;
   padding-bottom: 100px;
 
-  ${media.biggerThanMinTablet`
-    max-height: calc(100vh - 265px);
+  ${media.smallerThanMinTablet`
+    height: 150px;
+    max-height: auto;
+    padding: 0px;
   `}
 `;
 
 const IdeaIcon = styled(Icon)`
-  flex: 0 0 43px;
-  width: 43px;
-  height: 43px;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
   fill: ${colors.label};
 `;
 
 const EmptyMessage = styled.div`
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 15px;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-top: 12px;
   margin-bottom: 30px;
 `;
 
@@ -284,6 +293,7 @@ interface Props extends InputProps, DataProps {
 interface State {
   selectedView: 'card' | 'map';
   filtersModalOpened: boolean;
+  selectedIdeaFilters: Partial<IQueryParameters>;
 }
 
 class IdeaCards extends PureComponent<Props, State> {
@@ -295,11 +305,20 @@ class IdeaCards extends PureComponent<Props, State> {
     super(props);
     this.state = {
       selectedView: (props.defaultView || 'card'),
-      filtersModalOpened: false
+      filtersModalOpened: false,
+      selectedIdeaFilters: !isNilOrError(props.ideas) ? props.ideas.queryParameters : {}
     };
   }
 
   componentDidUpdate(prevProps: Props) {
+    const oldQueryParameters = get(prevProps.ideas, 'queryParameters', null);
+    const newQueryParameters = get(this.props.ideas, 'queryParameters', null);
+    const { ideas } = this.props;
+
+    if (newQueryParameters !== oldQueryParameters) {
+      this.setState({ selectedIdeaFilters: !isNilOrError(ideas) ? ideas.queryParameters : {} });
+    }
+
     if (this.props.phaseId !== prevProps.phaseId) {
       this.setState({ selectedView: this.props.defaultView || 'card' });
     }
@@ -325,13 +344,40 @@ class IdeaCards extends PureComponent<Props, State> {
     this.props.ideas.onChangeSorting(sort);
   }
 
-  handleIdeaFiltersOnApply = (ideaFilters: IIdeaFilters) => {
-    this.props.ideas.onIdeaFiltering(ideaFilters);
+  handleSearchOnChange = (searchTerm: string) => {
+    this.props.ideas.onChangeSearchTerm(searchTerm);
+  }
+
+  handleIdeaFiltersOnChange = (newSelectedIdeaFilters: Partial<IQueryParameters>) => {
+    this.setState((state) => {
+      const selectedIdeaFilters = {
+        ...state.selectedIdeaFilters,
+        ...newSelectedIdeaFilters
+      };
+
+      this.props.ideas.onIdeaFiltering(selectedIdeaFilters);
+
+      return { selectedIdeaFilters };
+    });
+  }
+
+  handleMobileIdeaFiltersOnChange = (newSelectedIdeaFilters: Partial<IQueryParameters>) => {
+    this.setState(({ selectedIdeaFilters }) => ({
+      selectedIdeaFilters: {
+        ...selectedIdeaFilters,
+        ...newSelectedIdeaFilters
+      }
+    }));
+  }
+
+  handleIdeaFiltersOnApply = () => {
+    this.props.ideas.onIdeaFiltering(this.state.selectedIdeaFilters);
     this.closeFiltersModal();
   }
 
   handleIdeaFiltersOnClose = () => {
     this.closeFiltersModal();
+    this.setState({ selectedIdeaFilters: !isNilOrError(this.props.ideas) ? this.props.ideas.queryParameters : {} });
   }
 
   selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
@@ -343,25 +389,9 @@ class IdeaCards extends PureComponent<Props, State> {
   filterMessage = <FormattedMessage {...messages.filter} />;
 
   render() {
-    const { selectedView, filtersModalOpened } = this.state;
-    const {
-      participationMethod,
-      participationContextId,
-      participationContextType,
-      ideas,
-      ideasFilterCounts,
-      windowSize,
-      className,
-      theme,
-      showViewToggle
-    } = this.props;
-    const {
-      queryParameters,
-      ideasList,
-      hasMore,
-      querying,
-      loadingMore
-    } = ideas;
+    const { selectedView, selectedIdeaFilters, filtersModalOpened } = this.state;
+    const { participationMethod, participationContextId, participationContextType, ideas, ideasFilterCounts, windowSize, className, theme, showViewToggle } = this.props;
+    const { queryParameters, ideasList, hasMore, querying, loadingMore } = ideas;
     const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
@@ -378,22 +408,27 @@ class IdeaCards extends PureComponent<Props, State> {
               url="/ideas/filters/"
               animateInOut={true}
               topBar={<FiltersSidebarTopBar />}
-              bottomBar={<FiltersSidebarBottomBar />}
+              bottomBar={<FiltersSidebarBottomBar selectedIdeaFilters={selectedIdeaFilters} />}
             >
               <MobileFiltersSidebarWrapper>
                 <StyledFiltersSidebar
-                  queryParameters={queryParameters}
+                  selectedIdeaFilters={selectedIdeaFilters}
+                  onChange={this.handleMobileIdeaFiltersOnChange}
                   onApply={this.handleIdeaFiltersOnApply}
                   onClose={this.handleIdeaFiltersOnClose}
                 />
               </MobileFiltersSidebarWrapper>
             </FullscreenModal>
 
+            <MobileSearchFilter onChange={this.handleSearchOnChange} />
+
             <MobileFilterButton
               style="secondary-outlined"
               onClick={this.openFiltersModal}
               icon="filter"
               text={this.filterMessage}
+              borderColor="#ccc"
+              borderHoverColor="#999"
             />
           </>
         }
@@ -412,6 +447,7 @@ class IdeaCards extends PureComponent<Props, State> {
                 </ViewButtons>
               </FeatureFlag>
             }
+
             {!isNilOrError(ideasFilterCounts) &&
               <IdeasCount>
                 <FormattedMessage {...messages.xIdeas} values={{ ideasCount: ideasFilterCounts.total }} />
@@ -448,7 +484,6 @@ class IdeaCards extends PureComponent<Props, State> {
               <Footer>
                 <ShowMoreButton
                   onClick={this.loadMore}
-                  size="1"
                   style="secondary"
                   text={<FormattedMessage {...messages.showMore} />}
                   processing={loadingMore}
@@ -495,9 +530,8 @@ class IdeaCards extends PureComponent<Props, State> {
               filterColumnWidth={filterColumnWidth}
             >
               <FiltersSidebar
-                queryParameters={queryParameters}
-                onChange={this.handleIdeaFiltersOnApply}
-                onClose={this.handleIdeaFiltersOnClose}
+                selectedIdeaFilters={selectedIdeaFilters}
+                onChange={this.handleIdeaFiltersOnChange}
               />
             </ContentRight>
           }
@@ -510,7 +544,15 @@ class IdeaCards extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize debounce={50} />,
   ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
-  ideasFilterCounts: ({ ideas, render }) => <GetIdeasFilterCounts queryParameters={get(ideas, 'queryParameters', null)}>{render}</GetIdeasFilterCounts>
+  ideasFilterCounts: ({ ideas, render }) => {
+    const queryParameters = {
+      ...!isNilOrError(ideas) ? ideas.queryParameters : {},
+      'page[number]': 1,
+      'page[size]': 5000
+    };
+
+    return <GetIdeasFilterCounts queryParameters={queryParameters}>{render}</GetIdeasFilterCounts>;
+  }
 });
 
 const WithFiltersSidebarWithHoCs = withTheme(IdeaCards);

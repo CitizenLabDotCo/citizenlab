@@ -1,6 +1,6 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { capitalize, omit, get } from 'lodash-es';
+import { capitalize, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -78,10 +78,10 @@ const Status = styled.button`
 
   &.selected {
     color: #fff;
-    background: ${({ theme }) => theme.colorMain};
+    background: ${({ theme }) => theme.colorSecondary};
 
     &:hover {
-      background: ${({ theme }) => darken(0.15, theme.colorMain)};
+      background: ${({ theme }) => darken(0.15, theme.colorSecondary)};
     }
 
     ${Count} {
@@ -91,14 +91,15 @@ const Status = styled.button`
 `;
 
 const AllStatus = styled(Status)`
+  /*
   ${media.smallerThanMaxTablet`
     display: none;
   `}
+  */
 `;
 
 interface InputProps {
-  selectedStatusId: string | null;
-  queryParameters: IQueryParameters;
+  selectedStatusId: string | null | undefined;
   onChange: (arg: string | null) => void;
   className?: string;
 }
@@ -171,16 +172,16 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, ideasFilterC
   return null;
 });
 
+const queryParameters = {
+  'page[number]': 1,
+  'page[size]': 5000,
+  project_publication_status: 'published',
+  publication_status: 'published'
+} as Partial<IQueryParameters>;
+
 const Data = adopt<DataProps, InputProps>({
   ideaStatuses: <GetIdeaStatuses/>,
-  ideasFilterCounts: ({ queryParameters, render }) => {
-    const modifiedQueryParameters = {
-      ...omit(queryParameters, ['page[number]', 'idea_status']),
-      'page[size]': queryParameters['page[number]'] * queryParameters['page[size]']
-    };
-
-    return <GetIdeasFilterCounts queryParameters={modifiedQueryParameters}>{render}</GetIdeasFilterCounts>;
-  }
+  ideasFilterCounts: <GetIdeasFilterCounts queryParameters={queryParameters} />
 });
 
 export default (inputProps: InputProps) => (

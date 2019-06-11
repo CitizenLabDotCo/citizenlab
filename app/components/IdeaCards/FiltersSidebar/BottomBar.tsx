@@ -1,4 +1,6 @@
 import React, { memo, useCallback } from 'react';
+import { isNumber } from 'lodash-es';
+import { adopt } from 'react-adopt';
 
 // components
 import Button from 'components/UI/Button';
@@ -10,27 +12,41 @@ import messages from '../messages';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
+// resources
+import GetIdeasFilterCounts, { GetIdeasFilterCountsChildProps } from 'resources/GetIdeasFilterCounts';
+
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
+// typings
+import { IQueryParameters } from 'resources/GetIdeas';
+
 const Container = styled.div`
   height: ${props => props.theme.mobileTopBarHeight}px;
-  background: #fff;
-  border-top: solid 1px ${colors.separation};
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: 40px;
+  background: #fff;
+  border-top: solid 1px ${colors.separation};
 `;
 
-interface Props {
+interface InputProps {
+  selectedIdeaFilters: Partial<IQueryParameters>;
   className?: string;
 }
 
-const BottomBar = memo<Props>(({ className }) => {
+interface DataProps {
+  ideasFilterCounts: GetIdeasFilterCountsChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+const BottomBar = memo<Props>(({ selectedIdeaFilters, ideasFilterCounts, className }) => {
+
+  console.log('selectedIdeaFilters:');
+  console.log(selectedIdeaFilters);
 
   const onApplyFilters = useCallback(() => {
     eventEmitter.emit('IdeaFiltersBottomBar', 'applyIdeaFilters', null);
@@ -39,10 +55,22 @@ const BottomBar = memo<Props>(({ className }) => {
   return (
     <Container className={className}>
       <Button onClick={onApplyFilters} fullWidth={true}>
-      <FormattedMessage {...messages.showIdeas} />
+        {(ideasFilterCounts && isNumber(ideasFilterCounts.total)) ? (
+          <FormattedMessage {...messages.showXIdeas} values={{ ideasCount: ideasFilterCounts.total}} />
+        ) : (
+          <FormattedMessage {...messages.showIdeas} />
+        )}
       </Button>
     </Container>
   );
 });
 
-export default BottomBar;
+const Data = adopt<DataProps, InputProps>({
+  ideasFilterCounts: ({ selectedIdeaFilters, render }) => <GetIdeasFilterCounts queryParameters={selectedIdeaFilters}>{render}</GetIdeasFilterCounts>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <BottomBar {...inputProps} {...dataProps} />}
+  </Data>
+);
