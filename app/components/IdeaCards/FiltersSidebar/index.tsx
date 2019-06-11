@@ -51,7 +51,6 @@ const FiltersSidebar = memo<Props>(({ selectedIdeaFilters, className, onApply, o
 
       eventEmitter.observeEvent('clearIdeaFilters').subscribe(() => {
         onChange({
-          search: null,
           idea_status: null,
           areas: null,
           topics: null

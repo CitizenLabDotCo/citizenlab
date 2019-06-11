@@ -171,6 +171,43 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   justify-content: flex-start;
   align-items: stretch;
   margin-left: ${gapWidth}px;
+  position: relative;
+`;
+
+const ClearAllIcon = styled(Icon)`
+  flex:  0 0 10px;
+  width: 10px;
+  height: 10px;
+  fill: ${colors.label};
+  margin-right: 6px;
+  display: none;
+`;
+
+const ClearAllText = styled.span`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+`;
+
+const ClearAllButton = styled.button`
+  height: 32px;
+  position: absolute;
+  top: -46px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+
+  &:hover {
+    ${ClearAllIcon} {
+      fill: #000;
+    }
+
+    ${ClearAllText} {
+      color: #000;
+    }
+  }
 `;
 
 const Spacer = styled.div`
@@ -347,6 +384,22 @@ class IdeaCards extends PureComponent<Props, State> {
     this.props.ideas.onChangeSearchTerm(searchTerm);
   }
 
+  handleIdeaFiltersOnClear = () => {
+    this.setState((state) => {
+      const selectedIdeaFilters = {
+        ...state.selectedIdeaFilters,
+        search: null,
+        idea_status: null,
+        areas: null,
+        topics: null
+      };
+
+      this.props.ideas.onIdeaFiltering(selectedIdeaFilters);
+
+      return { selectedIdeaFilters };
+    });
+  }
+
   handleIdeaFiltersOnChange = (newSelectedIdeaFilters: Partial<IQueryParameters>) => {
     this.setState((state) => {
       const selectedIdeaFilters = {
@@ -385,6 +438,10 @@ class IdeaCards extends PureComponent<Props, State> {
     this.setState({ selectedView });
   }
 
+  removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  }
+
   filterMessage = <FormattedMessage {...messages.filter} />;
 
   render() {
@@ -396,8 +453,6 @@ class IdeaCards extends PureComponent<Props, State> {
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 300 : 352);
-
-    console.log(ideasFilterCounts);
 
     return (
       <Container id="e2e-ideas-container" className={className}>
@@ -530,6 +585,14 @@ class IdeaCards extends PureComponent<Props, State> {
               id="e2e-ideas-filters"
               filterColumnWidth={filterColumnWidth}
             >
+              {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
+                <ClearAllButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnClear}>
+                  <ClearAllIcon name="close4" />
+                  <ClearAllText>
+                    <FormattedMessage {...messages.clearAll} />
+                  </ClearAllText>
+                </ClearAllButton>
+              }
               <FiltersSidebar
                 selectedIdeaFilters={selectedIdeaFilters}
                 onChange={this.handleIdeaFiltersOnChange}
