@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.readMore',
     defaultMessage: 'Read more here.'
   },
-  readMoreLink: {
-    id: 'app.containers.InitiativesIndexPage.readMoreLink',
-    defaultMessage: 'someURL'
-  },
   orgName: {
     id: 'app.containers.InitiativesIndexPage.orgName',
     defaultMessage: '{orgName}'
