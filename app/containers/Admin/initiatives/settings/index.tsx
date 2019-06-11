@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { updateTenant } from 'services/tenant';
 
 import InitiativesSettingsForm, { FormValues } from './InitiativesSettingsForm';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -71,9 +71,6 @@ class InitiativesSettingsPage extends PureComponent<DataProps> {
           <SectionTitle>
             <FormattedMessage {...messages.titleSettingsTab} />
           </SectionTitle>
-          <SectionSubtitle>
-            <FormattedMessage {...messages.subtitleSettingsTab} />
-          </SectionSubtitle>
 
           <Formik
             initialValues={this.initialValues()}
