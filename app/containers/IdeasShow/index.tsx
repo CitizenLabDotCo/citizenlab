@@ -49,6 +49,7 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 
 // services
 import { updateIdea } from 'services/ideas';
@@ -332,6 +333,7 @@ interface DataProps {
   ideaFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
+  officialFeedbacks: GetOfficialFeedbacksChildProps;
 }
 
 interface InputProps {
@@ -418,7 +420,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     const { opened, loaded, actionInfos } = prevState;
-    const { idea, ideaImages, project, phases } = nextProps;
+    const { idea, ideaImages, project, phases, officialFeedbacks } = nextProps;
     let stateToUpdate: Partial<State> = {};
 
     if (!opened && !isNilOrError(idea)) {
@@ -428,7 +430,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       };
     }
 
-    if (!loaded && !isNilOrError(idea) && !isUndefined(ideaImages) && !isNilOrError(project)) {
+    if (!loaded && !isNilOrError(idea) && !isUndefined(ideaImages) && !isNilOrError(project) && !isUndefined(officialFeedbacks.officialFeedbacksList)) {
       stateToUpdate = {
         ...stateToUpdate,
         loaded: true
@@ -787,7 +789,8 @@ const Data = adopt<DataProps, InputProps>({
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
-  phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>
+  phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>,
+  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks ideaId={ideaId}>{render}</GetOfficialFeedbacks>
 });
 
 export default (inputProps: InputProps) => (

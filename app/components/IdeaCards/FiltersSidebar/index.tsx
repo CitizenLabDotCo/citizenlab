@@ -79,7 +79,7 @@ const FiltersSidebar = memo<Props>(({ selectedIdeaFilters, className, onApply, o
 
   return (
     <Container className={className}>
-      <StyledSearchFilter value={selectedIdeaFilters.search} onChange={handleSearchOnChange} />
+      <StyledSearchFilter value={selectedIdeaFilters.search || null} onChange={handleSearchOnChange} />
       <StyledStatusFilter selectedStatusId={selectedIdeaFilters.idea_status} onChange={handleStatusOnChange} />
       <StyledTopicsFilter selectedTopicIds={selectedIdeaFilters.topics} onChange={handleTopicsOnChange} />
     </Container>

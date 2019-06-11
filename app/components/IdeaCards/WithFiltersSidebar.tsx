@@ -476,7 +476,7 @@ class IdeaCards extends PureComponent<Props, State> {
               </MobileFiltersSidebarWrapper>
             </FullscreenModal>
 
-            <MobileSearchFilter value={selectedIdeaFilters.search} onChange={this.handleSearchOnChange} />
+            <MobileSearchFilter value={selectedIdeaFilters.search || null} onChange={this.handleSearchOnChange} />
 
             <MobileFilterButton
               style="secondary-outlined"
