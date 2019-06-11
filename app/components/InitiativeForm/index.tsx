@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Form, FormikErrors, InjectedFormikProps, Field } from 'formik';
 import { isEmpty } from 'lodash-es';
-import { FormSection, FormSectionTitle, FormLabel } from './FormComponents';
+import { FormSection, FormSectionTitle, FormLabel } from 'components/UI/FormComponents';
 import FormikInput from 'components/UI/FormikInput';
 
 import messages from './messages';

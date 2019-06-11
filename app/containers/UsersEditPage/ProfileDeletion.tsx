@@ -17,6 +17,7 @@ import messages from './messages';
 // utils
 import LoadableModal from 'components/Loadable/Modal';
 import DeletionDialog from './DeletionDialog';
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 
 const Row = styled.div`
   display: flex;
@@ -55,9 +56,8 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <>
-      <ProfileSection>
-        <SectionTitle><FormattedMessage {...messages.deletionSection} /></SectionTitle>
-        <SectionSubtitle><FormattedMessage {...messages.deletionSubtitle} /></SectionSubtitle>
+      <FormSection>
+        <FormSectionTitle message={messages.deletionSection} subtitleMessage={messages.deletionSubtitle}/>
         <Row>
           <Button
             style="delete"
@@ -70,7 +70,7 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
             <FormattedMessage {...messages.deleteMyAccount} />
           </Button>
         </Row>
-      </ProfileSection>
+      </FormSection>
       <LoadableModal
         opened={dialogOpened}
         close={this.onCloseDialog}
