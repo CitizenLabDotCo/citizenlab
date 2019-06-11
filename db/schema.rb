@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_05_125206) do
+ActiveRecord::Schema.define(version: 2019_06_07_132326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -919,6 +919,42 @@ ActiveRecord::Schema.define(version: 2019_06_05_125206) do
                      FROM phases
                     WHERE ((phases.start_at <= (now())::date) AND (phases.end_at >= (now())::date))) active_phases ON ((active_phases.id = joined_phases.id)))
             GROUP BY projects.id) sub;
+  SQL
+
+  create_view "union_posts",  sql_definition: <<-SQL
+      SELECT ideas.id,
+      ideas.title_multiloc,
+      ideas.body_multiloc,
+      ideas.publication_status,
+      ideas.published_at,
+      ideas.author_id,
+      ideas.author_name,
+      ideas.created_at,
+      ideas.updated_at,
+      ideas.upvotes_count,
+      ideas.location_point,
+      ideas.location_description,
+      ideas.comments_count,
+      ideas.slug,
+      ideas.official_feedbacks_count
+     FROM ideas
+  UNION ALL
+   SELECT initiatives.id,
+      initiatives.title_multiloc,
+      initiatives.body_multiloc,
+      initiatives.publication_status,
+      initiatives.published_at,
+      initiatives.author_id,
+      initiatives.author_name,
+      initiatives.created_at,
+      initiatives.updated_at,
+      initiatives.upvotes_count,
+      initiatives.location_point,
+      initiatives.location_description,
+      initiatives.comments_count,
+      initiatives.slug,
+      initiatives.official_feedbacks_count
+     FROM initiatives;
   SQL
 
 end
