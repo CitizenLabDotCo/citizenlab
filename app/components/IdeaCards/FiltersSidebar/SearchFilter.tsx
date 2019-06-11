@@ -1,5 +1,4 @@
 import React, { memo, useState, useCallback, useEffect, ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
-import useDebounce from 'hooks/useDebounce';
 import { isEmpty } from 'lodash-es';
 
 // components
@@ -91,7 +90,7 @@ const IconWrapper = styled.div`
 `;
 
 interface Props {
-  value?: string | null;
+  value: string | null;
   onChange: (arg: string | null) => void;
   className?: string;
 }
@@ -99,8 +98,7 @@ interface Props {
 const SearchFilter = memo<Props & InjectedIntlProps>(({ value, onChange, className, intl }) => {
 
   const [focussed, setFocussed] = useState(false);
-  const [searchTerm, setSearchTerm] = useState<string | null | undefined>(value || null);
-  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const [searchTerm, setSearchTerm] = useState<string | null>(value || null);
 
   const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -132,12 +130,18 @@ const SearchFilter = memo<Props & InjectedIntlProps>(({ value, onChange, classNa
   }, []);
 
   useEffect(() => {
-    onChange(debouncedSearchTerm);
-  }, [debouncedSearchTerm]);
+    if (value !== searchTerm) {
+      setSearchTerm(value);
+    }
+  }, [value]);
 
   useEffect(() => {
-    setSearchTerm(value);
-  }, [value]);
+    const handler = setTimeout(() => {
+      onChange(searchTerm);
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
 
   const ariaLabel = intl.formatMessage(messages.searchAriaLabel);
   const placeholder = intl.formatMessage(messages.searchPlaceholder);
