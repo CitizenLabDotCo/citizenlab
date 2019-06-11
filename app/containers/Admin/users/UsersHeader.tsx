@@ -86,8 +86,9 @@ const Buttons = styled.div`
 `;
 
 const StyledSearchInput = styled(SearchInput)`
-  flex: 0 0 225px;
-  width: 225px;
+  flex: 0 0 250px;
+  width: 250px;
+  margin-top: -10px;
 `;
 
 interface Props {
@@ -122,10 +123,6 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
     this.debounceSearch(newValue);
   }
 
-  focusSearch = () => {
-    this.props.trackSearchInput();
-  }
-
   render() {
     if (this.props.title) {
       return (
@@ -139,7 +136,7 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
             </Buttons>
           </TextAndButtons>
           <Spacer />
-          <StyledSearchInput value={this.state.searchValue} onChange={this.handleSearchChange} onFocus={this.focusSearch} />
+          <StyledSearchInput value={this.state.searchValue} onChange={this.handleSearchChange} />
         </OnlyRow>
       );
     }

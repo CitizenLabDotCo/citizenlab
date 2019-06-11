@@ -18,8 +18,9 @@ import FeatureFlag from 'components/FeatureFlag';
 import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // utils
 import { trackEventByName } from 'utils/analytics';
@@ -80,11 +81,10 @@ const LeftFilterArea = styled(FilterArea)`
   &.hidden {
     display: none;
   }
+
   ${media.smallerThanMaxTablet`
-    margin-bottom: 22px;
-  `}
-  ${media.largePhone`
     width: 100%;
+    margin-bottom: 22px;
   `}
 `;
 
@@ -120,13 +120,9 @@ const StyledSearchInput = styled(SearchInput)`
   width: 300px;
   margin-right: 30px;
 
-  input {
-    font-size: ${fontSizes.medium}px;
-    font-weight: 400;
-  }
-
-  ${media.largePhone`
+  ${media.smallerThanMaxTablet`
     width: 100%;
+    margin-right: 0px;
   `}
 `;
 
@@ -285,12 +281,12 @@ interface State {
   selectedView: 'card' | 'map';
 }
 
-class WithoutFiltersSidebar extends PureComponent<Props, State> {
+class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
     showViewToggle: false
   };
 
-  constructor(props) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       selectedView: (props.defaultView || 'card')
@@ -330,6 +326,9 @@ class WithoutFiltersSidebar extends PureComponent<Props, State> {
     this.setState({ selectedView });
   }
 
+  searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
+  searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
+
   render() {
     const { selectedView } = this.state;
     const {
@@ -344,7 +343,6 @@ class WithoutFiltersSidebar extends PureComponent<Props, State> {
     } = this.props;
     const {
       queryParameters,
-      searchValue,
       ideasList,
       hasMore,
       querying,
@@ -358,7 +356,13 @@ class WithoutFiltersSidebar extends PureComponent<Props, State> {
       <Container id="e2e-ideas-container" className={className}>
         <FiltersArea id="e2e-ideas-filters" className={`${showMapView && 'mapView'}`}>
           <LeftFilterArea className={`${showMapView && 'hidden'}`}>
-            <StyledSearchInput value={(searchValue || '')} onChange={this.handleSearchOnChange} className="e2e-search-ideas-input"/>
+            <StyledSearchInput
+              className="e2e-search-ideas-input"
+              placeholder={this.searchPlaceholder}
+              ariaLabel={this.searchAriaLabel}
+              value={queryParameters.search || null}
+              onChange={this.handleSearchOnChange}
+            />
           </LeftFilterArea>
 
           <RightFilterArea>
@@ -448,7 +452,7 @@ const Data = adopt<DataProps, InputProps>({
   ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>
 });
 
-const WithoutFiltersSidebarWithHoCs = withTheme(WithoutFiltersSidebar);
+const WithoutFiltersSidebarWithHoCs = withTheme(injectIntl(WithoutFiltersSidebar));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

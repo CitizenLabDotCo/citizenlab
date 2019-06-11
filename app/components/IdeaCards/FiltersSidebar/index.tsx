@@ -1,12 +1,17 @@
 import React, { memo, useCallback, useEffect } from 'react';
 
 // components
-import SearchFilter from './SearchFilter';
+import SearchInput from 'components/UI/SearchInput';
 import StatusFilter from './StatusFilter';
 import TopicsFilter from './TopicsFilter';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+
+// i18n
+import messages from '../messages';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -17,7 +22,7 @@ import { IQueryParameters } from 'resources/GetIdeas';
 
 const Container = styled.div``;
 
-const StyledSearchFilter = styled(SearchFilter)`
+const StyledSearchInput = styled(SearchInput)`
   margin-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
@@ -41,7 +46,7 @@ interface Props {
   onClose?: () => void;
 }
 
-const FiltersSidebar = memo<Props>(({ selectedIdeaFilters, className, onApply, onChange, onClose }) => {
+const FiltersSidebar = memo<Props & InjectedIntlProps>(({ selectedIdeaFilters, className, onApply, onChange, onClose, intl }) => {
 
   useEffect(() => {
     const subscriptions = [
@@ -77,13 +82,27 @@ const FiltersSidebar = memo<Props>(({ selectedIdeaFilters, className, onApply, o
     onChange({ topics });
   }, []);
 
+  const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
+  const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
+
   return (
     <Container className={className}>
-      <StyledSearchFilter value={selectedIdeaFilters.search || null} onChange={handleSearchOnChange} />
-      <StyledStatusFilter selectedStatusId={selectedIdeaFilters.idea_status} onChange={handleStatusOnChange} />
-      <StyledTopicsFilter selectedTopicIds={selectedIdeaFilters.topics} onChange={handleTopicsOnChange} />
+      <StyledSearchInput
+        placeholder={searchPlaceholder}
+        ariaLabel={searchAriaLabel}
+        value={selectedIdeaFilters.search || null}
+        onChange={handleSearchOnChange}
+      />
+      <StyledStatusFilter
+        selectedStatusId={selectedIdeaFilters.idea_status}
+        onChange={handleStatusOnChange}
+      />
+      <StyledTopicsFilter
+        selectedTopicIds={selectedIdeaFilters.topics}
+        onChange={handleTopicsOnChange}
+      />
     </Container>
   );
 });
 
-export default FiltersSidebar;
+export default injectIntl(FiltersSidebar);
