@@ -7,6 +7,7 @@ import { get } from 'lodash-es';
 // components
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
+import Link from 'utils/cl-router/Link';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -17,7 +18,6 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import FormattedAnchor from 'components/FormattedAnchor';
 import messages from './messages';
 
 // style
@@ -228,9 +228,9 @@ class SignedOutHeader extends PureComponent<Props, State> {
               <ManualTitle>
                 <FormattedMessage {...messages.explanationTitle} />
               </ManualTitle>
-              <FormattedAnchor
-                mainMessage={messages.explanationContent}
-                mainMessageValues={{
+              <FormattedMessage
+                {...messages.explanationContent}
+                values={{
                   constraints: (
                     <Bold>
                       <FormattedMessage
@@ -241,10 +241,9 @@ class SignedOutHeader extends PureComponent<Props, State> {
                         }}
                       />
                     </Bold>
-                  )
+                  ),
+                  link: <Link to="/pages/initiatives"><FormattedMessage {...messages.readMore}/></Link>
                 }}
-                linkTextMessage={messages.readMore}
-                urlMessage={messages.readMoreLink}
               />
             </ManualText>
           </ManualContent>
