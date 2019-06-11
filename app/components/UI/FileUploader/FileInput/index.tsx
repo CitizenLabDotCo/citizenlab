@@ -93,18 +93,18 @@ export default class FileInput extends PureComponent<Props> {
     return (
       <Container className={className}>
         <Input
-          id="project-attachment-uploader"
+          id="file-attachment-uploader"
           onChange={this.onChange}
           onClick={this.onClick}
           type="file"
           ref={this.fileInput}
           accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .sxw, .sxc, .sxi, .sdw, .sdc, .sdd, .csv, .mp3, .mp4, .mkv, .avi"
         />
-        <Label htmlFor="project-attachment-uploader">
+        <Label htmlFor="file-attachment-uploader">
           <StyledIcon name="upload-file" />
           <span
             role="button"
-            aria-controls="project-attachment-uploader"
+            aria-controls="file-attachment-uploader"
             tabIndex={0}
             onKeyPress={this.handleKeyPress}
           >
