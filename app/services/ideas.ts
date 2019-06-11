@@ -34,7 +34,7 @@ export interface IIdeaData {
       data: IRelationship[];
     };
     idea_images: {
-      data: IRelationship[];
+      data: IRelationship[] | null;
     };
     author: {
       data: IRelationship | null;
