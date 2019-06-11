@@ -1092,6 +1092,7 @@
   "app.containers.IdeaCards.searchPlaceholder": "",
   "app.containers.IdeaCards.selectYourArea": "",
   "app.containers.IdeaCards.showIdeas": "",
+  "app.containers.IdeaCards.showXIdeas": "",
   "app.containers.IdeaCards.sortTitle": "Ordenar",
   "app.containers.IdeaCards.statusTitle": "",
   "app.containers.IdeaCards.topics": "Temas",
