@@ -12,7 +12,7 @@ import { injectIntl } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 const Container = styled.div`
@@ -51,6 +51,10 @@ const Input = styled.input`
     font-weight: 400;
     opacity: 1;
   }
+
+  ${media.smallerThanMinTablet`
+    height: 50px;
+  `}
 `;
 
 const SearchIcon = styled(Icon)`
@@ -95,7 +99,7 @@ interface Props {
 const SearchFilter = memo<Props & InjectedIntlProps>(({ value, onChange, className, intl }) => {
 
   const [focussed, setFocussed] = useState(false);
-  const [searchTerm, setSearchTerm] = useState<string | null>(value || null);
+  const [searchTerm, setSearchTerm] = useState<string | null | undefined>(value || null);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -130,6 +134,10 @@ const SearchFilter = memo<Props & InjectedIntlProps>(({ value, onChange, classNa
   useEffect(() => {
     onChange(debouncedSearchTerm);
   }, [debouncedSearchTerm]);
+
+  useEffect(() => {
+    setSearchTerm(value);
+  }, [value]);
 
   const ariaLabel = intl.formatMessage(messages.searchAriaLabel);
   const placeholder = intl.formatMessage(messages.searchPlaceholder);

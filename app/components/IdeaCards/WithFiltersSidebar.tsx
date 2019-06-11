@@ -306,17 +306,16 @@ class IdeaCards extends PureComponent<Props, State> {
     this.state = {
       selectedView: (props.defaultView || 'card'),
       filtersModalOpened: false,
-      selectedIdeaFilters: !isNilOrError(props.ideas) ? props.ideas.queryParameters : {}
+      selectedIdeaFilters: get(props.ideas, 'queryParameters', {})
     };
   }
 
   componentDidUpdate(prevProps: Props) {
     const oldQueryParameters = get(prevProps.ideas, 'queryParameters', null);
     const newQueryParameters = get(this.props.ideas, 'queryParameters', null);
-    const { ideas } = this.props;
 
     if (newQueryParameters !== oldQueryParameters) {
-      this.setState({ selectedIdeaFilters: !isNilOrError(ideas) ? ideas.queryParameters : {} });
+      this.setState({ selectedIdeaFilters: get(this.props.ideas, 'queryParameters', {}) });
     }
 
     if (this.props.phaseId !== prevProps.phaseId) {
@@ -398,6 +397,8 @@ class IdeaCards extends PureComponent<Props, State> {
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 300 : 352);
 
+    console.log(ideasFilterCounts);
+
     return (
       <Container id="e2e-ideas-container" className={className}>
         {!biggerThanLargeTablet &&
@@ -420,7 +421,7 @@ class IdeaCards extends PureComponent<Props, State> {
               </MobileFiltersSidebarWrapper>
             </FullscreenModal>
 
-            <MobileSearchFilter onChange={this.handleSearchOnChange} />
+            <MobileSearchFilter value={selectedIdeaFilters.search} onChange={this.handleSearchOnChange} />
 
             <MobileFilterButton
               style="secondary-outlined"
@@ -546,7 +547,7 @@ const Data = adopt<DataProps, InputProps>({
   ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
   ideasFilterCounts: ({ ideas, render }) => {
     const queryParameters = {
-      ...!isNilOrError(ideas) ? ideas.queryParameters : {},
+      ...get(ideas, 'queryParameters', {}),
       'page[number]': 1,
       'page[size]': 5000
     };
