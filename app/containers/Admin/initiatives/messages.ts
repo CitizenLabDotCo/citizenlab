@@ -39,7 +39,7 @@ export default defineMessages({
   },
   fieldThresholdReachedMessage: {
     id: 'app.containers.Admin.initiatives.fieldThresholdReachedMessage',
-    defaultMessage: 'When threshold is reached'
+    defaultMessage: 'What can people expect when their initiative reach the threshold in time?'
   },
   fieldThresholdReachedMessageInfo: {
     id: 'app.containers.Admin.initiatives.fieldThresholdReachedMessageInfo',
@@ -47,7 +47,7 @@ export default defineMessages({
   },
   fieldEligibilityCriteria: {
     id: 'app.containers.Admin.initiatives.fieldEligibilityCriteria',
-    defaultMessage: 'The initiative should'
+    defaultMessage: 'The criteria for an initiative'
   },
   fieldEligibilityCriteriaInfo: {
     id: 'app.containers.Admin.initiatives.fieldEligibilityCriteriaInfo',
