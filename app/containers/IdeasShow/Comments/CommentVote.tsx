@@ -64,10 +64,6 @@ const UpvoteIconWrapper = styled.button`
       width: 28px;
       border-radius: 50%;
       background: ${colors.clGreen};
-
-      // &:hover {
-      //   background: ${darken(0.1, colors.clGreen)};
-      // }
     }
   }
 `;
