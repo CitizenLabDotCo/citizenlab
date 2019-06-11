@@ -43,10 +43,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const BottomBar = memo<Props>(({ selectedIdeaFilters, ideasFilterCounts, className }) => {
-
-  console.log('selectedIdeaFilters:');
-  console.log(selectedIdeaFilters);
+const BottomBar = memo<Props>(({ ideasFilterCounts, className }) => {
 
   const onApplyFilters = useCallback(() => {
     eventEmitter.emit('IdeaFiltersBottomBar', 'applyIdeaFilters', null);
@@ -66,7 +63,15 @@ const BottomBar = memo<Props>(({ selectedIdeaFilters, ideasFilterCounts, classNa
 });
 
 const Data = adopt<DataProps, InputProps>({
-  ideasFilterCounts: ({ selectedIdeaFilters, render }) => <GetIdeasFilterCounts queryParameters={selectedIdeaFilters}>{render}</GetIdeasFilterCounts>
+  ideasFilterCounts: ({ selectedIdeaFilters, render }) => {
+    const queryParameters = {
+      ...selectedIdeaFilters,
+      'page[number]': 1,
+      'page[size]': 5000
+    };
+
+    return <GetIdeasFilterCounts queryParameters={queryParameters}>{render}</GetIdeasFilterCounts>;
+  }
 });
 
 export default (inputProps: InputProps) => (
