@@ -21,6 +21,7 @@ import Error from 'components/UI/Error';
 import HasPermission from 'components/HasPermission';
 import FileUploader from 'components/UI/FileUploader';
 import FeatureFlag from 'components/FeatureFlag';
+import { FormLabel, FormLabelWithIcon } from 'components/UI/FormComponents';
 
 // services
 import { localeStream } from 'services/locale';
@@ -396,7 +397,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return (
       <Form id="idea-form" className={className}>
         <FormElement name="titleInput">
-          <Label value={<FormattedMessage {...messages.titleLabel} />} htmlFor="title" />
+          <FormLabel labelMessage={messages.titleLabel} htmlFor="title" />
           <Input
             id="title"
             type="text"
@@ -410,7 +411,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         </FormElement>
 
         <FormElement name="descriptionInput">
-          <Label value={<FormattedMessage {...messages.descriptionLabel} />} htmlFor="editor" />
+          <FormLabel labelMessage={messages.descriptionLabel} htmlFor="editor" />
           <QuillEditor
             id="editor"
             noImages
@@ -425,7 +426,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
         {topics && topics.length > 0 &&
           <FormElement>
-            <Label value={<FormattedMessage {...messages.topicsLabel} />} htmlFor="topics" />
+            <FormLabel labelMessage={messages.topicsLabel} htmlFor="topics" />
             <StyledMultipleSelect
               className="e2e-idea-form-topics-multiple-select-box"
               inputId="topics"
@@ -439,11 +440,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         }
 
         <FormElement>
-          <Label value={<FormattedMessage {...messages.locationLabel} />} htmlFor="location" />
-          <label htmlFor="location">
-            <HiddenLabel>
-              <FormattedMessage {...messages.locationLabel} />
-            </HiddenLabel>
+          <FormLabel labelMessage={messages.locationLabel} htmlFor="location" />
             <LocationInput
               id="location"
               className="e2e-idea-form-location-input-field"
@@ -451,13 +448,12 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               placeholder={formatMessage(messages.locationPlaceholder)}
               onChange={this.handleLocationOnChange}
             />
-          </label>
         </FormElement>
 
         <FormElement>
-          <Label value={<FormattedMessage {...messages.imageUploadLabel} />} />
+          <FormLabel labelMessage={messages.imageUploadLabel} />
           <label htmlFor="idea-img-dropzone">
-            <HiddenLabel>
+           <HiddenLabel>
               <FormattedMessage {...messages.imageDropzonePlaceholder} />
             </HiddenLabel>
             <ImagesDropzone
@@ -481,7 +477,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               context={{ projectId }}
             >
               <FormElement>
-                <LabelWithIcon value={<><FormattedMessage {...messages.budgetLabel} values={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }} /><StyledIcon name="admin" /></>} htmlFor="budget" />
+                <FormLabelWithIcon labelMessage={messages.budgetLabel} labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }} htmlFor="budget" iconName="admin" />
                 <Input
                   id="budget"
                   error={budgetError}
@@ -495,14 +491,13 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         }
 
         <FormElement>
-          <Label>
-            <FormattedMessage {...messages.fileUploadLabel} />
-          </Label>
-          <FileUploader
-            onFileAdd={this.handleIdeaFileOnAdd}
-            onFileRemove={this.handleIdeaFileOnRemove}
-            files={ideaFiles}
-          />
+          <FormLabel labelMessage={messages.fileUploadLabel}>
+            <FileUploader
+              onFileAdd={this.handleIdeaFileOnAdd}
+              onFileRemove={this.handleIdeaFileOnRemove}
+              files={ideaFiles}
+            />
+          </FormLabel>
         </FormElement>
       </Form>
     );

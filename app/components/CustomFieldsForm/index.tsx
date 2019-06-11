@@ -12,7 +12,7 @@ import { localeStream } from 'services/locale';
 import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
 // components
-import Label from 'components/UI/Label';
+import { FormLabelValue } from 'components/UI/FormComponents';
 import TextArea from 'components/UI/TextArea';
 import Input from 'components/UI/Input';
 import DateInput from 'components/UI/DateInput';
@@ -32,7 +32,6 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale, IOption } from 'typings';
@@ -41,16 +40,6 @@ const Container = styled.div``;
 
 const InvisibleSubmitButton = styled.button`
   visibility: hidden;
-`;
-
-const Description = styled.div`
-  width: 100%;
-  color: ${colors.text};
-  font-size: ${fontSizes.small}px;
-  line-height: 20px;
-  margin: 0;
-  margin-bottom: 10px;
-  padding: 0;
 `;
 
 interface Props {
@@ -256,10 +245,11 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
 
   CustomCheckbox = (props: FieldProps) => {
     const onChange = () => props.onChange((isBoolean(props.value) ? !props.value : true));
+    const { title } = props.schema;
 
     return (
       <>
-        <Label>{props.schema.title}</Label>
+        {title && <FormLabelValue thin labelValue={title}/>}
         <Checkbox
           value={(isBoolean(props.value) ? props.value : false)}
           onChange={onChange}
@@ -284,16 +274,12 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
     const { id, label, description, rawErrors, children, required } = props;
     const errors: any = uniq(rawErrors);
     if (props.hidden !== true) {
+      const safeDescription = description && get(description, 'props.description') && description.props.description.length > 0;
+      const descriptionJSX = description && <div dangerouslySetInnerHTML={{ __html: description.props.description }} />;
       return (
         <SectionField>
           {(props.schema.type !== 'boolean') &&
-            <>
-              {renderLabel(id, label, required)}
-
-              {description && description.props && description.props.description && description.props.description.length > 0 &&
-                <Description dangerouslySetInnerHTML={{ __html: description.props.description }} />
-              }
-            </>
+            renderLabel(id, label, required, descriptionJSX)
           }
 
           {children}
@@ -362,10 +348,10 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
     );
   }
 }
-function renderLabel(id, label, required) {
+function renderLabel(id, label, required, descriptionJSX) {
   if (label && label.length > 0) {
-    return (
-      <Label htmlFor={id}>
+    const fullLabel = (
+      <>
         {label}
         {!required &&
           <>
@@ -373,7 +359,10 @@ function renderLabel(id, label, required) {
             <FormattedMessage {...messages.optional} />
           </>
         }
-      </Label>
+      </>
+    );
+    return (
+      <FormLabelValue thin htmlFor={id} labelValue={fullLabel} subtextValue={descriptionJSX}/>
     );
   }
   return;

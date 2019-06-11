@@ -35,31 +35,31 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps> {
     } = this.props;
 
   return (
-        <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-          <AuthProviderButtonInner>
-            <Checkbox
-              value={accepted}
-              onChange={onCheck}
-              disableLabelClick={true}
-              label={
-                <FormattedMessage
-                  {...acceptText}
-                  values={{
-                    loginMechanismName: providerName,
-                    tacLink: <Link
-                      target="_blank"
-                      to="/pages/terms-and-conditions"
-                      onClick={this.handleLinkClick}
-                    >
-                      <FormattedMessage {...messages.termsAndConditions} />
-                    </Link>
-                  }}
-                />
-              }
+    <CSSTransition classNames="tac" timeout={timeout} exit={true}>
+      <AuthProviderButtonInner>
+        <Checkbox
+          value={accepted}
+          onChange={onCheck}
+          disableLabelClick={true}
+          label={
+            <FormattedMessage
+              {...acceptText}
+              values={{
+                loginMechanismName: providerName,
+                tacLink: <Link
+                  target="_blank"
+                  to="/pages/terms-and-conditions"
+                  onClick={this.handleLinkClick}
+                >
+                  <FormattedMessage {...messages.termsAndConditions} />
+                </Link>
+              }}
             />
-          </AuthProviderButtonInner>
-        </CSSTransition>
-      );
+          }
+        />
+      </AuthProviderButtonInner>
+    </CSSTransition>
+  );
 
   }
 }
