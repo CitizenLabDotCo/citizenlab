@@ -93,11 +93,14 @@ const TwoColumns = styled.div`
 
 const TipsContainer = styled.div`
   position: relative;
+  margin-left: 25px;
 `;
+
 const StyledTipsBox = styled(TipsBox)`
   position: sticky;
   top: calc(${({ theme }) => theme.menuHeight}px + 50px);
   max-width: 550px;
+  width: 100%;
   padding: 40px 50px;
   ${media.smallerThanMaxTablet`
     padding: 30px 35px;
@@ -109,9 +112,8 @@ const StyledTipsBox = styled(TipsBox)`
   `}
 `;
 
-const FormContainer = styled.div`
+const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
-  margin-right: 25px;
   min-width: 530px;
   height: 900px;
   ${media.smallerThanMaxTablet`
@@ -177,7 +179,7 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
   }
 
   renderFn = (props) => {
-    return <InitiativeForm {...props} />;
+    return <StyledInitiativeForm {...props} />;
   }
 
   render() {
@@ -197,17 +199,15 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
         </Header>
         <ContentContainer mode="page">
           <TwoColumns>
-            <FormContainer>
-              <Formik
-                initialValues={{
-                  title: '',
-                  body: ''
-                }}
-                render={this.renderFn}
-                onSubmit={this.handleSubmit}
-                validate={InitiativeForm.validate}
-              />
-            </FormContainer>
+            <Formik
+              initialValues={{
+                title: '',
+                body: ''
+              }}
+              render={this.renderFn}
+              onSubmit={this.handleSubmit}
+              validate={InitiativeForm.validate}
+            />
             <TipsContainer>
               <StyledTipsBox />
             </TipsContainer>
