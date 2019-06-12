@@ -95,6 +95,7 @@ const FiltersSidebar = memo<Props & InjectedIntlProps>(({ selectedIdeaFilters, c
       />
       <StyledStatusFilter
         selectedStatusId={selectedIdeaFilters.idea_status}
+        selectedIdeaFilters={selectedIdeaFilters}
         onChange={handleStatusOnChange}
       />
       <StyledTopicsFilter

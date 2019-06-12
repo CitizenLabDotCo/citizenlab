@@ -100,6 +100,7 @@ const AllStatus = styled(Status)`
 
 interface InputProps {
   selectedStatusId: string | null | undefined;
+  selectedIdeaFilters: Partial<IQueryParameters>;
   onChange: (arg: string | null) => void;
   className?: string;
 }
@@ -172,16 +173,19 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, ideasFilterC
   return null;
 });
 
-const queryParameters = {
-  'page[number]': 1,
-  'page[size]': 5000,
-  project_publication_status: 'published',
-  publication_status: 'published'
-} as Partial<IQueryParameters>;
-
 const Data = adopt<DataProps, InputProps>({
   ideaStatuses: <GetIdeaStatuses/>,
-  ideasFilterCounts: <GetIdeasFilterCounts queryParameters={queryParameters} />
+  ideasFilterCounts: ({ selectedIdeaFilters, render }) => {
+    const queryParameters = {
+      ...selectedIdeaFilters,
+      'page[number]': 1,
+      'page[size]': 5000,
+      project_publication_status: 'published',
+      publication_status: 'published'
+    } as Partial<IQueryParameters>;
+
+    return <GetIdeasFilterCounts queryParameters={queryParameters}>{render}</GetIdeasFilterCounts>;
+  }
 });
 
 export default (inputProps: InputProps) => (
