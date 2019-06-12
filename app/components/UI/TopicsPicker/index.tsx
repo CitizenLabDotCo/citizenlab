@@ -26,14 +26,13 @@ const TopicsContainer = styled.div`
 const TopicSwitch = styled(Button)`
   margin-bottom: 4px;
   margin-right: 4px;
-  border-radius: ${({ theme }) => theme.borderRadius};
-  border: ${({ style }: any)  => style === 'text' ? `1px solid ${colors.separation}` : 'none'};
 `;
 
 export interface InputProps {
   onChange: (tocisIds: string[]) => void;
   value: string[];
   max: number;
+  id?: string;
 }
 
 interface DataProps {
@@ -42,8 +41,16 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const TopicsPicker = ({ onChange, value, localize, topics, max }: Props & InjectedLocalized) => {
+const doNothing = (event) => {
+  console.log(event.target, event.currentTarget);
+  event.preventDefault();
+  event.stopPropagation();
+};
+
+const TopicsPicker = ({ onChange, value, localize, topics, max, id }: Props & InjectedLocalized) => {
   const handleOnChange = (topicId: string) => (event) => {
+    event.stopPropagation();
+    event.preventDefault();
     const newTopics = [...value];
     if (!value) {
       onChange([topicId]);
@@ -69,15 +76,21 @@ const TopicsPicker = ({ onChange, value, localize, topics, max }: Props & Inject
   const workingTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
   return (
-    <TopicsContainer>
+    <TopicsContainer
+      onClick={doNothing}
+      onMouseOver={doNothing}
+      onMouseEnter={doNothing}
+      id={id}
+    >
       {orderBy(workingTopics, topic => localize(topic.attributes.title_multiloc)).map((topic) => {
         const isActive = value && !!value.find(id => id === topic.id);
         return (
           <TopicSwitch
             key={topic.id}
             onClick={handleOnChange(topic.id)}
-            style={isActive ? 'primary' : 'text'}
-            bgColor={isActive ? colors.clGreen : undefined}
+            textColor={isActive ? 'white' : colors.adminSecondaryTextColor}
+            bgColor={isActive ? colors.clGreen : 'transparent'}
+            borderColor={isActive ? 'none' : colors.separation}
             padding="7px 14px"
           >
             <T value={topic.attributes.title_multiloc} />

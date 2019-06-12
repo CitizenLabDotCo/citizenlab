@@ -80,14 +80,15 @@ class InitiativeForm extends React.Component<InjectedFormikProps<Props, FormValu
             <FormLabel
               labelMessage={messages.topicsLabel}
               subtextMessage={messages.topicsLabelSubtext}
-            >
+              htmlFor="field-topic-multiple-picker"
+            />
               <Field
+                id="field-topic-multiple-picker"
                 name="topics"
                 component={FormikTopicsPicker}
                 required
                 max={2}
               />
-            </FormLabel>
           </SectionField>
         </FormSection>
       </Form>
