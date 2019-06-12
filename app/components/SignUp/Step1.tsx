@@ -8,11 +8,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 
 // components
-import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Checkbox from 'components/UI/Checkbox';
+import { FormLabel } from 'components/UI/FormComponents';
 
 // utils
 import { isValidEmail } from 'utils/validate';
@@ -38,7 +38,6 @@ import { fontSizes, colors } from 'utils/styleUtils';
 // typings
 import { CLErrorsJSON, Locale } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import { FormLabel } from 'components/UI/FormComponents';
 
 const Form = styled.form`
   width: 100%;

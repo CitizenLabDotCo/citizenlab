@@ -275,7 +275,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
     const errors: any = uniq(rawErrors);
     if (props.hidden !== true) {
       const safeDescription = description && get(description, 'props.description') && description.props.description.length > 0;
-      const descriptionJSX = description && <div dangerouslySetInnerHTML={{ __html: description.props.description }} />;
+      const descriptionJSX = safeDescription && <div dangerouslySetInnerHTML={{ __html: description.props.description }} />;
       return (
         <SectionField>
           {(props.schema.type !== 'boolean') &&

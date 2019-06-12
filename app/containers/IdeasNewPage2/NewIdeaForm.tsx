@@ -18,7 +18,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { IOption, UploadFile } from 'typings';
+import { UploadFile } from 'typings';
 
 // style
 import { media, fontSizes, viewportWidths } from 'utils/styleUtils';
