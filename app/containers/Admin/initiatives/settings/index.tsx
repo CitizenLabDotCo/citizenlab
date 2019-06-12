@@ -33,7 +33,7 @@ class InitiativesSettingsPage extends PureComponent<DataProps> {
       return pick(newValues, changedKeys);
     }
 
-    handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+    handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus, resetForm }) => {
       const { tenant } = this.props;
       if (isNilOrError(tenant)) return;
 
@@ -46,6 +46,7 @@ class InitiativesSettingsPage extends PureComponent<DataProps> {
       })
         .then(() => {
           setSubmitting(false);
+          resetForm();
           setStatus('success');
         })
         .catch((errorResponse) => {
