@@ -73,7 +73,8 @@ const InnerContainer = styled.div`
 `;
 
 export interface IIdeaCardClickEvent {
-  ideaId: string | null;
+  ideaId: string;
+  ideaSlug: string;
 }
 
 type Props = {};
@@ -83,6 +84,7 @@ type State = {
   tenant: ITenant | null;
   authUser: IUser | null;
   ideaId: string | null;
+  ideaSlug: string | null;
   visible: boolean;
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
@@ -101,6 +103,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       tenant: null,
       authUser: null,
       ideaId: null,
+      ideaSlug: null,
       visible: true,
       userDeletedModalOpened: false,
       userActuallyDeleted: false
@@ -171,10 +174,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       }),
 
       eventEmitter.observeEvent<IIdeaCardClickEvent>('ideaCardClick').subscribe(({ eventValue }) => {
-        const { ideaId } = eventValue;
+        const { ideaId, ideaSlug } = eventValue;
 
         if (ideaId) {
-          this.openIdeaPageModal(ideaId);
+          this.openIdeaPageModal(ideaId, ideaSlug);
         }
       }),
 
@@ -199,12 +202,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  openIdeaPageModal = (ideaId: string) => {
-    this.setState({ ideaId });
+  openIdeaPageModal = (ideaId: string, ideaSlug: string) => {
+    this.setState({ ideaId, ideaSlug });
   }
 
   closeIdeaPageModal = () => {
-    this.setState({ ideaId: null });
+    this.setState({ ideaId: null, ideaSlug: null });
   }
 
   closeUserDeletedModal = () => {
@@ -213,7 +216,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { location, children } = this.props;
-    const { previousPathname, tenant, ideaId, visible, userDeletedModalOpened, userActuallyDeleted } = this.state;
+    const { previousPathname, tenant, ideaId, ideaSlug, visible, userDeletedModalOpened, userActuallyDeleted } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
 
@@ -230,7 +233,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <IdeaPageFullscreenModal ideaId={ideaId} close={this.closeIdeaPageModal} />
+                      <IdeaPageFullscreenModal ideaId={ideaId} ideaSlug={ideaSlug} close={this.closeIdeaPageModal} />
                     </Suspense>
                   </ErrorBoundary>
 

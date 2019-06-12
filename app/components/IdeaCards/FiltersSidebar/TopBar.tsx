@@ -63,8 +63,8 @@ const CloseIcon = styled(Icon)`
 `;
 
 const CloseButton = styled.button`
-  width: 41px;
-  height: 41px;
+  width: 45px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
