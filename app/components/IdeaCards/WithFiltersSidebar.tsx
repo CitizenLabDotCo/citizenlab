@@ -51,7 +51,7 @@ const Container = styled.div`
   align-items: stretch;
 
   @media (max-width: 1400px) {
-    max-width: 1015px;
+    max-width: 1000px;
   }
 `;
 
@@ -456,7 +456,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
-    const filterColumnWidth = (windowSize && windowSize < 1400 ? 300 : 352);
+    const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
 
     return (
       <Container id="e2e-ideas-container" className={className}>
