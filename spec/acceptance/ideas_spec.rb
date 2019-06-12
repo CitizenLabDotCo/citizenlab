@@ -410,6 +410,11 @@ resource "Ideas" do
       do_request areas: [@a1.id], projects: nil
       expect(status).to eq 200
     end
+
+    example "List idea counts per filter option with a search string" do
+      do_request search: 'trees'
+      expect(status).to eq 200
+    end
   end
 
 
