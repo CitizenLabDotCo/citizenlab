@@ -2,6 +2,7 @@ import React, { PureComponent, MouseEvent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import ReactTimeAgo from 'react-time-ago';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -271,7 +272,12 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
             {commentType === 'child' &&
               <TimeAgo className={authUser ? 'hasLeftMargin' : ''}>
-                <FormattedRelative value={createdAt} />
+                {/* <FormattedRelative value={createdAt} /> */}
+                <ReactTimeAgo
+                  date={new Date(createdAt)}
+                  locale={locale}
+                  timeStyle="twitter"
+                />
               </TimeAgo>
             }
           </Right>

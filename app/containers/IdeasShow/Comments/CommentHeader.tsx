@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import ReactTimeAgo from 'react-time-ago';
 
 // components
 import Author from 'components/Author';
@@ -7,6 +8,7 @@ import AdminBadge from './AdminBadge';
 
 // resources
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
 import { FormattedRelative } from 'react-intl';
@@ -63,6 +65,7 @@ interface InputProps {
 
 interface DataProps {
   windowSize: GetWindowSizeChildProps;
+  locale: GetLocaleChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -71,7 +74,15 @@ interface State {}
 
 class CommentHeader extends PureComponent<Props, State> {
   render() {
-    const { windowSize, projectId, authorId, commentType, commentCreatedAt, moderator } = this.props;
+    const {
+      windowSize,
+      locale,
+      projectId,
+      authorId,
+      commentType,
+      commentCreatedAt,
+      moderator
+    } = this.props;
     const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
     return (
@@ -88,6 +99,11 @@ class CommentHeader extends PureComponent<Props, State> {
           />
           <TimeAgo>
             <FormattedRelative value={commentCreatedAt} />
+            <ReactTimeAgo
+              date={new Date(commentCreatedAt)}
+              locale={locale}
+              timeStyle="twitter"
+            />
           </TimeAgo>
         </Left>
 
@@ -103,7 +119,8 @@ class CommentHeader extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize debounce={50} />
+  windowSize: <GetWindowSize debounce={50} />,
+  locale: <GetLocale />,
 });
 
 export default (inputProps: InputProps) => (
