@@ -36,6 +36,7 @@ import messages from './messages';
 const Container = styled.div`
   background: ${colors.background};
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  width: 100%;
   position: relative;
 `;
 

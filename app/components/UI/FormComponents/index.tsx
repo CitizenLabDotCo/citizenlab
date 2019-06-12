@@ -14,6 +14,7 @@ export const FormSection = styled.div`
   color: ${({ theme }) => theme.colorText};
   margin-bottom: 10px;
   max-width: 620px;
+  min-width: 560px;
 `;
 
 const TitleContainer = styled.div`
