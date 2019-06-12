@@ -51,6 +51,23 @@ export const appLocalePairs = {
   'es-CL': 'Español (Chile)',
   ach: 'Acholi',
 };
+
+export const appLocalePairsWithoutCountryName = {
+  en: 'en',
+  'en-GB': 'en',
+  'en-CA': 'en',
+  'fr-BE': 'fr',
+  'fr-FR': 'fr',
+  'nl-BE': 'nl',
+  'nl-NL': 'nl',
+  'de-DE': 'de',
+  'da-DK': 'da',
+  'nb-NO': 'nb',
+  'es-ES': 'es',
+  'es-CL': 'es',
+  ach: 'ach',
+};
+
 export const shortenedAppLocalePairs = {
   en: 'English',
   'en-GB': 'English',
@@ -66,6 +83,7 @@ export const shortenedAppLocalePairs = {
   'es-CL': 'Español',
   ach: 'Acholi',
 };
+
 export const appLocalesMomentPairs = {
     'en-GB': 'en-gb',
     'en-CA': 'en-ca',
