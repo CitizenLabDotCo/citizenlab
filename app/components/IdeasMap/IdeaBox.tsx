@@ -164,10 +164,13 @@ class IdeaBox extends React.PureComponent<Props, State> {
     }
   }
 
-  createIdeaClickHandler = (idea) => (event) => {
+  createIdeaClickHandler = (idea: GetIdeaChildProps) => (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    eventEmitter.emit<IIdeaCardClickEvent>('IdeaBox', 'ideaCardClick', { ideaId: idea.id });
+
+    if (!isNilOrError(idea)) {
+      eventEmitter.emit<IIdeaCardClickEvent>('IdeaBox', 'ideaCardClick', { ideaId: idea.id, ideaSlug: idea.attributes.slug });
+    }
   }
 
   handleUnauthenticatedVoteClick = () => {

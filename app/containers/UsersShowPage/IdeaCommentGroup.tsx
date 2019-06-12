@@ -144,7 +144,7 @@ export class IdeaCommentGroup extends PureComponent<Props> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IIdeaCardClickEvent>('IdeaCommentGroup', 'ideaCardClick', { ideaId: idea.id });
+      eventEmitter.emit<IIdeaCardClickEvent>('IdeaCommentGroup', 'ideaCardClick', { ideaId: idea.id, ideaSlug: idea.attributes.slug });
     }
   }
 

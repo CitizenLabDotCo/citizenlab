@@ -1,32 +1,21 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FullscreenModal from 'components/UI/FullscreenModal';
 import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 
-// resources
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-
-interface InputProps {
+interface Props {
   ideaId: string | null;
+  ideaSlug: string | null;
   close: () => void;
 }
 
-interface DataProps {
-  idea: GetIdeaChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const IdeaPageFullscreenModal = memo<Props>(({ ideaId, close, idea }) => {
+const IdeaPageFullscreenModal = memo<Props>(({ ideaId, ideaSlug, close }) => {
 
   const onClose = useCallback(() => {
     close();
   }, []);
-
-  const url = (!isNilOrError(idea) ? `/ideas/${idea.attributes.slug}` : null);
 
   const topBar = useMemo(() => {
     return (ideaId ? <IdeaShowPageTopBar ideaId={ideaId} insideModal={true} /> : null);
@@ -38,9 +27,9 @@ const IdeaPageFullscreenModal = memo<Props>(({ ideaId, close, idea }) => {
 
   return (
     <FullscreenModal
-      opened={!isNilOrError(idea)}
+      opened={!!(ideaId && ideaSlug)}
       close={onClose}
-      url={url}
+      url={ideaSlug ? `/ideas/${ideaSlug}` : null}
       topBar={topBar}
     >
       {content}
@@ -48,8 +37,4 @@ const IdeaPageFullscreenModal = memo<Props>(({ ideaId, close, idea }) => {
   );
 });
 
-export default (inputProps: InputProps) => (
-  <GetIdea id={inputProps.ideaId}>
-    {idea => <IdeaPageFullscreenModal {...inputProps} idea={idea} />}
-  </GetIdea>
-);
+export default IdeaPageFullscreenModal;

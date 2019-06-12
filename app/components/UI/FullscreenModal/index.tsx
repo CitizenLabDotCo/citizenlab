@@ -9,8 +9,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // tracking
-import { trackEventByName, trackPage } from 'utils/analytics';
-import tracks from './tracks';
+import { trackPage } from 'utils/analytics';
 
 // styling
 import styled from 'styled-components';
@@ -93,27 +92,31 @@ class FullscreenModal extends PureComponent<Props, State> {
   goBackUrl: string | null = null;
   ContentElement: HTMLDivElement | null = null;
 
-  componentWillUnmount() {
-    this.cleanup();
-  }
-
   componentDidUpdate(prevProps: Props) {
     if (!prevProps.opened && this.props.opened) {
-      this.openModal(this.props.url);
+      this.openModal();
     } else if (prevProps.opened && !this.props.opened) {
       this.cleanup();
     }
   }
 
-  openModal = (url?: string | null) => {
+  componentWillUnmount() {
+    this.cleanup();
+  }
+
+  openModal = () => {
+    const { url } = this.props;
     this.goBackUrl = window.location.href;
 
     window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
     window.addEventListener('keydown', this.handleKeypress, useCapture);
 
-    // on route change
+    // route change
+    // use timeout to only trigger close() when not already called by handlePopstateEvent()
     this.unlisten = clHistory.listen(() => {
-      setTimeout(() => this.props.close(), 250);
+      setTimeout(() => {
+        this.props.close();
+      }, 250);
     });
 
     // Add locale to the URL if it's not present yet
@@ -134,15 +137,11 @@ class FullscreenModal extends PureComponent<Props, State> {
   }
 
   handlePopstateEvent = () => {
-    if (location.href === this.goBackUrl) {
-      trackEventByName(tracks.clickBack, { extra: { url: this.props.url } });
-    }
-
     this.props.close();
   }
 
   cleanup = () => {
-    if (this.props.url && this.goBackUrl && this.goBackUrl !== this.props.url) {
+    if (this.goBackUrl) {
       window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
     }
 

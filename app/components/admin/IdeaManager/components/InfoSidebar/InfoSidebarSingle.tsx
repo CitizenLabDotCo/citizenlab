@@ -49,7 +49,7 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IIdeaCardClickEvent>('infoSidebarSingle', 'ideaCardClick', { ideaId: idea.id });
+      eventEmitter.emit<IIdeaCardClickEvent>('infoSidebarSingle', 'ideaCardClick', { ideaId: idea.id, ideaSlug: idea.attributes.slug });
     }
   }
 

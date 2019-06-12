@@ -218,7 +218,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IIdeaCardClickEvent>('IdeaCard', 'ideaCardClick', { ideaId: idea.id });
+      eventEmitter.emit<IIdeaCardClickEvent>('IdeaCard', 'ideaCardClick', { ideaId: idea.id, ideaSlug: idea.attributes.slug });
     }
   }
 
