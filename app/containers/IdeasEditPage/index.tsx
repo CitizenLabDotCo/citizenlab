@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { isString, isEmpty } from 'lodash-es';
-import { Subscription, Observable, combineLatest, of } from 'rxjs';
+import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -18,14 +18,12 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
 import { ideaImageStream, addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
-import { topicByIdStream, ITopic } from 'services/topics';
 import { hasPermission } from 'services/permissions';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getLocalized } from 'utils/i18n';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -33,7 +31,7 @@ import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 import { convertToGeoJson } from 'utils/locationTools';
 
 // typings
-import { IOption, UploadFile, Multiloc, Locale } from 'typings';
+import { UploadFile, Multiloc, Locale } from 'typings';
 
 // style
 import { media, fontSizes, colors } from 'utils/styleUtils';
@@ -141,18 +139,11 @@ class IdeaEditPage extends PureComponent<Props, State> {
       currentTenantLocales$,
       idea$
     ).pipe(
-      switchMap(([locale, currentTenantLocales, idea]) => {
-        let ideaImage$ = of(null) as Observable<UploadFile | null>;
-        const granted$ = of(false) as Observable<boolean>;
-        const selectedTopics$ = of(null) as Observable<{ label: string, value: string }[]| null>;
-
-        if (!isNilOrError(idea)) {
-
-        // ideaImage$
+      switchMap(([_locale, _currentTenantLocales, idea]) => {
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
         const ideaImageId = (ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null);
-        ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.pipe(
+        const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.pipe(
           first(),
           switchMap((ideaImage) => {
             if (ideaImage && ideaImage.data && ideaImage.data.attributes.versions.large) {
@@ -164,13 +155,11 @@ class IdeaEditPage extends PureComponent<Props, State> {
             return of(null);
         })) : of(null));
 
-        // selectedTopics$
-        let topics$: Observable<null | ITopic[]> = of(null);
-        if ((idea.data.relationships.topics && idea.data.relationships.topics.data && idea.data.relationships.topics.data.length > 0)) {
-          topics$ = combineLatest(
-            idea.data.relationships.topics.data.map(topic => topicByIdStream(topic.id).observable)
-          );
-        }
+        const granted$ = hasPermission({
+          item: idea.data,
+          action: 'edit',
+          context: idea.data
+        });
 
         return combineLatest(
           locale$,

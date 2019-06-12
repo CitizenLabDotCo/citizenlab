@@ -9,7 +9,7 @@ import messages from './messages';
 import T from 'components/T';
 
 // style
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 import { get } from 'lodash-es';
 

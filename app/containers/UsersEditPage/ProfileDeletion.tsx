@@ -5,8 +5,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 // components
-import ProfileSection from './ProfileSection';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
 
 // intl
@@ -17,7 +16,6 @@ import messages from './messages';
 // utils
 import LoadableModal from 'components/Loadable/Modal';
 import DeletionDialog from './DeletionDialog';
-import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 
 const Row = styled.div`
   display: flex;

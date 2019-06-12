@@ -111,7 +111,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       currentTenantLocales$,
       idea$
     ).pipe(
-      switchMap(([locale, currentTenantLocales, idea]) => {
+      switchMap(([_locale, _currentTenantLocales, idea]) => {
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
         const ideaImageId = (ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null);

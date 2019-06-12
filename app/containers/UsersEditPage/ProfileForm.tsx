@@ -21,7 +21,7 @@ import { getJwt, decode } from 'utils/auth/jwt';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFileObservable } from 'utils/imageTools';
-import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
+import { SectionField } from 'components/admin/Section';
 import CustomFieldsForm from 'components/CustomFieldsForm';
 import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
@@ -31,7 +31,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 import { appLocalePairs, API_PATH } from 'containers/App/constants';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // styling
