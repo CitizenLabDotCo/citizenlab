@@ -18,24 +18,28 @@ import { Locale, Multiloc } from 'typings';
 
 const Container = styled.div``;
 
+const StyledLabel = styled(Label)`
+  display: block;
+`;
+
 const TextAreaWrapper = styled.div`
   &:not(.last) {
     margin-bottom: 12px;
   }
 `;
 
-const LabelWrapper = styled.div`
-  display: flex;
-`;
-
-const LanguageExtension = styled(Label)`
+const LanguageExtension = styled.span`
   font-weight: 500;
   margin-left: 5px;
 `;
 
+const LabelWrapper = styled.div`
+  display: flex;
+`;
+
 const LabelTooltip = styled.div`
-  margin-left: 10px;
-  margin-top: 2px;
+  margin-left: 5px;
+  margin-top: 3px;
 `;
 
 export type Props = {
@@ -108,10 +112,12 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
       <TextAreaWrapper key={currentTenantLocale} className={`${index === totalLocales - 1 && 'last'}`}>
         {label &&
           <LabelWrapper>
-            <Label htmlFor={id}>{label}</Label>
-            {totalLocales > 1 &&
-              <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
-            }
+            <StyledLabel htmlFor={id}>
+                {label}
+                {totalLocales > 1 &&
+                  <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
+                }
+            </StyledLabel>
             {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
           </LabelWrapper>
         }

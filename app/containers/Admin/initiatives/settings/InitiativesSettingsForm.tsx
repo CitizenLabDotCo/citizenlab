@@ -57,11 +57,10 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
     <FormikTextAreaMultiloc
       shownLocale={this.state.selectedLocale}
       label={(
-        <Label>
-          <FormattedMessage {...messages.fieldThresholdReachedMessage} />
-        </Label>
+        <FormattedMessage {...messages.fieldThresholdReachedMessage} />
       )}
       labelTooltip={<InfoTooltip {...messages.fieldThresholdReachedMessageInfo} />}
+      name="threshold_reached_message"
       {...props}
     />
   )
@@ -69,11 +68,10 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
     <FormikTextAreaMultiloc
       shownLocale={this.state.selectedLocale}
       label={(
-        <Label>
-          <FormattedMessage {...messages.fieldEligibilityCriteria} />
-        </Label>
+        <FormattedMessage {...messages.fieldEligibilityCriteria} />
       )}
       labelTooltip={<InfoTooltip {...messages.fieldEligibilityCriteriaInfo} />}
+      name="eligibility_criteria"
       {...props}
     />
   )
@@ -87,6 +85,8 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
     const { selectedLocale } = this.state;
 
     const multilocValues = pick(values, ['threshold_reached_message', 'eligibility_criteria']);
+
+    console.log(isValid, touched, status);
 
     return (
       <Form>
