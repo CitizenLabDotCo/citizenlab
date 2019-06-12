@@ -6,13 +6,13 @@ import { isObject, isEmpty, has } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 // typings
-import { IOption, UploadFile } from 'typings';
+import { UploadFile } from 'typings';
 import { setTimeout } from 'timers';
 
 export interface IIdeasNewPageGlobalState {
   title: string | null;
   description: string | null;
-  selectedTopics: IOption[] | null;
+  selectedTopics: string[];
   budget: number | null;
   position: string;
   position_coordinates: GeoJSON.Point | null;

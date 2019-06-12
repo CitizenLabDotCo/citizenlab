@@ -7,10 +7,12 @@ import FormikInput from 'components/UI/FormikInput';
 import messages from './messages';
 import { SectionField } from 'components/admin/Section';
 import FormikQuill from 'components/UI/QuillEditor/FormikQuill';
+import FormikTopicsPicker from 'components/UI/FormikTopicsPicker';
 
 export interface FormValues {
   title: string;
   body: string;
+  topics: string[];
 }
 
 interface Props {}
@@ -66,6 +68,24 @@ class InitiativeForm extends React.Component<InjectedFormikProps<Props, FormValu
                 name="description"
                 render={this.renderFormikQuill}
                 required
+              />
+            </FormLabel>
+          </SectionField>
+        </FormSection>
+
+        <FormSection>
+          <FormSectionTitle message={messages.formDetailsSectionTitle} />
+
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.topicsLabel}
+              subtextMessage={messages.topicsLabelSubtext}
+            >
+              <Field
+                name="topics"
+                component={FormikTopicsPicker}
+                required
+                max={2}
               />
             </FormLabel>
           </SectionField>
