@@ -27,7 +27,7 @@ export default defineMessages({
   },
   warningTresholdSettings: {
     id: 'app.containers.Admin.initiatives.warningTresholdSettings',
-    defaultMessage: 'Changing this will immediately impact all active initiatives!'
+    defaultMessage: 'Changing this will impact all active initiatives'
   },
   fieldVotingThreshold: {
     id: 'app.containers.Admin.initiatives.fieldVotingThreshold',
@@ -39,11 +39,11 @@ export default defineMessages({
   },
   fieldThresholdReachedMessage: {
     id: 'app.containers.Admin.initiatives.fieldThresholdReachedMessage',
-    defaultMessage: 'What can people expect when their initiative reach the threshold in time?'
+    defaultMessage: 'What can people expect when their initiatives reach the threshold in time?'
   },
   fieldThresholdReachedMessageInfo: {
     id: 'app.containers.Admin.initiatives.fieldThresholdReachedMessageInfo',
-    defaultMessage: 'This will be shown to all users on the initiatives page.'
+    defaultMessage: 'This will be visible to all and shown with every initiative'
   },
   fieldEligibilityCriteria: {
     id: 'app.containers.Admin.initiatives.fieldEligibilityCriteria',
@@ -51,6 +51,6 @@ export default defineMessages({
   },
   fieldEligibilityCriteriaInfo: {
     id: 'app.containers.Admin.initiatives.fieldEligibilityCriteriaInfo',
-    defaultMessage: 'This will be shown to users posting an initiative. These criteria are the rules on which you will let an initiative be considered.'
+    defaultMessage: 'This will be shown to users posting an initiative. These criteria define when an initiative can be eligible or not'
   },
 });
