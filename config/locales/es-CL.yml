@@ -55,6 +55,9 @@ es-CL:
     infopage_body: Descubre más información relacionada con la plataforma.
     homepage_info_title: ""
     homepage_info_body: ""
+    initiatives_title: Initiatives
+    initiatives_body: >
+      <p>Explanation about initiatives</p>
   projects:
     open_idea_project_title: '¿Tienes una idea? Proponla en la plataforma!'
     open_idea_project_description_preview: '¿Quizás tienes una idea que no encaja con uno de los proyectos existentes? Entonces publícalo aquí, reúne apoyo y ponlo en la agenda política!'
