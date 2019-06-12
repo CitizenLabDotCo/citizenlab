@@ -202,7 +202,8 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
             <Formik
               initialValues={{
                 title: '',
-                body: ''
+                body: '',
+                topics: []
               }}
               render={this.renderFn}
               onSubmit={this.handleSubmit}

@@ -178,7 +178,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const initialGlobalState: IIdeasNewPageGlobalState = {
       title: null,
       description: null,
-      selectedTopics: null,
+      selectedTopics: [],
       budget: null,
       position: '',
       position_coordinates: null,
@@ -230,7 +230,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const { title, description, selectedTopics, budget, position, position_coordinates, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
     const ideaDescription = { [locale as string]: (description || '') };
-    const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = !isNilOrError(project) ? project.id : null;
     const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : position_coordinates || null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
@@ -240,7 +239,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       publication_status: publicationStatus,
       title_multiloc: ideaTitle,
       body_multiloc: ideaDescription,
-      topic_ids: topicIds,
+      topic_ids: selectedTopics,
       project_id: projectId,
       location_point_geojson: locationGeoJSON,
       location_description: locationDescription

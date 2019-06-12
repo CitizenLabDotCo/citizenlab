@@ -96,7 +96,7 @@ interface State {
   ideaSlug: string | null;
   titleMultiloc: Multiloc | null;
   descriptionMultiloc: Multiloc | null;
-  selectedTopics: IOption[] | null;
+  selectedTopics: string[];
   budget: number | null;
   location: string;
   imageFile: UploadFile[];
@@ -117,7 +117,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
       ideaSlug: null,
       titleMultiloc: null,
       descriptionMultiloc: null,
-      selectedTopics: null,
+      selectedTopics: [],
       budget: null,
       location: '',
       imageFile: [],
@@ -143,8 +143,8 @@ class IdeaEditPage extends PureComponent<Props, State> {
     ).pipe(
       switchMap(([locale, currentTenantLocales, idea]) => {
         let ideaImage$ = of(null) as Observable<UploadFile | null>;
-        let granted$ = of(false) as Observable<boolean>;
-        let selectedTopics$ = of(null) as Observable<{ label: string, value: string }[]| null>;
+        const granted$ = of(false) as Observable<boolean>;
+        const selectedTopics$ = of(null) as Observable<{ label: string, value: string }[]| null>;
 
         if (!isNilOrError(idea)) {
 
@@ -172,43 +172,21 @@ class IdeaEditPage extends PureComponent<Props, State> {
           );
         }
 
-        selectedTopics$ = topics$.pipe(map((topics) => {
-          if (topics && topics.length > 0) {
-            return topics.map((topic) => {
-              return {
-                value: topic.data.id,
-                label: getLocalized(topic.data.attributes.title_multiloc, locale, currentTenantLocales)
-              };
-            });
-          }
-
-          return null;
-        }));
-
-        // granted$
-        granted$ = hasPermission({
-          item: idea.data,
-          action: 'edit',
-          context: idea.data
-        });
-      }
-
         return combineLatest(
           locale$,
           idea$,
           ideaImage$,
-          selectedTopics$,
           granted$
         );
       })
     );
 
     this.subscriptions = [
-      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, selectedTopics, granted]) => {
-        if (!isNilOrError(idea) && granted) {
+      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, granted]) => {
+        if (granted) {
           this.setState({
             locale,
-            selectedTopics,
+            selectedTopics: idea.data.relationships.topics.data.map(topic => topic.id),
             projectId: idea.data.relationships.project.data.id,
             loaded: true,
             ideaSlug: idea.data.attributes.slug,
@@ -238,7 +216,6 @@ class IdeaEditPage extends PureComponent<Props, State> {
     const { ideaId } = this.props.params;
     const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId, imageFile } = this.state;
     const { title, description, selectedTopics, position, budget, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
-    const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
     const oldImageId = imageId;
@@ -259,7 +236,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
         ...descriptionMultiloc,
         [locale]: description
       },
-      topic_ids: topicIds,
+      topic_ids: selectedTopics,
       location_point_geojson: locationGeoJSON,
       location_description: locationDescription
     });

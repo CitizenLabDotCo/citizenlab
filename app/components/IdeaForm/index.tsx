@@ -10,9 +10,6 @@ import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
 
 // components
-import MultipleSelect from 'components/UI/MultipleSelect';
-import Label from 'components/UI/Label';
-import Icon from 'components/UI/Icon';
 import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import QuillEditor from 'components/UI/QuillEditor';
@@ -46,6 +43,7 @@ import { IOption, UploadFile, Locale } from 'typings';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
+import TopicsPicker from 'components/UI/TopicsPicker';
 
 const Form = styled.form`
   width: 100%;
@@ -59,22 +57,6 @@ const FormElement: any = styled.div`
   margin-bottom: 40px;
 `;
 
-const StyledMultipleSelect = styled(MultipleSelect)`
-  max-width: 100%;
-  padding: 2.5px 0;
-  cursor: pointer;
-`;
-
-const LabelWithIcon = styled(Label)`
-  display: flex;
-  align-items: center;
-`;
-const StyledIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
-  margin-left: 10px;
-`;
-
 const HiddenLabel = styled.span`
   ${hideVisually() as any}
 `;
@@ -82,7 +64,7 @@ const HiddenLabel = styled.span`
 export interface IIdeaFormOutput {
   title: string;
   description: string;
-  selectedTopics: IOption[] | null;
+  selectedTopics: string[];
   position: string;
   budget: number | null;
   imageFile: UploadFile[];
@@ -94,7 +76,7 @@ interface Props {
   projectId: string | null;
   title: string | null;
   description: string | null;
-  selectedTopics: IOption[] | null;
+  selectedTopics: string[];
   budget: number | null;
   position: string;
   imageFile: UploadFile[];
@@ -111,7 +93,7 @@ interface State {
   titleError: string | JSX.Element | null;
   description: string;
   descriptionError: string | JSX.Element | null;
-  selectedTopics: IOption[] | null;
+  selectedTopics: string[];
   budget: number | null;
   budgetError: string | JSX.Element | null;
   position: string;
@@ -136,7 +118,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       titleError: null,
       description: '',
       descriptionError: null,
-      selectedTopics: null,
+      selectedTopics: [],
       position: '',
       imageFile: [],
       budget: null,
@@ -254,7 +236,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     }));
   }
 
-  handleTopicsOnChange = (selectedTopics: IOption[]) => {
+  handleTopicsOnChange = (selectedTopics: string[]) => {
     this.setState({ selectedTopics });
   }
 
@@ -427,14 +409,10 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         {topics && topics.length > 0 &&
           <FormElement>
             <FormLabel labelMessage={messages.topicsLabel} htmlFor="topics" />
-            <StyledMultipleSelect
-              className="e2e-idea-form-topics-multiple-select-box"
-              inputId="topics"
+            <TopicsPicker
               value={selectedTopics}
-              placeholder={<FormattedMessage {...messages.topicsPlaceholder} />}
-              options={topics}
-              max={2}
               onChange={this.handleTopicsOnChange}
+              max={2}
             />
           </FormElement>
         }
