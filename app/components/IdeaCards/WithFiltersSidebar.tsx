@@ -465,7 +465,8 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
             <FullscreenModal
               opened={filtersModalOpened}
               close={this.closeFiltersModal}
-              url="/ideas/filters/"
+              // url={filtersModalOpened ? '/ideas/filters/' : null}
+              // goBackUrl={filtersModalOpened ? '/ideas/' : null}
               animateInOut={true}
               topBar={<FiltersSidebarTopBar />}
               bottomBar={<FiltersSidebarBottomBar selectedIdeaFilters={selectedIdeaFilters} />}
