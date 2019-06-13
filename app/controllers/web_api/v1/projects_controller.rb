@@ -24,7 +24,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
 
     @projects = ProjectSortingService.new.sort(@projects)
-      .includes(:project_images, :phases)
+      .includes(:project_images, :phases, :areas, :topics)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
