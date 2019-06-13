@@ -5,7 +5,7 @@ import { isNilOrError, isFullMultiloc } from 'utils/helperUtils';
 
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
-import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
+import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikInput from 'components/UI/FormikInput';
 // TODO add enabled toggle (i3)
 // import FormikToggle from 'components/UI/FormikToggle';
@@ -54,24 +54,32 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
   }
 
   renderFormikThresholdField = (props) => (
-    <FormikTextAreaMultiloc
+    <FormikQuillMultiloc
       shownLocale={this.state.selectedLocale}
       label={(
         <FormattedMessage {...messages.fieldThresholdReachedMessage} />
       )}
       labelTooltip={<InfoTooltip {...messages.fieldThresholdReachedMessageInfo} />}
       name="threshold_reached_message"
+      noImages
+      noVideos
+      noAlign
+      limitedTextFormatting
       {...props}
     />
   )
   renderFormikEligibilityField = (props) => (
-    <FormikTextAreaMultiloc
+    <FormikQuillMultiloc
       shownLocale={this.state.selectedLocale}
       label={(
         <FormattedMessage {...messages.fieldEligibilityCriteria} />
       )}
       labelTooltip={<InfoTooltip {...messages.fieldEligibilityCriteriaInfo} />}
       name="eligibility_criteria"
+      noImages
+      noVideos
+      noAlign
+      limitedTextFormatting
       {...props}
     />
   )
@@ -85,8 +93,6 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
     const { selectedLocale } = this.state;
 
     const multilocValues = pick(values, ['threshold_reached_message', 'eligibility_criteria']);
-
-    console.log(isValid, touched, status);
 
     return (
       <Form>
