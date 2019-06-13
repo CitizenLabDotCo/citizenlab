@@ -8,6 +8,8 @@ import messages from './messages';
 import { SectionField } from 'components/admin/Section';
 import FormikQuill from 'components/UI/QuillEditor/FormikQuill';
 import FormikTopicsPicker from 'components/UI/FormikTopicsPicker';
+import LocationInput from 'components/UI/LocationInput';
+import FormikLocationInput from 'components/UI/FomrikLocationInput';
 
 export interface FormValues {
   title: string;
@@ -40,6 +42,7 @@ class InitiativeForm extends React.Component<InjectedFormikProps<Props, FormValu
 
   render() {
     // const { isSubmitting, errors, isValid, touched } = this.props;
+    console.log(this.props.values);
 
     return (
       <Form>
@@ -89,6 +92,18 @@ class InitiativeForm extends React.Component<InjectedFormikProps<Props, FormValu
                 required
                 max={2}
               />
+          </SectionField>
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.locationLabel}
+              subtextMessage={messages.locationLabelSubtext}
+            >
+              <Field
+                id="field-topic-multiple-picker"
+                name="position"
+                component={FormikLocationInput}
+              />
+            </FormLabel>
           </SectionField>
         </FormSection>
       </Form>
