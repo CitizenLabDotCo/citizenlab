@@ -7,7 +7,6 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
   has_many :areas
   has_many :topics
-  has_many :permissions
   has_many :avatars, serializer: WebApi::V1::AvatarSerializer
   
   has_one :action_descriptor

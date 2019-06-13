@@ -36,6 +36,8 @@ group :development, :test do
   gem 'ci_reporter_rspec'
   gem 'simplecov'
   gem 'simplecov-rcov'
+  
+  gem 'rack-mini-profiler'
 end
 
 group :development do
