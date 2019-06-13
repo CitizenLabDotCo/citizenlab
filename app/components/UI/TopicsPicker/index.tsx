@@ -41,13 +41,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const doNothing = (event) => {
-  console.log(event.target, event.currentTarget);
-  event.preventDefault();
-  event.stopPropagation();
-};
-
-const TopicsPicker = ({ onChange, value, localize, topics, max, id }: Props & InjectedLocalized) => {
+const TopicsPicker = ({ onChange, value, localize, topics, max }: Props & InjectedLocalized) => {
   const handleOnChange = (topicId: string) => (event) => {
     event.stopPropagation();
     event.preventDefault();
@@ -76,12 +70,7 @@ const TopicsPicker = ({ onChange, value, localize, topics, max, id }: Props & In
   const workingTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
   return (
-    <TopicsContainer
-      onClick={doNothing}
-      onMouseOver={doNothing}
-      onMouseEnter={doNothing}
-      id={id}
-    >
+    <TopicsContainer>
       {orderBy(workingTopics, topic => localize(topic.attributes.title_multiloc)).map((topic) => {
         const isActive = value && !!value.find(id => id === topic.id);
         return (
