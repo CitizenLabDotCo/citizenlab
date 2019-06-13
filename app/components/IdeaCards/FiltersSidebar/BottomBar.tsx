@@ -53,7 +53,7 @@ const BottomBar = memo<Props>(({ ideasFilterCounts, className }) => {
     <Container className={className}>
       <Button onClick={onApplyFilters} fullWidth={true}>
         {(ideasFilterCounts && isNumber(ideasFilterCounts.total)) ? (
-          <FormattedMessage {...messages.showXIdeas} values={{ ideasCount: ideasFilterCounts.total}} />
+          <FormattedMessage {...messages.showXIdeas} values={{ ideasCount: ideasFilterCounts.total }} />
         ) : (
           <FormattedMessage {...messages.showIdeas} />
         )}
