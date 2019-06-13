@@ -180,6 +180,7 @@ const Data = adopt<DataProps, InputProps>({
       ...selectedIdeaFilters,
       'page[number]': 1,
       'page[size]': 5000,
+      idea_status: undefined,
       project_publication_status: 'published',
       publication_status: 'published'
     } as Partial<IQueryParameters>;

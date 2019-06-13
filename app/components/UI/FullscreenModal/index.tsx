@@ -18,8 +18,8 @@ import { trackPage } from 'utils/analytics';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const timeout = 400;
-const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+const slideInOutTimeout = 500;
+const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container = styled.div`
   position: fixed;
@@ -39,7 +39,7 @@ const Container = styled.div`
 
     &.modal-enter-active {
       transform: translateY(0px);
-      transition: all ${timeout}ms ${easing};
+      transition: all ${slideInOutTimeout}ms ${slideInOutEasing};
     }
   }
 
@@ -48,7 +48,7 @@ const Container = styled.div`
 
     &.modal-exit-active {
       transform: translateY(100vh);
-      transition: all ${timeout}ms ${easing};
+      transition: all ${slideInOutTimeout}ms ${slideInOutEasing};
     }
   }
 
@@ -184,8 +184,8 @@ class FullscreenModal extends PureComponent<Props, State> {
           classNames="modal"
           in={opened}
           timeout={{
-            enter: timeout,
-            exit: timeout
+            enter: slideInOutTimeout,
+            exit: slideInOutTimeout
           }}
           mountOnEnter={true}
           unmountOnExit={true}
