@@ -30,5 +30,13 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 #
 # preload_app!
 
+# on_worker_boot do
+#   ActiveSupport.on_load(:active_record) do
+#     ActiveRecord::Base.establish_connection
+#   end
+#   # Re-open appenders after forking the process
+#   SemanticLogger.reopen
+# end
+
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
