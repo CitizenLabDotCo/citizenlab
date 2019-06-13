@@ -8,9 +8,8 @@ import 'moment-timezone';
 import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
 import WebFont from 'webfontloader';
-import JavascriptTimeAgo from 'javascript-time-ago';
 
-import { appLocalesMomentPairs, appLocalePairsWithoutCountryName } from 'containers/App/constants';
+import { appLocalesMomentPairs } from 'containers/App/constants';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -157,25 +156,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         })),
         locale$,
         tenant$.pipe(tap((tenant) => {
-          // Moment locales setup
           uniq(tenant.data.attributes.settings.core.locales
             .filter(locale => locale !== 'en' && locale !== 'ach')
             .map(locale => appLocalesMomentPairs[locale]))
             .forEach(locale => require(`moment/locale/${locale}.js`));
           moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
-          import('javascript-time-ago/locale/en').then(loc => {
-            JavascriptTimeAgo.locale(loc);
-          });
         }))
       ).subscribe(([authUser, locale, tenant]) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
-        const locWithoutCountryName = appLocalePairsWithoutCountryName[locale];
-
         moment.locale(momentLoc);
-        // react-time-ago setup
-        import(`javascript-time-ago/locale/${locWithoutCountryName}`).then(locale => {
-          JavascriptTimeAgo.locale(locale);
-        });
         this.setState({ tenant, authUser });
       }),
 
