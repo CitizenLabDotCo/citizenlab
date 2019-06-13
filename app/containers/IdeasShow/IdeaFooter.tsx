@@ -48,9 +48,9 @@ const ContentInner = styled.div`
     padding-right: ${rightColumnWidthTablet + columnsGapTablet}px;
   `}
 
-  @media (max-width: 1225px) {
-    padding-right: 0;
-  }
+  ${media.smallerThanMaxTablet`
+    padding-right: 0px;
+  `}
 `;
 
 interface Props {
