@@ -97,14 +97,19 @@ class CommentHeader extends PureComponent<Props, State> {
             createdAt={smallerThanSmallTablet ? commentCreatedAt : undefined}
             avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
           />
-          <TimeAgo>
-            <FormattedRelative value={commentCreatedAt} />
-            <ReactTimeAgo
-              date={new Date(commentCreatedAt)}
-              locale={locale}
-              timeStyle="twitter"
-            />
-          </TimeAgo>
+
+          {/* Locale isn't loaded fast enough and it would fall back to
+          the default locale (English) without this check */}
+          {locale &&
+            <TimeAgo>
+              <ReactTimeAgo
+                date={new Date(commentCreatedAt)}
+                locale={locale}
+                timeStyle="twitter"
+              />
+            </TimeAgo>
+          }
+
         </Left>
 
         <Right>
