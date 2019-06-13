@@ -51,7 +51,11 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   end
 
   def user_basket
-    current_user&.baskets&.find_by participation_context_id: object.id
+    if @instance_options[:ubci]
+      @instance_options.dig(:ubci, object.id)&.first
+    else
+      current_user&.baskets&.find_by participation_context_id: object.id
+    end
   end
 
   def avatars_count
