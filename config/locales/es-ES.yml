@@ -2,8 +2,8 @@ es:
   statuses:
     proposed: propuesta
     proposed_description: Esta idea ha sido propuesta
-    viewed: viewed
-    viewed_description: This idea has been seen by someone from the city
+    viewed: revisado
+    viewed_description: Esta idea ha sido vista por alguien de la organización
     under_consideration: bajo consideración
     under_consideration_description: Esta idea está siendo considerada
     accepted: aceptada
