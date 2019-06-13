@@ -91,7 +91,7 @@ export default defineMessages({
   },
   xIdeas: {
     id: 'app.containers.IdeaCards.xIdeas',
-    defaultMessage: '{<span>ideasCount</span>, plural, no {# ideas} one {# idea} other {# ideas}}',
+    defaultMessage: '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
   all: {
     id: 'app.containers.IdeaCards.all',
