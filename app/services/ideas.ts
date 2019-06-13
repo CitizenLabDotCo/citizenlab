@@ -192,7 +192,7 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
   const response = await streams.update<IIdea>(`${API_PATH}/ideas/${ideaId}`, ideaId, { idea: object });
   streams.fetchAllWith({
     dataId: [response.data.relationships.project.data.id],
-    apiEndpoint: [`${API_PATH}/ideas`, `${API_PATH}/stats/ideas_count`]
+    apiEndpoint: [`${API_PATH}/stats/ideas_count`]
   });
   return response;
 }
