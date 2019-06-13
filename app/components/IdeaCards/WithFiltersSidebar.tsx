@@ -24,7 +24,7 @@ import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize'
 
 // i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedHTMLMessage, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // utils
@@ -68,59 +68,6 @@ const MobileFiltersSidebarWrapper = styled.div`
 
 const StyledFiltersSidebar = styled(FiltersSidebar)``;
 
-const Loading = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  ${media.biggerThanMinTablet`
-    max-height: calc(100vh - 265px);
-  `}
-`;
-
-const EmptyContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  max-height: calc(100vh - 265px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding-top: 100px;
-  padding-bottom: 100px;
-
-  ${media.smallerThanMinTablet`
-    height: 150px;
-    max-height: auto;
-    padding: 0px;
-  `}
-`;
-
-const IdeaIcon = styled(Icon)`
-  flex: 0 0 40px;
-  width: 40px;
-  height: 40px;
-  fill: ${colors.label};
-`;
-
-const EmptyMessage = styled.div`
-  padding-left: 30px;
-  padding-right: 30px;
-  margin-top: 12px;
-  margin-bottom: 30px;
-`;
-
-const EmptyMessageLine = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  text-align: center;
-`;
-
 const AboveContent = styled.div<{ filterColumnWidth: number }>`
   display: flex;
   align-items: center;
@@ -162,6 +109,85 @@ const ContentLeft = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  position: relative;
+`;
+
+const Loading = styled.div`
+  width: 100%;
+  height: calc(100vh - 265px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${media.smallerThanMinTablet`
+    height: 150px;
+    max-height: auto;
+  `}
+`;
+
+const EmptyContainer = styled.div`
+  width: 100%;
+  height: calc(100vh - 265px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 140px;
+
+  ${media.smallerThanMinTablet`
+    height: 150px;
+    max-height: auto;
+  `}
+`;
+
+const EmptyContainerInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 30px;
+  padding-right: 30px;
+`;
+
+const IdeaIcon = styled(Icon)`
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  fill: ${colors.label};
+`;
+
+const EmptyMessage = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+  margin-top: 12px;
+`;
+
+const IdeasList = styled.div`
+  margin-left: -13px;
+  margin-right: -13px;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const StyledIdeaCard = styled(IdeaCard)`
+  flex-grow: 0;
+  width: calc(100% * (1/3) - 26px);
+  margin-left: 13px;
+  margin-right: 13px;
+
+  @media (max-width: 1400px) {
+    width: calc(100% * (1/2) - 26px);
+  }
+
+  ${media.smallerThanMaxTablet`
+    width: calc(100% * (1/2) - 26px);
+  `};
+
+  ${media.smallerThanMinTablet`
+    width: 100%;
+  `};
 `;
 
 const ContentRight = styled.div<{ filterColumnWidth: number }>`
@@ -175,42 +201,42 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   position: relative;
 `;
 
-const ClearAllIcon = styled(Icon)`
-  flex:  0 0 16px;
-  width: 16px;
-  height: 16px;
-  fill: ${colors.label};
-  margin-right: 6px;
-  margin-top: -2px;
-`;
+// const ClearAllIcon = styled(Icon)`
+//   flex:  0 0 16px;
+//   width: 16px;
+//   height: 16px;
+//   fill: ${colors.label};
+//   margin-right: 6px;
+//   margin-top: -2px;
+// `;
 
-const ClearAllText = styled.span`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  line-height: auto;
-`;
+// const ClearAllText = styled.span`
+//   color: ${colors.label};
+//   font-size: ${fontSizes.base}px;
+//   line-height: auto;
+// `;
 
-const ClearAllButton = styled.button`
-  height: 32px;
-  position: absolute;
-  top: -46px;
-  right: 0px;
-  display: flex;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
+// const ClearAllButton = styled.button`
+//   height: 32px;
+//   position: absolute;
+//   top: -46px;
+//   right: 0px;
+//   display: flex;
+//   align-items: center;
+//   padding: 0;
+//   margin: 0;
+//   cursor: pointer;
 
-  &:hover {
-    ${ClearAllIcon} {
-      fill: #000;
-    }
+//   &:hover {
+//     ${ClearAllIcon} {
+//       fill: #000;
+//     }
 
-    ${ClearAllText} {
-      color: #000;
-    }
-  }
-`;
+//     ${ClearAllText} {
+//       color: #000;
+//     }
+//   }
+// `;
 
 const Spacer = styled.div`
   flex: 1;
@@ -267,32 +293,6 @@ const CardsButton = styled(ViewButton)`
 const MapButton = styled(ViewButton)`
  border-top-right-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
-`;
-
-const IdeasList: any = styled.div`
-  margin-left: -13px;
-  margin-right: -13px;
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const StyledIdeaCard = styled(IdeaCard)`
-  flex-grow: 0;
-  width: calc(100% * (1/3) - 26px);
-  margin-left: 13px;
-  margin-right: 13px;
-
-  @media (max-width: 1400px) {
-    width: calc(100% * (1/2) - 26px);
-  }
-
-  ${media.smallerThanMaxTablet`
-    width: calc(100% * (1/2) - 26px);
-  `};
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-  `};
 `;
 
 const Footer = styled.div`
@@ -516,7 +516,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             {!isNilOrError(ideasFilterCounts) &&
               <IdeasCount>
-                <FormattedMessage {...messages.xIdeas} values={{ ideasCount: ideasFilterCounts.total }} />
+                <FormattedHTMLMessage {...messages.xIdeas} values={{ ideasCount: ideasFilterCounts.total }} />
               </IdeasCount>
             }
           </AboveContentLeft>
@@ -564,45 +564,45 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 />
               </Footer>
             }
+
+            {showCardView && querying &&
+              <Loading id="ideas-loading">
+                <Spinner />
+              </Loading>
+            }
+
+            {!querying && !hasIdeas &&
+              <EmptyContainer id="ideas-empty">
+                <EmptyContainerInner>
+                  <IdeaIcon name="idea" />
+                  <EmptyMessage>
+                    <FormattedMessage {...messages.noIdea} />
+                  </EmptyMessage>
+                </EmptyContainerInner>
+              </EmptyContainer>
+            }
+
+            {showMapView && hasIdeas &&
+              <IdeasMap
+                projectIds={queryParameters.projects}
+                phaseId={queryParameters.phase}
+              />
+            }
           </ContentLeft>
-
-          {showCardView && querying &&
-            <Loading id="ideas-loading">
-              <Spinner />
-            </Loading>
-          }
-
-          {!querying && !hasIdeas &&
-            <EmptyContainer id="ideas-empty">
-              <IdeaIcon name="idea" />
-              <EmptyMessage>
-                <EmptyMessageLine>
-                  <FormattedMessage {...messages.noIdea} />
-                </EmptyMessageLine>
-              </EmptyMessage>
-            </EmptyContainer>
-          }
-
-          {showMapView && hasIdeas &&
-            <IdeasMap
-              projectIds={queryParameters.projects}
-              phaseId={queryParameters.phase}
-            />
-          }
 
           {biggerThanLargeTablet &&
             <ContentRight
               id="e2e-ideas-filters"
               filterColumnWidth={filterColumnWidth}
             >
-              {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
+              {/* {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
                 <ClearAllButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnClear}>
                   <ClearAllIcon name="close" />
                   <ClearAllText>
                     <FormattedMessage {...messages.clearAll} />
                   </ClearAllText>
                 </ClearAllButton>
-              }
+              } */}
               <FiltersSidebar
                 selectedIdeaFilters={selectedIdeaFilters}
                 onChange={this.handleIdeaFiltersOnChange}
