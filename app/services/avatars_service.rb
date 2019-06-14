@@ -37,7 +37,7 @@ class AvatarsService
   def add_count users, limit
     {
       users: with_avatars(users, limit),
-      total_count: users.count
+      total_count: users.size
     }
   end
 
