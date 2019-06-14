@@ -28,9 +28,13 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    user_baskets_by_context_id = current_user&.baskets&.group_by(&:participation_context_id) || {}
+    user_baskets = current_user&.baskets&.group_by(&:participation_context_id) || {}
+    instance_options = {
+      user_baskets: user_baskets,
+      timeline_active: TimelineService.new.timeline_active_on_collection(@projects)
+    }
 
-    render json: @projects, include: ['project_images', 'current_phase', 'avatars'], ubci: user_baskets_by_context_id
+    render({ json: @projects, include: ['project_images', 'current_phase', 'avatars'], **instance_options })
   end
 
   def show

@@ -51,8 +51,8 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   end
 
   def user_basket
-    if @instance_options[:ubci]
-      @instance_options.dig(:ubci, object.id)&.first
+    if @instance_options[:user_baskets]
+      @instance_options.dig(:user_baskets, object.id)&.first
     else
       current_user&.baskets&.find_by participation_context_id: object.id
     end
@@ -82,7 +82,11 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   end
 
   def timeline_active
-    TimelineService.new.timeline_active object
+    if @instance_options[:timeline_active]
+      @instance_options.dig(:timeline_active, object.id)
+    else
+      TimelineService.new.timeline_active object
+    end
   end
 
   def can_moderate?
