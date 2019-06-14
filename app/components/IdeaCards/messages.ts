@@ -18,7 +18,7 @@ export default defineMessages({
     defaultMessage: 'No ideas found',
   },
   tryOtherFilter: {
-    id: 'app.containers.IdeaCards.noFilteredIdeas',
+    id: 'app.containers.IdeaCards.tryOtherFilter',
     defaultMessage: "Try adjusting your search or filter to find what you're looking for",
   },
   suggestIdea: {
