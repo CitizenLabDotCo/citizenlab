@@ -37,8 +37,9 @@ Rails.application.routes.draw do
         concerns: [:votable, :spam_reportable, :post, :post], 
         defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
         
-        resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
-        resources :files, defaults: {container_class: Idea, file_class: IdeaFile}
+        resources :official_feedback, shallow: true
+        resources :images, defaults: {container_class_name: Idea.name, image_class_name: IdeaImage.name}
+        resources :files, defaults: {container_class_name: Idea.name, file_class_name: IdeaFile.name}
         resources :activities, only: [:index]
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
@@ -50,8 +51,8 @@ Rails.application.routes.draw do
         concerns: [:votable, :spam_reportable, :post, :post], 
         defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
 
-        resources :images, defaults: {container_class: Initiative, image_class: InitiativeImage}
-        resources :files, defaults: {container_class: Initiative, file_class: InitiativeFile}
+        resources :images, defaults: {container_class_name: Initiative.name, image_class_name: InitiativeImage.name}
+        resources :files, defaults: {container_class_name: Initiative.name, file_class_name: InitiativeFile.name}
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
         get :as_markers, on: :collection, action: 'index_initiative_markers'
@@ -94,7 +95,7 @@ Rails.application.routes.draw do
         get :current, on: :collection
       end
       resources :pages do
-        resources :files, defaults: {container_class: Page, file_class: PageFile}, shallow: false
+        resources :files, defaults: {container_class_name: Page.name, file_class_name: PageFile.name}, shallow: false
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
@@ -110,16 +111,16 @@ Rails.application.routes.draw do
       # to be shallow so we can determine their container class. See e.g.
       # https://github.com/rails/rails/pull/24405
       resources :events, only: [:show, :edit, :update, :destroy] do
-        resources :files, defaults: {container_class: Event, file_class: EventFile}, shallow: false
+        resources :files, defaults: {container_class_name: Event.name, file_class_name: EventFile.name}, shallow: false
       end
       resources :phases, only: [:show, :edit, :update, :destroy], concerns: :participation_context, defaults: {parent_param: :phase_id} do
-        resources :files, defaults: {container_class: Phase, file_class: PhaseFile}, shallow: false
+        resources :files, defaults: {container_class_name: Phase.name, file_class_name: PhaseFile.name}, shallow: false
       end
       resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do
         resources :events, only: [:index, :new, :create]
         resources :phases, only: [:index, :new, :create]
-        resources :images, defaults: {container_class: Project, image_class: ProjectImage}
-        resources :files, defaults: {container_class: Project, file_class: ProjectFile}
+        resources :images, defaults: {container_class_name: Project.name, image_class_name: ProjectImage.name}
+        resources :files, defaults: {container_class_name: Project.name, file_class_name: ProjectFile.name}
         resources :groups_projects, shallow: true, except: [:update]
         resources :moderators, except: [:update] do
           get :users_search, on: :collection

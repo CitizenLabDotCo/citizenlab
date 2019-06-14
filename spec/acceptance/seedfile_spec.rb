@@ -23,7 +23,7 @@ describe "seedfile", slow_test: true do
       expect(IdeaImage.count).to be > 0
       expect(ProjectImage.count).to be > 0
       expect(Comment.count).to be > 0
-      expect(Page.count).to be 13 # 8 generated + 5 legal pages by the template
+      expect(Page.count).to be 14 # 8 generated + 6 legal pages by the template
       expect(Notification.count).to be > 0
       expect(IdeaStatus.count).to be > 0
       expect(Group.count).to be > 0
