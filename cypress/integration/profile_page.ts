@@ -26,9 +26,12 @@ describe('Profile Page', () => {
       return cy.apiAddComment(ideaId, commentContent, undefined, jwt);
     }).then((comment) => {
       commentId = comment.body.data.id;
-      cy.visit(`/profile/${newUserName}-${newUserSurname}`);
-      cy.wait(1000);
     });
+  });
+
+  beforeEach(() => {
+    cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.wait(1000);
   });
 
   it('shows the page, and main infos', () => {
