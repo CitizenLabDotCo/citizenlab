@@ -55,6 +55,9 @@ da:
     infopage_body: Oplev mere information relateret til platformen.
     homepage_info_title: ""
     homepage_info_body: ""
+    initiatives_title: Initiatives
+    initiatives_body: >
+      <p>Explanation about initiatives</p>
   projects:
     open_idea_project_title: En idé? Tag det med til dit råd!
     open_idea_project_description_preview: Måske har du en idé, der ikke passer til ét af de eksisterende projekter? Så post det her, saml støtte og få det på den politiske dagsorden!
@@ -88,4 +91,5 @@ da:
     default_threshold_reached_message: >
       <p>The initiators are invited to present their initiative on the next council meeting. We will provide an official update.</p>
     default_eligibility_criteria: >
-      <p>The initiative should be within the city's competences</p>
+      <p>The initiative should</p>
+      <p>- be within the city's competences</p>

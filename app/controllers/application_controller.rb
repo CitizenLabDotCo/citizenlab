@@ -55,4 +55,13 @@ class ApplicationController < ActionController::API
     Current.tenant = Tenant.current
   rescue ActiveRecord::RecordNotFound
   end
+
+  # Used by semantic logger to include in every log line
+  def append_info_to_payload(payload)
+    super
+    payload[:tenant_id] = Current.tenant&.id
+    payload[:user_id] = current_user&.id
+    payload[:request_id] = request.request_id
+    payload[:"X-Amzn-Trace-Id"] = request.headers["X-Amzn-Trace-Id"]
+  end
 end
