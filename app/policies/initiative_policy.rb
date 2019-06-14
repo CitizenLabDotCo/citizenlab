@@ -57,4 +57,10 @@ class InitiativePolicy < ApplicationPolicy
       shared
     end
   end
+
+  # Helper method that is not part of the pundit conventions but is used
+  # publicly
+  def moderate?
+    user&.active? && user.admin?
+  end
 end

@@ -54,7 +54,7 @@ class Initiative < ApplicationRecord
   private
 
   def assignee_can_moderate_initiatives
-    if self.assignee && !self.assignee.admin?
+    if self.assignee && !InitiativePolicy.new(self.assignee, self).moderate?
       self.errors.add(
         :assignee_id,
         :assignee_can_not_moderate_initiatives,

@@ -32,7 +32,7 @@ resource "OfficialFeedback" do
   get "web_api/v1/official_feedback/:id" do
     let(:id) { @feedbacks.first.id }
 
-    example_request "Get one official feedback by id" do
+    example_request "Get one official feedback on an initiative by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @feedbacks.first.id
@@ -71,7 +71,7 @@ resource "OfficialFeedback" do
       describe do
         let(:body_multiloc) { {"en" => ""} }
 
-        example_request "[error] Create an invalid official feedback" do
+        example_request "[error] Create an invalid official feedback on an initiative" do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response.dig(:errors, :body_multiloc)).to eq [{error: 'blank'}]
@@ -90,7 +90,7 @@ resource "OfficialFeedback" do
       let(:id) { official_feedback.id }
       let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
 
-      example_request "Update an official feedback" do
+      example_request "Update an official feedback for an initiative" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
@@ -101,7 +101,7 @@ resource "OfficialFeedback" do
     delete "web_api/v1/official_feedback/:id" do
       let(:official_feedback) { create(:official_feedback, user: @user, post: @initiative) }
       let(:id) { official_feedback.id }
-      example_request "Delete an official feedback" do
+      example_request "Delete an official feedback from an initiative" do
         expect(response_status).to eq 200
         expect{OfficialFeedback.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(@initiative.reload.official_feedbacks_count).to eq 2
