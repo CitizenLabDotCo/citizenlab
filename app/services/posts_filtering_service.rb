@@ -28,6 +28,9 @@ class PostsFilteringService
     initiatives
   end
 
+
+  private
+
   def apply_common_post_index_filters posts, params
     posts = posts.includes(:author).where(author_id: params[:author]) if params[:author].present?
     posts = posts.search_by_all(params[:search]) if params[:search].present?
