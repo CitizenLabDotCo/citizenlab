@@ -51,7 +51,7 @@ Rails.application.routes.draw do
         defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
 
         resources :images, defaults: {container_class_name: Initiative.name, image_class_name: InitiativeImage.name}
-        resources :files, defaults: {container_class_name: Initiative.name, image_class_name: InitiativeFile.name}
+        resources :files, defaults: {container_class_name: Initiative.name, file_class_name: InitiativeFile.name}
         get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
         get :as_markers, on: :collection, action: 'index_initiative_markers'
       end
