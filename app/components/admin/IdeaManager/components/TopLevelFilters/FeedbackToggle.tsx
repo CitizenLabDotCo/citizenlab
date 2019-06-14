@@ -87,12 +87,12 @@ const StyledLabel = styled.label`
 interface InputProps {
   value: boolean;
   onChange: (feedbackNeeded: boolean | undefined) => void;
-  assignee: string | undefined;
-  project?: string;
-  phase?: string;
-  topics?: string[];
-  ideaStatus?: string;
-  searchTerm?: string;
+  assignee?: string | null;
+  project?: string | null;
+  phase?: string | null;
+  topics?: string[] | null;
+  ideaStatus?: string | null;
+  searchTerm?: string | null;
 }
 
 interface DataProps {

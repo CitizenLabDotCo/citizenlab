@@ -1,51 +1,38 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 
 // components
 import FullscreenModal from 'components/UI/FullscreenModal';
 import IdeasShow from 'containers/IdeasShow';
-import VoteControl from 'components/VoteControl';
+import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 
 interface Props {
-  modalOpened: boolean;
-  modalUrl: string | null;
-  modalId: string | null;
-  modalType: string | null;
+  ideaId: string | null;
+  ideaSlug: string | null;
   close: () => void;
-  unauthenticatedVoteClick: () => void;
 }
 
-const IdeaPageFullscreenModal = memo<Props>(({ modalOpened, close, modalUrl, modalId, modalType, unauthenticatedVoteClick }) => {
+const IdeaPageFullscreenModal = memo<Props>(({ ideaId, ideaSlug, close }) => {
 
-  const onClose = useCallback(
-    () => {
-      close();
-    },
-    []
-  );
+  const onClose = useCallback(() => {
+    close();
+  }, []);
 
-  const onUnauthenticatedVoteClick = useCallback(
-    () => {
-      unauthenticatedVoteClick();
-    },
-    []
-  );
+  const topBar = useMemo(() => {
+    return (ideaId ? <IdeaShowPageTopBar ideaId={ideaId} insideModal={true} /> : null);
+  }, [ideaId]);
 
-  const fullscreenModalHeaderChild = ((modalOpened && modalType === 'idea' && modalId) ? (
-    <VoteControl
-      ideaId={modalId}
-      unauthenticatedVoteClick={onUnauthenticatedVoteClick}
-      size="1"
-    />
-  ) : undefined);
+  const content = useMemo(() => {
+    return (ideaId ? <IdeasShow ideaId={ideaId} inModal={true} /> : null);
+  }, [ideaId]);
 
   return (
     <FullscreenModal
-      opened={modalOpened}
+      opened={!!(ideaId && ideaSlug)}
       close={onClose}
-      url={modalUrl}
-      headerChild={fullscreenModalHeaderChild}
+      url={ideaSlug ? `/ideas/${ideaSlug}` : null}
+      topBar={topBar}
     >
-      {modalId ? <IdeasShow ideaId={modalId} inModal={true}/> : null}
+      {content}
     </FullscreenModal>
   );
 });

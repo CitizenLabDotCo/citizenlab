@@ -129,7 +129,8 @@ export type NavItem = {
   message: string,
   featureName?: string,
   isActive: (pathname: string) => boolean,
-  count?: number
+  count?: number,
+  onlyCheckAllowed?: boolean
 };
 
 type Tracks = {
@@ -161,6 +162,15 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
         iconName: 'ideas',
         message: 'ideas',
         isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/ideas`))
+      },
+      {
+        id: 'initiatives',
+        link: '/admin/initiatives',
+        iconName: 'initiatives',
+        message: 'initiatives',
+        featureName: 'initiatives',
+        onlyCheckAllowed: true,
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/initiatives`))
       },
       {
         id: 'users',
@@ -233,7 +243,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
               );
             } else if (route.featureName) {
               return (
-                <FeatureFlag name={route.featureName}>
+                <FeatureFlag name={route.featureName} onlyCheckAllowed={route.onlyCheckAllowed} key={route.id}>
                   <MenuItem route={route} key={route.id} />
                 </FeatureFlag>
               );

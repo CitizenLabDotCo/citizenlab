@@ -1,5 +1,6 @@
 import React from 'react';
 import { get, isString } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
 import { IOfficialFeedbacks, officialFeedbacksForIdeaStream } from 'services/officialFeedback';
@@ -19,7 +20,7 @@ export type GetOfficialFeedbacksChildProps = State & {
 };
 
 interface State {
-  officialFeedbacksList: IOfficialFeedbacks | null | Error;
+  officialFeedbacksList: IOfficialFeedbacks | null | undefined | Error;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;
@@ -34,7 +35,7 @@ export default class GetOfficialFeedbacks extends React.Component<Props, State> 
   constructor(props: Props) {
     super(props);
     const initialState = {
-      officialFeedbacksList: null,
+      officialFeedbacksList: undefined,
       hasMore: false,
       querying: true,
       loadingMore: false
@@ -78,7 +79,7 @@ export default class GetOfficialFeedbacks extends React.Component<Props, State> 
 
         this.setState({
           hasMore,
-          officialFeedbacksList,
+          officialFeedbacksList: !isNilOrError(officialFeedbacksList) ? officialFeedbacksList : null,
           querying: false,
           loadingMore: false
         });

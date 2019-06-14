@@ -298,7 +298,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                     forwardedRef={null}
                     name="checkmark"
                   >
-                    <Component
+                    <Memo()
                       className="c2"
                       name="checkmark"
                     >
@@ -312,7 +312,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                           fillRule="evenodd"
                         />
                       </svg>
-                    </Component>
+                    </Memo()>
                   </StyledComponent>
                 </Checkbox__CheckmarkIcon>
               </div>

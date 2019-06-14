@@ -142,6 +142,19 @@ export interface IIdeaAdd {
   budget: number | null;
 }
 
+export interface IIdeasFilterCounts {
+  idea_status_id: {
+    [key: string]: number;
+  };
+  area_id: {
+    [key: string]: number;
+  };
+  topic_id: {
+    [key: string]: number;
+  };
+  total: number;
+}
+
 export function ideaByIdStream(ideaId: string) {
   return streams.get<IIdea>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}` });
 }
@@ -154,6 +167,10 @@ export function ideasStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeas>({ apiEndpoint: `${API_PATH}/ideas`, ...streamParams });
 }
 
+export function ideasFilterCountsStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeasFilterCounts>({ apiEndpoint: `${API_PATH}/ideas/filter_counts`, ...streamParams, cacheStream: false });
+}
+
 export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
   return streams.get<{ data: IGeotaggedIdeaData[], links: IIdeaLinks}>({ apiEndpoint: `${API_PATH}/ideas/as_markers`, ...streamParams, cacheStream: false });
 }
@@ -164,14 +181,19 @@ export function geotaggedIdeasStream(streamParams: IStreamParams | null = null) 
 
 export async function addIdea(object: IIdeaAdd) {
   const response = await streams.add<IIdea>(`${API_PATH}/ideas/`, { idea: object });
-  streams.fetchAllWith({ dataId: [response.data.relationships.project.data.id] });
-  streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${object.author_id}/ideas_count`] });
+  streams.fetchAllWith({
+    dataId: [response.data.relationships.project.data.id],
+    apiEndpoint: [`${API_PATH}/users/${object.author_id}/ideas_count`]
+  });
   return response;
 }
 
 export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
   const response = await streams.update<IIdea>(`${API_PATH}/ideas/${ideaId}`, ideaId, { idea: object });
-  streams.fetchAllWith({ dataId: [response.data.relationships.project.data.id], apiEndpoint: [`${API_PATH}/ideas`, `${API_PATH}/stats/ideas_count`] });
+  streams.fetchAllWith({
+    dataId: [response.data.relationships.project.data.id],
+    apiEndpoint: [`${API_PATH}/stats/ideas_count`]
+  });
   return response;
 }
 
@@ -180,11 +202,15 @@ export async function deleteIdea(ideaId: string) {
     ideaByIdStream(ideaId).observable.pipe(first()).toPromise(),
     streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId)
   ]);
+
   const authorId = get(idea, 'relationships.author.data.id', false);
-  if (authorId) {
-    streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/ideas_count`] });
-  }
-  streams.fetchAllWith({ dataId: [idea.data.relationships.project.data.id] });
+  const projectId = idea.data.relationships.project.data.id;
+
+  streams.fetchAllWith({
+    dataId: [projectId],
+    apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/ideas_count`] : [])
+  });
+
   return response;
 }
 
