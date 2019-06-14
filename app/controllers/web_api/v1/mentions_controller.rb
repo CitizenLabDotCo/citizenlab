@@ -12,15 +12,19 @@ class WebApi::V1::MentionsController < ApplicationController
 
     @users = []
     if params[:post_id] && params[:post_type]
-      post_class = params[:post_type].constantize
+      post_class = case params[:post_type]
+        when 'Idea' then Idea
+        when 'Initiative' then Initiative
+        else raise "#{params[:post_type]} is not a post type"
+      end
       post = post_class.find(params[:post_id])
       @users = service.users_from_post mention_pattern, post, limit
     end
 
-    if @users.count < limit
+    if @users.load.size < limit
       @users += User
         .where("slug ILIKE ?", "#{mention_pattern}%")
-        .limit(limit - @users.count)
+        .limit(limit - @users.size)
         .where.not(id: @users)
         .all
     end
