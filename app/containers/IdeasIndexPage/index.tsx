@@ -61,7 +61,7 @@ export default memo(() => (
   <>
     <IdeasIndexMeta />
     <Container>
-      <StyledContentContainer>
+      <StyledContentContainer maxWidth="100%">
         <PageTitle>
           <FormattedMessage {...messages.pageTitle} />
         </PageTitle>
@@ -69,6 +69,8 @@ export default memo(() => (
           type="load-more"
           allowProjectsFilter={true}
           projectPublicationStatus="published"
+          showViewToggle={false}
+          showFiltersSidebar={true}
         />
       </StyledContentContainer>
       <Footer />

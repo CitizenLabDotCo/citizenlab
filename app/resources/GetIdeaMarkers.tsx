@@ -5,8 +5,8 @@ import shallowCompare from 'utils/shallowCompare';
 import { IGeotaggedIdeaData, ideasMarkersStream } from 'services/ideas';
 
 interface InputProps {
-  phaseId?: string;
-  projectIds?: string[];
+  phaseId?: string | null;
+  projectIds?: string[] | null;
 }
 
 type children = (renderProps: GetIdeaMarkersChildProps) => JSX.Element | null;

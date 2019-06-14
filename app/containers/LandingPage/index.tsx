@@ -11,6 +11,7 @@ import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
 import SignedOutHeader from './SignedOutHeader';
 import SignedInHeader from './SignedInHeader';
+import InitiativesCTABox from './InitiativesCTABox';
 import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -37,6 +38,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { PublicationStatus } from 'resources/GetProjects';
+import FeatureFlag from 'components/FeatureFlag';
 
 const Container: any = styled.div`
   height: 100%;
@@ -97,7 +99,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const ProjectsStyledContentContainer: any = styled(StyledContentContainer)`
-  padding-bottom: 30px;
+  padding-bottom: 40px;
   background: ${colors.background};
   border-bottom: solid 1px #eaeaea;
 
@@ -228,6 +230,9 @@ class LandingPage extends PureComponent<Props, State> {
                     />
                   </SectionContainer>
                 </ProjectSection>
+                <FeatureFlag name="initiatives">
+                  <InitiativesCTABox />
+                </FeatureFlag>
               </ProjectsStyledContentContainer>
 
               {showCustomSection &&

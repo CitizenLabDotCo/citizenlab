@@ -54,7 +54,7 @@ const Container = styled.div`
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
   border-bottom: solid 1px ${({ theme }) => theme.navbarBorderColor || '#eaeaea'};;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
-  z-index: 999;
+  z-index: 998;
 
   &.hideNavbar {
     ${media.smallerThanMaxTablet`
@@ -348,9 +348,7 @@ const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
   `}
 `;
 
-interface InputProps {
-  fullscreenModalOpened: boolean;
-}
+interface InputProps {}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
@@ -398,7 +396,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
   render() {
     const {
-      fullscreenModalOpened,
       projects,
       location,
       locale,
@@ -419,7 +416,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const secondUrlSegment = urlSegments[1];
     const lastUrlSegment = urlSegments[urlSegments.length - 1];
     const onIdeaPage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'ideas' && lastUrlSegment !== 'new');
-    const hideNavbar = (fullscreenModalOpened || onIdeaPage);
 
     return (
       <>
@@ -430,7 +426,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
         <Container
           role="navigation"
           id="navbar"
-          className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${hideNavbar ? 'hideNavbar' : ''}`}
+          className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage ? 'hideNavbar' : ''}`}
         >
           <ContainerInner>
             <Left>
@@ -495,6 +491,14 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   <NavigationItem to="/ideas" activeClassName="active">
                     <NavigationItemText>
                       <FormattedMessage {...messages.pageIdeas} />
+                    </NavigationItemText>
+                  </NavigationItem>
+                </FeatureFlag>
+
+                <FeatureFlag name="initiatives">
+                  <NavigationItem to="/initiatives" activeClassName="active">
+                    <NavigationItemText>
+                      <FormattedMessage {...messages.pageInitiatives} />
                     </NavigationItemText>
                   </NavigationItem>
                 </FeatureFlag>

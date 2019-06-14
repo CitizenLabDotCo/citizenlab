@@ -82,6 +82,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
         onChange={this.handleOnChange}
         isDisabled={this.props.disabled}
         styles={selectStyles}
+        menuPlacement="auto"
       />
     );
   }

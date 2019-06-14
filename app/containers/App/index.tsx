@@ -72,10 +72,9 @@ const InnerContainer = styled.div`
   }
 `;
 
-export interface IModalInfo {
-  type: string;
-  id: string | null;
-  url: string | null;
+export interface IIdeaCardClickEvent {
+  ideaId: string;
+  ideaSlug: string;
 }
 
 type Props = {};
@@ -84,10 +83,8 @@ type State = {
   previousPathname: string | null;
   tenant: ITenant | null;
   authUser: IUser | null;
-  modalOpened: boolean;
-  modalType: string | null;
-  modalId: string | null;
-  modalUrl: string | null;
+  ideaId: string | null;
+  ideaSlug: string | null;
   visible: boolean;
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
@@ -105,10 +102,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       previousPathname: null,
       tenant: null,
       authUser: null,
-      modalOpened: false,
-      modalType: null,
-      modalId: null,
-      modalUrl: null,
+      ideaId: null,
+      ideaSlug: null,
       visible: true,
       userDeletedModalOpened: false,
       userActuallyDeleted: false
@@ -178,12 +173,18 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         }
       }),
 
-      eventEmitter.observeEvent<IModalInfo>('ideaCardClick').subscribe(({ eventValue }) => {
-        const { type, id, url } = eventValue;
-        this.openModal(type, id, url);
+      eventEmitter.observeEvent<IIdeaCardClickEvent>('ideaCardClick').subscribe(({ eventValue }) => {
+        const { ideaId, ideaSlug } = eventValue;
+
+        if (ideaId) {
+          this.openIdeaPageModal(ideaId, ideaSlug);
+        }
       }),
-    ];
-    this.subscriptions.push(
+
+      eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
+        this.closeIdeaPageModal();
+      }),
+
       eventEmitter.observeEvent('tryAndDeleteProfile').subscribe(() => {
         signOutAndDeleteAccountPart2().then(success => {
           if (success) {
@@ -193,7 +194,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           }
         });
       })
-    );
+    ];
   }
 
   componentWillUnmount() {
@@ -201,16 +202,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  openModal = (type: string, id: string | null, url: string | null) => {
-    this.setState({ modalOpened: true, modalType: type, modalId: id, modalUrl: url });
+  openIdeaPageModal = (ideaId: string, ideaSlug: string) => {
+    this.setState({ ideaId, ideaSlug });
   }
 
-  closeModal = () => {
-    this.setState({ modalOpened: false, modalType: null, modalId: null, modalUrl: null });
-  }
-
-  unauthenticatedVoteClick = () => {
-    clHistory.push('/sign-in');
+  closeIdeaPageModal = () => {
+    this.setState({ ideaId: null, ideaSlug: null });
   }
 
   closeUserDeletedModal = () => {
@@ -219,17 +216,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { location, children } = this.props;
-    const {
-      previousPathname,
-      tenant,
-      modalOpened,
-      modalType,
-      modalId,
-      modalUrl,
-      visible ,
-      userDeletedModalOpened,
-      userActuallyDeleted
-    } = this.state;
+    const { previousPathname, tenant, ideaId, ideaSlug, visible, userDeletedModalOpened, userActuallyDeleted } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
 
@@ -246,14 +233,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <IdeaPageFullscreenModal
-                        modalOpened={modalOpened}
-                        close={this.closeModal}
-                        modalUrl={modalUrl}
-                        modalId={modalId}
-                        modalType={modalType}
-                        unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                      />
+                      <IdeaPageFullscreenModal ideaId={ideaId} ideaSlug={ideaSlug} close={this.closeIdeaPageModal} />
                     </Suspense>
                   </ErrorBoundary>
 
@@ -271,7 +251,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <Navbar fullscreenModalOpened={modalOpened} />
+                    <Navbar />
                   </ErrorBoundary>
 
                   <ErrorBoundary>

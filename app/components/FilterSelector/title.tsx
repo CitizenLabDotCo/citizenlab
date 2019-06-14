@@ -46,33 +46,34 @@ const Container = styled.button`
       fill: ${({ theme }) => darken(0.15, theme.colorText)};
     }
   }
-
-  &:focus {
-    outline: none;
-  }
 `;
 
-type Props = {
-  title: string | JSX.Element,
-  opened: boolean,
-  onClick: Function,
-  baseID: string,
-};
+interface Props {
+  title: string | JSX.Element;
+  opened: boolean;
+  onClick: (arg: React.MouseEvent<HTMLButtonElement>) => void;
+  baseID: string;
+  className?: string;
+}
 
-type State = {};
+interface State {}
 
 export default class Title extends PureComponent<Props, State> {
-  handleClick = (event) => {
+  removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  }
+
+  handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.onClick(event);
   }
 
   render() {
-    const className = this.props['className'];
-    const { title, opened, baseID } = this.props;
+    const { title, opened, baseID, className } = this.props;
 
     return (
       <Container
-        onClick={this.handleClick}
+        onMouseDown={this.removeFocus}
+        onClick={this.handleOnClick}
         aria-expanded={opened}
         id={`${baseID}-label`}
         className={`e2e-filter-selector-button FilterSelectorTitle ${opened ? 'opened' : ''} ${className}`}

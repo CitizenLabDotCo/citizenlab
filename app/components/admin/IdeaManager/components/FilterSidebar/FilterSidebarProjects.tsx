@@ -6,8 +6,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 interface Props {
-  projects?: IProjectData[];
-  selectedProject?: string;
+  projects?: IProjectData[] | null;
+  selectedProject?: string | null;
   onChangeProjectFilter?: (project: string[] | undefined) => void;
 }
 

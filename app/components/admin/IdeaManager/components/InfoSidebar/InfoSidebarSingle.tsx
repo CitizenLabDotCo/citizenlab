@@ -5,7 +5,7 @@ import { deleteIdea } from 'services/ideas';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
-import { IModalInfo } from 'containers/App';
+import { IIdeaCardClickEvent } from 'containers/App';
 import T from 'components/T';
 import { Segment, Header } from 'semantic-ui-react';
 import { injectIntl } from 'utils/cl-intl';
@@ -49,11 +49,7 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IModalInfo>('adminIdeas', 'ideaCardClick', {
-        type: 'idea',
-        id: idea.id,
-        url: `/ideas/${idea.attributes.slug}`
-      });
+      eventEmitter.emit<IIdeaCardClickEvent>('infoSidebarSingle', 'ideaCardClick', { ideaId: idea.id, ideaSlug: idea.attributes.slug });
     }
   }
 

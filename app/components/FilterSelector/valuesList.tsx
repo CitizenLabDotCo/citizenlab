@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { includes } from 'lodash-es';
+import { includes, isNil } from 'lodash-es';
 
 // components
 import Checkbox from 'components/UI/Checkbox';
@@ -35,7 +35,6 @@ const ListItem = styled.button`
   padding: 10px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;
 
@@ -102,6 +101,10 @@ export default class ValuesList extends PureComponent<Props, State> {
     mobileRight:undefined
   };
 
+  removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  }
+
   handleOnToggle = (entry, index) => (event: FormEvent) => {
     event.preventDefault();
     this.setState({ currentFocus: index });
@@ -128,6 +131,12 @@ export default class ValuesList extends PureComponent<Props, State> {
             {values && values.map((entry, index) => {
               const checked = includes(selected, entry.value);
               const last = (index === values.length - 1);
+              const classNames = [
+                'e2e-filter-list-item',
+                `e2e-projects-filter-${entry.value !== '-new' ? entry.value : 'old'}`,
+                !multiple && checked ? 'selected' : null,
+                last ? 'last' : null,
+              ].filter(item => !isNil(item)).join(' ');
 
               return (
                 <ListItem
@@ -136,15 +145,9 @@ export default class ValuesList extends PureComponent<Props, State> {
                   aria-posinset={index + 1}
                   aria-selected={checked}
                   key={entry.value}
+                  onMouseDown={this.removeFocus}
                   onClick={this.handleOnToggle(entry, index)}
-                  className={`
-                    e2e-filter-list-item
-                    ${!multiple && checked ? 'selected' : ''}
-                    ${last ? 'last' : ''}
-                    ${entry.value === 'archived' ? 'e2e-projects-filter-archived' : ''}
-                    ${entry.value === 'new' ? 'e2e-projects-filter-new' : ''}
-                    ${entry.value === '-new' ? 'e2e-projects-filter-old' : ''}
-                  `}
+                  className={classNames}
                 >
                   <ListItemText>{entry.text}</ListItemText>
 
