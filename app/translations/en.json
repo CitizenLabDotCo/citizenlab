@@ -1203,7 +1203,6 @@
   "app.containers.InitiativesIndexPage.header": "Start your own initiative and make your voice heard by {styledOrgName}",
   "app.containers.InitiativesIndexPage.metaDescription": "Explore and support initiatives conducted in {orgName}",
   "app.containers.InitiativesIndexPage.metaTitle": "All Initiatives • {orgName}",
-  "app.containers.InitiativesIndexPage.orgName": "{orgName}",
   "app.containers.InitiativesIndexPage.readMore": "Read more here.",
   "app.containers.InitiativesIndexPage.startInitiative": "Start an initiative",
   "app.containers.InitiativesIndexPage.success": "success",
