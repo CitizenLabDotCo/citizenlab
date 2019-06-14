@@ -423,6 +423,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
         {showCardView && !querying && hasMore &&
           <Footer>
             <ShowMoreButton
+              id="e2e-idea-cards-show-more-button"
               onClick={this.loadMore}
               size="1"
               style="secondary"

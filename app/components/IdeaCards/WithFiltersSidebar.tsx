@@ -503,7 +503,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
 
     return (
-      <Container id="e2e-ideas-container-with-filter-sidebar" className={className}>
+      <Container id="e2e-ideas-container" className={className}>
         {ideasList === undefined &&
           <InitialLoading id="ideas-loading">
             <Spinner />
@@ -601,6 +601,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 {showCardView && !querying && hasMore &&
                   <Footer>
                     <ShowMoreButton
+                      id="e2e-idea-cards-show-more-button"
                       onClick={this.loadMore}
                       style="secondary"
                       text={<FormattedMessage {...messages.showMore} />}
