@@ -43,14 +43,10 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  # Print deprecation notices to the Rails logger.
-  config.active_support.deprecation = :log
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
-  # Highlight code that triggered database queries in logs.
-  config.active_record.verbose_query_logs = true
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
@@ -74,5 +70,25 @@ Rails.application.configure do
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.smtp_settings = { :address => "mailcatcher", :port => 1025 }
   end
+
+  # *** Logging
+
+  # Highlight code that triggered database queries in logs.
+  config.active_record.verbose_query_logs = true
+
+  # Print deprecation notices to the Rails logger.
+  config.active_support.deprecation = :log
+
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    STDOUT.sync = true
+    config.rails_semantic_logger.add_file_appender = false
+    config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: config.rails_semantic_logger.format)
+  end
+
+  # In development, we want to keep the logs closer to classic rails
+  config.rails_semantic_logger.semantic   = false
+  config.rails_semantic_logger.started    = true
+  config.rails_semantic_logger.processing = true
+  config.rails_semantic_logger.rendered   = true
 
 end
