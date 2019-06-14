@@ -6,7 +6,7 @@ class WebApi::V1::ImagesController < ApplicationController
 
   def index
     @images = @container.send("#{container_association}_images").order(:ordering)
-    policy_scope_class = "#{params['image_class'].name}Policy::Scope".constantize
+    policy_scope_class = "#{params['image_class_name']}Policy::Scope".constantize
     @images = policy_scope_class.new(current_user, @images).resolve
     render json: @images, each_serializer: WebApi::V1::ImageSerializer
   end
@@ -57,17 +57,19 @@ class WebApi::V1::ImagesController < ApplicationController
   end
 
   def set_image
-    @image = params['image_class'].find(params[:id])
+    image_class = params['image_class_name'].constantize
+    @image = image_class.find(params[:id])
     authorize @image
   end
 
   def set_container
     container_id = params["#{container_association}_id"]
-    @container = params['container_class'].find(container_id)
+    container_class = params['container_class_name'].constantize
+    @container = container_class.find(container_id)
   end
 
   def container_association
-    params['container_class'].name.downcase
+    params['container_class_name'].downcase
   end
 
   def transform_errors_details! error_details
