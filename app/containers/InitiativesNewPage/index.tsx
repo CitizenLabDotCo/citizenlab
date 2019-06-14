@@ -14,7 +14,7 @@ import InitiativeForm, { FormValues } from 'components/InitiativeForm';
 
 // services
 import { CLErrorsJSON } from 'typings';
-import { addInitiative, InitiativePublicationStatus } from 'services/initiatives';
+import { addInitiative, InitiativePublicationStatus, updateInitiative } from 'services/initiatives';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -32,6 +32,9 @@ import { lighten } from 'polished';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { convertToGeoJson } from 'utils/locationTools';
+import { isEqual, pick, get } from 'lodash-es';
+import InitiativesFormWrapper from './InitiativesFormWrapper';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -132,7 +135,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  publishing: boolean;
+  initialValues: FormValues | null;
 }
 
 class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, State> {
@@ -140,40 +143,48 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
     super(props);
 
     this.state = {
-      publishing: false,
+      initialValues: null
     };
   }
 
   componentDidMount() {
-    // const { location } = this.props;
-    //
-    // if (location.query.position) {
-    //   reverseGeocode(JSON.parse(location.query.position)).then((position) => {
-    //     this.setState({
-    //       position,
-    //       position_coordinates: {
-    //         type: 'Point',
-    //         coordinates: JSON.parse(location.query.position) as number[]
-    //       }
-    //     });
-    //   });
-    // }
   }
 
-  handleSubmit = async (values: FormValues, { setSubmitting, setErrors, setStatus }) => {
-    const { authUser, locale } = this.props;
-    if (isNilOrError(authUser) || isNilOrError(locale)) return;
-    try {
-      const {  title, body  } = values;
-      const fieldValues = { title_multiloc: { [locale]: title }, body_multiloc: { [locale]: body }, author_id: authUser.id, publication_status: 'draft' as InitiativePublicationStatus };
-      await addInitiative(fieldValues);
-      setStatus('success');
-    } catch (errorResponse) {
-      const apiErrors = (errorResponse as CLErrorsJSON).json.errors; // TODO merge master and update this.
-      setErrors(apiErrors);
-      setSubmitting(false);
-    }
+  changedValues = (initialValues, newValues) => {
+    const changedKeys = Object.keys(newValues).filter((key) => (
+      !isEqual(initialValues[key], newValues[key])
+    ));
+    return pick(newValues, changedKeys);
   }
+
+  handleSave = (mode: 'published' | 'draft', initiativeId: string, initialValues) =>
+    async (values: FormValues, { setSubmitting, setErrors, setStatus }) => {
+      const { authUser, locale } = this.props;
+      if (isNilOrError(authUser) || isNilOrError(locale)) return;
+      try {
+        const {  title, body, topics, position } = this.changedValues(initialValues, values);
+        // if position has changed and is not empty, transform it
+        const isPositionSafe = (typeof(position) === 'string') && position !== '';
+        const locationGeoJSON = isPositionSafe ? await convertToGeoJson(position) : null;
+        const locationDescription = isPositionSafe ? position : null;
+        // build API readable object
+        const apiValues = {
+          title_multiloc: { [locale]: title },
+          body_multiloc: { [locale]: body },
+          author_id: authUser.id,
+          topic_ids: topics,
+          location_point_geojson: locationGeoJSON,
+          location_description: locationDescription,
+          publication_status: mode
+        };
+        await updateInitiative(initiativeId, apiValues);
+        setStatus('success');
+      } catch (errorResponse) {
+        const apiErrors = get(errorResponse, 'json.errors'); // TODO merge master and update this.
+        setErrors(apiErrors);
+        setSubmitting(false);
+      }
+    }
 
   goBack = () => {
     clHistory.goBack();
@@ -184,6 +195,9 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
   }
 
   render() {
+    const { authUser, locale } = this.props;
+
+    if (isNilOrError(authUser) || isNilOrError(locale)) return null;
 
     return (
       <Container className="e2e-initiatives-form-page">
@@ -200,15 +214,9 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
         </Header>
         <ContentContainer mode="page">
           <TwoColumns>
-            <Formik
-              initialValues={{
-                title: '',
-                body: '',
-                topics: []
-              }}
-              render={this.renderFn}
-              onSubmit={this.handleSubmit}
-              validate={InitiativeForm.validate}
+            <InitiativesFormWrapper
+              userId={authUser.id}
+              locale={locale}
             />
             <TipsContainer>
               <StyledTipsBox />
@@ -220,13 +228,13 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
   }
 }
 
-const Data = adopt<DataProps,  InputProps & WithRouterProps>({
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
+export default (inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {dataProps => <InitiativesNewPage {...inputProps} {...dataProps} />}
   </Data>
-));
+);
