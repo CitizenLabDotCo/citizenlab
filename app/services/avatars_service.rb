@@ -27,7 +27,7 @@ class AvatarsService
   end
 
   def avatars_for_tenant users: User.active, limit: 5
-    Rails.cache.fetch(users, expires_in: 1.day) do
+    Rails.cache.fetch('avatars', expires_in: 1.day) do
       add_count(users, limit)
     end
   end
