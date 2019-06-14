@@ -10,10 +10,8 @@ class Tenant < ApplicationRecord
   validates :name, :host, presence: true
   validates :host, uniqueness: true
 
-  SETTINGS_JSON_SCHEMA_STR = ERB.new(File.read(Rails.root.join('config', 'schemas', 'tenant_settings.json_schema.erb'))).result(binding)
-  SETTINGS_JSON_SCHEMA = JSON.parse(SETTINGS_JSON_SCHEMA_STR)
   validates :settings, presence: true, json: { 
-    schema: SETTINGS_JSON_SCHEMA_STR, 
+    schema: -> { Tenant.settings_json_schema_str }, 
     message: ->(errors) { errors.map{|e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
     options: {
       errors_as_objects: true
@@ -43,6 +41,15 @@ class Tenant < ApplicationRecord
    self.current.settings.dig(*path)
   end
 
+  def self.settings_json_schema_str
+    @@settings_json_schema_str ||= ERB.new(File.read(Rails.root.join('config', 'schemas', 'tenant_settings.json_schema.erb')))
+      .result(binding)
+  end
+
+  def self.settings_json_schema
+    @@settings_json_schema ||= JSON.parse(settings_json_schema_str)
+  end
+
   def schema_name
     # The reason for using `host_was` and not `host` is
     # because the schema name would be wrong when updating
@@ -54,10 +61,10 @@ class Tenant < ApplicationRecord
 
   def cleanup_settings
     ss = SettingsService.new
-    self.settings = ss.remove_additional_features(self.settings, SETTINGS_JSON_SCHEMA)
-    self.settings = ss.remove_additional_settings(self.settings, SETTINGS_JSON_SCHEMA)
-    self.settings = ss.add_missing_features(self.settings, SETTINGS_JSON_SCHEMA)
-    self.settings = ss.add_missing_settings(self.settings, SETTINGS_JSON_SCHEMA)
+    self.settings = ss.remove_additional_features(self.settings, self.class.settings_json_schema)
+    self.settings = ss.remove_additional_settings(self.settings, self.class.settings_json_schema)
+    self.settings = ss.add_missing_features(self.settings, self.class.settings_json_schema)
+    self.settings = ss.add_missing_settings(self.settings, self.class.settings_json_schema)
   end
 
   def has_feature? f
@@ -75,7 +82,7 @@ class Tenant < ApplicationRecord
 
   def public_settings
     ss = SettingsService.new
-    ss.remove_private_settings(self.settings, SETTINGS_JSON_SCHEMA)
+    ss.remove_private_settings(self.settings, self.class.settings_json_schema)
   end
 
   def base_frontend_uri
@@ -119,7 +126,7 @@ class Tenant < ApplicationRecord
 
   def validate_missing_feature_dependencies
     ss = SettingsService.new
-    missing_dependencies = ss.missing_dependencies(settings, SETTINGS_JSON_SCHEMA)
+    missing_dependencies = ss.missing_dependencies(settings, self.class.settings_json_schema)
     unless missing_dependencies.empty?
       errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
     end
