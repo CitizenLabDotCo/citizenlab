@@ -8,7 +8,7 @@ import ContentContainer from 'components/ContentContainer';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // data
 import { adopt } from 'react-adopt';
@@ -24,11 +24,8 @@ interface Props extends InputProps, DataProps {}
 
 const StyledContentContainer: any = styled(ContentContainer)`
   background: ${colors.background};
-  border-bottom: solid 1px #eaeaea;
-
-  ${media.smallerThanMinTablet`
-    padding-bottom: 25px;
-  `}
+  border-bottom: solid 1px ${colors.separation};
+  padding-bottom: 50px;
 `;
 
 const ShouldBeInitiatives = memo(({ projects }: Props) => {

@@ -177,6 +177,7 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         onKeyDown={handleOnKeyDown}
+        className="e2e-search-input"
       />
       <IconWrapper
         onMouseDown={removeFocus}

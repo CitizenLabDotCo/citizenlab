@@ -55,6 +55,21 @@ const Container = styled.div`
   }
 `;
 
+const InitialLoading = styled.div`
+  width: 100%;
+  height: 300px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+
+  ${media.smallerThanMinTablet`
+    height: 150px;
+  `}
+`;
+
 const MobileSearchFilter = styled(SearchInput)`
   margin-bottom: 20px;
 `;
@@ -73,7 +88,7 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
   align-items: center;
   justify-content: space-between;
   margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 
   ${media.smallerThanMaxTablet`
     margin-right: 0;
@@ -159,9 +174,9 @@ const EmptyContainerInner = styled.div`
 `;
 
 const IdeaIcon = styled(Icon)`
-  flex: 0 0 36px;
-  width: 36px;
-  height: 36px;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
   fill: ${colors.label};
 `;
 
@@ -169,6 +184,24 @@ const EmptyMessage = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
+  line-height: normal;
+  text-align: center;
+  margin-top: 10px;
+`;
+
+const EmptyMessageMainLine = styled.div`
+  color: ${colors.text};
+  font-size: ${fontSizes.large}px;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+  margin-top: 20px;
+`;
+
+const EmptyMessageSubLine = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
   line-height: normal;
   text-align: center;
   margin-top: 10px;
@@ -211,42 +244,43 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   position: relative;
 `;
 
-// const ClearAllIcon = styled(Icon)`
-//   flex:  0 0 16px;
-//   width: 16px;
-//   height: 16px;
-//   fill: ${colors.label};
-//   margin-right: 6px;
-//   margin-top: -2px;
-// `;
+const ClearAllIcon = styled(Icon)`
+  flex:  0 0 16px;
+  width: 16px;
+  height: 16px;
+  fill: ${colors.label};
+  margin-right: 6px;
+  margin-top: -2px;
+`;
 
-// const ClearAllText = styled.span`
-//   color: ${colors.label};
-//   font-size: ${fontSizes.base}px;
-//   line-height: auto;
-// `;
+const ClearAllText = styled.span`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: auto;
+`;
 
-// const ClearAllButton = styled.button`
-//   height: 32px;
-//   position: absolute;
-//   top: -46px;
-//   right: 0px;
-//   display: flex;
-//   align-items: center;
-//   padding: 0;
-//   margin: 0;
-//   cursor: pointer;
+const ClearAllButton = styled.button`
+  height: 32px;
+  position: absolute;
+  top: -41px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
 
-//   &:hover {
-//     ${ClearAllIcon} {
-//       fill: #000;
-//     }
+  &:hover {
+    ${ClearAllIcon} {
+      fill: #000;
+    }
 
-//     ${ClearAllText} {
-//       color: #000;
-//     }
-//   }
-// `;
+    ${ClearAllText} {
+      color: #000;
+    }
+  }
+`;
 
 const Spacer = styled.div`
   flex: 1;
@@ -469,11 +503,11 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
 
     return (
-      <Container id="e2e-ideas-container" className={className}>
+      <Container id="e2e-ideas-container-with-filter-sidebar" className={className}>
         {ideasList === undefined &&
-          <Loading id="ideas-loading">
+          <InitialLoading id="ideas-loading">
             <Spinner />
-          </Loading>
+          </InitialLoading>
         }
 
         {ideasList !== undefined &&
@@ -594,7 +628,8 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     <EmptyContainerInner>
                       <IdeaIcon name="idea" />
                       <EmptyMessage>
-                        <FormattedMessage {...messages.noIdea} />
+                        <EmptyMessageMainLine><FormattedMessage {...messages.noIdeasForFilter} /></EmptyMessageMainLine>
+                        <EmptyMessageSubLine><FormattedMessage {...messages.tryOtherFilter} /></EmptyMessageSubLine>
                       </EmptyMessage>
                     </EmptyContainerInner>
                   </EmptyContainer>
@@ -613,14 +648,14 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   id="e2e-ideas-filters"
                   filterColumnWidth={filterColumnWidth}
                 >
-                  {/* {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
+                  {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
                     <ClearAllButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnClear}>
-                      <ClearAllIcon name="close" />
+                      {/* <ClearAllIcon name="close" /> */}
                       <ClearAllText>
                         <FormattedMessage {...messages.clearAll} />
                       </ClearAllText>
                     </ClearAllButton>
-                  } */}
+                  }
                   <FiltersSidebar
                     selectedIdeaFilters={selectedIdeaFilters}
                     onChange={this.handleIdeaFiltersOnChange}
