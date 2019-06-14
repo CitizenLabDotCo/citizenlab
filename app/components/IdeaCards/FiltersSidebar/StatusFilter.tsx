@@ -17,7 +17,7 @@ import GetIdeasFilterCounts, { GetIdeasFilterCountsChildProps } from 'resources/
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 import { Header, Title } from './styles';
 
@@ -90,13 +90,7 @@ const Status = styled.button`
   }
 `;
 
-const AllStatus = styled(Status)`
-  /*
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
-  */
-`;
+const AllStatus = styled(Status)``;
 
 interface InputProps {
   selectedStatusId: string | null | undefined;
@@ -178,8 +172,6 @@ const Data = adopt<DataProps, InputProps>({
   ideasFilterCounts: ({ selectedIdeaFilters, render }) => {
     const queryParameters = {
       ...selectedIdeaFilters,
-      'page[number]': 1,
-      'page[size]': 5000,
       idea_status: undefined,
       project_publication_status: 'published',
       publication_status: 'published'

@@ -517,8 +517,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 <FullscreenModal
                   opened={filtersModalOpened}
                   close={this.closeFiltersModal}
-                  // url={filtersModalOpened ? '/ideas/filters/' : null}
-                  // goBackUrl={filtersModalOpened ? '/ideas/' : null}
                   animateInOut={true}
                   topBar={<FiltersSidebarTopBar />}
                   bottomBar={<FiltersSidebarBottomBar selectedIdeaFilters={selectedIdeaFilters} />}
@@ -674,15 +672,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize debounce={50} />,
   ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
-  ideasFilterCounts: ({ ideas, render }) => {
-    const queryParameters = {
-      ...get(ideas, 'queryParameters', {}),
-      'page[number]': 1,
-      'page[size]': 5000
-    };
-
-    return <GetIdeasFilterCounts queryParameters={queryParameters}>{render}</GetIdeasFilterCounts>;
-  }
+  ideasFilterCounts: ({ ideas, render }) => <GetIdeasFilterCounts queryParameters={get(ideas, 'queryParameters', null)}>{render}</GetIdeasFilterCounts>
 });
 
 const WithFiltersSidebarWithHoCs = withTheme(injectIntl(IdeaCards));
