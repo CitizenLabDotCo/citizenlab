@@ -32,7 +32,7 @@ describe('Profile Page', () => {
       cy.visit(`/profile/${newUserName}-${newUserSurname}`);
 
       // type ideaTitle in search field and check if it's actually there
-      cy.get('#e2e-ideas-search').type(ideaTitle).should('have.value', ideaTitle);
+      cy.get('.e2e-search-input').type(ideaTitle).should('have.value', ideaTitle);
 
       // there should only be this idea (ideaTitle), which we double check (length + content)
       cy.get('#e2e-ideas-container').find('.e2e-idea-card').should('have.length', 1).contains(ideaTitle);

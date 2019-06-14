@@ -9,9 +9,17 @@ export default defineMessages({
     id: 'app.components.IdeaCards.showMore',
     defaultMessage: 'Show more',
   },
-  noIdea: {
-    id: 'app.components.IdeaCards.noIdea',
+  empty: {
+    id: 'app.components.IdeaCards.empty',
     defaultMessage: 'It looks like there are no ideas yet.',
+  },
+  noIdeasForFilter: {
+    id: 'app.containers.IdeaCards.noFilteredIdeas',
+    defaultMessage: 'No ideas found',
+  },
+  tryOtherFilter: {
+    id: 'app.containers.IdeaCards.noFilteredIdeas',
+    defaultMessage: "Try adjusting your search or filter to find what you're looking for",
   },
   suggestIdea: {
     id: 'app.components.IdeaCards.suggestIdea',

@@ -91,7 +91,6 @@ const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px);
   background: #fff;
   opacity: 0;
-  will-change: opacity;
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
