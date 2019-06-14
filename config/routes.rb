@@ -41,6 +41,7 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
+        get :filter_counts, on: :collection
       end
 
       resources :idea_statuses, only: [:index, :show]

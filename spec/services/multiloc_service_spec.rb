@@ -85,6 +85,13 @@ describe MultilocService do
     it "returns missing strings for a missing translation key" do
       expect{service.i18n_to_multiloc('not.existing.key')}.to raise_error(I18n::MissingTranslationData)
     end
+
+    it "supports setting the returned locales explicitly" do
+      expect(service.i18n_to_multiloc('foo.hello', locales: ["en", "fr-FR"])).to eq({
+        "en" => 'hello!',
+        "fr-FR" => 'bonjour!'
+      })
+    end
   end
 
   describe "block_to_multiloc" do

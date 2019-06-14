@@ -93,6 +93,9 @@ en-CA:
     infopage_body: '<p>This <strong>all-in-one participation platform</strong> is an initiative of your municipality or organisation and can be used for different public consultation processes: collecting ideas, voting, discussing, surveys, polls, participatory budgeting, online mapping, scenario planning, support for advisory boards and committees, ...</p><p>On the home page, you''ll see which <strong>processes are active </strong>and in which <strong>phase </strong>they currently are.</p><p><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png" alt="Horizontal separation rule" data-align="center" style="display: block; margin: auto;"></p><ul><li><strong>How do I sign in on the platform?</strong></li></ul><p>Signing in is done easily by giving your first and last name and your e-mail address. You could also use your Google or Facebook account. Only your first and last name will be visible to others.</p><ul><li><strong>Can I use the platform myself, e.g. to organise a public consultation?</strong></li></ul><p>Absolutely. Ask the responsible within your municipality or organisation to give you the needed permission rights to become a project moderator. Once granted these permissions, you can set up your own project and timeline and share the information you want (video, documents, images, ...). This will also allow you to invite others to the platform, enabling them to post ideas within your project, vote or comment.</p><ul><li><strong>Can I participate as an association/organisation/committee? </strong></li></ul><p>Yes, that''s possible. Given that only your first and last name are visible to others on the platform, you can simply use your organisation''s name while setting up your profile.</p><ul><li><strong>Why would I use this platform and not create a website myself?</strong></li></ul><p>A team of dedicated developers and specialists in online participation (<a href="https://www.citizenlab.co/en" target="_blank">CitizenLab,</a> commissioned by your municipality or organisation) is improving and updating this platform on a daily basis. Even the smallest bug gets tackled immediately and if you have creative proposals, they can help you pointing out which features of the platform can be used for this or which ones are in the pipeline.</p><p><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png" alt="Horizontal separation rule" data-align="center" style="display: block; margin: auto;"></p><p><strong><em>Need more information? </em></strong><em>Do you want to use the platform? Questions or feedback? Contact the responsible within your municipality or organisation. Or contact CitizenLab through support@citizenlab.co.</em></p>'
     homepage_info_title: ""
     homepage_info_body: ""
+    initiatives_title: Initiatives
+    initiatives_body: >
+      <p>Explanation about initiatives</p>
   projects:
     open_idea_project_title: An idea? Bring it to your council!
     open_idea_project_description_preview: Maybe you have an idea that doesn't fit with one of the existing projects? Than post it here, gather support and get it on the political agenda!
@@ -122,3 +125,9 @@ en-CA:
       ISCED6: Bachelor or equivalent
       ISCED7: Master or equivalent
       ISCED8: Doctoral or equivalent
+  initiatives:
+    default_threshold_reached_message: >
+      <p>The initiators are invited to present their initiative on the next council meeting. We will provide an official update.</p>
+    default_eligibility_criteria: >
+      <p>The initiative should</p>
+      <p>- be within the city's competences</p>
