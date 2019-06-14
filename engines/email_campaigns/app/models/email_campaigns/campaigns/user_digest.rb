@@ -87,7 +87,7 @@ module EmailCampaigns
         },
         top_comments: idea.comments
           .where(publication_status: 'published')
-          .sort_by{|c| -c.children.count}
+          .sort_by{|c| -c.children.size}
           .take(N_TOP_COMMENTS).map{ |comment|
             top_comment_payload comment
           }
