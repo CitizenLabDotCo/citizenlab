@@ -2,8 +2,8 @@ es:
   statuses:
     proposed: propuesta
     proposed_description: Esta idea ha sido propuesta
-    viewed: viewed
-    viewed_description: This idea has been seen by someone from the city
+    viewed: revisado
+    viewed_description: Esta idea ha sido vista por alguien de la organización
     under_consideration: bajo consideración
     under_consideration_description: Esta idea está siendo considerada
     accepted: aceptada
@@ -55,6 +55,9 @@ es:
     infopage_body: Descubre más información relacionada con la plataforma.
     homepage_info_title: ""
     homepage_info_body: ""
+    initiatives_title: Initiatives
+    initiatives_body: >
+      <p>Explanation about initiatives</p>
   projects:
     open_idea_project_title: '¿Tienes una idea? Proponla en la plataforma!'
     open_idea_project_description_preview: '¿Quizás tienes una idea que no encaja con uno de los proyectos existentes? Entonces publícalo aquí, reúne apoyo y ponlo en la agenda política!'
@@ -88,4 +91,5 @@ es:
     default_threshold_reached_message: >
       <p>The initiators are invited to present their initiative on the next council meeting. We will provide an official update.</p>
     default_eligibility_criteria: >
-      <p>The initiative should be within the city's competences</p>
+      <p>The initiative should</p>
+      <p>- be within the city's competences</p>

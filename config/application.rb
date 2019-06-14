@@ -31,12 +31,6 @@ module Cl2Back
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    # From https://nickjanetakis.com/blog/dockerize-a-rails-5-postgres-redis-sidekiq-action-cable-app-with-docker-compose
-    logger           = ActiveSupport::Logger.new(STDOUT)
-    logger.formatter = config.log_formatter
-    config.log_tags  = [:domain]
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
-
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
     end
