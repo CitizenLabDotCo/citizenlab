@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { get, keys, isEqual, pick, omit } from 'lodash-es';
+import { get, keys, isEqual, pick } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { Formik } from 'formik';
 
@@ -22,7 +22,7 @@ class InitiativesSettingsPage extends PureComponent<DataProps> {
     initialValues = () => {
       const initiativesSettings = get(this.props.tenant, 'attributes.settings.initiatives');
       // TODO don't omit enabled (i3)
-      if (initiativesSettings) return omit(initiativesSettings, ['enabled', 'allowed', 'success_stories']);
+      if (initiativesSettings) return pick(initiativesSettings, ['days_limit', 'eligibility_criteria', 'threshold_reached_message', 'voting_threshold']);
       return null;
     }
 

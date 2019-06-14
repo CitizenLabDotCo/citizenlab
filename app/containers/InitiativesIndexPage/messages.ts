@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.readMore',
     defaultMessage: 'Read more here.'
   },
-  orgName: {
-    id: 'app.containers.InitiativesIndexPage.orgName',
-    defaultMessage: '{orgName}'
-  },
   explanationTitle: {
     id: 'app.containers.InitiativesIndexPage.explanationTitle',
     defaultMessage: 'How does it work ?'
