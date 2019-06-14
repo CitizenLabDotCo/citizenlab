@@ -53,37 +53,6 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
     };
   }
 
-  renderFormikThresholdField = (props) => (
-    <FormikQuillMultiloc
-      shownLocale={this.state.selectedLocale}
-      label={(
-        <FormattedMessage {...messages.fieldThresholdReachedMessage} />
-      )}
-      labelTooltip={<InfoTooltip {...messages.fieldThresholdReachedMessageInfo} />}
-      name="threshold_reached_message"
-      noImages
-      noVideos
-      noAlign
-      limitedTextFormatting
-      {...props}
-    />
-  )
-  renderFormikEligibilityField = (props) => (
-    <FormikQuillMultiloc
-      shownLocale={this.state.selectedLocale}
-      label={(
-        <FormattedMessage {...messages.fieldEligibilityCriteria} />
-      )}
-      labelTooltip={<InfoTooltip {...messages.fieldEligibilityCriteriaInfo} />}
-      name="eligibility_criteria"
-      noImages
-      noVideos
-      noAlign
-      limitedTextFormatting
-      {...props}
-    />
-  )
-
   onLocaleChange = (locale: Locale) => () => {
     this.setState({ selectedLocale: locale });
   }
@@ -140,14 +109,32 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
 
           <SectionField>
             <Field
+              component={FormikQuillMultiloc}
+              shownLocale={this.state.selectedLocale}
+              label={(
+                <FormattedMessage {...messages.fieldThresholdReachedMessage} />
+              )}
+              labelTooltip={<InfoTooltip {...messages.fieldThresholdReachedMessageInfo} />}
               name="threshold_reached_message"
-              render={this.renderFormikThresholdField}
+              noImages
+              noVideos
+              noAlign
+              limitedTextFormatting
             />
           </SectionField>
           <SectionField>
             <Field
+              shownLocale={this.state.selectedLocale}
+              label={(
+                <FormattedMessage {...messages.fieldEligibilityCriteria} />
+              )}
+              labelTooltip={<InfoTooltip {...messages.fieldEligibilityCriteriaInfo} />}
               name="eligibility_criteria"
-              render={this.renderFormikEligibilityField}
+              noImages
+              noVideos
+              noAlign
+              limitedTextFormatting
+              component={FormikQuillMultiloc}
             />
           </SectionField>
 
