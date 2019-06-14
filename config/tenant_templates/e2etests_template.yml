@@ -119,6 +119,10 @@ models:
     title_multiloc: pages.homepage_info_title
     body_multiloc: pages.homepage_info_body
     slug: homepage-info
+  -
+    title_multiloc: pages.initiatives_title
+    body_multiloc: pages.initiatives_body
+    slug: initiatives
   page_link:
   - linking_page_ref: *1
     linked_page_ref: *2
