@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, FormikErrors, InjectedFormikProps, Field } from 'formik';
+import { Form, FormikErrors, InjectedFormikProps, Field, FastField } from 'formik';
 import { isEmpty } from 'lodash-es';
 import { FormSection, FormSectionTitle, FormLabel } from 'components/UI/FormComponents';
 import FormikInput from 'components/UI/FormikInput';
@@ -8,16 +8,18 @@ import messages from './messages';
 import { SectionField } from 'components/admin/Section';
 import FormikQuill from 'components/UI/QuillEditor/FormikQuill';
 import FormikTopicsPicker from 'components/UI/FormikTopicsPicker';
-import LocationInput from 'components/UI/LocationInput';
 import FormikLocationInput from 'components/UI/FomrikLocationInput';
 
 export interface FormValues {
   title: string;
   body: string;
   topics: string[];
+  position: string;
 }
 
-interface Props {}
+interface Props {
+  onSave: () => void;
+}
 
 class InitiativeForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
@@ -30,19 +32,9 @@ class InitiativeForm extends React.Component<InjectedFormikProps<Props, FormValu
     return errors;
   }
 
-  renderFormikQuill = (props) => {
-    return (
-      <FormikQuill
-        noVideos
-        noAlign
-        {...props}
-      />
-    );
-  }
-
   render() {
     // const { isSubmitting, errors, isValid, touched } = this.props;
-    console.log(this.props.values);
+    console.log(this.props);
 
     return (
       <Form>
@@ -58,6 +50,7 @@ class InitiativeForm extends React.Component<InjectedFormikProps<Props, FormValu
                 name="title"
                 component={FormikInput}
                 required
+                onBlur={this.props.onSave}
               />
             </FormLabel>
           </SectionField>
@@ -67,9 +60,12 @@ class InitiativeForm extends React.Component<InjectedFormikProps<Props, FormValu
               labelMessage={messages.descriptionLabel}
               subtextMessage={messages.descriptionLabelSubtext}
             >
-              <Field
+              <FastField
                 name="description"
-                render={this.renderFormikQuill}
+                component={FormikQuill}
+                noVideos
+                noAlign
+                onBlur={this.props.onSave}
                 required
               />
             </FormLabel>
@@ -99,7 +95,6 @@ class InitiativeForm extends React.Component<InjectedFormikProps<Props, FormValu
               subtextMessage={messages.locationLabelSubtext}
             >
               <Field
-                id="field-topic-multiple-picker"
                 name="position"
                 component={FormikLocationInput}
               />
