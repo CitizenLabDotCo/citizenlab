@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "Idea Votes" do
+resource "Votes" do
 
   explanation "Votes are used to express agreement on content (i.e. ideas). Ideally, the city would accept the most voted ideas."
 

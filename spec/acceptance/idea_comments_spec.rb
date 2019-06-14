@@ -110,7 +110,7 @@ resource "Comments" do
 
     let(:comment_id) { @c.id }
 
-    example_request "List the direct child comments of a comment" do
+    example_request "List the direct child comments of a comment on an idea" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 6
@@ -129,7 +129,7 @@ resource "Comments" do
     parameter :project, 'Filter by project', required: false
     parameter :ideas, 'Filter by a given list of idea ids', required: false
 
-    example_request "XLSX export" do
+    example_request "XLSX export of comments on ideas" do
       expect(status).to eq 200
     end
 
@@ -183,7 +183,7 @@ resource "Comments" do
     get "web_api/v1/ideas/:idea_id/comments" do
       let(:idea_id) { @idea.id }
 
-      example "List all comments includes the user_vote when authenticated" do
+      example "List all comments of an idea includes the user_vote when authenticated" do
         comment = create(:comment, post: @idea)
         vote = create(:vote, user: @user, votable: comment)
         do_request
@@ -275,7 +275,7 @@ resource "Comments" do
       let(:comment) { create(:comment, author: @user, post: @idea) }
       let(:id) { comment.id }
 
-      example_request "Mark a comment as deleted" do
+      example_request "Mark a comment on an idea as deleted" do
         expect(response_status).to eq 200
         expect(comment.reload.publication_status).to eq('deleted')
       end
@@ -302,14 +302,14 @@ resource "Comments" do
       let(:id) { comment.id }
       let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
 
-      example_request "Update a comment" do
+      example_request "Update a comment on an idea" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
         expect(@idea.reload.comments_count).to eq 1
       end
 
-      example "Admins cannot modify a comment", document: false do
+      example "Admins cannot modify a comment on an idea", document: false do
         @admin = create(:admin)
         token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
         header 'Authorization', "Bearer #{token}"

@@ -25,7 +25,7 @@ class WebApi::V1::InitiativeSerializer < ActiveModel::Serializer
   end
 
   def can_moderate?
-    current_user&.admin?
+    InitiativePolicy.new(scope, object).moderate?
   end
 
   def cached_user_vote
