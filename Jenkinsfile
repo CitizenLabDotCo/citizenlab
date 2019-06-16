@@ -139,8 +139,8 @@ pipeline {
       when { branch 'production' }
       steps {
         sshagent (credentials: ['local-ssh-user']) {
-          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 18.195.88.135 "docker pull citizenlabdotco/cl2-back:production-benelux && docker run --env-file cl2-deployment/.env-production-benelux citizenlabdotco/cl2-back:production-benelux rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store"'
-          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 18.195.88.135 "cd cl2-deployment && docker stack deploy --compose-file docker-compose-production-benelux.yml cl2-prd-bnlx-stack --with-registry-auth"'
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.74.84 "docker pull citizenlabdotco/cl2-back:production-benelux && docker run --env-file cl2-deployment/.env-production-benelux citizenlabdotco/cl2-back:production-benelux rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store"'
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.74.84 "cd cl2-deployment && docker stack deploy --compose-file docker-compose-production-benelux.yml cl2-prd-bnlx-stack --with-registry-auth"'
           slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} deployed to benelux production cluster!\nMore info at ${env.BUILD_URL}"
         }
       }
