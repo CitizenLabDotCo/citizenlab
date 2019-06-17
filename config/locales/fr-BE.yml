@@ -93,7 +93,7 @@ fr-BE:
     homepage_info_body: ""
     initiatives_title: Initiatives
     initiatives_body: >
-      <p>Explanation about initiatives</p>
+      <p>Explications à propos des initiatives</p>
   projects:
     open_idea_project_title: Une idée? Apportez-la à votre conseil communal!
     open_idea_project_description_preview: Vous avez une idée qui ne correspond pas à l'un des projets existants? Ensuite, affichez-la ici, obtenez du soutien et inscrivez-la à l'ordre du jour politique!
@@ -125,7 +125,6 @@ fr-BE:
       ISCED8: Doctorat ou équivalent
   initiatives:
     default_threshold_reached_message: >
-      <p>The initiators are invited to present their initiative on the next council meeting. We will provide an official update.</p>
+      <p>Les initiateurs sont invités à présenter leur initiative à la prochaine réunion du conseil. Nous fourniront une mise à jour officielle.</p>
     default_eligibility_criteria: >
-      <p>The initiative should</p>
-      <p>- be within the city's competences</p>
+      <p>L'initiative devra/p> <p>- rentrer dans les compétences de la ville</p>
