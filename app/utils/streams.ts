@@ -551,6 +551,8 @@ class Streams {
       });
     }
 
+    console.log(uniq([...streamIds1, ...streamIds2]));
+
     uniq([...streamIds1, ...streamIds2]).forEach((streamId) => {
       if (!onlyFetchActiveStreams || this.isActiveStream(streamId)) {
         promises.push(this.streams[streamId].fetch());
