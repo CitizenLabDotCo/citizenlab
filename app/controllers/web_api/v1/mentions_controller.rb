@@ -21,7 +21,7 @@ class WebApi::V1::MentionsController < ApplicationController
       @users = service.users_from_post mention_pattern, post, limit
     end
 
-    if @users.load.size < limit
+    if @users.size < limit
       @users += User
         .where("slug ILIKE ?", "#{mention_pattern}%")
         .limit(limit - @users.size)
