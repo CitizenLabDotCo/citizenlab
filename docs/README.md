@@ -6,6 +6,7 @@
 
 - The column titles in comments excel export are aligned with the content
 - There's now enough space between voting anc translate links under a comment
+- Vote button on an idea no longer stays active when a vote on that idea causes the voting treshold of the project to be reached
 
 ## Added
 
