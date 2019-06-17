@@ -70,9 +70,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
     if @instance_options[:allocated_budgets]
       @instance_options.dig(:allocated_budgets, object.id)
     else
-      Rails.cache.fetch("#{object.cache_key}/allocated_budget") do
-        ParticipationContextService.new.allocated_budget object
-      end
+      ParticipationContextService.new.allocated_budget object
     end
   end
 
