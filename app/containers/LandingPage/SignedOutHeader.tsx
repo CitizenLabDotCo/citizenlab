@@ -140,6 +140,7 @@ const HeaderSubtitle: any = styled.h2`
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-top: 18px;
+  min-height: 40px;
 `;
 
 const SignUpButton = styled(Button)`

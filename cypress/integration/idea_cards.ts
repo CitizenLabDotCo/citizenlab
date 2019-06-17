@@ -21,14 +21,17 @@ describe('IdeaCards without filter sidebar component', () => {
   });
 
   it('lets you search the ideas', () => {
-    cy.get('.e2e-search-input').type(ideaTitle).should('have.value', ideaTitle);
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').should('have.length', 1).contains(ideaTitle);
+    cy.get('.e2e-search-input').type(ideaTitle);
+    cy.wait(1000);
+    cy.get('.e2e-search-input').should('have.value', ideaTitle);
+    cy.get('#e2e-ideas-list');
+    cy.get('#e2e-ideas-list').find('.e2e-idea-card').should('have.length', 1).contains(ideaTitle);
   });
 
   it('lets you load more ideas', () => {
     cy.get('#e2e-idea-cards-show-more-button').click();
     cy.wait(1000);
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').its('length').should('be.gte', 12);
+    cy.get('#e2e-ideas-list').find('.e2e-idea-card').its('length').should('be.gte', 12);
   });
 
   it('lets you sort the ideas', () => {
