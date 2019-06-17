@@ -55,9 +55,9 @@ es:
     infopage_body: Descubre más información relacionada con la plataforma.
     homepage_info_title: ""
     homepage_info_body: ""
-    initiatives_title: Initiatives
+    initiatives_title: Iniciativas
     initiatives_body: >
-      <p>Explanation about initiatives</p>
+      <p>Explicación sobre las iniciativas</p>
   projects:
     open_idea_project_title: '¿Tienes una idea? Proponla en la plataforma!'
     open_idea_project_description_preview: '¿Quizás tienes una idea que no encaja con uno de los proyectos existentes? Entonces publícalo aquí, reúne apoyo y ponlo en la agenda política!'
@@ -89,7 +89,6 @@ es:
       ISCED8: Doctorado
   initiatives:
     default_threshold_reached_message: >
-      <p>The initiators are invited to present their initiative on the next council meeting. We will provide an official update.</p>
+      <p>Se invita a los iniciadores a presentar su iniciativa en la próxima reunión del consejo. Proporcionaremos una actualización oficial.</p>
     default_eligibility_criteria: >
-      <p>The initiative should</p>
-      <p>- be within the city's competences</p>
+      <p>La iniciativa debe</p> <p>- estar dentro de las competencias de la municipalidad u organización</p>
