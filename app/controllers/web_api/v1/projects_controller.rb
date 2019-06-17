@@ -31,6 +31,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     user_baskets = current_user&.baskets&.group_by(&:participation_context_id) || {}
     instance_options = {
       user_baskets: user_baskets,
+      allocated_budgets: ParticipationContextService.new.allocated_budgets(@projects),
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects)
     }
 
