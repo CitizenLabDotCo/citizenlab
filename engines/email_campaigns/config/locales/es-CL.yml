@@ -2,7 +2,7 @@ es-CL:
   email_campaigns:
     campaign_type_description:
       "manual": Mensajes directos enviados por administradores o moderadores
-      "comment_on_your_comment": Cuando alguien responde a mi comentario
+      "comment_on_your_comment": Cuando alguien responde mi comentario
       "comment_on_your_idea": Cuando alguien responde a mi idea
       "admin_rights_received": Cuando se me otorgan derechos de administración
       "comment_deleted_by_admin": Cuando un administrador elimina mi comentario
@@ -16,15 +16,15 @@ es-CL:
       "mention_in_official_feedback": Cuando alguien me menciona en una publicación oficial
       "project_moderation_rights_received": Cuando me entregan derechos para moderar proyectos
       "project_phase_started": Cuando un proyecto entra en una nueva fase
-      "project_phase_upcoming": Cuando un proyecto entrará en una nueva fase de una semana (para administradores y moderadores)
+      "project_phase_upcoming": Cuando un proyecto esté a una semana de entrar en una nueva fase (para administradores y moderadores)
       "status_change_of_your_idea": Cuando cambia el estatus de mi idea
       "welcome": Cuando me registro en la plataforma
-      "password_reset": Cuándo solicito una contraseña restablecer mi cuenta
+      "password_reset": Cuándo solicito restablecer la constraseña para mi cuenta
       "first_idea_published": Cuando se publique mi primera idea
       "idea_published": Cuando mi idea se publique
       "new_comment_for_admin": Cuando un nuevo comentario fue escrito en un proyecto que modero
       "new_comment_on_commented_idea": Cuando se ha escrito un nuevo comentario sobre una idea que he comentado
-      "new_comment_on_voted_idea": Cuando se ha escrito un nuevo comentario sobre una idea por la que he votado
+      "new_comment_on_voted_idea": Cuando se ha escrito un nuevo comentario sobre una idea por la cual he votado
       "new_idea_for_admin": Cuando una idea se publica en un proyecto que puedo moderar
       "official_feedback_on_commented_idea": Cuando se ha publicado nueva información oficial sobre una idea que he comentado
       "official_feedback_on_voted_idea": Cuando nueva información oficial ha sido publicada en una idea por la que he votado
@@ -38,7 +38,7 @@ es-CL:
     admin_campaign_type_description:
       "manual": Mensajes directos enviados por administradores o moderadores
       "comment_on_your_comment": Cuando un usuario recibe una respuesta a su comentario
-      "comment_on_your_idea": Cuando un usuario recibe una respuesta a su comentario
+      "comment_on_your_idea": Cuando un usuario recibe una respuesta para su idea
       "admin_rights_received": Cuando a un usuario se le entregan derechos de administrador
       "comment_deleted_by_admin": Cuando un administrador elimina mi comentario
       "comment_marked_as_spam": Cuando un usuario marca un comentario como spam (para los administradores y moderadores)
@@ -51,19 +51,19 @@ es-CL:
       "mention_in_official_feedback": Cuando alguien me menciona en una publicación oficial
       "project_moderation_rights_received": Cuando a un usuario se le entregan derechos de moderación del proyecto
       "project_phase_started": Cuando un proyecto entra en una nueva fase
-      "project_phase_upcoming": Cuando un proyecto entrará en una nueva fase de una semana (para administradores y moderadores)
+      "project_phase_upcoming": Cuando un proyecto está a una semana de entrar a una nueva fase (para administradores y moderadores)
       "status_change_of_your_idea": Cuando cambia el estatus de mi idea
       "welcome": Cuando un usuario se registra en la plataforma
       "password_reset": Cuando un usuario solicita restablecer la contraseña
       "first_idea_published": Cuando se publica la primera idea de un usuario
       "idea_published": Cuando mi idea sea publicada
       "new_comment_for_admin": Cuando un nuevo comentario fue escrito en un proyecto que puedo moderar 
-      "new_comment_on_commented_idea": Cuando se ha escrito un nuevo comentario en una idea, el usuario ha comentado
-      "new_comment_on_voted_idea": Cuando se ha escrito un nuevo comentario en una idea que el usuario ha votado a favor
-      "new_idea_for_admin": Puedo moderar cuando una idea se publica en un proyecto
-      "official_feedback_on_commented_idea": Cuando nueva información oficial se ha publicado sobre una idea que he comentado
-      "official_feedback_on_voted_idea": Cuando nueva información oficial se ha publicado en una idea por la que he votado
-      "official_feedback_on_your_idea": Cuando nueva información oficial ha sido publicada en mi idea
+      "new_comment_on_commented_idea": Cuando se ha escrito un nuevo comentario en una idea que el usuario ha comentado
+      "new_comment_on_voted_idea": Cuando se ha escrito un nuevo comentario en una idea por la cual el usuario ha votado a favor
+      "new_idea_for_admin": Cuando una idea se publica en un proyecto el cual puedo moderar
+      "official_feedback_on_commented_idea": Cuando nueva retroalimentación oficial se ha publicado sobre una idea que he comentado
+      "official_feedback_on_voted_idea": Cuando nueva retroalimentación oficial se ha publicado en una idea por la que he votado
+      "official_feedback_on_your_idea": Cuando nueva reacción oficial ha sido publicada en mi idea
       "status_change_of_commented_idea": Cuando cambia de estatus una idea comentada por el usuario
       "status_change_of_voted_idea": Cuando cambia de estatus una idea votada por el usuario
       "admin_digest": Resumen semanal de las actividad en la plataforma (sólo para administradores)

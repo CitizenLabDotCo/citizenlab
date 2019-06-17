@@ -129,5 +129,4 @@ en-GB:
     default_threshold_reached_message: >
       <p>The initiators are invited to present their initiative on the next council meeting. We will provide an official update.</p>
     default_eligibility_criteria: >
-      <p>The initiative should</p>
-      <p>- be within the city's competences</p>
+      <p>The initiative should</p> <p>- be within the city's competences</p>

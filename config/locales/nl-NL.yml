@@ -78,9 +78,9 @@ nl:
     infopage_body: '<p>Dit <strong>all-in-one participatieplatform</strong> is een initiatief van jouw gemeente of organisatie en kan worden ingezet voor allerhande inspraakprocessen: ideeën ophalen, stemmen, discussiëren, enquêtes, polls, burgerbegroting, openbare onderzoeken, online mapping, scenarioplanning, ondersteuning voor adviesraden en comités, etc.</p><p>Op de homepagina zie je welke <strong>processen actief</strong> zijn of in welke <strong>fase</strong> een proces zich bevindt.</p><p><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png" alt="Horizontale scheidingsregel" data-align="center" style="display: block; margin: auto;"></p><ul><li><strong>Hoe log ik in op het platform?</strong></li></ul><p>Inloggen kan eenvoudig door je aan te melden met je voornaam, naam en e-mailadres. Je kunt ook je Google- of Facebook-account gebruiken. Enkel je naam en voornaam is zichtbaar voor anderen.</p><ul><li><strong>Kan ik het platform zelf gebruiken, bijvoorbeeld om een inspraaktraject op te zetten? </strong></li></ul><p>Dat kan zeker. Vraag aan de verantwoordelijke persoon binnen jouw gemeente of organisatie om jou de nodige toegangsrechten te geven om van jou een projectmoderator te maken. Je kunt dan zelf je project en tijdslijn opzetten en de nodige informatie (video, documenten, afbeeldingen, …) delen. Ook kan je dan zelf anderen op het platform uitnodigen, waardoor ze binnen jouw project ideeën kunnen posten, of stemmen en reageren op bestaande ideeën.</p><ul><li><strong>Kan ik als vereniging/organisatie/comité deelnemen? </strong></li></ul><p>Ja, dat kan. Omdat voor andere gebruikers van het platform enkel je voornaam en naam zichtbaar is, vul je binnen je profiel dus gewoon de naam van je vereniging in. Bvb. naam: <em>vzw</em> en voornaam: <em>De Globetrotters</em>. Ongeacht je e-mailadres, zien andere mensen enkel <em>vzw De Globetrotters</em>.</p><ul><li><strong>Waarom zou ik dit platform gebruiken en niet zelf een website maken? </strong></li></ul><p>Een team van gedreven developers en specialisten in online participatie (<a href="https://www.citizenlab.co/en" target="_blank">CitizenLab</a>, in opdracht van jouw gemeente of organisatie) is dagelijks bezig met dit platform te verbeteren en te updaten. De kleinste bug wordt direct aangepakt en als je zelf creatieve voorstellen hebt, kunnen we je zeggen welke toepassingen van het platform je hiervoor kunt gebruiken of welke er in de pijplijn zitten.</p><p><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png" alt="Horizontale scheidingsregel" data-align="center" style="display: block; margin: auto;"></p><p><strong><em>Meer informatie nodig? </em></strong><em>Wil je het platform gebruiken? Vragen of feedback? Contacteer de verantwoordelijke dienst of persoon van je gemeente of organisatie of neem contact met CitizenLab via support@citizenlab.co</em></p>'
     homepage_info_title: ""
     homepage_info_body: ""
-    initiatives_title: Initiatives
+    initiatives_title: Initiatieven
     initiatives_body: >
-      <p>Explanation about initiatives</p>
+      <p>Informatie over initiatieven</p>
   projects:
     open_idea_project_title: Een idee? Breng het op de gemeenteraad!
     open_idea_project_description_preview: Misschien past je idee niet bij een van de bestaande projecten? Plaats het dan hier, verzamel steun en krijg het op de politieke agenda!
@@ -112,7 +112,6 @@ nl:
       ISCED8: Doctoraat of gelijkwaardig
   initiatives:
     default_threshold_reached_message: >
-      <p>The initiators are invited to present their initiative on the next council meeting. We will provide an official update.</p>
+      <p>De initiatiefnemers worden uitgenodigd om hun initiatief te komen voorstellen op de volgende gemeenteraad, waarop een officiële reactie volgt.</p>
     default_eligibility_criteria: >
-      <p>The initiative should</p>
-      <p>- be within the city's competences</p>
+      <p>Het initiatief</p> <p>- valt binnen de bevoegdheden van de gemeente</p>
