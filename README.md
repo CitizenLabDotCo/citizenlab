@@ -176,3 +176,12 @@ require './engines/blorgh/spec/factories/blorghs.rb'
 4. Add your rule to `spec/models/group_spec.rb`.
 
 5. Create a frontend task to support the new smart groups rule.
+
+
+## Running the profiler
+
+1. Run the backend
+
+2. Execute the requests you want to profile
+
+3. Go to http://localhost:4000/profiler.html?pp=normal-backtrace
