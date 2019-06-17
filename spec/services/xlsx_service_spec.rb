@@ -55,7 +55,8 @@ describe XlsxService do
     end
 
     it "contains a row for every comment" do
-      expect(worksheet.sheet_data.size).to eq (comments.size + 1) 
+      expect(worksheet.sheet_data.size).to eq (comments.size + 1)
+      expect(worksheet[comments.size].cells.map(&:value)[worksheet[0].cells.map(&:value).index('project')]).to eq comments.last.idea.project.title_multiloc.values.first
     end
   end
 
