@@ -44,6 +44,11 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
         enabled: !voting_disabled_reason,
         disabled_reason: voting_disabled_reason,
       },
+      comment_voting: {
+        # You can vote if you can comment.
+        enabled: !commenting_disabled_reason,
+        disabled_reason: commenting_disabled_reason,
+      },
       taking_survey: {
         enabled:!taking_survey_disabled_reason,
         disabled_reason: taking_survey_disabled_reason
