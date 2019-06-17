@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
@@ -121,8 +122,6 @@ const StyledLink = styled(Link)`
   &:hover {
     color: #000;
     text-decoration: underline;
-    /* box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12); */
-    /* transform: translate(0px, -2px); */
   }
 `;
 
@@ -131,7 +130,7 @@ const LinkIcon = styled(Icon)`
   height: 1em;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;
@@ -145,18 +144,18 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class PagesShowPage extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
+class PagesShowPage extends PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
   render() {
     const { formatMessage } = this.props.intl;
     const { locale, tenantLocales, page, pageFiles, pageLinks } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && page !== undefined) {
-      let seoTitle = formatMessage(messages.notFoundTitle);
-      let seoDescription = formatMessage(messages.notFoundDescription);
-      let blockIndexing = true;
-      let pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
-      let pageDescription = <FormattedMessage {...messages.notFoundDescription} />;
-      let pageSlug = '';
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isUndefined(page) && !isUndefined(pageLinks)) {
+      let seoTitle: string;
+      let seoDescription: string;
+      let blockIndexing: boolean;
+      let pageTitle: JSX.Element;
+      let pageDescription: JSX.Element;
+      let pageSlug: string;
 
       if (!isNilOrError(page)) {
         seoTitle = getLocalized(page.attributes.title_multiloc, locale, tenantLocales);
@@ -169,6 +168,13 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
             {(multiloc) => <T value={multiloc} supportHtml={true} />}
           </ResolveTextVariables>
         );
+      } else {
+        seoTitle = formatMessage(messages.notFoundTitle);
+        seoDescription = formatMessage(messages.notFoundDescription);
+        blockIndexing = true;
+        pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
+        pageDescription = <FormattedMessage {...messages.notFoundDescription} />;
+        pageSlug = '';
       }
 
       return (
@@ -192,14 +198,14 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
                 </PageDescription>
               </Fragment>
             </StyledContentContainer>
-            <AttachmentsContainer>
-              {pageFiles && !isNilOrError(pageFiles) &&
+            {!isNilOrError(pageFiles) && pageFiles.length > 0 &&
+              <AttachmentsContainer>
                 <FileAttachments files={pageFiles} />
-              }
-            </AttachmentsContainer>
+              </AttachmentsContainer>
+            }
           </PageContent>
 
-          {!isNilOrError(pageLinks) &&
+          {!isNilOrError(pageLinks) && pageLinks.length > 0 &&
             <PagesNavWrapper>
               <PagesNav>
                 <StyledContentContainer>

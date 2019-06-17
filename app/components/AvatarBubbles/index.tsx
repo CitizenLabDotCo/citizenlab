@@ -21,6 +21,8 @@ import messages from './messages';
 import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
+const EmptyContainer = styled.div``;
+
 const AvatarWrapper = styled.div`
   border: 2px solid #fff;
   border-radius: 50%;
@@ -167,11 +169,9 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
           </Container>
         );
       }
-
-      return null;
     }
 
-    return null;
+    return <EmptyContainer className={className} />;
   }
 }
 
