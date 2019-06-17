@@ -226,6 +226,37 @@ if ['public','example_org'].include? Apartment::Tenant.current
       surveymonkey_surveys: {
         enabled: true,
         allowed: true
+      },
+      initiatives: {
+        enabled: true,
+        allowed: true,
+        voting_threshold: 300,
+        days_limit: 90,
+        threshold_reached_message: MultilocService.new.i18n_to_multiloc(
+          'initiatives.default_threshold_reached_message',
+          locales: CL2_SUPPORTED_LOCALES
+        ),
+        eligibility_criteria: MultilocService.new.i18n_to_multiloc(
+          'initiatives.default_eligibility_criteria',
+          locales: CL2_SUPPORTED_LOCALES
+        ),
+        success_stories: [
+          {
+            "page_slug": "success_story_1",
+            "location": Faker::Address.city,
+            "image_url": "https://www.quebecoriginal.com/en/listing/images/800x600/7fd3e9f7-aec9-4966-9751-bc0a1ab56127/parc-des-deux-rivieres-parc-des-deux-rivieres-en-ete.jpg",
+          },
+          {
+            "page_slug": "success_story_2",
+            "location": Faker::Address.city,
+            "image_url": "https://www.washingtonpost.com/resizer/I9IJifRLgy3uHVKcwZlvdjUBirc=/1484x0/arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/ZQIB4NHDUMI6RKZMWMO42U6KNM.jpg",
+          },
+          {
+            "page_slug": "success_story_3",
+            "location": Faker::Address.city,
+            "image_url": "http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg",
+          }
+        ]
       }
     }
   })
@@ -575,6 +606,15 @@ if Apartment::Tenant.current == 'localhost'
         title_multiloc:create_for_some_locales{Faker::Lorem.sentence},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
         project: rand(2) == 0 ? Project.offset(rand(Project.count)).first : nil,
+      })
+    end
+
+    # success stories
+    3.times do |i|
+      Page.create!({
+        title_multiloc:create_for_some_locales{Faker::Lorem.sentence},
+        slug: "success_story_#{i+1}",
+        body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
       })
     end
 

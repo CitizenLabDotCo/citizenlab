@@ -55,6 +55,9 @@ nb:
     infopage_body: Discover more information related to the platform.
     homepage_info_title: ""
     homepage_info_body: ""
+    initiatives_title: Initiatives
+    initiatives_body: >
+      <p>Explanation about initiatives</p>
   projects:
     open_idea_project_title: An idea? Bring it to your council!
     open_idea_project_description_preview: Maybe you have an idea that doesn't fit with one of the existing projects? Then post it here, gather support and get it on the political agenda!
@@ -84,3 +87,8 @@ nb:
       ISCED6: Bachelor or equivalent
       ISCED7: Master or equivalent
       ISCED8: Doctoral or equivalent
+  initiatives:
+    default_threshold_reached_message: >
+      <p>The initiators are invited to present their initiative on the next council meeting. We will provide an official update.</p>
+    default_eligibility_criteria: >
+      <p>The initiative should</p> <p>- be within the city's competences</p>

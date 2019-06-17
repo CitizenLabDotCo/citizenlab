@@ -6,7 +6,7 @@ class WebApi::V1::FilesController < ApplicationController
 
   def index
     @files = @container.send("#{container_association}_files").order(:ordering)
-    policy_scope_class = "#{params['file_class'].name}Policy::Scope".constantize
+    policy_scope_class = "#{params['file_class_name']}Policy::Scope".constantize
     @files = policy_scope_class.new(current_user, @files).resolve
     render json: @files, each_serializer: WebApi::V1::FileSerializer
   end
@@ -58,17 +58,19 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def set_file
-    @file = params['file_class'].find(params[:id])
+    file_class = params['file_class_name'].constantize
+    @file = file_class.find(params[:id])
     authorize @file
   end
 
   def set_container
     container_id = params["#{container_association}_id"]
-    @container = params['container_class'].find(container_id)
+    container_class = params['container_class_name'].constantize
+    @container = container_class.find(container_id)
   end
 
   def container_association
-    params['container_class'].name.downcase
+    params['container_class_name'].downcase
   end
 
    def transform_errors_details! error_details
