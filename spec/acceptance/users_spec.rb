@@ -596,7 +596,7 @@ resource "Users" do
         create(:comment, post: create(:initiative))
         create(:comment, author: @user, post: create(:idea))
         create(:comment, author: @user, post: create(:idea))
-        create(:comment, author: @user, publication_status: 'deleted', post: create(:initiative))
+        create(:comment, author: @user, publication_status: 'deleted', post: create(:idea))
         do_request post_type: 'Idea'
         expect(status).to eq 200
         json_response = json_parse(response_body)
@@ -608,7 +608,7 @@ resource "Users" do
         create(:comment, author: @user, post: create(:initiative))
         create(:comment, post: create(:idea))
         create(:comment, author: @user, post: create(:idea))
-        create(:comment, author: @user, publication_status: 'deleted')
+        create(:comment, author: @user, publication_status: 'deleted', post: create(:initiative))
         do_request post_type: 'Initiative'
         expect(status).to eq 200
         json_response = json_parse(response_body)

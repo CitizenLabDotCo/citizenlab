@@ -37,7 +37,6 @@ class TenantTemplateService
                 id, ref_class = obj_to_id_and_class[field_value]
                 model.send("#{field_name.chomp '_ref'}=", ref_class.find(id))
               rescue Exception => e
-                byebug
                 raise e
               end
             end
@@ -56,7 +55,6 @@ class TenantTemplateService
           model.save!
           ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
         rescue Exception => e
-          byebug
           raise e
         end
         obj_to_id_and_class[attributes] = [model.id, model_class]
