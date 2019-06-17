@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import GetTenant from 'resources/GetTenant';
 import { isNilOrError } from 'utils/helperUtils';
@@ -13,11 +13,10 @@ type Props = {
   title: string;
   name: string;
   tenantId: string;
-  children?: JSX.Element | null;
 };
 
 type State = {
-  fragmentExists?: boolean;
+  fragmentExists: boolean;
   iframeHeight?: number;
 };
 
@@ -25,14 +24,14 @@ type State = {
  * Wrap content in a named fragment to allow the content to be overridden
  * for a specific tenant
 */
-class Fragment extends React.Component<Props, State> {
+class Fragment extends PureComponent<Props, State> {
 
   iframeNode: HTMLIFrameElement;
 
   constructor(props) {
     super(props);
     this.state = {
-      fragmentExists: undefined,
+      fragmentExists: false
     };
   }
 
@@ -80,7 +79,9 @@ class Fragment extends React.Component<Props, State> {
       );
     } else if (fragmentExists === false) {
       return children;
-    } else return null;
+    }
+
+    return null;
   }
 }
 

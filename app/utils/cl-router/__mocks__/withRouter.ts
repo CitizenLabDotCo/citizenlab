@@ -6,6 +6,7 @@ export const mockWithRouterProps : WithRouterProps = {
     search: '',
     query: '',
     state: '',
+    hash: '',
     action: 'PUSH',
     key: ''
   },

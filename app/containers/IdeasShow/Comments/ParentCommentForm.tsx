@@ -81,6 +81,7 @@ const ButtonWrapper = styled.div`
 
 interface InputProps {
   ideaId: string;
+  postingComment: (arg: boolean) => void;
   className?: string;
 }
 
@@ -108,6 +109,12 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
       processing: false,
       errorMessage: null
     };
+  }
+
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    if (prevState.processing !== this.state.processing) {
+      this.props.postingComment(this.state.processing);
+    }
   }
 
   onChange = (inputValue: string) => {
@@ -142,7 +149,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
 
     this.setState({
       focused: false,
-      processing: false,
+      processing: true,
       errorMessage: null
     });
 

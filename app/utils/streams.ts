@@ -257,7 +257,7 @@ class Streams {
             })
           ).subscribe((response) => {
             if (!this.streams[streamId]) {
-              console.log(`no stream exists for ${streamId}`);
+              // no stream found with this streamId
             } else {
               if (!isError(response)) {
                 this.streams[streamId].observer.next(response);
@@ -282,7 +282,10 @@ class Streams {
 
       const observable = new Observable<T | null>((observer) => {
         const dataId = lastUrlSegment;
-        this.streams[streamId].observer = observer;
+
+        if (this.streams[streamId]) {
+          this.streams[streamId].observer = observer;
+        }
 
         if (cacheStream && isSingleItemStream && has(this.resourcesByDataId, dataId)) {
           observer.next(this.resourcesByDataId[dataId]);
@@ -547,6 +550,8 @@ class Streams {
         });
       });
     }
+
+    console.log(uniq([...streamIds1, ...streamIds2]));
 
     uniq([...streamIds1, ...streamIds2]).forEach((streamId) => {
       if (!onlyFetchActiveStreams || this.isActiveStream(streamId)) {

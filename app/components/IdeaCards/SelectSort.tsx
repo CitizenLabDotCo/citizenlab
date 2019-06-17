@@ -50,7 +50,7 @@ class SelectSort extends PureComponent<Props, State> {
         multiple={false}
         width="180px"
         right="-10px"
-        mobileLeft="-5px"
+        mobileRight="-5px"
       />
     );
   }

@@ -26,8 +26,6 @@ declare global {
 }
 
 export function randomString(length: number = 15) {
-  // return Math.random().toString(36).substring(2, 12).toLowerCase();
-
   let text = '';
   const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -328,6 +326,11 @@ export function apiRemoveComment(commentId: string) {
       },
       method: 'POST',
       url: `web_api/v1/comments/${commentId}/mark_as_deleted`,
+      body: {
+        comment: {
+          reason_code: 'irrelevant'
+        }
+      }
     });
   });
 }

@@ -4,6 +4,7 @@
 // about the code splitting business
 import dashboardRoutes from './dashboard/routes';
 import ideasRoutes from './ideas/routes';
+import initiativesRoutes from './initiatives/routes';
 import usersRoutes from './users/routes';
 import invitationsRoutes from './invitations/routes';
 import projectsRoutes from './projects/routes';
@@ -64,6 +65,7 @@ export default () => ({
   childRoutes: [
     dashboardRoutes(),
     ideasRoutes(),
+    initiativesRoutes(),
     usersRoutes(),
     projectsRoutes(),
     {

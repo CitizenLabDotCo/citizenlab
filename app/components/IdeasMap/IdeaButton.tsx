@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -38,7 +38,7 @@ const StyledIcon = styled(Icon)`
 
 interface InputProps {
   projectId: string;
-  phaseId?: string;
+  phaseId?: string | null;
   onClick?: () => void;
 }
 
@@ -52,7 +52,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class IdeaButton extends React.PureComponent<Props, State> {
+class IdeaButton extends PureComponent<Props, State> {
 
   disabledReasonToMessage: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
     notPermitted: messages.postingNotPermitted,
@@ -106,9 +106,9 @@ class IdeaButton extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
-  authUser: <GetAuthUser />
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 
 const WrappedIdeaButton = (inputProps: InputProps) => (

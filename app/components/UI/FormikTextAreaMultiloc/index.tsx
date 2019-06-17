@@ -5,6 +5,7 @@ import { FieldProps } from 'formik';
 class FormikInputMultiloc extends React.Component<FieldProps & VanillaTextAreaMultilocProps> {
 
   handleOnChange = (newValue) => {
+    this.props.form.setFieldTouched(this.props.field.name);
     this.props.form.setFieldValue(this.props.field.name, newValue);
   }
 

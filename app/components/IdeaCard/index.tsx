@@ -39,7 +39,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { IModalInfo } from 'containers/App';
+import { IIdeaCardClickEvent } from 'containers/App';
 import { ParticipationMethod } from 'services/participationContexts';
 
 const IdeaBudget = styled.div`
@@ -87,7 +87,6 @@ const IdeaTitle: any = styled.h3`
   display: block;
   display: -webkit-box;
   max-width: 400px;
-  max-height: 60px;
   margin: 0;
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
@@ -219,11 +218,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IModalInfo>(componentName, 'ideaCardClick', {
-        type: 'idea',
-        id: idea.id,
-        url: `/ideas/${idea.attributes.slug}`
-      });
+      eventEmitter.emit<IIdeaCardClickEvent>('IdeaCard', 'ideaCardClick', { ideaId: idea.id, ideaSlug: idea.attributes.slug });
     }
   }
 
@@ -281,17 +276,17 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       !isUndefined(ideaAuthor)
     ) {
       const ideaImageUrl: string | null = get(ideaImage, 'attributes.versions.medium', null);
-      const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
-      const budgetingDescriptor = get(idea.relationships.action_descriptor.data, 'budgeting', null);
-      const projectId = idea.relationships.project.data.id;
+      const votingDescriptor = get(idea, 'relationships.action_descriptor.data.voting', null);
+      const budgetingDescriptor = get(idea, 'relationships.action_descriptor.data.budgeting', null);
+      const projectId = get(idea, 'relationships.project.data.id');
       const ideaAuthorId = (!isNilOrError(ideaAuthor) ? ideaAuthor.id : null);
       const ideaBudget = idea.attributes.budget;
       const tenantCurrency = tenant.attributes.settings.core.currency;
-      const commentingDescriptor = (idea.relationships.action_descriptor.data.commenting || null);
-      const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
+      const commentingDescriptor = get(idea, 'relationships.action_descriptor.data.commenting');
+      const commentingEnabled = get(idea, 'relationships.action_descriptor.data.commenting.enabled');
       const className = `${this.props['className']}
         e2e-idea-card
-        ${idea.relationships.user_vote && idea.relationships.user_vote.data ? 'voted' : 'not-voted' }
+        ${get(idea, 'relationships.user_vote.data') ? 'voted' : 'not-voted' }
         ${commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled'}
         ${idea.attributes.comments_count > 0 ? 'e2e-has-comments' : ''}
         ${votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'}
@@ -412,7 +407,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => {
-    const ideaImageData = get(idea, 'relationships.idea_images.data');
+    const ideaImageData = !isNilOrError(idea) ? get(idea, 'relationships.idea_images.data') : null;
     const ideaImageImage = Array.isArray(ideaImageData) && ideaImageData.length > 0
       ? ideaImageData[0]
       : null;

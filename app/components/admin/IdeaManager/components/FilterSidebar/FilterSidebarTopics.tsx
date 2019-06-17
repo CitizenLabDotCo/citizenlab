@@ -7,8 +7,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 interface Props {
-  topics?: ITopicData[];
-  selectedTopics?: string[];
+  topics?: ITopicData[] | null;
+  selectedTopics?: string[] | null;
   onChangeTopicsFilter?: (topics: string[]) => void;
 }
 
