@@ -389,79 +389,81 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps & Tracks, Stat
         edit={formatMessage(messages.edit)}
         remove={formatMessage(messages.remove)}
       >
-        <div id={toolbarId} >
-          {!limitedTextFormatting &&
-            <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
-              <select className="ql-header" defaultValue={''}>
-                <option
-                  value="2"
-                  aria-selected={false}
-                >{formatMessage(messages.title)}
-                </option>
-                <option
-                  value="3"
-                  aria-selected={false}
-                >{formatMessage(messages.subtitle)}
-                </option>
-                <option
+        {!noToolbar &&
+          <div id={toolbarId} >
+            {!limitedTextFormatting &&
+              <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
+                <select className="ql-header" defaultValue={''}>
+                  <option
+                    value="2"
+                    aria-selected={false}
+                  >{formatMessage(messages.title)}
+                  </option>
+                  <option
+                    value="3"
+                    aria-selected={false}
+                  >{formatMessage(messages.subtitle)}
+                  </option>
+                  <option
+                    value=""
+                    aria-selected
+                  >{formatMessage(messages.normalText)}
+                  </option>
+                </select>
+              </span>
+            }
+            {!limitedTextFormatting && !noAlign &&
+              <span className="ql-formats">
+                <button
+                  className="ql-align"
                   value=""
-                  aria-selected
-                >{formatMessage(messages.normalText)}
-                </option>
-              </select>
-            </span>
-          }
-          {!limitedTextFormatting && !noAlign &&
+                  onClick={this.trackAdvanced('align', 'left')}
+                  aria-label={formatMessage(messages.alignLeft)}
+                />
+                <button
+                  className="ql-align"
+                  value="center"
+                  onClick={this.trackAdvanced('align', 'center')}
+                  aria-label={formatMessage(messages.alignCenter)}
+                />
+                <button
+                  className="ql-align"
+                  value="right"
+                  onClick={this.trackAdvanced('align', 'right')}
+                  aria-label={formatMessage(messages.alignRight)}
+                />
+              </span>
+            }
+            {!limitedTextFormatting &&
+              <span className="ql-formats">
+                <button
+                  className="ql-list"
+                  value="ordered"
+                  onClick={this.trackAdvanced('list', 'ordered')}
+                  aria-label={formatMessage(messages.orderedList)}
+                />
+                <button
+                  className="ql-list"
+                  value="bullet"
+                  onClick={this.trackAdvanced('list', 'bullet')}
+                  aria-label={formatMessage(messages.unorderedList)}
+                />
+              </span>
+            }
             <span className="ql-formats">
-              <button
-                className="ql-align"
-                value=""
-                onClick={this.trackAdvanced('align', 'left')}
-                aria-label={formatMessage(messages.alignLeft)}
-              />
-              <button
-                className="ql-align"
-                value="center"
-                onClick={this.trackAdvanced('align', 'center')}
-                aria-label={formatMessage(messages.alignCenter)}
-              />
-              <button
-                className="ql-align"
-                value="right"
-                onClick={this.trackAdvanced('align', 'right')}
-                aria-label={formatMessage(messages.alignRight)}
-              />
+              <button className="ql-bold" onClick={this.trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
+              <button className="ql-italic" onClick={this.trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
+              <button className="ql-link" onClick={this.trackBasic('link')} aria-label={formatMessage(messages.link)} />
             </span>
-          }
-          {!limitedTextFormatting &&
-            <span className="ql-formats">
-              <button
-                className="ql-list"
-                value="ordered"
-                onClick={this.trackAdvanced('list', 'ordered')}
-                aria-label={formatMessage(messages.orderedList)}
-              />
-              <button
-                className="ql-list"
-                value="bullet"
-                onClick={this.trackAdvanced('list', 'bullet')}
-                aria-label={formatMessage(messages.unorderedList)}
-              />
-            </span>
-          }
-          <span className="ql-formats">
-            <button className="ql-bold" onClick={this.trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
-            <button className="ql-italic" onClick={this.trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
-            <button className="ql-link" onClick={this.trackBasic('link')} aria-label={formatMessage(messages.link)} />
-          </span>
 
-          {!(noImages && noVideos) &&
-            <span className="ql-formats">
-              {!noImages && <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)} />}
-              {!noVideos && <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)} />}
-            </span>
-          }
-        </div>
+            {!(noImages && noVideos) &&
+              <span className="ql-formats">
+                {!noImages && <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)} />}
+                {!noVideos && <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)} />}
+              </span>
+            }
+          </div>
+        }
         <ReactQuill
           modules={modules}
           bounds="#boundaries"

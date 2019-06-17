@@ -151,7 +151,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
         // ideaImage$
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
-        const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
+        const ideaImageId = (ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null);
         ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.pipe(
           first(),
           switchMap((ideaImage) => {

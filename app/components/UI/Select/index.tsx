@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isBoolean } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
@@ -21,13 +21,7 @@ export type Props = {
 
 type State = {};
 
-export default class Select extends React.PureComponent<Props, State> {
-  private emptyArray: never[];
-
-  constructor(props: Props & {tenantColor: string | null}) {
-    super(props as any);
-    this.emptyArray = [];
-  }
+export default class Select extends PureComponent<Props, State> {
 
   handleOnChange = (newValue: IOption) => {
     this.props.onChange(newValue || null);
@@ -55,6 +49,8 @@ export default class Select extends React.PureComponent<Props, State> {
       }, 10);
     }
   }
+
+  emptyArray = [];
 
   render() {
     const className = this.props['className'];
@@ -88,6 +84,7 @@ export default class Select extends React.PureComponent<Props, State> {
         isDisabled={disabled}
         styles={styles}
         onMenuOpen={this.handleOpen}
+        menuPlacement="auto"
       />
     );
   }

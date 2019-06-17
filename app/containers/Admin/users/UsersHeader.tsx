@@ -22,14 +22,14 @@ import styled from 'styled-components';
 import rgba from 'polished/lib/color/rgba';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-const gutter = '.5rem';
-
 const TitleWrapper = styled.div`
   min-height: 105px;
+
   h2 {
+    padding: 0;
     margin: 10px;
-    margin-bottom: 30px !important;
     margin-top: 20px;
+    margin-bottom: 30px;
     color: ${colors.adminSecondaryTextColor};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
@@ -37,17 +37,10 @@ const TitleWrapper = styled.div`
 `;
 
 const FirstRow = styled.div`
-  align-items: flex-start;
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  margin-left: -${gutter};
-  margin-right: -${gutter};
-
-  > * {
-    padding-left: ${gutter};
-    padding-right: ${gutter};
-  }
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-left: 10px;
 `;
 
 const OnlyRow = styled(FirstRow)`
@@ -55,8 +48,16 @@ const OnlyRow = styled(FirstRow)`
   margin-bottom: 30px;
 `;
 
+const Spacer = styled.div`
+  flex: 1;
+`;
+
 const TitleIcon = styled(Icon)`
-  flex: 0 0 calc(3rem + 2 * ${gutter});
+  flex: 0 0 56px;
+  width: 56px;
+  height: 47px;
+  margin-right: 10px;
+  margin-left: -15px;
 
   .cl-icon-primary {
     fill: ${colors.adminOrangeIcons};
@@ -69,9 +70,10 @@ const TitleIcon = styled(Icon)`
 
 const TextAndButtons = styled.div`
   h1 {
-    margin-left: 10px;
-    margin-right: 10px;
     display: inline;
+    padding: 0;
+    margin: 0;
+    margin-right: 10px;
     font-weight: 600;
   }
 `;
@@ -83,18 +85,12 @@ const Buttons = styled.div`
   transform: scale(0.9);
 `;
 
-const StyledSearch = styled(SearchInput)`
+const StyledSearchInput = styled(SearchInput)`
+  flex: 0 0 250px;
+  width: 250px;
   margin-top: -10px;
-  align-self: flex-start;
-  flex: 0 0 225px;
-  justify-self: flex-end;
 `;
 
-const Spacer = styled.div`
-  flex: 1 0 auto;
-`;
-
-// Typings
 interface Props {
   title?: Multiloc;
   smartGroup?: boolean;
@@ -122,13 +118,9 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
     this.debounceSearch = throttle(this.props.onSearch, 500);
   }
 
-  handleSearchChange = (newValue) => {
+  handleSearchChange = (newValue: string) => {
     this.setState({ searchValue: newValue });
     this.debounceSearch(newValue);
-  }
-
-  focusSearch = () => {
-    this.props.trackSearchInput();
   }
 
   render() {
@@ -144,10 +136,11 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
             </Buttons>
           </TextAndButtons>
           <Spacer />
-          <StyledSearch value={this.state.searchValue} onChange={this.handleSearchChange} onFocus={this.focusSearch} />
+          <StyledSearchInput value={this.state.searchValue} onChange={this.handleSearchChange} />
         </OnlyRow>
       );
     }
+
     return (
       <TitleWrapper>
         <FirstRow>
@@ -155,7 +148,7 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
             <FormattedMessage tagName="h1" {...messages.allUsers} />
           </TextAndButtons>
           <Spacer />
-          <StyledSearch value={this.state.searchValue} onChange={this.handleSearchChange} />
+          <StyledSearchInput value={this.state.searchValue} onChange={this.handleSearchChange} />
         </FirstRow>
         <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
       </TitleWrapper>

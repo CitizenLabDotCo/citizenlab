@@ -13,8 +13,6 @@ import { media } from 'utils/styleUtils';
 const Container = styled(clickOutside)`
   display: inline-block;
   position: relative;
-  user-select: none;
-  outline: none;
 
   &:not(:last-child) {
     margin-right: 40px;
@@ -30,10 +28,6 @@ const Container = styled(clickOutside)`
 
   &.last {
     margin-right: 0px;
-  }
-
-  * {
-    user-select: none;
   }
 `;
 

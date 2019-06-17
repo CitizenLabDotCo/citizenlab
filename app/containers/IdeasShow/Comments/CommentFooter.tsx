@@ -44,16 +44,6 @@ const Left = styled.div`
   align-items: center;
 `;
 
-const LeftActions = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-
-  ${media.smallerThanMinTablet`
-    margin-left: 5px;
-  `}
-`;
-
 const Separator = styled.div`
   font-size: ${fontSizes.xs}px;
   line-height: 24px;
@@ -64,7 +54,7 @@ const Separator = styled.div`
     margin-left: 8px;
     margin-right: 8px;
 
-    &.first {
+    &.vote {
       display: none;
     }
   `}
@@ -237,37 +227,38 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
         <Container className={className}>
           <Left>
             {showVoteComponent &&
-              <CommentVote
-                ideaId={ideaId}
-                commentId={commentId}
-                commentType={commentType}
-                votingEnabled={votingEnabled}
-              />
+              <>
+                <CommentVote
+                  ideaId={ideaId}
+                  commentId={commentId}
+                  commentType={commentType}
+                  votingEnabled={votingEnabled}
+                />
+                {/* // Make sure there's a next item before adding a separator */}
+                {(showReplyButton || showTranslateButton) && <Separator className="vote">•</Separator>}
+              </>
             }
 
-            <LeftActions>
-              {showReplyButton &&
-                <>
-                  {showVoteComponent && <Separator className="first">•</Separator>}
-                  <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply} className="e2e-comment-reply-button">
-                    <FormattedMessage {...messages.commentReplyButton} />
-                  </ReplyButton>
-                </>
+            {showReplyButton &&
+              <>
+                <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply} className="e2e-comment-reply-button">
+                  <FormattedMessage {...messages.commentReplyButton} />
+                </ReplyButton>
+                {/* // Make sure there's a next item before adding a separator */}
+                {showTranslateButton && <Separator>•</Separator>}
+              </>
+            }
+
+            <FeatureFlag name="machine_translations">
+              {showTranslateButton &&
+                <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
+                  {!translateButtonClicked
+                    ? <FormattedMessage {...messages.seeTranslation} />
+                    : <FormattedMessage {...messages.seeOriginal} />
+                  }
+                </TranslateButton>
               }
-              <FeatureFlag name="machine_translations">
-                {showTranslateButton &&
-                  <>
-                    {showReplyButton && <Separator>•</Separator>}
-                    <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
-                      {!translateButtonClicked
-                        ? <FormattedMessage {...messages.seeTranslation} />
-                        : <FormattedMessage {...messages.seeOriginal} />
-                      }
-                    </TranslateButton>
-                  </>
-                }
-              </FeatureFlag>
-            </LeftActions>
+            </FeatureFlag>
           </Left>
 
           <Right>

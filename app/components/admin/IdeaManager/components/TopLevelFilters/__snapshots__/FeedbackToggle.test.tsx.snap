@@ -31,7 +31,7 @@ exports[`<FeedbackToggle /> renders correctly checked 1`] = `
       defaultMessage="Need Feedback"
       id="app.components.admin.IdeaManager.needFeedback"
     />
-    <Component
+    <Memo()
       count={6}
     />
   </FeedbackToggle__StyledLabel>
@@ -69,7 +69,7 @@ exports[`<FeedbackToggle /> renders correctly unchecked 1`] = `
       defaultMessage="Need Feedback"
       id="app.components.admin.IdeaManager.needFeedback"
     />
-    <Component
+    <Memo()
       count={6}
     />
   </FeedbackToggle__StyledLabel>
