@@ -1,4 +1,23 @@
 # Changelog
+
+## 2019-06-17
+
+## Fixed
+
+- The column titles in comments excel export are aligned with the content
+- There's now enough space between voting anc translate links under a comment
+
+## Added
+
+- The admin part of the new citizen initiatives is available (set initiatives feature on `allowed`)
+  - Cities can configure how they plan to use initiatives
+- A preview of how initiatives will look like city side is available, not yet ready for prime time (set initiatives feature on `allowed` and `enabled`)
+- The ideas overview page has a new filtering sidebar,  which will be used for other idea and initiative listings in the future
+  - On idea status
+  - On topic
+  - Search
+- Comments now load automatically while scrolling down, so the first comments appear faster
+
 ## 2019-06-05
 
 ### Fixed
