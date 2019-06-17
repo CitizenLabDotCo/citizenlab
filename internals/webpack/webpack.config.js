@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ResourceHintsWebpackPlugin = require('resource-hints-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
@@ -29,6 +30,8 @@ const config = {
     },
   },
 
+  stats: 'normal',
+
   mode: isDev ? 'development' : 'production',
 
   devtool: isDev ? 'cheap-module-eval-source-map' : (isProd ? 'source-map' : false),
@@ -37,6 +40,7 @@ const config = {
     contentBase: path.join(process.cwd(), 'build'),
     port: 3000,
     host: '0.0.0.0',
+    stats: 'normal',
     disableHostCheck: true,
     historyApiFallback: true,
     proxy: {
@@ -143,6 +147,14 @@ const config = {
       filename: '[name].[hash].css',
       chunkFilename: '[name].[hash].chunk.css'
     }),
+
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'disabled',
+      generateStatsFile: true,
+      statsOptions: {
+        source: false
+      }
+    })
   ],
 
   resolve: {
