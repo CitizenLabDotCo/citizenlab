@@ -41,18 +41,21 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
     voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_idea(object, current_user)
     cancelling_votes_disabled_reason = @participation_context_service.cancelling_votes_disabled_reason(object, current_user)
     budgeting_disabled_reason = @participation_context_service.budgeting_disabled_reason_for_idea(object, current_user)
+    commenting_action_descriptor = {
+      enabled: !commenting_disabled_reason,
+      disabled_reason: commenting_disabled_reason,
+      future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_enabled_phase(object.project, current_user)&.start_at
+    }
     {
+      commenting: commenting_action_descriptor,
       voting: {
         enabled: !voting_disabled_reason,
         disabled_reason: voting_disabled_reason,
         future_enabled: voting_disabled_reason && @participation_context_service.future_voting_enabled_phase(object.project, current_user)&.start_at,
         cancelling_enabled: !cancelling_votes_disabled_reason
-      },
-      commenting: {
-        enabled: !commenting_disabled_reason,
-        disabled_reason: commenting_disabled_reason,
-        future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_enabled_phase(object.project, current_user)&.start_at
-      },
+      }, 
+      # You can vote if you can comment.  
+      comment_voting: commenting_action_descriptor,
       budgeting: {
         enabled: !budgeting_disabled_reason,
         disabled_reason: budgeting_disabled_reason,
