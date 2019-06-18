@@ -256,6 +256,8 @@ GEM
       i18n (>= 0.7)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
+    fast_jsonapi (1.5)
+      activesupport (>= 4.2)
     ffi (1.9.25)
     fog-aws (3.3.0)
       fog-core (~> 2.1)
@@ -586,6 +588,7 @@ DEPENDENCIES
   email_campaigns!
   factory_bot_rails
   faker
+  fast_jsonapi
   fog-aws
   frontend!
   groupdate

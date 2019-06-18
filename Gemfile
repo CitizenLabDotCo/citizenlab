@@ -116,6 +116,7 @@ gem 'dalli'
 gem 'aws-sdk-s3', '~> 1'
 gem 'rinku', '~> 2'
 gem 'rails_semantic_logger'
+gem 'fast_jsonapi'
 
 gem 'admin_api', path: 'engines/admin_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'
