@@ -6,7 +6,7 @@ class WebApi::V1::IdeasController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   def index
-    @ideas = policy_scope(Idea).includes(:author, :assignee, :topics, :areas, :phases, :idea_images, project: [:phases])
+    @ideas = policy_scope(Idea).includes(:topics, :areas, :idea_images, project: [:phases, :permissions], phases: [:permissions], author: [:unread_notifications], assignee: [:unread_notifications])
       .left_outer_joins(:idea_trending_info)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
@@ -56,10 +56,8 @@ class WebApi::V1::IdeasController < ApplicationController
         end
     end
 
-    @idea_ids = @ideas.map(&:id)
-
     if current_user
-      votes = Vote.where(user: current_user, votable_id: @idea_ids, votable_type: 'Idea')
+      votes = Vote.where(user: current_user, votable: @ideas, votable_type: 'Idea')
       votes_by_idea_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
       render json: @ideas, include: ['author', 'user_vote', 'idea_images', 'assignee'], vbii: votes_by_idea_id, pcs: ParticipationContextService.new
     else
