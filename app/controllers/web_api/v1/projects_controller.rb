@@ -22,11 +22,21 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
 
     @projects = ProjectSortingService.new.sort(@projects)
-      .includes(:project_images, :phases)
+      .includes(:project_images, :phases, :areas, :topics)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: @projects, include: ['project_images', 'current_phase', 'avatars']
+    user_baskets = current_user&.baskets
+      &.where(participation_context_type: 'Project')
+      &.group_by(&:participation_context_id) 
+    user_baskets ||= {}
+    instance_options = {
+      user_baskets: user_baskets,
+      allocated_budgets: ParticipationContextService.new.allocated_budgets(@projects),
+      timeline_active: TimelineService.new.timeline_active_on_collection(@projects)
+    }
+
+    render({ json: @projects, include: ['project_images', 'current_phase', 'avatars'], **instance_options })
   end
 
   def show
@@ -95,6 +105,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     end
   end
 
+
   private
 
   def secure_controller?
@@ -105,4 +116,5 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     @project = Project.find params[:id]
     authorize @project
   end
+
 end
