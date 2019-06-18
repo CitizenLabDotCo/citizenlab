@@ -12,6 +12,8 @@ const argv = require('yargs').argv;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
 
@@ -143,6 +145,8 @@ const config = {
       filename: '[name].[hash].css',
       chunkFilename: '[name].[hash].chunk.css'
     }),
+
+    new BundleAnalyzerPlugin(),
   ],
 
   resolve: {
