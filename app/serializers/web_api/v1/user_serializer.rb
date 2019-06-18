@@ -6,7 +6,7 @@ class WebApi::V1::UserSerializer < ActiveModel::Serializer
 
   attribute :custom_field_values, if: :view_private_attributes?
 
-  attribute :unread_notifications, if: :unread_notifications
+  has_many :unread_notifications
 
   has_many :granted_permissions, serializer: WebApi::V1::PermissionSerializer
 
@@ -17,13 +17,6 @@ class WebApi::V1::UserSerializer < ActiveModel::Serializer
 
   def avatar
     object.avatar && object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
-  end
-
-  def unread_notifications
-    # TODO Optimize this. The (rails cached, but still) query is executed
-    # everytime the current_user is rendered, except if coming from the /me
-    # endpoint
-    instance_options[:unread_notifications] || (scope && scope.notifications.unread.count)
   end
 
   def granted_permissions
