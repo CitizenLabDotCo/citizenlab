@@ -598,6 +598,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                         padding="8px 8px"
                         disabled={selectedPhaseId === phases.data[0].id}
                         ariaLabel={this.props.intl.formatMessage(messages.goToPreviousPhase)}
+                        className="e2e-previous-phase"
                       />
                       <NextPhaseButton
                         onClick={this.goToNextPhase}
@@ -622,7 +623,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
               </HeaderRows>
             </Header>
 
-            <Phases>
+            <Phases className="e2e-phases">
               {phases.data.map((phase, index) => {
                 const phaseTitle = getLocalized(phase.attributes.title_multiloc, locale, currentTenantLocales);
                 const isFirst = (index === 0);
@@ -637,7 +638,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
 
                 return (
                   <PhaseContainer
-                    className={`${isFirst && 'first'} ${isLast && 'last'} ${isCurrentPhase && 'currentPhase'} ${isSelectedPhase && 'selectedPhase'}`}
+                    className={`${isFirst ? 'first' : ''} ${isLast ? 'last' : ''} ${isCurrentPhase ? 'currentPhase' : ''} ${isSelectedPhase ? 'selectedPhase' : ''}`}
                     key={index}
                     numberOfDays={numberOfDays}
                     onMouseDown={this.removeFocus}
