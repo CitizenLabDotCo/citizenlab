@@ -28,7 +28,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    user_baskets = current_user&.baskets&.group_by(&:participation_context_id) || {}
+    user_baskets = current_user&.baskets
+      &.where(participation_context_type: 'Project')
+      &.group_by(&:participation_context_id) 
+    user_baskets ||= {}
     instance_options = {
       user_baskets: user_baskets,
       allocated_budgets: ParticipationContextService.new.allocated_budgets(@projects),

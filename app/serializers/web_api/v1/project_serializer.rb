@@ -43,6 +43,11 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
         enabled: !voting_disabled_reason,
         disabled_reason: voting_disabled_reason,
       },
+      comment_voting: {
+        # You can vote if you can comment.
+        enabled: !commenting_disabled_reason,
+        disabled_reason: commenting_disabled_reason,
+      },
       taking_survey: {
         enabled:!taking_survey_disabled_reason,
         disabled_reason: taking_survey_disabled_reason
@@ -54,7 +59,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
     if @instance_options[:user_baskets]
       @instance_options.dig(:user_baskets, object.id)&.first
     else
-      current_user&.baskets&.find_by participation_context_id: object.id
+      current_user&.baskets&.find_by(participation_context_id: object.id, participation_context_type: 'Project')
     end
   end
 
