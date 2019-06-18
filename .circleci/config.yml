@@ -184,8 +184,8 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "50:78:bd:26:fb:8c:2d:96:38:ac:57:d2:08:46:96:da"
-      - run: ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 "docker run --env-file cl2-deployment/.env-staging --rm citizenlabdotco/cl2-back:latest bundle exec rake cl2_back:create_tenant['e2e.stg.citizenlab.co','e2etests_template']"
-      - run: ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 "docker run --env-file cl2-deployment/.env-staging --rm citizenlabdotco/cl2-back:latest bundle exec rake cl2_back:create_tenant['pa11y.stg.citizenlab.co','e2etests_template']"
+      - run: ssh -o StrictHostKeyChecking=no -l ubuntu 52.29.30.188 "docker run --env-file cl2-deployment/.env-staging --rm citizenlabdotco/cl2-back:latest bundle exec rake cl2_back:create_tenant['e2e.stg.citizenlab.co','e2etests_template']"
+      - run: ssh -o StrictHostKeyChecking=no -l ubuntu 52.29.30.188 "docker run --env-file cl2-deployment/.env-staging --rm citizenlabdotco/cl2-back:latest bundle exec rake cl2_back:create_tenant['pa11y.stg.citizenlab.co','e2etests_template']"
 
   test_a11y:
     docker:

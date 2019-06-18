@@ -15,13 +15,8 @@ import { lighten } from 'polished';
 
 const Container = styled.div`
   height: ${props => props.theme.mobileTopBarHeight}px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   background: #fff;
   border-bottom: solid 1px ${colors.separation};
-  z-index: 1000;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -106,13 +101,10 @@ interface Props {
 
 const TopBar = memo<Props>(({ children, goBack, className }) => {
 
-  const onGoBack = useCallback(
-    (event: MouseEvent) => {
-      event.preventDefault();
-      goBack && goBack();
-    },
-    []
-  );
+  const onGoBack = useCallback((event: MouseEvent) => {
+    event.preventDefault();
+    goBack && goBack();
+  }, []);
 
   return (
     <Container className={className}>
@@ -129,9 +121,11 @@ const TopBar = memo<Props>(({ children, goBack, className }) => {
             </>
           }
         </Left>
-        <Right>
-          {children}
-        </Right>
+        {!isNil(children) &&
+          <Right>
+            {children}
+          </Right>
+        }
       </TopBarInner>
     </Container>
   );

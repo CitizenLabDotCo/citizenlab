@@ -17,7 +17,6 @@ const Container: any = styled(clickOutside)`
   top: ${(props: Props) => props.top};
   left: ${(props: Props) => props.left};
   right: ${(props: Props) => props.right};
-  outline: none;
   transition: none;
 
   * {

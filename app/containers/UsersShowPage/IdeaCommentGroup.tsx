@@ -11,7 +11,7 @@ import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // typings
 import { ICommentData } from 'services/comments';
-import { IModalInfo } from 'containers/App';
+import { IIdeaCardClickEvent } from 'containers/App';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -136,8 +136,6 @@ const nothingHappens = () => {};
 
 interface Props extends InputProps, DataProps {}
 
-export const componentName = 'containers/UsersShowPage/IdeaCommentGroup';
-
 export class IdeaCommentGroup extends PureComponent<Props> {
 
   onIdeaLinkClick = (event: FormEvent<any>) => {
@@ -146,11 +144,7 @@ export class IdeaCommentGroup extends PureComponent<Props> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IModalInfo>(componentName, 'ideaCardClick', {
-        type: 'idea',
-        id: idea.id,
-        url: `/ideas/${idea.attributes.slug}`
-      });
+      eventEmitter.emit<IIdeaCardClickEvent>('IdeaCommentGroup', 'ideaCardClick', { ideaId: idea.id, ideaSlug: idea.attributes.slug });
     }
   }
 

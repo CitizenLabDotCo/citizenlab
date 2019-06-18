@@ -6,8 +6,9 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ResourceHintsWebpackPlugin = require('resource-hints-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
@@ -143,6 +144,14 @@ const config = {
       filename: '[name].[hash].css',
       chunkFilename: '[name].[hash].chunk.css'
     }),
+
+    // new BundleAnalyzerPlugin({
+    //   analyzerMode: 'disabled',
+    //   generateStatsFile: true,
+    //   statsOptions: {
+    //     source: false
+    //   }
+    // })
   ],
 
   resolve: {

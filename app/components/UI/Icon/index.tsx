@@ -14,7 +14,7 @@ const icons = {
     </svg>
   ),
   close: (className, title) => (
-    <svg className={className} height="100%" viewBox="2 2.002 19.998 19.997" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <svg className={className} height="100%" viewBox="2 2.002 19.998 19.997">
       {injectTitle(title)}
       <path d="M19.07 4.93c-3.902-3.904-10.238-3.904-14.142 0-3.903 3.902-3.903 10.238 0 14.142 3.903 3.902 10.24 3.902 14.142 0 3.905-3.904 3.905-10.24 0-14.143zm-2.828 9.898l-1.414 1.414L12 13.414l-2.83 2.828-1.413-1.414L10.587 12l-2.83-2.83L9.17 7.758l2.83 2.83 2.828-2.83 1.414 1.414L13.414 12l2.828 2.828z" />
     </svg>
@@ -206,6 +206,12 @@ const icons = {
     <svg className={className} height="100%" viewBox="0 0 19 19">
       {injectTitle(title)}
       <path d="M13.58 11.95h-.864l-.3-.3c1.065-1.232 1.706-2.834 1.706-4.59 0-3.9-3.16-7.06-7.06-7.06C3.16 0 0 3.16 0 7.06c0 3.9 3.16 7.062 7.06 7.062 1.756 0 3.358-.64 4.59-1.7l.3.3v.857L17.38 19 19 17.38l-5.42-5.43zm-6.52 0c-2.698 0-4.887-2.19-4.887-4.89 0-2.698 2.19-4.887 4.888-4.887 2.7 0 4.89 2.19 4.89 4.888 0 2.7-2.19 4.89-4.89 4.89z" />
+    </svg>
+  ),
+  search2: (className, title) => (
+    <svg className={className} height="100%" viewBox="0 0 20 20">
+      {injectTitle(title)}
+      <path d="M19.756 18.578l-5.688-5.688a7.88 7.88 0 0 0 1.766-4.974C15.834 3.552 12.281 0 7.917 0S0 3.552 0 7.917s3.552 7.917 7.917 7.917a7.88 7.88 0 0 0 4.974-1.766l5.688 5.688a.833.833 0 0 0 1.177-1.178zM7.917 14.166c-3.446 0-6.25-2.803-6.25-6.25s2.804-6.25 6.25-6.25c3.447 0 6.25 2.803 6.25 6.25s-2.804 6.25-6.25 6.25z"/>
     </svg>
   ),
   lock: (className) => (
@@ -414,7 +420,7 @@ const icons = {
     </svg>
   ),
   survey: (className, title) => (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="15" height="18">
+    <svg className={className} width="15" height="18">
       {injectTitle(title)}
       <path id="path0_fill" d="M7.5 0a2.34 2.34 0 0 0-1.17.322 2.303 2.303 0 0 0-.845.861H0V18h15V1.174H9.515c-.2-.355-.493-.65-.847-.857A2.34 2.34 0 0 0 7.5 0zm-.825 2.761l.136-.623a.697.697 0 0 1 .248-.393.712.712 0 0 1 1.132.393l.136.623h1.122v.7H5.553v-.71l1.122.01zm6.728 13.661H1.597V2.752h2.359V5.03h7.088V2.75h2.359v13.671z" />
       <path id="path1_fill" d="M2.607 10.347h3.926V6.47H2.607v3.877zm1.598-2.3h.73v.723h-.73v-.722z" />
@@ -431,41 +437,41 @@ const icons = {
     </svg>
   ),
   notification_invitation_accepted: (className, title) => (
-    <svg className={className} viewBox="0 0 24 24" version="1.1" fill="#6B6B6B">
+    <svg className={className} viewBox="0 0 24 24" fill="#6B6B6B">
       {injectTitle(title)}
       <path d="M 9 4 C 6.789063 4 5 5.789063 5 8 C 5 10.210938 6.789063 12 9 12 C 11.210938 12 13 10.210938 13 8 C 13 5.789063 11.210938 4 9 4 Z M 22.28125 6.8125 L 17.6875 11.5625 L 15.59375 9.5 L 14.1875 10.90625 L 17.71875 14.4375 L 18.40625 13.6875 L 23.71875 8.1875 Z M 9 14 C 2.898438 14 1 18 1 18 L 1 20 L 17 20 L 17 18 C 17 18 15.101563 14 9 14 Z " />
     </svg>
   ),
   notification_status: (className, title) => (
-    <svg className={className} viewBox="0 0 24 24" version="1.1" fill="#6B6B6B">
+    <svg className={className} viewBox="0 0 24 24" fill="#6B6B6B">
       {injectTitle(title)}
       <path d="M 2 8 L 2 16 C 2 17.101563 2.898438 18 4 18 L 15.199219 18 C 15.699219 18 16.199219 17.800781 16.601563 17.398438 L 22 12 L 16.601563 6.601563 C 16.199219 6.199219 15.699219 6 15.199219 6 L 4 6 C 2.898438 6 2 6.898438 2 8 Z " />
     </svg>
   ),
   arrowLeft: (className, title) => (
-    <svg className={className} width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={className} width="16" height="12" viewBox="0 0 16 12" fill="none">
       {injectTitle(title)}
       <g className="Arrow-Left-icon">
-        <path d="M13.8547 5.10446H0V6.89551H13.8547V5.10446Z" fill="white" />
-        <path d="M10.0112 12L8.75977 10.7463L13.4972 6L8.75977 1.25373L10.0112 0L16 6L10.0112 12Z" fill="white" />
+        <path d="M13.8547 5.10446H0V6.89551H13.8547V5.10446Z" />
+        <path d="M10.0112 12L8.75977 10.7463L13.4972 6L8.75977 1.25373L10.0112 0L16 6L10.0112 12Z" />
       </g>
     </svg>
   ),
   create: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="31" height="31" viewBox="0 0 31 31" fill="none">
       {injectTitle(title)}
       <circle className="cl-icon-background Background-Create-icon" cx="15.5" cy="15.5" r="15.5" fill="rgba(1, 161, 177, 0.15)" />
       <path className="cl-icon-fill cl-icon-primary Create-icon" d="M14.85 8.48571H8.48571V14.85H6.36429V8.48571H0V6.36429H6.36429V0H8.48571V6.36429H14.85V8.48571Z" transform="translate(8 8)" fill="#044D6C" />
     </svg>
   ),
   shield: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} viewBox="0 0 21 24" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} viewBox="0 0 21 24">
       {injectTitle(title)}
       <path d="M20.644 3.021L10.644 0.021C10.55 -0.007 10.451 -0.007 10.357 0.021L0.357 3.021C0.145 3.085 0 3.279 0 3.5V14.5C0 18.922 6.742 22.854 10.352 23.978C10.4 23.993 10.45 24 10.5 24C10.55 24 10.6 23.993 10.648 23.978C14.258 22.855 21 18.922 21 14.5V3.5C21 3.279 20.855 3.085 20.644 3.021ZM16.854 8.854L9.854 15.854C9.756 15.951 9.628 16 9.5 16C9.372 16 9.244 15.951 9.146 15.854L5.146 11.854C4.951 11.659 4.951 11.342 5.146 11.147C5.341 10.952 5.658 10.952 5.853 11.147L9.5 14.793L16.146 8.147C16.341 7.952 16.658 7.952 16.853 8.147C17.048 8.342 17.049 8.658 16.854 8.854Z" fill="#8C680D" />
     </svg>
   ),
   blankPage: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="53" height="70" viewBox="0 0 53 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="53" height="70" viewBox="0 0 53 70" fill="none">
       {injectTitle(title)}
       <g className="Blank-Page-icon">
         <path className="Fillin-Paper-icon" d="M8.5 7.75L17 0H51V66H0V17.5L8.5 7.75Z" transform="translate(2 1)" fill="rgba(1, 161, 177, 0.2)" />
@@ -477,7 +483,7 @@ const icons = {
     </svg>
   ),
   mailBig: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="60" height="40" viewBox="0 0 60 40" fill="none">
       {injectTitle(title)}
       <path d="M53.75 0H6.25A6.259 6.259 0 0 0 0 6.25v27.5A6.259 6.259 0 0 0 6.25 40h47.5A6.259 6.259 0 0 0 60 33.75V6.25A6.259 6.259 0 0 0 53.75 0zm-31.7 22.21l-15 12.5c-.232.195-.518.29-.8.29a1.252 1.252 0 0 1-.803-2.212l15-12.5c.53-.44 1.32-.368 1.763.16.442.532.37 1.322-.16 1.762zm7.95.332a6.98 6.98 0 0 1-3.953-1.232L5.546 7.283a1.252 1.252 0 0 1-.327-1.738 1.246 1.246 0 0 1 1.737-.325l20.502 14.027a4.476 4.476 0 0 0 5.083 0L53.042 5.22a1.25 1.25 0 0 1 1.413 2.063L33.953 21.31A6.98 6.98 0 0 1 30 22.543zM54.71 34.55a1.244 1.244 0 0 1-1.76.16l-15-12.5a1.252 1.252 0 0 1-.16-1.762c.443-.528 1.23-.6 1.763-.16l15 12.5c.527.442.6 1.232.157 1.762z" fill="#01A1B1" fillOpacity=".25" />
     </svg>
@@ -489,31 +495,31 @@ const icons = {
     </svg>
   ),
   add: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="23" height="23" viewBox="0 0 23 23" fill="none">
       {injectTitle(title)}
       <path d="M11.5 0C5.14625 0 0 5.14625 0 11.5C0 17.8538 5.14625 23 11.5 23C17.8538 23 23 17.8538 23 11.5C23 5.14625 17.8538 0 11.5 0ZM17.25 12.65H12.65V17.25H10.35V12.65H5.75V10.35H10.35V5.75H12.65V10.35H17.25V12.65Z" />
     </svg>
   ),
   circleInfo: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="23" height="23" viewBox="0 0 23 23" fill="none">
       {injectTitle(title)}
       <path d="M11.5 0C5.159 0 0 5.159 0 11.5C0 17.841 5.159 23 11.5 23C17.841 23 23 17.841 23 11.5C23 5.159 17.841 0 11.5 0ZM11.5 19C10.949 19 10.5 18.552 10.5 18C10.5 17.448 10.949 17 11.5 17C12.051 17 12.5 17.448 12.5 18C12.5 18.552 12.051 19 11.5 19ZM15 9.258C15 10.18 14.626 11.081 13.975 11.733L12.733 12.975C12.267 13.439 12 14.084 12 14.742V15.5C12 15.776 11.776 16 11.5 16C11.224 16 11 15.776 11 15.5V14.742C11 13.82 11.374 12.919 12.025 12.267L13.267 11.025C13.733 10.561 14 9.916 14 9.258V8.5C14 7.121 12.878 6 11.5 6C10.122 6 9 7.121 9 8.5V9.5C9 9.776 8.776 10 8.5 10C8.224 10 8 9.776 8 9.5V8.5C8 6.57 9.57 5 11.5 5C13.43 5 15 6.57 15 8.5V9.258Z" fill="#32B67A" />
     </svg>
   ),
   paperclip: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} viewBox="0 0 10 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} viewBox="0 0 10 20" fill="none">
       {injectTitle(title)}
       <path d="M8.636 4.545V15A3.635 3.635 0 0 1 5 18.636 3.635 3.635 0 0 1 1.364 15V3.636a2.274 2.274 0 0 1 4.545 0v9.546a.909.909 0 1 1-1.818 0V4.545H2.727v8.637a2.273 2.273 0 0 0 4.546 0V3.636A3.635 3.635 0 0 0 3.636 0 3.635 3.635 0 0 0 0 3.636V15a5 5 0 0 0 10 0V4.545H8.636z" />
     </svg>
   ),
   code: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="17" height="10" viewBox="0 0 17 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="17" height="10" viewBox="0 0 17 10" fill="none">
       {injectTitle(title)}
       <path d="M6.29 8.83333L2.4225 5L6.3325 1.16667L5.1 0L0 5L5.1 10L6.29 8.83333ZM10.71 8.83333L14.62 5L10.71 1.16667L11.9 0L17 5L11.9 10L10.71 8.83333Z" fill="white" />
     </svg>
   ),
   stamp: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="47" height="48" viewBox="0 0 47 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="47" height="48" viewBox="0 0 47 48" fill="none">
       {injectTitle(title)}
       <path d="M28.7133 19.2C26.1468 19.2 24.7031 18.08 23.5802 16.96C22.4573 16 21.4949 15.2 19.4096 15.2C17.3242 15.2 16.3618 16 15.2389 16.96C13.9556 17.92 12.5119 19.2 9.94539 19.2C7.37884 19.2 6.09556 18.08 4.9727 16.96C3.84983 16 2.88737 15.2 0.802048 15.2C0.16041 15.2 0 14.88 0 14.4C0 13.92 0.320819 13.6 0.802048 13.6C3.3686 13.6 4.81229 14.72 5.93515 15.84C7.05802 16.8 8.02048 17.6 10.1058 17.6C12.1911 17.6 13.1536 16.8 14.2764 15.84C15.3993 14.88 16.843 13.6 19.4096 13.6C21.9761 13.6 23.4198 14.72 24.5427 15.84C25.6655 16.8 26.628 17.6 28.7133 17.6C29.1945 17.6 29.5154 17.92 29.5154 18.4C29.5154 18.88 29.1945 19.2 28.7133 19.2Z" fill="#D8D8D8" />
       <path d="M28.7133 27.2C26.1468 27.2 24.7031 26.08 23.5802 24.96C22.4573 24 21.4949 23.2 19.4096 23.2C17.3242 23.2 16.3618 24 15.2389 24.96C14.116 25.92 12.6724 27.2 10.1058 27.2C7.53925 27.2 6.09556 26.08 4.9727 24.96C3.84983 24 2.88737 23.2 0.802048 23.2C0.320819 23.2 0 22.88 0 22.4C0 21.92 0.320819 21.6 0.802048 21.6C3.3686 21.6 4.81229 22.72 5.93515 23.84C7.05802 24.8 8.02048 25.6 10.1058 25.6C12.1911 25.6 13.1536 24.8 14.2764 23.84C15.3993 22.88 16.843 21.6 19.4096 21.6C21.9761 21.6 23.4198 22.72 24.5427 23.84C25.6655 24.8 26.628 25.6 28.7133 25.6C29.1945 25.6 29.5154 25.92 29.5154 26.4C29.5154 26.88 29.1945 27.2 28.7133 27.2Z" fill="#D8D8D8" />
@@ -549,7 +555,7 @@ const icons = {
     </svg>
   ),
   setup: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="42" height="42" viewBox="0 0 42 42" fill="none">
       {injectTitle(title)}
       <path d="M32.375 0H9.625C4.31725 0 0 4.319 0 9.625V32.375C0 37.681 4.31725 42 9.625 42H32.375C37.6828 42 42 37.681 42 32.375V9.625C42 4.319 37.6828 0 32.375 0ZM29.75 21C29.75 21.2975 29.5995 21.574 29.3493 21.7367L17.0993 29.6117C16.954 29.7045 16.7895 29.75 16.625 29.75C16.4797 29.75 16.3363 29.7132 16.205 29.6415C15.925 29.491 15.75 29.1952 15.75 28.875V13.125C15.75 12.8048 15.925 12.509 16.205 12.3585C16.4867 12.2027 16.828 12.215 17.0975 12.39L29.3475 20.265C29.5995 20.426 29.75 20.7025 29.75 21Z" fill="white" />
       <path d="M32.375 0H9.625C4.31725 0 0 4.319 0 9.625V32.375C0 37.681 4.31725 42 9.625 42H32.375C37.6828 42 42 37.681 42 32.375V9.625C42 4.319 37.6828 0 32.375 0ZM29.75 21C29.75 21.2975 29.5995 21.574 29.3493 21.7367L17.0993 29.6117C16.954 29.7045 16.7895 29.75 16.625 29.75C16.4797 29.75 16.3363 29.7132 16.205 29.6415C15.925 29.491 15.75 29.1952 15.75 28.875V13.125C15.75 12.8048 15.925 12.509 16.205 12.3585C16.4867 12.2027 16.828 12.215 17.0975 12.39L29.3475 20.265C29.5995 20.426 29.75 20.7025 29.75 21Z" fill="url(#paint0_linear)" fillOpacity="0.3" />
@@ -563,7 +569,7 @@ const icons = {
     </svg>
   ),
   engage: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="42" height="42" viewBox="0 0 42 42" fill="none">
       {injectTitle(title)}
       <circle cx="21" cy="21" r="21" fill="url(#paint0_linear)" fillOpacity="0.3" />
       <path d="M22.9006 10.352C22.9006 10.352 18.732 12.9533 17.5746 15.0501L17.5675 15.0482C17.5611 15.0721 17.547 15.0961 17.5401 15.1219C17.4587 15.3234 17.384 15.5283 17.3044 15.7303C16.1176 18.997 15.7166 22.5264 15.9429 26.2804L20.9619 27.6253C23.0193 24.5088 24.4273 21.2653 25.0369 17.8717C25.0876 17.6165 25.1283 17.3622 25.1626 17.1026L25.1675 17.0845C25.2154 14.6906 22.9006 10.352 22.9006 10.352ZM21.4468 15.7634C22.4301 16.0269 23.0078 17.0484 22.742 18.0402C22.4762 19.0322 21.4671 19.6207 20.4838 19.3572C19.5005 19.0938 18.9173 18.0786 19.1831 17.0866C19.4488 16.0947 20.4634 15.4999 21.4468 15.7634ZM23.9404 22.9774C23.4341 24.2092 22.8041 25.4265 22.0711 26.6411C22.1677 26.8804 22.2169 27.1316 22.2382 27.3883L22.4111 29.9704C22.4277 30.208 22.7404 30.265 22.841 30.0509L23.8075 28.0288C24.5844 26.4307 24.6172 24.5895 23.9404 22.9774ZM15.671 20.7694C14.2784 21.8289 13.3961 23.4328 13.2589 25.2023L13.0849 27.4367C13.0649 27.6724 13.3713 27.7814 13.5046 27.5839L14.9488 25.4351C15.0865 25.2211 15.2619 25.0319 15.4564 24.8687C15.4343 23.4598 15.5048 22.0844 15.671 20.7694ZM16.7458 27.225C16.3729 27.3662 15.8182 27.7298 15.7426 28.6699C15.6183 30.0989 16.9084 32.3439 16.5996 33.4963C16.9084 32.3439 19.148 31.0446 19.7621 29.7469C20.1612 28.8934 19.8609 28.3008 19.6086 27.9921L19.0268 27.8362C19.0325 27.9464 19.0122 28.0718 18.9452 28.2119C18.684 28.7703 17.7162 29.3289 17.5819 29.8304C17.7157 29.3307 17.1557 28.3608 17.2067 27.7461C17.2189 27.5913 17.264 27.4725 17.324 27.3799L16.7458 27.225Z" fill="#84939E" />
@@ -577,7 +583,7 @@ const icons = {
     </svg>
   ),
   manage: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="42" height="42" viewBox="0 0 42 42" fill="none">
       {injectTitle(title)}
       <circle cx="21" cy="21" r="21" fill="url(#paint0_linear)" fillOpacity="0.3" />
       <path d="M27.647 21.8488C27.6828 21.5702 27.7096 21.2872 27.7096 20.9999C27.7096 20.7125 27.6828 20.4295 27.647 20.1509L29.5398 18.7098C29.7098 18.5792 29.759 18.3441 29.6472 18.1526L27.8573 15.1355C27.7454 14.9483 27.5128 14.8699 27.3114 14.9483L25.083 15.8234C24.6221 15.4794 24.1165 15.1877 23.5706 14.9657L23.235 12.6582C23.1947 12.4536 23.0113 12.2925 22.7875 12.2925H19.2078C18.9841 12.2925 18.8006 12.4536 18.7648 12.6582L18.4292 14.9657C17.8833 15.1877 17.3777 15.4751 16.9168 15.8234L14.6884 14.9483C14.4871 14.8743 14.2544 14.9483 14.1425 15.1355L12.3527 18.1526C12.2408 18.3398 12.29 18.5749 12.4601 18.7098L14.3484 20.1509C14.3126 20.4295 14.2857 20.7125 14.2857 20.9999C14.2857 21.2872 14.3126 21.5702 14.3484 21.8488L12.4601 23.2899C12.29 23.4205 12.2408 23.6556 12.3527 23.8472L14.1425 26.8642C14.2544 27.0514 14.4871 27.1298 14.6884 27.0514L16.9168 26.1764C17.3777 26.5203 17.8833 26.812 18.4292 27.034L18.7648 29.3415C18.8006 29.5461 18.9841 29.7072 19.2078 29.7072H22.7875C23.0113 29.7072 23.1947 29.5461 23.2305 29.3415L23.5661 27.034C24.112 26.812 24.6177 26.5246 25.0786 26.1764L27.3069 27.0514C27.5083 27.1255 27.741 27.0514 27.8528 26.8642L29.6427 23.8472C29.7546 23.6599 29.7053 23.4248 29.5353 23.2899L27.647 21.8488ZM20.9977 24.0474C19.266 24.0474 17.8654 22.6847 17.8654 20.9999C17.8654 19.315 19.266 17.9523 20.9977 17.9523C22.7294 17.9523 24.1299 19.315 24.1299 20.9999C24.1299 22.6847 22.7294 24.0474 20.9977 24.0474Z" fill="#84939E" />
@@ -591,7 +597,7 @@ const icons = {
     </svg>
   ),
   decide: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="42" height="42" viewBox="0 0 42 42" fill="none">
       {injectTitle(title)}
       <circle cx="21" cy="21" r="21" fill="url(#paint0_linear)" fillOpacity="0.3" />
       <rect x="17.4875" y="15.3658" width="4.97561" height="14.3415" fill="#84939E" fillOpacity="0.75" />
@@ -607,13 +613,13 @@ const icons = {
     </svg>
   ),
   showMore: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="20" height="18" viewBox="0 0 20 18" fill="none">
       {injectTitle(title)}
       <path d="M8.286 18c.995 0 1.803-.784 1.803-1.752 0-.967-.808-1.751-1.803-1.751-.61 0-1.15.295-1.475.747-2.942-.867-5.085-3.554-5.085-6.636 0-3.822 3.201-6.931 7.135-6.931 3.858 0 7.007 2.989 7.13 6.708h-2.237c-.253 0-.316.144-.14.32l2.822 2.826a.454.454 0 0 0 .642 0L19.9 8.706c.176-.177.113-.321-.14-.321h-2.043C17.594 3.74 13.67 0 8.86 0 3.975 0 0 3.862 0 8.609c0 2.17.837 4.245 2.358 5.842a8.902 8.902 0 0 0 4.27 2.487A1.804 1.804 0 0 0 8.287 18z"/>
     </svg>
   ),
   translate: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="16" height="15" viewBox="0 0 16 15" fill="none">
       {injectTitle(title)}
       <path d="M8.633 9.803L6.785 7.92l.022-.022A13.25 13.25 0 0 0 9.505 3h2.131V1.5h-5.09V0H5.09v1.5H0v1.493h8.124a11.87 11.87 0 0 1-2.306 4.02A11.753 11.753 0 0 1 4.138 4.5H2.684A13.22 13.22 0 0 0 4.85 7.92l-3.702 3.765 1.033 1.065L5.818 9l2.262 2.332.553-1.53zM12.727 6h-1.454L8 15h1.455l.814-2.25h3.455l.822 2.25H16l-3.273-9zm-1.905 5.25L12 8.002l1.178 3.248h-2.356z" />
     </svg>
@@ -625,7 +631,7 @@ const icons = {
     </svg>
   ),
   similarIdeas: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="23" height="23" viewBox="0 0 23 23" fill="none">
       {injectTitle(title)}
       <path d="M11.5 0C5.159 0 0 5.159 0 11.5S5.159 23 11.5 23 23 17.841 23 11.5 17.841 0 11.5 0zM8 8.5v6a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-4C8.673 7 8 7.673 8 8.5zm9 9a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v9z" fill="#84939E"/>
     </svg>
@@ -634,13 +640,13 @@ const icons = {
 
 const clIcons = {
   play: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="19" height="19" viewBox="0 0 19 19" fill="none">
       {injectTitle(title)}
       <path className="cl-icon-fill cl-icon-primary Play-icon" d="M14.6458 0H4.35417C1.95304 0 0 1.95383 0 4.35417V14.6458C0 17.0462 1.95304 19 4.35417 19H14.6458C17.047 19 19 17.0462 19 14.6458V4.35417C19 1.95383 17.047 0 14.6458 0ZM13.4583 9.5C13.4583 9.63458 13.3903 9.75967 13.277 9.83329L7.73537 13.3958C7.66967 13.4377 7.59525 13.4583 7.52083 13.4583C7.45513 13.4583 7.39021 13.4417 7.33083 13.4093C7.20417 13.3412 7.125 13.2074 7.125 13.0625V5.9375C7.125 5.79262 7.20417 5.65883 7.33083 5.59075C7.45829 5.52029 7.61267 5.52583 7.73458 5.605L13.2763 9.1675C13.3903 9.24033 13.4583 9.36542 13.4583 9.5Z" fill={theme.clIconPrimary} />
     </svg>
   ),
   lightingBolt: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="47" height="47" viewBox="0 0 47 47" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+    <svg className={`cl-icon ${className ? className : ''}`} width="47" height="47" viewBox="0 0 47 47">
       {injectTitle(title)}
       <circle className="cl-icon-background Background-SmartFlash-icon" cx="23.5" cy="23.5" r="23.5" fill={theme.clIconBackground} />
       <path className="cl-icon-fill cl-icon-primary SmartFlash-icon" d="M 0 0L 0 12.1172L 3.525 12.1172L 3.525 22.0312L 11.75 8.8125L 7.05 8.8125L 11.75 0L 0 0Z" transform="translate(17.625 13.2188)" fill={theme.clIconPrimary} />
@@ -652,14 +658,14 @@ const clIcons = {
     </svg>
   ),
   database: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="64" height="64" viewBox="0 0 64 64" fill="none">
       {injectTitle(title)}
       <circle className="cl-icon-background Background-Database-icon" cx="32" cy="32" r="32" fill={theme.clIconBackground} />
       <path className="cl-icon-fill cl-icon-primary Database-icon" d="M24.625 22C24.375 21.875 24.125 21.875 24 22C21.5 23.875 17.25 25 12.5 25C7.75 25 3.49998 23.875 0.999985 22C0.749985 21.875 0.499985 21.875 0.374985 22C0.124985 22.125 0 22.375 0 22.5V24.375C0 27.5 5.5 30 12.5 30C19.5 30 25 27.5 25 24.375V22.5C25 22.25 24.875 22 24.625 22ZM12.5 11.25C19.5 11.25 25 8.74998 25 5.62498C25 2.49998 19.5 -1.52588e-05 12.5 -1.52588e-05C5.5 -1.52588e-05 0 2.49998 0 5.62498C0 8.74998 5.5 11.25 12.5 11.25ZM24.625 9.37498C24.375 9.24998 24.125 9.24998 24 9.37498C21.5 11.25 17.25 12.375 12.5 12.375C7.75 12.375 3.49998 11.25 0.999985 9.37498C0.749985 9.24998 0.499985 9.24998 0.374985 9.37498C0.124985 9.49998 0 9.75002 0 9.87502V11.75C0 14.875 5.5 17.375 12.5 17.375C19.5 17.375 25 14.875 25 11.75V9.87502C25 9.75002 24.875 9.49998 24.625 9.37498ZM24.625 15.625C24.375 15.5 24.125 15.5 24 15.625C21.5 17.5 17.25 18.625 12.5 18.625C7.75 18.625 3.49998 17.5 0.999985 15.625C0.749985 15.5 0.499985 15.5 0.374985 15.625C0.124985 15.75 0 16 0 16.125V18C0 21.125 5.5 23.625 12.5 23.625C19.5 23.625 25 21.125 25 18V16.125C25 16 24.875 15.75 24.625 15.625Z" transform="translate(19 18)" fill={theme.clIconPrimary} />
     </svg>
   ),
   menu: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="17" height="14" viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="17" height="14" viewBox="0 0 17 14" fill="none">
       {injectTitle(title)}
       <g className="menu-icon">
         <path className="menu-1-icon" d="M0 14H4.70846V0H0V14Z" fill={theme.clIconPrimary} />
@@ -669,7 +675,7 @@ const clIcons = {
     </svg>
   ),
   moveFolder: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="23" height="24" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="23" height="24" viewBox="0 0 23 24" fill="none">
       {injectTitle(title)}
       <g className="Move-icon">
         <path className="cl-icon-secondary Back-Cover-icon" d="M0.5 1C2.009 1 3.343 1.962 3.82 3.391L3.908 3.658C3.975 3.863 4.167 4.002 4.383 4.002L15.941 4C16.207 4 16.484 4.04 16.815 4.126C16.857 4.137 16.899 4.142 16.941 4.142C17.05 4.142 17.159 4.106 17.247 4.038C17.37 3.943 17.441 3.797 17.441 3.642V2.5C17.441 1.122 16.32 0 14.941 0H0.5C0.224 0 1.52588e-08 0.224 1.52588e-08 0.5C1.52588e-08 0.776 0.223 1 0.5 1Z" transform="translate(4.55908)" fill={theme.clIconSecondary} />
@@ -679,7 +685,7 @@ const clIcons = {
     </svg>
   ),
   trash: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="14" height="19" viewBox="0 0 14 19" fill="none">
       {injectTitle(title)}
       <g className="Trash-icon">
         <path className="cl-icon-primary container-icon" d="M0 12.6667C0 13.8331 0.895 14.7778 2 14.7778H10C11.105 14.7778 12 13.8331 12 12.6667V0H0V12.6667Z" transform="translate(1 4.22217)" fill={theme.clIconPrimary} />
@@ -688,7 +694,7 @@ const clIcons = {
     </svg>
   ),
   userExport: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="24" height="24" viewBox="0 0 24 24" fill="none">
       {injectTitle(title)}
       <g className="User-Export-icon">
         <path className="cl-icon-secondary Face-Back-icon" d="M1.64555 8.172C1.57555 8.741 1.29055 9.257 0.844548 9.624C0.765548 9.688 0.708547 9.776 0.680547 9.874C0.538547 10.377 0.332548 10.865 0.0665476 11.325C-0.0114524 11.461 -0.0214528 11.626 0.0395472 11.77C0.101547 11.915 0.226548 12.022 0.378548 12.06L1.63955 12.375C2.24855 12.527 2.83055 12.795 3.37055 13.171C3.45455 13.23 3.55555 13.261 3.65655 13.261C3.69355 13.261 3.73055 13.257 3.76655 13.248C3.88155 13.223 4.00355 13.202 4.21355 13.167C4.35055 13.144 4.47155 13.063 4.54755 12.947C4.62355 12.83 4.64755 12.687 4.61355 12.552L4.43455 11.837C5.16455 11.091 5.66855 10.09 5.83655 9.06C6.26655 8.906 6.59155 8.521 6.65055 8.046L6.83555 6.567C6.87855 6.218 6.77155 5.866 6.54055 5.6C6.42655 5.47 6.28755 5.367 6.13355 5.294L6.19555 4.043L6.43855 3.799C6.88755 3.322 7.26155 2.508 6.49355 1.335C5.91355 0.449 4.93555 2.6822e-10 3.58455 2.6822e-10C3.08855 2.6822e-10 2.42855 0.03 1.71955 0.271C1.57755 0.319 1.46455 0.428 1.41155 0.569C1.35855 0.709 1.37155 0.866 1.44655 0.996C2.13055 2.176 2.07955 3.389 1.30855 4.323C1.15455 4.51 1.15655 4.78 1.31255 4.965C1.71655 5.443 1.90455 6.071 1.82755 6.692L1.64555 8.172Z" transform="translate(13.3584)" fill={theme.clIconSecondary} />
@@ -702,7 +708,7 @@ const clIcons = {
     </svg>
   ),
   setting: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="25" height="26" viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="25" height="26" viewBox="0 0 25 26" fill="none">
       {injectTitle(title)}
       <g className="Settings-icon">
         <path className="cl-icon-primary Gear-Big-icon" d="M16.9145 10.4054C16.9362 10.1898 16.9481 9.96992 16.9481 9.75C16.9481 9.52683 16.9351 9.30475 16.9134 9.08158L18.637 7.72958C19.0183 7.40783 19.1104 6.86725 18.8613 6.45233L17.0153 3.26192C16.7672 2.85025 16.2797 2.65525 15.7824 2.8405L13.775 3.64758C13.4143 3.39083 13.0383 3.17092 12.6375 2.98242L12.3331 0.821167C12.2464 0.35425 11.8196 0 11.3418 0H7.65851C7.17751 0 6.75067 0.361833 6.66184 0.860167L6.36176 2.99975C5.95659 3.19042 5.57634 3.4125 5.22426 3.66167L3.20492 2.84917C2.75534 2.68233 2.23426 2.86 1.98076 3.2825L0.143424 6.45883C-0.110076 6.88133 -0.0169095 7.42083 0.378507 7.75558L2.08584 9.0935C2.06526 9.31017 2.05226 9.53008 2.05226 9.75C2.05226 9.97317 2.06526 10.1952 2.08692 10.4184L0.36334 11.7704C-0.0179929 12.0922 -0.110076 12.6328 0.139091 13.0477L1.98509 16.2381C2.23317 16.6508 2.72176 16.848 3.21792 16.6595L5.22534 15.8524C5.58609 16.1092 5.96201 16.3291 6.36284 16.5176L6.66726 18.6788C6.75501 19.1458 7.18076 19.5 7.65851 19.5H11.3418C11.8228 19.5 12.2497 19.1382 12.3385 18.6398L12.6386 16.5013C13.0438 16.3096 13.424 16.0875 13.775 15.8383L15.7943 16.6508C15.9081 16.6942 16.0283 16.7158 16.1508 16.7158C16.5072 16.7158 16.83 16.5328 17.0196 16.2186L18.8569 13.0422C19.1104 12.6197 19.0173 12.0802 18.6218 11.7455L16.9145 10.4054ZM9.50017 11.9167C8.30526 11.9167 7.33351 10.9449 7.33351 9.75C7.33351 8.55508 8.30526 7.58333 9.50017 7.58333C10.6951 7.58333 11.6668 8.55508 11.6668 9.75C11.6668 10.9449 10.6951 11.9167 9.50017 11.9167Z" transform="translate(0 6.5)" fill={theme.clIconPrimary} />
@@ -711,7 +717,7 @@ const clIcons = {
     </svg>
   ),
   ideas: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="18" height="25" viewBox="0 0 18 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="18" height="25" viewBox="0 0 18 25" fill="none">
       {injectTitle(title)}
       <g className="Ideas-icon">
         <path className="cl-icon-primary LightBulb-icon" d="M8.69628 0L8.55598 0.00113636C6.27294 0.0363636 4.03628 1.01705 2.41879 2.68864C0.798979 4.36364 -0.0810757 6.60909 0.00588619 8.84886C0.0963265 11.2034 1.20132 13.4398 3.0368 14.983C3.14463 15.0739 3.20956 15.1784 3.23275 15.2966C3.52378 16.8409 4.20788 20.4545 6.37729 20.4545H11.0153C13.1858 20.4545 13.8931 16.7057 14.1598 15.2943C14.1818 15.1784 14.2468 15.0739 14.3534 14.9841C16.284 13.3602 17.3913 11.0057 17.3913 8.52273C17.3925 3.82386 13.4919 0 8.69628 0Z" fill={theme.clIconPrimary} />
@@ -721,6 +727,12 @@ const clIcons = {
       </g>
     </svg>
   ),
+  initiatives: (className, title, theme) => (
+    <svg className={`cl-icon ${className ? className : ''}`}  width="26" height="19" viewBox="0 0 26 19" fill="none">
+      {injectTitle(title)}
+      <path className="cl-icon-primary" fill={theme.clIconPrimary} d="M1.18286 4.07342C1.37569 5.24106 1.55655 6.34353 2.20154 6.98852C2.86116 7.64814 3.72825 7.97795 4.59533 7.97795C5.23101 7.97795 5.86403 7.79709 6.41726 7.44334C7.96258 9.60705 9.97336 15.7684 10.6662 18.1409C10.75 18.4255 11.0093 18.6183 11.3046 18.6183C11.3099 18.6183 11.3152 18.6183 11.3205 18.6183C11.6211 18.6117 11.8804 18.4016 11.9509 18.109C11.9575 18.0837 12.2847 16.7764 13.2728 14.8242C14.3261 15.5636 15.5416 15.9532 16.7651 15.9519C18.3237 15.9519 19.877 15.3561 21.0619 14.1712C22.2003 13.0328 22.546 10.9303 22.9118 8.70539C23.3067 6.30629 23.715 3.82473 25.0728 2.4656C25.263 2.27542 25.3202 1.9895 25.2164 1.74081C25.114 1.49213 24.8707 1.32988 24.602 1.32988C19.6123 1.32988 15.0602 2.90313 12.427 5.53629C10.9069 7.05634 10.3072 9.3065 10.8644 11.4117C10.9322 11.6697 11.149 11.8625 11.4136 11.8998C11.6796 11.937 11.9403 11.8147 12.0772 11.5846C13.2954 9.56051 14.7982 7.64947 16.543 5.90334C16.8023 5.64401 17.2239 5.64401 17.4832 5.90334C17.7425 6.16266 17.7425 6.58424 17.4832 6.84356C16.9725 7.35424 16.5084 7.86092 16.0682 8.36362C16.0256 8.41282 15.9858 8.46203 15.9432 8.51123C13.451 11.3944 12.0573 14.0781 11.3405 15.8123C10.4761 13.11 8.85626 8.47001 7.37744 6.50976C8.28574 5.19185 8.15941 3.37125 6.98778 2.20095C5.59008 0.801918 3.2854 0 0.665532 0C0.396896 0 0.153528 0.162245 0.0511275 0.410933C-0.0526031 0.65962 0.00458148 0.945545 0.194754 1.13572C0.79985 1.73948 0.994012 2.92707 1.18286 4.07342Z"/>
+    </svg>
+  ),
   ideas2: (className, title, _theme) => (
     <svg className={`cl-icon ${className ? className : ''}`} height="100%" viewBox="0.305 0 17.391 24">
       {injectTitle(title)}
@@ -728,7 +740,7 @@ const clIcons = {
     </svg>
   ),
   folder: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="26" height="20" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="26" height="20" viewBox="0 0 26 20" fill="none">
       {injectTitle(title)}
       <g className="Folder-icon">
         <path className="cl-icon-primary Cover-icon" d="M23.2917 3.15789H10.7694C10.0696 3.15789 9.44992 2.72421 9.22783 2.07895L9.1325 1.79895C8.76308 0.723158 7.73067 0 6.56392 0H2.70833C1.2155 0 0 1.18105 0 2.63158V15.2632C0 16.7137 1.2155 17.8947 2.70833 17.8947H23.2917C24.7845 17.8947 26 16.7137 26 15.2632V5.78947C26 4.33895 24.7845 3.15789 23.2917 3.15789Z" transform="translate(0 2.10526)" fill={theme.clIconPrimary} />
@@ -737,7 +749,7 @@ const clIcons = {
     </svg >
   ),
   users: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="28" height="28" viewBox="0 0 28 28" fill="none">
       {injectTitle(title)}
       <g className="Users-icon">
         <path className="cl-icon-primary Body-icon" fillRule="evenodd" clipRule="evenodd" d="M22.9087 1.0619L19.9068 0.0315792C19.6875 -0.0433321 19.4437 0.0177481 19.2862 0.18601C17.815 1.77183 15.9378 2.64541 14 2.64541C12.0633 2.64541 10.1862 1.77183 8.715 0.18601C8.5575 0.0177481 8.31367 -0.0433321 8.09317 0.0315792L5.0925 1.0619C2.04633 2.10835 0 4.95152 0 8.13813V8.98406C0 9.30214 0.261333 9.5603 0.583333 9.5603H27.4167C27.7398 9.5603 28 9.30214 28 8.98406V8.13813C28 4.95152 25.9548 2.10835 22.9087 1.0619Z" transform="translate(0 18.4397)" fill={theme.clIconPrimary} />
@@ -747,7 +759,7 @@ const clIcons = {
     </svg>
   ),
   stats: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="27" height="25" viewBox="0 0 27 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="27" height="25" viewBox="0 0 27 25" fill="none">
       {injectTitle(title)}
       <g className="Stats-icon">
         <path className="cl-icon-secondary Segment-2-icon" fillRule="evenodd" clipRule="evenodd" d="M0.452157 0C0.202566 0 0 0.197891 0 0.449752V10.3443C0 10.5962 0.202566 10.7941 0.452157 10.7941H10.3996C10.6492 10.7941 10.8518 10.5962 10.8518 10.3443C10.8518 4.64144 6.18641 0 0.452157 0Z" transform="matrix(0.998753 -0.0499261 0.0513545 0.99868 13.2483 0.541794)" fill={theme.clIconSecondary} />
@@ -760,13 +772,13 @@ const clIcons = {
     </svg>
   ),
   charts: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="14" height="12" viewBox="0 0 14 12" fill="none">
       {injectTitle(title)}
       <path d="M7.8 3.6H5.4C5.0688 3.6 4.8 3.8688 4.8 4.2V11.4C4.8 11.7312 5.0688 12 5.4 12H7.8C8.1312 12 8.4 11.7312 8.4 11.4V4.2C8.4 3.8688 8.1312 3.6 7.8 3.6ZM3 7.2H0.6C0.2688 7.2 0 7.4688 0 7.8V11.4C0 11.7312 0.2688 12 0.6 12H3C3.3312 12 3.6 11.7312 3.6 11.4V7.8C3.6 7.4688 3.3312 7.2 3 7.2ZM12.6 0H10.2C9.8688 0 9.6 0.2688 9.6 0.6V11.4C9.6 11.7312 9.8688 12 10.2 12H12.6C12.9312 12 13.2 11.7312 13.2 11.4V0.6C13.2 0.2688 12.9312 0 12.6 0Z" fill="#84939E" />
     </svg>
   ),
   invitations: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="25" height="25" viewBox="0 0 25 25" fill="none">
       {injectTitle(title)}
       <path className="cl-icon-accent Invitations-plus-icon" d="M11.1897 15.8621L19.8276 9.69224V6.22155V5.60345V0.431034C19.8276 0.316379 19.7819 0.206896 19.7017 0.125862C19.6216 0.0448275 19.5112 0 19.3966 0L0.431035 0.0137929C0.193103 0.0137929 0 0.206896 0 0.444827V5.60345V6.22241V9.69138L8.63793 15.8431C9.40172 15.425 10.4172 15.431 11.1897 15.8621ZM6.03448 7.32759C6.03448 7.08965 6.22759 6.89655 6.46552 6.89655H9.48276V3.87931C9.48276 3.64138 9.67586 3.44828 9.91379 3.44828C10.1517 3.44828 10.3448 3.64138 10.3448 3.87931V6.89655H13.3621C13.6 6.89655 13.7931 7.08965 13.7931 7.32759C13.7931 7.56552 13.6 7.75862 13.3621 7.75862H10.3448V10.7759C10.3448 11.0138 10.1517 11.2069 9.91379 11.2069C9.67586 11.2069 9.48276 11.0138 9.48276 10.7759V7.75862H6.46552C6.22759 7.75862 6.03448 7.56552 6.03448 7.32759Z" transform="translate(2.58618)" fill={theme.clIconAccent} />
       <g className="cl-icon-primary Invitations-envelope-icon" fill={theme.clIconPrimary}>
@@ -777,7 +789,7 @@ const clIcons = {
     </svg>
   ),
   initiatieven: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="30" height="28" viewBox="0 0 30 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="30" height="28" viewBox="0 0 30 28" fill="none">
       {injectTitle(title)}
       <path d="M12.5 -6.47136e-05C5.60731 -6.47136e-05 1.48464e-05 5.60723 1.48464e-05 12.4999C1.48464e-05 19.3926 5.60731 24.9999 12.5 24.9999C19.3927 24.9999 25 19.3926 25 12.4999C25 5.60723 19.3927 -6.47136e-05 12.5 -6.47136e-05Z" transform="translate(1 2)" fill="#01A1B1" />
       <path d="M14 0C6.28017 0 0 6.28017 0 14C0 21.7198 6.28017 28 14 28C21.7198 28 28 21.7198 28 14C28 6.28017 21.7198 0 14 0ZM10.4428 20.7223C10.332 20.8973 10.143 20.993 9.94933 20.993C9.84317 20.993 9.73467 20.9638 9.63783 20.902C7.2555 19.3958 5.83333 16.8152 5.83333 14C5.83333 9.49667 9.49667 5.83333 14 5.83333C14.1213 5.83333 14.2403 5.84383 14.3593 5.85083L13.0037 4.49517C12.7762 4.26767 12.7762 3.89783 13.0037 3.67033C13.2312 3.44283 13.601 3.44283 13.8285 3.67033L16.1618 6.00367C16.3893 6.23117 16.3893 6.601 16.1618 6.8285L13.8285 9.16183C13.7153 9.27617 13.566 9.33333 13.4167 9.33333C13.2673 9.33333 13.118 9.27617 13.0037 9.163C12.7762 8.9355 12.7762 8.56567 13.0037 8.33817L14.3243 7.0175C14.217 7.00933 14.1097 7 14 7C10.1395 7 7 10.1395 7 14C7 16.4127 8.21917 18.6247 10.262 19.9173C10.5338 20.09 10.6155 20.4505 10.4428 20.7223ZM14 22.1667C13.8787 22.1667 13.7597 22.1562 13.6407 22.1492L14.9963 23.5048C15.2238 23.7323 15.2238 24.1022 14.9963 24.3297C14.882 24.4428 14.7327 24.5 14.5833 24.5C14.434 24.5 14.2847 24.4428 14.1703 24.3297L11.837 21.9963C11.6095 21.7688 11.6095 21.399 11.837 21.1715L14.1703 18.8382C14.3978 18.6107 14.7677 18.6107 14.9952 18.8382C15.2227 19.0657 15.2227 19.4355 14.9952 19.663L13.6745 20.9837C13.783 20.9907 13.8903 21 14 21C17.8605 21 21 17.8605 21 14C21 11.5932 19.7855 9.38467 17.752 8.092C17.4802 7.91933 17.3997 7.55883 17.5735 7.287C17.7462 7.01633 18.1055 6.93583 18.3785 7.1085C20.7503 8.61583 22.1667 11.193 22.1667 14C22.1667 18.5033 18.5033 22.1667 14 22.1667Z" fill="#00577C" />
@@ -786,7 +798,7 @@ const clIcons = {
     </svg>
   ),
   emails: (className, title, theme) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="32" height="17" viewBox="0 0 32 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} width="32" height="17" viewBox="0 0 32 17" fill="none">
       {injectTitle(title)}
       <path className="cl-icon-primary emails-icon" d="M26.3743 1.04615C26.0518 0.392308 25.4067 0 24.8691 0H7.02205C5.7319 0 4.54926 0.915384 4.01169 2.48461L0.14124 13.8615C-0.0737851 14.5154 -0.0737848 15.4308 0.356266 15.9538C0.786316 16.4769 1.32388 17 1.86144 17H19.8161C21.1062 17 22.2888 16.0846 22.8264 14.5154L26.3743 3.13846C26.8044 2.48461 26.6969 1.7 26.3743 1.04615ZM10.4625 10.4615L3.47413 14.3846C3.36662 14.3846 3.36662 14.3846 3.25911 14.3846C3.04408 14.3846 2.82906 14.2538 2.72154 13.9923C2.61403 13.6 2.72154 13.3385 2.93657 13.0769L9.92489 9.15385C10.2474 9.02308 10.4625 9.15385 10.6775 9.41538C10.8925 9.80769 10.785 10.2 10.4625 10.4615ZM19.8161 14.1231C19.7085 14.2538 19.601 14.3846 19.386 14.3846C19.2785 14.3846 19.171 14.3846 19.0635 14.2538L15.3005 10.3308C15.0855 10.0692 15.0855 9.67692 15.193 9.41538C15.408 9.15385 15.7306 9.15385 15.9456 9.28462L19.7085 13.2077C20.0311 13.4692 20.0311 13.8615 19.8161 14.1231ZM22.3964 3.79231L15.408 8.63077C14.763 9.02308 14.1179 9.15385 13.4728 9.15385C12.5052 9.15385 11.5376 8.76154 10.6775 7.97692L6.80702 3.79231C6.592 3.53077 6.592 3.13846 6.80702 2.87692C7.02205 2.61538 7.34459 2.61538 7.55961 2.87692L11.4301 7.06154C12.3977 7.97692 13.7953 8.23846 14.978 7.58462L21.9663 2.87692C22.1813 2.74615 22.5039 2.87692 22.7189 3.13846C22.7189 3.26923 22.6114 3.66154 22.3964 3.79231Z" transform="translate(5.34204)" fill={theme.clIconPrimary} />
       <path className="cl-icon-accent emails-icon" d="M5.91319 1.30769H0.537563C0.215025 1.30769 0 1.04615 0 0.653846C0 0.261538 0.215025 0 0.537563 0H5.91319C6.23573 0 6.45076 0.261538 6.45076 0.653846C6.45076 1.04615 6.23573 1.30769 5.91319 1.30769Z" transform="translate(0 1.30774)" fill={theme.clIconAccent} />
@@ -816,7 +828,7 @@ const clIcons = {
     </svg>
   ),
   homeFilled: (className, title) => (
-    <svg className={className} viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={className} viewBox="0 0 26 25" fill="none">
       {injectTitle(title)}
       <path d="M24.7864 11.5246L13.7657 0.503844C13.0954 -0.167427 11.9228 -0.168469 11.2505 0.503844L0.152646 11.6017C0.00359107 11.7507 -0.0412298 11.9749 0.0400731 12.1698C0.120334 12.3647 0.311083 12.4919 0.521637 12.4919H2.08515V24.4788C2.08515 24.7665 2.31864 25 2.60633 25H8.8604C9.14809 25 9.38157 24.7665 9.38157 24.4788V15.6189H15.6356V24.4788C15.6356 24.7665 15.8691 25 16.1568 25H22.4109C22.6986 25 22.9321 24.7665 22.9321 24.4788V12.4908H24.506C24.8135 12.4877 25.0386 12.2615 25.0376 11.9696C25.0366 11.781 24.9365 11.6163 24.7864 11.5246Z" />
     </svg>
@@ -828,13 +840,13 @@ const clIcons = {
     </svg>
   ),
   dot: (className, title) => (
-    <svg className={className} width="7" height="7" viewBox="0 0 7 7" xmlns="http://www.w3.org/2000/svg">
+    <svg className={className} width="7" height="7" viewBox="0 0 7 7">
       {injectTitle(title)}
       <circle cx="3.5" cy="3.5" r="3.5" />
     </svg>
   ),
   pen: (className, title) => (
-    <svg className={className} width="16" height="17" viewBox="0 0 16 17" xmlns="http://www.w3.org/2000/svg">
+    <svg className={className} width="16" height="17" viewBox="0 0 16 17">
       {injectTitle(title)}
       <path d="M13.44 6.0667L10.9334 3.56004L10.3467 2.97337C10.24 2.8667 10.08 2.8667 9.97337 2.97337L5.44003 7.5067C5.33337 7.61337 5.33337 7.77337 5.44003 7.88004C5.49337 7.93337 5.5467 7.93337 5.65337 7.93337C5.76003 7.93337 5.81337 7.93337 5.8667 7.88004L10.1334 3.5067L10.56 3.93337L1.8667 12.6267L4.37337 15.1334C5.12003 14.3334 8.64003 10.8667 11.52 7.98671C12.0534 7.45337 12.5867 6.92004 13.0667 6.44004L13.44 6.81337C13.5467 6.92004 13.7067 6.92004 13.8134 6.81337C13.92 6.7067 13.92 6.54671 13.8134 6.44004L13.44 6.0667Z"/>
       <path d="M15.36 1.48003C14.72 0.786698 13.6534 0.840031 12.8534 1.5867L11.3067 3.13336L13.8134 5.64003C14.4 5.05336 14.9334 4.52003 15.36 4.09336C15.7867 3.72003 16 3.1867 16 2.7067C15.9467 2.2267 15.7334 1.80003 15.36 1.48003Z"/>
@@ -848,28 +860,42 @@ const clIcons = {
     </svg>
   ),
   lightBulb: (className, title) => (
-    <svg className={className} viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={className} viewBox="0 0 14 20" fill="none">
       {injectTitle(title)}
       <path d="M4 19C4 19.55 4.45 20 5 20H9C9.55 20 10 19.55 10 19V18H4V19ZM7 0C3.14 0 0 3.14 0 7C0 9.38 1.19 11.47 3 12.74V15C3 15.55 3.45 16 4 16H10C10.55 16 11 15.55 11 15V12.74C12.81 11.47 14 9.38 14 7C14 3.14 10.86 0 7 0ZM9.85 11.1L9 11.7V14H5V11.7L4.15 11.1C2.8 10.16 2 8.63 2 7C2 4.24 4.24 2 7 2C9.76 2 12 4.24 12 7C12 8.63 11.2 10.16 9.85 11.1Z" fill="#84939E"/>
     </svg>
   ),
   bubbles: (className, title) => (
-    <svg className={className} width="27" height="21" viewBox="0 0 27 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={className} width="27" height="21" viewBox="0 0 27 21" fill="none">
       {injectTitle(title)}
       <path d="M26.25 11.6059C26.25 8.42587 24.1401 5.57635 20.743 4.17259C20.5351 4.08748 20.2978 4.13722 20.1414 4.30081C19.9861 4.4644 19.9445 4.70757 20.0375 4.91316C20.5308 6.00632 20.7812 7.14259 20.7812 8.28991C20.7812 12.9367 16.7376 16.9313 11.3739 17.5812C11.1366 17.61 10.9441 17.7924 10.9014 18.03C10.8587 18.2676 10.9736 18.5075 11.1858 18.6191C13.9628 20.0892 17.4716 20.2904 20.4433 19.1596L23.2247 20.916C23.3144 20.9724 23.415 21 23.5145 21C23.6469 21 23.7792 20.9514 23.882 20.8563C24.0636 20.6894 24.1128 20.4208 24.0034 20.1997L22.8484 17.8664C25.0173 16.2891 26.25 14.0321 26.25 11.6059Z" fill="#84939E" fillOpacity="0.5"/>
       <path d="M19.6875 8.2899C19.6875 3.7183 15.2709 0 9.84375 0C4.41656 0 0 3.7194 0 8.2899C0 10.715 1.23266 12.9731 3.40047 14.5515L2.24547 16.8849C2.13609 17.1059 2.18531 17.3745 2.36687 17.5414C2.47078 17.6365 2.60203 17.6851 2.73437 17.6851C2.8339 17.6851 2.93562 17.6575 3.02422 17.6011L5.80562 15.8448C7.08968 16.3322 8.44703 16.5798 9.84375 16.5798C15.2709 16.5798 19.6875 12.8615 19.6875 8.2899Z" fill="#84939E"/>
     </svg>
   ),
   pencil: (className, title) => (
-    <svg className={className} width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
+    <svg className={className} width="15" height="15" viewBox="0 0 15 15">
       {injectTitle(title)}
       <path d="M0 11.8746V15H3.12543L12.3475 5.77789L9.22211 2.65245L0 11.8746ZM14.7562 3.36922C15.0813 3.04417 15.0813 2.51493 14.7562 2.18989L12.8101 0.243784C12.4851 -0.0812613 11.9558 -0.0812613 11.6308 0.243784L10.1056 1.769L13.231 4.89443L14.7562 3.36922Z"/>
     </svg>
   ),
   profile1: (className, title) => (
-    <svg className={className} width="23" height="23" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">
+    <svg className={className} width="23" height="23" viewBox="0 0 23 23">
       {injectTitle(title)}
       <path d="M14.8824 16.7749C13.8676 16.2337 14.4088 15.219 14.8824 14.7455C15.4912 14.1366 16.2353 12.0396 16.2353 12.0396C17.4529 11.4984 17.5882 10.619 17.7235 10.0102C18.2647 8.25135 16.9118 7.98076 16.9118 7.98076C16.9118 7.98076 17.9941 5.07194 17.1147 2.83958C15.9647 -0.0692414 11.2971 -1.15159 10.4853 1.55429C4.93824 0.336641 6.08824 7.98076 6.08824 7.98076C6.08824 7.98076 4.73529 8.25135 5.27647 10.0102C5.41176 10.619 5.54706 11.4984 6.76471 12.0396C6.76471 12.0396 7.50882 14.1366 8.11765 14.7455C8.59118 15.219 9.13235 16.2337 8.11765 16.7749C6.08824 17.8572 0 18.1278 0 22.8631H23C23 18.1278 16.9118 17.8572 14.8824 16.7749Z"/>
+    </svg>
+  ),
+  filter: (className, title) => (
+    <svg className={className} height="100%" viewBox="0 0 20.508 15.776">
+      {injectTitle(title)}
+      <g><path d="M.759 4.507h3.117c.349 1.721 1.887 3.012 3.712 3.012s3.384-1.291 3.732-3.012h8.429a.757.757 0 1 0 0-1.516H11.32C10.972 1.291 9.434 0 7.588 0S4.225 1.291 3.876 3.012H.759c-.41 0-.759.328-.759.758s.349.737.759.737zm6.829-3.011c1.251 0 2.276 1.004 2.276 2.254S8.839 6.003 7.588 6.003 5.312 4.999 5.312 3.75c0-1.25 1.025-2.254 2.276-2.254zM19.749 11.269h-3.117c-.349-1.721-1.887-3.012-3.712-3.012s-3.384 1.291-3.732 3.012H.759a.756.756 0 0 0-.759.758.77.77 0 0 0 .759.758h8.429c.349 1.7 1.887 2.991 3.732 2.991s3.363-1.291 3.712-3.013h3.117c.41 0 .759-.327.759-.758 0-.409-.349-.736-.759-.736zM12.92 14.28c-1.251 0-2.276-1.004-2.276-2.253 0-1.25 1.025-2.254 2.276-2.254s2.276 1.004 2.276 2.254c0 1.229-1.025 2.253-2.276 2.253z"/></g>
+    </svg>
+  ),
+  successStory: (className, title) => (
+    <svg className={className} width="17" height="27" viewBox="0 0 17 27">
+      {injectTitle(title)}
+      <path d="M8.5 14.625C5.089 14.625 2.3125 17.4004 2.3125 20.8125C2.3125 24.2246 5.089 27 8.5 27C11.911 27 14.6875 24.2246 14.6875 20.8125C14.6875 17.4004 11.911 14.625 8.5 14.625ZM11.9493 20.2534L10.3529 21.4144L10.9626 23.292C11.0369 23.5237 10.9548 23.778 10.7579 23.9209C10.6589 23.9929 10.5441 24.0289 10.4271 24.0289C10.3101 24.0289 10.1954 23.9929 10.0964 23.9209L8.5 22.761L6.9025 23.9209C6.7045 24.0649 6.439 24.0649 6.241 23.9209C6.04412 23.778 5.962 23.5237 6.03625 23.292L6.646 21.4144L5.04962 20.2534C4.85275 20.1105 4.77063 19.8562 4.84488 19.6245C4.92025 19.3927 5.13625 19.2364 5.38038 19.2364H7.35475L7.9645 17.3588C8.11637 16.8953 8.8825 16.8953 9.03438 17.3588L9.64412 19.2364H11.6185C11.8626 19.2364 12.0775 19.3939 12.154 19.6245C12.2283 19.8562 12.1461 20.1105 11.9493 20.2534Z" />
+      <path d="M8.13437 0H3.99999C3.77499 0 3.57137 0.133875 3.48249 0.340875L0.107493 8.21587C0.000617705 8.4645 0.0872428 8.75475 0.313368 8.9055L3.29349 10.8923L8.13437 0Z"/>
+      <path d="M16.8927 8.21587L13.5177 0.340875C13.512 0.32625 13.4963 0.3195 13.4884 0.306C13.4805 0.29025 13.4817 0.27225 13.4727 0.257625C13.4457 0.214875 13.4018 0.19125 13.3658 0.1575C13.3388 0.133875 13.3197 0.104625 13.2893 0.086625C13.2139 0.0405 13.1284 0.01575 13.0373 0.009C13.0272 0.009 13.0182 0 13.0069 0C13.0058 0 13.0047 0.001125 13.0035 0.001125C13.0024 0.001125 13.0013 0 13.0002 0H9.36642L4.24316 11.5256L7.06354 13.4055C7.15691 13.4674 7.26491 13.5 7.37516 13.5C7.42691 13.5 7.47866 13.4932 7.53041 13.4786C7.68904 13.4325 7.81954 13.32 7.88704 13.1704L8.12666 12.6427L11.9202 3.71813C12.0417 3.43237 12.3735 3.29737 12.657 3.42112C12.9439 3.54262 13.0767 3.87225 12.9552 4.15912L9.12116 13.1816C9.19091 13.3256 9.31691 13.4359 9.47104 13.4798C9.52166 13.4933 9.57341 13.5 9.62516 13.5C9.73541 13.5 9.84341 13.4674 9.93679 13.4055L16.6868 8.9055C16.9129 8.75475 16.9995 8.4645 16.8927 8.21587Z"/>
     </svg>
   ),
 };

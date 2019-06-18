@@ -16,13 +16,13 @@ exports[`<NotificationMenu /> renders correctly when everything is there 1`] = `
         isReverse={false}
         loadMore={[MockFunction]}
         loader={
-          <ForwardRef>
+          <ForwardRef(NotificationMenu__LoadingContainer)>
             <Spinner
               color="#666"
               size="32px"
               thickness="3px"
             />
-          </ForwardRef>
+          </ForwardRef(NotificationMenu__LoadingContainer)>
         }
         pageStart={0}
         ref={null}
@@ -96,13 +96,13 @@ exports[`<NotificationMenu /> renders correctly when there is no notifs 1`] = `
         isReverse={false}
         loadMore={[MockFunction]}
         loader={
-          <ForwardRef>
+          <ForwardRef(NotificationMenu__LoadingContainer)>
             <Spinner
               color="#666"
               size="32px"
               thickness="3px"
             />
-          </ForwardRef>
+          </ForwardRef(NotificationMenu__LoadingContainer)>
         }
         pageStart={0}
         ref={null}
@@ -110,19 +110,19 @@ exports[`<NotificationMenu /> renders correctly when there is no notifs 1`] = `
         useCapture={false}
         useWindow={false}
       >
-        <ForwardRef>
-          <ForwardRef
+        <ForwardRef(NotificationMenu__EmptyStateContainer)>
+          <ForwardRef(NotificationMenu__EmptyStateImage)
             alt=""
             role="presentation"
             src={null}
           />
-          <ForwardRef>
+          <ForwardRef(NotificationMenu__EmptyStateText)>
             <FormattedMessage
               defaultMessage="You don't have any notifications yet"
               id="app.containers.NotificationMenu.noNotifications"
             />
-          </ForwardRef>
-        </ForwardRef>
+          </ForwardRef(NotificationMenu__EmptyStateText)>
+        </ForwardRef(NotificationMenu__EmptyStateContainer)>
       </InfiniteScroll>
     }
     left="auto"

@@ -7,8 +7,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 interface Props {
-  statuses?: IIdeaStatusData[];
-  selectedStatus?: string;
+  statuses?: IIdeaStatusData[] | null;
+  selectedStatus?: string | null;
   onChangeStatusFilter?: (status: string | null) => void;
 }
 
