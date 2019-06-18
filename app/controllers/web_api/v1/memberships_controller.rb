@@ -7,7 +7,7 @@ class WebApi::V1::MembershipsController < ApplicationController
   def index
     @memberships = policy_scope(Membership)
       .where(group_id: params[:group_id])
-      .includes(:user)
+      .includes(user: [:unread_notifications])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
   	render json: @memberships, include: ['user']
