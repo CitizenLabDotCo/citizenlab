@@ -399,10 +399,12 @@ export function apiCreatePhase(
   participationMethod: 'ideation' | 'information' | 'survey' | 'budgeting',
   canPost: boolean,
   canVote: boolean,
-  canComment: boolean
+  canComment: boolean,
+  description?: string
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
+    console.log(description);
 
     return cy.request({
       headers: {
@@ -422,7 +424,8 @@ export function apiCreatePhase(
           participation_method: participationMethod,
           posting_enabled: canPost,
           voting_enabled: canVote,
-          commenting_enabled: canComment
+          commenting_enabled: canComment,
+          description_multiloc: { 'en-GB': description }
         }
       }
     });
