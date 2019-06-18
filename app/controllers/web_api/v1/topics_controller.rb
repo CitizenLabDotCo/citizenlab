@@ -10,7 +10,7 @@ class WebApi::V1::TopicsController < ApplicationController
    end
 
    def show
-     render json: @topic
+     render json: WebApi::V1::TopicSerializer.new(@topic)
    end
 
    private
