@@ -12,14 +12,6 @@ const argv = require('yargs').argv;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
 
-// Used in the HtmlWebpackPlugin chunksSortMode
-function IndexInRegexArray(stringToMatch, regexArray, notFoundIndex) {
-  for (let i = 0; i < regexArray.length; i++) {
-      if (stringToMatch.match(regexArray[i])) return i;
-  }
-  return notFoundIndex !== undefined ? notFoundIndex : -1;
-};
-
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
 
@@ -32,30 +24,37 @@ const config = {
     chunkFilename: isProd ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js'
   },
 
-  // optimized 4
+  // optimized 5
   optimization: {
     splitChunks: {
       chunks: 'all',
-      minSize: 30000,
-      maxSize: 250000,
-      minChunks: 1,
-      maxAsyncRequests: 5,
-      maxInitialRequests: 3,
-      automaticNameDelimiter: '~',
-      name: true,
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10
-        },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true
-        }
-      }
-    }
+    },
   },
+
+  // optimized 4
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: 'all',
+  //     minSize: 30000,
+  //     maxSize: 250000,
+  //     minChunks: 1,
+  //     maxAsyncRequests: 5,
+  //     maxInitialRequests: 3,
+  //     automaticNameDelimiter: '~',
+  //     name: true,
+  //     cacheGroups: {
+  //       vendors: {
+  //         test: /[\\/]node_modules[\\/]/,
+  //         priority: -10
+  //       },
+  //       default: {
+  //         minChunks: 2,
+  //         priority: -20,
+  //         reuseExistingChunk: true
+  //       }
+  //     }
+  //   }
+  // },
 
   // optimized 3
   // optimization: {
@@ -176,13 +175,6 @@ const config = {
   //         },
   //       },
   //     },
-  //   },
-  // },
-
-  // current master
-  // optimization: {
-  //   splitChunks: {
-  //     chunks: 'all',
   //   },
   // },
 
@@ -307,16 +299,7 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html',
-      // sorts the chunks according to the chunkOrderMatches array, then by descending size
-      chunksSortMode: (chunkA, chunkB) => {
-        let chunkOrderMatches = [ /^vendor/ ];
-        let orderA = IndexInRegexArray(chunkA.names[0], chunkOrderMatches, 9999);
-        let orderB = IndexInRegexArray(chunkB.names[0], chunkOrderMatches, 9999);
-        if (chunkA.entry) orderA = -1;
-        if (chunkB.entry) orderB = -1;
-        return (orderA + (1 / (chunkA.size + 2))) - (orderB + (1 / (chunkB.size + 2)));
-      }
+      template: 'app/index.html'
     }),
 
     new MiniCssExtractPlugin({
