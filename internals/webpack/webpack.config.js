@@ -12,6 +12,14 @@ const argv = require('yargs').argv;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
 
+// Used in the HtmlWebpackPlugin chunksSortMode
+function IndexInRegexArray(stringToMatch, regexArray, notFoundIndex) {
+  for (let i = 0; i < regexArray.length; i++) {
+      if (stringToMatch.match(regexArray[i])) return i;
+  }
+  return notFoundIndex !== undefined ? notFoundIndex : -1;
+};
+
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
 
@@ -19,8 +27,9 @@ const config = {
     path: path.resolve(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
-    filename: isDev ? '[name].bundle.js' : '[name].[chunkhash].bundle.js',
-    chunkFilename: isDev ? '[name].chunk.js' : '[name].[chunkhash].chunk.js',
+    filename: isProd ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
+    sourceMapFilename: isProd ? '[name].[chunkhash].map' : '[name].[hash].map',
+    chunkFilename: isProd ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js'
   },
 
   // optimized 3
@@ -228,6 +237,9 @@ const config = {
       {
         test: /\.(eot|ttf|woff|woff2)$/,
         loader: 'file-loader',
+        options: {
+          name: '[name].[hash].[ext]'
+        }
       },
       {
         test: /\.htaccess/,
@@ -270,7 +282,16 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html'
+      template: 'app/index.html',
+      // sorts the chunks according to the chunkOrderMatches array, then by descending size
+      chunksSortMode: (chunkA, chunkB) => {
+        let chunkOrderMatches = [ /^vendor/ ];
+        let orderA = IndexInRegexArray(chunkA.names[0], chunkOrderMatches, 9999);
+        let orderB = IndexInRegexArray(chunkB.names[0], chunkOrderMatches, 9999);
+        if (chunkA.entry) orderA = -1;
+        if (chunkB.entry) orderB = -1;
+        return (orderA + (1 / (chunkA.size + 2))) - (orderB + (1 / (chunkB.size + 2)));
+      }
     }),
 
     new MiniCssExtractPlugin({
@@ -278,9 +299,7 @@ const config = {
       chunkFilename: '[name].[hash].chunk.css'
     }),
 
-    new webpack.HashedModuleIdsPlugin(),
-
-    new BundleAnalyzerPlugin()
+    // new BundleAnalyzerPlugin()
   ],
 
   resolve: {
