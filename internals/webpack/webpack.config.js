@@ -154,6 +154,11 @@ const config = {
       chunkFilename: '[name].[contenthash].chunk.css'
     }),
 
+    new webpack.optimize.AggressiveSplittingPlugin({
+      minSize: 30000,
+      maxSize: 50000
+    })
+
     // new BundleAnalyzerPlugin({
     //   statsOptions: {
     //     source: false
