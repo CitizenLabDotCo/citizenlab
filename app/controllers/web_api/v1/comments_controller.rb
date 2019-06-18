@@ -76,7 +76,15 @@ class WebApi::V1::CommentsController < ApplicationController
         @comments = @comments.where(ideas: {project_id: params[:project]}) 
       end
       @comments = @comments.where(post_id: post_ids) if post_ids.present?
-      xlsx = XlsxService.new.generate_comments_xlsx @comments
+
+      service = XlsxService.new
+      xlsx = case @post_type
+        when 'Idea' then service.generate_idea_comments_xlsx @comments
+        when 'Initiative' then service.generate_initiative_comments_xlsx @comments
+        else raise "#{@post_type} has no functionality for exporting comments"
+      end
+      raise RuntimeError, "must not be blank" if @post_type.blank?
+      
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
     end
   end

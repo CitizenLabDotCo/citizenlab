@@ -29,7 +29,7 @@ RSpec.describe Idea, type: :model do
     it "should select ideas with no official feedback or no idea status change" do
       TenantTemplateService.new.resolve_and_apply_template('base')
       i1 = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
-      create(:official_feedback, idea: i1)
+      create(:official_feedback, post: i1)
       i2 = create(:idea, idea_status: IdeaStatus.find_by(code: 'accepted'))
       i3 = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
       i4 = create(:idea, idea_status: IdeaStatus.find_by(code: 'viewed'))

@@ -4,7 +4,12 @@ class WebApi::V1::InitiativeSerializer < ActiveModel::Serializer
 
   has_many :initiative_images, serializer: WebApi::V1::ImageSerializer
 
+  has_many :topics
+  has_many :areas
+
   belongs_to :author
+  belongs_to :initiative_status
+  belongs_to :assignee, if: :can_moderate?
 
   has_one :user_vote, if: :signed_in? do |serializer|
     serializer.cached_user_vote
@@ -17,6 +22,10 @@ class WebApi::V1::InitiativeSerializer < ActiveModel::Serializer
 
   def signed_in?
     scope
+  end
+
+  def can_moderate?
+    InitiativePolicy.new(scope, object).moderate?
   end
 
   def cached_user_vote

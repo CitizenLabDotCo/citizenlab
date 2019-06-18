@@ -1,5 +1,5 @@
 en:
-  statuses:
+  idea_statuses:
     proposed: proposed
     proposed_description: This idea has been proposed to the city
     viewed: viewed
@@ -12,6 +12,17 @@ en:
     implemented_description: This idea has been implemented by the city
     rejected: rejected
     rejected_description: This idea has been rejected
+  initiative_statuses:
+    published: published
+    published_description: published
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   topics:
     infrastructure: Squares and streets
     infrastructure_description: Squares and streets

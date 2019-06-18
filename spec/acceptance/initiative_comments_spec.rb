@@ -109,7 +109,7 @@ resource "Comments" do
 
     let(:comment_id) { @c.id }
 
-    example_request "List the direct child comments of a comment" do
+    example_request "List the direct child comments of a comment on an initiative" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 6
@@ -125,7 +125,6 @@ resource "Comments" do
   end
 
   get "web_api/v1/initiatives/comments/as_xlsx" do
-    parameter :project, 'Filter by project', required: false
     parameter :initiatives, 'Filter by a given list of initiative ids', required: false
 
     describe do
@@ -135,7 +134,7 @@ resource "Comments" do
         end
       end
 
-      example_request 'XLSX export' do
+      example_request 'XLSX export of comments on initiatives' do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq (@comments.size + 1)
@@ -176,7 +175,7 @@ resource "Comments" do
     get "web_api/v1/initiatives/:initiative_id/comments" do
       let(:initiative_id) { @initiative.id }
 
-      example "List all comments includes the user_vote when authenticated" do
+      example "List all comments of an initiative includes the user_vote when authenticated" do
         comment = create(:comment, post: @initiative)
         vote = create(:vote, user: @user, votable: comment)
         do_request
@@ -219,7 +218,7 @@ resource "Comments" do
       let(:comment) { create(:comment, author: @user, post: @initiative) }
       let(:id) { comment.id }
 
-      example_request "Mark a comment as deleted" do
+      example_request "Mark a comment on an initiative as deleted" do
         expect(response_status).to eq 200
         expect(comment.reload.publication_status).to eq('deleted')
       end
@@ -238,14 +237,14 @@ resource "Comments" do
       let(:id) { comment.id }
       let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
 
-      example_request "Update a comment" do
+      example_request "Update a comment on an initiative" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
         expect(@initiative.reload.comments_count).to eq 1
       end
 
-      example "Admins cannot modify a comment", document: false do
+      example "Admins cannot modify a comment on an initiative", document: false do
         @admin = create(:admin)
         token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
         header 'Authorization', "Bearer #{token}"

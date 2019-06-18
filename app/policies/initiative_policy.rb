@@ -40,14 +40,27 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    [
+    shared = [
       :publication_status,
       :author_id,
       :location_description,
       :header_bg,
       location_point_geojson: [:type, coordinates: []],
       title_multiloc: CL2_SUPPORTED_LOCALES,
-      body_multiloc: CL2_SUPPORTED_LOCALES
+      body_multiloc: CL2_SUPPORTED_LOCALES,
+      topic_ids: [],
+      area_ids: []
     ]
+    if user&.admin?
+      [:initiative_status_id, :assignee_id, *shared]
+    else
+      shared
+    end
+  end
+
+  # Helper method that is not part of the pundit conventions but is used
+  # publicly
+  def moderate?
+    user&.active? && user.admin?
   end
 end

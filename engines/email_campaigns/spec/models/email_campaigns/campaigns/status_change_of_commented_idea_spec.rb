@@ -11,7 +11,7 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea, type: :mo
   	let(:campaign) { create(:status_change_of_commented_idea_campaign) }
     let(:old_status) { create(:idea_status) }
     let(:idea) { create(:idea, idea_status: create(:idea_status)) }
-    let!(:comment) { create(:comment, idea: idea) }
+    let!(:comment) { create(:comment, post: idea) }
     let(:initiator) { create(:admin) }
     let(:activity) { 
       create(

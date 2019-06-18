@@ -1,5 +1,5 @@
 fr-BE:
-  statuses:
+  idea_statuses:
     proposed: soumise
     proposed_description: Cette idée à été proposée à l'administration
     viewed: vu
@@ -12,6 +12,17 @@ fr-BE:
     implemented_description: Cette idée a été mise en place par l'administration
     rejected: rejetée
     rejected_description: Cette idée a été rejetée
+  initiative_statuses:
+    published: published
+    published_description: published
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   topics:
     infrastructure: Espace public
     infrastructure_description: Espace public

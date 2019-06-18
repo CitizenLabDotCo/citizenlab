@@ -1,19 +1,14 @@
 class OfficialFeedback < ApplicationRecord
-  counter_culture :idea
+  belongs_to :post, polymorphic: true
+  counter_culture :post
   
   belongs_to :user
-  belongs_to :idea
   has_many :notifications, foreign_key: :official_feedback_id, dependent: :nullify
 
   validates :body_multiloc, presence: true, multiloc: {presence: true}
   validates :author_multiloc, presence: true, multiloc: {presence: true}
 
   before_validation :sanitize_body_multiloc
-
-
-  def project
-    self.idea&.project
-  end
 
 
   private

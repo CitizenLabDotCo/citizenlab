@@ -1,5 +1,5 @@
 es:
-  statuses:
+  idea_statuses:
     proposed: propuesta
     proposed_description: Esta idea ha sido propuesta
     viewed: revisado
@@ -12,6 +12,17 @@ es:
     implemented_description: Esta idea ha sido implementada
     rejected: rechazada
     rejected_description: Esta idea ha sido rechazada
+  initiative_statuses:
+    published: published
+    published_description: published
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   topics:
     infrastructure: Plazas y calles
     infrastructure_description: Plazas y calles

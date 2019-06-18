@@ -24,7 +24,7 @@ RSpec.describe Comment, type: :model do
       expect(project.comments_count).to eq 0
       expect(idea.comments_count).to eq 0
 
-      create(:comment, idea: idea)
+      create(:comment, post: idea)
 
       expect(project.reload.comments_count).to eq 1
       expect(idea.reload.comments_count).to eq 1
@@ -33,7 +33,7 @@ RSpec.describe Comment, type: :model do
     it "decrements the comments_count in project and idea for a deleted comment" do
       project = create(:project)
       idea = create(:idea, project: project)
-      comment = create(:comment, idea: idea)
+      comment = create(:comment, post: idea)
 
       expect(project.reload.comments_count).to eq 1
       expect(idea.reload.comments_count).to eq 1
@@ -47,7 +47,7 @@ RSpec.describe Comment, type: :model do
     it "decrements the comments_count in project and idea for a destroyed comment" do
       project = create(:project)
       idea = create(:idea, project: project)
-      comment = create(:comment, idea: idea)
+      comment = create(:comment, post: idea)
 
       expect(project.reload.comments_count).to eq 1
       expect(idea.reload.comments_count).to eq 1

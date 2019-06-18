@@ -1,5 +1,5 @@
 da:
-  statuses:
+  idea_statuses:
     proposed: foreslået
     proposed_description: Denne idé er blevet foreslået til byen
     viewed: set
@@ -12,6 +12,17 @@ da:
     implemented_description: Denne ide er blevet implementeret af byen
     rejected: afvist
     rejected_description: Denne ide er blevet afvist
+  initiative_statuses:
+    published: published
+    published_description: published
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   topics:
     infrastructure: Firkanter og gader
     infrastructure_description: Firkanter og gader

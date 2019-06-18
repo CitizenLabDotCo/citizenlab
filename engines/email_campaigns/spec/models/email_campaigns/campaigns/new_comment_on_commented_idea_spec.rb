@@ -10,8 +10,8 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentOnCommentedIdea, type: :mode
   describe '#generate_command' do
   	let(:campaign) { create(:new_comment_on_commented_idea_campaign) }
     let(:idea) { create(:idea) }
-    let!(:recipient_comment) { create(:comment, idea: idea) }
-    let(:initiator_comment) { create(:comment, idea: idea) }
+    let!(:recipient_comment) { create(:comment, post: idea) }
+    let(:initiator_comment) { create(:comment, post: idea) }
     let(:activity) { create(:activity, item: initiator_comment, action: 'created', user: initiator_comment.author) }
 
   	it "generates a command with the desired payload and tracked content" do
