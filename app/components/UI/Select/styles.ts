@@ -5,6 +5,9 @@ export function getSelectStyles(borderColor = '#ccc') {
     container: (base) => ({
       ...base,
     }),
+    input: (base) => ({
+      ...base,
+    }),
     control: (base, { isFocused }) => ({
       ...base,
       fontSize: `${fontSizes.base}px`,
@@ -12,7 +15,7 @@ export function getSelectStyles(borderColor = '#ccc') {
       borderColor: isFocused ? '#000' : `${borderColor}`,
       borderRadius: '5px',
       minHeight: '48px',
-      backgroundColor: '#FFF',
+      backgroundColor: '#fff',
       boxShadow: 'none',
       cursor: 'pointer',
       '&:hover': {
@@ -29,11 +32,25 @@ export function getSelectStyles(borderColor = '#ccc') {
       fontSize: `${fontSizes.base}px`,
       color: isFocused ? colors.text : colors.label,
       backgroundColor: isFocused ? colors.clDropdownHoverBackground : '#fff',
+      cursor: 'pointer'
     }),
-    multiValueLabel: () => ({
+    multiValue: (base) => ({
+      ...base,
+      borderRadius: '3px',
+    }),
+    multiValueLabel: (base) => ({
+      ...base,
       fontSize: `${fontSizes.base}px`,
       padding: '6px',
+      paddingLeft: '10px'
     }),
+    multiValueRemove: (base) => ({
+      ...base,
+      fontSize: `${fontSizes.large}px`,
+      ':hover': {
+        background: '#ccc'
+      }
+    })
   };
 }
 

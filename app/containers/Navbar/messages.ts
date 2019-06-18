@@ -54,6 +54,10 @@ export default defineMessages({
     id: 'app.containers.app.navbar.pageIdeas',
     defaultMessage: 'Ideas',
   },
+  pageInitiatives: {
+    id: 'app.containers.app.navbar.pageInitiatives',
+    defaultMessage: 'Initiatives',
+  },
   pageOverview: {
     id: 'app.containers.app.navbar.pageOverview',
     defaultMessage: 'Overview',

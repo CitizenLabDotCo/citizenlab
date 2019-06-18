@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
 import { stylingConsts, media } from 'utils/styleUtils';
 import bowser from 'bowser';
@@ -21,9 +22,9 @@ const Outer = styled.div`
   }
 `;
 
-const Inner: any = styled.div`
+const Inner: any = styled.div<{ maxWidth?: string }>`
   width: 100%;
-  max-width: ${(props: any) => props.maxWidth}px;
+  max-width: ${({ maxWidth }) => isNumber(maxWidth) ? `${maxWidth}px` : maxWidth};
   z-index: 1;
 
   &.ie {
@@ -36,7 +37,7 @@ interface Props {
   children?: any;
   className?: string;
   mode?: 'oldPage' | 'banner' | 'page' | 'text';
-  maxWidth?: number;
+  maxWidth?: number | string;
 }
 
 interface State {}
