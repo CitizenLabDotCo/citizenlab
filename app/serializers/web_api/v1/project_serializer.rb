@@ -7,7 +7,6 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
   has_many :areas
   has_many :topics
-  has_many :permissions
   has_many :avatars, serializer: WebApi::V1::AvatarSerializer
   
   has_one :action_descriptor
@@ -57,7 +56,11 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   end
 
   def user_basket
-    current_user&.baskets&.find_by participation_context_id: object.id
+    if @instance_options[:user_baskets]
+      @instance_options.dig(:user_baskets, object.id)&.first
+    else
+      current_user&.baskets&.find_by(participation_context_id: object.id, participation_context_type: 'Project')
+    end
   end
 
   def avatars_count
@@ -69,8 +72,10 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   end
 
   def allocated_budget
-    Rails.cache.fetch("#{object.cache_key}/allocated_budget") do
-      object.allocated_budget
+    if @instance_options[:allocated_budgets]
+      @instance_options.dig(:allocated_budgets, object.id)
+    else
+      ParticipationContextService.new.allocated_budget object
     end
   end
 
@@ -84,7 +89,11 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   end
 
   def timeline_active
-    TimelineService.new.timeline_active object
+    if @instance_options[:timeline_active]
+      @instance_options.dig(:timeline_active, object.id)
+    else
+      TimelineService.new.timeline_active object
+    end
   end
 
   def can_moderate?
