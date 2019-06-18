@@ -7,13 +7,14 @@ class WebApi::V1::CommentsController < ApplicationController
   MINIMAL_SUBCOMMENTS = 2
 
   def index
+    include_attrs = [author: [:unread_notifications]]
 
     root_comments = policy_scope(Comment)
       .where(idea: params[:idea_id])
       .where(parent: nil)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-      .includes(:author)
+      .includes(*include_attrs)
 
     root_comments = case params[:sort]
       when "new"
@@ -45,7 +46,7 @@ class WebApi::V1::CommentsController < ApplicationController
       .where(parent: fully_expanded_root_comments)
       .or(Comment.where(id: partially_expanded_child_comments))
       .order(:created_at)
-      .includes(:author)
+      .includes(*include_attrs)
 
     # We're doing this merge in ruby, since the combination of a self-join
     # with different sorting criteria per depth became tremendously complex in
