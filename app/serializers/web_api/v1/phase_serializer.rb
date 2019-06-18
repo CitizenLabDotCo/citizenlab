@@ -15,7 +15,7 @@ class WebApi::V1::PhaseSerializer < ActiveModel::Serializer
     # queries to be executed by projects#index.
     # current_user&.baskets&.find_by participation_context_id: object.id
     current_user&.baskets&.select do |basket| 
-      basket.participation_context_id == object.id
+      (basket.participation_context_id == object.id) && (basket.participation_context_type == 'Phase')
     end&.first
   end
 
