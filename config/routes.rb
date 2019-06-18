@@ -34,7 +34,7 @@ Rails.application.routes.draw do
       end
 
       resources :ideas, 
-        concerns: [:votable, :spam_reportable, :post, :post], 
+        concerns: [:votable, :spam_reportable, :post], 
         defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
         
         resources :official_feedback, shallow: true
@@ -48,7 +48,7 @@ Rails.application.routes.draw do
       end
 
       resources :initiatives, 
-        concerns: [:votable, :spam_reportable, :post, :post], 
+        concerns: [:votable, :spam_reportable, :post], 
         defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
 
         resources :images, defaults: {container_class_name: Initiative.name, image_class_name: InitiativeImage.name}
@@ -85,6 +85,7 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
+        get 'initiatives_count', on: :member
         get 'comments_count', on: :member
       end
 

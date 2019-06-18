@@ -156,10 +156,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
-      surveys: {
-       enabled: true,
-       allowed: true,
-      },
       maps: {
         enabled: true,
         allowed: true,
