@@ -24,14 +24,15 @@ const config = {
     chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js'
   },
 
-	optimization: {
-		splitChunks: {
-			chunks: 'all',
-			maxInitialRequests: 20,
-			maxAsyncRequests: 20,
-			minSize: 30000,
+  optimization: {
+    runtimeChunk: false,
+    splitChunks: {
+      chunks: 'async',
+      minSize: 30000,
       maxSize: 200000,
       minChunks: 1,
+      maxAsyncRequests: 7,
+      maxInitialRequests: 5,
       automaticNameDelimiter: '~',
       name: true,
       cacheGroups: {
@@ -46,31 +47,7 @@ const config = {
         }
       }
     }
-	},
-
-  // optimization: {
-  //   splitChunks: {
-  //     chunks: 'async',
-  //     minSize: 30000,
-  //     maxSize: 0,
-  //     minChunks: 1,
-  //     maxAsyncRequests: 7,
-  //     maxInitialRequests: 5,
-  //     automaticNameDelimiter: '~',
-  //     name: true,
-  //     cacheGroups: {
-  //       vendors: {
-  //         test: /[\\/]node_modules[\\/]/,
-  //         priority: -10
-  //       },
-  //       default: {
-  //         minChunks: 2,
-  //         priority: -20,
-  //         reuseExistingChunk: true
-  //       }
-  //     }
-  //   }
-  // },
+  },
 
   mode: isDev ? 'development' : 'production',
 
@@ -178,11 +155,11 @@ const config = {
       chunkFilename: '[name].[contenthash].chunk.css'
     }),
 
-    // new BundleAnalyzerPlugin({
-    //   statsOptions: {
-    //     source: false
-    //   }
-    // })
+    new BundleAnalyzerPlugin({
+      statsOptions: {
+        source: false
+      }
+    })
   ],
 
   resolve: {
