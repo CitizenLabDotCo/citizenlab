@@ -5,10 +5,9 @@ const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ResourceHintsWebpackPlugin = require('resource-hints-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
@@ -20,32 +19,140 @@ const config = {
     path: path.resolve(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
-    filename: isDev ? '[name].js' : '[name].[hash].js',
-    chunkFilename: isDev ? '[name].chunk.js' : '[name].[hash].chunk.js',
+    filename: isDev ? '[name].bundle.js' : '[name].[chunkhash].bundle.js',
+    chunkFilename: isDev ? '[name].chunk.js' : '[name].[chunkhash].chunk.js',
   },
 
+  // optimized 3
   optimization: {
-    runtimeChunk: 'single',
+    runtimeChunk: true,
+    moduleIds: 'hashed',
     splitChunks: {
-      chunks: 'all',
-      maxInitialRequests: Infinity,
-      minSize: 0,
-      cacheGroups: {
-        vendor: {
+      hidePathInfo: true, // prevents the path from being used in the filename when using maxSize
+      chunks: 'initial', // default is async, set to initial and then use async inside cacheGroups instead
+      maxInitialRequests: Infinity, // Default is 3, make this unlimited if using HTTP/2
+      maxAsyncRequests: Infinity, // Default is 5, make this unlimited if using HTTP/2
+      // sizes are compared against source before minification
+      minSize: 10000, // chunk is only created if it would be bigger than minSize
+      maxSize: 40000, // splits chunks if bigger than 40k, added in webpack v4.15
+      cacheGroups: { // create separate js files for bluebird, jQuery, bootstrap, aurelia and one for the remaining node modules
+        default: false, // disable the built-in groups, default & vendors (vendors is overwritten below)
+
+        // generic 'initial/sync' vendor node module splits: separates out larger modules
+        vendorSplit: { // each node module as separate chunk file if module is bigger than minSize
           test: /[\\/]node_modules[\\/]/,
           name(module) {
-            // get the name. E.g. node_modules/packageName/not/this/part.js
-            // or node_modules/packageName
+            // Extract the name of the package from the path segment after node_modules
             const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-
-            // npm package names are URL-safe, but some servers don't like @ symbols
-            return `npm.${packageName.replace('@', '')}`;
+            return `vendor.${packageName.replace('@', '')}`;
           },
+          priority: 20
         },
-      },
-    },
+        vendors: { // picks up everything else being used from node_modules that is less than minSize
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          priority: 19,
+          enforce: true // create chunk regardless of the size of the chunk
+        },
+
+        // generic 'async' vendor node module splits: separates out larger modules
+        vendorAsyncSplit: { // vendor async chunks, create each asynchronously used node module as separate chunk file if module is bigger than minSize
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+            return `vendor.async.${packageName.replace('@', '')}`;
+          },
+          chunks: 'async',
+          priority: 10,
+          reuseExistingChunk: true,
+          minSize: 5000 // only create if 5k or larger
+        },
+        vendorsAsync: { // vendors async chunk, remaining asynchronously used node modules as single chunk file
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors.async',
+          chunks: 'async',
+          priority: 9,
+          reuseExistingChunk: true,
+          enforce: true // create chunk regardless of the size of the chunk
+        },
+
+        // generic 'async' common module splits: separates out larger modules
+        commonAsync: { // common async chunks, each asynchronously used module as a separate chunk files
+          name(module) {
+            // Extract the name of the module from last path component. 'src/modulename/' results in 'modulename'
+            const moduleName = module.context.match(/[^\\/]+(?=\/$|$)/)[0];
+            return `common.async.${moduleName.replace('@', '')}`;
+          },
+          minChunks: 2, // Minimum number of chunks that must share a module before splitting
+          chunks: 'async',
+          priority: 1,
+          reuseExistingChunk: true,
+          minSize: 5000 // only create if 5k or larger
+        },
+        commonsAsync: { // commons async chunk, remaining asynchronously used modules as single chunk file
+          name: 'commons.async',
+          minChunks: 2, // Minimum number of chunks that must share a module before splitting
+          chunks: 'async',
+          priority: 0,
+          reuseExistingChunk: true,
+          enforce: true // create chunk regardless of the size of the chunk
+        }
+      }
+    }
   },
 
+  // optimized 2
+  // optimization: {
+  //   runtimeChunk: 'single',
+  //   splitChunks: {
+  //     chunks: 'all',
+  //     cacheGroups: {
+  //       default: {
+  //         enforce: true,
+  //         priority: 1
+  //       },
+  //       vendors: {
+  //         test: /[\\/]node_modules[\\/]/,
+  //         priority: 2,
+  //         name: 'vendors',
+  //         enforce: true,
+  //         chunks: 'all'
+  //       }
+  //     }
+  //   }
+  // },
+
+  // optimized 1
+  // optimization: {
+  //   runtimeChunk: 'single',
+  //   splitChunks: {
+  //     chunks: 'all',
+  //     maxInitialRequests: Infinity,
+  //     minSize: 0,
+  //     cacheGroups: {
+  //       vendor: {
+  //         test: /[\\/]node_modules[\\/]/,
+  //         name(module) {
+  //           // get the name. E.g. node_modules/packageName/not/this/part.js
+  //           // or node_modules/packageName
+  //           const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+  //           // npm package names are URL-safe, but some servers don't like @ symbols
+  //           return `npm.${packageName.replace('@', '')}`;
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
+
+  // current master
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: 'all',
+  //   },
+  // },
+
+  // webpack default
   // optimization: {
   //   splitChunks: {
   //     chunks: 'async',
@@ -163,35 +270,17 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html',
-      preload: [
-        'main.*.js',
-        'main.*.css',
-        '*.eot',
-        '*.ttf',
-        '*.woff',
-        '*.woff2',
-      ],
-      prefetch: [
-        '*.chunk.js',
-        '*.chunk.css'
-      ],
+      template: 'app/index.html'
     }),
-
-    new ResourceHintsWebpackPlugin(),
 
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
       chunkFilename: '[name].[hash].chunk.css'
     }),
 
-    // new BundleAnalyzerPlugin({
-    //   analyzerMode: 'disabled',
-    //   generateStatsFile: true,
-    //   statsOptions: {
-    //     source: false
-    //   }
-    // })
+    new webpack.HashedModuleIdsPlugin(),
+
+    new BundleAnalyzerPlugin()
   ],
 
   resolve: {
