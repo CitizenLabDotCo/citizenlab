@@ -1,31 +1,52 @@
 class WebApi::V1::InitiativesController < ApplicationController
 
   before_action :set_initiative, only: [:show, :update, :destroy]
-  skip_after_action :verify_authorized, only: [:index_xlsx, :index_initiative_markers]
+  skip_after_action :verify_authorized, only: [:index_xlsx, :index_initiative_markers, :filter_counts]
   
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   def index
-    @initiatives = policy_scope(Initiative).includes(:author)
+    @initiatives = policy_scope(Initiative).includes(:author, :assignee, :topics, :areas)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    # TODO Generalize post filters?
-    @initiatives = @initiatives.where(author_id: params[:author]) if params[:author].present?
-    if params[:publication_status].present?
-      @initiatives = @initiatives.where(publication_status: params[:publication_status])
-    else
-      @initiatives = @initiatives.where(publication_status: 'published')
+    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params
+
+    if params[:sort].present? && !params[:search].present?
+      @initiatives = case params[:sort]
+        when 'new'
+          @initiatives.order_new
+        when '-new'
+          @initiatives.order_new(:asc)
+        when 'author_name'
+          @initiatives.order(author_name: :asc)
+        when '-author_name'
+          @initiatives.order(author_name: :desc)
+        when 'upvotes_count'
+          @initiatives.order(upvotes_count: :asc)
+        when '-upvotes_count'
+          @initiatives.order(upvotes_count: :desc)
+        when 'status'
+          @initiatives.order_status(:asc)
+        when '-status'
+          @initiatives.order_status(:desc)
+        when 'random'
+          @initiatives.order_random
+        when nil
+          @initiatives
+        else
+          raise 'Unsupported sort method'
+        end
     end
 
     @initiative_ids = @initiatives.map(&:id)
 
     if current_user
       votes = Vote.where(user: current_user, votable_id: @initiative_ids, votable_type: 'Initiative')
-      votes_by_idea_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @initiatives, include: ['author', 'user_vote'], vbii: votes_by_idea_id
+      votes_by_initiative_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
+      render json: @initiatives, include: ['author','user_vote','initiative_images','assignee'], vbii: votes_by_initiative_id
     else
-      render json: @initiatives, include: ['author']
+      render json: @initiatives, include: ['author','initiative_images','assignee']
     end
   end
 
@@ -34,21 +55,49 @@ class WebApi::V1::InitiativesController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    # TODO Generalize post filters?
-    @initiatives = @initiatives.where(author_id: params[:author]) if params[:author].present?
-    if params[:publication_status].present?
-      @initiatives = @initiatives.where(publication_status: params[:publication_status])
-    else
-      @initiatives = @initiatives.where(publication_status: 'published')
-    end
-
+    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params
     @initiatives = @initiatives.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
     render json: @initiatives, each_serializer: WebApi::V1::PostMarkerSerializer
   end
 
+  def index_xlsx
+    I18n.with_locale(current_user&.locale) do
+      @initiatives = policy_scope(Initiative)
+        .includes(:author, :topics, :areas, :initiative_status)
+        .where(publication_status: 'published')
+      @initiatives = @initiatives.where(id: params[:initiatives]) if params[:initiatives].present?
+      xlsx = XlsxService.new.generate_initiatives_xlsx @initiatives
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'initiatives.xlsx'
+    end
+  end
+
+  def filter_counts
+    @initiatives = policy_scope(Initiative)
+    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params
+    counts = {
+      'initiative_status_id' => {},
+      'area_id' => {},
+      'topic_id' => {}
+    } 
+    @initiatives
+      .joins('FULL OUTER JOIN initiatives_topics ON initiatives_topics.initiative_id = initiatives.id')
+      .joins('FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id')
+      .select('initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) as count')
+      .reorder(nil)  # Avoids SQL error on GROUP BY when a search string was used
+      .group('GROUPING SETS (initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id)')
+      .each do |record|
+        %w(initiative_status_id area_id topic_id).each do |attribute|
+          id = record.send attribute
+          counts[attribute][id] = record.count if id
+        end
+      end
+    counts['total'] = @initiatives.count
+    render json: counts
+  end
+
   def show
-    render json: @initiative, include: ['author','user_vote'], serializer: WebApi::V1::InitiativeSerializer
+    render json: @initiative, include: ['author','topics','areas','user_vote','initiative_images'], serializer: WebApi::V1::InitiativeSerializer
   end
 
   def by_slug
@@ -69,7 +118,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     ActiveRecord::Base.transaction do
       if @initiative.save
         service.after_create(@initiative, current_user)
-        render json: @initiative.reload, status: :created, include: ['author','user_vote']
+        render json: @initiative.reload, status: :created, include: ['author','topics','areas','user_vote','initiative_images']
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
       end
@@ -93,7 +142,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       if @initiative.save
         authorize @initiative
         service.after_update(@initiative, current_user)
-        render json: @initiative.reload, status: :ok, include: ['author','user_vote']
+        render json: @initiative.reload, status: :ok, include: ['author','topics','areas','user_vote','initiative_images']
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
       end

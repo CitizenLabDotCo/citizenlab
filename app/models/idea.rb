@@ -1,11 +1,6 @@
 class Idea < ApplicationRecord
-  include PgSearch
   include Post
 
-
-  pg_search_scope :search_by_all, 
-    :against => [:title_multiloc, :body_multiloc, :author_name],
-    :using => { :tsearch => {:prefix => true} }
 
   belongs_to :project, touch: true
   counter_culture :project, 
@@ -29,7 +24,6 @@ class Idea < ApplicationRecord
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
 
-  has_many :official_feedbacks, dependent: :destroy
   belongs_to :idea_status
   has_many :notifications, foreign_key: :idea_id, dependent: :nullify
 
@@ -78,23 +72,15 @@ class Idea < ApplicationRecord
       .where(projects: {publication_status: publication_status})
   end)
 
-  scope :order_new, -> (direction=:desc) {order(published_at: direction)}
   scope :order_popular, -> (direction=:desc) {order(Arel.sql("(upvotes_count - downvotes_count) #{direction}"))}
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
-
   scope :order_status, -> (direction=:desc) {
     joins(:idea_status)
     .order("idea_statuses.ordering #{direction}")
   }
-
-  scope :order_random, -> {
-    modulus = RandomOrderingService.new.modulus_of_the_day
-    order("(extract(epoch from ideas.created_at) * 100)::bigint % #{modulus}")
-  }
-
   scope :feedback_needed, -> {
     joins(:idea_status).where(idea_statuses: {code: 'proposed'})
-      .where('ideas.id NOT IN (SELECT DISTINCT(idea_id) FROM official_feedbacks)')
+      .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
   

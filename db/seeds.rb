@@ -156,10 +156,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
-      surveys: {
-       enabled: true,
-       allowed: true,
-      },
       maps: {
         enabled: true,
         allowed: true,
@@ -605,7 +601,12 @@ if Apartment::Tenant.current == 'localhost'
         created_at: created_at,
         location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
-        header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
+        header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+        topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
+        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
+        assignee: rand(5) == 0 ? User.admin.shuffle.first : nil,
+        # TODO make initiative statuses correspond with required votes reached
+        initiative_status: InitiativeStatus.offset(rand(InitiativeStatus.count)).first  
       })
 
       LogActivityJob.perform_later(initiative, 'created', initiative.author, initiative.created_at.to_i)
@@ -626,14 +627,14 @@ if Apartment::Tenant.current == 'localhost'
         end
       end
 
-      # rand(5).times do
-      #   official_feedback = initiative.official_feedbacks.create!(
-      #     body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join}, 
-      #     author_multiloc: create_for_some_locales{Faker::FunnyName.name},
-      #     user: User.admin.shuffle.first
-      #     )
-      #   LogActivityJob.perform_later(official_feedback, 'created', official_feedback.user, official_feedback.created_at.to_i)
-      # end
+      rand(5).times do
+        official_feedback = initiative.official_feedbacks.create!(
+          body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join}, 
+          author_multiloc: create_for_some_locales{Faker::FunnyName.name},
+          user: User.admin.shuffle.first
+          )
+        LogActivityJob.perform_later(official_feedback, 'created', official_feedback.user, official_feedback.created_at.to_i)
+      end
 
       create_comment_tree(initiative, nil)
     end

@@ -1,17 +1,23 @@
 require 'active_support/concern'
 
 module Post
+  include PgSearch
   extend ActiveSupport::Concern
 
   MAX_TITLE_LEN = 80
   PUBLICATION_STATUSES = %w(draft published closed spam)
 
   included do
+    pg_search_scope :search_by_all, 
+      :against => [:title_multiloc, :body_multiloc, :author_name],
+      :using => { :tsearch => {:prefix => true} }
+
     belongs_to :author, class_name: 'User', optional: true
 
     has_many :activities, as: :item
 
     has_many :comments, as: :post, dependent: :destroy
+    has_many :official_feedbacks, as: :post, dependent: :destroy
 
     has_many :votes, as: :votable, dependent: :destroy
     has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
@@ -42,6 +48,12 @@ module Post
     end)
 
     scope :published, -> {where publication_status: 'published'}
+
+    scope :order_new, -> (direction=:desc) {order(published_at: direction)}
+    scope :order_random, -> {
+      modulus = RandomOrderingService.new.modulus_of_the_day
+      order("(extract(epoch from #{table_name}.created_at) * 100)::bigint % #{modulus}")
+    }
 
 
     def location_point_geojson

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_04_135000) do
+ActiveRecord::Schema.define(version: 2019_06_07_132326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -44,6 +44,14 @@ ActiveRecord::Schema.define(version: 2019_06_04_135000) do
     t.index ["area_id"], name: "index_areas_ideas_on_area_id"
     t.index ["idea_id", "area_id"], name: "index_areas_ideas_on_idea_id_and_area_id", unique: true
     t.index ["idea_id"], name: "index_areas_ideas_on_idea_id"
+  end
+
+  create_table "areas_initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "area_id"
+    t.uuid "initiative_id"
+    t.index ["area_id"], name: "index_areas_initiatives_on_area_id"
+    t.index ["initiative_id", "area_id"], name: "index_areas_initiatives_on_initiative_id_and_area_id", unique: true
+    t.index ["initiative_id"], name: "index_areas_initiatives_on_initiative_id"
   end
 
   create_table "areas_projects", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -355,6 +363,16 @@ ActiveRecord::Schema.define(version: 2019_06_04_135000) do
     t.index ["initiative_id"], name: "index_initiative_images_on_initiative_id"
   end
 
+  create_table "initiative_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc"
+    t.jsonb "description_multiloc"
+    t.integer "ordering"
+    t.string "code"
+    t.string "color"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc"
     t.jsonb "body_multiloc"
@@ -371,9 +389,21 @@ ActiveRecord::Schema.define(version: 2019_06_04_135000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "header_bg"
+    t.uuid "assignee_id"
+    t.integer "official_feedbacks_count", default: 0, null: false
+    t.uuid "initiative_status_id"
     t.index ["author_id"], name: "index_initiatives_on_author_id"
+    t.index ["initiative_status_id"], name: "index_initiatives_on_initiative_status_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
     t.index ["slug"], name: "index_initiatives_on_slug"
+  end
+
+  create_table "initiatives_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "initiative_id"
+    t.uuid "topic_id"
+    t.index ["initiative_id", "topic_id"], name: "index_initiatives_topics_on_initiative_id_and_topic_id", unique: true
+    t.index ["initiative_id"], name: "index_initiatives_topics_on_initiative_id"
+    t.index ["topic_id"], name: "index_initiatives_topics_on_topic_id"
   end
 
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -443,10 +473,12 @@ ActiveRecord::Schema.define(version: 2019_06_04_135000) do
     t.jsonb "body_multiloc", default: {}
     t.jsonb "author_multiloc", default: {}
     t.uuid "user_id"
-    t.uuid "idea_id"
+    t.uuid "post_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["idea_id"], name: "index_official_feedbacks_on_idea_id"
+    t.string "post_type"
+    t.index ["post_id", "post_type"], name: "index_official_feedbacks_on_post"
+    t.index ["post_id"], name: "index_official_feedbacks_on_post_id"
     t.index ["user_id"], name: "index_official_feedbacks_on_user_id"
   end
 
@@ -692,6 +724,8 @@ ActiveRecord::Schema.define(version: 2019_06_04_135000) do
   add_foreign_key "activities", "users"
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"
+  add_foreign_key "areas_initiatives", "areas"
+  add_foreign_key "areas_initiatives", "initiatives"
   add_foreign_key "areas_projects", "areas"
   add_foreign_key "areas_projects", "projects"
   add_foreign_key "baskets", "users"
@@ -722,7 +756,11 @@ ActiveRecord::Schema.define(version: 2019_06_04_135000) do
   add_foreign_key "identities", "users"
   add_foreign_key "initiative_files", "initiatives"
   add_foreign_key "initiative_images", "initiatives"
+  add_foreign_key "initiatives", "initiative_statuses"
+  add_foreign_key "initiatives", "users", column: "assignee_id"
   add_foreign_key "initiatives", "users", column: "author_id"
+  add_foreign_key "initiatives_topics", "initiatives"
+  add_foreign_key "initiatives_topics", "topics"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "memberships", "groups"
@@ -737,7 +775,6 @@ ActiveRecord::Schema.define(version: 2019_06_04_135000) do
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
-  add_foreign_key "official_feedbacks", "ideas"
   add_foreign_key "official_feedbacks", "users"
   add_foreign_key "page_files", "pages"
   add_foreign_key "page_links", "pages", column: "linked_page_id"
@@ -882,6 +919,42 @@ ActiveRecord::Schema.define(version: 2019_06_04_135000) do
                      FROM phases
                     WHERE ((phases.start_at <= (now())::date) AND (phases.end_at >= (now())::date))) active_phases ON ((active_phases.id = joined_phases.id)))
             GROUP BY projects.id) sub;
+  SQL
+
+  create_view "union_posts",  sql_definition: <<-SQL
+      SELECT ideas.id,
+      ideas.title_multiloc,
+      ideas.body_multiloc,
+      ideas.publication_status,
+      ideas.published_at,
+      ideas.author_id,
+      ideas.author_name,
+      ideas.created_at,
+      ideas.updated_at,
+      ideas.upvotes_count,
+      ideas.location_point,
+      ideas.location_description,
+      ideas.comments_count,
+      ideas.slug,
+      ideas.official_feedbacks_count
+     FROM ideas
+  UNION ALL
+   SELECT initiatives.id,
+      initiatives.title_multiloc,
+      initiatives.body_multiloc,
+      initiatives.publication_status,
+      initiatives.published_at,
+      initiatives.author_id,
+      initiatives.author_name,
+      initiatives.created_at,
+      initiatives.updated_at,
+      initiatives.upvotes_count,
+      initiatives.location_point,
+      initiatives.location_description,
+      initiatives.comments_count,
+      initiatives.slug,
+      initiatives.official_feedbacks_count
+     FROM initiatives;
   SQL
 
 end

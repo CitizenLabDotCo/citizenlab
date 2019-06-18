@@ -33,8 +33,12 @@ class TenantTemplateService
             model.send("#{field_name}=", multiloc_value)
           elsif field_name.end_with?('_ref')
             if field_value
-              id, ref_class = obj_to_id_and_class[field_value]
-              model.send("#{field_name.chomp '_ref'}=", ref_class.find(id))
+              begin
+                id, ref_class = obj_to_id_and_class[field_value]
+                model.send("#{field_name.chomp '_ref'}=", ref_class.find(id))
+              rescue Exception => e
+                raise e
+              end
             end
           elsif field_name.end_with?('_timediff')
             if field_value && field_value.kind_of?(Numeric)
@@ -96,6 +100,12 @@ class TenantTemplateService
       @template['models']['idea_image']                = yml_idea_images
       @template['models']['ideas_phase']               = yml_ideas_phases
       @template['models']['ideas_topic']               = yml_ideas_topics
+      @template['models']['initiative_status']         = yml_initiative_statuses
+      @template['models']['initiative']                = yml_initiatives
+      @template['models']['areas_initiative']          = yml_areas_initiatives
+      @template['models']['initiative_file']           = yml_initiative_files
+      @template['models']['initiative_image']          = yml_initiative_images
+      @template['models']['initiatives_topic']         = yml_initiatives_topics
       @template['models']['official_feedback']         = yml_official_feedback
       @template['models']['comment']                   = yml_comments
       @template['models']['vote']                      = yml_votes
@@ -253,8 +263,9 @@ class TenantTemplateService
   def lookup_ref id, model_name
     if model_name.kind_of?(Array)
       model_name.each do |n|
-        return @refs[n][id] if @refs[n][id]
+        return @refs.dig(n, id) if @refs.dig(n, id)
       end
+      return nil
     else
       @refs[model_name][id]
     end
@@ -735,11 +746,91 @@ class TenantTemplateService
     end
   end
 
+  def yml_initiative_statuses
+    InitiativeStatus.all.map do |i|
+      yml_initiative_status = {
+        'title_multiloc'       => i.title_multiloc,
+        'ordering'             => i.ordering,
+        'code'                 => i.code,
+        'color'                => i.color,
+        'created_at'           => i.created_at.to_s,
+        'updated_at'           => i.updated_at.to_s,
+        'description_multiloc' => i.description_multiloc
+      }
+      store_ref yml_initiative_status, i.id, :initiative_status
+      yml_initiative_status
+    end
+  end
+
+  def yml_initiatives
+    Initiative.published.map do |i|
+      yml_initiative = {
+        'title_multiloc'         => i.title_multiloc,
+        'body_multiloc'          => i.body_multiloc,
+        'publication_status'     => i.publication_status,
+        'published_at'           => i.published_at.to_s,
+        'author_ref'             => lookup_ref(i.author_id, :user),
+        'created_at'             => i.created_at.to_s,
+        'updated_at'             => i.updated_at.to_s,
+        'location_point_geojson' => i.location_point_geojson,
+        'location_description'   => i.location_description,
+        'initiative_status_ref'  => lookup_ref(i.initiative_status_id, :initiative_status)
+      }
+      store_ref yml_initiative, i.id, :initiative
+      yml_initiative
+    end
+  end
+
+  def yml_areas_initiatives
+    AreasInitiative.all.map do |a|
+      if lookup_ref(a.initiative_id, :initiative)
+        {
+          'area_ref'       => lookup_ref(a.area_id, :area),
+          'initiative_ref' => lookup_ref(a.initiative_id, :initiative)
+        }
+      end
+    end.compact
+  end
+
+  def yml_initiative_files
+    InitiativeFile.all.map do |i|
+      {
+        'initiative_ref'  => lookup_ref(i.initiative_id, :initiative),
+        'remote_file_url' => i.file_url,
+        'ordering'        => i.ordering,
+        'created_at'      => i.created_at.to_s,
+        'updated_at'      => i.updated_at.to_s,
+        'name'            => i.name
+      }
+    end
+  end
+      
+  def yml_initiative_images
+    InitiativeImage.all.map do |i|
+      {
+        'initiative_ref'   => lookup_ref(i.initiative_id, :initiative),
+        'remote_image_url' => i.image_url,
+        'ordering'         => i.ordering,
+        'created_at'       => i.created_at.to_s,
+        'updated_at'       => i.updated_at.to_s
+      }
+    end
+  end
+
+  def yml_initiatives_topics
+    InitiativesTopic.all.map do |i|
+      {
+        'initiative_ref'   => lookup_ref(i.initiative_id, :initiative),
+        'topic_ref'  => lookup_ref(i.topic_id, :topic)
+      }
+    end
+  end
+
   def yml_official_feedback
     OfficialFeedback.all.map do |a|
       yml_official_feedback = {
         'user_ref'        => lookup_ref(a.user_id, :user),
-        'idea_ref'        => lookup_ref(a.idea_id, :idea),
+        'post_ref'        => lookup_ref(a.post_id, [:idea, :initiative]),
         'body_multiloc'   => a.body_multiloc,
         'author_multiloc' => a.author_multiloc,
         'created_at'      => a.created_at.to_s,
@@ -754,7 +845,7 @@ class TenantTemplateService
     (Comment.where('parent_id IS NULL')+Comment.where('parent_id IS NOT NULL')).map do |c|
       yml_comment = {
         'author_ref'         => lookup_ref(c.author_id, :user),
-        'idea_ref'           => lookup_ref(c.idea_id, :idea),
+        'post_ref'           => lookup_ref(c.post_id, [:idea, :initiative]),
         'body_multiloc'      => c.body_multiloc,
         'created_at'         => c.created_at.to_s,
         'updated_at'         => c.updated_at.to_s,
@@ -770,7 +861,7 @@ class TenantTemplateService
   def yml_votes
     Vote.all.map do |v|
       yml_vote = {
-        'votable_ref' => lookup_ref(v.votable_id, [:idea, :comment]),
+        'votable_ref' => lookup_ref(v.votable_id, [:idea, :initiative, :comment]),
         'user_ref'    => lookup_ref(v.user_id, :user),
         'mode'        => v.mode,
         'created_at'  => v.created_at.to_s,
