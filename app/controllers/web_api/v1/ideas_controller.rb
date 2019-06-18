@@ -7,7 +7,7 @@ class WebApi::V1::IdeasController < ApplicationController
   
   def index
     @ideas = policy_scope(Idea).includes(:author, :assignee, :topics, :areas, :phases, :idea_images, project: [:phases])
-      .left_outer_joins(:idea_status).left_outer_joins(:idea_trending_info)
+      .left_outer_joins(:idea_trending_info)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
