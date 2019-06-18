@@ -19,23 +19,23 @@ const config = {
     path: path.resolve(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
-    filename: isProd ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
-    sourceMapFilename: isProd ? '[name].[chunkhash].map' : '[name].[hash].map',
-    chunkFilename: isProd ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js'
+    filename: isDev ? '[name].bundle.js' : '[name].[contenthash].bundle.js',
+    sourceMapFilename: isDev ? '[name].map' : '[name].[contenthash].map',
+    chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js'
   },
 
   // optimized 6
-	optimization: {
-		splitChunks: {
-			cacheGroups: {
-				commons: {
-					test: /[\\/]node_modules[\\/]/,
-					name: 'vendors',
-					chunks: 'all'
-				}
-			}
-		}
-	},
+	// optimization: {
+	// 	splitChunks: {
+	// 		cacheGroups: {
+	// 			commons: {
+	// 				test: /[\\/]node_modules[\\/]/,
+	// 				name: 'vendors',
+	// 				chunks: 'all'
+	// 			}
+	// 		}
+	// 	}
+	// },
 
   // optimized 5
   // optimization: {
@@ -268,7 +268,7 @@ const config = {
         test: /\.(eot|ttf|woff|woff2)$/,
         loader: 'file-loader',
         options: {
-          name: '[name].[hash].[ext]'
+          name: isDev ? '[name].[ext]' : '[name].[contenthash].[ext]'
         }
       },
       {
@@ -315,12 +315,18 @@ const config = {
       template: 'app/index.html'
     }),
 
+    new webpack.HashedModuleIdsPlugin(),
+
     new MiniCssExtractPlugin({
-      filename: '[name].[hash].css',
-      chunkFilename: '[name].[hash].chunk.css'
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[name].[contenthash].chunk.css'
     }),
 
-    // new BundleAnalyzerPlugin()
+    // new BundleAnalyzerPlugin({
+    //   statsOptions: {
+    //     source: false
+    //   }
+    // })
   ],
 
   resolve: {
