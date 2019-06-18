@@ -19,7 +19,7 @@ class SideFxUserService
     if user.registration_completed_at
       LogActivityJob.perform_later(user, 'completed_registration', user, user.created_at.to_i)
     end
-    if user.admin? # or User.admin.count == 1 (this would exclude invite as admin, event is currently triggered before accept)
+    if user.admin?
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
     end
   end

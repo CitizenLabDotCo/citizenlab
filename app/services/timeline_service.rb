@@ -56,4 +56,21 @@ class TimelineService
     end
   end
 
+  def timeline_active_on_collection projects
+    starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
+    ends = Phase.where(project: projects).group(:project_id).maximum(:end_at) 
+    projects.map do |project|
+      active = if project.continuous? || project.phases.blank?
+        nil
+      elsif Date.today > ends[project.id]  
+        :past
+      elsif Date.today < starts[project.id]
+        :future
+      else
+        :present
+      end
+      [project.id, active]
+    end.to_h
+  end
+
 end
