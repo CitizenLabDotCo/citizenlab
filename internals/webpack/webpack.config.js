@@ -24,12 +24,25 @@ const config = {
     chunkFilename: isProd ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js'
   },
 
+  // optimized 6
+	optimization: {
+		splitChunks: {
+			cacheGroups: {
+				commons: {
+					test: /[\\/]node_modules[\\/]/,
+					name: 'vendors',
+					chunks: 'all'
+				}
+			}
+		}
+	},
+
   // optimized 5
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
-  },
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: 'all',
+  //   },
+  // },
 
   // optimized 4
   // optimization: {
