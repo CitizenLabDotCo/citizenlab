@@ -50,7 +50,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: stretch;
 
-  @media (max-width: 1400px) {
+  @media (max-width: 1279px) {
     max-width: 1000px;
   }
 `;
@@ -88,7 +88,7 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
   align-items: center;
   justify-content: space-between;
   margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
-  margin-bottom: 15px;
+  margin-bottom: 22px;
 
   ${media.smallerThanMaxTablet`
     margin-right: 0;
@@ -220,13 +220,15 @@ const StyledIdeaCard = styled(IdeaCard)`
   margin-left: 13px;
   margin-right: 13px;
 
-  @media (max-width: 1400px) {
-    width: calc(100% * (1/2) - 26px);
+  @media (max-width: 1440px) and (min-width: 1279px)  {
+    width: calc(100% * (1/3) - 16px);
+    margin-left: 8px;
+    margin-right: 8px;
   }
 
-  ${media.smallerThanMaxTablet`
+  @media (max-width: 1279px) and (min-width: 768px)  {
     width: calc(100% * (1/2) - 26px);
-  `};
+  }
 
   ${media.smallerThanMinTablet`
     width: 100%;
@@ -249,7 +251,7 @@ const ClearAllIcon = styled(Icon)`
   width: 16px;
   height: 16px;
   fill: ${colors.label};
-  margin-right: 6px;
+  margin-right: 5px;
   margin-top: -2px;
 `;
 
@@ -263,7 +265,7 @@ const ClearAllText = styled.span`
 const ClearAllButton = styled.button`
   height: 32px;
   position: absolute;
-  top: -41px;
+  top: -48px;
   right: 0px;
   display: flex;
   align-items: center;
@@ -647,14 +649,14 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   id="e2e-ideas-filters"
                   filterColumnWidth={filterColumnWidth}
                 >
-                  {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
+                  {/* {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
                     <ClearAllButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnClear}>
-                      {/* <ClearAllIcon name="close" /> */}
+                      <ClearAllIcon name="close" />
                       <ClearAllText>
                         <FormattedMessage {...messages.clearAll} />
                       </ClearAllText>
                     </ClearAllButton>
-                  }
+                  } */}
                   <FiltersSidebar
                     selectedIdeaFilters={selectedIdeaFilters}
                     onChange={this.handleIdeaFiltersOnChange}
