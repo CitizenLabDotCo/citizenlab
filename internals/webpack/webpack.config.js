@@ -180,20 +180,20 @@ if (isDev) {
     //   }
     // })
   );
-}
-
-if (isProd) {
+} else {
   config.plugins.push(
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
       chunkFilename: '[name].[contenthash].chunk.css'
-    }),
+    })
+  );
 
+  if (isProd) {
     new SentryCliPlugin({
       include: path.resolve(process.cwd(), 'build'),
       release: process.env.CIRCLE_BUILD_NUM,
-    })
-  );
+    });
+  }
 }
 
 module.exports = config;
