@@ -10,11 +10,14 @@ describe('Idea card component', () => {
   const commentContent = randomString();
   let projectId: string;
   let ideaId: string;
+  let userId: string;
   let parentCommentId: string;
   let childCommentId: string;
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password);
+    cy.apiSignup(firstName, lastName, email, password).then(userResponse => {
+      userId = userResponse.body.data.id;
+    });
     cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
       projectId = project.body.data.id;
       return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
@@ -80,5 +83,6 @@ describe('Idea card component', () => {
     cy.apiRemoveComment(childCommentId);
     cy.apiRemoveComment(parentCommentId);
     cy.apiRemoveIdea(ideaId);
+    cy.apiRemoveUser(userId);
   });
 });

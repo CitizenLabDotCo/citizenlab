@@ -34,12 +34,18 @@ describe('Landing page', () => {
   });
 
   describe('Signed in header', () => {
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
+    let userId: string;
+
+    before(() => {
+      cy.apiSignup(firstName, lastName, email, password).then(userResponse => {
+        userId = userResponse.body.data.id;
+      });
+    });
     beforeEach(() => {
-      const firstName = randomString();
-      const lastName = randomString();
-      const email = randomEmail();
-      const password = randomString();
-      cy.apiSignup(firstName, lastName, email, password);
       cy.login(email, password);
       cy.visit('/');
       cy.wait(1000);
@@ -58,6 +64,10 @@ describe('Landing page', () => {
       cy.get('#e2e-singed-in-header-complete-profile').get('.e2e-singed-in-header-skip-btn').click();
       cy.wait(1000);
       cy.get('#e2e-singed-in-header-default-cta');
+    });
+
+    after(() => {
+      cy.apiRemoveUser(userId);
     });
   });
 
