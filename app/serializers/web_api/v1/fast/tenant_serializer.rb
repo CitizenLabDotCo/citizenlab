@@ -1,4 +1,4 @@
-class WebApi::V1::Fast::TenantSerializer < ActiveModel::Serializer
+class WebApi::V1::Fast::TenantSerializer
   include FastJsonapi::ObjectSerializer
   
   attributes :id, :name, :host, :style

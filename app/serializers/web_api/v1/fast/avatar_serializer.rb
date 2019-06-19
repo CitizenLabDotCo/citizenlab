@@ -1,4 +1,4 @@
-class WebApi::V1::Fast::AvatarSerializer < ActiveModel::Serializer
+class WebApi::V1::Fast::AvatarSerializer
   include FastJsonapi::ObjectSerializer
 
   set_type :avatar

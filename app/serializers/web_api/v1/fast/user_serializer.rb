@@ -1,4 +1,4 @@
-class WebApi::V1::Fast::UserSerializer < ActiveModel::Serializer
+class WebApi::V1::Fast::UserSerializer
   include FastJsonapi::ObjectSerializer
 
   attributes :id, :first_name, :last_name, :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
