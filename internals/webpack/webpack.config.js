@@ -48,9 +48,11 @@ const config = {
     runtimeChunk: 'single',
     splitChunks: {
       chunks: 'all',
-      maxInitialRequests: Infinity,
+      maxInitialRequests: 5,
+      maxAsyncRequests: 7,
       minSize: 30000,
       maxSize: 250000,
+      minChunks: 2,
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
