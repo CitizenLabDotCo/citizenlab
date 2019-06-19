@@ -217,7 +217,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const createdAt = comment.attributes.created_at;
       const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
-      const commentVotingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.voting, 'enabled', false) : false);
+      const commentVotingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.comment_voting, 'enabled', false) : false);
       const upvoteCount = comment.attributes.upvotes_count;
       const showVoteComponent = (commentVotingEnabled || (!commentVotingEnabled && upvoteCount > 0));
       const showReplyButton = !!(authUser && commentingEnabled && canReply);
