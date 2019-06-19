@@ -160,17 +160,6 @@ const config = {
     }),
 
     new webpack.HashedModuleIdsPlugin(),
-
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-      chunkFilename: '[name].[contenthash].chunk.css'
-    }),
-
-    new BundleAnalyzerPlugin({
-      statsOptions: {
-        source: false
-      }
-    })
   ],
 
   resolve: {
@@ -180,12 +169,29 @@ const config = {
 };
 
 if (isDev) {
-  config.plugins.push(new webpack.ProgressPlugin());
-} else if (isProd) {
-  config.plugins.push(new SentryCliPlugin({
-    include: path.resolve(process.cwd(), 'build'),
-    release: process.env.CIRCLE_BUILD_NUM,
-  }));
+  config.plugins.push(
+    new webpack.ProgressPlugin(),
+
+    // new BundleAnalyzerPlugin({
+    //   statsOptions: {
+    //     source: false
+    //   }
+    // })
+  );
+}
+
+if (isProd) {
+  config.plugins.push(
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[name].[contenthash].chunk.css'
+    }),
+
+    new SentryCliPlugin({
+      include: path.resolve(process.cwd(), 'build'),
+      release: process.env.CIRCLE_BUILD_NUM,
+    })
+  );
 }
 
 module.exports = config;
