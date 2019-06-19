@@ -26,11 +26,11 @@ class WebApi::V1::AvatarsController < ApplicationController
       avatars_service.avatars_for_tenant(users: users, limit: limit)
     end
 
-    render json: avatars[:users], each_serializer: WebApi::V1::AvatarSerializer, meta: { total: avatars[:total_count] }
+    render json: { **WebApi::V1::Fast::AvatarSerializer.new(avatars[:users]).serializable_hash, meta: { total: avatars[:total_count] } }
   end
 
   def show
-    render json: @user, serializer: WebApi::V1::AvatarSerializer
+    render json: WebApi::V1::Fast::AvatarSerializer.new(@user).serialized_json
   end
 
   private
