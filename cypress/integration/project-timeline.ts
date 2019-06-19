@@ -11,6 +11,7 @@ describe('Project timeline page', () => {
   const phaseFutureTitle = randomString();
 
   let projectId: string;
+  let projectSlug: string;
 
   const twoMonthsAgo = moment().subtract(2, 'month').format('DD/MM/YYYY');
   const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
@@ -22,15 +23,19 @@ describe('Project timeline page', () => {
     // create new project
     cy.apiCreateProject('timeline', projectTitle, projectDescriptionPreview, projectDescription).then((project) => {
       projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
       // create new phases
       cy.apiCreatePhase(projectId, phasePastTitle, twoMonthsAgo, twoDaysAgo, 'ideation', true, true, true, `description ${phasePastTitle}`);
       cy.apiCreatePhase(projectId, phaseCurrentTitle, today, today, 'ideation', true, true, true, `description ${phaseCurrentTitle}`);
       cy.apiCreatePhase(projectId, phaseFutureTitle, inTwoDays, inTwoMonths, 'ideation', true, true, true, `description ${phaseFutureTitle}`);
 
-      // navigate to the landing page
-      cy.visit(`/projects/${project.body.data.attributes.slug}`);
-      cy.wait(1000);
     });
+  });
+
+  beforeEach(() => {
+    // navigate to project
+    cy.visit(`/projects/${projectSlug}`);
+    cy.wait(1000);
   });
 
   it('shows the current phase', () => {
