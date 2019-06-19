@@ -1,7 +1,7 @@
 import moment = require('moment');
 import { randomString, apiRemoveProject } from '../support/commands';
 
-describe('Project card component', () => {
+describe('Project timeline page', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
   const projectDescription = randomString();
