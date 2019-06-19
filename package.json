@@ -9,7 +9,7 @@
   "description": "Citizenlab is a ready-to-use citizen participation platform for local governments",
   "engines": {
     "npm": ">=5",
-    "node": ">=7.6"
+    "node": ">=8"
   },
   "author": "Citizenlab",
   "license": "MIT",
@@ -24,8 +24,8 @@
     "start:production": "npm run build && npm run start:prod",
     "start:prod": "cross-env NODE_ENV=production node server/production",
     "start:images": "cross-env NODE_ENV=production node server/images",
-    "prestats": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.config.js --profile --json > build/stats.json",
-    "stats": "webpack-bundle-analyzer build/stats.json",
+    "prestats": "cross-env NODE_ENV=production NODE_OPTIONS=--max_old_space_size=4096 webpack --config internals/webpack/webpack.config.js --profile --json > build/stats.json",
+    "stats": "cross-env NODE_OPTIONS=--max_old_space_size=4096 webpack-bundle-analyzer build/stats.json",
     "lint": "npm run lint:ts",
     "lint:ts": "tslint -p ./app/tsconfig.json -t stylish",
     "e2e-setup": "selenium-standalone install",
@@ -44,8 +44,7 @@
     "jestScriptPath": "node_modules/jest/bin/jest.js"
   },
   "dependencies": {
-    "@babel/polyfill": "7.4.4",
-    "@babel/runtime": "7.4.5",
+    "@babel/runtime-corejs3": "7.4.5",
     "@researchgate/react-intersection-observer": "1.0.1",
     "@segment/consent-manager": "1.3.0",
     "@segment/snippet": "4.4.0",
@@ -189,6 +188,8 @@
     "jest-junit": "6.4.0",
     "jest-styled-components": "6.3.3",
     "mini-css-extract-plugin": "0.7.0",
+    "moment-locales-webpack-plugin": "1.0.7",
+    "moment-timezone-data-webpack-plugin": "1.1.0",
     "nightwatch": "1.1.12",
     "pa11y-ci": "2.3.0",
     "puppeteer": "1.17.0",

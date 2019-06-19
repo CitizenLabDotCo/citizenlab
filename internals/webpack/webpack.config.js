@@ -5,12 +5,16 @@ const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
+
+const currentYear = new Date().getFullYear();
 
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
@@ -20,33 +24,7 @@ const config = {
     pathinfo: false,
     publicPath: '/',
     filename: isDev ? '[name].bundle.js' : '[name].[contenthash].bundle.js',
-    sourceMapFilename: isDev ? '[name].map' : '[name].[contenthash].map',
     chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js'
-  },
-
-  optimization: {
-    runtimeChunk: false,
-    splitChunks: {
-      chunks: 'async',
-      minSize: 30000,
-      maxSize: 200000,
-      minChunks: 1,
-      maxAsyncRequests: 7,
-      maxInitialRequests: 5,
-      automaticNameDelimiter: '~',
-      name: true,
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10
-        },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true
-        }
-      }
-    }
   },
 
   mode: isDev ? 'development' : 'production',
@@ -134,7 +112,18 @@ const config = {
       },
     }),
 
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    // Strip all moment locales except “en” and the ones defined below
+    // (“en” is built into Moment and can’t be removed).
+    // See constants.ts > appLocalesMomentPairs for the list of locales that should be included
+    new MomentLocalesPlugin({
+      localesToKeep: ['en-gb', 'en-ca', 'fr', 'nl', 'de', 'da', 'nb', 'es']
+    }),
+
+    new MomentTimezoneDataPlugin({
+      // matchZones: ['Europe/Brussels'],
+      startYear: currentYear - 2,
+      endYear: currentYear + 2,
+    }),
 
     new ForkTsCheckerWebpackPlugin({
       checkSyntacticErrors: true,
