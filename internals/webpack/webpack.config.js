@@ -144,11 +144,11 @@ const config = {
       chunkFilename: '[name].[contenthash].chunk.css'
     }),
 
-    new BundleAnalyzerPlugin({
-      statsOptions: {
-        source: false
-      }
-    })
+    // new BundleAnalyzerPlugin({
+    //   statsOptions: {
+    //     source: false
+    //   }
+    // })
   ],
 
   resolve: {
