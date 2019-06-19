@@ -6,11 +6,11 @@ class WebApi::V1::TopicsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
      @topics = @topics.order(created_at: :desc)
-     render json: WebApi::V1::Fast::TopicSerializer.new(@topics)
+     render json: WebApi::V1::Fast::TopicSerializer.new(@topics).serialized_json
    end
 
    def show
-     render json: WebApi::V1::Fast::TopicSerializer.new(@topic)
+     render json: WebApi::V1::Fast::TopicSerializer.new(@topic).serialized_json
    end
 
    private
