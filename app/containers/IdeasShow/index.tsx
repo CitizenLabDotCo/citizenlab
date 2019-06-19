@@ -671,7 +671,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
                   <MetaContent>
-                    {(showVoteControl || showBudgetControl) &&
+                    {(showVoteControl || showBudgetControl || statusId) &&
                       <ControlWrapper className="e2e-vote-controls-desktop">
                         {showVoteControl &&
                           <>
@@ -697,9 +697,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                           />
                         }
 
-                        <ControlWrapperHorizontalRule />
+                        {(showVoteControl || showBudgetControl) &&
+                          <ControlWrapperHorizontalRule />
+                        }
 
-                        {statusId && <IdeaStatus statusId={statusId} />}
+                        {statusId &&
+                          <IdeaStatus statusId={statusId} />
+                        }
                       </ControlWrapper>
                     }
 
