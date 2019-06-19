@@ -44,6 +44,29 @@ const config = {
     },
   },
 
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 30000,
+      maxSize: 250000,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            // get the name. E.g. node_modules/packageName/not/this/part.js
+            // or node_modules/packageName
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+            // npm package names are URL-safe, but some servers don't like @ symbols
+            return `npm.${packageName.replace('@', '')}`;
+          },
+        },
+      },
+    },
+  },
+
   module: {
     rules: [
       {
@@ -120,7 +143,6 @@ const config = {
     }),
 
     new MomentTimezoneDataPlugin({
-      // matchZones: ['Europe/Brussels'],
       startYear: currentYear - 2,
       endYear: currentYear + 2,
     }),
@@ -144,11 +166,11 @@ const config = {
       chunkFilename: '[name].[contenthash].chunk.css'
     }),
 
-    // new BundleAnalyzerPlugin({
-    //   statsOptions: {
-    //     source: false
-    //   }
-    // })
+    new BundleAnalyzerPlugin({
+      statsOptions: {
+        source: false
+      }
+    })
   ],
 
   resolve: {
