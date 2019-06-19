@@ -520,14 +520,24 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
       const phaseIds = (phases ? phases.data.map(phase => phase.id) : null);
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const selectedPhase = (selectedPhaseId ? phases.data.find(phase => phase.id === selectedPhaseId) : null);
-      const selectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('LL') : null);
-      const selectedPhaseEnd = (selectedPhase ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('LL') : null);
-      const mobileSelectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('ll') : null);
-      const mobileSelectedPhaseEnd = (selectedPhase ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('ll') : null);
-      const selectedPhaseTitle = (selectedPhase ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
+      const selectedPhaseStart = (selectedPhase
+        ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('LL')
+        : null);
+      const selectedPhaseEnd = (selectedPhase
+        ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('LL')
+        : null);
+      const mobileSelectedPhaseStart = (selectedPhase
+        ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('ll')
+        : null);
+      const mobileSelectedPhaseEnd = (selectedPhase
+        ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('ll')
+        : null);
+      const selectedPhaseTitle = (selectedPhase
+        ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
       const selectedPhaseNumber = (selectedPhase ? indexOf(phaseIds, selectedPhaseId) + 1 : null);
       const isSelected = (selectedPhaseId !== null);
-      const phaseStatus = (selectedPhase && pastPresentOrFuture([selectedPhase.attributes.start_at, selectedPhase.attributes.end_at]));
+      const phaseStatus = (selectedPhase
+        && pastPresentOrFuture([selectedPhase.attributes.start_at, selectedPhase.attributes.end_at]));
       const lastPhaseIndex = phases.data.length - 1;
 
       return (
@@ -638,7 +648,11 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
 
                 return (
                   <PhaseContainer
-                    className={`${isFirst ? 'first' : ''} ${isLast ? 'last' : ''} ${isCurrentPhase ? 'currentPhase' : ''} ${isSelectedPhase ? 'selectedPhase' : ''}`}
+                    className={`
+                      ${isFirst ? 'first' : ''}
+                      ${isLast ? 'last' : ''}
+                      ${isCurrentPhase ? 'currentPhase' : ''}
+                      ${isSelectedPhase ? 'selectedPhase' : ''}`}
                     key={index}
                     numberOfDays={numberOfDays}
                     onMouseDown={this.removeFocus}

@@ -113,6 +113,35 @@ export function apiCreateAdmin(firstName: string, lastName: string, email: strin
   });
 }
 
+export function apiCreateModeratorForProject(firstName: string, lastName: string, email: string, password: string, projectId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+
+      },
+      method: 'POST',
+      url: 'web_api/v1/users',
+      body: {
+        user: {
+          email,
+          password,
+          locale: 'en-GB',
+          first_name: firstName,
+          last_name: lastName,
+          roles: [{
+            type: 'project_moderator',
+            project_id: projectId
+          }],
+        }
+      }
+    });
+  });
+}
+
 export function logout() {
   cy.get('#e2e-user-menu-container button').click();
   cy.get('#e2e-sign-out-link').click();
@@ -404,7 +433,6 @@ export function apiCreatePhase(
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
-    console.log(description);
 
     return cy.request({
       headers: {
