@@ -5,9 +5,18 @@ module.exports = function (api) {
     [
       "@babel/preset-env",
       {
-        useBuiltIns: "entry",
+        useBuiltIns: "usage",
         corejs: 3,
-        targets: "> 1%, last 1 version, Safari > 9, IE 11"
+        targets: {
+          browsers: [
+            "last 2 Chrome versions",
+            "last 2 Firefox versions",
+            "last 2 Edge versions",
+            "last 2 Opera versions",
+            "last 2 Safari versions",
+            "ie 11"
+          ]
+        }
       }
     ],
     "@babel/preset-react",
@@ -19,7 +28,7 @@ module.exports = function (api) {
     "@babel/plugin-syntax-dynamic-import",
     "@babel/proposal-class-properties",
     "@babel/proposal-object-rest-spread",
-    "@babel/plugin-transform-runtime"
+    ["@babel/plugin-transform-runtime", { corejs: 3 }]
   ];
 
   const env = {
@@ -35,7 +44,7 @@ module.exports = function (api) {
         "@babel/plugin-syntax-dynamic-import",
         "@babel/proposal-class-properties",
         "@babel/proposal-object-rest-spread",
-        "@babel/plugin-transform-runtime"
+        ["@babel/plugin-transform-runtime", { corejs: 3 }]
       ],
     }
   }
