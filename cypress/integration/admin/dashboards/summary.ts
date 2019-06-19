@@ -4,7 +4,6 @@ const oneYearAgo = moment().subtract(1, 'year').format('MMMM YYYY');
 
 describe('/admin route', () => {
   beforeEach(() => {
-    console.log(oneYearAgo);
     cy.login('admin@citizenlab.co', 'testtest');
     cy.visit('/admin/dashboard');
   });
