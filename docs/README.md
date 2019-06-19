@@ -1,11 +1,23 @@
 # Changelog
 
+## 2019-06-19
+
+## Fixed
+
+- Show 3-column instead of 2-column layout for ideas overview page on smaller desktop screens
+- Don't hide status label on idea page when voting buttons are not shown
+
+## Changed
+
+- Small improvement in loading speed
+
 ## 2019-06-17
 
 ## Fixed
 
 - The column titles in comments excel export are aligned with the content
 - There's now enough space between voting anc translate links under a comment
+- Vote button on an idea no longer stays active when a vote on that idea causes the voting treshold of the project to be reached
 
 ## Added
 

@@ -121,7 +121,9 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
 
   findActivePreset = () => {
     const { startAtMoment, endAtMoment } = this.props;
+
     if (!endAtMoment) return null;
+
     return this.presets.find(preset => {
       const startAt = preset.startAt();
       if (startAt === undefined) {
