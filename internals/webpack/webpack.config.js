@@ -13,7 +13,6 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const argv = require('yargs').argv;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
-
 const currentYear = new Date().getFullYear();
 
 const config = {
@@ -43,31 +42,6 @@ const config = {
       '/widgets/': `http://${API_HOST}:3200`,
     },
   },
-
-  // optimization: {
-  //   runtimeChunk: 'single',
-  //   splitChunks: {
-  //     chunks: 'all',
-  //     maxInitialRequests: 5,
-  //     maxAsyncRequests: 7,
-  //     minSize: 30000,
-  //     maxSize: 250000,
-  //     minChunks: 2,
-  //     cacheGroups: {
-  //       vendor: {
-  //         test: /[\\/]node_modules[\\/]/,
-  //         name(module) {
-  //           // get the name. E.g. node_modules/packageName/not/this/part.js
-  //           // or node_modules/packageName
-  //           const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-
-  //           // npm package names are URL-safe, but some servers don't like @ symbols
-  //           return `npm.${packageName.replace('@', '')}`;
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
 
   module: {
     rules: [
