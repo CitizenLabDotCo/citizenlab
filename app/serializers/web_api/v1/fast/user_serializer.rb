@@ -1,5 +1,4 @@
-class WebApi::V1::Fast::UserSerializer
-  include FastJsonapi::ObjectSerializer
+class WebApi::V1::Fast::UserSerializer < WebApi::V1::Fast::BaseSerializer
 
   attributes :id, :first_name, :last_name, :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
   
@@ -15,7 +14,9 @@ class WebApi::V1::Fast::UserSerializer
     object.avatar && object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
 
-  has_many :unread_notifications
+  attribute :unread_notifications do |object|
+    object.unread_notifications.size
+  end
 
   has_many :granted_permissions, serializer: WebApi::V1::PermissionSerializer do |object, params|
     params[:granted_permissions]

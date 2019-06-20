@@ -1,6 +1,4 @@
-class WebApi::V1::Fast::TenantSerializer
-  include FastJsonapi::ObjectSerializer
-  
+class WebApi::V1::Fast::TenantSerializer < WebApi::V1::Fast::BaseSerializer
   attributes :id, :name, :host, :style
 
   attribute :logo do |object|
