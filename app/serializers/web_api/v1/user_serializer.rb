@@ -6,7 +6,7 @@ class WebApi::V1::UserSerializer < ActiveModel::Serializer
 
   attribute :custom_field_values, if: :view_private_attributes?
 
-  has_many :unread_notifications
+  attribute :unread_notifications
 
   has_many :granted_permissions, serializer: WebApi::V1::PermissionSerializer
 
@@ -17,6 +17,10 @@ class WebApi::V1::UserSerializer < ActiveModel::Serializer
 
   def avatar
     object.avatar && object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
+  end
+
+  def unread_notifications
+    object.unread_notifications.size
   end
 
   def granted_permissions
