@@ -175,12 +175,16 @@ export default class GetIdeas extends React.Component<Props, State> {
                   queryParameters,
                   cacheStream,
                   hasMore,
-                  ideas: (!isLoadingMore ? ideas.data : unionBy((acc.ideas || []), ideas.data))
+                  ideas: (!isLoadingMore ? ideas.data : unionBy((acc.ideas || []), ideas.data, 'id'))
                 };
               })
             );
           }, startAccumulatorValue)
         ).subscribe(({ ideas, queryParameters, hasMore }) => {
+
+          console.log(queryParameters);
+          console.log(ideas);
+
           this.setState({ queryParameters, hasMore, ideasList: ideas, querying: false, loadingMore: false });
         })
       ];
