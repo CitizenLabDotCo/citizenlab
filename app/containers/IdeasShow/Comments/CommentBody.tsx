@@ -3,7 +3,6 @@ import React, { PureComponent, FormEvent } from 'react';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { get } from 'lodash-es';
-import linkifyHtml from 'linkifyjs/html';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -171,10 +170,10 @@ class CommentBody extends PureComponent<Props, State> {
     const { comment, locale, tenantLocales } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(comment)) {
-      commentContent = linkifyHtml(getLocalized(comment.attributes.body_multiloc, locale, tenantLocales).replace(
+      commentContent = getLocalized(comment.attributes.body_multiloc, locale, tenantLocales).replace(
         /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
         '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-      )) as string;
+      );
     }
 
     this.setState({ commentContent });

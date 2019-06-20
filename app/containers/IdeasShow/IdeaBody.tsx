@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import linkifyHtml from 'linkifyjs/html';
 
 // components
 import Fragment from 'components/Fragment';
@@ -51,14 +50,14 @@ const IdeaBody = memo<Props>(({ ideaId, ideaBody, locale, translateButtonClicked
             <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={ideaId}>
               {translation => {
                 if (!isNilOrError(translation)) {
-                  return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }} />;
+                  return <span dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />;
                 }
 
-                return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />;
+                return <span dangerouslySetInnerHTML={{ __html: ideaBody }} />;
               }}
             </GetMachineTranslation>
             :
-            <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
+            <span dangerouslySetInnerHTML={{ __html: ideaBody }} />
           }
         </QuillEditedContent>
       </Fragment>
