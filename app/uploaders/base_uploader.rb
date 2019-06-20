@@ -2,7 +2,6 @@ module BaseUploader
   extend ActiveSupport::Concern
 
   included do
-    include CarrierWave::ImageOptimizer
     if !Rails.env.test? && !Rails.env.development?
       storage :fog
     end
@@ -18,9 +17,9 @@ module BaseUploader
     "uploads/#{tenant.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
-  if Rails.env.development?
+  unless Rails.env.test?
     def asset_host
-      "http://localhost:4000"
+      Tenant.current.base_backend_uri
     end
   end
 
