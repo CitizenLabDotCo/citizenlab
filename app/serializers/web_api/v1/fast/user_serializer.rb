@@ -1,6 +1,5 @@
 class WebApi::V1::Fast::UserSerializer < WebApi::V1::Fast::BaseSerializer
-
-  attributes :id, :first_name, :last_name, :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
+  attributes :first_name, :last_name, :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
   
   attribute :email, if: Proc.new { |object, params|
     view_private_attributes? object, params

@@ -1,5 +1,5 @@
 class WebApi::V1::Fast::IdeaSerializer < WebApi::V1::Fast::BaseSerializer
-  attributes :id, :title_multiloc, :body_multiloc, :author_name, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :official_feedbacks_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at, :budget, :baskets_count
+  attributes :title_multiloc, :body_multiloc, :author_name, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :official_feedbacks_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at, :budget, :baskets_count
 
   attribute :action_descriptor do |object, params|
     @participation_context_service = params[:pcs] || ParticipationContextService.new
@@ -35,16 +35,16 @@ class WebApi::V1::Fast::IdeaSerializer < WebApi::V1::Fast::BaseSerializer
   has_many :idea_images, serializer: WebApi::V1::Fast::ImageSerializer
   has_many :phases
 
-  belongs_to :author, serializer: WebApi::V1::Fast::UserSerializer
+  belongs_to :author, serializer: WebApi::V1::Fast::UserSerializer, record_type: :user
   belongs_to :project
   belongs_to :idea_status
   belongs_to :assignee, if: Proc.new { |object, params|
     can_moderate? object, params
-  }, serializer: WebApi::V1::Fast::UserSerializer
+  }, serializer: WebApi::V1::Fast::UserSerializer, record_type: :user
 
   has_one :user_vote, if: Proc.new { |object, params|
     signed_in? object, params
-  }, serializer: WebApi::V1::Fast::UserSerializer do |object, params|
+  }, serializer: WebApi::V1::Fast::VoteSerializer, record_type: :vote do |object, params|
     cached_user_vote object, params
   end
 
