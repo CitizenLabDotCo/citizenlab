@@ -11,6 +11,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
+const appLocalesMomentPairs = require(path.join(process.cwd(), 'app/containers/App/constants')).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
 const currentYear = new Date().getFullYear();
@@ -113,14 +114,13 @@ const config = {
 
     // Strip all moment locales except “en” and the ones defined below
     // (“en” is built into Moment and can’t be removed).
-    // See constants.ts > appLocalesMomentPairs for the list of locales that should be included
     new MomentLocalesPlugin({
-      localesToKeep: ['en-gb', 'en-ca', 'fr', 'nl', 'de', 'da', 'nb', 'es']
+      localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))]
     }),
 
     new MomentTimezoneDataPlugin({
-      startYear: currentYear - 2,
-      endYear: currentYear + 2,
+      startYear: 2012,
+      endYear: currentYear + 10,
     }),
 
     new ForkTsCheckerWebpackPlugin({
