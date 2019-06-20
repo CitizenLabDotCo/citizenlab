@@ -101,7 +101,6 @@ gem 'omniauth-twitter'
 gem 'omniauth-azure-activedirectory', github: 'CitizenLabDotCo/omniauth-azure-activedirectory'
 gem 'omniauth_openid_connect'
 gem "bunny", ">= 2.7.2"
-gem 'carrierwave-imageoptimizer'
 gem 'scenic'
 gem 'acts_as_list'
 gem 'faker'
