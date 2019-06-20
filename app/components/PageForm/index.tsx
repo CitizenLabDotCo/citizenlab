@@ -12,12 +12,8 @@ import { Section, SectionField } from 'components/admin/Section';
 import ErrorComponent from 'components/UI/Error';
 import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
-import Link from 'utils/cl-router/Link';
 import FileUploader from 'components/UI/FileUploader';
 import InfoTooltip from 'components/admin/InfoTooltip';
-
-// Resources
-// import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // I18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -58,18 +54,6 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
     }
 
     return errors;
-  }
-
-  renderAdvancedEditorLink = (locale) => {
-    if (this.props.mode === 'edit') {
-      return (
-        <Link to={`/admin/pages/${this.props.pageId}/editor/${locale}`}>
-          <FormattedMessage {...messages.advancedEditorLink} />
-        </Link>
-      );
-    } else {
-      return null;
-    }
   }
 
   renderQuill = (props) => {
@@ -136,7 +120,6 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
             <Field
               name="body_multiloc"
               render={this.renderQuill}
-              renderPerLocale={this.renderAdvancedEditorLink}
             />
             {touched.body_multiloc &&
               <ErrorComponent
