@@ -1,5 +1,5 @@
 class WebApi::V1::Fast::TenantSerializer < WebApi::V1::Fast::BaseSerializer
-  attributes :id, :name, :host, :style
+  attributes :name, :host, :style
 
   attribute :logo do |object|
     object.logo && object.logo.versions.map{|k, v| [k.to_s, v.url]}.to_h

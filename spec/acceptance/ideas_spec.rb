@@ -421,12 +421,34 @@ resource "Ideas" do
   get "web_api/v1/ideas/:id" do
     let(:idea) {@ideas.first}
     let!(:baskets) {create_list(:basket, 2, ideas: [idea])}
+    let!(:topic) {create(:topic, ideas: [idea])}
+    let!(:user_vote) {create(:vote, user: @user, votable: idea)}
     let(:id) {idea.id}
 
     example_request "Get one idea by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
+      
       expect(json_response.dig(:data, :id)).to eq idea.id
+      expect(json_response.dig(:data, :type)).to eq 'idea'
+      expect(json_response.dig(:data, :attributes)).to include(
+        slug: idea.slug,
+        budget: idea.budget,
+        action_descriptor: {
+          commenting: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
+          voting: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil, cancelling_enabled: false},
+          comment_voting: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil},
+          budgeting: {enabled: false, disabled_reason: 'not_permitted', future_enabled: nil}}
+        )
+      expect(json_response.dig(:data, :relationships)).to include(
+        topics: {
+          data: [{id: topic.id, type: 'topic'}]
+        },
+        areas: {data: []},
+        author: {data: {id: idea.author_id, type: 'user'}},
+        idea_status: {data: {id: idea.idea_status_id, type: 'idea_status'}},
+        user_vote: {data: {id: user_vote.id, type: 'vote'}}
+        )
     end
   end
 
