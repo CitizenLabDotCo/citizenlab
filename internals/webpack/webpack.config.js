@@ -5,12 +5,16 @@ const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ResourceHintsWebpackPlugin = require('resource-hints-webpack-plugin');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
+const appLocalesMomentPairs = require(path.join(process.cwd(), 'app/containers/App/constants')).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
+const currentYear = new Date().getFullYear();
 
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
@@ -19,14 +23,8 @@ const config = {
     path: path.resolve(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
-    filename: isDev ? '[name].js' : '[name].[hash].js',
-    chunkFilename: isDev ? '[name].chunk.js' : '[name].[hash].chunk.js',
-  },
-
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
+    filename: isDev ? '[name].bundle.js' : '[name].[contenthash].bundle.js',
+    chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js'
   },
 
   mode: isDev ? 'development' : 'production',
@@ -80,6 +78,9 @@ const config = {
       {
         test: /\.(eot|ttf|woff|woff2)$/,
         loader: 'file-loader',
+        options: {
+          name: isDev ? '[name].[ext]' : '[name].[contenthash].[ext]'
+        }
       },
       {
         test: /\.htaccess/,
@@ -111,7 +112,16 @@ const config = {
       },
     }),
 
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    // Strip all moment locales except “en” and the ones defined below
+    // (“en” is built into Moment and can’t be removed).
+    new MomentLocalesPlugin({
+      localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))]
+    }),
+
+    new MomentTimezoneDataPlugin({
+      startYear: 2012,
+      endYear: currentYear + 10,
+    }),
 
     new ForkTsCheckerWebpackPlugin({
       checkSyntacticErrors: true,
@@ -122,27 +132,10 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html',
-      preload: [
-        'main.*.js',
-        'main.*.css',
-        '*.eot',
-        '*.ttf',
-        '*.woff',
-        '*.woff2',
-      ],
-      prefetch: [
-        '*.chunk.js',
-        '*.chunk.css'
-      ],
+      template: 'app/index.html'
     }),
 
-    new ResourceHintsWebpackPlugin(),
-
-    new MiniCssExtractPlugin({
-      filename: '[name].[hash].css',
-      chunkFilename: '[name].[hash].chunk.css'
-    }),
+    new webpack.HashedModuleIdsPlugin(),
   ],
 
   resolve: {
@@ -152,12 +145,29 @@ const config = {
 };
 
 if (isDev) {
-  config.plugins.push(new webpack.ProgressPlugin());
-} else if (isProd) {
-  config.plugins.push(new SentryCliPlugin({
-    include: path.resolve(process.cwd(), 'build'),
-    release: process.env.CIRCLE_BUILD_NUM,
-  }));
+  config.plugins.push(
+    new webpack.ProgressPlugin(),
+
+    // new BundleAnalyzerPlugin({
+    //   statsOptions: {
+    //     source: false
+    //   }
+    // })
+  );
+} else {
+  config.plugins.push(
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[name].[contenthash].chunk.css'
+    })
+  );
+
+  if (isProd) {
+    new SentryCliPlugin({
+      include: path.resolve(process.cwd(), 'build'),
+      release: process.env.CIRCLE_BUILD_NUM,
+    });
+  }
 }
 
 module.exports = config;
