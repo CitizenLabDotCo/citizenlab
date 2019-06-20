@@ -265,10 +265,10 @@ workflows:
             branches:
               only:
                 - master
-      - deploy_crowdin:
-          filters:
-            branches:
-              only: master
+      # - deploy_crowdin:
+      #     filters:
+      #       branches:
+      #         only: master
       - reset_ci_tenants:
           filters:
             branches:
