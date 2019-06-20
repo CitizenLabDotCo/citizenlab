@@ -181,10 +181,6 @@ export default class GetIdeas extends React.Component<Props, State> {
             );
           }, startAccumulatorValue)
         ).subscribe(({ ideas, queryParameters, hasMore }) => {
-
-          console.log(queryParameters);
-          console.log(ideas);
-
           this.setState({ queryParameters, hasMore, ideasList: ideas, querying: false, loadingMore: false });
         })
       ];
