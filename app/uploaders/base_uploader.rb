@@ -17,8 +17,10 @@ module BaseUploader
     "uploads/#{tenant.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
-  def asset_host
-    Tenant.current.base_backend_uri
+  unless Rails.env.test?
+    def asset_host
+      Tenant.current.base_backend_uri
+    end
   end
 
 end
