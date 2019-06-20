@@ -88,6 +88,7 @@ type State = {
   visible: boolean;
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
+  fonts: { [key: string]: string; } | null;
 };
 
 const IdeaPageFullscreenModal = lazy(() => import('./IdeaPageFullscreenModal'));
@@ -106,7 +107,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       ideaSlug: null,
       visible: true,
       userDeletedModalOpened: false,
-      userActuallyDeleted: false
+      userActuallyDeleted: false,
+      fonts: null
     };
     this.subscriptions = [];
   }
@@ -134,6 +136,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           search: newLocation.search
         });
       }
+    });
+
+    import(/* webpackPreload: true */
+      'fonts'
+    ).then(fonts => {
+      this.setState({ fonts });
     });
 
     this.subscriptions = [
@@ -217,7 +225,16 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { location, children } = this.props;
-    const { previousPathname, tenant, ideaId, ideaSlug, visible, userDeletedModalOpened, userActuallyDeleted } = this.state;
+    const {
+      previousPathname,
+      tenant,
+      ideaId,
+      ideaSlug,
+      visible,
+      userDeletedModalOpened,
+      userActuallyDeleted,
+      fonts
+    } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
 
@@ -227,7 +244,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider theme={theme}>
               <>
-                <GlobalStyle />
+                <GlobalStyle fonts={fonts} />
 
                 <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                   <Meta />
