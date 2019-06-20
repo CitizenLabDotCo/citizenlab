@@ -1,5 +1,16 @@
 # Changelog
 
+## 2019-06-19
+
+## Fixed
+
+- Show 3-column instead of 2-column layout for ideas overview page on smaller desktop screens
+- Don't hide status label on idea page when voting buttons are not shown
+
+## Changed
+
+- Small improvement in loading speed
+
 ## 2019-06-17
 
 ## Fixed

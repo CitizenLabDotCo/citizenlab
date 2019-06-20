@@ -151,11 +151,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         })),
         locale$,
         tenant$.pipe(tap((tenant) => {
+          moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
+
           uniq(tenant.data.attributes.settings.core.locales
             .filter(locale => locale !== 'en' && locale !== 'ach')
             .map(locale => appLocalesMomentPairs[locale]))
             .forEach(locale => require(`moment/locale/${locale}.js`));
-          moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
         }))
       ).subscribe(([authUser, locale, tenant]) => {
         const momenLoc = appLocalesMomentPairs[locale] || 'en';

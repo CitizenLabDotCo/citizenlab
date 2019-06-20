@@ -1,5 +1,4 @@
 import React from 'react';
-import 'moment-timezone';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
