@@ -47,7 +47,11 @@ RSpec.describe LogActivityJob, type: :job do
     it "enqueues a LogToEventbusJob when bunny is initialized" do
       idea = create(:idea)
       user = create(:user)
-      expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(LogToEventbusJob)
+      if BUNNY_CON
+        expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(LogToEventbusJob)
+      else
+        expect{job.perform(idea, "created", user, Time.now)}.not_to have_enqueued_job(LogToEventbusJob)
+      end
     end
 
     it "enqueues a LogToSegmentJob when Analytics is initialized" do

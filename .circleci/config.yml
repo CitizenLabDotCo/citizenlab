@@ -25,6 +25,7 @@ executors:
 jobs:
 
   build-docker-image:
+    resource_class: small
     docker:
       - image: docker:stable-git
     steps:
