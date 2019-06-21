@@ -55,7 +55,7 @@ jobs:
           rake db:create
           rake db:schema:load
       - run: |
-          rspec
+          rake spec
 
   # deploy_staging:
   #   machine: true
