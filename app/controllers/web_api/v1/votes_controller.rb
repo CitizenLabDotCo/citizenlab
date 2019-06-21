@@ -8,11 +8,19 @@ class WebApi::V1::VotesController < ApplicationController
     @votes = policy_scope(Vote, policy_scope_class: @policy_class::Scope)
       .where(votable_type: @votable_type, votable_id: @votable_id)
       .includes(:user)
-    render json: WebApi::V1::Fast::VoteSerializer.new(@votes, params: {current_user: current_user}, include: [:user]).serialized_json
+    render json: WebApi::V1::Fast::VoteSerializer.new(
+      @votes, 
+      params: fastjson_params, 
+      include: [:user]
+      ).serialized_json
   end
 
   def show
-    render json: WebApi::V1::Fast::VoteSerializer.new(@vote, params: {current_user: current_user}, include: [:user]).serialized_json
+    render json: WebApi::V1::Fast::VoteSerializer.new(
+      @vote, 
+      params: fastjson_params, 
+      nclude: [:user]
+      ).serialized_json
   end
 
   def create

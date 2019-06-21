@@ -65,9 +65,10 @@ class ApplicationController < ActionController::API
     payload[:"X-Amzn-Trace-Id"] = request.headers["X-Amzn-Trace-Id"]
   end
 
-  def basic_params
+  def fastjson_params extra_params={}
     {
-      current_user: current_user
+      current_user: current_user,
+      **extra_params
     }
   end
 end

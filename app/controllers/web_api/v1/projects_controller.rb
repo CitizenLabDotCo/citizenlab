@@ -42,7 +42,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
     render json: WebApi::V1::Fast::ProjectSerializer.new(
       @projects, 
-      params: {current_user: current_user, **instance_options}, 
+      params: fastjson_params(instance_options), 
       include: [:project_images, :current_phase, :avatars]
       ).serialized_json
   end
@@ -50,7 +50,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   def show
     render json: WebApi::V1::Fast::ProjectSerializer.new(
       @project, 
-      params: {current_user: current_user}, 
+      params: fastjson_params, 
       include: [:project_images, :current_phase, :avatars]
       ).serialized_json
   end
