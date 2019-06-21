@@ -114,8 +114,11 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::Fast::IdeaSerializer.new(@idea, params: {current_user: current_user}, include: [:author, :topics, :areas, :user_vote, :idea_images]).serialized_json
-    # render json: @idea, include: ['author','topics','areas','user_vote','idea_images']
+    render json: WebApi::V1::Fast::IdeaSerializer.new(
+      @idea, 
+      params: {current_user: current_user}, 
+      include: [:author, :topics, :areas, :user_vote, :idea_images]
+      ).serialized_json
   end
 
   def by_slug

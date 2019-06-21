@@ -19,7 +19,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
     if params[:areas].present?
       @projects = @projects.with_some_areas(params[:areas])
-        .or(@projects.without_areas.left_outer_joins(:areas_projects))
+        .or(@projects.without_areas)
     end
     @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
 
@@ -30,7 +30,9 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
     user_baskets = current_user&.baskets
       &.where(participation_context_type: 'Project')
-      &.group_by(&:participation_context_id) 
+      &.group_by do |basket|
+        [basket.participation_context_id, basket.participation_context_type]
+      end
     user_baskets ||= {}
     instance_options = {
       user_baskets: user_baskets,
@@ -38,11 +40,19 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects)
     }
 
-    render({ json: @projects, include: ['project_images', 'current_phase', 'avatars'], **instance_options })
+    render json: WebApi::V1::Fast::ProjectSerializer.new(
+      @projects, 
+      params: {current_user: current_user, **instance_options}, 
+      include: [:project_images, :current_phase, :avatars]
+      ).serialized_json
   end
 
   def show
-    render json: @project, include: ['project_images', 'current_phase', 'avatars']
+    render json: WebApi::V1::Fast::ProjectSerializer.new(
+      @project, 
+      params: {current_user: current_user}, 
+      include: [:project_images, :current_phase, :avatars]
+      ).serialized_json
   end
 
   def by_slug
