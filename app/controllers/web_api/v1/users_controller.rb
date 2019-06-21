@@ -59,10 +59,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     skip_authorization
 
     if @user
-      params = {
-        **basic_params,
-        unread_notifications: @user.notifications.unread.size
-      }
+      params = fastjson_params unread_notifications: @user.notifications.unread.size
       render json: WebApi::V1::Fast::UserSerializer.new(@user, params: params).serialized_json
     else
       head 404

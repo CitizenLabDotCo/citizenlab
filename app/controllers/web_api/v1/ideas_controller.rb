@@ -116,7 +116,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def show
     render json: WebApi::V1::Fast::IdeaSerializer.new(
       @idea, 
-      params: {current_user: current_user}, 
+      params: fastjson_params, 
       include: [:author, :topics, :areas, :user_vote, :idea_images]
       ).serialized_json
   end
