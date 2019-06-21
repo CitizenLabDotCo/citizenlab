@@ -240,7 +240,11 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .order("sum_score DESC")
       .limit(10)
 
-    render json: serie, each_serializer: WebApi::V1::EngagementScoreSerializer, include: [:user]
+    render json: WebApi::V1::Fast::EngagementScoreSerializer.new(
+      serie, 
+      params: fastjson_params,
+      include: [:user]
+      ).serialized_json
   end
 
   private
