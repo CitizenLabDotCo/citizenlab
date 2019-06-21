@@ -5,4 +5,8 @@ class WebApi::V1::Fast::BaseSerializer
     throw 'current_user missing in serializer parameters' if !params.include?(:current_user)
     params[:current_user]
   end
+
+  def self.signed_in? object, params
+    !!current_user(params)
+  end
 end
