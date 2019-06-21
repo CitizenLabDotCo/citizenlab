@@ -3,11 +3,11 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def index
     @idea_statuses = policy_scope(IdeaStatus).order(:ordering)
-    render json: @idea_statuses
+    render json: WebApi::V1::Fast::IdeaStatusSerializer.new(@idea_statuses, params: fastjson_params).serialized_json
   end
 
   def show
-    render json: @idea_status
+    render json: WebApi::V1::Fast::IdeaStatusSerializer.new(@idea_status, params: fastjson_params).serialized_json
   end
 
   private

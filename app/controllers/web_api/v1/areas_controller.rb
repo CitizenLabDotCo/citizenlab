@@ -6,11 +6,11 @@ class WebApi::V1::AreasController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
     @areas = @areas.order(created_at: :desc)
-    render json: @areas
+    render json: WebApi::V1::Fast::AreaSerializer.new(@areas, params: fastjson_params).serialized_json
   end
 
   def show
-    render json: @area
+    render json: WebApi::V1::Fast::AreaSerializer.new(@area, params: fastjson_params).serialized_json
   end
 
   def create
@@ -20,7 +20,10 @@ class WebApi::V1::AreasController < ApplicationController
     SideFxAreaService.new.before_create(@area, current_user)
     if @area.save
       SideFxAreaService.new.after_create(@area, current_user)
-      render json: @area, status: :created
+      render json: WebApi::V1::Fast::AreaSerializer.new(
+        @area, 
+        params: fastjson_params
+        ).serialized_json, status: :created
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
@@ -32,7 +35,10 @@ class WebApi::V1::AreasController < ApplicationController
     SideFxAreaService.new.before_update(@area, current_user)
     if @area.save
       SideFxAreaService.new.after_update(@area, current_user)
-      render json: @area, status: :ok
+      render json: WebApi::V1::Fast::AreaSerializer.new(
+        @area, 
+        params: fastjson_params
+        ).serialized_json, status: :ok
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
