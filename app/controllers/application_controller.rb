@@ -64,4 +64,10 @@ class ApplicationController < ActionController::API
     payload[:request_id] = request.request_id
     payload[:"X-Amzn-Trace-Id"] = request.headers["X-Amzn-Trace-Id"]
   end
+
+  def basic_params
+    {
+      current_user: current_user
+    }
+  end
 end
