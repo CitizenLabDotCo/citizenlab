@@ -14,6 +14,14 @@ executors:
         auth:
           username: $DOCKER_USER
           password: $DOCKER_PASS
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+      - image: 'camptocamp/postgres:9.6'
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
 jobs:
 
   build-docker-image:
@@ -27,6 +35,7 @@ jobs:
 
       - run: |
           docker build -t citizenlabdotco/cl2-back:CIRCLE_SHA1 .
+      - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/cl2-back:CIRCLE_SHA1
 
@@ -37,8 +46,9 @@ jobs:
     working_directory: /cl2_back
     steps:
       - run: |
-          pwd
-          ls
+          rake db:create
+          rake db:schema:load
+      - run: |
           rspec
 
   # deploy_staging:
