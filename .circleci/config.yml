@@ -1,0 +1,68 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2.1
+
+executors:
+  cl2-back:
+    parameters:
+      image-tag:
+        type: string
+    docker:
+      - image: citizenlabdotco/cl2-back:<< parameters.image-tag >>
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+jobs:
+
+  build-docker-image:
+    docker:
+      - image: docker:stable-git
+    steps:
+      - checkout
+
+      - setup_remote_docker
+
+      - run: |
+          docker build -t citizenlabdotco/cl2-back:$CIRCLE_BRANCH .
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push citizenlabdotco/cl2-back:$CIRCLE_BRANCH
+
+  test:
+    executor: 
+      name: cl2-back
+      image-tag: $CIRCLE_BRANCH
+
+    steps:
+      - run: |
+          rake -T
+
+  # deploy_staging:
+  #   machine: true
+  #   steps:
+  #     - run: |
+  #         SSHU_VAR=SSH_STG_USER
+  #         SSHH_VAR=SSH_STG_HOST
+  #         ssh ${!SSHU_VAR}@${!SSHH_VAR} "docker pull citizenlabdotco/cl2-emails:latest && cd cl2-deployment && docker stack deploy --compose-file docker-compose-staging.yml cl2-back-stg --with-registry-auth"
+
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build-docker-image:
+          context: docker-hub-access
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+      - test:
+          context: docker-hub-access
+          requires:
+            - build-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+
