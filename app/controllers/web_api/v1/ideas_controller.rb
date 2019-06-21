@@ -59,9 +59,17 @@ class WebApi::V1::IdeasController < ApplicationController
     if current_user
       votes = Vote.where(user: current_user, votable: @ideas, votable_type: 'Idea')
       votes_by_idea_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @ideas, include: ['author', 'user_vote', 'idea_images', 'assignee'], vbii: votes_by_idea_id, pcs: ParticipationContextService.new
+      render json: WebApi::V1::Fast::IdeaSerializer.new(
+        @ideas, 
+        params: fastjson_params(vbii: votes_by_idea_id, pcs: ParticipationContextService.new),
+        include: [:author, :user_vote, :idea_images, :assignee]
+        ).serialized_json
     else
-      render json: @ideas, include: ['author', 'idea_images'], pcs: ParticipationContextService.new
+      render json: WebApi::V1::Fast::IdeaSerializer.new(
+        @ideas, 
+        params: fastjson_params(pcs: ParticipationContextService.new),
+        include: [:author, :idea_images]
+        ).serialized_json
     end
 
   end
@@ -74,7 +82,7 @@ class WebApi::V1::IdeasController < ApplicationController
     @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
-    render json: @ideas, each_serializer: WebApi::V1::IdeaMarkerSerializer
+    render json: WebApi::V1::Fast::IdeaMarkerSerializer.new(@ideas, params: fastjson_params).serialized_json
   end
 
   def index_xlsx
@@ -140,7 +148,11 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       if @idea.save
         service.after_create(@idea, current_user)
-        render json: @idea.reload, status: :created, include: ['author','topics','areas','phases','user_vote','idea_images']
+        render json: WebApi::V1::Fast::IdeaSerializer.new(
+          @idea.reload, 
+          params: fastjson_params, 
+          include: [:author, :topics, :areas, :phases, :user_vote, :idea_images]
+          ).serialized_json, status: :created
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
       end
@@ -164,7 +176,11 @@ class WebApi::V1::IdeasController < ApplicationController
       if @idea.save
         authorize @idea
         service.after_update(@idea, current_user)
-        render json: @idea.reload, status: :ok, include: ['author','topics','areas','user_vote','idea_images']
+        render json: WebApi::V1::Fast::IdeaSerializer.new(
+          @idea.reload, 
+          params: fastjson_params, 
+          include: [:author, :topics, :areas, :user_vote, :idea_images]
+          ).serialized_json, status: :ok
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
       end
