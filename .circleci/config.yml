@@ -18,6 +18,10 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
+          AWS_ACCESS_KEY_ID: fakeawsid
+          AWS_SECRET_ACCESS_KEY: fakeawssecret
+          AWS_REGION: eu-central-1
+          AWS_S3_BUCKET: fakeawsbucket
       - image: 'camptocamp/postgres:9.6'
         environment:
           POSTGRES_USER: postgres
@@ -44,6 +48,8 @@ jobs:
       name: cl2-back
       image-tag: CIRCLE_SHA1
     working_directory: /cl2_back
+    environment:
+      RAILS_ENV: test
     steps:
       - run: |
           rake db:create
