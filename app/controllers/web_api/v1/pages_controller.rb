@@ -1,5 +1,4 @@
 class WebApi::V1::PagesController < ::ApplicationController
-
   before_action :set_page, only: [:show, :update, :destroy]
 
   def index
@@ -9,12 +8,20 @@ class WebApi::V1::PagesController < ::ApplicationController
 
     @pages = @pages.where(project_id: params[:project]) if params[:project].present?
 
-    render json: @pages, include: ['page_links']
+    render json: WebApi::V1::Fast::PageSerializer.new(
+      @pages, 
+      params: fastjson_params, 
+      include: [:page_links]
+      ).serialized_json
   end
 
 
   def show
-    render json: @page, include: ['page_links']
+    render json: WebApi::V1::Fast::PageSerializer.new(
+      @page, 
+      params: fastjson_params, 
+      include: [:page_links]
+      ).serialized_json
   end
 
   def by_slug
@@ -29,7 +36,11 @@ class WebApi::V1::PagesController < ::ApplicationController
     authorize @page
     if @page.save
       SideFxPageService.new.after_create(@page, current_user)
-      render json: @page, status: :created, include: ['page_links']
+      render json: WebApi::V1::Fast::PageSerializer.new(
+        @page, 
+        params: fastjson_params, 
+        include: [:page_links]
+        ).serialized_json, status: :created
     else
       render json: {errors: @page.errors.details}, status: :unprocessable_entity
     end
@@ -41,7 +52,11 @@ class WebApi::V1::PagesController < ::ApplicationController
     SideFxPageService.new.before_update(@page, current_user)
     if @page.save
       SideFxPageService.new.after_update(@page, current_user)
-      render json: @page, status: :ok, include: ['page_links']
+      render json: WebApi::V1::Fast::PageSerializer.new(
+        @page, 
+        params: fastjson_params, 
+        include: [:page_links]
+        ).serialized_json, status: :ok
     else
       render json: {errors: @page.errors.details}, status: :unprocessable_entity
     end

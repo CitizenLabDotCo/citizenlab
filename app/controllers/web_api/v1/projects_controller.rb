@@ -69,9 +69,12 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     authorize @project
     if @project.save
       SideFxProjectService.new.after_create(@project, current_user)
-      render json: @project, status: :created
+      render json: WebApi::V1::Fast::ProjectSerializer.new(
+        @project, 
+        params: fastjson_params, 
+        ).serialized_json, status: :created
     else
-      render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images', 'current_phase', 'avatars']
+      render json: {errors: @project.errors.details}, status: :unprocessable_entity
     end
   end
 
@@ -91,7 +94,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     SideFxProjectService.new.before_update(@project, current_user)
     if @project.save
       SideFxProjectService.new.after_update(@project, current_user)
-      render json: @project, status: :ok
+      render json: WebApi::V1::Fast::ProjectSerializer.new(
+        @project, 
+        params: fastjson_params, 
+        ).serialized_json, status: :ok
     else
       render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
     end
@@ -100,7 +106,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   def reorder
     if @project.insert_at(permitted_attributes(@project)[:ordering])
       SideFxProjectService.new.after_update(@project, current_user)
-      render json: @project, status: :ok
+      render json: WebApi::V1::Fast::ProjectSerializer.new(
+        @project, 
+        params: fastjson_params, 
+        ).serialized_json, status: :ok
     else
       render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
     end

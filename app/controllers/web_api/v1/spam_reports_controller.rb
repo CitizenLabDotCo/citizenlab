@@ -8,11 +8,19 @@ class WebApi::V1::SpamReportsController < ApplicationController
     @spam_reports = policy_scope(SpamReport)
       .where(spam_reportable_type: @spam_reportable_type, spam_reportable_id: @spam_reportable_id)
       .includes(:user)
-    render json: @spam_reports, include: ['user']
+    render json: WebApi::V1::Fast::SpamReportSerializer.new(
+      @spam_reports, 
+      params: fastjson_params,
+      include: [:user]
+      ).serialized_json
   end
 
   def show
-    render json: @spam_report, include: ['user']
+    render json: WebApi::V1::Fast::SpamReportSerializer.new(
+      @spam_report, 
+      params: fastjson_params,
+      include: [:user]
+      ).serialized_json
   end
 
   def create
@@ -24,7 +32,10 @@ class WebApi::V1::SpamReportsController < ApplicationController
 
     if @spam_report.save
       SideFxSpamReportService.new.after_create(@spam_report, current_user)
-      render json: @spam_report, status: :created
+      render json: WebApi::V1::Fast::SpamReportSerializer.new(
+        @spam_report, 
+        params: fastjson_params
+        ).serialized_json, status: :created
     else
       render json: { errors: @spam_report.errors.details }, status: :unprocessable_entity
     end
@@ -37,7 +48,11 @@ class WebApi::V1::SpamReportsController < ApplicationController
       if @spam_report.update(spam_report_params)
         authorize @spam_report
         SideFxSpamReportService.new.after_update(@spam_report, current_user)
-        render json: @spam_report.reload, status: :ok, include: ['user']
+        render json: WebApi::V1::Fast::SpamReportSerializer.new(
+          @spam_report.reload, 
+          params: fastjson_params,
+          include: [:user]
+        ).serialized_json, status: :ok
       else
         render json: { errors: @spam_report.errors.details }, status: :unprocessable_entity
       end

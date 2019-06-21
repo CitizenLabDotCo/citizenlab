@@ -19,7 +19,7 @@ class WebApi::V1::VotesController < ApplicationController
     render json: WebApi::V1::Fast::VoteSerializer.new(
       @vote, 
       params: fastjson_params, 
-      nclude: [:user]
+      include: [:user]
       ).serialized_json
   end
 
@@ -34,7 +34,10 @@ class WebApi::V1::VotesController < ApplicationController
 
     if @vote.save
       SideFxVoteService.new.after_create(@vote, current_user)
-      render json: @vote, status: :created
+      render json: WebApi::V1::Fast::VoteSerializer.new(
+        @vote, 
+        params: fastjson_params
+        ).serialized_json, status: :created
     else
       render json: { errors: @vote.errors.details }, status: :unprocessable_entity
     end
@@ -91,7 +94,10 @@ class WebApi::V1::VotesController < ApplicationController
 
         if @new_vote.save
           SideFxVoteService.new.after_create(@new_vote, current_user)
-          render json: @vote, status: :created
+          render json: WebApi::V1::Fast::VoteSerializer.new(
+            @vote, 
+            params: fastjson_params
+            ).serialized_json, status: :created
         else
           render json: {errors: @new_vote.errors.details}, status: :unprocessable_entity
         end
