@@ -44,6 +44,7 @@ jobs:
       name: cl2-back
       image-tag: CIRCLE_SHA1
     working_directory: /cl2_back
+    parallelism: 4
     environment:
       RAILS_ENV: test
     steps:
@@ -51,7 +52,8 @@ jobs:
           rake db:create
           rake db:schema:load
       - run: |
-          rake spec
+          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split)
+          bundle exec rspec -- ${TESTFILES}
 
   # deploy_staging:
   #   machine: true
