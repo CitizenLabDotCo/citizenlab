@@ -22,7 +22,8 @@ jobs:
     steps:
       - checkout
 
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
 
       - run: |
           docker build -t citizenlabdotco/cl2-back:CIRCLE_SHA1 .
@@ -36,7 +37,8 @@ jobs:
 
     steps:
       - run: |
-          rake -T
+          pwd
+          ls
 
   # deploy_staging:
   #   machine: true
