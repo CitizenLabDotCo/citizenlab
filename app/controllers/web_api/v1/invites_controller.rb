@@ -48,7 +48,7 @@ class WebApi::V1::InvitesController < ApplicationController
       end
     end
 
-    render json: @invites, include: ['invitee']
+    render json: WebApi::V1::Fast::InviteSerializer.new(@invites, params: fastjson_params, include: [:invitee]).serialized_json
   end
 
   def index_xlsx
@@ -124,7 +124,11 @@ class WebApi::V1::InvitesController < ApplicationController
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invite)
         end
         SideFxInviteService.new.after_accept @invite
-        render json: @invite.reload, include: ['invitee'], status: :ok
+        render json: WebApi::V1::Fast::InviteSerializer.new(
+          @invite.reload, 
+          params: fastjson_params,
+          include: [:invitee]
+          ).serialized_json, status: :ok
       end
     rescue ClErrors::TransactionError => e
       if e.error_key == :unprocessable_invitee

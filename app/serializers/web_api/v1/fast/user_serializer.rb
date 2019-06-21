@@ -9,8 +9,10 @@ class WebApi::V1::Fast::UserSerializer < WebApi::V1::Fast::BaseSerializer
     view_private_attributes? object, params
   }
 
-  attribute :avatar do |object|
-    object.avatar && object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
+  attribute :avatar, if: Proc.new { |object|
+    object.avatar
+  } do |object|
+    object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
 
   attribute :unread_notifications do |object|
