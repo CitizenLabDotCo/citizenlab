@@ -19,7 +19,7 @@ class WebApi::V1::Fast::UserSerializer < WebApi::V1::Fast::BaseSerializer
     object.unread_notifications.size
   end
 
-  has_many :granted_permissions, serializer: WebApi::V1::PermissionSerializer do |object, params|
+  has_many :granted_permissions, record_type: :permission, serializer: WebApi::V1::Fast::PermissionSerializer do |object, params|
     params[:granted_permissions]
   end
 

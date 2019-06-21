@@ -25,7 +25,10 @@ class WebApi::V1::MentionsController < ApplicationController
     end
 
 
-    render json: @users, each_serializer: WebApi::V1::External::UserSerializer
+    render json: WebApi::V1::Fast::UserSerializer.new(
+      @users, 
+      params: fastjson_params
+      ).serialized_json
   end
 
   def secure_controller?
