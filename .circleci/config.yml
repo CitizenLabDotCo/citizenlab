@@ -25,14 +25,14 @@ jobs:
       - setup_remote_docker
 
       - run: |
-          docker build -t citizenlabdotco/cl2-back:$CIRCLE_BRANCH .
+          docker build -t citizenlabdotco/cl2-back:CIRCLE_SHA1 .
           docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker push citizenlabdotco/cl2-back:$CIRCLE_BRANCH
+          docker push citizenlabdotco/cl2-back:CIRCLE_SHA1
 
   test:
     executor: 
       name: cl2-back
-      image-tag: $CIRCLE_BRANCH
+      image-tag: CIRCLE_SHA1
 
     steps:
       - run: |
