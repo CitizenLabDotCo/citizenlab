@@ -35,22 +35,17 @@ class WebApi::V1::Fast::IdeaSerializer < WebApi::V1::Fast::BaseSerializer
   has_many :idea_images, serializer: WebApi::V1::Fast::ImageSerializer
   has_many :phases
 
-  belongs_to :author, serializer: WebApi::V1::Fast::UserSerializer, record_type: :user
+  belongs_to :author, record_type: :user, serializer: WebApi::V1::Fast::UserSerializer
   belongs_to :project
   belongs_to :idea_status
   belongs_to :assignee, if: Proc.new { |object, params|
     can_moderate? object, params
-  }, serializer: WebApi::V1::Fast::UserSerializer, record_type: :user
+  }, record_type: :user, serializer: WebApi::V1::Fast::UserSerializer
 
   has_one :user_vote, if: Proc.new { |object, params|
     signed_in? object, params
-  }, serializer: WebApi::V1::Fast::VoteSerializer, record_type: :vote do |object, params|
+  }, record_type: :vote, serializer: WebApi::V1::Fast::VoteSerializer do |object, params|
     cached_user_vote object, params
-  end
-
-
-  def self.signed_in? object, params
-    current_user(params).present?
   end
 
   def self.can_moderate? object, params

@@ -61,9 +61,23 @@ class WebApi::V1::CommentsController < ApplicationController
     if current_user
       votes = Vote.where(user: current_user, votable: @comments)
       votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @comments, include: ['author', 'user_vote'], vbci: votes_by_comment_id, meta: { total: total_root_comments_count }
+      render json: { 
+        **WebApi::V1::Fast::CommentSerializer.new(
+          @comments, 
+          params: fastjson_params(vbci: votes_by_comment_id), 
+          include: [:author, :user_vote]
+          ).serializable_hash, 
+        meta: { total: total_root_comments_count }
+      }
     else
-      render json: @comments, include: ['author'], meta: { total: total_root_comments_count }
+      render json: { 
+        **WebApi::V1::Fast::CommentSerializer.new(
+          @comments, 
+          params: fastjson_params, 
+          include: [:author]
+          ).serializable_hash, 
+        meta: { total: total_root_comments_count }
+      }
     end
   end
 
@@ -89,14 +103,26 @@ class WebApi::V1::CommentsController < ApplicationController
     if current_user
       votes = Vote.where(user: current_user, votable: @comments.all)
       votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @comments, include: ['author', 'user_vote'], vbci: votes_by_comment_id
+      render json: WebApi::V1::Fast::CommentSerializer.new(
+        @comments, 
+        params: fastjson_params(vbci: votes_by_comment_id), 
+        include: [:author, :user_vote]
+        ).serialized_json
     else
-      render json: @comments, include: ['author']
+      render json: WebApi::V1::Fast::CommentSerializer.new(
+        @comments, 
+        params: fastjson_params, 
+        include: [:author]
+        ).serialized_json
     end
   end
 
   def show
-    render json: @comment, include: ['author']
+    render json: WebApi::V1::Fast::CommentSerializer.new(
+      @comment, 
+      params: fastjson_params, 
+      include: [:author]
+      ).serialized_json
   end
 
   def create
@@ -107,7 +133,11 @@ class WebApi::V1::CommentsController < ApplicationController
     SideFxCommentService.new.before_create @comment, current_user
     if @comment.save
       SideFxCommentService.new.after_create @comment, current_user
-      render json: @comment, status: :created, include: ['author']
+      render json: WebApi::V1::Fast::CommentSerializer.new(
+        @comment, 
+        params: fastjson_params, 
+        include: [:author]
+        ).serialized_json, status: :created
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end
@@ -119,7 +149,11 @@ class WebApi::V1::CommentsController < ApplicationController
     SideFxCommentService.new.before_update @comment, current_user
     if @comment.save
       SideFxCommentService.new.after_update @comment, current_user
-      render json: @comment, status: :ok, include: ['author']
+      render json: WebApi::V1::Fast::CommentSerializer.new(
+        @comment, 
+        params: fastjson_params, 
+        include: [:author]
+        ).serialized_json, status: :ok
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end

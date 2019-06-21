@@ -69,7 +69,7 @@ class WebApi::V1::Fast::ProjectSerializer < WebApi::V1::Fast::BaseSerializer
   end
   
   has_one :user_basket, record_type: :basket, if: Proc.new { |object, params|
-    current_user(params)
+    signed_in? object, params
   } do |object, params|
     user_basket object, params
   end

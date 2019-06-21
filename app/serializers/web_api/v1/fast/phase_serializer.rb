@@ -8,7 +8,7 @@ class WebApi::V1::Fast::PhaseSerializer < WebApi::V1::Fast::BaseSerializer
   has_many :permissions
   
   has_one :user_basket, if: Proc.new { |object, params|
-    current_user(params)
+    signed_in? object, params
   } do |object, params|
     user_basket object, params
   end
