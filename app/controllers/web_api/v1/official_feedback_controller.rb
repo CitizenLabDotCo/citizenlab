@@ -9,11 +9,17 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
       .per(params.dig(:page, :size))
       .order(created_at: :desc)
 
-    render json: @feedbacks
+    render json: WebApi::V1::Fast::OfficialFeedbackSerializer.new(
+      @feedbacks, 
+      params: fastjson_params
+      ).serialized_json
   end
 
   def show
-    render json: @feedback
+    render json: WebApi::V1::Fast::OfficialFeedbackSerializer.new(
+      @feedback, 
+      params: fastjson_params
+      ).serialized_json
   end
 
   def create
@@ -24,7 +30,10 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
     SideFxOfficialFeedbackService.new.before_create @feedback, current_user
     if @feedback.save
       SideFxOfficialFeedbackService.new.after_create @feedback, current_user
-      render json: @feedback, status: :created
+      render json: WebApi::V1::Fast::OfficialFeedbackSerializer.new(
+        @feedback, 
+        params: fastjson_params
+        ).serialized_json, status: :created
     else
       render json: { errors: @feedback.errors.details }, status: :unprocessable_entity
     end
@@ -37,7 +46,10 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
     SideFxOfficialFeedbackService.new.before_update @feedback, current_user
     if @feedback.save
       SideFxOfficialFeedbackService.new.after_update @feedback, current_user
-      render json: @feedback, status: :ok
+      render json: WebApi::V1::Fast::OfficialFeedbackSerializer.new(
+        @feedback, 
+        params: fastjson_params
+        ).serialized_json, status: :ok
     else
       render json: { errors: @feedback.errors.details }, status: :unprocessable_entity
     end

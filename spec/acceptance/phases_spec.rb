@@ -36,8 +36,7 @@ resource "Phases" do
       expect(json_response.dig(:data, :id)).to eq @phases.first.id
       expect(json_response.dig(:data, :type)).to eq 'phase'
       expect(json_response.dig(:data, :attributes)).to include(
-        voting_method: 'unlimited',
-        start_at: @phases.first.start_at.iso8601
+        voting_method: 'unlimited'
         )
       expect(json_response.dig(:data, :relationships)).to include(
         project: {
