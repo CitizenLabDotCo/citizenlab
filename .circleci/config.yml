@@ -77,10 +77,10 @@ jobs:
             - run: bundle exec rake web_api:docs:generate
             - run: bundle exec rake public_api:docs:generate
             - run: bundle exec rake admin_api:docs:generate
-            - run: apt-get -y install awscli # Needed for aws-cli installation
-            - deploy: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
-            - deploy: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/public_api/$CIRCLE_BRANCH --delete --acl public-read
-            - deploy: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/admin_api/$CIRCLE_BRANCH --delete --acl public-read
+            - run: apt-get -y install awscli
+            - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
+            - run: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/public_api/$CIRCLE_BRANCH --delete --acl public-read
+            - run: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/admin_api/$CIRCLE_BRANCH --delete --acl public-read
 
   # deploy_staging:
   #   machine: true
