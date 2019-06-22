@@ -58,7 +58,7 @@ resource "MachineTranslations" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :attribute_name)).to eq attribute_name
-        expect(json_response.dig(:data, :relationships, :translatable, :data, :type)).to eq 'ideas'
+        expect(json_response.dig(:data, :relationships, :translatable, :data, :id)).to eq idea_id
       end
     end
   end
