@@ -4,9 +4,6 @@
 #
 version: 2.1
 
-orbs:
-  aws-s3: circleci/aws-s3@1.0.11
-
 executors:
   cl2-back:
     parameters:
@@ -80,23 +77,10 @@ jobs:
             - run: bundle exec rake web_api:docs:generate
             - run: bundle exec rake public_api:docs:generate
             - run: bundle exec rake admin_api:docs:generate
-            - run: apt-get -y install python python-pip # Needed for aws-cli installation
-            - aws-s3/sync:
-                from: doc/api
-                to: s3://developers.citizenlab.co/api-docs/frontweb_api/$CIRCLE_BRANCH
-                arguments: '--acl public-read'
-                overwrite: true
-            - aws-s3/sync:
-                from: doc/public_api
-                to: s3://developers.citizenlab.co/api-docs/public_api/$CIRCLE_BRANCH
-                arguments: '--acl public-read'
-                overwrite: true
-            - aws-s3/sync:
-                from: doc/admin_api
-                to: s3://developers.citizenlab.co/api-docs/admin_api/$CIRCLE_BRANCH
-                arguments: '--acl public-read'
-                overwrite: true
-      # - deploy: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/frontweb_api/${env.BRANCH_NAME} --delete --acl public-read
+            - run: apt-get -y install awscli # Needed for aws-cli installation
+            - deploy: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
+            - deploy: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/public_api/$CIRCLE_BRANCH --delete --acl public-read
+            - deploy: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/admin_api/$CIRCLE_BRANCH --delete --acl public-read
 
   # deploy_staging:
   #   machine: true
