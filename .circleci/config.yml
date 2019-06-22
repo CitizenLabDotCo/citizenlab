@@ -68,27 +68,43 @@ jobs:
     environment:
       RAILS_ENV: test
     steps:
-      - when:
-          condition: $CIRCLE_PULL_REQUEST
-          steps:
-            - run: |
-                rake db:create
-                rake db:schema:load
-            - run: bundle exec rake web_api:docs:generate
-            - run: bundle exec rake public_api:docs:generate
-            - run: bundle exec rake admin_api:docs:generate
-            - run: apt-get -y install awscli
-            - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
-            - run: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/public_api/$CIRCLE_BRANCH --delete --acl public-read
-            - run: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/admin_api/$CIRCLE_BRANCH --delete --acl public-read
+      - run: |
+          rake db:create
+          rake db:schema:load
+      - run: bundle exec rake web_api:docs:generate
+      - run: bundle exec rake public_api:docs:generate
+      - run: bundle exec rake admin_api:docs:generate
+      - run: apt-get -y install awscli
+      - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
+      - run: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/public_api/$CIRCLE_BRANCH --delete --acl public-read
+      - run: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/admin_api/$CIRCLE_BRANCH --delete --acl public-read
 
-  # deploy_staging:
-  #   machine: true
-  #   steps:
-  #     - run: |
-  #         SSHU_VAR=SSH_STG_USER
-  #         SSHH_VAR=SSH_STG_HOST
-  #         ssh ${!SSHU_VAR}@${!SSHH_VAR} "docker pull citizenlabdotco/cl2-back:$CIRCLE_BRANCH && cd cl2-deployment && docker stack deploy --compose-file docker-compose-staging.yml cl2-back-stg --with-registry-auth"
+  deploy-cl-docs-portal:
+    resource_class: small
+    docker:
+      - image: byrnedo/alpine-curl
+    steps:
+      - run: "curl -u $CIRCLE_API_TOKEN: -d build_parameters[CIRCLE_JOB]=build https://circleci.com/api/v1.1/project/github/CitizenLabDotCo/cl-docs-portal/tree/master"
+
+  deploy-to-swarm:
+    resource_class: small
+    docker:
+      - image: buildo/alpine-ssh
+    parameters:
+      ssh_host:
+        type: string
+      ssh_user:
+        type: string
+        default: ubuntu
+      stack_name:
+        type: string
+        default: cl2-back
+      compose_file:
+        type: string
+        default: docker-compose-production.yml
+    steps:
+      - deploy:
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> "docker pull citizenlabdotco/cl2-back:$CIRCLE_BRANCH && cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
 
 
 workflows:
@@ -101,15 +117,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
-      # - test:
-      #     context: docker-hub-access
-      #     requires:
-      #       - build-docker-image
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - crowdin_master
-      - web-api-docs:
+      - test:
           context: docker-hub-access
           requires:
             - build-docker-image
@@ -117,13 +125,44 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
-      # - deploy_staging:
-      #     requires:
-      #       - test
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
-      #           - production
-
-
+      - web-api-docs:
+          context: docker-hub-access
+          requires:
+            - test
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+      - deploy-cl-docs-portal:
+          context: docker-hub-access
+          requires:
+            - web-api-docs
+      - deploy-to-swarm:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+          ssh_host: "52.29.30.188"
+          compose_file: docker-compose-staging.yml
+          stack_name: cl2-back-stg
+      - deploy-to-swarm:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "52.57.74.84"
+          compose_file: docker-compose-production-benelux.yml
+          stack_name: cl2-prd-bnlx-stack
+      - deploy-to-swarm:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "35.183.23.116"
+          compose_file: docker-compose-production-canada.yml
