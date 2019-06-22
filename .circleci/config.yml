@@ -37,25 +37,29 @@ jobs:
           docker_layer_caching: true
 
       - run: |
-          docker build -t citizenlabdotco/cl2-back:CIRCLE_SHA1 .
+          docker build -t citizenlabdotco/cl2-back:$CIRCLE_SHA1 .
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker push citizenlabdotco/cl2-back:CIRCLE_SHA1
+          docker push citizenlabdotco/cl2-back:$CIRCLE_SHA1
 
   test:
     resource_class: small
     executor: 
       name: cl2-back
-      image-tag: CIRCLE_SHA1
+      image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     parallelism: 4
     environment:
       RAILS_ENV: test
     steps:
-      - run: source .env
       - run: |
           rake db:create
           rake db:schema:load
+      - run: |
+          if [ ! -f .env ]
+          then
+            export $(cat .env | xargs)
+          fi
       - run: |
           TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/spec/**/*_spec.rb" | circleci tests split)
           bundle exec rspec -- ${TESTFILES}
@@ -64,7 +68,7 @@ jobs:
     resource_class: small
     executor:
       name: cl2-back
-      image-tag: CIRCLE_SHA1
+      image-tag: $CIRCLE_SHA1
     working_directory: /cl2-back
     steps:
       - when:
@@ -73,6 +77,11 @@ jobs:
             - run: |
                 rake db:create
                 rake db:schema:load
+            - run: |
+                if [ ! -f .env ]
+                then
+                  export $(cat .env | xargs)
+                fi
             - run: bundle exec rake web_api:docs:generate
             - aws-s3/sync:
                 from: doc/api
