@@ -56,13 +56,10 @@ jobs:
           rake db:create
           rake db:schema:load
       - run: |
-          if [ ! -f .env ]
-          then
-            export $(cat .env | xargs)
-          fi
-      - run: |
           TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/spec/**/*_spec.rb" | circleci tests split)
           bundle exec rspec -- ${TESTFILES}
+      - store_test_results:
+          path: spec/reports
 
   web-api-docs:
     resource_class: small
@@ -77,11 +74,6 @@ jobs:
             - run: |
                 rake db:create
                 rake db:schema:load
-            - run: |
-                if [ ! -f .env ]
-                then
-                  export $(cat .env | xargs)
-                fi
             - run: bundle exec rake web_api:docs:generate
             - aws-s3/sync:
                 from: doc/api
