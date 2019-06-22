@@ -52,6 +52,7 @@ jobs:
     environment:
       RAILS_ENV: test
     steps:
+      - run: source .env
       - run: |
           rake db:create
           rake db:schema:load
