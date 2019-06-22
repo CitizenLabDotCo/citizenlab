@@ -56,7 +56,7 @@ jobs:
           rake db:create
           rake db:schema:load
       - run: |
-          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/spec/**/*_spec.rb" | circleci tests split)
+          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
           bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
       - store_test_results:
           path: spec/reports
@@ -72,6 +72,8 @@ jobs:
           condition: $CIRCLECI_PULL_REQUEST
           steps:
             - run: |
+                pwd
+                ls
                 rake db:create
                 rake db:schema:load
             - run: bundle exec rake web_api:docs:generate
