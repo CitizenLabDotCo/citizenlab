@@ -217,11 +217,6 @@ GEM
       mimemagic (~> 0.3.2)
     case_transform (0.2)
       activesupport
-    ci_reporter (2.0.0)
-      builder (>= 2.1.2)
-    ci_reporter_rspec (1.0.0)
-      ci_reporter (~> 2.0)
-      rspec (>= 2.14, < 4)
     concurrent-ruby (1.1.4)
     connection_pool (2.2.2)
     counter_culture (2.1.1)
@@ -483,6 +478,8 @@ GEM
       activesupport (>= 3.0.0)
       mustache (~> 1.0, >= 0.99.4)
       rspec (~> 3.0)
+    rspec_junit_formatter (0.4.1)
+      rspec-core (>= 2, < 4, != 2.12.0)
     rubyXL (3.3.31)
       nokogiri (>= 1.4.4)
       rubyzip (>= 1.1.6)
@@ -574,7 +571,6 @@ DEPENDENCIES
   byebug
   carrierwave (~> 1.2.2)
   carrierwave-base64 (~> 2.6)
-  ci_reporter_rspec
   counter_culture (~> 2.1)
   dalli
   database_cleaner
@@ -618,6 +614,7 @@ DEPENDENCIES
   rinku (~> 2)
   rspec-rails
   rspec_api_documentation
+  rspec_junit_formatter
   rubyXL
   rubyzip (~> 1.2.1)
   scenic
