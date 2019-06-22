@@ -80,7 +80,7 @@ jobs:
             - run: bundle exec rake web_api:docs:generate
             - run: bundle exec rake public_api:docs:generate
             - run: bundle exec rake admin_api:docs:generate
-            - run: sudo apt-get -y install curl # Needed for aws-cli installation
+            - run: apt-get -y install curl # Needed for aws-cli installation
             - aws-s3/sync:
                 from: doc/api
                 to: s3://developers.citizenlab.co/api-docs/frontweb_api/$CIRCLE_BRANCH
