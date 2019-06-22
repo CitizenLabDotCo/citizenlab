@@ -112,7 +112,7 @@ workflows:
       - web-api-docs:
           context: docker-hub-access
           requires:
-            - test
+            - build-docker-image
           filters:
             branches:
               ignore:
