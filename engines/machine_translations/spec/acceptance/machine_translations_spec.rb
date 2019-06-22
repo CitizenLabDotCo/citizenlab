@@ -31,19 +31,6 @@ resource "MachineTranslations" do
         expect(json_response.dig(:data, :attributes, :translation)).to eq translation.translation
       end
 
-      describe '' do
-        let(:translation) { nil }
-        let(:idea_id) { create(:idea).id }
-        let(:attribute_name) { 'title_multiloc' }
-        let(:locale_to) { 'en' }
-
-        example_request "A new machine translation is created when the translation was never done before" do
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :attribute_name)).to eq attribute_name
-          expect(json_response.dig(:data, :relationships, :translatable, :data, :type)).to eq 'ideas'
-        end
-      end
 
       example "Update the translation if it has already been created but the original text might have changed" do
         prev_updated_at = translation.updated_at
@@ -58,6 +45,20 @@ resource "MachineTranslations" do
         translation.translatable.destroy!
         do_request
         expect(status).to eq 404
+      end
+    end
+
+    describe '' do
+      let(:translation) { nil }
+      let(:idea_id) { create(:idea).id }
+      let(:attribute_name) { 'title_multiloc' }
+      let(:locale_to) { 'en' }
+
+      example_request "A new machine translation is created when the translation was never done before" do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :attribute_name)).to eq attribute_name
+        expect(json_response.dig(:data, :relationships, :translatable, :data, :type)).to eq 'ideas'
       end
     end
   end
