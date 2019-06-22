@@ -4,6 +4,9 @@
 #
 version: 2.1
 
+orbs:
+  aws-s3: circleci/aws-s3@1.0.0
+
 executors:
   cl2-back:
     parameters:
@@ -25,7 +28,6 @@ executors:
 jobs:
 
   build-docker-image:
-    resource_class: small
     docker:
       - image: docker:stable-git
     steps:
@@ -41,6 +43,7 @@ jobs:
           docker push citizenlabdotco/cl2-back:CIRCLE_SHA1
 
   test:
+    resource_class: small
     executor: 
       name: cl2-back
       image-tag: CIRCLE_SHA1
@@ -53,8 +56,29 @@ jobs:
           rake db:create
           rake db:schema:load
       - run: |
-          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split)
+          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/spec/**/*_spec.rb" | circleci tests split)
           bundle exec rspec -- ${TESTFILES}
+
+  web-api-docs:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: CIRCLE_SHA1
+    working_directory: /cl2-back
+    steps:
+      - when:
+          condition: $CIRCLECI_PULL_REQUEST
+          steps:
+            - run: |
+                rake db:create
+                rake db:schema:load
+            - run: bundle exec rake web_api:docs:generate
+            - aws-s3/sync:
+                from: doc/api
+                to: s3://developers.citizenlab.co/api-docs/frontweb_api/$CIRCLE_BRANCH
+                arguments: '--acl public-read'
+                overwrite: true
+            # - deploy: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/frontweb_api/${env.BRANCH_NAME} --delete --acl public-read
 
   # deploy_staging:
   #   machine: true
@@ -83,4 +107,13 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+      - web-api-docs:
+          context: docker-hub-access
+          requires:
+            - test
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+
 
