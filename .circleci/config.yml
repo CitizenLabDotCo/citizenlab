@@ -67,16 +67,14 @@ jobs:
     executor:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
-    working_directory: /cl2-back
+    # working_directory: /cl2-back
     steps:
       - run: |
-          pwd
-          ls
-          rake db:create
-          rake db:schema:load
-      - run: bundle exec rake web_api:docs:generate
+          cd /cl2-back && rake db:create
+          cd /cl2-back && rake db:schema:load
+      - run: cd /cl2-back && bundle exec rake web_api:docs:generate
       - aws-s3/sync:
-          from: doc/api
+          from: /cl2-back/doc/api
           to: s3://developers.citizenlab.co/api-docs/frontweb_api/$CIRCLE_BRANCH
           arguments: '--acl public-read'
           overwrite: true
@@ -117,5 +115,13 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+      # - deploy_staging:
+      #     requires:
+      #       - test
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
+      #           - production
 
 
