@@ -68,6 +68,8 @@ jobs:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
+    environment:
+      RAILS_ENV: test
     steps:
       - when:
           condition: $CIRCLE_PULL_REQUEST
