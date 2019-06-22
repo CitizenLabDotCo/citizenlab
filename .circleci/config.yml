@@ -67,17 +67,32 @@ jobs:
     executor:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
-    # working_directory: /cl2-back
+    working_directory: /cl2_back
     steps:
-      - run: |
-          cd /cl2-back && rake db:create
-          cd /cl2-back && rake db:schema:load
-      - run: cd /cl2-back && bundle exec rake web_api:docs:generate
-      - aws-s3/sync:
-          from: /cl2-back/doc/api
-          to: s3://developers.citizenlab.co/api-docs/frontweb_api/$CIRCLE_BRANCH
-          arguments: '--acl public-read'
-          overwrite: true
+      - when:
+          condition: $CIRCLE_PULL_REQUEST
+          steps:
+            - run: |
+                rake db:create
+                rake db:schema:load
+            - run: bundle exec rake web_api:docs:generate
+            - run: bundle exec rake public_api:docs:generate
+            - run: bundle exec rake admin_api:docs:generate
+            - aws-s3/sync:
+                from: doc/api
+                to: s3://developers.citizenlab.co/api-docs/frontweb_api/$CIRCLE_BRANCH
+                arguments: '--acl public-read'
+                overwrite: true
+            - aws-s3/sync:
+                from: doc/public_api
+                to: s3://developers.citizenlab.co/api-docs/public_api/$CIRCLE_BRANCH
+                arguments: '--acl public-read'
+                overwrite: true
+            - aws-s3/sync:
+                from: doc/admin_api
+                to: s3://developers.citizenlab.co/api-docs/admin_api/$CIRCLE_BRANCH
+                arguments: '--acl public-read'
+                overwrite: true
       # - deploy: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/frontweb_api/${env.BRANCH_NAME} --delete --acl public-read
 
   # deploy_staging:
