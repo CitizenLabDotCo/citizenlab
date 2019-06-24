@@ -166,10 +166,12 @@ workflows:
             branches:
               only:
                 - master
+                - production
       - web-api-docs:
           context: docker-hub-access
           requires:
             - test
+            - slow-tests
           filters:
             branches:
               ignore:
@@ -182,6 +184,7 @@ workflows:
           context: docker-hub-access
           requires:
             - test
+            - slow-tests
           filters:
             branches:
               only:
