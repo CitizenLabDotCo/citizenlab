@@ -27,32 +27,33 @@ const config = {
     filename: isDev ? '[name].bundle.js' : '[name].[contenthash].bundle.js',
     chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js'
   },
-  
-//   optimization: {
-//     splitChunks: {
-//       chunks: 'all',
-//     },
-//   },
-  
-	optimization: {
-		splitChunks: {
-			cacheGroups: {
-				commons: {
-					chunks: "initial",
-					minChunks: 2,
-					maxInitialRequests: 5,
-					minSize: 0
-				},
-				vendor: {
-					test: /node_modules/,
-					chunks: "initial",
-					name: "vendor",
-					priority: 10,
-					enforce: true
-				}
-			}
-		}
-	},
+
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
+
+// 	optimization: {
+// 		splitChunks: {
+// 			cacheGroups: {
+// 				commons: {
+// 					chunks: "initial",
+// 					minChunks: 2,
+// 					maxInitialRequests: 5,
+// 					minSize: 0
+// 				},
+// 				vendor: {
+// 					test: /node_modules/,
+// 					chunks: "initial",
+// 					name: "vendor",
+// 					priority: 10,
+// 					enforce: true
+// 				}
+// 			}
+// 		}
+// 	},
 
   mode: isDev ? 'development' : 'production',
 
