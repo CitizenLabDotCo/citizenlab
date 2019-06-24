@@ -1,5 +1,5 @@
 class ProjectImageUploader < CarrierWave::Uploader::Base
-  include BaseUploader
+  include BaseImageUploader
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -52,11 +52,5 @@ class ProjectImageUploader < CarrierWave::Uploader::Base
   def extension_whitelist
     %w(jpg jpeg jpe jif jfif jfi jp2 jpf jpm jpx j2k jxr gif png tif tiff bmp pbm pgm ppm pnm webp heif heic ico tga sgi fits flif sid svg)
   end
-
-  # Override the filename of the uploaded files:
-  # Avoid using model.id or version_name here, see uploader/store.rb for details.
-  # def filename
-  #   "something.jpg" if original_filename
-  # end
 
 end
