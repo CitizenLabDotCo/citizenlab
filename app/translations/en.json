@@ -1076,7 +1076,7 @@
   "app.containers.IdeaCards.areas": "Areas",
   "app.containers.IdeaCards.cards": "Cards",
   "app.containers.IdeaCards.clear": "Clear",
-  "app.containers.IdeaCards.clearAll": "Clear all",
+  "app.containers.IdeaCards.clearAll": "Reset filters",
   "app.containers.IdeaCards.commentsSortTitle": "Sort comments by",
   "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.filterPerArea": "Filter per area",
