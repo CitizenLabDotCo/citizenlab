@@ -67,14 +67,28 @@ describe('Idea form page', () => {
     cy.get('.e2e-idea-form-location-input-field input').its('val').should('not.equal', 'antwerp');
     cy.get('.e2e-idea-form-location-input-field input').its('val').should('not.be.empty');
 
-    // check if the form as image and file upload components
+    // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
     cy.get('#e2e-idea-file-upload');
 
-    cy.get('#2e-idea-edit-save-button').click();
+    // save the form
+    cy.get('#e2e-idea-edit-save-button').click();
     cy.wait(3000);
 
-    // check url
+    // verify updated idea page
+    cy.location('pathname').should('eq', `/en-GB/ideas/${ideaSlug}`);
+    cy.get('#e2e-idea-show');
+    cy.get('#e2e-idea-show').find('.e2e-ideatitle').contains(newIdeaTitle);
+    cy.get('#e2e-idea-show').find('#e2e-idea-description').contains(newIdeaContent);
+    cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1).contains('Education and youth');
+    cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
+    cy.get('#e2e-idea-show').find('.e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
+    cy.get('#e2e-idea-show').find('.e2e-idea-last-modified-button').contains('Last modified');
+
+    // verify modal with edit changelog
+    cy.get('#e2e-idea-show').find('.e2e-idea-last-modified-button').click();
+    cy.wait(1000);
+    cy.get('.e2e-activities-changelog').find('.e2e-activities-changelog-entry').should('have.length', 2);
   });
 
   after(() => {

@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -135,7 +136,24 @@ const config = {
       template: 'app/index.html'
     }),
 
-    new webpack.HashedModuleIdsPlugin(),
+    ...isDev ? [
+      new webpack.ProgressPlugin(),
+      // new BundleAnalyzerPlugin(),
+    ] : [
+      new webpack.HashedModuleIdsPlugin(),
+      new MiniCssExtractPlugin({
+        filename: '[name].[contenthash].css',
+        chunkFilename: '[name].[contenthash].chunk.css'
+      }),
+      new OptimizeCSSAssetsPlugin()
+    ],
+
+    ...isProd ? [
+      new SentryCliPlugin({
+        include: path.resolve(process.cwd(), 'build'),
+        release: process.env.CIRCLE_BUILD_NUM,
+      })
+    ] : []
   ],
 
   resolve: {
@@ -143,31 +161,5 @@ const config = {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
 };
-
-if (isDev) {
-  config.plugins.push(
-    new webpack.ProgressPlugin(),
-
-    // new BundleAnalyzerPlugin({
-    //   statsOptions: {
-    //     source: false
-    //   }
-    // })
-  );
-} else {
-  config.plugins.push(
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-      chunkFilename: '[name].[contenthash].chunk.css'
-    })
-  );
-
-  if (isProd) {
-    new SentryCliPlugin({
-      include: path.resolve(process.cwd(), 'build'),
-      release: process.env.CIRCLE_BUILD_NUM,
-    });
-  }
-}
 
 module.exports = config;
