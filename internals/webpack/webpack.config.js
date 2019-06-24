@@ -137,11 +137,11 @@ const config = {
 
     new webpack.HashedModuleIdsPlugin(),
 
-    new BundleAnalyzerPlugin({
-      statsOptions: {
-        source: false
-      }
-    })
+    // new BundleAnalyzerPlugin({
+    //   statsOptions: {
+    //     source: false
+    //   }
+    // })
   ],
 
   resolve: {
