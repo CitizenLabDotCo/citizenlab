@@ -27,6 +27,12 @@ const config = {
     filename: isDev ? '[name].bundle.js' : '[name].[contenthash].bundle.js',
     chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js'
   },
+  
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 
   mode: isDev ? 'development' : 'production',
 
