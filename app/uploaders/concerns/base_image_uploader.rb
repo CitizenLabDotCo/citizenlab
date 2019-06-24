@@ -1,4 +1,4 @@
-module BaseUploader
+module BaseImageUploader
   extend ActiveSupport::Concern
 
   included do
