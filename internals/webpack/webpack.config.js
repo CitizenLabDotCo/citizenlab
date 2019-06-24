@@ -11,6 +11,7 @@ const SentryCliPlugin = require('@sentry/webpack-plugin');
 const argv = require('yargs').argv;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
@@ -152,7 +153,13 @@ const config = {
 };
 
 if (isDev) {
-  config.plugins.push(new webpack.ProgressPlugin());
+  config.plugins.push(new webpack.ProgressPlugin(),
+    // new BundleAnalyzerPlugin({
+    //   statsOptions: {
+    //     source: false
+    //   }
+    // })
+  );
 } else if (isProd) {
   config.plugins.push(new SentryCliPlugin({
     include: path.resolve(process.cwd(), 'build'),
