@@ -151,7 +151,7 @@ const config = {
         filename: '[name].[contenthash].css',
         chunkFilename: '[name].[contenthash].chunk.css'
       }),
-      new OptimizeCssAssetsPlugin({
+      new OptimizeCSSAssetsPlugin({
         cssProcessor: require('cssnano'),
         cssProcessorPluginOptions: {
           preset: [
