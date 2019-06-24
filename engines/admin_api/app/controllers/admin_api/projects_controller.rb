@@ -3,7 +3,7 @@ module AdminApi
 
     def index
       @projects = Project.all
-      render json: @projects
+      render json: WebApi::V1::Fast::ProjectSerializer.new(@projects).serialized_json
     end
 
     def template_export

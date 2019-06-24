@@ -3,7 +3,7 @@ module AdminApi
 
     def index
       @areas = Area.all
-      render json: @areas
+      render json: WebApi::V1::Fast::AreaSerializer.new(@areas).serialized_json
     end
 
   end
