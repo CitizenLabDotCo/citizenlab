@@ -181,6 +181,7 @@ const IdeaIcon = styled(Icon)`
 `;
 
 const EmptyMessage = styled.div`
+  max-width: 400px;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -246,43 +247,43 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   position: relative;
 `;
 
-// const ClearAllIcon = styled(Icon)`
-//   flex:  0 0 16px;
-//   width: 16px;
-//   height: 16px;
-//   fill: ${colors.label};
-//   margin-right: 5px;
-//   margin-top: -2px;
-// `;
+const ClearFiltersIcon = styled(Icon)`
+  flex:  0 0 16px;
+  width: 16px;
+  height: 16px;
+  fill: ${colors.label};
+  margin-right: 5px;
+  margin-top: -2px;
+`;
 
-// const ClearAllText = styled.span`
-//   color: ${colors.label};
-//   font-size: ${fontSizes.base}px;
-//   font-weight: 400;
-//   line-height: auto;
-// `;
+const ClearFiltersText = styled.span`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: auto;
+`;
 
-// const ClearAllButton = styled.button`
-//   height: 32px;
-//   position: absolute;
-//   top: -48px;
-//   right: 0px;
-//   display: flex;
-//   align-items: center;
-//   padding: 0;
-//   margin: 0;
-//   cursor: pointer;
+const ClearFiltersButton = styled.button`
+  height: 32px;
+  position: absolute;
+  top: -48px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
 
-//   &:hover {
-//     ${ClearAllIcon} {
-//       fill: #000;
-//     }
+  &:hover {
+    ${ClearFiltersIcon} {
+      fill: #000;
+    }
 
-//     ${ClearAllText} {
-//       color: #000;
-//     }
-//   }
-// `;
+    ${ClearFiltersText} {
+      color: #000;
+    }
+  }
+`;
 
 const Spacer = styled.div`
   flex: 1;
@@ -649,16 +650,15 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   id="e2e-ideas-filters"
                   filterColumnWidth={filterColumnWidth}
                 >
-                  {/*
                   {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
-                    <ClearAllButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnClear}>
-                      <ClearAllIcon name="close" />
-                      <ClearAllText>
+                    <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnClear}>
+                      {/* <ClearFiltersIcon name="close" /> */}
+                      <ClearFiltersText>
                         <FormattedMessage {...messages.clearAll} />
-                      </ClearAllText>
-                    </ClearAllButton>
+                      </ClearFiltersText>
+                    </ClearFiltersButton>
                   }
-                  */}
+
                   <FiltersSidebar
                     selectedIdeaFilters={selectedIdeaFilters}
                     onChange={this.handleIdeaFiltersOnChange}

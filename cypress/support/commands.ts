@@ -8,6 +8,7 @@ declare global {
       logout: typeof logout;
       signup: typeof signup;
       acceptCookies: typeof acceptCookies;
+      getIdeaById: typeof getIdeaById;
       getProjectBySlug: typeof getProjectBySlug;
       getUserBySlug: typeof getUserBySlug;
       getAuthUser: typeof getAuthUser;
@@ -131,6 +132,16 @@ export function signup(firstName: string, lastName: string, email: string, passw
 export function acceptCookies() {
   cy.get('#e2e-cookie-banner').as('cookieBanner');
   cy.get('@cookieBanner').find('.e2e-accept-cookies-btn').click();
+}
+
+export function getIdeaById(ideaId: string) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'GET',
+    url: `web_api/v1/ideas/${ideaId}`
+  });
 }
 
 export function getProjectBySlug(projectSlug: string) {
@@ -477,6 +488,7 @@ Cypress.Commands.add('apiCreateAdmin', apiCreateAdmin);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('signup', signup);
 Cypress.Commands.add('acceptCookies', acceptCookies);
+Cypress.Commands.add('getIdeaById', getIdeaById);
 Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
 Cypress.Commands.add('getUserBySlug', getUserBySlug);
 Cypress.Commands.add('getAuthUser', getAuthUser);

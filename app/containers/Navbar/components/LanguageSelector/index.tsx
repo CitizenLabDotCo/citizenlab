@@ -87,7 +87,6 @@ const ListItem = styled.button`
   padding: 10px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  outline: none;
   cursor: pointer;
 
   &.last {
