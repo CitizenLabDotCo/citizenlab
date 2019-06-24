@@ -18,13 +18,19 @@ module BaseImageUploader
     end
   end
 
-  # from https://github.com/carrierwaveuploader/carrierwave/wiki/how-to:-create-random-and-unique-filenames-for-all-versioned-files#unique-filenames
+  # We're not caching, since the external image optimization process will
+  # quickly generate a new version that should replace this one asap
+  def fog_attributes
+    {'Cache-Control' => 'no-cache'}
+  end
 
+  # from https://github.com/carrierwaveuploader/carrierwave/wiki/how-to:-create-random-and-unique-filenames-for-all-versioned-files#unique-filenames
   def filename
     "#{secure_token}.#{file.extension}" if original_filename.present?
   end
 
   protected
+
   def secure_token
     var = :"@#{mounted_as}_secure_token"
     model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)
