@@ -59,6 +59,23 @@ jobs:
       - store_test_results:
           path: spec/reports
 
+  slow-tests:
+    resource_class: small
+    executor: 
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      RAILS_ENV: test
+    steps:
+      - run: |
+          rake db:create
+          rake db:schema:load
+      - run: |
+          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -t slow_test
+      - store_test_results:
+          path: spec/reports
+
   web-api-docs:
     resource_class: small
     executor:
@@ -85,6 +102,17 @@ jobs:
       - image: byrnedo/alpine-curl
     steps:
       - run: "curl -u $CIRCLE_API_TOKEN: -d build_parameters[CIRCLE_JOB]=build https://circleci.com/api/v1.1/project/github/CitizenLabDotCo/cl-docs-portal/tree/master"
+
+  push-deployment-docker-image:
+    resource_class: small
+    docker:
+      - image: docker:stable-git
+    steps:
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker pull citizenlabdotco/cl2-back:$CIRCLE_SHA1
+      - run: docker tag citizenlabdotco/cl2-back/$CIRCLE_SHA1 citizenlabdotco/cl2-back:$CIRCLE_BRANCH
+      - deploy: 
+          command: docker push citizenlabdotco/cl2-back:$CIRCLE_BRANCH
 
   deploy-to-swarm:
     resource_class: small
@@ -130,6 +158,14 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+      - slow-tests:
+          context: docker-hub-access
+          requires:
+            - build-docker-image
+          filters:
+            branches:
+              only:
+                - master
       - web-api-docs:
           context: docker-hub-access
           requires:
@@ -142,9 +178,20 @@ workflows:
           context: docker-hub-access
           requires:
             - web-api-docs
+      - push-deployment-docker-image:
+          context: docker-hub-access
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+                - production
       - deploy-to-swarm:
           requires:
             - test
+            - slow-tests
+            - push-deployment-docker-image
           filters:
             branches:
               only:
@@ -156,6 +203,7 @@ workflows:
       - deploy-to-swarm:
           requires:
             - test
+            - push-deployment-docker-image
           filters:
             branches:
               only:
@@ -167,6 +215,7 @@ workflows:
       - deploy-to-swarm:
           requires:
             - test
+            - push-deployment-docker-image
           filters:
             branches:
               only:
