@@ -144,14 +144,27 @@ const config = {
 
     ...isDev ? [
       new webpack.ProgressPlugin(),
-      // new BundleAnalyzerPlugin(),
+      new BundleAnalyzerPlugin(),
     ] : [
       new webpack.HashedModuleIdsPlugin(),
       new MiniCssExtractPlugin({
         filename: '[name].[contenthash].css',
         chunkFilename: '[name].[contenthash].chunk.css'
       }),
-      new OptimizeCSSAssetsPlugin()
+      new OptimizeCssAssetsPlugin({
+        cssProcessor: require('cssnano'),
+        cssProcessorPluginOptions: {
+          preset: [
+            'default',
+            {
+              discardComments: {
+                removeAll: true
+              }
+            }
+          ]
+        },
+        canPrint: true
+      })
     ],
 
     ...isProd ? [
