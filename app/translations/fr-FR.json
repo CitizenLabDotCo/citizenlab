@@ -1076,7 +1076,7 @@
   "app.containers.IdeaCards.areas": "Lieux",
   "app.containers.IdeaCards.cards": "Idées",
   "app.containers.IdeaCards.clear": "Effacer",
-  "app.containers.IdeaCards.clearAll": "Tout effacer",
+  "app.containers.IdeaCards.clearAll": "Réinitialiser les filtres",
   "app.containers.IdeaCards.commentsSortTitle": "Trier les commentaires par",
   "app.containers.IdeaCards.filter": "Filtrer",
   "app.containers.IdeaCards.filterPerArea": "Filtrer par quartier",
