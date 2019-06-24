@@ -286,7 +286,7 @@ export default class SideModal extends PureComponent<Props, State> {
             <HiddenSpan>
               <FormattedMessage {...messages.closeButtonAria} />
             </HiddenSpan>
-            <CloseIcon name="close3" />
+            <CloseIcon name="close" />
           </CloseButton >
         </Overlay>
       </CSSTransition>
