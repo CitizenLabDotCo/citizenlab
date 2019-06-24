@@ -1,4 +1,4 @@
-module BaseUploader
+module BaseFileUploader
   extend ActiveSupport::Concern
 
   included do
@@ -7,12 +7,7 @@ module BaseUploader
     end
   end
 
-  class_methods do
-  end
-
   def store_dir
-    # tenant = Apartment::Tenant.current
-    # "uploads/#{tenant}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
     tenant = Tenant.current
     "uploads/#{tenant.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
@@ -21,6 +16,12 @@ module BaseUploader
     def asset_host
       Tenant.current.base_backend_uri
     end
+  end
+
+  def fog_attributes
+    # Deleting consecutive whitespaces in filename because of
+    # https://github.com/fog/fog-aws/issues/160
+    {"Content-Disposition" => "attachment; filename=\"#{model.name.strip.gsub(/\s+/, ' ')}\""}
   end
 
 end
