@@ -22,6 +22,21 @@ executors:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+
+commands:
+  wait-for-postgres:
+    steps:
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgres && exit 1
+
 jobs:
 
   build-docker-image:
@@ -49,6 +64,7 @@ jobs:
     environment:
       RAILS_ENV: test
     steps:
+      - wait-for-postgres
       - run: |
           rake db:create
           rake db:schema:load
@@ -68,6 +84,7 @@ jobs:
     environment:
       RAILS_ENV: test
     steps:
+      - wait-for-postgres
       - run: |
           rake db:create
           rake db:schema:load
