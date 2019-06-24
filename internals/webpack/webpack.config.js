@@ -32,6 +32,10 @@ const config = {
     splitChunks: {
       chunks: 'all',
     },
+    minimizer: !isDev ? [
+      new TerserJSPlugin(),
+      new OptimizeCSSAssetsPlugin()
+    ] : [],
   },
 
   mode: isDev ? 'development' : 'production',
@@ -151,20 +155,20 @@ const config = {
         filename: '[name].[contenthash].css',
         chunkFilename: '[name].[contenthash].chunk.css'
       }),
-      new OptimizeCSSAssetsPlugin({
-        cssProcessor: require('cssnano'),
-        cssProcessorPluginOptions: {
-          preset: [
-            'default',
-            {
-              discardComments: {
-                removeAll: true
-              }
-            }
-          ]
-        },
-        canPrint: true
-      })
+      // new OptimizeCSSAssetsPlugin({
+      //   cssProcessor: require('cssnano'),
+      //   cssProcessorPluginOptions: {
+      //     preset: [
+      //       'default',
+      //       {
+      //         discardComments: {
+      //           removeAll: true
+      //         }
+      //       }
+      //     ]
+      //   },
+      //   canPrint: true
+      // })
     ],
 
     ...isProd ? [
