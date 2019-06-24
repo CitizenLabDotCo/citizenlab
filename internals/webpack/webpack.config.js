@@ -4,6 +4,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
@@ -33,7 +34,7 @@ const config = {
       chunks: 'all',
     },
     minimizer: !isDev ? [
-      new TerserJSPlugin(),
+      new TerserPlugin(),
       new OptimizeCSSAssetsPlugin()
     ] : [],
   },
