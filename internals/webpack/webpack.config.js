@@ -4,7 +4,9 @@ const isProd = process.env.NODE_ENV === 'production';
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -25,6 +27,16 @@ const config = {
     publicPath: '/',
     filename: isDev ? '[name].bundle.js' : '[name].[contenthash].bundle.js',
     chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js'
+  },
+
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+    minimizer: !isDev ? [
+      new TerserPlugin(),
+      new OptimizeCSSAssetsPlugin()
+    ] : [],
   },
 
   mode: isDev ? 'development' : 'production',
@@ -134,14 +146,43 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'app/index.html'
     }),
-
-    new webpack.HashedModuleIdsPlugin(),
-
     // new BundleAnalyzerPlugin({
     //   statsOptions: {
     //     source: false
     //   }
     // })
+
+    ...isDev ? [
+      new webpack.ProgressPlugin(),
+      new BundleAnalyzerPlugin(),
+    ] : [
+      new webpack.HashedModuleIdsPlugin(),
+      new MiniCssExtractPlugin({
+        filename: '[name].[contenthash].css',
+        chunkFilename: '[name].[contenthash].chunk.css'
+      }),
+      // new OptimizeCSSAssetsPlugin({
+      //   cssProcessor: require('cssnano'),
+      //   cssProcessorPluginOptions: {
+      //     preset: [
+      //       'default',
+      //       {
+      //         discardComments: {
+      //           removeAll: true
+      //         }
+      //       }
+      //     ]
+      //   },
+      //   canPrint: true
+      // })
+    ],
+
+    ...isProd ? [
+      new SentryCliPlugin({
+        include: path.resolve(process.cwd(), 'build'),
+        release: process.env.CIRCLE_BUILD_NUM,
+      })
+    ] : []
   ],
 
   resolve: {
@@ -155,25 +196,5 @@ const config = {
     },
   },
 };
-
-if (isDev) {
-  config.plugins.push(
-    new webpack.ProgressPlugin(),
-  );
-} else {
-  config.plugins.push(
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-      chunkFilename: '[name].[contenthash].chunk.css'
-    })
-  );
-
-  if (isProd) {
-    new SentryCliPlugin({
-      include: path.resolve(process.cwd(), 'build'),
-      release: process.env.CIRCLE_BUILD_NUM,
-    });
-  }
-}
 
 module.exports = config;

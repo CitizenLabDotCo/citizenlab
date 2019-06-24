@@ -123,6 +123,6 @@ export default defineMessages({
   },
   clearAll: {
     id: 'app.containers.IdeaCards.clearAll',
-    defaultMessage: 'Clear all',
+    defaultMessage: 'Clear filters',
   },
 });
