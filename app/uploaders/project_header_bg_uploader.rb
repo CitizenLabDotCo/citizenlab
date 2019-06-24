@@ -1,5 +1,5 @@
 class ProjectHeaderBgUploader < CarrierWave::Uploader::Base
-  include BaseUploader
+  include BaseImageUploader
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
