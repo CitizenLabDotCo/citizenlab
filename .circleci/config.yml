@@ -108,11 +108,11 @@ jobs:
     docker:
       - image: docker:stable-git
     steps:
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker pull citizenlabdotco/cl2-back:$CIRCLE_SHA1
-      - run: docker tag citizenlabdotco/cl2-back/$CIRCLE_SHA1 citizenlabdotco/cl2-back:$CIRCLE_BRANCH
-      - deploy: 
-          command: docker push citizenlabdotco/cl2-back:$CIRCLE_BRANCH
+      - run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker pull citizenlabdotco/cl2-back:$CIRCLE_SHA1
+          docker tag citizenlabdotco/cl2-back/$CIRCLE_SHA1 citizenlabdotco/cl2-back:$CIRCLE_BRANCH
+          docker push citizenlabdotco/cl2-back:$CIRCLE_BRANCH
 
   deploy-to-swarm:
     resource_class: small
