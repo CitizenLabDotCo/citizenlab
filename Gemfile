@@ -33,10 +33,9 @@ group :development, :test do
   gem 'rspec_api_documentation'
   gem 'rspec-rails'
   gem 'database_cleaner'
-  gem 'ci_reporter_rspec'
   gem 'simplecov'
   gem 'simplecov-rcov'
-  
+  gem 'rspec_junit_formatter'
   gem 'rack-mini-profiler'
 end
 
