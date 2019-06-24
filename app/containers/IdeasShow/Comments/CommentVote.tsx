@@ -262,7 +262,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
             onClick={this.onVote}
             className={`${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'} ${votingEnabled ? 'enabled' : 'disabled'}`}
           >
-            <UpvoteIcon name="upvote-2" className={`${voted ? 'voted' : ''} ${votingEnabled ? 'enabled' : 'disabled'}`} />
+            <UpvoteIcon name="upvote" className={`${voted ? 'voted' : ''} ${votingEnabled ? 'enabled' : 'disabled'}`} />
           </UpvoteIconWrapper>
 
           {upvoteCount > 0 &&
