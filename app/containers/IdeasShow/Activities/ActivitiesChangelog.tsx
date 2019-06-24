@@ -1,10 +1,14 @@
 // Libraries
-import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
+import React, { memo } from 'react';
+import { adopt } from 'react-adopt';
+import { get } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { IdeaActivity } from 'services/ideas';
-import { userByIdStream, IUser } from 'services/users';
+
+// resources
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // Components
 import UserName from 'components/UI/UserName';
@@ -21,18 +25,14 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 const ChangeLogEntry = styled.div`
   display: flex;
-  margin-bottom: 1rem;
-`;
-
-const AvatarWrapper = styled.div`
-  flex: 0 0 2rem;
-  height: 2rem;
-  margin-right: 1rem;
+  align-items: center;
+  margin-bottom: 25px;
 `;
 
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 10px;
 
   p {
     font-size: ${fontSizes.base}px;
@@ -46,72 +46,55 @@ const TextWrapper = styled.div`
   }
 `;
 
-// Typing
-interface Props {
+interface InputProps {
   activity: IdeaActivity;
 }
 
-interface State {
-  user: IUser | null;
+interface DataProps {
+  user: GetUserChildProps;
 }
 
-export default class ActivityChangeLog extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
+interface Props extends InputProps, DataProps {}
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: null,
-    };
-    this.subscriptions = [];
-  }
+const ActivityChangeLog = memo<Props>(({ activity, user }) => {
+  return (
+    <ChangeLogEntry className="e2e-activities-changelog-entry">
+      <Avatar userId={activity.relationships.user.data.id} size="36px" />
+      <TextWrapper>
+        <p>
+          <FormattedMessage
+            {...messages.changeLogEntry}
+            values={{
+              userName: <UserName user={(!isNilOrError(user) ? user : null)} />,
+              changeType: activity.attributes.action,
+            }}
+          />
+        </p>
+        <p>
+          <FormattedDate
+            value={activity.attributes.acted_at}
+            year="numeric"
+            month="2-digit"
+            day="2-digit"
+          />
+          &nbsp;
+          <FormattedTime
+            value={activity.attributes.acted_at}
+            hour="2-digit"
+            minute="2-digit"
+          />
+        </p>
+      </TextWrapper>
+    </ChangeLogEntry>
+  );
+});
 
-  componentDidMount() {
-    this.subscriptions = [
-      userByIdStream(this.props.activity.relationships.user.data.id).observable.subscribe((response) => {
-        this.setState({ user: response });
-      })
-    ];
-  }
+const Data = adopt<DataProps, InputProps>({
+  user: ({ activity, render }) => <GetUser id={get(activity, 'relationships.user.data.id')}>{render}</GetUser>
+});
 
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  render() {
-    const { user } = this.state;
-
-    return (
-      <ChangeLogEntry>
-        <AvatarWrapper>
-          <Avatar userId={this.props.activity.relationships.user.data.id as string} size="30px" />
-        </AvatarWrapper>
-        <TextWrapper>
-          <p>
-            <FormattedMessage
-              {...messages.changeLogEntry}
-              values={{
-                userName: <UserName user={(user ? user.data : null)} />,
-                changeType: this.props.activity.attributes.action,
-              }}
-            />
-          </p>
-          <p>
-            <FormattedDate
-              value={this.props.activity.attributes.acted_at}
-              year="numeric"
-              month="2-digit"
-              day="2-digit"
-            />
-            &nbsp;
-            <FormattedTime
-              value={this.props.activity.attributes.acted_at}
-              hour="2-digit"
-              minute="2-digit"
-            />
-          </p>
-        </TextWrapper>
-      </ChangeLogEntry>
-    );
-  }
-}
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ActivityChangeLog {...inputProps} {...dataProps} />}
+  </Data>
+);
