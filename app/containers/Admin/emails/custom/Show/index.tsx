@@ -23,7 +23,6 @@ import StatusLabel from 'components/UI/StatusLabel';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
 import T from 'components/T';
-import Icon from 'components/UI/Icon';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -31,6 +30,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // styling
 import { fontSizes } from 'utils/styleUtils';
 import InfoTooltip from 'components/admin/InfoTooltip';
+
+import Stamp from './stamp';
 
 const PageHeader = styled.div`
   display: flex;
@@ -45,7 +46,7 @@ const CampaignHeader = styled.div`
   margin-bottom: 20px;
 `;
 
-const StampIcon = styled(Icon)`
+const StampIcon = styled(Stamp)`
   margin-right: 20px;
 `;
 
@@ -191,7 +192,7 @@ class Show extends React.Component<Props, State> {
             }
           </PageHeader>
           <CampaignHeader>
-            <StampIcon name="stamp" />
+            <StampIcon />
             <FromTo>
               <div>
                 <FromToHeader>

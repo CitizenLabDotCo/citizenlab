@@ -24,7 +24,9 @@ module.exports = function (api) {
   ];
 
   const plugins = [
-    "babel-plugin-styled-components",
+    ["babel-plugin-styled-components", {
+      "pure": true
+    }],
     "@babel/plugin-syntax-dynamic-import",
     "@babel/proposal-class-properties",
     "@babel/proposal-object-rest-spread",
@@ -39,8 +41,10 @@ module.exports = function (api) {
         "@babel/typescript"
       ],
       plugins: [
+        ["babel-plugin-styled-components", {
+          "pure": true
+        }],
         "transform-es2015-modules-commonjs",
-        "babel-plugin-styled-components",
         "@babel/plugin-syntax-dynamic-import",
         "@babel/proposal-class-properties",
         "@babel/proposal-object-rest-spread",

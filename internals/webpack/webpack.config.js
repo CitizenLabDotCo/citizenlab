@@ -136,23 +136,29 @@ const config = {
     }),
 
     new webpack.HashedModuleIdsPlugin(),
+
+    new BundleAnalyzerPlugin({
+      statsOptions: {
+        source: false
+      }
+    })
   ],
 
   resolve: {
     modules: [path.resolve(process.cwd(), 'app'), 'node_modules'],
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
+
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 };
 
 if (isDev) {
   config.plugins.push(
     new webpack.ProgressPlugin(),
-
-    // new BundleAnalyzerPlugin({
-    //   statsOptions: {
-    //     source: false
-    //   }
-    // })
   );
 } else {
   config.plugins.push(
