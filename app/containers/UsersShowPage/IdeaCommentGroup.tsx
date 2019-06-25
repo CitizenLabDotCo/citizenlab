@@ -183,7 +183,6 @@ export class IdeaCommentGroup extends PureComponent<Props> {
                   commentId={comment.id}
                   commentType="parent"
                   editing={false}
-                  moderator={canModerate(projectId, { data: user })}
                   onCommentSaved={nothingHappens}
                   onCancelEditing={nothingHappens}
                 />
