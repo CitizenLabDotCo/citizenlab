@@ -31,11 +31,16 @@ describe EmailCampaigns::DeliveryService do
 
     it "enqueues an external event job" do
       travel_to campaign.ic_schedule.start_time do
-        expectation = expect{service.send_on_schedule(Time.now)}
-        expectation.to have_enqueued_job(PublishRawEventToSegmentJob)
-        .exactly(1).times
-        expectation.to have_enqueued_job(PublishRawEventToRabbitJob)
-        .exactly(1).times
+        expect{service.send_on_schedule(Time.now)}
+          .to have_enqueued_job(PublishRawEventToRabbitJob)
+          .exactly(1).times
+      end
+    end
+
+    it "does not send any email commands through Segment" do
+      travel_to campaign.ic_schedule.start_time do
+        expect{service.send_on_schedule(Time.now)}
+          .not_to have_enqueued_job(PublishRawEventToSegmentJob)
       end
     end
 
@@ -65,12 +70,14 @@ describe EmailCampaigns::DeliveryService do
     let(:user) { create(:user) }
 
     it "enqueues an external event job" do
-      expectation = expect{service.send_on_activity(activity)}
-      expectation.to have_enqueued_job(PublishRawEventToSegmentJob)
-      .exactly(1).times
-      expectation.to have_enqueued_job(PublishRawEventToRabbitJob)
-      .exactly(1).times
-      expect(EmailCampaigns::Delivery.all).to be_empty
+      expect{service.send_on_activity(activity)}
+        .to have_enqueued_job(PublishRawEventToRabbitJob)
+        .exactly(1).times
+    end
+
+    it "does not send any email commands through Segment" do
+      expect{service.send_on_activity(activity)}
+        .not_to have_enqueued_job(PublishRawEventToSegmentJob)
     end
   end
 
