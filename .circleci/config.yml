@@ -102,6 +102,7 @@ jobs:
     environment:
       RAILS_ENV: test
     steps:
+      - wait-for-postgres
       - run: |
           rake db:create
           rake db:schema:load
