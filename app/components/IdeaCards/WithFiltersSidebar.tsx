@@ -578,7 +578,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
               {!showMapView &&
                 <AboveContentRight>
-                  <SelectSort onChange={this.handleSortOnChange} />
+                  <SelectSort
+                    onChange={this.handleSortOnChange}
+                    alignment="right"
+                  />
                 </AboveContentRight>
               }
             </AboveContent>
