@@ -115,17 +115,6 @@ const config = {
       },
     }),
 
-    // Strip all moment locales except “en” and the ones defined below
-    // (“en” is built into Moment and can’t be removed).
-    new MomentLocalesPlugin({
-      localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))]
-    }),
-
-    new MomentTimezoneDataPlugin({
-      startYear: 2012,
-      endYear: currentYear + 10,
-    }),
-
     new ForkTsCheckerWebpackPlugin({
       checkSyntacticErrors: true,
       tsconfig: path.join(process.cwd(), 'app/tsconfig.json'),
@@ -136,7 +125,9 @@ const config = {
 
     new HtmlWebpackPlugin({
       template: 'app/index.html'
-    })
+    }),
+
+    // new BundleAnalyzerPlugin()
   ],
 
   resolve: {
@@ -147,15 +138,23 @@ const config = {
 
 if (isDev) {
   config.plugins.push(
-    new webpack.ProgressPlugin(),
-
-    // new BundleAnalyzerPlugin()
+    new webpack.ProgressPlugin()
   );
 }
 
 if (!isDev) {
   config.plugins.push(
     new webpack.HashedModuleIdsPlugin(),
+
+    // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
+    new MomentLocalesPlugin({
+      localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))]
+    }),
+
+    new MomentTimezoneDataPlugin({
+      startYear: 2012,
+      endYear: currentYear + 10,
+    }),
 
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
@@ -166,13 +165,6 @@ if (!isDev) {
   config.optimization = {
     // splitChunks: {
     //   chunks: 'all'
-    // },
-
-    // splitChunks: {
-    //   hidePathInfo: true,
-    //   minSize: 30000,
-    //   maxAsyncRequests: 5,
-    //   maxInitialRequests: 3,
     // },
 
     runtimeChunk: 'single',
@@ -192,7 +184,6 @@ if (!isDev) {
         },
       },
     },
-
     minimizer: [
       new TerserPlugin({
         cache: true,

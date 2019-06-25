@@ -15,6 +15,7 @@ import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
 
 // resources
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 
 // i18n
@@ -28,7 +29,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { darken, rgba } from 'polished';
 
 // typings
@@ -270,6 +271,7 @@ interface InputProps extends GetIdeasInputProps  {
 }
 
 interface DataProps {
+  windowSize: GetWindowSizeChildProps;
   ideas: GetIdeasChildProps;
 }
 
@@ -335,6 +337,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       participationMethod,
       participationContextId,
       participationContextType,
+      windowSize,
       ideas,
       className,
       theme,
@@ -351,6 +354,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
+    const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
 
     return (
       <Container id="e2e-ideas-container" className={className}>
@@ -367,9 +371,9 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
 
           <RightFilterArea>
             <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'}`}>
-              <SelectSort onChange={this.handleSortOnChange} />
+              <SelectSort onChange={this.handleSortOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
               {allowProjectsFilter && <SelectProjects onChange={this.handleProjectsOnChange} />}
-              <SelectTopics onChange={this.handleTopicsOnChange} />
+              <SelectTopics onChange={this.handleTopicsOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
             </DropdownFilters>
 
             <Spacer />
@@ -450,6 +454,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
 }
 
 const Data = adopt<DataProps, InputProps>({
+  windowSize: <GetWindowSize debounce={50} />,
   ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>
 });
 
