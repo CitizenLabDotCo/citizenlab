@@ -146,6 +146,8 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'app/index.html'
     }),
+    // better to run the bundle analyzer in production mode,
+    // but can be useful in dev mode for a more readable analyze
     // new BundleAnalyzerPlugin({
     //   statsOptions: {
     //     source: false
