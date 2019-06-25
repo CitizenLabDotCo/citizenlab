@@ -154,7 +154,6 @@ const config = {
 
     ...isDev ? [
       new webpack.ProgressPlugin(),
-      new BundleAnalyzerPlugin(),
     ] : [
       new webpack.HashedModuleIdsPlugin(),
       new MiniCssExtractPlugin({
