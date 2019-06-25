@@ -13,5 +13,13 @@ module EmailCampaigns
     def activity_triggers
       {'Notifications::ProjectPhaseStarted' => {'created' => true}}
     end
+
+    def generate_commands recipient:, activity:
+      commands = super
+      commands.map do |command|
+        command[:delay] = 8.hours.to_i
+        command
+      end
+    end
   end
 end
