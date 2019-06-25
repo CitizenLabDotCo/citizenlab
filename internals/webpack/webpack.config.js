@@ -148,6 +148,7 @@ const config = {
 if (isDev) {
   config.plugins.push(
     new webpack.ProgressPlugin(),
+
     // new BundleAnalyzerPlugin()
   );
 }
@@ -155,6 +156,7 @@ if (isDev) {
 if (!isDev) {
   config.plugins.push(
     new webpack.HashedModuleIdsPlugin(),
+
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
       chunkFilename: '[name].[contenthash].chunk.css'
@@ -162,9 +164,35 @@ if (!isDev) {
   );
 
   config.optimization = {
+    // splitChunks: {
+    //   chunks: 'all'
+    // },
+
+    // splitChunks: {
+    //   hidePathInfo: true,
+    //   minSize: 30000,
+    //   maxAsyncRequests: 5,
+    //   maxInitialRequests: 3,
+    // },
+
+    runtimeChunk: 'single',
     splitChunks: {
-      chunks: 'all'
+      chunks: 'all',
+      maxInitialRequests: 10,
+      minSize: 0,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            const packageName = module.context.match(
+              /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
+            )[1];
+            return `npm.${packageName.replace('@', '')}`;
+          },
+        },
+      },
     },
+
     minimizer: [
       new TerserPlugin({
         cache: true,
