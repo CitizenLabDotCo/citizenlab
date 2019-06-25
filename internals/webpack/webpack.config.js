@@ -47,6 +47,58 @@ const config = {
     },
   },
 
+  ...!isDev ? {
+    optimization: {
+      runtimeChunk: 'single',
+      splitChunks: {
+        chunks: 'all',
+        maxInitialRequests: 10,
+        minSize: 0,
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name(module) {
+              const packageName = module.context.match(
+                /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
+              )[1];
+              return `npm.${packageName.replace('@', '')}`;
+            },
+          },
+        },
+      },
+      minimizer: [
+        new TerserPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true,
+          terserOptions: {
+            ecma: undefined,
+            warnings: false,
+            parse: {},
+            compress: {},
+            mangle: true,
+            module: false,
+            output: null,
+            toplevel: false,
+            nameCache: null,
+            ie8: false,
+            keep_classnames: undefined,
+            keep_fnames: false,
+            safari10: false
+          }
+        }),
+        new OptimizeCSSAssetsPlugin({
+          assetNameRegExp: /\.css$/g,
+          cssProcessor: cssnano,
+          cssProcessorPluginOptions: {
+            preset: ['default', { discardComments: { removeAll: true } }],
+          },
+          canPrint: true
+        })
+      ]
+    }
+  } : {},
+
   module: {
     rules: [
       {
@@ -127,103 +179,37 @@ const config = {
       template: 'app/index.html'
     }),
 
-    // new BundleAnalyzerPlugin()
-  ],
+    // isDev && new BundleAnalyzerPlugin(),
+
+    isDev && new webpack.ProgressPlugin(),
+
+    !isDev && new webpack.HashedModuleIdsPlugin(),
+
+    // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
+    !isDev && new MomentLocalesPlugin({
+      localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))]
+    }),
+
+    !isDev && new MomentTimezoneDataPlugin({
+      startYear: 2012,
+      endYear: currentYear + 10,
+    }),
+
+    !isDev && new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[name].[contenthash].chunk.css'
+    }),
+
+    isProd && new SentryCliPlugin({
+      include: path.resolve(process.cwd(), 'build'),
+      release: process.env.CIRCLE_BUILD_NUM,
+    })
+  ].filter(Boolean),
 
   resolve: {
     modules: [path.resolve(process.cwd(), 'app'), 'node_modules'],
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
 };
-
-if (isDev) {
-  config.plugins.push(
-    new webpack.ProgressPlugin()
-  );
-}
-
-if (!isDev) {
-  config.plugins.push(
-    new webpack.HashedModuleIdsPlugin(),
-
-    // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
-    new MomentLocalesPlugin({
-      localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))]
-    }),
-
-    new MomentTimezoneDataPlugin({
-      startYear: 2012,
-      endYear: currentYear + 10,
-    }),
-
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-      chunkFilename: '[name].[contenthash].chunk.css'
-    }),
-  );
-
-  config.optimization = {
-    // splitChunks: {
-    //   chunks: 'all'
-    // },
-
-    runtimeChunk: 'single',
-    splitChunks: {
-      chunks: 'all',
-      maxInitialRequests: 10,
-      minSize: 0,
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name(module) {
-            const packageName = module.context.match(
-              /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
-            )[1];
-            return `npm.${packageName.replace('@', '')}`;
-          },
-        },
-      },
-    },
-    minimizer: [
-      new TerserPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-        terserOptions: {
-          ecma: undefined,
-          warnings: false,
-          parse: {},
-          compress: {},
-          mangle: true,
-          module: false,
-          output: null,
-          toplevel: false,
-          nameCache: null,
-          ie8: false,
-          keep_classnames: undefined,
-          keep_fnames: false,
-          safari10: false
-        }
-      }),
-      new OptimizeCSSAssetsPlugin({
-        assetNameRegExp: /\.css$/g,
-        cssProcessor: cssnano,
-        cssProcessorPluginOptions: {
-          preset: ['default', { discardComments: { removeAll: true } }],
-        },
-        canPrint: true
-      })
-    ]
-  };
-}
-
-if (isProd) {
-  config.plugins.push(
-    new SentryCliPlugin({
-      include: path.resolve(process.cwd(), 'build'),
-      release: process.env.CIRCLE_BUILD_NUM,
-    })
-  );
-}
 
 module.exports = config;
