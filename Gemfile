@@ -116,7 +116,9 @@ gem 'dalli'
 gem 'aws-sdk-s3', '~> 1'
 gem 'rinku', '~> 2'
 gem 'rails_semantic_logger'
-gem 'fast_jsonapi'
+# For serialization of heterogeneous collections (i.e. notifications), see
+# https://github.com/Netflix/fast_jsonapi/pull/410.
+gem 'fast_jsonapi', github: 'dvandersluis/fast_jsonapi', branch: 'heterogeneous-collection'  
 
 gem 'admin_api', path: 'engines/admin_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'
