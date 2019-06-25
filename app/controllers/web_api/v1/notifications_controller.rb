@@ -16,7 +16,17 @@ class WebApi::V1::NotificationsController < ApplicationController
       @notifications = @notifications.where(read_at: nil)
     end
 
-    render json: @notifications
+    serializers = { 
+      Notifications::CommentOnYourComment => WebApi::V1::Fast::Notifications::CommentOnYourCommentSerializer 
+    }
+    render json: WebApi::V1::Fast::Notifications::NotificationSerializer.new(
+      @notifications, 
+      params: fastjson_params,
+      serializers: serializers,
+      ).serialized_json
+    # render json: WebApi::V1::Fast::Notifications::NotificationSerializer.new(
+    #   @notifications
+    #   ).serialized_json
   end
 
   def mark_all_read

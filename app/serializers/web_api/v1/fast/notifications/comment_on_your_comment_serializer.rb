@@ -1,4 +1,4 @@
-class WebApi::V1::Notifications::Fast::CommentOnYourCommentSerializer < WebApi::V1::Fast::Notifications::NotificationSerializer
+class WebApi::V1::Fast::Notifications::CommentOnYourCommentSerializer < WebApi::V1::Fast::Notifications::NotificationSerializer
 
   # belongs_to :initiating_user, serializer: WebApi::V1::UserSerializer
   # belongs_to :idea, serializer: WebApi::V1::IdeaSerializer
