@@ -146,6 +146,12 @@ describe SanitizationService do
       expect(output).to eq '<p><a href="https://www.google.com" target="_blank">https://www.google.com</a></p>'
     end
 
+    it "transforms plain-text links with one domain segment" do
+      html = "<p>http://localhost:3000/ideas</p>"
+      output = service.linkify(html)
+      expect(output).to eq '<p><a href="http://localhost:3000/ideas" target="_blank">http://localhost:3000/ideas</a></p>'
+    end
+
     it "doesn't transforms an existing anchor" do
       html = '<p><a href="https://www.google.com" target="_blank">https://www.google.com</a></p>'
       output = service.linkify(html)
