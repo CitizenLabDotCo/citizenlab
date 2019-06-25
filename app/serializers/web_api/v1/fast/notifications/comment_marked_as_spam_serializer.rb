@@ -1,24 +1,19 @@
-class WebApi::V1::Notifications::CommentMarkedAsSpamSerializer < WebApi::V1::Notifications::NotificationSerializer
-
-  belongs_to :initiating_user, serializer: WebApi::V1::UserSerializer
-  belongs_to :spam_report, serializer: WebApi::V1::SpamReportSerializer
-  belongs_to :comment, serializer: WebApi::V1::CommentSerializer
-  belongs_to :idea, serializer: WebApi::V1::IdeaSerializer
-  belongs_to :project, serializer: WebApi::V1::ProjectSerializer
-
-  attributes :initiating_user_first_name, :initiating_user_last_name, :initiating_user_slug
-
-
-  def initiating_user_first_name
+class WebApi::V1::Fast::Notifications::CommentMarkedAsSpamSerializer < WebApi::V1::Fast::Notifications::NotificationSerializer
+  attribute :initiating_user_first_name do |object|
     object.initiating_user&.first_name
   end
 
-  def initiating_user_last_name
+  attribute :initiating_user_last_name do |object|
     object.initiating_user&.last_name
   end
 
-  def initiating_user_slug
+  attribute :initiating_user_slug do |object|
     object.initiating_user&.slug
   end
 
+  belongs_to :initiating_user, record_type: :user, serializer: WebApi::V1::Fast::UserSerializer
+  belongs_to :spam_report, serializer: WebApi::V1::Fast::SpamReportSerializer
+  belongs_to :idea, serializer: WebApi::V1::Fast::IdeaSerializer
+  belongs_to :comment, serializer: WebApi::V1::Fast::CommentSerializer
+  belongs_to :project, serializer: WebApi::V1::Fast::ProjectSerializer
 end
