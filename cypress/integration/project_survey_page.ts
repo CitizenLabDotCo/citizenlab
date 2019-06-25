@@ -1,37 +1,100 @@
 import { randomString } from '../support/commands';
 
-describe('Project survey page', () => {
-  beforeEach(() => {
-    cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
-  });
+describe('Continuous project with survey', () => {
+  const projectTitle = randomString();
+  const projectDescription = randomString();
+  const projectDescriptionPreview = randomString(30);
+  let projectId: string;
+  let projectSlug: string;
 
-  it('shows where you are', () => {
-    cy.get('.e2e-projects-dropdown-link').should('have.class', 'active').should('be.visible');
-    cy.get('.e2e-project-ideas-link').should('have.class', 'active').should('be.visible');
-  });
-
-  it('shows the list of idea cards', () => {
-    cy.get('#e2e-ideas-container');
-  });
-
-  it('asks unauthorised users to log in or sign up before they vote', () => {
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').first().find('.upvote.enabled').click();
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('.e2e-login-button');
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('.e2e-register-button');
-  });
-
-  it('takes unauthorised users through signup and back to the page', () => {
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').first().find('.upvote.enabled').click();
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('.e2e-login-button').click();
-    cy.location('pathname').should('eq', '/en-GB/sign-in');
-  });
-
-  it('takes you to the idea page when clicking an idea card', () => {
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').first().as('ideaCard');
-    cy.get('@ideaCard').then(($a) => {
-      const href = $a.prop('href');
-      cy.get('@ideaCard').click();
-      cy.url().should('eq', href);
+  before(() => {
+    cy.apiCreateProject(
+      'continuous',
+      projectTitle,
+      projectDescriptionPreview,
+      projectDescription,
+      'published',
+      undefined,
+      'https://citizenlabco.typeform.com/to/Yv6B7V',
+      'typeform'
+    ).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
     });
   });
+
+  beforeEach(() => {
+    cy.visit(`/projects/${projectSlug}/survey`);
+    cy.wait(1000);
+  });
+
+  it('shows the survey', () => {
+    cy.get('#e2e-continuous-project-survey-container');
+    cy.get('.e2e-typeform-survey');
+    cy.wait(5000);
+    cy.get('.e2e-typeform-survey iframe');
+    cy.get('.e2e-typeform-survey iframe').then(($iframe) => {
+      const $body = $iframe.contents().find('body');
+      cy.wrap($body).find('#root');
+      cy.wrap($body).find('._Text-sc-1t2ribu-0-div').contains('Start');
+    });
+  });
+
+   after(() => {
+    cy.apiRemoveProject(projectId);
+   });
+});
+
+describe('Timeline project with survey phase', () => {
+  const projectTitle = randomString();
+  const projectDescription = randomString();
+  const projectDescriptionPreview = randomString(30);
+  const phaseTitle = randomString();
+  let projectId: string;
+  let projectSlug: string;
+  let phaseId: string;
+  let phaseSlug: string;
+
+  before(() => {
+    cy.apiCreateProject('timeline', projectTitle, projectDescriptionPreview, projectDescription).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+
+      return cy.apiCreatePhase(
+        projectId,
+        phaseTitle,
+        '2018-03-01',
+        '2025-01-01',
+        'survey',
+        true,
+        true,
+        true,
+        'https://citizenlabco.typeform.com/to/Yv6B7V',
+        'typeform'
+      );
+    }).then((phase) => {
+      phaseId = phase.body.data.id;
+      phaseSlug = phase.body.data.attributes.slug;
+    });
+  });
+
+  beforeEach(() => {
+    cy.visit(`/projects/${projectSlug}/process`);
+    cy.wait(1000);
+  });
+
+  it('shows the survey', () => {
+    cy.get('.e2e-typeform-survey');
+    cy.wait(5000);
+    cy.get('.e2e-typeform-survey iframe');
+    cy.get('.e2e-typeform-survey iframe').then(($iframe) => {
+      const $body = $iframe.contents().find('body');
+      cy.wrap($body).find('#root');
+      cy.wrap($body).find('._Text-sc-1t2ribu-0-div').contains('Start');
+    });
+  });
+
+   after(() => {
+    cy.apiRemoveProject(projectId);
+   });
 });
