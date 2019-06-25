@@ -119,6 +119,14 @@ module EmailCampaigns
         end
     end
 
+    # A command can have the following structure:
+    # {
+    #   time: , # Time at which the send_on_schedule was sent, optional
+    #   activity: # Activity that triggered the command, optional
+    #   recipient: # A user object, required
+    #   event_payload: # A hash with the daa that's needed to generate email view, required
+    #   delay: # Integer in seconds, optional
+    # }
     def process_command campaign, command
       if campaign.respond_to? :mailer_class
         send_command_internal(campaign, command)
@@ -147,7 +155,9 @@ module EmailCampaigns
         payload: command[:event_payload]
       }
 
-      PublishRawEventToRabbitJob.perform_later rabbit_event, "campaigns.command.#{campaign.class.campaign_name}"
+      PublishRawEventToRabbitJob
+        .set(wait: command[:delay] || 0)
+        .perform_later rabbit_event, "campaigns.command.#{campaign.class.campaign_name}"
     end
 
     # This method is triggered when the given sending command should be sent
