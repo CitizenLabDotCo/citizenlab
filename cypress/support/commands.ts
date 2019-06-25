@@ -352,7 +352,9 @@ export function apiCreateProject(
   descriptionPreview: string,
   description: string,
   publicationStatus: 'draft' | 'published' | 'archived' = 'published',
-  assigneeId?: string
+  assigneeId?: string,
+  surveyUrl?: string,
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms'
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
@@ -381,6 +383,9 @@ export function apiCreateProject(
             'nl-BE': description
           },
           default_assignee_id: assigneeId,
+          participation_method: surveyUrl ? 'survey' : undefined,
+          survey_embed_url: surveyUrl,
+          survey_service: surveyService,
         }
       }
     });
@@ -410,8 +415,22 @@ export function apiCreatePhase(
   participationMethod: 'ideation' | 'information' | 'survey' | 'budgeting',
   canPost: boolean,
   canVote: boolean,
-  canComment: boolean
+  canComment: boolean,
+  surveyUrl?: string,
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms'
 ) {
+
+  /*
+  end_at: "2019-07-31"
+  participation_method: "survey"
+  start_at: "2019-06-01"
+  survey_embed_url: "https://citizenlabco.typeform.com/to/Yv6B7V"
+  survey_service: "typeform"
+  title_multiloc:
+  en-GB: "Survey phase"
+  nl-BE: "Survey phase"
+  */
+
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -433,7 +452,9 @@ export function apiCreatePhase(
           participation_method: participationMethod,
           posting_enabled: canPost,
           voting_enabled: canVote,
-          commenting_enabled: canComment
+          commenting_enabled: canComment,
+          survey_embed_url: surveyUrl,
+          survey_service: surveyService
         }
       }
     });
