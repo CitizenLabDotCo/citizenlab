@@ -13,6 +13,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
+const cssnano = require('cssnano');
 const appLocalesMomentPairs = require(path.join(process.cwd(), 'app/containers/App/constants')).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
@@ -27,16 +28,6 @@ const config = {
     publicPath: '/',
     filename: isDev ? '[name].bundle.js' : '[name].[contenthash].bundle.js',
     chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js'
-  },
-
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
-    minimizer: !isDev ? [
-      new TerserPlugin(),
-      new OptimizeCSSAssetsPlugin()
-    ] : [],
   },
 
   mode: isDev ? 'development' : 'production',
@@ -197,5 +188,51 @@ const config = {
     },
   },
 };
+
+  config.optimization = {
+    splitChunks: {
+      chunks: 'all'
+    },
+    minimizer: [
+      new TerserPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true,
+        terserOptions: {
+          ecma: undefined,
+          warnings: false,
+          parse: {},
+          compress: {},
+          mangle: true,
+          module: false,
+          output: null,
+          toplevel: false,
+          nameCache: null,
+          ie8: false,
+          keep_classnames: undefined,
+          keep_fnames: false,
+          safari10: false
+        }
+      }),
+      new OptimizeCSSAssetsPlugin({
+        assetNameRegExp: /\.css$/g,
+        cssProcessor: cssnano,
+        cssProcessorPluginOptions: {
+          preset: ['default', { discardComments: { removeAll: true } }],
+        },
+        canPrint: true
+      })
+    ]
+  };
+}
+
+if (isProd) {
+  config.plugins.push(
+    new SentryCliPlugin({
+      include: path.resolve(process.cwd(), 'build'),
+      release: process.env.CIRCLE_BUILD_NUM,
+    })
+  );
+}
 
 module.exports = config;

@@ -159,8 +159,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
             .forEach(locale => require(`moment/locale/${locale}.js`));
         }))
       ).subscribe(([authUser, locale, tenant]) => {
-        const momenLoc = appLocalesMomentPairs[locale] || 'en';
-        moment.locale(momenLoc);
+        const momentLoc = appLocalesMomentPairs[locale] || 'en';
+        moment.locale(momentLoc);
         this.setState({ tenant, authUser });
       }),
 
