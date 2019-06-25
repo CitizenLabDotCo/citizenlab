@@ -4,6 +4,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
@@ -12,6 +13,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
+const cssnano = require('cssnano');
 const appLocalesMomentPairs = require(path.join(process.cwd(), 'app/containers/App/constants')).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
@@ -134,26 +136,7 @@ const config = {
 
     new HtmlWebpackPlugin({
       template: 'app/index.html'
-    }),
-
-    ...isDev ? [
-      new webpack.ProgressPlugin(),
-      // new BundleAnalyzerPlugin(),
-    ] : [
-      new webpack.HashedModuleIdsPlugin(),
-      new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].css',
-        chunkFilename: '[name].[contenthash].chunk.css'
-      }),
-      new OptimizeCSSAssetsPlugin()
-    ],
-
-    ...isProd ? [
-      new SentryCliPlugin({
-        include: path.resolve(process.cwd(), 'build'),
-        release: process.env.CIRCLE_BUILD_NUM,
-      })
-    ] : []
+    })
   ],
 
   resolve: {
@@ -161,5 +144,67 @@ const config = {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
 };
+
+if (isDev) {
+  config.plugins.push(
+    new webpack.ProgressPlugin(),
+    // new BundleAnalyzerPlugin()
+  );
+}
+
+if (!isDev) {
+  config.plugins.push(
+    new webpack.HashedModuleIdsPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[name].[contenthash].chunk.css'
+    }),
+  );
+
+  config.optimization = {
+    splitChunks: {
+      chunks: 'all'
+    },
+    minimizer: [
+      new TerserPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true,
+        terserOptions: {
+          ecma: undefined,
+          warnings: false,
+          parse: {},
+          compress: {},
+          mangle: true,
+          module: false,
+          output: null,
+          toplevel: false,
+          nameCache: null,
+          ie8: false,
+          keep_classnames: undefined,
+          keep_fnames: false,
+          safari10: false
+        }
+      }),
+      new OptimizeCSSAssetsPlugin({
+        assetNameRegExp: /\.css$/g,
+        cssProcessor: cssnano,
+        cssProcessorPluginOptions: {
+          preset: ['default', { discardComments: { removeAll: true } }],
+        },
+        canPrint: true
+      })
+    ]
+  };
+}
+
+if (isProd) {
+  config.plugins.push(
+    new SentryCliPlugin({
+      include: path.resolve(process.cwd(), 'build'),
+      release: process.env.CIRCLE_BUILD_NUM,
+    })
+  );
+}
 
 module.exports = config;
