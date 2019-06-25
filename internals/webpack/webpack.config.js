@@ -26,8 +26,8 @@ const config = {
     path: path.resolve(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
-    filename: isDev ? '[name].bundle.js' : '[name].[contenthash].bundle.js',
-    chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js'
+    filename: isDev ? '[name].bundle.js' : '[name].[contenthash:8].bundle.js',
+    chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash:8].chunk.js'
   },
 
   mode: isDev ? 'development' : 'production',
@@ -47,57 +47,43 @@ const config = {
     },
   },
 
-  ...!isDev ? {
-    optimization: {
-      runtimeChunk: 'single',
-      splitChunks: {
-        chunks: 'all',
-        maxInitialRequests: 10,
-        minSize: 0,
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name(module) {
-              const packageName = module.context.match(
-                /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
-              )[1];
-              return `npm.${packageName.replace('@', '')}`;
-            },
-          },
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'all',
+    },
+    minimize: !isDev,
+    minimizer: [
+      new TerserPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true,
+        terserOptions: {
+          ecma: undefined,
+          warnings: false,
+          parse: {},
+          compress: {},
+          mangle: true,
+          module: false,
+          output: null,
+          toplevel: false,
+          nameCache: null,
+          ie8: false,
+          keep_classnames: undefined,
+          keep_fnames: false,
+          safari10: false
+        }
+      }),
+      new OptimizeCSSAssetsPlugin({
+        assetNameRegExp: /\.css$/g,
+        cssProcessor: cssnano,
+        cssProcessorPluginOptions: {
+          preset: ['default', { discardComments: { removeAll: true } }],
         },
-      },
-      minimizer: [
-        new TerserPlugin({
-          cache: true,
-          parallel: true,
-          sourceMap: true,
-          terserOptions: {
-            ecma: undefined,
-            warnings: false,
-            parse: {},
-            compress: {},
-            mangle: true,
-            module: false,
-            output: null,
-            toplevel: false,
-            nameCache: null,
-            ie8: false,
-            keep_classnames: undefined,
-            keep_fnames: false,
-            safari10: false
-          }
-        }),
-        new OptimizeCSSAssetsPlugin({
-          assetNameRegExp: /\.css$/g,
-          cssProcessor: cssnano,
-          cssProcessorPluginOptions: {
-            preset: ['default', { discardComments: { removeAll: true } }],
-          },
-          canPrint: true
-        })
-      ]
-    }
-  } : {},
+        canPrint: true
+      })
+    ]
+  },
 
   module: {
     rules: [
@@ -134,7 +120,7 @@ const config = {
         test: /\.(eot|ttf|woff|woff2)$/,
         loader: 'file-loader',
         options: {
-          name: isDev ? '[name].[ext]' : '[name].[contenthash].[ext]'
+          name: isDev ? '[name].[ext]' : '[name].[contenthash:8].[ext]'
         }
       },
       {
@@ -179,7 +165,7 @@ const config = {
       template: 'app/index.html'
     }),
 
-    // isDev && new BundleAnalyzerPlugin(),
+    isDev && new BundleAnalyzerPlugin(),
 
     isDev && new webpack.ProgressPlugin(),
 
@@ -196,8 +182,8 @@ const config = {
     }),
 
     !isDev && new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-      chunkFilename: '[name].[contenthash].chunk.css'
+      filename: '[name].[contenthash:8].css',
+      chunkFilename: '[name].[contenthash:8].chunk.css'
     }),
 
     isProd && new SentryCliPlugin({
