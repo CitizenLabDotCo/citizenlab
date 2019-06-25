@@ -143,7 +143,7 @@ const config = {
     //   statsOptions: {
     //     source: false
     //   }
-    // })
+    // }),
 
     ...isDev ? [
       new webpack.ProgressPlugin(),
@@ -153,20 +153,6 @@ const config = {
         filename: '[name].[contenthash].css',
         chunkFilename: '[name].[contenthash].chunk.css'
       }),
-      // new OptimizeCSSAssetsPlugin({
-      //   cssProcessor: require('cssnano'),
-      //   cssProcessorPluginOptions: {
-      //     preset: [
-      //       'default',
-      //       {
-      //         discardComments: {
-      //           removeAll: true
-      //         }
-      //       }
-      //     ]
-      //   },
-      //   canPrint: true
-      // })
     ],
 
     ...isProd ? [
@@ -181,58 +167,42 @@ const config = {
     modules: [path.resolve(process.cwd(), 'app'), 'node_modules'],
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
-
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
-  },
 };
 
-  config.optimization = {
-    splitChunks: {
-      chunks: 'all'
-    },
-    minimizer: [
-      new TerserPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-        terserOptions: {
-          ecma: undefined,
-          warnings: false,
-          parse: {},
-          compress: {},
-          mangle: true,
-          module: false,
-          output: null,
-          toplevel: false,
-          nameCache: null,
-          ie8: false,
-          keep_classnames: undefined,
-          keep_fnames: false,
-          safari10: false
-        }
-      }),
-      new OptimizeCSSAssetsPlugin({
-        assetNameRegExp: /\.css$/g,
-        cssProcessor: cssnano,
-        cssProcessorPluginOptions: {
-          preset: ['default', { discardComments: { removeAll: true } }],
-        },
-        canPrint: true
-      })
-    ]
-  };
-}
-
-if (isProd) {
-  config.plugins.push(
-    new SentryCliPlugin({
-      include: path.resolve(process.cwd(), 'build'),
-      release: process.env.CIRCLE_BUILD_NUM,
+config.optimization = {
+  splitChunks: {
+    chunks: 'all',
+  },
+  minimizer: [
+    new TerserPlugin({
+      cache: true,
+      parallel: true,
+      sourceMap: true,
+      terserOptions: {
+        ecma: undefined,
+        warnings: false,
+        parse: {},
+        compress: {},
+        mangle: true,
+        module: false,
+        output: null,
+        toplevel: false,
+        nameCache: null,
+        ie8: false,
+        keep_classnames: undefined,
+        keep_fnames: false,
+        safari10: false
+      }
+    }),
+    new OptimizeCSSAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: cssnano,
+      cssProcessorPluginOptions: {
+        preset: ['default', { discardComments: { removeAll: true } }],
+      },
+      canPrint: true
     })
-  );
-}
+  ]
+};
 
 module.exports = config;

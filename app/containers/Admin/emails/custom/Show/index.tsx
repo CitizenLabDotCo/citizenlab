@@ -31,7 +31,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import InfoTooltip from 'components/admin/InfoTooltip';
 
-import Stamp from './stamp';
+import Stamp from './Stamp';
 
 const PageHeader = styled.div`
   display: flex;
