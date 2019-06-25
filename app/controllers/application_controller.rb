@@ -71,4 +71,13 @@ class ApplicationController < ActionController::API
       **extra_params
     }
   end
+
+  # def cl2_renderable serializer
+  #   {
+  #     **serializer.serializable_hash,
+  #     links: {
+  #       sef
+  #     }
+  #   }
+  # end
 end

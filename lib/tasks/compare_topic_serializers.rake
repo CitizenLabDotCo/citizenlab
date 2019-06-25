@@ -10,7 +10,7 @@ namespace :cl2back do
         Topic.all.each do |tp|
           start_ams = Time.now
           puts ActiveModelSerializers::SerializableResource.new(tp, {
-            serializer: WebApi::V1::TopicSerializer,
+            serializer: WebApi::V1::External::TopicSerializer,
             adapter: :json
           }).serializable_hash
           end_ams = Time.now
