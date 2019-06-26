@@ -4,7 +4,7 @@ import { ImageSizes } from 'typings';
 
 export interface IMentionData {
   id: string;
-  type: 'users';
+  type: 'user';
   attributes: {
     first_name: string;
     last_name: string;

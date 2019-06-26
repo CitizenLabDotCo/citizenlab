@@ -6,12 +6,12 @@ import { ImageSizes } from 'typings';
 
 export interface IGroupMembership {
   id: string;
-  type: 'memberships';
+  type: 'membership';
   relationships: {
     user: {
       data: {
         id: string;
-        type: 'users';
+        type: 'user';
       };
     };
   };
@@ -23,7 +23,7 @@ export interface IGroupMemberships {
 
 export interface IGroupMembershipsFoundUserData {
   id: string;
-  type: 'users';
+  type: 'user';
   attributes: {
     first_name: string;
     last_name: string;

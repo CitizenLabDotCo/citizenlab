@@ -3,14 +3,14 @@ import streams from 'utils/streams';
 
 export interface IGroupsProjectsData {
   id: string;
-  type: 'groups_projects';
+  type: 'groups_project';
   relationships: {
     group: {
       data: {
         id: string;
-        type: 'groups';
+        type: 'group';
       };
-      type: 'groups_projects';
+      type: 'groups_project';
     }
   };
 }
