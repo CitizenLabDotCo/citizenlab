@@ -23,7 +23,7 @@ interface IDeletedComment extends CommentAttributes {
 
 export interface ICommentData {
   id: string;
-  type: 'comments';
+  type: 'comment';
   attributes: IPresentComment | IDeletedComment;
   relationships: {
     idea: {

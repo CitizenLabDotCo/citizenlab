@@ -118,7 +118,7 @@ export interface IIdeas {
 
 export interface IdeaActivity {
   id: string;
-  type: 'activities';
+  type: 'activity';
   attributes: {
     action: string;
     acted_at: string;

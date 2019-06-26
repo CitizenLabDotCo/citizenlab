@@ -11,7 +11,7 @@ export interface Report {
 export interface SpamReportResponse {
   data: {
     id: string;
-    type: 'spam_reports';
+    type: 'spam_report';
     attributes: Report;
   };
   relationships: {
