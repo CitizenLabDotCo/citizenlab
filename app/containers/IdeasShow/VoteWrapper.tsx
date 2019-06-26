@@ -7,7 +7,7 @@ import { IIdeaData } from 'services/ideas';
 
 type Props = {
   ideaId?: string;
-  votingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['voting'];
+  votingDescriptor: IIdeaData['attributes']['action_descriptor']['data']['voting'];
   projectId: string;
 };
 

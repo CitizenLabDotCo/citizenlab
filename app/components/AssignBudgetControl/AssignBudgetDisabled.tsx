@@ -31,7 +31,7 @@ const ProjectLink = styled.span`
 
 interface InputProps {
   projectId: string;
-  budgetingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['budgeting'];
+  budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['data']['budgeting'];
 }
 
 interface DataProps {

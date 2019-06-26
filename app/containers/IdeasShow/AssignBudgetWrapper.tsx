@@ -14,7 +14,7 @@ interface Props {
   projectId: string;
   participationContextId: string;
   participationContextType: 'Phase' | 'Project';
-  budgetingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['budgeting'];
+  budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['data']['budgeting'];
 }
 
 interface State {
