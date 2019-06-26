@@ -1,5 +1,6 @@
 class WebApi::V1::AreasController < ApplicationController
   # include Kaminari::Helpers::UrlHelper
+  # include Kaminari::Helpers::HelperMethods
 
   before_action :set_area, only: [:show, :update, :destroy]
 
