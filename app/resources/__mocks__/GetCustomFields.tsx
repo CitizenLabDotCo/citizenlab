@@ -3,7 +3,7 @@ import { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
 export const mockGetCustomFields = [
   {
     id: '3d9ad03c-fbe3-47e5-8d6d-c8bbc512682d',
-    type: 'custom_fields',
+    type: 'custom_field',
     attributes: {
       key: 'gender',
       input_type: 'select',
@@ -30,7 +30,7 @@ export const mockGetCustomFields = [
   },
   {
     id: '45f7f17d-5b05-4be4-879a-ca9a040596c0',
-    type: 'custom_fields',
+    type: 'custom_field',
     attributes: {
       key: 'domicile',
       input_type: 'select',
@@ -57,7 +57,7 @@ export const mockGetCustomFields = [
   },
   {
     id: '4145ae1d-da1e-4984-a043-e1269eb37cd4',
-    type: 'custom_fields',
+    type: 'custom_field',
     attributes: {
       key: 'multiselect_test',
       input_type: 'multiselect',
@@ -79,7 +79,7 @@ export const mockGetCustomFields = [
   },
   {
     id: 'a0e5a642-a67d-4f73-bb52-35af018a903c',
-    type: 'custom_fields',
+    type: 'custom_field',
     attributes: {
       key: 'are_you_ready',
       input_type: 'checkbox',
