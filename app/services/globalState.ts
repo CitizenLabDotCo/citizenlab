@@ -7,7 +7,6 @@ import shallowCompare from 'utils/shallowCompare';
 
 // typings
 import { IOption, UploadFile } from 'typings';
-import { setTimeout } from 'timers';
 
 export interface IIdeasNewPageGlobalState {
   title: string | null;
@@ -22,9 +21,7 @@ export interface IIdeasNewPageGlobalState {
   ideaSlug: string | null;
   imageFile: UploadFile[];
   imageId: string | null;
-  imageChanged: boolean;
   ideaFiles: UploadFile[];
-  ideaFilesToRemove: UploadFile[];
 }
 
 export interface IAdminFullWidth {
