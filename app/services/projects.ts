@@ -44,17 +44,6 @@ export interface IProjectData {
     survey_service?: SurveyServices;
     survey_embed_url?: string;
     ordering: number;
-  };
-  relationships: {
-    project_images: {
-      data: IRelationship[]
-    }
-    areas: {
-      data: IRelationship[]
-    }
-    avatars?: {
-      data?: IRelationship[]
-    }
     action_descriptor: {
       data: {
         posting: {
@@ -75,6 +64,17 @@ export interface IProjectData {
           disabled_reason: SurveyDisabledReasons | null;
         }
       }
+    }
+  };
+  relationships: {
+    project_images: {
+      data: IRelationship[]
+    }
+    areas: {
+      data: IRelationship[]
+    }
+    avatars?: {
+      data?: IRelationship[]
     }
     current_phase: {
       data: IRelationship | null;
