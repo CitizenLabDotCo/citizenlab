@@ -282,7 +282,7 @@
   "app.components.admin.IdeaManager.projectsTab": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.components.admin.IdeaManager.projectsTabTooltip": "Filtrez les idées par projet en cliquant sur le projet désiré. Plusieurs projets peuvent être sélectionnés en même temps.",
   "app.components.admin.IdeaManager.publication_date": "Publiée le",
-  "app.components.admin.IdeaManager.resetFiltersButton": "Réinitialiser les filtres",
+  "app.components.admin.IdeaManager.resetFiltersButton": "Réinitialiser",
   "app.components.admin.IdeaManager.resetFiltersDescription": "Réinitialiser les filtres pour afficher toutes les idées.",
   "app.components.admin.IdeaManager.statusesTab": "Statut",
   "app.components.admin.IdeaManager.statusesTabTooltip": "Sélectionnez et faites glisser les idées sur le statut que vous souhaitez leur donner. En faisant cela, ces idées changeront de statut.",
