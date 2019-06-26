@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { get, isFunction } from 'lodash-es';
-import { Subscription } from 'rxjs';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // libraries
 import Link from 'utils/cl-router/Link';
-import clHistory from 'utils/cl-router/history';
-import { Location } from 'history';
 
 // components
 import Input from 'components/UI/Input';
@@ -17,11 +15,10 @@ import AuthProviderButton, { Providers } from 'components/AuthProviderButton';
 
 // resources
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // services
 import { signIn } from 'services/auth';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -190,6 +187,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  tenant: GetTenantChildProps;
   passwordLoginEnabled: boolean | null;
   googleLoginEnabled: boolean | null;
   facebookLoginEnabled: boolean | null;
@@ -200,69 +198,48 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 type State = {
-  location: Location | null;
-  currentTenant: ITenant | null;
   email: string | null;
   password: string | null;
   processing: boolean;
   emailError: string | null;
   passwordError: string | null;
   signInError: string | null;
-  socialLoginUrlParameter: string;
   loading: boolean;
 };
 
-class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Subscription[];
+class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
   constructor(props) {
     super(props);
     this.state = {
-      location: clHistory.getCurrentLocation(),
-      currentTenant: null,
       email: null,
       password: null,
       processing: false,
       emailError: null,
       passwordError: null,
       signInError: null,
-      socialLoginUrlParameter: '',
       loading: true
     };
-    this.subscriptions = [];
     this.emailInputElement = null;
     this.passwordInputElement = null;
   }
 
-  componentDidMount() {
-    const globalState$ = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage').observable;
-    const currentTenant$ = currentTenantStream().observable;
-
-    this.subscriptions = [
-      currentTenant$.subscribe((currentTenant) => {
-        this.setState({ currentTenant, loading: false });
-      }),
-
-      globalState$.subscribe((globalState) => {
-        this.setState({
-          socialLoginUrlParameter: (globalState && globalState.ideaId && globalState.ideaSlug ? `?new_idea_id=${globalState.ideaId}&new_idea_slug=${globalState.ideaSlug}&publish=true` : '')
-        });
-      })
-    ];
+  handleEmailOnChange = (email: string) => {
+    this.setState({
+      email,
+      emailError: null,
+      signInError: null
+    });
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  handleEmailOnChange = (email) => {
-    this.setState({ email, emailError: null, signInError: null });
-  }
-
-  handlePasswordOnChange = (password) => {
-    this.setState({ password, passwordError: null, signInError: null });
+  handlePasswordOnChange = (password: string) => {
+    this.setState({
+      password,
+      passwordError: null,
+      signInError: null
+    });
   }
 
   validate(email: string | null, password: string | null) {
@@ -284,7 +261,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     return (!emailError && !passwordError);
   }
 
-  handleOnSubmit = async (event: React.FormEvent<any>) => {
+  handleOnSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const { onSignedIn } = this.props;
@@ -315,7 +292,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.passwordInputElement = element;
   }
 
-  goToSignUpForm = (event) => {
+  goToSignUpForm = (event: React.MouseEvent) => {
     event.preventDefault();
 
     if (isFunction(this.props.goToSignUpForm)) {
@@ -324,13 +301,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleOnSSOClick = (provider: Providers) => () => {
-    window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
+    window.location.href = `${AUTH_PATH}/${provider}`;
   }
 
   render() {
     const {
-      location,
-      currentTenant,
       email,
       password,
       processing,
@@ -341,6 +316,8 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     } = this.state;
     const {
       title,
+      location,
+      tenant,
       passwordLoginEnabled,
       googleLoginEnabled,
       facebookLoginEnabled,
@@ -349,8 +326,8 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     } = this.props;
     const { formatMessage } = this.props.intl;
     const externalLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled);
-    const azureAdLogo: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
-    const tenantLoginMechanismName: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name');
+    const azureAdLogo: string = get(tenant, 'data.attributes.settings.azure_ad_login.logo_url');
+    const tenantLoginMechanismName: string = get(tenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name');
 
     const createAccount = ((location && location.pathname.replace(/\/$/, '').endsWith('ideas/new')) ? (
       <CreateAnAccountDiv onClick={this.goToSignUpForm}>
@@ -439,20 +416,22 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                       altText={messages.signInButtonAltText}
                     />
                   </FeatureFlag>
-                <FeatureFlag name="franceconnect_login">
-                  <FranceConnectButton role="button" onClick={this.handleOnSSOClick('franceconnect')}>
-                    <img
-                      src={franceconnectLogo}
-                      alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'FranceConnect' })}
-                    />
-                  </FranceConnectButton>
-                  <SubSocialButtonLink
-                    href="https://app.franceconnect.gouv.fr/en-savoir-plus"
-                    target="_blank"
-                  >
-                    <FormattedMessage {...messages.whatIsFranceConnect} />
-                  </SubSocialButtonLink>
-                </FeatureFlag>
+
+                  <FeatureFlag name="franceconnect_login">
+                    <FranceConnectButton role="button" onClick={this.handleOnSSOClick('franceconnect')}>
+                      <img
+                        src={franceconnectLogo}
+                        alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'FranceConnect' })}
+                      />
+                    </FranceConnectButton>
+                    <SubSocialButtonLink
+                      href="https://app.franceconnect.gouv.fr/en-savoir-plus"
+                      target="_blank"
+                    >
+                      <FormattedMessage {...messages.whatIsFranceConnect} />
+                    </SubSocialButtonLink>
+                  </FeatureFlag>
+
                   <FeatureFlag name="google_login">
                     <AuthProviderButton
                       logoUrl={googleLogo}
@@ -492,9 +471,10 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-const SignInWithInjectedIntl = injectIntl<Props>(SignIn);
+const SignInWithInjectedIntl = withRouter<Props>(injectIntl(SignIn));
 
 const Data = adopt<DataProps, {}>({
+  tenant: <GetTenant />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,

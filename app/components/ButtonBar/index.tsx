@@ -6,7 +6,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 
-const TIMEOUT = 600;
+const transitionDuration = 600;
 
 const ButtonBarContainer = styled.div`
   width: 100%;
@@ -24,7 +24,7 @@ const ButtonBarContainer = styled.div`
 
     &.buttonbar-enter-active {
       transform: translateY(0);
-      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: transform ${transitionDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 
@@ -33,7 +33,7 @@ const ButtonBarContainer = styled.div`
 
     &.buttonbar-exit-active {
       transform: translateY(64px);
-      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: transform ${transitionDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 `;
@@ -65,7 +65,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
         {(matches) => {
           if (matches) {
             return (
-              <CSSTransition classNames="buttonbar" timeout={TIMEOUT}>
+              <CSSTransition classNames="buttonbar" timeout={transitionDuration}>
                 <ButtonBarContainer>
                   <Container>
                     {this.props.children}

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import { has, isString, sortBy, last, get, isEmpty, isUndefined } from 'lodash-es';
+import { isString, sortBy, last, get, isEmpty, isUndefined } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -37,8 +38,6 @@ import TranslateButton from './TranslateButton';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
@@ -52,7 +51,6 @@ import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize'
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 
 // services
-import { updateIdea } from 'services/ideas';
 import { authUserStream } from 'services/auth';
 
 // i18n
@@ -389,27 +387,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   componentDidMount() {
     const authUser$ = authUserStream().observable;
     const query = clHistory.getCurrentLocation().query;
-    const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
-    const newIdea$ = urlHasNewIdeaQueryParam ? of({
-      id: get(query, 'new_idea_id'),
-      publish: get(query, 'publish')
-    }) : of(null);
+    const newIdeaId$ = of(get(query, 'new_idea_id'));
 
     this.subscriptions = [
       combineLatest(
         authUser$,
-        newIdea$
-      ).subscribe(async ([authUser, newIdea]) => {
-        if (newIdea && isString(newIdea.id) && !isEmpty(newIdea.id)) {
+        newIdeaId$
+      ).pipe(
+        first()
+      ).subscribe(async ([authUser, newIdeaId]) => {
+        if (isString(newIdeaId) && !isEmpty(newIdeaId)) {
           if (authUser) {
             setTimeout(() => {
-              this.setState({ ideaIdForSocialSharing: newIdea.id });
-            }, 2000);
-
-            if (newIdea.publish === 'true') {
-              await updateIdea(newIdea.id, { author_id: authUser.data.id, publication_status: 'published' });
-              streams.fetchAllWith({ dataId: [newIdea.id], apiEndpoint: [`${API_PATH}/ideas`] });
-            }
+              this.setState({ ideaIdForSocialSharing: newIdeaId });
+            }, 1500);
           }
 
           window.history.replaceState(null, '', window.location.pathname);

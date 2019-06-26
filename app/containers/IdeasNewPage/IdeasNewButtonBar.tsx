@@ -52,8 +52,8 @@ export default class IdeasNewButtonBar extends React.PureComponent<Props, State>
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       submitError: false,
       processing: false
