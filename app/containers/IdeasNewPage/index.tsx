@@ -100,7 +100,11 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
-    const { location } = this.props;
+    const { location, authUser } = this.props;
+
+    if (authUser === null) {
+      this.redirectToSignInPage();
+    }
 
     if (location.query.position) {
       reverseGeocode(JSON.parse(location.query.position)).then((position) => {
@@ -113,6 +117,16 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         });
       });
     }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.authUser !== this.props.authUser && this.props.authUser === null) {
+      this.redirectToSignInPage();
+    }
+  }
+
+  redirectToSignInPage = () => {
+    clHistory.push('/sign-in');
   }
 
   handleOnIdeaSubmit = async () => {

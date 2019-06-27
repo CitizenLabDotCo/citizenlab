@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get, isFunction } from 'lodash-es';
+import { get } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // libraries
@@ -175,7 +175,6 @@ const SubSocialButtonLink = styled.a`
 interface InputProps {
   onSignedIn: (userId: string) => void;
   title?: string | JSX.Element;
-  goToSignUpForm?: () => void;
 }
 
 interface DataProps {
@@ -280,14 +279,6 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
 
   handlePasswordInputSetRef = (element: HTMLInputElement) => {
     this.passwordInputElement = element;
-  }
-
-  goToSignUpForm = (event: React.MouseEvent) => {
-    event.preventDefault();
-
-    if (isFunction(this.props.goToSignUpForm)) {
-      this.props.goToSignUpForm();
-    }
   }
 
   handleOnSSOClick = (provider: Providers) => () => {
