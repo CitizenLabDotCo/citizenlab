@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isString, isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -76,7 +76,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class IdeasNewPage extends React.PureComponent<Props & WithRouterProps, State> {
+class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
 
   constructor(props) {
