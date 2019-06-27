@@ -12,11 +12,12 @@ class WebApi::V1::ActivitiesController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: WebApi::V1::Fast::ActivitySerializer.new(
+    render json: linked_json(
       @activities, 
-      params: fastjson_params, 
+      WebApi::V1::Fast::ActivitySerializer, 
+      params: fastjson_params,
       include: [:user]
-      ).serialized_json
+      )
   end
 
 
