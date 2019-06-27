@@ -473,6 +473,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             />
           </label>
         </FormElement>
+
         {pbContext &&
           <FeatureFlag name="participatory_budgeting">
             <HasPermission
