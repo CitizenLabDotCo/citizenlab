@@ -141,50 +141,7 @@ interface State {
 class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, State> {
   constructor(props) {
     super(props);
-
-    this.state = {
-      initialValues: null
-    };
   }
-
-  componentDidMount() {
-  }
-
-  changedValues = (initialValues, newValues) => {
-    const changedKeys = Object.keys(newValues).filter((key) => (
-      !isEqual(initialValues[key], newValues[key])
-    ));
-    return pick(newValues, changedKeys);
-  }
-
-  handleSave = (mode: 'published' | 'draft', initiativeId: string, initialValues) =>
-    async (values: FormValues, { setSubmitting, setErrors, setStatus }) => {
-      const { authUser, locale } = this.props;
-      if (isNilOrError(authUser) || isNilOrError(locale)) return;
-      try {
-        const {  title, body, topics, position } = this.changedValues(initialValues, values);
-        // if position has changed and is not empty, transform it
-        const isPositionSafe = (typeof(position) === 'string') && position !== '';
-        const locationGeoJSON = isPositionSafe ? await convertToGeoJson(position) : null;
-        const locationDescription = isPositionSafe ? position : null;
-        // build API readable object
-        const apiValues = {
-          title_multiloc: { [locale]: title },
-          body_multiloc: { [locale]: body },
-          author_id: authUser.id,
-          topic_ids: topics,
-          location_point_geojson: locationGeoJSON,
-          location_description: locationDescription,
-          publication_status: mode
-        };
-        await updateInitiative(initiativeId, apiValues);
-        setStatus('success');
-      } catch (errorResponse) {
-        const apiErrors = get(errorResponse, 'json.errors'); // TODO merge master and update this.
-        setErrors(apiErrors);
-        setSubmitting(false);
-      }
-    }
 
   goBack = () => {
     clHistory.goBack();
@@ -196,7 +153,6 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
 
   render() {
     const { authUser, locale } = this.props;
-
     if (isNilOrError(authUser) || isNilOrError(locale)) return null;
 
     return (

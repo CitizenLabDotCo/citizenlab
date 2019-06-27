@@ -49,6 +49,7 @@ export type InputProps = {
   labelTooltip?: JSX.Element;
   onChangeMultiloc?: (value: Multiloc, locale: Locale) => void;
   renderPerLocale?: (locale: string) => JSX.Element;
+  shownLocale?: Locale;
 };
 
 type DataProps = {
@@ -71,39 +72,49 @@ class EditorMultiloc extends PureComponent<Props & VanillaProps, State> {
     }
   }
 
-  render() {
+  renderOnce = (currentTenantLocale, index) => {
     const { tenantLocales, id, label, labelTooltip, valueMultiloc, renderPerLocale, ...otherProps } = this.props;
+    const value = get(valueMultiloc, [currentTenantLocale], undefined);
+    const idLocale = id && `${id}-${currentTenantLocale}`;
+
+    if (isNilOrError(tenantLocales)) return;
+
+    return (
+      <EditorWrapper key={currentTenantLocale} className={`${index === tenantLocales.length - 1 && 'last'}`}>
+        {label &&
+          <LabelWrapper>
+            <Label>{label}</Label>
+            {tenantLocales.length > 1 &&
+              <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
+            }
+            {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
+          </LabelWrapper>
+        }
+
+        {renderPerLocale && renderPerLocale(currentTenantLocale)}
+
+        <QuillEditor
+          id={idLocale}
+          value={value || ''}
+          onChange={this.handleOnChange(currentTenantLocale)}
+          {...otherProps}
+        />
+      </EditorWrapper>
+    );
+  }
+
+  render() {
+    const { tenantLocales, id, shownLocale } = this.props;
 
     if (!isNilOrError(tenantLocales)) {
       return (
         <Container id={id} className={`${this.props['className']} e2e-multiloc-editor`} >
-          {tenantLocales.map((currentTenantLocale, index) => {
-            const value = get(valueMultiloc, [currentTenantLocale], undefined);
-            const idLocale = id && `${id}-${currentTenantLocale}`;
-
-            return (
-              <EditorWrapper key={currentTenantLocale} className={`${index === tenantLocales.length - 1 && 'last'}`}>
-                {label &&
-                  <LabelWrapper>
-                    <Label>{label}</Label>
-                    {tenantLocales.length > 1 &&
-                      <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
-                    }
-                    {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
-                  </LabelWrapper>
-                }
-
-                {renderPerLocale && renderPerLocale(currentTenantLocale)}
-
-                <QuillEditor
-                  id={idLocale}
-                  value={value || ''}
-                  onChange={this.handleOnChange(currentTenantLocale)}
-                  {...otherProps}
-                />
-              </EditorWrapper>
-            );
-          })}
+          {shownLocale
+            ? this.renderOnce(shownLocale, 0)
+            : tenantLocales.map((currentTenantLocale, index) => (
+              this.renderOnce(currentTenantLocale, index)
+            ))
+          }
         </Container>
       );
     }

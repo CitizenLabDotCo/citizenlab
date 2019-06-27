@@ -13,14 +13,6 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.titleLengthError',
     defaultMessage: 'The initiative title must be at least 10 characters long',
   },
-  descriptionEmptyError: {
-    id: 'app.components.InitiativeForm.descriptionEmptyError',
-    defaultMessage: 'Please provide a description',
-  },
-  descriptionLengthError: {
-    id: 'app.components.InitiativeForm.descriptionLengthError',
-    defaultMessage: 'The initiative description must be at least 500 characters long',
-  },
   titleLabel: {
     id: 'app.components.InitiativeForm.titleLabel',
     defaultMessage: 'Title',
@@ -36,6 +28,14 @@ export default defineMessages({
   descriptionLabelSubtext: {
     id: 'app.components.InitiativeForm.descriptionLabelSubtext',
     defaultMessage: 'Give others a good understanding of your initiative (min. 500 characters)',
+  },
+  descriptionEmptyError: {
+    id: 'app.components.InitiativeForm.descriptionEmptyError',
+    defaultMessage: 'Please provide a description',
+  },
+  descriptionLengthError: {
+    id: 'app.components.InitiativeForm.descriptionLengthError',
+    defaultMessage: 'The initiative description must be at least 500 characters long',
   },
   formDetailsSectionTitle: {
     id: 'app.components.InitiativeForm.formDetailsSectionTitle',
