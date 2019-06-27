@@ -66,7 +66,7 @@ class Survey extends PureComponent<Props, State> {
       const email = (authUser ? authUser.attributes.email : null);
 
       return (
-        <Container className={className}>
+        <Container className={`${className} e2e-${surveyService}-survey`}>
           {surveyService === 'typeform' &&
             <TypeformSurvey
               typeformUrl={surveyEmbedUrl}

@@ -52,11 +52,9 @@ export default class GetPage extends React.Component<Props, State> {
                 pageLinks.map(link => getPageLink(link.id).observable)
               );
             }
-
-            return of([]);
           }
 
-          return of(page);
+          return of(null);
         })
       ).subscribe((pageLinks) => {
         this.setState({ pageLinks: pageLinks && pageLinks.map(pageLink => !isNilOrError(pageLink) ? pageLink.data : pageLink) });

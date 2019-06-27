@@ -28,18 +28,17 @@ const EditorWrapper = styled.div`
   }
 `;
 
-const LabelWrapper = styled.div`
-  display: flex;
-  align-items: flex-start;
+const StyledLabel = styled(Label)`
+  display: block;
 `;
 
-const LanguageExtension = styled(Label)`
+const LanguageExtension = styled.span`
   font-weight: 500;
 `;
 
 const LabelTooltip = styled.div`
-  margin-left: 10px;
-  margin-top: 2px;
+  margin-top: 7px;
+  display: inline-block;
 `;
 
 export type InputProps = {
@@ -49,6 +48,7 @@ export type InputProps = {
   labelTooltip?: JSX.Element;
   onChangeMultiloc?: (value: Multiloc, locale: Locale) => void;
   renderPerLocale?: (locale: string) => JSX.Element;
+  shownLocale?: Locale;
 };
 
 type DataProps = {
@@ -71,39 +71,44 @@ class EditorMultiloc extends PureComponent<Props & VanillaProps, State> {
     }
   }
 
+  renderOnce = (locale, index) => {
+    const { tenantLocales, label, labelTooltip, renderPerLocale, id, valueMultiloc, ...otherProps } = this.props;
+    const value = get(valueMultiloc, [locale], undefined);
+    const idLocale = id && `${id}-${locale}`;
+
+    if (isNilOrError(tenantLocales)) return null;
+
+    return (
+      <EditorWrapper key={locale} className={`${index === tenantLocales.length - 1 && 'last'}`}>
+        {label &&
+          <StyledLabel>{label}
+            {tenantLocales.length > 1 &&
+              <LanguageExtension>{locale.toUpperCase()}</LanguageExtension>
+            }
+            {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
+          </StyledLabel>
+        }
+
+        {renderPerLocale && renderPerLocale(locale)}
+
+        <QuillEditor
+          id={idLocale}
+          value={value || ''}
+          onChange={this.handleOnChange(locale)}
+          {...otherProps}
+        />
+      </EditorWrapper>
+    );
+  }
+
   render() {
-    const { tenantLocales, id, label, labelTooltip, valueMultiloc, renderPerLocale, ...otherProps } = this.props;
+    const { tenantLocales, id, shownLocale } = this.props;
 
     if (!isNilOrError(tenantLocales)) {
       return (
         <Container id={id} className={`${this.props['className']} e2e-multiloc-editor`} >
-          {tenantLocales.map((currentTenantLocale, index) => {
-            const value = get(valueMultiloc, [currentTenantLocale], undefined);
-            const idLocale = id && `${id}-${currentTenantLocale}`;
-
-            return (
-              <EditorWrapper key={currentTenantLocale} className={`${index === tenantLocales.length - 1 && 'last'}`}>
-                {label &&
-                  <LabelWrapper>
-                    <Label>{label}</Label>
-                    {tenantLocales.length > 1 &&
-                      <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
-                    }
-                    {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
-                  </LabelWrapper>
-                }
-
-                {renderPerLocale && renderPerLocale(currentTenantLocale)}
-
-                <QuillEditor
-                  id={idLocale}
-                  value={value || ''}
-                  onChange={this.handleOnChange(currentTenantLocale)}
-                  {...otherProps}
-                />
-              </EditorWrapper>
-            );
-          })}
+          {!shownLocale ? tenantLocales.map((currentTenantLocale, index) => this.renderOnce(currentTenantLocale, index))
+        : this.renderOnce(shownLocale, 0)}
         </Container>
       );
     }

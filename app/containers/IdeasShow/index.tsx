@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { sortBy, last, get, isEmpty, isUndefined } from 'lodash-es';
+import { sortBy, last, get, isUndefined } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -63,9 +63,9 @@ import styled from 'styled-components';
 import { media, colors, fontSizes, ideaPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
-const contentFadeInDuration = 400;
-const contentFadeInEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
-const contentFadeInDelay = 350;
+const contentFadeInDuration = 250;
+const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+const contentFadeInDelay = 150;
 
 const Loading = styled.div`
   position: absolute;
@@ -83,24 +83,23 @@ const Container = styled.div`
   flex-direction: column;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px);
   background: #fff;
+  opacity: 0;
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 
-  ${media.smallerThanMaxTablet`
-    &.content-enter {
-      opacity: 0;
+  &.content-enter {
+    opacity: 0;
 
-      &.content-enter-active {
-        opacity: 1;
-        transition: all ${contentFadeInDuration}ms ${contentFadeInEasing} ${contentFadeInDelay}ms;
-      }
+    &.content-enter-active {
+      opacity: 1;
+      transition: opacity ${contentFadeInDuration}ms ${contentFadeInEasing} ${contentFadeInDelay}ms;
     }
-  `}
+  }
 
-  &.content-exit {
-    display: none;
+  &.content-enter-done {
+    opacity: 1;
   }
 `;
 
@@ -346,7 +345,6 @@ interface IActionInfos {
 }
 
 interface State {
-  opened: boolean;
   loaded: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
@@ -360,7 +358,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   constructor(props) {
     super(props);
     const initialState = {
-      opened: false,
       loaded: false,
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
@@ -375,6 +372,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   componentDidMount() {
     const newIdeaId = get(this.props.location.query, 'new_idea_id');
 
+    this.setLoaded();
+
     if (newIdeaId) {
       setTimeout(() => {
         this.setState({ ideaIdForSocialSharing: newIdeaId });
@@ -384,24 +383,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     }
   }
 
+  componentDidUpdate() {
+    this.setLoaded();
+  }
+
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { opened, loaded, actionInfos } = prevState;
-    const { idea, ideaImages, project, phases, officialFeedbacks } = nextProps;
-    let stateToUpdate: Partial<State> = {};
-
-    if (!opened && !isNilOrError(idea)) {
-      stateToUpdate = {
-        ...stateToUpdate,
-        opened: true
-      };
-    }
-
-    if (!loaded && !isNilOrError(idea) && !isUndefined(ideaImages) && !isNilOrError(project) && !isUndefined(officialFeedbacks.officialFeedbacksList)) {
-      stateToUpdate = {
-        ...stateToUpdate,
-        loaded: true
-      };
-    }
+    const { actionInfos } = prevState;
+    const { idea, project, phases } = nextProps;
+    let stateToUpdate: Partial<State> | null = null;
 
     if (!actionInfos && !isNilOrError(idea) && !isNilOrError(project) && !isUndefined(phases)) {
       const upvotesCount = idea.attributes.upvotes_count;
@@ -434,7 +423,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       }
 
       stateToUpdate = {
-        ...stateToUpdate,
+        ...(stateToUpdate || {}),
         actionInfos: {
           participationContextType,
           participationContextId,
@@ -445,7 +434,16 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       };
     }
 
-    return isEmpty(stateToUpdate) ? null : stateToUpdate;
+    return stateToUpdate;
+  }
+
+  setLoaded = () => {
+    const { loaded } = this.state;
+    const { idea, ideaImages, project, officialFeedbacks } = this.props;
+
+    if (!loaded && !isNilOrError(idea) && !isUndefined(ideaImages) && !isNilOrError(project) && !isUndefined(officialFeedbacks.officialFeedbacksList)) {
+      this.setState({ loaded: true });
+    }
   }
 
   closeIdeaSocialSharingModal = () => {
@@ -478,13 +476,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       windowSize,
       className
     } = this.props;
-    const {
-      opened,
-      loaded,
-      ideaIdForSocialSharing,
-      translateButtonClicked,
-      actionInfos,
-    } = this.state;
+    const { loaded, ideaIdForSocialSharing, translateButtonClicked, actionInfos } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
@@ -642,7 +634,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
                   <MetaContent>
-                    {(showVoteControl || showBudgetControl) &&
+                    {(showVoteControl || showBudgetControl || statusId) &&
                       <ControlWrapper className="e2e-vote-controls-desktop">
                         {showVoteControl &&
                           <>
@@ -668,9 +660,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                           />
                         }
 
-                        <ControlWrapperHorizontalRule />
+                        {(showVoteControl || showBudgetControl) &&
+                          <ControlWrapperHorizontalRule />
+                        }
 
-                        {statusId && <IdeaStatus statusId={statusId} />}
+                        {statusId &&
+                          <IdeaStatus statusId={statusId} />
+                        }
                       </ControlWrapper>
                     }
 
@@ -702,7 +698,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
     return (
       <>
-        {(opened && !loaded) &&
+        {!loaded &&
           <Loading>
             <Spinner />
           </Loading>
@@ -710,12 +706,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
         <CSSTransition
           classNames="content"
-          in={(opened && loaded)}
-          timeout={contentFadeInDuration + contentFadeInDelay}
-          mountOnEnter={false}
-          unmountOnExit={false}
+          in={loaded}
+          timeout={{
+            enter: contentFadeInDuration + contentFadeInDelay,
+            exit: 0
+          }}
           enter={true}
-          exit={true}
+          exit={false}
         >
           <Container id="e2e-idea-show" className={className}>
             {content}

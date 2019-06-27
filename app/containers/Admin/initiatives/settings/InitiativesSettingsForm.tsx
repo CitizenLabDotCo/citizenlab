@@ -5,7 +5,7 @@ import { isNilOrError, isFullMultiloc } from 'utils/helperUtils';
 
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
-import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
+import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikInput from 'components/UI/FormikInput';
 // TODO add enabled toggle (i3)
 // import FormikToggle from 'components/UI/FormikToggle';
@@ -53,29 +53,6 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
     };
   }
 
-  renderFormikThresholdField = (props) => (
-    <FormikTextAreaMultiloc
-      shownLocale={this.state.selectedLocale}
-      label={(
-        <FormattedMessage {...messages.fieldThresholdReachedMessage} />
-      )}
-      labelTooltip={<InfoTooltip {...messages.fieldThresholdReachedMessageInfo} />}
-      name="threshold_reached_message"
-      {...props}
-    />
-  )
-  renderFormikEligibilityField = (props) => (
-    <FormikTextAreaMultiloc
-      shownLocale={this.state.selectedLocale}
-      label={(
-        <FormattedMessage {...messages.fieldEligibilityCriteria} />
-      )}
-      labelTooltip={<InfoTooltip {...messages.fieldEligibilityCriteriaInfo} />}
-      name="eligibility_criteria"
-      {...props}
-    />
-  )
-
   onLocaleChange = (locale: Locale) => () => {
     this.setState({ selectedLocale: locale });
   }
@@ -85,8 +62,6 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
     const { selectedLocale } = this.state;
 
     const multilocValues = pick(values, ['threshold_reached_message', 'eligibility_criteria']);
-
-    console.log(isValid, touched, status);
 
     return (
       <Form>
@@ -134,14 +109,32 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
 
           <SectionField>
             <Field
+              component={FormikQuillMultiloc}
+              shownLocale={this.state.selectedLocale}
+              label={(
+                <FormattedMessage {...messages.fieldThresholdReachedMessage} />
+              )}
+              labelTooltip={<InfoTooltip {...messages.fieldThresholdReachedMessageInfo} />}
               name="threshold_reached_message"
-              render={this.renderFormikThresholdField}
+              noImages
+              noVideos
+              noAlign
+              limitedTextFormatting
             />
           </SectionField>
           <SectionField>
             <Field
+              shownLocale={this.state.selectedLocale}
+              label={(
+                <FormattedMessage {...messages.fieldEligibilityCriteria} />
+              )}
+              labelTooltip={<InfoTooltip {...messages.fieldEligibilityCriteriaInfo} />}
               name="eligibility_criteria"
-              render={this.renderFormikEligibilityField}
+              noImages
+              noVideos
+              noAlign
+              limitedTextFormatting
+              component={FormikQuillMultiloc}
             />
           </SectionField>
 

@@ -44,8 +44,9 @@ export function votesStream(ideaId: string, streamParams: IStreamParams | null =
   return streams.get<IIdeaVotes>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/votes`, ...streamParams });
 }
 
-export function addVote(ideaId: string, object: INewVoteProperties) {
-  return streams.add<IIdeaVote>(`${API_PATH}/ideas/${ideaId}/votes`, { vote: object });
+export async function addVote(ideaId: string, object: INewVoteProperties) {
+  const response = await streams.add<IIdeaVote>(`${API_PATH}/ideas/${ideaId}/votes`, { vote: object });
+  return response;
 }
 
 export function deleteVote(_ideaId, voteId: string) {
