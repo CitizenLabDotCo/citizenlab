@@ -103,7 +103,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     const { location, authUser } = this.props;
 
     if (authUser === null) {
-      this.redirectToSignInPage();
+      this.redirectToSignUpPage();
     }
 
     if (location.query.position) {
@@ -121,12 +121,12 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.authUser !== this.props.authUser && this.props.authUser === null) {
-      this.redirectToSignInPage();
+      this.redirectToSignUpPage();
     }
   }
 
-  redirectToSignInPage = () => {
-    clHistory.push('/sign-in');
+  redirectToSignUpPage = () => {
+    clHistory.push('/sign-up');
   }
 
   handleOnIdeaSubmit = async () => {
@@ -176,7 +176,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
 
     if (!isNilOrError(authUser) && !isNilOrError(project)) {
       return (
-        <Container className="e2e-idea-form-page">
+        <Container id="e2e-idea-new-page">
           <PageContainer className="ideaForm">
             <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} projectId={project.id} />
           </PageContainer>
