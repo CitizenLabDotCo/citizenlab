@@ -31,7 +31,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 
 // style
 import { darken } from 'polished';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // logos
@@ -110,7 +110,7 @@ const ButtonWrapper = styled.div`
   padding-top: 10px;
 `;
 
-const CreateAnAccountStyle = css`
+const CreateAnAccountLink = styled(Link)`
   color: ${(props) => props.theme.colorMain};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
@@ -122,14 +122,6 @@ const CreateAnAccountStyle = css`
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
   }
-`;
-
-const CreateAnAccountDiv: any = styled.div`
-  ${CreateAnAccountStyle}
-`;
-
-const CreateAnAccountLink: any = styled(Link)`
-  ${CreateAnAccountStyle}
 `;
 
 const Separator = styled.div`
@@ -204,7 +196,6 @@ type State = {
   emailError: string | null;
   passwordError: string | null;
   signInError: string | null;
-  loading: boolean;
 };
 
 class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
@@ -219,8 +210,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
       processing: false,
       emailError: null,
       passwordError: null,
-      signInError: null,
-      loading: true
+      signInError: null
     };
     this.emailInputElement = null;
     this.passwordInputElement = null;
@@ -305,107 +295,82 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
   }
 
   render() {
-    const {
-      email,
-      password,
-      processing,
-      emailError,
-      passwordError,
-      signInError,
-      loading
-    } = this.state;
-    const {
-      title,
-      location,
-      tenant,
-      passwordLoginEnabled,
-      googleLoginEnabled,
-      facebookLoginEnabled,
-      azureAdLoginEnabled,
-      franceconnectLoginEnabled,
-    } = this.props;
+    const { email, password, processing, emailError, passwordError, signInError } = this.state;
+    const { title, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
     const { formatMessage } = this.props.intl;
     const externalLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled);
-    const azureAdLogo: string = get(tenant, 'data.attributes.settings.azure_ad_login.logo_url');
-    const tenantLoginMechanismName: string = get(tenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name');
+    const azureAdLogo: string | null = get(tenant, 'data.attributes.settings.azure_ad_login.logo_url', null);
+    const tenantLoginMechanismName: string | null = get(tenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name', null);
 
-    const createAccount = ((location && location.pathname.replace(/\/$/, '').endsWith('ideas/new')) ? (
-      <CreateAnAccountDiv onClick={this.goToSignUpForm}>
-        <FormattedMessage {...messages.createAnAccount} />
-      </CreateAnAccountDiv>
-    ) : (
-      <CreateAnAccountLink to="/sign-up" className="e2e-sign-up-link">
-        <FormattedMessage {...messages.createAnAccount} />
-      </CreateAnAccountLink>
-    ));
+    return (
+      <Container>
+        <Title>{title || <FormattedMessage {...messages.title} />}</Title>
 
-    if (!loading) {
-      return (
-        <Container>
-          <Title>{title || <FormattedMessage {...messages.title} />}</Title>
+        <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
+          {passwordLoginEnabled &&
+            <PasswordLogin>
+              <FormElement>
+                <StyledInput
+                  ariaLabel={formatMessage(messages.emailPlaceholder)}
+                  type="email"
+                  id="email"
+                  value={email}
+                  placeholder={formatMessage(messages.emailPlaceholder)}
+                  error={emailError}
+                  onChange={this.handleEmailOnChange}
+                  setRef={this.handleEmailInputSetRef}
+                />
+              </FormElement>
 
-          <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
-            {passwordLoginEnabled &&
-              <PasswordLogin>
-                <FormElement>
-                  <StyledInput
-                    ariaLabel={formatMessage(messages.emailPlaceholder)}
-                    type="email"
-                    id="email"
-                    value={email}
-                    placeholder={formatMessage(messages.emailPlaceholder)}
-                    error={emailError}
-                    onChange={this.handleEmailOnChange}
-                    setRef={this.handleEmailInputSetRef}
+              <FormElement>
+                <PasswordInput
+                  ariaLabel={formatMessage(messages.passwordPlaceholder)}
+                  type="password"
+                  id="password"
+                  value={password}
+                  placeholder={formatMessage(messages.passwordPlaceholder)}
+                  error={passwordError}
+                  onChange={this.handlePasswordOnChange}
+                  setRef={this.handlePasswordInputSetRef}
+                />
+                <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
+                  <FormattedMessage {...messages.forgotPassword} />
+                </ForgotPassword>
+              </FormElement>
+
+              <FormElement>
+                <ButtonWrapper>
+                  <Button
+                    onClick={this.handleOnSubmit}
+                    size="1"
+                    processing={processing}
+                    text={formatMessage(messages.submit)}
+                    circularCorners={false}
+                    className="e2e-submit-signin"
                   />
-                </FormElement>
+                  <CreateAnAccountLink to="/sign-up" className="e2e-sign-up-link">
+                    <FormattedMessage {...messages.createAnAccount} />
+                  </CreateAnAccountLink>
+                </ButtonWrapper>
+                <Error marginTop="10px" text={signInError} />
+              </FormElement>
+            </PasswordLogin>
+          }
 
-                <FormElement>
-                  <PasswordInput
-                    ariaLabel={formatMessage(messages.passwordPlaceholder)}
-                    type="password"
-                    id="password"
-                    value={password}
-                    placeholder={formatMessage(messages.passwordPlaceholder)}
-                    error={passwordError}
-                    onChange={this.handlePasswordOnChange}
-                    setRef={this.handlePasswordInputSetRef}
-                  />
-                  <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
-                    <FormattedMessage {...messages.forgotPassword} />
-                  </ForgotPassword>
-                </FormElement>
+          {passwordLoginEnabled && externalLoginEnabled &&
+            <Separator />
+          }
 
-                <FormElement>
-                  <ButtonWrapper>
-                    <Button
-                      onClick={this.handleOnSubmit}
-                      size="1"
-                      processing={processing}
-                      text={formatMessage(messages.submit)}
-                      circularCorners={false}
-                      className="e2e-submit-signin"
-                    />
-                    {createAccount}
-                  </ButtonWrapper>
-                  <Error marginTop="10px" text={signInError} />
-                </FormElement>
-              </PasswordLogin>
-            }
-
-            {passwordLoginEnabled && externalLoginEnabled &&
-              <Separator />
-            }
-
-            {externalLoginEnabled &&
-              <Footer>
-                {(passwordLoginEnabled &&
-                  <SocialLoginText>
-                    {formatMessage(messages.orLogInWith)}
-                  </SocialLoginText>
-                )}
-                <AuthProviderButtons>
-                  <FeatureFlag name="azure_ad_login">
+          {externalLoginEnabled &&
+            <Footer>
+              {(passwordLoginEnabled &&
+                <SocialLoginText>
+                  {formatMessage(messages.orLogInWith)}
+                </SocialLoginText>
+              )}
+              <AuthProviderButtons>
+                <FeatureFlag name="azure_ad_login">
+                  {azureAdLogo && tenantLoginMechanismName &&
                     <AuthProviderButton
                       logoUrl={azureAdLogo}
                       logoHeight="45px"
@@ -415,59 +380,60 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                       acceptText={messages.alreadyAcceptTermsAndConditions}
                       altText={messages.signInButtonAltText}
                     />
-                  </FeatureFlag>
+                  }
+                </FeatureFlag>
 
-                  <FeatureFlag name="franceconnect_login">
-                    <FranceConnectButton role="button" onClick={this.handleOnSSOClick('franceconnect')}>
-                      <img
-                        src={franceconnectLogo}
-                        alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'FranceConnect' })}
-                      />
-                    </FranceConnectButton>
-                    <SubSocialButtonLink
-                      href="https://app.franceconnect.gouv.fr/en-savoir-plus"
-                      target="_blank"
-                    >
-                      <FormattedMessage {...messages.whatIsFranceConnect} />
-                    </SubSocialButtonLink>
-                  </FeatureFlag>
-
-                  <FeatureFlag name="google_login">
-                    <AuthProviderButton
-                      logoUrl={googleLogo}
-                      logoHeight="29px"
-                      provider="google"
-                      providerName="Google"
-                      onAccept={this.handleOnSSOClick('google')}
-                      acceptText={messages.alreadyAcceptTermsAndConditions}
-                      altText={messages.signInButtonAltText}
+                <FeatureFlag name="franceconnect_login">
+                  <FranceConnectButton role="button" onClick={this.handleOnSSOClick('franceconnect')}>
+                    <img
+                      src={franceconnectLogo}
+                      alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'FranceConnect' })}
                     />
-                  </FeatureFlag>
-                  <FeatureFlag name="facebook_login">
-                    <AuthProviderButton
-                      logoUrl={facebookLogo}
-                      logoHeight="21px"
-                      provider="facebook"
-                      providerName="Facebook"
-                      onAccept={this.handleOnSSOClick('facebook')}
-                      acceptText={messages.alreadyAcceptTermsAndConditions}
-                      altText={messages.signInButtonAltText}
-                    />
-                  </FeatureFlag>
-                </AuthProviderButtons>
-                {!passwordLoginEnabled &&
-                  <CreateAccount>
-                    {createAccount}
-                  </CreateAccount>
-                }
-              </Footer>
-            }
-          </Form>
-        </Container>
-      );
-    }
+                  </FranceConnectButton>
+                  <SubSocialButtonLink
+                    href="https://app.franceconnect.gouv.fr/en-savoir-plus"
+                    target="_blank"
+                  >
+                    <FormattedMessage {...messages.whatIsFranceConnect} />
+                  </SubSocialButtonLink>
+                </FeatureFlag>
 
-    return null;
+                <FeatureFlag name="google_login">
+                  <AuthProviderButton
+                    logoUrl={googleLogo}
+                    logoHeight="29px"
+                    provider="google"
+                    providerName="Google"
+                    onAccept={this.handleOnSSOClick('google')}
+                    acceptText={messages.alreadyAcceptTermsAndConditions}
+                    altText={messages.signInButtonAltText}
+                  />
+                </FeatureFlag>
+                <FeatureFlag name="facebook_login">
+                  <AuthProviderButton
+                    logoUrl={facebookLogo}
+                    logoHeight="21px"
+                    provider="facebook"
+                    providerName="Facebook"
+                    onAccept={this.handleOnSSOClick('facebook')}
+                    acceptText={messages.alreadyAcceptTermsAndConditions}
+                    altText={messages.signInButtonAltText}
+                  />
+                </FeatureFlag>
+              </AuthProviderButtons>
+
+              {!passwordLoginEnabled &&
+                <CreateAccount>
+                  <CreateAnAccountLink to="/sign-up" className="e2e-sign-up-link">
+                    <FormattedMessage {...messages.createAnAccount} />
+                  </CreateAnAccountLink>
+                </CreateAccount>
+              }
+            </Footer>
+          }
+        </Form>
+      </Container>
+    );
   }
 }
 

@@ -165,7 +165,7 @@ const config = {
       template: 'app/index.html'
     }),
 
-    isDev && new BundleAnalyzerPlugin(),
+    // isDev && new BundleAnalyzerPlugin(),
 
     isDev && new webpack.ProgressPlugin(),
 
