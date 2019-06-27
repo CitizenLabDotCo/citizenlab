@@ -53,32 +53,21 @@ class WebApi::V1::CommentsController < ApplicationController
     # one SQL query
     @comments = merge_comments(root_comments.to_a, child_comments.to_a)
 
-    total_root_comments_count = policy_scope(Comment)
-      .where(idea: params[:idea_id])
-      .where(parent: nil)
-      .count
-
-    if current_user
+    serialization_options = if current_user
       votes = Vote.where(user: current_user, votable: @comments)
       votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: { 
-        **WebApi::V1::Fast::CommentSerializer.new(
-          @comments, 
-          params: fastjson_params(vbci: votes_by_comment_id), 
-          include: [:author, :user_vote]
-          ).serializable_hash, 
-        meta: { total: total_root_comments_count }
+      {
+        params: fastjson_params(vbci: votes_by_comment_id), 
+        include: [:author, :user_vote]
       }
     else
-      render json: { 
-        **WebApi::V1::Fast::CommentSerializer.new(
-          @comments, 
-          params: fastjson_params, 
-          include: [:author]
-          ).serializable_hash, 
-        meta: { total: total_root_comments_count }
-      }
+      { params: fastjson_params, include: [:author] }
     end
+    
+    render json: { 
+      **WebApi::V1::Fast::CommentSerializer.new(@comments, serialization_options).serializable_hash, 
+      links: page_links(root_comments)
+    }
   end
 
   def index_xlsx
@@ -100,21 +89,18 @@ class WebApi::V1::CommentsController < ApplicationController
       .per(params.dig(:page, :size))
       .order(:lft)
 
-    if current_user
+    serialization_options = if current_user
       votes = Vote.where(user: current_user, votable: @comments.all)
       votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: WebApi::V1::Fast::CommentSerializer.new(
-        @comments, 
+      { 
         params: fastjson_params(vbci: votes_by_comment_id), 
-        include: [:author, :user_vote]
-        ).serialized_json
+        include: [:author, :user_vote] 
+      }
     else
-      render json: WebApi::V1::Fast::CommentSerializer.new(
-        @comments, 
-        params: fastjson_params, 
-        include: [:author]
-        ).serialized_json
+      { params: fastjson_params, include: [:author] }
     end
+
+    render json: linked_json(@comments, WebApi::V1::Fast::CommentSerializer, serialization_options)
   end
 
   def show

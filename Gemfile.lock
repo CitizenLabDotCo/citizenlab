@@ -579,7 +579,7 @@ DEPENDENCIES
   admin_api!
   apartment (~> 2.2.0)
   apartment-sidekiq (~> 1.2.0)
-  api-pagination
+  api-pagination (~> 4.8.2)
   awesome_nested_set
   aws-sdk-s3 (~> 1)
   axlsx (= 3.0.0.pre)

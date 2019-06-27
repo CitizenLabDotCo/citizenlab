@@ -6,7 +6,7 @@ class WebApi::V1::AreasController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
     @areas = @areas.order(created_at: :desc)
-    render json: collection_to_jsonspec(@areas, WebApi::V1::Fast::AreaSerializer, params: fastjson_params)
+    render json: linked_json(@areas, WebApi::V1::Fast::AreaSerializer, params: fastjson_params)
   end
 
   def show

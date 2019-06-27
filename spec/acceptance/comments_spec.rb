@@ -58,7 +58,7 @@ resource "Comments" do
           @c3sub5,
           @c3sub6,
         ].map(&:id))
-        expect(json_response[:meta][:total]).to eq 4
+        expect(json_response[:links][:next]).to be_present
       end
     end
 
@@ -153,9 +153,7 @@ resource "Comments" do
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].map{|d| d[:id]}).to eq [@c2.id, @c3.id, @c1.id]
         expect(json_response[:included].map{|d| d.dig(:attributes, :slug)}).to eq [@i1.slug, @i2.slug]
-        expect(json_response.dig(:meta, :total_count)).to eq 3
-        expect(json_response.dig(:meta, :total_pages)).to eq 2
-        expect(json_response.dig(:meta, :current_page)).to eq 1
+        expect(json_response.dig(:links, :next)).to be_present
       end
     end
   end

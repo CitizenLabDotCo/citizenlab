@@ -5,7 +5,8 @@ class WebApi::V1::ClusteringsController < ApplicationController
     @clusterings = policy_scope(Clustering)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-    render json: WebApi::V1::Fast::ClusteringSerializer.new(@clusterings, params: fastjson_params).serialized_json
+
+    render json: linked_json(@clusterings, WebApi::V1::Fast::ClusteringSerializer, params: fastjson_params)
   end
 
   def show
