@@ -14,6 +14,13 @@ module BaseImageUploader
 
   unless Rails.env.test?
     def asset_host
+      # There is no Tenant.current?
+      begin
+        Tenant.current
+      rescue ActiveRecord::RecordNotFound
+        # May not work work properly, but at least this won't crash.
+        return super
+      end
       Tenant.current.base_backend_uri
     end
   end
