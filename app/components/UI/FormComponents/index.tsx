@@ -2,10 +2,11 @@ import React, { memo } from 'react';
 
 import styled from 'styled-components';
 import { fontSizes, colors, booleanClass, invisibleA11yText } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { Messages, FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 import Icon, { IconNames } from 'components/UI/Icon';
+import Button from '../Button';
 
 export const FormSection = styled.div`
   background: white;
@@ -33,9 +34,7 @@ const FormSectionSubtitleStyled = styled.p`
   line-height: 21px;
 `;
 
-interface FormSectionTitleProps {
-  message: Messages['key'];
-  values?: OriginalFormattedMessage.Props['values'];
+interface FormSectionTitleProps extends IMessageInfo {
   subtitleMessage?: Messages['key'];
 }
 
@@ -192,4 +191,28 @@ export const FormLabelWithIcon = memo(({
     {!noSpace && <Spacer />}
     {children}
   </FormLabelStyled>
+));
+
+interface FormSubmitFooterProps extends IMessageInfo {
+  disabled?: boolean;
+  processing?: boolean;
+}
+
+const SubmitFooterContainer = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`;
+
+export const FormSubmitFooter = memo(({
+  message,
+  values,
+  ...otherProps
+}: FormSubmitFooterProps) => (
+  <SubmitFooterContainer>
+    <Button
+      {...otherProps}
+    />
+  </SubmitFooterContainer>
 ));

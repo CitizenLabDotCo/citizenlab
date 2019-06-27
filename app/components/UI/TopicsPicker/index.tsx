@@ -73,6 +73,7 @@ const TopicsPicker = ({ onChange, value, localize, topics, max }: Props & Inject
     <TopicsContainer>
       {orderBy(workingTopics, topic => localize(topic.attributes.title_multiloc)).map((topic) => {
         const isActive = value && !!value.find(id => id === topic.id);
+        const isDisabled = !isActive && value.length === max;
         return (
           <TopicSwitch
             key={topic.id}
@@ -81,6 +82,7 @@ const TopicsPicker = ({ onChange, value, localize, topics, max }: Props & Inject
             bgColor={isActive ? colors.clGreen : 'transparent'}
             borderColor={isActive ? 'none' : colors.separation}
             padding="7px 14px"
+            disabled={isDisabled}
           >
             <T value={topic.attributes.title_multiloc} />
           </TopicSwitch>

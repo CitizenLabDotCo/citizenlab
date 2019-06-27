@@ -1,13 +1,10 @@
 import React from 'react';
 
-// libraries
-import { Formik } from 'formik';
-
 // components
 import InitiativeForm, { FormValues } from 'components/InitiativeForm';
 
 // services
-import { Locale } from 'typings';
+import { Locale, Multiloc } from 'typings';
 import { addInitiative, InitiativePublicationStatus, updateInitiative } from 'services/initiatives';
 
 // utils
@@ -19,7 +16,7 @@ import styled from 'styled-components';
 
 // intl
 import { convertToGeoJson } from 'utils/locationTools';
-import { isEqual, pick, get } from 'lodash-es';
+import { isEqual, pick, get, isNil, omitBy } from 'lodash-es';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
@@ -41,109 +38,171 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
+interface State extends FormValues {
   initiativeId: string | null;
+  saving: boolean;
+  publishing: boolean;
 }
 
 export default class InitiativesFormWrapper extends React.PureComponent<Props, State> {
   initialValues: FormValues;
   constructor(props) {
     super(props);
-
-    this.state = {
-      initiativeId: null
-    };
     this.initialValues = {
-      title: '',
-      body: '',
+      title_multiloc: {},
+      body_multiloc: {},
       topics: [],
       position: '',
     };
+
+    this.state = {
+      ...this.initialValues,
+      initiativeId: null,
+      saving: false,
+      publishing: false
+    };
   }
 
-  componentDidMount() {
-  }
-
-  changedValues = (initialValues, newValues) => {
-    const changedKeys = Object.keys(newValues).filter((key) => (
-      !isEqual(initialValues[key], newValues[key])
+  changedValues = () => {
+    const changedKeys = Object.keys(this.initialValues).filter((key) => (
+      !isEqual(this.initialValues[key], this.state[key])
     ));
-    return pick(newValues, changedKeys);
+    return pick(this.state, changedKeys);
   }
 
-  handleSave = (mode: 'create' | 'edit' | 'publish', initialValues = this.initialValues) =>
-    async (values: FormValues, { setSubmitting, setErrors, setStatus }) => {
-      const { userId, locale } = this.props;
-      try {
-        const {  title, body, topics, position } = this.changedValues(initialValues, values);
-        const { initiativeId } = this.state;
-        if ((mode === 'create' && title === '')
-          || mode !== 'create' && initialValues === this.initialValues || !initiativeId) {
-            return;
-          }
-        // if position has changed and is not empty, transform it
-        const isPositionSafe = (typeof(position) === 'string') && position !== '';
-        const locationGeoJSON = isPositionSafe ? await convertToGeoJson(position) : null;
-        const locationDescription = isPositionSafe ? position : null;
-        // build API readable object
-        const apiValues = {
-          title_multiloc: { [locale]: title },
-          body_multiloc: { [locale]: body },
-          topic_ids: topics,
-          location_point_geojson: locationGeoJSON,
-          location_description: locationDescription,
-          publication_status: mode === 'publish' ? 'published' : 'draft' as InitiativePublicationStatus
-        };
-        if (mode === 'create') {
-          const createValues = Object.assign(apiValues, { author_id: userId });
-          await addInitiative(createValues);
-        } else {
-          await updateInitiative(initiativeId, apiValues);
-        }
-        setStatus('success');
-      } catch (errorResponse) {
-        const apiErrors = get(errorResponse, 'json.errors'); // TODO merge master and update this.
-        setErrors(apiErrors);
-        setSubmitting(false);
-      }
+  handleCreate = async () => {
+    const { userId } = this.props;
+    try {
+      this.setState({ saving: true });
+      const {  title_multiloc, body_multiloc, topics, position } = this.changedValues();
+      // if position has changed and is not empty, transform it
+      const isPositionSafe = !!(typeof position === 'string' && position !== '');
+      const locationGeoJSON = isPositionSafe ? await convertToGeoJson(position) : null;
+      const locationDescription = isPositionSafe ? position : null;
+      // build API readable object
+      const apiValues = {
+        title_multiloc,
+        body_multiloc,
+        topic_ids: topics,
+        location_point_geojson: locationGeoJSON,
+        location_description: locationDescription,
+        publication_status: 'draft' as InitiativePublicationStatus,
+        author_id: userId
+      };
+      const createValues = omitBy(apiValues, isNil);
+      console.log(createValues);
+      await addInitiative(createValues);
+    } catch (errorResponse) {
+      const apiErrors = get(errorResponse, 'json.errors'); // TODO merge master and update this.
+        // setErrors(apiErrors);
     }
-
-  renderFnCreate = (props) => {
-    return (
-      <StyledInitiativeForm
-        {...props}
-        onSave={this.handleSave('create')}
-      />
-    );
+    this.setState({ saving: false });
   }
-  renderFnUpdate = (initialValues) => (props) => {
-    return (
-      <StyledInitiativeForm
-        {...props}
-        onSave={this.handleSave('edit', initialValues)}
-      />
-    );
+
+  handleEdit = async () => {
+    const { initiativeId } = this.state;
+
+    if (!initiativeId) return; // TODO
+
+    try {
+      this.setState({ saving: true });
+      const {  title_multiloc, body_multiloc, topics, position } = this.changedValues();
+      // if position has changed and is not empty, transform it
+      const isPositionSafe = !!(typeof position === 'string' && position !== '');
+      const locationGeoJSON = isPositionSafe ? await convertToGeoJson(position) : null;
+      const locationDescription = isPositionSafe ? position : null;
+      // build API readable object
+      const apiValues = {
+        title_multiloc,
+        body_multiloc,
+        topic_ids: topics,
+        location_point_geojson: locationGeoJSON,
+        location_description: locationDescription,
+        publication_status: 'draft' as InitiativePublicationStatus
+      };
+      const editValues = omitBy(apiValues, isNil);
+      await updateInitiative(initiativeId, editValues);
+    } catch (errorResponse) {
+      const apiErrors = get(errorResponse, 'json.errors'); // TODO merge master and update this.
+        // setErrors(apiErrors);
+    }
+    this.setState({ saving: false });
+  }
+  handlePublish = async () => {
+    const { initiativeId } = this.state;
+
+    if (!initiativeId) return; // TODO
+
+    try {
+      this.setState({ publishing: true });
+      const {  title_multiloc, body_multiloc, topics, position } = this.changedValues();
+      // if position has changed and is not empty, transform it
+      const isPositionSafe = !!(typeof position === 'string' && position !== '');
+      const locationGeoJSON = isPositionSafe ? await convertToGeoJson(position) : null;
+      const locationDescription = isPositionSafe ? position : null;
+      // build API readable object
+      const apiValues = {
+        title_multiloc,
+        body_multiloc,
+        topic_ids: topics,
+        location_point_geojson: locationGeoJSON,
+        location_description: locationDescription,
+        publication_status: 'published' as InitiativePublicationStatus
+      };
+      const editValues = omitBy(apiValues, isNil);
+      await updateInitiative(initiativeId, editValues);
+    } catch (errorResponse) {
+      const apiErrors = get(errorResponse, 'json.errors'); // TODO merge master and update this.
+        // setErrors(apiErrors);
+    }
+    this.setState({ publishing: false });
+  }
+
+  onChangeTitle = (title_multiloc: Multiloc) => {
+    this.setState({ title_multiloc });
+  }
+  onChangeBody = (body_multiloc: Multiloc) => {
+    this.setState({ body_multiloc });
+  }
+  onChangeTopics = (topics: string[]) => {
+    this.setState({ topics });
+  }
+  onChangePosition = (position: string) => {
+    this.setState({ position });
+  }
+
+  getApiValues(initiative: GetInitiativeChildProps) {
+    if (isNilOrError(initiative)) {
+      return this.initialValues;
+    } else {
+      return ({
+        title_multiloc: get(initiative, 'title_multiloc'),
+        body_multiloc: get(initiative, 'body_multiloc'),
+        topics: get(initiative, 'relationships.topics.data').map(topic => topic.id),
+        position: get(initiative, 'position')
+      });
+    }
   }
 
   render() {
-    const { initiativeId } = this.state;
+    const { initiativeId, ...otherProps } = this.state;
+    const { locale } = this.props;
 
     if (initiativeId) {
       return (
         <GetInitiative>
           {initiative => {
-            const initialValues = this.getApiValues(initiative);
+            this.initialValues = this.getApiValues(initiative);
             return (
-              <Formik
-                initialValues={{
-                  title: '',
-                  body: '',
-                  topics: [],
-                  position: ''
-                }}
-                render={this.renderFnUpdate(initialValues)}
-                onSubmit={this.handleSave('publish', initialValues)}
-                validate={InitiativeForm.validate}
+              <StyledInitiativeForm
+                onPublish={this.handlePublish}
+                onSave={this.handleEdit}
+                locale={locale}
+                {...otherProps}
+                onChangeTitle={this.onChangeTitle}
+                onChangeBody={this.onChangeBody}
+                onChangeTopics={this.onChangeTopics}
+                onChangePosition={this.onChangePosition}
               />
             );
           }
@@ -152,26 +211,17 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       );
     } else {
       return (
-        <Formik
-          initialValues={this.initialValues}
-          render={this.renderFnCreate}
-          onSubmit={this.handleSave('publish')}
-          validate={InitiativeForm.validate}
+        <StyledInitiativeForm
+          onPublish={this.handlePublish}
+          onSave={this.handleCreate}
+          locale={locale}
+          {...otherProps}
+          onChangeTitle={this.onChangeTitle}
+          onChangeBody={this.onChangeBody}
+          onChangeTopics={this.onChangeTopics}
+          onChangePosition={this.onChangePosition}
         />
       );
-    }
-  }
-  getApiValues(initiative: GetInitiativeChildProps) {
-    if (isNilOrError(initiative)) {
-      return undefined;
-    } else {
-      const { locale } = this.props;
-      return ({
-        title: get(initiative, `title_multiloc[${locale}]`),
-        body: get(initiative, `title_multiloc[${locale}]`),
-        topics: get(initiative, 'relationships.topics.data').map(topic => topic.id),
-        position: get(initiative, 'position')
-      });
     }
   }
 }

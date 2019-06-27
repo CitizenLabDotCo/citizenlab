@@ -256,9 +256,21 @@ function handlerRemoveTab() {
 }
 
 class QuillEditor extends PureComponent<Props & InjectedIntlProps & Tracks, State> {
+  toolbarId: string;
+  modules: ModulesConfig;
   constructor(props) {
     super(props);
     this.state = { editorHtml: '' };
+    this.toolbarId = `ql-editor-toolbar-${props.id}`;
+    this.modules = this.getModuleConfig(props);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.noToolbar !== prevProps.noToolbar
+    || this.props.noImages !== prevProps.noImages
+    || this.props.noVideos !== prevProps.noVideos) {
+      this.modules = this.getModuleConfig(this.props);
+    }
   }
 
   handleChange = (html) => {
@@ -304,6 +316,41 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps & Tracks, Stat
     };
   }
 
+  getModuleConfig(props) {
+    const {
+      noToolbar,
+      noImages,
+      noVideos,
+    } = props;
+    return {
+      blotFormatter: (noImages && noVideos) ? false : {
+        specs: [CustomImageSpec, CustomIframeVideoSpec],
+      },
+      keyboard: {
+        // This will overwrite the default binding also named 'tab'
+        bindings: {
+          tab: {
+            key: 9,
+            handler: handlerTab
+          },
+          'remove tab': {
+            key: 9,
+            shiftKey: true,
+            collapsed: true,
+            prefix: /\t$/,
+            handler: handlerRemoveTab
+          }
+        }
+      },
+      toolbar: noToolbar ? false : {
+        container: `#${this.toolbarId}`,
+        handlers: {
+          link: handleLink,
+        }
+      },
+    };
+  }
+
   trackBasic = (type) => {
     return () => this.props.trackBasicEditing({
       extra: {
@@ -334,38 +381,9 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps & Tracks, Stat
       trackVideoEditing,
       trackAdvancedEditing,
       intl: { formatMessage },
+      onBlur,
       ...quillProps
     } = this.props;
-
-    const toolbarId = `ql-editor-toolbar-${id}`;
-
-    const modules: ModulesConfig = {
-      blotFormatter: (noImages && noVideos) ? false : {
-        specs: [CustomImageSpec, CustomIframeVideoSpec],
-      },
-      keyboard: {
-        // This will overwrite the default binding also named 'tab'
-        bindings: {
-          tab: {
-            key: 9,
-            handler: handlerTab
-          },
-          'remove tab': {
-            key: 9,
-            shiftKey: true,
-            collapsed: true,
-            prefix: /\t$/,
-            handler: handlerRemoveTab
-          }
-        }
-      },
-      toolbar: noToolbar ? false : {
-        container: `#${toolbarId}`,
-        handlers: {
-          link: handleLink,
-        }
-      },
-    };
 
     const formats = ['bold', 'italic', 'link'];
     if (!noImages) { formats.push('image', 'imageFormat', 'height', 'width', 'style'); }
@@ -388,8 +406,9 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps & Tracks, Stat
         save={formatMessage(messages.save)}
         edit={formatMessage(messages.edit)}
         remove={formatMessage(messages.remove)}
+        onBlur={onBlur}
       >
-        <div id={toolbarId} >
+        <div id={this.toolbarId} >
           {!limitedTextFormatting &&
             <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
               <select className="ql-header" defaultValue={''}>
@@ -463,7 +482,7 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps & Tracks, Stat
           }
         </div>
         <ReactQuill
-          modules={modules}
+          modules={this.modules}
           bounds="#boundaries"
           theme="snow"
           formats={formats}
