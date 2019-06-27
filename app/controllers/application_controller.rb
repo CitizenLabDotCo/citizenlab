@@ -72,12 +72,36 @@ class ApplicationController < ActionController::API
     }
   end
 
-  # def cl2_renderable serializer
-  #   {
-  #     **serializer.serializable_hash,
-  #     links: {
-  #       sef
-  #     }
-  #   }
-  # end
+  def linked_json collection, serializer, options={}
+    {
+      **serializer.new(collection, options).serializable_hash,
+      links: page_links(collection)
+    }
+  end
+
+  def page_links collection
+    # Inspired by https://github.com/davidcelis/api-pagination/blob/master/lib/grape/pagination.rb
+    pages = ApiPagination.send :pages_from, collection
+    links = pages.transform_values &method(:build_link)
+    # do |number|
+    #   build_link number
+    # end.to_h
+    links[:self] = build_link collection.current_page
+    [:first, :prev, :next, :last].each do |key|
+      links[key] ||= nil
+    end
+    links
+  end
+
+
+  private
+
+  def build_link number
+    # Inspired by https://github.com/davidcelis/api-pagination/blob/master/lib/grape/pagination.rb
+    url = request.url.sub(/\?.*$/, '')
+    pageparams = Rack::Utils.parse_nested_query(request.query_string)
+    pageparams['page'] ||= {}
+    pageparams['page']['number'] = number
+    "#{url}?#{pageparams.to_param}"
+  end
 end
