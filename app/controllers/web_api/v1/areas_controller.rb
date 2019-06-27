@@ -1,7 +1,4 @@
 class WebApi::V1::AreasController < ApplicationController
-  # include Kaminari::Helpers::UrlHelper
-  # include Kaminari::Helpers::HelperMethods
-
   before_action :set_area, only: [:show, :update, :destroy]
 
   def index
@@ -9,8 +6,7 @@ class WebApi::V1::AreasController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
     @areas = @areas.order(created_at: :desc)
-    byebug
-    render json: WebApi::V1::Fast::AreaSerializer.new(@areas, params: fastjson_params).serialized_json
+    render json: collection_to_jsonspec(@areas, WebApi::V1::Fast::AreaSerializer, params: fastjson_params)
   end
 
   def show
