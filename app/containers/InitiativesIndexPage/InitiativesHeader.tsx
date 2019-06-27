@@ -24,6 +24,7 @@ import messages from './messages';
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
+import T from 'components/T';
 
 const illustration = require('assets/img/initiativesHeaderImage.png');
 
@@ -201,7 +202,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
             <HeaderTitle>
               <FormattedMessage
                 {...messages.header}
-                values={{ styledOrgName: <ColoredText><FormattedMessage {...messages.orgName} /></ColoredText> }}
+                values={{ styledOrgName: <ColoredText><T value={tenant.attributes.settings.core.organization_name}/></ColoredText> }}
               />
             </HeaderTitle>
 

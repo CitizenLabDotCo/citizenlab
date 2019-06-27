@@ -1,19 +1,12 @@
 import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
 
 // components
 import Author from 'components/Author';
 import AdminBadge from './AdminBadge';
 
-// resources
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-
-// i18n
-import { FormattedRelative } from 'react-intl';
-
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -40,18 +33,6 @@ const StyledAuthor = styled(Author)`
   margin-left: -4px;
 `;
 
-const TimeAgo = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.small}px;
-  line-height: 14px;
-  font-weight: 400;
-  margin-left: 16px;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
-`;
-
 interface InputProps {
   projectId: string;
   authorId: string | null;
@@ -61,18 +42,19 @@ interface InputProps {
   moderator: boolean;
 }
 
-interface DataProps {
-  windowSize: GetWindowSizeChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps {}
 
 interface State {}
 
-class CommentHeader extends PureComponent<Props, State> {
+export default class CommentHeader extends PureComponent<Props, State> {
   render() {
-    const { windowSize, projectId, authorId, commentType, commentCreatedAt, moderator } = this.props;
-    const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+    const {
+      projectId,
+      authorId,
+      commentType,
+      commentCreatedAt,
+      moderator
+    } = this.props;
 
     return (
       <Container>
@@ -83,12 +65,9 @@ class CommentHeader extends PureComponent<Props, State> {
             size="32px"
             projectId={projectId}
             showModeration={moderator}
-            createdAt={smallerThanSmallTablet ? commentCreatedAt : undefined}
+            createdAt={commentCreatedAt}
             avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
           />
-          <TimeAgo>
-            <FormattedRelative value={commentCreatedAt} />
-          </TimeAgo>
         </Left>
 
         <Right>
@@ -98,16 +77,5 @@ class CommentHeader extends PureComponent<Props, State> {
         </Right>
       </Container>
     );
-
   }
 }
-
-const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize debounce={50} />
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <CommentHeader {...inputProps} {...dataProps} />}
-  </Data>
-);

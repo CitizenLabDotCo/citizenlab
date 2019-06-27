@@ -24,7 +24,6 @@ const LinkButton = styled.button`
   margin: 0;
   padding: 0;
   cursor: pointer;
-  outline: none;
 
   &:hover {
     color: #000;
@@ -58,6 +57,10 @@ class IdeaActivities extends PureComponent<Props, State> {
     };
   }
 
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
   openModal = () => {
     this.setState({ modalOpen: true });
   }
@@ -75,16 +78,17 @@ class IdeaActivities extends PureComponent<Props, State> {
 
       return (
         <>
-          <span> - <LinkButton onClick={this.openModal}>
+          <span> - <LinkButton onMouseDown={this.removeFocus} onClick={this.openModal} className="e2e-idea-last-modified-button">
             <FormattedMessage {...messages.lastUpdated} values={{ modificationTime: <FormattedRelative value={lastUpdated} /> }} />
           </LinkButton></span>
+
           <Modal
             opened={this.state.modalOpen}
             close={this.closeModal}
             header={<FormattedMessage {...messages.lastChangesTitle} />}
             fixedHeight={true}
           >
-            <Activities>
+            <Activities className="e2e-activities-changelog">
               {ideaActivities.map((activity) => (
                 <ActivitiesChangeLog key={activity.id} activity={activity} />
               ))}
