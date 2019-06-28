@@ -79,7 +79,7 @@ export interface IProjectData {
     current_phase: {
       data: IRelationship | null;
     }
-    user_basket: {
+    user_basket?: {
       data: IRelationship | null;
     }
     default_assignee: {
