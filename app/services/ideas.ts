@@ -51,7 +51,7 @@ export interface IIdeaData {
     idea_status?: {
       data: IRelationship | null;
     },
-    user_vote: {
+    user_vote?: {
       data: IRelationship;
     },
     action_descriptor: {
