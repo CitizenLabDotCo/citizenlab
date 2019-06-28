@@ -39,7 +39,7 @@ export interface IIdeaData {
     author: {
       data: IRelationship | null;
     };
-    assignee: {
+    assignee?: {
       data: IRelationship | null;
     };
     phases: {
