@@ -18,6 +18,11 @@ resource "Comment Votes" do
   end
 
   get "web_api/v1/comments/:comment_id/votes" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of votes per page"
+    end
+
     let(:comment_id) { @comment.id }
 
     example_request "List all votes of a comment" do
