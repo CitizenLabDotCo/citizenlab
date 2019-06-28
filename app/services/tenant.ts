@@ -102,7 +102,7 @@ interface TenantMapSettings extends TenantFeature {
   zoom_level: number;
 }
 
-interface ITenantStyle {
+export interface ITenantStyle {
   invertedNavbarColors: boolean;
   navbarBackgroundColor?: string;
   navbarActiveItemBackgroundColor?: string;
