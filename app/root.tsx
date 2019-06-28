@@ -7,6 +7,7 @@ import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 import 'assets/css/reset.min.css';
 import App from 'containers/App';
+import { loadFonts } from 'containers/App/fonts';
 import LanguageProvider from 'containers/LanguageProvider';
 import { init } from '@sentry/browser';
 import * as Integrations from '@sentry/integrations';
@@ -27,6 +28,8 @@ if (process && process.env && process.env.NODE_ENV === 'production' && process.e
     integrations: [new Integrations.RewriteFrames()]
   });
 }
+
+loadFonts();
 
 initializeAnalytics();
 
