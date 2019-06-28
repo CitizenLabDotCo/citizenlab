@@ -21,22 +21,32 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 #
-# workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 
-# Use the `preload_app!` method when specifying a `workers` number.
-# This directive tells Puma to first boot the application and load code
-# before forking the application. This takes advantage of Copy On Write
-# process behavior so workers use less memory.
-#
-# preload_app!
+web_concurrency = ENV.fetch("WEB_CONCURRENCY", 2).to_i
 
-# on_worker_boot do
-#   ActiveSupport.on_load(:active_record) do
-#     ActiveRecord::Base.establish_connection
-#   end
-#   # Re-open appenders after forking the process
-#   SemanticLogger.reopen
-# end
+if web_concurrency.to_i > 1
+  workers web_concurrency
+
+  # Use the `preload_app!` method when specifying a `workers` number.
+  # This directive tells Puma to first boot the application and load code
+  # before forking the application. This takes advantage of Copy On Write
+  # process behavior so workers use less memory.
+  #
+  preload_app!
+
+  on_worker_boot do
+    ActiveSupport.on_load(:active_record) do
+      ActiveRecord::Base.establish_connection
+    end
+    SemanticLogger.reopen
+
+    # We also need to deal with bunny here, but since we're only using it from
+    # sidekiq, it's easier right now to leave it in an initializer
+    # http://rubybunny.info/articles/connecting.html#using_bunny_with_unicorn
+    #
+    # BUNNY_CON = connect_bunny
+  end
+end
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart

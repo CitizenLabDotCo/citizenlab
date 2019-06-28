@@ -4,6 +4,7 @@ module EmailCampaigns
     include ActivityTriggerable
     include RecipientConfigurable
     include Disableable
+    include Trackable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
 

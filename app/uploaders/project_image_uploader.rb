@@ -1,5 +1,5 @@
 class ProjectImageUploader < CarrierWave::Uploader::Base
-  include BaseUploader
+  include BaseImageUploader
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -37,17 +37,14 @@ class ProjectImageUploader < CarrierWave::Uploader::Base
 
   version :small do
     process resize_to_fill: [96, 96]
-    # process optimize: [{ quality: 90, quiet: true }]
   end
 
   version :medium do
     process resize_to_fill: [575,575]
-    # process optimize: [{ quality: 90, quiet: true }]
   end
 
   version :large do
     process resize_to_fit: [1200,1200]
-    # process optimize: [{ quality: 90, quiet: true }]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.
@@ -55,11 +52,5 @@ class ProjectImageUploader < CarrierWave::Uploader::Base
   def extension_whitelist
     %w(jpg jpeg jpe jif jfif jfi jp2 jpf jpm jpx j2k jxr gif png tif tiff bmp pbm pgm ppm pnm webp heif heic ico tga sgi fits flif sid svg)
   end
-
-  # Override the filename of the uploaded files:
-  # Avoid using model.id or version_name here, see uploader/store.rb for details.
-  # def filename
-  #   "something.jpg" if original_filename
-  # end
 
 end
