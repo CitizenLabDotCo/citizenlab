@@ -46,9 +46,6 @@ import { media, getTheme } from 'utils/styleUtils';
 // typings
 import ErrorBoundary from 'components/ErrorBoundary';
 
-// fonts
-import('./fonts');
-
 const Container = styled.div`
   background: #fff;
   position: relative;
