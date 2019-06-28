@@ -9,10 +9,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
       .per(params.dig(:page, :size))
       .order(created_at: :desc)
 
-    render json: WebApi::V1::Fast::OfficialFeedbackSerializer.new(
-      @feedbacks, 
-      params: fastjson_params
-      ).serialized_json
+    render json: linked_json(@feedbacks, WebApi::V1::Fast::OfficialFeedbackSerializer, params: fastjson_params)
   end
 
   def show

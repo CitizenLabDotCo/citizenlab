@@ -19,7 +19,8 @@ class WebApi::V1::ModeratorsController < ApplicationController
       .project_moderator(params[:project_id])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-    render json: WebApi::V1::Fast::UserSerializer.new(@moderators, params: fastjson_params).serialized_json
+
+    render json: linked_json(@moderators, WebApi::V1::Fast::UserSerializer, params: fastjson_params)
   end
 
   def show
@@ -58,10 +59,8 @@ class WebApi::V1::ModeratorsController < ApplicationController
       .search_by_all(params[:search])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-    render json: WebApi::V1::Fast::ModeratorSerializer.new(
-      @users, 
-      params: fastjson_params(project_id: params[:project_id])
-      ).serialized_json
+
+    render json: linked_json(@users, WebApi::V1::Fast::ModeratorSerializer, params: fastjson_params(project_id: params[:project_id]))
   end
 
 

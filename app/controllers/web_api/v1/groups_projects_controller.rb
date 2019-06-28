@@ -20,11 +20,12 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
         raise "Unsupported sort method"
     end
 
-    render json: WebApi::V1::Fast::GroupsProjectSerializer.new(
+    render json: linked_json(
       @groups_projects, 
+      WebApi::V1::Fast::GroupsProjectSerializer, 
       params: fastjson_params,
       include: [:group]
-      ).serialized_json
+      )
   end
 
   def show

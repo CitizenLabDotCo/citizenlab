@@ -9,11 +9,13 @@ class WebApi::V1::MembershipsController < ApplicationController
       .includes(user: [:unread_notifications])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-    render json: WebApi::V1::Fast::MembershipSerializer.new(
+
+    render json: linked_json(
       @memberships, 
+      WebApi::V1::Fast::MembershipSerializer, 
       params: fastjson_params, 
       include: [:user]
-      ).serialized_json
+      )
   end
 
   def show
@@ -66,10 +68,7 @@ class WebApi::V1::MembershipsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: WebApi::V1::Fast::MemberSerializer.new(
-      @users, 
-      params: fastjson_params(group_id: params[:group_id])
-      ).serialized_json
+    render json: linked_json(@users, WebApi::V1::Fast::MemberSerializer, params: fastjson_params(group_id: params[:group_id]))
   end
 
 

@@ -10,7 +10,7 @@ class WebApi::V1::GroupsController < ApplicationController
     @groups = @groups.where(membership_type: params[:membership_type]) if params[:membership_type]
     @groups = @groups.order_new
     
-  	render json: WebApi::V1::Fast::GroupSerializer.new(@groups, params: fastjson_params).serialized_json
+  	render json: linked_json(@groups, WebApi::V1::Fast::GroupSerializer, params: fastjson_params)
   end
 
   def show

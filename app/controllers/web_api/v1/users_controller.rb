@@ -43,7 +43,7 @@ class WebApi::V1::UsersController < ::ApplicationController
         raise "Unsupported sort method"
     end
 
-    render json: WebApi::V1::Fast::UserSerializer.new(@users, params: fastjson_params).serialized_json
+    render json: linked_json(@users, WebApi::V1::Fast::UserSerializer, params: fastjson_params)
   end
 
   def index_xlsx

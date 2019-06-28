@@ -48,7 +48,7 @@ class WebApi::V1::InvitesController < ApplicationController
       end
     end
 
-    render json: WebApi::V1::Fast::InviteSerializer.new(@invites, params: fastjson_params, include: [:invitee]).serialized_json
+    render json: linked_json(@invites, WebApi::V1::Fast::InviteSerializer, params: fastjson_params, include: [:invitee])
   end
 
   def index_xlsx

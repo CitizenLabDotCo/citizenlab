@@ -8,7 +8,7 @@ class WebApi::V1::PhasesController < ApplicationController
       .per(params.dig(:page, :size))
       .order(:start_at)
 
-    render json: WebApi::V1::Fast::PhaseSerializer.new(@phases, params: fastjson_params).serialized_json
+    render json: linked_json(@phases, WebApi::V1::Fast::PhaseSerializer, params: fastjson_params)
   end
 
   def show
