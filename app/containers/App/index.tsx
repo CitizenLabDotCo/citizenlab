@@ -8,7 +8,6 @@ import 'moment-timezone';
 import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
 import { appLocalesMomentPairs } from 'containers/App/constants';
-import { loadFonts } from './fonts';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -90,7 +89,6 @@ type State = {
   visible: boolean;
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
-  fonts: { [key: string]: string; } | null;
 };
 
 const IdeaPageFullscreenModal = lazy(() => import('./IdeaPageFullscreenModal'));
@@ -109,11 +107,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       ideaSlug: null,
       visible: true,
       userDeletedModalOpened: false,
-      userActuallyDeleted: false,
-      fonts: null
+      userActuallyDeleted: false
     };
     this.subscriptions = [];
-    loadFonts();
   }
 
   componentDidMount() {
@@ -231,8 +227,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       ideaSlug,
       visible,
       userDeletedModalOpened,
-      userActuallyDeleted,
-      fonts
+      userActuallyDeleted
     } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
@@ -243,7 +238,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider theme={theme}>
               <>
-                <GlobalStyle fonts={fonts} />
+                <GlobalStyle />
 
                 <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                   <Meta />
