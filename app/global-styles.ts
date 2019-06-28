@@ -2,103 +2,101 @@ import { createGlobalStyle } from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 const GlobalStyle = createGlobalStyle`
-  ${props => props.fonts ?
-    `@font-face {
-      font-family: 'larsseit';
-      src:  url(${props.fonts.larsseithhinwoff2}) format('woff2'),
-            url(${props.fonts.larsseithhinwoff}) format('woff');
-      font-style: normal;
-      font-weight: 200;
-    }
+  @font-face {
+    font-family: 'larsseit';
+    src:  url('/larsseit-thin.woff2') format('woff2'),
+          url('/larsseit-thin.woff') format('woff');
+    font-style: normal;
+    font-weight: 200;
+  }
 
-    @font-face {
-      font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitthinitalicwoff2}) format('woff2'),
-            url(${props.fonts.larsseitthinitalicwoff}) format('woff');
-      font-style: italic;
-      font-weight: 200;
-    }
+  @font-face {
+    font-family: 'larsseit';
+    src:  url('/larsseit-thinitalic.woff2') format('woff2'),
+          url('/larsseit-thinitalic.woff') format('woff');
+    font-style: italic;
+    font-weight: 200;
+  }
 
-    @font-face {
-      font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitlightwoff2}) format('woff2'),
-            url(${props.fonts.larsseitlightwoff}) format('woff');
-      font-style: normal;
-      font-weight: 300;
-    }
+  @font-face {
+    font-family: 'larsseit';
+    src:  url('/larsseit-light.woff2') format('woff2'),
+          url('/larsseit-light.woff') format('woff');
+    font-style: normal;
+    font-weight: 300;
+  }
 
-    @font-face {
-      font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitlightitalicwoff2}) format('woff2'),
-            url(${props.fonts.larsseitlightitalicwoff}) format('woff');
-      font-style: italic;
-      font-weight: 300;
-    }
+  @font-face {
+    font-family: 'larsseit';
+    src:  url('/larsseit-lightitalic.woff2') format('woff2'),
+          url('/larsseit-lightitalic.woff') format('woff');
+    font-style: italic;
+    font-weight: 300;
+  }
 
-    @font-face {
-      font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitwoff2}) format('woff2'),
-            url(${props.fonts.larsseitwoff}) format('woff');
-      font-style: normal;
-      font-weight: 400;
-    }
+  @font-face {
+    font-family: 'larsseit';
+    src:  url('/larsseit.woff2') format('woff2'),
+          url('/larsseit.woff') format('woff');
+    font-style: normal;
+    font-weight: 400;
+  }
 
-    @font-face {
-      font-family: 'larsseit';
-      src:  url(${props.fonts.larsseititalicwoff2}) format('woff2'),
-            url(${props.fonts.larsseititalicwoff}) format('woff');
-      font-style: italic;
-      font-weight: 400;
-    }
+  @font-face {
+    font-family: 'larsseit';
+    src:  url('/larsseit-italic.woff2') format('woff2'),
+          url('/larsseit-italic.woff') format('woff');
+    font-style: italic;
+    font-weight: 400;
+  }
 
-    @font-face {
-      font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitmediumwoff2}) format('woff2'),
-            url(${props.fonts.larsseitmediumwoff}) format('woff');
-      font-style: normal;
-      font-weight: 500;
-    }
+  @font-face {
+    font-family: 'larsseit';
+    src:  url('/larsseit-medium.woff2') format('woff2'),
+          url('/larsseit-medium.woff') format('woff');
+    font-style: normal;
+    font-weight: 500;
+  }
 
-    @font-face {
-      font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitMediumitalicwoff2}) format('woff2'),
-            url(${props.fonts.larsseitMediumitalicwoff}) format('woff');
-      font-style: italic;
-      font-weight: 500;
-    }
+  @font-face {
+    font-family: 'larsseit';
+    src:  url('/larsseit-mediumitalic.woff2') format('woff2'),
+          url('/larsseit-mediumitalic.woff') format('woff');
+    font-style: italic;
+    font-weight: 500;
+  }
 
-    @font-face {
-      font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitboldwoff2}) format('woff2'),
-            url(${props.fonts.larsseitboldwoff}) format('woff');
-      font-style: normal;
-      font-weight: 600;
-    }
+  @font-face {
+    font-family: 'larsseit';
+    src:  url('/larsseit-bold.woff2') format('woff2'),
+          url('/larsseit-bold.woff') format('woff');
+    font-style: normal;
+    font-weight: 600;
+  }
 
-    @font-face {
-      font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitbolditalicwoff2}) format('woff2'),
-            url(${props.fonts.larsseitbolditalicwoff}) format('woff');
-      font-style: italic;
-      font-weight: 600;
-    }
+  @font-face {
+    font-family: 'larsseit';
+    src:  url('/larsseit-bolditalic.woff2') format('woff2'),
+          url('/larsseit-bolditalic.woff') format('woff');
+    font-style: italic;
+    font-weight: 600;
+  }
 
-    @font-face {
-      font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitextraboldwoff2}) format('woff2'),
-            url(${props.fonts.larsseitextraboldwoff}) format('woff');
-      font-style: normal;
-      font-weight: 800;
-    }
+  @font-face {
+    font-family: 'larsseit';
+    src:  url('/larsseit-extrabold.woff2') format('woff2'),
+          url('/larsseit-extrabold.woff') format('woff');
+    font-style: normal;
+    font-weight: 800;
+  }
 
-    @font-face {
-      font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitextrabolditalicwoff2}) format('woff2'),
-            url(${props.fonts.larsseitextrabolditalicwoff}) format('woff');
-      font-style: italic;
-      font-weight: 800;
-    }`
-  : ''}
+  @font-face {
+    font-family: 'larsseit';
+    src:  url('/larsseit-extrabolditalic.woff2') format('woff2'),
+          url('/larsseit-extrabolditalic.woff') format('woff');
+    font-style: italic;
+    font-weight: 800;
+  }
 
   html {
     box-sizing: border-box;
