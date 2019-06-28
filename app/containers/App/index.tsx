@@ -6,9 +6,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import 'moment-timezone';
 import { configureScope } from '@sentry/browser';
-import { reportError } from 'utils/loggingUtils';
 import GlobalStyle from 'global-styles';
 import { appLocalesMomentPairs } from 'containers/App/constants';
+import { loadFonts } from './fonts';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -46,6 +46,9 @@ import { media, getTheme } from 'utils/styleUtils';
 
 // typings
 import ErrorBoundary from 'components/ErrorBoundary';
+
+// fonts
+import('./fonts');
 
 const Container = styled.div`
   background: #fff;
@@ -110,6 +113,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       fonts: null
     };
     this.subscriptions = [];
+    loadFonts();
   }
 
   componentDidMount() {
@@ -136,8 +140,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         });
       }
     });
-
-    this.loadFonts();
 
     this.subscriptions = [
       combineLatest(
@@ -206,96 +208,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentWillUnmount() {
     this.unlisten();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  loadFonts = async () => {
-    try {
-      const fontModules = await Promise.all([
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-thin.woff'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-thin.woff2'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-thinitalic.woff'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-thinitalic.woff2'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-light.woff'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-light.woff2'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-lightitalic.woff'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-lightitalic.woff2'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit.woff'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit.woff2'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-italic.woff'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-italic.woff2'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-medium.woff'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-medium.woff2'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-mediumitalic.woff'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-mediumitalic.woff2'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-bold.woff'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-bold.woff2'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-bolditalic.woff'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-bolditalic.woff2'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-extrabold.woff'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-extrabold.woff2'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-extrabolditalic.woff'
-        ),
-        import(
-          /* webpackPreload: true */ 'assets/fonts/larsseit-extrabolditalic.woff2'
-        )
-      ]);
-
-      const fonts = {};
-
-      fontModules.forEach((fontModule) => {
-        const name = fontModule.default.replace(/^\/|\/$/g, '').replace(/\-/g, '').replace(/\./g, '');
-        fonts[name] = fontModule.default;
-      });
-
-      this.setState({ fonts });
-    } catch (error) {
-      reportError(error);
-    }
   }
 
   openIdeaPageModal = (ideaId: string, ideaSlug: string) => {
