@@ -8,7 +8,8 @@ class WebApi::V1::PermissionsController < ApplicationController
     @permissions = @permissions
       .where(permittable_id: params[params[:parent_param]])
       .order(created_at: :desc)
-    render json: WebApi::V1::Fast::PermissionSerializer.new(@permissions, params: fastjson_params).serialized_json
+      
+    render json: linked_json(@permissions, WebApi::V1::Fast::PermissionSerializer, params: fastjson_params)
   end
 
   def show

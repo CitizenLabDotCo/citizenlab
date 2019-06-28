@@ -8,11 +8,10 @@ class WebApi::V1::SpamReportsController < ApplicationController
     @spam_reports = policy_scope(SpamReport)
       .where(spam_reportable_type: @spam_reportable_type, spam_reportable_id: @spam_reportable_id)
       .includes(:user)
-    render json: WebApi::V1::Fast::SpamReportSerializer.new(
-      @spam_reports, 
-      params: fastjson_params,
-      include: [:user]
-      ).serialized_json
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+      
+    render json: linked_json(@spam_reports, WebApi::V1::Fast::SpamReportSerializer, params: fastjson_params, include: [:user])
   end
 
   def show

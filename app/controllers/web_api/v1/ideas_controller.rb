@@ -56,22 +56,21 @@ class WebApi::V1::IdeasController < ApplicationController
         end
     end
 
-    if current_user
+    serialization_options = if current_user
       votes = Vote.where(user: current_user, votable: @ideas, votable_type: 'Idea')
       votes_by_idea_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: WebApi::V1::Fast::IdeaSerializer.new(
-        @ideas, 
+      {
         params: fastjson_params(vbii: votes_by_idea_id, pcs: ParticipationContextService.new),
         include: [:author, :user_vote, :idea_images, :assignee]
-        ).serialized_json
+      }
     else
-      render json: WebApi::V1::Fast::IdeaSerializer.new(
-        @ideas, 
+      {
         params: fastjson_params(pcs: ParticipationContextService.new),
         include: [:author, :idea_images]
-        ).serialized_json
+      }
     end
 
+    render json: linked_json(@ideas, WebApi::V1::Fast::IdeaSerializer, serialization_options)
   end
 
   def index_idea_markers
@@ -82,7 +81,7 @@ class WebApi::V1::IdeasController < ApplicationController
     @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
-    render json: WebApi::V1::Fast::IdeaMarkerSerializer.new(@ideas, params: fastjson_params).serialized_json
+    render json: linked_json(@ideas, WebApi::V1::Fast::AreaSerializer, params: fastjson_params)
   end
 
   def index_xlsx

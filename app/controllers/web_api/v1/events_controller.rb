@@ -7,7 +7,7 @@ class WebApi::V1::EventsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
       .order(:start_at)
-    render json: WebApi::V1::Fast::EventSerializer.new(@events, params: fastjson_params).serialized_json
+    render json: linked_json(@events, WebApi::V1::Fast::EventSerializer, params: fastjson_params)
   end
 
   def show

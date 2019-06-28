@@ -40,11 +40,12 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects)
     }
 
-    render json: WebApi::V1::Fast::ProjectSerializer.new(
+    render json: linked_json(
       @projects, 
+      WebApi::V1::Fast::ProjectSerializer, 
       params: fastjson_params(instance_options), 
       include: [:project_images, :current_phase, :avatars]
-      ).serialized_json
+      )
   end
 
   def show

@@ -5,14 +5,9 @@ class WebApi::V1::PagesController < ::ApplicationController
     @pages = policy_scope(Page).includes(:page_links)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-
     @pages = @pages.where(project_id: params[:project]) if params[:project].present?
 
-    render json: WebApi::V1::Fast::PageSerializer.new(
-      @pages, 
-      params: fastjson_params, 
-      include: [:page_links]
-      ).serialized_json
+    render json: linked_json(@pages, WebApi::V1::Fast::PageSerializer, params: fastjson_params, include: [:page_links]) 
   end
 
 
