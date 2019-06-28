@@ -5,96 +5,96 @@ const GlobalStyle = createGlobalStyle`
   ${props => props.fonts ?
     `@font-face {
       font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitThinWOFF2}) format('woff2'),
-            url(${props.fonts.larsseitThinWOFF}) format('woff');
+      src:  url(${props.fonts.larsseithhinwoff2}) format('woff2'),
+            url(${props.fonts.larsseithhinwoff}) format('woff');
       font-style: normal;
       font-weight: 200;
     }
 
     @font-face {
       font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitThinItalicWOFF2}) format('woff2'),
-            url(${props.fonts.larsseitThinItalicWOFF}) format('woff');
+      src:  url(${props.fonts.larsseitthinitalicwoff2}) format('woff2'),
+            url(${props.fonts.larsseitthinitalicwoff}) format('woff');
       font-style: italic;
       font-weight: 200;
     }
 
     @font-face {
       font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitLightWOFF2}) format('woff2'),
-            url(${props.fonts.larsseitLightWOFF}) format('woff');
+      src:  url(${props.fonts.larsseitlightwoff2}) format('woff2'),
+            url(${props.fonts.larsseitlightwoff}) format('woff');
       font-style: normal;
       font-weight: 300;
     }
 
     @font-face {
       font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitLightItalicWOFF2}) format('woff2'),
-            url(${props.fonts.larsseitLightItalicWOFF}) format('woff');
+      src:  url(${props.fonts.larsseitlightitalicwoff2}) format('woff2'),
+            url(${props.fonts.larsseitlightitalicwoff}) format('woff');
       font-style: italic;
       font-weight: 300;
     }
 
     @font-face {
       font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitRegularWOFF2}) format('woff2'),
-            url(${props.fonts.larsseitRegularWOFF}) format('woff');
+      src:  url(${props.fonts.larsseitwoff2}) format('woff2'),
+            url(${props.fonts.larsseitwoff}) format('woff');
       font-style: normal;
       font-weight: 400;
     }
 
     @font-face {
       font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitRegularItalicWOFF2}) format('woff2'),
-            url(${props.fonts.larsseitRegularItalicWOFF}) format('woff');
+      src:  url(${props.fonts.larsseititalicwoff2}) format('woff2'),
+            url(${props.fonts.larsseititalicwoff}) format('woff');
       font-style: italic;
       font-weight: 400;
     }
 
     @font-face {
       font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitMediumWOFF2}) format('woff2'),
-            url(${props.fonts.larsseitMediumWOFF}) format('woff');
+      src:  url(${props.fonts.larsseitmediumwoff2}) format('woff2'),
+            url(${props.fonts.larsseitmediumwoff}) format('woff');
       font-style: normal;
       font-weight: 500;
     }
 
     @font-face {
       font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitMediumItalicWOFF2}) format('woff2'),
-            url(${props.fonts.larsseitMediumItalicWOFF}) format('woff');
+      src:  url(${props.fonts.larsseitMediumitalicwoff2}) format('woff2'),
+            url(${props.fonts.larsseitMediumitalicwoff}) format('woff');
       font-style: italic;
       font-weight: 500;
     }
 
     @font-face {
       font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitBoldWOFF2}) format('woff2'),
-            url(${props.fonts.larsseitBoldWOFF}) format('woff');
+      src:  url(${props.fonts.larsseitboldwoff2}) format('woff2'),
+            url(${props.fonts.larsseitboldwoff}) format('woff');
       font-style: normal;
       font-weight: 600;
     }
 
     @font-face {
       font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitBoldItalicWOFF2}) format('woff2'),
-            url(${props.fonts.larsseitBoldItalicWOFF}) format('woff');
+      src:  url(${props.fonts.larsseitbolditalicwoff2}) format('woff2'),
+            url(${props.fonts.larsseitbolditalicwoff}) format('woff');
       font-style: italic;
       font-weight: 600;
     }
 
     @font-face {
       font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitExtraBoldWOFF2}) format('woff2'),
-            url(${props.fonts.larsseitExtraBoldWOFF}) format('woff');
+      src:  url(${props.fonts.larsseitextraboldwoff2}) format('woff2'),
+            url(${props.fonts.larsseitextraboldwoff}) format('woff');
       font-style: normal;
       font-weight: 800;
     }
 
     @font-face {
       font-family: 'larsseit';
-      src:  url(${props.fonts.larsseitExtraBoldItalicWOFF2}) format('woff2'),
-            url(${props.fonts.larsseitExtraBoldItalicWOFF}) format('woff');
+      src:  url(${props.fonts.larsseitextrabolditalicwoff2}) format('woff2'),
+            url(${props.fonts.larsseitextrabolditalicwoff}) format('woff');
       font-style: italic;
       font-weight: 800;
     }`

@@ -6,9 +6,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import 'moment-timezone';
 import { configureScope } from '@sentry/browser';
+import { reportError } from 'utils/loggingUtils';
 import GlobalStyle from 'global-styles';
-import WebFont from 'webfontloader';
-
 import { appLocalesMomentPairs } from 'containers/App/constants';
 
 // context
@@ -36,7 +35,7 @@ import HasPermission from 'components/HasPermission';
 import { localeStream } from 'services/locale';
 import { IUser } from 'services/users';
 import { authUserStream, signOut, signOutAndDeleteAccountPart2 } from 'services/auth';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -138,11 +137,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       }
     });
 
-    import(/* webpackPreload: true */
-      'fonts'
-    ).then(fonts => {
-      this.setState({ fonts });
-    });
+    this.loadFonts();
 
     this.subscriptions = [
       combineLatest(
@@ -174,10 +169,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
       tenant$.pipe(first()).subscribe((tenant) => {
         if (tenant.data.attributes.style && tenant.data.attributes.style.customFontAdobeId) {
-          WebFont.load({
-            typekit: {
-              id: tenant.data.attributes.style.customFontAdobeId
-            }
+          import('webfontloader').then((WebfontLoader) => {
+            WebfontLoader.load({
+              typekit: {
+                id: (tenant.data.attributes.style as ITenantStyle).customFontAdobeId
+              }
+            });
           });
         }
       }),
@@ -209,6 +206,48 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentWillUnmount() {
     this.unlisten();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  loadFonts = async () => {
+    try {
+      const fontModules = await Promise.all([
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-thin.woff'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-thin.woff2'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-thinitalic.woff'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-thinitalic.woff2'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-light.woff'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-light.woff2'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-lightitalic.woff'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-lightitalic.woff2'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit.woff'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit.woff2'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-italic.woff'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-italic.woff2'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-medium.woff'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-medium.woff2'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-mediumitalic.woff'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-mediumitalic.woff2'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-bold.woff'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-bold.woff2'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-bolditalic.woff'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-bolditalic.woff2'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-extrabold.woff'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-extrabold.woff2'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-extrabolditalic.woff'),
+        import(/* webpackPreload: true */ 'assets/fonts/larsseit-extrabolditalic.woff2')
+      ]);
+
+      const fonts = {};
+
+      fontModules.forEach((fontModule) => {
+        const name = fontModule.default.replace(/^\/|\/$/g, '').replace(/\-/g, '').replace(/\./g, '');
+        fonts[name] = fontModule.default;
+      });
+
+      this.setState({ fonts });
+    } catch (error) {
+      reportError(error);
+    }
   }
 
   openIdeaPageModal = (ideaId: string, ideaSlug: string) => {
