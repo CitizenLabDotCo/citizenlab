@@ -35,7 +35,7 @@ export interface ICommentData {
     parent: {
       data: IRelationship | null;
     };
-    user_vote: {
+    user_vote?: {
       data: IRelationship | null;
     }
   };
