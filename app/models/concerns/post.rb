@@ -29,17 +29,17 @@ module Post
     validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
     with_options unless: :draft? do |post|
-      validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
-      validates :body_multiloc, presence: true, multiloc: {presence: true}
-      validates :author, presence: true, on: :create
-      validates :author_name, presence: true, on: :create
-      validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
+      post.validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
+      post.validates :body_multiloc, presence: true, multiloc: {presence: true}
+      post.validates :author, presence: true, on: :create
+      post.validates :author_name, presence: true, on: :create
+      post.validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
 
-      before_validation :strip_title
-      before_validation :sanitize_body_multiloc
-      before_validation :set_author_name
-      before_validation :generate_slug
-      after_validation :set_published_at
+      post.before_validation :strip_title
+      post.before_validation :sanitize_body_multiloc
+      post.before_validation :set_author_name
+      post.before_validation :generate_slug
+      post.after_validation :set_published_at
     end
 
 

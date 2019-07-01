@@ -15,10 +15,12 @@ class Initiative < ApplicationRecord
 
   belongs_to :assignee, class_name: 'User', optional: true
 
-  validates :initiative_status, presence: true, unless: :draft?
-  validate :assignee_can_moderate_initiatives, unless: :draft?
+  with_options unless: :draft? do |initiative|
+    initiative.validates :initiative_status, presence: true
+    initiative.validate :assignee_can_moderate_initiatives, presence: true
 
-  before_validation :set_initiative_status
+    initiative.before_validation :set_initiative_status
+  end
 
 
   scope :with_all_topics, (Proc.new do |topic_ids|
