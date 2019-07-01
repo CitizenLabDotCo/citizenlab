@@ -2,9 +2,7 @@ import React from 'react';
 
 // libraries
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
-import { Formik } from 'formik';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -12,16 +10,11 @@ import TipsBox from './TipsBox';
 import ContentContainer from 'components/ContentContainer';
 import InitiativeForm, { FormValues } from 'components/InitiativeForm';
 
-// services
-import { CLErrorsJSON } from 'typings';
-import { addInitiative, InitiativePublicationStatus, updateInitiative } from 'services/initiatives';
-
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
-// import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
 import { isNilOrError } from 'utils/helperUtils';
 
 // style
@@ -32,8 +25,6 @@ import { lighten } from 'polished';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { convertToGeoJson } from 'utils/locationTools';
-import { isEqual, pick, get } from 'lodash-es';
 import InitiativesFormWrapper from './InitiativesFormWrapper';
 
 const Container = styled.div`
@@ -138,7 +129,7 @@ interface State {
   initialValues: FormValues | null;
 }
 
-class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, State> {
+class InitiativesNewPage extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
   }
@@ -184,12 +175,12 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
   }
 }
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
+const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />
 });
 
-export default (inputProps: InputProps & WithRouterProps) => (
+export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <InitiativesNewPage {...inputProps} {...dataProps} />}
   </Data>

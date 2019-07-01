@@ -73,6 +73,10 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.locationPlaceholder',
     defaultMessage: 'Type an address',
   },
+  publishButton: {
+    id: 'app.components.InitiativeForm.publishButton',
+    defaultMessage: 'Publish you initiative',
+  },
   // TODO
   // imageUploadLabel: {
   //   id: 'app.components.InitiativeForm.imageUploadLabel',
