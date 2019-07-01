@@ -24,19 +24,22 @@ class Idea < ApplicationRecord
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
 
-  belongs_to :idea_status
+  belongs_to :idea_status, optional: true
   has_many :notifications, foreign_key: :idea_id, dependent: :nullify
 
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
   has_one :idea_trending_info
 
-  validates :project, presence: true, unless: :draft?
-  validates :idea_status, presence: true, unless: :draft?
-  validate :assignee_can_moderate_project, unless: :draft?
-
-  before_validation :set_idea_status, on: :create
   after_update :fix_comments_count_on_projects
+
+  with_options unless: :draft? do |idea|
+    idea.validates :idea_status, presence: true
+    idea.validates :project, presence: true
+    idea.validate :assignee_can_moderate_project
+
+    idea.before_validation :set_idea_status
+  end
 
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
