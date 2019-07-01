@@ -174,7 +174,7 @@ const config = {
         keepClosingSlash: true,
         minifyJS: true,
         minifyCSS: true,
-        minifyURLs: true,
+        minifyURLs: false
       } : false
     }),
 
@@ -202,7 +202,8 @@ const config = {
       publicPath: '/',
       appShell: '/',
       minify: false,
-      excludes: ['.htaccess'],
+      responseStrategy: 'cache-first',
+      excludes: ['**/.*', '**/*.map', '**/*.gz', '.htaccess'],
       caches: {
         main: [':rest:'],
         additional: ['*.chunk.js'],
