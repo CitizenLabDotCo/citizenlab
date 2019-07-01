@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_07_132326) do
+ActiveRecord::Schema.define(version: 2019_07_01_091036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -305,7 +305,7 @@ ActiveRecord::Schema.define(version: 2019_06_07_132326) do
     t.string "location_description"
     t.integer "comments_count", default: 0, null: false
     t.uuid "idea_status_id"
-    t.string "slug", null: false
+    t.string "slug"
     t.integer "budget"
     t.integer "baskets_count", default: 0, null: false
     t.integer "official_feedbacks_count", default: 0, null: false
@@ -384,7 +384,7 @@ ActiveRecord::Schema.define(version: 2019_06_07_132326) do
     t.integer "downvotes_count", default: 0, null: false
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "location_description"
-    t.string "slug", null: false
+    t.string "slug"
     t.integer "comments_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
