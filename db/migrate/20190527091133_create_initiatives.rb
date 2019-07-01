@@ -5,7 +5,7 @@ class CreateInitiatives < ActiveRecord::Migration[5.2]
       t.jsonb :body_multiloc
       t.string :publication_status
       t.timestamp :published_at
-      t.references :author, foreign_key: { to_table: :users }, null: false, type: :uuid, index: true
+      t.references :author, foreign_key: { to_table: :users }, type: :uuid, index: true
       t.string :author_name
       t.integer :upvotes_count, null: false, default: 0
       t.integer :downvotes_count, null: false, default: 0

@@ -11,7 +11,7 @@ class Initiative < ApplicationRecord
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
 
-  belongs_to :initiative_status
+  belongs_to :initiative_status, optional: true
 
   belongs_to :assignee, class_name: 'User', optional: true
 

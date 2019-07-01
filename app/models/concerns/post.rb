@@ -25,21 +25,22 @@ module Post
     has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
 
     has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
-
-    validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}, unless: :draft?
-    validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
+    
     validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
-    validates :author, presence: true, unless: :draft?, on: :create
-    validates :author_name, presence: true, unless: :draft?, on: :create
 
-    validates :slug, uniqueness: true, format: {with: SlugService.new.regex }, unless: :draft?
+    with_options unless: :draft? do |post|
+      validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
+      validates :body_multiloc, presence: true, multiloc: {presence: true}
+      validates :author, presence: true, on: :create
+      validates :author_name, presence: true, on: :create
+      validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
 
-    before_validation :set_author_name
-
-    before_validation :sanitize_body_multiloc, if: :body_multiloc
-    before_validation :strip_title, if: :title_multiloc
-    before_validation :generate_slug, if: ->(post){ post.published? && post.publication_status_changed? }
-    after_validation :set_published_at, if: ->(post){ post.published? && post.publication_status_changed? }
+      before_validation :strip_title
+      before_validation :sanitize_body_multiloc
+      before_validation :set_author_name
+      before_validation :generate_slug
+      after_validation :set_published_at
+    end
 
 
     scope :with_bounding_box, (Proc.new do |coordinates|
