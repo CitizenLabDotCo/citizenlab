@@ -29,7 +29,7 @@ export default withRouter((props: WithRouterProps) => (
         return (
           <>
             <ContentContainer>
-              <SurveyContainer>
+              <SurveyContainer id="e2e-continuous-project-survey-container">
                 <Survey
                   projectId={project.id}
                   surveyService={project.attributes.survey_service}

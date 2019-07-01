@@ -35,7 +35,7 @@ describe('Idea form page', () => {
     cy.get('#e2e-idea-edit-page');
   });
 
-  it('shows the page', () => {
+  it('has a working idea edit form', () => {
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form');
     cy.get('#e2e-idea-title-input #title').as('titleInput');
