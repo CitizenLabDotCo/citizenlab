@@ -2,7 +2,7 @@ import * as React from 'react';
 import { get } from 'lodash-es';
 
 // Components
-import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter } from 'components/UI/FormComponents';
+import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter, FormError } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import InputMultiloc from 'components/UI/InputMultiloc';
@@ -151,9 +151,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 shownLocale={locale}
               />
             </FormLabel>
-            {get(touched, 'title_multiloc', false)
-            && get(errors, 'title_multiloc', false)
-            && <span>'hahahahahahha'</span>}
+            {touched.title_multiloc
+            && errors.title_multiloc
+            && <FormError message={errors.title_multiloc.message} />}
           </SectionField>
 
           <SectionField>
@@ -172,6 +172,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 // required TODO (accessibility)
               />
             </FormLabel>
+            {touched.body_multiloc
+            && errors.body_multiloc
+            && <FormError message={errors.body_multiloc.message} />}
           </SectionField>
         </FormSection>
 
@@ -184,12 +187,15 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               subtextMessage={messages.topicsLabelSubtext}
               htmlFor="field-topic-multiple-picker"
             />
-              <TopicsPicker
-                id="field-topic-multiple-picker"
-                max={2}
-                value={topics}
-                onChange={this.topicsOnChange}
-              />
+            <TopicsPicker
+              id="field-topic-multiple-picker"
+              max={2}
+              value={topics}
+              onChange={this.topicsOnChange}
+            />
+            {touched.topics
+            && errors.topics
+            && <FormError message={errors.topics.message} />}
           </SectionField>
           <SectionField>
             <FormLabel
