@@ -11,7 +11,7 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
-const OfflinePlugin = require('offline-plugin');
+// const OfflinePlugin = require('offline-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
 const cssnano = require('cssnano');
@@ -197,29 +197,29 @@ const config = {
       chunkFilename: '[name].[contenthash].chunk.css'
     }),
 
-    !isDev && new OfflinePlugin({
-      relativePaths: false,
-      publicPath: '/',
-      appShell: '/',
-      responseStrategy: 'cache-first',
-      excludes: [
-        '**/.*',
-        '**/*.map',
-        '**/*.gz',
-        '**/*.html',
-        '.htaccess'
-      ],
-      caches: {
-        main: [':rest:'],
-        additional: ['*.chunk.js'],
-      },
-      ServiceWorker: {
-        prefetchRequest: {
-          credentials: 'same-origin',
-        },
-      },
-      safeToUseOptionalCaches: true, // removes warning for about `additional` section usage
-    }),
+    // !isDev && new OfflinePlugin({
+    //   relativePaths: false,
+    //   publicPath: '/',
+    //   appShell: '/',
+    //   responseStrategy: 'cache-first',
+    //   excludes: [
+    //     '**/.*',
+    //     '**/*.map',
+    //     '**/*.gz',
+    //     '**/*.html',
+    //     '.htaccess'
+    //   ],
+    //   caches: {
+    //     main: [':rest:'],
+    //     additional: ['*.chunk.js'],
+    //   },
+    //   ServiceWorker: {
+    //     prefetchRequest: {
+    //       credentials: 'same-origin',
+    //     },
+    //   },
+    //   safeToUseOptionalCaches: true, // removes warning for about `additional` section usage
+    // }),
 
     !isDev && new webpack.HashedModuleIdsPlugin(),
 
