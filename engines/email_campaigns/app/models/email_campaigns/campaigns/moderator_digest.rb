@@ -3,7 +3,6 @@ module EmailCampaigns
     include Disableable
     include Consentable
     include Schedulable
-    include RecipientConfigurable
     include Trackable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
@@ -151,6 +150,12 @@ module EmailCampaigns
       new_vote_count = idea.votes.where('created_at > ?', Time.now - days_ago).count
       new_comments_count = idea.comments.where('created_at > ?', Time.now - days_ago).count
       new_vote_count + new_comments_count
+    end
+
+    protected
+
+    def set_enabled
+      self.enabled = false if self.enabled.nil?
     end
 
   end

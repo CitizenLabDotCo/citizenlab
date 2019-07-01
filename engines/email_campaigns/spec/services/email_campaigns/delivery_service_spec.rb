@@ -31,11 +31,16 @@ describe EmailCampaigns::DeliveryService do
 
     it "enqueues an external event job" do
       travel_to campaign.ic_schedule.start_time do
-        expectation = expect{service.send_on_schedule(Time.now)}
-        expectation.to have_enqueued_job(PublishRawEventToSegmentJob)
-        .exactly(1).times
-        expectation.to have_enqueued_job(PublishRawEventToRabbitJob)
-        .exactly(1).times
+        expect{service.send_on_schedule(Time.now)}
+          .to have_enqueued_job(PublishRawEventToRabbitJob)
+          .exactly(1).times
+      end
+    end
+
+    it "does not send any email commands through Segment" do
+      travel_to campaign.ic_schedule.start_time do
+        expect{service.send_on_schedule(Time.now)}
+          .not_to have_enqueued_job(PublishRawEventToSegmentJob)
       end
     end
 
@@ -65,12 +70,37 @@ describe EmailCampaigns::DeliveryService do
     let(:user) { create(:user) }
 
     it "enqueues an external event job" do
-      expectation = expect{service.send_on_activity(activity)}
-      expectation.to have_enqueued_job(PublishRawEventToSegmentJob)
-      .exactly(1).times
-      expectation.to have_enqueued_job(PublishRawEventToRabbitJob)
-      .exactly(1).times
-      expect(EmailCampaigns::Delivery.all).to be_empty
+      expect{service.send_on_activity(activity)}
+        .to have_enqueued_job(PublishRawEventToRabbitJob)
+        .exactly(1).times
+    end
+
+    it "does not send any email commands through Segment" do
+      expect{service.send_on_activity(activity)}
+        .not_to have_enqueued_job(PublishRawEventToSegmentJob)
+    end
+
+    context "on project_phase_upcoming notification" do
+      let!(:campaign) { create(:project_phase_upcoming_campaign) }
+      let(:notification) { create(:project_phase_upcoming) }
+      let(:activity) { 
+        Activity.create(
+          item: notification,
+          item_type: notification.class.name,
+          action: 'created',
+          acted_at: Time.now
+        )
+      }
+      let!(:admin) { create(:admin) }
+
+      it "delays enqueueing a job because the command specifies a delay" do
+        travel_to Time.now do
+          expect{service.send_on_activity(activity)}
+            .to have_enqueued_job(PublishRawEventToRabbitJob)
+            .exactly(1).times
+            .at(Time.now + 8.hours)
+        end
+      end
     end
   end
 

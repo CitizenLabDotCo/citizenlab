@@ -1,5 +1,5 @@
 class IdeaImageUploader < CarrierWave::Uploader::Base
-  include BaseUploader
+  include BaseImageUploader
 
   # Include RMagick or MiniMagick support:
   include CarrierWave::MiniMagick
@@ -36,17 +36,14 @@ class IdeaImageUploader < CarrierWave::Uploader::Base
 
   version :small do
     process resize_to_fill: [96, 96]
-    # process optimize: [{ quality: 90, quiet: true }]
   end
 
   version :medium do
     process resize_to_fill: [298,135]
-    # process optimize: [{ quality: 90, quiet: true }]
   end
 
   version :large do
     process resize_to_limit: [480,nil]
-    # process optimize: [{ quality: 90, quiet: true }]
   end
 
   version :fb do
@@ -58,11 +55,5 @@ class IdeaImageUploader < CarrierWave::Uploader::Base
   def extension_whitelist
     %w(jpg jpeg gif png bmp)
   end
-
-  # Override the filename of the uploaded files:
-  # Avoid using model.id or version_name here, see uploader/store.rb for details.
-  # def filename
-  #   "something.jpg" if original_filename
-  # end
 
 end

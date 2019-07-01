@@ -107,6 +107,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
           "nl-BE" => Faker::Address.city,
           "fr-FR" => Faker::Address.city
         },
+        lifecycle_stage: 'active',
         timezone: "Europe/Brussels",
         currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
         color_main: Faker::Color.hex_color,

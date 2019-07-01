@@ -15,7 +15,7 @@
 
 .byebug_history
 
-spec/reports
+spec/reports/rspec.xml
 coverage
 public/uploads
 
