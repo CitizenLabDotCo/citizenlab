@@ -17,7 +17,7 @@ class Initiative < ApplicationRecord
 
   with_options unless: :draft? do |initiative|
     initiative.validates :initiative_status, presence: true
-    initiative.validate :assignee_can_moderate_initiatives, presence: true
+    initiative.validate :assignee_can_moderate_initiatives
 
     initiative.before_validation :set_initiative_status
   end
