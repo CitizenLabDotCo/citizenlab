@@ -86,10 +86,7 @@ module EmailCampaigns
 
     def serialize_campaign item
       serializer = "#{self.class.name}Serializer".constantize
-      ActiveModelSerializers::SerializableResource.new(item, {
-        serializer: serializer,
-        adapter: :json
-      }).serializable_hash
+      serializer.new(item).serializable_hash
     end
   end
 end

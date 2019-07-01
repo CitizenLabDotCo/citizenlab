@@ -1,150 +1,127 @@
 module EmailCampaigns
-  class Campaigns::NotificationSerializer < ActiveModel::Serializer
+  class Campaigns::NotificationSerializer < ::WebApi::V1::Fast::BaseSerializer
 
-    class CustomUserSerializer < ActiveModel::Serializer
-      attributes :id, :slug, :first_name, :last_name, :avatar, :locale
+    class CustomUserSerializer < ::WebApi::V1::Fast::BaseSerializer
+      attributes :slug, :first_name, :last_name, :locale
 
-      def avatar
+      attribute :avatar do |object|
         object.avatar && object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
       end
     end
 
-    class CustomProjectSerializer < ActiveModel::Serializer
-      attributes :id, :slug, :title_multiloc, :description_multiloc, :url, :created_at, :header_bg, :ideas_count
+    class CustomProjectSerializer < ::WebApi::V1::Fast::BaseSerializer
+      attributes :slug, :title_multiloc, :description_multiloc, :ideas_count
 
-      def created_at
+      attribute :created_at do |object|
         object.created_at.iso8601
       end
 
-      def url
+      attribute :url do |object|
         Frontend::UrlService.new.model_to_url object
       end
 
-      def header_bg
+      attribute :header_bg do |object|
         object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
       end
     end
 
-    class CustomPhaseSerializer < ActiveModel::Serializer
-      attributes :id, :title_multiloc, :description_multiloc, :url, :start_at, :end_at
+    class CustomPhaseSerializer < ::WebApi::V1::Fast::BaseSerializer
+      attributes :title_multiloc, :description_multiloc
 
-      def start_at
+      attribute :start_at do |object|
         object.start_at.iso8601
       end
 
-      def end_at
+      attribute :end_at do |object|
         object.start_at.iso8601
       end
 
-      def url
+      attribute :url do |object|
         Frontend::UrlService.new.model_to_url object
       end
     end
 
-    class CustomOfficialFeedbackSerializer < ActiveModel::Serializer
-      attributes :id, :body_multiloc, :author_multiloc, :url, :created_at
+    class CustomOfficialFeedbackSerializer < ::WebApi::V1::Fast::BaseSerializer
+      attributes :body_multiloc, :author_multiloc
 
-      def created_at
+      attribute :created_at do |object|
         object.created_at.iso8601
       end
 
-      def url
+      attribute :url do |object|
         Frontend::UrlService.new.model_to_url object
       end
     end
 
-    class CustomCommentSerializer < ActiveModel::Serializer
-      attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at, :author_name, :author_avatar
+    class CustomCommentSerializer < ::WebApi::V1::Fast::BaseSerializer
+      attributes :body_multiloc, :upvotes_count, :downvotes_count, :author_name
 
-      def created_at
+      attribute :created_at do |object|
         object.created_at.iso8601
       end
 
-      def url
+      attribute :url do |object|
         Frontend::UrlService.new.model_to_url object
       end
 
-      def author_avatar
+      attribute :author_avatar do |object|
         object.author&.avatar && object.author.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
       end
     end
 
-    class CustomIdeaSerializer < ActiveModel::Serializer
-      attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count, :url, :published_at, :created_at, :author_name
+    class CustomIdeaSerializer < ::WebApi::V1::Fast::BaseSerializer
+      attributes :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count, :author_name
 
-      def published_at
+      attribute :published_at do |object|
         object.published_at.iso8601
       end
 
-      def created_at
+      attribute :created_at do |object|
         object.created_at.iso8601
       end
 
-      def url
+      attribute :url do |object|
         Frontend::UrlService.new.model_to_url object
       end
     end
 
-    class CustomImageSerializer < ActiveModel::Serializer
-      attributes :id, :versions, :ordering
+    class CustomImageSerializer < ::WebApi::V1::Fast::BaseSerializer
+      attribute :ordering
 
-      def versions
+      attribute :versions do |object|
         object.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
       end
     end
 
-    class CustomSpamReportSerializer < ActiveModel::Serializer
-      attributes :id, :reason_code, :other_reason, :reported_at, :url
+    class CustomSpamReportSerializer < ::WebApi::V1::Fast::BaseSerializer
+      attributes :reason_code, :other_reason
 
-      def reported_at
+      attribute :reported_at do |object|
         object.reported_at.iso8601
       end
 
-      def url
+      attribute :url do |object|
         Frontend::UrlService.new.model_to_url object.spam_reportable
       end
     end
 
-    class CustomInviteSerializer < ActiveModel::Serializer
-     attributes :id, :invite_text, :accepted_at, :activate_invite_url
+    class CustomInviteSerializer < ::WebApi::V1::Fast::BaseSerializer
+      attribute :invite_text
 
-      def accepted_at
+      attribute :accepted_at do |object|
         object.accepted_at.iso8601
       end
 
-      def activate_invite_url
+      attribute :activate_invite_url do |object|
         Frontend::UrlService.new.invite_url object.token, locale: object.invitee.locale
       end
     end
 
-    
-    attributes :id, :recipient_email
-    belongs_to :recipient, serializer: CustomUserSerializer
 
-
-    def recipient_email
+    attribute :recipient_email do |object|
       object.recipient&.email
     end
 
-    def comment_author
-      object.comment&.author
-    end
-
-    def idea_author
-      object.idea&.author
-    end
-
-    def idea_images
-      object.idea&.idea_images
-    end
-
-    def idea_topics
-      object.idea&.topics
-    end
-
-    def project_images
-      object.project&.project_images
-    end
-
+    belongs_to :recipient, record_type: :user, serializer: CustomUserSerializer
   end
 end
