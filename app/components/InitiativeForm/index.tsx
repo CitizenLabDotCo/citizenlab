@@ -1,20 +1,19 @@
 import * as React from 'react';
-import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter } from 'components/UI/FormComponents';
+import { get } from 'lodash-es';
 
-import messages from './messages';
+// Components
+import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import { Multiloc, Locale } from 'typings';
 import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import LocationInput from 'components/UI/LocationInput';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import { isEmptyMultiloc } from 'utils/helperUtils';
-import { Messages } from 'react-intl';
-import { IMessageInfo } from 'utils/cl-intl';
-import { get } from 'lodash-es';
+
+// intl
+import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { IMessageInfo, injectIntl } from 'utils/cl-intl';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -40,23 +39,32 @@ interface Props extends FormValues, FormProps {
 
 interface State {
   touched: {
-    [key in keyof FormValues]: boolean | undefined;
+    [key in keyof FormValues]?: boolean | undefined;
   };
   errors: {
-    [key in keyof FormValues]: IMessageInfo | undefined;
+    [key in keyof FormValues]?: IMessageInfo | undefined;
   };
 }
 
-class InitiativeForm extends React.Component<Props, State> {
+class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
       touched: {} as State['touched'],
-      errors: {} as State['errors']
+      errors: {} as State['errors'],
     };
   }
   static titleMinLength = 10;
   static bodyMinLength = 20;
+  static requiredFields = ['title_multiloc', 'body_multiloc', 'topics'];
+
+  componentDidMount() {
+    const errors = {};
+    InitiativeForm.requiredFields.forEach(fieldName => {
+      errors[fieldName] = this.validations[fieldName]();
+    });
+    this.setState({ errors });
+  }
 
   validations = {
     title_multiloc: () => {
@@ -90,17 +98,19 @@ class InitiativeForm extends React.Component<Props, State> {
 
   topicsOnChange = (topics: string[]) => {
     this.props.onChangeTopics(topics);
-    this.onBlur('topics');
-    setTimeout(this.props.onSave, 5);
+    setTimeout(this.onBlur('topics'), 5);
   }
 
   onBlur = (fieldName: string) => () => {
     const touched = Object.assign({}, this.state.touched);
     touched[fieldName] = true;
     const errors = Object.assign({}, this.state.errors);
+    console.log(this.validations['topics']);
     errors[fieldName] = this.validations[fieldName]();
     this.setState({ touched, errors });
-    this.props.onSave();
+    if (errors[fieldName] === undefined) {
+      this.props.onSave();
+    }
   }
 
   render() {
@@ -113,20 +123,14 @@ class InitiativeForm extends React.Component<Props, State> {
       body_multiloc,
       onChangeBody,
       topics,
-      onChangeTopics,
       position,
-      onChangePosition
+      onChangePosition,
+      intl: { formatMessage }
     } = this.props;
 
     const { touched, errors } = this.state;
 
-    const status = saving
-      ? 'saving'
-      : publishing
-      ? 'publishing'
-      : !Object.values(errors).every(val => val === undefined)
-      ? 'enabled'
-      : 'disabled';
+    const status = Object.values(errors).every(val => val === undefined) ? 'enabled' : 'disabled';
 
     return (
       <form>
@@ -147,7 +151,9 @@ class InitiativeForm extends React.Component<Props, State> {
                 shownLocale={locale}
               />
             </FormLabel>
-            {get(touched, 'title_multiloc', false) && get(errors, 'title_multiloc', false) && <span>'hahahahahahha'</span>}
+            {get(touched, 'title_multiloc', false)
+            && get(errors, 'title_multiloc', false)
+            && <span>'hahahahahahha'</span>}
           </SectionField>
 
           <SectionField>
@@ -159,10 +165,10 @@ class InitiativeForm extends React.Component<Props, State> {
                 id="body"
                 shownLocale={locale}
                 valueMultiloc={body_multiloc}
-                onChange={onChangeBody}
+                onChangeMultiloc={onChangeBody}
                 noVideos
                 noAlign
-                // onBlur={this.onBlur('body_multiloc')} TODO fix
+                onBlur={this.onBlur('body_multiloc')}
                 // required TODO (accessibility)
               />
             </FormLabel>
@@ -183,30 +189,32 @@ class InitiativeForm extends React.Component<Props, State> {
                 max={2}
                 value={topics}
                 onChange={this.topicsOnChange}
-                // required TODO (accessibility)
-                // onBlur={this.props.onSave} TODO (mix onChange?)
               />
           </SectionField>
           <SectionField>
             <FormLabel
               labelMessage={messages.locationLabel}
               subtextMessage={messages.locationLabelSubtext}
+              optional
             >
               <LocationInput
                 onBlur={this.props.onSave}
                 value={position}
                 onChange={onChangePosition}
-                placeholder="Placeholder" // TODO
+                placeholder={formatMessage(messages.locationPlaceholder)}
               />
             </FormLabel>
           </SectionField>
         </FormSection>
         <FormSubmitFooter
-          message={messages.locationLabel}
+          message={messages.publishButton}
+          disabled={status === 'disabled'}
+          processing={publishing}
+          onSubmit={this.props.onPublish}
         />
       </form>
     );
   }
 }
 
-export default InitiativeForm;
+export default injectIntl(InitiativeForm);

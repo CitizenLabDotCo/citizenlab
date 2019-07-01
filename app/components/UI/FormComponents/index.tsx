@@ -1,12 +1,13 @@
 import React, { memo } from 'react';
 
-import styled from 'styled-components';
-import { fontSizes, colors, booleanClass, invisibleA11yText } from 'utils/styleUtils';
+import styled, { withTheme } from 'styled-components';
+import { fontSizes, colors, booleanClass, invisibleA11yText, media } from 'utils/styleUtils';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { Messages, FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 import Icon, { IconNames } from 'components/UI/Icon';
 import Button from '../Button';
+import messages from './messages';
 
 export const FormSection = styled.div`
   background: white;
@@ -71,6 +72,9 @@ const FormSubtextStyled = styled.span`
 const Spacer = styled.div`
   height: 12px;
 `;
+const OptionalText = styled.span`
+  font-weight: 500;
+`;
 
 interface FormLabelGenericProps {
   id?: string;
@@ -80,6 +84,7 @@ interface FormLabelGenericProps {
   className?: string;
   thin?: boolean;
   noSpace?: boolean;
+  optional?: boolean;
 }
 
 interface FormLabelProps extends FormLabelGenericProps {
@@ -100,15 +105,23 @@ export const FormLabel = memo(({
   className,
   hidden,
   thin,
-  noSpace
+  noSpace,
+  optional,
 }: FormLabelProps) => (
   <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
     <FormattedMessage {...labelMessage} values={labelMessageValues} />
+    {optional &&
+      <OptionalText>
+        {' ('}
+        <FormattedMessage {...messages.optional} />
+        {')'}
+      </OptionalText>
+    }
     {subtextMessage &&
       <>
         <br/>
         <FormSubtextStyled>
-            <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
+          <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
         </FormSubtextStyled>
       </>
     }
@@ -196,6 +209,9 @@ export const FormLabelWithIcon = memo(({
 interface FormSubmitFooterProps extends IMessageInfo {
   disabled?: boolean;
   processing?: boolean;
+  onSubmit: () => void;
+  theme: any;
+  className?: string;
 }
 
 const SubmitFooterContainer = styled.div`
@@ -203,16 +219,57 @@ const SubmitFooterContainer = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: white;
+  border-top: 1px solid #e8e8e8;
 `;
 
-export const FormSubmitFooter = memo(({
+const SubmitFooterInner = styled.div`
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 28px;
+  padding-right: 28px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background: #fff;
+
+  ${media.smallerThanMaxTablet`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  `}
+
+  ${media.smallerThanMinTablet`
+    padding: 15px;
+  `}
+`;
+
+export const FormSubmitFooter = withTheme(memo(({
   message,
   values,
+  theme,
+  onSubmit,
+  className,
   ...otherProps
 }: FormSubmitFooterProps) => (
-  <SubmitFooterContainer>
-    <Button
-      {...otherProps}
-    />
+  <SubmitFooterContainer className={className}>
+    <SubmitFooterInner>
+      <Button
+        fontWeight="500"
+        padding="13px 22px"
+        bgColor={theme.colorMain}
+        textColor="#FFF"
+        type="submit"
+        onClick={onSubmit}
+        {...otherProps}
+      >
+        <FormattedMessage {...message} values={values} />
+      </Button>
+    </SubmitFooterInner>
   </SubmitFooterContainer>
-));
+)));
