@@ -96,16 +96,10 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     },
   };
 
-  topicsOnChange = (topics: string[]) => {
-    this.props.onChangeTopics(topics);
-    setTimeout(this.onBlur('topics'), 5);
-  }
-
   onBlur = (fieldName: string) => () => {
     const touched = Object.assign({}, this.state.touched);
     touched[fieldName] = true;
     const errors = Object.assign({}, this.state.errors);
-    console.log(this.validations['topics']);
     errors[fieldName] = this.validations[fieldName]();
     this.setState({ touched, errors });
     if (errors[fieldName] === undefined) {
@@ -123,6 +117,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       body_multiloc,
       onChangeBody,
       topics,
+      onChangeTopics,
       position,
       onChangePosition,
       intl: { formatMessage }
@@ -191,7 +186,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               id="field-topic-multiple-picker"
               max={2}
               value={topics}
-              onChange={this.topicsOnChange}
+              onChange={onChangeTopics}
+              onBlur={this.onBlur('topics')}
             />
             {touched.topics
             && errors.topics
