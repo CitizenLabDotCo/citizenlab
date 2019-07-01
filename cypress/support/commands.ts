@@ -509,11 +509,6 @@ export function apiRemoveCustomField(fieldId: string) {
   });
 }
 
-// remove service workers before each test
-beforeEach(() => {
-  cy.unregisterServiceWorkers();
-});
-
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('login', login);
 Cypress.Commands.add('apiLogin', apiLogin);

@@ -5,3 +5,8 @@ Cypress.on('uncaught:exception', (err, runnable) => {
   // failing the test
   return false;
 });
+
+// remove service workers before each test
+beforeEach(() => {
+  cy.unregisterServiceWorkers();
+});
