@@ -11,13 +11,9 @@ import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import { init } from '@sentry/browser';
 import * as Integrations from '@sentry/integrations';
-
-// Load the .htaccess file
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 import 'file-loader?name=[name].[ext]!./.htaccess';
-
-// Import root routes
 import createRoutes from './routes';
-
 import { initializeAnalytics } from 'utils/analytics';
 
 if (process && process.env && process.env.NODE_ENV === 'production' && process.env.SENTRY_DSN) {
@@ -28,6 +24,8 @@ if (process && process.env && process.env.NODE_ENV === 'production' && process.e
     integrations: [new Integrations.RewriteFrames()]
   });
 }
+
+OfflinePluginRuntime.install();
 
 initializeAnalytics();
 

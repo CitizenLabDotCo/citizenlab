@@ -11,6 +11,7 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
+const OfflinePlugin = require('offline-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
 const cssnano = require('cssnano');
@@ -26,8 +27,8 @@ const config = {
     path: path.resolve(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
-    filename: isDev ? '[name].bundle.js' : '[name].[contenthash:8].bundle.js',
-    chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash:8].chunk.js'
+    filename: isDev ? '[name].js' : '[name].[contenthash].js',
+    chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js'
   },
 
   mode: isDev ? 'development' : 'production',
@@ -53,26 +54,24 @@ const config = {
       splitChunks: {
         chunks: 'all',
       },
+      minimize: true,
       minimizer: [
         new TerserPlugin({
           cache: true,
           parallel: true,
           sourceMap: true,
           terserOptions: {
-            ecma: undefined,
             warnings: false,
+            compress: {
+              comparisons: false,
+            },
             parse: {},
-            compress: {},
             mangle: true,
-            module: false,
-            output: null,
-            toplevel: false,
-            nameCache: null,
-            ie8: false,
-            keep_classnames: undefined,
-            keep_fnames: false,
-            safari10: false
-          }
+            output: {
+              comments: false,
+              ascii_only: true,
+            },
+          },
         }),
         new OptimizeCSSAssetsPlugin({
           assetNameRegExp: /\.css$/g,
@@ -163,14 +162,25 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html'
+      template: 'app/index.html',
+      inject: true,
+      minify: !isDev ? {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      } : false
     }),
 
-    // isDev && new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
 
     isDev && new webpack.ProgressPlugin(),
-
-    !isDev && new webpack.HashedModuleIdsPlugin(),
 
     // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
     !isDev && new MomentLocalesPlugin({
@@ -183,9 +193,24 @@ const config = {
     }),
 
     !isDev && new MiniCssExtractPlugin({
-      filename: '[name].[contenthash:8].css',
-      chunkFilename: '[name].[contenthash:8].chunk.css'
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[name].[contenthash].chunk.css'
     }),
+
+    !isDev && new OfflinePlugin({
+      relativePaths: false,
+      publicPath: '/',
+      appShell: '/',
+      minify: false,
+      excludes: ['.htaccess'],
+      caches: {
+        main: [':rest:'],
+        additional: ['*.chunk.js'],
+      },
+      safeToUseOptionalCaches: true, // removes warning for about `additional` section usage
+    }),
+
+    !isDev && new webpack.HashedModuleIdsPlugin(),
 
     isProd && new SentryCliPlugin({
       include: path.resolve(process.cwd(), 'build'),
