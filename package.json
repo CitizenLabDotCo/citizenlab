@@ -192,6 +192,7 @@
     "moment-locales-webpack-plugin": "1.0.7",
     "moment-timezone-data-webpack-plugin": "1.1.0",
     "nightwatch": "1.1.12",
+    "offline-plugin": "5.0.7",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "pa11y-ci": "2.3.0",
     "puppeteer": "1.18.0",

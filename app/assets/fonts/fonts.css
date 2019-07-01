@@ -1,25 +1,10 @@
 @font-face {
   font-family: 'larsseit';
-  src:  url('./larsseit-thin.woff2') format('woff2'),
-        url('./larsseit-thin.woff') format('woff');
-  font-style: normal;
-  font-weight: 200;
-}
-
-@font-face {
-  font-family: 'larsseit';
-  src:  url('./larsseit-thinitalic.woff2') format('woff2'),
-        url('./larsseit-thinitalic.woff') format('woff');
-  font-style: italic;
-  font-weight: 200;
-}
-
-@font-face {
-  font-family: 'larsseit';
   src:  url('./larsseit-light.woff2') format('woff2'),
         url('./larsseit-light.woff') format('woff');
   font-style: normal;
   font-weight: 300;
+  font-display: auto;
 }
 
 @font-face {
@@ -28,6 +13,7 @@
         url('./larsseit-lightitalic.woff') format('woff');
   font-style: italic;
   font-weight: 300;
+  font-display: auto;
 }
 
 @font-face {
@@ -36,6 +22,7 @@
         url('./larsseit.woff') format('woff');
   font-style: normal;
   font-weight: 400;
+  font-display: auto;
 }
 
 @font-face {
@@ -44,6 +31,7 @@
         url('./larsseit-italic.woff') format('woff');
   font-style: italic;
   font-weight: 400;
+  font-display: auto;
 }
 
 @font-face {
@@ -52,6 +40,7 @@
         url('./larsseit-medium.woff') format('woff');
   font-style: normal;
   font-weight: 500;
+  font-display: auto;
 }
 
 @font-face {
@@ -60,6 +49,7 @@
         url('./larsseit-mediumitalic.woff') format('woff');
   font-style: italic;
   font-weight: 500;
+  font-display: auto;
 }
 
 @font-face {
@@ -68,6 +58,7 @@
         url('./larsseit-bold.woff') format('woff');
   font-style: normal;
   font-weight: 600;
+  font-display: auto;
 }
 
 @font-face {
@@ -76,20 +67,5 @@
         url('./larsseit-bolditalic.woff') format('woff');
   font-style: italic;
   font-weight: 600;
-}
-
-@font-face {
-  font-family: 'larsseit';
-  src:  url('./larsseit-extrabold.woff2') format('woff2'),
-        url('./larsseit-extrabold.woff') format('woff');
-  font-style: normal;
-  font-weight: 800;
-}
-
-@font-face {
-  font-family: 'larsseit';
-  src:  url('./larsseit-extrabolditalic.woff2') format('woff2'),
-        url('./larsseit-extrabolditalic.woff') format('woff');
-  font-style: italic;
-  font-weight: 800;
+  font-display: auto;
 }
