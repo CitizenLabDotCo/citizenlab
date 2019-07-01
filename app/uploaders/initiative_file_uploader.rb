@@ -1,5 +1,5 @@
 class InitiativeFileUploader < CarrierWave::Uploader::Base
-  include BaseUploader
+  include BaseFileUploader
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick

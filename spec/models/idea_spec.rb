@@ -18,11 +18,13 @@ RSpec.describe Idea, type: :model do
       expect(idea.author_name).to eq u.display_name
     end
 
-    it "should generate a slug on creation" do
-      idea = create(:idea, slug: nil)
-      expect(idea.slug).to be_present
+    it "should generate a slug on publication" do
+      idea = create(:idea, slug: nil, publication_status: 'draft', title_multiloc: nil)
+      expect(idea.title_multiloc).to eq nil
+      expect(idea.slug).to eq nil
+      idea.update!(title_multiloc: {'en' => 'Make democracy great again'}, publication_status: 'published')
+      expect(idea.slug).to eq 'make-democracy-great-again'
     end
-
   end
 
   context "feedback_needed" do 

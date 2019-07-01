@@ -26,19 +26,19 @@ module Post
 
     has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
-    validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
+    validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}, unless: :draft?
     validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
     validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
     validates :author, presence: true, unless: :draft?, on: :create
     validates :author_name, presence: true, unless: :draft?, on: :create
 
-    validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
+    validates :slug, uniqueness: true, format: {with: SlugService.new.regex }, unless: :draft?
 
-    before_validation :generate_slug, on: :create
     before_validation :set_author_name
 
     before_validation :sanitize_body_multiloc, if: :body_multiloc
-    before_validation :strip_title
+    before_validation :strip_title, if: :title_multiloc
+    before_validation :generate_slug, if: ->(post){ post.published? && post.publication_status_changed? }
     after_validation :set_published_at, if: ->(post){ post.published? && post.publication_status_changed? }
 
 
@@ -98,7 +98,7 @@ module Post
     def generate_slug
       if !self.slug
         title = MultilocService.new.t self.title_multiloc, self.author
-        self.slug = SlugService.new.generate_slug self, title
+        self.slug ||= SlugService.new.generate_slug self, title
       end
     end
 

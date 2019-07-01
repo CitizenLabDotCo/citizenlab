@@ -11,7 +11,7 @@ class CreateInitiatives < ActiveRecord::Migration[5.2]
       t.integer :downvotes_count, null: false, default: 0
       t.st_point :location_point, geographic: true
       t.string :location_description
-      t.string :slug, null: false
+      t.string :slug
       t.integer :comments_count, null: false, default: 0
 
       t.timestamps
