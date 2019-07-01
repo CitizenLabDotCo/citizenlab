@@ -25,6 +25,12 @@ RSpec.describe Initiative, type: :model do
       initiative.update!(title_multiloc: {'en' => 'Make democracy great again'}, publication_status: 'published')
       expect(initiative.slug).to eq 'make-democracy-great-again'
     end
+
+    # it "temp test" do
+    #   initiative = create(:initiative, publication_status: 'draft')
+    #   expect(initiative).to be_valid
+    #   expect(initiative.initiative_status_id).to be_present
+    # end
   end
 
   context "published at" do

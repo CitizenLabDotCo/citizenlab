@@ -378,7 +378,7 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
     t.jsonb "body_multiloc"
     t.string "publication_status"
     t.datetime "published_at"
-    t.uuid "author_id", null: false
+    t.uuid "author_id"
     t.string "author_name"
     t.integer "upvotes_count", default: 0, null: false
     t.integer "downvotes_count", default: 0, null: false
