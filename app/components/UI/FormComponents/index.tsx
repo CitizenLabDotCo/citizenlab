@@ -5,7 +5,6 @@ import { fontSizes, colors, booleanClass, invisibleA11yText, media } from 'utils
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { Messages, FormattedMessage as OriginalFormattedMessage } from 'react-intl';
-import Icon, { IconNames } from 'components/UI/Icon';
 import Button from '../Button';
 import messages from './messages';
 
@@ -52,7 +51,7 @@ export const FormSectionTitle = memo(({ message, values, subtitleMessage }: Form
   </TitleContainer>
 ));
 
-const FormLabelStyled: any = styled.label`
+export const FormLabelStyled: any = styled.label`
   font-size: ${fontSizes.large}px;
   color: ${({ theme }) => theme.colorText};
   font-weight: ${(props) => (props as any).thin ? 400 : 600};
@@ -63,13 +62,13 @@ const FormLabelStyled: any = styled.label`
   }
 `;
 
-const FormSubtextStyled = styled.span`
+export const FormSubtextStyled = styled.span`
   font-size: ${fontSizes.base}px;
   color: ${colors.label};
   font-weight: 300;
 `;
 
-const Spacer = styled.div`
+export const Spacer = styled.div`
   height: 12px;
 `;
 const OptionalText = styled.span`
@@ -87,7 +86,7 @@ interface FormLabelGenericProps {
   optional?: boolean;
 }
 
-interface FormLabelProps extends FormLabelGenericProps {
+export interface FormLabelProps extends FormLabelGenericProps {
   labelMessage: Messages['key'];
   labelMessageValues?: OriginalFormattedMessage.Props['values'];
   subtextMessage?: Messages['key'];
@@ -159,53 +158,6 @@ export const FormLabelValue = memo(({
   </FormLabelStyled>
 ));
 
-interface FormLabelWithIconProps extends FormLabelProps {
-  iconName: IconNames;
-}
-
-const LabelContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const StyledIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
-  margin-left: 10px;
-`;
-
-export const FormLabelWithIcon = memo(({
-  labelMessage,
-  labelMessageValues,
-  subtextMessage,
-  subtextMessageValues,
-  id,
-  htmlFor,
-  children,
-  className,
-  hidden,
-  thin,
-  noSpace,
-  iconName
-}: FormLabelWithIconProps) => (
-  <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
-    <LabelContainer>
-      <FormattedMessage {...labelMessage} values={labelMessageValues} />
-      <StyledIcon name={iconName} />
-    </LabelContainer>
-    {subtextMessage &&
-      <>
-        <br/>
-        <FormSubtextStyled>
-            <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
-        </FormSubtextStyled>
-      </>
-    }
-    {!noSpace && <Spacer />}
-    {children}
-  </FormLabelStyled>
-));
-
 interface FormSubmitFooterProps extends IMessageInfo {
   disabled?: boolean;
   processing?: boolean;
@@ -266,6 +218,7 @@ export const FormSubmitFooter = withTheme(memo(({
         textColor="#FFF"
         type="submit"
         onClick={onSubmit}
+        className="e2e-submit-form"
         {...otherProps}
       >
         <FormattedMessage {...message} values={values} />
