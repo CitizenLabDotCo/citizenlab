@@ -1,7 +1,18 @@
 import './commands'
 
-// remove service workers before each test
+before(function () {
+  // run this once before all code
+  return window.caches.keys().then((cacheNames) => {
+    return Promise.all(
+      cacheNames.map((cacheName) => {
+        return window.caches.delete(cacheName);
+      })
+    );
+  });
+});
+
 beforeEach(() => {
+  // remove service workers before each test
   cy.unregisterServiceWorkers();
 });
 

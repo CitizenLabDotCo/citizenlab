@@ -17,6 +17,8 @@ import createRoutes from './routes';
 import { initializeAnalytics } from 'utils/analytics';
 
 if (process && process.env && process.env.NODE_ENV === 'production' && process.env.SENTRY_DSN) {
+  OfflinePluginRuntime.install();
+
   init({
     dsn: process.env.SENTRY_DSN,
     environment: process.env.NODE_ENV,
@@ -24,8 +26,6 @@ if (process && process.env && process.env.NODE_ENV === 'production' && process.e
     integrations: [new Integrations.RewriteFrames()]
   });
 }
-
-OfflinePluginRuntime.install();
 
 initializeAnalytics();
 
