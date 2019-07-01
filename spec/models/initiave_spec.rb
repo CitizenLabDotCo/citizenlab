@@ -18,11 +18,13 @@ RSpec.describe Initiative, type: :model do
       expect(initiative.author_name).to eq u.display_name
     end
 
-    it "should generate a slug on creation" do
-      initiative = create(:initiative, slug: nil)
-      expect(initiative.slug).to be_present
+    it "should generate a slug on publication" do
+      initiative = create(:initiative, slug: nil, publication_status: 'draft', title_multiloc: nil)
+      expect(initiative.title_multiloc).to eq nil
+      expect(initiative.slug).to eq nil
+      initiative.update!(title_multiloc: {'en' => 'Make democracy great again'}, publication_status: 'published')
+      expect(initiative.slug).to eq 'make-democracy-great-again'
     end
-
   end
 
   context "published at" do
