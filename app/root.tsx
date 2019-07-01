@@ -9,25 +9,10 @@ import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
-import { init } from '@sentry/browser';
-import * as Integrations from '@sentry/integrations';
-import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 import createRoutes from './routes';
 import { initializeAnalytics } from 'utils/analytics';
-
-if (process && process.env && process.env.NODE_ENV === 'production' && process.env.SENTRY_DSN) {
-  OfflinePluginRuntime.install();
-
-  init({
-    dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV,
-    release: process.env.CIRCLE_BUILD_NUM,
-    integrations: [new Integrations.RewriteFrames()]
-  });
-}
-
-initializeAnalytics();
+import { init } from '@sentry/browser';
 
 const rootRoute = {
   component: App,
@@ -47,3 +32,24 @@ const Root = () => {
 };
 
 render(<Root />, document.getElementById('app'));
+
+if (process.env.NODE_ENV !== 'development') {
+  import('offline-plugin/runtime').then((OfflinePlugin) => {
+    OfflinePlugin.install();
+  });
+}
+
+if (process.env.NODE_ENV === 'production') {
+  initializeAnalytics();
+
+  import('@sentry/integrations').then((Integrations) => {
+    init({
+      dsn: process.env.SENTRY_DSN,
+      environment: process.env.NODE_ENV,
+      release: process.env.CIRCLE_BUILD_NUM,
+      integrations: [
+        new Integrations.RewriteFrames()
+      ]
+    });
+  });
+}
