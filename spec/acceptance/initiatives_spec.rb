@@ -342,12 +342,6 @@ resource "Initiatives" do
         expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
       end
 
-      example "temp test", document: false do
-        do_request(publication_status: 'draft')
-        json_response = json_parse(response_body) 
-        byebug
-      end
-
       example "Check for the automatic assignement of the default assignee", document: false do
         do_request(initiative: {assignee_id: nil})
         json_response = json_parse(response_body) 
