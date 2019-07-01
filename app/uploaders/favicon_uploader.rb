@@ -1,5 +1,5 @@
 class FaviconUploader < CarrierWave::Uploader::Base
-  include BaseUploader
+  include BaseImageUploader
   include CarrierWave::MiniMagick
 
 
