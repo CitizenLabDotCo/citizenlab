@@ -44,14 +44,6 @@ export function randomEmail() {
 }
 
 export function unregisterServiceWorkers() {
-  // if ('serviceWorker' in navigator) {
-  //   navigator.serviceWorker.getRegistrations().then((registrations) => {
-  //     registrations.forEach((registration) => {
-  //       registration.unregister();
-  //     });
-  //   });
-  // }
-
   if (navigator.serviceWorker) {
     navigator.serviceWorker.getRegistrations().then((registrations) => {
       registrations.forEach((registration) => {

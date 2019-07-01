@@ -206,18 +206,20 @@ const config = {
         '**/.*',
         '**/*.map',
         '**/*.gz',
-        '**/*.html',
-        '.htaccess'
+        '/__/**',
+        '/fragments/**',
+        '/widgets/**'
       ],
       caches: {
         main: [':rest:'],
         additional: ['*.chunk.js'],
       },
-      ServiceWorker: {
-        prefetchRequest: {
-          credentials: 'same-origin',
-        },
-      },
+      // ServiceWorker: {
+      //   prefetchRequest: {
+      //     mode: 'same-origin',
+      //     credentials: 'same-origin',
+      //   },
+      // },
       safeToUseOptionalCaches: true, // removes warning for about `additional` section usage
     }),
 
