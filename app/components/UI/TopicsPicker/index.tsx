@@ -6,7 +6,7 @@ import { orderBy } from 'lodash-es';
 import Button from 'components/UI/Button';
 
 // styles
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // resources
@@ -30,6 +30,7 @@ const TopicSwitch = styled(Button)`
 
 export interface InputProps {
   onChange: (tocisIds: string[]) => void;
+  onBlur: () => void;
   value: string[];
   max: number;
   id?: string;
@@ -39,9 +40,11 @@ interface DataProps {
   topics: GetTopicsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
-const TopicsPicker = ({ onChange, value, localize, topics, max }: Props & InjectedLocalized) => {
+const TopicsPicker = ({ onChange, onBlur, value, localize, topics, max, theme }: Props & InjectedLocalized) => {
   const handleOnChange = (topicId: string) => (event) => {
     event.stopPropagation();
     event.preventDefault();
@@ -70,7 +73,7 @@ const TopicsPicker = ({ onChange, value, localize, topics, max }: Props & Inject
   const workingTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
   return (
-    <TopicsContainer>
+    <TopicsContainer onBlur={onBlur}>
       {orderBy(workingTopics, topic => localize(topic.attributes.title_multiloc)).map((topic) => {
         const isActive = value && !!value.find(id => id === topic.id);
         const isDisabled = !isActive && value.length === max;
@@ -79,7 +82,7 @@ const TopicsPicker = ({ onChange, value, localize, topics, max }: Props & Inject
             key={topic.id}
             onClick={handleOnChange(topic.id)}
             textColor={isActive ? 'white' : colors.adminSecondaryTextColor}
-            bgColor={isActive ? colors.clGreen : 'transparent'}
+            bgColor={isActive ? theme.colorSecondary : 'transparent'}
             borderColor={isActive ? 'none' : colors.separation}
             padding="7px 14px"
             disabled={isDisabled}
@@ -96,7 +99,7 @@ const Data = adopt<DataProps,  InputProps>({
    topics: <GetTopics />
  });
 
- const TopicsPickerWithHoc = injectLocalize(TopicsPicker);
+ const TopicsPickerWithHoc = injectLocalize(withTheme(TopicsPicker));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
