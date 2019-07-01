@@ -18,7 +18,7 @@ import Error from 'components/UI/Error';
 import HasPermission from 'components/HasPermission';
 import FileUploader from 'components/UI/FileUploader';
 import FeatureFlag from 'components/FeatureFlag';
-import { FormLabel, FormLabelWithIcon } from 'components/UI/FormComponents';
+import { FormLabel } from 'components/UI/FormComponents';
 
 // services
 import { localeStream } from 'services/locale';
@@ -44,6 +44,7 @@ import { IOption, UploadFile, Locale } from 'typings';
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
 import TopicsPicker from 'components/UI/TopicsPicker';
+import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 
 const Form = styled.form`
   width: 100%;
