@@ -207,9 +207,7 @@ const config = {
         '**/*.map',
         '**/*.gz',
         '**/*.html',
-        '.htaccess',
-        '/__',
-        '/__/**'
+        '.htaccess'
       ],
       caches: {
         main: [':rest:'],
