@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 
 // components
@@ -48,12 +48,12 @@ interface GlobalState {
 
 interface State extends GlobalState {}
 
-export default class IdeasNewButtonBar extends React.PureComponent<Props, State> {
+export default class IdeasNewButtonBar extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       submitError: false,
       processing: false
