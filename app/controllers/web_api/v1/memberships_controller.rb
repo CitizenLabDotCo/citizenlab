@@ -12,14 +12,14 @@ class WebApi::V1::MembershipsController < ApplicationController
 
     render json: linked_json(
       @memberships, 
-      WebApi::V1::Fast::MembershipSerializer, 
+      WebApi::V1::MembershipSerializer, 
       params: fastjson_params, 
       include: [:user]
       )
   end
 
   def show
-    render json: WebApi::V1::Fast::MembershipSerializer.new(
+    render json: WebApi::V1::MembershipSerializer.new(
       @membership, 
       params: fastjson_params, 
       include: [:user]
@@ -36,7 +36,7 @@ class WebApi::V1::MembershipsController < ApplicationController
     @membership.group_id = params[:group_id]
     authorize @membership
     if @membership.save
-      render json: WebApi::V1::Fast::MembershipSerializer.new(
+      render json: WebApi::V1::MembershipSerializer.new(
         @membership.reload, 
         params: fastjson_params, 
         include: [:user]
@@ -68,7 +68,7 @@ class WebApi::V1::MembershipsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: linked_json(@users, WebApi::V1::Fast::MemberSerializer, params: fastjson_params(group_id: params[:group_id]))
+    render json: linked_json(@users, WebApi::V1::MemberSerializer, params: fastjson_params(group_id: params[:group_id]))
   end
 
 

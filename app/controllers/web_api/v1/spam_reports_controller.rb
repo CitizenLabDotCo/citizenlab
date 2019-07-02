@@ -11,11 +11,11 @@ class WebApi::V1::SpamReportsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
       
-    render json: linked_json(@spam_reports, WebApi::V1::Fast::SpamReportSerializer, params: fastjson_params, include: [:user])
+    render json: linked_json(@spam_reports, WebApi::V1::SpamReportSerializer, params: fastjson_params, include: [:user])
   end
 
   def show
-    render json: WebApi::V1::Fast::SpamReportSerializer.new(
+    render json: WebApi::V1::SpamReportSerializer.new(
       @spam_report, 
       params: fastjson_params,
       include: [:user]
@@ -31,7 +31,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
 
     if @spam_report.save
       SideFxSpamReportService.new.after_create(@spam_report, current_user)
-      render json: WebApi::V1::Fast::SpamReportSerializer.new(
+      render json: WebApi::V1::SpamReportSerializer.new(
         @spam_report, 
         params: fastjson_params
         ).serialized_json, status: :created
@@ -47,7 +47,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
       if @spam_report.update(spam_report_params)
         authorize @spam_report
         SideFxSpamReportService.new.after_update(@spam_report, current_user)
-        render json: WebApi::V1::Fast::SpamReportSerializer.new(
+        render json: WebApi::V1::SpamReportSerializer.new(
           @spam_report.reload, 
           params: fastjson_params,
           include: [:user]

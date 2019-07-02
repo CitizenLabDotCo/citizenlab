@@ -9,11 +9,11 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
       .per(params.dig(:page, :size))
       .order(created_at: :desc)
 
-    render json: linked_json(@feedbacks, WebApi::V1::Fast::OfficialFeedbackSerializer, params: fastjson_params)
+    render json: linked_json(@feedbacks, WebApi::V1::OfficialFeedbackSerializer, params: fastjson_params)
   end
 
   def show
-    render json: WebApi::V1::Fast::OfficialFeedbackSerializer.new(
+    render json: WebApi::V1::OfficialFeedbackSerializer.new(
       @feedback, 
       params: fastjson_params
       ).serialized_json
@@ -27,7 +27,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
     SideFxOfficialFeedbackService.new.before_create @feedback, current_user
     if @feedback.save
       SideFxOfficialFeedbackService.new.after_create @feedback, current_user
-      render json: WebApi::V1::Fast::OfficialFeedbackSerializer.new(
+      render json: WebApi::V1::OfficialFeedbackSerializer.new(
         @feedback, 
         params: fastjson_params
         ).serialized_json, status: :created
@@ -43,7 +43,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
     SideFxOfficialFeedbackService.new.before_update @feedback, current_user
     if @feedback.save
       SideFxOfficialFeedbackService.new.after_update @feedback, current_user
-      render json: WebApi::V1::Fast::OfficialFeedbackSerializer.new(
+      render json: WebApi::V1::OfficialFeedbackSerializer.new(
         @feedback, 
         params: fastjson_params
         ).serialized_json, status: :ok

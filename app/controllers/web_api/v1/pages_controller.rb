@@ -7,12 +7,12 @@ class WebApi::V1::PagesController < ::ApplicationController
       .per(params.dig(:page, :size))
     @pages = @pages.where(project_id: params[:project]) if params[:project].present?
 
-    render json: linked_json(@pages, WebApi::V1::Fast::PageSerializer, params: fastjson_params, include: [:page_links]) 
+    render json: linked_json(@pages, WebApi::V1::PageSerializer, params: fastjson_params, include: [:page_links]) 
   end
 
 
   def show
-    render json: WebApi::V1::Fast::PageSerializer.new(
+    render json: WebApi::V1::PageSerializer.new(
       @page, 
       params: fastjson_params, 
       include: [:page_links]
@@ -31,7 +31,7 @@ class WebApi::V1::PagesController < ::ApplicationController
     authorize @page
     if @page.save
       SideFxPageService.new.after_create(@page, current_user)
-      render json: WebApi::V1::Fast::PageSerializer.new(
+      render json: WebApi::V1::PageSerializer.new(
         @page, 
         params: fastjson_params, 
         include: [:page_links]
@@ -47,7 +47,7 @@ class WebApi::V1::PagesController < ::ApplicationController
     SideFxPageService.new.before_update(@page, current_user)
     if @page.save
       SideFxPageService.new.after_update(@page, current_user)
-      render json: WebApi::V1::Fast::PageSerializer.new(
+      render json: WebApi::V1::PageSerializer.new(
         @page, 
         params: fastjson_params, 
         include: [:page_links]

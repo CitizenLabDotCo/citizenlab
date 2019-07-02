@@ -1,29 +1,29 @@
 class WebApi::V1::NotificationsController < ApplicationController
 
   MODEL_TO_SERIALIZER = { 
-    Notifications::AdminRightsReceived             => WebApi::V1::Fast::Notifications::AdminRightsReceivedSerializer,
-    Notifications::CommentDeletedByAdmin           => WebApi::V1::Fast::Notifications::CommentDeletedByAdminSerializer,
-    Notifications::CommentMarkedAsSpam             => WebApi::V1::Fast::Notifications::CommentMarkedAsSpamSerializer,
-    Notifications::CommentOnYourComment            => WebApi::V1::Fast::Notifications::CommentOnYourCommentSerializer,
-    Notifications::CommentOnYourIdea               => WebApi::V1::Fast::Notifications::CommentOnYourIdeaSerializer,
-    Notifications::IdeaAssignedToYou               => WebApi::V1::Fast::Notifications::IdeaAssignedToYouSerializer,
-    Notifications::IdeaMarkedAsSpam                => WebApi::V1::Fast::Notifications::IdeaMarkedAsSpamSerializer,
-    Notifications::InviteAccepted                  => WebApi::V1::Fast::Notifications::InviteAcceptedSerializer,
-    Notifications::MentionInComment                => WebApi::V1::Fast::Notifications::MentionInCommentSerializer,
-    Notifications::NewCommentForAdmin              => WebApi::V1::Fast::Notifications::NewCommentForAdminSerializer,
-    Notifications::NewIdeaForAdmin                 => WebApi::V1::Fast::Notifications::NewIdeaForAdminSerializer,
-    Notifications::OfficialFeedbackOnCommentedIdea => WebApi::V1::Fast::Notifications::OfficialFeedbackOnCommentedIdeaSerializer,
-    Notifications::OfficialFeedbackOnVotedIdea     => WebApi::V1::Fast::Notifications::OfficialFeedbackOnVotedIdeaSerializer,
-    Notifications::OfficialFeedbackOnYourIdea      => WebApi::V1::Fast::Notifications::OfficialFeedbackOnYourIdeaSerializer,
-    Notifications::ProjectModerationRightsReceived => WebApi::V1::Fast::Notifications::ProjectModerationRightsReceivedSerializer,
-    Notifications::ProjectPhaseStarted             => WebApi::V1::Fast::Notifications::ProjectPhaseStartedSerializer,
-    Notifications::ProjectPhaseUpcoming            => WebApi::V1::Fast::Notifications::ProjectPhaseUpcomingSerializer,
-    Notifications::StatusChangeOfYourIdea          => WebApi::V1::Fast::Notifications::StatusChangeOfYourIdeaSerializer
+    Notifications::AdminRightsReceived             => WebApi::V1::Notifications::AdminRightsReceivedSerializer,
+    Notifications::CommentDeletedByAdmin           => WebApi::V1::Notifications::CommentDeletedByAdminSerializer,
+    Notifications::CommentMarkedAsSpam             => WebApi::V1::Notifications::CommentMarkedAsSpamSerializer,
+    Notifications::CommentOnYourComment            => WebApi::V1::Notifications::CommentOnYourCommentSerializer,
+    Notifications::CommentOnYourIdea               => WebApi::V1::Notifications::CommentOnYourIdeaSerializer,
+    Notifications::IdeaAssignedToYou               => WebApi::V1::Notifications::IdeaAssignedToYouSerializer,
+    Notifications::IdeaMarkedAsSpam                => WebApi::V1::Notifications::IdeaMarkedAsSpamSerializer,
+    Notifications::InviteAccepted                  => WebApi::V1::Notifications::InviteAcceptedSerializer,
+    Notifications::MentionInComment                => WebApi::V1::Notifications::MentionInCommentSerializer,
+    Notifications::NewCommentForAdmin              => WebApi::V1::Notifications::NewCommentForAdminSerializer,
+    Notifications::NewIdeaForAdmin                 => WebApi::V1::Notifications::NewIdeaForAdminSerializer,
+    Notifications::OfficialFeedbackOnCommentedIdea => WebApi::V1::Notifications::OfficialFeedbackOnCommentedIdeaSerializer,
+    Notifications::OfficialFeedbackOnVotedIdea     => WebApi::V1::Notifications::OfficialFeedbackOnVotedIdeaSerializer,
+    Notifications::OfficialFeedbackOnYourIdea      => WebApi::V1::Notifications::OfficialFeedbackOnYourIdeaSerializer,
+    Notifications::ProjectModerationRightsReceived => WebApi::V1::Notifications::ProjectModerationRightsReceivedSerializer,
+    Notifications::ProjectPhaseStarted             => WebApi::V1::Notifications::ProjectPhaseStartedSerializer,
+    Notifications::ProjectPhaseUpcoming            => WebApi::V1::Notifications::ProjectPhaseUpcomingSerializer,
+    Notifications::StatusChangeOfYourIdea          => WebApi::V1::Notifications::StatusChangeOfYourIdeaSerializer
   }
 
   before_action :set_notification, only: [:show, :mark_read]
   before_action do
-    self.namespace_for_serializer = WebApi::V1::Fast::Notifications
+    self.namespace_for_serializer = WebApi::V1::Notifications
   end
 
   def index
@@ -39,7 +39,7 @@ class WebApi::V1::NotificationsController < ApplicationController
 
     render json: linked_json(
       @notifications, 
-      WebApi::V1::Fast::Notifications::NotificationSerializer, 
+      WebApi::V1::Notifications::NotificationSerializer, 
       params: fastjson_params,
       serializers: MODEL_TO_SERIALIZER
       )
@@ -52,7 +52,7 @@ class WebApi::V1::NotificationsController < ApplicationController
     ids = @notifications.map(&:id)
 
     if @notifications.update_all(read_at: Time.now)
-      render json: WebApi::V1::Fast::Notifications::NotificationSerializer.new(
+      render json: WebApi::V1::Notifications::NotificationSerializer.new(
         Notification.find(ids), 
         params: fastjson_params,
         serializers: MODEL_TO_SERIALIZER,
@@ -63,7 +63,7 @@ class WebApi::V1::NotificationsController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::Fast::Notifications::NotificationSerializer.new(
+    render json: WebApi::V1::Notifications::NotificationSerializer.new(
       @notification, 
       params: fastjson_params,
       serializers: MODEL_TO_SERIALIZER,
@@ -72,7 +72,7 @@ class WebApi::V1::NotificationsController < ApplicationController
 
   def mark_read
     if @notification.update(read_at: Time.now)
-      render json: WebApi::V1::Fast::Notifications::NotificationSerializer.new(
+      render json: WebApi::V1::Notifications::NotificationSerializer.new(
         @notification, 
         params: fastjson_params,
         serializers: MODEL_TO_SERIALIZER,

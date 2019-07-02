@@ -17,7 +17,7 @@ class WebApi::V1::UserCommentsController < ApplicationController
     @comments = @comments.order('ideas.published_at DESC, ideas.id DESC, comments.created_at DESC')
 
     render json: { 
-      **WebApi::V1::Fast::CommentSerializer.new(@comments, params: fastjson_params, include: [:idea]).serializable_hash,
+      **WebApi::V1::CommentSerializer.new(@comments, params: fastjson_params, include: [:idea]).serializable_hash,
       links: page_links(@ideas)
     }
   end

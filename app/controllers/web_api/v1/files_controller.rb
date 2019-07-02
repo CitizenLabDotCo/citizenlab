@@ -8,18 +8,18 @@ class WebApi::V1::FilesController < ApplicationController
     @files = @container.send("#{container_association}_files").order(:ordering)
     policy_scope_class = "#{params['file_class_name']}Policy::Scope".constantize
     @files = policy_scope_class.new(current_user, @files).resolve
-    render json: WebApi::V1::Fast::FileSerializer.new(@files, params: fastjson_params).serialized_json
+    render json: WebApi::V1::FileSerializer.new(@files, params: fastjson_params).serialized_json
   end
 
   def show
-    render json: WebApi::V1::Fast::FileSerializer.new(@file, params: fastjson_params).serialized_json
+    render json: WebApi::V1::FileSerializer.new(@file, params: fastjson_params).serialized_json
   end
 
   def create
     @file = @container.send("#{container_association}_files").create(file_params)
     authorize @file
     if @file.save
-      render json: WebApi::V1::Fast::FileSerializer.new(
+      render json: WebApi::V1::FileSerializer.new(
         @file, 
         params: fastjson_params
         ).serialized_json, status: :created
@@ -30,7 +30,7 @@ class WebApi::V1::FilesController < ApplicationController
 
   def update
     if @file.update(file_params)
-      render json: WebApi::V1::Fast::FileSerializer.new(
+      render json: WebApi::V1::FileSerializer.new(
         @file, 
         params: fastjson_params
         ).serialized_json, status: :ok

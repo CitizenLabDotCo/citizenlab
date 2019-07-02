@@ -22,14 +22,14 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
 
     render json: linked_json(
       @groups_projects, 
-      WebApi::V1::Fast::GroupsProjectSerializer, 
+      WebApi::V1::GroupsProjectSerializer, 
       params: fastjson_params,
       include: [:group]
       )
   end
 
   def show
-    render json: WebApi::V1::Fast::GroupsProjectSerializer.new(
+    render json: WebApi::V1::GroupsProjectSerializer.new(
       @groups_project, 
       params: fastjson_params,
       include: [:group]
@@ -42,7 +42,7 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     @groups_project.project_id = params[:project_id]
     authorize @groups_project
     if @groups_project.save
-      render json: WebApi::V1::Fast::GroupsProjectSerializer.new(
+      render json: WebApi::V1::GroupsProjectSerializer.new(
         @groups_project, 
         params: fastjson_params,
         include: [:group]

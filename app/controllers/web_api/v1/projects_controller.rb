@@ -42,14 +42,14 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
     render json: linked_json(
       @projects, 
-      WebApi::V1::Fast::ProjectSerializer, 
+      WebApi::V1::ProjectSerializer, 
       params: fastjson_params(instance_options), 
       include: [:project_images, :current_phase, :avatars]
       )
   end
 
   def show
-    render json: WebApi::V1::Fast::ProjectSerializer.new(
+    render json: WebApi::V1::ProjectSerializer.new(
       @project, 
       params: fastjson_params, 
       include: [:project_images, :current_phase, :avatars]
@@ -70,7 +70,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     authorize @project
     if @project.save
       SideFxProjectService.new.after_create(@project, current_user)
-      render json: WebApi::V1::Fast::ProjectSerializer.new(
+      render json: WebApi::V1::ProjectSerializer.new(
         @project, 
         params: fastjson_params, 
         ).serialized_json, status: :created
@@ -95,7 +95,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     SideFxProjectService.new.before_update(@project, current_user)
     if @project.save
       SideFxProjectService.new.after_update(@project, current_user)
-      render json: WebApi::V1::Fast::ProjectSerializer.new(
+      render json: WebApi::V1::ProjectSerializer.new(
         @project, 
         params: fastjson_params, 
         ).serialized_json, status: :ok
@@ -107,7 +107,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   def reorder
     if @project.insert_at(permitted_attributes(@project)[:ordering])
       SideFxProjectService.new.after_update(@project, current_user)
-      render json: WebApi::V1::Fast::ProjectSerializer.new(
+      render json: WebApi::V1::ProjectSerializer.new(
         @project, 
         params: fastjson_params, 
         ).serialized_json, status: :ok

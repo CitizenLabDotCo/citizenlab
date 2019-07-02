@@ -70,7 +70,7 @@ class WebApi::V1::IdeasController < ApplicationController
       }
     end
 
-    render json: linked_json(@ideas, WebApi::V1::Fast::IdeaSerializer, serialization_options)
+    render json: linked_json(@ideas, WebApi::V1::IdeaSerializer, serialization_options)
   end
 
   def index_idea_markers
@@ -81,7 +81,7 @@ class WebApi::V1::IdeasController < ApplicationController
     @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
-    render json: linked_json(@ideas, WebApi::V1::Fast::IdeaMarkerSerializer, params: fastjson_params)
+    render json: linked_json(@ideas, WebApi::V1::IdeaMarkerSerializer, params: fastjson_params)
   end
 
   def index_xlsx
@@ -121,7 +121,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::Fast::IdeaSerializer.new(
+    render json: WebApi::V1::IdeaSerializer.new(
       @idea, 
       params: fastjson_params, 
       include: [:author, :topics, :areas, :user_vote, :idea_images]
@@ -147,7 +147,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       if @idea.save
         service.after_create(@idea, current_user)
-        render json: WebApi::V1::Fast::IdeaSerializer.new(
+        render json: WebApi::V1::IdeaSerializer.new(
           @idea.reload, 
           params: fastjson_params, 
           include: [:author, :topics, :areas, :phases, :user_vote, :idea_images]
@@ -175,7 +175,7 @@ class WebApi::V1::IdeasController < ApplicationController
       if @idea.save
         authorize @idea
         service.after_update(@idea, current_user)
-        render json: WebApi::V1::Fast::IdeaSerializer.new(
+        render json: WebApi::V1::IdeaSerializer.new(
           @idea.reload, 
           params: fastjson_params, 
           include: [:author, :topics, :areas, :user_vote, :idea_images]

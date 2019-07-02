@@ -8,18 +8,18 @@ class WebApi::V1::ImagesController < ApplicationController
     @images = @container.send("#{container_association}_images").order(:ordering)
     policy_scope_class = "#{params['image_class_name']}Policy::Scope".constantize
     @images = policy_scope_class.new(current_user, @images).resolve
-    render json: WebApi::V1::Fast::ImageSerializer.new(@images, params: fastjson_params).serialized_json
+    render json: WebApi::V1::ImageSerializer.new(@images, params: fastjson_params).serialized_json
   end
 
   def show
-    render json: WebApi::V1::Fast::ImageSerializer.new(@image, params: fastjson_params).serialized_json
+    render json: WebApi::V1::ImageSerializer.new(@image, params: fastjson_params).serialized_json
   end
 
   def create
     @image = @container.send("#{container_association}_images").create(image_params)
     authorize @image
     if @image.save
-      render json: WebApi::V1::Fast::ImageSerializer.new(
+      render json: WebApi::V1::ImageSerializer.new(
         @image, 
         params: fastjson_params
         ).serialized_json, status: :created
@@ -30,7 +30,7 @@ class WebApi::V1::ImagesController < ApplicationController
 
   def update
     if @image.update(image_params)
-      render json: WebApi::V1::Fast::ImageSerializer.new(
+      render json: WebApi::V1::ImageSerializer.new(
         @image, 
         params: fastjson_params
         ).serialized_json, status: :ok

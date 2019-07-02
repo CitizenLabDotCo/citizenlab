@@ -11,11 +11,11 @@ class WebApi::V1::VotesController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: linked_json(@votes, WebApi::V1::Fast::VoteSerializer, params: fastjson_params, include: [:user])
+    render json: linked_json(@votes, WebApi::V1::VoteSerializer, params: fastjson_params, include: [:user])
   end
 
   def show
-    render json: WebApi::V1::Fast::VoteSerializer.new(
+    render json: WebApi::V1::VoteSerializer.new(
       @vote, 
       params: fastjson_params, 
       include: [:user]
@@ -33,7 +33,7 @@ class WebApi::V1::VotesController < ApplicationController
 
     if @vote.save
       SideFxVoteService.new.after_create(@vote, current_user)
-      render json: WebApi::V1::Fast::VoteSerializer.new(
+      render json: WebApi::V1::VoteSerializer.new(
         @vote, 
         params: fastjson_params
         ).serialized_json, status: :created
@@ -93,7 +93,7 @@ class WebApi::V1::VotesController < ApplicationController
 
         if @new_vote.save
           SideFxVoteService.new.after_create(@new_vote, current_user)
-          render json: WebApi::V1::Fast::VoteSerializer.new(
+          render json: WebApi::V1::VoteSerializer.new(
             @vote, 
             params: fastjson_params
             ).serialized_json, status: :created

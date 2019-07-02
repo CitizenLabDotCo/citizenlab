@@ -21,7 +21,7 @@
         .find_by(reset_password_token: reset_password_params[:token])
       if @user && ResetPasswordService.new.token_valid?(@user, reset_password_params[:token])
         if @user.update(password: reset_password_params[:password], reset_password_token: nil)
-          render json: WebApi::V1::Fast::UserSerializer.new(
+          render json: WebApi::V1::UserSerializer.new(
             @user, 
             params: fastjson_params
             ).serialized_json
