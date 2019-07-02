@@ -2,23 +2,23 @@ class WebApi::V1::NotificationsController < ApplicationController
 
   MODEL_TO_SERIALIZER = { 
     ::Notifications::AdminRightsReceived             => WebApi::V1::Notifications::AdminRightsReceivedSerializer,
-    Notifications::CommentDeletedByAdmin           => WebApi::V1::Notifications::CommentDeletedByAdminSerializer,
-    Notifications::CommentMarkedAsSpam             => WebApi::V1::Notifications::CommentMarkedAsSpamSerializer,
-    Notifications::CommentOnYourComment            => WebApi::V1::Notifications::CommentOnYourCommentSerializer,
-    Notifications::CommentOnYourIdea               => WebApi::V1::Notifications::CommentOnYourIdeaSerializer,
-    Notifications::IdeaAssignedToYou               => WebApi::V1::Notifications::IdeaAssignedToYouSerializer,
-    Notifications::IdeaMarkedAsSpam                => WebApi::V1::Notifications::IdeaMarkedAsSpamSerializer,
-    Notifications::InviteAccepted                  => WebApi::V1::Notifications::InviteAcceptedSerializer,
-    Notifications::MentionInComment                => WebApi::V1::Notifications::MentionInCommentSerializer,
-    Notifications::NewCommentForAdmin              => WebApi::V1::Notifications::NewCommentForAdminSerializer,
-    Notifications::NewIdeaForAdmin                 => WebApi::V1::Notifications::NewIdeaForAdminSerializer,
-    Notifications::OfficialFeedbackOnCommentedIdea => WebApi::V1::Notifications::OfficialFeedbackOnCommentedIdeaSerializer,
-    Notifications::OfficialFeedbackOnVotedIdea     => WebApi::V1::Notifications::OfficialFeedbackOnVotedIdeaSerializer,
-    Notifications::OfficialFeedbackOnYourIdea      => WebApi::V1::Notifications::OfficialFeedbackOnYourIdeaSerializer,
-    Notifications::ProjectModerationRightsReceived => WebApi::V1::Notifications::ProjectModerationRightsReceivedSerializer,
-    Notifications::ProjectPhaseStarted             => WebApi::V1::Notifications::ProjectPhaseStartedSerializer,
-    Notifications::ProjectPhaseUpcoming            => WebApi::V1::Notifications::ProjectPhaseUpcomingSerializer,
-    Notifications::StatusChangeOfYourIdea          => WebApi::V1::Notifications::StatusChangeOfYourIdeaSerializer
+    ::Notifications::CommentDeletedByAdmin           => WebApi::V1::Notifications::CommentDeletedByAdminSerializer,
+    ::Notifications::CommentMarkedAsSpam             => WebApi::V1::Notifications::CommentMarkedAsSpamSerializer,
+    ::Notifications::CommentOnYourComment            => WebApi::V1::Notifications::CommentOnYourCommentSerializer,
+    ::Notifications::CommentOnYourIdea               => WebApi::V1::Notifications::CommentOnYourIdeaSerializer,
+    ::Notifications::IdeaAssignedToYou               => WebApi::V1::Notifications::IdeaAssignedToYouSerializer,
+    ::Notifications::IdeaMarkedAsSpam                => WebApi::V1::Notifications::IdeaMarkedAsSpamSerializer,
+    ::Notifications::InviteAccepted                  => WebApi::V1::Notifications::InviteAcceptedSerializer,
+    ::Notifications::MentionInComment                => WebApi::V1::Notifications::MentionInCommentSerializer,
+    ::Notifications::NewCommentForAdmin              => WebApi::V1::Notifications::NewCommentForAdminSerializer,
+    ::Notifications::NewIdeaForAdmin                 => WebApi::V1::Notifications::NewIdeaForAdminSerializer,
+    ::Notifications::OfficialFeedbackOnCommentedIdea => WebApi::V1::Notifications::OfficialFeedbackOnCommentedIdeaSerializer,
+    ::Notifications::OfficialFeedbackOnVotedIdea     => WebApi::V1::Notifications::OfficialFeedbackOnVotedIdeaSerializer,
+    ::Notifications::OfficialFeedbackOnYourIdea      => WebApi::V1::Notifications::OfficialFeedbackOnYourIdeaSerializer,
+    ::Notifications::ProjectModerationRightsReceived => WebApi::V1::Notifications::ProjectModerationRightsReceivedSerializer,
+    ::Notifications::ProjectPhaseStarted             => WebApi::V1::Notifications::ProjectPhaseStartedSerializer,
+    ::Notifications::ProjectPhaseUpcoming            => WebApi::V1::Notifications::ProjectPhaseUpcomingSerializer,
+    ::Notifications::StatusChangeOfYourIdea          => WebApi::V1::Notifications::StatusChangeOfYourIdeaSerializer
   }
 
   before_action :set_notification, only: [:show, :mark_read]
