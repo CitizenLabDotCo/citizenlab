@@ -46,9 +46,9 @@ interface Props extends InputProps, DataProps {}
 const IdeaTopics = memo<Props & InjectedLocalized>(({ topics, localize, className }) => {
   if (!isNilOrError(topics) && topics.length > 0) {
     return (
-      <Container className={className}>
+      <Container id="e2e-idea-topics" className={className}>
         {topics.map((topic: ITopicData) => {
-          return <Topic key={topic.id}>{localize(topic.attributes.title_multiloc)}</Topic>;
+          return <Topic key={topic.id} className="e2e-idea-topic">{localize(topic.attributes.title_multiloc)}</Topic>;
         })}
       </Container>
     );

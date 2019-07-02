@@ -48,7 +48,11 @@ export async function addOfficialFeedbackToIdea(ideaId: string, feedBack: INewFe
   };
 
   const response = await streams.add<IOfficialFeedback>(`${API_PATH}/ideas/${ideaId}/official_feedback`, bodyData);
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/ideas/${ideaId}/official_feedback`, `${API_PATH}/ideas`, `${API_PATH}/stats/ideas_count`] });
+
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/ideas/${ideaId}/official_feedback`, `${API_PATH}/stats/ideas_count`]
+  });
+
   return response;
 }
 
@@ -61,6 +65,8 @@ export function updateOfficialFeedback(officialFeedbackId: string, object: INewF
 
 export async function deleteOfficialfeedback(ideaId: string) {
   const response = await streams.delete(`${API_PATH}/official_feedback/${ideaId}`, ideaId);
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/ideas/${ideaId}/official_feedback`, `${API_PATH}/ideas`, `${API_PATH}/stats/ideas_count`] });
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/ideas/${ideaId}/official_feedback`, `${API_PATH}/stats/ideas_count`]
+  });
   return response;
 }

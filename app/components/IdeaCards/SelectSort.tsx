@@ -9,6 +9,7 @@ import messages from './messages';
 
 type Props = {
   id?: string | undefined;
+  alignment: 'left' | 'right';
   onChange: (value: string) => void;
 };
 
@@ -30,6 +31,7 @@ class SelectSort extends PureComponent<Props, State> {
   }
 
   render() {
+    const { alignment } = this.props;
     const { selectedValue } = this.state;
     const options = [
       { text: <FormattedMessage {...messages.random} />, value: 'random' },
@@ -49,8 +51,10 @@ class SelectSort extends PureComponent<Props, State> {
         onChange={this.handleOnChange}
         multiple={false}
         width="180px"
-        right="-10px"
-        mobileRight="-5px"
+        left={alignment === 'left' ? '-5px' : undefined}
+        mobileLeft={alignment === 'left' ? '-5px' : undefined}
+        right={alignment === 'right' ? '-5px' : undefined}
+        mobileRight={alignment === 'right' ? '-5px' : undefined}
       />
     );
   }

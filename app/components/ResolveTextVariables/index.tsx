@@ -25,17 +25,19 @@ class ResolveTextVariables extends PureComponent<Props> {
 
   tenantVariables = () => {
     const { tenant, localize } = this.props;
+
     if (!isNilOrError(tenant)) {
       return {
         orgName: localize(tenant.attributes.settings.core.organization_name)
       };
-    } else {
-      return null;
     }
+
+    return null;
   }
 
   valueWithreplacedVariables = (): Multiloc => {
     const variables = this.tenantVariables();
+
     return mapValues(this.props.value, (text) => (
       reduce(
         variables,
