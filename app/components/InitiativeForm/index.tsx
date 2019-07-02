@@ -19,7 +19,7 @@ export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   topics: string[];
-  position: string;
+  position: string | undefined | null; // undefined initially, set to null to remove position in the API
 }
 
 export interface FormProps {
@@ -100,11 +100,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     const touched = Object.assign({}, this.state.touched);
     touched[fieldName] = true;
     const errors = Object.assign({}, this.state.errors);
-    errors[fieldName] = this.validations[fieldName]();
+    errors[fieldName] = get(this.validations, fieldName, () => undefined)();
     this.setState({ touched, errors });
-    if (errors[fieldName] === undefined) {
-      this.props.onSave();
-    }
+    this.props.onSave();
   }
 
   render() {
@@ -200,8 +198,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               optional
             >
               <LocationInput
-                onBlur={this.props.onSave}
-                value={position}
+                onBlur={this.onBlur('position')}
+                value={position || ''}
                 onChange={onChangePosition}
                 placeholder={formatMessage(messages.locationPlaceholder)}
               />

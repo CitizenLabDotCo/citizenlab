@@ -75,7 +75,7 @@ export default defineMessages({
   },
   publishButton: {
     id: 'app.components.InitiativeForm.publishButton',
-    defaultMessage: 'Publish you initiative',
+    defaultMessage: 'Publish your initiative',
   },
   // TODO
   // imageUploadLabel: {
