@@ -8,15 +8,17 @@ module EmailCampaigns
       
       @consents = policy_scope(Consent)
         .where(user_id: params[:user_id])
+        .page(params.dig(:page, :number))
+        .per(params.dig(:page, :size))
 
-      render json: @consents
+      render json: linked_json(@consents, WebApi::V1::ConsentSerializer, params: fastjson_params)
     end
 
     def update
       @consent.assign_attributes consent_params
       authorize @consent
       if @consent.save
-        render json: @consent, status: :ok
+        render json: WebApi::V1::Fast::ConsentSerializer.new(@consent, params: fastjson_params).serialized_json, status: :ok
       else
         render json: { errors: @consent.errors.details }, status: :unprocessable_entity
       end
