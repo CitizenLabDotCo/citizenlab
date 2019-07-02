@@ -2,7 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { distinctUntilChanged, mergeScan, map, switchMap, tap } from 'rxjs/operators';
 import { ICommentData, commentsForIdeaStream, CommentsSort } from 'services/comments';
-import { unionBy } from 'lodash-es';
+import { unionBy, isString, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 type children = (renderProps: GetCommentsChildProps) => JSX.Element | null;
@@ -82,8 +82,9 @@ export default class GetComments extends React.Component<Props, State> {
               }
             }).observable.pipe(
               map((comments) => {
-                hasMore = ((pageNumber * pageSize) < comments.meta.total);
-                commentsList = !isNilOrError(commentsList) ? unionBy(commentsList, comments.data, 'id') : comments.data;
+                const selfLink = get(comments, 'links.self');
+                const lastLink = get(comments, 'links.last');
+                hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);                commentsList = !isNilOrError(commentsList) ? unionBy(commentsList, comments.data, 'id') : comments.data;
                 return null;
             }));
           }, null),
