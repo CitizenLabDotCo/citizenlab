@@ -33,11 +33,11 @@ const Root = () => {
 
 render(<Root />, document.getElementById('app'));
 
-if (process.env.NODE_ENV !== 'development') {
-  import('offline-plugin/runtime').then((OfflinePlugin) => {
-    OfflinePlugin.install();
-  });
-}
+// if (process.env.NODE_ENV !== 'development') {
+//   import('offline-plugin/runtime').then((OfflinePlugin) => {
+//     OfflinePlugin.install();
+//   });
+// }
 
 if (process.env.NODE_ENV === 'production') {
   initializeAnalytics();
