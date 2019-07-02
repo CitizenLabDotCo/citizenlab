@@ -6,29 +6,13 @@ import { render } from 'react-dom';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 import 'assets/css/reset.min.css';
+import 'assets/fonts/fonts.css';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
-import { init } from '@sentry/browser';
-import * as Integrations from '@sentry/integrations';
-
-// Load the .htaccess file
 import 'file-loader?name=[name].[ext]!./.htaccess';
-
-// Import root routes
 import createRoutes from './routes';
-
 import { initializeAnalytics } from 'utils/analytics';
-
-if (process && process.env && process.env.NODE_ENV === 'production' && process.env.SENTRY_DSN) {
-  init({
-    dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV,
-    release: process.env.CIRCLE_BUILD_NUM,
-    integrations: [new Integrations.RewriteFrames()]
-  });
-}
-
-initializeAnalytics();
+import { init } from '@sentry/browser';
 
 const rootRoute = {
   component: App,
@@ -48,3 +32,24 @@ const Root = () => {
 };
 
 render(<Root />, document.getElementById('app'));
+
+// if (process.env.NODE_ENV !== 'development') {
+//   import('offline-plugin/runtime').then((OfflinePlugin) => {
+//     OfflinePlugin.install();
+//   });
+// }
+
+if (process.env.NODE_ENV === 'production') {
+  initializeAnalytics();
+
+  import('@sentry/integrations').then((Integrations) => {
+    init({
+      dsn: process.env.SENTRY_DSN,
+      environment: process.env.NODE_ENV,
+      release: process.env.CIRCLE_BUILD_NUM,
+      integrations: [
+        new Integrations.RewriteFrames()
+      ]
+    });
+  });
+}

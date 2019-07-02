@@ -27,7 +27,7 @@ const events$ = new Subject<IEvent>();
 const pageChanges$ = new Subject<IPageChange>();
 
 combineLatest(tenant$, authUser$, events$).subscribe(([tenant, user, event]) => {
-  if (analytics) {
+  if (window['analytics']) {
     analytics.track(
       event.name,
       { ...event.properties, ...tenantInfo(tenant.data) },
@@ -37,7 +37,7 @@ combineLatest(tenant$, authUser$, events$).subscribe(([tenant, user, event]) => 
 });
 
 combineLatest(tenant$, authUser$, pageChanges$).subscribe(([tenant, user, pageChange]) => {
-  if (analytics) {
+  if (window['analytics']) {
     analytics.page(
       '',
       {
@@ -53,50 +53,50 @@ combineLatest(tenant$, authUser$, pageChanges$).subscribe(([tenant, user, pageCh
 });
 
 combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
-  if (!analytics) return;
-
-  if (user) {
-    analytics.identify(
-      user.data.id,
-      {
-        ...tenantInfo(tenant.data),
-        email: user.data.attributes.email,
-        firstName: user.data.attributes.first_name,
-        lastName: user.data.attributes.last_name,
-        createdAt: user.data.attributes.created_at,
-        avatar: user.data.attributes.avatar ? user.data.attributes.avatar.large : null,
-        birthday: user.data.attributes.birthyear,
-        gender: user.data.attributes.gender,
-        locale: user.data.attributes.locale,
-        isSuperAdmin: isSuperAdmin(user),
-        isAdmin: isAdmin(user),
-        isProjectModerator: isProjectModerator(user),
-        highestRole: user.data.attributes.highest_role,
-      },
-      {
-        integrations: integrations(user),
-        Intercom: { hideDefaultLauncher: !isAdmin(user) }
-      } as any
-    );
-    analytics.group(
-      tenant.data.id,
-      {
-        ...tenantInfo(tenant.data),
-        name: tenant.data.attributes.name,
-        website: tenant.data.attributes.settings.core.organization_site,
-        avatar: tenant.data.attributes.logo && tenant.data.attributes.logo.medium,
-        tenantLocales: tenant.data.attributes.settings.core.locales,
-      },
-      { integrations: integrations(user) },
-    );
-  } else { // no user
-    analytics.identify(
-      tenantInfo(tenant.data),
-      {
-        integrations: integrations(user),
-        Intercom: { hideDefaultLauncher: true }
-      } as any
-    );
+  if (window['analytics']) {
+    if (user) {
+      analytics.identify(
+        user.data.id,
+        {
+          ...tenantInfo(tenant.data),
+          email: user.data.attributes.email,
+          firstName: user.data.attributes.first_name,
+          lastName: user.data.attributes.last_name,
+          createdAt: user.data.attributes.created_at,
+          avatar: user.data.attributes.avatar ? user.data.attributes.avatar.large : null,
+          birthday: user.data.attributes.birthyear,
+          gender: user.data.attributes.gender,
+          locale: user.data.attributes.locale,
+          isSuperAdmin: isSuperAdmin(user),
+          isAdmin: isAdmin(user),
+          isProjectModerator: isProjectModerator(user),
+          highestRole: user.data.attributes.highest_role,
+        },
+        {
+          integrations: integrations(user),
+          Intercom: { hideDefaultLauncher: !isAdmin(user) }
+        } as any
+      );
+      analytics.group(
+        tenant.data.id,
+        {
+          ...tenantInfo(tenant.data),
+          name: tenant.data.attributes.name,
+          website: tenant.data.attributes.settings.core.organization_site,
+          avatar: tenant.data.attributes.logo && tenant.data.attributes.logo.medium,
+          tenantLocales: tenant.data.attributes.settings.core.locales,
+        },
+        { integrations: integrations(user) },
+      );
+    } else { // no user
+      analytics.identify(
+        tenantInfo(tenant.data),
+        {
+          integrations: integrations(user),
+          Intercom: { hideDefaultLauncher: true }
+        } as any
+      );
+    }
   }
 });
 
