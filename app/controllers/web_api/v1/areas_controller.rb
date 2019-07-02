@@ -7,11 +7,11 @@ class WebApi::V1::AreasController < ApplicationController
       .per(params.dig(:page, :size))
     @areas = @areas.order(created_at: :desc)
     
-    render json: linked_json(@areas, WebApi::V1::Fast::AreaSerializer, params: fastjson_params)
+    render json: linked_json(@areas, WebApi::V1::AreaSerializer, params: fastjson_params)
   end
 
   def show
-    render json: WebApi::V1::Fast::AreaSerializer.new(@area, params: fastjson_params).serialized_json
+    render json: WebApi::V1::AreaSerializer.new(@area, params: fastjson_params).serialized_json
   end
 
   def create
@@ -21,7 +21,7 @@ class WebApi::V1::AreasController < ApplicationController
     SideFxAreaService.new.before_create(@area, current_user)
     if @area.save
       SideFxAreaService.new.after_create(@area, current_user)
-      render json: WebApi::V1::Fast::AreaSerializer.new(
+      render json: WebApi::V1::AreaSerializer.new(
         @area, 
         params: fastjson_params
         ).serialized_json, status: :created
@@ -36,7 +36,7 @@ class WebApi::V1::AreasController < ApplicationController
     SideFxAreaService.new.before_update(@area, current_user)
     if @area.save
       SideFxAreaService.new.after_update(@area, current_user)
-      render json: WebApi::V1::Fast::AreaSerializer.new(
+      render json: WebApi::V1::AreaSerializer.new(
         @area, 
         params: fastjson_params
         ).serialized_json, status: :ok

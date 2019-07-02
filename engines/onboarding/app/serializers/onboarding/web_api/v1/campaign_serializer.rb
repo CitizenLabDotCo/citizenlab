@@ -1,5 +1,5 @@
 module Onboarding
-  class WebApi::V1::CampaignSerializer < ::WebApi::V1::Fast::BaseSerializer
+  class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
     set_type 'onboarding_campaign'
 
     attribute :name

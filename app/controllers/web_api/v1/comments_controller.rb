@@ -65,7 +65,7 @@ class WebApi::V1::CommentsController < ApplicationController
     end
     
     render json: { 
-      **WebApi::V1::Fast::CommentSerializer.new(@comments, serialization_options).serializable_hash, 
+      **WebApi::V1::CommentSerializer.new(@comments, serialization_options).serializable_hash, 
       links: page_links(root_comments)
     }
   end
@@ -100,11 +100,11 @@ class WebApi::V1::CommentsController < ApplicationController
       { params: fastjson_params, include: [:author] }
     end
 
-    render json: linked_json(@comments, WebApi::V1::Fast::CommentSerializer, serialization_options)
+    render json: linked_json(@comments, WebApi::V1::CommentSerializer, serialization_options)
   end
 
   def show
-    render json: WebApi::V1::Fast::CommentSerializer.new(
+    render json: WebApi::V1::CommentSerializer.new(
       @comment, 
       params: fastjson_params, 
       include: [:author]
@@ -119,7 +119,7 @@ class WebApi::V1::CommentsController < ApplicationController
     SideFxCommentService.new.before_create @comment, current_user
     if @comment.save
       SideFxCommentService.new.after_create @comment, current_user
-      render json: WebApi::V1::Fast::CommentSerializer.new(
+      render json: WebApi::V1::CommentSerializer.new(
         @comment, 
         params: fastjson_params, 
         include: [:author]
@@ -135,7 +135,7 @@ class WebApi::V1::CommentsController < ApplicationController
     SideFxCommentService.new.before_update @comment, current_user
     if @comment.save
       SideFxCommentService.new.after_update @comment, current_user
-      render json: WebApi::V1::Fast::CommentSerializer.new(
+      render json: WebApi::V1::CommentSerializer.new(
         @comment, 
         params: fastjson_params, 
         include: [:author]

@@ -17,7 +17,7 @@ namespace :cl2back do
           ams_serializer += [end_ams - start_ams]
 
           start_fast = Time.now
-          puts WebApi::V1::Fast::TopicSerializer.new(tp).serializable_hash
+          puts WebApi::V1::TopicSerializer.new(tp).serializable_hash
           end_fast = Time.now
           fast_serializer += [end_fast - start_fast]
         end       

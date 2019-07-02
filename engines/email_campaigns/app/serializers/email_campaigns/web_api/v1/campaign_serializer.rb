@@ -1,5 +1,5 @@
 module EmailCampaigns
-  class WebApi::V1::CampaignSerializer < ::WebApi::V1::Fast::BaseSerializer
+  class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
     attributes :created_at, :updated_at
     
     attribute :campaign_name do |object|
@@ -48,7 +48,7 @@ module EmailCampaigns
       trackable? object
     }
 
-    belongs_to :author, record_type: :user, serializer: ::WebApi::V1::Fast::UserSerializer
+    belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
 
     has_many :groups, if: Proc.new { |object|
       recipient_configurable? object

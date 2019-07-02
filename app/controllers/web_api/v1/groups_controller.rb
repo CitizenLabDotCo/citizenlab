@@ -10,11 +10,11 @@ class WebApi::V1::GroupsController < ApplicationController
     @groups = @groups.where(membership_type: params[:membership_type]) if params[:membership_type]
     @groups = @groups.order_new
     
-  	render json: linked_json(@groups, WebApi::V1::Fast::GroupSerializer, params: fastjson_params)
+  	render json: linked_json(@groups, WebApi::V1::GroupSerializer, params: fastjson_params)
   end
 
   def show
-    render json: WebApi::V1::Fast::GroupSerializer.new(@group, params: fastjson_params).serialized_json
+    render json: WebApi::V1::GroupSerializer.new(@group, params: fastjson_params).serialized_json
   end
 
   def by_slug
@@ -30,7 +30,7 @@ class WebApi::V1::GroupsController < ApplicationController
     SideFxGroupService.new.before_create(@group, current_user)
     if @group.save
       SideFxGroupService.new.after_create(@group, current_user)
-      render json: WebApi::V1::Fast::GroupSerializer.new(
+      render json: WebApi::V1::GroupSerializer.new(
         @group.reload, 
         params: fastjson_params
         ).serialized_json, status: :created
@@ -46,7 +46,7 @@ class WebApi::V1::GroupsController < ApplicationController
     SideFxGroupService.new.before_update(@group, current_user)
     if @group.save
       SideFxGroupService.new.after_update(@group, current_user)
-      render json: WebApi::V1::Fast::GroupSerializer.new(
+      render json: WebApi::V1::GroupSerializer.new(
         @group.reload, 
         params: fastjson_params
         ).serialized_json, status: :ok

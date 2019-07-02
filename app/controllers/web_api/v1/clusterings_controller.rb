@@ -6,11 +6,11 @@ class WebApi::V1::ClusteringsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: linked_json(@clusterings, WebApi::V1::Fast::ClusteringSerializer, params: fastjson_params)
+    render json: linked_json(@clusterings, WebApi::V1::ClusteringSerializer, params: fastjson_params)
   end
 
   def show
-    render json: WebApi::V1::Fast::ClusteringSerializer.new(@clustering, params: fastjson_params).serialized_json
+    render json: WebApi::V1::ClusteringSerializer.new(@clustering, params: fastjson_params).serialized_json
   end
 
   def create
@@ -58,7 +58,7 @@ class WebApi::V1::ClusteringsController < ApplicationController
     SideFxClusteringService.new.before_create(@clustering, current_user)
     if @clustering.save
       SideFxClusteringService.new.after_create(@clustering, current_user)
-      render json: WebApi::V1::Fast::ClusteringSerializer.new(
+      render json: WebApi::V1::ClusteringSerializer.new(
         @clustering, 
         params: fastjson_params
         ).serialized_json, status: :created
@@ -73,7 +73,7 @@ class WebApi::V1::ClusteringsController < ApplicationController
     SideFxClusteringService.new.before_update(@clustering, current_user)
     if @clustering.save
       SideFxClusteringService.new.after_update(@clustering, current_user)
-      render json: WebApi::V1::Fast::ClusteringSerializer.new(
+      render json: WebApi::V1::ClusteringSerializer.new(
         @clustering, 
         params: fastjson_params
         ).serialized_json, status: :ok

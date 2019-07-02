@@ -9,7 +9,7 @@ class WebApi::V1::CustomFieldsController < ApplicationController
 
     @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
   
-    render json: WebApi::V1::Fast::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
+    render json: WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
   end
 
   def schema
@@ -26,7 +26,7 @@ class WebApi::V1::CustomFieldsController < ApplicationController
   end
 
   def show
-    render json: WebApi::V1::Fast::CustomFieldSerializer.new(@custom_field, params: fastjson_params).serialized_json
+    render json: WebApi::V1::CustomFieldSerializer.new(@custom_field, params: fastjson_params).serialized_json
   end
 
 
@@ -39,7 +39,7 @@ class WebApi::V1::CustomFieldsController < ApplicationController
 
     if @custom_field.save
       SideFxCustomFieldService.new.after_create @custom_field, current_user
-      render json: WebApi::V1::Fast::CustomFieldSerializer.new(
+      render json: WebApi::V1::CustomFieldSerializer.new(
         @custom_field, 
         params: fastjson_params
         ).serialized_json, status: :created
@@ -54,7 +54,7 @@ class WebApi::V1::CustomFieldsController < ApplicationController
     authorize @custom_field
     if @custom_field.save
       SideFxCustomFieldService.new.after_update(@custom_field, current_user)
-      render json: WebApi::V1::Fast::CustomFieldSerializer.new(
+      render json: WebApi::V1::CustomFieldSerializer.new(
         @custom_field.reload, 
         params: fastjson_params
         ).serialized_json, status: :ok
@@ -66,7 +66,7 @@ class WebApi::V1::CustomFieldsController < ApplicationController
   def reorder
     if @custom_field.insert_at(permitted_attributes(@custom_field)[:ordering])
       SideFxCustomFieldService.new.after_update(@custom_field, current_user)
-      render json: WebApi::V1::Fast::CustomFieldSerializer.new(
+      render json: WebApi::V1::CustomFieldSerializer.new(
         @custom_field.reload, 
         params: fastjson_params
         ).serialized_json, status: :ok

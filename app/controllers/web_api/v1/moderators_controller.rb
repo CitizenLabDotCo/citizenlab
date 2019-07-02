@@ -20,11 +20,11 @@ class WebApi::V1::ModeratorsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: linked_json(@moderators, WebApi::V1::Fast::UserSerializer, params: fastjson_params)
+    render json: linked_json(@moderators, WebApi::V1::UserSerializer, params: fastjson_params)
   end
 
   def show
-    render json: WebApi::V1::Fast::UserSerializer.new(@moderator, params: fastjson_params).serialized_json
+    render json: WebApi::V1::UserSerializer.new(@moderator, params: fastjson_params).serialized_json
   end
 
   # insert
@@ -33,7 +33,7 @@ class WebApi::V1::ModeratorsController < ApplicationController
     @user.add_role 'project_moderator', project_id: params[:project_id]
     if @user.save
       SideFxModeratorService.new.after_create(@user, Project.find(params[:project_id]), current_user)
-      render json: WebApi::V1::Fast::UserSerializer.new(
+      render json: WebApi::V1::UserSerializer.new(
         @user, 
         params: fastjson_params
         ).serialized_json, status: :created
@@ -60,7 +60,7 @@ class WebApi::V1::ModeratorsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: linked_json(@users, WebApi::V1::Fast::ModeratorSerializer, params: fastjson_params(project_id: params[:project_id]))
+    render json: linked_json(@users, WebApi::V1::ModeratorSerializer, params: fastjson_params(project_id: params[:project_id]))
   end
 
 
