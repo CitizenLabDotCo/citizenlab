@@ -41,15 +41,21 @@ export interface ICommentData {
   };
 }
 
+export interface ICommentLinks {
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
+}
+
 export interface IComment {
   data: ICommentData;
 }
 
 export interface IComments {
   data: ICommentData[];
-  meta: {
-    total: number;
-  };
+  links: ICommentLinks;
 }
 
 export interface IUpdatedComment {
