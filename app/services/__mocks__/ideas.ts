@@ -39,23 +39,21 @@ export const getIdea = (id, enTitle) => (
       budget: 60,
       baskets_count: 0,
       action_descriptor: {
-        data: {
-          voting: {
-            enabled: true,
-            disabled_reason: null,
-            future_enabled: null,
-            cancelling_enabled: true
-          },
-          commenting: {
-            enabled: false,
-            disabled_reason: 'not_permitted',
-            future_enabled: null
-          },
-          budgeting: {
-            enabled: false,
-            disabled_reason: 'not_permitted',
-            future_enabled: null
-          }
+        voting: {
+          enabled: true,
+          disabled_reason: null,
+          future_enabled: null,
+          cancelling_enabled: true
+        },
+        commenting: {
+          enabled: false,
+          disabled_reason: 'not_permitted',
+          future_enabled: null
+        },
+        budgeting: {
+          enabled: false,
+          disabled_reason: 'not_permitted',
+          future_enabled: null
         }
       }
     },
