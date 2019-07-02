@@ -1,6 +1,7 @@
 declare global {
   namespace Cypress {
     interface Chainable {
+      unregisterServiceWorkers: typeof unregisterServiceWorkers;
       login: typeof login;
       apiLogin: typeof apiLogin;
       apiSignup: typeof apiSignup;
@@ -40,6 +41,16 @@ export function randomString(length: number = 15) {
 
 export function randomEmail() {
   return `${Math.random().toString(36).substr(2, 12).toLowerCase()}@${Math.random().toString(36).substr(2, 12).toLowerCase()}.com`;
+}
+
+export function unregisterServiceWorkers() {
+  if (navigator.serviceWorker) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister();
+      });
+    });
+  }
 }
 
 export function login(email: string, password: string) {
@@ -502,6 +513,7 @@ export function apiRemoveCustomField(fieldId: string) {
   });
 }
 
+Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('login', login);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);

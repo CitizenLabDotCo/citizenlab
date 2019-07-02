@@ -75,7 +75,7 @@ const ListItem = styled.div`
     border-radius: ${(props: any) => props.theme.borderRadius};
     padding: 2px 5px;
     border: 1px solid;
-    font-weight: 700;
+    font-weight: 600;
   }
 `;
 
