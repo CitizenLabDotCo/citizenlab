@@ -1,8 +1,9 @@
 module WebApi::V1::Fast::ParticipationContextSerializer
   extend ActiveSupport::Concern
+  include Surveys::WebApi::V1::SurveyParticipationContextSerializer
 
   included do
-    with_options if: Proc.new { |object, params|
+    with_options if: Proc.new { |object|
       object.is_participation_context?
     } do
       attribute :participation_method
@@ -15,8 +16,6 @@ module WebApi::V1::Fast::ParticipationContextSerializer
       attribute :survey_embed_url
       attribute :survey_service
       attribute :max_budget
-      attribute :survey_embed_url
-      attribute :survey_service
     end
   end
 
