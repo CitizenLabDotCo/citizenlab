@@ -1,5 +1,5 @@
 module Onboarding
-  class WebApi::V1::CampaignSerializer < ActiveModel::Serializer
+  class WebApi::V1::CampaignSerializer < WebApi::V1::Fast::BaseSerializer
     type 'onboarding_campaign'
 
     attribute :name

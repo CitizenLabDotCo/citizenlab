@@ -13,7 +13,10 @@ module NLP
             [idea.id, geotagging.geotag(Tenant.current.id, idea, geocoder: 'google')]
           end.to_h
 
-          render json: @ideas, each_serializer: ::WebApi::V1::IdeaGeotagSerializer, geotags: geotags
+          render json: linked_json(
+            @ideas, 
+            WebApi::V1::Fast::IdeaGeotagSerializer, 
+            params: fastjson_params(geotags: geotags))
         end
 
 
