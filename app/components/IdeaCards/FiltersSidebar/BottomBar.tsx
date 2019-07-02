@@ -53,7 +53,7 @@ const BottomBar = memo<Props>(({ ideasFilterCounts, className }) => {
     <Container className={className}>
       <Button onClick={onApplyFilters} fullWidth={true}>
         {(ideasFilterCounts && isNumber(ideasFilterCounts.total)) ? (
-          <FormattedMessage {...messages.showXIdeas} values={{ ideasCount: ideasFilterCounts.total}} />
+          <FormattedMessage {...messages.showXIdeas} values={{ ideasCount: ideasFilterCounts.total }} />
         ) : (
           <FormattedMessage {...messages.showIdeas} />
         )}
@@ -63,15 +63,7 @@ const BottomBar = memo<Props>(({ ideasFilterCounts, className }) => {
 });
 
 const Data = adopt<DataProps, InputProps>({
-  ideasFilterCounts: ({ selectedIdeaFilters, render }) => {
-    const queryParameters = {
-      ...selectedIdeaFilters,
-      'page[number]': 1,
-      'page[size]': 5000
-    };
-
-    return <GetIdeasFilterCounts queryParameters={queryParameters}>{render}</GetIdeasFilterCounts>;
-  }
+  ideasFilterCounts: ({ selectedIdeaFilters, render }) => <GetIdeasFilterCounts queryParameters={selectedIdeaFilters}>{render}</GetIdeasFilterCounts>
 });
 
 export default (inputProps: InputProps) => (

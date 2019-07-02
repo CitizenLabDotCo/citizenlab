@@ -74,7 +74,6 @@ const ContentInner: any = styled.div`
 `;
 
 export interface Props {
-  children: JSX.Element;
   content: JSX.Element;
   top: string;
   backgroundColor: string;

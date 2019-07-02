@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react';
-import { omit } from 'lodash-es';
 import Popover, { Props as PopoverProps } from 'components/UI/Popover';
-import { Omit } from 'typings';
 import styled from 'styled-components';
 
-interface Props extends Omit<PopoverProps, 'onClickOutside'|'dropdownOpened'|'content'> {
+interface Props extends Omit<PopoverProps, 'onClickOutside' | 'dropdownOpened' | 'content'> {
   /** whether the tooltip should be active at all. NOT it's opened state */
   enabled: boolean;
   content: PopoverProps['content'] | null;
@@ -59,7 +57,6 @@ export default class Tooltip extends PureComponent<Props, State> {
     render() {
       const { opened } = this.state;
       const { enabled, children, content, className } = this.props;
-      const passthroughProps = omit(this.props, ['dropdownOpened', 'onClickOutside']);
 
       if (!enabled) {
         return children;
@@ -80,7 +77,7 @@ export default class Tooltip extends PureComponent<Props, State> {
           role="tooltip"
         >
           <Popover
-            {...passthroughProps}
+            {...this.props}
             content={content}
             dropdownOpened={opened}
             onClickOutside={this.handleOnMouseLeave}

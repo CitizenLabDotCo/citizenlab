@@ -19,13 +19,13 @@ interface Props {
   className?: string;
 }
 
-export default React.memo<Props>((props: Props) => {
-  const { user, className, hideLastName } = props;
+export default React.memo<Props>(({ user, className, hideLastName }) => {
+
   const firstName = get(user, 'attributes.first_name', '');
   const lastName = get(user, 'attributes.last_name', '');
 
   return (
-    <User className={`${className} ${!user ? 'deleted-user' : ''}`}>
+    <User className={`${className} ${!user ? 'deleted-user' : ''} e2e-username`}>
       {user ? (
         `${firstName} ${!hideLastName && lastName ? lastName : ''}`
       ) : (
