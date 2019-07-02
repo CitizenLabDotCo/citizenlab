@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isString, has, get, isEmpty, last, sortBy } from 'lodash-es';
+import { isString, get, isEmpty, last, sortBy } from 'lodash-es';
 import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
@@ -311,7 +311,7 @@ export default class VoteControl extends PureComponent<Props, State> {
       idea$
     ).pipe(
       switchMap(([authUser, idea]) => {
-        if (authUser && idea && has(idea, 'data.relationships.user_vote.data') && idea.data.relationships.user_vote.data !== null) {
+        if (authUser && idea && idea.data.relationships.user_vote && idea.data.relationships.user_vote.data !== null) {
           const voteId = idea.data.relationships.user_vote.data.id;
           const vote$ = voteStream(voteId).observable;
 

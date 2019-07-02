@@ -62,7 +62,7 @@ export interface IIdeaData {
     author: {
       data: IRelationship | null;
     };
-    assignee: {
+    assignee?: {
       data: IRelationship | null;
     };
     phases: {
@@ -74,7 +74,7 @@ export interface IIdeaData {
     idea_status?: {
       data: IRelationship | null;
     },
-    user_vote: {
+    user_vote?: {
       data: IRelationship;
     }
   };

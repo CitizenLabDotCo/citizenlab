@@ -30,7 +30,7 @@ export interface IProjectData {
     updated_at: string;
     visible_to: Visibility;
     process_type: ProcessType;
-    timeline_active: 'past' | 'present' | 'future' | null;
+    timeline_active?: 'past' | 'present' | 'future' | null;
     participation_method: ParticipationMethod | null;
     posting_enabled: boolean;
     commenting_enabled: boolean;
@@ -76,13 +76,13 @@ export interface IProjectData {
     avatars?: {
       data?: IRelationship[]
     }
-    current_phase: {
+    current_phase?: {
       data: IRelationship | null;
     }
-    user_basket: {
+    user_basket?: {
       data: IRelationship | null;
     }
-    default_assignee: {
+    default_assignee?: {
       data: IRelationship | null
     }
   };
