@@ -214,6 +214,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   updateState = () => {
     const { title, description, selectedTopics, position, budget, imageFile, remoteIdeaFiles } = this.props;
     const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
+    console.log(`updateState: ${position}`);
 
     this.setState({
       selectedTopics,
@@ -389,10 +390,23 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const className = this.props['className'];
     const { projectId } = this.props;
     const { formatMessage } = this.props.intl;
-    const { tenant, topics, pbContext, title, description, selectedTopics, position, budget, imageFile, titleError, descriptionError, budgetError } = this.state;
+    const { tenant,
+      topics,
+      pbContext,
+      title,
+      description,
+      selectedTopics,
+      position,
+      budget,
+      imageFile,
+      titleError,
+      descriptionError,
+      budgetError
+    } = this.state;
     const { ideaFiles } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
 
+    console.log(position);
     return (
       <Form id="idea-form" className={className}>
         <FormElement name="titleInput" id="e2e-idea-title-input">
