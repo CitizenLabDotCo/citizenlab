@@ -81,7 +81,7 @@ class WebApi::V1::IdeasController < ApplicationController
     @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
-    render json: linked_json(@ideas, WebApi::V1::Fast::AreaSerializer, params: fastjson_params)
+    render json: linked_json(@ideas, WebApi::V1::Fast::IdeaMarkerSerializer, params: fastjson_params)
   end
 
   def index_xlsx
