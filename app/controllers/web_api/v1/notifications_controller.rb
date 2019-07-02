@@ -1,7 +1,7 @@
 class WebApi::V1::NotificationsController < ApplicationController
 
   MODEL_TO_SERIALIZER = { 
-    Notifications::AdminRightsReceived             => WebApi::V1::Notifications::AdminRightsReceivedSerializer,
+    ::Notifications::AdminRightsReceived             => WebApi::V1::Notifications::AdminRightsReceivedSerializer,
     Notifications::CommentDeletedByAdmin           => WebApi::V1::Notifications::CommentDeletedByAdminSerializer,
     Notifications::CommentMarkedAsSpam             => WebApi::V1::Notifications::CommentMarkedAsSpamSerializer,
     Notifications::CommentOnYourComment            => WebApi::V1::Notifications::CommentOnYourCommentSerializer,
