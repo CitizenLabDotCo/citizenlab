@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 import { orderBy } from 'lodash-es';
 
@@ -30,7 +30,7 @@ const TopicSwitch = styled(Button)`
 
 export interface InputProps {
   onChange: (tocisIds: string[]) => void;
-  onBlur: () => void;
+  onBlur?: () => void;
   value: string[];
   max: number;
   id?: string;
@@ -44,7 +44,7 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-const TopicsPicker = ({ onChange, onBlur, value, localize, topics, max, theme }: Props & InjectedLocalized) => {
+const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, theme }: Props & InjectedLocalized) => {
   const handleOnChange = (topicId: string) => (event) => {
     event.stopPropagation();
     event.preventDefault();
@@ -55,7 +55,6 @@ const TopicsPicker = ({ onChange, onBlur, value, localize, topics, max, theme }:
       const i = newTopics.lastIndexOf(topicId);
       if (i === -1) {
         if (value.length === max) {
-          console.log(event, event.currentTarget);
           // TODO animate?
         } else {
           newTopics.push(topicId);
@@ -93,13 +92,13 @@ const TopicsPicker = ({ onChange, onBlur, value, localize, topics, max, theme }:
       })}
     </TopicsContainer>
   );
-};
+});
 
 const Data = adopt<DataProps,  InputProps>({
    topics: <GetTopics />
  });
 
- const TopicsPickerWithHoc = injectLocalize(withTheme(TopicsPicker));
+ const TopicsPickerWithHoc = withTheme(injectLocalize(TopicsPicker));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
