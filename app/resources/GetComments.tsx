@@ -84,7 +84,8 @@ export default class GetComments extends React.Component<Props, State> {
               map((comments) => {
                 const selfLink = get(comments, 'links.self');
                 const lastLink = get(comments, 'links.last');
-                hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);                commentsList = !isNilOrError(commentsList) ? unionBy(commentsList, comments.data, 'id') : comments.data;
+                hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
+                commentsList = !isNilOrError(commentsList) ? unionBy(commentsList, comments.data, 'id') : comments.data;
                 return null;
             }));
           }, null),
