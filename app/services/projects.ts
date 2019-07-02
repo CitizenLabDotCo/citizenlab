@@ -45,24 +45,22 @@ export interface IProjectData {
     survey_embed_url?: string;
     ordering: number;
     action_descriptor: {
-      data: {
-        posting: {
-          enabled: boolean,
-          future_enabled: string | null,
-          disabled_reason: PostingDisabledReasons | null,
-        }
-        commenting: {
-          enabled: boolean,
-          disabled_reason: CommentingDisabledReasons | null,
-        }
-        voting: {
-          enabled: boolean,
-          disabled_reason: VotingDisabledReasons | null,
-        }
-        taking_survey: {
-          enabled: boolean;
-          disabled_reason: SurveyDisabledReasons | null;
-        }
+      posting: {
+        enabled: boolean,
+        future_enabled: string | null,
+        disabled_reason: PostingDisabledReasons | null,
+      }
+      commenting: {
+        enabled: boolean,
+        disabled_reason: CommentingDisabledReasons | null,
+      }
+      voting: {
+        enabled: boolean,
+        disabled_reason: VotingDisabledReasons | null,
+      }
+      taking_survey: {
+        enabled: boolean;
+        disabled_reason: SurveyDisabledReasons | null;
       }
     }
   };

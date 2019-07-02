@@ -181,7 +181,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
   render() {
     const { authUser, idea, ideaId, className } = this.props;
     const { inputValue, focused, processing, errorMessage } = this.state;
-    const commentingEnabled = (!isNilOrError(idea) ? get(idea.attributes.action_descriptor.data.commenting, 'enabled', false) : false);
+    const commentingEnabled = (!isNilOrError(idea) ? get(idea.attributes.action_descriptor.commenting, 'enabled', false) : false);
     const projectId = (!isNilOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
     const commentButtonDisabled = (!inputValue || inputValue === '');
     const isModerator = !isNilOrError(authUser) && canModerate(projectId, { data: authUser });

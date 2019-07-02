@@ -276,14 +276,14 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       !isUndefined(ideaAuthor)
     ) {
       const ideaImageUrl: string | null = get(ideaImage, 'attributes.versions.medium', null);
-      const votingDescriptor = get(idea, 'attributes.action_descriptor.data.voting', null);
-      const budgetingDescriptor = get(idea, 'attributes.action_descriptor.data.budgeting', null);
+      const votingDescriptor = get(idea, 'attributes.action_descriptor.voting', null);
+      const budgetingDescriptor = get(idea, 'attributes.action_descriptor.budgeting', null);
       const projectId = get(idea, 'relationships.project.data.id');
       const ideaAuthorId = (!isNilOrError(ideaAuthor) ? ideaAuthor.id : null);
       const ideaBudget = idea.attributes.budget;
       const tenantCurrency = tenant.attributes.settings.core.currency;
-      const commentingDescriptor = get(idea, 'attributes.action_descriptor.data.commenting');
-      const commentingEnabled = get(idea, 'attributes.action_descriptor.data.commenting.enabled');
+      const commentingDescriptor = get(idea, 'attributes.action_descriptor.commenting');
+      const commentingEnabled = get(idea, 'attributes.action_descriptor.commenting.enabled');
       const className = `${this.props['className']}
         e2e-idea-card
         ${get(idea, 'relationships.user_vote.data') ? 'voted' : 'not-voted' }

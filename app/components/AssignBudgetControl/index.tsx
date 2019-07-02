@@ -166,7 +166,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
       unauthenticatedAssignBudgetClick && unauthenticatedAssignBudgetClick();
       this.props.unauthenticatedAssignClick();
     } else if (!isNilOrError(idea) && !isNilOrError(authUser)) {
-      const budgetingEnabled = get(idea.attributes.action_descriptor.data.budgeting, 'enabled', null);
+      const budgetingEnabled = get(idea.attributes.action_descriptor.budgeting, 'enabled', null);
 
       if (budgetingEnabled === false) {
         disabledAssignBudgetClick && disabledAssignBudgetClick();

@@ -366,10 +366,10 @@ export default class VoteControl extends PureComponent<Props, State> {
       ).subscribe(({ idea, project, phases }) => {
         const upvotesCount = idea.data.attributes.upvotes_count;
         const downvotesCount = idea.data.attributes.downvotes_count;
-        const votingEnabled = idea.data.attributes.action_descriptor.data.voting.enabled;
-        const cancellingEnabled = idea.data.attributes.action_descriptor.data.voting.cancelling_enabled;
-        const votingDisabledReason = idea.data.attributes.action_descriptor.data.voting.disabled_reason;
-        const votingFutureEnabled = idea.data.attributes.action_descriptor.data.voting.future_enabled;
+        const votingEnabled = idea.data.attributes.action_descriptor.voting.enabled;
+        const cancellingEnabled = idea.data.attributes.action_descriptor.voting.cancelling_enabled;
+        const votingDisabledReason = idea.data.attributes.action_descriptor.voting.disabled_reason;
+        const votingFutureEnabled = idea.data.attributes.action_descriptor.voting.future_enabled;
 
         this.setState({
           idea,
