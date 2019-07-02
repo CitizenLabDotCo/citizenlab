@@ -19,13 +19,6 @@ export interface IBasketData {
     user: {
       data: IRelationship;
     };
-    baskets_ideas: {
-      id: string;
-      basket_id: string;
-      idea_id: string;
-      created_at: string;
-      updated_at: string;
-    }[];
     ideas: {
       data: IRelationship[];
     }
