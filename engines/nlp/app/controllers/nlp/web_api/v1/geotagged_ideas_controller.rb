@@ -15,8 +15,9 @@ module NLP
 
           render json: linked_json(
             @ideas, 
-            WebApi::V1::Fast::IdeaGeotagSerializer, 
-            params: fastjson_params(geotags: geotags))
+            ::WebApi::V1::IdeaGeotagSerializer, 
+            params: fastjson_params(geotags: geotags)
+            )
         end
 
 

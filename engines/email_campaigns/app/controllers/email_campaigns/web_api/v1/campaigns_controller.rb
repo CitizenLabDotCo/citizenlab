@@ -20,11 +20,11 @@ module EmailCampaigns
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
-      render json: linked_json(@campaigns, WebApi::V1::Fast::CampaignSerializer, params: fastjson_params)
+      render json: linked_json(@campaigns, WebApi::V1::CampaignSerializer, params: fastjson_params)
     end
 
     def show
-      render json: WebApi::V1::Fast::CampaignSerializer.new(@campaign, params: fastjson_params).serialized_json
+      render json: WebApi::V1::CampaignSerializer.new(@campaign, params: fastjson_params).serialized_json
     end
 
     def create
@@ -36,7 +36,7 @@ module EmailCampaigns
       SideFxCampaignService.new.before_create(@campaign, current_user)
       if @campaign.save
         SideFxCampaignService.new.after_create(@campaign, current_user)
-        render json: WebApi::V1::Fast::CampaignSerializer.new(
+        render json: WebApi::V1::CampaignSerializer.new(
           @campaign, 
           params: fastjson_params
           ).serialized_json, status: :created
@@ -56,7 +56,7 @@ module EmailCampaigns
 
         if @campaign.save
           SideFxCampaignService.new.after_update(@campaign, current_user)
-          render json: WebApi::V1::Fast::CampaignSerializer.new(
+          render json: WebApi::V1::CampaignSerializer.new(
             @campaign, 
             params: fastjson_params
             ).serialized_json, status: :ok
@@ -81,7 +81,7 @@ module EmailCampaigns
       SideFxCampaignService.new.before_send(@campaign, current_user)
       EmailCampaigns::DeliveryService.new.send_now(@campaign)
       SideFxCampaignService.new.after_send(@campaign, current_user)
-      render json: WebApi::V1::Fast::CampaignSerializer.new(
+      render json: WebApi::V1::CampaignSerializer.new(
         @campaign.reload, 
         params: fastjson_params
         ).serialized_json
@@ -104,7 +104,7 @@ module EmailCampaigns
         .per(params.dig(:page, :size))
       render json: linked_json(
         @deliveries, 
-        WebApi::V1::Fast::DeliverySerializer, 
+        WebApi::V1::DeliverySerializer, 
         params: fastjson_params, 
         include: [:user]
         )

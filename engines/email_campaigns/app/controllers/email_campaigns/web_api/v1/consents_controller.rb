@@ -18,7 +18,7 @@ module EmailCampaigns
       @consent.assign_attributes consent_params
       authorize @consent
       if @consent.save
-        render json: WebApi::V1::Fast::ConsentSerializer.new(@consent, params: fastjson_params).serialized_json, status: :ok
+        render json: WebApi::V1::ConsentSerializer.new(@consent, params: fastjson_params).serialized_json, status: :ok
       else
         render json: { errors: @consent.errors.details }, status: :unprocessable_entity
       end

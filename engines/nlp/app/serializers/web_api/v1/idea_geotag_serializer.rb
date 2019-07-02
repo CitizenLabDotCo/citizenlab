@@ -1,4 +1,4 @@
-class WebApi::V1::IdeaGeotagSerializer < WebApi::V1::Fast::BaseSerializer
+class WebApi::V1::IdeaGeotagSerializer < ::WebApi::V1::Fast::BaseSerializer
   attribute :title_multiloc
 
   attribute :location_point_geojson do |object, params|
