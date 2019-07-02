@@ -32,6 +32,7 @@ const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   width: 100%;
   position: relative;
+  padding-bottom: 73px;
 `;
 
 const TopLine = styled.div`
@@ -40,6 +41,10 @@ const TopLine = styled.div`
   position: sticky;
   top: ${({ theme }) => theme.menuHeight}px;
   padding: 30px 40px 0;
+  ${media.smallerThanMaxTablet`
+    position: relative;
+    top: 0;
+  `}
 `;
 
 const Header = styled.div`
@@ -84,6 +89,11 @@ const TwoColumns = styled.div`
   display: flex;
   flex-direction: row;
   margin: 30px 0;
+  ${media.smallerThanMaxTablet`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `}
 `;
 
 const TipsContainer = styled.div`
@@ -98,11 +108,6 @@ const StyledTipsBox = styled(TipsBox)`
   width: 100%;
   padding: 40px 50px;
   ${media.smallerThanMaxTablet`
-    padding: 30px 35px;
-    top: 50px;
-    min-width: 250px;
-  `}
-  ${media.smallerThanMinTablet`
     display: none;
   `}
 `;
@@ -111,9 +116,6 @@ const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
   min-width: 530px;
   height: 900px;
-  ${media.smallerThanMaxTablet`
-    min-width: 230px;
-  `}
 `;
 
 interface InputProps {}

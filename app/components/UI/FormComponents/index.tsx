@@ -7,6 +7,7 @@ import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 import { Messages, FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 import Button from '../Button';
 import messages from './messages';
+import ContentContainer from 'components/ContentContainer';
 
 export const FormSection = styled.div`
   background: white;
@@ -16,6 +17,9 @@ export const FormSection = styled.div`
   margin-bottom: 10px;
   max-width: 620px;
   min-width: 560px;
+  ${media.smallerThanMaxTablet`
+    min-width: unset;
+  `}
 `;
 
 const TitleContainer = styled.div`
@@ -176,6 +180,16 @@ const SubmitFooterContainer = styled.div`
   align-items: flex-start;
   background-color: white;
   border-top: 1px solid #e8e8e8;
+  z-index: 1;
+  ${media.smallerThanMaxTablet`
+    bottom: ${({ theme }) => theme.mobileMenuHeight}px;
+    align-items: center;
+  `}
+`;
+const StyledContentContainer = styled(ContentContainer)`
+  ${media.smallerThanMaxTablet`
+    max-width: 620px;
+  `}
 `;
 
 const SubmitFooterInner = styled.div`
@@ -184,20 +198,12 @@ const SubmitFooterInner = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 28px;
-  padding-right: 28px;
   padding-top: 12px;
   padding-bottom: 12px;
   background: #fff;
 
-  ${media.smallerThanMaxTablet`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  `}
-
   ${media.smallerThanMinTablet`
-    padding: 15px;
+    padding: 10px;
   `}
 `;
 
@@ -210,20 +216,22 @@ export const FormSubmitFooter = withTheme(memo(({
   ...otherProps
 }: FormSubmitFooterProps) => (
   <SubmitFooterContainer className={className}>
+  <StyledContentContainer mode="page">
     <SubmitFooterInner>
-      <Button
-        fontWeight="500"
-        padding="13px 22px"
-        bgColor={theme.colorMain}
-        textColor="#FFF"
-        type="submit"
-        onClick={onSubmit}
-        className="e2e-submit-form"
-        {...otherProps}
-      >
-        <FormattedMessage {...message} values={values} />
-      </Button>
+        <Button
+          fontWeight="500"
+          padding="13px 22px"
+          bgColor={theme.colorMain}
+          textColor="#FFF"
+          type="submit"
+          onClick={onSubmit}
+          className="e2e-submit-form"
+          {...otherProps}
+        >
+          <FormattedMessage {...message} values={values} />
+        </Button>
     </SubmitFooterInner>
+    </StyledContentContainer>
   </SubmitFooterContainer>
 )));
 
