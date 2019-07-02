@@ -20,7 +20,7 @@ module NLP
             .page(params.dig(:page, :number))
             .per(params.dig(:page, :size))
             
-          render json: linked_json(@ideas, WebApi::V1::Fast::SimilarIdeaSerializer, params: fastjson_params)
+          render json: linked_json(@ideas, ::WebApi::V1::SimilarIdeaSerializer, params: fastjson_params)
         end
 
 

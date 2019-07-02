@@ -1,4 +1,4 @@
-class WebApi::V1::SimilarIdeaSerializer < WebApi::V1::Fast::BaseSerializer
+class WebApi::V1::SimilarIdeaSerializer < ::WebApi::V1::Fast::BaseSerializer
   attributes :title_multiloc, :body_multiloc, :author_name, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :published_at, :budget, :baskets_count
 
   attribute :url do |object|

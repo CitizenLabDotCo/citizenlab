@@ -5,6 +5,9 @@ module Onboarding
 
         class Campaign < OpenStruct
           include ActiveModel::Serialization
+          def id
+            SecureRandom.uuid
+          end
           def type
             Campaign
           end
@@ -23,7 +26,7 @@ module Onboarding
             cta_button_link: custom_cta ? Tenant.settings('core','custom_onboarding_link') : nil,
           })
           
-          render json: WebApi::V1::Fast::CampaignSerializer.new(campaign, params: fastjson_params)
+          render json: WebApi::V1::CampaignSerializer.new(campaign, params: fastjson_params)
         end
 
         private

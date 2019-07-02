@@ -1,5 +1,5 @@
 module EmailCampaigns
-  class WebApi::V1::ConsentSerializer < WebApi::V1::Fast::BaseSerializer
+  class WebApi::V1::ConsentSerializer < ::WebApi::V1::Fast::BaseSerializer
     attributes :consented, :created_at, :updated_at
 
     attribute :campaign_name do |object|
