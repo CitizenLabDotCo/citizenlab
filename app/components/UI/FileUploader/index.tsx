@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 // components
 import FileInput from './FileInput';
@@ -17,7 +17,7 @@ interface Props {
 
 interface State {}
 
-export default class FileUploader extends React.PureComponent<Props, State>{
+export default class FileUploader extends PureComponent<Props, State>{
 
   handleFileOnAdd = (fileToAdd: UploadFile) => {
     this.props.onFileAdd(fileToAdd);
@@ -30,16 +30,18 @@ export default class FileUploader extends React.PureComponent<Props, State>{
   render() {
     const { files, errors } = this.props;
 
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      return null;
-    }
+    // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    //   return null;
+    // }
 
     return (
       <>
         <FileInput
           onAdd={this.handleFileOnAdd}
         />
+
         {errors && <Error fieldName="file" apiErrors={errors.file} />}
+
         {Array.isArray(files) && files.map(file => (
           <FileDisplay
             key={file.id || file.filename}

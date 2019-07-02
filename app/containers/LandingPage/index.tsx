@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
-import { get } from 'lodash-es';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -166,19 +165,6 @@ interface Props extends InputProps, DataProps {
 interface State {}
 
 class LandingPage extends PureComponent<Props, State> {
-  componentDidMount() {
-    const query = clHistory.getCurrentLocation().query;
-    const newIdeaId = get(query, 'new_idea_id');
-    const newIdeaSlug = get(query, 'new_idea_slug');
-    const publish = get(query, 'publish');
-
-    if (newIdeaId && newIdeaSlug) {
-      clHistory.push({
-        pathname: `/ideas/${newIdeaSlug}`,
-        search: `?new_idea_id=${newIdeaId}&new_idea_slug=${newIdeaSlug}&publish=${publish}`
-      });
-    }
-  }
 
   goToIdeasPage = () => {
     clHistory.push('/ideas');
