@@ -132,9 +132,9 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   handleOnIdeaSubmit = async () => {
     const { locale, authUser, project } = this.props;
 
-    this.globalState.set({ submitError: false, processing: true });
-
     if (!isNilOrError(locale) && !isNilOrError(authUser) && !isNilOrError(project)) {
+      this.globalState.set({ submitError: false, processing: true });
+
       try {
         const { title, description, selectedTopics, budget, position, position_coordinates, imageFile, ideaFiles } = await this.globalState.get();
         const ideaTitle = { [locale]: title as string };
