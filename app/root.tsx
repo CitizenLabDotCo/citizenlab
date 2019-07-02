@@ -33,6 +33,8 @@ const Root = () => {
 
 render(<Root />, document.getElementById('app'));
 
+initializeAnalytics();
+
 // if (process.env.NODE_ENV !== 'development') {
 //   import('offline-plugin/runtime').then((OfflinePlugin) => {
 //     OfflinePlugin.install();
@@ -40,8 +42,6 @@ render(<Root />, document.getElementById('app'));
 // }
 
 if (process.env.NODE_ENV === 'production') {
-  initializeAnalytics();
-
   import('@sentry/integrations').then((Integrations) => {
     init({
       dsn: process.env.SENTRY_DSN,
