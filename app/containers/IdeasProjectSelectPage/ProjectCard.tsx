@@ -176,7 +176,7 @@ class ProjectCard extends PureComponent<Props, State> {
     const { project, authUser } = this.props;
 
     if (!isNilOrError(project)) {
-      const { enabled, future_enabled: futureEnabled, disabled_reason: disabledReason } = project.relationships.action_descriptor.data.posting;
+      const { enabled, future_enabled: futureEnabled, disabled_reason: disabledReason } = project.attributes.action_descriptor.data.posting;
       if (enabled) {
         return null;
       } else if (disabledReason === 'not_permitted') {
@@ -224,7 +224,7 @@ class ProjectCard extends PureComponent<Props, State> {
       const disabledMessage = this.disabledMessage();
       const cardState = this.calculateCardState();
       const enabled = (cardState === 'enabled' || cardState === 'enabledBecauseAdmin');
-      const futureEnabledDate = project.relationships.action_descriptor.data.posting.future_enabled;
+      const futureEnabledDate = project.attributes.action_descriptor.data.posting.future_enabled;
       const formattedFutureEnabledDate = (futureEnabledDate ? moment(futureEnabledDate, 'YYYY-MM-DD').format('LL') : null);
 
       return (

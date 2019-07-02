@@ -221,7 +221,7 @@ class IdeaBox extends React.PureComponent<Props, State> {
 
             {showFooter === 'votingDisabled' &&
               <VotingDisabled
-                votingDescriptor={idea.relationships.action_descriptor.data.voting}
+                votingDescriptor={idea.attributes.action_descriptor.data.voting}
                 projectId={idea.relationships.project.data.id}
               />
             }

@@ -484,8 +484,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const postingPermission = getPostingPermission({ project, phase, authUser });
       const participationMethod = (!isNilOrError(phase) ? phase.attributes.participation_method : project.attributes.participation_method);
       const canPost = !!((!isNilOrError(phase) ? phase.attributes.posting_enabled : project.attributes.posting_enabled) && postingPermission.enabled);
-      const canVote = !!((!isNilOrError(phase) ? phase.attributes.voting_enabled : project.attributes.voting_enabled) && get(project, 'relationships.action_descriptor.data.voting.enabled'));
-      const canComment = !!((!isNilOrError(phase) ? phase.attributes.commenting_enabled : project.attributes.commenting_enabled) && get(project, 'relationships.action_descriptor.data.commenting.enabled'));
+      const canVote = !!((!isNilOrError(phase) ? phase.attributes.voting_enabled : project.attributes.voting_enabled) && get(project, 'attributes.action_descriptor.data.voting.enabled'));
+      const canComment = !!((!isNilOrError(phase) ? phase.attributes.commenting_enabled : project.attributes.commenting_enabled) && get(project, 'attributes.action_descriptor.data.commenting.enabled'));
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = getProjectUrl(project);
       const isFinished = (project.attributes.timeline_active === 'past');

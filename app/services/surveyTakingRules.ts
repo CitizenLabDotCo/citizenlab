@@ -35,11 +35,11 @@ const disabledReason = (backendReason: SurveyDisabledReasons | null, signedIn: b
 export const surveyTakingState = ({ project, phaseContext, signedIn }: SurveyTakingStateArgs): SurveyTakeResponse => {
   if (phaseContext) {
     const inCurrentPhase = (pastPresentOrFuture([phaseContext.attributes.start_at, phaseContext.attributes.end_at]) === 'present');
-    const { disabled_reason } = project.relationships.action_descriptor.data.taking_survey;
+    const { disabled_reason } = project.attributes.action_descriptor.data.taking_survey;
 
     if (inCurrentPhase) {
       return {
-        show: project.relationships.action_descriptor.data.taking_survey.enabled,
+        show: project.attributes.action_descriptor.data.taking_survey.enabled,
         disabledReason: disabledReason(disabled_reason, !!signedIn),
       };
     } else { // if not in current phase
@@ -49,7 +49,7 @@ export const surveyTakingState = ({ project, phaseContext, signedIn }: SurveyTak
       };
     }
   } else { // if not in phase context
-    const { enabled, disabled_reason } = project.relationships.action_descriptor.data.taking_survey;
+    const { enabled, disabled_reason } = project.attributes.action_descriptor.data.taking_survey;
     return {
       show: enabled,
       disabledReason: enabled ? undefined : disabledReason(disabled_reason, !!signedIn),

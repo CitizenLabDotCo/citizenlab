@@ -101,8 +101,8 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
   );
 
   const isModerator = !isNilOrError(authUser) && canModerate(get(project, 'id'), { data: authUser });
-  const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
-  const commentingDisabledReason = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
+  const commentingEnabled = (!isNilOrError(idea) ? get(idea.attributes.action_descriptor.data.commenting, 'enabled', false) : false);
+  const commentingDisabledReason = (!isNilOrError(idea) ? get(idea.attributes.action_descriptor.data.commenting, 'disabled_reason', null) : null);
 
   return (
     <Container className={className}>
