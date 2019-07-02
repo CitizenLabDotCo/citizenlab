@@ -27,7 +27,7 @@ interface InputProps {
   projectId: string | null;
   isLoggedIn: boolean | null;
   commentingEnabled: boolean | null;
-  commentingDisabledReason: IIdeaData['relationships']['action_descriptor']['data']['commenting']['disabled_reason'] | null;
+  commentingDisabledReason: IIdeaData['attributes']['action_descriptor']['data']['commenting']['disabled_reason'] | null;
 }
 
 interface DataProps {

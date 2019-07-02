@@ -13,7 +13,7 @@ const isIdeaProjectModerator = (idea: IIdeaData, user?: IUser) => {
 
 definePermissionRule('ideas', 'create', (_idea: IIdeaData, user: IUser, _tenant, { project = null }) => {
   if (project) {
-    return project.relationships.action_descriptor.data.posting.enabled || isAdmin(user);
+    return project.attributes.action_descriptor.data.posting.enabled || isAdmin(user);
   }
 
   return true;
