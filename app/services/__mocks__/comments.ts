@@ -46,8 +46,12 @@ export const makeComment = (id = 'commentId', attributes = {}, ideaId?: string, 
 
 export const makeComments = (argumentsArray = [{ id: undefined, attributes: {}, ideaId: undefined, authorId: undefined, parentId: undefined }]) : IComments => ({
   data: argumentsArray.map(args => makeCommentData(args.id, args.attributes, args.ideaId, args.authorId, args.parentId)),
-  meta: {
-    total: 10
+  links: {
+    self: 'self',
+    first: 'first',
+    last: 'last',
+    prev: 'prev',
+    next: 'next'
   }
 });
 
