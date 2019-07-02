@@ -28,7 +28,7 @@ export interface IGroupMembershipsFoundUserData {
     first_name: string;
     last_name: string;
     slug: string;
-    avatar: ImageSizes;
+    avatar?: ImageSizes;
     is_member?: boolean;
     is_moderator?: boolean;
     email: string;
