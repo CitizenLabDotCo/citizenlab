@@ -1,5 +1,4 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import Link from 'utils/cl-router/Link';
@@ -7,9 +6,6 @@ import Link from 'utils/cl-router/Link';
 // components
 import FeatureFlag from 'components/FeatureFlag';
 import AuthProviderButton, { Providers } from 'components/AuthProviderButton';
-
-// services
-import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // resources
 import { GetTenantChildProps } from 'resources/GetTenant';
@@ -109,36 +105,9 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-interface State {
-  socialLoginUrlParameter: string;
-}
+interface State {}
 
 class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Subscription[];
-
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      socialLoginUrlParameter: ''
-    };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const globalState$ = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage').observable;
-
-    this.subscriptions = [
-      globalState$.subscribe((globalState) => {
-        this.setState({
-          socialLoginUrlParameter: (globalState && globalState.ideaId && globalState.ideaSlug ? `?new_idea_id=${globalState.ideaId}&new_idea_slug=${globalState.ideaSlug}&publish=true` : '')
-        });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
 
   handleOnClick = () => {
     this.props.goToSignIn();
@@ -146,7 +115,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   handleOnAccept = (provider: Providers) => () => {
     setTimeout(() => {
-      window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
+      window.location.href = `${AUTH_PATH}/${provider}`;
     }, 200);
   }
 

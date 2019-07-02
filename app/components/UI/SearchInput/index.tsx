@@ -43,6 +43,11 @@ const Input = styled.input`
   border: none;
   outline: none;
   -webkit-appearance: none;
+  -moz-appearance: none;
+
+  &::-ms-clear {
+    display: none;
+  }
 
   &::placeholder {
     color: ${colors.secondaryText};
@@ -64,15 +69,20 @@ const CloseIcon = styled(Icon)`
   fill: ${colors.label};
 `;
 
-const IconWrapper = styled.div`
+const IconWrapper = styled.button`
   flex:  0 0 20px;
   width: 20px;
   height: 20px;
   margin-left: 10px;
   margin-right: 20px;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
 
   &.clickable {
     cursor: pointer;
@@ -122,7 +132,7 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
     }
   }, []);
 
-  const handleOnReset = useCallback((event: MouseEvent<HTMLDivElement>) => {
+  const handleOnReset = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
     setSearchTerm(null);
   }, []);
@@ -136,7 +146,9 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
   useEffect(() => {
     // debounce input
     const handler = setTimeout(() => {
-      onChange(searchTerm);
+      if (searchTerm !== value) {
+        onChange(searchTerm);
+      }
     }, 500);
 
     return () => clearTimeout(handler);
@@ -150,6 +162,10 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
     return (ariaLabel || intl.formatMessage(messages.searchAriaLabel));
   }, [ariaLabel]);
 
+  const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+  }, []);
+
   return (
     <Container className={`${className} ${focussed ? 'focussed' : 'blurred'}`}>
       <Input
@@ -161,8 +177,13 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         onKeyDown={handleOnKeyDown}
+        className="e2e-search-input"
       />
-      <IconWrapper onClick={handleOnReset} className={!isEmpty(searchTerm) ? 'clickable' : ''}>
+      <IconWrapper
+        onMouseDown={removeFocus}
+        onClick={handleOnReset}
+        className={!isEmpty(searchTerm) ? 'clickable' : ''}
+      >
         {isEmpty(searchTerm) ? <SearchIcon name="search2" /> : <CloseIcon name="close3" />}
       </IconWrapper>
     </Container>

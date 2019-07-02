@@ -122,7 +122,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       const nextPathname = newLocation.pathname;
       const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
 
-      this.setState({ previousPathname });
+      this.setState((state) => ({
+        previousPathname: !(previousPathname.endsWith('/sign-up') || previousPathname.endsWith('/sign-in')) ? previousPathname : state.previousPathname
+      }));
 
       trackPage(newLocation.pathname);
 
@@ -151,15 +153,16 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         })),
         locale$,
         tenant$.pipe(tap((tenant) => {
+          moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
+
           uniq(tenant.data.attributes.settings.core.locales
             .filter(locale => locale !== 'en' && locale !== 'ach')
             .map(locale => appLocalesMomentPairs[locale]))
             .forEach(locale => require(`moment/locale/${locale}.js`));
-          moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
         }))
       ).subscribe(([authUser, locale, tenant]) => {
-        const momenLoc = appLocalesMomentPairs[locale] || 'en';
-        moment.locale(momenLoc);
+        const momentLoc = appLocalesMomentPairs[locale] || 'en';
+        moment.locale(momentLoc);
         this.setState({ tenant, authUser });
       }),
 

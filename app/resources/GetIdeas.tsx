@@ -175,7 +175,7 @@ export default class GetIdeas extends React.Component<Props, State> {
                   queryParameters,
                   cacheStream,
                   hasMore,
-                  ideas: (!isLoadingMore ? ideas.data : unionBy((acc.ideas || []), ideas.data))
+                  ideas: (!isLoadingMore ? ideas.data : unionBy((acc.ideas || []), ideas.data, 'id'))
                 };
               })
             );

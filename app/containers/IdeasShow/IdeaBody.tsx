@@ -40,7 +40,7 @@ const IdeaBody = memo<Props>(({ ideaId, ideaBody, locale, translateButtonClicked
   const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
   return (
-    <Container className={className}>
+    <Container id="e2e-idea-description" className={className}>
       <Fragment name={`ideas/${ideaId}/body`}>
         <QuillEditedContent
           textColor={theme.colorText}

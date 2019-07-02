@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { get, isString, isObject, isUndefined, includes } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isString, isObject, isUndefined, includes } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
@@ -13,7 +12,6 @@ import SignInUpBanner from 'components/SignInUpBanner';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -97,7 +95,6 @@ interface InputProps {}
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -107,20 +104,7 @@ interface State {}
 class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
   redirect = () => {
-    const { location, authUser, idea } = this.props;
-    const authError = includes(location.pathname, 'authentication-error');
-
-    if (!authError && !isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') {
-      const ideaToPublishId = idea.id;
-      const ideaToPublishSlug = idea.attributes.slug;
-
-      clHistory.push({
-        pathname: `/ideas/${ideaToPublishSlug}`,
-        search: ((ideaToPublishId && ideaToPublishSlug) ? `?new_idea_id=${ideaToPublishId}&new_idea_slug=${ideaToPublishSlug}&publish=true` : undefined)
-      });
-    } else {
-      clHistory.push('/');
-    }
+    clHistory.push('/');
   }
 
   focusTitle = (titleEl: HTMLHeadingElement) => {
@@ -131,9 +115,9 @@ class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   render() {
-    const { location, authUser, idea } = this.props;
+    const { location, authUser } = this.props;
 
-    if (!isUndefined(authUser) && !isUndefined(idea)) {
+    if (!isUndefined(authUser)) {
       const authError = includes(location.pathname, 'authentication-error');
       const registrationCompletedAt = (authUser ? authUser.attributes.registration_completed_at : null);
 
@@ -172,8 +156,7 @@ class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
-  authUser: <GetAuthUser />,
-  idea: ({ location, render }) => <GetIdea id={get(location.query, 'new_idea_id', null)}>{render}</GetIdea>
+  authUser: <GetAuthUser />
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (

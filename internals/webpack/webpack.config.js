@@ -4,13 +4,20 @@ const isProd = process.env.NODE_ENV === 'production';
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ResourceHintsWebpackPlugin = require('resource-hints-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
+const cssnano = require('cssnano');
+const appLocalesMomentPairs = require(path.join(process.cwd(), 'app/containers/App/constants')).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
+const currentYear = new Date().getFullYear();
 
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
@@ -19,14 +26,8 @@ const config = {
     path: path.resolve(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
-    filename: isDev ? '[name].js' : '[name].[hash].js',
-    chunkFilename: isDev ? '[name].chunk.js' : '[name].[hash].chunk.js',
-  },
-
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
+    filename: isDev ? '[name].bundle.js' : '[name].[contenthash:8].bundle.js',
+    chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash:8].chunk.js'
   },
 
   mode: isDev ? 'development' : 'production',
@@ -44,6 +45,45 @@ const config = {
       '/auth/': `http://${API_HOST}:${API_PORT}`,
       '/widgets/': `http://${API_HOST}:3200`,
     },
+  },
+
+  ...!isDev && {
+    optimization: {
+      runtimeChunk: 'single',
+      splitChunks: {
+        chunks: 'all',
+      },
+      minimizer: [
+        new TerserPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true,
+          terserOptions: {
+            ecma: undefined,
+            warnings: false,
+            parse: {},
+            compress: {},
+            mangle: true,
+            module: false,
+            output: null,
+            toplevel: false,
+            nameCache: null,
+            ie8: false,
+            keep_classnames: undefined,
+            keep_fnames: false,
+            safari10: false
+          }
+        }),
+        new OptimizeCSSAssetsPlugin({
+          assetNameRegExp: /\.css$/g,
+          cssProcessor: cssnano,
+          cssProcessorPluginOptions: {
+            preset: ['default', { discardComments: { removeAll: true } }],
+          },
+          canPrint: true
+        })
+      ]
+    }
   },
 
   module: {
@@ -80,6 +120,9 @@ const config = {
       {
         test: /\.(eot|ttf|woff|woff2)$/,
         loader: 'file-loader',
+        options: {
+          name: isDev ? '[name].[ext]' : '[name].[contenthash:8].[ext]'
+        }
       },
       {
         test: /\.htaccess/,
@@ -111,8 +154,6 @@ const config = {
       },
     }),
 
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-
     new ForkTsCheckerWebpackPlugin({
       checkSyntacticErrors: true,
       tsconfig: path.join(process.cwd(), 'app/tsconfig.json'),
@@ -122,42 +163,40 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html',
-      preload: [
-        'main.*.js',
-        'main.*.css',
-        '*.eot',
-        '*.ttf',
-        '*.woff',
-        '*.woff2',
-      ],
-      prefetch: [
-        '*.chunk.js',
-        '*.chunk.css'
-      ],
+      template: 'app/index.html'
     }),
 
-    new ResourceHintsWebpackPlugin(),
+    // isDev && new BundleAnalyzerPlugin(),
 
-    new MiniCssExtractPlugin({
-      filename: '[name].[hash].css',
-      chunkFilename: '[name].[hash].chunk.css'
+    isDev && new webpack.ProgressPlugin(),
+
+    !isDev && new webpack.HashedModuleIdsPlugin(),
+
+    // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
+    !isDev && new MomentLocalesPlugin({
+      localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))]
     }),
-  ],
+
+    !isDev && new MomentTimezoneDataPlugin({
+      startYear: 2012,
+      endYear: currentYear + 10,
+    }),
+
+    !isDev && new MiniCssExtractPlugin({
+      filename: '[name].[contenthash:8].css',
+      chunkFilename: '[name].[contenthash:8].chunk.css'
+    }),
+
+    isProd && new SentryCliPlugin({
+      include: path.resolve(process.cwd(), 'build'),
+      release: process.env.CIRCLE_BUILD_NUM,
+    })
+  ].filter(Boolean),
 
   resolve: {
     modules: [path.resolve(process.cwd(), 'app'), 'node_modules'],
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
 };
-
-if (isDev) {
-  config.plugins.push(new webpack.ProgressPlugin());
-} else if (isProd) {
-  config.plugins.push(new SentryCliPlugin({
-    include: path.resolve(process.cwd(), 'build'),
-    release: process.env.CIRCLE_BUILD_NUM,
-  }));
-}
 
 module.exports = config;
