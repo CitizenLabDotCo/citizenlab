@@ -4,7 +4,7 @@ import { IRelationship, Multiloc } from 'typings';
 
 export interface IOfficialFeedbackData {
   id: string;
-  type: 'official_feedbacks';
+  type: 'official_feedback';
   attributes: {
     body_multiloc: Multiloc;
     author_multiloc: Multiloc;
