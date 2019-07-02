@@ -17,7 +17,7 @@ export const ideasStream = jest.fn((_ideas) => {
 export const getIdea = (id, enTitle) => (
   {
     id,
-    type: 'ideas',
+    type: 'idea',
     attributes: {
       title_multiloc: { en: enTitle, 'nl-BE':'Doloribus quam molestiae ut.' },
       body_multiloc: { 'nl-BE':'\u003cp\u003eEa ea aut. Quasi corrupti iste. Delectus eum voluptates.\u003c/p\u003e\u003cp\u003eEst harum voluptates. Et fugit enim. Suscipit inventore ullam.\u003c/p\u003e\u003cp\u003eEos mollitia omnis. Laudantium porro perferendis. Minus in aut.\u003c/p\u003e' },

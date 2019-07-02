@@ -16,7 +16,7 @@ export type VotingDisabledReasons = 'project_inactive' | 'not_ideation' | 'votin
 export type SurveyDisabledReasons = 'project_inactive' | 'not_survey' | 'not_permitted';
 export interface IProjectData {
   id: string;
-  type: 'projects';
+  type: 'project';
   attributes: {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
