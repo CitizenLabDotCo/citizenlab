@@ -146,29 +146,29 @@ describe('<ConsentManager />', () => {
     expect(setPreferences).not.toBeCalled();
     expect(resetPreferences).not.toBeCalled();
   });
-  it('handles close banner clicks as expected', () => {
-    const wrapper = mountWithTheme(
-      <Container
-        intl={intl}
-        setPreferences={setPreferences}
-        resetPreferences={resetPreferences}
-        saveConsent={saveConsent}
-        isConsentRequired={isConsentRequired}
-        implyConsentOnInteraction={implyConsentOnInteraction}
-        destinations={destinations}
-        newDestinations={newDestinations}
-        preferences={{
-          analytics: null,
-          advertising: null,
-          functional: null
-        }}
-      />
-    );
-    wrapper.find('Banner').find('.integration-button-close').find('button').simulate('click');
-    expect(saveConsent).toBeCalled();
-    expect(setPreferences).not.toBeCalled();
-    expect(resetPreferences).not.toBeCalled();
-  });
+  // it('handles close banner clicks as expected', () => {
+  //   const wrapper = mountWithTheme(
+  //     <Container
+  //       intl={intl}
+  //       setPreferences={setPreferences}
+  //       resetPreferences={resetPreferences}
+  //       saveConsent={saveConsent}
+  //       isConsentRequired={isConsentRequired}
+  //       implyConsentOnInteraction={implyConsentOnInteraction}
+  //       destinations={destinations}
+  //       newDestinations={newDestinations}
+  //       preferences={{
+  //         analytics: null,
+  //         advertising: null,
+  //         functional: null
+  //       }}
+  //     />
+  //   );
+  //   wrapper.find('Banner').find('.integration-button-close').find('button').simulate('click');
+  //   expect(saveConsent).toBeCalled();
+  //   expect(setPreferences).not.toBeCalled();
+  //   expect(resetPreferences).not.toBeCalled();
+  // });
   // it('when a preferences is set, clicking cancel in the dialog will prompt confirmation', () => {
   //   const wrapper = mountWithTheme(
   //     <Container
