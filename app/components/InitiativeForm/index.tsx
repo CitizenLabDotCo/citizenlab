@@ -13,7 +13,7 @@ import LocationInput from 'components/UI/LocationInput';
 // intl
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { IMessageInfo, injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { IMessageInfo, injectIntl } from 'utils/cl-intl';
 import ImageDropzone from 'components/UI/ImageDropzone';
 
 export interface FormValues {
@@ -22,6 +22,7 @@ export interface FormValues {
   topics: string[];
   position: string | undefined | null; // undefined initially, set to null to remove position in the API
   banner: UploadFile | undefined | null;
+  image: UploadFile | undefined | null;
 }
 
 export interface FormProps {
@@ -37,6 +38,7 @@ interface Props extends FormValues, FormProps {
   onChangeTopics: (newValue: string[]) => void;
   onChangePosition: (newValue: string) => void;
   onChangeBanner: (newValue: UploadFile | null) => void;
+  onChangeImage: (newValue: UploadFile | null) => void;
   locale: Locale;
 }
 
@@ -117,6 +119,10 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     this.props.onChangeBanner(banner);
     setTimeout(this.onBlur('banner'), 5);
   }
+  changeAndSaveImage = (image) => {
+    this.props.onChangeImage(image);
+    setTimeout(this.onBlur('image'), 5);
+  }
 
   render() {
     const {
@@ -130,6 +136,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       position,
       onChangePosition,
       banner,
+      image,
       intl: { formatMessage }
     } = this.props;
 
@@ -220,19 +227,37 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
         <FormSection>
           <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
 
-          <FormLabel
-            labelMessage={messages.bannerUploadLabel}
-            subtextMessage={messages.bannerUploadLabelSubtext}
-            optional
-          >
-            <ImageDropzone
-              id="idea-img-dropzone"
-              image={banner || null}
-              imagePreviewRatio={360 / 1440}
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              onChange={this.changeAndSaveBanner}
-            />
-          </FormLabel>
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.bannerUploadLabel}
+              subtextMessage={messages.bannerUploadLabelSubtext}
+              optional
+            >
+              <ImageDropzone
+                id="idea-img-dropzone"
+                image={banner || null}
+                imagePreviewRatio={360 / 1440}
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                onChange={this.changeAndSaveBanner}
+              />
+            </FormLabel>
+          </SectionField>
+
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.imageUploadLabel}
+              subtextMessage={messages.imageUploadLabelSubtext}
+              optional
+            >
+              <ImageDropzone
+                id="idea-img-dropzone"
+                image={image || null}
+                imagePreviewRatio={135 / 298}
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                onChange={this.changeAndSaveImage}
+              />
+            </FormLabel>
+          </SectionField>
         </FormSection>
         <FormSubmitFooter
           message={messages.publishButton}
