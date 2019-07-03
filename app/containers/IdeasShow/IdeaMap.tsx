@@ -128,7 +128,7 @@ const MapWrapperInner = styled.div`
 `;
 
 interface Props {
-  adress: string;
+  address: string;
   location: GeoJSON.Point;
   id: string;
   className?: string;
@@ -152,7 +152,7 @@ class IdeaMap extends PureComponent<Props, State> {
   }
 
   render() {
-    const { adress, location, className } = this.props;
+    const { address, location, className } = this.props;
     const { showMap } = this.state;
     const points: any = [{ ...location }];
     const center = location.coordinates;
@@ -163,7 +163,7 @@ class IdeaMap extends PureComponent<Props, State> {
           <Location>
             <LocationIcon name="position" />
             <LocationLabel>
-              {adress}
+              {address}
             </LocationLabel>
           </Location>
           <ArrowIcon name="dropdown" className={showMap ? 'open' : ''}/>

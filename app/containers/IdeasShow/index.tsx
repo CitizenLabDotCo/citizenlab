@@ -613,7 +613,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 {ideaLocation && ideaAddress &&
                   <StyledIdeaMap
-                    adress={ideaAddress}
+                    address={ideaAddress}
                     location={ideaLocation}
                     id={ideaId}
                   />
