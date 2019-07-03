@@ -186,7 +186,7 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
           aria-label={formatMessage(messages.ariaButtonClose)}
           onClick={onAccept}
         >
-          <CloseIcon name="close4" />
+          <CloseIcon name="close" />
         </CloseButton>
       </Container>
     );

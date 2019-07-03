@@ -29,35 +29,6 @@ import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const UpvoteIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
-  flex: 0 0 16px;
-  fill: ${colors.label};
-
-  &.disabled {
-    fill: ${lighten(0.25, colors.label)};
-  }
-
-  &.enabled.voted {
-    fill: #fff;
-  }
-`;
-
-const UpvoteCount = styled.div`
-  color: ${colors.label};
-  margin-right: 12px;
-
-  &.disabled {
-    color: ${lighten(0.25, colors.label)};
-  }
-`;
-
 const UpvoteIconWrapper = styled.button`
   width: 18px;
   height: 28px;
@@ -84,12 +55,6 @@ const UpvoteIconWrapper = styled.button`
     &.hasNoVotes {
       margin-right: 10px;
     }
-
-    &.enabled:hover {
-      ${UpvoteIcon} {
-        fill: #000;
-      }
-    }
   }
 
   &.voted {
@@ -99,11 +64,31 @@ const UpvoteIconWrapper = styled.button`
       width: 28px;
       border-radius: 50%;
       background: ${colors.clGreen};
-
-      &:hover {
-        background: ${darken(0.1, colors.clGreen)};
-      }
     }
+  }
+`;
+
+const UpvoteIcon = styled(Icon)`
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  fill: ${colors.label};
+
+  &.disabled {
+    fill: ${lighten(0.25, colors.label)};
+  }
+
+  &.enabled.voted {
+    fill: #fff;
+  }
+`;
+
+const UpvoteCount = styled.div`
+  color: ${colors.label};
+  margin-right: 12px;
+
+  &.disabled {
+    color: ${lighten(0.25, colors.label)};
   }
 `;
 
@@ -114,13 +99,39 @@ const UpvoteLabel = styled.button`
   margin: 0;
   border: none;
 
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
+`;
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+
   &:hover {
-    color: #000;
-    text-decoration: underline;
+    ${UpvoteIconWrapper} {
+
+      &.enabled {
+        &.notVoted {
+          ${UpvoteIcon} {
+            fill: #000;
+          }
+        }
+
+        &.voted {
+          background: ${darken(0.1, colors.clGreen)};
+        }
+      }
+    }
+
+    ${UpvoteLabel} {
+      color: #000;
+      text-decoration: underline;
+    }
   }
 
   ${media.smallerThanMinTablet`
-    display: none;
+    margin-right: 5px;
   `}
 `;
 
@@ -251,7 +262,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
             onClick={this.onVote}
             className={`${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'} ${votingEnabled ? 'enabled' : 'disabled'}`}
           >
-            <UpvoteIcon name="upvote-2" className={`${voted ? 'voted' : ''} ${votingEnabled ? 'enabled' : 'disabled'}`} />
+            <UpvoteIcon name="upvote" className={`${voted ? 'voted' : ''} ${votingEnabled ? 'enabled' : 'disabled'}`} />
           </UpvoteIconWrapper>
 
           {upvoteCount > 0 &&

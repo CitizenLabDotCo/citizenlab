@@ -17,7 +17,7 @@ import GetIdeasFilterCounts, { GetIdeasFilterCountsChildProps } from 'resources/
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 import { Header, Title } from './styles';
 
@@ -90,16 +90,11 @@ const Status = styled.button`
   }
 `;
 
-const AllStatus = styled(Status)`
-  /*
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
-  */
-`;
+const AllStatus = styled(Status)``;
 
 interface InputProps {
   selectedStatusId: string | null | undefined;
+  selectedIdeaFilters: Partial<IQueryParameters>;
   onChange: (arg: string | null) => void;
   className?: string;
 }
@@ -161,7 +156,7 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, ideasFilterC
                 {get(ideasFilterCounts, `idea_status_id.${ideaStatus.id}`, 0)}
               </Count>
             ) : (
-              <CloseIcon name="close2" />
+              <CloseIcon name="close" />
             )}
           </Status>
         ))}
@@ -172,16 +167,18 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, ideasFilterC
   return null;
 });
 
-const queryParameters = {
-  'page[number]': 1,
-  'page[size]': 5000,
-  project_publication_status: 'published',
-  publication_status: 'published'
-} as Partial<IQueryParameters>;
-
 const Data = adopt<DataProps, InputProps>({
   ideaStatuses: <GetIdeaStatuses/>,
-  ideasFilterCounts: <GetIdeasFilterCounts queryParameters={queryParameters} />
+  ideasFilterCounts: ({ selectedIdeaFilters, render }) => {
+    const queryParameters = {
+      ...selectedIdeaFilters,
+      idea_status: undefined,
+      project_publication_status: 'published',
+      publication_status: 'published'
+    } as Partial<IQueryParameters>;
+
+    return <GetIdeasFilterCounts queryParameters={queryParameters}>{render}</GetIdeasFilterCounts>;
+  }
 });
 
 export default (inputProps: InputProps) => (

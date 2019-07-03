@@ -42,7 +42,17 @@ const InvisibleSubmitButton = styled.button`
   visibility: hidden;
 `;
 
-interface Props {
+const Description = styled.div`
+  width: 100%;
+  color: ${colors.text};
+  font-size: ${fontSizes.small}px;
+  line-height: 20px;
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 0;
+`;
+
+export interface Props {
   formData?: object;
   onSubmit?: (arg: any) => void;
   onChange?: (arg: any) => void;

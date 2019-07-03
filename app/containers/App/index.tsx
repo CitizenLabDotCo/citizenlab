@@ -7,8 +7,6 @@ import moment from 'moment';
 import 'moment-timezone';
 import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
-import WebFont from 'webfontloader';
-
 import { appLocalesMomentPairs } from 'containers/App/constants';
 
 // context
@@ -27,7 +25,7 @@ import Meta from './Meta';
 import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
-import UserDeletedModalContent from 'components/UserDeletedModalContent';
+import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -36,7 +34,7 @@ import HasPermission from 'components/HasPermission';
 import { localeStream } from 'services/locale';
 import { IUser } from 'services/users';
 import { authUserStream, signOut, signOutAndDeleteAccountPart2 } from 'services/auth';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -151,24 +149,27 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         })),
         locale$,
         tenant$.pipe(tap((tenant) => {
+          moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
+
           uniq(tenant.data.attributes.settings.core.locales
             .filter(locale => locale !== 'en' && locale !== 'ach')
             .map(locale => appLocalesMomentPairs[locale]))
             .forEach(locale => require(`moment/locale/${locale}.js`));
-          moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
         }))
       ).subscribe(([authUser, locale, tenant]) => {
-        const momenLoc = appLocalesMomentPairs[locale] || 'en';
-        moment.locale(momenLoc);
+        const momentLoc = appLocalesMomentPairs[locale] || 'en';
+        moment.locale(momentLoc);
         this.setState({ tenant, authUser });
       }),
 
       tenant$.pipe(first()).subscribe((tenant) => {
         if (tenant.data.attributes.style && tenant.data.attributes.style.customFontAdobeId) {
-          WebFont.load({
-            typekit: {
-              id: tenant.data.attributes.style.customFontAdobeId
-            }
+          import('webfontloader').then((WebfontLoader) => {
+            WebfontLoader.load({
+              typekit: {
+                id: (tenant.data.attributes.style as ITenantStyle).customFontAdobeId
+              }
+            });
           });
         }
       }),
@@ -216,7 +217,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { location, children } = this.props;
-    const { previousPathname, tenant, ideaId, ideaSlug, visible, userDeletedModalOpened, userActuallyDeleted } = this.state;
+    const {
+      previousPathname,
+      tenant,
+      ideaId,
+      ideaSlug,
+      visible,
+      userDeletedModalOpened,
+      userActuallyDeleted
+    } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
 
@@ -242,7 +251,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                       opened={userDeletedModalOpened}
                       close={this.closeUserDeletedModal}
                     >
-                      <UserDeletedModalContent userActuallyDeleted={userActuallyDeleted} />
+                      <LoadableUserDeleted userActuallyDeleted={userActuallyDeleted} />
                     </LoadableModal>
                   </ErrorBoundary>
 

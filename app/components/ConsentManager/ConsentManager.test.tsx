@@ -8,6 +8,7 @@ import { ConsentManager, mapCustomPreferences, CustomPreferences, IDestination }
 jest.mock('utils/cl-intl');
 jest.mock('services/tenant');
 jest.mock('services/auth');
+jest.mock('components/Loadable/Modal');
 
 describe('<ConsentManager />', () => {
   beforeEach(() => {
