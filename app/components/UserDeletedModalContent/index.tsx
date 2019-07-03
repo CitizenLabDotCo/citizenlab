@@ -69,7 +69,7 @@ interface InputProps {
 interface DataProps {
 }
 
-interface Props extends InputProps, DataProps {}
+export interface Props extends InputProps, DataProps {}
 
 export default memo(({ userActuallyDeleted }: Props) => userActuallyDeleted ? (
   <Container>

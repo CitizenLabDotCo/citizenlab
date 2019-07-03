@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
-import linkifyHtml from 'linkifyjs/html';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
@@ -143,10 +142,10 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
 
   getPostBodyText = (postBodyMultiloc: Multiloc, locale: Locale, tenantLocales: Locale[]) => {
     const postBodyText = getLocalized(postBodyMultiloc, locale, tenantLocales);
-    const processedPostBodyText = linkifyHtml(postBodyText.replace(
+    const processedPostBodyText = postBodyText.replace(
       /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
       '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-    ));
+    );
     return processedPostBodyText;
   }
 

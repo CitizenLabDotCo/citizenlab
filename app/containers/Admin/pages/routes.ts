@@ -25,14 +25,6 @@ export default () => ({
       }),
     },
     {
-      path: ':pageId/editor/:locale',
-      component: Loadable({
-        loader: () => import('./BodyEditor'),
-        loading: LoadableLoadingAdmin,
-        delay: 500
-      }),
-    },
-    {
       path: ':pageId',
       component: Loadable({
         loader: () => import('./Edit'),
