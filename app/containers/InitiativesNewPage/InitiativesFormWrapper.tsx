@@ -4,8 +4,8 @@ import React from 'react';
 import InitiativeForm, { FormValues } from 'components/InitiativeForm';
 
 // services
-import { Locale, Multiloc } from 'typings';
-import { addInitiative, InitiativePublicationStatus, updateInitiative } from 'services/initiatives';
+import { Locale, Multiloc, UploadFile } from 'typings';
+import { addInitiative, InitiativePublicationStatus, updateInitiative, IInitiativeData } from 'services/initiatives';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -17,8 +17,7 @@ import styled from 'styled-components';
 
 // intl
 import { convertToGeoJson } from 'utils/locationTools';
-import { isEqual, pick, get, isNil, omitBy } from 'lodash-es';
-import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { isEqual, pick, get, omitBy, isEmpty } from 'lodash-es';
 import { Point } from 'geojson';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
@@ -44,6 +43,7 @@ interface State extends FormValues {
   initiativeId: string | null;
   saving: boolean;
   publishing: boolean;
+  hasBannerChanged: boolean;
 }
 
 export default class InitiativesFormWrapper extends React.PureComponent<Props, State> {
@@ -51,33 +51,33 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
   constructor(props) {
     super(props);
     this.initialValues = {
-      title_multiloc: {},
-      body_multiloc: {},
+      title_multiloc: undefined,
+      body_multiloc: undefined,
       topics: [],
       position: undefined,
+      banner: undefined,
     };
 
     this.state = {
       ...this.initialValues,
       initiativeId: null,
       saving: false,
-      publishing: false
+      publishing: false,
+      hasBannerChanged: false
     };
   }
 
   componentWillMount() {
     addInitiative({ publication_status: 'draft' }).then(initiative => {
       this.setState({ initiativeId: initiative.data.id });
-      this.initialValues = initiative.data;
+      this.initialValues = this.getFormValues(initiative.data);
     });
   }
 
   changedValues = () => {
-    console.log(this.initialValues, this.state);
     const changedKeys = Object.keys(this.initialValues).filter((key) => (
-      !isEqual(this.initialValues[key], this.state[key]))
-    );
-    console.log(this.state, changedKeys);
+      key !== 'banner' ? !isEqual(this.initialValues[key], this.state[key]) : undefined
+    ));
     return pick(this.state, changedKeys);
   }
 
@@ -86,9 +86,6 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
     let location_description: string | null | undefined;
     switch (position) {
       case null:
-        location_point_geojson = null;
-        location_description = null;
-        break;
       case '':
         location_point_geojson = null;
         location_description = null;
@@ -108,27 +105,32 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
   }
 
   handleSave = (status: InitiativePublicationStatus) => async () => {
+    const changedValues = this.changedValues();
+    const { initiativeId, hasBannerChanged, banner } = this.state;
+    const { title_multiloc, body_multiloc, topics, position } = changedValues;
+    if (isEmpty(changedValues) && !hasBannerChanged) return;
+
     if (status === 'published') {
       this.setState({ publishing: true });
     } else {
       this.setState({ saving: true });
     }
+
     try {
-      const { initiativeId } = this.state;
-      const { title_multiloc, body_multiloc, topics, position } = this.changedValues();
       // build API readable object
       const apiValues = {
         title_multiloc,
         body_multiloc,
         topic_ids: topics,
-        publication_status: status,
+        publication_status: status
       };
       const positionInfo = await this.parsePosition(position);
-      console.log(apiValues);
 
-      // removes undefined values, not null so that position can be removed
+      // removes undefined values, not null so that null values are removed
       const formAPIValues = omitBy({ ...apiValues, ...positionInfo }, (entry) => (entry === undefined));
-      console.log(formAPIValues);
+      if (hasBannerChanged) {
+        formAPIValues.header_bg = banner ? banner.base64 : null;
+      }
       let initiative;
       if (initiativeId) {
         initiative = await updateInitiative(initiativeId, formAPIValues);
@@ -139,13 +141,11 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       if (status === 'published') {
         clHistory.push(`initiatives/${initiative.data.slug}`);
       } else {
-        this.initialValues = this.getApiValues(initiative.data);
-        console.log(this.getApiValues(initiative.data));
+        this.initialValues = this.getFormValues(initiative.data);
+        this.setState({ hasBannerChanged: false });
       }
     } catch (errorResponse) {
       const apiErrors = get(errorResponse, 'json.errors');
-        // setErrors(apiErrors);
-      console.log(errorResponse, apiErrors);
     }
     this.setState({ saving: false, publishing: false });
   }
@@ -163,21 +163,26 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
     this.setState({ position });
   }
 
-  getApiValues(initiative: GetInitiativeChildProps) {
+  onChangeBanner = (newValue: UploadFile | null) => {
+    this.setState({ banner: newValue, hasBannerChanged: true });
+  }
+
+  getFormValues(initiative: IInitiativeData) {
     if (isNilOrError(initiative)) {
       return this.initialValues;
     } else {
       return ({
-        title_multiloc: get(initiative, 'title_multiloc'),
-        body_multiloc: get(initiative, 'body_multiloc'),
+        title_multiloc: get(initiative, 'attributes.title_multiloc', undefined) || undefined,
+        body_multiloc: get(initiative, 'attributes.body_multiloc', undefined) || undefined,
         topics: get(initiative, 'relationships.topics.data', []).map(topic => topic.id),
-        position: get(initiative, 'position')
+        position: get(initiative, 'attributes.location_description', undefined) || undefined,
+        banner: this.initialValues.banner
       });
     }
   }
 
   render() {
-    const { initiativeId, ...otherProps } = this.state;
+    const { initiativeId, hasBannerChanged, ...otherProps } = this.state;
     const { locale } = this.props;
 
     return (
@@ -190,6 +195,7 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
         onChangeBody={this.onChangeBody}
         onChangeTopics={this.onChangeTopics}
         onChangePosition={this.onChangePosition}
+        onChangeBanner={this.onChangeBanner}
       />
     );
   }

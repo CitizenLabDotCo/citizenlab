@@ -54,11 +54,11 @@ export interface IInitiatives {
 }
 
 export interface IInitiativeAdd {
-  author_id: string | null;
+  author_id?: string | null;
   assignee_id?: string | null;
   initiative_status_id?: string | null;
-  publication_status: InitiativePublicationStatus;
-  title_multiloc: Multiloc;
+  publication_status?: InitiativePublicationStatus;
+  title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
   topic_ids?: string[] | null;
   area_ids?: string[] | null;
