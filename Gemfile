@@ -69,7 +69,7 @@ gem "sidekiq" # , "~> 5.0.5"
 gem "apartment", "~> 2.2.0"
 gem "apartment-sidekiq", "~> 1.2.0"
 gem "carrierwave", "~> 1.2.2"
-gem "kaminari", "~> 1.1.1"  # , github: 'kaminari/kaminari', branch: 'master'
+gem "kaminari", "~> 1.1.1"
 gem 'api-pagination', "~> 4.8.2"
 gem "activerecord_json_validator", "~> 1.2.0"
 

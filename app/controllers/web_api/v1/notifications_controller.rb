@@ -1,5 +1,6 @@
 class WebApi::V1::NotificationsController < ApplicationController
 
+  # This mapping is needed to serialize a collection (of notifications) of different types.
   MODEL_TO_SERIALIZER = { 
     ::Notifications::AdminRightsReceived             => WebApi::V1::Notifications::AdminRightsReceivedSerializer,
     ::Notifications::CommentDeletedByAdmin           => WebApi::V1::Notifications::CommentDeletedByAdminSerializer,
