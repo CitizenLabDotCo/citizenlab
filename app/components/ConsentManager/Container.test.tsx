@@ -11,7 +11,6 @@ import { IDestination } from './';
 
 // mock utilities
 jest.mock('utils/cl-intl');
-jest.mock('components/Loadable/Modal');
 
 const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
