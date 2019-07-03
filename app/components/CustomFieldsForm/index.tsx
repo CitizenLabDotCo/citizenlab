@@ -53,7 +53,7 @@ const Description = styled.div`
   padding: 0;
 `;
 
-interface Props {
+export interface Props {
   formData?: object;
   onSubmit?: (arg: any) => void;
   onChange?: (arg: any) => void;

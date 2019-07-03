@@ -188,7 +188,7 @@ export class IdeaCommentGroup extends PureComponent<Props> {
                 />
                 <VotesContainer>
                   <IconContainer>
-                    <VoteIcon name="upvote-2"/>
+                    <VoteIcon name="upvote"/>
                   </IconContainer>
                   <Votes>
                     {comment.attributes.upvotes_count}

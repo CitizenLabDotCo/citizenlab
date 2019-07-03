@@ -92,13 +92,13 @@ const VotePreview = memo<Props>(({ votesCount, className }) => {
         </Label>
         <Block>
           <UpvotesContainer>
-            <UpvoteIcon name="upvote-2"/>
+            <UpvoteIcon name="upvote"/>
             <UpvotesCount>
               {votesCount.up}
             </UpvotesCount>
           </UpvotesContainer>
           <DownvotesContainer>
-            <DownvoteIcon name="downvote-2"/>
+            <DownvoteIcon name="downvote"/>
             <DownvotesCount>
               {votesCount.down}
             </DownvotesCount>
