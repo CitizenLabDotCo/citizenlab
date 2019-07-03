@@ -25,7 +25,7 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { FormattedRelative, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // style
@@ -44,16 +44,6 @@ const Left = styled.div`
   align-items: center;
 `;
 
-const LeftActions = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-
-  ${media.smallerThanMinTablet`
-    margin-left: 5px;
-  `}
-`;
-
 const Separator = styled.div`
   font-size: ${fontSizes.xs}px;
   line-height: 24px;
@@ -64,7 +54,7 @@ const Separator = styled.div`
     margin-left: 8px;
     margin-right: 8px;
 
-    &.first {
+    &.vote {
       display: none;
     }
   `}
@@ -106,21 +96,6 @@ const Right = styled.div`
 
 const StyledCommentsMoreActions = styled(CommentsMoreActions)`
   margin-right: -6px;
-`;
-
-const TimeAgo = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.small}px;
-  line-height: normal;
-  font-weight: 400;
-
-  &.hasLeftMargin {
-    margin-left: 22px;
-  }
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
 `;
 
 export interface ICommentReplyClicked {
@@ -225,11 +200,10 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (!isNilOrError(idea) && !isNilOrError(comment) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
-      const createdAt = comment.attributes.created_at;
       const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
-      const votingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.voting, 'enabled', false) : false);
+      const commentVotingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.voting, 'enabled', false) : false);
       const upvoteCount = comment.attributes.upvotes_count;
-      const showVoteComponent = (votingEnabled || (!votingEnabled && upvoteCount > 0));
+      const showVoteComponent = (commentVotingEnabled || (!commentVotingEnabled && upvoteCount > 0));
       const showReplyButton = !!(authUser && commentingEnabled && canReply);
       const showTranslateButton = !!(commentBodyMultiloc && !commentBodyMultiloc[locale] && tenantLocales.length > 1);
 
@@ -237,37 +211,38 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
         <Container className={className}>
           <Left>
             {showVoteComponent &&
-              <CommentVote
-                ideaId={ideaId}
-                commentId={commentId}
-                commentType={commentType}
-                votingEnabled={votingEnabled}
-              />
+              <>
+                <CommentVote
+                  ideaId={ideaId}
+                  commentId={commentId}
+                  commentType={commentType}
+                  votingEnabled={commentVotingEnabled}
+                />
+                {/* // Make sure there's a next item before adding a separator */}
+                {(showReplyButton || showTranslateButton) && <Separator className="vote">•</Separator>}
+              </>
             }
 
-            <LeftActions>
-              {showReplyButton &&
-                <>
-                  {showVoteComponent && <Separator className="first">•</Separator>}
-                  <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply} className="e2e-comment-reply-button">
-                    <FormattedMessage {...messages.commentReplyButton} />
-                  </ReplyButton>
-                </>
+            {showReplyButton &&
+              <>
+                <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply} className="e2e-comment-reply-button">
+                  <FormattedMessage {...messages.commentReplyButton} />
+                </ReplyButton>
+                {/* // Make sure there's a next item before adding a separator */}
+                {showTranslateButton && <Separator>•</Separator>}
+              </>
+            }
+
+            <FeatureFlag name="machine_translations">
+              {showTranslateButton &&
+                <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
+                  {!translateButtonClicked
+                    ? <FormattedMessage {...messages.seeTranslation} />
+                    : <FormattedMessage {...messages.seeOriginal} />
+                  }
+                </TranslateButton>
               }
-              <FeatureFlag name="machine_translations">
-                {showTranslateButton &&
-                  <>
-                    {showReplyButton && <Separator>•</Separator>}
-                    <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
-                      {!translateButtonClicked
-                        ? <FormattedMessage {...messages.seeTranslation} />
-                        : <FormattedMessage {...messages.seeOriginal} />
-                      }
-                    </TranslateButton>
-                  </>
-                }
-              </FeatureFlag>
-            </LeftActions>
+            </FeatureFlag>
           </Left>
 
           <Right>
@@ -277,12 +252,6 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
               onCommentEdit={this.onCommentEdit}
               ariaLabel={this.moreActionsAriaLabel}
             />
-
-            {commentType === 'child' &&
-              <TimeAgo className={authUser ? 'hasLeftMargin' : ''}>
-                <FormattedRelative value={createdAt} />
-              </TimeAgo>
-            }
           </Right>
         </Container>
       );

@@ -11,6 +11,7 @@ import { IDestination } from './';
 
 // mock utilities
 jest.mock('utils/cl-intl');
+
 const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
 
@@ -144,94 +145,29 @@ describe('<ConsentManager />', () => {
     expect(setPreferences).not.toBeCalled();
     expect(resetPreferences).not.toBeCalled();
   });
-  it('lets the user open the modal to change its preferences', () => {
-    const wrapper = mountWithTheme(
-      <Container
-        intl={intl}
-        setPreferences={setPreferences}
-        resetPreferences={resetPreferences}
-        saveConsent={saveConsent}
-        isConsentRequired={isConsentRequired}
-        implyConsentOnInteraction={implyConsentOnInteraction}
-        destinations={destinations}
-        newDestinations={newDestinations}
-        preferences={{
-          analytics: null,
-          advertising: null,
-          functional: null
-        }}
-      />
-    );
-    wrapper.find('.integration-open-modal').find('button').simulate('click');
-    expect(wrapper.find('Modal').prop('opened')).toBeTruthy();
-  });
-  it('handles close banner clicks as expected', () => {
-    const wrapper = mountWithTheme(
-      <Container
-        intl={intl}
-        setPreferences={setPreferences}
-        resetPreferences={resetPreferences}
-        saveConsent={saveConsent}
-        isConsentRequired={isConsentRequired}
-        implyConsentOnInteraction={implyConsentOnInteraction}
-        destinations={destinations}
-        newDestinations={newDestinations}
-        preferences={{
-          analytics: null,
-          advertising: null,
-          functional: null
-        }}
-      />
-    );
-    wrapper.find('Banner').find('.integration-button-close').find('button').simulate('click');
-    expect(saveConsent).toBeCalled();
-    expect(setPreferences).not.toBeCalled();
-    expect(resetPreferences).not.toBeCalled();
-  });
-  it('handles closing the modal as expected', () => {
-    const wrapper = mountWithTheme(
-      <Container
-        intl={intl}
-        setPreferences={setPreferences}
-        resetPreferences={resetPreferences}
-        saveConsent={saveConsent}
-        isConsentRequired={isConsentRequired}
-        implyConsentOnInteraction={implyConsentOnInteraction}
-        destinations={destinations}
-        newDestinations={newDestinations}
-        preferences={{
-          analytics: null,
-          advertising: null,
-          functional: null
-        }}
-      />
-    );
-    wrapper.find('.integration-open-modal').find('button').simulate('click');
-    wrapper.find('Modal').find('.e2e-modal-close-button').find('button').simulate('click');
-    expect(wrapper.find('Modal').prop('opened')).toBeFalsy();
-  });
-  it('when no preferences are set, clicking cancel in the dialog will close it', () => {
-    const wrapper = mountWithTheme(
-      <Container
-        intl={intl}
-        setPreferences={setPreferences}
-        resetPreferences={resetPreferences}
-        saveConsent={saveConsent}
-        isConsentRequired={isConsentRequired}
-        implyConsentOnInteraction={implyConsentOnInteraction}
-        destinations={destinations}
-        newDestinations={newDestinations}
-        preferences={{
-          analytics: null,
-          advertising: null,
-          functional: null
-        }}
-      />
-    );
-    wrapper.find('.integration-open-modal').find('button').simulate('click');
-    wrapper.find('Modal').find('.integration-cancel').find('button').simulate('click');
-    expect(wrapper.find('Modal').prop('opened')).toBeFalsy();
-  });
+  // it('handles close banner clicks as expected', () => {
+  //   const wrapper = mountWithTheme(
+  //     <Container
+  //       intl={intl}
+  //       setPreferences={setPreferences}
+  //       resetPreferences={resetPreferences}
+  //       saveConsent={saveConsent}
+  //       isConsentRequired={isConsentRequired}
+  //       implyConsentOnInteraction={implyConsentOnInteraction}
+  //       destinations={destinations}
+  //       newDestinations={newDestinations}
+  //       preferences={{
+  //         analytics: null,
+  //         advertising: null,
+  //         functional: null
+  //       }}
+  //     />
+  //   );
+  //   wrapper.find('Banner').find('.integration-button-close').find('button').simulate('click');
+  //   expect(saveConsent).toBeCalled();
+  //   expect(setPreferences).not.toBeCalled();
+  //   expect(resetPreferences).not.toBeCalled();
+  // });
   // it('when a preferences is set, clicking cancel in the dialog will prompt confirmation', () => {
   //   const wrapper = mountWithTheme(
   //     <Container

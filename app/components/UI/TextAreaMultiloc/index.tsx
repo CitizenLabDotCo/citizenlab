@@ -18,28 +18,23 @@ import { Locale, Multiloc } from 'typings';
 
 const Container = styled.div``;
 
-const StyledLabel = styled(Label)`
-  display: block;
-`;
-
 const TextAreaWrapper = styled.div`
   &:not(.last) {
     margin-bottom: 12px;
   }
 `;
 
-const LanguageExtension = styled.span`
-  font-weight: 500;
-  margin-left: 5px;
+const StyledLabel = styled(Label)`
+  display: block;
 `;
 
-const LabelWrapper = styled.div`
-  display: flex;
+const LanguageExtension = styled.span`
+  font-weight: 500;
 `;
 
 const LabelTooltip = styled.div`
-  margin-left: 5px;
-  margin-top: 3px;
+  margin-top: 7px;
+  display: inline-block;
 `;
 
 export type Props = {
@@ -111,16 +106,14 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
     return (
       <TextAreaWrapper key={currentTenantLocale} className={`${index === totalLocales - 1 && 'last'}`}>
         {label &&
-          <LabelWrapper>
-            <StyledLabel htmlFor={id}>
-                {label}
-                {totalLocales > 1 &&
-                  <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
-                }
-            </StyledLabel>
-            {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
-          </LabelWrapper>
-        }
+          <StyledLabel htmlFor={id}>
+              {label}
+              {totalLocales > 1 &&
+                <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
+              }
+              {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
+          </StyledLabel>
+      }
 
         {renderPerLocale && renderPerLocale(currentTenantLocale)}
 
@@ -152,7 +145,7 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
           {shownLocale
             ? this.renderOnce(shownLocale, 1, totalLocales)
             : currentTenantLocales.map((currentTenantLocale, index) => {
-              this.renderOnce(currentTenantLocale, index, totalLocales);
+              return this.renderOnce(currentTenantLocale, index, totalLocales);
           })}
         </Container>
       );

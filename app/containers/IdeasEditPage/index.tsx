@@ -270,7 +270,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
       const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
       return (
-        <Container>
+        <Container id="e2e-idea-edit-page">
           <FormContainer>
             <Title>
               <FormattedMessage {...messages.formTitle} />
@@ -290,6 +290,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
             <ButtonWrapper>
               <SaveButton
+                id="e2e-idea-edit-save-button"
                 processing={processing}
                 text={<FormattedMessage {...messages.save} />}
                 onClick={this.handleOnSaveButtonClick}

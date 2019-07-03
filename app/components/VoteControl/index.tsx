@@ -371,7 +371,17 @@ export default class VoteControl extends PureComponent<Props, State> {
         const votingDisabledReason = idea.data.relationships.action_descriptor.data.voting.disabled_reason;
         const votingFutureEnabled = idea.data.relationships.action_descriptor.data.voting.future_enabled;
 
-        this.setState({ idea, project, phases, upvotesCount, downvotesCount, votingEnabled, cancellingEnabled, votingDisabledReason, votingFutureEnabled });
+        this.setState({
+          idea,
+          project,
+          phases,
+          upvotesCount,
+          downvotesCount,
+          votingEnabled,
+          cancellingEnabled,
+          votingDisabledReason,
+          votingFutureEnabled
+        });
       }),
 
       authUser$.subscribe((authUser) => {
@@ -387,7 +397,7 @@ export default class VoteControl extends PureComponent<Props, State> {
     ];
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: Props, _prevState: State) {
     if (this.props.ideaId !== prevProps.ideaId) {
       this.id$.next(this.props.ideaId);
     }
@@ -513,8 +523,8 @@ export default class VoteControl extends PureComponent<Props, State> {
           className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'} e2e-ideacard-upvote-button`}
           enabled={upvotingEnabled}
         >
-          <VoteIconContainer size={size} votingEnabled={votingEnabled}>
-            <VoteIcon name="upvote-2" size={size} enabled={upvotingEnabled} />
+          <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
+            <VoteIcon name="upvote" size={size} enabled={upvotingEnabled} />
           </VoteIconContainer>
           <VoteCount className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
         </Upvote>
@@ -526,8 +536,8 @@ export default class VoteControl extends PureComponent<Props, State> {
           className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
           enabled={downvotingEnabled}
         >
-          <VoteIconContainer size={size} votingEnabled={votingEnabled}>
-            <VoteIcon name="downvote-2" size={size} enabled={downvotingEnabled} />
+          <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
+            <VoteIcon name="downvote" size={size} enabled={downvotingEnabled} />
           </VoteIconContainer>
           <VoteCount className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
         </Downvote>

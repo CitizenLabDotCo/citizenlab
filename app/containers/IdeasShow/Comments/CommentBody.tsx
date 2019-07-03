@@ -3,12 +3,8 @@ import React, { PureComponent, FormEvent } from 'react';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { get } from 'lodash-es';
-import linkifyHtml from 'linkifyjs/html';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-
-// Router
-import Link from 'utils/cl-router/Link';
 
 // Services
 import { updateComment, IUpdatedComment } from 'services/comments';
@@ -18,7 +14,6 @@ import eventEmitter from 'utils/eventEmitter';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetMachineTranslation from 'resources/GetMachineTranslation';
 
 // i18n
@@ -27,7 +22,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // Components
-import UserName from 'components/UI/UserName';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -35,8 +29,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // Styling
 import styled from 'styled-components';
-import { darken } from 'polished';
-import { colors, media } from 'utils/styleUtils';
 
 // Typings
 import { CLErrorsJSON, CLErrors } from 'typings';
@@ -49,36 +41,6 @@ const CommentWrapper = styled.div`
 
   &.child {
     margin-top: 7px;
-  }
-`;
-
-const StyledLink = styled(Link)`
-  display: inline;
-  margin-right: 10px;
-  text-decoration: none !important;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
-`;
-
-const StyledUserName = styled(UserName)`
-  color: ${({ theme }) => theme.colorText};
-  font-weight: 400;
-  text-decoration: none !important;
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => darken(0.15, theme.colorText)};
-    text-decoration: underline !important;
-  }
-
-  &.canModerate {
-    color: ${colors.clRed};
-
-    &:hover {
-      color: ${darken(0.15, colors.clRed)};
-    }
   }
 `;
 
@@ -103,7 +65,6 @@ const ButtonsWrapper = styled.div`
 interface InputProps {
   commentId: string;
   commentType: 'parent' | 'child';
-  moderator: boolean;
   editing: boolean;
   last?: boolean;
   onCommentSaved: () => void;
@@ -115,7 +76,6 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
   comment: GetCommentChildProps;
-  author: GetUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -171,10 +131,10 @@ class CommentBody extends PureComponent<Props, State> {
     const { comment, locale, tenantLocales } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(comment)) {
-      commentContent = linkifyHtml(getLocalized(comment.attributes.body_multiloc, locale, tenantLocales).replace(
+      commentContent = getLocalized(comment.attributes.body_multiloc, locale, tenantLocales).replace(
         /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
         '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-      )) as string;
+      );
     }
 
     this.setState({ commentContent });
@@ -242,9 +202,7 @@ class CommentBody extends PureComponent<Props, State> {
     const {
       editing,
       commentType,
-      moderator,
       locale,
-      author,
       commentId,
       className
     } = this.props;
@@ -262,17 +220,7 @@ class CommentBody extends PureComponent<Props, State> {
     if (!isNilOrError(locale)) {
       if (!editing) {
         const CommentBodyContent = ({ text }: { text: string }) => (
-          <>
-            {commentType === 'child' &&
-              <StyledLink to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
-                <StyledUserName
-                  className={moderator ? 'canModerate' : ''}
-                  user={!isNilOrError(author) ? author : null}
-                />
-              </StyledLink>
-            }
-            <CommentText dangerouslySetInnerHTML={{ __html: text }} />
-          </>
+          <CommentText dangerouslySetInnerHTML={{ __html: text }} />
         );
 
         content = (
@@ -349,7 +297,6 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
 export default (inputProps: InputProps) => (

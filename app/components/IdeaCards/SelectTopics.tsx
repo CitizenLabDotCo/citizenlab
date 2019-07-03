@@ -17,6 +17,7 @@ import { Locale } from 'typings';
 
 type Props = {
   id?: string | undefined;
+  alignment: 'left' | 'right';
   onChange: (value: any) => void;
 };
 
@@ -31,8 +32,8 @@ type State = {
 export default class SelectTopic extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       currentTenant: null,
       locale: null,
@@ -69,6 +70,7 @@ export default class SelectTopic extends PureComponent<Props, State> {
   }
 
   render() {
+    const { alignment } = this.props;
     const { currentTenant, locale, topics, selectedValues, titleKey } = this.state;
 
     if (currentTenant && locale && topics && topics.data && topics.data.length > 0) {
@@ -91,8 +93,10 @@ export default class SelectTopic extends PureComponent<Props, State> {
             onChange={this.handleOnChange}
             multiple={true}
             last={true}
-            right="-10px"
-            mobileLeft="-5px"
+            left={alignment === 'left' ? '-5px' : undefined}
+            mobileLeft={alignment === 'left' ? '-5px' : undefined}
+            right={alignment === 'right' ? '-5px' : undefined}
+            mobileRight={alignment === 'right' ? '-5px' : undefined}
           />
         );
       }

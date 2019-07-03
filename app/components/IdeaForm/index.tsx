@@ -379,7 +379,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
     return (
       <Form id="idea-form" className={className}>
-        <FormElement name="titleInput">
+        <FormElement name="titleInput" id="e2e-idea-title-input">
           <FormLabel labelMessage={messages.titleLabel} htmlFor="title" />
           <Input
             id="title"
@@ -393,7 +393,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           />
         </FormElement>
 
-        <FormElement name="descriptionInput">
+        <FormElement name="descriptionInput" id="e2e-idea-description-input">
           <FormLabel labelMessage={messages.descriptionLabel} htmlFor="editor" />
           <QuillEditor
             id="editor"
@@ -407,7 +407,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           {descriptionError && <Error text={descriptionError} />}
         </FormElement>
 
-        {topics && topics.length > 0 &&
+        {topics && topics.length > 0 && (
           <FormElement>
             <FormLabel labelMessage={messages.topicsLabel} htmlFor="topics" />
             <TopicsPicker
@@ -416,7 +416,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               max={2}
             />
           </FormElement>
-        }
+        )}
 
         <FormElement>
           <FormLabel labelMessage={messages.locationLabel} htmlFor="location" />
@@ -429,7 +429,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             />
         </FormElement>
 
-        <FormElement>
+        <FormElement id="e2e-idea-image-upload">
           <FormLabel labelMessage={messages.imageUploadLabel} />
           <label htmlFor="idea-img-dropzone">
            <HiddenLabel>
@@ -448,7 +448,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             />
           </label>
         </FormElement>
-        {pbContext &&
+
+        {pbContext && (
           <FeatureFlag name="participatory_budgeting">
             <HasPermission
               item="ideas"
@@ -467,9 +468,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               </FormElement>
             </HasPermission>
           </FeatureFlag>
-        }
+        )}
 
-        <FormElement>
+        <FormElement id="e2e-idea-file-upload">
           <FormLabel labelMessage={messages.fileUploadLabel}>
             <FileUploader
               onFileAdd={this.handleIdeaFileOnAdd}
