@@ -89,14 +89,14 @@ export default defineMessages({
     id: 'app.container.InitiativeForm.imageDropzonePlaceholder',
     defaultMessage: 'Drop your image here',
   },
-  // imageUploadLabel: {
-  //   id: 'app.components.InitiativeForm.imageUploadLabel',
-  //   defaultMessage: 'Image (optional)',
-  // },
-  // imageDropzonePlaceholder: {
-  //   id: 'app.container.InitiativeForm.imageDropzonePlaceholder',
-  //   defaultMessage: 'Drop your image here',
-  // },
+  imageUploadLabel: {
+    id: 'app.components.InitiativeForm.imageUploadLabel',
+    defaultMessage: 'Add a main picture',
+  },
+  imageUploadLabelSubtext: {
+    id: 'app.components.InitiativeForm.imageUploadLabelSubtext',
+    defaultMessage: 'This image is shown on top of your initiative’s page',
+  },
   // TODO
   // fileUploadLabel: {
   //   id: 'app.container.InitiativeForm.fileUploadLabel',

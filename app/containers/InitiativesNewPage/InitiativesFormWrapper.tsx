@@ -19,6 +19,7 @@ import styled from 'styled-components';
 import { convertToGeoJson } from 'utils/locationTools';
 import { isEqual, pick, get, omitBy, isEmpty } from 'lodash-es';
 import { Point } from 'geojson';
+import { addInitiativeImage, deleteInitiativeImage } from 'services/initiativeImages';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
@@ -44,6 +45,8 @@ interface State extends FormValues {
   saving: boolean;
   publishing: boolean;
   hasBannerChanged: boolean;
+  hasImageChanged: boolean;
+  imageId: string | null;
 }
 
 export default class InitiativesFormWrapper extends React.PureComponent<Props, State> {
@@ -56,6 +59,7 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       topics: [],
       position: undefined,
       banner: undefined,
+      image: undefined
     };
 
     this.state = {
@@ -63,7 +67,9 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       initiativeId: null,
       saving: false,
       publishing: false,
-      hasBannerChanged: false
+      hasBannerChanged: false,
+      hasImageChanged: false,
+      imageId: null
     };
   }
 
@@ -106,9 +112,9 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
 
   handleSave = (status: InitiativePublicationStatus) => async () => {
     const changedValues = this.changedValues();
-    const { initiativeId, hasBannerChanged, banner } = this.state;
+    const { initiativeId, hasBannerChanged, hasImageChanged, image, banner } = this.state;
     const { title_multiloc, body_multiloc, topics, position } = changedValues;
-    if (isEmpty(changedValues) && !hasBannerChanged) return;
+    if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
 
     if (status === 'published') {
       this.setState({ publishing: true });
@@ -131,18 +137,30 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       if (hasBannerChanged) {
         formAPIValues.header_bg = banner ? banner.base64 : null;
       }
-      let initiative;
-      if (initiativeId) {
-        initiative = await updateInitiative(initiativeId, formAPIValues);
-      } else {
-        initiative = await addInitiative(formAPIValues);
-        this.setState({ initiativeId: initiative.data.id });
+      if (!isEmpty(formAPIValues)) {
+        let initiative;
+        if (initiativeId) {
+          initiative = await updateInitiative(initiativeId, formAPIValues);
+        } else {
+          initiative = await addInitiative(formAPIValues);
+          this.setState({ initiativeId: initiative.data.id });
+        }
+        if (status === 'published') {
+          clHistory.push(`initiatives/${initiative.data.slug}`);
+        } else {
+          this.initialValues = this.getFormValues(initiative.data);
+          this.setState({ hasBannerChanged: false });
+        }
       }
-      if (status === 'published') {
-        clHistory.push(`initiatives/${initiative.data.slug}`);
-      } else {
-        this.initialValues = this.getFormValues(initiative.data);
-        this.setState({ hasBannerChanged: false });
+      if (hasImageChanged && initiativeId) {
+        if (image && image.base64) {
+          const imageRemote = await addInitiativeImage(initiativeId, image.base64);
+          this.setState({ imageId: imageRemote.data.id });
+          console.log(imageRemote);
+        } else if (this.state.imageId) {
+          deleteInitiativeImage(initiativeId, this.state.imageId);
+        }
+        this.setState({ hasImageChanged: false });
       }
     } catch (errorResponse) {
       const apiErrors = get(errorResponse, 'json.errors');
@@ -167,6 +185,10 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
     this.setState({ banner: newValue, hasBannerChanged: true });
   }
 
+  onChangeImage = (newValue: UploadFile | null) => {
+    this.setState({ image: newValue, hasImageChanged: true });
+  }
+
   getFormValues(initiative: IInitiativeData) {
     if (isNilOrError(initiative)) {
       return this.initialValues;
@@ -176,7 +198,8 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
         body_multiloc: get(initiative, 'attributes.body_multiloc', undefined) || undefined,
         topics: get(initiative, 'relationships.topics.data', []).map(topic => topic.id),
         position: get(initiative, 'attributes.location_description', undefined) || undefined,
-        banner: this.initialValues.banner
+        banner: undefined,
+        image: undefined
       });
     }
   }
@@ -196,6 +219,7 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
         onChangeTopics={this.onChangeTopics}
         onChangePosition={this.onChangePosition}
         onChangeBanner={this.onChangeBanner}
+        onChangeImage={this.onChangeImage}
       />
     );
   }
