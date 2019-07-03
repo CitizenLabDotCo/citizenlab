@@ -69,19 +69,16 @@ export default class LocationInput extends PureComponent<Props, State> {
     super(props as any);
   }
 
-  handleOnChange = (value: string) => {
-    const { onChange, onBlur } = this.props;
-    onBlur && onBlur();
-    onChange(value);
-  }
-
   handleSelect = async (adress: string, placeId: string) => {
-    this.props.onChange(adress);
+    const { onBlur, onChange } = this.props;
+
+    onChange(adress);
+    onBlur && onBlur();
     return geocodeByPlaceId(placeId).then(results => results);
   }
 
   render() {
-    const { id, className } = this.props;
+    const { id, className, onChange } = this.props;
     let { value, placeholder } = this.props;
 
     value = (value || '');
@@ -90,7 +87,7 @@ export default class LocationInput extends PureComponent<Props, State> {
     const inputProps = {
       value,
       placeholder,
-      onChange: this.handleOnChange,
+      onChange,
       type: 'search',
       autoFocus: false,
     };
