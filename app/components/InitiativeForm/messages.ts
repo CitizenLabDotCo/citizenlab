@@ -73,41 +73,37 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.locationPlaceholder',
     defaultMessage: 'Type an address',
   },
-  publishButton: {
-    id: 'app.components.InitiativeForm.publishButton',
-    defaultMessage: 'Publish your initiative',
+  formAttachmentsSectionTitle: {
+    id: 'app.components.InitiativeForm.formAttachmentsSectionTitle',
+    defaultMessage: 'Images and attachments',
   },
-  // TODO
+  bannerUploadLabel: {
+    id: 'app.components.InitiativeForm.bannerUploadLabel',
+    defaultMessage: 'Add a banner',
+  },
+  bannerUploadLabelSubtext: {
+    id: 'app.components.InitiativeForm.bannerUploadLabelSubtext',
+    defaultMessage: 'This cover will be used at the top of your initiative page',
+  },
+  imageDropzonePlaceholder: {
+    id: 'app.container.InitiativeForm.imageDropzonePlaceholder',
+    defaultMessage: 'Drop your image here',
+  },
   // imageUploadLabel: {
   //   id: 'app.components.InitiativeForm.imageUploadLabel',
   //   defaultMessage: 'Image (optional)',
-  // },
-  // imageUploadPlaceholder: {
-  //   id: 'app.components.InitiativeForm.imageUploadPlaceholder',
-  //   defaultMessage: 'Select an image for your initiative.<br /> This will increase the visibility of your initiative!',
   // },
   // imageDropzonePlaceholder: {
   //   id: 'app.container.InitiativeForm.imageDropzonePlaceholder',
   //   defaultMessage: 'Drop your image here',
   // },
-  // budgetLabel: {
-  //   id: 'app.container.InitiativeForm.budgetLabel',
-  //   defaultMessage: 'Budget (in {currency}, max. {maxBudget})',
-  // },
-  // noBudgetError: {
-  //   id: 'app.container.InitiativeForm.noBudgetError',
-  //   defaultMessage: 'Please provide a budget',
-  // },
-  // budgetIsZeroError: {
-  //   id: 'app.container.InitiativeForm.budgetIsZeroError',
-  //   defaultMessage: 'Please provide a budget larger than 0',
-  // },
-  // budgetIsTooBig: {
-  //   id: 'app.container.InitiativeForm.budgetIsTooBig',
-  //   defaultMessage: `The provided budget is too big`,
-  // },
+  // TODO
   // fileUploadLabel: {
   //   id: 'app.container.InitiativeForm.fileUploadLabel',
   //   defaultMessage: 'Add files to your initiative',
   // }
+  publishButton: {
+    id: 'app.components.InitiativeForm.publishButton',
+    defaultMessage: 'Publish your initiative',
+  },
 });
