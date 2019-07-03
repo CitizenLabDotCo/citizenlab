@@ -100,18 +100,12 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
   };
 
   onBlur = (fieldName: string) => () => {
-    console.log('onblur');
     const touched = Object.assign({}, this.state.touched);
     touched[fieldName] = true;
     const errors = Object.assign({}, this.state.errors);
     errors[fieldName] = get(this.validations, fieldName, () => undefined)();
     this.setState({ touched, errors });
     this.props.onSave();
-  }
-
-  changeAndSavePosition = (position) => {
-    this.props.onChangePosition(position);
-    setTimeout(this.onBlur('position'), 5);
   }
 
   changeAndSaveTopics = (topics) => {
@@ -134,6 +128,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       onChangeBody,
       topics,
       position,
+      onChangePosition,
       banner,
       intl: { formatMessage }
     } = this.props;
@@ -215,7 +210,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             >
               <LocationInput
                 value={position || ''}
-                onChange={this.changeAndSavePosition}
+                onChange={onChangePosition}
+                onBlur={this.onBlur('position')}
                 placeholder={formatMessage(messages.locationPlaceholder)}
               />
             </FormLabel>
