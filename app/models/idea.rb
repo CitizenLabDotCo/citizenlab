@@ -50,8 +50,6 @@ class Idea < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
   validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
-  validates :author, presence: true, unless: :draft?, on: :create
-  validates :author_name, presence: true, unless: :draft?, on: :create
   validates :idea_status, presence: true, unless: :draft?
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
   validate :assignee_can_moderate_project, unless: :draft?
