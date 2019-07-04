@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
+import { get } from 'lodash-es';
 
 // components
 import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
@@ -18,14 +19,15 @@ import Link from 'utils/cl-router/Link';
 import T from 'components/T';
 import { Top, Content, Container } from '.';
 
+// srvices
+import { deleteIdea } from 'services/ideas';
+
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-
-import { deleteIdea } from 'services/ideas';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -37,7 +39,6 @@ import messages from './messages';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
-import { get } from 'lodash-es';
 
 const StyledIdeaTitle = styled(IdeaTitle)`
   margin-bottom: 30px;
