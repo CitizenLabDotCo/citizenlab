@@ -28,7 +28,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // utils
-import { reverseGeocode } from 'utils/locationTools';
+import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
 
 // style
 import { media, colors } from 'utils/styleUtils';
@@ -240,6 +240,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = !isNilOrError(project) ? project.id : null;
+    const locationGeoJSON = !geojson_position_coordinates ? await convertToGeoJson(location) : geojson_position_coordinates;
     const locationDescription = (isString(location) && !isEmpty(location) ? location : null);
     const ideaObject: IIdeaAdd = {
       budget,
@@ -249,7 +250,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       body_multiloc: ideaDescription,
       topic_ids: topicIds,
       project_id: projectId,
-      location_point_geojson: geojson_position_coordinates,
+      location_point_geojson: locationGeoJSON,
       location_description: locationDescription
     };
 
