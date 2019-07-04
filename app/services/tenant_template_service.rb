@@ -11,11 +11,11 @@ class TenantTemplateService
     template_names
   end
 
-  def resolve_and_apply_template template_name, external_subfolder: 'release'
-    apply_template resolve_template(template_name, external_subfolder: external_subfolder)
+  def resolve_and_apply_template template_name, external_subfolder: 'release', validate: true
+    apply_template resolve_template(template_name, external_subfolder: external_subfolder), validate: validate
   end
 
-  def apply_template template
+  def apply_template template, validate: true
     start_of_day = Time.now.in_time_zone(Tenant.settings('core','timezone')).beginning_of_day
     obj_to_id_and_class = {}
     template['models'].each do |model_name, fields|
@@ -47,8 +47,13 @@ class TenantTemplateService
             model.send("#{field_name}=", field_value)
           end
         end
-        begin 
-          model.save!
+        begin
+          if validate
+            model.save!
+          else
+            model.save  # Might fail but runs before_validations
+            model.save(validate: false)
+          end
           ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
         rescue Exception => e
           raise e
