@@ -198,11 +198,9 @@ class IdeaEdit extends PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId, goBack } = this.props;
-    const { locale, titleMultiloc, descriptionMultiloc, imageId, imageFile } = this.state;
+    const { locale, titleMultiloc, descriptionMultiloc, imageId, imageFile, location } = this.state;
     const { title, description, selectedTopics, position, budget, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
-    const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : null);
-    const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
     const oldImageId = imageId;
     const oldImage = (imageFile && imageFile.length > 0 ? imageFile[0] : null);
     const oldImageBase64 = (oldImage ? oldImage.base64 : null);
@@ -211,6 +209,13 @@ class IdeaEdit extends PureComponent<Props, State> {
     const imageToAddPromise = (newImageBase64 && oldImageBase64 !== newImageBase64 ? addIdeaImage(ideaId, newImageBase64, 0) : Promise.resolve(null));
     const filesToAddPromises = ideaFiles.filter(file => !file.remote).map(file => addIdeaFile(ideaId, file.base64, file.name));
     const filesToRemovePromises = ideaFilesToRemove.filter(file => !!(file.remote && file.id)).map(file => deleteIdeaFile(ideaId, file.id as string));
+
+    const locationDiff = {};
+    if (isString(position) && !isEmpty(position) && position !== location) {
+      locationDiff['location_point_geojson'] = await convertToGeoJson(position);
+      locationDiff['location_description'] = position;
+    }
+
     const updateIdeaPromise = updateIdea(ideaId, {
       budget,
       title_multiloc: {
@@ -222,8 +227,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         [locale]: description
       },
       topic_ids: topicIds,
-      location_point_geojson: locationGeoJSON,
-      location_description: locationDescription
+      ...locationDiff
     });
 
     this.setState({ processing: true, submitError: false });
