@@ -198,8 +198,8 @@ class IdeaEdit extends PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId, goBack } = this.props;
-    const { locale, titleMultiloc, descriptionMultiloc, imageId, imageFile, location } = this.state;
-    const { title, description, selectedTopics, position, budget, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
+    const { locale, titleMultiloc, descriptionMultiloc, imageId, imageFile, location: savedLocation } = this.state;
+    const { title, description, selectedTopics, location: ideaFormLocation, budget, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const oldImageId = imageId;
     const oldImage = (imageFile && imageFile.length > 0 ? imageFile[0] : null);
@@ -211,9 +211,9 @@ class IdeaEdit extends PureComponent<Props, State> {
     const filesToRemovePromises = ideaFilesToRemove.filter(file => !!(file.remote && file.id)).map(file => deleteIdeaFile(ideaId, file.id as string));
 
     const locationDiff = {};
-    if (isString(position) && !isEmpty(position) && position !== location) {
-      locationDiff['location_point_geojson'] = await convertToGeoJson(position);
-      locationDiff['location_description'] = position;
+    if (isString(ideaFormLocation) && !isEmpty(ideaFormLocation) && ideaFormLocation !== savedLocation) {
+      locationDiff['location_point_geojson'] = await convertToGeoJson(ideaFormLocation);
+      locationDiff['location_description'] = ideaFormLocation;
     }
 
     const updateIdeaPromise = updateIdea(ideaId, {
@@ -289,7 +289,7 @@ class IdeaEdit extends PureComponent<Props, State> {
               description={description}
               selectedTopics={selectedTopics}
               budget={budget}
-              position={location}
+              location={location}
               imageFile={imageFile}
               onSubmit={this.handleIdeaFormOutput}
               remoteIdeaFiles={!isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null}

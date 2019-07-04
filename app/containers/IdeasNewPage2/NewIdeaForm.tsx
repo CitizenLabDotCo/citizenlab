@@ -81,7 +81,7 @@ interface GlobalState {
   description: string | null;
   selectedTopics: IOption[] | null;
   budget: number | null;
-  position: string;
+  location: string;
   imageFile: UploadFile[];
   submitError: boolean;
   processing: boolean;
@@ -100,7 +100,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       description: null,
       selectedTopics: null,
       budget: null,
-      position: '',
+      location: '',
       imageFile: [],
       submitError: false,
       processing: false
@@ -118,7 +118,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
         description,
         selectedTopics,
         budget,
-        position,
+        location,
         imageFile,
         submitError,
         processing
@@ -128,7 +128,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           description,
           selectedTopics,
           budget,
-          position,
+          location,
           imageFile,
           submitError,
           processing
@@ -149,16 +149,16 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { imageFile: oldImageFile } = await this.globalState.get();
-    const { title, description, selectedTopics, budget, position, imageFile, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
+    const { title, description, selectedTopics, budget, location, imageFile, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
     const oldBase64Image = (oldImageFile && oldImageFile.length > 0 && oldImageFile[0].base64 ? oldImageFile[0].base64 : null);
     const newBase64Image = (imageFile && imageFile.length > 0 && imageFile[0].base64 ? imageFile[0].base64 : null);
     const imageChanged = (oldBase64Image !== newBase64Image);
-    this.globalState.set({ title, description, selectedTopics, budget, position, imageFile, imageChanged, ideaFiles, ideaFilesToRemove });
+    this.globalState.set({ title, description, selectedTopics, budget, location, imageFile, imageChanged, ideaFiles, ideaFilesToRemove });
     this.props.onSubmit();
   }
 
   render() {
-    const { title, description, selectedTopics, budget, position, imageFile, submitError, processing } = this.state;
+    const { title, description, selectedTopics, budget, location, imageFile, submitError, processing } = this.state;
     const { projectId } = this.props;
     const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
@@ -174,7 +174,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           description={description}
           selectedTopics={selectedTopics}
           budget={budget}
-          position={position}
+          location={location}
           imageFile={imageFile}
           onSubmit={this.handleIdeaFormOutput}
         />
