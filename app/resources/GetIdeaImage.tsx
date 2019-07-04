@@ -7,8 +7,8 @@ import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
-  ideaId: string | null;
-  ideaImageId: string | null;
+  ideaId: string | null | undefined;
+  ideaImageId: string | null | undefined;
   resetOnChange?: boolean;
 }
 
