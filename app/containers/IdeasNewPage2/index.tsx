@@ -28,7 +28,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // utils
-import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
+import { reverseGeocode } from 'utils/locationTools';
 
 // style
 import { media, colors } from 'utils/styleUtils';
@@ -181,7 +181,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       selectedTopics: null,
       budget: null,
       position: '',
-      position_coordinates: null,
+      geojson_position_coordinates: null,
       submitError: false,
       processing: false,
       ideaId: null,
@@ -203,12 +203,20 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const localState$ = this.localState.observable;
 
     if (location.query.position) {
-      reverseGeocode(JSON.parse(location.query.position)).then((position) => {
+      const coordinates = JSON.parse(location.query.position);
+      const lat = coordinates[0];
+      const lng = coordinates[1];
+
+      reverseGeocode(coordinates).then((position) => {
         this.globalState.set({
+          // when we post an idea through the map,
+          // we want to keep the original coordinates for the position on the map
+          // and don't use the convertToGeoJson function
+          // position (variable) is an address and will possibly be an approximation
           position,
-          position_coordinates: {
+          geojson_position_coordinates: {
             type: 'Point',
-            coordinates: JSON.parse(location.query.position) as number[]
+            coordinates: [lng, lat] as number[]
           }
         });
       });
@@ -227,12 +235,11 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null) {
     const { locale, project } = this.props;
-    const { title, description, selectedTopics, budget, position, position_coordinates, ideaId } = await this.globalState.get();
+    const { title, description, selectedTopics, budget, position, geojson_position_coordinates, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
     const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = !isNilOrError(project) ? project.id : null;
-    const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : position_coordinates || null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
     const ideaObject: IIdeaAdd = {
       budget,
@@ -242,7 +249,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       body_multiloc: ideaDescription,
       topic_ids: topicIds,
       project_id: projectId,
-      location_point_geojson: locationGeoJSON,
+      location_point_geojson: geojson_position_coordinates,
       location_description: locationDescription
     };
 
