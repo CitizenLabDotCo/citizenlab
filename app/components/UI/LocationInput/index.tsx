@@ -123,10 +123,6 @@ export default class LocationInput extends PureComponent<Props, State> {
           renderSuggestion={AutocompleteItem}
           styles={styles}
           onSelect={this.handleSelect}
-          options={{
-            radius: 0,
-            types: ['geocode']
-          }}
         />
       </LocationInputWrapper>
     );
