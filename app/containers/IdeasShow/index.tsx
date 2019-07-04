@@ -14,7 +14,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
-import IdeaMap from './IdeaMap';
+import IdeaMap from './IdeaMapLoadable';
 import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';

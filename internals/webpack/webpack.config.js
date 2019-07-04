@@ -197,18 +197,31 @@ const config = {
       chunkFilename: '[name].[contenthash].chunk.css'
     }),
 
-    !isDev && new OfflinePlugin({
-      relativePaths: false,
-      publicPath: '/',
-      appShell: '/',
-      minify: false,
-      excludes: ['.htaccess'],
-      caches: {
-        main: [':rest:'],
-        additional: ['*.chunk.js'],
-      },
-      safeToUseOptionalCaches: true, // removes warning for about `additional` section usage
-    }),
+    // !isDev && new OfflinePlugin({
+    //   relativePaths: false,
+    //   publicPath: '/',
+    //   appShell: '/',
+    //   responseStrategy: 'cache-first',
+    //   excludes: [
+    //     '**/.*',
+    //     '**/*.map',
+    //     '**/*.gz',
+    //     '/__/**',
+    //     '/fragments/**',
+    //     '/widgets/**'
+    //   ],
+    //   caches: {
+    //     main: [':rest:'],
+    //     additional: ['*.chunk.js'],
+    //   },
+    //   ServiceWorker: {
+    //     prefetchRequest: {
+    //       mode: 'same-origin',
+    //       credentials: 'same-origin',
+    //     },
+    //   },
+    //   safeToUseOptionalCaches: true, // removes warning for about `additional` section usage
+    // }),
 
     !isDev && new webpack.HashedModuleIdsPlugin(),
 
