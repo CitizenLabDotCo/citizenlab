@@ -127,7 +127,7 @@ const MapWrapperInner = styled.div`
   height: 265px;
 `;
 
-interface Props {
+export interface Props {
   address: string;
   location: GeoJSON.Point;
   id: string;
@@ -139,7 +139,6 @@ interface State {
 }
 
 class IdeaMap extends PureComponent<Props, State> {
-
   constructor(props) {
     super(props);
     this.state = {
