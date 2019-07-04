@@ -174,7 +174,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           description={description}
           selectedTopics={selectedTopics}
           budget={budget}
-          location={location}
+          ideaLocation={location}
           imageFile={imageFile}
           onSubmit={this.handleIdeaFormOutput}
         />

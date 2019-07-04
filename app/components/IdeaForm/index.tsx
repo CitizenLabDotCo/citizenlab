@@ -95,7 +95,8 @@ interface Props {
   description: string | null;
   selectedTopics: IOption[] | null;
   budget: number | null;
-  location: string;
+  // not using the name location here because there's a prop inserted by react-router with the same name
+  ideaLocation: string;
   imageFile: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
@@ -212,15 +213,15 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   updateState = () => {
-    const { title, description, selectedTopics, location, budget, imageFile, remoteIdeaFiles } = this.props;
+    const { title, description, selectedTopics, ideaLocation, budget, imageFile, remoteIdeaFiles } = this.props;
     const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
 
     this.setState({
       selectedTopics,
       budget,
-      location,
       imageFile,
       ideaFiles,
+      location: ideaLocation,
       title: (title || ''),
       description: (description || '')
     });
@@ -401,9 +402,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       imageFile,
       titleError,
       descriptionError,
-      budgetError
+      budgetError,
+      ideaFiles
     } = this.state;
-    const { ideaFiles } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
 
     return (
