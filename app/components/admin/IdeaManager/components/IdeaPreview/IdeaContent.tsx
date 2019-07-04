@@ -242,7 +242,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
 
                 {ideaLocation && ideaAdress &&
                   <StyledIdeaMap
-                    adress={ideaAdress}
+                    address={ideaAdress}
                     location={ideaLocation}
                     id={idea.id}
                   />
