@@ -26,13 +26,13 @@ const RegisterLink = styled.span`
 `;
 
 export default class Unauthenticated extends React.PureComponent {
-  goToLogin = (event) => {
+  goToLogin = (event: React.FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
     clHistory.push('/sign-in');
   }
 
-  goToRegister = (event) => {
+  goToRegister = (event: React.FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
     clHistory.push('/sign-up');

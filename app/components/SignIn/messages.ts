@@ -51,7 +51,7 @@ export default defineMessages({
   },
   noAccount: {
     id: 'app.containers.SignIn.noAccount',
-    defaultMessage: `Don't have an account yet?`,
+    defaultMessage: "Don't have an account yet?",
   },
   signUp: {
     id: 'app.containers.SignIn.signUp',
