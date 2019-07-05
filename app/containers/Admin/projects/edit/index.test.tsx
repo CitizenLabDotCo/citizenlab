@@ -287,12 +287,12 @@ describe('<AdminProjectEdition />', () => {
       expect(linkPath).toEqual('/projects/continuousIdeation/ideas/new');
     });
 
-    it('doesn\'t you add an idea when you\'re not on the ideas tab', () => {
+    it('doesn\'t you add an idea when there\'s no ideation phase', () => {
       const surveys_enabled = true;
       const typeform_enabled = true;
       const phases = [];
-      const project = getMockProject('continuousIdeation', 'continuous', 'ideation');
-      const routerProps = getRouterProps('continuousIdeation', 'general');
+      const project = getMockProject('continuousInformation', 'continuous', 'information');
+      const routerProps = getRouterProps('continuousInformation', 'general');
 
       // passing in mock data to replace the HoCs
       // ignore the error, shallowWithIntl method passes in the intl object
