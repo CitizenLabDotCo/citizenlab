@@ -10,7 +10,7 @@ describe('/admin/users/ page', () => {
     cy.get('.e2e-user-table').find('.e2e-user-table-row');
   });
 
-  it('Has a functional search field, show the user correctly', () => {
+  it('Has a functional search field, shows the user correctly', () => {
     cy.get('.e2e-search-input').type('Sylvester');
     cy.wait(700);
     cy.get('.e2e-user-table').find('.e2e-user-table-row').should('have.length', 1);
@@ -19,7 +19,7 @@ describe('/admin/users/ page', () => {
     cy.get('.e2e-user-table').find('.e2e-user-table-row').find('input').should('have.attr', 'aria-checked').and('be', 'true');
   });
 
-  it('Lets you select users and reacts accordingly', () => {
+  it('Lets you select users then show selected controls', () => {
     cy.get('.export').contains('Export all users');
     cy.get('.e2e-selected-count').contains('0');
     cy.get('.e2e-user-table').find('.e2e-user-table-row').first().find('.e2e-checkbox').click();

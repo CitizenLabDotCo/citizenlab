@@ -489,7 +489,6 @@ export function apiCreatePhase(
 
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
-    console.log(description);
 
     return cy.request({
       headers: {
