@@ -190,7 +190,7 @@ class IdeaBox extends React.PureComponent<Props, State> {
         <Container className={this.props['className']}>
           {this.props.onClose &&
             <CloseButton onClick={this.props.onClose}>
-              <CloseIcon name="close3" />
+              <CloseIcon name="close" />
             </CloseButton>
           }
           <IdeaTitle>

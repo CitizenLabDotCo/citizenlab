@@ -149,6 +149,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
           <StyledButton
             style="text"
             onClick={this.toggleDropdown}
+            className="e2e-open-time-presets"
           >
             {activePreset ? activePreset.label : <FormattedMessage {...messages.customDateRange} />}
             <DropdownItemIcon name="dropdown" />
@@ -158,6 +159,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
             top="45px"
             opened={dropdownOpened}
             onClickOutside={this.toggleDropdown}
+            className="e2e-preset-items"
             content={
               <>
                 {this.presets.map(preset => (

@@ -225,7 +225,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
 
     return (
       <Menu>
-        <MenuInner>
+        <MenuInner id="sidebar">
           {navItems.map((route) => {
             if (route.id === 'emails') {
               return (

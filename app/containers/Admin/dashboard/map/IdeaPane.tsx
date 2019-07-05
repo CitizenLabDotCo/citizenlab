@@ -104,7 +104,7 @@ class IdeaPane extends PureComponent<Props, State> {
         <CloseButton
           onClick={onClose}
         >
-          <CloseIcon name="close3" />
+          <CloseIcon name="close" />
         </CloseButton >
 
         <Link to={`/ideas/${idea.attributes.slug}`} target="_blank" onClick={this.trackLinkClick}>

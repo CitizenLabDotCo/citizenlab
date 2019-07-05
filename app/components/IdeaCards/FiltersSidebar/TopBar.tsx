@@ -106,7 +106,7 @@ const TopBar = memo<Props>(({ className }) => {
       <TopBarInner>
         <Left>
           <CloseButton onClick={onClose}>
-            <CloseIcon name="close4" />
+            <CloseIcon name="close" />
           </CloseButton>
         </Left>
         <Center>

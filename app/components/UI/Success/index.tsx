@@ -73,14 +73,14 @@ type Props = {
   text: string | null;
   showIcon?: boolean;
   showBackground?: boolean;
+  className?: string;
 };
 
 type State = {};
 
 export default class Success extends React.PureComponent<Props, State> {
   render() {
-    const className = this.props['className'];
-    const { text } = this.props;
+    const { text, className } = this.props;
     let { showIcon, showBackground } = this.props;
     const timeout = 400;
 

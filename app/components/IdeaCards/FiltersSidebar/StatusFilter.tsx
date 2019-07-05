@@ -156,7 +156,7 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, ideasFilterC
                 {get(ideasFilterCounts, `idea_status_id.${ideaStatus.id}`, 0)}
               </Count>
             ) : (
-              <CloseIcon name="close2" />
+              <CloseIcon name="close" />
             )}
           </Status>
         ))}
