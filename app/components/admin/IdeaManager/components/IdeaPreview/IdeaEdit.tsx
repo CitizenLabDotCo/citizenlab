@@ -210,10 +210,10 @@ class IdeaEdit extends PureComponent<Props, State> {
     const filesToAddPromises = ideaFiles.filter(file => !file.remote).map(file => addIdeaFile(ideaId, file.base64, file.name));
     const filesToRemovePromises = ideaFilesToRemove.filter(file => !!(file.remote && file.id)).map(file => deleteIdeaFile(ideaId, file.id as string));
 
-    const locationDiff = {};
+    const addressDiff = {};
     if (isString(ideaFormAddress) && !isEmpty(ideaFormAddress) && ideaFormAddress !== savedAddress) {
-      locationDiff['location_point_geojson'] = await convertToGeoJson(ideaFormAddress);
-      locationDiff['location_description'] = ideaFormAddress;
+      addressDiff['location_point_geojson'] = await convertToGeoJson(ideaFormAddress);
+      addressDiff['location_description'] = ideaFormAddress;
     }
 
     const updateIdeaPromise = updateIdea(ideaId, {
@@ -227,7 +227,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         [locale]: description
       },
       topic_ids: topicIds,
-      ...locationDiff
+      ...addressDiff
     });
 
     this.setState({ processing: true, submitError: false });
