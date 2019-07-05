@@ -9,20 +9,25 @@ import InputMultiloc from 'components/UI/InputMultiloc';
 import { Multiloc, Locale, UploadFile } from 'typings';
 import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import LocationInput from 'components/UI/LocationInput';
+import ImageDropzone from 'components/UI/ImageDropzone';
+import FileUploader from 'components/UI/FileUploader';
 
 // intl
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { IMessageInfo, injectIntl } from 'utils/cl-intl';
-import ImageDropzone from 'components/UI/ImageDropzone';
 
-export interface FormValues {
+export interface SimpleFormValues {
   title_multiloc: Multiloc | undefined | null;
   body_multiloc: Multiloc | undefined | null;
-  topics: string[];
-  position: string | undefined | null; // undefined initially, set to null to remove position in the API
+  topic_ids: string[];
+  position: string | undefined | null;
+}
+
+export interface FormValues extends SimpleFormValues {
   banner: UploadFile | undefined | null;
   image: UploadFile | undefined | null;
+  files: UploadFile[];
 }
 
 export interface FormProps {
@@ -39,6 +44,8 @@ interface Props extends FormValues, FormProps {
   onChangePosition: (newValue: string) => void;
   onChangeBanner: (newValue: UploadFile | null) => void;
   onChangeImage: (newValue: UploadFile | null) => void;
+  onAddFile: (newValue: UploadFile) => void;
+  onRemoveFile: (newValue: UploadFile) => void;
   locale: Locale;
 }
 
@@ -60,8 +67,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     };
   }
   static titleMinLength = 10;
-  static bodyMinLength = 20;
-  static requiredFields = ['title_multiloc', 'body_multiloc', 'topics'];
+  static bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 500;
+  static requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids', 'image'];
 
   componentDidMount() {
     const errors = {};
@@ -92,36 +99,45 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       }
       return undefined;
     },
-    topics: () => {
-      const { topics } = this.props;
-      if (topics.length === 0) {
+    topic_ids: () => {
+      const { topic_ids } = this.props;
+      if (topic_ids.length === 0) {
         return { message: messages.topicEmptyError };
+      }
+      return undefined;
+    },
+    image: () => {
+      const { image } = this.props;
+      if (!image) {
+        return { message: messages.imageEmptyError };
       }
       return undefined;
     },
   };
 
   onBlur = (fieldName: string) => () => {
-    const touched = Object.assign({}, this.state.touched);
-    touched[fieldName] = true;
-    const errors = Object.assign({}, this.state.errors);
-    errors[fieldName] = get(this.validations, fieldName, () => undefined)();
-    this.setState({ touched, errors });
-    this.props.onSave();
+    // making sure the props are updated before validation and save.
+    setTimeout(() => {
+      const touched = Object.assign({}, this.state.touched);
+      touched[fieldName] = true;
+      const errors = Object.assign({}, this.state.errors);
+      errors[fieldName] = get(this.validations, fieldName, () => undefined)();
+      this.setState({ touched, errors });
+      this.props.onSave();
+    }, 5);
   }
 
-  changeAndSaveTopics = (topics) => {
-    this.props.onChangeTopics(topics);
-    setTimeout(this.onBlur('topics'), 5);
+  changeAndSaveTopics = (topic_ids) => {
+    this.props.onChangeTopics(topic_ids);
+    this.onBlur('topic_ids')();
   }
-
   changeAndSaveBanner = (banner) => {
     this.props.onChangeBanner(banner);
-    setTimeout(this.onBlur('banner'), 5);
+    this.onBlur('banner')();
   }
   changeAndSaveImage = (image) => {
     this.props.onChangeImage(image);
-    setTimeout(this.onBlur('image'), 5);
+    this.onBlur('image')();
   }
 
   render() {
@@ -132,11 +148,14 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       onChangeTitle,
       body_multiloc,
       onChangeBody,
-      topics,
+      topic_ids,
       position,
       onChangePosition,
       banner,
       image,
+      files,
+      onAddFile,
+      onRemoveFile,
       intl: { formatMessage }
     } = this.props;
 
@@ -159,7 +178,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 valueMultiloc={title_multiloc || {}}
                 onChange={onChangeTitle}
                 onBlur={this.onBlur('title_multiloc')}
-                // required
                 shownLocale={locale}
               />
             </FormLabel>
@@ -181,7 +199,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 noVideos
                 noAlign
                 onBlur={this.onBlur('body_multiloc')}
-                // required TODO (accessibility)
               />
             </FormLabel>
             {touched.body_multiloc
@@ -202,12 +219,12 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <TopicsPicker
               id="field-topic-multiple-picker"
               max={2}
-              value={topics}
+              value={topic_ids}
               onChange={this.changeAndSaveTopics}
             />
-            {touched.topics
-            && errors.topics
-            && <FormError message={errors.topics.message} />}
+            {touched.topic_ids
+            && errors.topic_ids
+            && <FormError message={errors.topic_ids.message} />}
           </SectionField>
           <SectionField>
             <FormLabel
@@ -247,7 +264,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.imageUploadLabel}
               subtextMessage={messages.imageUploadLabelSubtext}
-              optional
             >
               <ImageDropzone
                 id="idea-img-dropzone"
@@ -257,6 +273,18 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onChange={this.changeAndSaveImage}
               />
             </FormLabel>
+          </SectionField>
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.fileUploadLabel}
+              subtextMessage={messages.fileUploadLabelSubtext}
+              optional
+            />
+              <FileUploader
+                onFileAdd={onAddFile}
+                onFileRemove={onRemoveFile}
+                files={files}
+              />
           </SectionField>
         </FormSection>
         <FormSubmitFooter
