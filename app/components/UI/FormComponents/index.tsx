@@ -75,8 +75,8 @@ export const FormSubtextStyled = styled.span`
 export const Spacer = styled.div`
   height: 12px;
 `;
-const OptionalText = styled.span`
-  font-weight: 500;
+const OptionalText: any = styled.span`
+  font-weight: ${(props) => (props as any).thin ? 400 : 500};
 `;
 
 interface FormLabelGenericProps {
@@ -114,7 +114,7 @@ export const FormLabel = memo(({
   <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
     <FormattedMessage {...labelMessage} values={labelMessageValues} />
     {optional &&
-      <OptionalText>
+      <OptionalText thin={thin}>
         {' ('}
         <FormattedMessage {...messages.optional} />
         {')'}
@@ -146,10 +146,18 @@ export const FormLabelValue = memo(({
   className,
   hidden,
   thin,
-  noSpace
+  noSpace,
+  optional
 }: FormLabelValueProps) => (
   <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
     {labelValue}
+    {optional &&
+      <OptionalText thin={thin}>
+        {' ('}
+        <FormattedMessage {...messages.optional} />
+        {')'}
+      </OptionalText>
+    }
     {subtextValue &&
       <>
         <br/>
