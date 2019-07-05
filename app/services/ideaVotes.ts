@@ -23,8 +23,17 @@ export interface IIdeaVoteData {
   };
 }
 
+interface ILinks {
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
+}
+
 export interface IIdeaVotes {
   data: IIdeaVoteData[];
+  links: ILinks;
 }
 
 export interface IIdeaVote {

@@ -23,8 +23,17 @@ export interface ICommentVoteData {
   };
 }
 
+interface ILinks {
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
+}
+
 export interface ICommentVotes {
   data: ICommentVoteData[];
+  links: ILinks;
 }
 
 export interface ICommentVote {
