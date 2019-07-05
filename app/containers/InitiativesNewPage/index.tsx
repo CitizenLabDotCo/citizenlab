@@ -136,6 +136,23 @@ class InitiativesNewPage extends React.PureComponent<Props, State> {
     super(props);
   }
 
+  componentDidMount() {
+    const { authUser } = this.props;
+
+    if (authUser === null) {
+      this.redirectToSignUpPage();
+    }
+  }
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.authUser !== this.props.authUser && this.props.authUser === null) {
+      this.redirectToSignUpPage();
+    }
+  }
+
+  redirectToSignUpPage = () => {
+    clHistory.push('/sign-up');
+  }
+
   goBack = () => {
     clHistory.goBack();
   }
