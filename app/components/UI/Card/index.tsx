@@ -29,8 +29,11 @@ const Container = styled(Link)`
 
 const Header = styled.div`
   width: 100%;
-  height: 115px;
   position: relative;
+`;
+
+const ImageWrapper = styled.div`
+  height: 115px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,6 +44,15 @@ const Header = styled.div`
 
 const Image = styled(LazyImage)`
   width: 100%;
+`;
+
+const HeaderContentWrapper = styled.div`
+  &.absolutePositioning {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
 `;
 
 const Title = styled.h3`
@@ -59,16 +71,13 @@ const Title = styled.h3`
   margin: 0;
   margin-bottom: 13px;
   padding: 20px;
+  padding-bottom: 0px;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-
-  /* &.extraTopPadding {
-    padding-top: 75px;
-  } */
 `;
 
-const Content = styled.div`
+const Body = styled.div`
   flex-grow: 1;
   padding-left: 20px;
   padding-right: 20px;
@@ -85,14 +94,15 @@ interface Props {
   to: string;
   imageUrl?: string | null;
   imageAltText?: string | null;
+  header?: JSX.Element;
   title: string;
-  content?: JSX.Element;
+  body?: JSX.Element;
   footer?: JSX.Element;
   onClick: (event: MouseEvent<HTMLDivElement>) => void;
   className?: string;
 }
 
-const Card = memo<Props>(({ to, onClick, imageUrl, imageAltText, title, content, footer, className }) => {
+const Card = memo<Props>(({ to, onClick, imageUrl, imageAltText, header, title, body, footer, className }) => {
   return (
     <Container
       onClick={onClick}
@@ -100,25 +110,29 @@ const Card = memo<Props>(({ to, onClick, imageUrl, imageAltText, title, content,
       className={`${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
     >
       <>
-        {imageUrl &&
-          <Header>
-            <Image src={imageUrl} alt={imageAltText || ''} />
-          </Header>
-        }
+        <Header>
+          {imageUrl &&
+            <ImageWrapper>
+              <Image src={imageUrl} alt={imageAltText || ''} />
+            </ImageWrapper>
+          }
+
+          <HeaderContentWrapper className={imageUrl ? 'absolutePositioning' : ''}>
+            {header}
+          </HeaderContentWrapper>
+        </Header>
 
         <Title>
           {title}
         </Title>
 
-        <Content>
-          {content}
-        </Content>
+        <Body>
+          {body}
+        </Body>
 
-        {footer &&
-          <Footer>
-            {footer}
-          </Footer>
-        }
+        <Footer>
+          {footer}
+        </Footer>
       </>
     </Container>
   );

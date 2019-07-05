@@ -5,7 +5,6 @@ import { adopt } from 'react-adopt';
 
 // components
 import Card from 'components/UI/Card';
-import CardImage from 'components/UI/Card/CardImage';
 import Icon from 'components/UI/Icon';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import BottomBounceUp from './BottomBounceUp';
@@ -47,9 +46,9 @@ const IdeaBudget = styled.div`
   line-height: ${fontSizes.base}px;
   font-weight: 500;
   padding: 10px 12px;
-  position: absolute;
-  top: 15px;
-  left: 19px;
+  margin-top: 15px;
+  margin-left: 19px;
+  display: inline-block;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.clRed2};
   background: rgba(255, 255, 255, 0.9);
@@ -134,7 +133,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
     };
   }
 
-  onCardClick = (event: FormEvent<any>) => {
+  onCardClick = (event: FormEvent) => {
     event.preventDefault();
 
     const { idea } = this.props;
@@ -191,20 +190,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
         votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'
       ].filter(item => isString(item) && item !== '').join(' ');
 
-      // {participationMethod === 'budgeting' && ideaBudget &&
-      //   <IdeaBudget>
-      //     <FormattedNumber
-      //       value={ideaBudget}
-      //       style="currency"
-      //       currency={tenantCurrency}
-      //       minimumFractionDigits={0}
-      //       maximumFractionDigits={0}
-      //     />
-      //   </IdeaBudget>
-      // }
-
-      // (ideaImageUrl === null && participationMethod === 'budgeting' && ideaBudget) ? 'extraTopPadding' : ''
-
       return (
         <Card
           className={className}
@@ -212,8 +197,23 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
           to={`/ideas/${idea.attributes.slug}`}
           imageUrl={ideaImageUrl}
           imageAltText={ideaImageAltText}
+          header={
+            <>
+              {participationMethod === 'budgeting' && ideaBudget &&
+                <IdeaBudget>
+                  <FormattedNumber
+                    value={ideaBudget}
+                    style="currency"
+                    currency={tenantCurrency}
+                    minimumFractionDigits={0}
+                    maximumFractionDigits={0}
+                  />
+                </IdeaBudget>
+              }
+            </>
+          }
           title={ideaTitle}
-          content={
+          body={
             <StyledAuthor
               authorId={ideaAuthorId}
               message={messages.byAuthorName}
