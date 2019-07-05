@@ -27,7 +27,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
@@ -350,19 +350,8 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
 }
 function renderLabel(id, label, required, descriptionJSX) {
   if (label && label.length > 0) {
-    const fullLabel = (
-      <>
-        {label}
-        {!required &&
-          <>
-            <span>&nbsp;</span>
-            <FormattedMessage {...messages.optional} />
-          </>
-        }
-      </>
-    );
     return (
-      <FormLabelValue thin htmlFor={id} labelValue={fullLabel} subtextValue={descriptionJSX}/>
+      <FormLabelValue thin htmlFor={id} labelValue={label} optional={!required} subtextValue={descriptionJSX}/>
     );
   }
   return;
