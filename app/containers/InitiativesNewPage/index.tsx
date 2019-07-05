@@ -181,7 +181,6 @@ class InitiativesNewPage extends React.PureComponent<Props, State> {
         <ContentContainer mode="page">
           <TwoColumns>
             <InitiativesFormWrapper
-              userId={authUser.id}
               locale={locale}
             />
             <TipsContainer>
