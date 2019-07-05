@@ -525,8 +525,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       // If you're not an admin/mod, statusId can be null
       const statusId: string | null = get(idea, 'relationships.idea_status.data.id', null);
       const ideaImageLarge: string | null = get(ideaImages, '[0].attributes.versions.large', null);
-      const ideaLocation = (idea.attributes.location_point_geojson || null);
-      const ideaAdress = (idea.attributes.location_description || null);
+      const ideaGeoPosition = (idea.attributes.location_point_geojson || null);
+      const ideaAddress = (idea.attributes.location_description || null);
       const projectId = idea.relationships.project.data.id;
       const topicIds = (idea.relationships.topics.data ? idea.relationships.topics.data.map(item => item.id) : []);
       const ideaUrl = location.href;
@@ -611,10 +611,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   />
                 }
 
-                {ideaLocation && ideaAdress &&
+                {ideaGeoPosition && ideaAddress &&
                   <StyledIdeaMap
-                    adress={ideaAdress}
-                    location={ideaLocation}
+                    address={ideaAddress}
+                    position={ideaGeoPosition}
                     id={ideaId}
                   />
                 }

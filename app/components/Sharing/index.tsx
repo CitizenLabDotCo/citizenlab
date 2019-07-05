@@ -33,7 +33,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.h3`
+const Title: any = styled.h3`
   font-size: ${fontSizes.large}px;
   font-weight: 500;
   color: ${({ theme }) => theme.colorText};
@@ -42,6 +42,7 @@ const Title = styled.h3`
   padding: 0;
   margin: 0;
   margin-bottom: 18px;
+  justify-content: ${(props: any) => props.location === 'modal' ? 'center' : 'start'};
 `;
 
 const ShareIcon = styled(Icon)`
@@ -278,7 +279,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
 
       return (
         <Container className={className}>
-          <Title>
+          <Title location={location}>
             <ShareIcon name="share" />
             {context === 'idea' && <FormattedMessage {...messages.shareThisIdea} />}
             {context === 'project' && <FormattedMessage {...messages.shareThisProject} />}
