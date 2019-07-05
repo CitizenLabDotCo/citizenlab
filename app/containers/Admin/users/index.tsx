@@ -133,7 +133,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
         />
 
         <Wrapper>
-          <LeftPanel onCreateGroup={this.openGroupCreationModal} />
+          <LeftPanel className="e2e-left-panel" onCreateGroup={this.openGroupCreationModal} />
           <ChildWrapper>{this.props.children}</ChildWrapper>
         </Wrapper>
 
