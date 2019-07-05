@@ -13,8 +13,8 @@ export interface IIdeasNewPageGlobalState {
   description: string | null;
   selectedTopics: IOption[] | null;
   budget: number | null;
-  position: string;
-  position_coordinates: GeoJSON.Point | null;
+  address: string;
+  geojson_position_coordinates: GeoJSON.Point | null;
   submitError: boolean;
   processing: boolean;
   ideaId: string | null;
