@@ -24,18 +24,18 @@ describe('Idea show page actions', () => {
     });
 
     it('saves a new official feedback, shows it and deletes it', () => {
-      const offifialFeedback = randomString(30);
+      const officialFeedback = randomString(30);
       // input
-      cy.get('input').first().type(offifialFeedback);
-      cy.get('textarea').first().type(offifialFeedback);
+      cy.get('input').first().type(officialFeedback);
+      cy.get('textarea').first().type(officialFeedback);
 
       // save
       cy.get('.e2e-submit-wrapper-button').click();
       cy.get('.e2e-submit-wrapper-button').should('have.class', 'disabled');
       cy.wait(1000);
 
-      cy.get('.e2e-official-feedback-post').contains(offifialFeedback);
-      cy.get('.e2e-official-feedback-post').contains(offifialFeedback);
+      cy.get('.e2e-official-feedback-post').contains(officialFeedback);
+      cy.get('.e2e-official-feedback-post').contains(officialFeedback);
 
       // delete
       cy.get('.e2e-official-feedback-post').find('button').first().click();

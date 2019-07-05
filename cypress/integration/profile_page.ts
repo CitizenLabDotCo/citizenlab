@@ -55,7 +55,6 @@ describe('Profile Page', () => {
   after(() => {
     cy.apiRemoveComment(commentId);
     cy.apiRemoveIdea(ideaId);
-    console.log(cy.apiRemoveUser);
     cy.apiRemoveUser(userId);
   });
 });
