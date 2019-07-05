@@ -55,45 +55,8 @@ const IdeaBudget = styled.div`
   background: rgba(255, 255, 255, 0.9);
 `;
 
-const Header = styled.div`
-  flex-grow: 1;
-  padding: 20px;
-  padding-top: 18px;
-
-  &.extraTopPadding {
-    padding-top: 75px;
-  }
-`;
-
-const Title = styled.h3`
-  color: #333;
-  max-width: 400px;
-  font-size: ${fontSizes.xl}px;
-  font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-height: 26px;
-  max-height: 78px;
-  margin: 0;
-  margin-bottom: 13px;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-`;
-
 const StyledAuthor = styled(Author)`
   margin-left: -4px;
-`;
-
-const Footer = styled.div`
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
 `;
 
 const FooterInner = styled.div`
@@ -239,6 +202,8 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
       //     />
       //   </IdeaBudget>
       // }
+
+      // (ideaImageUrl === null && participationMethod === 'budgeting' && ideaBudget) ? 'extraTopPadding' : ''
 
       return (
         <Card
