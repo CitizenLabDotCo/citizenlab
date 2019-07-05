@@ -97,11 +97,18 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.imageUploadLabelSubtext',
     defaultMessage: 'This image is shown on top of your initiative’s page',
   },
-  // TODO
-  // fileUploadLabel: {
-  //   id: 'app.container.InitiativeForm.fileUploadLabel',
-  //   defaultMessage: 'Add files to your initiative',
-  // }
+  imageEmptyError: {
+    id: 'app.components.InitiativeForm.imageEmptyError',
+    defaultMessage: 'Please provide an image',
+  },
+  fileUploadLabel: {
+    id: 'app.container.InitiativeForm.fileUploadLabel',
+    defaultMessage: 'Add files to your initiative',
+  },
+  fileUploadLabelSubtext: {
+    id: 'app.container.InitiativeForm.fileUploadLabelSubtext',
+    defaultMessage: 'Upload files to give others more information and context',
+  },
   publishButton: {
     id: 'app.components.InitiativeForm.publishButton',
     defaultMessage: 'Publish your initiative',
