@@ -209,10 +209,9 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
       reverseGeocode(coordinates).then((address) => {
         this.globalState.set({
-          // when we post an idea through the map,
-          // we want to keep the original coordinates for the position on the map
-          // and don't use the convertToGeoJson function
-          // position (variable) is an address and will possibly be an approximation
+          // When an idea is posted through the map, we Google Maps gets an approximate address,
+          // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
+          // and doesn't readjust together with the address correction/approximation
           address,
           geojson_position_coordinates: {
             type: 'Point',
@@ -240,7 +239,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = !isNilOrError(project) ? project.id : null;
-    const locationGeoJSON = !geojson_position_coordinates ? await convertToGeoJson(address) : geojson_position_coordinates;
+    const locationGeoJSON = geojson_position_coordinates || await convertToGeoJson(address);
     const locationDescription = (isString(address) && !isEmpty(address) ? address : null);
     const ideaObject: IIdeaAdd = {
       budget,
