@@ -1,6 +1,7 @@
 declare global {
   namespace Cypress {
     interface Chainable {
+      unregisterServiceWorkers: typeof unregisterServiceWorkers;
       login: typeof login;
       apiLogin: typeof apiLogin;
       apiSignup: typeof apiSignup;
@@ -9,6 +10,7 @@ declare global {
       logout: typeof logout;
       signup: typeof signup;
       acceptCookies: typeof acceptCookies;
+      getIdeaById: typeof getIdeaById;
       getProjectBySlug: typeof getProjectBySlug;
       getUserBySlug: typeof getUserBySlug;
       getAuthUser: typeof getAuthUser;
@@ -40,6 +42,16 @@ export function randomString(length: number = 15) {
 
 export function randomEmail() {
   return `${Math.random().toString(36).substr(2, 12).toLowerCase()}@${Math.random().toString(36).substr(2, 12).toLowerCase()}.com`;
+}
+
+export function unregisterServiceWorkers() {
+  if (navigator.serviceWorker) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister();
+      });
+    });
+  }
 }
 
 export function login(email: string, password: string) {
@@ -175,6 +187,16 @@ export function signup(firstName: string, lastName: string, email: string, passw
 export function acceptCookies() {
   cy.get('#e2e-cookie-banner').as('cookieBanner');
   cy.get('@cookieBanner').find('.e2e-accept-cookies-btn').click();
+}
+
+export function getIdeaById(ideaId: string) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'GET',
+    url: `web_api/v1/ideas/${ideaId}`
+  });
 }
 
 export function getProjectBySlug(projectSlug: string) {
@@ -385,7 +407,9 @@ export function apiCreateProject(
   descriptionPreview: string,
   description: string,
   publicationStatus: 'draft' | 'published' | 'archived' = 'published',
-  assigneeId?: string
+  assigneeId?: string,
+  surveyUrl?: string,
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms'
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
@@ -414,6 +438,9 @@ export function apiCreateProject(
             'nl-BE': description
           },
           default_assignee_id: assigneeId,
+          participation_method: surveyUrl ? 'survey' : undefined,
+          survey_embed_url: surveyUrl,
+          survey_service: surveyService,
         }
       }
     });
@@ -444,8 +471,22 @@ export function apiCreatePhase(
   canPost: boolean,
   canVote: boolean,
   canComment: boolean,
-  description?: string
+  description?: string,
+  surveyUrl?: string,
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms'
 ) {
+
+  /*
+  end_at: "2019-07-31"
+  participation_method: "survey"
+  start_at: "2019-06-01"
+  survey_embed_url: "https://citizenlabco.typeform.com/to/Yv6B7V"
+  survey_service: "typeform"
+  title_multiloc:
+  en-GB: "Survey phase"
+  nl-BE: "Survey phase"
+  */
+
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
     console.log(description);
@@ -469,7 +510,9 @@ export function apiCreatePhase(
           posting_enabled: canPost,
           voting_enabled: canVote,
           commenting_enabled: canComment,
-          description_multiloc: { 'en-GB': description }
+          description_multiloc: { 'en-GB': description },
+          survey_embed_url: surveyUrl,
+          survey_service: surveyService
         }
       }
     });
@@ -517,6 +560,7 @@ export function apiRemoveCustomField(fieldId: string) {
   });
 }
 
+Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('login', login);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);
@@ -525,6 +569,7 @@ Cypress.Commands.add('apiRemoveUser', apiRemoveUser);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('signup', signup);
 Cypress.Commands.add('acceptCookies', acceptCookies);
+Cypress.Commands.add('getIdeaById', getIdeaById);
 Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
 Cypress.Commands.add('getUserBySlug', getUserBySlug);
 Cypress.Commands.add('getAuthUser', getAuthUser);

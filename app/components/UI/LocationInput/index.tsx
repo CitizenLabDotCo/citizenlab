@@ -123,6 +123,7 @@ export default class LocationInput extends PureComponent<Props, State> {
           renderSuggestion={AutocompleteItem}
           styles={styles}
           onSelect={this.handleSelect}
+          googleCallbackName="myCallbackFunc"
         />
       </LocationInputWrapper>
     );

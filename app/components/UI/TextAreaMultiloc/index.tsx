@@ -145,7 +145,7 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
           {shownLocale
             ? this.renderOnce(shownLocale, 1, totalLocales)
             : currentTenantLocales.map((currentTenantLocale, index) => {
-              this.renderOnce(currentTenantLocale, index, totalLocales);
+              return this.renderOnce(currentTenantLocale, index, totalLocales);
           })}
         </Container>
       );

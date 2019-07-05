@@ -46,7 +46,6 @@ export function votesStream(ideaId: string, streamParams: IStreamParams | null =
 
 export async function addVote(ideaId: string, object: INewVoteProperties) {
   const response = await streams.add<IIdeaVote>(`${API_PATH}/ideas/${ideaId}/votes`, { vote: object });
-  console.log(response);
   return response;
 }
 

@@ -14,7 +14,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
-import IdeaMap from './IdeaMap';
+import IdeaMap from './IdeaMapLoadable';
 import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
@@ -671,7 +671,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
                   <MetaContent>
-                    {(showVoteControl || showBudgetControl) &&
+                    {(showVoteControl || showBudgetControl || statusId) &&
                       <ControlWrapper className="e2e-vote-controls-desktop">
                         {showVoteControl &&
                           <>
@@ -697,9 +697,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                           />
                         }
 
-                        <ControlWrapperHorizontalRule />
+                        {(showVoteControl || showBudgetControl) &&
+                          <ControlWrapperHorizontalRule />
+                        }
 
-                        {statusId && <IdeaStatus statusId={statusId} />}
+                        {statusId &&
+                          <IdeaStatus statusId={statusId} />
+                        }
                       </ControlWrapper>
                     }
 
