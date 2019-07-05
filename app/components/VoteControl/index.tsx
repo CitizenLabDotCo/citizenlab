@@ -62,6 +62,10 @@ const VoteIconContainer: any = styled.div`
   transition: all 60ms ease-out;
   will-change: transform;
 
+  ${(props: any) => !props.votingEnabled ? css`
+    margin-left: 5px;
+  ` : css``}
+
   ${(props: any) => props.size === '1' && props.votingEnabled ? css`
     width: 45px;
     height: 45px;
