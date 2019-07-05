@@ -27,7 +27,7 @@ const Container = styled(Link)`
   }
 `;
 
-const ImageWrapper = styled.div`
+const Header = styled.div`
   width: 100%;
   height: 115px;
   position: relative;
@@ -62,6 +62,10 @@ const Title = styled.h3`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+
+  /* &.extraTopPadding {
+    padding-top: 75px;
+  } */
 `;
 
 const Content = styled.div`
@@ -97,9 +101,9 @@ const Card = memo<Props>(({ to, onClick, imageUrl, imageAltText, title, content,
     >
       <>
         {imageUrl &&
-          <ImageWrapper>
+          <Header>
             <Image src={imageUrl} alt={imageAltText || ''} />
-          </ImageWrapper>
+          </Header>
         }
 
         <Title>
