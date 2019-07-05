@@ -50,7 +50,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: stretch;
 
-  @media (max-width: 1400px) {
+  @media (max-width: 1279px) {
     max-width: 1000px;
   }
 `;
@@ -88,7 +88,7 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
   align-items: center;
   justify-content: space-between;
   margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
-  margin-bottom: 15px;
+  margin-bottom: 22px;
 
   ${media.smallerThanMaxTablet`
     margin-right: 0;
@@ -181,6 +181,7 @@ const IdeaIcon = styled(Icon)`
 `;
 
 const EmptyMessage = styled.div`
+  max-width: 400px;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -220,13 +221,15 @@ const StyledIdeaCard = styled(IdeaCard)`
   margin-left: 13px;
   margin-right: 13px;
 
-  @media (max-width: 1400px) {
-    width: calc(100% * (1/2) - 26px);
+  @media (max-width: 1440px) and (min-width: 1279px)  {
+    width: calc(100% * (1/3) - 16px);
+    margin-left: 8px;
+    margin-right: 8px;
   }
 
-  ${media.smallerThanMaxTablet`
+  @media (max-width: 1279px) and (min-width: 768px)  {
     width: calc(100% * (1/2) - 26px);
-  `};
+  }
 
   ${media.smallerThanMinTablet`
     width: 100%;
@@ -244,26 +247,26 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   position: relative;
 `;
 
-const ClearAllIcon = styled(Icon)`
+const ClearFiltersIcon = styled(Icon)`
   flex:  0 0 16px;
   width: 16px;
   height: 16px;
   fill: ${colors.label};
-  margin-right: 6px;
+  margin-right: 5px;
   margin-top: -2px;
 `;
 
-const ClearAllText = styled.span`
+const ClearFiltersText = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: auto;
 `;
 
-const ClearAllButton = styled.button`
+const ClearFiltersButton = styled.button`
   height: 32px;
   position: absolute;
-  top: -41px;
+  top: -48px;
   right: 0px;
   display: flex;
   align-items: center;
@@ -272,11 +275,11 @@ const ClearAllButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    ${ClearAllIcon} {
+    ${ClearFiltersIcon} {
       fill: #000;
     }
 
-    ${ClearAllText} {
+    ${ClearFiltersText} {
       color: #000;
     }
   }
@@ -575,7 +578,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
               {!showMapView &&
                 <AboveContentRight>
-                  <SelectSort onChange={this.handleSortOnChange} />
+                  <SelectSort
+                    onChange={this.handleSortOnChange}
+                    alignment="right"
+                  />
                 </AboveContentRight>
               }
             </AboveContent>
@@ -648,13 +654,14 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   filterColumnWidth={filterColumnWidth}
                 >
                   {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
-                    <ClearAllButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnClear}>
-                      {/* <ClearAllIcon name="close" /> */}
-                      <ClearAllText>
+                    <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnClear}>
+                      {/* <ClearFiltersIcon name="close" /> */}
+                      <ClearFiltersText>
                         <FormattedMessage {...messages.clearAll} />
-                      </ClearAllText>
-                    </ClearAllButton>
+                      </ClearFiltersText>
+                    </ClearFiltersButton>
                   }
+
                   <FiltersSidebar
                     selectedIdeaFilters={selectedIdeaFilters}
                     onChange={this.handleIdeaFiltersOnChange}

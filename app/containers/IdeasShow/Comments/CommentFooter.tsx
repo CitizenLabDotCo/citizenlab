@@ -25,7 +25,7 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { FormattedRelative, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // style
@@ -96,21 +96,6 @@ const Right = styled.div`
 
 const StyledCommentsMoreActions = styled(CommentsMoreActions)`
   margin-right: -6px;
-`;
-
-const TimeAgo = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.small}px;
-  line-height: normal;
-  font-weight: 400;
-
-  &.hasLeftMargin {
-    margin-left: 22px;
-  }
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
 `;
 
 export interface ICommentReplyClicked {
@@ -215,9 +200,8 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (!isNilOrError(idea) && !isNilOrError(comment) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
-      const createdAt = comment.attributes.created_at;
       const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
-      const commentVotingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.comment_voting, 'enabled', false) : false);
+      const commentVotingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.voting, 'enabled', false) : false);
       const upvoteCount = comment.attributes.upvotes_count;
       const showVoteComponent = (commentVotingEnabled || (!commentVotingEnabled && upvoteCount > 0));
       const showReplyButton = !!(authUser && commentingEnabled && canReply);
@@ -268,12 +252,6 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
               onCommentEdit={this.onCommentEdit}
               ariaLabel={this.moreActionsAriaLabel}
             />
-
-            {commentType === 'child' &&
-              <TimeAgo className={authUser ? 'hasLeftMargin' : ''}>
-                <FormattedRelative value={createdAt} />
-              </TimeAgo>
-            }
           </Right>
         </Container>
       );

@@ -395,7 +395,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
     return (
       <Form id="idea-form" className={className}>
-        <FormElement name="titleInput">
+        <FormElement name="titleInput" id="e2e-idea-title-input">
           <Label value={<FormattedMessage {...messages.titleLabel} />} htmlFor="title" />
           <Input
             id="title"
@@ -409,12 +409,11 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           />
         </FormElement>
 
-        <FormElement name="descriptionInput">
+        <FormElement name="descriptionInput" id="e2e-idea-description-input">
           <Label value={<FormattedMessage {...messages.descriptionLabel} />} htmlFor="editor" />
           <QuillEditor
             id="editor"
-            noImages
-            noVideos
+            noImages={true}
             value={description}
             placeholder={formatMessage(messages.descriptionPlaceholder)}
             onChange={this.handleDescriptionOnChange}
@@ -454,7 +453,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           </label>
         </FormElement>
 
-        <FormElement>
+        <FormElement id="e2e-idea-image-upload">
           <Label value={<FormattedMessage {...messages.imageUploadLabel} />} />
           <label htmlFor="idea-img-dropzone">
             <HiddenLabel>
@@ -473,6 +472,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             />
           </label>
         </FormElement>
+
         {pbContext &&
           <FeatureFlag name="participatory_budgeting">
             <HasPermission
@@ -494,7 +494,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           </FeatureFlag>
         }
 
-        <FormElement>
+        <FormElement id="e2e-idea-file-upload">
           <Label>
             <FormattedMessage {...messages.fileUploadLabel} />
           </Label>

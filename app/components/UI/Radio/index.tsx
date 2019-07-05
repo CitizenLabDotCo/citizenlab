@@ -10,20 +10,21 @@ const Wrapper = styled.label`
   cursor: pointer;
 `;
 
-export const CustomRadio: any = styled.div`
+export const CustomRadio = styled.button`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  margin: 0;
   margin-right: 10px;
   position: relative;
   background: #fff;
   border-radius: 50%;
   border: 1px solid #a6a6a6;
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.15);
-  outline: none;
 
   &:not(.disabled) {
     cursor: pointer;
@@ -76,10 +77,13 @@ export interface Props {
 
 export default class Radio extends PureComponent<Props> {
 
-  handleKeyPress = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      this.handleChange();
-    }
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
+  handleClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    this.handleChange();
   }
 
   handleChange = () => {
@@ -105,8 +109,8 @@ export default class Radio extends PureComponent<Props> {
           onChange={this.handleChange}
         />
         <CustomRadio
-          tabIndex={0}
-          onKeyPress={this.handleKeyPress}
+          onMouseDown={this.removeFocus}
+          onClick={this.handleClick}
           className={`${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}`}
           disabled={disabled}
         >

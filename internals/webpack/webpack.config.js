@@ -4,13 +4,21 @@ const isProd = process.env.NODE_ENV === 'production';
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
+const OfflinePlugin = require('offline-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
+const cssnano = require('cssnano');
+const appLocalesMomentPairs = require(path.join(process.cwd(), 'app/containers/App/constants')).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
+const currentYear = new Date().getFullYear();
 
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -21,34 +29,8 @@ const config = {
     path: path.resolve(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
-    filename: isDev ? '[name].bundle.js' : '[name].[contenthash].bundle.js',
-    sourceMapFilename: isDev ? '[name].map' : '[name].[contenthash].map',
+    filename: isDev ? '[name].js' : '[name].[contenthash].js',
     chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js'
-  },
-
-  optimization: {
-    runtimeChunk: false,
-    splitChunks: {
-      chunks: 'async',
-      minSize: 30000,
-      maxSize: 200000,
-      minChunks: 1,
-      maxAsyncRequests: 7,
-      maxInitialRequests: 5,
-      automaticNameDelimiter: '~',
-      name: true,
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10
-        },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true
-        }
-      }
-    }
   },
 
   mode: isDev ? 'development' : 'production',
@@ -66,6 +48,43 @@ const config = {
       '/auth/': `http://${API_HOST}:${API_PORT}`,
       '/widgets/': `http://${API_HOST}:3200`,
     },
+  },
+
+  ...!isDev && {
+    optimization: {
+      runtimeChunk: 'single',
+      splitChunks: {
+        chunks: 'all',
+      },
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true,
+          terserOptions: {
+            warnings: false,
+            compress: {
+              comparisons: false,
+            },
+            parse: {},
+            mangle: true,
+            output: {
+              comments: false,
+              ascii_only: true,
+            },
+          },
+        }),
+        new OptimizeCSSAssetsPlugin({
+          assetNameRegExp: /\.css$/g,
+          cssProcessor: cssnano,
+          cssProcessorPluginOptions: {
+            preset: ['default', { discardComments: { removeAll: true } }],
+          },
+          canPrint: true
+        })
+      ]
+    }
   },
 
   module: {
@@ -103,7 +122,7 @@ const config = {
         test: /\.(eot|ttf|woff|woff2)$/,
         loader: 'file-loader',
         options: {
-          name: isDev ? '[name].[ext]' : '[name].[contenthash].[ext]'
+          name: '[name].[ext]',
         }
       },
       {
@@ -136,8 +155,6 @@ const config = {
       },
     }),
 
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-
     new ForkTsCheckerWebpackPlugin({
       checkSyntacticErrors: true,
       tsconfig: path.join(process.cwd(), 'app/tsconfig.json'),
@@ -147,32 +164,79 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html'
+      template: 'app/index.html',
+      inject: true,
+      minify: !isDev ? {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      } : false
     }),
 
-    new webpack.HashedModuleIdsPlugin(),
+    // new BundleAnalyzerPlugin(),
 
-    new MiniCssExtractPlugin({
+    isDev && new webpack.ProgressPlugin(),
+
+    // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
+    !isDev && new MomentLocalesPlugin({
+      localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))]
+    }),
+
+    !isDev && new MomentTimezoneDataPlugin({
+      startYear: 2012,
+      endYear: currentYear + 10,
+    }),
+
+    !isDev && new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
       chunkFilename: '[name].[contenthash].chunk.css'
     }),
 
-    new BundleAnalyzerPlugin(),
-  ],
+    // !isDev && new OfflinePlugin({
+    //   relativePaths: false,
+    //   publicPath: '/',
+    //   appShell: '/',
+    //   responseStrategy: 'cache-first',
+    //   excludes: [
+    //     '**/.*',
+    //     '**/*.map',
+    //     '**/*.gz',
+    //     '/__/**',
+    //     '/fragments/**',
+    //     '/widgets/**'
+    //   ],
+    //   caches: {
+    //     main: [':rest:'],
+    //     additional: ['*.chunk.js'],
+    //   },
+    //   ServiceWorker: {
+    //     prefetchRequest: {
+    //       mode: 'same-origin',
+    //       credentials: 'same-origin',
+    //     },
+    //   },
+    //   safeToUseOptionalCaches: true, // removes warning for about `additional` section usage
+    // }),
+
+    !isDev && new webpack.HashedModuleIdsPlugin(),
+
+    isProd && new SentryCliPlugin({
+      include: path.resolve(process.cwd(), 'build'),
+      release: process.env.CIRCLE_BUILD_NUM,
+    })
+  ].filter(Boolean),
 
   resolve: {
     modules: [path.resolve(process.cwd(), 'app'), 'node_modules'],
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
 };
-
-if (isDev) {
-  config.plugins.push(new webpack.ProgressPlugin());
-} else if (isProd) {
-  config.plugins.push(new SentryCliPlugin({
-    include: path.resolve(process.cwd(), 'build'),
-    release: process.env.CIRCLE_BUILD_NUM,
-  }));
-}
 
 module.exports = config;
