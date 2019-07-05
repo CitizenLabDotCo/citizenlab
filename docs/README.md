@@ -3,6 +3,7 @@
 ## 2019-07-05
 
 ### Fixed
+
 - When changing images like the project header, it's no longer needed to refresh to see the result
 - The comments now display with a shorter date format to work better on smaller screens
 - The code snippet from the widget will now work in some website that are strict on valid html
@@ -10,22 +11,23 @@
 - The project preview description input is displayed again in the projects admin
 - The idea status is no longer hidden when no vote buttons are displayed on the idea page
 - Duplicate idea cards no longer appear when loading new pages
-- 
 
 ### Added
+
 - Performance optimizations on the initial loading of the platform
 - Performance optimizations on loading new pages of ideas and projects
 - The 'Add an idea' button is now shown in every tab of the projects admin
 - It's now possible to add videos to the idea body text
 - E-mails are no longer sent out through Vero, but are using the internal cl2-emails server
-- 
+
 ### Changed
 
 - The automated emails in the admin no longer show the time schedule, to work around the broken translations
 - The rights for voting on comments now follow the same rights than commenting itself, instead of following the rights for idea voting
 - On smaller desktop screens, 3 columns of idea cards are now shown instead of 2
 - When adding an idea from the map, the idea will now be positioned on the exact location that was clicked instead of to the nearest detectable address
-- 
+- Using the project copy tool in admin HQ is more tolerant about making copies of inconsistent source projects
+
 
 ## 2019-06-19
 
