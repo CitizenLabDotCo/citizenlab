@@ -33,7 +33,6 @@ const StyledInitiativeForm = styled(InitiativeForm)`
 `;
 
 interface InputProps {
-  userId: string;
   locale: Locale;
 }
 
