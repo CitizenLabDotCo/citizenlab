@@ -6,7 +6,7 @@ import { isObject, isEmpty, has } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 // typings
-import { IOption, UploadFile } from 'typings';
+import { UploadFile } from 'typings';
 
 export interface IIdeasNewPageGlobalState {
   title: string | null;
