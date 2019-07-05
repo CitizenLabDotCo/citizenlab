@@ -6,6 +6,7 @@ declare global {
       apiLogin: typeof apiLogin;
       apiSignup: typeof apiSignup;
       apiCreateAdmin: typeof apiCreateAdmin;
+      apiRemoveUser: typeof apiRemoveUser;
       logout: typeof logout;
       signup: typeof signup;
       acceptCookies: typeof acceptCookies;
@@ -119,6 +120,49 @@ export function apiCreateAdmin(firstName: string, lastName: string, email: strin
           first_name: firstName,
           last_name: lastName,
           roles: [{ type: 'admin' }],
+        }
+      }
+    });
+  });
+}
+
+export function apiRemoveUser(userId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'DELETE',
+      url: `web_api/v1/users/${userId}`
+    });
+  });
+}
+
+export function apiCreateModeratorForProject(firstName: string, lastName: string, email: string, password: string, projectId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'POST',
+      url: 'web_api/v1/users',
+      body: {
+        user: {
+          email,
+          password,
+          locale: 'en-GB',
+          first_name: firstName,
+          last_name: lastName,
+          roles: [{
+            type: 'project_moderator',
+            project_id: projectId
+          }],
         }
       }
     });
@@ -427,6 +471,7 @@ export function apiCreatePhase(
   canPost: boolean,
   canVote: boolean,
   canComment: boolean,
+  description?: string,
   surveyUrl?: string,
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms'
 ) {
@@ -464,6 +509,7 @@ export function apiCreatePhase(
           posting_enabled: canPost,
           voting_enabled: canVote,
           commenting_enabled: canComment,
+          description_multiloc: { 'en-GB': description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService
         }
@@ -518,6 +564,7 @@ Cypress.Commands.add('login', login);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);
 Cypress.Commands.add('apiCreateAdmin', apiCreateAdmin);
+Cypress.Commands.add('apiRemoveUser', apiRemoveUser);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('signup', signup);
 Cypress.Commands.add('acceptCookies', acceptCookies);
