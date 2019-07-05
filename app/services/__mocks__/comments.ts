@@ -15,7 +15,7 @@ export const makeCommentData = (id = 'commentId', attributes = {}, ideaId?: stri
     ...attributes
   },
   relationships: {
-    idea: {
+    post: {
       data: {
         id: ideaId ? ideaId : 'ideaId',
         type: 'ideas'

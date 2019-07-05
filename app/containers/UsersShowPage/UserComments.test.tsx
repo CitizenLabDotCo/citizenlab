@@ -16,7 +16,7 @@ describe('<UserComments />', () => {
 
   it('lets reducer splits the array returned  by the back-end into arrays of comments belonging to the same idea', () => {
     const commentsAsReturned = makeComments([{ ideaId: 'idea1' }, { ideaId: 'idea1' }, { ideaId: 'idea1' }, { ideaId: 'idea2' }, { ideaId: 'idea2' }]);
-    expect(commentsAsReturned.data.reduce(reducer, [[]]).map(arr => arr.map(comment => comment.relationships.idea.data.id))).toMatchSnapshot();
+    expect(commentsAsReturned.data.reduce(reducer, [[]]).map(arr => arr.map(comment => comment.relationships.post.data.id))).toMatchSnapshot();
   });
   it('renders correctly when empty', () => {
     const commentsAsReturned = { commentsList: [] };
