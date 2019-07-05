@@ -47,6 +47,7 @@ interface Props extends FormValues, FormProps {
   onAddFile: (newValue: UploadFile) => void;
   onRemoveFile: (newValue: UploadFile) => void;
   locale: Locale;
+  publishError: boolean;
 }
 
 interface State {
@@ -156,6 +157,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       files,
       onAddFile,
       onRemoveFile,
+      publishError,
       intl: { formatMessage }
     } = this.props;
 
@@ -290,6 +292,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
         <FormSubmitFooter
           message={messages.publishButton}
           disabled={status === 'disabled'}
+          error={publishError}
+          errorMessage={messages.publishUnknownError}
           processing={publishing}
           onSubmit={this.props.onPublish}
         />

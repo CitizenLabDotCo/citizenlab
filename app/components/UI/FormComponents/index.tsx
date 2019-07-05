@@ -168,6 +168,8 @@ interface FormSubmitFooterProps extends IMessageInfo {
   onSubmit: () => void;
   theme: any;
   className?: string;
+  error: boolean;
+  errorMessage: IMessageInfo['message'];
 }
 
 const SubmitFooterContainer = styled.div`
@@ -213,6 +215,8 @@ export const FormSubmitFooter = withTheme(memo(({
   theme,
   onSubmit,
   className,
+  error,
+  errorMessage,
   ...otherProps
 }: FormSubmitFooterProps) => (
   <SubmitFooterContainer className={className}>
@@ -230,6 +234,9 @@ export const FormSubmitFooter = withTheme(memo(({
         >
           <FormattedMessage {...message} values={values} />
         </Button>
+        {error && <ErrorContainer className="e2e-error-form">
+          <FormattedMessage {...errorMessage} />
+        </ErrorContainer>}
     </SubmitFooterInner>
     </StyledContentContainer>
   </SubmitFooterContainer>
