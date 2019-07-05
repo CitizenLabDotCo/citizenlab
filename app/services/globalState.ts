@@ -6,8 +6,7 @@ import { isObject, isEmpty, has } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 // typings
-import { UploadFile } from 'typings';
-import { setTimeout } from 'timers';
+import { IOption, UploadFile } from 'typings';
 
 export interface IIdeasNewPageGlobalState {
   title: string | null;
@@ -22,9 +21,7 @@ export interface IIdeasNewPageGlobalState {
   ideaSlug: string | null;
   imageFile: UploadFile[];
   imageId: string | null;
-  imageChanged: boolean;
   ideaFiles: UploadFile[];
-  ideaFilesToRemove: UploadFile[];
 }
 
 export interface IAdminFullWidth {

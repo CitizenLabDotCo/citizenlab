@@ -93,7 +93,7 @@ export default class SignInPage extends PureComponent {
         <Right>
           <RightInner>
             <PreviousPathnameContext.Consumer>
-              {previousPathName => <SignIn onSignedIn={this.onSuccess(previousPathName)} goToSignUpForm={this.goToSignUpForm} />}
+              {previousPathName => <SignIn onSignedIn={this.onSuccess(previousPathName)} />}
             </PreviousPathnameContext.Consumer>
           </RightInner>
         </Right>

@@ -11,6 +11,6 @@ export default defineMessages({
   },
   notSignedIn: {
     id: 'app.containers.CompleteSignUpPage.notSignedIn',
-    defaultMessage: `Something went wrong and we can't sign you in right now. Please try again in a few minutes.`,
+    defaultMessage: "Something went wrong and we can't sign you in right now. Please try again in a few minutes.",
   },
 });

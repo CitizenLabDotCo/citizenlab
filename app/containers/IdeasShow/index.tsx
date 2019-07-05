@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { has, isString, sortBy, last, get, isEmpty, isUndefined } from 'lodash-es';
-import { Subscription, combineLatest, of } from 'rxjs';
+import { sortBy, last, get, isUndefined } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -9,7 +8,7 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // router
-import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Sharing from 'components/Sharing';
@@ -37,8 +36,6 @@ import TranslateButton from './TranslateButton';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
@@ -50,10 +47,6 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
-
-// services
-import { updateIdea } from 'services/ideas';
-import { authUserStream } from 'services/auth';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -359,9 +352,8 @@ interface State {
   actionInfos: IActionInfos | null;
 }
 
-export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
   initialState: State;
-  subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
@@ -375,45 +367,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     };
     this.initialState = initialState;
     this.state = initialState;
-    this.subscriptions = [];
   }
 
   componentDidMount() {
-    const authUser$ = authUserStream().observable;
-    const query = clHistory.getCurrentLocation().query;
-    const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
-    const newIdea$ = urlHasNewIdeaQueryParam ? of({
-      id: get(query, 'new_idea_id'),
-      publish: get(query, 'publish')
-    }) : of(null);
+    const newIdeaId = get(this.props.location.query, 'new_idea_id');
 
     this.setLoaded();
 
-    this.subscriptions = [
-      combineLatest(
-        authUser$,
-        newIdea$
-      ).subscribe(async ([authUser, newIdea]) => {
-        if (newIdea && isString(newIdea.id) && !isEmpty(newIdea.id)) {
-          if (authUser) {
-            setTimeout(() => {
-              this.setState({ ideaIdForSocialSharing: newIdea.id });
-            }, 2000);
+    if (newIdeaId) {
+      setTimeout(() => {
+        this.setState({ ideaIdForSocialSharing: newIdeaId });
+      }, 1500);
 
-            if (newIdea.publish === 'true') {
-              await updateIdea(newIdea.id, { author_id: authUser.data.id, publication_status: 'published' });
-
-              streams.fetchAllWith({
-                dataId: [newIdea.id],
-                apiEndpoint: [`${API_PATH}/ideas`]
-              });
-            }
-          }
-
-          window.history.replaceState(null, '', window.location.pathname);
-        }
-      })
-    ];
+      window.history.replaceState(null, '', window.location.pathname);
+    }
   }
 
   componentDidUpdate() {
@@ -468,10 +435,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     }
 
     return stateToUpdate;
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   setLoaded = () => {
@@ -774,7 +737,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 }
 
-const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl<Props & InjectedLocalized>(IdeasShow));
+const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl(withRouter(IdeasShow)));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
