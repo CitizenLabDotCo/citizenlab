@@ -191,8 +191,7 @@ class InitiativesNewPage extends React.PureComponent<Props & WithRouterProps, St
   }
 
   handleOnIdeaSubmit = async () => {
-    const { authUser } = this.props;
-    console.log('submit', authUser);
+    // empty
   }
 
   goBack = () => {

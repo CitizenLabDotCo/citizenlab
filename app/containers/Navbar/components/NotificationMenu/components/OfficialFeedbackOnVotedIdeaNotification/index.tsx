@@ -50,10 +50,10 @@ const OfficialFeedbackOnVotedIdeaNotification = memo<Props>(props => {
 export default (inputProps: InputProps) => {
   const { notification } = inputProps;
 
-  if (!notification.relationships.idea.data) return null;
+  if (!notification.relationships.post.data) return null;
 
   return (
-    <GetIdea id={notification.relationships.idea.data.id}>
+    <GetIdea id={notification.relationships.post.data.id}>
       {idea => <OfficialFeedbackOnVotedIdeaNotification notification={notification} idea={idea} />}
     </GetIdea>
   );

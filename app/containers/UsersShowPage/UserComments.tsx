@@ -75,7 +75,7 @@ export const reducer = (acc: ICommentData[][], current: ICommentData) => {
   }
 
   if (current.attributes.publication_status === 'published') {
-    if (current.relationships.idea.data.id === lastArray[lastArray.length - 1].relationships.idea.data.id) {
+    if (current.relationships.post.data.id === lastArray[lastArray.length - 1].relationships.post.data.id) {
       lastArray.push(current);
     } else {
       acc.push([current]);
@@ -90,8 +90,8 @@ export const UserComments = memo<Props>(({ comments, comments: { commentsList },
     <Container className="e2e-profile-comments">
       {commentsList.reduce(reducer, [[]]).map(commentForIdea => (
         <IdeaCommentGroup
-          key={commentForIdea[0].relationships.idea.data.id}
-          ideaId={commentForIdea[0].relationships.idea.data.id}
+          key={commentForIdea[0].relationships.post.data.id}
+          ideaId={commentForIdea[0].relationships.post.data.id}
           commentsForIdea={commentForIdea}
           userId={userId}
         />
