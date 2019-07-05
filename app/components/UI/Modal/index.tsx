@@ -386,7 +386,7 @@ export default class Modal extends PureComponent<Props, State> {
               onClick={this.clickCloseButton}
               ref={this.setCloseButtonRef}
             >
-              <CloseIcon name="close3" />
+              <CloseIcon name="close" />
             </CloseButton >
 
             {header &&
