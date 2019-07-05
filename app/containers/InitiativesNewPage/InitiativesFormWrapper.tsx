@@ -49,6 +49,7 @@ interface State extends FormValues {
   hasBannerChanged: boolean;
   hasImageChanged: boolean;
   imageId: string | null;
+  publishError: boolean;
 }
 
 export default class InitiativesFormWrapper extends React.PureComponent<Props, State> {
@@ -74,7 +75,8 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       imageId: null,
       banner: undefined,
       image: undefined,
-      files: []
+      files: [],
+      publishError: false
     };
   }
 
@@ -239,7 +241,11 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
     } catch (errorResponse) {
       const apiErrors = get(errorResponse, 'json.errors');
-      // TODO
+      this.setState({ publishError: true });
+      setTimeout(() => {
+        this.setState({ publishError: false });
+      }, 5000);
+      // TODO: pass down API errors.
     }
     this.setState({ publishing: false });
   }
@@ -269,7 +275,7 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       addInitiativeFile(initiativeId, file.base64, file.name).then(res => {
         file.id = res.data.id;
         this.setState(({ files }) => ({ files: [...files, file], saving: false }));
-      }); // TODO error-handling for onAddFile
+      }).catch(); // TODO error-handling for onAddFile
     }
   }
   onRemoveFile = (fileToRemove: UploadFile) => {
