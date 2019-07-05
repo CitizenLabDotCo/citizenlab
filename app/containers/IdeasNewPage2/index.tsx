@@ -180,8 +180,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       description: null,
       selectedTopics: [],
       budget: null,
-      position: '',
-      position_coordinates: null,
+      address: '',
+      geojson_position_coordinates: null,
       submitError: false,
       processing: false,
       ideaId: null,
@@ -203,12 +203,19 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const localState$ = this.localState.observable;
 
     if (location.query.position) {
-      reverseGeocode(JSON.parse(location.query.position)).then((position) => {
+      const coordinates = JSON.parse(location.query.position);
+      const lat = coordinates[0];
+      const lng = coordinates[1];
+
+      reverseGeocode(coordinates).then((address) => {
         this.globalState.set({
-          position,
-          position_coordinates: {
+          // When an idea is posted through the map, we Google Maps gets an approximate address,
+          // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
+          // and doesn't readjust together with the address correction/approximation
+          address,
+          geojson_position_coordinates: {
             type: 'Point',
-            coordinates: JSON.parse(location.query.position) as number[]
+            coordinates: [lng, lat] as number[]
           }
         });
       });
@@ -227,12 +234,12 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null) {
     const { locale, project } = this.props;
-    const { title, description, selectedTopics, budget, position, position_coordinates, ideaId } = await this.globalState.get();
+    const { title, description, selectedTopics, budget, address, geojson_position_coordinates, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
     const ideaDescription = { [locale as string]: (description || '') };
     const projectId = !isNilOrError(project) ? project.id : null;
-    const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : position_coordinates || null);
-    const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
+    const locationGeoJSON = geojson_position_coordinates || await convertToGeoJson(address);
+    const locationDescription = (isString(address) && !isEmpty(address) ? address : null);
     const ideaObject: IIdeaAdd = {
       budget,
       author_id: authorId,

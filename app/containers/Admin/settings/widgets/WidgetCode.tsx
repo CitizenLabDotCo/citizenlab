@@ -66,7 +66,7 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
 
     if (isNilOrError(tenant)) return null;
 
-    const text = `<iframe src="https://${tenant.attributes.host}/widgets${path}" width="${width}" height="${height}" frameborder="0" scrolling="no" />`;
+    const text = `<iframe src="https://${tenant.attributes.host}/widgets${path}" width="${width}" height="${height}" frameborder="0" scrolling="no"></iframe>`;
 
     return (
       <>

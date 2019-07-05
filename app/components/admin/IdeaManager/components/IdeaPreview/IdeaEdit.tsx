@@ -69,7 +69,7 @@ interface State {
   descriptionMultiloc: Multiloc | null;
   selectedTopics: string[];
   budget: number | null;
-  location: string;
+  address: string;
   imageFile: UploadFile[];
   imageId: string | null;
   submitError: boolean;
@@ -89,7 +89,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       descriptionMultiloc: null,
       selectedTopics: [],
       budget: null,
-      location: '',
+      address: '',
       imageFile: [],
       imageId: null,
       submitError: false,
@@ -152,7 +152,7 @@ class IdeaEdit extends PureComponent<Props, State> {
             loaded: true,
             titleMultiloc: idea.data.attributes.title_multiloc,
             descriptionMultiloc: idea.data.attributes.body_multiloc,
-            location: idea.data.attributes.location_description,
+            address: idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
             imageFile: (ideaImage ? [ideaImage] : []),
             imageId: (ideaImage && ideaImage.id ? ideaImage.id : null)
@@ -174,10 +174,8 @@ class IdeaEdit extends PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId, goBack } = this.props;
-    const { locale, titleMultiloc, descriptionMultiloc, imageId, imageFile } = this.state;
-    const { title, description, selectedTopics, position, budget, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
-    const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : null);
-    const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
+    const { locale, titleMultiloc, descriptionMultiloc, imageId, imageFile, address: savedAddress } = this.state;
+    const { title, description, selectedTopics, address: ideaFormAddress, budget, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
     const oldImageId = imageId;
     const oldImage = (imageFile && imageFile.length > 0 ? imageFile[0] : null);
     const oldImageBase64 = (oldImage ? oldImage.base64 : null);
@@ -186,6 +184,13 @@ class IdeaEdit extends PureComponent<Props, State> {
     const imageToAddPromise = (newImageBase64 && oldImageBase64 !== newImageBase64 ? addIdeaImage(ideaId, newImageBase64, 0) : Promise.resolve(null));
     const filesToAddPromises = ideaFiles.filter(file => !file.remote).map(file => addIdeaFile(ideaId, file.base64, file.name));
     const filesToRemovePromises = ideaFilesToRemove.filter(file => !!(file.remote && file.id)).map(file => deleteIdeaFile(ideaId, file.id as string));
+
+    const addressDiff = {};
+    if (isString(ideaFormAddress) && !isEmpty(ideaFormAddress) && ideaFormAddress !== savedAddress) {
+      addressDiff['location_point_geojson'] = await convertToGeoJson(ideaFormAddress);
+      addressDiff['location_description'] = ideaFormAddress;
+    }
+
     const updateIdeaPromise = updateIdea(ideaId, {
       budget,
       title_multiloc: {
@@ -197,8 +202,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         [locale]: description
       },
       topic_ids: selectedTopics,
-      location_point_geojson: locationGeoJSON,
-      location_description: locationDescription
+      ...addressDiff
     });
 
     this.setState({ processing: true, submitError: false });
@@ -230,7 +234,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         titleMultiloc,
         descriptionMultiloc,
         selectedTopics,
-        location,
+        address,
         imageFile,
         submitError,
         processing,
@@ -260,7 +264,7 @@ class IdeaEdit extends PureComponent<Props, State> {
               description={description}
               selectedTopics={selectedTopics}
               budget={budget}
-              position={location}
+              address={address}
               imageFile={imageFile}
               onSubmit={this.handleIdeaFormOutput}
               remoteIdeaFiles={!isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null}
