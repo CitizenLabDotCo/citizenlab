@@ -6,7 +6,7 @@ export async function convertToGeoJson(location: string) {
     const { lat, lng } = await getLatLng(results[0]);
     const point: GeoJSON.Point = {
       type: 'Point',
-      coordinates: [lng as number, lat as number]
+      coordinates: [lng, lat] as number[]
     };
     return point;
   } catch (error) {
