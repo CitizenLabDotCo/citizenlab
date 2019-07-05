@@ -180,7 +180,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       description: null,
       selectedTopics: null,
       budget: null,
-      location: '',
+      address: '',
       geojson_position_coordinates: null,
       submitError: false,
       processing: false,
@@ -207,13 +207,13 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       const lat = coordinates[0];
       const lng = coordinates[1];
 
-      reverseGeocode(coordinates).then((location) => {
+      reverseGeocode(coordinates).then((address) => {
         this.globalState.set({
           // when we post an idea through the map,
           // we want to keep the original coordinates for the position on the map
           // and don't use the convertToGeoJson function
           // position (variable) is an address and will possibly be an approximation
-          location,
+          address,
           geojson_position_coordinates: {
             type: 'Point',
             coordinates: [lng, lat] as number[]
@@ -235,13 +235,13 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null) {
     const { locale, project } = this.props;
-    const { title, description, selectedTopics, budget, location, geojson_position_coordinates, ideaId } = await this.globalState.get();
+    const { title, description, selectedTopics, budget, address, geojson_position_coordinates, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
     const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = !isNilOrError(project) ? project.id : null;
-    const locationGeoJSON = !geojson_position_coordinates ? await convertToGeoJson(location) : geojson_position_coordinates;
-    const locationDescription = (isString(location) && !isEmpty(location) ? location : null);
+    const locationGeoJSON = !geojson_position_coordinates ? await convertToGeoJson(address) : geojson_position_coordinates;
+    const locationDescription = (isString(address) && !isEmpty(address) ? address : null);
     const ideaObject: IIdeaAdd = {
       budget,
       author_id: authorId,

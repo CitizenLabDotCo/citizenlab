@@ -82,7 +82,7 @@ export interface IIdeaFormOutput {
   title: string;
   description: string;
   selectedTopics: IOption[] | null;
-  location: string;
+  address: string;
   budget: number | null;
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
@@ -95,8 +95,7 @@ interface Props {
   description: string | null;
   selectedTopics: IOption[] | null;
   budget: number | null;
-  // not using the name location here because there's a prop inserted by react-router with the same name
-  ideaLocation: string;
+  address: string;
   imageFile: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
@@ -114,7 +113,7 @@ interface State {
   selectedTopics: IOption[] | null;
   budget: number | null;
   budgetError: string | JSX.Element | null;
-  location: string;
+  address: string;
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
@@ -137,7 +136,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       description: '',
       descriptionError: null,
       selectedTopics: null,
-      location: '',
+      address: '',
       imageFile: [],
       budget: null,
       budgetError: null,
@@ -213,7 +212,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   updateState = () => {
-    const { title, description, selectedTopics, ideaLocation, budget, imageFile, remoteIdeaFiles } = this.props;
+    const { title, description, selectedTopics, address, budget, imageFile, remoteIdeaFiles } = this.props;
     const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
 
     this.setState({
@@ -221,7 +220,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       budget,
       imageFile,
       ideaFiles,
-      location: ideaLocation,
+      address,
       title: (title || ''),
       description: (description || '')
     });
@@ -258,8 +257,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.setState({ selectedTopics });
   }
 
-  handleLocationOnChange = (location: string) => {
-    this.setState({ location });
+  handleLocationOnChange = (address: string) => {
+    this.setState({ address });
   }
 
   handleUploadOnAdd = (imageFile: UploadFile) => {
@@ -367,14 +366,14 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   handleOnSubmit = () => {
-    const { title, description, selectedTopics, location, budget, imageFile, ideaFiles, ideaFilesToRemove } = this.state;
+    const { title, description, selectedTopics, address, budget, imageFile, ideaFiles, ideaFilesToRemove } = this.state;
     const formIsValid = this.validate(title, description, budget);
 
     if (formIsValid) {
       const output: IIdeaFormOutput = {
         title,
         selectedTopics,
-        location,
+        address,
         imageFile,
         budget,
         description,
@@ -397,7 +396,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       title,
       description,
       selectedTopics,
-      location,
+      address,
       budget,
       imageFile,
       titleError,
@@ -461,7 +460,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             <LocationInput
               id="location"
               className="e2e-idea-form-location-input-field"
-              value={location}
+              value={address}
               placeholder={formatMessage(messages.locationPlaceholder)}
               onChange={this.handleLocationOnChange}
             />

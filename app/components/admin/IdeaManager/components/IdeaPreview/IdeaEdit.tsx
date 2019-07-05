@@ -71,7 +71,7 @@ interface State {
   descriptionMultiloc: Multiloc | null;
   selectedTopics: IOption[] | null;
   budget: number | null;
-  location: string;
+  address: string;
   imageFile: UploadFile[];
   imageId: string | null;
   submitError: boolean;
@@ -91,7 +91,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       descriptionMultiloc: null,
       selectedTopics: null,
       budget: null,
-      location: '',
+      address: '',
       imageFile: [],
       imageId: null,
       submitError: false,
@@ -176,7 +176,7 @@ class IdeaEdit extends PureComponent<Props, State> {
             loaded: true,
             titleMultiloc: idea.data.attributes.title_multiloc,
             descriptionMultiloc: idea.data.attributes.body_multiloc,
-            location: idea.data.attributes.location_description,
+            address: idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
             imageFile: (ideaImage ? [ideaImage] : []),
             imageId: (ideaImage && ideaImage.id ? ideaImage.id : null)
@@ -198,8 +198,8 @@ class IdeaEdit extends PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId, goBack } = this.props;
-    const { locale, titleMultiloc, descriptionMultiloc, imageId, imageFile, location: savedLocation } = this.state;
-    const { title, description, selectedTopics, location: ideaFormLocation, budget, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
+    const { locale, titleMultiloc, descriptionMultiloc, imageId, imageFile, address: savedAddress } = this.state;
+    const { title, description, selectedTopics, address: ideaFormAddress, budget, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const oldImageId = imageId;
     const oldImage = (imageFile && imageFile.length > 0 ? imageFile[0] : null);
@@ -211,9 +211,9 @@ class IdeaEdit extends PureComponent<Props, State> {
     const filesToRemovePromises = ideaFilesToRemove.filter(file => !!(file.remote && file.id)).map(file => deleteIdeaFile(ideaId, file.id as string));
 
     const locationDiff = {};
-    if (isString(ideaFormLocation) && !isEmpty(ideaFormLocation) && ideaFormLocation !== savedLocation) {
-      locationDiff['location_point_geojson'] = await convertToGeoJson(ideaFormLocation);
-      locationDiff['location_description'] = ideaFormLocation;
+    if (isString(ideaFormAddress) && !isEmpty(ideaFormAddress) && ideaFormAddress !== savedAddress) {
+      locationDiff['location_point_geojson'] = await convertToGeoJson(ideaFormAddress);
+      locationDiff['location_description'] = ideaFormAddress;
     }
 
     const updateIdeaPromise = updateIdea(ideaId, {
@@ -259,7 +259,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         titleMultiloc,
         descriptionMultiloc,
         selectedTopics,
-        location,
+        address,
         imageFile,
         submitError,
         processing,
@@ -289,7 +289,7 @@ class IdeaEdit extends PureComponent<Props, State> {
               description={description}
               selectedTopics={selectedTopics}
               budget={budget}
-              ideaLocation={location}
+              address={address}
               imageFile={imageFile}
               onSubmit={this.handleIdeaFormOutput}
               remoteIdeaFiles={!isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null}
