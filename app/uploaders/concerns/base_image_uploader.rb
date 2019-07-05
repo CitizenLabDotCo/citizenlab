@@ -14,14 +14,20 @@ module BaseImageUploader
 
   unless Rails.env.test?
     def asset_host
-      # There is no Tenant.current?
       begin
-        Tenant.current
-      rescue ActiveRecord::RecordNotFound
-        # May not work work properly, but at least this won't crash.
-        return super
+        Tenant.current.base_backend_uri
+      rescue ActiveRecord::RecordNotFound # There is no Tenant.current
+
+        # Maybe the model we're operating on is a Tenant itself?
+        if model.kind_of? Tenant
+          model.base_backend_uri
+
+        # Nope, so let's fall back to default carrierwave behavior (s3 bucket
+        # in production)
+        else
+          super
+        end
       end
-      Tenant.current.base_backend_uri
     end
   end
 
