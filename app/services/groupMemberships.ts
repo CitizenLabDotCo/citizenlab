@@ -30,6 +30,8 @@ export interface IGroupMembershipsFoundUserData {
     slug: string;
     avatar?: ImageSizes;
     is_member?: boolean;
+    // the is_moderator attribute is absent, except in moderators/users_search if the project_id was provided as a parameter
+    // this is only the case in the findMembership function in moderators.ts at the time of this writing
     is_moderator?: boolean;
     email: string;
   };
