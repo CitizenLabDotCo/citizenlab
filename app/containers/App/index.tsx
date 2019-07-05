@@ -25,7 +25,7 @@ import Meta from './Meta';
 import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
-import UserDeletedModalContent from 'components/UserDeletedModalContent';
+import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -251,7 +251,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                       opened={userDeletedModalOpened}
                       close={this.closeUserDeletedModal}
                     >
-                      <UserDeletedModalContent userActuallyDeleted={userActuallyDeleted} />
+                      <LoadableUserDeleted userActuallyDeleted={userActuallyDeleted} />
                     </LoadableModal>
                   </ErrorBoundary>
 

@@ -65,7 +65,11 @@
     </div>
   </div>
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&libraries=places" async defer></script>
+  <script>
+    window.myCallbackFunc = function() {}
+  </script>
+
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&libraries=places&callback=myCallbackFunc"></script>
 </body>
 
 </html>

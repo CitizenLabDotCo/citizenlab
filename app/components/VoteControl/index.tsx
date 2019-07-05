@@ -524,7 +524,7 @@ export default class VoteControl extends PureComponent<Props, State> {
           enabled={upvotingEnabled}
         >
           <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
-            <VoteIcon name="upvote-2" size={size} enabled={upvotingEnabled} />
+            <VoteIcon name="upvote" size={size} enabled={upvotingEnabled} />
           </VoteIconContainer>
           <VoteCount className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
         </Upvote>
@@ -537,7 +537,7 @@ export default class VoteControl extends PureComponent<Props, State> {
           enabled={downvotingEnabled}
         >
           <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
-            <VoteIcon name="downvote-2" size={size} enabled={downvotingEnabled} />
+            <VoteIcon name="downvote" size={size} enabled={downvotingEnabled} />
           </VoteIconContainer>
           <VoteCount className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
         </Downvote>
