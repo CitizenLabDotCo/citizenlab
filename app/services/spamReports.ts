@@ -8,6 +8,14 @@ export interface Report {
   other_reason?: string;
 }
 
+interface ILinks {
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
+}
+
 export interface SpamReportResponse {
   data: {
     id: string;
@@ -17,6 +25,7 @@ export interface SpamReportResponse {
   relationships: {
     [key: string]: IRelationship[]
   };
+  links: ILinks;
 }
 
 export function sendSpamReport(targetType: 'comments' | 'ideas', targetId: string, spamReport: Report) {
