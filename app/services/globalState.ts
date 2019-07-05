@@ -14,7 +14,7 @@ export interface IIdeasNewPageGlobalState {
   description: string | null;
   selectedTopics: IOption[] | null;
   budget: number | null;
-  location: string;
+  address: string;
   geojson_position_coordinates: GeoJSON.Point | null;
   submitError: boolean;
   processing: boolean;
