@@ -413,8 +413,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           <Label value={<FormattedMessage {...messages.descriptionLabel} />} htmlFor="editor" />
           <QuillEditor
             id="editor"
-            noImages
-            noVideos
+            noImages={true}
             value={description}
             placeholder={formatMessage(messages.descriptionPlaceholder)}
             onChange={this.handleDescriptionOnChange}
