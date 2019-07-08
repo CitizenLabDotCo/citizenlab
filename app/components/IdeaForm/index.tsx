@@ -489,7 +489,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         {pbContext &&
           <FeatureFlag name="participatory_budgeting">
             <HasPermission
-              item="ideas"
+              item="idea"
               action="assignBudget"
               context={{ projectId }}
             >
