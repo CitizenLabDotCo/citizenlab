@@ -1,7 +1,6 @@
 import React from 'react';
 import { isEmpty } from 'lodash-es';
 import { IPhaseData } from 'services/phases';
-import { ITopicData } from 'services/topics';
 import { IProjectData } from 'services/projects';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { Segment, Menu } from 'semantic-ui-react';
@@ -12,13 +11,10 @@ import StatusesMenu from './FilterSidebarStatuses';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import { isNilOrError } from 'utils/helperUtils';
 import InfoTooltip from 'components/admin/InfoTooltip';
 
 interface Props {
-  project?: IProjectData;
   phases?: IPhaseData[];
-  topics?: (ITopicData | Error)[];
   projects?: IProjectData[];
   statuses: IIdeaStatusData[];
   selectedTopics?: string[] | null;
@@ -73,7 +69,6 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
         key: 'topics',
         content: (
           <TopicsMenu
-            topics={!isNilOrError(this.props.topics) ? this.props.topics.filter(topic => !isNilOrError(topic)) as ITopicData[] : []}
             selectedTopics={this.props.selectedTopics}
             onChangeTopicsFilter={this.props.onChangeTopicsFilter}
           />
