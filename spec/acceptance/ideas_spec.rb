@@ -574,6 +574,14 @@ resource "Ideas" do
         expect(response_status).to eq 201
       end
     end
+
+    describe do
+      let(:body_multiloc) { {'en' => '<p> </p>'} }
+      
+      example_request "[error] Create an idea without a body" do
+        expect(response_status).to eq 422
+      end
+    end
     
     context "when admin" do
       before do
