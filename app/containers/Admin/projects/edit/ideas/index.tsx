@@ -53,7 +53,8 @@ class AdminProjectIdeas extends React.PureComponent<Props & WithRouterProps, Sta
 
         {!isNilOrError(project) &&
           <IdeaManager
-            project={project}
+            type="ProjectIdeas"
+            projectId={project.id}
             phases={phases}
             visibleFilterMenus={project && project.attributes.process_type === 'timeline'
               ? ['phases', 'statuses', 'topics']
