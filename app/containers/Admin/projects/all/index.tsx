@@ -210,7 +210,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
                 <Spacer />
 
-                <HasPermission item="projects" action="reorder">
+                <HasPermission item="project" action="reorder">
                   <FeatureFlag name="manual_project_sorting" onlyCheckAllowed>
                     <ToggleWrapper>
                       <ToggleLabel htmlFor="manual-sorting-toggle">
@@ -225,7 +225,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   </FeatureFlag>
                 </HasPermission>
               </ListHeader>
-              <HasPermission item="projects" action="reorder">
+              <HasPermission item="project" action="reorder">
                 {(tenant.attributes.settings.manual_project_sorting as any).enabled ?
                   <SortableList
                     items={publishedProjects}
@@ -277,7 +277,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 </ListHeaderTitle>
                 <InfoTooltip {...messages.draftTooltip} />
               </ListHeader>
-              <HasPermission item="projects" action="reorder">
+              <HasPermission item="project" action="reorder">
                 <SortableList
                   items={draftProjects}
                   onReorder={this.handleReorder}
