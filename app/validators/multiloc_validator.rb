@@ -8,7 +8,7 @@ class MultilocValidator < ActiveModel::EachValidator
       if !(value.keys - locales).empty?
         record.errors.add(attribute, :unsupported_locales, 
           message: (options[:message] || "contains unsupported locales #{(value.keys - locales)}"))
-      elsif options[:presence] && value.values.all?(&:blank?)
+      elsif options[:presence] && value.values.all?{|text_or_html| Nokogiri::HTML.fragment(text_or_html).text.blank?}
         record.errors.add(attribute, :blank, 
           message: (options[:message] || "should be set for at least one locale"))
       elsif options[:length]
