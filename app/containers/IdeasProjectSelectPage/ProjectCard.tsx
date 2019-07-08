@@ -284,7 +284,7 @@ class ProjectCard extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ project, render }) => <GetProjectImages projectId={get(project, 'id')}>{render}</GetProjectImages>,
-  permission: ({ project, render }) => <GetPermission item="ideas" action="create" context={{ project: (!isError(project) ? project : null) }}>{render}</GetPermission>,
+  permission: ({ project, render }) => <GetPermission item="idea" action="create" context={{ project: (!isError(project) ? project : null) }}>{render}</GetPermission>,
   authUser: <GetAuthUser />,
 });
 
