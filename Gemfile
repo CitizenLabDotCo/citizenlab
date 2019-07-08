@@ -33,9 +33,10 @@ group :development, :test do
   gem 'rspec_api_documentation'
   gem 'rspec-rails'
   gem 'database_cleaner'
-  gem 'ci_reporter_rspec'
   gem 'simplecov'
   gem 'simplecov-rcov'
+  gem 'rspec_junit_formatter'
+  gem 'rack-mini-profiler'
 end
 
 group :development do
@@ -44,7 +45,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'redcarpet'
-  gem 'mongo', '~> 2.5'
 end
 
 group :test do
@@ -99,7 +99,6 @@ gem 'omniauth-twitter'
 gem 'omniauth-azure-activedirectory', github: 'CitizenLabDotCo/omniauth-azure-activedirectory'
 gem 'omniauth_openid_connect'
 gem "bunny", ">= 2.7.2"
-gem 'carrierwave-imageoptimizer'
 gem 'scenic'
 gem 'acts_as_list'
 gem 'faker'
@@ -114,6 +113,7 @@ gem 'dalli'
 gem 'aws-sdk-s3', '~> 1'
 gem 'rinku', '~> 2'
 gem 'rails_semantic_logger'
+gem 'bootsnap', require: false
 
 gem 'admin_api', path: 'engines/admin_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'

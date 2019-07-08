@@ -3,7 +3,6 @@ module EmailCampaigns
     include Disableable
     include Consentable
     include Schedulable
-    include RecipientConfigurable
     include Trackable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
@@ -65,7 +64,7 @@ module EmailCampaigns
       ps = ParticipantsService.new
       participants_increase = ps.projects_participants([project], since: (Time.now - days_ago)).size
       participants_past_increase = ps.projects_participants([project], since: (Time.now - (days_ago * 2))).size - participants_increase
-      ideas = Idea.published.where project_id: project.id
+      ideas = Idea.published.where(project_id: project.id).load
       comments = Comment.where(idea_id: ideas.map(&:id))
       votes = Vote.where(votable_id: (ideas.map(&:id) + comments.map(&:id)))
       {
@@ -79,7 +78,7 @@ module EmailCampaigns
           new_comments: stat_increase(
             comments.map(&:created_at).compact
             ),
-          total_ideas: ideas.count
+          total_ideas: ideas.size
         },
         users: {
           new_visitors: stat_increase(
@@ -89,7 +88,7 @@ module EmailCampaigns
             increase: participants_increase,
             past_increase: participants_past_increase
           },
-          total_participants: ps.projects_participants([project]).count
+          total_participants: ps.projects_participants([project]).size
         }
       }
     end
@@ -151,6 +150,12 @@ module EmailCampaigns
       new_vote_count = idea.votes.where('created_at > ?', Time.now - days_ago).count
       new_comments_count = idea.comments.where('created_at > ?', Time.now - days_ago).count
       new_vote_count + new_comments_count
+    end
+
+    protected
+
+    def set_enabled
+      self.enabled = false if self.enabled.nil?
     end
 
   end
