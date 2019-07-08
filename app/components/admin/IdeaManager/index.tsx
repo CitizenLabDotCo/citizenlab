@@ -15,11 +15,7 @@ import { IProjectData } from 'services/projects';
 // resources
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
-import GetIdeasCount from 'resources/GetIdeasCount';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // components
 import ActionBar from './components/ActionBar';
@@ -35,6 +31,7 @@ import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { GetPhasesChildProps } from 'resources/GetPhases';
 
 const StyledExportMenu = styled(ExportMenu)<ExportMenuProps>`
   margin-left: auto;
@@ -120,15 +117,17 @@ interface InputProps {
   // When the IdeaManager is used in admin/ideas, the parent component passes
   // down the array of projects the current user can moderate.
   projects?: IProjectData[] | null;
+
+  // filters settings
+  // the filters needed for this view, in the order they'll be shown, first one active by default
+  visibleFilterMenus: TFilterMenu[]; // cannot be empty.
+  phases?: GetPhasesChildProps;
 }
 
 interface DataProps {
   ideas: GetIdeasChildProps;
   topics: GetTopicsChildProps;
   ideaStatuses: GetIdeaStatusesChildProps;
-  phases: GetPhasesChildProps;
-  authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -138,7 +137,6 @@ type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 interface State {
   selectedIdeas: { [key: string]: boolean };
   activeFilterMenu: TFilterMenu | null;
-  visibleFilterMenus: string[];
   contextRef: any;
   searchTerm: string | undefined;
   modalIdeaId: string | null;
@@ -152,8 +150,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       selectedIdeas: {},
-      visibleFilterMenus: [],
-      activeFilterMenu: null,
+      activeFilterMenu: props.visibleFilterMenus[0],
       contextRef: null,
       searchTerm: undefined,
       modalIdeaId: null,
@@ -164,8 +161,6 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.globalState.set({ enabled: true });
-
-    this.setVisibleFilterMenus(this.props.project);
   }
 
   componentWillUnmount() {
@@ -173,29 +168,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const oldProjectId = get(prevProps.project, 'id', null);
-    const newProjectId = get(this.props.project, 'id', null);
+    const { visibleFilterMenus } = this.props;
 
-    if (this.props.project && newProjectId !== oldProjectId) {
-      this.setVisibleFilterMenus(this.props.project);
+    if (prevProps.visibleFilterMenus !== visibleFilterMenus) {
+      this.setState({ activeFilterMenu: visibleFilterMenus[0] });
     }
-  }
-
-  setVisibleFilterMenus = (project?: IProjectData | null) => {
-    let visibleFilterMenus: TFilterMenu[] = [];
-
-    if (project && project.attributes.process_type === 'timeline') {
-      visibleFilterMenus = ['phases', 'statuses', 'topics'];
-    } else if (project) {
-      visibleFilterMenus = ['statuses', 'topics'];
-    } else {
-      visibleFilterMenus = ['projects', 'topics', 'statuses'];
-    }
-
-    this.setState({
-      visibleFilterMenus,
-      activeFilterMenu: visibleFilterMenus[0],
-    });
   }
 
   handleSearchChange = (event) => {
@@ -271,13 +248,13 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
   render() {
     const { searchTerm, modalIdeaId, ideaModalMode } = this.state;
-    const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
+    const { project, projects, ideas, phases, ideaStatuses, topics, visibleFilterMenus } = this.props;
     const { ideasList, onChangePhase, onChangeTopics, onChangeIdeaStatus, queryParameters } = ideas;
     const selectedTopics = queryParameters.topics;
     const selectedPhase = queryParameters.phase;
     const selectedProject = isArray(queryParameters.projects) && queryParameters.projects.length === 1 ? queryParameters.projects[0] : undefined;
     const selectedIdeaStatus = queryParameters.idea_status;
-    const { selectedIdeas, activeFilterMenu, visibleFilterMenus } = this.state;
+    const { selectedIdeas, activeFilterMenu } = this.state;
     const selectedIdeaIds = keys(this.state.selectedIdeas);
     const showInfoSidebar = this.isAnyIdeaSelected();
     const multipleIdeasSelected = this.areMultipleIdeasSelected();
@@ -418,11 +395,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   ideas: ({ project, projects, render }) => <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={project ? [project.id] : (projects ? projects.map(project => project.id) : undefined)}>{render}</GetIdeas>,
   topics: <GetTopics />,
-  tenant: <GetTenant />,
   ideaStatuses: <GetIdeaStatuses />,
-  authUser: <GetAuthUser />,
-  phases: ({ project, render }) => <GetPhases projectId={get(project, 'id')}>{render}</GetPhases>,
-  ideasCount:  <GetIdeasCount feedbackNeeded={true} />
 });
 
 const IdeaManagerWithDragDropContext = DragDropContext(HTML5Backend)(IdeaManager);
