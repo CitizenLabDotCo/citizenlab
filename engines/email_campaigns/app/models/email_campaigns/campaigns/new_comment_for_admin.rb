@@ -14,6 +14,9 @@ module EmailCampaigns
       {'Notifications::NewCommentForAdmin' => {'created' => true}}
     end
 
+    def self.consentable_roles
+      ['admin', 'project_moderator']
+    end
 
     protected
 
