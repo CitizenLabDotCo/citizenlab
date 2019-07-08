@@ -39,7 +39,6 @@ class AdminProjectIdeas extends React.PureComponent<Props & WithRouterProps, Sta
 
   render() {
     const { project, phases } = this.props;
-    console.log(phases, project);
 
     return (
       <>

@@ -13,7 +13,6 @@ import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/glob
 import { IProjectData } from 'services/projects';
 
 // resources
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 
@@ -126,7 +125,6 @@ interface InputProps {
 
 interface DataProps {
   ideas: GetIdeasChildProps;
-  topics: GetTopicsChildProps;
   ideaStatuses: GetIdeaStatusesChildProps;
 }
 
@@ -248,7 +246,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
   render() {
     const { searchTerm, modalIdeaId, ideaModalMode } = this.state;
-    const { project, projects, ideas, phases, ideaStatuses, topics, visibleFilterMenus } = this.props;
+    const { project, projects, ideas, phases, ideaStatuses, visibleFilterMenus } = this.props;
     const { ideasList, onChangePhase, onChangeTopics, onChangeIdeaStatus, queryParameters } = ideas;
     const selectedTopics = queryParameters.topics;
     const selectedPhase = queryParameters.phase;
@@ -325,9 +323,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
                 activeFilterMenu={activeFilterMenu}
                 visibleFilterMenus={visibleFilterMenus}
                 onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
-                project={!isNilOrError(project) ? project : undefined}
                 phases={!isNilOrError(phases) ? phases : undefined}
-                topics={!isNilOrError(topics) ? topics : undefined}
                 projects={!isNilOrError(projects) ? projects : undefined}
                 statuses={!isNilOrError(ideaStatuses) ? ideaStatuses : []}
                 selectedTopics={selectedTopics}
@@ -394,7 +390,6 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   ideas: ({ project, projects, render }) => <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={project ? [project.id] : (projects ? projects.map(project => project.id) : undefined)}>{render}</GetIdeas>,
-  topics: <GetTopics />,
   ideaStatuses: <GetIdeaStatuses />,
 });
 
