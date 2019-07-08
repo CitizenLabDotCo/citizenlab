@@ -42,4 +42,45 @@ namespace :inconsistent_data do
       puts "Success!"
     end
   end
+
+  task :fix_pc_that_cannot_contain_ideas => :environment do
+    fixes = {}
+    failures = {}
+
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        to_fix = Project.where(process_type: 'continuous').all.select do |project| 
+          !project.can_contain_ideas? && project.ideas.present?
+        end
+        to_fix += Phase.all.select do |phase| 
+          !phase.can_contain_ideas? && phase.ideas.present?
+        end
+        to_fix.each do |p| 
+          log = if p.update(ideas: [])
+            fixes
+          else
+            failures
+          end
+          log[tenant.host] ||= []
+          log[tenant.host] += ["#{p.class} #{p.id}"]
+        end      
+      end
+    end
+
+    if fixes.present?
+      puts "Fixed for some tenants:"
+      fixes.each do |host, classes_and_slugs|
+        puts "#{host}: #{classes_and_slugs.join ', '}"
+      end
+    end
+
+    if failures.present?
+      puts "Failed for some tenants:"
+      failures.each do |host, classes_and_slugs|
+        puts "#{host}: #{classes_and_slugs.join ', '}"
+      end
+    else
+      puts "Success!"
+    end
+  end
 end
