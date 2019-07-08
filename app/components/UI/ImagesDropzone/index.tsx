@@ -428,7 +428,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
             >
               <Image imageRadius={imageRadius} src={image.url} objectFit={objectFit}>
                 <RemoveButton onClick={this.removeImage(image)} className="remove-button">
-                  <RemoveIcon name="close2" />
+                  <RemoveIcon name="close" />
                 </RemoveButton>
               </Image>
             </Box>

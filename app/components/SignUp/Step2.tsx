@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Spinner from 'components/UI/Spinner';
-import CustomFieldsForm from 'components/CustomFieldsForm';
+import CustomFieldsForm from 'components/Loadable/CustomFieldsForm';
 
 // services
 import { authUserStream } from 'services/auth';

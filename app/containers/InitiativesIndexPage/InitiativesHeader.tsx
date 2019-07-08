@@ -153,7 +153,7 @@ const Illustration = styled.img`
 const ManualTitle = styled.h2`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 7px;
 `;
 

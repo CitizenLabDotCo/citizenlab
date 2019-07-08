@@ -1,4 +1,4 @@
-import { isString, get } from 'lodash-es';
+import { get } from 'lodash-es';
 
 describe('Admin: add project', () => {
 

@@ -146,7 +146,7 @@ export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State
       trackEventByName(tracks.createIdeaFromMap, { position: this.savedPosition, projectSlug: this.props.params.slug });
       clHistory.push({
         pathname: `/projects/${this.props.params.slug}/ideas/new`,
-        query: { position: `[${this.savedPosition.lat},${this.savedPosition.lng}]` }
+        query: { position: `[${this.savedPosition.lat}, ${this.savedPosition.lng}]` }
       });
     }
   }

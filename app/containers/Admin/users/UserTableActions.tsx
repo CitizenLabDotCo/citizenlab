@@ -345,7 +345,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
             label={
               <>
                 <FormattedMessage {...messages.select} />
-                <UserCount>
+                <UserCount className="e2e-selected-count">
                   (<FormattedMessage
                     {...messages.userCount}
                     values={{

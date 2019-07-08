@@ -38,7 +38,7 @@ const ResolutionButton = styled.button`
 
   @media print {
     &.active {
-      font-weight: 800;
+      font-weight: 600;
     }
   }
 `;

@@ -3,13 +3,11 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import CommentHeader from './CommentHeader';
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
-import Avatar from 'components/Avatar';
 import Icon from 'components/UI/Icon';
 
 // services
@@ -81,24 +79,8 @@ const ContainerInner = styled.div`
   `}
 `;
 
-const CommmentHeaderWrapper = styled.div`
-  ${media.biggerThanMinTablet`
-    &.child {
-      display: none;
-    }
-  `}
-`;
-
 const Content = styled.div`
   display: flex;
-`;
-
-const AvatarWrapper = styled.div`
-  margin-right: 7px;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
 `;
 
 const BodyAndFooter = styled.div`
@@ -171,14 +153,6 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ editing: false });
   }
 
-  goToUserProfile = () => {
-    const { author } = this.props;
-
-    if (!isNilOrError(author)) {
-      clHistory.push(`/profile/${author.attributes.slug}`);
-    }
-  }
-
   render() {
     const { comment, author, ideaId, projectId, commentType, hasBottomBorder, hasChildComments, last, className, canReply } = this.props;
     const { editing } = this.state;
@@ -194,36 +168,21 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
           <ContainerInner className={`${commentType} ${lastComment ? 'lastComment' : ''} ${hasBottomBorder ? 'hasBottomBorder' : ''}`}>
             {comment.attributes.publication_status === 'published' &&
               <>
-                <CommmentHeaderWrapper className={commentType}>
-                  <CommentHeader
-                    projectId={projectId}
-                    authorId={authorId}
-                    commentId={commentId}
-                    commentType={commentType}
-                    commentCreatedAt={comment.attributes.created_at}
-                    moderator={moderator}
-                  />
-                </CommmentHeaderWrapper>
+                <CommentHeader
+                  projectId={projectId}
+                  authorId={authorId}
+                  commentId={commentId}
+                  commentType={commentType}
+                  commentCreatedAt={comment.attributes.created_at}
+                  moderator={moderator}
+                />
 
                 <Content>
-                  {commentType === 'child' &&
-                    <AvatarWrapper>
-                      <Avatar
-                        userId={authorId}
-                        size="32px"
-                        moderator={moderator}
-                        onClick={this.goToUserProfile}
-                        badgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
-                      />
-                    </AvatarWrapper>
-                  }
-
                   <BodyAndFooter>
                     <CommentBody
                       commentId={commentId}
                       commentType={commentType}
                       editing={editing}
-                      moderator={moderator}
                       onCommentSaved={this.onCommentSaved}
                       onCancelEditing={this.onCancelEditing}
                     />

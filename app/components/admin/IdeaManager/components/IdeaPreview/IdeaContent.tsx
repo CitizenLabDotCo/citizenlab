@@ -182,8 +182,8 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
     if (!isNilOrError(idea)) {
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const ideaImageLarge = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
-      const ideaLocation = (idea.attributes.location_point_geojson || null);
-      const ideaAdress = (idea.attributes.location_description || null);
+      const ideaGeoPosition = (idea.attributes.location_point_geojson || null);
+      const ideaAddress = (idea.attributes.location_description || null);
 
       return (
         <Container>
@@ -240,10 +240,10 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   ideaBody={localize(idea.attributes.body_multiloc)}
                 />
 
-                {ideaLocation && ideaAdress &&
+                {ideaGeoPosition && ideaAddress &&
                   <StyledIdeaMap
-                    adress={ideaAdress}
-                    location={ideaLocation}
+                    address={ideaAddress}
+                    position={ideaGeoPosition}
                     id={idea.id}
                   />
                 }

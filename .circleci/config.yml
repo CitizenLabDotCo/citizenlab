@@ -55,6 +55,7 @@ jobs:
   build:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: medium+
     working_directory: ~/cl2-front
     steps:
       - checkout
@@ -103,6 +104,7 @@ jobs:
   deploy_demo:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: medium+
     working_directory: ~/cl2-front
     steps:
       - checkout
@@ -124,33 +126,35 @@ jobs:
           name: Deploy to S3 if tests pass and branch is Master
           command: aws s3 sync build/ s3://cl2-front-staging/ --delete --acl public-read
 
-  deploy_crowdin:
-    docker:
-      - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: ~/cl2-front
-    steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
-      - run: npm ci
-      - save_cache:
-          paths:
-            - /root/.npm
-          key: v1-npm-cache-{{ checksum "package.json" }}
-      - run:
-          command: CROWDIN_PLUGIN_ENABLED=true SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
-          no_output_timeout: '30m'
-      - deploy :
-          name: Deploy translatable version to i18n.stg.citizenlab.co
-          command: aws s3 sync build/ s3://cl2-front-translations/ --delete --acl public-read
+  # deploy_crowdin:
+  #   docker:
+  #     - image: citizenlabdotco/cl2-devops-front-buildenv
+  #   resource_class: medium+
+  #   working_directory: ~/cl2-front
+  #   steps:
+  #     - checkout
+  #     # Download and cache dependencies
+  #     - restore_cache:
+  #         keys:
+  #         - v1-npm-cache-{{ checksum "package.json" }}
+  #         # fallback to using the latest cache if no exact match is found
+  #         - v1-npm-cache-
+  #     - run: npm ci
+  #     - save_cache:
+  #         paths:
+  #           - /root/.npm
+  #         key: v1-npm-cache-{{ checksum "package.json" }}
+  #     - run:
+  #         command: CROWDIN_PLUGIN_ENABLED=true SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
+  #         no_output_timeout: '30m'
+  #     - deploy :
+  #         name: Deploy translatable version to i18n.stg.citizenlab.co
+  #         command: aws s3 sync build/ s3://cl2-front-translations/ --delete --acl public-read
 
   deploy_production:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: medium+
     working_directory: ~/cl2-front
     steps:
       - checkout
@@ -180,6 +184,7 @@ jobs:
   reset_ci_tenants:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: small
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -190,6 +195,7 @@ jobs:
   test_a11y:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: small
     working_directory: ~/cl2-front
     steps:
       - checkout
@@ -213,6 +219,7 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
         user: pptruser
+    resource_class: small
     working_directory: ~/cl2-front
     steps:
       - checkout
@@ -261,10 +268,10 @@ workflows:
             branches:
               only:
                 - master
-      - deploy_crowdin:
-          filters:
-            branches:
-              only: master
+      # - deploy_crowdin:
+      #     filters:
+      #       branches:
+      #         only: master
       - reset_ci_tenants:
           filters:
             branches:
