@@ -73,8 +73,8 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
         } else {
           const { loadingMore, commentsList } = this.state;
           // is this the last page?
-          const selfLink = get(newComments, 'meta.self');
-          const lastLink = get(newComments, 'meta.last');
+          const selfLink = get(newComments, 'links.self');
+          const lastLink = get(newComments, 'links.last');
           const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
 
           // if we had not set loading more, we should'nt aggregate the content,
