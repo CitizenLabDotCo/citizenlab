@@ -11,7 +11,7 @@ const isIdeaProjectModerator = (idea: IIdeaData, user?: IUser) => {
   return user && isProjectModerator(user, idea.relationships.project.data.id);
 };
 
-definePermissionRule('ideas', 'create', (_idea: IIdeaData, user: IUser, _tenant, { project = null }) => {
+definePermissionRule('idea', 'create', (_idea: IIdeaData, user: IUser, _tenant, { project = null }) => {
   if (project) {
     return project.attributes.action_descriptor.posting.enabled || isAdmin(user);
   }
@@ -19,14 +19,14 @@ definePermissionRule('ideas', 'create', (_idea: IIdeaData, user: IUser, _tenant,
   return true;
 });
 
-definePermissionRule('ideas', 'edit', (idea: IIdeaData, user: IUser) => {
+definePermissionRule('idea', 'edit', (idea: IIdeaData, user: IUser) => {
   return !!(isAuthor(idea, user) || isAdmin(user) || isIdeaProjectModerator(idea, user));
 });
 
-definePermissionRule('ideas', 'markAsSpam', () => {
+definePermissionRule('idea', 'markAsSpam', () => {
   return true;
 });
 
-definePermissionRule('ideas', 'assignBudget', (idea: IIdeaData | null, user: IUser, _tenant, { projectId }) => {
+definePermissionRule('idea', 'assignBudget', (idea: IIdeaData | null, user: IUser, _tenant, { projectId }) => {
   return !!isAdmin(user) || (!!idea && !!isProjectModerator(user, projectId));
 });
