@@ -50,8 +50,6 @@ class Idea < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
   validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
-  validates :author, presence: true, unless: :draft?, on: :create
-  validates :author_name, presence: true, unless: :draft?, on: :create
   validates :idea_status, presence: true, unless: :draft?
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
   validate :assignee_can_moderate_project, unless: :draft?
@@ -171,7 +169,7 @@ class Idea < ApplicationRecord
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc(
       self.body_multiloc,
-      %i{title alignment list decoration link}
+      %i{title alignment list decoration link video}
     )
     self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)

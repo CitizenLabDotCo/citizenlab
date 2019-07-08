@@ -1,5 +1,5 @@
 class AvatarUploader < CarrierWave::Uploader::Base
-  include BaseUploader
+  include BaseImageUploader
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
@@ -37,17 +37,14 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   version :small do
     process resize_to_fill: [32,32]
-    # process optimize: [{ quality: 90, quiet: true }]
   end
 
   version :medium do
     process resize_to_fill: [200,200]
-    # process optimize: [{ quality: 90, quiet: true }]
   end
 
   version :large do
     process resize_to_fill: [640,640]
-    # process optimize: [{ quality: 90, quiet: true }]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.
@@ -55,11 +52,5 @@ class AvatarUploader < CarrierWave::Uploader::Base
   def extension_whitelist
     %w(jpg jpeg gif png)
   end
-
-  # Override the filename of the uploaded files:
-  # Avoid using model.id or version_name here, see uploader/store.rb for details.
-  # def filename
-  #   "something.jpg" if original_filename
-  # end
 
 end

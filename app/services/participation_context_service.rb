@@ -242,6 +242,14 @@ class ParticipationContextService
     project_ids + phase_ids
   end
 
+  def allocated_budget project
+    Idea.from(project.ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
+  end
+
+  def allocated_budgets projects
+    Idea.from(Idea.where(project: projects).select('project_id, budget * baskets_count as allocated_budget')).group(:project_id).sum(:allocated_budget)
+  end
+
 
   private
 

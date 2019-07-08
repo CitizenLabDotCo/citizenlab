@@ -202,7 +202,8 @@ GEM
       rubyzip (~> 1.2, >= 1.2.1)
     bcrypt (3.1.12)
     bindata (2.4.4)
-    bson (4.3.0)
+    bootsnap (1.4.4)
+      msgpack (~> 1.0)
     builder (3.2.3)
     bunny (2.12.0)
       amq-protocol (~> 2.3, >= 2.3.0)
@@ -215,16 +216,8 @@ GEM
       carrierwave (>= 0.8.0)
       mime-types (~> 3.0)
       mimemagic (~> 0.3.2)
-    carrierwave-imageoptimizer (1.4.0)
-      carrierwave (>= 0.8, < 2.0)
-      image_optimizer (~> 1.6)
     case_transform (0.2)
       activesupport
-    ci_reporter (2.0.0)
-      builder (>= 2.1.2)
-    ci_reporter_rspec (1.0.0)
-      ci_reporter (~> 2.0)
-      rspec (>= 2.14, < 4)
     concurrent-ruby (1.1.4)
     connection_pool (2.2.2)
     counter_culture (2.1.1)
@@ -290,7 +283,6 @@ GEM
     httpclient (2.8.3)
     i18n (1.5.3)
       concurrent-ruby (~> 1.0)
-    image_optimizer (1.8.0)
     ipaddress (0.8.3)
     jmespath (1.4.0)
     json (2.1.0)
@@ -337,8 +329,7 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
-    mongo (2.6.2)
-      bson (>= 4.3.0, < 5.0.0)
+    msgpack (1.3.0)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
@@ -406,6 +397,8 @@ GEM
       activesupport (>= 3.0.0)
     rack (2.0.7)
     rack-cors (1.0.2)
+    rack-mini-profiler (1.0.2)
+      rack (>= 1.2.0)
     rack-oauth2 (1.9.3)
       activesupport
       attr_required
@@ -485,6 +478,8 @@ GEM
       activesupport (>= 3.0.0)
       mustache (~> 1.0, >= 0.99.4)
       rspec (~> 3.0)
+    rspec_junit_formatter (0.4.1)
+      rspec-core (>= 2, < 4, != 2.12.0)
     rubyXL (3.3.31)
       nokogiri (>= 1.4.4)
       rubyzip (>= 1.1.6)
@@ -572,12 +567,11 @@ DEPENDENCIES
   aws-sdk-s3 (~> 1)
   axlsx (= 3.0.0.pre)
   bcrypt (~> 3.1.7)
+  bootsnap
   bunny (>= 2.7.2)
   byebug
   carrierwave (~> 1.2.2)
   carrierwave-base64 (~> 2.6)
-  carrierwave-imageoptimizer
-  ci_reporter_rspec
   counter_culture (~> 2.1)
   dalli
   database_cleaner
@@ -595,7 +589,6 @@ DEPENDENCIES
   machine_translations!
   mailgun-ruby
   mini_magick
-  mongo (~> 2.5)
   nlp!
   okcomputer
   omniauth
@@ -612,6 +605,7 @@ DEPENDENCIES
   puma
   pundit (~> 2.0)
   rack-cors
+  rack-mini-profiler
   rails (~> 5.2.1)
   rails_semantic_logger
   redcarpet
@@ -620,6 +614,7 @@ DEPENDENCIES
   rinku (~> 2)
   rspec-rails
   rspec_api_documentation
+  rspec_junit_formatter
   rubyXL
   rubyzip (~> 1.2.1)
   scenic

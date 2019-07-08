@@ -1,5 +1,5 @@
 class ProjectFileUploader < CarrierWave::Uploader::Base
-  include BaseUploader
+  include BaseFileUploader
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -52,12 +52,6 @@ class ProjectFileUploader < CarrierWave::Uploader::Base
   # def filename
   #   model.name
   # end
-
-  def fog_attributes
-    # Deleting consecutive whitespaces in filename because of
-    # https://github.com/fog/fog-aws/issues/160
-    {"Content-Disposition" => "attachment; filename=\"#{model.name.strip.gsub(/\s+/, ' ')}\""}
-  end
 
   def size_range
     1.byte..50.megabytes

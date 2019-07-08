@@ -27,10 +27,10 @@ describe AvatarsService do
       create(:idea, project: project, author: u1)
       create(:idea, project: project, author: u1)
 
-      expect(service.avatars_for_project(project)).to eq({
-        users: [u1],
-        total_count: 1
-      })
+      result = service.avatars_for_project(project)
+
+      expect(result[:total_count]).to eq 1
+      expect(result[:users].map(&:id)).to match_array [u1.id]
     end
   end
 
@@ -43,8 +43,8 @@ describe AvatarsService do
 
       result = service.avatars_for_idea(idea1)
 
-      expect(result[:users].to_a).to match_array [idea1.author, comment1.author, comment2.author]
       expect(result[:total_count]).to eq 3
+      expect(result[:users].map(&:id)).to match_array [idea1.author.id, comment1.author.id, comment2.author.id]
     end
 
     it "does not include authors from deleted comments" do
@@ -53,8 +53,8 @@ describe AvatarsService do
 
       result = service.avatars_for_idea(idea)
 
-      expect(result[:users].to_a).to match_array [idea.author]
       expect(result[:total_count]).to eq 1
+      expect(result[:users].map(&:id)).to match_array [idea.author.id]
     end
 
     it "does not return the voters" do
@@ -65,8 +65,8 @@ describe AvatarsService do
 
       result = service.avatars_for_idea(idea)
 
-      expect(result[:users].to_a).to match_array [idea.author, comment.author]
       expect(result[:total_count]).to eq 2
+      expect(result[:users].map(&:id)).to match_array [idea.author.id, comment.author.id]
     end
 
     it "doesn't return the same user twice" do
@@ -76,8 +76,8 @@ describe AvatarsService do
 
       result = service.avatars_for_idea(idea)
 
-      expect(result[:users].to_a).to match_array [u1]
       expect(result[:total_count]).to eq 1
+      expect(result[:users].map(&:id)).to match_array [u1.id]
     end
   end
 

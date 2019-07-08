@@ -1,8 +1,10 @@
 module EmailCampaigns
   class Campaigns::StatusChangeOfVotedIdea < Campaign
     include ActivityTriggerable
+    include Consentable
     include RecipientConfigurable
     include Disableable
+    include Trackable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
 
@@ -45,6 +47,10 @@ module EmailCampaigns
           }
         }
       }]
+    end
+
+    def set_enabled
+      self.enabled = false if self.enabled.nil?
     end
 
   end
