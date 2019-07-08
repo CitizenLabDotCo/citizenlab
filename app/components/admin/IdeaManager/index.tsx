@@ -1,5 +1,5 @@
 import React from 'react';
-import { keys, isEmpty, size, get, isFunction, isArray } from 'lodash-es';
+import { keys, isEmpty, size, isFunction, isArray } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -109,9 +109,18 @@ const StyledInput = styled(Input)`
   width: 100%;
 `;
 
+type TIdeaManagerType =
+  'AllIdeas' // should come with projectIds a list of projects that the current user can manage.
+  | 'ProjectIdeas'; // should come with projectId
+  // | 'Initiatives';
+
 interface InputProps {
-  // When the IdeaManager is used in admin/projects, we pass down the current project as a prop
-  project?: IProjectData | null;
+  // For all display and behaviour that's conditionned by the place this component is rendered
+  // this prop is used for the test.
+  type: TIdeaManagerType;
+
+  // When the IdeaManager is used in admin/projects, we pass down the current projects id as a prop
+  projectId?: string | null;
 
   // When the IdeaManager is used in admin/ideas, the parent component passes
   // down the array of projects the current user can moderate.
@@ -209,10 +218,12 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   onChangeProjects = (projectIds: string[] | undefined) => {
-    const { project, projects, ideas } = this.props;
+    const { projects, ideas, type } = this.props;
     const { onChangeProjects } = ideas;
 
-    const accessibleProjectsIds = !isNilOrError(project) ? [project.id] : (projects ? projects.map(project => project.id) : null);
+    if (type !== 'AllIdeas') return;
+
+    const accessibleProjectsIds = projects ? projects.map(project => project.id) : null;
 
     if (!projectIds || projectIds.length === 0) {
       accessibleProjectsIds && onChangeProjects(accessibleProjectsIds);
@@ -246,16 +257,19 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
   render() {
     const { searchTerm, modalIdeaId, ideaModalMode } = this.state;
-    const { project, projects, ideas, phases, ideaStatuses, visibleFilterMenus } = this.props;
-    const { ideasList, onChangePhase, onChangeTopics, onChangeIdeaStatus, queryParameters } = ideas;
+    const { type, projectId, projects, ideas, phases, ideaStatuses, visibleFilterMenus } = this.props;
+    const { ideasList, onChangePhase, onChangeTopics, onChangeIdeaStatus, queryParameters, onChangeAssignee } = ideas;
     const selectedTopics = queryParameters.topics;
     const selectedPhase = queryParameters.phase;
-    const selectedProject = isArray(queryParameters.projects) && queryParameters.projects.length === 1 ? queryParameters.projects[0] : undefined;
-    const selectedIdeaStatus = queryParameters.idea_status;
+    const selectedProject = isArray(queryParameters.projects) && queryParameters.projects.length === 1
+      ? queryParameters.projects[0]
+      : undefined;
     const { selectedIdeas, activeFilterMenu } = this.state;
     const selectedIdeaIds = keys(this.state.selectedIdeas);
     const showInfoSidebar = this.isAnyIdeaSelected();
     const multipleIdeasSelected = this.areMultipleIdeasSelected();
+
+    const selectedIdeaStatus = queryParameters.idea_status;
 
     let exportQueryParameter;
     let exportType: null | exportType = null;
@@ -276,8 +290,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
         <TopActionBar>
           <AssigneeFilter
             assignee={queryParameters.assignee}
-            projectId={!isNilOrError(project) ? project.id : undefined}
-            handleAssigneeFilterChange={ideas.onChangeAssignee}
+            projectId={type === 'ProjectIdeas' ? projectId : null}
+            handleAssigneeFilterChange={onChangeAssignee}
           />
           <FeedbackToggle
             value={queryParameters.feedback_needed || false}
@@ -389,7 +403,21 @@ class IdeaManager extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  ideas: ({ project, projects, render }) => <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={project ? [project.id] : (projects ? projects.map(project => project.id) : undefined)}>{render}</GetIdeas>,
+  ideas: ({ type, projectId, projects, render }) => (
+    <GetIdeas
+      type="paginated"
+      pageSize={10}
+      sort="new"
+      projectIds={type === 'ProjectIdeas' && projectId
+        ? [projectId]
+        : type === 'AllIdeas' && projects
+        ? projects.map(project => project.id)
+        : undefined
+      }
+    >
+      {render}
+    </GetIdeas>
+  ),
   ideaStatuses: <GetIdeaStatuses />,
 });
 
