@@ -29,17 +29,12 @@ import InfoSidebar from './components/InfoSidebar';
 import ExportMenu, { exportType, Props as ExportMenuProps } from './components/ExportMenu';
 import IdeasCount from './components/IdeasCount';
 import { Input, Message } from 'semantic-ui-react';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-const StyledDiv = styled.div`
-  margin-bottom: 30px;
-`;
 
 const StyledExportMenu = styled(ExportMenu)<ExportMenuProps>`
   margin-left: auto;
@@ -119,10 +114,7 @@ const StyledInput = styled(Input)`
 `;
 
 interface InputProps {
-  // When the IdeaManager is used in admin/projects,
-  // the project is loaded through the router inside the parent component (Admin/projects/edit/index.tsx)
-  // In this parent component, project gets loaded and passed to all childRoutes (child components), including admin/projects/edit/ideas
-  // Search this parent component for 'React.cloneElement' to see how this project prop is passed.
+  // When the IdeaManager is used in admin/projects, we pass down the current project as a prop
   project?: IProjectData | null;
 
   // When the IdeaManager is used in admin/ideas, the parent component passes
@@ -305,16 +297,6 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
     return (
       <div ref={this.handleContextRef}>
-        {project !== undefined &&
-          <StyledDiv>
-            <SectionTitle>
-              <FormattedMessage {...messages.titleIdeas} />
-            </SectionTitle>
-            <SectionSubtitle>
-              <FormattedMessage {...messages.subtitleIdeas} />
-            </SectionSubtitle>
-          </StyledDiv>
-        }
 
         <TopActionBar>
           <AssigneeFilter
