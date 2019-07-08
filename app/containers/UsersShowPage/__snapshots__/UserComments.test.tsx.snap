@@ -86,7 +86,7 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
       ]
     }
     ideaId="idea1"
-    key="idea1"
+    key="commentId"
   />
   <WrappedIdeaComments
     commentsForIdea={
@@ -164,7 +164,7 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
       ]
     }
     ideaId="idea2"
-    key="idea2"
+    key="commentId"
   />
 </UserComments__Container>
 `;
