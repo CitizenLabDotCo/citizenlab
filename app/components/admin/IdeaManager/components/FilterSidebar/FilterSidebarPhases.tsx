@@ -12,14 +12,7 @@ type Props  = {
   onChangePhaseFilter?: (string) => void;
 };
 
-type State = {};
-
-export default class FilterSidebarPhases extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {};
-  }
-
+export default class FilterSidebarPhases extends React.PureComponent<Props> {
   handleItemClick = (id) => () => {
     this.props.onChangePhaseFilter && this.props.onChangePhaseFilter(id);
   }
@@ -33,13 +26,14 @@ export default class FilterSidebarPhases extends React.PureComponent<Props, Stat
   }
 
   render() {
+    const { phases , selectedPhase } = this.props;
     return (
       <Menu secondary={true} vertical={true} fluid={true}>
-        <Menu.Item onClick={this.clearFilter} active={!this.props.selectedPhase}>
+        <Menu.Item onClick={this.clearFilter} active={!selectedPhase}>
           <FormattedMessage {...messages.allPhases} />
         </Menu.Item>
         <Divider />
-        {this.props.phases && this.props.phases.map((phase, index) => (
+        {phases && phases.map((phase, index) => (
           <FilterSidebarPhasesItem
             key={phase.id}
             phase={phase}

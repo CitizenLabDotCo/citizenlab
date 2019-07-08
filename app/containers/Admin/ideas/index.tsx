@@ -62,7 +62,10 @@ class IdeaDashboard extends React.PureComponent<Props> {
 
         <PageWrapper>
           {projects && projects.projectsList !== undefined &&
-            <IdeaManager projects={!isNilOrError(projects.projectsList) ? projects.projectsList : null} />
+            <IdeaManager
+              visibleFilterMenus={['projects', 'topics', 'statuses']}
+              projects={!isNilOrError(projects.projectsList) ? projects.projectsList : null}
+            />
           }
         </PageWrapper>
       </>

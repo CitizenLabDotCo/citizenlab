@@ -1,5 +1,5 @@
 import React from 'react';
-import { findIndex, isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import { IPhaseData } from 'services/phases';
 import { ITopicData } from 'services/topics';
 import { IProjectData } from 'services/projects';
@@ -59,7 +59,11 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
         name: this.tabName('timelineTab', this.props.selectedPhase, 'phases'),
         key: 'phases',
         content: (
-          <PhasesMenu phases={this.props.phases} selectedPhase={this.props.selectedPhase} onChangePhaseFilter={this.props.onChangePhaseFilter} />
+          <PhasesMenu
+            phases={this.props.phases}
+            selectedPhase={this.props.selectedPhase}
+            onChangePhaseFilter={this.props.onChangePhaseFilter}
+          />
         )
       }
     ),
@@ -81,7 +85,11 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
         name: this.tabName('projectsTab', this.props.selectedProject, 'projects'),
         key: 'projects',
         content: (
-          <ProjectsMenu projects={this.props.projects} selectedProject={this.props.selectedProject} onChangeProjectFilter={this.props.onChangeProjectFilter} />
+          <ProjectsMenu
+            projects={this.props.projects}
+            selectedProject={this.props.selectedProject}
+            onChangeProjectFilter={this.props.onChangeProjectFilter}
+          />
         )
       }
     ),
@@ -90,7 +98,11 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
         name: this.tabName('statusesTab', this.props.selectedStatus, 'statuses'),
         key: 'statuses',
         content: (
-          <StatusesMenu statuses={this.props.statuses} selectedStatus={this.props.selectedStatus} onChangeStatusFilter={this.props.onChangeStatusFilter} />
+          <StatusesMenu
+            statuses={this.props.statuses}
+            selectedStatus={this.props.selectedStatus}
+            onChangeStatusFilter={this.props.onChangeStatusFilter}
+          />
         )
       }
     )
@@ -100,15 +112,6 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
     return this.props.visibleFilterMenus.map((menuName) => {
       return this.menuItems[menuName]();
     });
-  }
-
-  activeIndex = (items) => {
-    const paneIndex = this.props.activeFilterMenu && findIndex(items as any, { key: this.props.activeFilterMenu });
-    if (paneIndex && paneIndex >= 0) {
-      return paneIndex;
-    } else {
-      return 0;
-    }
   }
 
   render() {

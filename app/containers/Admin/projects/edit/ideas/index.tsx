@@ -8,15 +8,16 @@ import { adopt } from 'react-adopt';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // Resources
-// import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // Components
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import IdeaManager from 'components/admin/IdeaManager';
 
 // resources
-// import GetProject from 'resources/GetProject';
-import { IProjectData } from 'services/projects';
+import { isNilOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
+import GetProject, { GetProjectChildProps }  from 'resources/GetProject';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;
@@ -25,23 +26,20 @@ const StyledDiv = styled.div`
 interface InputProps {}
 
 interface DataProps {
-  // phases: GetPhasesChildProps;
+  phases: GetPhasesChildProps;
+  project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {
-  // When the IdeaManager is used in admin/projects,
-  // the project is loaded through the router inside the parent component (Admin/projects/edit/index.tsx)
-  // In this parent component, project gets loaded and passed to all childRoutes (child components), including admin/projects/edit/ideas
-  // Search this parent component for 'React.cloneElement' to see how this project prop is passed.
-  project: IProjectData | null;
 }
 
 interface State {}
 
-export default class AdminProjectIdeas extends React.PureComponent<Props, State> {
+class AdminProjectIdeas extends React.PureComponent<Props & WithRouterProps, State> {
 
   render() {
-    const { project } = this.props;
+    const { project, phases } = this.props;
+    console.log(phases, project);
 
     return (
       <>
@@ -54,19 +52,27 @@ export default class AdminProjectIdeas extends React.PureComponent<Props, State>
           </SectionSubtitle>
         </StyledDiv>
 
-        <IdeaManager project={project} />
-
+        {!isNilOrError(project) &&
+          <IdeaManager
+            project={project}
+            phases={phases}
+            visibleFilterMenus={project && project.attributes.process_type === 'timeline'
+              ? ['phases', 'statuses', 'topics']
+              : ['statuses', 'topics']}
+          />
+        }
       </>
     );
   }
 }
 
-// const Data = adopt<Props>({
-//   phases: ({ params, render }) => <GetPhases projectId={params.projectId}>{render}</GetPhases>
-// });
-//
-// export default () => (
-//   <Data>
-//     {dataProps => <AdminProjectIdeas{...dataProps} />}
-//   </Data>
-// );
+const Data =  withRouter(adopt<Props>({
+  phases: ({ params, render }) => <GetPhases projectId={params.projectId}>{render}</GetPhases>,
+  project: ({ params, render }) => <GetProject id={params.projectId}>{render}</GetProject>
+}));
+
+export default () => (
+  <Data>
+    {dataProps => <AdminProjectIdeas{...dataProps} />}
+  </Data>
+);
