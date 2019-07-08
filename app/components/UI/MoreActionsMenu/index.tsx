@@ -76,6 +76,7 @@ const ListItem: any = styled.button`
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   white-space: nowrap;
+  transition: all 100ms ease-out;
 
   & > span {
     margin-right: 5px;
@@ -84,7 +85,7 @@ const ListItem: any = styled.button`
   &:hover,
   &:focus {
     color: white;
-    background: ${lighten(.1, colors.adminMenuBackground)};
+    background: ${lighten(.12, colors.adminMenuBackground)};
   }
 `;
 
@@ -135,6 +136,12 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     this.setState(({ visible }) => ({ visible: !visible }));
   }
 
+  handleListItemOnClick = (handler: () => void) => (event: React.MouseEvent) => {
+    event.preventDefault();
+    this.setState({ visible: false });
+    handler();
+  }
+
   render() {
     const { actions, ariaLabel, fontSize, id } = this.props;
     const { visible } = this.state;
@@ -152,13 +159,15 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
             <List>
               {actions.map((action, index) => {
                 const { handler, label, icon, name } = action;
-                const onClick = () => {
-                  this.setState({ visible: false });
-                  handler();
-                };
 
                 return (
-                  <ListItem key={index} onClick={onClick} className={`e2e-action-${name}`} fontSize={fontSize}>
+                  <ListItem
+                    key={index}
+                    onMouseDown={this.removeFocus}
+                    onClick={this.handleListItemOnClick(handler)}
+                    className={`e2e-action-${name}`}
+                    fontSize={fontSize}
+                  >
                     {label}
                     {icon && <StyledIcon name={icon} />}
                   </ListItem>

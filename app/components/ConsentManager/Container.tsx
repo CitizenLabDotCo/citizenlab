@@ -7,7 +7,7 @@ import eventEmitter from 'utils/eventEmitter';
 // Components
 import Banner from './Banner';
 import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
-import Modal from 'components/UI/Modal';
+import LoadableModal from 'components/Loadable/Modal';
 import Footer from './Footer';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -188,7 +188,7 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <>
-        <Modal
+        <LoadableModal
           opened={isDialogOpen}
           close={this.closeDialog}
           label={intl.formatMessage(messages.modalLabel)}
@@ -216,7 +216,7 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.confirmation} tagName="h1" />
             </ContentContainer>
           }
-        </Modal>
+        </LoadableModal>
         {isConsentRequired && newDestinations.length > 0 && (
           <Banner
             onAccept={this.handleBannerAccept}

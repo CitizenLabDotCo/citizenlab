@@ -183,13 +183,12 @@ export class IdeaCommentGroup extends PureComponent<Props> {
                   commentId={comment.id}
                   commentType="parent"
                   editing={false}
-                  moderator={canModerate(projectId, { data: user })}
                   onCommentSaved={nothingHappens}
                   onCancelEditing={nothingHappens}
                 />
                 <VotesContainer>
                   <IconContainer>
-                    <VoteIcon name="upvote-2"/>
+                    <VoteIcon name="upvote"/>
                   </IconContainer>
                   <Votes>
                     {comment.attributes.upvotes_count}

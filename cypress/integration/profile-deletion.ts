@@ -1,11 +1,12 @@
 import { randomString, randomEmail } from '../support/commands';
 
-const firstName = randomString();
-const lastName = randomString();
-const peasantEmail = randomEmail();
-const peasantPassword = randomString();
-
 describe('profile deletion', () => {
+
+  const firstName = randomString();
+  const lastName = randomString();
+  const peasantEmail = randomEmail();
+  const peasantPassword = randomString();
+
   before(() => {
     cy.apiSignup(firstName, lastName, peasantEmail, peasantPassword);
   });

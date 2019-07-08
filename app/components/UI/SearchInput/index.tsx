@@ -184,7 +184,7 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
         onClick={handleOnReset}
         className={!isEmpty(searchTerm) ? 'clickable' : ''}
       >
-        {isEmpty(searchTerm) ? <SearchIcon name="search2" /> : <CloseIcon name="close3" />}
+        {isEmpty(searchTerm) ? <SearchIcon name="search2" /> : <CloseIcon name="close" />}
       </IconWrapper>
     </Container>
   );

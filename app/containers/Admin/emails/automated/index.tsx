@@ -55,9 +55,9 @@ class AutomatedCampaigns extends React.PureComponent<Props & InjectedIntlProps> 
               <TextCell className="expand">
                 <T value={campaign.attributes.admin_campaign_description_multiloc} />
               </TextCell>
-              <div>
+              {/* <div>
                 <T value={campaign.attributes.schedule_multiloc} />
-              </div>
+              </div> */}
             </Row>
           ))}
         </List>
