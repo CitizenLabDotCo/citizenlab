@@ -10,6 +10,8 @@ import Row from './Row';
 import Pagination from 'components/admin/Pagination';
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
+import NoIdeas from './NoIdeas';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 // services
 import { IIdeaData } from 'services/ideas';
@@ -25,9 +27,6 @@ import { SortDirection } from 'utils/paginationUtils';
 // i18n
 import messages from '../../messages';
 import InfoTooltip from 'components/admin/InfoTooltip';
-import IdeaPreview from '../IdeaPreview';
-import NoIdeas from './NoIdeas';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const Container = styled.div`
   .ui.table {
@@ -85,11 +84,7 @@ interface Props {
   onIdeaChangePage?: (number: number) => void;
   activeFilterMenu: string | null;
   handleSeeAllIdeas: () => void;
-  onCloseModal: () => void;
   onClickIdeaTitle: (ideaId: string) => void;
-  modalIdeaId: string | null;
-  switchModalMode: () => void;
-  ideaModalMode: 'edit' | 'view';
 }
 
 export default class IdeaTable extends React.Component<Props> {
@@ -159,11 +154,7 @@ export default class IdeaTable extends React.Component<Props> {
       activeFilterMenu,
       statuses,
       handleSeeAllIdeas,
-      modalIdeaId,
-      onCloseModal,
       onClickIdeaTitle,
-      switchModalMode,
-      ideaModalMode
     } = this.props;
 
     return (
@@ -275,13 +266,6 @@ export default class IdeaTable extends React.Component<Props> {
             </CSSTransition>
           }
         </TransitionGroup>
-
-        <IdeaPreview
-          ideaId={modalIdeaId}
-          mode={ideaModalMode}
-          onCloseModal={onCloseModal}
-          onSwitchIdeaMode={switchModalMode}
-        />
       </Container>
     );
   }
