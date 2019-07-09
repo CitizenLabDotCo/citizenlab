@@ -2,10 +2,8 @@ import React from 'react';
 import { keys, isEmpty, size, isFunction, isArray } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
-import CSSTransition from 'react-transition-group/CSSTransition';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -62,46 +60,15 @@ const LeftColumn = styled.div`
   min-width: 260px;
 `;
 
-const Sticky = styled.div`
-  position: -webkit-sticky;
-  position: sticky;
-  top: ${props => props.theme.menuHeight + 20}px;
-`;
-
 const MiddleColumn = styled.div`
   flex: 1;
   transition: 200ms;
 `;
 
-const RightColumn = styled.div`
-  max-width: 200px;
-  display: flex;
-
-  ${media.smallerThan1280px`
-    display: none;
-  `}
-
-  &.slide-enter {
-    transform: translateX(100%);
-    opacity: 0;
-
-    &.slide-enter-active {
-      transition: 200ms;
-      transform: translateX(0%);
-      opacity: 1;
-    }
-  }
-
-  &.slide-exit {
-    transition: 200ms;
-    transform: translateX(0%);
-    opacity: 1;
-
-    &.slide-exit-active {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-  }
+export const Sticky = styled.div`
+  position: -webkit-sticky;
+  position: sticky;
+  top: ${props => props.theme.menuHeight + 20}px;
 `;
 
 const StyledInput = styled(Input)`
@@ -227,7 +194,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   // Preview
-  openIdeaPreview = (ideaId: string) => {
+  openPreview = (ideaId: string) => {
     this.setState({ modalIdeaId: ideaId, ideaModalMode: 'view' });
   }
 
@@ -368,24 +335,14 @@ class IdeaManager extends React.PureComponent<Props, State> {
               ideaLastPageNumber={ideas.lastPage}
               onIdeaChangePage={ideas.onChangePage}
               handleSeeAllIdeas={this.props.ideas.onResetParams}
-              onClickIdeaTitle={this.openIdeaPreview}
+              onClickIdeaTitle={this.openPreview}
             />
           </MiddleColumn>
-          <CSSTransition
-            in={showInfoSidebar}
-            mountOnEnter={true}
-            unmountOnExit={true}
-            timeout={200}
-            classNames="slide"
-          >
-            <RightColumn>
-              <Sticky>
-                <InfoSidebar
-                  ideaIds={selectedIdeaIds}
-                />
-              </Sticky>
-            </RightColumn>
-          </CSSTransition>
+          <InfoSidebar
+            ideaIds={selectedIdeaIds}
+            showInfoSidebar={showInfoSidebar}
+            openPreview={this.openPreview}
+          />
         </ThreeColumns>
         <IdeaPreview
           ideaId={modalIdeaId}
