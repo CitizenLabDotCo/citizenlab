@@ -36,6 +36,9 @@ module MachineTranslations
         text_or_html
       else
         EasyTranslate.translate(text_or_html, :from => from, :to => to)
+      rescue EasyTranslate::EasyTranslateException => e
+        sleep rand(60)
+        translate text_or_html, locale_from, locale_to
       end
     end
   end
