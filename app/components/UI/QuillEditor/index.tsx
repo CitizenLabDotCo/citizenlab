@@ -89,7 +89,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // Styling
@@ -223,13 +223,6 @@ interface ModulesConfig {
   keyboard: any;
 }
 
-interface Tracks {
-  trackImageEditing: Function;
-  trackBasicEditing: Function;
-  trackVideoEditing: Function;
-  trackAdvancedEditing: Function;
-}
-
 export interface Props extends InputProps, QuillProps { }
 
 // Quill override link handler
@@ -255,91 +248,68 @@ function handlerRemoveTab() {
   return true;
 }
 
-class QuillEditor extends PureComponent<Props & InjectedIntlProps & Tracks, State> {
+class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
+  toolbarId: string;
+  modules: ModulesConfig;
+  formats: string[];
+  toolbar: JSX.Element | null;
+
   constructor(props) {
     super(props);
     this.state = { editorHtml: '' };
+    this.toolbarId = `ql-editor-toolbar-${props.id}`;
+    this.modules = this.getModuleConfig(props);
+    this.formats = this.getFormats(props);
+    this.toolbar = this.computeToolbar(props);
   }
 
-  handleChange = (html) => {
-    this.setState({ editorHtml: html });
-  }
-
-  setRef = (element) => {
-    if (isFunction(this.props.setRef)) {
-      this.props.setRef(element);
+  componentDidUpdate(prevProps) {
+    if (this.props.noToolbar !== prevProps.noToolbar
+    || this.props.noImages !== prevProps.noImages
+    || this.props.noVideos !== prevProps.noVideos) {
+      this.modules = this.getModuleConfig(this.props);
+    }
+    if (this.props.limitedTextFormatting !== prevProps.limitedTextFormatting
+    || this.props.noAlign !== prevProps.noAlign
+    || this.props.noImages !== prevProps.noImages
+    || this.props.noVideos !== prevProps.noVideos) {
+      this.modules = this.getModuleConfig(this.props);
+    }
+    if (this.props.noToolbar !== prevProps.noToolbar
+    || this.props.noAlign !== prevProps.noAlign
+    || this.props.noImages !== prevProps.noImages
+    || this.props.noVideos !== prevProps.noVideos
+    || this.props.limitedTextFormatting !== prevProps.limitedTextFormatting) {
+      this.modules = this.getModuleConfig(this.props);
     }
   }
 
-  trackAdvanced = (type, option) => {
-    return () => {
-      this.props.trackAdvancedEditing({
-        extra: {
-          type,
-          option,
-        },
-      });
-    };
-  }
-
-  trackClickDropdown = () => {
-    return (e) => {
-      if (e.target && e.target.classList.contains('ql-picker-item')) {
-        const value = e.target.getAttribute('data-value');
-        let option;
-        if (value === '1') {
-          option = 'title';
-        } else if (value === '2') {
-          option = 'subtitle';
-        } else {
-          option = 'normal';
-        }
-        this.props.trackAdvancedEditing({
-          extra: {
-            option,
-            type: 'heading',
-          },
-        });
+  getFormats({
+    noAlign,
+    noImages,
+    noVideos,
+    limitedTextFormatting,
+  }) {
+    const formats = ['bold', 'italic', 'link'];
+    if (!noImages) { formats.push('image', 'imageFormat', 'height', 'width', 'style'); }
+    if (!noVideos) { formats.push('video', 'videoFormat', 'height', 'width', 'style'); }
+    if (!limitedTextFormatting) {
+      formats.push('list');
+      if (!noAlign) {
+        formats.push('align');
       }
-    };
+      formats.push('header');
+    }
+    return formats;
   }
 
-  trackBasic = (type) => {
-    return () => this.props.trackBasicEditing({
-      extra: {
-        type,
-      },
-    });
-  }
-
-  trackImage = () => {
-    return this.props.trackImageEditing();
-  }
-
-  trackVideo = () => {
-    return this.props.trackVideoEditing();
-  }
-
-  render() {
+  getModuleConfig(props) {
     const {
-      id,
       noToolbar,
-      noAlign,
       noImages,
       noVideos,
-      limitedTextFormatting,
-      inAdmin,
-      trackBasicEditing,
-      trackImageEditing,
-      trackVideoEditing,
-      trackAdvancedEditing,
-      intl: { formatMessage },
-      ...quillProps
-    } = this.props;
-
-    const toolbarId = `ql-editor-toolbar-${id}`;
-
-    const modules: ModulesConfig = {
+    } = props;
+    return {
       blotFormatter: (noImages && noVideos) ? false : {
         specs: [CustomImageSpec, CustomIframeVideoSpec],
       },
@@ -360,23 +330,172 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps & Tracks, Stat
         }
       },
       toolbar: noToolbar ? false : {
-        container: `#${toolbarId}`,
+        container: `#${this.toolbarId}`,
         handlers: {
           link: handleLink,
         }
       },
     };
+  }
 
-    const formats = ['bold', 'italic', 'link'];
-    if (!noImages) { formats.push('image', 'imageFormat', 'height', 'width', 'style'); }
-    if (!noVideos) { formats.push('video', 'videoFormat', 'height', 'width', 'style'); }
-    if (!limitedTextFormatting) {
-      formats.push('list');
-      if (!noAlign) {
-        formats.push('align');
-      }
-      formats.push('header');
+  computeToolbar({
+    noToolbar,
+    noAlign,
+    noImages,
+    noVideos,
+    limitedTextFormatting,
+    intl: { formatMessage },
+  }) {
+    if (noToolbar) return null;
+    return (
+      <div id={this.toolbarId} >
+        {!limitedTextFormatting &&
+          <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
+            <select className="ql-header" defaultValue={''}>
+              <option
+                value="2"
+                aria-selected={false}
+              >{formatMessage(messages.title)}
+              </option>
+              <option
+                value="3"
+                aria-selected={false}
+              >{formatMessage(messages.subtitle)}
+              </option>
+              <option
+                value=""
+                aria-selected
+              >{formatMessage(messages.normalText)}
+              </option>
+            </select>
+          </span>
+        }
+        {!limitedTextFormatting && !noAlign &&
+          <span className="ql-formats">
+            <button
+              className="ql-align"
+              value=""
+              onClick={this.trackAdvanced('align', 'left')}
+              aria-label={formatMessage(messages.alignLeft)}
+            />
+            <button
+              className="ql-align"
+              value="center"
+              onClick={this.trackAdvanced('align', 'center')}
+              aria-label={formatMessage(messages.alignCenter)}
+            />
+            <button
+              className="ql-align"
+              value="right"
+              onClick={this.trackAdvanced('align', 'right')}
+              aria-label={formatMessage(messages.alignRight)}
+            />
+          </span>
+        }
+        {!limitedTextFormatting &&
+          <span className="ql-formats">
+            <button
+              className="ql-list"
+              value="ordered"
+              onClick={this.trackAdvanced('list', 'ordered')}
+              aria-label={formatMessage(messages.orderedList)}
+            />
+            <button
+              className="ql-list"
+              value="bullet"
+              onClick={this.trackAdvanced('list', 'bullet')}
+              aria-label={formatMessage(messages.unorderedList)}
+            />
+          </span>
+        }
+        <span className="ql-formats">
+          <button className="ql-bold" onClick={this.trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
+          <button className="ql-italic" onClick={this.trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
+          <button className="ql-link" onClick={this.trackBasic('link')} aria-label={formatMessage(messages.link)} />
+        </span>
+
+        {!(noImages && noVideos) &&
+          <span className="ql-formats">
+            {!noImages && <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)} />}
+            {!noVideos && <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)} />}
+          </span>
+        }
+      </div>
+    );
+  }
+
+  setRef = (element) => {
+    if (isFunction(this.props.setRef)) {
+      this.props.setRef(element);
     }
+  }
+
+  handleChange = (html) => {
+    this.setState({ editorHtml: html });
+  }
+
+  trackAdvanced = (type, option) => {
+    return () => {
+      trackEventByName(tracks.advancedEditing.name, {
+        extra: {
+          type,
+          option,
+        },
+      });
+    };
+  }
+
+  trackClickDropdown = () => {
+    return (e) => {
+      if (e.target && e.target.classList.contains('ql-picker-item')) {
+        const value = e.target.getAttribute('data-value');
+        let option;
+        if (value === '1') {
+          option = 'title';
+        } else if (value === '2') {
+          option = 'subtitle';
+        } else {
+          option = 'normal';
+        }
+        trackEventByName(tracks.advancedEditing.name, {
+          extra: {
+            option,
+            type: 'heading',
+          },
+        });
+      }
+    };
+  }
+
+  trackBasic = (type) => {
+    return () => trackEventByName(tracks.basicEditing.name, {
+      extra: {
+        type,
+      },
+    });
+  }
+
+  trackImage = () => {
+    return trackEventByName(tracks.imageEditing.name);
+  }
+
+  trackVideo = () => {
+    return trackEventByName(tracks.videoEditing.name);
+  }
+
+  render() {
+    const {
+      id,
+      noToolbar,
+      noAlign,
+      noImages,
+      noVideos,
+      limitedTextFormatting,
+      inAdmin,
+      intl: { formatMessage },
+      onBlur,
+      ...quillProps
+    } = this.props;
 
     return (
       <Container
@@ -388,87 +507,14 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps & Tracks, Stat
         save={formatMessage(messages.save)}
         edit={formatMessage(messages.edit)}
         remove={formatMessage(messages.remove)}
+        onBlur={onBlur}
       >
-        {!noToolbar &&
-          <div id={toolbarId} >
-            {!limitedTextFormatting &&
-              <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
-                <select className="ql-header" defaultValue={''}>
-                  <option
-                    value="2"
-                    aria-selected={false}
-                  >{formatMessage(messages.title)}
-                  </option>
-                  <option
-                    value="3"
-                    aria-selected={false}
-                  >{formatMessage(messages.subtitle)}
-                  </option>
-                  <option
-                    value=""
-                    aria-selected
-                  >{formatMessage(messages.normalText)}
-                  </option>
-                </select>
-              </span>
-            }
-            {!limitedTextFormatting && !noAlign &&
-              <span className="ql-formats">
-                <button
-                  className="ql-align"
-                  value=""
-                  onClick={this.trackAdvanced('align', 'left')}
-                  aria-label={formatMessage(messages.alignLeft)}
-                />
-                <button
-                  className="ql-align"
-                  value="center"
-                  onClick={this.trackAdvanced('align', 'center')}
-                  aria-label={formatMessage(messages.alignCenter)}
-                />
-                <button
-                  className="ql-align"
-                  value="right"
-                  onClick={this.trackAdvanced('align', 'right')}
-                  aria-label={formatMessage(messages.alignRight)}
-                />
-              </span>
-            }
-            {!limitedTextFormatting &&
-              <span className="ql-formats">
-                <button
-                  className="ql-list"
-                  value="ordered"
-                  onClick={this.trackAdvanced('list', 'ordered')}
-                  aria-label={formatMessage(messages.orderedList)}
-                />
-                <button
-                  className="ql-list"
-                  value="bullet"
-                  onClick={this.trackAdvanced('list', 'bullet')}
-                  aria-label={formatMessage(messages.unorderedList)}
-                />
-              </span>
-            }
-            <span className="ql-formats">
-              <button className="ql-bold" onClick={this.trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
-              <button className="ql-italic" onClick={this.trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
-              <button className="ql-link" onClick={this.trackBasic('link')} aria-label={formatMessage(messages.link)} />
-            </span>
-
-            {!(noImages && noVideos) &&
-              <span className="ql-formats">
-                {!noImages && <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)} />}
-                {!noVideos && <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)} />}
-              </span>
-            }
-          </div>
-        }
+        {this.toolbar}
         <ReactQuill
-          modules={modules}
+          modules={this.modules}
           bounds="#boundaries"
           theme="snow"
-          formats={formats}
+          formats={this.formats}
           ref={this.setRef}
           {...quillProps}
         />
@@ -477,11 +523,4 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps & Tracks, Stat
   }
 }
 
-const QuillEditorWithHoc = injectTracks<Props>({
-  trackBasicEditing: tracks.basicEditing,
-  trackImageEditing: tracks.imageEditing,
-  trackVideoEditing: tracks.videoEditing,
-  trackAdvancedEditing: tracks.advancedEditing,
-})(QuillEditor);
-
-export default injectIntl<Props>(QuillEditorWithHoc);
+export default injectIntl<Props>(QuillEditor);
