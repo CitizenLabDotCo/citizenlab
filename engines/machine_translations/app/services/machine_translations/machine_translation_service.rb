@@ -35,13 +35,13 @@ module MachineTranslations
       if from == to
         text_or_html
       else
-        EasyTranslate.translate(text_or_html, :from => from, :to => to)
-      rescue EasyTranslate::EasyTranslateException => e
-        if retries > 0
-          sleep rand(60)
-          translate text_or_html, locale_from, locale_to, retries: (retries - 1)
-        else
-          raise e
+        while retries > 0
+          begin
+            return EasyTranslate.translate(text_or_html, :from => from, :to => to)
+          rescue EasyTranslate::EasyTranslateException => e
+            retries -= 1
+            sleep rand(60)
+          end
         end
       end
     end
