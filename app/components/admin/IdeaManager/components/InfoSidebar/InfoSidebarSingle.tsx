@@ -5,20 +5,20 @@ import T from 'components/T';
 import { Segment, Header } from 'semantic-ui-react';
 import { handlePreviewCLick, StyledLink } from './';
 
-export default (props: { ideaId: string, openPreview: (id: string) => void }) => (
-  <GetIdea id={props.ideaId}>
-    {(idea) =>  {
-      if (isNilOrError(idea)) return null;
+export default (props: { postId: string, openPreview: (id: string) => void }) => (
+  <GetIdea id={props.postId}>
+    {(post) =>  {
+      if (isNilOrError(post)) return null;
 
       return (
         <Segment attached="bottom">
-          <StyledLink onClick={handlePreviewCLick(idea.id, props.openPreview)}>
+          <StyledLink onClick={handlePreviewCLick(post.id, props.openPreview)}>
             <Header as="h5">
-              <T value={idea.attributes.title_multiloc} />
+              <T value={post.attributes.title_multiloc} />
             </Header>
           </StyledLink>
           <p>
-            <T value={idea.attributes.body_multiloc} supportHtml={true} />
+            <T value={post.attributes.body_multiloc} supportHtml={true} />
           </p>
         </Segment>
       );

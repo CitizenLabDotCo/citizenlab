@@ -1,24 +1,24 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import IdeaPreview from './';
+import PostPreview from './';
 
 jest.mock('utils/cl-intl');
 jest.mock('scroll-to', () => {});
 jest.mock('services/permissions', () => {});
 
-describe('<IdeaPreview />', () => {
-  let closeSideModal: jest.Mock;
+describe('<PostPreview />', () => {
+  let closePreview: jest.Mock;
   let onSwitchIdeaMode: jest.Mock;
   beforeEach(() => {
-    closeSideModal = jest.fn();
+    closePreview = jest.fn();
     onSwitchIdeaMode = jest.fn();
   });
 
   it('renders correctly closed', () => {
     const wrapper = shallow(
-      <IdeaPreview
-        onCloseModal={closeSideModal}
+      <PostPreview
+        onCloseModal={closePreview}
         ideaId={null}
         onSwitchIdeaMode={onSwitchIdeaMode}
         mode="view"
@@ -30,8 +30,8 @@ describe('<IdeaPreview />', () => {
 
   it('renders the idea content initially', () => {
     const wrapper = shallow(
-      <IdeaPreview
-        onCloseModal={closeSideModal}
+      <PostPreview
+        onCloseModal={closePreview}
         ideaId="GreatIdea"
         onSwitchIdeaMode={onSwitchIdeaMode}
         mode="view"
@@ -43,8 +43,8 @@ describe('<IdeaPreview />', () => {
 
   it('renders the idea edit correctly', () => {
     const wrapper = shallow(
-      <IdeaPreview
-        onCloseModal={closeSideModal}
+      <PostPreview
+        onCloseModal={closePreview}
         ideaId="GreatIdea"
         onSwitchIdeaMode={onSwitchIdeaMode}
         mode="edit"
@@ -55,8 +55,8 @@ describe('<IdeaPreview />', () => {
 
   it('calls the correct handler to switch to edit mode', () => {
     const wrapper = shallow(
-      <IdeaPreview
-        onCloseModal={closeSideModal}
+      <PostPreview
+        onCloseModal={closePreview}
         ideaId="GreatIdea"
         onSwitchIdeaMode={onSwitchIdeaMode}
         mode="view"
@@ -68,8 +68,8 @@ describe('<IdeaPreview />', () => {
 
   it('calls the correct handler to switch to view mode', () => {
     const wrapper = shallow(
-      <IdeaPreview
-        onCloseModal={closeSideModal}
+      <PostPreview
+        onCloseModal={closePreview}
         ideaId="GreatIdea"
         onSwitchIdeaMode={onSwitchIdeaMode}
         mode="edit"

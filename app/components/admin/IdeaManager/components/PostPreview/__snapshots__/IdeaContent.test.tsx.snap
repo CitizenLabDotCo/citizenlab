@@ -11,7 +11,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
     >
       <FormattedMessage
         defaultMessage="Edit"
-        id="app.components.admin.IdeaManager.IdeaPreview.edit"
+        id="app.components.admin.IdeaManager.PostPreview.edit"
       />
     </WithTheme(Button)>
     <WithTheme(Button)
@@ -22,7 +22,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
     >
       <FormattedMessage
         defaultMessage="Delete"
-        id="app.components.admin.IdeaManager.IdeaPreview.delete"
+        id="app.components.admin.IdeaManager.PostPreview.delete"
       />
     </WithTheme(Button)>
   </Top>

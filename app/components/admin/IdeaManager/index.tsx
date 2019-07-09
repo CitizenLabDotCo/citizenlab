@@ -29,7 +29,7 @@ import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { GetPhasesChildProps } from 'resources/GetPhases';
-import IdeaPreview from './components/IdeaPreview';
+import PostPreview from './components/PostPreview';
 
 const StyledExportMenu = styled(ExportMenu)<ExportMenuProps>`
   margin-left: auto;
@@ -94,14 +94,14 @@ interface InputProps {
   // the filters needed for this view, in the order they'll be shown, first one active by default
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
   phases?: GetPhasesChildProps;
-  // When the IdeaManager is used in admin/ideas, the parent component passes
+  // When the IdeaManager is used in admin/posts, the parent component passes
   // down the array of projects the current user can moderate.
   projects?: IProjectData[] | null;
 }
 
 interface DataProps {
-  ideas: GetIdeasChildProps;
-  ideaStatuses: GetIdeaStatusesChildProps;
+  posts: GetIdeasChildProps;
+  postStatuses: GetIdeaStatusesChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -112,8 +112,8 @@ interface State {
   selectedIdeas: { [key: string]: boolean };
   activeFilterMenu: TFilterMenu | null;
   searchTerm: string | undefined;
-  modalIdeaId: string | null;
-  ideaModalMode: 'view' | 'edit';
+  previewPostId: string | null;
+  previewMode: 'view' | 'edit';
 }
 
 class IdeaManager extends React.PureComponent<Props, State> {
@@ -125,8 +125,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
       selectedIdeas: {},
       activeFilterMenu: props.visibleFilterMenus[0],
       searchTerm: undefined,
-      modalIdeaId: null,
-      ideaModalMode: 'view'
+      previewPostId: null,
+      previewMode: 'view'
     };
     this.globalState = globalState.init('AdminFullWidth');
   }
@@ -152,10 +152,9 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
     this.setState({ searchTerm });
 
-    if (isFunction(this.props.ideas.onChangeSearchTerm)) {
-      this.props.ideas.onChangeSearchTerm(searchTerm);
+    if (isFunction(this.props.posts.onChangeSearchTerm)) {
+      this.props.posts.onChangeSearchTerm(searchTerm);
     }
-
   }
 
   isAnyIdeaSelected = () => {
@@ -179,8 +178,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   onChangeProjects = (projectIds: string[] | undefined) => {
-    const { projects, ideas, type } = this.props;
-    const { onChangeProjects } = ideas;
+    const { projects, posts, type } = this.props;
+    const { onChangeProjects } = posts;
 
     if (type !== 'AllIdeas') return;
 
@@ -193,36 +192,38 @@ class IdeaManager extends React.PureComponent<Props, State> {
     }
   }
 
-  // Preview
-  openPreview = (ideaId: string) => {
-    this.setState({ modalIdeaId: ideaId, ideaModalMode: 'view' });
+  // Modal Preview
+  openPreview = (postId: string) => {
+    this.setState({ previewPostId: postId, previewMode: 'view' });
   }
 
-  openIdeaEdit = () => {
+  openPreviewEdit = () => {
     const selectedIdeaIds = keys(this.state.selectedIdeas);
     if (selectedIdeaIds.length === 1) {
-      this.setState({ modalIdeaId: selectedIdeaIds[0], ideaModalMode: 'edit' });
+      this.setState({ previewPostId: selectedIdeaIds[0], previewMode: 'edit' });
     }
   }
 
-  switchModalMode = () => {
-    if (this.state.ideaModalMode === 'edit') {
-      this.setState({ ideaModalMode: 'view' });
+  switchPreviewMode = () => {
+    if (this.state.previewMode === 'edit') {
+      this.setState({ previewMode: 'view' });
     } else {
-      this.setState({ ideaModalMode: 'edit' });
+      this.setState({ previewMode: 'edit' });
     }
   }
 
-  closeSideModal = () => {
-    this.setState({ modalIdeaId: null });
+  closePreview = () => {
+    this.setState({ previewPostId: null });
   }
+  // End Modal Preview
 
   render() {
-    const { searchTerm, modalIdeaId, ideaModalMode, selectedIdeas, activeFilterMenu } = this.state;
-    const { type, projectId, projects, ideas, phases, ideaStatuses, visibleFilterMenus } = this.props;
-    const { ideasList, onChangePhase, onChangeTopics, onChangeIdeaStatus, queryParameters, onChangeAssignee } = ideas;
+    const { searchTerm, previewPostId, previewMode, selectedIdeas, activeFilterMenu } = this.state;
+    const { type, projectId, projects, posts, phases, postStatuses, visibleFilterMenus } = this.props;
+    const { list, onChangePhase, onChangeTopics, onChangeIdeaStatus, queryParameters, onChangeAssignee } = posts;
     const selectedTopics = queryParameters.topics;
     const selectedPhase = queryParameters.phase;
+    const selectedAssignee = queryParameters.assignee;
     const selectedProject = isArray(queryParameters.projects) && queryParameters.projects.length === 1
       ? queryParameters.projects[0]
       : undefined;
@@ -250,18 +251,18 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
         <TopActionBar>
           <AssigneeFilter
-            assignee={queryParameters.assignee}
+            assignee={selectedAssignee}
             projectId={type === 'ProjectIdeas' ? projectId : null}
             handleAssigneeFilterChange={onChangeAssignee}
           />
           <FeedbackToggle
             value={queryParameters.feedback_needed || false}
-            onChange={ideas.onChangeFeedbackFilter}
+            onChange={posts.onChangeFeedbackFilter}
             project={selectedProject}
             phase={selectedPhase}
             topics={selectedTopics}
-            ideaStatus={selectedStatus}
-            assignee={queryParameters.assignee}
+            status={selectedStatus}
+            assignee={selectedAssignee}
             searchTerm={searchTerm}
           />
           <StyledExportMenu
@@ -275,7 +276,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
             <ActionBar
               ideaIds={selectedIdeaIds}
               resetSelectedIdeas={this.resetSelectedIdeas}
-              handleClickEdit={this.openIdeaEdit}
+              handleClickEdit={this.openPreviewEdit}
             />
           </LeftColumn>
           <MiddleColumnTop>
@@ -286,7 +287,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
               topics={selectedTopics}
               ideaStatus={selectedStatus}
               searchTerm={searchTerm}
-              assignee={queryParameters.assignee}
+              assignee={selectedAssignee}
             />
             <StyledInput icon="search" onChange={this.handleSearchChange}/>
           </MiddleColumnTop>
@@ -300,7 +301,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
                 onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
                 phases={!isNilOrError(phases) ? phases : undefined}
                 projects={!isNilOrError(projects) ? projects : undefined}
-                statuses={!isNilOrError(ideaStatuses) ? ideaStatuses : []}
+                statuses={!isNilOrError(postStatuses) ? postStatuses : []}
                 selectedTopics={selectedTopics}
                 selectedPhase={selectedPhase}
                 selectedProject={selectedProject}
@@ -323,32 +324,32 @@ class IdeaManager extends React.PureComponent<Props, State> {
           <MiddleColumn>
             <IdeaTable
               activeFilterMenu={activeFilterMenu}
-              ideaSortAttribute={ideas.sortAttribute}
-              ideaSortDirection={ideas.sortDirection}
-              onChangeIdeaSort={ideas.onChangeSorting}
-              ideas={ideasList || undefined}
+              sortAttribute={posts.sortAttribute}
+              sortDirection={posts.sortDirection}
+              onChangeSort={posts.onChangeSorting}
+              posts={list || undefined}
               phases={phases || undefined}
-              statuses={ideaStatuses || undefined}
+              statuses={postStatuses || undefined}
               selectedIdeas={selectedIdeas}
               onChangeIdeaSelection={this.handleChangeIdeaSelection}
-              ideaCurrentPageNumber={ideas.currentPage}
-              ideaLastPageNumber={ideas.lastPage}
-              onIdeaChangePage={ideas.onChangePage}
-              handleSeeAllIdeas={this.props.ideas.onResetParams}
-              onClickIdeaTitle={this.openPreview}
+              currentPageNumber={posts.currentPage}
+              lastPageNumber={posts.lastPage}
+              onChangePage={posts.onChangePage}
+              handleSeeAll={this.props.posts.onResetParams}
+              openPreview={this.openPreview}
             />
           </MiddleColumn>
           <InfoSidebar
-            ideaIds={selectedIdeaIds}
+            postIds={selectedIdeaIds}
             showInfoSidebar={showInfoSidebar}
             openPreview={this.openPreview}
           />
         </ThreeColumns>
-        <IdeaPreview
-          ideaId={modalIdeaId}
-          mode={ideaModalMode}
-          onCloseModal={this.closeSideModal}
-          onSwitchIdeaMode={this.switchModalMode}
+        <PostPreview
+          postId={previewPostId}
+          mode={previewMode}
+          onClose={this.closePreview}
+          onSwitchPreviewMode={this.switchPreviewMode}
         />
       </>
     );
@@ -356,7 +357,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  ideas: ({ type, projectId, projects, render }) => (
+  posts: ({ type, projectId, projects, render }) => (
     <GetIdeas
       type="paginated"
       pageSize={10}
@@ -371,7 +372,7 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetIdeas>
   ),
-  ideaStatuses: <GetIdeaStatuses />,
+  postStatuses: <GetIdeaStatuses />,
 });
 
 const IdeaManagerWithDragDropContext = DragDropContext(HTML5Backend)(IdeaManager);

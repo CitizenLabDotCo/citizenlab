@@ -71,32 +71,32 @@ const TableHeaderCellText = styled.span`
 `;
 
 interface Props {
-  ideaSortAttribute?: SortAttribute;
-  ideaSortDirection?: SortDirection;
-  ideas?: IIdeaData[];
+  sortAttribute?: SortAttribute;
+  sortDirection?: SortDirection;
+  posts?: IIdeaData[];
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[];
-  onChangeIdeaSort?: (sort: Sort) => void;
+  onChangeSort?: (sort: Sort) => void;
   selectedIdeas: { [key: string]: boolean };
   onChangeIdeaSelection: (selection: { [key: string]: boolean }) => void;
-  ideaCurrentPageNumber?: number;
-  ideaLastPageNumber?: number;
-  onIdeaChangePage?: (number: number) => void;
+  currentPageNumber?: number;
+  lastPageNumber?: number;
+  onChangePage?: (number: number) => void;
   activeFilterMenu: string | null;
-  handleSeeAllIdeas: () => void;
-  onClickIdeaTitle: (ideaId: string) => void;
+  handleSeeAll: () => void;
+  openPreview: (ideaId: string) => void;
 }
 
 export default class IdeaTable extends React.Component<Props> {
 
   handleSortClick = (newSortAttribute: SortAttribute) => () => {
-    const { ideaSortAttribute: oldSortAttribute, ideaSortDirection: oldSortDirection, onChangeIdeaSort } = this.props;
-    if (isFunction(onChangeIdeaSort)) {
+    const { sortAttribute: oldSortAttribute, sortDirection: oldSortDirection, onChangeSort } = this.props;
+    if (isFunction(onChangeSort)) {
       let newSortSign = '-';
       if (newSortAttribute === oldSortAttribute) {
         newSortSign = oldSortDirection === 'ascending' ? '-' : '';
       }
-      onChangeIdeaSort(`${newSortSign}${newSortAttribute}` as Sort);
+      onChangeSort(`${newSortSign}${newSortAttribute}` as Sort);
     }
   }
 
@@ -123,7 +123,7 @@ export default class IdeaTable extends React.Component<Props> {
     if (this.allSelected()) {
       this.props.onChangeIdeaSelection({});
     } else {
-      const newSelection = fromPairs(this.props.ideas && this.props.ideas.map((idea) => [idea.id, true]));
+      const newSelection = fromPairs(this.props.posts && this.props.posts.map((idea) => [idea.id, true]));
       this.props.onChangeIdeaSelection(newSelection);
     }
   }
@@ -137,24 +137,24 @@ export default class IdeaTable extends React.Component<Props> {
   }
 
   handlePaginationClick = (page) => {
-    this.props.onIdeaChangePage && this.props.onIdeaChangePage(page);
+    this.props.onChangePage && this.props.onChangePage(page);
   }
 
   allSelected = () => {
-    return !isEmpty(this.props.ideas) && every(this.props.ideas, (idea) => this.props.selectedIdeas[idea.id]);
+    return !isEmpty(this.props.posts) && every(this.props.posts, (idea) => this.props.selectedIdeas[idea.id]);
   }
 
   render() {
     const {
-      ideaSortAttribute,
-      ideaSortDirection,
-      ideas,
+      sortAttribute,
+      sortDirection,
+      posts,
       selectedIdeas,
       phases,
       activeFilterMenu,
       statuses,
-      handleSeeAllIdeas,
-      onClickIdeaTitle,
+      handleSeeAll,
+      openPreview,
     } = this.props;
 
     return (
@@ -177,7 +177,7 @@ export default class IdeaTable extends React.Component<Props> {
               </Table.HeaderCell>
               <Table.HeaderCell width={2}>
                 <SortableTableHeader
-                  direction={ideaSortAttribute === 'new' ? ideaSortDirection : null}
+                  direction={sortAttribute === 'new' ? sortDirection : null}
                   onToggle={this.handleSortClick('new')}
                 >
                   <TableHeaderCellText>
@@ -187,7 +187,7 @@ export default class IdeaTable extends React.Component<Props> {
               </Table.HeaderCell>
               <Table.HeaderCell width={1}>
                 <SortableTableHeader
-                  direction={ideaSortAttribute === 'upvotes_count' ? ideaSortDirection : null}
+                  direction={sortAttribute === 'upvotes_count' ? sortDirection : null}
                   onToggle={this.handleSortClick('upvotes_count')}
                 >
                   <TableHeaderCellText>
@@ -197,7 +197,7 @@ export default class IdeaTable extends React.Component<Props> {
               </Table.HeaderCell >
               <Table.HeaderCell width={1}>
                 <SortableTableHeader
-                  direction={ideaSortAttribute === 'downvotes_count' ? ideaSortDirection : null}
+                  direction={sortAttribute === 'downvotes_count' ? sortDirection : null}
                   onToggle={this.handleSortClick('downvotes_count')}
                 >
                   <TableHeaderCellText>
@@ -208,7 +208,7 @@ export default class IdeaTable extends React.Component<Props> {
               <FeatureFlag name="participatory_budgeting">
                 <Table.HeaderCell width={1}>
                   <SortableTableHeader
-                    direction={ideaSortAttribute === 'baskets_count' ? ideaSortDirection : null}
+                    direction={sortAttribute === 'baskets_count' ? sortDirection : null}
                     onToggle={this.handleSortClick('baskets_count')}
                   >
                     <TableHeaderCellText>
@@ -222,9 +222,9 @@ export default class IdeaTable extends React.Component<Props> {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {!!ideas && ideas.length > 0 ?
+            {!!posts && posts.length > 0 ?
               <TransitionGroup component={null}>
-                {ideas.map((idea) =>
+                {posts.map((idea) =>
                   <CSSTransition classNames="fade" timeout={500} key={idea.id}>
                     <Row
                       className="e2e-idea-manager-idea-row"
@@ -238,20 +238,20 @@ export default class IdeaTable extends React.Component<Props> {
                       selected={selectedIdeas[idea.id]}
                       selectedIdeas={selectedIdeas}
                       activeFilterMenu={activeFilterMenu}
-                      openIdea={onClickIdeaTitle}
+                      openIdea={openPreview}
                     />
                   </CSSTransition>
                 )}
               </TransitionGroup> : null
             }
           </Table.Body>
-          {!!ideas && ideas.length > 0 &&
+          {!!posts && posts.length > 0 &&
             <Table.Footer fullWidth={true}>
               <Table.Row>
                 <Table.HeaderCell colSpan="7">
                   <Pagination
-                    currentPage={this.props.ideaCurrentPageNumber || 1}
-                    totalPages={this.props.ideaLastPageNumber || 1}
+                    currentPage={this.props.currentPageNumber || 1}
+                    totalPages={this.props.lastPageNumber || 1}
                     loadPage={this.handlePaginationClick}
                   />
                 </Table.HeaderCell>
@@ -260,9 +260,9 @@ export default class IdeaTable extends React.Component<Props> {
           }
         </Table>
         <TransitionGroup component={null}>
-          {!ideas || ideas.length === 0 &&
+          {!posts || posts.length === 0 &&
             <CSSTransition classNames="fade" timeout={500}>
-              <NoIdeas handleSeeAllIdeas={handleSeeAllIdeas} />
+              <NoIdeas handleSeeAllIdeas={handleSeeAll} />
             </CSSTransition>
           }
         </TransitionGroup>

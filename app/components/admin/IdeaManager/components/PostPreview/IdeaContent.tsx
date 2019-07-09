@@ -141,7 +141,7 @@ interface State {}
 
 interface InputProps {
   ideaId: string | null;
-  closeSideModal: () => void;
+  closePreview: () => void;
   handleClickEdit: () => void;
 }
 
@@ -157,13 +157,13 @@ interface Props extends InputProps, DataProps {}
 
 export class IdeaContent extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
   handleClickDelete = () => {
-    const { idea, closeSideModal } = this.props;
+    const { idea, closePreview } = this.props;
     const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
 
     if (!isNilOrError(idea)) {
       if (window.confirm(message)) {
         deleteIdea(idea.id);
-        closeSideModal();
+        closePreview();
       }
     }
   }

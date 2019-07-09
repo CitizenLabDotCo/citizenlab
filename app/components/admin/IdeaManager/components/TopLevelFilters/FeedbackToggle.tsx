@@ -91,7 +91,7 @@ interface InputProps {
   project?: string | null;
   phase?: string | null;
   topics?: string[] | null;
-  ideaStatus?: string | null;
+  status?: string | null;
   searchTerm?: string | null;
 }
 

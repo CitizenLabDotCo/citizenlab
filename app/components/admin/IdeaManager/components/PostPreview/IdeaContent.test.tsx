@@ -19,17 +19,17 @@ jest.mock('resources/GetIdeaImages', () => {});
 import { intl } from 'utils/cl-intl';
 
 describe('<IdeaContent />', () => {
-  let closeSideModal: jest.Mock;
+  let closePreview: jest.Mock;
   let handleClickEdit: jest.Mock;
   beforeEach(() => {
-    closeSideModal = jest.fn();
+    closePreview = jest.fn();
     handleClickEdit = jest.fn();
   });
 
   it('renders correctly when ideaId is not defined', () => {
     const wrapper = shallow(
       <IdeaContent
-        closeSideModal={closeSideModal}
+        closePreview={closePreview}
         handleClickEdit={handleClickEdit}
         ideaId={undefined}
         intl={intl}
@@ -45,7 +45,7 @@ describe('<IdeaContent />', () => {
     const idea = getIdea(ideaId);
     const wrapper = shallow(
       <IdeaContent
-        closeSideModal={closeSideModal}
+        closePreview={closePreview}
         handleClickEdit={handleClickEdit}
         ideaId={ideaId}
         ideaImages={null}
