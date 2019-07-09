@@ -1,17 +1,14 @@
 import React, { PureComponent } from 'react';
 import messages from './messages';
-import ProfileSection from '../ProfileSection';
 import GetCampaignConsents, { GetCampaignConsentsChildProps } from 'resources/GetCampaignConsents';
 import { IConsentData, updateConsent, IConsent } from 'services/campaignConsents';
 import styled from 'styled-components';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { FormattedMessage } from 'utils/cl-intl';
 import { find } from 'lodash-es';
 
 // components
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
@@ -19,6 +16,7 @@ import Checkbox from 'components/UI/Checkbox';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
+import { FormSectionTitle, FormSection, FormLabelValue } from 'components/UI/FormComponents';
 
 const CheckboxContainer = styled.div`
   padding-bottom: 0.5rem;
@@ -107,17 +105,16 @@ export class CampaignsConsentForm extends PureComponent<Props, State> {
     const { isSaving, saveButtonStatus } = this.state;
 
     return (
-      <ProfileSection>
+      <FormSection>
         <form action="">
-          <SectionTitle><FormattedMessage {...messages.notificationsTitle} /></SectionTitle>
-          <SectionSubtitle><FormattedMessage {...messages.notificationsSubTitle} /></SectionSubtitle>
+          <FormSectionTitle message={messages.notificationsTitle} subtitleMessage={messages.notificationsSubTitle} />
           <ConsentList>
             {!isNilOrError(consents) && consents.map((consent) => (
               <CheckboxContainer key={consent.id}>
                 <Checkbox
                   value={this.isConsented(consent.id)}
                   onChange={this.handleOnChange(consent)}
-                  label={<T value={consent.attributes.campaign_type_description_multiloc} />}
+                  label={<FormLabelValue thin noSpace labelValue={<T value={consent.attributes.campaign_type_description_multiloc}/>} />}
                 />
               </CheckboxContainer>
             ))}
@@ -135,7 +132,7 @@ export class CampaignsConsentForm extends PureComponent<Props, State> {
             }}
           />
         </form>
-      </ProfileSection>
+      </FormSection>
     );
   }
 }

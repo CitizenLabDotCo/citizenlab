@@ -11,9 +11,9 @@ import messages from './messages';
 // components
 import Input from 'components/UI/Input';
 import { SectionField } from 'components/admin/Section';
-import Label from 'components/UI/Label';
 import TextArea from 'components/UI/TextArea';
 import Error from 'components/UI/Error';
+import { FormLabel } from 'components/UI/FormComponents';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -150,7 +150,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
         ) : (
           <Form>
             <SectionField className="fullWidth">
-              <Label value={<FormattedMessage {...messages.feedback} />} />
+              <FormLabel labelMessage={messages.feedback} thin />
               <TextArea
                 autofocus={true}
                 name="feedback"
@@ -161,7 +161,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
             </SectionField>
 
             <SectionField className="fullWidth">
-              <Label value={<FormattedMessage {...messages.email} />} />
+              <FormLabel labelMessage={messages.email} thin />
               <Input
                 type="text"
                 value={emailValue}
