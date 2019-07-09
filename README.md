@@ -29,11 +29,16 @@ API_HOST=XXX API_PORT=YYY npm start
 
 ## E2E tests
 
-Tests are run automatically every night at midnight (UTC). Please check the status of these on a regular basis in order to ensure nothing is broken.
+The E2E tests are run whenever a change to the Master branch occurs. You can view the results on CircleCI.
 
-If you want to manually run these tests, you will need a browserstack user/key combo and the URL of a test platform, then run this command, replacing `xxx`, `yyy` and `zzz` with the appropriate info:
+To manually run the e2e tests once:
 ```
-BROWSERSTACK_USER=xxx BROWSERSTACK_KEY=yyy ROOT_URL=zzz npm run test:browserstack
+npm run cypress:run 
+```
+
+To run the e2e tests in watcher mode:
+```
+npm run cypress:open
 ```
 
 ## Unit and integration tests
