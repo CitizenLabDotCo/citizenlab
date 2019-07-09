@@ -8,7 +8,7 @@ class MultilocValidator < ActiveModel::EachValidator
       if !(value.keys - locales).empty?
         record.errors.add(attribute, :unsupported_locales, 
           message: (options[:message] || "contains unsupported locales #{(value.keys - locales)}"))
-      elsif options[:presence] && value.values.all?{|text_or_html| Nokogiri::HTML.fragment(text_or_html).text.blank?}
+      elsif options[:presence] && value.values.all?{|text_or_html| !html_with_content?(text_or_html)}
         record.errors.add(attribute, :blank, 
           message: (options[:message] || "should be set for at least one locale"))
       elsif options[:length]
@@ -41,6 +41,14 @@ class MultilocValidator < ActiveModel::EachValidator
         end
       end
     end
+  end
+
+
+  private
+
+  def html_with_content? text_or_html
+    html = Nokogiri::HTML.fragment(text_or_html)
+    html.text.present? || !!%w(img iframe).any?{|tag| html.at tag}
   end
 
 end
