@@ -607,7 +607,6 @@
   "app.containers.AdminPage.FaviconPage.saveErrorMessage": "Er ging iets mis. Probeer het opnieuw.",
   "app.containers.AdminPage.FaviconPage.saveSuccess": "Success!",
   "app.containers.AdminPage.FaviconPage.saveSuccessMessage": "Your changes have been saved.",
-  "app.containers.AdminPage.IdeaDashboard.delete": "Verwijder",
   "app.containers.AdminPage.IdeaDashboard.helmetDescription": "Ideeënlijst",
   "app.containers.AdminPage.IdeaDashboard.helmetTitle": "Ideeën dashboard",
   "app.containers.AdminPage.PagesEdition.buttonError": "Fout",

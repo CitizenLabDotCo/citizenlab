@@ -607,7 +607,6 @@
   "app.containers.AdminPage.FaviconPage.saveErrorMessage": "Noe gikk galt, vennligst prøv igjen senere.",
   "app.containers.AdminPage.FaviconPage.saveSuccess": "Suksess!",
   "app.containers.AdminPage.FaviconPage.saveSuccessMessage": "Endringene dine har blitt lagret.",
-  "app.containers.AdminPage.IdeaDashboard.delete": "Slett",
   "app.containers.AdminPage.IdeaDashboard.helmetDescription": "Idéliste",
   "app.containers.AdminPage.IdeaDashboard.helmetTitle": "Kontrollpanel for idéer",
   "app.containers.AdminPage.PagesEdition.buttonError": "Feil",
