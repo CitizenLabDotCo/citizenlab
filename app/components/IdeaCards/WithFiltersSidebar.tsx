@@ -498,8 +498,8 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { selectedView, selectedIdeaFilters, filtersModalOpened } = this.state;
     const { participationMethod, participationContextId, participationContextType, ideas, ideasFilterCounts, windowSize, className, theme, showViewToggle } = this.props;
-    const { queryParameters, ideasList, hasMore, querying, loadingMore } = ideas;
-    const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
+    const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
+    const hasIdeas = (!isNilOrError(list) && list.length > 0);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
@@ -507,13 +507,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container id="e2e-ideas-container" className={className}>
-        {ideasList === undefined &&
+        {list === undefined &&
           <InitialLoading id="ideas-loading">
             <Spinner />
           </InitialLoading>
         }
 
-        {ideasList !== undefined &&
+        {list !== undefined &&
           <>
             {!biggerThanLargeTablet &&
               <>
@@ -588,9 +588,9 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <ContentLeft>
-                {showCardView && !querying && hasIdeas && ideasList &&
+                {showCardView && !querying && hasIdeas && list &&
                   <IdeasList id="e2e-ideas-list">
-                    {ideasList.map((idea) => (
+                    {list.map((idea) => (
                       <StyledIdeaCard
                         key={idea.id}
                         ideaId={idea.id}

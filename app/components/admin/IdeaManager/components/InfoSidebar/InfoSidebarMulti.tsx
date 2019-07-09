@@ -3,21 +3,21 @@ import InfoSidebarMultiItem from './InfoSidebarMultiItem';
 import { Segment, List } from 'semantic-ui-react';
 
 interface Props {
-  ideaIds: string[];
+  postIds: string[];
   openPreview: (id: string) => void;
 }
 
 export default class InfoSidebarMulti extends React.PureComponent<Props> {
   render() {
-    const { ideaIds, openPreview } = this.props;
+    const { postIds, openPreview } = this.props;
 
     return (
       <Segment attached="bottom">
         <List bulleted={true}>
-          {ideaIds.map((ideaId) => (
+          {postIds.map((postId) => (
             <InfoSidebarMultiItem
-              key={ideaId}
-              ideaId={ideaId}
+              key={postId}
+              postId={postId}
               openPreview={openPreview}
             />
           ))}

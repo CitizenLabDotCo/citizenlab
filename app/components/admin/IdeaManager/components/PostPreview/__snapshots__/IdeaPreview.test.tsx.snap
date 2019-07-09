@@ -1,32 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<IdeaPreview /> renders correctly closed 1`] = `
+exports[`<PostPreview /> renders correctly closed 1`] = `
 <SideModal
   close={[MockFunction]}
   opened={false}
 >
   <WrappedIdeaContent
-    closeSideModal={[MockFunction]}
+    closePreview={[MockFunction]}
     handleClickEdit={[MockFunction]}
     ideaId={null}
   />
 </SideModal>
 `;
 
-exports[`<IdeaPreview /> renders the idea content initially 1`] = `
+exports[`<PostPreview /> renders the idea content initially 1`] = `
 <SideModal
   close={[MockFunction]}
   opened={true}
 >
   <WrappedIdeaContent
-    closeSideModal={[MockFunction]}
+    closePreview={[MockFunction]}
     handleClickEdit={[MockFunction]}
     ideaId="GreatIdea"
   />
 </SideModal>
 `;
 
-exports[`<IdeaPreview /> renders the idea edit correctly 1`] = `
+exports[`<PostPreview /> renders the idea edit correctly 1`] = `
 <SideModal
   close={[MockFunction]}
   opened={true}

@@ -8,9 +8,9 @@ import { colors } from 'utils/styleUtils';
 interface DataProps {}
 
 interface InputProps {
-  onCloseModal: () => void;
-  ideaId: string | null;
-  onSwitchIdeaMode: () => void;
+  onClose: () => void;
+  postId: string | null;
+  onSwitchPreviewMode: () => void;
   mode: 'edit' | 'view';
 }
 
@@ -39,27 +39,27 @@ export const Content = styled.div`
   margin-top: 50px;
 `;
 
-export default class IdeaPreview extends PureComponent<Props> {
+export default class PostPreview extends PureComponent<Props> {
 
   render() {
-    const { ideaId, onCloseModal, onSwitchIdeaMode, mode } = this.props;
+    const { postId, onClose, onSwitchPreviewMode, mode } = this.props;
 
     return (
       <SideModal
-        opened={!!ideaId}
-        close={onCloseModal}
+        opened={!!postId}
+        close={onClose}
       >
         {mode === 'view' &&
           <IdeaContent
-            ideaId={ideaId}
-            closeSideModal={onCloseModal}
-            handleClickEdit={onSwitchIdeaMode}
+            ideaId={postId}
+            closePreview={onClose}
+            handleClickEdit={onSwitchPreviewMode}
           />
         }
-        {mode === 'edit' && ideaId &&
+        {mode === 'edit' && postId &&
           <IdeaEdit
-            ideaId={ideaId}
-            goBack={onSwitchIdeaMode}
+            ideaId={postId}
+            goBack={onSwitchPreviewMode}
           />
         }
       </SideModal>
