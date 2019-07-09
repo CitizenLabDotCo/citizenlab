@@ -1,39 +1,28 @@
 import React from 'react';
 import InfoSidebarMultiItem from './InfoSidebarMultiItem';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import { deleteIdea } from 'services/ideas';
 import { Segment, List } from 'semantic-ui-react';
-import messages from '../../messages';
 
 interface Props {
   ideaIds: string[];
+  openPreview: (id: string) => void;
 }
 
-class InfoSidebarMulti extends React.PureComponent<Props & InjectedIntlProps> {
-  handleClickDelete = () => {
-    const message = this.props.intl.formatMessage(messages.deleteIdeasConfirmation, { count: this.props.ideaIds.length });
-
-    if (window.confirm(message)) {
-      this.props.ideaIds.forEach((id) => {
-        deleteIdea(id);
-      });
-    }
-  }
-
+export default class InfoSidebarMulti extends React.PureComponent<Props> {
   render() {
-    const { ideaIds } = this.props;
+    const { ideaIds, openPreview } = this.props;
 
     return (
       <Segment attached="bottom">
         <List bulleted={true}>
           {ideaIds.map((ideaId) => (
-            <InfoSidebarMultiItem key={ideaId} ideaId={ideaId} />
+            <InfoSidebarMultiItem
+              key={ideaId}
+              ideaId={ideaId}
+              openPreview={openPreview}
+            />
           ))}
         </List>
       </Segment>
     );
   }
 }
-
-export default injectIntl<Props>(InfoSidebarMulti);
