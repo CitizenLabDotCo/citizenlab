@@ -1,6 +1,7 @@
 module EmailCampaigns
   class Campaigns::NewCommentOnCommentedIdea < Campaign
     include ActivityTriggerable
+    include Consentable
     include RecipientConfigurable
     include Disableable
     include LifecycleStageRestrictable
