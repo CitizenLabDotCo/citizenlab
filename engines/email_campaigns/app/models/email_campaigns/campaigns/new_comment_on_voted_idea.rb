@@ -1,6 +1,7 @@
 module EmailCampaigns
   class Campaigns::NewCommentOnVotedIdea < Campaign
     include ActivityTriggerable
+    include Consentable
     include RecipientConfigurable
     include Disableable
     include LifecycleStageRestrictable
@@ -56,6 +57,10 @@ module EmailCampaigns
         }
       }]
     end
-    
+
+    def set_enabled
+      self.enabled = false if self.enabled.nil?
+    end
+
   end
 end

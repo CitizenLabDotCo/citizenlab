@@ -36,10 +36,10 @@ module Post
       post.validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
 
       post.before_validation :strip_title
-      post.before_validation :sanitize_body_multiloc
+      post.before_validation :sanitize_body_multiloc, if: :body_multiloc
       post.before_validation :set_author_name
-      post.before_validation :generate_slug
-      post.after_validation :set_published_at
+      post.before_validation :generate_slug, on: :create
+      post.after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
     end
 
 
@@ -84,7 +84,7 @@ module Post
       service = SanitizationService.new
       self.body_multiloc = service.sanitize_multiloc(
         self.body_multiloc,
-        %i{title alignment list decoration link}
+        %i{title alignment list decoration link video}
       )
       self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
       self.body_multiloc = service.linkify_multiloc(self.body_multiloc)

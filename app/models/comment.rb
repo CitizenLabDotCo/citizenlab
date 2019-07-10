@@ -41,7 +41,6 @@ class Comment < ApplicationRecord
   PUBLICATION_STATUSES = %w(published deleted)
 
   validates :body_multiloc, presence: true, multiloc: {presence: true}
-  validates :author_name, presence: true
   validates :author, presence: true, on: :create
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 

@@ -31,8 +31,6 @@ class Idea < ApplicationRecord
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
   has_one :idea_trending_info
 
-  after_update :fix_comments_count_on_projects
-
   with_options unless: :draft? do |idea|
     idea.validates :idea_status, presence: true
     idea.validates :project, presence: true
@@ -40,6 +38,8 @@ class Idea < ApplicationRecord
 
     idea.before_validation :set_idea_status
   end
+
+  after_update :fix_comments_count_on_projects
 
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
@@ -92,7 +92,7 @@ class Idea < ApplicationRecord
   def set_idea_status
     self.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
   end
-
+  
   def assignee_can_moderate_project
     if self.assignee && self.project &&
       !ProjectPolicy.new(self.assignee, self.project).moderate?
