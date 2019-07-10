@@ -267,14 +267,10 @@ workflows:
   check-for-inconsistent-data:
     jobs:
       - check-for-inconsistent-data:
-          requires:
-            - test
-            - slow-tests
-            - push-deployment-docker-image
           filters:
             branches:
               only:
-                - master
+                - CL2-3995-nightly-invalid-data-check
           ssh_host: "52.29.30.188"
           compose_file: docker-compose-staging.yml
           stack_name: cl2-back-stg
