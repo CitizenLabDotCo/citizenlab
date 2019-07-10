@@ -12,7 +12,7 @@ const StyledLabel = styled(Label)`
 
 interface Props {
   selectedTopics: string[];
-  onUpdateIdeaTopics: (topicIds: string[]) => void;
+  onUpdateTopics: (topicIds: string[]) => void;
 }
 
 export default class TopicsSelector extends React.PureComponent<Props> {
@@ -20,7 +20,7 @@ export default class TopicsSelector extends React.PureComponent<Props> {
   handleTopicDelete = (topicId) => (event) => {
     event.stopPropagation();
     const newSelectedTopics = pull(this.props.selectedTopics, topicId);
-    this.props.onUpdateIdeaTopics(newSelectedTopics);
+    this.props.onUpdateTopics(newSelectedTopics);
   }
 
   render() {

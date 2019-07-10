@@ -4,10 +4,12 @@ import IdeaEdit from './IdeaEdit';
 import IdeaContent from './IdeaContent';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { ManagerType } from '../..';
 
 interface DataProps {}
 
 interface InputProps {
+  type: ManagerType;
   onClose: () => void;
   postId: string | null;
   onSwitchPreviewMode: () => void;
@@ -42,21 +44,22 @@ export const Content = styled.div`
 export default class PostPreview extends PureComponent<Props> {
 
   render() {
-    const { postId, onClose, onSwitchPreviewMode, mode } = this.props;
+    const { type, postId, onClose, onSwitchPreviewMode, mode } = this.props;
+    console.log(type === 'Initiatives' ? 'TODO PostPreview' : '');
 
     return (
       <SideModal
         opened={!!postId}
         close={onClose}
       >
-        {mode === 'view' &&
+        {mode === 'view' && (type === 'AllIdeas' || type === 'ProjectIdeas') &&
           <IdeaContent
             ideaId={postId}
             closePreview={onClose}
             handleClickEdit={onSwitchPreviewMode}
           />
         }
-        {mode === 'edit' && postId &&
+        {mode === 'edit' && postId && (type === 'AllIdeas' || type === 'ProjectIdeas') &&
           <IdeaEdit
             ideaId={postId}
             goBack={onSwitchPreviewMode}

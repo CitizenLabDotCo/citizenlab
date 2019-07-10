@@ -16,6 +16,7 @@ import GetIdeasCount, { GetIdeasCountChildProps } from 'resources/GetIdeasCount'
 
 // components
 import CountBadge from 'components/UI/CountBadge';
+import { ManagerType } from '../..';
 
 const size = 21;
 const padding = 4;
@@ -85,6 +86,7 @@ const StyledLabel = styled.label`
 `;
 
 interface InputProps {
+  type: ManagerType;
   value: boolean;
   onChange: (feedbackNeeded: boolean | undefined) => void;
   assignee?: string | null;
