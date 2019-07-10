@@ -310,6 +310,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 resolution={resolution}
                 stream={usersByTimeCumulativeStream}
+                className="e2e-users-by-time-cumulative-chart"
                 {...this.state}
               />
               <BarChartActiveUsersByTime
@@ -321,6 +322,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 resolution={resolution}
                 stream={activeUsersByTimeStream}
                 infoMessage={infoMessage}
+                className="e2e-active-users-chart"
                 {...this.state}
               />
               <CumulativeAreaChart
@@ -330,6 +332,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 resolution={resolution}
                 stream={ideasByTimeCumulativeStream}
+                className="e2e-ideas-chart"
                 {...this.state}
               />
               <CumulativeAreaChart
@@ -339,18 +342,19 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 endAt={endAt}
                 resolution={resolution}
                 stream={commentsByTimeCumulativeStream}
+                className="e2e-comments-chart"
                 {...this.state}
               />
               <Column>
                 <LineChartVotesByTime
-                  className="fullWidth"
+                  className="fullWidth e2e-votes-chart"
                   startAt={startAt}
                   endAt={endAt}
                   resolution={resolution}
                   {...this.state}
                 />
                 <SelectableResourceByProjectChart
-                  className="dynamicHeight fullWidth"
+                  className="dynamicHeight fullWidth e2e-resource-by-project-chart"
                   onResourceByProjectChange={this.onResourceByProjectChange}
                   resourceOptions={this.resourceOptions}
                   projectOptions={projectFilterOptions}
@@ -361,7 +365,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               </Column>
               <Column>
                 <SelectableResourceByTopicChart
-                  className="fullWidth dynamicHeight"
+                  className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
                   topicOptions={topicFilterOptions}
                   onResourceByTopicChange={this.onResourceByTopicChange}
                   resourceOptions={this.resourceOptions}

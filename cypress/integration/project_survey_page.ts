@@ -69,6 +69,7 @@ describe('Timeline project with survey phase', () => {
         true,
         true,
         true,
+        'description',
         'https://citizenlabco.typeform.com/to/Yv6B7V',
         'typeform'
       );

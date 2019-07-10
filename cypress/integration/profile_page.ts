@@ -12,9 +12,12 @@ describe('Profile Page', () => {
   let projectId: string;
   let ideaId: string;
   let commentId: string;
+  let userId: string;
 
   before(() => {
-    cy.apiSignup(newUserName, newUserSurname, newUserEmail, newUserPassword);
+    cy.apiSignup(newUserName, newUserSurname, newUserEmail, newUserPassword).then(userResponse => {
+      userId = userResponse.body.data.id;
+    });
     cy.apiLogin(newUserEmail, newUserPassword).then((user) => {
       jwt = user.body.jwt;
       return cy.getProjectBySlug('an-idea-bring-it-to-your-council');
@@ -52,6 +55,6 @@ describe('Profile Page', () => {
   after(() => {
     cy.apiRemoveComment(commentId);
     cy.apiRemoveIdea(ideaId);
+    cy.apiRemoveUser(userId);
   });
-
 });
