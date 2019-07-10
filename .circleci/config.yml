@@ -264,7 +264,7 @@ workflows:
           ssh_host: "35.183.23.116"
           compose_file: docker-compose-production-canada.yml
           env_file: ".env-production-canada"
-  build_and_deploy:
+  check-for-inconsistent-data:
     jobs:
       - check-for-inconsistent-data:
           requires:
