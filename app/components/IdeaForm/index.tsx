@@ -10,9 +10,6 @@ import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
 
 // components
-import MultipleSelect from 'components/UI/MultipleSelect';
-import Label from 'components/UI/Label';
-import Icon from 'components/UI/Icon';
 import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import QuillEditor from 'components/UI/QuillEditor';
@@ -21,6 +18,7 @@ import Error from 'components/UI/Error';
 import HasPermission from 'components/HasPermission';
 import FileUploader from 'components/UI/FileUploader';
 import FeatureFlag from 'components/FeatureFlag';
+import { FormLabel } from 'components/UI/FormComponents';
 
 // services
 import { localeStream } from 'services/locale';
@@ -45,6 +43,8 @@ import { IOption, UploadFile, Locale } from 'typings';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
+import TopicsPicker from 'components/UI/TopicsPicker';
+import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 
 const Form = styled.form`
   width: 100%;
@@ -58,22 +58,6 @@ const FormElement: any = styled.div`
   margin-bottom: 40px;
 `;
 
-const StyledMultipleSelect = styled(MultipleSelect)`
-  max-width: 100%;
-  padding: 2.5px 0;
-  cursor: pointer;
-`;
-
-const LabelWithIcon = styled(Label)`
-  display: flex;
-  align-items: center;
-`;
-const StyledIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
-  margin-left: 10px;
-`;
-
 const HiddenLabel = styled.span`
   ${hideVisually() as any}
 `;
@@ -81,7 +65,7 @@ const HiddenLabel = styled.span`
 export interface IIdeaFormOutput {
   title: string;
   description: string;
-  selectedTopics: IOption[] | null;
+  selectedTopics: string[];
   address: string;
   budget: number | null;
   imageFile: UploadFile[];
@@ -93,7 +77,7 @@ interface Props {
   projectId: string | null;
   title: string | null;
   description: string | null;
-  selectedTopics: IOption[] | null;
+  selectedTopics: string[];
   budget: number | null;
   address: string;
   imageFile: UploadFile[];
@@ -110,7 +94,7 @@ interface State {
   titleError: string | JSX.Element | null;
   description: string;
   descriptionError: string | JSX.Element | null;
-  selectedTopics: IOption[] | null;
+  selectedTopics: string[];
   budget: number | null;
   budgetError: string | JSX.Element | null;
   address: string;
@@ -135,7 +119,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       titleError: null,
       description: '',
       descriptionError: null,
-      selectedTopics: null,
+      selectedTopics: [],
       address: '',
       imageFile: [],
       budget: null,
@@ -253,7 +237,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     }));
   }
 
-  handleTopicsOnChange = (selectedTopics: IOption[]) => {
+  handleTopicsOnChange = (selectedTopics: string[]) => {
     this.setState({ selectedTopics });
   }
 
@@ -409,7 +393,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return (
       <Form id="idea-form" className={className}>
         <FormElement name="titleInput" id="e2e-idea-title-input">
-          <Label value={<FormattedMessage {...messages.titleLabel} />} htmlFor="title" />
+          <FormLabel labelMessage={messages.titleLabel} htmlFor="title" />
           <Input
             id="title"
             type="text"
@@ -423,7 +407,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         </FormElement>
 
         <FormElement name="descriptionInput" id="e2e-idea-description-input">
-          <Label value={<FormattedMessage {...messages.descriptionLabel} />} htmlFor="editor" />
+          <FormLabel labelMessage={messages.descriptionLabel} htmlFor="editor" />
           <QuillEditor
             id="editor"
             noImages={true}
@@ -435,27 +419,19 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           {descriptionError && <Error text={descriptionError} />}
         </FormElement>
 
-        {topics && topics.length > 0 &&
+        {topics && topics.length > 0 && (
           <FormElement>
-            <Label value={<FormattedMessage {...messages.topicsLabel} />} htmlFor="topics" />
-            <StyledMultipleSelect
-              className="e2e-idea-form-topics-multiple-select-box"
-              inputId="topics"
+            <FormLabel labelMessage={messages.topicsLabel} htmlFor="topics" />
+            <TopicsPicker
               value={selectedTopics}
-              placeholder={<FormattedMessage {...messages.topicsPlaceholder} />}
-              options={topics}
-              max={2}
               onChange={this.handleTopicsOnChange}
+              max={2}
             />
           </FormElement>
-        }
+        )}
 
         <FormElement>
-          <Label value={<FormattedMessage {...messages.locationLabel} />} htmlFor="location" />
-          <label htmlFor="location">
-            <HiddenLabel>
-              <FormattedMessage {...messages.locationLabel} />
-            </HiddenLabel>
+          <FormLabel labelMessage={messages.locationLabel} htmlFor="location" />
             <LocationInput
               id="location"
               className="e2e-idea-form-location-input-field"
@@ -463,13 +439,12 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               placeholder={formatMessage(messages.locationPlaceholder)}
               onChange={this.handleLocationOnChange}
             />
-          </label>
         </FormElement>
 
         <FormElement id="e2e-idea-image-upload">
-          <Label value={<FormattedMessage {...messages.imageUploadLabel} />} />
+          <FormLabel labelMessage={messages.imageUploadLabel} />
           <label htmlFor="idea-img-dropzone">
-            <HiddenLabel>
+           <HiddenLabel>
               <FormattedMessage {...messages.imageDropzonePlaceholder} />
             </HiddenLabel>
             <ImagesDropzone
@@ -486,7 +461,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           </label>
         </FormElement>
 
-        {pbContext &&
+        {pbContext && (
           <FeatureFlag name="participatory_budgeting">
             <HasPermission
               item="ideas"
@@ -494,7 +469,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               context={{ projectId }}
             >
               <FormElement>
-                <LabelWithIcon value={<><FormattedMessage {...messages.budgetLabel} values={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }} /><StyledIcon name="admin" /></>} htmlFor="budget" />
+                <FormLabelWithIcon labelMessage={messages.budgetLabel} labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }} htmlFor="budget" iconName="admin" />
                 <Input
                   id="budget"
                   error={budgetError}
@@ -505,12 +480,10 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               </FormElement>
             </HasPermission>
           </FeatureFlag>
-        }
+        )}
 
         <FormElement id="e2e-idea-file-upload">
-          <Label>
-            <FormattedMessage {...messages.fileUploadLabel} />
-          </Label>
+          <FormLabel labelMessage={messages.fileUploadLabel}/>
           <FileUploader
             onFileAdd={this.handleIdeaFileOnAdd}
             onFileRemove={this.handleIdeaFileOnRemove}

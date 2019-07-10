@@ -1,21 +1,20 @@
 import React from 'react';
-import Input, { InputProps as VanillaInputProps } from 'components/UI/Input';
+import TopicsPicker, { InputProps as VanillaTopicsPickerProps } from 'components/UI/TopicsPicker';
 import { FieldProps } from 'formik';
 
 type State = {};
 
-class FormikInput extends React.Component<FieldProps & VanillaInputProps, State> {
+class FormikTopicsPicker extends React.Component<FieldProps & VanillaTopicsPickerProps, State> {
 
   handleOnChange = (newValue) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
   }
 
   render() {
-    const { name, value } = this.props.field;
+    const { value } = this.props.field;
     return (
-      <Input
+      <TopicsPicker
         {...this.props}
-        name={name}
         value={value}
         onChange={this.handleOnChange}
       />
@@ -23,4 +22,4 @@ class FormikInput extends React.Component<FieldProps & VanillaInputProps, State>
   }
 }
 
-export default FormikInput;
+export default FormikTopicsPicker;

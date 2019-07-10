@@ -25,7 +25,7 @@ export async function getBase64FromFile(file: File) {
   return new Promise<string>((resolve, reject) => {
     if (file && !isString(file)) {
       const reader = new FileReader();
-      reader.onload = (event: any) => resolve(event.target.result);
+      reader.onloadend = (event: any) => resolve(event.target.result);
       reader.onerror = () => reject(new Error('error for getBase64()'));
       reader.readAsDataURL(file);
     } else {

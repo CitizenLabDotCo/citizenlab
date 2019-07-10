@@ -4,6 +4,7 @@ import { get } from 'lodash-es';
 
 // components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
+// since it will only be seen by admins, making the whoice of using the admin Label component for now.
 import Label from 'components/UI/Label';
 
 // services
