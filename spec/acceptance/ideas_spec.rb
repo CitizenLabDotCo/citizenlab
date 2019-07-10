@@ -253,6 +253,11 @@ resource "Ideas" do
       do_request search: 'Park', sort: 'trending'
       expect(status).to eq(200)
     end
+
+    example "Default trending ordering", document: false do
+      do_request project_publication_status: 'published', sort: 'trending'
+      expect(status).to eq(200)
+    end
   end
 
   get "web_api/v1/ideas/as_markers" do
