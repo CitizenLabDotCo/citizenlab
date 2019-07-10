@@ -5,7 +5,7 @@ namespace :checks do
     issues = {}
 
     cl2_root_models.each do |claz|
-      claz.all.each do |object|
+      claz.all.find_each do |object|
         errors = validation_errors object
         if errors
           issues[nil] ||= {}
@@ -20,7 +20,7 @@ namespace :checks do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         cl2_tenant_models.each do |claz|
-          claz.all.each do |object|
+          claz.all.find_each do |object|
             errors = validation_errors object
             if errors
               issues[tenant.host] ||= {}
@@ -37,6 +37,8 @@ namespace :checks do
     if issues.present?
       pp issues
       fail 'Some data is invalid.'
+    else
+      puts 'Success!'
     end
   end
 
