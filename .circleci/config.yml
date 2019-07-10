@@ -266,14 +266,18 @@ workflows:
           env_file: ".env-production-canada"
   check-for-inconsistent-data:
     triggers:
-      - schedule:
-          cron: "0 2 * * *"
+      # - schedule:
+      #     cron: "0 2 * * *"
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
+    jobs:
+      - check-for-inconsistent-data:
           filters:
             branches:
               only:
                 - master
-    jobs:
-      - check-for-inconsistent-data:
           ssh_host: "52.29.30.188"
           compose_file: docker-compose-staging.yml
           stack_name: cl2-back-stg
