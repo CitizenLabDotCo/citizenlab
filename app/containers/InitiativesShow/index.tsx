@@ -15,12 +15,10 @@ import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMapLoadable';
 import Modal from 'components/UI/Modal';
-import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
-import SimilarIdeas from './SimilarIdeas';
 import IdeaTopics from './IdeaTopics';
 import IdeaTitle from './IdeaTitle';
 import IdeaStatus from './IdeaStatus';
@@ -60,7 +58,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, ideaPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { media, colors, ideaPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -253,37 +251,6 @@ const MetaContent = styled.div`
   flex-direction: column;
 `;
 
-const ControlWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 45px;
-  padding: 35px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
-  border-radius: ${(props: any) => props.theme.borderRadius};
-`;
-
-const ControlWrapperHorizontalRule: any = styled.hr`
-  width: 100%;
-  border: none;
-  height: 1px;
-  background-color: ${colors.separation};
-  margin: 35px 0;
-`;
-
-const VoteLabel = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin-bottom: 12px;
-  display: none;
-
-  ${media.smallerThanMaxTablet`
-    display: block;
-  `}
-`;
-
 const AssignBudgetControlMobile = styled.div`
   margin-top: 40px;
   margin-bottom: 40px;
@@ -296,10 +263,6 @@ const AssignBudgetControlMobile = styled.div`
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const StyledSimilarIdeas = styled(SimilarIdeas)`
-  margin-top: 45px;
 `;
 
 const SharingMobile = styled(Sharing)`
@@ -329,7 +292,7 @@ interface DataProps {
 }
 
 interface InputProps {
-  ideaId: string | null;
+  initiativeId: string | null;
   inModal?: boolean | undefined;
   className?: string;
 }
@@ -352,7 +315,7 @@ interface State {
   actionInfos: IActionInfos | null;
 }
 
-export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
+export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
   initialState: State;
 
   constructor(props) {
@@ -499,7 +462,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const participationContextId = get(actionInfos, 'participationContextId', null);
       const budgetingDescriptor = get(actionInfos, 'budgetingDescriptor', null);
       const showBudgetControl = get(actionInfos, 'showBudgetControl', null);
-      const showVoteControl = get(actionInfos, 'showVoteControl', null);
       const biggerThanLargeTablet = windowSize ? windowSize > viewportWidths.largeTablet : false;
       const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
@@ -634,43 +596,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
                   <MetaContent>
-                    {(showVoteControl || showBudgetControl || statusId) &&
-                      <ControlWrapper className="e2e-vote-controls-desktop">
-                        {showVoteControl &&
-                          <>
-                            <VoteLabel>
-                              <FormattedMessage {...messages.voteOnThisIdea} />
-                            </VoteLabel>
-
-                            <VoteWrapper
-                              ideaId={ideaId}
-                              votingDescriptor={idea.relationships.action_descriptor.data.voting}
-                              projectId={projectId}
-                            />
-                          </>
-                        }
-
-                        {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
-                          <AssignBudgetWrapper
-                            ideaId={ideaId}
-                            projectId={projectId}
-                            participationContextId={participationContextId}
-                            participationContextType={participationContextType}
-                            budgetingDescriptor={budgetingDescriptor}
-                          />
-                        }
-
-                        {(showVoteControl || showBudgetControl) &&
-                          <ControlWrapperHorizontalRule />
-                        }
-
-                        {statusId &&
-                          <IdeaStatus statusId={statusId} />
-                        }
-                      </ControlWrapper>
-                    }
-
-                    <SharingWrapper>
+                  < SharingWrapper>
                       <Sharing
                         context="idea"
                         url={ideaUrl}
@@ -680,11 +606,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                         utmParams={utmParams}
                       />
                     </SharingWrapper>
-
-                    <FeatureFlag name="similar_ideas">
-                      <StyledSimilarIdeas ideaId={ideaId} />
-                    </FeatureFlag>
-
                   </MetaContent>
                 </RightColumnDesktop>
               }
@@ -737,7 +658,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 }
 
-const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl(withRouter(IdeasShow)));
+const InitiativesShowWithHOCs = injectLocalize<Props>(injectIntl(withRouter(InitiativesShow)));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
@@ -753,6 +674,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeasShowWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <InitiativesShowWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
