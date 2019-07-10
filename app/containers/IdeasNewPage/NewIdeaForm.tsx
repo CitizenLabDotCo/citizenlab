@@ -18,7 +18,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { IOption, UploadFile } from 'typings';
+import { UploadFile } from 'typings';
 
 // style
 import { media, fontSizes, viewportWidths } from 'utils/styleUtils';
@@ -79,7 +79,7 @@ interface Props {
 interface GlobalState {
   title: string | null;
   description: string | null;
-  selectedTopics: IOption[] | null;
+  selectedTopics: string[];
   budget: number | null;
   position: string;
   imageFile: UploadFile[];
@@ -98,7 +98,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
     this.state = {
       title: null,
       description: null,
-      selectedTopics: null,
+      selectedTopics: [],
       budget: null,
       position: '',
       imageFile: [],
