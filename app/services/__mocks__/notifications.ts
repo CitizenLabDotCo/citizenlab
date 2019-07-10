@@ -57,7 +57,7 @@ export const getNotification = (
         type: 'users'
       }
     },
-    idea: ['invite_accepted', 'admin_rights_received'].indexOf(type) === -1 ? {
+    post: ['invite_accepted', 'admin_rights_received'].indexOf(type) === -1 ? {
       data: {
         id: '5dda9f3e-4c3f-45f1-bb09-b88a40776cab',
         type: 'ideas'

@@ -171,7 +171,7 @@ class ParentComment extends PureComponent<Props, State> {
     const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
-      const ideaId = comment.relationships.idea.data.id;
+      const ideaId = comment.relationships.post.data.id;
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
       const showCommentForm = (authUser && commentingEnabled && !commentDeleted);
@@ -245,7 +245,7 @@ class ParentComment extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>
+  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.post.data.id')}>{render}</GetIdea>
 });
 
 export default (inputProps: InputProps) => (
