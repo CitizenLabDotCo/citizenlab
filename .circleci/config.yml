@@ -271,13 +271,9 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - production
     jobs:
       - check-for-inconsistent-data:
-          # filters:
-          #   branches:
-          #     only:
-          #       - master
           ssh_host: "52.29.30.188"
           compose_file: docker-compose-staging.yml
           stack_name: cl2-back-stg
