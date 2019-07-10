@@ -7,7 +7,7 @@ import T from 'components/T';
 type Props = {
   selectedPhases: string[],
   phases: IPhaseData[],
-  onUpdateIdeaPhases: (phasesIds: string[]) => void;
+  onUpdatePhases: (phasesIds: string[]) => void;
 };
 
 class PhasesSelector extends React.PureComponent<Props> {
@@ -20,7 +20,7 @@ class PhasesSelector extends React.PureComponent<Props> {
     event.stopPropagation();
     if (this.isEnabled(phase)) {
       const newSelectedPhases = xor(this.props.selectedPhases, [phase.id]);
-      this.props.onUpdateIdeaPhases(newSelectedPhases);
+      this.props.onUpdatePhases(newSelectedPhases);
     }
   }
 

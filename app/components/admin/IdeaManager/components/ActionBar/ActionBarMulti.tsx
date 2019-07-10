@@ -4,35 +4,42 @@ import { InjectedIntlProps } from 'react-intl';
 import { deleteIdea } from 'services/ideas';
 import { Button, Icon } from 'semantic-ui-react';
 import messages from '../../messages';
+import { ManagerType } from '../..';
 
 interface Props {
-  ideaIds: string[];
-  resetSelectedIdeas: () => void;
+  type: ManagerType;
+  postIds: string[];
+  resetSelection: () => void;
 }
 
 class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
-  handleClickDelete = () => {
-    const { ideaIds, resetSelectedIdeas } = this.props;
+  handleClickDeleteIdeas = () => {
+    const { postIds, resetSelection, intl: { formatMessage } } = this.props;
 
-    const message = this.props.intl.formatMessage(messages.deleteIdeasConfirmation, { count: this.props.ideaIds.length });
+      const message = formatMessage(messages.deleteIdeasConfirmation, { count: postIds.length });
 
-    if (window.confirm(message)) {
-      ideaIds.forEach((id) => {
-        deleteIdea(id);
-      });
-    }
+      if (window.confirm(message)) {
+        postIds.forEach((id) => {
+          deleteIdea(id);
+        });
+      }
 
-    resetSelectedIdeas();
+    resetSelection();
   }
 
   render() {
-    const { ideaIds } = this.props;
-    return (
-      <Button negative={true} basic={true} onClick={this.handleClickDelete}>
-        <Icon name="trash" />
-        <FormattedMessage {...messages.deleteAllSelectedIdeas} values={{ count: ideaIds.length }} />
-      </Button>
-    );
+    const { type, postIds } = this.props;
+    if (type === 'AllIdeas' || type === 'ProjectIdeas') {
+      return (
+        <Button negative={true} basic={true} onClick={this.handleClickDeleteIdeas}>
+          <Icon name="trash" />
+          <FormattedMessage {...messages.deleteAllSelectedIdeas} values={{ count: postIds.length }} />
+        </Button>
+      );
+    } else {
+      console.log('TODO ActionBarMulti');
+    }
+    return null;
   }
 }
 

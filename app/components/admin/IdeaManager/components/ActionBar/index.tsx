@@ -2,23 +2,25 @@ import React from 'react';
 import styled from 'styled-components';
 import ActionBarSingle from './ActionBarSingle';
 import ActionBarMulti from './ActionBarMulti';
+import { ManagerType } from '../..';
 
 const Container = styled.div`
   display: flex;
 `;
 
 interface Props {
-  ideaIds: string[];
-  resetSelectedIdeas: () => void;
+  type: ManagerType;
+  postIds: string[];
+  resetSelection: () => void;
   handleClickEdit: () => void;
 }
 
 export default (props: Props) => {
-  const { ideaIds, resetSelectedIdeas, handleClickEdit } = props;
+  const { type, postIds, resetSelection, handleClickEdit } = props;
   return (
     <Container>
-      {ideaIds.length > 1 && <ActionBarMulti ideaIds={ideaIds} resetSelectedIdeas={resetSelectedIdeas} />}
-      {ideaIds.length === 1 && <ActionBarSingle ideaId={ideaIds[0]} resetSelectedIdeas={resetSelectedIdeas} handleClickEdit={handleClickEdit} />}
+      {postIds.length > 1 && <ActionBarMulti type={type} postIds={postIds} resetSelection={resetSelection} />}
+      {postIds.length === 1 && <ActionBarSingle type={type} postId={postIds[0]} resetSelection={resetSelection} handleClickEdit={handleClickEdit} />}
     </Container>
   );
 };

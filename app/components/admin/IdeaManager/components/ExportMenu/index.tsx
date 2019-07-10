@@ -58,7 +58,7 @@ const Container = styled.div`
   }
 `;
 
-export type exportType = 'selected_ideas' | 'project' | 'all';
+export type exportType = 'selected_posts' | 'project' | 'all';
 
 export interface Props {
   exportType: exportType;

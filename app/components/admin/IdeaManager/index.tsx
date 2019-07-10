@@ -1,5 +1,5 @@
 import React from 'react';
-import { keys, isEmpty, size, isFunction, isArray } from 'lodash-es';
+import { keys, isFunction, isArray } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -77,7 +77,7 @@ const StyledInput = styled(Input)`
   width: 100%;
 `;
 
-type TIdeaManagerType =
+export type ManagerType =
   'AllIdeas' // should come with projectIds a list of projects that the current user can manage.
   | 'ProjectIdeas'; // should come with projectId
   // | 'Initiatives';
@@ -85,7 +85,7 @@ type TIdeaManagerType =
 interface InputProps {
   // For all display and behaviour that's conditionned by the place this component is rendered
   // this prop is used for the test.
-  type: TIdeaManagerType;
+  type: ManagerType;
 
   // When the IdeaManager is used in admin/projects, we pass down the current projects id as a prop
   projectId?: string | null;
@@ -106,10 +106,10 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
+export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 
 interface State {
-  selectedIdeas: { [key: string]: boolean };
+  selection: Set<string>;
   activeFilterMenu: TFilterMenu | null;
   searchTerm: string | undefined;
   previewPostId: string | null;
@@ -122,7 +122,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      selectedIdeas: {},
+      selection: new Set(),
       activeFilterMenu: props.visibleFilterMenus[0],
       searchTerm: undefined,
       previewPostId: null,
@@ -147,6 +147,14 @@ class IdeaManager extends React.PureComponent<Props, State> {
     }
   }
 
+ // Filtering handlers
+  getSelectedProject = () => {
+    const { posts: { queryParameters } } = this.props;
+    return Array.isArray(queryParameters.projects) && queryParameters.projects.length === 1
+      ? queryParameters.projects[0]
+      : undefined;
+  }
+
   handleSearchChange = (event) => {
     const searchTerm = event.target.value;
 
@@ -155,26 +163,6 @@ class IdeaManager extends React.PureComponent<Props, State> {
     if (isFunction(this.props.posts.onChangeSearchTerm)) {
       this.props.posts.onChangeSearchTerm(searchTerm);
     }
-  }
-
-  isAnyIdeaSelected = () => {
-    return !isEmpty(this.state.selectedIdeas);
-  }
-
-  areMultipleIdeasSelected = () => {
-    return size(this.state.selectedIdeas) > 1;
-  }
-
-  resetSelectedIdeas = () => {
-    this.setState({ selectedIdeas: {} });
-  }
-
-  handleChangeIdeaSelection = (selectedIdeas: { [key: string]: boolean }) => {
-    this.setState({ selectedIdeas });
-  }
-
-  handleChangeActiveFilterMenu = (activeFilterMenu: TFilterMenu) => {
-    this.setState({ activeFilterMenu });
   }
 
   onChangeProjects = (projectIds: string[] | undefined) => {
@@ -191,6 +179,47 @@ class IdeaManager extends React.PureComponent<Props, State> {
       onChangeProjects(projectIds);
     }
   }
+  // End filtering hanlders
+
+  // Selection management
+  isSelectionMultiple = () => {
+    return (this.state.selection.size > 1);
+  }
+
+  resetSelection = () => {
+    this.setState({ selection: new Set() });
+  }
+
+  handleChangeSelection = (selection: Set<string>) => {
+    this.setState({ selection });
+  }
+
+  getExportQueryParameters = () => {
+    const { selection } = this.state;
+    const selectedProject = this.getSelectedProject();
+
+    let exportQueryParameter;
+    let exportType: null | exportType = null;
+    if (selection.size > 0) {
+      exportQueryParameter = [...selection];
+      exportType = 'selected_posts';
+    } else if (selectedProject) {
+      exportQueryParameter = selectedProject;
+      exportType = 'project';
+    } else {
+      exportQueryParameter = 'all';
+      exportType = 'all';
+    }
+
+    return { exportQueryParameter, exportType };
+  }
+  // End selection management
+
+  // Filter menu
+  handleChangeActiveFilterMenu = (activeFilterMenu: TFilterMenu) => {
+    this.setState({ activeFilterMenu });
+  }
+  // End Filter menu
 
   // Modal Preview
   openPreview = (postId: string) => {
@@ -198,9 +227,9 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   openPreviewEdit = () => {
-    const selectedIdeaIds = keys(this.state.selectedIdeas);
-    if (selectedIdeaIds.length === 1) {
-      this.setState({ previewPostId: selectedIdeaIds[0], previewMode: 'edit' });
+    const { selection } = this.state;
+    if (selection.size === 1) {
+      this.setState({ previewPostId: [...selection][0], previewMode: 'edit' });
     }
   }
 
@@ -218,53 +247,44 @@ class IdeaManager extends React.PureComponent<Props, State> {
   // End Modal Preview
 
   render() {
-    const { searchTerm, previewPostId, previewMode, selectedIdeas, activeFilterMenu } = this.state;
+    const { searchTerm, previewPostId, previewMode, selection, activeFilterMenu } = this.state;
     const { type, projectId, projects, posts, phases, postStatuses, visibleFilterMenus } = this.props;
-    const { list, onChangePhase, onChangeTopics, onChangeIdeaStatus, queryParameters, onChangeAssignee } = posts;
+    const { list, onChangePhase, onChangeTopics, onChangeStatus, queryParameters, onChangeAssignee, onChangeFeedbackFilter, onResetParams } = posts;
+
     const selectedTopics = queryParameters.topics;
     const selectedPhase = queryParameters.phase;
     const selectedAssignee = queryParameters.assignee;
-    const selectedProject = isArray(queryParameters.projects) && queryParameters.projects.length === 1
-      ? queryParameters.projects[0]
-      : undefined;
-    const selectedIdeaIds = keys(this.state.selectedIdeas);
-    const showInfoSidebar = this.isAnyIdeaSelected();
-    const multipleIdeasSelected = this.areMultipleIdeasSelected();
-
     const selectedStatus = queryParameters.idea_status;
+    const selectedProject = this.getSelectedProject();
+    const feedbackNeeded = queryParameters.feedback_needed || false;
 
-    let exportQueryParameter;
-    let exportType: null | exportType = null;
-    if (selectedIdeaIds.length > 0) {
-      exportQueryParameter = [...selectedIdeaIds];
-      exportType = 'selected_ideas';
-    } else if (selectedProject) {
-      exportQueryParameter = selectedProject;
-      exportType = 'project';
-    } else {
-      exportQueryParameter = 'all';
-      exportType = 'all';
-    }
+    const multipleIdeasSelected = this.isSelectionMultiple();
+
+    const { exportType, exportQueryParameter } = this.getExportQueryParameters();
+
+    console.log(type === 'Initiatives' ? 'TODO FeedbackToggle' : '');
 
     return (
       <>
-
         <TopActionBar>
           <AssigneeFilter
             assignee={selectedAssignee}
             projectId={type === 'ProjectIdeas' ? projectId : null}
             handleAssigneeFilterChange={onChangeAssignee}
           />
-          <FeedbackToggle
-            value={queryParameters.feedback_needed || false}
-            onChange={posts.onChangeFeedbackFilter}
-            project={selectedProject}
-            phase={selectedPhase}
-            topics={selectedTopics}
-            status={selectedStatus}
-            assignee={selectedAssignee}
-            searchTerm={searchTerm}
-          />
+          {type === 'ProjectIdeas' || type === 'AllIdeas' &&
+            <FeedbackToggle
+              type={type}
+              value={feedbackNeeded}
+              onChange={onChangeFeedbackFilter}
+              project={selectedProject}
+              phase={selectedPhase}
+              topics={selectedTopics}
+              status={selectedStatus}
+              assignee={selectedAssignee}
+              searchTerm={searchTerm}
+            />
+          }
           <StyledExportMenu
             exportType={exportType}
             exportQueryParameter={exportQueryParameter}
@@ -274,14 +294,15 @@ class IdeaManager extends React.PureComponent<Props, State> {
         <ThreeColumns>
           <LeftColumn>
             <ActionBar
-              ideaIds={selectedIdeaIds}
-              resetSelectedIdeas={this.resetSelectedIdeas}
+              type={type}
+              postIds={[...selection]}
+              resetSelection={this.resetSelection}
               handleClickEdit={this.openPreviewEdit}
             />
           </LeftColumn>
           <MiddleColumnTop>
             <IdeasCount
-              feedbackNeeded={queryParameters.feedback_needed || false}
+              feedbackNeeded={feedbackNeeded}
               project={selectedProject}
               phase={selectedPhase}
               topics={selectedTopics}
@@ -302,14 +323,14 @@ class IdeaManager extends React.PureComponent<Props, State> {
                 phases={!isNilOrError(phases) ? phases : undefined}
                 projects={!isNilOrError(projects) ? projects : undefined}
                 statuses={!isNilOrError(postStatuses) ? postStatuses : []}
-                selectedTopics={selectedTopics}
                 selectedPhase={selectedPhase}
-                selectedProject={selectedProject}
+                selectedTopics={selectedTopics}
                 selectedStatus={selectedStatus}
+                selectedProject={selectedProject}
                 onChangePhaseFilter={onChangePhase}
                 onChangeTopicsFilter={onChangeTopics}
+                onChangeStatusFilter={onChangeStatus}
                 onChangeProjectFilter={this.onChangeProjects}
-                onChangeStatusFilter={onChangeIdeaStatus}
               />
               {multipleIdeasSelected &&
                 <Message
@@ -323,29 +344,30 @@ class IdeaManager extends React.PureComponent<Props, State> {
           </LeftColumn>
           <MiddleColumn>
             <IdeaTable
+              type={type}
               activeFilterMenu={activeFilterMenu}
               sortAttribute={posts.sortAttribute}
               sortDirection={posts.sortDirection}
               onChangeSort={posts.onChangeSorting}
               posts={list || undefined}
-              phases={phases || undefined}
-              statuses={postStatuses || undefined}
-              selectedIdeas={selectedIdeas}
-              onChangeIdeaSelection={this.handleChangeIdeaSelection}
+              phases={!isNilOrError(phases) ? phases : undefined}
+              statuses={!isNilOrError(postStatuses) ? postStatuses : []}
+              selection={selection}
+              onChangeSelection={this.handleChangeSelection}
               currentPageNumber={posts.currentPage}
               lastPageNumber={posts.lastPage}
               onChangePage={posts.onChangePage}
-              handleSeeAll={this.props.posts.onResetParams}
+              handleSeeAll={onResetParams}
               openPreview={this.openPreview}
             />
           </MiddleColumn>
           <InfoSidebar
-            postIds={selectedIdeaIds}
-            showInfoSidebar={showInfoSidebar}
+            postIds={[...selection]}
             openPreview={this.openPreview}
           />
         </ThreeColumns>
         <PostPreview
+          type={type}
           postId={previewPostId}
           mode={previewMode}
           onClose={this.closePreview}

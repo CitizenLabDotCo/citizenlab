@@ -1,5 +1,5 @@
 import React from 'react';
-import { clone, omit, every, fromPairs, isEmpty, isFunction } from 'lodash-es';
+import { every, isEmpty, isFunction } from 'lodash-es';
 import styled from 'styled-components';
 
 // components
@@ -27,6 +27,7 @@ import { SortDirection } from 'utils/paginationUtils';
 // i18n
 import messages from '../../messages';
 import InfoTooltip from 'components/admin/InfoTooltip';
+import { ManagerType } from '../..';
 
 const Container = styled.div`
   .ui.table {
@@ -71,14 +72,15 @@ const TableHeaderCellText = styled.span`
 `;
 
 interface Props {
+  type: ManagerType;
   sortAttribute?: SortAttribute;
   sortDirection?: SortDirection;
   posts?: IIdeaData[];
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[];
   onChangeSort?: (sort: Sort) => void;
-  selectedIdeas: { [key: string]: boolean };
-  onChangeIdeaSelection: (selection: { [key: string]: boolean }) => void;
+  selection: Set<string>;
+  onChangeSelection: (newSelection: Set<string>) => void;
   currentPageNumber?: number;
   lastPageNumber?: number;
   onChangePage?: (number: number) => void;
@@ -100,40 +102,40 @@ export default class IdeaTable extends React.Component<Props> {
     }
   }
 
-  selectIdea = (idea) => () => {
-    const selectedIdeas = clone(this.props.selectedIdeas);
-    selectedIdeas[idea.id] = true;
-    this.props.onChangeIdeaSelection(selectedIdeas);
+  select = (postId: string) => () => {
+    const { selection, onChangeSelection } = this.props;
+    const newSelection = new Set(selection);
+    newSelection.add(postId);
+    onChangeSelection(newSelection);
   }
 
-  unselectIdea = (idea) => () => {
-    const selectedIdeas = omit(this.props.selectedIdeas, [idea.id]);
-    this.props.onChangeIdeaSelection(selectedIdeas);
+  unselect = (postId: string) => () => {
+    const { selection, onChangeSelection } = this.props;
+    const newSelection = new Set(selection);
+    const success = newSelection.delete(postId);
+    onChangeSelection(newSelection);
+    return success;
   }
 
-  toggleSelectIdea = (idea) => () => {
-    if (this.props.selectedIdeas[idea.id]) {
-      this.unselectIdea(idea)();
-    } else {
-      this.selectIdea(idea)();
-    }
+  toggleSelect = (postId: string) => () => {
+    this.unselect(postId)() || this.select(postId)();
   }
 
   toggleSelectAll = () => {
+    const { posts, onChangeSelection } = this.props;
     if (this.allSelected()) {
-      this.props.onChangeIdeaSelection({});
+      onChangeSelection(new Set());
     } else {
-      const newSelection = fromPairs(this.props.posts && this.props.posts.map((idea) => [idea.id, true]));
-      this.props.onChangeIdeaSelection(newSelection);
+      posts && onChangeSelection(new Set(posts.map(post => post.id)));
     }
   }
 
-  singleSelectIdea = (idea) => () => {
-    this.props.onChangeIdeaSelection({ [idea.id]: true });
+  singleSelect = (postId: string) => () => {
+    this.props.onChangeSelection(new Set([postId]));
   }
 
-  clearIdeaSelection = () => () => {
-    this.props.onChangeIdeaSelection({});
+  clearSelection = () => () => {
+    this.props.onChangeSelection(new Set());
   }
 
   handlePaginationClick = (page) => {
@@ -141,15 +143,17 @@ export default class IdeaTable extends React.Component<Props> {
   }
 
   allSelected = () => {
-    return !isEmpty(this.props.posts) && every(this.props.posts, (idea) => this.props.selectedIdeas[idea.id]);
+    const { posts, selection } = this.props;
+    return !isEmpty(posts) && every(posts, (post) => selection.has(post.id));
   }
 
   render() {
     const {
+      type,
       sortAttribute,
       sortDirection,
       posts,
-      selectedIdeas,
+      selection,
       phases,
       activeFilterMenu,
       statuses,
@@ -224,21 +228,21 @@ export default class IdeaTable extends React.Component<Props> {
           <Table.Body>
             {!!posts && posts.length > 0 ?
               <TransitionGroup component={null}>
-                {posts.map((idea) =>
-                  <CSSTransition classNames="fade" timeout={500} key={idea.id}>
+                {posts.map((post) =>
+                  <CSSTransition classNames="fade" timeout={500} key={post.id}>
                     <Row
-                      className="e2e-idea-manager-idea-row"
-                      key={idea.id}
-                      idea={idea}
+                      className="e2e-post-manager-post-row"
+                      key={post.id}
+                      type={type}
+                      post={post}
                       phases={phases}
                       statuses={statuses}
-                      onUnselectIdea={this.unselectIdea(idea)}
-                      onToggleSelectIdea={this.toggleSelectIdea(idea)}
-                      onSingleSelectIdea={this.singleSelectIdea(idea)}
-                      selected={selectedIdeas[idea.id]}
-                      selectedIdeas={selectedIdeas}
+                      onUnselect={this.unselect(post.id)}
+                      onToggleSelect={this.toggleSelect(post.id)}
+                      onSingleSelect={this.singleSelect(post.id)}
+                      selection={selection}
                       activeFilterMenu={activeFilterMenu}
-                      openIdea={openPreview}
+                      openPreview={openPreview}
                     />
                   </CSSTransition>
                 )}

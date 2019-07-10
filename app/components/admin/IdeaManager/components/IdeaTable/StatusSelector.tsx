@@ -22,7 +22,7 @@ const ColorIndicator = styled.div<{ active: boolean }>`
 type Props = {
   selectedStatus?: string,
   statuses: IIdeaStatusData[],
-  onUpdateIdeaStatus: (statusId: string) => void;
+  onUpdateStatus: (statusId: string) => void;
 };
 
 class StatusSelector extends React.PureComponent<Props> {
@@ -33,7 +33,7 @@ class StatusSelector extends React.PureComponent<Props> {
 
   handleStatusClick = (statusId) => (event) => {
     event.stopPropagation();
-    this.props.onUpdateIdeaStatus(statusId);
+    this.props.onUpdateStatus(statusId);
   }
 
   render() {
