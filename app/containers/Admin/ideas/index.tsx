@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import PageWrapper from 'components/admin/PageWrapper';
-import IdeaManager from 'components/admin/IdeaManager';
+import PostManager from 'components/admin/PostManager';
 import IdeaButton from 'components/IdeaButton';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 
@@ -62,7 +62,7 @@ class IdeaDashboard extends React.PureComponent<Props> {
 
         <PageWrapper>
           {projects && projects.projectsList !== undefined &&
-            <IdeaManager
+            <PostManager
               type="AllIdeas"
               visibleFilterMenus={['projects', 'topics', 'statuses']}
               projects={!isNilOrError(projects.projectsList) ? projects.projectsList : null}

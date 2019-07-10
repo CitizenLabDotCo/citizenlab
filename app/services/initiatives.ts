@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship, Multiloc, ImageSizes } from 'typings';
+import { IRelationship, Multiloc, ImageSizes, ILinks } from 'typings';
 
 export type InitiativePublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
@@ -51,6 +51,7 @@ export interface IInitiative {
 
 export interface IInitiatives {
   data: IInitiativeData[];
+  links: ILinks;
 }
 
 export interface IInitiativeAdd {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { keys, isFunction, isArray } from 'lodash-es';
+import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -30,6 +30,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { GetPhasesChildProps } from 'resources/GetPhases';
 import PostPreview from './components/PostPreview';
+import GetInitiatives from 'resources/GetInitiatives';
 
 const StyledExportMenu = styled(ExportMenu)<ExportMenuProps>`
   margin-left: auto;
@@ -79,22 +80,22 @@ const StyledInput = styled(Input)`
 
 export type ManagerType =
   'AllIdeas' // should come with projectIds a list of projects that the current user can manage.
-  | 'ProjectIdeas'; // should come with projectId
-  // | 'Initiatives';
+  | 'ProjectIdeas' // should come with projectId
+  | 'Initiatives';
 
 interface InputProps {
   // For all display and behaviour that's conditionned by the place this component is rendered
   // this prop is used for the test.
   type: ManagerType;
 
-  // When the IdeaManager is used in admin/projects, we pass down the current projects id as a prop
+  // When the PostManager is used in admin/projects, we pass down the current projects id as a prop
   projectId?: string | null;
 
   // filters settings
   // the filters needed for this view, in the order they'll be shown, first one active by default
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
   phases?: GetPhasesChildProps;
-  // When the IdeaManager is used in admin/posts, the parent component passes
+  // When the PostManager is used in admin/posts, the parent component passes
   // down the array of projects the current user can moderate.
   projects?: IProjectData[] | null;
 }
@@ -116,7 +117,7 @@ interface State {
   previewMode: 'view' | 'edit';
 }
 
-class IdeaManager extends React.PureComponent<Props, State> {
+class PostManager extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IAdminFullWidth>;
 
   constructor(props: Props) {
@@ -379,7 +380,15 @@ class IdeaManager extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  posts: ({ type, projectId, projects, render }) => (
+  posts: ({ type, projectId, projects, render }) => type === 'Initiatives' ? (
+    <GetInitiatives
+      type="paginated"
+      pageSize={10}
+      sort="new"
+    >
+      {render}
+    </GetInitiatives>
+  ) : (
     <GetIdeas
       type="paginated"
       pageSize={10}
@@ -397,10 +406,10 @@ const Data = adopt<DataProps, InputProps>({
   postStatuses: <GetIdeaStatuses />,
 });
 
-const IdeaManagerWithDragDropContext = DragDropContext(HTML5Backend)(IdeaManager);
+const PostManagerWithDragDropContext = DragDropContext(HTML5Backend)(PostManager);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaManagerWithDragDropContext {...inputProps} {...dataProps} />}
+    {dataProps => <PostManagerWithDragDropContext {...inputProps} {...dataProps} />}
   </Data>
 );
