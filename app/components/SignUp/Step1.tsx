@@ -8,11 +8,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 
 // components
-import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Checkbox from 'components/UI/Checkbox';
+import { FormLabel } from 'components/UI/FormComponents';
 
 // utils
 import { isValidEmail } from 'utils/validate';
@@ -340,7 +340,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         <Form id="e2e-signup-step1" onSubmit={this.handleOnSubmit} noValidate={true}>
           {isInvitation && !this.props.token &&
             <FormElement>
-              <Label value={formatMessage(messages.tokenLabel)} htmlFor="token" />
+              <FormLabel labelMessage={messages.tokenLabel} htmlFor="token" thin />
               <Input
                 id="token"
                 type="text"
@@ -353,7 +353,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           }
 
           <FormElement>
-            <Label value={formatMessage(messages.firstNamesLabel)} htmlFor="firstName" />
+            <FormLabel labelMessage={messages.firstNamesLabel} htmlFor="firstName" thin />
             <Input
               id="firstName"
               type="text"
@@ -368,7 +368,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           </FormElement>
 
           <FormElement>
-            <Label value={formatMessage(messages.lastNameLabel)} htmlFor="lastName" />
+            <FormLabel labelMessage={messages.lastNameLabel} htmlFor="lastName" thin />
             <Input
               id="lastName"
               type="text"
@@ -382,7 +382,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           </FormElement>
 
           <FormElement>
-            <Label value={formatMessage(messages.emailLabel)} htmlFor="email" />
+            <FormLabel labelMessage={messages.emailLabel} htmlFor="email" thin />
             <Input
               type="email"
               id="email"
@@ -396,7 +396,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           </FormElement>
 
           <FormElement>
-            <Label value={formatMessage(messages.passwordLabel)} htmlFor="password" />
+            <FormLabel labelMessage={messages.passwordLabel} htmlFor="password" thin />
             <Input
               type="password"
               id="password"

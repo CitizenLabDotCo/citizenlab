@@ -23,7 +23,7 @@ export default defineMessages({
   },
   tipsExplanation: {
     id: 'app.containers.InitiativesNewPage.tipsExplanation',
-    defaultMessage: 'An initiative is a project that you, as a citizen, can start anytime. Posting it on the platform enables you to gather support from others and, at the end, being heard by Vancouver.'
+    defaultMessage: 'An initiative is a project that you, as a citizen, can start anytime. Posting it on the platform enables you to gather support from others and, at the end, being heard by {orgName}.'
   },
   requirmentsListTitle: {
     id: 'app.containers.InitiativesNewPage.requirmentsListTitle',
@@ -39,6 +39,6 @@ export default defineMessages({
   },
   eligibility: {
     id: 'app.containers.InitiativesNewPage.eligibility',
-    defaultMessage: 'To be eligible, Vancouver requires your initiative to respect the following:'
+    defaultMessage: 'To be eligible, {orgName} requires your initiative to respect the following:'
   },
 });
