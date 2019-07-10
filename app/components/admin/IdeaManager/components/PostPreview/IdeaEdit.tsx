@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import { isString, isEmpty } from 'lodash-es';
-import { Subscription, Observable, combineLatest, of } from 'rxjs';
+import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -19,14 +19,12 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
 import { ideaImageStream, addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
-import { topicByIdStream, ITopic } from 'services/topics';
 import { hasPermission } from 'services/permissions';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getLocalized } from 'utils/i18n';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -34,7 +32,7 @@ import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 import { convertToGeoJson } from 'utils/locationTools';
 
 // typings
-import { IOption, UploadFile, Multiloc, Locale } from 'typings';
+import { UploadFile, Multiloc, Locale } from 'typings';
 
 // style
 import { colors } from 'utils/styleUtils';
@@ -69,7 +67,7 @@ interface State {
   locale: Locale;
   titleMultiloc: Multiloc | null;
   descriptionMultiloc: Multiloc | null;
-  selectedTopics: IOption[] | null;
+  selectedTopics: string[];
   budget: number | null;
   address: string;
   imageFile: UploadFile[];
@@ -89,7 +87,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       locale: 'en',
       titleMultiloc: null,
       descriptionMultiloc: null,
-      selectedTopics: null,
+      selectedTopics: [],
       budget: null,
       address: '',
       imageFile: [],
@@ -113,7 +111,7 @@ class IdeaEdit extends PureComponent<Props, State> {
       currentTenantLocales$,
       idea$
     ).pipe(
-      switchMap(([locale, currentTenantLocales, idea]) => {
+      switchMap(([_locale, _currentTenantLocales, idea]) => {
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
         const ideaImageId = (ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null);
@@ -135,43 +133,21 @@ class IdeaEdit extends PureComponent<Props, State> {
           context: idea.data
         });
 
-        let topics$: Observable<null | ITopic[]> = of(null);
-
-        if ((idea.data.relationships.topics && idea.data.relationships.topics.data && idea.data.relationships.topics.data.length > 0)) {
-          topics$ = combineLatest(
-            idea.data.relationships.topics.data.map(topic => topicByIdStream(topic.id).observable)
-          );
-        }
-
-        const selectedTopics$ = topics$.pipe(map((topics) => {
-          if (topics && topics.length > 0) {
-            return topics.map((topic) => {
-              return {
-                value: topic.data.id,
-                label: getLocalized(topic.data.attributes.title_multiloc, locale, currentTenantLocales)
-              };
-            });
-          }
-
-          return null;
-        }));
-
         return combineLatest(
           locale$,
           idea$,
           ideaImage$,
-          selectedTopics$,
           granted$
         );
       })
     );
 
     this.subscriptions = [
-      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, selectedTopics, granted]) => {
+      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, granted]) => {
         if (granted) {
           this.setState({
             locale,
-            selectedTopics,
+            selectedTopics: idea.data.relationships.topics.data.map(topic => topic.id),
             projectId: idea.data.relationships.project.data.id,
             loaded: true,
             titleMultiloc: idea.data.attributes.title_multiloc,
@@ -200,7 +176,6 @@ class IdeaEdit extends PureComponent<Props, State> {
     const { ideaId, goBack } = this.props;
     const { locale, titleMultiloc, descriptionMultiloc, imageId, imageFile, address: savedAddress } = this.state;
     const { title, description, selectedTopics, address: ideaFormAddress, budget, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
-    const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const oldImageId = imageId;
     const oldImage = (imageFile && imageFile.length > 0 ? imageFile[0] : null);
     const oldImageBase64 = (oldImage ? oldImage.base64 : null);
@@ -226,7 +201,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         ...descriptionMultiloc,
         [locale]: description
       },
-      topic_ids: topicIds,
+      topic_ids: selectedTopics,
       ...addressDiff
     });
 

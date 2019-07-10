@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import PlacesAutocomplete, { geocodeByPlaceId } from 'react-places-autocomplete';
+import PlacesAutocomplete, { geocodeByPlaceId,  } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
@@ -53,12 +53,13 @@ const StyledAutocompleteItem = styled.div`
   }
 `;
 
-type Props = {
+export type Props = {
   id?: string;
   value: string;
   placeholder: string;
   onChange: (arg: string) => void;
   className?: string;
+  onBlur?: () => void;
 };
 
 type State = {};
@@ -68,17 +69,16 @@ export default class LocationInput extends PureComponent<Props, State> {
     super(props as any);
   }
 
-  handleOnChange = (value: string) => {
-    this.props.onChange(value);
-  }
-
   handleSelect = async (adress: string, placeId: string) => {
-    this.props.onChange(adress);
+    const { onBlur, onChange } = this.props;
+
+    onChange(adress);
+    onBlur && onBlur();
     return geocodeByPlaceId(placeId).then(results => results);
   }
 
   render() {
-    const { id, className } = this.props;
+    const { id, className, onChange } = this.props;
     let { value, placeholder } = this.props;
 
     value = (value || '');
@@ -87,7 +87,7 @@ export default class LocationInput extends PureComponent<Props, State> {
     const inputProps = {
       value,
       placeholder,
-      onChange: this.handleOnChange,
+      onChange,
       type: 'search',
       autoFocus: false,
     };
