@@ -206,11 +206,11 @@ export default defineMessages({
     defaultMessage: 'Export survey results',
   },
   titleIdeas: {
-    id: 'app.components.admin.IdeaManager.titleIdeas', // TODO
+    id: 'app.components.admin.PostManager.titleIdeas', // TODO
     defaultMessage: 'Manage idea',
   },
   subtitleIdeas: {
-    id: 'app.components.admin.IdeaManager.subtitleIdeas',
+    id: 'app.components.admin.PostManager.subtitleIdeas',
     defaultMessage: 'Get an overview of all the ideas inside your project. Add themes and change the status by dragging and dropping ideas to one of the left columns, or edit the ideas.',
   },
 });

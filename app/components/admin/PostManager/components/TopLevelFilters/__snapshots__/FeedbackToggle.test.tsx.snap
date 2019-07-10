@@ -10,7 +10,7 @@ exports[`<FeedbackToggle /> renders correctly checked 1`] = `
   >
     <FormattedMessage
       defaultMessage="All ideas"
-      id="app.components.admin.IdeaManager.anyFeedbackStatus"
+      id="app.components.admin.PostManager.anyFeedbackStatus"
     />
   </FeedbackToggle__StyledLabel>
   <FeedbackToggle__ToggleContainer
@@ -29,7 +29,7 @@ exports[`<FeedbackToggle /> renders correctly checked 1`] = `
   >
     <FormattedMessage
       defaultMessage="Need Feedback"
-      id="app.components.admin.IdeaManager.needFeedback"
+      id="app.components.admin.PostManager.needFeedback"
     />
     <Memo()
       count={6}
@@ -48,7 +48,7 @@ exports[`<FeedbackToggle /> renders correctly unchecked 1`] = `
   >
     <FormattedMessage
       defaultMessage="All ideas"
-      id="app.components.admin.IdeaManager.anyFeedbackStatus"
+      id="app.components.admin.PostManager.anyFeedbackStatus"
     />
   </FeedbackToggle__StyledLabel>
   <FeedbackToggle__ToggleContainer
@@ -67,7 +67,7 @@ exports[`<FeedbackToggle /> renders correctly unchecked 1`] = `
   >
     <FormattedMessage
       defaultMessage="Need Feedback"
-      id="app.components.admin.IdeaManager.needFeedback"
+      id="app.components.admin.PostManager.needFeedback"
     />
     <Memo()
       count={6}

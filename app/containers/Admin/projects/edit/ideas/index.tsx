@@ -12,7 +12,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // Components
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
-import IdeaManager from 'components/admin/IdeaManager';
+import PostManager from 'components/admin/PostManager';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
@@ -52,7 +52,7 @@ class AdminProjectIdeas extends React.PureComponent<Props & WithRouterProps, Sta
         </StyledDiv>
 
         {!isNilOrError(project) &&
-          <IdeaManager
+          <PostManager
             type="ProjectIdeas"
             projectId={project.id}
             phases={phases}
