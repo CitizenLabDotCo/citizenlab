@@ -267,15 +267,13 @@ workflows:
   check-for-inconsistent-data:
     jobs:
       - check-for-inconsistent-data:
-          filters:
-            nightly:
-              triggers:
-                - schedule:
-                    cron: "0 2 * * *"
-                    filters:
-                      branches:
-                        only:
-                          - master
+          triggers:
+            - schedule:
+                cron: "0 2 * * *"
+                filters:
+                  branches:
+                    only:
+                      - master
 
           ssh_host: "52.29.30.188"
           compose_file: docker-compose-staging.yml
