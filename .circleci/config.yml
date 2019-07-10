@@ -175,7 +175,7 @@ jobs:
         default: .env-production
     steps:
       - run:
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/cl2-back:master rake checks:invalid_data"
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/cl2-back:$CIRCLE_BRANCH rake checks:invalid_data"
 
 
 workflows:
@@ -270,7 +270,7 @@ workflows:
           filters:
             branches:
               only:
-                - CL2-3995-nightly-invalid-data-check
+                - master
           ssh_host: "52.29.30.188"
           compose_file: docker-compose-staging.yml
           stack_name: cl2-back-stg
