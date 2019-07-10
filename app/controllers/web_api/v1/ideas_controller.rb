@@ -56,8 +56,12 @@ class WebApi::V1::IdeasController < ApplicationController
         end
     end
 
+    # I have no idea why but the trending query part
+    # breaks if you don't fetch the ids in this way.
+    @idea_ids = @ideas.map(&:id)
+
     serialization_options = if current_user
-      votes = Vote.where(user: current_user, votable: @ideas, votable_type: 'Idea')
+      votes = Vote.where(user: current_user, votable_id: @idea_ids, votable_type: 'Idea')
       votes_by_idea_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
       {
         params: fastjson_params(vbii: votes_by_idea_id, pcs: ParticipationContextService.new),
