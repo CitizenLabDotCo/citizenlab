@@ -84,9 +84,12 @@ class ApplicationController < ActionController::API
     pages = ApiPagination.send :pages_from, collection
     links = pages.transform_values &method(:build_link)
     links[:self] = build_link collection.current_page
-    [:first, :prev, :next, :last].each do |key|
+    links[:first] ||= build_link 1
+    links[:last] ||= build_link collection.total_pages
+    [:prev, :next].each do |key|
       links[key] ||= nil
     end
+
     links
   end
 
