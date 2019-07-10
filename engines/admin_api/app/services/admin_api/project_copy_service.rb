@@ -5,7 +5,7 @@ module AdminApi
       service = TenantTemplateService.new
       same_template = service.translate_and_fix_locales template
       ActiveRecord::Base.transaction do
-        service.resolve_and_apply_template same_template
+        service.resolve_and_apply_template same_template, validate: false
       end
     end
 

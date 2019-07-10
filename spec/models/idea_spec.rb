@@ -154,6 +154,13 @@ RSpec.describe Idea, type: :model do
       })
       expect(idea.body_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
     end
+
+    it "allows embedded youtube video's in the body" do
+      idea = create(:idea, body_multiloc: {
+        "en" => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'
+      })
+      expect(idea.body_multiloc).to eq({"en" => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'})
+    end
   end
 
   describe "delete an idea" do

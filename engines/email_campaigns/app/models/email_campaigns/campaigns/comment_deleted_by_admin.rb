@@ -1,6 +1,5 @@
 module EmailCampaigns
   class Campaigns::CommentDeletedByAdmin < Campaigns::NotificationCampaign
-    include Consentable
     include ActivityTriggerable
     include Disableable
     include LifecycleStageRestrictable
