@@ -124,20 +124,6 @@ const IdeaContainer = styled.div`
   `}
 `;
 
-const StyledTopics = styled(Topics)`
-  padding-right: ${rightColumnWidthDesktop + columnsGapDesktop}px;
-  margin-bottom: 10px;
-
-  ${media.tablet`
-    padding-right: ${rightColumnWidthTablet + columnsGapTablet}px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    padding-right: 0px;
-    margin-bottom: 5px;
-  `}
-`;
-
 const Content = styled.div`
   width: 100%;
   display: flex;
@@ -473,10 +459,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
               }
             </FeatureFlag>
 
-            <StyledTopics topicIds={topicIds} />
-
             <Content>
               <LeftColumn>
+                <Topics topicIds={topicIds} />
                 <IdeaHeader>
                   <IdeaTitle
                     ideaId={ideaId}
