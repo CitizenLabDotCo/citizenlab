@@ -21,6 +21,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import Topics from 'components/PostComponents/Topics';
 import Title from 'components/PostComponents/Title';
 import PostedBy from './PostedBy';
+import Image from 'components/PostComponents/Image';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
@@ -485,10 +486,10 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 }
 
                 {ideaImageLarge &&
-                  <IdeaImage
+                  <Image
                     src={ideaImageLarge}
-                    alt={formatMessage(messages.imageAltText, { ideaTitle })}
-                    className="e2e-ideaImage"
+                    postType="initiative"
+                    className="e2e-initiativeImage"
                   />
                 }
 
