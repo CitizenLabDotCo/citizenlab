@@ -15,13 +15,11 @@ import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMapLoadable';
 import Modal from 'components/UI/Modal';
-import AssignBudgetWrapper from './AssignBudgetWrapper';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaTopics from './IdeaTopics';
 import IdeaTitle from './IdeaTitle';
-import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
@@ -40,7 +38,7 @@ import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResou
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
@@ -200,14 +198,6 @@ const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
   `}
 `;
 
-const StyledMobileIdeaStatus = styled(IdeaStatus)`
-  margin-bottom: 30px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
 const StyledIdeaAuthor = styled(IdeaAuthor)`
   margin-left: -4px;
   margin-bottom: 50px;
@@ -251,15 +241,6 @@ const MetaContent = styled.div`
   flex-direction: column;
 `;
 
-const AssignBudgetControlMobile = styled.div`
-  margin-top: 40px;
-  margin-bottom: 40px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -280,7 +261,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 `;
 
 interface DataProps {
-  idea: GetIdeaChildProps;
+  initiative: GetInitiativeChildProps;
   locale: GetLocaleChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
@@ -432,7 +413,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     const {
       ideaFiles,
       locale,
-      idea,
+      initiative,
       localize,
       ideaImages,
       authUser,
@@ -443,25 +424,18 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
-    if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
-      const authorId: string | null = get(idea, 'relationships.author.data.id', null);
-      const ideaCreatedAt = idea.attributes.created_at;
-      const titleMultiloc = idea.attributes.title_multiloc;
-      const ideaTitle = localize(titleMultiloc);
-      // If you're not an admin/mod, statusId can be null
-      const statusId: string | null = get(idea, 'relationships.idea_status.data.id', null);
+    if (!isNilOrError(initiative) && !isNilOrError(locale) && loaded) {
+      const authorId: string | null = get(initiative, 'relationships.author.data.id', null);
+      const initiativeCreatedAt = initiative.attributes.created_at;
+      const titleMultiloc = initiative.attributes.title_multiloc;
+      const initiativeTitle = localize(titleMultiloc);
       const ideaImageLarge: string | null = get(ideaImages, '[0].attributes.versions.large', null);
-      const ideaGeoPosition = (idea.attributes.location_point_geojson || null);
-      const ideaAddress = (idea.attributes.location_description || null);
-      const projectId = idea.relationships.project.data.id;
-      const topicIds = (idea.relationships.topics.data ? idea.relationships.topics.data.map(item => item.id) : []);
-      const ideaUrl = location.href;
-      const ideaId = idea.id;
-      const ideaBody = localize(idea.attributes.body_multiloc);
-      const participationContextType = get(actionInfos, 'participationContextType', null);
-      const participationContextId = get(actionInfos, 'participationContextId', null);
-      const budgetingDescriptor = get(actionInfos, 'budgetingDescriptor', null);
-      const showBudgetControl = get(actionInfos, 'showBudgetControl', null);
+      const initiativeGeoPosition = (initiative.attributes.location_point_geojson || null);
+      const initiativeAddress = (initiative.attributes.location_description || null);
+      const topicIds = (initiative.relationships.topics.data ? initiative.relationships.topics.data.map(item => item.id) : []);
+      const initiativeUrl = location.href;
+      const initiativeId = initiative.id;
+      const initiativeBody = localize(initiative.attributes.body_multiloc);
       const biggerThanLargeTablet = windowSize ? windowSize > viewportWidths.largeTablet : false;
       const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
@@ -474,9 +448,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         campaign: 'share_content'
       };
       const showTranslateButton = (
-        !isNilOrError(idea) &&
+        !isNilOrError(initiative) &&
         !isNilOrError(locale) &&
-        !idea.attributes.title_multiloc[locale]
+        !initiative.attributes.title_multiloc[locale]
       );
 
       content = (
@@ -516,10 +490,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   }
                 </IdeaHeader>
 
-                {statusId && smallerThanLargeTablet &&
-                  <StyledMobileIdeaStatus statusId={statusId} />
-                }
-
                 {biggerThanLargeTablet &&
                   <StyledIdeaAuthor
                     ideaId={ideaId}
@@ -553,22 +523,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
                 {!isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
                   <FileAttachments files={ideaFiles} />
-                }
-
-                {showBudgetControl &&
-                 participationContextId &&
-                 participationContextType &&
-                 budgetingDescriptor &&
-                 smallerThanLargeTablet &&
-                  <AssignBudgetControlMobile>
-                    <AssignBudgetWrapper
-                      ideaId={ideaId}
-                      projectId={projectId}
-                      participationContextId={participationContextId}
-                      participationContextType={participationContextType}
-                      budgetingDescriptor={budgetingDescriptor}
-                    />
-                  </AssignBudgetControlMobile>
                 }
 
                 <StyledOfficialFeedback
@@ -664,7 +618,7 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser/>,
   windowSize: <GetWindowSize debounce={50} />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
