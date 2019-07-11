@@ -53,9 +53,16 @@ const Form = styled.form`
   align-items: center;
 `;
 
-const FormElement: any = styled.div`
+const FormElement = styled.div`
   width: 100%;
   margin-bottom: 40px;
+`;
+
+const StyledTopicsPicker = styled(TopicsPicker)`
+  padding: 20px;
+  background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px #e0e0e0;
 `;
 
 const HiddenLabel = styled.span`
@@ -392,7 +399,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
     return (
       <Form id="idea-form" className={className}>
-        <FormElement name="titleInput" id="e2e-idea-title-input">
+        <FormElement id="e2e-idea-title-input">
           <FormLabel labelMessage={messages.titleLabel} htmlFor="title" />
           <Input
             id="title"
@@ -406,7 +413,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           />
         </FormElement>
 
-        <FormElement name="descriptionInput" id="e2e-idea-description-input">
+        <FormElement id="e2e-idea-description-input">
           <FormLabel labelMessage={messages.descriptionLabel} htmlFor="editor" />
           <QuillEditor
             id="editor"
@@ -422,7 +429,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         {topics && topics.length > 0 && (
           <FormElement>
             <FormLabel labelMessage={messages.topicsLabel} htmlFor="topics" />
-            <TopicsPicker
+            <StyledTopicsPicker
               value={selectedTopics}
               onChange={this.handleTopicsOnChange}
               max={2}
