@@ -1,25 +1,25 @@
 module EmailCampaigns
-  class WebApi::V1::CampaignSerializer < ActiveModel::Serializer
-
-    attributes :id, :campaign_name, :admin_campaign_description_multiloc, :created_at, :updated_at
-    belongs_to :author
-
-    attribute :enabled, if: :disableable?
-    attribute :schedule, if: :schedulable?
-    attribute :schedule_multiloc, if: :schedulable?
-    attribute :sender, if: :sender_configurable?
-    attribute :reply_to, if: :sender_configurable?
-    attribute :subject_multiloc, if: :content_configurable?
-    attribute :body_multiloc, if: :content_configurable?
-    attribute :deliveries_count, if: :trackable?
-
-    has_many :groups, if: :recipient_configurable?
+  class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
+    attributes :created_at, :updated_at
     
-    def campaign_name
+    attribute :campaign_name do |object|
       object.class.campaign_name
     end
 
-    def schedule_multiloc
+    attribute :admin_campaign_description_multiloc do |object|
+      object.class.admin_campaign_description_multiloc
+    end
+
+    attribute :enabled, if: Proc.new { |object|
+      disableable? object
+    }
+    attribute :schedule, if: Proc.new { |object|
+      schedulable? object
+    }
+
+    attribute :schedule_multiloc, if: Proc.new { |object|
+      schedulable? object
+    } do |object|
       # Temporary fix until CL2-3052 is solved
       Tenant.settings('core','locales').each_with_object({}) do |locale, result|
         I18n.with_locale('en') do
@@ -32,31 +32,49 @@ module EmailCampaigns
       # end
     end
 
-    def admin_campaign_description_multiloc
-      object.class.admin_campaign_description_multiloc
-    end
+    attribute :sender, if: Proc.new { |object|
+      sender_configurable? object
+    }
+    attribute :reply_to, if: Proc.new { |object|
+      sender_configurable? object
+    }
+    attribute :subject_multiloc, if: Proc.new { |object|
+      content_configurable? object
+    }
+    attribute :body_multiloc, if: Proc.new { |object|
+      content_configurable? object
+    }
+    attribute :deliveries_count, if: Proc.new { |object|
+      trackable? object
+    }
 
-    def disableable?
+    belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
+
+    has_many :groups, if: Proc.new { |object|
+      recipient_configurable? object
+    }
+
+    def self.disableable? object
       object.class.included_modules.include?(Disableable)
     end
 
-    def schedulable?
+    def self.schedulable? object
       object.class.included_modules.include?(Schedulable)
     end
 
-    def sender_configurable?
+    def self.sender_configurable? object
       object.class.included_modules.include?(SenderConfigurable)
     end
 
-    def content_configurable?
+    def self.content_configurable? object
       object.class.included_modules.include?(ContentConfigurable)
     end
 
-    def trackable?
+    def self.trackable? object
       object.class.included_modules.include?(Trackable)
     end
 
-    def recipient_configurable?
+    def self.recipient_configurable? object
       object.class.included_modules.include?(RecipientConfigurable)
     end
   end

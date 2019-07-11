@@ -1,5 +1,5 @@
-class WebApi::V1::MembershipSerializer < ActiveModel::Serializer
-  attributes :id, :created_at
+class WebApi::V1::MembershipSerializer < WebApi::V1::BaseSerializer
+  attributes :created_at
 
   belongs_to :user
   belongs_to :group

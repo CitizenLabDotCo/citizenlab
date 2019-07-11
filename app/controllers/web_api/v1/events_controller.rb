@@ -7,11 +7,11 @@ class WebApi::V1::EventsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
       .order(:start_at)
-    render json: @events
+    render json: linked_json(@events, WebApi::V1::EventSerializer, params: fastjson_params)
   end
 
   def show
-    render json: @event
+    render json: WebApi::V1::EventSerializer.new(@event, params: fastjson_params).serialized_json
   end
 
   def create
@@ -24,7 +24,7 @@ class WebApi::V1::EventsController < ApplicationController
 
     if @event.save
       SideFxEventService.new.after_create(@event, current_user)
-      render json: @event, status: :created
+      render json: WebApi::V1::EventSerializer.new(@event, params: fastjson_params).serialized_json, status: :created
     else
       render json: { errors: @event.errors.details }, status: :unprocessable_entity
     end
@@ -36,7 +36,7 @@ class WebApi::V1::EventsController < ApplicationController
     SideFxEventService.new.before_update(@event, current_user)
     if @event.save
       SideFxEventService.new.after_update(@event, current_user)
-      render json: @event, status: :ok
+      render json: WebApi::V1::EventSerializer.new(@event, params: fastjson_params).serialized_json, status: :ok
     else
       render json: { errors: @event.errors.details }, status: :unprocessable_entity
     end

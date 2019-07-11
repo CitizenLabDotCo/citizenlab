@@ -3,7 +3,9 @@ module WebApi::V1::ParticipationContextSerializer
   include Surveys::WebApi::V1::SurveyParticipationContextSerializer
 
   included do
-    with_options if: :is_participation_context? do
+    with_options if: Proc.new { |object|
+      object.is_participation_context?
+    } do
       attribute :participation_method
       attribute :posting_enabled
       attribute :commenting_enabled

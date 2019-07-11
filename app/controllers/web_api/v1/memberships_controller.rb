@@ -1,5 +1,4 @@
 class WebApi::V1::MembershipsController < ApplicationController
-
   before_action :set_membership, only: [:show, :destroy]
   before_action :set_membership_from_group_and_user, only: [:destroy_by_user_id, :show_by_user_id]
   skip_after_action :verify_authorized, only: [:users_search]
@@ -7,14 +6,24 @@ class WebApi::V1::MembershipsController < ApplicationController
   def index
     @memberships = policy_scope(Membership)
       .where(group_id: params[:group_id])
-      .includes(:user)
+      .includes(user: [:unread_notifications])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-  	render json: @memberships, include: ['user']
+
+    render json: linked_json(
+      @memberships, 
+      WebApi::V1::MembershipSerializer, 
+      params: fastjson_params, 
+      include: [:user]
+      )
   end
 
   def show
-    render json: @membership, include: ['user'], serializer: WebApi::V1::MembershipSerializer
+    render json: WebApi::V1::MembershipSerializer.new(
+      @membership, 
+      params: fastjson_params, 
+      include: [:user]
+      ).serialized_json
   end
 
   def show_by_user_id
@@ -27,7 +36,11 @@ class WebApi::V1::MembershipsController < ApplicationController
     @membership.group_id = params[:group_id]
     authorize @membership
     if @membership.save
-      render json: @membership.reload, include: ['user'], status: :created
+      render json: WebApi::V1::MembershipSerializer.new(
+        @membership.reload, 
+        params: fastjson_params, 
+        include: [:user]
+        ).serialized_json, status: :created
     else
       render json: { errors: @membership.errors.details }, status: :unprocessable_entity
     end
@@ -55,7 +68,7 @@ class WebApi::V1::MembershipsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render :json => @users, :each_serializer => WebApi::V1::MemberSerializer, :group_id => params[:group_id]
+    render json: linked_json(@users, WebApi::V1::MemberSerializer, params: fastjson_params(group_id: params[:group_id]))
   end
 
 

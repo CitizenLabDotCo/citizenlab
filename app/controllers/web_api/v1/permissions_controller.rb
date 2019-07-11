@@ -8,11 +8,12 @@ class WebApi::V1::PermissionsController < ApplicationController
     @permissions = @permissions
       .where(permittable_id: params[params[:parent_param]])
       .order(created_at: :desc)
-    render json: @permissions
+      
+    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params)
   end
 
   def show
-    render json: @permission
+    render json: WebApi::V1::PermissionSerializer.new(@permission, params: fastjson_params).serialized_json
   end
 
   def update
@@ -21,7 +22,10 @@ class WebApi::V1::PermissionsController < ApplicationController
     # SideFxPermissionService.new.before_update(@permission, current_user)
     if @permission.save
       # SideFxPermissionService.new.after_update(@permission, current_user)
-      render json: @permission, status: :ok
+      render json: WebApi::V1::PermissionSerializer.new(
+        @permission, 
+        params: fastjson_params
+        ).serialized_json, status: :ok
     else
       render json: { errors: @permission.errors.details }, status: :unprocessable_entity
     end

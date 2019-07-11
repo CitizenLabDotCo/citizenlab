@@ -129,11 +129,31 @@ resource "Projects" do
 
     get "web_api/v1/projects/:id" do
       let(:id) { @projects.first.id }
+      let!(:topic) { create(:topic, projects: [@projects.first]) }
 
       example_request "Get one project by id" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
+
         expect(json_response.dig(:data, :id)).to eq @projects.first.id
+        expect(json_response.dig(:data, :type)).to eq 'project'
+        expect(json_response.dig(:data, :attributes)).to include(
+          slug: @projects.first.slug,
+          timeline_active: nil,
+          action_descriptor: {
+            posting: {enabled: false, disabled_reason: 'project_inactive', future_enabled: nil},
+            commenting: {enabled: false, disabled_reason: 'project_inactive'},
+            voting: {enabled: false, disabled_reason: 'project_inactive'},
+            comment_voting: {enabled: false, disabled_reason: 'project_inactive'},
+            taking_survey: {enabled: false, disabled_reason: 'project_inactive'}}
+          )
+        expect(json_response.dig(:data, :relationships)).to include(
+          topics: {
+            data: [{id: topic.id, type: 'topic'}]
+          },
+          areas: {data: []},
+          user_basket: {data: nil}
+          )
       end
 
       example "Get a project with a basket", document: false do
@@ -163,8 +183,8 @@ resource "Projects" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
-        expect(json_response.dig(:data, :relationships, :avatars, :data).map{|d| d[:id]}).to include "#{author.id}-avatar"
-        expect(json_response.dig(:included).map{|i| i[:id]}).to include "#{author.id}-avatar"
+        # expect(json_response.dig(:data, :relationships, :avatars, :data).map{|d| d[:id]}).to include "#{author.id}-avatar"
+        expect(json_response.dig(:included).map{|i| i[:id]}).to include author.id
       end
     end
 
