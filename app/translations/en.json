@@ -189,6 +189,7 @@
   "app.components.PagesShowPage.notFoundDescription": "The requested page could not be found",
   "app.components.PagesShowPage.notFoundTitle": "Page not found",
   "app.components.PagesShowPage.projectAttachments": "Attachments",
+  "app.components.PostComponents.imageAltText": "Main image for the {postContext} {title}",
   "app.components.Project.projectModeratorIndicator": "You're a moderator of this project",
   "app.components.ProjectArchivedIndicator.archivedProject": "Unfortunately, you can't participate in this project anymore because it has been archived",
   "app.components.ProjectCard.allocateYourBudget": "Allocate your budget",
