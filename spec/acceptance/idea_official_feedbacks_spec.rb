@@ -41,8 +41,8 @@ resource "OfficialFeedback" do
       expect(json_response.dig(:data, :type)).to eq 'official_feedback'
       expect(json_response.dig(:data, :attributes, :created_at)).to be_present
       expect(json_response.dig(:data, :relationships)).to include(
-        idea: {
-          data: {id: @feedbacks.first.idea_id, type: 'idea'}
+        post: {
+          data: {id: @feedbacks.first.post_id, type: 'idea'}
         },
         user: {
           data: {id: @feedbacks.first.user_id, type: 'user'}
