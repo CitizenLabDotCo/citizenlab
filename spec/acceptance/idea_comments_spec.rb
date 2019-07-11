@@ -164,7 +164,9 @@ resource "Comments" do
   end
 
   get "web_api/v1/comments/:id" do
-    let(:comment) { create(:comment) }
+    let(:idea) { create(:idea) }
+    let(:parent) { create(:comment, post: idea) }
+    let(:comment) { create(:comment, parent: parent, post: idea) }
     let(:id) { comment.id }
 
     example_request "Get one comment by id" do
@@ -179,14 +181,15 @@ resource "Comments" do
         is_admin_comment: false
         )
       expect(json_response.dig(:data, :relationships)).to include(
-        idea: {
-          data: {id: comment.idea_id, type: 'idea'}
+        post: {
+          data: {id: comment.post_id, type: 'idea'}
         },
         author: {
           data: {id: comment.author_id, type: 'user'}
         },
-        parent: {data: nil}
-        )
+        parent: {
+          data: {id: parent.id, type: 'comment'}
+        })
       expect(json_response.dig(:included, 0, :attributes)).to include(
         first_name: comment.author.first_name,
         locale: comment.author.locale
