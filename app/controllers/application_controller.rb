@@ -64,4 +64,44 @@ class ApplicationController < ActionController::API
     payload[:request_id] = request.request_id
     payload[:"X-Amzn-Trace-Id"] = request.headers["X-Amzn-Trace-Id"]
   end
+
+  def fastjson_params extra_params={}
+    {
+      current_user: current_user,
+      **extra_params
+    }
+  end
+
+  def linked_json collection, serializer, options={}
+    {
+      **serializer.new(collection, options).serializable_hash,
+      links: page_links(collection)
+    }
+  end
+
+  def page_links collection
+    # Inspired by https://github.com/davidcelis/api-pagination/blob/master/lib/grape/pagination.rb
+    pages = ApiPagination.send :pages_from, collection
+    links = pages.transform_values &method(:build_link)
+    links[:self] = build_link collection.current_page
+    links[:first] ||= build_link 1
+    links[:last] ||= build_link collection.total_pages
+    [:prev, :next].each do |key|
+      links[key] ||= nil
+    end
+
+    links
+  end
+
+
+  private
+
+  def build_link number
+    # Inspired by https://github.com/davidcelis/api-pagination/blob/master/lib/grape/pagination.rb
+    url = request.url.sub(/\?.*$/, '')
+    pageparams = Rack::Utils.parse_nested_query(request.query_string)
+    pageparams['page'] ||= {}
+    pageparams['page']['number'] = number
+    "#{url}?#{pageparams.to_param}"
+  end
 end

@@ -7,11 +7,12 @@ class WebApi::V1::PhasesController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
       .order(:start_at)
-    render json: @phases
+
+    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: fastjson_params)
   end
 
   def show
-    render json: @phase
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: fastjson_params).serialized_json
   end
 
   def create
@@ -21,7 +22,7 @@ class WebApi::V1::PhasesController < ApplicationController
     authorize @phase
     if @phase.save
       SideFxPhaseService.new.after_create(@phase, current_user)
-      render json: @phase, status: :created
+      render json: WebApi::V1::PhaseSerializer.new(@phase, params: fastjson_params).serialized_json, status: :created
     else
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
     end
@@ -33,7 +34,7 @@ class WebApi::V1::PhasesController < ApplicationController
     SideFxPhaseService.new.before_update(@phase, current_user)
     if @phase.save
       SideFxPhaseService.new.after_update(@phase, current_user)
-      render json: @phase, status: :ok
+      render json: WebApi::V1::PhaseSerializer.new(@phase, params: fastjson_params).serialized_json, status: :ok
     else
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
     end

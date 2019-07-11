@@ -8,18 +8,21 @@ class WebApi::V1::FilesController < ApplicationController
     @files = @container.send("#{container_association}_files").order(:ordering)
     policy_scope_class = "#{params['file_class_name']}Policy::Scope".constantize
     @files = policy_scope_class.new(current_user, @files).resolve
-    render json: @files, each_serializer: WebApi::V1::FileSerializer
+    render json: WebApi::V1::FileSerializer.new(@files, params: fastjson_params).serialized_json
   end
 
   def show
-    render json: @file, serializer: WebApi::V1::FileSerializer
+    render json: WebApi::V1::FileSerializer.new(@file, params: fastjson_params).serialized_json
   end
 
   def create
     @file = @container.send("#{container_association}_files").create(file_params)
     authorize @file
     if @file.save
-      render json: @file, status: :created, serializer: WebApi::V1::FileSerializer
+      render json: WebApi::V1::FileSerializer.new(
+        @file, 
+        params: fastjson_params
+        ).serialized_json, status: :created
     else
       render json: {errors: transform_errors_details!(@file.errors.details)}, status: :unprocessable_entity
     end
@@ -27,7 +30,10 @@ class WebApi::V1::FilesController < ApplicationController
 
   def update
     if @file.update(file_params)
-      render json: @file, status: :ok, serializer: WebApi::V1::FileSerializer
+      render json: WebApi::V1::FileSerializer.new(
+        @file, 
+        params: fastjson_params
+        ).serialized_json, status: :ok
     else
       render json: {errors: transform_errors_details!(@file.errors.details)}, status: :unprocessable_entity
     end

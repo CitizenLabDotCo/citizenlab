@@ -7,12 +7,13 @@ class WebApi::V1::CommentsController < ApplicationController
   MINIMAL_SUBCOMMENTS = 2
 
   def index
+    include_attrs = [author: [:unread_notifications]]
     root_comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
       .where(post_type: @post_type, post_id: @post_id)
       .where(parent: nil)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-      .includes(:author)
+      .includes(*include_attrs)
 
     root_comments = case params[:sort]
       when "new"
@@ -44,25 +45,28 @@ class WebApi::V1::CommentsController < ApplicationController
       .where(parent: fully_expanded_root_comments)
       .or(Comment.where(id: partially_expanded_child_comments))
       .order(:created_at)
-      .includes(:author)
+      .includes(*include_attrs)
 
     # We're doing this merge in ruby, since the combination of a self-join
     # with different sorting criteria per depth became tremendously complex in
     # one SQL query
     @comments = merge_comments(root_comments.to_a, child_comments.to_a)
 
-    total_root_comments_count = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
-      .where(post_id: @post_id)
-      .where(parent: nil)
-      .count
-
-    if current_user
+    serialization_options = if current_user
       votes = Vote.where(user: current_user, votable: @comments)
       votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @comments, include: ['author', 'user_vote'], vbci: votes_by_comment_id, meta: { total: total_root_comments_count }
+      {
+        params: fastjson_params(vbci: votes_by_comment_id), 
+        include: [:author, :user_vote]
+      }
     else
-      render json: @comments, include: ['author'], meta: { total: total_root_comments_count }
+      { params: fastjson_params, include: [:author] }
     end
+    
+    render json: { 
+      **WebApi::V1::CommentSerializer.new(@comments, serialization_options).serializable_hash, 
+      links: page_links(root_comments)
+    }
   end
 
   def index_xlsx
@@ -96,17 +100,26 @@ class WebApi::V1::CommentsController < ApplicationController
       .per(params.dig(:page, :size))
       .order(:lft)
 
-    if current_user
+    serialization_options = if current_user
       votes = Vote.where(user: current_user, votable: @comments.all)
       votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @comments, include: ['author', 'user_vote'], vbci: votes_by_comment_id
+      { 
+        params: fastjson_params(vbci: votes_by_comment_id), 
+        include: [:author, :user_vote] 
+      }
     else
-      render json: @comments, include: ['author']
+      { params: fastjson_params, include: [:author] }
     end
+
+    render json: linked_json(@comments, WebApi::V1::CommentSerializer, serialization_options)
   end
 
   def show
-    render json: @comment, include: ['author']
+    render json: WebApi::V1::CommentSerializer.new(
+      @comment, 
+      params: fastjson_params, 
+      include: [:author]
+      ).serialized_json
   end
 
   def create
@@ -118,7 +131,11 @@ class WebApi::V1::CommentsController < ApplicationController
     SideFxCommentService.new.before_create @comment, current_user
     if @comment.save
       SideFxCommentService.new.after_create @comment, current_user
-      render json: @comment, status: :created, include: ['author']
+      render json: WebApi::V1::CommentSerializer.new(
+        @comment, 
+        params: fastjson_params, 
+        include: [:author]
+        ).serialized_json, status: :created
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end
@@ -132,7 +149,11 @@ class WebApi::V1::CommentsController < ApplicationController
     SideFxCommentService.new.before_update @comment, current_user
     if @comment.save
       SideFxCommentService.new.after_update @comment, current_user
-      render json: @comment, status: :ok, include: ['author']
+      render json: WebApi::V1::CommentSerializer.new(
+        @comment, 
+        params: fastjson_params, 
+        include: [:author]
+        ).serialized_json, status: :ok
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end

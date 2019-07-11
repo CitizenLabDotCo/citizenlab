@@ -36,7 +36,18 @@ resource "OfficialFeedback" do
     example_request "Get one official feedback on an idea by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
+
       expect(json_response.dig(:data, :id)).to eq @feedbacks.first.id
+      expect(json_response.dig(:data, :type)).to eq 'official_feedback'
+      expect(json_response.dig(:data, :attributes, :created_at)).to be_present
+      expect(json_response.dig(:data, :relationships)).to include(
+        idea: {
+          data: {id: @feedbacks.first.idea_id, type: 'idea'}
+        },
+        user: {
+          data: {id: @feedbacks.first.user_id, type: 'user'}
+        }
+        )
     end
   end
 

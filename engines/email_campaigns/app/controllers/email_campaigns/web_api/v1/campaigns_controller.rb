@@ -20,11 +20,11 @@ module EmailCampaigns
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
-      render json: @campaigns, each_serializer: WebApi::V1::CampaignSerializer
+      render json: linked_json(@campaigns, WebApi::V1::CampaignSerializer, params: fastjson_params)
     end
 
     def show
-      render json: @campaign, serializer: WebApi::V1::CampaignSerializer
+      render json: WebApi::V1::CampaignSerializer.new(@campaign, params: fastjson_params).serialized_json
     end
 
     def create
@@ -36,7 +36,10 @@ module EmailCampaigns
       SideFxCampaignService.new.before_create(@campaign, current_user)
       if @campaign.save
         SideFxCampaignService.new.after_create(@campaign, current_user)
-        render json: @campaign, status: :created, serializer: WebApi::V1::CampaignSerializer
+        render json: WebApi::V1::CampaignSerializer.new(
+          @campaign, 
+          params: fastjson_params
+          ).serialized_json, status: :created
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
@@ -53,7 +56,10 @@ module EmailCampaigns
 
         if @campaign.save
           SideFxCampaignService.new.after_update(@campaign, current_user)
-          render json: @campaign, status: :ok, serializer: WebApi::V1::CampaignSerializer
+          render json: WebApi::V1::CampaignSerializer.new(
+            @campaign, 
+            params: fastjson_params
+            ).serialized_json, status: :ok
         else
           render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
         end
@@ -75,7 +81,10 @@ module EmailCampaigns
       SideFxCampaignService.new.before_send(@campaign, current_user)
       EmailCampaigns::DeliveryService.new.send_now(@campaign)
       SideFxCampaignService.new.after_send(@campaign, current_user)
-      render json: @campaign.reload, serializer: WebApi::V1::CampaignSerializer
+      render json: WebApi::V1::CampaignSerializer.new(
+        @campaign.reload, 
+        params: fastjson_params
+        ).serialized_json
     end
 
     def send_preview
@@ -93,7 +102,12 @@ module EmailCampaigns
         .includes(:user)
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
-      render json: @deliveries, include: [:user]
+      render json: linked_json(
+        @deliveries, 
+        WebApi::V1::DeliverySerializer, 
+        params: fastjson_params, 
+        include: [:user]
+        )
     end
 
     def stats
