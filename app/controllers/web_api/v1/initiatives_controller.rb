@@ -39,15 +39,22 @@ class WebApi::V1::InitiativesController < ApplicationController
         end
     end
 
-    @initiative_ids = @initiatives.map(&:id)
-
-    if current_user
+    serialization_options = if current_user
+      @initiative_ids = @initiatives.map(&:id)
       votes = Vote.where(user: current_user, votable_id: @initiative_ids, votable_type: 'Initiative')
       votes_by_initiative_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @initiatives, include: ['author','user_vote','initiative_images','assignee'], vbii: votes_by_initiative_id
+      {
+        params: fastjson_params(vbii: votes_by_initiative_id, pcs: ParticipationContextService.new),
+        include: [:author, :user_vote, :initiative_images, :assignee]
+      }
     else
-      render json: @initiatives, include: ['author','initiative_images','assignee']
+      {
+        params: fastjson_params(pcs: ParticipationContextService.new),
+        include: [:author, :initiative_images]
+      }
     end
+
+    render json: linked_json(@initiatives, WebApi::V1::InitiativeSerializer, serialization_options)
   end
 
   def index_initiative_markers
@@ -58,7 +65,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params
     @initiatives = @initiatives.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
-    render json: @initiatives, each_serializer: WebApi::V1::PostMarkerSerializer
+    render json: linked_json(@initiatives, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
   end
 
   def index_xlsx
@@ -97,7 +104,11 @@ class WebApi::V1::InitiativesController < ApplicationController
   end
 
   def show
-    render json: @initiative, include: ['author','topics','areas','user_vote','initiative_images'], serializer: WebApi::V1::InitiativeSerializer
+    render json: WebApi::V1::InitiativeSerializer.new(
+      @initiative, 
+      params: fastjson_params, 
+      include: [:author, :topics, :areas, :user_vote, :initiative_images]
+      ).serialized_json
   end
 
   def by_slug
@@ -118,7 +129,11 @@ class WebApi::V1::InitiativesController < ApplicationController
     ActiveRecord::Base.transaction do
       if @initiative.save
         service.after_create(@initiative, current_user)
-        render json: @initiative.reload, status: :created, include: ['author','topics','areas','user_vote','initiative_images']
+        render json: WebApi::V1::InitiativeSerializer.new(
+          @initiative.reload, 
+          params: fastjson_params, 
+          include: [:author, :topics, :areas, :user_vote, :initiative_images]
+          ).serialized_json, status: :created
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
       end
@@ -142,7 +157,11 @@ class WebApi::V1::InitiativesController < ApplicationController
       if @initiative.save
         authorize @initiative
         service.after_update(@initiative, current_user)
-        render json: @initiative.reload, status: :ok, include: ['author','topics','areas','user_vote','initiative_images']
+        render json: WebApi::V1::InitiativeSerializer.new(
+          @initiative.reload, 
+          params: fastjson_params, 
+          include: [:author, :topics, :areas, :user_vote, :initiative_images]
+          ).serialized_json, status: :ok
       else
         render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
       end
