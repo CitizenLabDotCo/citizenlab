@@ -346,12 +346,12 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     } = this.props;
     const {
       queryParameters,
-      ideasList,
+      list,
       hasMore,
       querying,
       loadingMore
     } = ideas;
-    const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
+    const hasIdeas = (!isNilOrError(list) && list.length > 0);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
@@ -410,9 +410,9 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </EmptyContainer>
         }
 
-        {showCardView && !querying && hasIdeas && ideasList &&
+        {showCardView && !querying && hasIdeas && list &&
           <IdeasList id="e2e-ideas-list">
-            {ideasList.map((idea) => (
+            {list.map((idea) => (
               <StyledIdeaCard
                 key={idea.id}
                 ideaId={idea.id}
