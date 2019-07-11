@@ -142,7 +142,6 @@ RSpec.describe Idea, type: :model do
   describe "idea search" do
     it "should return results with exact prefixes" do
       create(:idea, title_multiloc: {'nl-BE' => 'Bomen in het park'})
-      byebug
       srx_results = Idea.all.search_by_all 'Bomen'
       expect(srx_results.size).to be > 0
     end
@@ -176,6 +175,15 @@ RSpec.describe Idea, type: :model do
     it "is stripped from spaces at beginning and ending" do
       idea = create(:idea, title_multiloc: {'en' => ' my fantastic idea  '})
       expect(idea.title_multiloc['en']).to eq 'my fantastic idea'
+    end
+  end
+
+  describe "body" do
+    let(:idea) { build(:idea) }
+    
+    it "is invalid if it has no true content" do
+      idea.body_multiloc = {'en' => '<p> </p>'}
+      expect(idea).to be_invalid
     end
   end
 
