@@ -306,6 +306,7 @@
   "app.components.admin.PostManager.multipleIdeas": "{ideaCount} ideas",
   "app.components.admin.PostManager.needFeedback": "Necesitan retroalimentación",
   "app.components.admin.PostManager.noIdeasHere": "No hay ideas que coincidan con los filtros",
+  "app.components.admin.PostManager.noInitiativesHere": "",
   "app.components.admin.PostManager.noOne": "Sin asignar",
   "app.components.admin.PostManager.oneIdea": "1 idea",
   "app.components.admin.PostManager.participatoryBudgettingPicks": "Recoge",
