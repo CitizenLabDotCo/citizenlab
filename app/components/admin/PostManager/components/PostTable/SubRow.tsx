@@ -16,11 +16,11 @@ interface Props {
   onClickRow: (event) => void;
   className?: string;
   activeFilterMenu: TFilterMenu;
-  selectedPhases: string[];
-  phases: IPhaseData[] | undefined;
-  selectedTopics: string[];
+  selectedPhases?: string[];
+  phases?: IPhaseData[];
+  selectedTopics?: string[];
   projectId: string;
-  statuses: IIdeaStatusData[] | undefined;
+  statuses?: IIdeaStatusData[] | undefined;
   selectedStatus: string | undefined;
   onUpdatePhases: (id: string[]) => void;
   onUpdateTopics: (id: string[]) => void;
@@ -47,14 +47,14 @@ export default ({
      <Table.Cell colSpan={6} as={FilterCell}>
        {activeFilterMenu === 'phases' && phases &&
          <PhasesSelector
-           selectedPhases={selectedPhases}
+           selectedPhases={selectedPhases || []}
            phases={phases}
            onUpdatePhases={onUpdatePhases}
          />
        }
        {activeFilterMenu === 'topics' &&
          <TopicsSelector
-           selectedTopics={selectedTopics}
+           selectedTopics={selectedTopics || []}
            onUpdateTopics={onUpdateTopics}
          />
        }

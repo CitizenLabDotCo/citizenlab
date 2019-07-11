@@ -11,8 +11,9 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+import { ManagerType } from '../..';
 
-const NoIdeasPage = styled.div`
+export const NoPostPage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,14 +58,14 @@ const NoIdeasPage = styled.div`
   }
 `;
 
-const NoIdeasHeader = styled.h2`
+export const NoPostHeader = styled.h2`
   font-size: ${fontSizes.medium}px;
   font-weight: 600;
   margin-top: 0;
   margin-bottom: 5px;
 `;
 
-const NoIdeasDescription = styled.p`
+export const NoPostDescription = styled.p`
   color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
   font-size: ${fontSizes.small}px;
@@ -73,24 +74,28 @@ const NoIdeasDescription = styled.p`
 `;
 
 interface Props {
-  handleSeeAllIdeas: () => void;
+  type: ManagerType;
+  handleSeeAll: () => void;
 }
 
 export default (props: Props) => (
-  <NoIdeasPage>
+  <NoPostPage>
     <Icon name="blankPage" />
-    <NoIdeasHeader>
-      <FormattedMessage {...messages.noIdeasHere} />
-    </NoIdeasHeader>
-    <NoIdeasDescription>
+    <NoPostHeader>
+      {props.type === 'Initiatives'
+      ? <FormattedMessage {...messages.noInitiativesHere} />
+      : <FormattedMessage {...messages.noIdeasHere} />
+    }
+    </NoPostHeader>
+    <NoPostDescription>
       <FormattedMessage {...messages.resetFiltersDescription} />
-    </NoIdeasDescription>
+    </NoPostDescription>
     <Button
       style="cl-blue"
       circularCorners={false}
-      onClick={props.handleSeeAllIdeas}
+      onClick={props.handleSeeAll}
     >
       <FormattedMessage {...messages.resetFiltersButton} />
     </Button>
-  </NoIdeasPage>
+  </NoPostPage>
 );

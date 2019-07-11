@@ -6,12 +6,12 @@ import { IOption } from 'typings';
 
 // services
 import { updateIdea } from 'services/ideas';
+import { updateInitiative } from 'services/initiatives';
 
 // resources
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { GetIdeaChildProps } from 'resources/GetIdea';
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -26,23 +26,21 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
 interface DataProps {
-  authUser: GetAuthUserChildProps;
-  tenant: GetTenantChildProps;
-  idea: GetIdeaChildProps;
   prospectAssignees: GetUsersChildProps;
 }
 
 interface InputProps {
-  ideaId: string;
+  type: 'AllIdeas' | 'ProjectIdeas' | 'Initiatives';
+  post: GetIdeaChildProps | GetInitiativeChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {
   assigneeOptions: IOption[];
-  ideaAssigneeOption: string | undefined;
+  postAssigneeOption: string | undefined;
   prevPropsProspectAssignees: GetUsersChildProps | null;
-  prevPropsIdea: GetIdeaChildProps;
+  prevPropsPost:  GetIdeaChildProps | GetInitiativeChildProps;
 }
 
 class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
@@ -50,15 +48,15 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       assigneeOptions: [],
-      ideaAssigneeOption: undefined,
+      postAssigneeOption: undefined,
       prevPropsProspectAssignees: null,
-      prevPropsIdea: null
+      prevPropsPost: null
     };
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { idea, prospectAssignees, intl: { formatMessage } } = props;
-    const { prevPropsProspectAssignees, prevPropsIdea } = state;
+    const { post, prospectAssignees, intl: { formatMessage } } = props;
+    const { prevPropsProspectAssignees, prevPropsPost } = state;
     const nextState = { ...state };
 
     if (prospectAssignees !== prevPropsProspectAssignees) {
@@ -72,50 +70,55 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
       nextState.prevPropsProspectAssignees = prospectAssignees;
     }
 
-    if (idea !== prevPropsIdea) {
-      if (isNilOrError(idea) || !idea.relationships.assignee || !idea.relationships.assignee.data) {
-        nextState.ideaAssigneeOption = 'unassigned';
+    if (post !== prevPropsPost) {
+      if (isNilOrError(post) || !post.relationships.assignee || !post.relationships.assignee.data) {
+        nextState.postAssigneeOption = 'unassigned';
       } else {
-        nextState.ideaAssigneeOption = idea.relationships.assignee.data.id;
+        nextState.postAssigneeOption = post.relationships.assignee.data.id;
       }
 
-      nextState.prevPropsIdea = idea;
+      nextState.prevPropsPost = post;
     }
 
     return nextState;
   }
 
   onAssigneeChange = (_event, assigneeOption) => {
-    const { tenant, ideaId, authUser }  = this.props;
+    const { post, type }  = this.props;
     const assigneeId = assigneeOption ? assigneeOption.value : null;
-    const adminAtWorkId = authUser ? authUser.id : null;
-    const tenantId = !isNilOrError(tenant) && tenant.id;
 
-    updateIdea(ideaId, {
-      assignee_id: assigneeId
-    });
+    if (!isNilOrError(post)) {
+      if (type === 'Initiatives') {
+        updateInitiative(post.id, {
+          assignee_id: assigneeId
+        });
+      } else {
+        updateIdea(post.id, {
+          assignee_id: assigneeId
+        });
+      }
+      trackEventByName(tracks.changePostAssignment, {
+        type,
+        location: 'Post manager',
+        post: post.id,
+        assignee: assigneeId,
+      });
+    }
 
-    trackEventByName(tracks.ideaReviewAssignment, {
-      tenant: tenantId,
-      location: 'Idea overview',
-      idea: ideaId,
-      assignee: assigneeId,
-      adminAtWork: adminAtWorkId
-    });
   }
 
   render() {
-    const { idea } = this.props;
-    const { assigneeOptions, ideaAssigneeOption } = this.state;
+    const { post } = this.props;
+    const { assigneeOptions, postAssigneeOption } = this.state;
 
-    if (!isNilOrError(idea)) {
+    if (!isNilOrError(post)) {
       return (
         <Select
-          id={`idea-row-select-assignee-${idea.id}`}
+          id={`post-row-select-assignee-${post.id}`}
           options={assigneeOptions}
           onChange={this.onAssigneeChange}
-          value={ideaAssigneeOption}
-          className="fluid e2e-idea-manager-idea-row-assignee-select"
+          value={postAssigneeOption}
+          className="fluid e2e-post-manager-post-row-assignee-select"
         />
       );
     }
@@ -124,10 +127,7 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  tenant: <GetTenant />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  prospectAssignees: ({ idea, render }) => <GetUsers canModerateProject={get(idea, 'relationships.project.data.id')}>{render}</GetUsers>
+  prospectAssignees: ({ post, render }) => <GetUsers canModerateProject={get(post, 'relationships.project.data.id')}>{render}</GetUsers>
 });
 
 const AssigneeSelectWithHocs = injectIntl<Props>(AssigneeSelect);

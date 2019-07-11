@@ -10,6 +10,8 @@ import styled from 'styled-components';
 
 import IdeaRow from './IdeaRow';
 import { ManagerType, TFilterMenu } from '../..';
+import InitiativeRow from './InitiativeRow';
+import { IInitiativeData } from 'services/initiatives';
 
 export const StyledRow = styled.tr`
   height: 5.7rem !important;
@@ -42,7 +44,7 @@ export const TitleLink = styled.a`
 
 type Props = {
   type: ManagerType;
-  post: IIdeaData,
+  post: IIdeaData | IInitiativeData,
   phases?: IPhaseData[],
   statuses?: IIdeaStatusData[],
   selection: Set<string>,
@@ -92,9 +94,25 @@ export default class Row extends React.PureComponent<Props> {
     if (type === 'AllIdeas' || type === 'ProjectIdeas') {
       return (
         <IdeaRow
-          idea={post}
+          type={type}
+          idea={post as IIdeaData}
           phases={phases}
           statuses={statuses}
+          selection={selection}
+          activeFilterMenu={activeFilterMenu}
+          className={className}
+          onClickRow={this.onClickRow}
+          onClickCheckbox={this.onClickCheckbox}
+          onClickTitle={this.onClickTitle}
+          nothingHappens={this.nothingHappens}
+        />
+      );
+    } else {
+      return (
+        <InitiativeRow
+          type={type}
+          initiative={post as IInitiativeData}
+          // statuses={statuses}
           selection={selection}
           activeFilterMenu={activeFilterMenu}
           className={className}
