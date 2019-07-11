@@ -10,6 +10,10 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
+    def self.consentable_roles
+      ['admin', 'project_moderator']
+    end
+
     def activity_triggers
       {'Notifications::ProjectPhaseUpcoming' => {'created' => true}}
     end
