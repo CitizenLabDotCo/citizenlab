@@ -640,7 +640,6 @@
   "app.containers.AdminPage.FaviconPage.saveErrorMessage": "Une erreur est survenue. Veuillez réessayer.",
   "app.containers.AdminPage.FaviconPage.saveSuccess": "Enregistré !",
   "app.containers.AdminPage.FaviconPage.saveSuccessMessage": "L'image a bien été enregistrée.",
-  "app.containers.AdminPage.IdeaDashboard.delete": "Supprimer",
   "app.containers.AdminPage.IdeaDashboard.helmetDescription": "Liste des idées",
   "app.containers.AdminPage.IdeaDashboard.helmetTitle": "Gestion des idées",
   "app.containers.AdminPage.PagesEdition.buttonError": "Erreur",
