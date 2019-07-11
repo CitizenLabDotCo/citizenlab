@@ -18,7 +18,7 @@ import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
-import IdeaTopics from './IdeaTopics';
+import Topics from 'components/PostComponents/Topics';
 import IdeaTitle from './IdeaTitle';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
@@ -124,7 +124,7 @@ const IdeaContainer = styled.div`
   `}
 `;
 
-const StyledIdeaTopics = styled(IdeaTopics)`
+const StyledTopics = styled(Topics)`
   padding-right: ${rightColumnWidthDesktop + columnsGapDesktop}px;
   margin-bottom: 10px;
 
@@ -473,7 +473,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
               }
             </FeatureFlag>
 
-            <StyledIdeaTopics topicIds={topicIds} />
+            <StyledTopics topicIds={topicIds} />
 
             <Content>
               <LeftColumn>
