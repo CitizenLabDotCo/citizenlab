@@ -20,7 +20,7 @@ import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import Topics from 'components/PostComponents/Topics';
 import Title from 'components/PostComponents/Title';
-import IdeaPostedBy from './IdeaPostedBy';
+import PostedBy from './PostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
@@ -477,10 +477,10 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 </InitiativeHeader>
 
                 {biggerThanLargeTablet &&
-                  <StyledIdeaAuthor
-                    ideaId={ideaId}
+                  <PostedBy
+                    id={initiativeId}
                     authorId={authorId}
-                    ideaCreatedAt={ideaCreatedAt}
+                    createdAt={initiativeCreatedAt}
                   />
                 }
 
