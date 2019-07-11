@@ -22,7 +22,10 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def show?
-    record.draft? ||
+    (
+      user&.active? &&
+      record.author_id == user.id
+    ) ||
     (user&.active? && user.admin?) ||
     %w(draft published closed).include?(record.publication_status)
   end
