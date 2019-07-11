@@ -19,7 +19,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import Topics from 'components/PostComponents/Topics';
-import IdeaTitle from './IdeaTitle';
+import Title from 'components/PostComponents/Title';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
@@ -158,7 +158,7 @@ const StyledTranslateButtonMobile = styled(TranslateButton)`
   `}
 `;
 
-const IdeaHeader = styled.div`
+const InitiativeHeader = styled.div`
   margin-top: -5px;
   margin-bottom: 28px;
 
@@ -462,10 +462,11 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             <Content>
               <LeftColumn>
                 <Topics topicIds={topicIds} />
-                <IdeaHeader>
-                  <IdeaTitle
-                    ideaId={ideaId}
-                    ideaTitle={ideaTitle}
+                <InitiativeHeader>
+                  <Title
+                    id={initiativeId}
+                    context="initiative"
+                    title={initiativeTitle}
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}
                   />
@@ -473,7 +474,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   {smallerThanLargeTablet &&
                     <StyledMobileIdeaPostedBy authorId={authorId} />
                   }
-                </IdeaHeader>
+                </InitiativeHeader>
 
                 {biggerThanLargeTablet &&
                   <StyledIdeaAuthor
