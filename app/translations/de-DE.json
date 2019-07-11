@@ -189,6 +189,7 @@
   "app.components.PagesShowPage.notFoundDescription": "Entschuldigen Sie, die angeforderte Seite konnte leider nicht gefunden werden",
   "app.components.PagesShowPage.notFoundTitle": "Seite nicht gefunden",
   "app.components.PagesShowPage.projectAttachments": "Anhänge",
+  "app.components.PostComponents.imageAltText": "",
   "app.components.Project.projectModeratorIndicator": "Du bist ein Moderator dieses Projektes",
   "app.components.ProjectArchivedIndicator.archivedProject": "Leider können Sie in diesem Projekt mehr nicht teilnehmen, weil es archiviert wurde",
   "app.components.ProjectCard.allocateYourBudget": "Geben Sie Ihr Budget",
