@@ -60,6 +60,7 @@ Rails.application.routes.draw do
       end
 
       resources :idea_statuses, only: [:index, :show]
+      resources :initiative_statuses, only: [:index, :show]
 
       # auth
       post 'user_token' => 'user_token#create'
