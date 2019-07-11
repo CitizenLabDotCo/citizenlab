@@ -267,14 +267,14 @@ workflows:
   check-for-inconsistent-data:
     triggers:
       - schedule:
-          cron: "0 2 * * 4"
+          cron: "0 2 * * 5"
           filters:
             branches:
               only:
                 - production
     jobs:
       - check-for-inconsistent-data:
-          ssh_host: "52.29.30.188"
-          compose_file: docker-compose-staging.yml
-          stack_name: cl2-back-stg
-          env_file: ".env-staging"
+          ssh_host: "52.57.74.84"
+          compose_file: docker-compose-production-benelux.yml
+          stack_name: cl2-prd-bnlx-stack
+          env_file: ".env-production-benelux"
