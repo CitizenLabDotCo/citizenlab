@@ -12,7 +12,7 @@ import { injectIntl } from 'utils/cl-intl';
 export class InitiativesPage extends React.PureComponent<InjectedIntlProps> {
   private tabs = [
     { label: this.props.intl.formatMessage(messages.tabSettings), url: '/admin/initiatives' },
-    // TODO  { label: this.props.intl.formatMessage(messages.tabManage), url: '/admin/initiatives/manage' },
+    { label: this.props.intl.formatMessage(messages.tabManage), url: '/admin/initiatives/manage' },
   ];
   private resource = {
     title: this.props.intl.formatMessage(messages.titleInitiatives),

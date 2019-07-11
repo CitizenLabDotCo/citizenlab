@@ -151,7 +151,7 @@
     "@types/react-select": "2.0.19",
     "@types/segment-analytics": "0.0.31",
     "@types/shelljs": "0.8.5",
-    "@types/styled-components": "4.1.16",
+    "@types/styled-components": "4.1.18",
     "@types/webfontloader": "1.6.29",
     "@types/webpack": "4.4.34",
     "acorn": "6.1.1",
