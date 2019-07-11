@@ -692,6 +692,8 @@
   "app.containers.AdminPage.ProjectEdit.ideasTab": "Ideeën",
   "app.containers.AdminPage.ProjectEdit.ideation": "Ideeën verzamelen, reageren en/of stemmen",
   "app.containers.AdminPage.ProjectEdit.ideationDescription": "Gebruikers kunnen ideeën toevoegen, reageren op andere ideeën en/of stemmen.",
+  "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget": "",
+  "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkText": "",
   "app.containers.AdminPage.ProjectEdit.information": "Info",
   "app.containers.AdminPage.ProjectEdit.informationDescription": "Gebruikers kunnen enkel de informatie lezen die je hen geeft. Er is geen actieve deelname mogelijk.",
   "app.containers.AdminPage.ProjectEdit.limited": "Beperkt",
