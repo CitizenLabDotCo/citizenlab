@@ -17,7 +17,7 @@ import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 // components
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
-import IdeaTable from './components/IdeaTable';
+import PostTable from './components/PostTable';
 import InfoSidebar from './components/InfoSidebar';
 import ExportMenu, { exportType, Props as ExportMenuProps } from './components/ExportMenu';
 import IdeasCount from './components/IdeasCount';
@@ -111,7 +111,7 @@ export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 
 interface State {
   selection: Set<string>;
-  activeFilterMenu: TFilterMenu | null;
+  activeFilterMenu: TFilterMenu;
   searchTerm: string | undefined;
   previewPostId: string | null;
   previewMode: 'view' | 'edit';
@@ -344,7 +344,7 @@ class PostManager extends React.PureComponent<Props, State> {
             </Sticky>
           </LeftColumn>
           <MiddleColumn>
-            <IdeaTable
+            <PostTable
               type={type}
               activeFilterMenu={activeFilterMenu}
               sortAttribute={posts.sortAttribute}

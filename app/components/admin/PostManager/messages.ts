@@ -165,6 +165,10 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.noIdeasHere',
     defaultMessage: 'No ideas match the current filters',
   },
+  noInitiativesHere: {
+    id: 'app.components.admin.PostManager.noInitiativesHere',
+    defaultMessage: 'No initiative match the current filters',
+  },
   resetFiltersDescription: {
     id: 'app.components.admin.PostManager.resetFiltersDescription',
     defaultMessage: 'Reset the filters to see all ideas.',

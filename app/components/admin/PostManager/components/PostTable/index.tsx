@@ -10,7 +10,7 @@ import Row from './Row';
 import Pagination from 'components/admin/Pagination';
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
-import NoIdeas from './NoIdeas';
+import NoPost from './NoPost';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 // services
@@ -27,7 +27,10 @@ import { SortDirection } from 'utils/paginationUtils';
 // i18n
 import messages from '../../messages';
 import InfoTooltip from 'components/admin/InfoTooltip';
-import { ManagerType } from '../..';
+import { ManagerType, TFilterMenu } from '../..';
+import NoInitiatives from './NoInitiatives';
+import IdeaHeaderRow from './IdeaHeaderRow';
+import InitiativesHeaderRow from './InitiativesHeaderRow';
 
 const Container = styled.div`
   .ui.table {
@@ -67,7 +70,7 @@ const Container = styled.div`
   }
 `;
 
-const TableHeaderCellText = styled.span`
+export const TableHeaderCellText = styled.span`
   font-weight: 600;
 `;
 
@@ -84,7 +87,7 @@ interface Props {
   currentPageNumber?: number;
   lastPageNumber?: number;
   onChangePage?: (number: number) => void;
-  activeFilterMenu: string | null;
+  activeFilterMenu: TFilterMenu;
   handleSeeAll: () => void;
   openPreview: (ideaId: string) => void;
 }
@@ -164,67 +167,22 @@ export default class IdeaTable extends React.Component<Props> {
     return (
       <Container>
         <Table sortable size="small">
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell width={1}>
-                <Checkbox value={this.allSelected()} onChange={this.toggleSelectAll} size="17px"/>
-              </Table.HeaderCell>
-              <Table.HeaderCell width={4}>
-                <TableHeaderCellText>
-                  <FormattedMessage {...messages.title} />
-                </TableHeaderCellText>
-              </Table.HeaderCell>
-              <Table.HeaderCell width={2}>
-                <TableHeaderCellText>
-                  <FormattedMessage {...messages.assignee} />
-                </TableHeaderCellText>
-              </Table.HeaderCell>
-              <Table.HeaderCell width={2}>
-                <SortableTableHeader
-                  direction={sortAttribute === 'new' ? sortDirection : null}
-                  onToggle={this.handleSortClick('new')}
-                >
-                  <TableHeaderCellText>
-                    <FormattedMessage {...messages.publication_date} />
-                  </TableHeaderCellText>
-                </SortableTableHeader>
-              </Table.HeaderCell>
-              <Table.HeaderCell width={1}>
-                <SortableTableHeader
-                  direction={sortAttribute === 'upvotes_count' ? sortDirection : null}
-                  onToggle={this.handleSortClick('upvotes_count')}
-                >
-                  <TableHeaderCellText>
-                    <FormattedMessage {...messages.up} />
-                  </TableHeaderCellText>
-                </SortableTableHeader>
-              </Table.HeaderCell >
-              <Table.HeaderCell width={1}>
-                <SortableTableHeader
-                  direction={sortAttribute === 'downvotes_count' ? sortDirection : null}
-                  onToggle={this.handleSortClick('downvotes_count')}
-                >
-                  <TableHeaderCellText>
-                    <FormattedMessage {...messages.down} />
-                  </TableHeaderCellText>
-                </SortableTableHeader>
-              </Table.HeaderCell>
-              <FeatureFlag name="participatory_budgeting">
-                <Table.HeaderCell width={1}>
-                  <SortableTableHeader
-                    direction={sortAttribute === 'baskets_count' ? sortDirection : null}
-                    onToggle={this.handleSortClick('baskets_count')}
-                  >
-                    <TableHeaderCellText>
-                      <FormattedMessage {...messages.participatoryBudgettingPicks} />
-                    </TableHeaderCellText>
-                    &nbsp;
-                    <InfoTooltip {...messages.basketsCountTooltip} size="small" position="top-left" />
-                  </SortableTableHeader>
-                </Table.HeaderCell>
-              </FeatureFlag>
-            </Table.Row>
-          </Table.Header>
+          {type === 'Initiatives'
+            ? <InitiativesHeaderRow
+                sortAttribute={sortAttribute}
+                sortDirection={sortDirection}
+                allSelected={this.allSelected()}
+                toggleSelectAll={this.toggleSelectAll}
+                handleSortClick={this.handleSortClick}
+            />
+            : <IdeaHeaderRow
+                sortAttribute={sortAttribute}
+                sortDirection={sortDirection}
+                allSelected={this.allSelected()}
+                toggleSelectAll={this.toggleSelectAll}
+                handleSortClick={this.handleSortClick}
+            />
+          }
           <Table.Body>
             {!!posts && posts.length > 0 ?
               <TransitionGroup component={null}>
@@ -266,7 +224,7 @@ export default class IdeaTable extends React.Component<Props> {
         <TransitionGroup component={null}>
           {!posts || posts.length === 0 &&
             <CSSTransition classNames="fade" timeout={500}>
-              <NoIdeas handleSeeAllIdeas={handleSeeAll} />
+              <NoPost handleSeeAll={handleSeeAll} type={type} />
             </CSSTransition>
           }
         </TransitionGroup>

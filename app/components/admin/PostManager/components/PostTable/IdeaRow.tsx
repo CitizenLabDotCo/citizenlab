@@ -32,11 +32,12 @@ import AssigneeSelect from './AssigneeSelect';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
-import { TFilterMenu } from '../..';
+import { TFilterMenu, ManagerType } from '../..';
 import { TitleLink, StyledRow } from './Row';
 import SubRow from './SubRow';
 
 type InputProps = {
+  type: ManagerType;
   idea: IIdeaData,
   phases?: IPhaseData[],
   statuses?: IIdeaStatusData[],
@@ -83,6 +84,7 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
 
   render() {
     const {
+      type,
       idea,
       selection,
       connectDragSource,
@@ -119,7 +121,7 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
               <T value={attrs.title_multiloc} />
             </TitleLink>
           </Table.Cell>
-          <Table.Cell onClick={nothingHappens} singleLine><AssigneeSelect ideaId={idea.id}/></Table.Cell>
+          <Table.Cell onClick={nothingHappens} singleLine><AssigneeSelect post={idea} type={type}/></Table.Cell>
           <Table.Cell>
             <FormattedRelative value={attrs.published_at} />
           </Table.Cell>
@@ -253,4 +255,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default injectIntl<Props>(localize<Props & InjectedIntlProps>(DragSource('IDEA', ideaSource, collect)(IdeaRow)));
+export default injectIntl<InputProps>(localize<InputProps & InjectedIntlProps>(DragSource('IDEA', ideaSource, collect)(IdeaRow)));
