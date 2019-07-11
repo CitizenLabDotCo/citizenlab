@@ -306,6 +306,7 @@
   "app.components.admin.PostManager.multipleIdeas": "{ideaCount} idées",
   "app.components.admin.PostManager.needFeedback": "Besoin de commentaires",
   "app.components.admin.PostManager.noIdeasHere": "Aucunes idées ne correspondent aux filtres actuels",
+  "app.components.admin.PostManager.noInitiativesHere": "",
   "app.components.admin.PostManager.noOne": "Non attribué",
   "app.components.admin.PostManager.oneIdea": "1 idée",
   "app.components.admin.PostManager.participatoryBudgettingPicks": "Choisis",

@@ -306,6 +306,7 @@
   "app.components.admin.PostManager.multipleIdeas": "{ideaCount} ideas",
   "app.components.admin.PostManager.needFeedback": "Need Feedback",
   "app.components.admin.PostManager.noIdeasHere": "No ideas match the current filters",
+  "app.components.admin.PostManager.noInitiativesHere": "No initiative match the current filters",
   "app.components.admin.PostManager.noOne": "Unassigned",
   "app.components.admin.PostManager.oneIdea": "1 idea",
   "app.components.admin.PostManager.participatoryBudgettingPicks": "Picks",

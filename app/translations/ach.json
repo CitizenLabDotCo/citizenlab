@@ -306,6 +306,7 @@
   "app.components.admin.PostManager.multipleIdeas": "",
   "app.components.admin.PostManager.needFeedback": "",
   "app.components.admin.PostManager.noIdeasHere": "",
+  "app.components.admin.PostManager.noInitiativesHere": "",
   "app.components.admin.PostManager.noOne": "",
   "app.components.admin.PostManager.oneIdea": "",
   "app.components.admin.PostManager.participatoryBudgettingPicks": "",
