@@ -189,6 +189,7 @@
   "app.components.PagesShowPage.notFoundDescription": "De opgevraagde pagina kon niet worden gevonden",
   "app.components.PagesShowPage.notFoundTitle": "Pagina niet gevonden",
   "app.components.PagesShowPage.projectAttachments": "Bijlagen",
+  "app.components.PostComponents.imageAltText": "",
   "app.components.Project.projectModeratorIndicator": "Je bent een moderator van dit project",
   "app.components.ProjectArchivedIndicator.archivedProject": "Je kan niet langer deelnemen aan dit project omdat het gearchiveerd is",
   "app.components.ProjectCard.allocateYourBudget": "Verdeel je budget",

@@ -7,7 +7,7 @@ import { adopt } from 'react-adopt';
 // components
 import InitiativesShow from 'containers/InitiativesShow';
 import Button from 'components/UI/Button';
-import InitiativesShowPageTopBar from './InitiativesShowPageTopBar';
+import InitiativeShowPageTopBar from '../InitiativeShowPageTopBar';
 
 // resources
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
@@ -34,7 +34,7 @@ const Container = styled.div`
   background: #fff;
 `;
 
-const StyledInitiativeShowPageTopBar = styled(InitiativesShowPageTopBar)`
+const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
   position: fixed;
   top: 0;
   left: 0;
