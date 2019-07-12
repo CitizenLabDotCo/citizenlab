@@ -13,8 +13,10 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 // services
 import { IIdeaData } from 'services/ideas';
+import { IInitiativeData } from 'services/initiatives';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // resources
 import { Sort, SortAttribute } from 'resources/GetIdeas';
@@ -71,9 +73,9 @@ interface Props {
   type: ManagerType;
   sortAttribute?: SortAttribute;
   sortDirection?: SortDirection;
-  posts?: IIdeaData[];
+  posts?: IIdeaData[] | IInitiativeData[];
   phases?: IPhaseData[];
-  statuses?: IIdeaStatusData[];
+  statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
   onChangeSort?: (sort: Sort) => void;
   selection: Set<string>;
   onChangeSelection: (newSelection: Set<string>) => void;
@@ -122,7 +124,7 @@ export default class IdeaTable extends React.Component<Props> {
     if (this.allSelected()) {
       onChangeSelection(new Set());
     } else {
-      posts && onChangeSelection(new Set(posts.map(post => post.id)));
+      posts && onChangeSelection(new Set(posts.map((post: IIdeaData | IInitiativeData) => post.id)));
     }
   }
 
@@ -140,7 +142,7 @@ export default class IdeaTable extends React.Component<Props> {
 
   allSelected = () => {
     const { posts, selection } = this.props;
-    return !isEmpty(posts) && every(posts, (post) => selection.has(post.id));
+    return !isEmpty(posts) && every(posts, (post: IIdeaData | IInitiativeData) => selection.has(post.id));
   }
 
   render() {
@@ -179,7 +181,7 @@ export default class IdeaTable extends React.Component<Props> {
           <Table.Body>
             {!!posts && posts.length > 0 ?
               <TransitionGroup component={null}>
-                {posts.map((post) =>
+                {posts.map((post: IIdeaData | IInitiativeData) =>
                   <CSSTransition classNames="fade" timeout={500} key={post.id}>
                     <Row
                       className="e2e-post-manager-post-row"

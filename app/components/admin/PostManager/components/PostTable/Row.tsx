@@ -112,7 +112,7 @@ export default class Row extends React.PureComponent<Props> {
         <InitiativeRow
           type={type}
           initiative={post as IInitiativeData}
-          // statuses={statuses}
+          statuses={statuses}
           selection={selection}
           activeFilterMenu={activeFilterMenu}
           className={className}

@@ -193,7 +193,7 @@ const ideaSource = {
     const dropResult = monitor.getDropResult();
     const { selection } = props;
 
-    if (dropResult && dropResult.type === 'ideaStatus') {
+    if (dropResult && dropResult.type === 'status') {
       selection.has(item.id) && selection.forEach((ideaId) => {
         updateIdea(ideaId, {
           idea_status_id: dropResult.id,
