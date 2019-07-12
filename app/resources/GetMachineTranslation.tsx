@@ -6,7 +6,8 @@ import shallowCompare from 'utils/shallowCompare';
 import {
   IMachineTranslationData,
   machineTranslationByIdeaIdStream,
-  machineTranslationByCommentIdStream
+  machineTranslationByCommentIdStream,
+  machineTranslationByInitiativeIdStream
 } from 'services/machineTranslations';
 import { isNilOrError } from 'utils/helperUtils';
 import { Locale } from 'typings';
@@ -14,8 +15,8 @@ import { Locale } from 'typings';
 interface InputProps {
   attributeName: 'body_multiloc' | 'title_multiloc';
   localeTo: Locale;
-  ideaId?: string;
-  commentId?: string;
+  id: string;
+  context: 'idea' | 'initiative' | 'comment';
   resetOnChange?: boolean;
 }
 
@@ -47,51 +48,59 @@ export default class GetMachineTranslation extends React.Component<Props, State>
   }
 
   componentDidMount() {
-    const { attributeName, localeTo, ideaId, commentId, resetOnChange } = this.props;
+    const { attributeName, localeTo, id, context, resetOnChange } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ attributeName, localeTo, ideaId, commentId, resetOnChange });
+    this.inputProps$ = new BehaviorSubject({
+      attributeName,
+      localeTo,
+      id,
+      context,
+      resetOnChange
+    });
 
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         tap(() => resetOnChange && this.setState({ machineTranslation: undefined })),
-        switchMap(({ ideaId, commentId }) => {
-          if (isString(ideaId)) {
-            return machineTranslationByIdeaIdStream(ideaId,
-              {
-                queryParameters: {
-                  machine_translation: {
-                    locale_to: localeTo,
-                    attribute_name: attributeName
-                  }
-                }
-              }
-            ).observable;
-          } else if (isString(commentId)) {
-            return machineTranslationByCommentIdStream(commentId,
-              {
-                queryParameters: {
-                  machine_translation: {
-                    locale_to: localeTo,
-                    attribute_name: attributeName
-                  }
-                }
-              }
-            ).observable;
+        switchMap(({ id }) => {
+          const queryParameters = {
+            machine_translation: {
+              locale_to: localeTo,
+              attribute_name: attributeName
+            }
+          };
+
+          if (isString(id)) {
+            switch (context) {
+              case 'idea':
+                return machineTranslationByIdeaIdStream(
+                  id, { queryParameters }
+                ).observable;
+              case 'initiative':
+                  return machineTranslationByInitiativeIdStream(
+                    id, { queryParameters }
+                  ).observable;
+              case 'comment':
+                return machineTranslationByCommentIdStream(
+                  id, { queryParameters }
+                ).observable;
+            }
           }
 
           return of(null);
         })
       )
       .subscribe((machineTranslation) => {
-        this.setState({ machineTranslation: !isNilOrError(machineTranslation) ? machineTranslation.data : machineTranslation });
+        this.setState({
+          machineTranslation: !isNilOrError(machineTranslation) ? machineTranslation.data : machineTranslation
+        });
       })
     ];
   }
 
   componentDidUpdate() {
-    const { attributeName, localeTo, ideaId, commentId, resetOnChange } = this.props;
-    this.inputProps$.next({ attributeName, localeTo, ideaId, commentId, resetOnChange });
+    const { attributeName, localeTo, id, context, resetOnChange } = this.props;
+    this.inputProps$.next({ attributeName, localeTo, id, context, resetOnChange });
   }
 
   componentWillUnmount() {

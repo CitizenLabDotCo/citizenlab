@@ -189,6 +189,7 @@
   "app.components.PagesShowPage.notFoundDescription": "La página que busca no fue encontrada",
   "app.components.PagesShowPage.notFoundTitle": "Página no encontrada",
   "app.components.PagesShowPage.projectAttachments": "Archivos adjuntos",
+  "app.components.PostComponents.imageAltText": "",
   "app.components.Project.projectModeratorIndicator": "Tu eres el moderador de este proyecto",
   "app.components.ProjectArchivedIndicator.archivedProject": "Desafortunadamente, ya no puedes participar en este proyecto porque ha sido archivado",
   "app.components.ProjectCard.allocateYourBudget": "Asigna tu presupuesto",
