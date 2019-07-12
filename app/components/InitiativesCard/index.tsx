@@ -6,21 +6,19 @@ import { adopt } from 'react-adopt';
 // components
 import Card from 'components/UI/Card';
 import Icon from 'components/UI/Icon';
-import Unauthenticated from 'components/IdeaCard/Unauthenticated';
+import Unauthenticated from 'components/InitiativeCard/Unauthenticated';
 import BottomBounceUp from './BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
-import AssignBudgetControl from 'components/AssignBudgetControl';
-import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Author from 'components/Author';
 
 // services
-import { IIdeaData } from 'services/ideas';
+import { IInitiativeData } from 'services/initiatives';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
+import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
+import GetInitiativeImage, { GetInitiativeImageChildProps } from 'resources/GetInitiativeImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // utils
@@ -28,7 +26,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { InjectedIntlProps, FormattedNumber } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
@@ -37,22 +35,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { IIdeaCardClickEvent } from 'containers/App';
-import { ParticipationMethod } from 'services/participationContexts';
-
-const IdeaBudget = styled.div`
-  color: ${colors.clRed2};
-  font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.base}px;
-  font-weight: 500;
-  padding: 10px 12px;
-  margin-top: 15px;
-  margin-left: 19px;
-  display: inline-block;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px ${colors.clRed2};
-  background: rgba(255, 255, 255, 0.9);
-`;
+import { IInitiativeCardClickEvent } from 'containers/App';
 
 const StyledAuthor = styled(Author)`
   margin-left: -4px;
@@ -103,43 +86,38 @@ const DisabledWrapper = styled.div`
 `;
 
 export interface InputProps {
-  ideaId: string;
-  participationMethod?: ParticipationMethod | null;
-  participationContextId?: string | null;
-  participationContextType?: 'Phase' | 'Project' | null;
+  initiativeId: string;
   className?: string;
 }
 
 interface DataProps {
   tenant: GetTenantChildProps;
-  idea: GetIdeaChildProps;
-  ideaImage: GetIdeaImageChildProps;
-  ideaAuthor: GetUserChildProps;
+  initiative: GetInitiativeChildProps;
+  initiativeImage: GetInitiativeImageChildProps;
+  initiativeAuthor: GetUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {
   showVotingDisabled: 'unauthenticated' | 'votingDisabled' | null;
-  showAssignBudgetDisabled: 'unauthenticated' | 'assignBudgetDisabled' | null;
 }
 
-class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
+class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   constructor(props) {
     super(props);
     this.state = {
-      showVotingDisabled: null,
-      showAssignBudgetDisabled: null
+      showVotingDisabled: null
     };
   }
 
   onCardClick = (event: FormEvent) => {
     event.preventDefault();
 
-    const { idea } = this.props;
+    const { initiative } = this.props;
 
-    if (!isNilOrError(idea)) {
-      eventEmitter.emit<IIdeaCardClickEvent>('IdeaCard', 'ideaCardClick', { ideaId: idea.id, ideaSlug: idea.attributes.slug });
+    if (!isNilOrError(initiative)) {
+      eventEmitter.emit<IInitiativeCardClickEvent>('InitiativeCard', 'initiativeCardClick', { initiativeId: initiative.id, initiativeSlug: initiative.attributes.slug });
     }
   }
 
@@ -151,42 +129,31 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
     this.setState({ showVotingDisabled: 'votingDisabled' });
   }
 
-  unauthenticatedAssignBudgetClick = () => {
-    this.setState({ showAssignBudgetDisabled: 'unauthenticated' });
-  }
-
-  disabledAssignBudgetClick = () => {
-    this.setState({ showAssignBudgetDisabled: 'assignBudgetDisabled' });
-  }
-
   render() {
-    const { idea, ideaImage, ideaAuthor, tenant, participationMethod, participationContextId, participationContextType, localize } = this.props;
+    const { initiative, initiativeImage, initiativeAuthor, tenant, localize } = this.props;
     const { formatMessage } = this.props.intl;
-    const { showVotingDisabled, showAssignBudgetDisabled } = this.state;
+    const { showVotingDisabled } = this.state;
 
     if (
       !isNilOrError(tenant) &&
-      !isNilOrError(idea) &&
-      !isUndefined(ideaImage) &&
-      !isUndefined(ideaAuthor)
+      !isNilOrError(initiative) &&
+      !isUndefined(initiativeImage) &&
+      !isUndefined(initiativeAuthor)
     ) {
-      const votingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['voting'] | null = get(idea, 'relationships.action_descriptor.data.voting', null);
-      const commentingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['commenting'] | null  = get(idea, 'relationships.action_descriptor.data.commenting', null);
-      const budgetingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['budgeting'] | null = get(idea, 'relationships.action_descriptor.data.budgeting', null);
-      const projectId: string | null = get(idea, 'relationships.project.data.id', null);
+      const votingDescriptor: IInitiativeData['relationships']['action_descriptor']['data']['voting'] | null = get(initiative, 'relationships.action_descriptor.data.voting', null);
+      const commentingDescriptor: IInitiativeData['relationships']['action_descriptor']['data']['commenting'] | null  = get(initiative, 'relationships.action_descriptor.data.commenting', null);
+      const projectId: string | null = get(initiative, 'relationships.project.data.id', null);
       const orgName = localize(tenant.attributes.settings.core.organization_name);
-      const ideaTitle = localize(idea.attributes.title_multiloc);
-      const ideaAuthorId = !isNilOrError(ideaAuthor) ? ideaAuthor.id : null;
-      const ideaBudget = idea.attributes.budget;
-      const ideaImageUrl: string | null = get(ideaImage, 'attributes.versions.medium', null);
-      const ideaImageAltText = orgName && ideaTitle ? formatMessage(messages.imageAltText, { orgName, ideaTitle }) : null;
-      const tenantCurrency = tenant.attributes.settings.core.currency;
+      const initiativeTitle = localize(initiative.attributes.title_multiloc);
+      const initiativeAuthorId = !isNilOrError(initiativeAuthor) ? initiativeAuthor.id : null;
+      const initiativeImageUrl: string | null = get(initiativeImage, 'attributes.versions.medium', null);
+      const initiativeImageAltText = orgName && initiativeTitle ? formatMessage(messages.imageAltText, { orgName, initiativeTitle }) : null;
       const className = [
         this.props.className,
-        'e2e-idea-card',
-        get(idea, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
+        'e2e-initiative-card',
+        get(initiative, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
         commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled',
-        idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
+        initiative.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
         votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'
       ].filter(item => isString(item) && item !== '').join(' ');
 
@@ -194,30 +161,15 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
         <Card
           className={className}
           onClick={this.onCardClick}
-          to={`/ideas/${idea.attributes.slug}`}
-          imageUrl={ideaImageUrl}
-          imageAltText={ideaImageAltText}
-          header={
-            <>
-              {participationMethod === 'budgeting' && ideaBudget &&
-                <IdeaBudget>
-                  <FormattedNumber
-                    value={ideaBudget}
-                    style="currency"
-                    currency={tenantCurrency}
-                    minimumFractionDigits={0}
-                    maximumFractionDigits={0}
-                  />
-                </IdeaBudget>
-              }
-            </>
-          }
-          title={ideaTitle}
+          to={`/initiatives/${initiative.attributes.slug}`}
+          imageUrl={initiativeImageUrl}
+          imageAltText={initiativeImageAltText}
+          title={initiativeTitle}
           body={
             <StyledAuthor
-              authorId={ideaAuthorId}
+              authorId={initiativeAuthorId}
               message={messages.byAuthorName}
-              createdAt={idea.attributes.published_at}
+              createdAt={initiative.attributes.published_at}
               size="34px"
               notALink
             />
@@ -226,39 +178,32 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
             <>
               {!showVotingDisabled &&
                 <FooterInner>
-                  {participationMethod !== 'budgeting' &&
-                    <VoteControl
-                      ideaId={idea.id}
-                      unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                      disabledVoteClick={this.disabledVoteClick}
-                      size="2"
-                    />
-                  }
-
-                  {participationMethod === 'budgeting' && ideaBudget && participationContextId && participationContextType &&
+                  {/*
+                  {participationMethod === 'budgeting' && initiativeBudget && participationContextId && participationContextType &&
                     <AssignBudgetControl
-                      view="ideaCard"
-                      ideaId={idea.id}
+                      view="initiativeCard"
+                      initiativeId={initiative.id}
                       participationContextId={participationContextId}
                       participationContextType={participationContextType}
-                      openIdea={this.onCardClick}
+                      openInitiative={this.onCardClick}
                       unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
                       disabledAssignBudgetClick={this.disabledAssignBudgetClick}
                     />
                   }
+                  */}
 
                   <Spacer />
 
                   <CommentInfo className={`${commentingDescriptor && commentingDescriptor.enabled ? 'enabled' : ''}`}>
                     <CommentIcon name="comments" />
-                    <CommentCount className="e2e-ideacard-comment-count">
-                      <span>{idea.attributes.comments_count}</span>
+                    <CommentCount className="e2e-initiativecard-comment-count">
+                      <span>{initiative.attributes.comments_count}</span>
                     </CommentCount>
                   </CommentInfo>
                 </FooterInner>
               }
 
-              {(showVotingDisabled === 'unauthenticated' || showAssignBudgetDisabled === 'unauthenticated') &&
+              {showVotingDisabled === 'unauthenticated' &&
                 <BottomBounceUp icon="lock-outlined">
                   <Unauthenticated />
                 </BottomBounceUp>
@@ -269,17 +214,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
                   <DisabledWrapper>
                     <VotingDisabled
                       votingDescriptor={votingDescriptor}
-                      projectId={projectId}
-                    />
-                  </DisabledWrapper>
-                </BottomBounceUp>
-              }
-
-              {showAssignBudgetDisabled === 'assignBudgetDisabled' && budgetingDescriptor && projectId &&
-                <BottomBounceUp icon="lock-outlined">
-                  <DisabledWrapper>
-                    <AssignBudgetDisabled
-                      budgetingDescriptor={budgetingDescriptor}
                       projectId={projectId}
                     />
                   </DisabledWrapper>
@@ -297,15 +231,15 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={get(idea, 'relationships.idea_images.data[0].id')}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
+  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
+  initiativeImage: ({ initiativeId, initiative, render }) => <GetInitiativeImage initiativeId={initiativeId} initiativeImageId={get(initiative, 'relationships.initiative_images.data[0].id')}>{render}</GetInitiativeImage>,
+  initiativeAuthor: ({ initiative, render }) => <GetUser id={get(initiative, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
-const IdeaCardWithHoC = injectIntl(injectLocalize(IdeaCard));
+const InitiativeCardWithHoC = injectIntl(injectLocalize(InitiativeCard));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaCardWithHoC {...inputProps} {...dataProps} />}
+    {dataProps => <InitiativeCardWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );
