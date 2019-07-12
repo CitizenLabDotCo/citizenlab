@@ -19,7 +19,7 @@ interface Props {
   selectedPhases?: string[];
   phases?: IPhaseData[];
   selectedTopics?: string[];
-  projectId: string;
+  projectId?: string;
   statuses?: IIdeaStatusData[] | undefined;
   selectedStatus: string | undefined;
   onUpdatePhases: (id: string[]) => void;
@@ -58,7 +58,7 @@ export default ({
            onUpdateTopics={onUpdateTopics}
          />
        }
-       {activeFilterMenu === 'projects' &&
+       {activeFilterMenu === 'projects' && projectId &&
          <ProjectSelector projectId={projectId} />
        }
        {activeFilterMenu === 'statuses' && statuses &&

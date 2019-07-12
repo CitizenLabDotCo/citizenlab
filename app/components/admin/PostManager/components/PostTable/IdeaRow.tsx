@@ -81,10 +81,23 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
       idea: ideaId
     });
   }
+  onUpdateIdeaAssignee = (assigneeId) => {
+    const { idea }  = this.props;
+    const ideaId = idea.id;
+
+    updateIdea(ideaId, {
+      assignee_id: assigneeId,
+    });
+
+    trackEventByName(tracks.changePostAssignment, {
+      location: 'Idea Manager',
+      method: 'Changed through the dropdown n the table overview',
+      idea: ideaId
+    });
+  }
 
   render() {
     const {
-      type,
       idea,
       selection,
       connectDragSource,
@@ -104,6 +117,7 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
     const attrs = idea.attributes;
     const active = selection.has(idea.id);
     const projectId = get(idea, 'relationships.project.data.id');
+    const assigneeId = get(idea, 'relationships.assignee.data.id');
     return (
       <>
         <WrappedRow
@@ -121,7 +135,13 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
               <T value={attrs.title_multiloc} />
             </TitleLink>
           </Table.Cell>
-          <Table.Cell onClick={nothingHappens} singleLine><AssigneeSelect post={idea} type={type}/></Table.Cell>
+          <Table.Cell onClick={nothingHappens} singleLine>
+          <AssigneeSelect
+            onAssigneeChange={this.onUpdateIdeaAssignee}
+            projectId={projectId}
+            assigneeId={assigneeId}
+          />
+          </Table.Cell>
           <Table.Cell>
             <FormattedRelative value={attrs.published_at} />
           </Table.Cell>

@@ -32,7 +32,7 @@ import { GetPhasesChildProps } from 'resources/GetPhases';
 import PostPreview from './components/PostPreview';
 import GetInitiatives from 'resources/GetInitiatives';
 
-const StyledExportMenu = styled(ExportMenu)<ExportMenuProps>`
+const StyledExportMenu = styled(ExportMenu) <ExportMenuProps>`
   margin-left: auto;
 `;
 
@@ -148,7 +148,7 @@ class PostManager extends React.PureComponent<Props, State> {
     }
   }
 
- // Filtering handlers
+  // Filtering handlers
   getSelectedProject = () => {
     const { posts: { queryParameters } } = this.props;
     return Array.isArray(queryParameters.projects) && queryParameters.projects.length === 1
@@ -273,19 +273,17 @@ class PostManager extends React.PureComponent<Props, State> {
             projectId={type === 'ProjectIdeas' ? projectId : null}
             handleAssigneeFilterChange={onChangeAssignee}
           />
-          {type === 'ProjectIdeas' || type === 'AllIdeas' &&
-            <FeedbackToggle
-              type={type}
-              value={feedbackNeeded}
-              onChange={onChangeFeedbackFilter}
-              project={selectedProject}
-              phase={selectedPhase}
-              topics={selectedTopics}
-              status={selectedStatus}
-              assignee={selectedAssignee}
-              searchTerm={searchTerm}
-            />
-          }
+          <FeedbackToggle
+            type={type}
+            value={feedbackNeeded}
+            onChange={onChangeFeedbackFilter}
+            project={selectedProject}
+            phase={selectedPhase}
+            topics={selectedTopics}
+            status={selectedStatus}
+            assignee={selectedAssignee}
+            searchTerm={searchTerm}
+          />
           <StyledExportMenu
             exportType={exportType}
             exportQueryParameter={exportQueryParameter}
@@ -311,7 +309,7 @@ class PostManager extends React.PureComponent<Props, State> {
               searchTerm={searchTerm}
               assignee={selectedAssignee}
             />
-            <StyledInput icon="search" onChange={this.handleSearchChange}/>
+            <StyledInput icon="search" onChange={this.handleSearchChange} />
           </MiddleColumnTop>
         </ThreeColumns>
         <ThreeColumns>
@@ -389,20 +387,20 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetInitiatives>
   ) : (
-    <GetIdeas
-      type="paginated"
-      pageSize={10}
-      sort="new"
-      projectIds={type === 'ProjectIdeas' && projectId
-        ? [projectId]
-        : type === 'AllIdeas' && projects
-        ? projects.map(project => project.id)
-        : undefined
-      }
-    >
-      {render}
-    </GetIdeas>
-  ),
+      <GetIdeas
+        type="paginated"
+        pageSize={10}
+        sort="new"
+        projectIds={type === 'ProjectIdeas' && projectId
+          ? [projectId]
+          : type === 'AllIdeas' && projects
+            ? projects.map(project => project.id)
+            : undefined
+        }
+      >
+        {render}
+      </GetIdeas>
+    ),
   postStatuses: <GetIdeaStatuses />,
 });
 
