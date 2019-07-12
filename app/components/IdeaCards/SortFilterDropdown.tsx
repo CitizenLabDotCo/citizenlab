@@ -17,7 +17,7 @@ type State = {
   selectedValue: string[];
 };
 
-class SelectSort extends PureComponent<Props, State> {
+class SortFilterDropdown extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -60,4 +60,4 @@ class SelectSort extends PureComponent<Props, State> {
   }
 }
 
-export default SelectSort;
+export default SortFilterDropdown;

@@ -1,14 +1,11 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, MouseEvent } from 'react';
 
 // components
 import Icon from 'components/UI/Icon';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
@@ -88,19 +85,12 @@ const CloseButton = styled.button`
 `;
 
 interface Props {
+  onClose: (event: MouseEvent) => void;
+  onReset: (event: MouseEvent) => void;
   className?: string;
 }
 
-const TopBar = memo<Props>(({ className }) => {
-
-  const onClose = useCallback(() => {
-    eventEmitter.emit('IdeaFiltersTopBar', 'closeIdeaFilters', null);
-  }, []);
-
-  const onClear = useCallback(() => {
-    eventEmitter.emit('IdeaFiltersTopBar', 'clearIdeaFilters', null);
-  }, []);
-
+const TopBar = memo<Props>(({ onClose, onReset, className }) => {
   return (
     <Container className={className}>
       <TopBarInner>
@@ -113,8 +103,8 @@ const TopBar = memo<Props>(({ className }) => {
           <FormattedMessage {...messages.filters} />
         </Center>
         <Right>
-          <button onClick={onClear}>
-            <FormattedMessage {...messages.clearAll} />
+          <button onClick={onReset}>
+            <FormattedMessage {...messages.resetFilters} />
           </button>
         </Right>
       </TopBarInner>

@@ -29,7 +29,7 @@ type State = {
   titleKey: number;
 };
 
-export default class SelectTopic extends PureComponent<Props, State> {
+export default class TopicFilterDropdown extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props) {

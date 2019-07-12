@@ -68,6 +68,19 @@ export interface IInitiativeAdd {
   location_description?: string | null;
 }
 
+export interface IInitiativesFilterCounts {
+  initiative_status_id: {
+    [key: string]: number;
+  };
+  area_id: {
+    [key: string]: number;
+  };
+  topic_id: {
+    [key: string]: number;
+  };
+  total: number;
+}
+
 export function initiativeByIdStream(initiativeId: string) {
   return streams.get<IInitiative>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}` });
 }
