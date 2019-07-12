@@ -4,13 +4,11 @@ import styled from 'styled-components';
 
 // components
 import { Table } from 'semantic-ui-react';
-import { FormattedMessage } from 'utils/cl-intl';
-import SortableTableHeader from 'components/admin/SortableTableHeader';
 import Row from './Row';
 import Pagination from 'components/admin/Pagination';
-import Checkbox from 'components/UI/Checkbox';
-import FeatureFlag from 'components/FeatureFlag';
 import NoPost from './NoPost';
+import IdeaHeaderRow from './IdeaHeaderRow';
+import InitiativesHeaderRow from './InitiativesHeaderRow';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 // services
@@ -25,12 +23,7 @@ import { Sort, SortAttribute } from 'resources/GetIdeas';
 import { SortDirection } from 'utils/paginationUtils';
 
 // i18n
-import messages from '../../messages';
-import InfoTooltip from 'components/admin/InfoTooltip';
 import { ManagerType, TFilterMenu } from '../..';
-import NoInitiatives from './NoInitiatives';
-import IdeaHeaderRow from './IdeaHeaderRow';
-import InitiativesHeaderRow from './InitiativesHeaderRow';
 
 const Container = styled.div`
   .ui.table {

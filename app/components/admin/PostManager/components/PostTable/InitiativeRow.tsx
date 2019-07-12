@@ -1,7 +1,7 @@
 import React from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { uniq, isEmpty, get } from 'lodash-es';
+import { uniq, get } from 'lodash-es';
 import { findDOMNode } from 'react-dom';
 import { DragSource } from 'react-dnd';
 
@@ -22,7 +22,6 @@ import localize, { InjectedLocalized } from 'utils/localize';
 // i18n
 import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from '../../messages';
 
 // style
 import AssigneeSelect from './AssigneeSelect';
@@ -37,7 +36,7 @@ import SubRow from './SubRow';
 type InputProps = {
   type: ManagerType;
   initiative: IInitiativeData,
-//  statuses?: IInitiativeStatusData[],
+  //  statuses?: IInitiativeStatusData[],
   selection: Set<string>,
   activeFilterMenu: TFilterMenu;
   className?: string;
@@ -65,7 +64,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
   }
 
   onUpdateInitiativeStatus = (statusId) => {
-    const { initiative }  = this.props;
+    const { initiative } = this.props;
     const initiativeId = initiative.id;
 
     updateInitiative(initiativeId, {
@@ -79,14 +78,28 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
     });
   }
 
+  onUpdateInitiativeAssignee = (assigneeId) => {
+    const { initiative }  = this.props;
+    const initiativeId = initiative.id;
+
+    updateInitiative(initiativeId, {
+      assignee_id: assigneeId,
+    });
+
+    trackEventByName(tracks.changePostAssignment, {
+      location: 'Initiative Manager',
+      method: 'Changed through the dropdown n the table overview',
+      initiative: initiativeId
+    });
+  }
+
   render() {
     const {
-      type,
       initiative,
       selection,
       connectDragSource,
       activeFilterMenu,
-  //    statuses,
+      //    statuses,
       className,
       onClickRow,
       onClickCheckbox,
@@ -98,7 +111,8 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
     const selectedTopics = initiative.relationships.topics.data.map((p) => p.id);
     const attrs = initiative.attributes;
     const active = selection.has(initiative.id);
-    const projectId = get(initiative, 'relationships.project.data.id');
+    const assigneeId = get(initiative, 'relationships.assignee.data.id');
+
     return (
       <>
         <WrappedRow
@@ -109,15 +123,19 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
           ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}
         >
           <Table.Cell collapsing={true}>
-            <Checkbox value={!!active} onChange={onClickCheckbox} size="17px"/>
+            <Checkbox value={!!active} onChange={onClickCheckbox} size="17px" />
           </Table.Cell>
           <Table.Cell>
             <TitleLink className="e2e-initiative-manager-initiative-title" onClick={onClickTitle}>
               <T value={attrs.title_multiloc} />
             </TitleLink>
           </Table.Cell>
-          <Table.Cell onClick={nothingHappens} singleLine><AssigneeSelect type={type} post={initiative}/></Table.Cell>
-          <Table.Cell>
+          <Table.Cell onClick={nothingHappens} singleLine>
+            <AssigneeSelect
+              onAssigneeChange={this.onUpdateInitiativeAssignee}
+              assigneeId={assigneeId}
+            />
+          </Table.Cell>          <Table.Cell>
             <FormattedRelative value={attrs.published_at} />
           </Table.Cell>
           <Table.Cell singleLine>
@@ -132,8 +150,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
             className,
             activeFilterMenu,
             selectedTopics,
-            projectId,
-          //  statuses,
+            //  statuses,
             selectedStatus
           }}
           onUpdatePhases={this.onUpdateInitiativePhases}
@@ -176,8 +193,8 @@ const initiativeSource = {
     } else if (dropResult && dropResult.type) {
 
       const observables = selection.has(item.id)
-      ? [...selection].map((id) => initiativeByIdStream(id).observable)
-      : [initiativeByIdStream(item.id).observable];
+        ? [...selection].map((id) => initiativeByIdStream(id).observable)
+        : [initiativeByIdStream(item.id).observable];
 
       if (dropResult.type === 'topic') {
         combineLatest(observables).pipe(take(1)).subscribe((initiatives) => {
