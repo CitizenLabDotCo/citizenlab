@@ -7,7 +7,7 @@ import { DragSource } from 'react-dnd';
 
 // services
 import { IInitiativeData, updateInitiative, initiativeByIdStream } from 'services/initiatives';
-// import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // components
 import { Table, Icon } from 'semantic-ui-react';
@@ -36,7 +36,7 @@ import SubRow from './SubRow';
 type InputProps = {
   type: ManagerType;
   initiative: IInitiativeData,
-  //  statuses?: IInitiativeStatusData[],
+  statuses?: IInitiativeStatusData[],
   selection: Set<string>,
   activeFilterMenu: TFilterMenu;
   className?: string;
@@ -99,7 +99,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
       selection,
       connectDragSource,
       activeFilterMenu,
-      //    statuses,
+      statuses,
       className,
       onClickRow,
       onClickCheckbox,
@@ -150,7 +150,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
             className,
             activeFilterMenu,
             selectedTopics,
-            //  statuses,
+            statuses,
             selectedStatus
           }}
           onUpdatePhases={this.onUpdateInitiativePhases}
@@ -174,7 +174,7 @@ const initiativeSource = {
     const dropResult = monitor.getDropResult();
     const { selection } = props;
 
-    if (dropResult && dropResult.type === 'initiativeStatus') {
+    if (dropResult && dropResult.type === 'status') {
       selection.has(item.id) && selection.forEach((initiativeId) => {
         updateInitiative(initiativeId, {
           initiative_status_id: dropResult.id,

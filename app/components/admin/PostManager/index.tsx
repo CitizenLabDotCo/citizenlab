@@ -12,6 +12,7 @@ import { IProjectData } from 'services/projects';
 
 // resources
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
+import GetInitiativeStatuses, { GetInitiativeStatusesChildProps } from 'resources/GetInitiativeStatuses';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 
 // components
@@ -30,7 +31,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { GetPhasesChildProps } from 'resources/GetPhases';
 import PostPreview from './components/PostPreview';
-import GetInitiatives from 'resources/GetInitiatives';
+import GetInitiatives, { GetInitiativesChildProps } from 'resources/GetInitiatives';
 
 const StyledExportMenu = styled(ExportMenu) <ExportMenuProps>`
   margin-left: auto;
@@ -101,8 +102,8 @@ interface InputProps {
 }
 
 interface DataProps {
-  posts: GetIdeasChildProps;
-  postStatuses: GetIdeaStatusesChildProps;
+  posts: GetIdeasChildProps | GetInitiativesChildProps;
+  postStatuses: GetIdeaStatusesChildProps | GetInitiativeStatusesChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -150,7 +151,10 @@ class PostManager extends React.PureComponent<Props, State> {
 
   // Filtering handlers
   getSelectedProject = () => {
-    const { posts: { queryParameters } } = this.props;
+    const { posts, type } = this.props;
+    if (type === 'Initiatives') return undefined;
+
+    const { queryParameters } = posts as GetIdeasChildProps;
     return Array.isArray(queryParameters.projects) && queryParameters.projects.length === 1
       ? queryParameters.projects[0]
       : undefined;
@@ -168,9 +172,9 @@ class PostManager extends React.PureComponent<Props, State> {
 
   onChangeProjects = (projectIds: string[] | undefined) => {
     const { projects, posts, type } = this.props;
-    const { onChangeProjects } = posts;
-
     if (type !== 'AllIdeas') return;
+
+    const { onChangeProjects } = posts as GetIdeasChildProps;
 
     const accessibleProjectsIds = projects ? projects.map(project => project.id) : null;
 
@@ -246,18 +250,37 @@ class PostManager extends React.PureComponent<Props, State> {
     this.setState({ previewPostId: null });
   }
   // End Modal Preview
+  getNonSharedParams = () => {
+    const { type } = this.props;
+    if (type === 'Initiatives') {
+      const posts = this.props.posts as GetInitiativesChildProps;
+      return ({
+        onChangePhase: undefined,
+        selectedPhase: undefined,
+        selectedStatus: posts.queryParameters.initiative_status
+      });
+    } else {
+      const posts = this.props.posts as GetIdeasChildProps;
+      return ({
+        onChangePhase: posts.onChangePhase,
+        selectedPhase: posts.queryParameters.phase,
+        selectedStatus: posts.queryParameters.idea_status
+      });
+    }
+  }
 
   render() {
     const { searchTerm, previewPostId, previewMode, selection, activeFilterMenu } = this.state;
     const { type, projectId, projects, posts, phases, postStatuses, visibleFilterMenus } = this.props;
-    const { list, onChangePhase, onChangeTopics, onChangeStatus, queryParameters, onChangeAssignee, onChangeFeedbackFilter, onResetParams } = posts;
+    const { list, onChangeTopics, onChangeStatus, queryParameters, onChangeAssignee, onChangeFeedbackFilter, onResetParams } = posts;
 
     const selectedTopics = queryParameters.topics;
-    const selectedPhase = queryParameters.phase;
     const selectedAssignee = queryParameters.assignee;
-    const selectedStatus = queryParameters.idea_status;
-    const selectedProject = this.getSelectedProject();
     const feedbackNeeded = queryParameters.feedback_needed || false;
+
+    const selectedProject = this.getSelectedProject();
+
+    const { onChangePhase, selectedPhase, selectedStatus } = this.getNonSharedParams();
 
     const multipleIdeasSelected = this.isSelectionMultiple();
 
@@ -401,7 +424,9 @@ const Data = adopt<DataProps, InputProps>({
         {render}
       </GetIdeas>
     ),
-  postStatuses: <GetIdeaStatuses />,
+  postStatuses: ({ type, render }) => type === 'Initiatives'
+    ? <GetInitiativeStatuses>{render}</GetInitiativeStatuses>
+    : <GetIdeaStatuses>{render}</GetIdeaStatuses>
 });
 
 const PostManagerWithDragDropContext = DragDropContext(HTML5Backend)(PostManager);

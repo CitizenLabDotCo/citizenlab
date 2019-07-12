@@ -66,6 +66,7 @@ export type GetInitiativesChildProps = State & {
   onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
   onInitiativeFiltering: (partialQueryParameters: Partial<IQueryParameters>) => void;
   onResetParams: (paramsToOmit?: (keyof IQueryParameters)[]) => void;
+  type: 'initiatives';
 };
 
 interface State {
@@ -383,6 +384,7 @@ export default class GetInitiatives extends React.Component<Props, State> {
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
       onInitiativeFiltering: this.handleInitiativeFiltering,
       onResetParams: this.handleResetParamsToProps,
+      type: 'initiatives'
     });
   }
 }
