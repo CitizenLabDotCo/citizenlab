@@ -143,6 +143,8 @@ resource "Campaigns" do
   end
 
   post "web_api/v1/campaigns/:id/send" do
+    ValidationErrorHelper.new.error_fields(self, EmailCampaigns::Campaign)
+
     let(:campaign) { create(:manual_campaign)}
     let(:id) { campaign.id }
 
@@ -150,6 +152,14 @@ resource "Campaigns" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:deliveries_count)).to eq User.count
+    end
+
+    example "[error] Send out the campaign without an author" do
+      campaign.update_columns(author_id: nil, sender: 'author')
+      do_request
+      expect(response_status).to eq 422
+      json_response = json_parse(response_body)
+      expect(json_response[:errors][:author][0][:error]).to eq 'blank'
     end
   end
 
