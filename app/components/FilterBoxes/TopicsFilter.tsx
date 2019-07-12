@@ -1,20 +1,16 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
-import { adopt } from 'react-adopt';
 import { isError, includes } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // styling
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // components
 import T from 'components/T';
-
-// resources
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // styling
 import styled from 'styled-components';
@@ -77,19 +73,14 @@ const Topic = styled.button`
   }
 `;
 
-interface InputProps {
+interface Props {
+  topics: ITopicData[];
   selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
   className?: string;
 }
 
-interface DataProps {
-  topics: GetTopicsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const TopicsFilter = memo<Props>(({ selectedTopicIds, topics, onChange, className }) => {
+const TopicsFilter = memo<Props>(({ topics, selectedTopicIds, onChange, className }) => {
 
   const handleOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
     const topicId = event.currentTarget.dataset.id as string;
@@ -137,12 +128,4 @@ const TopicsFilter = memo<Props>(({ selectedTopicIds, topics, onChange, classNam
   return null;
 });
 
-const Data = adopt<DataProps, InputProps>({
-  topics: <GetTopics />
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <TopicsFilter {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default TopicsFilter;

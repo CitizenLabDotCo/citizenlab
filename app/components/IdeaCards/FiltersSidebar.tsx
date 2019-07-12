@@ -1,26 +1,53 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, MouseEvent } from 'react';
 
 // components
 import SearchInput from 'components/UI/SearchInput';
-import StatusFilter from './StatusFilter';
-import TopicsFilter from './TopicsFilter';
+import IdeasStatusFilter from './StatusFilterBox';
+import IdeasTopicsFilter from './TopicFilterBox';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import messages from '../messages';
+import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { IQueryParameters } from 'resources/GetIdeas';
 
-const Container = styled.div``;
+const Container = styled.div`
+  position: relative;
+`;
+
+const ClearFiltersText = styled.span`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: auto;
+`;
+
+const ClearFiltersButton = styled.button`
+  height: 32px;
+  position: absolute;
+  top: -48px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+
+  &:hover {
+    ${ClearFiltersText} {
+      color: #000;
+    }
+  }
+`;
 
 const StyledSearchInput = styled(SearchInput)`
   margin-bottom: 20px;
@@ -30,11 +57,11 @@ const StyledSearchInput = styled(SearchInput)`
   `}
 `;
 
-const StyledStatusFilter = styled(StatusFilter)`
+const StyledIdeasStatusFilter = styled(IdeasStatusFilter)`
   margin-bottom: 20px;
 `;
 
-const StyledTopicsFilter = styled(TopicsFilter)`
+const StyledIdeasTopicsFilter = styled(IdeasTopicsFilter)`
   margin-bottom: 0px;
 `;
 
@@ -44,9 +71,10 @@ interface Props {
   onApply?: () => void;
   onChange: (arg: Partial<IQueryParameters>) => void;
   onClose?: () => void;
+  onReset?: () => void;
 }
 
-const FiltersSidebar = memo<Props & InjectedIntlProps>(({ selectedIdeaFilters, className, onApply, onChange, onClose, intl }) => {
+const FiltersSidebar = memo<Props & InjectedIntlProps>(({ selectedIdeaFilters, className, onApply, onChange, onClose, onReset, intl }) => {
 
   useEffect(() => {
     const subscriptions = [
@@ -82,23 +110,39 @@ const FiltersSidebar = memo<Props & InjectedIntlProps>(({ selectedIdeaFilters, c
     onChange({ topics });
   }, []);
 
+  const handleIdeaFiltersOnReset = useCallback(() => {
+    onReset && onReset();
+  }, []);
+
+  const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+  }, []);
+
   const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
   const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
 
   return (
     <Container className={className}>
+      {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
+        <ClearFiltersButton onMouseDown={removeFocus} onClick={handleIdeaFiltersOnReset}>
+          <ClearFiltersText>
+            <FormattedMessage {...messages.resetFilters} />
+          </ClearFiltersText>
+        </ClearFiltersButton>
+      }
+
       <StyledSearchInput
         placeholder={searchPlaceholder}
         ariaLabel={searchAriaLabel}
         value={selectedIdeaFilters.search || null}
         onChange={handleSearchOnChange}
       />
-      <StyledStatusFilter
+      <StyledIdeasStatusFilter
         selectedStatusId={selectedIdeaFilters.idea_status}
         selectedIdeaFilters={selectedIdeaFilters}
         onChange={handleStatusOnChange}
       />
-      <StyledTopicsFilter
+      <StyledIdeasTopicsFilter
         selectedTopicIds={selectedIdeaFilters.topics}
         onChange={handleTopicsOnChange}
       />

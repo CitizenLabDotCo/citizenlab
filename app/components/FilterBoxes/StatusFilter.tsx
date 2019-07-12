@@ -1,19 +1,14 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
-import { adopt } from 'react-adopt';
 import { capitalize, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // components
 import T from 'components/T';
 import Icon from 'components/UI/Icon';
-
-// resources
-import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
-import GetIdeasFilterCounts, { GetIdeasFilterCountsChildProps } from 'resources/GetIdeasFilterCounts';
 
 // styling
 import styled from 'styled-components';
@@ -22,7 +17,10 @@ import { darken } from 'polished';
 import { Header, Title } from './styles';
 
 // typings
-import { IQueryParameters } from 'resources/GetIdeas';
+import { IIdeasFilterCounts } from 'services/ideas';
+import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativesFilterCounts } from 'services/initiatives';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 const Container = styled.div`
   width: 100%;
@@ -92,21 +90,16 @@ const Status = styled.button`
 
 const AllStatus = styled(Status)``;
 
-interface InputProps {
+interface Props {
+  type: 'idea' | 'initiative';
+  statuses: IIdeaStatusData[] | IInitiativeStatusData[];
+  filterCounts: IIdeasFilterCounts | IInitiativesFilterCounts | null | undefined;
   selectedStatusId: string | null | undefined;
-  selectedIdeaFilters: Partial<IQueryParameters>;
   onChange: (arg: string | null) => void;
   className?: string;
 }
 
-interface DataProps {
-  ideaStatuses: GetIdeaStatusesChildProps;
-  ideasFilterCounts: GetIdeasFilterCountsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, ideasFilterCounts, onChange, className }) => {
+const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatusId, onChange, className }) => {
 
   const handleOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -119,7 +112,7 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, ideasFilterC
     event.preventDefault();
   }, []);
 
-  if (!isNilOrError(ideaStatuses) && ideaStatuses.length > 0) {
+  if (!isNilOrError(statuses) && statuses.length > 0) {
     return (
       <Container className={className}>
         <Header>
@@ -136,30 +129,32 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, ideasFilterC
         >
           <FormattedMessage {...messages.all} />
           <Count>
-            {get(ideasFilterCounts, 'total', 0)}
+            {filterCounts && filterCounts.total ? filterCounts.total : 0}
           </Count>
         </AllStatus>
 
-        {ideaStatuses.map((ideaStatus) => (
-          <Status
-            key={ideaStatus.id}
-            data-id={ideaStatus.id}
-            onMouseDown={removeFocus}
-            onClick={handleOnClick}
-            className={selectedStatusId === ideaStatus.id ? 'selected' : ''}
-          >
-            <T value={ideaStatus.attributes.title_multiloc}>
-              {ideaStatusTitle => <>{capitalize(ideaStatusTitle)}</>}
-            </T>
-            {selectedStatusId !== ideaStatus.id ? (
-              <Count>
-                {get(ideasFilterCounts, `idea_status_id.${ideaStatus.id}`, 0)}
-              </Count>
-            ) : (
-              <CloseIcon name="close" />
-            )}
-          </Status>
-        ))}
+        {statuses.map((status) => {
+          return (
+            <Status
+              key={status.id}
+              data-id={status.id}
+              onMouseDown={removeFocus}
+              onClick={handleOnClick}
+              className={selectedStatusId === status.id ? 'selected' : ''}
+            >
+              <T value={status.attributes.title_multiloc}>
+                {statusTitle => <>{capitalize(statusTitle)}</>}
+              </T>
+              {selectedStatusId !== status.id ? (
+                <Count>
+                  {get(filterCounts, `${type}_status_id.${status.id}`, 0)}
+                </Count>
+              ) : (
+                <CloseIcon name="close" />
+              )}
+            </Status>
+          );
+        })}
       </Container>
     );
   }
@@ -167,22 +162,4 @@ const StatusFilter = memo<Props>(({ selectedStatusId, ideaStatuses, ideasFilterC
   return null;
 });
 
-const Data = adopt<DataProps, InputProps>({
-  ideaStatuses: <GetIdeaStatuses/>,
-  ideasFilterCounts: ({ selectedIdeaFilters, render }) => {
-    const queryParameters = {
-      ...selectedIdeaFilters,
-      idea_status: undefined,
-      project_publication_status: 'published',
-      publication_status: 'published'
-    } as Partial<IQueryParameters>;
-
-    return <GetIdeasFilterCounts queryParameters={queryParameters}>{render}</GetIdeasFilterCounts>;
-  }
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <StatusFilter {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default StatusFilter;

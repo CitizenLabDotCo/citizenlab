@@ -1,6 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
+import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -8,14 +8,14 @@ import IdeaCard from 'components/IdeaCard';
 import IdeasMap from 'components/IdeasMap';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
-import SelectSort from './SelectSort';
+import SortFilterDropdown from './SortFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
-import FiltersSidebar from './FiltersSidebar';
-import FiltersSidebarTopBar from './FiltersSidebar/TopBar';
-import FiltersSidebarBottomBar from './FiltersSidebar/BottomBar';
+import TopBar from 'components/FiltersModal/TopBar';
+import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
+import FiltersSidebar from './FiltersSidebar';
 
 // resources
 import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps, IQueryParameters } from 'resources/GetIdeas';
@@ -28,6 +28,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // utils
+import eventEmitter from 'utils/eventEmitter';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
@@ -247,44 +248,6 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   position: relative;
 `;
 
-const ClearFiltersIcon = styled(Icon)`
-  flex:  0 0 16px;
-  width: 16px;
-  height: 16px;
-  fill: ${colors.label};
-  margin-right: 5px;
-  margin-top: -2px;
-`;
-
-const ClearFiltersText = styled.span`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: auto;
-`;
-
-const ClearFiltersButton = styled.button`
-  height: 32px;
-  position: absolute;
-  top: -48px;
-  right: 0px;
-  display: flex;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-
-  &:hover {
-    ${ClearFiltersIcon} {
-      fill: #000;
-    }
-
-    ${ClearFiltersText} {
-      color: #000;
-    }
-  }
-`;
-
 const Spacer = styled.div`
   flex: 1;
 `;
@@ -417,6 +380,14 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ filtersModalOpened: false });
   }
 
+  handleTopBarOnReset = () => {
+    eventEmitter.emit('IdeaFiltersTopBar', 'clearIdeaFilters', null);
+  }
+
+  applyFilters = () => {
+    eventEmitter.emit('IdeaFiltersBottomBar', 'applyIdeaFilters', null);
+  }
+
   loadMore = () => {
     this.props.ideas.onLoadMore();
   }
@@ -433,7 +404,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     this.props.ideas.onChangeSearchTerm(searchTerm);
   }
 
-  handleIdeaFiltersOnClear = () => {
+  handleIdeaFiltersOnReset = () => {
     this.setState((state) => {
       const selectedIdeaFilters = {
         ...state.selectedIdeaFilters,
@@ -521,8 +492,18 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   opened={filtersModalOpened}
                   close={this.closeFiltersModal}
                   animateInOut={true}
-                  topBar={<FiltersSidebarTopBar />}
-                  bottomBar={<FiltersSidebarBottomBar selectedIdeaFilters={selectedIdeaFilters} />}
+                  topBar={<TopBar onReset={this.handleTopBarOnReset} onClose={this.closeFiltersModal} />}
+                  bottomBar={
+                    <GetIdeasFilterCounts queryParameters={selectedIdeaFilters}>
+                      {newIdeasFilterCounts => {
+                        const bottomBarButtonText = (newIdeasFilterCounts && isNumber(newIdeasFilterCounts.total))
+                          ? <FormattedMessage {...messages.showXIdeas} values={{ ideasCount: newIdeasFilterCounts.total }} />
+                          : <FormattedMessage {...messages.showIdeas} />;
+
+                        return <BottomBar buttonText={bottomBarButtonText} onClick={this.applyFilters} />;
+                      }}
+                    </GetIdeasFilterCounts>
+                  }
                 >
                   <MobileFiltersSidebarWrapper>
                     <StyledFiltersSidebar
@@ -578,7 +559,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
               {!showMapView &&
                 <AboveContentRight>
-                  <SelectSort
+                  <SortFilterDropdown
                     onChange={this.handleSortOnChange}
                     alignment="right"
                   />
@@ -653,18 +634,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   id="e2e-ideas-filters"
                   filterColumnWidth={filterColumnWidth}
                 >
-                  {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
-                    <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnClear}>
-                      {/* <ClearFiltersIcon name="close" /> */}
-                      <ClearFiltersText>
-                        <FormattedMessage {...messages.clearAll} />
-                      </ClearFiltersText>
-                    </ClearFiltersButton>
-                  }
-
                   <FiltersSidebar
                     selectedIdeaFilters={selectedIdeaFilters}
                     onChange={this.handleIdeaFiltersOnChange}
+                    onReset={this.handleIdeaFiltersOnReset}
                   />
                 </ContentRight>
               }
