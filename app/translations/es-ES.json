@@ -1231,7 +1231,7 @@
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} comentó tu idea",
   "app.containers.NotificationMenu.userMarkedCommentAsSpam": "{name} reportó un comentario en '{ideaTitle}' como spam",
   "app.containers.NotificationMenu.userMarkedIdeaAsSpam": "{name} reportó '{ideaTitle}' como spam",
-  "app.containers.NotificationMenu.userPostedComment": "{commentAuthorFirstName} comentar en {idea}",
+  "app.containers.NotificationMenu.userPostedComment": "{commentAuthorFirstName} comentó en {idea}",
   "app.containers.NotificationMenu.userPostedIdea": "{ideaAuthorFirstName} escribió {idea}",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} reaccionó ante tu comentario",
   "app.containers.NotificationMenu.xAssignedIdeaToYou": "{name} fue asignada/o {ideaTitle} a ti",
