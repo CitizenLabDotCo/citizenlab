@@ -35,7 +35,7 @@ describe('Idea Page', () => {
     });
 
     it('shows a link to author profile', () => {
-      cy.get('.e2e-idea-author .e2e-author-link').click();
+      cy.get('.e2e-idea-author .e2e-idea-author-link').click();
       cy.location('pathname').should('eq', '/en-GB/profile/casey-luettgen');
     });
 
