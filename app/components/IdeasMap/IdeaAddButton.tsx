@@ -78,6 +78,10 @@ class IdeaAddButton extends PureComponent<Props, State> {
       authUser
     });
 
+    console.log(project);
+    console.log(show);
+    console.log(enabled);
+
     if (!show || !enabled) {
       return (
         <DisabledText>

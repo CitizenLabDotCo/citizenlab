@@ -36,16 +36,20 @@ const StyledWarning = styled(Warning)`
 `;
 
 const MapWrapper = styled.div`
-  height: 400px;
+  height: 600px;
   display: flex;
   align-items: stretch;
   margin-bottom: 2rem;
 
-  ${media.biggerThanPhone`
-    height: 600px;
+  ${media.smallerThanMaxTablet`
+    height: 500px;
   `}
 
-  > .create-idea-wrapper {
+  ${media.smallerThanMinTablet`
+    height: 400px;
+  `}
+
+  .create-idea-wrapper {
     display: none;
   }
 `;
@@ -157,6 +161,8 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
     }
   }
 
+  noIdeasWithLocationMessage = <FormattedMessage {...messages.noIdeasWithLocation} />;
+
   render() {
     const { phaseId, projectIds, ideaMarkers } = this.props;
     const { selectedIdeaId } = this.state;
@@ -165,7 +171,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
     return (
       <>
         {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 &&
-          <StyledWarning text={<FormattedMessage {...messages.noIdeasWithLocation} />} />
+          <StyledWarning text={this.noIdeasWithLocationMessage} />
         }
 
         <MapWrapper>
@@ -180,7 +186,9 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
             points={points}
             onMarkerClick={this.toggleIdea}
             onMapClick={this.onMapClick}
+            fitBounds={true}
           />
+
           {projectIds && projectIds.length === 1 &&
             <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
               <IdeaButton

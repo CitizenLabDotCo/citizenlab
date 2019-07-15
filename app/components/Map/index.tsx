@@ -1,9 +1,10 @@
-// Libraries
 import React from 'react';
-import { compact, isEqual } from 'lodash-es';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { adopt } from 'react-adopt';
+import { compact, isEqual, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+
+// components
+import ReactResizeDetector from 'react-resize-detector';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -15,6 +16,7 @@ import 'leaflet.markercluster';
 // Styling
 import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 const icon = require('./marker.svg');
 
@@ -35,6 +37,10 @@ const Container = styled.div`
     line-height: 37px;
     text-align: center;
     width: 40px;
+
+    &:hover {
+      background: ${darken(0.2, '#004949')};
+    }
   }
 `;
 
@@ -44,16 +50,10 @@ const customIcon = Leaflet.icon({
   iconAnchor: [14, 41],
 });
 
-// Typing
 interface Point extends GeoJSON.Point {
   data?: any;
   id: string;
   title?: string;
-}
-
-interface DataMarkerOptions extends Leaflet.MarkerOptions {
-  data?: any;
-  id: string;
 }
 
 export interface InputProps {
@@ -64,6 +64,7 @@ export interface InputProps {
   onMarkerClick?: (id: string, data: any) => void;
   onMapClick?: (map: Leaflet.Map, position: Leaflet.LatLng) => void;
   fitBounds?: boolean;
+  className?: string;
 }
 
 interface DataProps {
@@ -76,15 +77,9 @@ interface State {}
 
 class CLMap extends React.PureComponent<Props, State> {
   private map: Leaflet.Map;
-  private mapContainer: HTMLElement;
   private clusterLayer: Leaflet.MarkerClusterGroup;
   private markers: Leaflet.Marker[];
-  private interval: number;
-  private subs: Subscription[] = [];
-  private dimensionW$: BehaviorSubject<number> = new BehaviorSubject(0);
-  private dimensionH$: BehaviorSubject<number> = new BehaviorSubject(0);
-  private bounds$: BehaviorSubject<Leaflet.LatLngBounds | null> = new BehaviorSubject(null);
-
+  private markerOptions = { icon: customIcon };
   private clusterOptions = {
     showCoverageOnHover: false,
     spiderfyDistanceMultiplier: 2,
@@ -97,90 +92,41 @@ class CLMap extends React.PureComponent<Props, State> {
     },
   };
 
-  private markerOptions = {
-    icon: customIcon,
-  };
-
-  constructor(props) {
-    super(props);
-    this.interval = window.setInterval(this.resizeDetector, 200);
-  }
-
   componentDidMount() {
     if (this.props.points) {
       this.convertPoints(this.props.points);
     }
-
-    // Map container dimensions change
-    this.subs.push(
-      this.dimensionH$.pipe(distinctUntilChanged()).subscribe(() => this.map.invalidateSize()),
-      this.dimensionW$.pipe(distinctUntilChanged()).subscribe(() => this.map.invalidateSize()),
-    );
-
-    // Refresh bounds
-    this.subs.push(
-      this.bounds$.pipe(distinctUntilChanged()).subscribe((bounds) => {
-        if (bounds && this.props.fitBounds) this.map.fitBounds(bounds, { maxZoom: 12 });
-      })
-    );
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { tenant, center, points } = this.props;
-
-    if (points && !isEqual(prevProps.points, points) && !isEqual(prevProps.points, points)) {
-      this.convertPoints(points);
-    }
-
-    // Update the center if the tenant is loaded after map init and there's no set center
-    if (!isNilOrError(tenant) && !prevProps.tenant && !center && this.map && tenant.attributes.settings.maps) {
-      this.map.setView(
-        [
-          parseFloat(tenant.attributes.settings.maps.map_center.lat),
-          parseFloat(tenant.attributes.settings.maps.map_center.long),
-        ],
-        tenant.attributes.settings.maps.zoom_level
-      );
+    if (this.props.points && !isEqual(prevProps.points, this.props.points)) {
+      this.convertPoints(this.props.points);
     }
   }
 
-  componentWillUnmount() {
-    window.clearInterval(this.interval);
-    this.subs.forEach(sub => sub.unsubscribe());
-  }
-
-  bindMapContainer = (element) => {
+  bindMapContainer = (element: HTMLDivElement | null) => {
     const { tenant, center } = this.props;
 
-    if (!this.map) {
+    if (element && !isNilOrError(tenant) && !this.map) {
       let initCenter: [number, number] = [0, 0];
 
       if (center && center !== [0, 0]) {
         initCenter = [center[1], center[0]];
-      } else if (!isNilOrError(tenant) && tenant.attributes.settings.maps) {
+      } else if (tenant.attributes.settings.maps) {
         initCenter = [
           parseFloat(tenant.attributes.settings.maps.map_center.lat),
           parseFloat(tenant.attributes.settings.maps.map_center.long),
         ];
       }
 
-      let initZoom = 15;
-
-      if (!isNilOrError(tenant) && tenant.attributes.settings.maps) {
-        initZoom = tenant.attributes.settings.maps.zoom_level;
-      }
-
-      // Bind the mapElement
-      this.mapContainer = element;
-
       // Init the map
       this.map = Leaflet.map(element, {
         center: initCenter,
-        zoom: initZoom,
+        zoom: get(tenant, 'attributes.settings.maps.zoom_level', 15),
         maxZoom: 17
       });
 
-      Leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
       }).addTo(this.map);
@@ -192,18 +138,31 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   convertPoints = (points: Point[]) => {
-    if (points) {
-      const bounds: [number, number][] = [];
+    const bounds: [number, number][] = [];
 
-      this.markers = compact(points).map((point) => {
-        bounds.push([point.coordinates[1], point.coordinates[0]]);
-        return new Marker([point.coordinates[1], point.coordinates[0]] as [number, number], ({ ...this.markerOptions, data: point.data, id: point.id, title: point.title ? point.title : '' } as DataMarkerOptions));
-      });
+    this.markers = compact(points).map((point) => {
+      const latlng: [number, number] = [
+        point.coordinates[1],
+        point.coordinates[0]
+      ];
 
-      if (bounds.length > 0) this.bounds$.next(new Leaflet.LatLngBounds(bounds));
+      const markerOptions = {
+        ...this.markerOptions,
+        data: point.data,
+        id: point.id,
+        title: point.title ? point.title : ''
+      };
 
-      this.addClusters();
+      bounds.push(latlng);
+
+      return new Marker(latlng, markerOptions);
+    });
+
+    if (bounds && bounds.length > 0 && this.props.fitBounds) {
+      this.map.fitBounds(bounds, { maxZoom: 12 });
     }
+
+    this.addClusters();
   }
 
   addClusters = () => {
@@ -223,35 +182,38 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   handleMapClick = (event: Leaflet.LeafletMouseEvent) => {
-    if (this.props.onMapClick) {
-      this.props.onMapClick(this.map, event.latlng);
-    }
+    this.props.onMapClick && this.props.onMapClick(this.map, event.latlng);
   }
 
   handleMarkerClick = (event) => {
-    if (this.props.onMarkerClick) {
-      this.props.onMarkerClick(event.layer.options.id, event.layer.options.data);
-    }
+    this.props.onMarkerClick && this.props.onMarkerClick(event.layer.options.id, event.layer.options.data);
   }
 
-  resizeDetector = () => {
-    if (this.mapContainer) {
-      this.dimensionH$.next(this.mapContainer.clientHeight);
-      this.dimensionW$.next(this.mapContainer.clientWidth);
-    }
+  onMapElementResize = () => {
+    this.map.invalidateSize();
   }
 
   render() {
-    return (
-      <Container className={this.props['className']}>
-        <div id="e2e-map" ref={this.bindMapContainer} />
-      </Container>
-    );
+    if (!isNilOrError(this.props.tenant)) {
+      return (
+        <Container className={this.props.className}>
+          <div id="e2e-map" ref={this.bindMapContainer}>
+            <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
+          </div>
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />
+});
+
 export default (inputProps: InputProps) => (
-  <GetTenant>
-    {tenant => <CLMap {...inputProps} tenant={tenant} />}
-  </GetTenant>
+  <Data {...inputProps}>
+    {dataProps => <CLMap {...inputProps} {...dataProps} />}
+  </Data>
 );

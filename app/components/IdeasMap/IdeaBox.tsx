@@ -1,6 +1,7 @@
 // libs
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -13,11 +14,14 @@ import Icon from 'components/UI/Icon';
 import VoteControl from 'components/VoteControl';
 import Unauthenticated from './Unauthenticated';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
+import IdeaBody from 'containers/IdeasShow/IdeaBody';
 
 // resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -38,15 +42,14 @@ const Container = styled.div`
 `;
 
 const Title = styled.h3`
-  color: #333;
-  display: block;
-  display: -webkit-box;
+  color: ${colors.text};
   width: calc(100% - 50px);
   margin: 0;
-  font-size: ${fontSizes.xl}px;
+  padding: 0;
+  font-size: ${fontSizes.xxl}px;
   font-weight: 500;
-  line-height: 28px;
-  margin-bottom: 10px;
+  line-height: normal;
+  margin-bottom: 15px;
 `;
 
 const Description = styled.div`
@@ -140,6 +143,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  locale: GetLocaleChildProps;
   idea: GetIdeaChildProps;
 }
 
@@ -149,7 +153,7 @@ interface State {
   showFooter: 'unauthenticated' | 'votingDisabled' | null;
 }
 
-class IdeaBox extends React.PureComponent<Props, State> {
+class IdeaBox extends React.PureComponent<Props & InjectedLocalized, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -165,7 +169,6 @@ class IdeaBox extends React.PureComponent<Props, State> {
 
   createIdeaClickHandler = (idea: GetIdeaChildProps) => (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    event.stopPropagation();
 
     if (!isNilOrError(idea)) {
       eventEmitter.emit<IOpenPostPageModalEvent>('IdeaBox', 'cardClick', {
@@ -186,7 +189,7 @@ class IdeaBox extends React.PureComponent<Props, State> {
 
   render() {
     const { showFooter } = this.state;
-    const { idea, onClose, className } = this.props;
+    const { idea, locale, onClose, className, localize } = this.props;
 
     if (!isNilOrError(idea)) {
       return (
@@ -202,7 +205,11 @@ class IdeaBox extends React.PureComponent<Props, State> {
           </Title>
 
           <Description>
-            <T as="div" value={idea.attributes.body_multiloc} supportHtml />
+            <IdeaBody
+              ideaId={idea.id}
+              ideaBody={localize(idea.attributes.body_multiloc)}
+              locale={locale}
+            />
           </Description>
 
           <VoteComments>
@@ -245,8 +252,15 @@ class IdeaBox extends React.PureComponent<Props, State> {
   }
 }
 
+const IdeaBoxWithHOCs = injectLocalize<Props>(IdeaBox);
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
+});
+
 export default (inputProps: InputProps) => (
-  <GetIdea id={inputProps.ideaId}>
-    {idea => <IdeaBox {...inputProps} idea={idea} />}
-  </GetIdea>
+  <Data {...inputProps}>
+    {dataProps => <IdeaBoxWithHOCs {...inputProps} {...dataProps} />}
+  </Data>
 );
