@@ -287,8 +287,6 @@ class PostManager extends React.PureComponent<Props, State> {
 
     const { exportType, exportQueryParameter } = this.getExportQueryParameters();
 
-    console.log(type === 'Initiatives' ? 'TODO FeedbackToggle' : '');
-
     return (
       <>
         <TopActionBar>
