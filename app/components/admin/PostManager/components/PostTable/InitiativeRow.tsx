@@ -79,7 +79,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
   }
 
   onUpdateInitiativeAssignee = (assigneeId) => {
-    const { initiative }  = this.props;
+    const { initiative } = this.props;
     const initiativeId = initiative.id;
 
     updateInitiative(initiativeId, {
@@ -88,7 +88,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
 
     trackEventByName(tracks.changePostAssignment, {
       location: 'Initiative Manager',
-      method: 'Changed through the dropdown n the table overview',
+      method: 'Changed through the dropdown in the table overview',
       initiative: initiativeId
     });
   }
@@ -135,7 +135,8 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
               onAssigneeChange={this.onUpdateInitiativeAssignee}
               assigneeId={assigneeId}
             />
-          </Table.Cell>          <Table.Cell>
+          </Table.Cell>
+          <Table.Cell>
             <FormattedRelative value={attrs.published_at} />
           </Table.Cell>
           <Table.Cell singleLine>
