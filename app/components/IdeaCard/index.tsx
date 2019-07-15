@@ -6,8 +6,8 @@ import { adopt } from 'react-adopt';
 // components
 import Card from 'components/UI/Card';
 import Icon from 'components/UI/Icon';
-import Unauthenticated from 'components/IdeaCard/Unauthenticated';
-import BottomBounceUp from './BottomBounceUp';
+import Unauthenticated from 'components/UI/Card/Unauthenticated';
+import BottomBounceUp from 'components/UI/Card/BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import AssignBudgetControl from 'components/AssignBudgetControl';
@@ -37,7 +37,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { IIdeaCardClickEvent } from 'containers/App';
+import { ICardClick } from 'containers/App';
 import { ParticipationMethod } from 'services/participationContexts';
 
 const IdeaBudget = styled.div`
@@ -139,7 +139,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IIdeaCardClickEvent>('IdeaCard', 'ideaCardClick', { ideaId: idea.id, ideaSlug: idea.attributes.slug });
+      eventEmitter.emit<ICardClick>('IdeaCard', 'cardClick', {
+        id: idea.id,
+        slug: idea.attributes.slug,
+        type: 'initiative'
+      });
     }
   }
 
