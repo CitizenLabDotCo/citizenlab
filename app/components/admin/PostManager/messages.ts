@@ -157,17 +157,37 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exportSelectedIdeas',
     defaultMessage: 'Export selected ideas (.xslx)',
   },
-  exportComments: {
-    id: 'app.components.admin.PostManager.exportComments',
+  exportIdeasComments: {
+    id: 'app.components.admin.PostManager.exportIdeasComments',
     defaultMessage: 'Export all comments (.xslx)',
   },
-  exportCommentsProjects: {
-    id: 'app.components.admin.PostManager.exportCommentsProjects',
+  exportIdeasCommentsProjects: {
+    id: 'app.components.admin.PostManager.exportIdeasCommentsProjects',
     defaultMessage: 'Export comments for this project (.xslx)',
   },
-  exportSelectedComments: {
-    id: 'app.components.admin.PostManager.exportSelectedComments',
+  exportSelectedIdeasComments: {
+    id: 'app.components.admin.PostManager.exportSelectedIdeasComments',
     defaultMessage: 'Export comments for selected ideas (.xslx)',
+  },
+  exportInitiatives: {
+    id: 'app.components.admin.PostManager.exportInitiatives',
+    defaultMessage: 'Export all initiatives (.xslx)',
+  },
+  exportInitiativesProjects: {
+    id: 'app.components.admin.PostManager.exportInitiativesProjects',
+    defaultMessage: 'Export initiatives for this project (.xslx)',
+  },
+  exportSelectedInitiatives: {
+    id: 'app.components.admin.PostManager.exportSelectedInitiatives',
+    defaultMessage: 'Export selected initiatives (.xslx)',
+  },
+  exportInitiativesComments: {
+    id: 'app.components.admin.PostManager.exportInitiativesComments',
+    defaultMessage: 'Export all comments (.xslx)',
+  },
+  exportSelectedInitiativesComments: {
+    id: 'app.components.admin.PostManager.exportSelectedInitiativesComments',
+    defaultMessage: 'Export comments for selected initiatives (.xslx)',
   },
   noOne: {
     id: 'app.components.admin.PostManager.noOne',
