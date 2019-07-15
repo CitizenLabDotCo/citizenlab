@@ -70,7 +70,7 @@ const InnerContainer = styled.div`
   }
 `;
 
-export interface ICardClick {
+export interface IOpenPostPageModalEvent {
   id: string;
   slug: string;
   type: 'idea' | 'initiative';
@@ -179,7 +179,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         }
       }),
 
-      eventEmitter.observeEvent<ICardClick>('cardClick').subscribe(({ eventValue }) => {
+      eventEmitter.observeEvent<IOpenPostPageModalEvent>('cardClick').subscribe(({ eventValue }) => {
         const { id, slug, type } = eventValue;
         this.openPostPageModal(id, slug, type);
       }),

@@ -198,7 +198,6 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
                   style="primary"
                   processing={loading_deleteComment}
                   className="e2e-confirm-deletion"
-                  circularCorners={false}
                   onClick={this.deleteComment}
                 >
                   <FormattedMessage {...messages.commentDeletionConfirmButton} />

@@ -15,6 +15,7 @@ import 'leaflet.markercluster';
 // Styling
 import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
+
 const icon = require('./marker.svg');
 
 const Container = styled.div`

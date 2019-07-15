@@ -38,10 +38,10 @@ export interface IInitiativeData {
     };
     initiative_status?: {
       data: IRelationship | null;
-    },
+    };
     user_vote: {
       data: IRelationship;
-    }
+    };
   };
 }
 

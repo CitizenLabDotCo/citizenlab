@@ -100,7 +100,7 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & WithRouterPr
         <SectionSubtitle>
           <FormattedMessage {...messages.subtitleTimeline} />
         </SectionSubtitle>
-        <AddButton className="e2e-add-phase-button" icon="plus-circle" style="cl-blue" circularCorners={false} linkTo={`/admin/projects/${projectId}/timeline/new`}>
+        <AddButton className="e2e-add-phase-button" icon="plus-circle" style="cl-blue" linkTo={`/admin/projects/${projectId}/timeline/new`}>
           <FormattedMessage {...messages.addPhaseButton} />
         </AddButton>
 
@@ -128,7 +128,7 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & WithRouterPr
                     <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(projectId, phase.id)}>
                       <FormattedMessage {...messages.deletePhaseButton} />
                     </Button>
-                    <Button  circularCorners={false} className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}>
+                    <Button className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}>
                       <FormattedMessage {...messages.editPhaseButton} />
                     </Button>
                   </Row>

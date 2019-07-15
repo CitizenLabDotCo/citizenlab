@@ -11,7 +11,7 @@ import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // typings
 import { ICommentData } from 'services/comments';
-import { ICardClick } from 'containers/App';
+import { IOpenPostPageModalEvent } from 'containers/App';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -144,7 +144,7 @@ export class IdeaCommentGroup extends PureComponent<Props> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<ICardClick>('IdeaCommentGroup', 'cardClick', {
+      eventEmitter.emit<IOpenPostPageModalEvent>('IdeaCommentGroup', 'cardClick', {
         id: idea.id,
         slug: idea.attributes.slug,
         type: 'initiative'
