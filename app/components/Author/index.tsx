@@ -59,25 +59,6 @@ const AuthorNameContainer = styled.div`
   hyphens: manual;
 `;
 
-const AuthorNameLink = styled(Link)`
-  color: ${({ theme }) => theme.colorText};
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => darken(0.15, theme.colorText)};
-    text-decoration: underline;
-  }
-
-  &.canModerate {
-    color: ${colors.clRedError};
-
-    &:hover {
-      color: ${darken(0.15, colors.clRedError)};
-    }
-  }
-`;
-
 const TimeAgo = styled.div`
   color: ${colors.label};
   font-weight: 300;
@@ -123,15 +104,12 @@ class Author extends PureComponent<Props, State> {
   render() {
     const { authorId, createdAt, size, notALink, projectId, showAvatar, showModeration, className, author, avatarBadgeBgColor } = this.props;
     const authorCanModerate = !isNilOrError(author) && showModeration && canModerate(projectId, { data: author });
-    const authorNameComponent = notALink ? (
-      <UserName user={!isNilOrError(author) ? author : null} />
-    ) : (
-      <AuthorNameLink
+    const authorName = (
+      <UserName
+        userId={authorId}
+        linkToProfile={!notALink}
         className={authorCanModerate ? 'canModerate' : ''}
-        to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}
-      >
-        <UserName user={!isNilOrError(author) ? author : null} />
-      </AuthorNameLink>
+      />
     );
 
     return (
@@ -149,7 +127,7 @@ class Author extends PureComponent<Props, State> {
 
           <AuthorMeta>
             <AuthorNameContainer>
-              {authorNameComponent}
+              {authorName}
             </AuthorNameContainer>
 
             {createdAt &&

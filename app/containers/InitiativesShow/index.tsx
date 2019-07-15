@@ -479,9 +479,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
                 {biggerThanLargeTablet &&
                   <PostedBy
-                    id={initiativeId}
                     authorId={authorId}
-                    createdAt={initiativeCreatedAt}
                   />
                 }
 
