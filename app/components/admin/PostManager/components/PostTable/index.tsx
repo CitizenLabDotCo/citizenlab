@@ -124,7 +124,8 @@ export default class IdeaTable extends React.Component<Props> {
     if (this.allSelected()) {
       onChangeSelection(new Set());
     } else {
-      posts && onChangeSelection(new Set(posts.map((post: IIdeaData | IInitiativeData) => post.id)));
+      // TODO fix typings here, with the conditional type here, ts complains
+      posts && onChangeSelection(new Set((posts as IIdeaData[]).map(post => post.id)));
     }
   }
 
@@ -164,24 +165,25 @@ export default class IdeaTable extends React.Component<Props> {
         <Table sortable size="small">
           {type === 'Initiatives'
             ? <InitiativesHeaderRow
-                sortAttribute={sortAttribute}
-                sortDirection={sortDirection}
-                allSelected={this.allSelected()}
-                toggleSelectAll={this.toggleSelectAll}
-                handleSortClick={this.handleSortClick}
+              sortAttribute={sortAttribute}
+              sortDirection={sortDirection}
+              allSelected={this.allSelected()}
+              toggleSelectAll={this.toggleSelectAll}
+              handleSortClick={this.handleSortClick}
             />
             : <IdeaHeaderRow
-                sortAttribute={sortAttribute}
-                sortDirection={sortDirection}
-                allSelected={this.allSelected()}
-                toggleSelectAll={this.toggleSelectAll}
-                handleSortClick={this.handleSortClick}
+              sortAttribute={sortAttribute}
+              sortDirection={sortDirection}
+              allSelected={this.allSelected()}
+              toggleSelectAll={this.toggleSelectAll}
+              handleSortClick={this.handleSortClick}
             />
           }
           <Table.Body>
             {!!posts && posts.length > 0 ?
               <TransitionGroup component={null}>
-                {posts.map((post: IIdeaData | IInitiativeData) =>
+                {// TODO fix typings here, with the conditional type here, ts complains
+                (posts as IIdeaData[]).map(post =>
                   <CSSTransition classNames="fade" timeout={500} key={post.id}>
                     <Row
                       className="e2e-post-manager-post-row"
