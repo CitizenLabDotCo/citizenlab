@@ -10,17 +10,17 @@ const Container = styled.div`
 
 interface Props {
   type: ManagerType;
-  postIds: string[];
+  selection: Set<string>;
   resetSelection: () => void;
   handleClickEdit: () => void;
 }
 
 export default (props: Props) => {
-  const { type, postIds, resetSelection, handleClickEdit } = props;
+  const { type, selection, resetSelection, handleClickEdit } = props;
   return (
     <Container>
-      {postIds.length > 1 && <ActionBarMulti type={type} postIds={postIds} resetSelection={resetSelection} />}
-      {postIds.length === 1 && <ActionBarSingle type={type} postId={postIds[0]} resetSelection={resetSelection} handleClickEdit={handleClickEdit} />}
+      {selection.size > 1 && <ActionBarMulti type={type} selection={selection} resetSelection={resetSelection} />}
+      {selection.size === 1 && <ActionBarSingle type={type} postId={[...selection][0]} resetSelection={resetSelection} handleClickEdit={handleClickEdit} />}
     </Container>
   );
 };

@@ -45,6 +45,18 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.deleteIdeasConfirmation',
     defaultMessage: 'Are you sure you want to delete {count} ideas?',
   },
+  deleteAllSelectedInitiatives: {
+    id: 'app.components.admin.PostManager.deleteAllSelectedInitiatives',
+    defaultMessage: 'Delete {count} selected initiatives',
+  },
+  deleteInitiativeConfirmation: {
+    id: 'app.components.admin.PostManager.deleteInitiativeConfirmation',
+    defaultMessage: 'Are you sure you want to delete this initiative?',
+  },
+  deleteInitiativesConfirmation: {
+    id: 'app.components.admin.PostManager.deleteInitiativesConfirmation',
+    defaultMessage: 'Are you sure you want to delete {count} initiatives?',
+  },
   losePhaseInfoConfirmation: {
     id: 'app.components.admin.PostManager.losePhaseInfoConfirmation',
     defaultMessage: 'Moving \'{ideaTitle}\' away from its current project will lose the information about its assigned phases. Do you want to proceed?',
