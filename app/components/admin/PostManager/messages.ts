@@ -5,9 +5,13 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.header',
     defaultMessage: 'Ideas',
   },
-  anyFeedbackStatus: {
-    id: 'app.components.admin.PostManager.anyFeedbackStatus',
+  anyFeedbackStatusIdeas: {
+    id: 'app.components.admin.PostManager.anyFeedbackStatusIdeas',
     defaultMessage: 'All ideas',
+  },
+  anyFeedbackStatusInitiatives: {
+    id: 'app.components.admin.PostManager.anyFeedbackStatusInitiatives',
+    defaultMessage: 'All initiatives',
   },
   needFeedback: {
     id: 'app.components.admin.PostManager.needFeedback',
