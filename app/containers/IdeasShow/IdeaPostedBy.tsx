@@ -55,7 +55,7 @@ interface Props extends InputProps, DataProps {}
 const IdeaPostedBy = memo<Props>(({ author, className }) => {
 
   const userName = !isNilOrError(author) ? (
-    <UserNameLink to={`/profile/${author.attributes.slug}`} className="e2e-author-link">
+    <UserNameLink to={`/profile/${author.attributes.slug}`} className="e2e-idea-author-link">
       <UserName user={author} />
     </UserNameLink>
   ) : (
