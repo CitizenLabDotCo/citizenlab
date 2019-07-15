@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { IIdeaCardClickEvent } from 'containers/App';
+import { ICardClick } from 'containers/App';
 
 // components
 import T from 'components/T';
@@ -169,7 +169,11 @@ class IdeaBox extends React.PureComponent<Props, State> {
     event.stopPropagation();
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IIdeaCardClickEvent>('IdeaBox', 'ideaCardClick', { ideaId: idea.id, ideaSlug: idea.attributes.slug });
+      eventEmitter.emit<ICardClick>('IdeaBox', 'cardClick', {
+        id: idea.id,
+        slug: idea.attributes.slug,
+        type: 'initiative'
+      });
     }
   }
 

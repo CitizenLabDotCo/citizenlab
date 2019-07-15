@@ -6,30 +6,31 @@ import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 
 interface Props {
-  ideaId: string | null;
-  ideaSlug: string | null;
+  type: 'idea' | 'initiative' | null;
+  id: string | null;
+  slug: string | null;
   close: () => void;
 }
 
-const IdeaPageFullscreenModal = memo<Props>(({ ideaId, ideaSlug, close }) => {
+const PostPageFullscreenModal = memo<Props>(({ id, slug, type, close }) => {
 
   const onClose = useCallback(() => {
     close();
   }, []);
 
   const topBar = useMemo(() => {
-    return (ideaId ? <IdeaShowPageTopBar ideaId={ideaId} insideModal={true} /> : null);
-  }, [ideaId]);
+    return (id ? <IdeaShowPageTopBar ideaId={id} insideModal={true} /> : null);
+  }, [id]);
 
   const content = useMemo(() => {
-    return (ideaId ? <IdeasShow ideaId={ideaId} inModal={true} /> : null);
-  }, [ideaId]);
+    return (id ? <IdeasShow ideaId={id} inModal={true} /> : null);
+  }, [id]);
 
   return (
     <FullscreenModal
-      opened={!!(ideaId && ideaSlug)}
+      opened={!!(id && slug && type)}
       close={onClose}
-      url={ideaSlug ? `/ideas/${ideaSlug}` : null}
+      url={slug ? `/ideas/${slug}` : null}
       topBar={topBar}
     >
       {content}
@@ -37,4 +38,4 @@ const IdeaPageFullscreenModal = memo<Props>(({ ideaId, ideaSlug, close }) => {
   );
 });
 
-export default IdeaPageFullscreenModal;
+export default PostPageFullscreenModal;

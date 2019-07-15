@@ -6,8 +6,8 @@ import { adopt } from 'react-adopt';
 // components
 import Card from 'components/UI/Card';
 import Icon from 'components/UI/Icon';
-import Unauthenticated from 'components/InitiativeCard/Unauthenticated';
-import BottomBounceUp from './BottomBounceUp';
+import Unauthenticated from 'components/UI/Card/Unauthenticated';
+import BottomBounceUp from 'components/UI/Card/BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import Author from 'components/Author';
@@ -35,7 +35,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { IInitiativeCardClickEvent } from 'containers/App';
+import { ICardClick } from 'containers/App';
 
 const StyledAuthor = styled(Author)`
   margin-left: -4px;
@@ -117,7 +117,11 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
     const { initiative } = this.props;
 
     if (!isNilOrError(initiative)) {
-      eventEmitter.emit<IInitiativeCardClickEvent>('InitiativeCard', 'initiativeCardClick', { initiativeId: initiative.id, initiativeSlug: initiative.attributes.slug });
+      eventEmitter.emit<ICardClick>('InitiativeCard', 'initiativeCardClick', {
+        id: initiative.id,
+        slug: initiative.attributes.slug,
+        type: 'initiative'
+      });
     }
   }
 
@@ -178,20 +182,6 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
             <>
               {!showVotingDisabled &&
                 <FooterInner>
-                  {/*
-                  {participationMethod === 'budgeting' && initiativeBudget && participationContextId && participationContextType &&
-                    <AssignBudgetControl
-                      view="initiativeCard"
-                      initiativeId={initiative.id}
-                      participationContextId={participationContextId}
-                      participationContextType={participationContextType}
-                      openInitiative={this.onCardClick}
-                      unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
-                      disabledAssignBudgetClick={this.disabledAssignBudgetClick}
-                    />
-                  }
-                  */}
-
                   <Spacer />
 
                   <CommentInfo className={`${commentingDescriptor && commentingDescriptor.enabled ? 'enabled' : ''}`}>

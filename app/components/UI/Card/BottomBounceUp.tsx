@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import Icon, { IconNames } from 'components/UI/Icon';
 import { colors } from 'utils/styleUtils';
@@ -62,7 +62,7 @@ type Props = {
   children?: JSX.Element | null;
 };
 
-export default class BottomBounceUp extends React.PureComponent<Props> {
+export default class BottomBounceUp extends PureComponent<Props> {
   render() {
     return (
       <Container>
