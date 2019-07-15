@@ -340,7 +340,6 @@ export default class GetInitiatives extends React.Component<Props, State> {
   }
 
   handleFeedbackFilterOnChange = (feedbackNeeded: boolean) => {
-    console.log(feedbackNeeded);
     this.queryParameters$.next({
       ...this.state.queryParameters,
       feedback_needed: (feedbackNeeded || undefined),

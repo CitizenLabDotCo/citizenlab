@@ -286,6 +286,7 @@ class PostManager extends React.PureComponent<Props, State> {
             searchTerm={searchTerm}
           />
           <StyledExportMenu
+            type={type}
             selection={selection}
             selectedProject={selectedProject}
           />
