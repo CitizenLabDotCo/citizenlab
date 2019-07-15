@@ -8,12 +8,12 @@ import Card from 'components/UI/Card';
 import Icon from 'components/UI/Icon';
 import Unauthenticated from 'components/UI/Card/Unauthenticated';
 import BottomBounceUp from 'components/UI/Card/BottomBounceUp';
-import VotingDisabled from 'components/VoteControl/VotingDisabled';
-import VoteControl from 'components/VoteControl';
+// import VotingDisabled from 'components/VoteControl/VotingDisabled';
+// import VoteControl from 'components/VoteControl';
 import Author from 'components/Author';
 
 // services
-import { IInitiativeData } from 'services/initiatives';
+// import { IInitiativeData } from 'services/initiatives';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -35,7 +35,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { ICardClick } from 'containers/App';
+import { IOpenPostPageModalEvent } from 'containers/App';
 
 const StyledAuthor = styled(Author)`
   margin-left: -4px;
@@ -80,10 +80,10 @@ const CommentInfo = styled.div`
   }
 `;
 
-const DisabledWrapper = styled.div`
-  padding: 22px;
-  padding-top: 28px;
-`;
+// const DisabledWrapper = styled.div`
+//   padding: 22px;
+//   padding-top: 28px;
+// `;
 
 export interface InputProps {
   initiativeId: string;
@@ -117,7 +117,7 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
     const { initiative } = this.props;
 
     if (!isNilOrError(initiative)) {
-      eventEmitter.emit<ICardClick>('InitiativeCard', 'initiativeCardClick', {
+      eventEmitter.emit<IOpenPostPageModalEvent>('InitiativeCard', 'initiativeCardClick', {
         id: initiative.id,
         slug: initiative.attributes.slug,
         type: 'initiative'
@@ -144,9 +144,9 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
       !isUndefined(initiativeImage) &&
       !isUndefined(initiativeAuthor)
     ) {
-      const votingDescriptor: IInitiativeData['relationships']['action_descriptor']['data']['voting'] | null = get(initiative, 'relationships.action_descriptor.data.voting', null);
-      const commentingDescriptor: IInitiativeData['relationships']['action_descriptor']['data']['commenting'] | null  = get(initiative, 'relationships.action_descriptor.data.commenting', null);
-      const projectId: string | null = get(initiative, 'relationships.project.data.id', null);
+      // const votingDescriptor: IInitiativeData['relationships']['action_descriptor']['data']['voting'] | null = get(initiative, 'relationships.action_descriptor.data.voting', null);
+      // const commentingDescriptor: IInitiativeData['relationships']['action_descriptor']['data']['commenting'] | null  = get(initiative, 'relationships.action_descriptor.data.commenting', null);
+      // const projectId: string | null = get(initiative, 'relationships.project.data.id', null);
       const orgName = localize(tenant.attributes.settings.core.organization_name);
       const initiativeTitle = localize(initiative.attributes.title_multiloc);
       const initiativeAuthorId = !isNilOrError(initiativeAuthor) ? initiativeAuthor.id : null;
@@ -156,9 +156,9 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
         this.props.className,
         'e2e-initiative-card',
         get(initiative, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
-        commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled',
+        // commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled',
         initiative.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
-        votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'
+        // votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'
       ].filter(item => isString(item) && item !== '').join(' ');
 
       return (
@@ -184,7 +184,9 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
                 <FooterInner>
                   <Spacer />
 
-                  <CommentInfo className={`${commentingDescriptor && commentingDescriptor.enabled ? 'enabled' : ''}`}>
+                  <CommentInfo
+                    // className={`${commentingDescriptor && commentingDescriptor.enabled ? 'enabled' : ''}`}
+                  >
                     <CommentIcon name="comments" />
                     <CommentCount className="e2e-initiativecard-comment-count">
                       <span>{initiative.attributes.comments_count}</span>
@@ -199,7 +201,7 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
                 </BottomBounceUp>
               }
 
-              {showVotingDisabled === 'votingDisabled' && votingDescriptor && projectId &&
+              {/* {showVotingDisabled === 'votingDisabled' && votingDescriptor && projectId &&
                 <BottomBounceUp icon="lock-outlined">
                   <DisabledWrapper>
                     <VotingDisabled
@@ -208,7 +210,7 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
                     />
                   </DisabledWrapper>
                 </BottomBounceUp>
-              }
+              } */}
             </>
           }
         />

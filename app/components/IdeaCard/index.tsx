@@ -37,7 +37,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { ICardClick } from 'containers/App';
+import { IOpenPostPageModalEvent } from 'containers/App';
 import { ParticipationMethod } from 'services/participationContexts';
 
 const IdeaBudget = styled.div`
@@ -139,7 +139,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<ICardClick>('IdeaCard', 'cardClick', {
+      eventEmitter.emit<IOpenPostPageModalEvent>('IdeaCard', 'cardClick', {
         id: idea.id,
         slug: idea.attributes.slug,
         type: 'initiative'

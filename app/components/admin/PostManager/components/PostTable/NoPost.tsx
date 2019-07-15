@@ -92,7 +92,6 @@ export default (props: Props) => (
     </NoPostDescription>
     <Button
       style="cl-blue"
-      circularCorners={false}
       onClick={props.handleSeeAll}
     >
       <FormattedMessage {...messages.resetFiltersButton} />

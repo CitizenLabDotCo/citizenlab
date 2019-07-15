@@ -172,7 +172,6 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
             size="1"
             icon="plus-circle"
             onClick={this.handleOnAddModeratorsClick}
-            circularCorners={false}
             disabled={!selection || selection.length === 0}
             processing={this.state.processing}
           />

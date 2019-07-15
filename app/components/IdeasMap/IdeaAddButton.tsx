@@ -52,7 +52,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class IdeaButton extends PureComponent<Props, State> {
+class IdeaAddButton extends PureComponent<Props, State> {
 
   disabledReasonToMessage: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
     notPermitted: messages.postingNotPermitted,
@@ -98,7 +98,6 @@ class IdeaButton extends PureComponent<Props, State> {
         style="primary"
         size="2"
         text={<FormattedMessage {...messages.postIdeaHere} />}
-        circularCorners={false}
         disabled={!enabled}
       />
     );
@@ -111,10 +110,10 @@ const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 
-const WrappedIdeaButton = (inputProps: InputProps) => (
+const WrappedIdeaAddButton = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaButton {...inputProps} {...dataProps} />}
+    {dataProps => <IdeaAddButton {...inputProps} {...dataProps} />}
   </Data>
 );
 
-export default WrappedIdeaButton;
+export default WrappedIdeaAddButton;
