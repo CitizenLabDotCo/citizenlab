@@ -49,7 +49,6 @@ export class InitiativesCount extends React.PureComponent<Props, State> {
   render() {
     const { initiativesCount } = this.props;
     const initiativesMatchingFiltersCount = initiativesCount.count;
-    console.log(initiativesMatchingFiltersCount);
 
     return (
       <Container>
