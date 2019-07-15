@@ -61,8 +61,8 @@ const Container = styled.div`
 export type exportType = 'selected_posts' | 'project' | 'all';
 
 export interface Props {
-  exportType: exportType;
-  exportQueryParameter: 'all' | string | string[];
+  selection: Set<string>;
+  selectedProject: string | undefined;
   className?: string;
 }
 
@@ -78,6 +78,25 @@ export default class ExportMenu extends PureComponent<Props, State> {
     };
   }
 
+  getExportQueryParameters = () => {
+    const { selection, selectedProject } = this.props;
+
+    let exportQueryParameter;
+    let exportType: null | exportType = null;
+    if (selection.size > 0) {
+      exportQueryParameter = [...selection];
+      exportType = 'selected_posts';
+    } else if (selectedProject) {
+      exportQueryParameter = selectedProject;
+      exportType = 'project';
+    } else {
+      exportQueryParameter = 'all';
+      exportType = 'all';
+    }
+
+    return { exportQueryParameter, exportType };
+  }
+
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
   }
@@ -88,8 +107,9 @@ export default class ExportMenu extends PureComponent<Props, State> {
   }
 
   render() {
-    const { exportQueryParameter, exportType, className } = this.props;
+    const { className } = this.props;
     const { dropdownOpened } = this.state;
+    const { exportQueryParameter, exportType } = this.getExportQueryParameters();
 
       return (
         <Container className={className} onMouseDown={this.removeFocus} onClick={this.toggleDropdown}>

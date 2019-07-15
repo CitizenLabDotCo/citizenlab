@@ -14,6 +14,8 @@ import { IProjectData } from 'services/projects';
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
 import GetInitiativeStatuses, { GetInitiativeStatusesChildProps } from 'resources/GetInitiativeStatuses';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
+import GetInitiatives, { GetInitiativesChildProps } from 'resources/GetInitiatives';
+import { GetPhasesChildProps } from 'resources/GetPhases';
 
 // components
 import ActionBar from './components/ActionBar';
@@ -26,13 +28,11 @@ import InitiativesCount from './components/InitiativesCount';
 import { Input, Message } from 'semantic-ui-react';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+import PostPreview from './components/PostPreview';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { GetPhasesChildProps } from 'resources/GetPhases';
-import PostPreview from './components/PostPreview';
-import GetInitiatives, { GetInitiativesChildProps } from 'resources/GetInitiatives';
 
 const StyledExportMenu = styled(ExportMenu) <ExportMenuProps>`
   margin-left: auto;
@@ -199,26 +199,6 @@ class PostManager extends React.PureComponent<Props, State> {
   handleChangeSelection = (selection: Set<string>) => {
     this.setState({ selection });
   }
-
-  getExportQueryParameters = () => {
-    const { selection } = this.state;
-    const selectedProject = this.getSelectedProject();
-
-    let exportQueryParameter;
-    let exportType: null | exportType = null;
-    if (selection.size > 0) {
-      exportQueryParameter = [...selection];
-      exportType = 'selected_posts';
-    } else if (selectedProject) {
-      exportQueryParameter = selectedProject;
-      exportType = 'project';
-    } else {
-      exportQueryParameter = 'all';
-      exportType = 'all';
-    }
-
-    return { exportQueryParameter, exportType };
-  }
   // End selection management
 
   // Filter menu
@@ -251,6 +231,7 @@ class PostManager extends React.PureComponent<Props, State> {
     this.setState({ previewPostId: null });
   }
   // End Modal Preview
+
   getNonSharedParams = () => {
     const { type } = this.props;
     if (type === 'Initiatives') {
@@ -285,8 +266,6 @@ class PostManager extends React.PureComponent<Props, State> {
 
     const multipleIdeasSelected = this.isSelectionMultiple();
 
-    const { exportType, exportQueryParameter } = this.getExportQueryParameters();
-
     return (
       <>
         <TopActionBar>
@@ -307,8 +286,8 @@ class PostManager extends React.PureComponent<Props, State> {
             searchTerm={searchTerm}
           />
           <StyledExportMenu
-            exportType={exportType}
-            exportQueryParameter={exportQueryParameter}
+            selection={selection}
+            selectedProject={selectedProject}
           />
         </TopActionBar>
 
@@ -316,7 +295,7 @@ class PostManager extends React.PureComponent<Props, State> {
           <LeftColumn>
             <ActionBar
               type={type}
-              postIds={[...selection]}
+              selection={selection}
               resetSelection={this.resetSelection}
               handleClickEdit={this.openPreviewEdit}
             />

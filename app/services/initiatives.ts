@@ -1,6 +1,8 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc, ImageSizes, ILinks } from 'typings';
+import { first } from 'rxjs/operators';
+import { get } from 'lodash-es';
 
 export type InitiativePublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
@@ -93,6 +95,22 @@ export async function addInitiative(object: IInitiativeAdd) {
 export async function updateInitiative(initiativeId: string, object: Partial<IInitiativeAdd>) {
   const response = await streams.update<IInitiative>(`${API_PATH}/initiatives/${initiativeId}`, initiativeId, { initiative: object });
   // TODO refetches if necessary
+  return response;
+}
+
+export async function deleteInitiative(initiativeId: string) {
+  const [initiative, response] = await Promise.all([
+    initiativeByIdStream(initiativeId).observable.pipe(first()).toPromise(),
+    streams.delete(`${API_PATH}/initiatives/${initiativeId}`, initiativeId)
+  ]);
+
+  const authorId = get(initiative, 'relationships.author.data.id', false);
+
+  streams.fetchAllWith({
+    apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/initiatives_count`, `${API_PATH}/initiatives/filter_counts`] : [`${API_PATH}/initiatives/filter_counts`])
+    // TODO apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/initiatives_count`] : [])
+  });
+
   return response;
 }
 
