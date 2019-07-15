@@ -68,6 +68,10 @@ export interface IInitiativeAdd {
   location_description?: string | null;
 }
 
+export interface IInitiativesCount {
+  count: number;
+}
+
 export function initiativeByIdStream(initiativeId: string) {
   return streams.get<IInitiative>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}` });
 }
@@ -90,4 +94,21 @@ export async function updateInitiative(initiativeId: string, object: Partial<IIn
   const response = await streams.update<IInitiative>(`${API_PATH}/initiatives/${initiativeId}`, initiativeId, { initiative: object });
   // TODO refetches if necessary
   return response;
+}
+
+export interface IInitiativesFilterCounts {
+  idea_status_id: {
+    [key: string]: number;
+  };
+  area_id: {
+    [key: string]: number;
+  };
+  topic_id: {
+    [key: string]: number;
+  };
+  total: number;
+}
+
+export function initiativesFilterCountsStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IInitiativesFilterCounts>({ apiEndpoint: `${API_PATH}/initiatives/filter_counts`, ...streamParams, cacheStream: false });
 }

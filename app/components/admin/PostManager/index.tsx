@@ -22,6 +22,7 @@ import PostTable from './components/PostTable';
 import InfoSidebar from './components/InfoSidebar';
 import ExportMenu, { exportType, Props as ExportMenuProps } from './components/ExportMenu';
 import IdeasCount from './components/IdeasCount';
+import InitiativesCount from './components/InitiativesCount';
 import { Input, Message } from 'semantic-ui-react';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
@@ -323,15 +324,24 @@ class PostManager extends React.PureComponent<Props, State> {
             />
           </LeftColumn>
           <MiddleColumnTop>
-            <IdeasCount
-              feedbackNeeded={feedbackNeeded}
-              project={selectedProject}
-              phase={selectedPhase}
-              topics={selectedTopics}
-              ideaStatus={selectedStatus}
-              searchTerm={searchTerm}
-              assignee={selectedAssignee}
-            />
+            {type === 'Initiatives'
+              ? <InitiativesCount
+                feedbackNeeded={feedbackNeeded}
+                topics={selectedTopics}
+                initiativeStatus={selectedStatus}
+                searchTerm={searchTerm}
+                assignee={selectedAssignee}
+              />
+              : <IdeasCount
+                feedbackNeeded={feedbackNeeded}
+                project={selectedProject}
+                phase={selectedPhase}
+                topics={selectedTopics}
+                ideaStatus={selectedStatus}
+                searchTerm={searchTerm}
+                assignee={selectedAssignee}
+              />
+            }
             <StyledInput icon="search" onChange={this.handleSearchChange} />
           </MiddleColumnTop>
         </ThreeColumns>

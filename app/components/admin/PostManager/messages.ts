@@ -201,4 +201,12 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.multipleIdeas',
     defaultMessage: '{ideaCount} ideas',
   },
+  oneInitiative: {
+    id: 'app.components.admin.PostManager.oneInitiative',
+    defaultMessage: '1 initiative',
+  },
+  multipleInitiatives: {
+    id: 'app.components.admin.PostManager.multipleInitiatives',
+    defaultMessage: '{initiativesCount} initiatives',
+  },
 });
