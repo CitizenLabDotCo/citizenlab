@@ -41,7 +41,7 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
     voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_idea(object, current_user)
     cancelling_votes_disabled_reason = @participation_context_service.cancelling_votes_disabled_reason(object, current_user)
     budgeting_disabled_reason = @participation_context_service.budgeting_disabled_reason_for_idea(object, current_user)
-    comment_voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_comment(object, current_user)
+    comment_voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_comment(Comment.new(idea: object), current_user)
     {
       commenting: {
         enabled: !commenting_disabled_reason,
