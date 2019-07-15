@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FeedbackToggle /> renders correctly checked 1`] = `
+exports[`<FeedbackToggle /> renders correctly checked for initiatives 1`] = `
 <FeedbackToggle__Container
   className="feedback_needed_filter_toggle"
   id="e2e-feedback_needed_filter_toggle"
@@ -9,8 +9,8 @@ exports[`<FeedbackToggle /> renders correctly checked 1`] = `
     onClick={[Function]}
   >
     <FormattedMessage
-      defaultMessage="All ideas"
-      id="app.components.admin.PostManager.anyFeedbackStatus"
+      defaultMessage="All initiatives"
+      id="app.components.admin.PostManager.anyFeedbackStatusInitiatives"
     />
   </FeedbackToggle__StyledLabel>
   <FeedbackToggle__ToggleContainer
@@ -38,7 +38,7 @@ exports[`<FeedbackToggle /> renders correctly checked 1`] = `
 </FeedbackToggle__Container>
 `;
 
-exports[`<FeedbackToggle /> renders correctly unchecked 1`] = `
+exports[`<FeedbackToggle /> renders correctly unchecked for ideas 1`] = `
 <FeedbackToggle__Container
   className="feedback_needed_filter_toggle"
   id="e2e-feedback_needed_filter_toggle"
@@ -48,7 +48,7 @@ exports[`<FeedbackToggle /> renders correctly unchecked 1`] = `
   >
     <FormattedMessage
       defaultMessage="All ideas"
-      id="app.components.admin.PostManager.anyFeedbackStatus"
+      id="app.components.admin.PostManager.anyFeedbackStatusIdeas"
     />
   </FeedbackToggle__StyledLabel>
   <FeedbackToggle__ToggleContainer

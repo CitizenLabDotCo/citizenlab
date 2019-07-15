@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table, Checkbox } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
+import Checkbox from 'components/UI/Checkbox';
 import { FormattedMessage } from 'utils/cl-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import InfoTooltip from 'components/admin/InfoTooltip';
@@ -11,7 +12,7 @@ export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, ha
   <Table.Header>
     <Table.Row>
       <Table.HeaderCell width={1}>
-        <Checkbox value={allSelected} onChange={toggleSelectAll} size="17px"/>
+        <Checkbox value={!!allSelected} onChange={toggleSelectAll} size="17px"/>
       </Table.HeaderCell>
       <Table.HeaderCell width={4}>
         <TableHeaderCellText>

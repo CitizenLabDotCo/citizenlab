@@ -87,7 +87,7 @@ interface Props {
   openPreview: (ideaId: string) => void;
 }
 
-export default class IdeaTable extends React.Component<Props> {
+export default class PostTable extends React.Component<Props> {
 
   handleSortClick = (newSortAttribute: SortAttribute) => () => {
     const { sortAttribute: oldSortAttribute, sortDirection: oldSortDirection, onChangeSort } = this.props;
