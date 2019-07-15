@@ -213,7 +213,7 @@ export async function deleteIdea(ideaId: string) {
 
   streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/ideas_count`] : [])
+    apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/ideas_count`, `${API_PATH}/stats/ideas_count`] : [`${API_PATH}/stats/ideas_count`])
   });
 
   return response;
