@@ -87,14 +87,17 @@ export function initiativesStream(streamParams: IStreamParams | null = null) {
 }
 
 export async function addInitiative(object: IInitiativeAdd) {
-  const response = await streams.add<IInitiative>(`${API_PATH}/initiatives/`, { initiative: object });
+  const response = await streams.add<IInitiative>(`${API_PATH}/initiatives`, { initiative: object });
   // TODO refetches if necessary
   return response;
 }
 
 export async function updateInitiative(initiativeId: string, object: Partial<IInitiativeAdd>) {
   const response = await streams.update<IInitiative>(`${API_PATH}/initiatives/${initiativeId}`, initiativeId, { initiative: object });
-  // TODO refetches if necessary
+  // TODO less refetches? This is the only way I get the initiatives list to refresh when removing a topic
+  streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/stats/initiatives_count`, `${API_PATH}/initiatives`]
+  });
   return response;
 }
 

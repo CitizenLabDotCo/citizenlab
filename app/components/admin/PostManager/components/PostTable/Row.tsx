@@ -70,8 +70,6 @@ export default class Row extends React.PureComponent<Props> {
     }
   }
 
-  // TODO TOPICS removal fix
-
   onClickCheckbox = (event) => {
     event.stopPropagation();
     this.props.onToggleSelect();
@@ -123,6 +121,5 @@ export default class Row extends React.PureComponent<Props> {
         />
       );
     }
-    return null;
   }
 }
