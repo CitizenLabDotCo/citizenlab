@@ -22,7 +22,7 @@ import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import PostTable from './components/PostTable';
 import InfoSidebar from './components/InfoSidebar';
-import ExportMenu, { exportType, Props as ExportMenuProps } from './components/ExportMenu';
+import ExportMenu from './components/ExportMenu';
 import IdeasCount from './components/IdeasCount';
 import InitiativesCount from './components/InitiativesCount';
 import { Input, Message } from 'semantic-ui-react';
@@ -34,7 +34,7 @@ import PostPreview from './components/PostPreview';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-const StyledExportMenu = styled(ExportMenu) <ExportMenuProps>`
+const StyledExportMenu = styled(ExportMenu)`
   margin-left: auto;
 `;
 
