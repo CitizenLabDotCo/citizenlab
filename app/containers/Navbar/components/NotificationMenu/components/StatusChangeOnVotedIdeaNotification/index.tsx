@@ -24,7 +24,7 @@ interface Props extends InputProps, DataProps {}
 const StatusChangeOnVotedIdeaNotification = memo<Props>(props => {
   const { notification, idea, ideaStatus } = props;
 
-  if (isNilOrError(idea) || !ideaStatus) return null;
+  if (isNilOrError(idea) || isNilOrError(ideaStatus)) return null;
 
   return (
     <NotificationWrapper
@@ -36,8 +36,7 @@ const StatusChangeOnVotedIdeaNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.statusChangeOnVotedIdea}
         values={{
-          status: <T value={ideaStatus.attributes.title_multiloc} />,
-          ideaTitle: <T value={idea.attributes.title_multiloc} />
+          status: <T value={ideaStatus.attributes.title_multiloc} />
         }}
       />
     </NotificationWrapper>
