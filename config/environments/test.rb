@@ -44,7 +44,18 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.log_level = :error
-  # config.active_record.verbose_query_logs = true
+  config.log_level = :debug
+  config.active_record.verbose_query_logs = true
+
+
+  # Comment this out to see the queries in the logs.
+  # STDOUT.sync = true
+  # config.rails_semantic_logger.add_file_appender = false
+  # config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: config.rails_semantic_logger.format)
+
+  # config.rails_semantic_logger.semantic   = false
+  # config.rails_semantic_logger.started    = true
+  # config.rails_semantic_logger.processing = true
+  # config.rails_semantic_logger.rendered   = true
    
 end
