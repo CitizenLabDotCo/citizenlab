@@ -26,7 +26,6 @@ import IdeaTitle from './IdeaTitle';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
-import PostedBy from 'containers/InitiativesShow/PostedBy';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
@@ -561,14 +560,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 {biggerThanLargeTablet &&
-                  // <StyledIdeaAuthor
-                  //   ideaId={ideaId}
-                  //   authorId={authorId}
-                  //   ideaCreatedAt={ideaCreatedAt}
-                  // />
-
-                  <PostedBy
+                  <StyledIdeaAuthor
+                    ideaId={ideaId}
                     authorId={authorId}
+                    ideaCreatedAt={ideaCreatedAt}
                   />
                 }
 
@@ -584,7 +579,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <StyledIdeaMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
-                    id={ideaId}
                   />
                 }
 
