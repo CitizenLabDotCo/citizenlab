@@ -1,5 +1,5 @@
 module Notifications
-  class StatusChangeOfYourIdea < Notification
+  class StatusChangeOnCommentedIdea < Notification
     
     belongs_to :idea
     belongs_to :project, optional: true
@@ -9,7 +9,7 @@ module Notifications
 
 
     ACTIVITY_TRIGGERS = {'Idea' => {'changed_status' => true}}
-    EVENT_NAME = 'Status change of your idea'
+    EVENT_NAME = 'Status change on commented idea'
     
 
     def self.make_notifications_on activity
@@ -22,16 +22,20 @@ module Notifications
       idea_status_id = idea&.idea_status_id
 
       if idea_id && recipient_id && recipient_id != initiator_id
-        [self.create!(
-           recipient_id: recipient_id,
-           initiating_user: User.find(initiator_id),
-           idea_id: idea_id,
-           project_id: project_id,
-           idea_status_id: idea_status_id
-         )]
+        idea.comments.pluck(:author_id).map do |recipient_id|
+          if (recipient_id != initiator_id) && (recipient_id != idea.author_id)
+            self.create!(
+              recipient_id: recipient_id,
+              initiating_user: User.find_by(id: initiator_id),
+              idea_id: idea_id,
+              project_id: project_id,
+              idea_status_id: idea_status_id
+            )
+          end
+        end
       else
         []
-      end
+      end.compact
     end
 
   end
