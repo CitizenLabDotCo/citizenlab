@@ -54,9 +54,7 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, the
     } else {
       const i = newTopics.lastIndexOf(topicId);
       if (i === -1) {
-        if (value.length === max) {
-          // TODO animate?
-        } else {
+        if (value.length <= max) {
           newTopics.push(topicId);
           onChange(newTopics);
         }
@@ -75,7 +73,7 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, the
     <TopicsContainer onBlur={onBlur}>
       {orderBy(workingTopics, topic => localize(topic.attributes.title_multiloc)).map((topic) => {
         const isActive = value && !!value.find(id => id === topic.id);
-        const isDisabled = !isActive && value.length === max;
+        const isDisabled = !isActive && value.length >= max;
         return (
           <TopicSwitch
             key={topic.id}
