@@ -8,6 +8,7 @@ import Link from 'utils/cl-router/Link';
 // styling
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // i18n
 import messages from './messages';
@@ -37,11 +38,17 @@ const PostedByWrapper = styled.div`
 const PostedByText = styled.span`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
+  margin-bottom: 3px;
 `;
 
 const AboutInitiativesLink = styled(Link)`
   font-size: ${fontSizes.small}px;
+  color: ${colors.clGreyOnGreyBackground};
   text-decoration: underline;
+
+  &:hover {
+    color: ${darken(0.15, colors.clGreyOnGreyBackground)};
+  }
 `;
 
 interface Props {
@@ -52,10 +59,10 @@ interface Props {
 const PostedBy = memo<Props>(({ authorId, className }) => {
 
   if (authorId) {
-    const authorName = <UserName userId={authorId} emphasize linkToProfile />;
+    const authorName = <UserName userId={authorId} emphasize linkToProfile hideLastName />;
 
     return (
-      <Container className={`e2e-idea-author ${className}`}>
+      <Container className={`e2e-idea-author ${className || ''}`}>
         <InitiativesIcon name="initiatives"/>
         <PostedByWrapper>
           <PostedByText>

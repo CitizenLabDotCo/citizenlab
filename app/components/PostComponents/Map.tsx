@@ -137,7 +137,7 @@ interface State {
   showMap: boolean;
 }
 
-class IdeaMap extends PureComponent<Props, State> {
+class Map extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -190,4 +190,4 @@ class IdeaMap extends PureComponent<Props, State> {
   }
 }
 
-export default IdeaMap;
+export default Map;
