@@ -17,6 +17,7 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // components
 import Link from 'utils/cl-router/Link';
+import { IUserData } from 'services/users';
 
 const Name: any = styled.span`
   color: ${({ theme }) => theme.colorText};
