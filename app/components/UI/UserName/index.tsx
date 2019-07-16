@@ -22,27 +22,27 @@ const Name: any = styled.span`
   color: ${({ theme }) => theme.colorText};
   font-weight: ${({ emphasize }: any) => emphasize ? '500' : 'normal'};
   text-decoration: none;
-  cursor: pointer;
   hyphens: auto;
+
+  &.linkToProfile {
+    &:hover {
+      cursor: pointer;
+      color: ${({ theme }) => darken(0.15, theme.colorText)};
+      text-decoration: underline;
+    }
+
+    &.canModerate {
+      color: ${colors.clRedError};
+
+      &:hover {
+        color: ${darken(0.15, colors.clRedError)};
+      }
+    }
+  }
 
   &.deleted-user {
     font-style: italic;
   }
-
-  &.canModerate {
-    color: ${colors.clRedError};
-
-    &:hover {
-      color: ${darken(0.15, colors.clRedError)};
-    }
-  }
-
-  &:hover {
-    color: ${({ theme }) => darken(0.15, theme.colorText)};
-    text-decoration: underline;
-  }
-
-
 `;
 
 interface DataProps {
@@ -55,34 +55,45 @@ interface InputProps {
   className?: string;
   linkToProfile?: boolean;
   emphasize?: boolean;
+  canModerate?: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const UserName = React.memo<Props>(({ user, className, hideLastName, linkToProfile, emphasize }) => {
-
-  if (!isNilOrError(user)) {
-    const firstName = get(user, 'attributes.first_name', '');
-    const lastName = get(user, 'attributes.last_name', '');
-
-    return linkToProfile ? (
-      <Link to={`/profile/${user.attributes.slug}`} className="e2e-idea-author-link">
-        <Name emphasize={emphasize} className={`${className} e2e-username`}>
-          `${firstName} ${hideLastName ? '' : lastName}`
-        </Name>
-      </Link>
-    ) : (
-      <Name emphasize={emphasize} className={`${className} e2e-username`}>
-        `${firstName} ${hideLastName ? '' : lastName}`
+const UserName = React.memo<Props>(({ user, className, hideLastName, linkToProfile, emphasize, canModerate }) => {
+  if (isNilOrError(user)) {
+    return (
+      <Name className={`${className} deleted-user e2e-username`}>
+        <FormattedMessage {...messages.deletedUser} />
       </Name>
     );
   }
 
-  return (
-    <Name className={`${className} deleted-user e2e-username`}>
-      <FormattedMessage {...messages.deletedUser} />
+  const firstName = get(user, 'attributes.first_name', '');
+  const lastName = get(user, 'attributes.last_name', '');
+  const nameComponent = (
+    <Name
+      emphasize={emphasize}
+      className={
+        `${className || ''}
+        ${linkToProfile ? 'linkToProfile' : ''}
+        ${canModerate ? 'canModerate' : ''}
+        e2e-username`
+      }
+    >
+      {`${firstName} ${hideLastName ? '' : lastName}`}
     </Name>
   );
+
+  if (linkToProfile) {
+    return (
+      <Link to={`/profile/${user.attributes.slug}`} className="e2e-idea-author-link">
+        {nameComponent}
+      </Link>
+    );
+  }
+
+  return nameComponent;
 
 });
 
