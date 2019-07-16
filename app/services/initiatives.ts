@@ -111,7 +111,7 @@ export async function deleteInitiative(initiativeId: string) {
 
   streams.fetchAllWith({
     apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/initiatives_count`, `${API_PATH}/initiatives/filter_counts`] : [`${API_PATH}/initiatives/filter_counts`])
-    // TODO apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/initiatives_count`] : [])
+    // TODO fix with when switching to count endpoint apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/initiatives_count`] : [])
   });
 
   return response;
