@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { compact, isEqual, get } from 'lodash-es';
+import { compact, isEqual, get, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ReactResizeDetector from 'react-resize-detector';
+import Icon from 'components/UI/Icon';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -16,13 +17,62 @@ import 'leaflet.markercluster';
 // Styling
 import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
-import { darken } from 'polished';
+import { darken, lighten } from 'polished';
+import { colors } from 'utils/styleUtils';
 
 const icon = require('./marker.svg');
 
 const Container = styled.div`
-  height: 300px;
-  transition: width .1s, height .1s;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+`;
+
+const BoxContainer = styled.div`
+  flex: 0 0 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: strech;
+  padding: 30px;
+  position: relative;
+  background: #fff;
+`;
+
+const CloseIcon = styled(Icon)`
+  height: 10px;
+  fill: ${colors.label};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: fill 100ms ease-out;
+`;
+
+const CloseButton = styled.div`
+  height: 34px;
+  width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  cursor: pointer;
+  top: 12px;
+  right: 12px;
+  border-radius: 50%;
+  border: solid 1px ${lighten(0.4, colors.label)};
+  transition: border-color 100ms ease-out;
+
+  &:hover {
+    border-color: #000;
+
+    ${CloseIcon} {
+      fill: #000;
+    }
+  }
+`;
+
+const MapContainer = styled.div`
+  flex: 1 1 100%;
 
   .leaflet-container {
     height: 100%;
@@ -61,6 +111,8 @@ export interface InputProps {
   points?: Point[];
   areas?: GeoJSON.Polygon[];
   zoom?: number;
+  boxContent?: JSX.Element | null;
+  onBoxClose?: (event: FormEvent) => void;
   onMarkerClick?: (id: string, data: any) => void;
   onMapClick?: (map: Leaflet.Map, position: Leaflet.LatLng) => void;
   fitBounds?: boolean;
@@ -193,13 +245,30 @@ class CLMap extends React.PureComponent<Props, State> {
     this.map.invalidateSize();
   }
 
+  handleBoxOnClose = (event: FormEvent) => {
+    event.preventDefault();
+    this.props.onBoxClose && this.props.onBoxClose(event);
+  }
+
   render() {
-    if (!isNilOrError(this.props.tenant)) {
+    const { tenant, boxContent, className } = this.props;
+
+    if (!isNilOrError(tenant)) {
       return (
-        <Container className={this.props.className}>
-          <div id="e2e-map" ref={this.bindMapContainer}>
+        <Container className={className}>
+          {!isNil(boxContent) &&
+            <BoxContainer className={className}>
+              <CloseButton onClick={this.handleBoxOnClose}>
+                <CloseIcon name="close" />
+              </CloseButton>
+
+              {boxContent}
+            </BoxContainer>
+          }
+
+          <MapContainer id="e2e-map" ref={this.bindMapContainer}>
             <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
-          </div>
+          </MapContainer>
         </Container>
       );
     }
