@@ -1226,6 +1226,8 @@
   "app.containers.NotificationMenu.projectModerationRightsReceived": "",
   "app.containers.NotificationMenu.projectPhaseStarted": "",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "",
+  "app.containers.NotificationMenu.statusChangeOnCommentedIdea": "",
+  "app.containers.NotificationMenu.statusChangeOnVotedIdea": "",
   "app.containers.NotificationMenu.statusChangedOfYourIdea": "",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "",
