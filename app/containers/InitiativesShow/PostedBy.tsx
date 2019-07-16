@@ -37,10 +37,12 @@ const PostedByWrapper = styled.div`
 const PostedByText = styled.span`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
+  margin-bottom: 3px;
 `;
 
 const AboutInitiativesLink = styled(Link)`
   font-size: ${fontSizes.small}px;
+  color: ${colors.clGreyOnGreyBackground};
   text-decoration: underline;
 `;
 
@@ -55,7 +57,7 @@ const PostedBy = memo<Props>(({ authorId, className }) => {
     const authorName = <UserName userId={authorId} emphasize linkToProfile hideLastName />;
 
     return (
-      <Container className={`e2e-idea-author ${className}`}>
+      <Container className={`e2e-idea-author ${className || ''}`}>
         <InitiativesIcon name="initiatives"/>
         <PostedByWrapper>
           <PostedByText>
