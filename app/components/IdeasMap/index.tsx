@@ -1,5 +1,5 @@
 // Libs
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Leaflet from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
@@ -13,7 +13,7 @@ import tracks from './tracks';
 import Map from 'components/Map';
 import Warning from 'components/UI/Warning';
 import IdeaBox from './IdeaBox';
-import IdeaButton from './IdeaButton';
+import IdeaButton from './IdeaAddButton';
 
 // Injectors
 import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'resources/GetIdeaMarkers';
@@ -87,12 +87,12 @@ interface State {
   selectedIdeaId: string | null;
 }
 
-export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
+export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
   private createIdeaButton: HTMLDivElement;
   private savedPosition: Leaflet.LatLng | null = null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       selectedIdeaId: null,
     };

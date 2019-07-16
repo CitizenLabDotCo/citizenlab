@@ -3,7 +3,6 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // router
-import Link from 'utils/cl-router/Link';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -21,7 +20,6 @@ import { FormattedRelative } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // typings

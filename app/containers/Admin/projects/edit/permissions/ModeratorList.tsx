@@ -65,7 +65,6 @@ class ModeratorList extends PureComponent<Props & InjectedIntlProps>{
               <Button
                 onClick={this.handleDeleteClick(projectId, moderator.id)}
                 style="text"
-                circularCorners={false}
                 icon="delete"
                 disabled={authUser.id === moderator.id}
               >

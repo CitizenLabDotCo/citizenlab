@@ -151,7 +151,7 @@ const Container: any = styled.div`
   a {
     align-items: center;
     border: ${(props: any) => props.borderThickness || '1px'} solid transparent;
-    border-radius: ${(props: any) => props.circularCorners ? '999em' : props.theme.borderRadius};
+    border-radius: ${(props: any) => props.theme.borderRadius};
     display: ${(props: any) => !props.width ? 'inline-flex' : 'flex'};
     height: ${(props: any) => props.height || 'auto'};
     justify-content: ${(props: any) => props.justify || 'center'};
@@ -271,7 +271,6 @@ export type ButtonStyles =
 
 export type Props = {
   children?: any;
-  circularCorners?: boolean;
   className?: string;
   disabled?: boolean;
   form?: string;
@@ -386,7 +385,7 @@ class Button extends PureComponent<Props, State> {
       ariaLabel,
       fontSize
     } = this.props;
-    let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
+    let { id, size, style, processing, disabled, fullWidth, iconPos, className } = this.props;
 
     id = (id || '');
     size = (size || '1');
@@ -394,7 +393,6 @@ class Button extends PureComponent<Props, State> {
     processing = (isBoolean(processing) ? processing : false);
     disabled = (isBoolean(disabled) ? disabled : false);
     fullWidth = (isBoolean(fullWidth) ? fullWidth : false);
-    circularCorners = (isBoolean(circularCorners) ? circularCorners : false);
     iconPos = (iconPos || 'left');
     className = `${className ? className : ''}`;
 
@@ -441,7 +439,6 @@ class Button extends PureComponent<Props, State> {
         processing={processing}
         onClick={this.handleOnClick}
         disabled={disabled}
-        circularCorners={circularCorners}
         className={`${className} ${buttonClassnames} ${fullHeight ? 'bannerStyle' : ''}`}
         textColor={textColor}
         textHoverColor={textHoverColor}

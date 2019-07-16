@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.titleSettingsTab',
     defaultMessage: 'Define how initiatives should work in your context.'
   },
+  titleManageTab: {
+    id: 'app.containers.Admin.initiatives.titleManageTab',
+    defaultMessage: 'Manage the initiatives on the platform.'
+  },
+  subtitleManageTab: {
+    id: 'app.containers.Admin.initiatives.subtitleManageTab',
+    defaultMessage: 'Add topics to initiatives, consult or change their statuses, officially update the citizens. Contact us if you want to use custom topics or statuses.'
+  },
   warningTresholdSettings: {
     id: 'app.containers.Admin.initiatives.warningTresholdSettings',
     defaultMessage: 'Changing this will impact all active initiatives'
