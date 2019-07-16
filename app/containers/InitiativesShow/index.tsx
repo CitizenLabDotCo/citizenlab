@@ -20,6 +20,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import Topics from 'components/PostComponents/Topics';
 import Title from 'components/PostComponents/Title';
 import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
+import Body from 'components/PostComponents/Body';
 
 import PostedBy from './PostedBy';
 import Image from 'components/PostComponents/Image';
@@ -27,7 +28,6 @@ import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
-import IdeaBody from './IdeaBody';
 import IdeaContentFooter from './IdeaContentFooter';
 import ActionBar from './ActionBar';
 import TranslateButton from './TranslateButton';
@@ -499,10 +499,11 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   />
                 }
 
-                <IdeaBody
-                  ideaId={ideaId}
+                <Body
+                  id={initiativeId}
+                  context="initiative"
                   locale={locale}
-                  ideaBody={ideaBody}
+                  body={initiativeBody}
                   translateButtonClicked={translateButtonClicked}
                 />
 
