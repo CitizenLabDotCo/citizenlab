@@ -18,7 +18,7 @@ import 'leaflet.markercluster';
 import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
 import { darken, lighten } from 'polished';
-import { colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 const icon = require('./marker.svg');
 
@@ -37,6 +37,14 @@ const BoxContainer = styled.div`
   padding: 30px;
   position: relative;
   background: #fff;
+
+  ${media.smallerThanMaxTablet`
+    flex: 0 0 40%;
+  `}
+
+  ${media.smallerThanMinTablet`
+    flex: 0 0 80%;
+  `}
 `;
 
 const CloseIcon = styled(Icon)`
@@ -238,6 +246,7 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   handleMarkerClick = (event) => {
+    console.log(event);
     this.props.onMarkerClick && this.props.onMarkerClick(event.layer.options.id, event.layer.options.data);
   }
 
