@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { memoize } from 'lodash-es';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -7,14 +8,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Dropdown } from 'semantic-ui-react';
 
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
-import { memoize } from 'lodash-es';
 
 interface DataProps {
   prospectAssignees: GetUsersChildProps;

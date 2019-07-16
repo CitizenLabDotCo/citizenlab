@@ -68,14 +68,14 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
                 "type": "users",
               },
             },
-            "idea": Object {
+            "parent": Object {
+              "data": null,
+            },
+            "post": Object {
               "data": Object {
                 "id": "idea1",
                 "type": "ideas",
               },
-            },
-            "parent": Object {
-              "data": null,
             },
             "user_vote": Object {
               "data": null,
@@ -111,14 +111,14 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
                 "type": "users",
               },
             },
-            "idea": Object {
+            "parent": Object {
+              "data": null,
+            },
+            "post": Object {
               "data": Object {
                 "id": "idea2",
                 "type": "ideas",
               },
-            },
-            "parent": Object {
-              "data": null,
             },
             "user_vote": Object {
               "data": null,
@@ -146,14 +146,14 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
                 "type": "users",
               },
             },
-            "idea": Object {
+            "parent": Object {
+              "data": null,
+            },
+            "post": Object {
               "data": Object {
                 "id": "idea2",
                 "type": "ideas",
               },
-            },
-            "parent": Object {
-              "data": null,
             },
             "user_vote": Object {
               "data": null,
