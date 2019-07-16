@@ -1262,6 +1262,8 @@
   "app.containers.InitiativesNewPage.requirmentsListTitle": "",
   "app.containers.InitiativesNewPage.tipsExplanation": "",
   "app.containers.InitiativesNewPage.tipsTitle": "",
+  "app.containers.InitiativesShow.learnMore": "",
+  "app.containers.InitiativesShow.postedBy": "",
   "app.containers.NotificationMenu.adminRightsReceived": "",
   "app.containers.NotificationMenu.clearAll": "",
   "app.containers.NotificationMenu.commentDeletedByAdmin": "",
