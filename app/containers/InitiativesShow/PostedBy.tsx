@@ -8,6 +8,7 @@ import Link from 'utils/cl-router/Link';
 // styling
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // i18n
 import messages from './messages';
@@ -44,6 +45,10 @@ const AboutInitiativesLink = styled(Link)`
   font-size: ${fontSizes.small}px;
   color: ${colors.clGreyOnGreyBackground};
   text-decoration: underline;
+
+  &:hover {
+    color: ${darken(0.15, colors.clGreyOnGreyBackground)};
+  }
 `;
 
 interface Props {
