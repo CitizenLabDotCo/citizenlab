@@ -31,14 +31,12 @@ import { colors, media, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Container = styled.div`
+  flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: strech;
-  padding: 30px;
   position: relative;
-  background: #fff;
 `;
 
 const Title = styled.h3`
@@ -137,7 +135,7 @@ const CloseButton = styled.div`
 `;
 
 interface InputProps {
-  ideaId: string;
+  ideaId?: string | null;
   onClose?: (event: React.MouseEvent<HTMLDivElement>) => void;
   className?: string;
 }
@@ -153,7 +151,7 @@ interface State {
   showFooter: 'unauthenticated' | 'votingDisabled' | null;
 }
 
-class IdeaBox extends React.PureComponent<Props & InjectedLocalized, State> {
+class IdeaPreview extends React.PureComponent<Props & InjectedLocalized, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -171,7 +169,7 @@ class IdeaBox extends React.PureComponent<Props & InjectedLocalized, State> {
     event.preventDefault();
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('IdeaBox', 'cardClick', {
+      eventEmitter.emit<IOpenPostPageModalEvent>('IdeaPreview', 'cardClick', {
         id: idea.id,
         slug: idea.attributes.slug,
         type: 'initiative'
@@ -248,11 +246,11 @@ class IdeaBox extends React.PureComponent<Props & InjectedLocalized, State> {
       );
     }
 
-    return <Container className={className} />;
+    return null;
   }
 }
 
-const IdeaBoxWithHOCs = injectLocalize<Props>(IdeaBox);
+const IdeaPreviewWithHOCs = injectLocalize<Props>(IdeaPreview);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
@@ -261,6 +259,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaBoxWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <IdeaPreviewWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
