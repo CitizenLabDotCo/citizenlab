@@ -15,9 +15,11 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import GetIdeasCount, { GetIdeasCountChildProps } from 'resources/GetIdeasCount';
 import GetInitiativesCount, { GetInitiativesCountChildProps } from 'resources/GetInitiativesCount';
 
+// typings
+import { ManagerType } from '../..';
+
 // components
 import CountBadge from 'components/UI/CountBadge';
-import { ManagerType } from '../..';
 
 const size = 21;
 const padding = 4;
@@ -145,7 +147,7 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt({
-  ideasCount: ({ project, phase, topics, status, assignee, render, type }) => {
+  feedbackNeededCount: ({ project, phase, topics, status, assignee, render, type }) => {
     const projectIds = [project];
 
     return type === 'Initiatives'
@@ -175,6 +177,6 @@ const Data = adopt({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <FeedbackToggle {...inputProps} feedbackNeededCount={dataProps.ideasCount} />}
+    {dataProps => <FeedbackToggle {...inputProps} {...dataProps} />}
   </Data>
 );

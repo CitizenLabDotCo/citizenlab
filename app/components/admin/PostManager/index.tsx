@@ -90,7 +90,7 @@ interface InputProps {
   // this prop is used for the test.
   type: ManagerType;
 
-  // When the PostManager is used in admin/projects, we pass down the current projects id as a prop
+  // When the PostManager is used in admin/projects, we pass down the current project id as a prop
   projectId?: string | null;
 
   // filters settings
@@ -119,7 +119,7 @@ interface State {
   previewMode: 'view' | 'edit';
 }
 
-class PostManager extends React.PureComponent<Props, State> {
+export class PostManager extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IAdminFullWidth>;
 
   constructor(props: Props) {

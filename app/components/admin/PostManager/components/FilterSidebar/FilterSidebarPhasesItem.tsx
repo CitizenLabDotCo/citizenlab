@@ -1,6 +1,5 @@
 import React from 'react';
 import { IPhaseData, canContainIdeas } from 'services/phases';
-import { flow } from 'lodash-es';
 import { Menu, Label } from 'semantic-ui-react';
 import { DropTarget } from 'react-dnd';
 import T from 'components/T';
@@ -58,6 +57,4 @@ const collect = (connect, monitor) => ({
   canDrop: monitor.canDrop(),
 });
 
-export default flow([
-  DropTarget('IDEA', phaseTarget, collect),
-])(FilterSidebarPhasesItem);
+export default DropTarget('IDEA', phaseTarget, collect)(FilterSidebarPhasesItem);
