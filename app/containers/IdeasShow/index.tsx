@@ -579,7 +579,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <StyledIdeaMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
-                    id={ideaId}
                   />
                 }
 

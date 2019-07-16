@@ -491,11 +491,10 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   />
                 }
 
-                {ideaGeoPosition && ideaAddress &&
+                {initiativeGeoPosition && initiativeAddress &&
                   <StyledIdeaMap
-                    address={ideaAddress}
-                    position={ideaGeoPosition}
-                    id={ideaId}
+                    address={initiativeAddress}
+                    position={initiativeGeoPosition}
                   />
                 }
 
