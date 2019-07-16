@@ -29,7 +29,7 @@ interface Props {
 
 const IdeaPostedBy = memo<Props>(({ authorId, className }) => {
 
-  const userName = <UserName userId={authorId} emphasize />;
+  const userName = <UserName userId={authorId} linkToProfile emphasize />;
 
   return (
     <Container className={className}>

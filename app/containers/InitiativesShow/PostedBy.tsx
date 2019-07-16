@@ -52,7 +52,7 @@ interface Props {
 const PostedBy = memo<Props>(({ authorId, className }) => {
 
   if (authorId) {
-    const authorName = <UserName userId={authorId} emphasize />;
+    const authorName = <UserName userId={authorId} emphasize linkToProfile />;
 
     return (
       <Container className={`e2e-idea-author ${className}`}>

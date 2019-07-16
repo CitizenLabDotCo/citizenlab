@@ -145,7 +145,7 @@ class UserMenu extends PureComponent<Props, State> {
           >
             <StyledUserName
               userId={userId}
-              hideLastName={true}
+              hideLastName
             />
             <StyledAvatar
               userId={userId}
