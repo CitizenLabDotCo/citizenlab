@@ -1262,6 +1262,8 @@
   "app.containers.InitiativesNewPage.requirmentsListTitle": "",
   "app.containers.InitiativesNewPage.tipsExplanation": "",
   "app.containers.InitiativesNewPage.tipsTitle": "",
+  "app.containers.InitiativesShow.learnMore": "",
+  "app.containers.InitiativesShow.postedBy": "",
   "app.containers.NotificationMenu.adminRightsReceived": "Du er nu administrator af platformen",
   "app.containers.NotificationMenu.clearAll": "Ryd alle",
   "app.containers.NotificationMenu.commentDeletedByAdmin": "Din kommentar på '{ideaTitle}' er blevet slettet af en administrator fordi {reasonCode, select, irrelevant {det er irrelevant} inappropriate {dens indhold er upassende} other {{otherReason}}}",
