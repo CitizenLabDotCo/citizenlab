@@ -1,14 +1,8 @@
 // Libraries
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { IdeaActivity } from 'services/ideas';
-
-// resources
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // Components
 import UserName from 'components/UI/UserName';
@@ -46,17 +40,11 @@ const TextWrapper = styled.div`
   }
 `;
 
-interface InputProps {
+interface Props {
   activity: IdeaActivity;
 }
 
-interface DataProps {
-  user: GetUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const ActivityChangeLog = memo<Props>(({ activity, user }) => {
+const ActivityChangeLog = memo<Props>(({ activity }) => {
   const userId = activity.relationships.user.data.id;
 
   return (
@@ -91,12 +79,4 @@ const ActivityChangeLog = memo<Props>(({ activity, user }) => {
   );
 });
 
-const Data = adopt<DataProps, InputProps>({
-  user: ({ activity, render }) => <GetUser id={get(activity, 'relationships.user.data.id')}>{render}</GetUser>
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <ActivityChangeLog {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default ActivityChangeLog;
