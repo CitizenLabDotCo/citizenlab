@@ -106,7 +106,7 @@ class Author extends PureComponent<Props, State> {
       <UserName
         userId={authorId}
         linkToProfile={!notALink}
-        className={authorCanModerate ? 'canModerate' : ''}
+        canModerate={authorCanModerate}
       />
     );
 
