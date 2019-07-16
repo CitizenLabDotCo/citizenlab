@@ -66,7 +66,6 @@ class Pages extends React.Component<Props & InjectedIntlProps, State> {
             <ButtonWrapper>
               <Button
                 style="cl-blue"
-                circularCorners={false}
                 icon="plus-circle"
                 linkTo="/admin/pages/new"
               >
@@ -83,13 +82,13 @@ class Pages extends React.Component<Props & InjectedIntlProps, State> {
                 <TextCell className="expand">
                   <T value={page.attributes.title_multiloc} />
                 </TextCell>
-                <Button onClick={this.handleOnDeleteClick(page.id)} style="text" circularCorners={false} icon="delete">
+                <Button onClick={this.handleOnDeleteClick(page.id)} style="text" icon="delete">
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </Button>
-                <Button linkTo={`/pages/${page.attributes.slug}`} style="text" circularCorners={false} icon="search2">
+                <Button linkTo={`/pages/${page.attributes.slug}`} style="text" icon="search2">
                   <FormattedMessage {...messages.showButtonLabel} />
                 </Button>
-                <Button linkTo={`/admin/pages/${page.id}`} style="secondary" circularCorners={false} icon="edit">
+                <Button linkTo={`/admin/pages/${page.id}`} style="secondary" icon="edit">
                   <FormattedMessage {...messages.editButtonLabel} />
                 </Button>
               </Row>

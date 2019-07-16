@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship, Multiloc, ImageSizes } from 'typings';
+import { IRelationship, Multiloc, ImageSizes, ILinks } from 'typings';
 
 export type InitiativePublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
@@ -38,10 +38,10 @@ export interface IInitiativeData {
     };
     initiative_status?: {
       data: IRelationship | null;
-    },
+    };
     user_vote: {
       data: IRelationship;
-    }
+    };
   };
 }
 
@@ -51,6 +51,7 @@ export interface IInitiative {
 
 export interface IInitiatives {
   data: IInitiativeData[];
+  links: ILinks;
 }
 
 export interface IInitiativeAdd {
@@ -65,6 +66,19 @@ export interface IInitiativeAdd {
   phase_ids?: string[] | null;
   location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | null;
+}
+
+export interface IInitiativesFilterCounts {
+  initiative_status_id: {
+    [key: string]: number;
+  };
+  area_id: {
+    [key: string]: number;
+  };
+  topic_id: {
+    [key: string]: number;
+  };
+  total: number;
 }
 
 export function initiativeByIdStream(initiativeId: string) {
