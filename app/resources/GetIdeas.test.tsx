@@ -37,7 +37,7 @@ describe('<GetIdeas sort="new" />', () => {
 
   it('passes undefined to the child function initially', () => {
     shallow(<GetIdeas sort="new">{child}</GetIdeas>);
-    expect(child.mock.calls[0][0].ideasList).toBeUndefined;
+    expect(child.mock.calls[0][0].list).toBeUndefined;
   });
 
   it('passes the idea data to the child function received from the streams', () => {
@@ -47,7 +47,7 @@ describe('<GetIdeas sort="new" />', () => {
     __setMockIdeas(mockIdeas);
 
     shallow(<GetIdeas sort="new">{child}</GetIdeas>);
-    expect(child.mock.calls.find(arr => arr[0].ideasList !== undefined)[0].ideasList).toEqual(mockIdeas.data);
+    expect(child.mock.calls.find(arr => arr[0].list !== undefined)[0].list).toEqual(mockIdeas.data);
   });
 
   it('passes the idea data to the child function received from the streams', () => {
@@ -57,20 +57,20 @@ describe('<GetIdeas sort="new" />', () => {
     __setMockIdeas(mockIdeas);
 
     shallow(<GetIdeas sort="new">{child}</GetIdeas>);
-    expect(child.mock.calls.find(arr => arr[0].ideasList !== undefined)[0].ideasList).toEqual(mockIdeas.data);
+    expect(child.mock.calls.find(arr => arr[0].list !== undefined)[0].list).toEqual(mockIdeas.data);
   });
 
   it('passes null to the child function when it receives null from the streams', () => {
     __setMockIdeas(null);
     shallow(<GetIdeas sort="new">{child}</GetIdeas>);
-    expect(child.mock.calls[1][0].ideasList).toBeNull;
+    expect(child.mock.calls[1][0].list).toBeNull;
   });
 
   it('passes undefined to the child function when it receives Error from the streams', () => {
     const error = new Error();
     __setMockIdeas(error);
     shallow(<GetIdeas sort="new">{child}</GetIdeas>);
-    expect(child.mock.calls[1][0].ideasList).toBeUndefined;
+    expect(child.mock.calls[1][0].list).toBeUndefined;
   });
 
   it('reacts to assignee filter change', () => {
@@ -84,7 +84,7 @@ describe('<GetIdeas sort="new" />', () => {
 
     __setMockIdeas(null);
     expect(ideasStream.mock.calls[1][0].queryParameters.assignee).toEqual('User_ID');
-    expect(child.mock.calls[2][0].ideasList).toBeNull;
+    expect(child.mock.calls[2][0].list).toBeNull;
   });
 
   it('reacts to page change', () => {

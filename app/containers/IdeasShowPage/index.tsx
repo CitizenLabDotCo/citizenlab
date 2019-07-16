@@ -71,7 +71,6 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
           linkTo="/ideas"
           text={goBackToListMessage}
           icon="arrow-back"
-          circularCorners={false}
         />
       </IdeaNotFoundWrapper>
     );

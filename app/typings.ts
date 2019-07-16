@@ -24,6 +24,14 @@ export interface ITheme {
   };
 }
 
+export interface ILinks {
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
+}
+
 export interface UploadFile extends File {
   filename: string;
   base64: string;

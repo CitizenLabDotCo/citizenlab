@@ -15,13 +15,13 @@ export default () => ({
       loading: () => null
     }),
   },
-  // childRoutes: [
-  //   {
-  //     path: 'manage',
-  //     component: Loadable({
-  //       loader: () => import('./manage'),
-  //       loading: () => null
-  //     }),
-  //   },
-  // ],
+  childRoutes: [
+    {
+      path: 'manage',
+      component: Loadable({
+        loader: () => import('./manage'),
+        loading: () => null
+      }),
+    },
+  ],
 });

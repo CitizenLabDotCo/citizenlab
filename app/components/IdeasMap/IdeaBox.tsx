@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { IIdeaCardClickEvent } from 'containers/App';
+import { IOpenPostPageModalEvent } from 'containers/App';
 
 // components
 import T from 'components/T';
@@ -37,7 +37,7 @@ const Container = styled.div`
   background: #fff;
 `;
 
-const IdeaTitle: any = styled.h3`
+const Title = styled.h3`
   color: #333;
   display: block;
   display: -webkit-box;
@@ -49,7 +49,7 @@ const IdeaTitle: any = styled.h3`
   margin-bottom: 10px;
 `;
 
-const IdeaDescription = styled.div`
+const Description = styled.div`
   flex: 1 1 100%;
   margin-bottom: 1rem;
   overflow: hidden;
@@ -76,7 +76,7 @@ const VoteComments = styled.div`
   margin-bottom: 30px;
 `;
 
-const StyledButton = styled(Button)`
+const ViewIdeaButton = styled(Button)`
   justify-self: flex-end;
 `;
 
@@ -135,7 +135,8 @@ const CloseButton = styled.div`
 
 interface InputProps {
   ideaId: string;
-  onClose?: (event) => void;
+  onClose?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  className?: string;
 }
 
 interface DataProps {
@@ -158,9 +159,7 @@ class IdeaBox extends React.PureComponent<Props, State> {
 
   componentDidUpdate(prevProps: Props) {
     if (this.props.idea !== prevProps.idea) {
-      this.setState({
-        showFooter: null,
-      });
+      this.setState({ showFooter: null });
     }
   }
 
@@ -169,7 +168,11 @@ class IdeaBox extends React.PureComponent<Props, State> {
     event.stopPropagation();
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IIdeaCardClickEvent>('IdeaBox', 'ideaCardClick', { ideaId: idea.id, ideaSlug: idea.attributes.slug });
+      eventEmitter.emit<IOpenPostPageModalEvent>('IdeaBox', 'cardClick', {
+        id: idea.id,
+        slug: idea.attributes.slug,
+        type: 'initiative'
+      });
     }
   }
 
@@ -183,22 +186,25 @@ class IdeaBox extends React.PureComponent<Props, State> {
 
   render() {
     const { showFooter } = this.state;
-    const { idea } = this.props;
+    const { idea, onClose, className } = this.props;
 
     if (!isNilOrError(idea)) {
       return (
-        <Container className={this.props['className']}>
-          {this.props.onClose &&
-            <CloseButton onClick={this.props.onClose}>
+        <Container className={className}>
+          {onClose &&
+            <CloseButton onClick={onClose}>
               <CloseIcon name="close" />
             </CloseButton>
           }
-          <IdeaTitle>
+
+          <Title>
             <T value={idea.attributes.title_multiloc} />
-          </IdeaTitle>
-          <IdeaDescription>
+          </Title>
+
+          <Description>
             <T as="div" value={idea.attributes.body_multiloc} supportHtml />
-          </IdeaDescription>
+          </Description>
+
           <VoteComments>
             {!showFooter &&
               <>
@@ -226,14 +232,16 @@ class IdeaBox extends React.PureComponent<Props, State> {
               />
             }
           </VoteComments>
-          <StyledButton circularCorners={false} width="100%" onClick={this.createIdeaClickHandler(idea)}>
+
+          <ViewIdeaButton fullWidth={true} onClick={this.createIdeaClickHandler(idea)}>
             <FormattedMessage {...messages.seeIdea} />
-          </StyledButton>
+          </ViewIdeaButton>
+
         </Container>
       );
     }
 
-    return  <Container className={this.props['className']} />;
+    return <Container className={className} />;
   }
 }
 
