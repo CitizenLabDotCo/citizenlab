@@ -13,9 +13,12 @@ module.exports = (on) => {
             test: /\.ts$/,
             exclude: [/node_modules/],
             include: path.join(process.cwd(), 'cypress'),
-            use: {
-              loader: 'ts-loader'
-            }
+            use: [{
+              loader: 'ts-loader',
+              options: {
+                transpileOnly: true
+              }
+            }]
           },
         ],
       }

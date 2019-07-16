@@ -190,7 +190,6 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
                 processing={processing}
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmitButtonClick}
-                circularCorners={false}
               />
               {!hasRequiredFields &&
                 <SkipButton

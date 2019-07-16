@@ -336,7 +336,6 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                     size="1"
                     processing={processing}
                     text={formatMessage(messages.submit)}
-                    circularCorners={false}
                     className="e2e-submit-signin"
                   />
                   <CreateAnAccountLink to="/sign-up" className="e2e-sign-up-link">
