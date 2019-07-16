@@ -1262,6 +1262,8 @@
   "app.containers.InitiativesNewPage.requirmentsListTitle": "To get there, you need to:",
   "app.containers.InitiativesNewPage.tipsExplanation": "An initiative is a project that you, as a citizen, can start anytime. Posting it on the platform enables you to gather support from others and, at the end, being heard by Vancouver.",
   "app.containers.InitiativesNewPage.tipsTitle": "Tips and tricks for a successful initiative",
+  "app.containers.InitiativesShow.learnMore": "Learn more about initiatives",
+  "app.containers.InitiativesShow.postedBy": "Initiative posted by {authorName}",
   "app.containers.NotificationMenu.adminRightsReceived": "You're now an administrator of the platform",
   "app.containers.NotificationMenu.clearAll": "Clear all",
   "app.containers.NotificationMenu.commentDeletedByAdmin": "Your comment on '{ideaTitle}' has been deleted by an admin because\n      {reasonCode, select, irrelevant {it is irrelevant} inappropriate {its content is inappropriate} other {{otherReason}}}",

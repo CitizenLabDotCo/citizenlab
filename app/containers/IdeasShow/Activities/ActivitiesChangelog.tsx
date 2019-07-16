@@ -57,15 +57,17 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const ActivityChangeLog = memo<Props>(({ activity, user }) => {
+  const userId = activity.relationships.user.data.id;
+
   return (
     <ChangeLogEntry className="e2e-activities-changelog-entry">
-      <Avatar userId={activity.relationships.user.data.id} size="36px" />
+      <Avatar userId={userId} size="36px" />
       <TextWrapper>
         <p>
           <FormattedMessage
             {...messages.changeLogEntry}
             values={{
-              userName: <UserName user={(!isNilOrError(user) ? user : null)} />,
+              userName: <UserName userId={userId} />,
               changeType: activity.attributes.action,
             }}
           />

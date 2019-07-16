@@ -26,6 +26,7 @@ import IdeaTitle from './IdeaTitle';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
+import PostedBy from 'containers/InitiativesShow/PostedBy';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
@@ -481,6 +482,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     let content: JSX.Element | null = null;
 
     if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
+      // If the user deletes their profile, authorId can be null
       const authorId: string | null = get(idea, 'relationships.author.data.id', null);
       const ideaCreatedAt = idea.attributes.created_at;
       const titleMultiloc = idea.attributes.title_multiloc;
@@ -559,10 +561,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 {biggerThanLargeTablet &&
-                  <StyledIdeaAuthor
-                    ideaId={ideaId}
+                  // <StyledIdeaAuthor
+                  //   ideaId={ideaId}
+                  //   authorId={authorId}
+                  //   ideaCreatedAt={ideaCreatedAt}
+                  // />
+
+                  <PostedBy
                     authorId={authorId}
-                    ideaCreatedAt={ideaCreatedAt}
                   />
                 }
 
