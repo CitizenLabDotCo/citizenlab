@@ -42,6 +42,11 @@ export const TitleLink = styled.a`
   }
 `;
 
+function nothingHappens(event) {
+  event.preventDefault();
+  event.stopPropagation();
+}
+
 type Props = {
   type: ManagerType;
   post: IIdeaData | IInitiativeData,
@@ -82,11 +87,6 @@ export default class Row extends React.PureComponent<Props> {
     openPreview(post.id);
   }
 
-  nothingHappens = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
   render() {
     const { type, post, selection, activeFilterMenu, phases, statuses, className } = this.props;
     if (type === 'AllIdeas' || type === 'ProjectIdeas') {
@@ -102,7 +102,7 @@ export default class Row extends React.PureComponent<Props> {
           onClickRow={this.onClickRow}
           onClickCheckbox={this.onClickCheckbox}
           onClickTitle={this.onClickTitle}
-          nothingHappens={this.nothingHappens}
+          nothingHappens={nothingHappens}
         />
       );
     } else {
@@ -117,7 +117,7 @@ export default class Row extends React.PureComponent<Props> {
           onClickRow={this.onClickRow}
           onClickCheckbox={this.onClickCheckbox}
           onClickTitle={this.onClickTitle}
-          nothingHappens={this.nothingHappens}
+          nothingHappens={nothingHappens}
         />
       );
     }

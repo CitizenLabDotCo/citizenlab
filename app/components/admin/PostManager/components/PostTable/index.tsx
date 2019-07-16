@@ -19,7 +19,8 @@ import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // resources
-import { Sort, SortAttribute } from 'resources/GetIdeas';
+import { Sort as IdeasSort, SortAttribute as IdeasSortAttribute } from 'resources/GetIdeas';
+import { Sort as InitiativesSort, SortAttribute as InitiativesSortAttribute } from 'resources/GetInitiatives';
 
 // utils
 import { SortDirection } from 'utils/paginationUtils';
@@ -71,12 +72,12 @@ export const TableHeaderCellText = styled.span`
 
 interface Props {
   type: ManagerType;
-  sortAttribute?: SortAttribute;
+  sortAttribute?: IdeasSortAttribute | InitiativesSortAttribute;
   sortDirection?: SortDirection;
   posts?: IIdeaData[] | IInitiativeData[];
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
-  onChangeSort?: (sort: Sort) => void;
+  onChangeSort?: (sort: IdeasSort | InitiativesSort) => void;
   selection: Set<string>;
   onChangeSelection: (newSelection: Set<string>) => void;
   currentPageNumber?: number;
@@ -89,14 +90,14 @@ interface Props {
 
 export default class PostTable extends React.Component<Props> {
 
-  handleSortClick = (newSortAttribute: SortAttribute) => () => {
+  handleSortClick = (newSortAttribute: IdeasSortAttribute | InitiativesSortAttribute) => () => {
     const { sortAttribute: oldSortAttribute, sortDirection: oldSortDirection, onChangeSort } = this.props;
     if (isFunction(onChangeSort)) {
       let newSortSign = '-';
       if (newSortAttribute === oldSortAttribute) {
         newSortSign = oldSortDirection === 'ascending' ? '-' : '';
       }
-      onChangeSort(`${newSortSign}${newSortAttribute}` as Sort);
+      onChangeSort(`${newSortSign}${newSortAttribute}` as IdeasSort); // TODO; ok for now since InitiativesSort is a subset of ideas sort
     }
   }
 

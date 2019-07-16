@@ -4,6 +4,9 @@ import { take } from 'rxjs/operators';
 import { uniq, get } from 'lodash-es';
 import { findDOMNode } from 'react-dom';
 import { DragSource } from 'react-dnd';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
+import moment from 'moment';
 
 // services
 import { IInitiativeData, updateInitiative, initiativeByIdStream } from 'services/initiatives';
@@ -15,12 +18,13 @@ import WrappedRow from './WrappedRow';
 import T from 'components/T';
 
 import Checkbox from 'components/UI/Checkbox';
+import StatusLabel from 'components/UI/StatusLabel';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // i18n
-import { FormattedRelative, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // style
@@ -33,22 +37,29 @@ import { TFilterMenu, ManagerType } from '../..';
 import { TitleLink, StyledRow } from './Row';
 import SubRow from './SubRow';
 
-type InputProps = {
+// resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+
+interface DataProps {
+  tenant: GetTenantChildProps;
+}
+
+interface InputProps {
   type: ManagerType;
-  initiative: IInitiativeData,
-  statuses?: IInitiativeStatusData[],
-  selection: Set<string>,
+  initiative: IInitiativeData;
+  statuses?: IInitiativeStatusData[];
+  selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   className?: string;
   onClickRow: (event) => void;
   onClickCheckbox: (event) => void;
   onClickTitle: (event) => void;
   nothingHappens: (event) => void;
-};
+}
 
-type Props = InputProps & {
+interface Props extends InputProps, DataProps {
   connectDragSource: any;
-};
+}
 
 class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLocalized> {
   onUpdateInitiativePhases = (selectedPhases) => {
@@ -91,6 +102,35 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
       method: 'Changed through the dropdown in the table overview',
       initiative: initiativeId
     });
+  }
+
+  renderTimingCell = () => {
+    const {
+      initiative,
+      tenant,
+      statuses
+    } = this.props;
+
+    const selectedStatus: string | undefined = get(initiative, 'relationships.initiative_status.data.id');
+    const selectedStatusObject = statuses && statuses.find(status => status.id === selectedStatus);
+
+    if (selectedStatusObject && !isNilOrError(tenant) && tenant.attributes.settings.initiatives) {
+      if (selectedStatusObject.attributes.code === 'published') {
+        const startingTime = moment(initiative.attributes.published_at).startOf('day');
+        const daysSinceStart = moment().diff(startingTime, 'days');
+        const timeSpanDays = tenant.attributes.settings.initiatives.days_limit || 0;
+
+        return timeSpanDays - daysSinceStart;
+      } else {
+        return (
+          <StatusLabel
+            text={<T value={selectedStatusObject.attributes.title_multiloc} />}
+            color={selectedStatusObject.attributes.color}
+          />
+        );
+      }
+    }
+    return null;
   }
 
   render() {
@@ -137,11 +177,14 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
             />
           </Table.Cell>
           <Table.Cell>
-            <FormattedRelative value={attrs.published_at} />
+            {this.renderTimingCell()}
           </Table.Cell>
           <Table.Cell singleLine>
             <Icon name="thumbs up" />
             {attrs.upvotes_count}
+          </Table.Cell>
+          <Table.Cell>
+            {attrs.comments_count}
           </Table.Cell>
         </WrappedRow>
         <SubRow
@@ -220,4 +263,14 @@ function collect(connect, monitor) {
   };
 }
 
-export default injectIntl<InputProps>(localize<InputProps & InjectedIntlProps>(DragSource('IDEA', initiativeSource, collect)(InitiativeRow)));
+const InitiativesRowWithHocs = injectIntl<InputProps>(localize<InputProps & InjectedIntlProps>(DragSource('IDEA', initiativeSource, collect)(InitiativeRow)));
+
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <InitiativesRowWithHocs {...inputProps} {...dataProps} />}
+  </Data>
+);
