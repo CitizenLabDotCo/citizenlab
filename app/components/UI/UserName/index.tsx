@@ -1,7 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
-import { get } from 'lodash-es';
+import { get, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styles
@@ -69,8 +69,9 @@ const UserName = React.memo<Props>(({ user, className, hideLastName, linkToProfi
     );
   }
 
-  const firstName = get(user, 'attributes.first_name', '');
-  const lastName = get(user, 'attributes.last_name', '');
+  // Make sure to have a fall-back for both null and undefined
+  const firstName = isString(get(user, 'attributes.first_name')) ? get(user, 'attributes.first_name') : '';
+  const lastName = isString(get(user, 'attributes.last_name')) ? get(user, 'attributes.last_name') : '';
   const nameComponent = (
     <Name
       emphasize={emphasize}
