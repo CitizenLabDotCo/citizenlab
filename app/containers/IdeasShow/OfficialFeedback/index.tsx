@@ -38,8 +38,7 @@ interface State {}
 export class OfficialFeedback extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   render() {

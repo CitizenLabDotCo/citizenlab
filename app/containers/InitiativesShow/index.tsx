@@ -254,7 +254,7 @@ interface DataProps {
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
   ideaImages: GetIdeaImagesChildProps;
-  ideaFiles: GetResourceFilesChildProps;
+  initiativeFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
@@ -399,7 +399,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
   render() {
     const {
-      ideaFiles,
+      initiativeFiles,
       locale,
       initiative,
       localize,
@@ -507,8 +507,8 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   translateButtonClicked={translateButtonClicked}
                 />
 
-                {!isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
-                  <FileAttachments files={ideaFiles} />
+                {!isNilOrError(initiativeFiles) && initiativeFiles.length > 0 &&
+                  <FileAttachments files={initiativeFiles} />
                 }
 
                 <StyledOfficialFeedback
@@ -606,7 +606,7 @@ const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize debounce={50} />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
-  ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
+  initiativeFiles: ({ initiativeId, render }) => <GetResourceFiles resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFiles>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
   phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>,
   officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks ideaId={ideaId}>{render}</GetOfficialFeedbacks>
