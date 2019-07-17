@@ -13,20 +13,21 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
-import IdeaMap from './IdeaMapLoadable';
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import Topics from 'components/PostComponents/Topics';
 import Title from 'components/PostComponents/Title';
+import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
+import Body from 'components/PostComponents/Body';
+
 import PostedBy from './PostedBy';
 import Image from 'components/PostComponents/Image';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
-import IdeaBody from './IdeaBody';
 import IdeaContentFooter from './IdeaContentFooter';
 import ActionBar from './ActionBar';
 import TranslateButton from './TranslateButton';
@@ -194,7 +195,7 @@ const StyledIdeaAuthor = styled(IdeaAuthor)`
   `}
 `;
 
-const StyledIdeaMap = styled(IdeaMap)`
+const StyledLoadableDropdownMap = styled(LoadableDropdownMap)`
   margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
@@ -492,16 +493,17 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 }
 
                 {initiativeGeoPosition && initiativeAddress &&
-                  <StyledIdeaMap
+                  <StyledLoadableDropdownMap
                     address={initiativeAddress}
                     position={initiativeGeoPosition}
                   />
                 }
 
-                <IdeaBody
-                  ideaId={ideaId}
+                <Body
+                  id={initiativeId}
+                  context="initiative"
                   locale={locale}
-                  ideaBody={ideaBody}
+                  body={initiativeBody}
                   translateButtonClicked={translateButtonClicked}
                 />
 
