@@ -524,8 +524,8 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
                 {smallerThanLargeTablet &&
                   <SharingMobile
-                    context="idea"
-                    url={ideaUrl}
+                    context="initiative"
+                    url={initiativeUrl}
                     twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                     emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
                     emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
