@@ -3,7 +3,7 @@
 exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
 <Container>
   <Top>
-    <WithTheme(Button)
+    <Button
       icon="edit"
       onClick={[MockFunction]}
       style="text"
@@ -13,8 +13,8 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         defaultMessage="Edit"
         id="app.components.admin.PostManager.PostPreview.edit"
       />
-    </WithTheme(Button)>
-    <WithTheme(Button)
+    </Button>
+    <Button
       icon="delete"
       onClick={[Function]}
       style="text"
@@ -24,7 +24,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         defaultMessage="Delete"
         id="app.components.admin.PostManager.PostPreview.delete"
       />
-    </WithTheme(Button)>
+    </Button>
   </Top>
   <Content>
     <IdeaContent__StyledIdeaTitle
@@ -33,7 +33,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
     />
     <IdeaContent__Row>
       <IdeaContent__Left>
-        <Component
+        <IdeaAuthor
           authorId="8ea3a61c-e1bd-4756-a54d-c092553abccd"
           ideaCreatedAt="2019-03-12T00: 00: 00.000Z"
           ideaId="myIdeasiD"
@@ -50,10 +50,10 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         />
       </IdeaContent__Left>
       <IdeaContent__Right>
-        <Component
+        <VotePreview
           ideaId="myIdeasiD"
         />
-        <Component
+        <IdeaSettings
           ideaId="myIdeasiD"
         />
       </IdeaContent__Right>
