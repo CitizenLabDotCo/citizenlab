@@ -218,6 +218,64 @@ export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificati
   };
 }
 
+export interface IStatusChangeOnCommentedIdeaNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'status_change_on_commented_idea';
+    read_at: string | null;
+    created_at: string;
+    idea_title: Multiloc;
+  };
+  relationships: {
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea_status: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+export interface IStatusChangeOnVotedIdeaNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'status_change_on_voted_idea';
+    read_at: string | null;
+    created_at: string;
+    idea_title: Multiloc;
+  };
+  relationships: {
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea_status: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
 export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'invite_accepted';
@@ -628,6 +686,8 @@ export type TNotificationData =
   IMentionInCommentNotificationData |
   IInviteAcceptedNotificationData |
   IStatusChangeOfYourIdeaNotificationData |
+  IStatusChangeOnCommentedIdeaNotificationData |
+  IStatusChangeOnVotedIdeaNotificationData |
   ICommentDeletedByAdminNotificationData |
   IProjectModerationRightsReceivedNotificationData |
   IAdminRightsReceivedNotificationData |
