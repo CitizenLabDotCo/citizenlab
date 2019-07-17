@@ -195,6 +195,7 @@
   "app.components.PagesShowPage.notFoundDescription": "Den forespurte siden ble ikke funnet",
   "app.components.PagesShowPage.notFoundTitle": "Side ikke funnet",
   "app.components.PagesShowPage.projectAttachments": "Attachments",
+  "app.components.PostComponents.createdTimeAgo": "",
   "app.components.PostComponents.imageAltText": "",
   "app.components.Project.projectModeratorIndicator": "Du er en moderator av dette prosjektet",
   "app.components.ProjectArchivedIndicator.archivedProject": "Dessverre kan du ikke delta i dette prosjektet lenger, fordi det har blitt arkivert",
