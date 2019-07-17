@@ -195,6 +195,7 @@
   "app.components.PagesShowPage.notFoundDescription": "",
   "app.components.PagesShowPage.notFoundTitle": "",
   "app.components.PagesShowPage.projectAttachments": "",
+  "app.components.PostComponents.createdTimeAgo": "",
   "app.components.PostComponents.imageAltText": "",
   "app.components.Project.projectModeratorIndicator": "",
   "app.components.ProjectArchivedIndicator.archivedProject": "",
