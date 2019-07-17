@@ -21,6 +21,7 @@ import Topics from 'components/PostComponents/Topics';
 import Title from 'components/PostComponents/Title';
 import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
 import Body from 'components/PostComponents/Body';
+import ContentFooter from 'components/PostComponents/ContentFooter';
 
 import PostedBy from './PostedBy';
 import Image from 'components/PostComponents/Image';
@@ -28,7 +29,6 @@ import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
-import IdeaContentFooter from './IdeaContentFooter';
 import ActionBar from './ActionBar';
 import TranslateButton from './TranslateButton';
 
@@ -501,7 +501,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
                 <Body
                   id={initiativeId}
-                  context="initiative"
+                  postType="initiative"
                   locale={locale}
                   body={initiativeBody}
                   translateButtonClicked={translateButtonClicked}
@@ -515,10 +515,11 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   ideaId={ideaId}
                 />
 
-                <IdeaContentFooter
-                  ideaId={ideaId}
-                  ideaCreatedAt={ideaCreatedAt}
-                  commentsCount={idea.attributes.comments_count}
+                <ContentFooter
+                  postType="initiative"
+                  id={initiativeId}
+                  createdAt={initiativeCreatedAt}
+                  commentsCount={initiative.attributes.comments_count}
                 />
 
                 {smallerThanLargeTablet &&
