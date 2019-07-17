@@ -481,6 +481,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     let content: JSX.Element | null = null;
 
     if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
+      // If the user deletes their profile, authorId can be null
       const authorId: string | null = get(idea, 'relationships.author.data.id', null);
       const ideaCreatedAt = idea.attributes.created_at;
       const titleMultiloc = idea.attributes.title_multiloc;
@@ -578,7 +579,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <StyledIdeaMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
-                    id={ideaId}
                   />
                 }
 

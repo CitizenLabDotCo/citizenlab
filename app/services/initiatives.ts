@@ -40,10 +40,10 @@ export interface IInitiativeData {
     };
     initiative_status?: {
       data: IRelationship | null;
-    },
+    };
     user_vote: {
       data: IRelationship;
-    }
+    };
   };
 }
 
@@ -69,9 +69,21 @@ export interface IInitiativeAdd {
   location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | null;
 }
-
 export interface IInitiativesCount {
   count: number;
+}
+
+export interface IInitiativesFilterCounts {
+  initiative_status_id: {
+    [key: string]: number;
+  };
+  area_id: {
+    [key: string]: number;
+  };
+  topic_id: {
+    [key: string]: number;
+  };
+  total: number;
 }
 
 export function initiativeByIdStream(initiativeId: string) {

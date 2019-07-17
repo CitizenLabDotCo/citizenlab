@@ -131,8 +131,8 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
           <TextAndButtons>
             <T as="h1" value={this.props.title} />
             <Buttons>
-              <Button iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" style="secondary" circularCorners={false} onClick={this.props.onEdit} />
-              <Button iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" style="text" circularCorners={false} onClick={this.props.onDelete} />
+              <Button iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" style="secondary" onClick={this.props.onEdit} />
+              <Button iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" style="text" onClick={this.props.onDelete} />
             </Buttons>
           </TextAndButtons>
           <Spacer />

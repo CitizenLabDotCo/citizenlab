@@ -86,8 +86,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       description: null,
       selectedTopics: [],
       budget: null,
-      address: '',
-      geojson_position_coordinates: null,
+      position: '',
+      position_coordinates: null,
       submitError: false,
       processing: false,
       ideaId: null,
@@ -111,13 +111,13 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       const lat = coordinates[0];
       const lng = coordinates[1];
 
-      reverseGeocode(coordinates).then((address) => {
+      reverseGeocode(coordinates).then((position) => {
         this.globalState.set({
           // When an idea is posted through the map, we Google Maps gets an approximate address,
           // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
           // and doesn't readjust together with the address correction/approximation
-          address,
-          geojson_position_coordinates: {
+          position,
+          position_coordinates: {
             type: 'Point',
             coordinates: [lng, lat] as number[]
           }
@@ -143,11 +143,11 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       this.globalState.set({ submitError: false, processing: true });
 
       try {
-        const { title, description, selectedTopics, budget, address, geojson_position_coordinates, imageFile, ideaFiles } = await this.globalState.get();
+        const { title, description, selectedTopics, budget, position, position_coordinates, imageFile, ideaFiles } = await this.globalState.get();
         const ideaTitle = { [locale]: title as string };
         const ideaDescription = { [locale]: (description || '') };
-        const locationGeoJSON = geojson_position_coordinates || await convertToGeoJson(address);
-        const locationDescription = (isString(address) && !isEmpty(address) ? address : null);
+        const locationGeoJSON = position_coordinates || await convertToGeoJson(position);
+        const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
         const ideaObject: IIdeaAdd = {
           budget,
           author_id: authUser.id,

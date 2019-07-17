@@ -11,7 +11,7 @@ exports[`IdeasMap renders correctly 1`] = `
     <div
       className="create-idea-wrapper"
     >
-      <WrappedIdeaButton
+      <WrappedIdeaAddButton
         onClick={[Function]}
         phaseId="c43968d3-171e-570c-8b71-f5fc0e55bbfa"
         projectId="379cac45-d26b-505c-9215-b2677a693d37"

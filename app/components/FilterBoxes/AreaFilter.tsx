@@ -8,7 +8,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 
 // i18n
-import messages from '../messages';
+import messages from './messages';
 import localize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';

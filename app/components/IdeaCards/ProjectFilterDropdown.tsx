@@ -27,9 +27,9 @@ type State = {
   selectedValues: string[];
 };
 
-class SelectProjects extends PureComponent<Props & InjectedLocalized, State> {
-  constructor(props: Props) {
-    super(props as any);
+class ProjectFilterDropdown extends PureComponent<Props & InjectedLocalized, State> {
+  constructor(props) {
+    super(props);
     this.state = {
       selectedValues: [],
     };
@@ -78,10 +78,10 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects publicationStatuses={['published']} sort="new" />
 });
 
-const SelectProjectsWithLocalize = localize(SelectProjects);
+const ProjectFilterDropdownWithLocalize = localize(ProjectFilterDropdown);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <SelectProjectsWithLocalize {...dataProps} {...inputProps} />}
+    {dataProps => <ProjectFilterDropdownWithLocalize {...dataProps} {...inputProps} />}
   </Data>
 );

@@ -7,9 +7,9 @@ import IdeaCard from 'components/IdeaCard';
 import IdeasMap from 'components/IdeasMap';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
-import SelectTopics from './SelectTopics';
-import SelectSort from './SelectSort';
-import SelectProjects from './SelectProjects';
+import TopicFilterDropdown from './TopicFilterDropdown';
+import SelectSort from './SortFilterDropdown';
+import ProjectFilterDropdown from './ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
@@ -372,8 +372,8 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           <RightFilterArea>
             <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'}`}>
               <SelectSort onChange={this.handleSortOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
-              {allowProjectsFilter && <SelectProjects onChange={this.handleProjectsOnChange} />}
-              <SelectTopics onChange={this.handleTopicsOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
+              {allowProjectsFilter && <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />}
+              <TopicFilterDropdown onChange={this.handleTopicsOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
             </DropdownFilters>
 
             <Spacer />

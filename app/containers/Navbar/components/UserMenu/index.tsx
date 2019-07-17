@@ -144,8 +144,8 @@ class UserMenu extends PureComponent<Props, State> {
             onClick={this.toggleDropdown}
           >
             <StyledUserName
-              user={authUser.data}
-              hideLastName={true}
+              userId={userId}
+              hideLastName
             />
             <StyledAvatar
               userId={userId}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
 import { darken } from 'polished';
@@ -25,14 +25,14 @@ const RegisterLink = styled.span`
   }
 `;
 
-export default class Unauthenticated extends React.PureComponent {
-  goToLogin = (event: React.FormEvent) => {
+export default class Unauthenticated extends PureComponent {
+  goToLogin = (event: FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
     clHistory.push('/sign-in');
   }
 
-  goToRegister = (event: React.FormEvent) => {
+  goToRegister = (event: FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
     clHistory.push('/sign-up');

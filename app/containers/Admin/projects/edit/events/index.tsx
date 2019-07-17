@@ -66,7 +66,7 @@ class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProp
           <FormattedMessage {...messages.subtitleEvents} />
         </SectionSubtitle>
         <ListWrapper className="e2e-projects-events">
-          <AddButton style="cl-blue" icon="plus-circle" circularCorners={false} linkTo={`/admin/projects/${projectId}/events/new`}>
+          <AddButton style="cl-blue" icon="plus-circle" linkTo={`/admin/projects/${projectId}/events/new`}>
             <FormattedMessage {...messages.addEventButton} />
           </AddButton>
 

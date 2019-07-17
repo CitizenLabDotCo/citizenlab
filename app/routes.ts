@@ -125,6 +125,15 @@ export default function createRoutes() {
           })
         },
         {
+          path: 'initiatives/:slug',
+          name: 'initiativesShow',
+          component: Loadable({
+            loader: () => import('containers/InitiativesShowPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
+        },
+        {
           path: 'initiatives/new',
           name: 'initiativesNewPage',
           component: Loadable({

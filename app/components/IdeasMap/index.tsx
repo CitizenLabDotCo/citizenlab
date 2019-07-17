@@ -1,5 +1,5 @@
 // Libs
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Leaflet from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
@@ -12,8 +12,8 @@ import tracks from './tracks';
 // Components
 import Map from 'components/Map';
 import Warning from 'components/UI/Warning';
-import IdeaBox from './IdeaBox';
-import IdeaButton from './IdeaButton';
+import IdeaPreview from './IdeaPreview';
+import IdeaButton from './IdeaAddButton';
 
 // Injectors
 import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'resources/GetIdeaMarkers';
@@ -29,52 +29,33 @@ import { media } from 'utils/styleUtils';
 // Typing
 import { IGeotaggedIdeaData } from 'services/ideas';
 
-const timeout = 40000;
-
-const StyledWarning = styled(Warning)`
-  margin-bottom: 10px;
-`;
-
-const MapWrapper = styled.div`
-  height: 400px;
-  display: flex;
-  align-items: stretch;
-  margin-bottom: 2rem;
-
-  ${media.biggerThanPhone`
-    height: 600px;
-  `}
-
+const Container = styled.div`
   > .create-idea-wrapper {
     display: none;
   }
 `;
 
-const StyledIdeaBox = styled(IdeaBox)`
-  flex: 0 0 400px;
-
-  ${media.smallerThanMaxTablet`
-    flex: 0 0 40%;
-  `}
-
-  ${media.smallerThanMinTablet`
-    flex: 0 0 80%;
-  `}
+const StyledWarning = styled(Warning)`
+  margin-bottom: 10px;
 `;
 
 const StyledMap = styled(Map)`
-  flex: 1;
-  height: 100%;
-  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  height: 600px;
+  margin-bottom: 2rem;
 
-  ${media.biggerThanPhone`
-    flex-basis: 60%;
+  ${media.smallerThanMaxTablet`
+    height: 500px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    height: 400px;
   `}
 `;
 
 interface InputProps {
   projectIds?: string[] | null;
   phaseId?: string | null;
+  className?: string;
 }
 
 interface DataProps {
@@ -87,12 +68,12 @@ interface State {
   selectedIdeaId: string | null;
 }
 
-export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
+export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
   private createIdeaButton: HTMLDivElement;
   private savedPosition: Leaflet.LatLng | null = null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       selectedIdeaId: null,
     };
@@ -130,7 +111,7 @@ export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State
   onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
     this.savedPosition = position;
 
-    if (this.props.projectIds) {
+    if (this.props.projectIds && this.createIdeaButton) {
       Leaflet
         .popup()
         .setLatLng(position)
@@ -157,41 +138,38 @@ export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State
     }
   }
 
+  noIdeasWithLocationMessage = <FormattedMessage {...messages.noIdeasWithLocation} />;
+
   render() {
-    const { phaseId, projectIds, ideaMarkers } = this.props;
+    const { phaseId, projectIds, ideaMarkers, className } = this.props;
     const { selectedIdeaId } = this.state;
     const points = this.getPoints(ideaMarkers);
 
     return (
-      <>
+      <Container className={className}>
         {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 &&
-          <StyledWarning text={<FormattedMessage {...messages.noIdeasWithLocation} />} />
+          <StyledWarning text={this.noIdeasWithLocationMessage} />
         }
 
-        <MapWrapper>
-          {selectedIdeaId &&
-            <StyledIdeaBox
-              ideaId={selectedIdeaId}
-              onClose={this.deselectIdea}
-            />
-          }
+        <StyledMap
+          points={points}
+          onMarkerClick={this.toggleIdea}
+          onMapClick={this.onMapClick}
+          fitBounds={true}
+          boxContent={selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null}
+          onBoxClose={this.deselectIdea}
+        />
 
-          <StyledMap
-            points={points}
-            onMarkerClick={this.toggleIdea}
-            onMapClick={this.onMapClick}
-          />
-          {projectIds && projectIds.length === 1 &&
-            <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
-              <IdeaButton
-                projectId={projectIds[0]}
-                phaseId={phaseId}
-                onClick={this.redirectToIdeaCreation}
-              />
-            </div>
-          }
-        </MapWrapper>
-      </>
+        {projectIds && projectIds.length === 1 &&
+          <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
+            <IdeaButton
+              projectId={projectIds[0]}
+              phaseId={phaseId}
+              onClick={this.redirectToIdeaCreation}
+            />
+          </div>
+        }
+      </Container>
     );
   }
 }
