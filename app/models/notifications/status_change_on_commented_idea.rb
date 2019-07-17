@@ -14,22 +14,17 @@ module Notifications
 
     def self.make_notifications_on activity
       idea = activity.item
+      initiator_id = activity.user_id
 
-      idea_id = idea&.id
-      recipient_id = idea&.author_id
-      initiator_id = activity&.user_id
-      project_id = idea&.project_id
-      idea_status_id = idea&.idea_status_id
-
-      if idea_id && recipient_id && recipient_id != initiator_id
+      if idea.present?
         idea.comments.pluck(:author_id).map do |recipient_id|
           if (recipient_id != initiator_id) && (recipient_id != idea.author_id)
             self.create!(
               recipient_id: recipient_id,
-              initiating_user: User.find_by(id: initiator_id),
-              idea_id: idea_id,
-              project_id: project_id,
-              idea_status_id: idea_status_id
+              initiating_user_id: initiator_id,
+              idea_id: idea.id,
+              project_id: idea.project_id,
+              idea_status_id: idea.idea_status_id
             )
           end
         end
