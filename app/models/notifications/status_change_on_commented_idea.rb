@@ -17,7 +17,7 @@ module Notifications
       initiator_id = activity.user_id
 
       if idea.present?
-        idea.comments.pluck(:author_id).map do |recipient_id|
+        User.joins(:comments).where(comments: {idea_id: idea.id}).distinct.ids.map do |recipient_id|
           if (recipient_id != initiator_id) && (recipient_id != idea.author_id)
             self.create!(
               recipient_id: recipient_id,
