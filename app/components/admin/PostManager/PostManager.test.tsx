@@ -152,8 +152,6 @@ describe('<PostManager />', () => {
       />
     ));
 
-    expect(Wrapper).toMatchSnapshot();
-
     Wrapper.find('PostManager__StyledInput').prop('onChange')({ target: { value: 'searchString' } });
 
     // initially sets it to the first item of the visibleFilterMenus prop
