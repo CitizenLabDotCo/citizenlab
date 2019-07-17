@@ -1,22 +1,36 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { IdeaContent } from './IdeaContent';
-import { makeUser } from 'services/__mocks__/users';
-import { getIdea } from 'services/ideas';
 import { localizeProps } from 'utils/testUtils/localizeProps';
-
-jest.mock('utils/cl-intl');
-jest.mock('resources/GetUsers');
-jest.mock('services/users');
-jest.mock('services/ideas');
-jest.mock('scroll-to', () => {});
-jest.mock('services/permissions', () => {});
-jest.mock('./', () => ({ Top: () => {}, Content: () => {}, Container: () => {} }));
-jest.mock('resources/GetResourceFiles', () => {});
-jest.mock('resources/GetIdeaImages', () => {});
-
 import { intl } from 'utils/cl-intl';
+import { getIdea } from 'services/ideas';
+
+jest.mock('resources/GetUsers', () => 'GetUsers');
+jest.mock('resources/GetResourceFiles', () => 'GetResourceFiles');
+jest.mock('resources/GetIdea', () => 'GetIdea');
+jest.mock('resources/GetTenant', () => 'GetTenant');
+jest.mock('resources/GetProject', () => 'GetProject');
+jest.mock('containers/IdeasShow/IdeaAuthor', () => 'IdeaAuthor');
+jest.mock('containers/IdeasShow/IdeaTitle', () => 'IdeaTitle');
+jest.mock('containers/IdeasShow/IdeaBody', () => 'IdeaBody');
+jest.mock('containers/IdeasShow/OfficialFeedback', () => 'OfficialFeedback');
+jest.mock('containers/IdeasShow/Comments', () => 'Comments');
+jest.mock('components/UI/FileAttachments', () => 'FileAttachments');
+jest.mock('components/UI/Button', () => 'Button');
+jest.mock('components/admin/InfoTooltip', () => 'InfoTooltip');
+jest.mock('./IdeaSettings', () => 'IdeaSettings');
+jest.mock('./VotePreview', () => 'VotePreview');
+jest.mock('utils/cl-router/Link', () => 'Link');
+jest.mock('components/T', () => 'T');
+jest.mock('./', () => ({
+  Top: () => 'Top',
+  Content: () => 'Content',
+  Container: () => 'Container'
+}));
+jest.mock('services/ideas');
+jest.mock('utils/cl-intl');
+
+import { IdeaContent } from './IdeaContent';
 
 describe('<IdeaContent />', () => {
   let closePreview: jest.Mock;
