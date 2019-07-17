@@ -14,7 +14,7 @@ module Notifications
 
       # We only notify manual assignments, meaning there needs to be an
       # initiator
-      if recipient && initiator_id
+      if recipient && initiator_id && recipient.id != initiator_id
         [
           self.create(
            recipient_id: recipient.id,
