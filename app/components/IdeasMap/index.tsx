@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
-// Services & utils
+// Utils
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
@@ -15,7 +15,10 @@ import Warning from 'components/UI/Warning';
 import IdeaPreview from './IdeaPreview';
 import IdeaAddButton from './IdeaAddButton';
 
-// Injectors
+// Services
+import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
+
+// Resources
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'resources/GetIdeaMarkers';
 
