@@ -456,9 +456,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   <SharingMobile
                     context="initiative"
                     url={initiativeUrl}
-                    twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
-                    emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-                    emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
+                    twitterMessage={formatMessage(messages.twitterMessage, { initiativeTitle })}
+                    emailSubject={formatMessage(messages.emailSharingSubject, { initiativeTitle })}
+                    emailBody={formatMessage(messages.emailSharingBody, { initiativeUrl, initiativeTitle })}
                     utmParams={utmParams}
                   />
                 }
@@ -469,11 +469,11 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   <MetaContent>
                   < SharingWrapper>
                       <Sharing
-                        context="idea"
-                        url={ideaUrl}
-                        twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
-                        emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-                        emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
+                        context="initiative"
+                        url={initiativeUrl}
+                        twitterMessage={formatMessage(messages.twitterMessage, { initiativeTitle })}
+                        emailSubject={formatMessage(messages.emailSharingSubject, { initiativeTitle })}
+                        emailBody={formatMessage(messages.emailSharingBody, { initiativeUrl, initiativeTitle })}
                         utmParams={utmParams}
                       />
                     </SharingWrapper>
