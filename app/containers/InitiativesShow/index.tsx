@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { sortBy, last, get, isUndefined } from 'lodash-es';
+import { get, isUndefined } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -32,16 +32,11 @@ import OfficialFeedback from './OfficialFeedback';
 import ActionBar from './ActionBar';
 import TranslateButton from './TranslateButton';
 
-// utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
@@ -251,8 +246,6 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 interface DataProps {
   initiative: GetInitiativeChildProps;
   locale: GetLocaleChildProps;
-  project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
   ideaImages: GetIdeaImagesChildProps;
   initiativeFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
@@ -268,20 +261,11 @@ interface InputProps {
 
 interface Props extends DataProps, InputProps {}
 
-interface IActionInfos {
-  participationContextType: 'Project' | 'Phase' | null;
-  participationContextId: string | null;
-  budgetingDescriptor: any | null;
-  showBudgetControl: boolean | null;
-  showVoteControl: boolean | null;
-}
-
 interface State {
   loaded: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
-  actionInfos: IActionInfos | null;
 }
 
 export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
@@ -289,16 +273,12 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
   constructor(props) {
     super(props);
-    const initialState = {
+    this.state = {
       loaded: false,
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
-      ideaBody: null,
-      actionInfos: null
     };
-    this.initialState = initialState;
-    this.state = initialState;
   }
 
   componentDidMount() {
@@ -319,61 +299,11 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     this.setLoaded();
   }
 
-  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { actionInfos } = prevState;
-    const { idea, project, phases } = nextProps;
-    let stateToUpdate: Partial<State> | null = null;
-
-    if (!actionInfos && !isNilOrError(idea) && !isNilOrError(project) && !isUndefined(phases)) {
-      const upvotesCount = idea.attributes.upvotes_count;
-      const downvotesCount = idea.attributes.downvotes_count;
-      const votingEnabled = idea.relationships.action_descriptor.data.voting.enabled;
-      const cancellingEnabled = idea.relationships.action_descriptor.data.voting.cancelling_enabled;
-      const votingFutureEnabled = idea.relationships.action_descriptor.data.voting.future_enabled;
-      const pbProject = (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'budgeting' ? project : null);
-      const pbPhase = (!pbProject && !isNilOrError(phases) ? phases.find(phase => phase.attributes.participation_method === 'budgeting') : null);
-      const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.attributes.start_at, pbPhase.attributes.end_at]) === 'present');
-      const lastPhase = (!isNilOrError(phases) ? last(sortBy(phases, [phase => phase.attributes.end_at])) : null);
-      const lastPhaseHasPassed = (lastPhase ? pastPresentOrFuture([lastPhase.attributes.start_at, lastPhase.attributes.end_at]) === 'past' : false);
-      const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.id === pbPhase.id);
-      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
-      const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0));
-      const budgetingDescriptor = get(idea, 'relationships.action_descriptor.data.budgeting', null);
-      let participationContextType: 'Project' | 'Phase' | null = null;
-      let participationContextId: string | null = null;
-
-      if (pbProject) {
-        participationContextType = 'Project';
-      } else if (pbPhase) {
-        participationContextType = 'Phase';
-      }
-
-      if (!isNilOrError(pbProject)) {
-        participationContextId = pbProject.id;
-      } else if (!isNilOrError(pbPhase)) {
-        participationContextId = pbPhase.id;
-      }
-
-      stateToUpdate = {
-        ...(stateToUpdate || {}),
-        actionInfos: {
-          participationContextType,
-          participationContextId,
-          budgetingDescriptor,
-          showBudgetControl,
-          showVoteControl
-        }
-      };
-    }
-
-    return stateToUpdate;
-  }
-
   setLoaded = () => {
     const { loaded } = this.state;
-    const { idea, ideaImages, project, officialFeedbacks } = this.props;
+    const { initiative, ideaImages, officialFeedbacks } = this.props;
 
-    if (!loaded && !isNilOrError(idea) && !isUndefined(ideaImages) && !isNilOrError(project) && !isUndefined(officialFeedbacks.officialFeedbacksList)) {
+    if (!loaded && !isNilOrError(initiative) && !isUndefined(ideaImages) && !isUndefined(officialFeedbacks.officialFeedbacksList)) {
       this.setState({ loaded: true });
     }
   }
@@ -408,7 +338,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       windowSize,
       className
     } = this.props;
-    const { loaded, ideaIdForSocialSharing, translateButtonClicked, actionInfos } = this.state;
+    const { loaded, ideaIdForSocialSharing, translateButtonClicked } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
@@ -608,8 +538,6 @@ const Data = adopt<DataProps, InputProps>({
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   initiativeFiles: ({ initiativeId, render }) => <GetResourceFiles resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFiles>,
-  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
-  phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>,
   officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks ideaId={ideaId}>{render}</GetOfficialFeedbacks>
 });
 
