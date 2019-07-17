@@ -1,10 +1,11 @@
 // libs
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { IIdeaCardClickEvent } from 'containers/App';
+import { IOpenPostPageModalEvent } from 'containers/App';
 
 // components
 import T from 'components/T';
@@ -13,11 +14,14 @@ import Icon from 'components/UI/Icon';
 import VoteControl from 'components/VoteControl';
 import Unauthenticated from './Unauthenticated';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
+import IdeaBody from 'containers/IdeasShow/IdeaBody';
 
 // resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -27,29 +31,26 @@ import { colors, media, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Container = styled.div`
+  flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: strech;
-  padding: 30px;
   position: relative;
-  background: #fff;
 `;
 
-const IdeaTitle: any = styled.h3`
-  color: #333;
-  display: block;
-  display: -webkit-box;
+const Title = styled.h3`
+  color: ${colors.text};
   width: calc(100% - 50px);
   margin: 0;
-  font-size: ${fontSizes.xl}px;
+  padding: 0;
+  font-size: ${fontSizes.xxl}px;
   font-weight: 500;
-  line-height: 28px;
-  margin-bottom: 10px;
+  line-height: normal;
+  margin-bottom: 15px;
 `;
 
-const IdeaDescription = styled.div`
+const Description = styled.div`
   flex: 1 1 100%;
   margin-bottom: 1rem;
   overflow: hidden;
@@ -76,7 +77,7 @@ const VoteComments = styled.div`
   margin-bottom: 30px;
 `;
 
-const StyledButton = styled(Button)`
+const ViewIdeaButton = styled(Button)`
   justify-self: flex-end;
 `;
 
@@ -134,11 +135,13 @@ const CloseButton = styled.div`
 `;
 
 interface InputProps {
-  ideaId: string;
-  onClose?: (event) => void;
+  ideaId?: string | null;
+  onClose?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  className?: string;
 }
 
 interface DataProps {
+  locale: GetLocaleChildProps;
   idea: GetIdeaChildProps;
 }
 
@@ -148,7 +151,7 @@ interface State {
   showFooter: 'unauthenticated' | 'votingDisabled' | null;
 }
 
-class IdeaBox extends React.PureComponent<Props, State> {
+class IdeaPreview extends React.PureComponent<Props & InjectedLocalized, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -158,18 +161,19 @@ class IdeaBox extends React.PureComponent<Props, State> {
 
   componentDidUpdate(prevProps: Props) {
     if (this.props.idea !== prevProps.idea) {
-      this.setState({
-        showFooter: null,
-      });
+      this.setState({ showFooter: null });
     }
   }
 
   createIdeaClickHandler = (idea: GetIdeaChildProps) => (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    event.stopPropagation();
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IIdeaCardClickEvent>('IdeaBox', 'ideaCardClick', { ideaId: idea.id, ideaSlug: idea.attributes.slug });
+      eventEmitter.emit<IOpenPostPageModalEvent>('IdeaPreview', 'cardClick', {
+        id: idea.id,
+        slug: idea.attributes.slug,
+        type: 'initiative'
+      });
     }
   }
 
@@ -183,22 +187,29 @@ class IdeaBox extends React.PureComponent<Props, State> {
 
   render() {
     const { showFooter } = this.state;
-    const { idea } = this.props;
+    const { idea, locale, onClose, className, localize } = this.props;
 
     if (!isNilOrError(idea)) {
       return (
-        <Container className={this.props['className']}>
-          {this.props.onClose &&
-            <CloseButton onClick={this.props.onClose}>
+        <Container className={className}>
+          {onClose &&
+            <CloseButton onClick={onClose}>
               <CloseIcon name="close" />
             </CloseButton>
           }
-          <IdeaTitle>
+
+          <Title>
             <T value={idea.attributes.title_multiloc} />
-          </IdeaTitle>
-          <IdeaDescription>
-            <T as="div" value={idea.attributes.body_multiloc} supportHtml />
-          </IdeaDescription>
+          </Title>
+
+          <Description>
+            <IdeaBody
+              ideaId={idea.id}
+              ideaBody={localize(idea.attributes.body_multiloc)}
+              locale={locale}
+            />
+          </Description>
+
           <VoteComments>
             {!showFooter &&
               <>
@@ -226,19 +237,28 @@ class IdeaBox extends React.PureComponent<Props, State> {
               />
             }
           </VoteComments>
-          <StyledButton circularCorners={false} width="100%" onClick={this.createIdeaClickHandler(idea)}>
+
+          <ViewIdeaButton fullWidth={true} onClick={this.createIdeaClickHandler(idea)}>
             <FormattedMessage {...messages.seeIdea} />
-          </StyledButton>
+          </ViewIdeaButton>
+
         </Container>
       );
     }
 
-    return  <Container className={this.props['className']} />;
+    return null;
   }
 }
 
+const IdeaPreviewWithHOCs = injectLocalize<Props>(IdeaPreview);
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
+});
+
 export default (inputProps: InputProps) => (
-  <GetIdea id={inputProps.ideaId}>
-    {idea => <IdeaBox {...inputProps} idea={idea} />}
-  </GetIdea>
+  <Data {...inputProps}>
+    {dataProps => <IdeaPreviewWithHOCs {...inputProps} {...dataProps} />}
+  </Data>
 );

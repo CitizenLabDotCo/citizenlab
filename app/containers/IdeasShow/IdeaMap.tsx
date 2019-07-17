@@ -130,7 +130,6 @@ const MapWrapperInner = styled.div`
 export interface Props {
   address: string;
   position: GeoJSON.Point;
-  id: string;
   className?: string;
 }
 

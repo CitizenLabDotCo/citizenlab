@@ -3,7 +3,6 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // router
-import Link from 'utils/cl-router/Link';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -21,7 +20,6 @@ import { FormattedRelative } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
@@ -57,25 +55,6 @@ const AuthorNameContainer = styled.div`
   font-weight: 400;
   text-decoration: none;
   hyphens: manual;
-`;
-
-const AuthorNameLink = styled(Link)`
-  color: ${({ theme }) => theme.colorText};
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => darken(0.15, theme.colorText)};
-    text-decoration: underline;
-  }
-
-  &.canModerate {
-    color: ${colors.clRedError};
-
-    &:hover {
-      color: ${darken(0.15, colors.clRedError)};
-    }
-  }
 `;
 
 const TimeAgo = styled.div`
@@ -123,15 +102,12 @@ class Author extends PureComponent<Props, State> {
   render() {
     const { authorId, createdAt, size, notALink, projectId, showAvatar, showModeration, className, author, avatarBadgeBgColor } = this.props;
     const authorCanModerate = !isNilOrError(author) && showModeration && canModerate(projectId, { data: author });
-    const authorNameComponent = notALink ? (
-      <UserName user={!isNilOrError(author) ? author : null} />
-    ) : (
-      <AuthorNameLink
-        className={authorCanModerate ? 'canModerate' : ''}
-        to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}
-      >
-        <UserName user={!isNilOrError(author) ? author : null} />
-      </AuthorNameLink>
+    const authorName = (
+      <UserName
+        userId={authorId}
+        linkToProfile={!notALink}
+        canModerate={authorCanModerate}
+      />
     );
 
     return (
@@ -149,7 +125,7 @@ class Author extends PureComponent<Props, State> {
 
           <AuthorMeta>
             <AuthorNameContainer>
-              {authorNameComponent}
+              {authorName}
             </AuthorNameContainer>
 
             {createdAt &&

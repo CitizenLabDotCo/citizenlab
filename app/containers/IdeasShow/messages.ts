@@ -11,7 +11,7 @@ export default defineMessages({
   },
   imageAltText: {
     id: 'app.containers.IdeasShow.imageAltText',
-    defaultMessage: '{orgName} - main image for the ida {ideaTitle}',
+    defaultMessage: '{orgName} - main image for the idea {ideaTitle}',
   },
   Map: {
     id: 'app.containers.IdeasShow.Map',

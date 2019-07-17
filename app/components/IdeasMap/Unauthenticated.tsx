@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
 import { darken } from 'polished';
@@ -8,11 +8,10 @@ import messages from './messages';
 import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  width: 100%;
-  padding: 22px 0;
+  justify-content: space-between;
 `;
 
 const RegisterLink = styled.span`
@@ -27,15 +26,13 @@ const RegisterLink = styled.span`
 `;
 
 export default class Unauthenticated extends React.PureComponent {
-  goToLogin = (event) => {
+  goToLogin = (event: FormEvent) => {
     event.preventDefault();
-    event.stopPropagation();
     clHistory.push('/sign-in');
   }
 
-  goToRegister = (event) => {
+  goToRegister = (event: FormEvent) => {
     event.preventDefault();
-    event.stopPropagation();
     clHistory.push('/sign-up');
   }
 

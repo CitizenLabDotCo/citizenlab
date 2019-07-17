@@ -17,8 +17,8 @@ type State = {
   selectedValue: string[];
 };
 
-class SelectSort extends PureComponent<Props, State> {
-  constructor(props: Props) {
+class SortFilterDropdown extends PureComponent<Props, State> {
+  constructor(props) {
     super(props);
     this.state = {
       selectedValue: ['random']
@@ -43,7 +43,7 @@ class SelectSort extends PureComponent<Props, State> {
 
     return (
       <FilterSelector
-        id="e2e-ideas-sort-filter"
+        id="e2e-initiatives-sort-filter"
         title={<FormattedMessage {...messages.sortTitle} />}
         name="sort"
         selected={selectedValue}
@@ -60,4 +60,4 @@ class SelectSort extends PureComponent<Props, State> {
   }
 }
 
-export default SelectSort;
+export default SortFilterDropdown;
