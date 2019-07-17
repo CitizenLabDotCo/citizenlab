@@ -137,7 +137,7 @@ interface State {
   showMap: boolean;
 }
 
-class Map extends PureComponent<Props, State> {
+class DropdownMap extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -190,4 +190,4 @@ class Map extends PureComponent<Props, State> {
   }
 }
 
-export default Map;
+export default DropdownMap;
