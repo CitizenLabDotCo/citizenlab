@@ -112,7 +112,7 @@ export default class PostTable extends React.Component<Props> {
     const { selection, onChangeSelection } = this.props;
     const newSelection = new Set(selection);
     const success = newSelection.delete(postId);
-    onChangeSelection(newSelection);
+    success && onChangeSelection(newSelection);
     return success;
   }
 
@@ -132,10 +132,6 @@ export default class PostTable extends React.Component<Props> {
 
   singleSelect = (postId: string) => () => {
     this.props.onChangeSelection(new Set([postId]));
-  }
-
-  clearSelection = () => () => {
-    this.props.onChangeSelection(new Set());
   }
 
   handlePaginationClick = (page) => {
@@ -181,31 +177,31 @@ export default class PostTable extends React.Component<Props> {
             />
           }
           <Table.Body>
-            {!!posts && posts.length > 0 ?
+            {!isEmpty(posts) ?
               <TransitionGroup component={null}>
                 {// TODO fix typings here, with the conditional type here, ts complains
-                (posts as IIdeaData[]).map(post =>
-                  <CSSTransition classNames="fade" timeout={500} key={post.id}>
-                    <Row
-                      className="e2e-post-manager-post-row"
-                      key={post.id}
-                      type={type}
-                      post={post}
-                      phases={phases}
-                      statuses={statuses}
-                      onUnselect={this.unselect(post.id)}
-                      onToggleSelect={this.toggleSelect(post.id)}
-                      onSingleSelect={this.singleSelect(post.id)}
-                      selection={selection}
-                      activeFilterMenu={activeFilterMenu}
-                      openPreview={openPreview}
-                    />
-                  </CSSTransition>
-                )}
+                  (posts as IIdeaData[]).map(post =>
+                    <CSSTransition classNames="fade" timeout={500} key={post.id}>
+                      <Row
+                        className="e2e-post-manager-post-row"
+                        key={post.id}
+                        type={type}
+                        post={post}
+                        phases={phases}
+                        statuses={statuses}
+                        onUnselect={this.unselect(post.id)}
+                        onToggleSelect={this.toggleSelect(post.id)}
+                        onSingleSelect={this.singleSelect(post.id)}
+                        selection={selection}
+                        activeFilterMenu={activeFilterMenu}
+                        openPreview={openPreview}
+                      />
+                    </CSSTransition>
+                  )}
               </TransitionGroup> : null
             }
           </Table.Body>
-          {!!posts && posts.length > 0 &&
+          {!isEmpty(posts) &&
             <Table.Footer fullWidth={true}>
               <Table.Row>
                 <Table.HeaderCell colSpan="7">
@@ -219,14 +215,15 @@ export default class PostTable extends React.Component<Props> {
             </Table.Footer>
           }
         </Table>
-        <TransitionGroup component={null}>
-          {!posts || posts.length === 0 &&
+        {isEmpty(posts) &&
+          <TransitionGroup component={null}>
             <CSSTransition classNames="fade" timeout={500}>
               <NoPost handleSeeAll={handleSeeAll} type={type} />
             </CSSTransition>
-          }
-        </TransitionGroup>
+          </TransitionGroup>
+        }
       </Container>
     );
   }
 }
+// TODO check animation nopost
