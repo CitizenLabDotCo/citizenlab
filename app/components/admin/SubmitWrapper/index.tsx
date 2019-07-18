@@ -13,6 +13,8 @@ import Button, { ButtonStyles, Props as OriginalButtonProps } from 'components/U
 // typings
 import { Omit } from 'typings';
 
+export type ISubmitState = 'disabled' | 'enabled' | 'error' | 'customError' | 'success';
+
 const Wrapper: any = styled.div`
   display: flex;
   align-items: center;
@@ -63,8 +65,9 @@ const Message = styled.p`
 `;
 
 interface Props extends Omit<OriginalButtonProps, 'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'> {
-  status: 'disabled' | 'enabled' | 'error' | 'success';
+  status: ISubmitState;
   loading: boolean;
+  customError?: string | null;
   messages: {
     buttonSave: any,
     buttonSuccess: any,
@@ -105,7 +108,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
     }
 
     const buttonProps = omit(this.props, ['className', 'style', 'processing', 'disabled', 'onClick', 'setSubmitButtonRef', 'messages']);
-    const { loading, status, onClick, messages, animate } = this.props;
+    const { loading, status, onClick, messages, animate, customError } = this.props;
 
     return (
       <Wrapper fullWidth={!!buttonProps.fullWidth}>
@@ -128,7 +131,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
 
         {status === 'error' &&
           <Message className="error">
-            <FormattedMessage {...messages.messageError}/>
+            {customError ? customError : <FormattedMessage {...messages.messageError}/>}
           </Message>
         }
 
