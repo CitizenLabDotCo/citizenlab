@@ -8,6 +8,10 @@ const Wrapper = styled.label`
   align-items: center;
   margin-bottom: 12px;
   cursor: pointer;
+
+  &.disabled {
+    cursor: not-allowed;
+  }
 `;
 
 export const CustomRadio = styled.button`
@@ -38,6 +42,7 @@ export const CustomRadio = styled.button`
 
   &.disabled {
     opacity: 0.5;
+    cursor: not-allowed;
   }
 `;
 
@@ -98,7 +103,7 @@ export default class Radio extends PureComponent<Props> {
     const checked = (value === currentValue);
 
     return (
-      <Wrapper className={className} htmlFor={id}>
+      <Wrapper className={`${className} ${disabled ? 'disabled' : ''}`} htmlFor={id}>
         <HiddenInput
           type="radio"
           name={name}
