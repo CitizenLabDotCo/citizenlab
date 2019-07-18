@@ -120,7 +120,7 @@ class ParticipationContextService
   end
 
   def voting_disabled_reason_for_comment comment, user
-    commenting_disabled_reason_for_idea comment.idea, user
+    commenting_disabled_reason_for_idea comment.post, user
   end
 
   def voting_disabled_reason_for_idea idea, user
