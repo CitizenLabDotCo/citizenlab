@@ -108,5 +108,15 @@ FactoryBot.define do
     idea
     idea_status
   end
+
+  factory :status_change_on_commented_idea, parent: :notification, class: 'Notifications::StatusChangeOnCommentedIdea' do
+    idea
+    idea_status
+  end
+
+  factory :status_change_on_voted_idea, parent: :notification, class: 'Notifications::StatusChangeOnVotedIdea' do
+    idea
+    idea_status
+  end
   
 end

@@ -176,6 +176,7 @@ jobs:
     steps:
       - run:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/cl2-back:$CIRCLE_BRANCH rake checks:invalid_data"
+          no_output_timeout: 3600
 
 
 workflows:
@@ -267,18 +268,14 @@ workflows:
   check-for-inconsistent-data:
     triggers:
       - schedule:
-          cron: "0 2 * * 4"
+          cron: "0 2 * * 5"
           filters:
             branches:
               only:
-                - master
+                - production
     jobs:
       - check-for-inconsistent-data:
-          # filters:
-          #   branches:
-          #     only:
-          #       - master
-          ssh_host: "52.29.30.188"
-          compose_file: docker-compose-staging.yml
-          stack_name: cl2-back-stg
-          env_file: ".env-staging"
+          ssh_host: "52.57.74.84"
+          compose_file: docker-compose-production-benelux.yml
+          stack_name: cl2-prd-bnlx-stack
+          env_file: ".env-production-benelux"

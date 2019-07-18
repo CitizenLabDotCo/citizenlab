@@ -183,7 +183,6 @@ resource "Projects" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
-        # expect(json_response.dig(:data, :relationships, :avatars, :data).map{|d| d[:id]}).to include "#{author.id}-avatar"
         expect(json_response.dig(:included).map{|i| i[:id]}).to include author.id
       end
     end

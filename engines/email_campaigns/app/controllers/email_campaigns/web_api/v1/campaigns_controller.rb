@@ -78,13 +78,17 @@ module EmailCampaigns
     end
 
     def do_send
-      SideFxCampaignService.new.before_send(@campaign, current_user)
-      EmailCampaigns::DeliveryService.new.send_now(@campaign)
-      SideFxCampaignService.new.after_send(@campaign, current_user)
-      render json: WebApi::V1::CampaignSerializer.new(
-        @campaign.reload, 
-        params: fastjson_params
-        ).serialized_json
+      if @campaign.valid?
+        SideFxCampaignService.new.before_send(@campaign, current_user)
+        EmailCampaigns::DeliveryService.new.send_now(@campaign)
+        SideFxCampaignService.new.after_send(@campaign, current_user)
+        render json: WebApi::V1::CampaignSerializer.new(
+          @campaign.reload, 
+          params: fastjson_params
+          ).serialized_json
+      else
+        render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
+      end
     end
 
     def send_preview

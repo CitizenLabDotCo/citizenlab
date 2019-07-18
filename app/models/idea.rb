@@ -1,7 +1,6 @@
 class Idea < ApplicationRecord
   include Post
 
-
   belongs_to :project, touch: true
   counter_culture :project, 
     column_name: proc {|idea| idea.publication_status == 'published' ? "ideas_count" : nil},
@@ -75,12 +74,14 @@ class Idea < ApplicationRecord
       .where(projects: {publication_status: publication_status})
   end)
 
-  scope :order_popular, -> (direction=:desc) {order(Arel.sql("(upvotes_count - downvotes_count) #{direction}"))}
+  scope :order_new, -> (direction=:desc) {order(published_at: direction, id: direction)}
+  scope :order_popular, -> (direction=:desc) {order(Arel.sql("(upvotes_count - downvotes_count) #{direction}, ideas.id"))}
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
   scope :order_status, -> (direction=:desc) {
     joins(:idea_status)
-    .order("idea_statuses.ordering #{direction}")
+    .order("idea_statuses.ordering #{direction}, ideas.id")
   }
+
   scope :feedback_needed, -> {
     joins(:idea_status).where(idea_statuses: {code: 'proposed'})
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
