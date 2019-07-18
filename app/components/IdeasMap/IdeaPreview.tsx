@@ -1,5 +1,4 @@
-// libs
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -28,7 +27,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, media, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 const Container = styled.div`
   flex: 1;
@@ -102,41 +100,8 @@ const CommentIcon = styled(Icon)`
   margin-top: 2px;
 `;
 
-const CloseIcon = styled(Icon)`
-  height: 10px;
-  fill: ${colors.label};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: fill 100ms ease-out;
-`;
-
-const CloseButton = styled.div`
-  height: 34px;
-  width: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  cursor: pointer;
-  top: 12px;
-  right: 12px;
-  border-radius: 50%;
-  border: solid 1px ${lighten(0.4, colors.label)};
-  transition: border-color 100ms ease-out;
-
-  &:hover {
-    border-color: #000;
-
-    ${CloseIcon} {
-      fill: #000;
-    }
-  }
-`;
-
 interface InputProps {
   ideaId?: string | null;
-  onClose?: (event: React.MouseEvent<HTMLDivElement>) => void;
   className?: string;
 }
 
@@ -151,7 +116,7 @@ interface State {
   showFooter: 'unauthenticated' | 'votingDisabled' | null;
 }
 
-class IdeaPreview extends React.PureComponent<Props & InjectedLocalized, State> {
+class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -165,7 +130,7 @@ class IdeaPreview extends React.PureComponent<Props & InjectedLocalized, State> 
     }
   }
 
-  createIdeaClickHandler = (idea: GetIdeaChildProps) => (event: React.FormEvent<HTMLButtonElement>) => {
+  createIdeaClickHandler = (idea: GetIdeaChildProps) => (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     if (!isNilOrError(idea)) {
@@ -187,17 +152,11 @@ class IdeaPreview extends React.PureComponent<Props & InjectedLocalized, State> 
 
   render() {
     const { showFooter } = this.state;
-    const { idea, locale, onClose, className, localize } = this.props;
+    const { idea, locale, className, localize } = this.props;
 
     if (!isNilOrError(idea)) {
       return (
         <Container className={className}>
-          {onClose &&
-            <CloseButton onClick={onClose}>
-              <CloseIcon name="close" />
-            </CloseButton>
-          }
-
           <Title>
             <T value={idea.attributes.title_multiloc} />
           </Title>
@@ -241,7 +200,6 @@ class IdeaPreview extends React.PureComponent<Props & InjectedLocalized, State> 
           <ViewIdeaButton fullWidth={true} onClick={this.createIdeaClickHandler(idea)}>
             <FormattedMessage {...messages.seeIdea} />
           </ViewIdeaButton>
-
         </Container>
       );
     }
