@@ -1,6 +1,7 @@
 class MultilocValidator < ActiveModel::EachValidator
 
   def validate_each(record, attribute, value)
+    sanitizer = SanitizationService.new
     if (options[:presence] && !value.kind_of?(Hash)) || (!options[:presence] && !(value.kind_of?(Hash) || value.nil?))
       record.errors[attribute] << (options[:message] || "is not a translation hash")
     elsif !value.nil?
@@ -8,7 +9,7 @@ class MultilocValidator < ActiveModel::EachValidator
       if !(value.keys - locales).empty?
         record.errors.add(attribute, :unsupported_locales, 
           message: (options[:message] || "contains unsupported locales #{(value.keys - locales)}"))
-      elsif options[:presence] && value.values.all?{|text_or_html| !html_with_content?(text_or_html)}
+      elsif options[:presence] && value.values.all?{|text_or_html| !sanitizer.html_with_content?(text_or_html)}
         record.errors.add(attribute, :blank, 
           message: (options[:message] || "should be set for at least one locale"))
       elsif options[:length]
@@ -41,14 +42,6 @@ class MultilocValidator < ActiveModel::EachValidator
         end
       end
     end
-  end
-
-
-  private
-
-  def html_with_content? text_or_html
-    html = Nokogiri::HTML.fragment(text_or_html)
-    html.text.present? || !!%w(img iframe).any?{|tag| html.at tag}
   end
 
 end
