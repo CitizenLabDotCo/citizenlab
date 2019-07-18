@@ -8,7 +8,6 @@ import clHistory from 'utils/cl-router/history';
 import GoBackButton from 'components/UI/GoBackButton';
 import TipsBox from './TipsBox';
 import ContentContainer from 'components/ContentContainer';
-import InitiativeForm, { FormValues } from 'components/InitiativeForm';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -112,30 +111,14 @@ const StyledTipsBox = styled(TipsBox)`
   `}
 `;
 
-const StyledInitiativeForm = styled(InitiativeForm)`
-  width: 100%;
-  min-width: 530px;
-  height: 900px;
-`;
-
-interface InputProps {}
-
 interface DataProps {
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends DataProps {}
 
-interface State {
-  initialValues: FormValues | null;
-}
-
-class InitiativesNewPage extends React.PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-  }
-
+export class InitiativesNewPage extends React.PureComponent<Props> {
   componentDidMount() {
     const { authUser } = this.props;
 
@@ -155,10 +138,6 @@ class InitiativesNewPage extends React.PureComponent<Props, State> {
 
   goBack = () => {
     clHistory.goBack();
-  }
-
-  renderFn = (props) => {
-    return <StyledInitiativeForm {...props} />;
   }
 
   render() {
@@ -193,13 +172,13 @@ class InitiativesNewPage extends React.PureComponent<Props, State> {
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
+const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <InitiativesNewPage {...inputProps} {...dataProps} />}
+export default () => (
+  <Data>
+    {dataProps => <InitiativesNewPage {...dataProps} />}
   </Data>
 );
