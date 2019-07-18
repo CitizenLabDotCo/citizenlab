@@ -4,12 +4,13 @@ namespace :inconsistent_data do
   task :fix_empty_bodies => :environment do
     fixes = {}
     failures = {}
+    sanitizer = SanitizationService.new
 
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         to_fix = Idea.all.select do |i| 
-          i.body_multiloc.values.all? do |text_or_html|
-            Nokogiri::HTML.fragment(text_or_html).text.blank?
+          i.body_multiloc.values.all? do |text_or_html| 
+            !sanitizer.html_with_content?(text_or_html)
           end
         end
         to_fix.each do |i| 
