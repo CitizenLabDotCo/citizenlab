@@ -8,7 +8,7 @@ import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 interface InputProps {
   limit?: number;
   context?: {
-    type: 'project' | 'group' | 'idea';
+    type: 'project' | 'group' | 'idea' | 'initiative';
     id: string;
   };
 }

@@ -7,7 +7,7 @@ import { adopt } from 'react-adopt';
 // components
 import InitiativesShow from 'containers/InitiativesShow';
 import Button from 'components/UI/Button';
-import InitiativeShowPageTopBar from '../InitiativeShowPageTopBar';
+import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 
 // resources
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';

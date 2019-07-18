@@ -24,7 +24,7 @@ interface InputProps {
   locale?: Locale;
   translateButtonClicked?: boolean;
   className?: string;
-  context: 'idea' | 'initiative';
+  postType: 'idea' | 'initiative';
 }
 
 interface DataProps {
@@ -35,18 +35,18 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-const Body = memo<Props>(({ id, body, locale, translateButtonClicked, theme, windowSize, className, context }) => {
+const Body = memo<Props>(({ id, body, locale, translateButtonClicked, theme, windowSize, className, postType }) => {
   const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
   return (
-    <Container id={`e2e-${context}-description`} className={className}>
+    <Container id={`e2e-${postType}-description`} className={className}>
       <QuillEditedContent
         textColor={theme.colorText}
         fontSize={smallerThanSmallTablet ? 'base' : 'large'}
         fontWeight={300}
       >
         {(translateButtonClicked && locale) ?
-          <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} id={id} context={context}>
+          <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} id={id} context={postType}>
             {translation => {
               if (!isNilOrError(translation)) {
                 return <span dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />;
