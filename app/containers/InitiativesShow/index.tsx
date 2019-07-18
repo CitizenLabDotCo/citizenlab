@@ -5,17 +5,17 @@ import { adopt } from 'react-adopt';
 
 // analytics
 import { trackEvent } from 'utils/analytics';
-import tracks from './tracks';
+// import tracks from './tracks';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Sharing from 'components/Sharing';
-import IdeaMeta from './IdeaMeta';
+// import IdeaMeta from './IdeaMeta';
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-import IdeaSharingModalContent from './IdeaSharingModalContent';
+// import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import Topics from 'components/PostComponents/Topics';
 import Title from 'components/PostComponents/Title';
@@ -25,12 +25,12 @@ import ContentFooter from 'components/PostComponents/ContentFooter';
 
 import PostedBy from './PostedBy';
 import Image from 'components/PostComponents/Image';
-import IdeaAuthor from './IdeaAuthor';
-import IdeaFooter from './IdeaFooter';
+// import IdeaAuthor from './IdeaAuthor';
+// import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
-import OfficialFeedback from './OfficialFeedback';
-import ActionBar from './ActionBar';
-import TranslateButton from './TranslateButton';
+// import OfficialFeedback from './OfficialFeedback';
+// import ActionBar from './ActionBar';
+// import TranslateButton from './TranslateButton';
 
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
