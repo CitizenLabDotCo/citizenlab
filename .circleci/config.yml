@@ -176,7 +176,7 @@ jobs:
     steps:
       - run:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/cl2-back:$CIRCLE_BRANCH rake checks:invalid_data"
-          no_output_timeout: 3600
+          no_output_timeout: 60m
 
 
 workflows:
