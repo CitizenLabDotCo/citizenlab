@@ -88,4 +88,9 @@ class SanitizationService
     Rinku.auto_link(html, :all, 'target="_blank"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
   end
 
+  def html_with_content? text_or_html
+    html = Nokogiri::HTML.fragment(text_or_html)
+    html.text.present? || !!%w(img iframe).any?{|tag| html.at tag}
+  end
+
 end
