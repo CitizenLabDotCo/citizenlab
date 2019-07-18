@@ -1121,7 +1121,6 @@
   "app.containers.IdeaButton.startAnIdea": "Publica tu idea",
   "app.containers.IdeaCard.byAuthorName": "por {authorNameComponent}",
   "app.containers.IdeaCards.all": "Todos",
-  "app.containers.IdeaCards.areas": "Localidad/Barrio/Zona",
   "app.containers.IdeaCards.cards": "Lista",
   "app.containers.IdeaCards.clear": "Eliminar",
   "app.containers.IdeaCards.commentsSortTitle": "Ordena los comentarios por",
