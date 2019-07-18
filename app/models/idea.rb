@@ -101,18 +101,18 @@ class Idea < ApplicationRecord
     where("ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
   end)
 
-  scope :order_new, -> (direction=:desc) {order(published_at: direction)}
-  scope :order_popular, -> (direction=:desc) {order(Arel.sql("(upvotes_count - downvotes_count) #{direction}"))}
+  scope :order_new, -> (direction=:desc) {order(published_at: direction, id: direction)}
+  scope :order_popular, -> (direction=:desc) {order(Arel.sql("(upvotes_count - downvotes_count) #{direction}, ideas.id"))}
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
 
   scope :order_status, -> (direction=:desc) {
     joins(:idea_status)
-    .order("idea_statuses.ordering #{direction}")
+    .order("idea_statuses.ordering #{direction}, ideas.id")
   }
 
   scope :order_random, -> {
     modulus = RandomOrderingService.new.modulus_of_the_day
-    order("(extract(epoch from ideas.created_at) * 100)::bigint % #{modulus}")
+    order("(extract(epoch from ideas.created_at) * 100)::bigint % #{modulus}, ideas.id")
   }
 
   scope :published, -> {where publication_status: 'published'}
