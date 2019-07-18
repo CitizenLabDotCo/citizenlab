@@ -28,7 +28,7 @@ import Image from 'components/PostComponents/Image';
 // import IdeaAuthor from './IdeaAuthor';
 // import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
-// import OfficialFeedback from './OfficialFeedback';
+import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 // import ActionBar from './ActionBar';
 // import TranslateButton from './TranslateButton';
 
@@ -40,6 +40,7 @@ import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative'
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
+import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -251,6 +252,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
+  postOfficialFeedbackPermission: GetPermissionChildProps;
 }
 
 interface InputProps {
@@ -336,7 +338,8 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       ideaImages,
       authUser,
       windowSize,
-      className
+      className,
+      postOfficialFeedbackPermission
     } = this.props;
     const { loaded, ideaIdForSocialSharing, translateButtonClicked } = this.state;
     const { formatMessage } = this.props.intl;
@@ -442,7 +445,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 }
 
                 <StyledOfficialFeedback
-                  ideaId={ideaId}
+                  postId={initiativeId}
+                  postType="initiative"
+                  permissionToPost={postOfficialFeedbackPermission}
                 />
 
                 <ContentFooter
@@ -538,7 +543,8 @@ const Data = adopt<DataProps, InputProps>({
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   initiativeFiles: ({ initiativeId, render }) => <GetResourceFiles resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFiles>,
-  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks ideaId={ideaId}>{render}</GetOfficialFeedbacks>
+  officialFeedbacks: ({ initiativeId, render }) => <GetOfficialFeedbacks postId={initiativeId} postType="initiative">{render}</GetOfficialFeedbacks>,
+  postOfficialFeedbackPermission: ({ initiative, render }) => !isNilOrError(initiative) ? <GetPermission item={initiative} action="moderate" >{render}</GetPermission> : null,
 });
 
 export default (inputProps: InputProps) => (
