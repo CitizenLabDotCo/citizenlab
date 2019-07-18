@@ -1,5 +1,17 @@
 # Changelog
 
+## 2019-07-18
+
+### Fixed
+
+- It's no longer possible to change the participation method to information or survey if a phase/project already contains ideas
+- The 'Share your idea modal' is now properly centered
+- It's no longer possible to send out a manual email campaign when the author is not properly defined
+- Invite emails are being sent out again
+- Imported ideas no longer cause incomplete pages of idea cards
+- Invited users who did not accept yet no longer receive any automated digest emails
+
+
 ## 2019-07-05
 
 ### Fixed
