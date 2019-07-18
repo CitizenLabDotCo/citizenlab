@@ -12,7 +12,7 @@ interface InputProps {
 type children = (renderProps: GetIdeaMarkersChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
-  children: children;
+  children?: children;
 }
 
 interface State {
