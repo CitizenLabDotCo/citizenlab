@@ -23,7 +23,7 @@ import { FormattedDate, InjectedIntlProps } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
 
 // services
-import { IOfficialFeedbackData, deleteOfficialfeedback } from 'services/officialFeedback';
+import { IOfficialFeedbackData, deleteOfficialFeedbackFromIdea, deleteOfficialFeedbackFromInitiative } from 'services/officialFeedback';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -98,6 +98,7 @@ interface InputProps {
   editingAllowed: boolean | null;
   officialFeedbackPost: IOfficialFeedbackData;
   last: boolean;
+  postType: 'idea' | 'initiative';
 }
 
 interface Props extends InputProps, DataProps {}
@@ -123,8 +124,15 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
   }
 
   deletePost = (postId: string) => () => {
+    const { postType } = this.props;
+
     if (window.confirm(this.props.intl.formatMessage(messages.deletionConfirmation))) {
-      deleteOfficialfeedback(postId);
+      switch (postType) {
+        case 'idea':
+          deleteOfficialFeedbackFromIdea(postId);
+        case 'initiative':
+          deleteOfficialFeedbackFromInitiative(postId);
+        }
     }
   }
 
