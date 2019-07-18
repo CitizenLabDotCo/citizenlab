@@ -94,6 +94,8 @@ resource "Votes" do
 
     example_request "[error] Downvote an initiative that doesn't have your vote yet" do
       expect(status).to eq 401
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:errors, :base)).to include({error: 'downvoting_not_supported'})
       expect(@initiative.reload.upvotes_count).to eq 2
       expect(@initiative.reload.downvotes_count).to eq 0
     end

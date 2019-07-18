@@ -151,6 +151,8 @@ class WebApi::V1::VotesController < ApplicationController
     if exception.record.votable.kind_of? Idea
       reason = pcs.voting_disabled_reason_for_idea exception.record.votable, exception.record.user
       reason ||= pcs.cancelling_votes_disabled_reason(exception.record.votable, exception.record.user)
+    elsif exception.record.votable.kind_of?(Initiative) && exception.record.mode == 'down'
+      reason = 'downvoting_not_supported'
     elsif exception.record.votable.kind_of? Comment
       reason = pcs.voting_disabled_reason_for_comment exception.record.votable, exception.record.user
     else
