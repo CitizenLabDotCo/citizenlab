@@ -97,6 +97,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                   editingAllowed={editingAllowed}
                   officialFeedbackPost={officialFeedbackPost}
                   last={index === officialFeedbacksList.data.length - 1}
+                  postType="initiative"
                 />
               );
             })}
