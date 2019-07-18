@@ -12,7 +12,7 @@
 - Invited users who did not accept yet no longer receive any automated digest emails
 
 
-## 2019-07-05
+## 2019-07-08
 
 ### Fixed
 
@@ -28,6 +28,7 @@
 
 - Performance optimizations on the initial loading of the platform
 - Performance optimizations on loading new pages of ideas and projects
+- Newly uploaded images are automatically optimized to be smaller in filesize and load faster
 - The 'Add an idea' button is now shown in every tab of the projects admin
 - It's now possible to add videos to the idea body text
 - E-mails are no longer sent out through Vero, but are using the internal cl2-emails server
