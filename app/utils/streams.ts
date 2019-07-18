@@ -452,6 +452,7 @@ class Streams {
       if (!error.json || !error.json.errors) {
         reportError(error);
       }
+
       return Promise.reject(error);
     }
   }
