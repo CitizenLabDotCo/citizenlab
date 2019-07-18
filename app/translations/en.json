@@ -1121,7 +1121,6 @@
   "app.containers.IdeaButton.startAnIdea": "Post your idea",
   "app.containers.IdeaCard.byAuthorName": "by {authorNameComponent}",
   "app.containers.IdeaCards.all": "All",
-  "app.containers.IdeaCards.areas": "Areas",
   "app.containers.IdeaCards.cards": "List",
   "app.containers.IdeaCards.clear": "Clear",
   "app.containers.IdeaCards.commentsSortTitle": "Sort comments by",
