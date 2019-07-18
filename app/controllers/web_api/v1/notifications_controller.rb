@@ -19,7 +19,9 @@ class WebApi::V1::NotificationsController < ApplicationController
     ::Notifications::ProjectModerationRightsReceived => WebApi::V1::Notifications::ProjectModerationRightsReceivedSerializer,
     ::Notifications::ProjectPhaseStarted             => WebApi::V1::Notifications::ProjectPhaseStartedSerializer,
     ::Notifications::ProjectPhaseUpcoming            => WebApi::V1::Notifications::ProjectPhaseUpcomingSerializer,
-    ::Notifications::StatusChangeOfYourIdea          => WebApi::V1::Notifications::StatusChangeOfYourIdeaSerializer
+    ::Notifications::StatusChangeOfYourIdea          => WebApi::V1::Notifications::StatusChangeOfYourIdeaSerializer,
+    ::Notifications::StatusChangeOnCommentedIdea     => WebApi::V1::Notifications::StatusChangeOnCommentedIdeaSerializer,
+    ::Notifications::StatusChangeOnVotedIdea         => WebApi::V1::Notifications::StatusChangeOnVotedIdeaSerializer
   }
 
   before_action :set_notification, only: [:show, :mark_read]

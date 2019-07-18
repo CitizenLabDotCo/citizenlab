@@ -85,7 +85,7 @@ class ApplicationController < ActionController::API
     links = pages.transform_values &method(:build_link)
     links[:self] = build_link collection.current_page
     links[:first] ||= build_link 1
-    links[:last] ||= build_link collection.total_pages
+    links[:last] ||= build_link [collection.total_pages, 1].max
     [:prev, :next].each do |key|
       links[key] ||= nil
     end

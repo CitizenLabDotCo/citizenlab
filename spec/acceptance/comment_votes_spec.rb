@@ -40,6 +40,17 @@ resource "Comment Votes" do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @votes.first.id
     end
+
+    example "[error] Get one vote on a comment by id" do
+      @user = create(:user)
+      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      header 'Authorization', "Bearer #{token}"
+
+      @votes.first.votable.idea.update!(project: create(:project_with_current_phase))
+      do_request
+      
+      expect(status).to eq 401
+    end
   end
 
   post "web_api/v1/comments/:comment_id/votes" do

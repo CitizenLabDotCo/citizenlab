@@ -119,6 +119,10 @@ class ParticipationContextService
     end
   end
 
+  def voting_disabled_reason_for_comment comment, user
+    commenting_disabled_reason_for_idea comment.idea, user
+  end
+
   def voting_disabled_reason_for_idea idea, user
     context = get_participation_context idea.project
     if !context
@@ -227,6 +231,10 @@ class ParticipationContextService
     @timeline_service.future_phases(project, time).find do |phase|
       phase.can_contain_ideas? && phase.voting_enabled && context_permission(phase, 'voting')&.granted_to?(user)
     end
+  end
+
+  def future_comment_voting_enabled_phase project, user, time=Time.now
+    future_commenting_enabled_phase project, user, time
   end
 
   def future_budgeting_enabled_phase project, user, time=Time.now

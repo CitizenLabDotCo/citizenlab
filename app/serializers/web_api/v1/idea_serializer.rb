@@ -7,21 +7,25 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_idea(object, current_user(params))
     cancelling_votes_disabled_reason = @participation_context_service.cancelling_votes_disabled_reason(object, current_user(params))
     budgeting_disabled_reason = @participation_context_service.budgeting_disabled_reason_for_idea(object, current_user(params))
-    commenting_action_descriptor = {
-      enabled: !commenting_disabled_reason,
-      disabled_reason: commenting_disabled_reason,
-      future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_enabled_phase(object.project, current_user(params))&.start_at
-    }
+    comment_voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_comment(Comment.new(idea: object), current_user(params))
+
     {
-      commenting: commenting_action_descriptor,
+      commenting: {
+        enabled: !commenting_disabled_reason,
+        disabled_reason: commenting_disabled_reason,
+        future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_enabled_phase(object.project, current_user(params))&.start_at
+      },
       voting: {
         enabled: !voting_disabled_reason,
         disabled_reason: voting_disabled_reason,
         future_enabled: voting_disabled_reason && @participation_context_service.future_voting_enabled_phase(object.project, current_user(params))&.start_at,
         cancelling_enabled: !cancelling_votes_disabled_reason
-      }, 
-      # You can vote if you can comment.  
-      comment_voting: commenting_action_descriptor,
+      },   
+      comment_voting: {
+        enabled: !comment_voting_disabled_reason,
+        disabled_reason: comment_voting_disabled_reason,
+        future_enabled: comment_voting_disabled_reason && @participation_context_service.future_comment_voting_enabled_phase(object.project, current_user(params))&.start_at
+      },
       budgeting: {
         enabled: !budgeting_disabled_reason,
         disabled_reason: budgeting_disabled_reason,
