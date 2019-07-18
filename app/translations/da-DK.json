@@ -663,7 +663,7 @@
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltip": "Indicate on what geographical areas this project applies. The areas can be set {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "here",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Selection",
-  "app.containers.AdminPage.ProjectEdit.cardDisplay": "Cards",
+  "app.containers.AdminPage.ProjectEdit.cardDisplay": "List",
   "app.containers.AdminPage.ProjectEdit.commentingEnabled": "Comment",
   "app.containers.AdminPage.ProjectEdit.continuous": "Without timeline",
   "app.containers.AdminPage.ProjectEdit.defaultDisplay": "Ideas displayed by default as:",
