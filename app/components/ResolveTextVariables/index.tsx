@@ -27,9 +27,19 @@ class ResolveTextVariables extends PureComponent<Props> {
     const { tenant, localize } = this.props;
 
     if (!isNilOrError(tenant)) {
-      return {
+      const textVariables : { [key: string]: string } = {
         orgName: localize(tenant.attributes.settings.core.organization_name)
       };
+
+      const initiatives = tenant.attributes.settings.initiatives;
+      if (initiatives && initiatives.eligibility_criteria) {
+          textVariables.initiativesEligibilityCriteria = localize(initiatives.eligibility_criteria);
+        }
+      if (initiatives && initiatives.threshold_reached_message) {
+        textVariables.initiativesthresholdReachedMessage = localize(initiatives.threshold_reached_message);
+      }
+
+      return textVariables;
     }
 
     return null;
