@@ -1,6 +1,6 @@
 class Comment < ApplicationRecord
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
-  belongs_to :author, class_name: 'User'
+  belongs_to :author, class_name: 'User', optional: true
   belongs_to :idea
   has_many :votes, as: :votable, dependent: :destroy
   has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
@@ -26,7 +26,6 @@ class Comment < ApplicationRecord
   PUBLICATION_STATUSES = %w(published deleted)
 
   validates :body_multiloc, presence: true, multiloc: {presence: true}
-  validates :author, presence: true, on: :create
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
   before_validation :set_author_name, :set_publication_status, on: :create

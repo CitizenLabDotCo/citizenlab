@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_many :assigned_ideas, class_name: 'Idea', foreign_key: :assignee_id, dependent: :nullify
   has_many :default_assigned_projects, class_name: 'Project', foreign_key: :default_assignee_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
+  has_many :official_feedbacks, foreign_key: :author_id, dependent: :nullify
   has_many :votes, dependent: :nullify
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
