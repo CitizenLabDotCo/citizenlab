@@ -5,7 +5,7 @@ import { adopt } from 'react-adopt';
 
 // analytics
 import { trackEvent } from 'utils/analytics';
-// import tracks from './tracks';
+import tracks from './tracks';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
@@ -318,9 +318,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     this.setState(prevState => {
       // analytics
       if (prevState.translateButtonClicked === true) {
-        trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
+        trackEvent(tracks.clickGoBackToOriginalInitiativeCopyButton);
       } else if (prevState.translateButtonClicked === false) {
-        trackEvent(tracks.clickTranslateIdeaButton);
+        trackEvent(tracks.clickTranslateInitiativeButton);
       }
 
       return ({
