@@ -95,7 +95,6 @@ class IdeaAddButton extends PureComponent<Props, State> {
       <Button
         onClick={this.props.onClick}
         icon="plus-circle"
-        style="primary"
         size="2"
         text={<FormattedMessage {...messages.postIdeaHere} />}
         disabled={!enabled}

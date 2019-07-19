@@ -12,13 +12,11 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-import VoteControl from 'components/VoteControl';
-import VotingDisabled from 'components/VoteControl/VotingDisabled';
-import IdeaBody from 'containers/IdeasShow/IdeaBody';
+import Body from 'components/PostComponents/Body';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -28,7 +26,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, media, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 const Container = styled.div`
   flex: 1;
@@ -104,7 +101,7 @@ const VoteComments = styled.div`
   margin-bottom: 30px;
 `;
 
-const ViewIdeaButton = styled(Button)`
+const ViewInitiativeButton = styled(Button)`
   justify-self: flex-end;
 `;
 
@@ -129,74 +126,34 @@ const CommentIcon = styled(Icon)`
   margin-top: 2px;
 `;
 
-const Unauthenticated = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const RegisterLink = styled.span`
-  color: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.small}px;
-  font-weight: 500;
-  cursor: pointer;
-
-  &:hover {
-    color: ${(props) => darken(0.15, props.theme.colorMain)};
-  }
-`;
-
 interface InputProps {
-  ideaId?: string | null;
+  initiativeId?: string | null;
   className?: string;
 }
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  idea: GetIdeaChildProps;
+  initiative: GetInitiativeChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  showFooter: 'unauthenticated' | 'votingDisabled' | null;
-}
+interface State {}
 
-class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showFooter: null,
-    };
-  }
+class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> {
 
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.idea !== prevProps.idea) {
-      this.setState({ showFooter: null });
-    }
-  }
-
-  createIdeaClickHandler = (event: FormEvent<HTMLButtonElement>) => {
+  createInitiativeClickHandler = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    const { idea } = this.props;
+    const { initiative } = this.props;
 
-    if (!isNilOrError(idea)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('IdeaPreview', 'cardClick', {
-        id: idea.id,
-        slug: idea.attributes.slug,
+    if (!isNilOrError(initiative)) {
+      eventEmitter.emit<IOpenPostPageModalEvent>('InitiativePreview', 'cardClick', {
+        id: initiative.id,
+        slug: initiative.attributes.slug,
         type: 'initiative'
       });
     }
-  }
-
-  handleUnauthenticatedVoteClick = () => {
-    this.setState({ showFooter: 'unauthenticated' });
-  }
-
-  handleDisabledVoteClick = () => {
-    this.setState({ showFooter: 'votingDisabled' });
   }
 
   goToLogin = (event: FormEvent) => {
@@ -210,75 +167,47 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
   }
 
   render() {
-    const { showFooter } = this.state;
-    const { idea, locale, className, localize } = this.props;
+    const { initiative, locale, className, localize } = this.props;
 
-    if (!isNilOrError(idea)) {
-      const ideaAddress = get(idea, 'attributes.location_description');
-      const ideaBody = localize(idea.attributes.body_multiloc);
+    if (!isNilOrError(initiative)) {
+      const initiativeAddress = get(initiative, 'attributes.location_description');
+      const initiativeBody = localize(initiative.attributes.body_multiloc);
 
       return (
         <Container className={className}>
           <Title>
-            <T value={idea.attributes.title_multiloc} />
+            <T value={initiative.attributes.title_multiloc} />
           </Title>
 
-          {ideaAddress &&
+          {initiativeAddress &&
             <Address>
               <MapMarkerIcon name="mapmarker" />
-              {ideaAddress}
+              {initiativeAddress}
             </Address>
           }
 
           <Description>
-            <IdeaBody
-              ideaId={idea.id}
-              ideaBody={ideaBody}
+            <Body
+              id={initiative.id}
+              postType="initiative"
               locale={locale}
+              body={initiativeBody}
             />
           </Description>
 
           <VoteComments>
-            {!showFooter &&
-              <>
-                <VoteControl
-                  ideaId={idea.id}
-                  size="2"
-                  unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
-                  disabledVoteClick={this.handleDisabledVoteClick}
-                />
-                <CommentsCount>
-                  <CommentIcon name="comments" />
-                  {idea.attributes.comments_count}
-                </CommentsCount>
-              </>
-            }
-
-            {showFooter === 'unauthenticated' &&
-              <Unauthenticated>
-                <Button onClick={this.goToLogin}>
-                  <FormattedMessage {...messages.login} />
-                </Button>
-                <RegisterLink onClick={this.goToRegister}>
-                  <FormattedMessage {...messages.register} />
-                </RegisterLink>
-              </Unauthenticated>
-            }
-
-            {showFooter === 'votingDisabled' &&
-              <VotingDisabled
-                votingDescriptor={idea.relationships.action_descriptor.data.voting}
-                projectId={idea.relationships.project.data.id}
-              />
-            }
+            <CommentsCount>
+              <CommentIcon name="comments" />
+              {initiative.attributes.comments_count}
+            </CommentsCount>
           </VoteComments>
 
-          <ViewIdeaButton
+          <ViewInitiativeButton
             fullWidth={true}
-            onClick={this.createIdeaClickHandler}
+            onClick={this.createInitiativeClickHandler}
           >
-            <FormattedMessage {...messages.seeIdea} />
-          </ViewIdeaButton>
+            <FormattedMessage {...messages.seeInitiative} />
+          </ViewInitiativeButton>
         </Container>
       );
     }
@@ -287,15 +216,15 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
   }
 }
 
-const IdeaPreviewWithHOCs = injectLocalize<Props>(IdeaPreview);
+const InitiativePreviewWithHOCs = injectLocalize<Props>(InitiativePreview);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
+  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaPreviewWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <InitiativePreviewWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
