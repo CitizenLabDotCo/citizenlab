@@ -178,6 +178,15 @@ RSpec.describe Idea, type: :model do
     end
   end
 
+  describe "body" do
+    let(:idea) { build(:idea) }
+    
+    it "is invalid if it has no true content" do
+      idea.body_multiloc = {'en' => '<p> </p>'}
+      expect(idea).to be_invalid
+    end
+  end
+
   describe "assignee" do
     let(:idea) { build(:idea) }
 

@@ -38,4 +38,23 @@ RSpec.describe EmailCampaigns::Campaigns::ModeratorDigest, type: :model do
       expect(command.dig(:tracked_content, :idea_ids)).to include(new_ideas.first.id)
   	end
   end
+
+  describe "apply_recipient_filters" do
+    let(:campaign) { build(:moderator_digest_campaign) }
+
+    it "filters out invitees" do
+      moderator = create(:moderator)
+      invitee = create(:invited_user, roles: [{type: 'project_moderator', project_id: create(:project).id}])
+
+      expect(campaign.apply_recipient_filters).to match([moderator])
+    end
+
+    it "filters out moderators and normal users" do
+      admin = create(:admin)
+      moderator = create(:moderator)
+      user = create(:user)
+
+      expect(campaign.apply_recipient_filters).to match([moderator])
+    end
+  end
 end

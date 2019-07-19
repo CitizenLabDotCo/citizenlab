@@ -538,7 +538,7 @@ if Apartment::Tenant.current == 'localhost'
       phases = []
       if project && project.timeline?
         phases = project.phases.sample(rand(project.phases.count)).select do |phase| 
-          phase.ideation? || phase.budgeting?
+          phase.can_contain_ideas?
         end
       end
       idea = Idea.create!({
