@@ -55,8 +55,6 @@ def create_comment_tree(idea, parent, depth=0)
         Vote.create!(votable: c, user: u, mode: "up", created_at: Faker::Date.between(c.created_at, Time.now))
       end
     end
-    LogActivityJob.perform_later(c, 'created', c.author, c.created_at.to_i)
-    MakeNotificationsJob.perform_now(Activity.new(item: c, action: 'created', user: c.author, acted_at: Time.now))
     create_comment_tree(idea, c, depth+1)
   end
 end
@@ -303,25 +301,28 @@ if ['public','example_org'].include? Apartment::Tenant.current
   })
 end
 
-admin_koen = {
-  first_name: 'Koen',
-  last_name: 'Gremmelprez',
-  email: 'koen@citizenlab.co',
+admin = {
+  email: 'admin@citizenlab.co',
   password: 'testtest',
-  locale: 'en',
   roles: [
     {type: "admin"},
-  ],
-  gender: "male",
-  domicile: 'outside',
-  birthyear: 1987,
-  registration_completed_at: Time.now
+  ]
+}
+moderator = {
+  email: 'moderator@citizenlab.co',
+  password: 'testtest',
+  roles: []
+}
+user = {
+  email: 'user@citizenlab.co',
+  password: 'testtest',
+  roles: []
 }
 
 if Apartment::Tenant.current == 'empty_localhost'
   TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   SideFxTenantService.new.after_apply_template Tenant.current, nil
-  User.create! admin_koen
+  User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
 end
 
 
@@ -361,43 +362,19 @@ if Apartment::Tenant.current == 'localhost'
       });
     end
 
-    admin_koen[:domicile] = (rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id)
-    admin_koen[:custom_field_values] = ((rand(2) == 0) ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key})
+    # admin_koen[:domicile] = (rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id)
+    # admin_koen[:custom_field_values] = ((rand(2) == 0) ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key})
   end
 
   TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   SideFxTenantService.new.after_apply_template Tenant.current, nil
-  User.create! admin_koen
+  User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
+  User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(moderator)
+  User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(user)
 
   if SEED_SIZE != 'empty'
-    num_users.times do 
-      gender = %w(male female unspecified)[rand(4)]
-      first_name = case gender
-      when 'male'
-        Faker::Name.male_first_name
-      when 'female'
-        Faker::Name.female_first_name
-      else
-        Faker::Name.first_name
-      end
-      last_name = Faker::Name.last_name
-      has_last_name = (rand(5) > 0)
-      User.create!({
-        first_name: first_name,
-        last_name: has_last_name ? last_name : nil,
-        cl1_migrated: !has_last_name,
-        email: Faker::Internet.email,
-        password: 'testtest',
-        locale: ['en','nl-BE'][rand(1)],
-        roles: rand(10) == 0 ? [{type: 'admin'}] : [],
-        gender: gender,
-        birthyear: rand(2) === 0 ? nil : (1935 + rand(70)),
-        education: rand(2) === 0 ? nil : (rand(7)+2).to_s,
-        avatar: (rand(3) == 0) ? generate_avatar(gender) : nil,
-        domicile: rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id,
-        custom_field_values: rand(2) == 0 ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key},
-        registration_completed_at: Faker::Date.between(Tenant.current.created_at, Time.now)
-      })
+    num_users.times do
+      User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({password: 'testtest'})
     end
 
     Area.create!({
@@ -517,7 +494,7 @@ if Apartment::Tenant.current == 'localhost'
         end
       end
 
-      User.all.shuffle.take(rand(5)).each do |moderator|
+      ([User.find_by(email: 'moderator@citizenlab.co')] + User.where.not(email: %w(admin@citizenlab.co user@citizenlab.co)).shuffle.take(rand(5))).each do |moderator|
         moderator.add_role 'project_moderator', project_id: project.id
         moderator.save!
        end
@@ -559,8 +536,6 @@ if Apartment::Tenant.current == 'localhost'
         assignee: rand(5) == 0 ? User.admin.or(User.project_moderator(project.id)).shuffle.first : nil
       })
 
-      LogActivityJob.perform_later(idea, 'created', idea.author, idea.created_at.to_i)
-
       [0,0,1,1,2][rand(5)].times do |i|
         idea.idea_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end
@@ -585,7 +560,6 @@ if Apartment::Tenant.current == 'localhost'
           author_multiloc: create_for_some_locales{Faker::FunnyName.name},
           user: User.admin.shuffle.first
           )
-        LogActivityJob.perform_later(official_feedback, 'created', official_feedback.user, official_feedback.created_at.to_i)
       end
 
       create_comment_tree(idea, nil)
