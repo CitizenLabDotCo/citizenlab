@@ -89,6 +89,10 @@ export function commentsForIdeaStream(ideaId: string, streamParams: IStreamParam
   return streams.get<IComments>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/comments`, ...streamParams });
 }
 
+export function commentsForInitiativeStream(initiativeId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IComments>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/comments`, ...streamParams });
+}
+
 export function commentsForUserStream(userId: string, streamParams: IStreamParams | null = null) {
   return streams.get<IComments>({ apiEndpoint: `${API_PATH}/users/${userId}/comments`, ...streamParams });
 }
