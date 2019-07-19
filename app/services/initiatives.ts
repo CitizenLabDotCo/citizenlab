@@ -81,6 +81,16 @@ export interface IInitiativesFilterCounts {
   total: number;
 }
 
+export interface IGeotaggedInitiativeData {
+  id: string;
+  type: string;
+  attributes: {
+    title_multiloc: Multiloc;
+    location_point_geojson: GeoJSON.Point;
+    location_description: string;
+  };
+}
+
 export function initiativeByIdStream(initiativeId: string) {
   return streams.get<IInitiative>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}` });
 }

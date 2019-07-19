@@ -14,11 +14,11 @@ import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import VoteControl from 'components/VoteControl';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
-import IdeaBody from 'containers/IdeasShow/IdeaBody';
+import InitiativeBody from 'containers/InitiativesShow/InitiativeBody';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -104,7 +104,7 @@ const VoteComments = styled.div`
   margin-bottom: 30px;
 `;
 
-const ViewIdeaButton = styled(Button)`
+const ViewInitiativeButton = styled(Button)`
   justify-self: flex-end;
 `;
 
@@ -148,13 +148,13 @@ const RegisterLink = styled.span`
 `;
 
 interface InputProps {
-  ideaId?: string | null;
+  initiativeId?: string | null;
   className?: string;
 }
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  idea: GetIdeaChildProps;
+  initiative: GetInitiativeChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -163,7 +163,7 @@ interface State {
   showFooter: 'unauthenticated' | 'votingDisabled' | null;
 }
 
-class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
+class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -172,20 +172,20 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.idea !== prevProps.idea) {
+    if (this.props.initiative !== prevProps.initiative) {
       this.setState({ showFooter: null });
     }
   }
 
-  createIdeaClickHandler = (event: FormEvent<HTMLButtonElement>) => {
+  createInitiativeClickHandler = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    const { idea } = this.props;
+    const { initiative } = this.props;
 
-    if (!isNilOrError(idea)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('IdeaPreview', 'cardClick', {
-        id: idea.id,
-        slug: idea.attributes.slug,
+    if (!isNilOrError(initiative)) {
+      eventEmitter.emit<IOpenPostPageModalEvent>('InitiativePreview', 'cardClick', {
+        id: initiative.id,
+        slug: initiative.attributes.slug,
         type: 'initiative'
       });
     }
@@ -211,29 +211,29 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
 
   render() {
     const { showFooter } = this.state;
-    const { idea, locale, className, localize } = this.props;
+    const { initiative, locale, className, localize } = this.props;
 
-    if (!isNilOrError(idea)) {
-      const ideaAddress = get(idea, 'attributes.location_description');
-      const ideaBody = localize(idea.attributes.body_multiloc);
+    if (!isNilOrError(initiative)) {
+      const initiativeAddress = get(initiative, 'attributes.location_description');
+      const initiativeBody = localize(initiative.attributes.body_multiloc);
 
       return (
         <Container className={className}>
           <Title>
-            <T value={idea.attributes.title_multiloc} />
+            <T value={initiative.attributes.title_multiloc} />
           </Title>
 
-          {ideaAddress &&
+          {initiativeAddress &&
             <Address>
               <MapMarkerIcon name="mapmarker" />
-              {ideaAddress}
+              {initiativeAddress}
             </Address>
           }
 
           <Description>
-            <IdeaBody
-              ideaId={idea.id}
-              ideaBody={ideaBody}
+            <InitiativeBody
+              initiativeId={initiative.id}
+              initiativeBody={initiativeBody}
               locale={locale}
             />
           </Description>
@@ -242,14 +242,14 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
             {!showFooter &&
               <>
                 <VoteControl
-                  ideaId={idea.id}
+                  initiativeId={initiative.id}
                   size="2"
                   unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
                   disabledVoteClick={this.handleDisabledVoteClick}
                 />
                 <CommentsCount>
                   <CommentIcon name="comments" />
-                  {idea.attributes.comments_count}
+                  {initiative.attributes.comments_count}
                 </CommentsCount>
               </>
             }
@@ -267,18 +267,18 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
 
             {showFooter === 'votingDisabled' &&
               <VotingDisabled
-                votingDescriptor={idea.relationships.action_descriptor.data.voting}
-                projectId={idea.relationships.project.data.id}
+                votingDescriptor={initiative.relationships.action_descriptor.data.voting}
+                projectId={initiative.relationships.project.data.id}
               />
             }
           </VoteComments>
 
-          <ViewIdeaButton
+          <ViewInitiativeButton
             fullWidth={true}
-            onClick={this.createIdeaClickHandler}
+            onClick={this.createInitiativeClickHandler}
           >
-            <FormattedMessage {...messages.seeIdea} />
-          </ViewIdeaButton>
+            <FormattedMessage {...messages.seeInitiative} />
+          </ViewInitiativeButton>
         </Container>
       );
     }
@@ -287,15 +287,15 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
   }
 }
 
-const IdeaPreviewWithHOCs = injectLocalize<Props>(IdeaPreview);
+const InitiativePreviewWithHOCs = injectLocalize<Props>(InitiativePreview);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
+  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaPreviewWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <InitiativePreviewWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
