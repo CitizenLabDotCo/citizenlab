@@ -1,12 +1,12 @@
 module EmailCampaigns
-  class WebApi::V1::ConsentSerializer < ActiveModel::Serializer
-    attributes :id, :campaign_name, :campaign_type_description_multiloc, :consented, :created_at, :updated_at
+  class WebApi::V1::ConsentSerializer < ::WebApi::V1::BaseSerializer
+    attributes :consented, :created_at, :updated_at
 
-    def campaign_name
+    attribute :campaign_name do |object|
       object.campaign_type.safe_constantize&.campaign_name
     end
 
-    def campaign_type_description_multiloc
+    attribute :campaign_type_description_multiloc do |object|
     	object.campaign_type.safe_constantize&.campaign_description_multiloc
     end
   end

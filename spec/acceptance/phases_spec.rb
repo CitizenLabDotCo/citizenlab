@@ -32,7 +32,18 @@ resource "Phases" do
     example_request "Get one phase by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
+
       expect(json_response.dig(:data, :id)).to eq @phases.first.id
+      expect(json_response.dig(:data, :type)).to eq 'phase'
+      expect(json_response.dig(:data, :attributes)).to include(
+        voting_method: 'unlimited'
+        )
+      expect(json_response.dig(:data, :relationships)).to include(
+        project: {
+          data: {id: @phases.first.project_id, type: 'project'}
+        },
+        permissions: {data: []}
+        )
     end
   end
 
@@ -201,6 +212,25 @@ resource "Phases" do
         expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method
         expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
+      end
+
+      describe do
+        before do
+          @project.phases.first.update(
+            participation_method: 'budgeting',
+            max_budget: 30000
+            )
+        end
+        let(:ideas) { create_list(:idea, 2, project: @project) }
+        let(:phase) { create(:phase, project: @project, participation_method: 'ideation', ideas: ideas) }
+        let(:participation_method) { 'information' }
+
+        example "[error] Make a phase with ideas an information phase", document: true do
+          do_request
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :base)).to eq [{error: 'cannot_contain_ideas', ideas_count: 2}]
+        end
       end
     end
 

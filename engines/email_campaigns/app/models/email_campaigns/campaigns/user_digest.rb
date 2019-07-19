@@ -7,6 +7,8 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
 
+    recipient_filter :user_filter_no_invitees
+
     before_send :is_content_worth_sending?
 
     N_TOP_IDEAS = ENV.fetch("N_USER_PLATFORM_DIGEST_IDEAS", 3).to_i
@@ -41,6 +43,7 @@ module EmailCampaigns
       }]
     end
 
+
     def is_content_worth_sending? _
       @is_worth_sending ||= TrendingIdeaService.new.filter_trending(
         IdeaPolicy::Scope.new(nil, Idea).resolve.where(publication_status: 'published')
@@ -50,6 +53,9 @@ module EmailCampaigns
 
     private
 
+    def user_filter_no_invitees users_scope, options={}
+      users_scope.active
+    end
 
     def top_ideas recipient
       ti_service = TrendingIdeaService.new 

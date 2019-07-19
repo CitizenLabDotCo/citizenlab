@@ -1,10 +1,16 @@
 class Comment < ApplicationRecord
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
-  belongs_to :author, class_name: 'User'
-
+  belongs_to :author, class_name: 'User', optional: true
   belongs_to :post, polymorphic: true
-  counter_culture :post, 
+  has_many :votes, as: :votable, dependent: :destroy
+  has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
+  has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
+  has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
+  has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
+  has_many :notifications, foreign_key: :comment_id, dependent: :nullify
+  
+  counter_culture :post,
     column_name: proc {|model| model.published? ? 'comments_count' : nil },
     column_names: {
       ["comments.publication_status = ?", "published"] => "comments_count"
@@ -41,7 +47,6 @@ class Comment < ApplicationRecord
   PUBLICATION_STATUSES = %w(published deleted)
 
   validates :body_multiloc, presence: true, multiloc: {presence: true}
-  validates :author, presence: true, on: :create
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
   before_validation :set_author_name, :set_publication_status, on: :create

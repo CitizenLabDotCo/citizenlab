@@ -19,8 +19,8 @@ module NLP
           @ideas = policy_scope(Idea.where(id: similarities.map{|h| h[:idea_id]}))
             .page(params.dig(:page, :number))
             .per(params.dig(:page, :size))
-
-          render json: @ideas, each_serializer: ::WebApi::V1::SimilarIdeaSerializer
+            
+          render json: linked_json(@ideas, ::WebApi::V1::SimilarIdeaSerializer, params: fastjson_params)
         end
 
 

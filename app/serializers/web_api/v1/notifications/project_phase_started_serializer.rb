@@ -1,25 +1,22 @@
 class WebApi::V1::Notifications::ProjectPhaseStartedSerializer < WebApi::V1::Notifications::NotificationSerializer
+  attribute :created_at
 
-  belongs_to :phase, serializer: WebApi::V1::PhaseSerializer
-  belongs_to :project, serializer: WebApi::V1::ProjectSerializer
-
-  attributes :phase_title_multiloc, :phase_start_at, :project_slug, :project_title_multiloc, :created_at
-
-
-  def phase_title_multiloc
+  attribute :phase_title_multiloc do |object|
     object.phase&.title_multiloc
   end
 
-  def phase_start_at
+  attribute :phase_start_at do |object|
     object.phase&.start_at
   end
 
-  def project_slug
+  attribute :project_slug do |object|
     object.project&.slug
   end
 
-  def project_title_multiloc
+  attribute :project_title_multiloc do |object|
     object.project&.title_multiloc
   end
 
+  belongs_to :phase, serializer: WebApi::V1::PhaseSerializer
+  belongs_to :project, serializer: WebApi::V1::ProjectSerializer
 end

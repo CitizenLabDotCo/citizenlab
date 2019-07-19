@@ -33,4 +33,23 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest, type: :model do
       expect(command.dig(:tracked_content, :idea_ids)).to include(new_ideas.first.id)
   	end
   end
+
+  describe "apply_recipient_filters" do
+    let(:campaign) { build(:admin_digest_campaign) }
+
+    it "filters out invitees" do
+      admin = create(:admin)
+      invitee = create(:invited_user, roles: [{type: 'admin'}])
+
+      expect(campaign.apply_recipient_filters).to match([admin])
+    end
+
+    it "filters out moderators and normal users" do
+      admin = create(:admin)
+      moderator = create(:moderator)
+      user = create(:user)
+
+      expect(campaign.apply_recipient_filters).to match([admin])
+    end
+  end
 end

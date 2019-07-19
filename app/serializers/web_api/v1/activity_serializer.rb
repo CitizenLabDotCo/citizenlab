@@ -1,8 +1,9 @@
-class WebApi::V1::ActivitySerializer < ActiveModel::Serializer
-  attributes :id, :action, :acted_at, :change
-  belongs_to :user
+class WebApi::V1::ActivitySerializer < WebApi::V1::BaseSerializer
+  attributes :action, :acted_at
 
-  def change
+  attribute :change do |object|
     object.payload&.dig('change')
   end
+
+  belongs_to :user
 end

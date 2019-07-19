@@ -29,7 +29,10 @@ class WebApi::V1::UserCommentsController < ApplicationController
       .joins('LEFT OUTER JOIN union_posts ON comments.post_id = union_posts.id')
       .order('union_posts.published_at DESC, union_posts.id DESC, comments.created_at DESC')
 
-    render json: comments, include: ['post'], meta: { total_count: paged_posts.total_count, total_pages: paged_posts.total_pages, current_page: paged_posts.current_page }
+    render json: { 
+      **WebApi::V1::CommentSerializer.new(comments, params: fastjson_params, include: [:post]).serializable_hash,
+      links: page_links(paged_posts)
+    }
   end
 
 

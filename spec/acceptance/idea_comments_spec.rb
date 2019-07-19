@@ -58,7 +58,7 @@ resource "Comments" do
           @c3sub5,
           @c3sub6,
         ].map(&:id))
-        expect(json_response[:meta][:total]).to eq 4
+        expect(json_response[:links][:next]).to be_present
       end
     end
 
@@ -164,12 +164,36 @@ resource "Comments" do
   end
 
   get "web_api/v1/comments/:id" do
-    let(:id) { create(:comment).id }
+    let(:idea) { create(:idea) }
+    let(:parent) { create(:comment, post: idea) }
+    let(:comment) { create(:comment, parent: parent, post: idea) }
+    let(:id) { comment.id }
 
     example_request "Get one comment by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
+
       expect(json_response.dig(:data, :id)).to eq id
+      expect(json_response.dig(:data, :type)).to eq 'comment'
+      expect(json_response.dig(:data, :attributes)).to include(
+        downvotes_count: 0,
+        publication_status: 'published',
+        is_admin_comment: false
+        )
+      expect(json_response.dig(:data, :relationships)).to include(
+        post: {
+          data: {id: comment.post_id, type: 'idea'}
+        },
+        author: {
+          data: {id: comment.author_id, type: 'user'}
+        },
+        parent: {
+          data: {id: parent.id, type: 'comment'}
+        })
+      expect(json_response.dig(:included, 0, :attributes)).to include(
+        first_name: comment.author.first_name,
+        locale: comment.author.locale
+        )
     end
   end
 

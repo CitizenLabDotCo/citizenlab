@@ -16,6 +16,11 @@ resource "Spam Reports" do
   end
 
   get "web_api/v1/ideas/:idea_id/spam_reports" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of spam reports per page"
+    end
+
     let(:idea_id) { @idea.id }
 
     example_request "List all spam reports of an idea" do

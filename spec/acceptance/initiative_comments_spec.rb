@@ -57,7 +57,6 @@ resource "Comments" do
           @c3sub5,
           @c3sub6,
         ].map(&:id))
-        expect(json_response[:meta][:total]).to eq 4
       end
     end
 

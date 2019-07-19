@@ -1,0 +1,1 @@
+require 'fast_jsonapi/instrumentation/skylight'
