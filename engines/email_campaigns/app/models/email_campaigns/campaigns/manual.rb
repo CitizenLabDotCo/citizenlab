@@ -8,6 +8,8 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     allow_lifecycle_stages except: ['churned']
 
+    recipient_filter :user_filter_no_invitees
+
     def mailer_class
       CampaignMailer
     end
@@ -25,6 +27,12 @@ module EmailCampaigns
         sender: sender,
         reply_to: reply_to
       }]
+    end
+
+    private
+
+    def user_filter_no_invitees users_scope, options={}
+      users_scope.active
     end
 
     def only_manual_send activity: nil, time: nil

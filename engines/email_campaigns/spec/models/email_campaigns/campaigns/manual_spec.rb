@@ -23,4 +23,16 @@ RSpec.describe EmailCampaigns::Campaigns::Manual, type: :model do
     end
   end
 
+  describe "apply_recipient_filters" do
+    let(:campaign) { build(:manual_campaign) }
+
+    it "filters out invitees" do
+      user = create(:user)
+      invitee = create(:invited_user)
+
+      expect(campaign.apply_recipient_filters).to include(user)
+      expect(campaign.apply_recipient_filters).not_to include(invitee)
+    end
+  end
+
 end

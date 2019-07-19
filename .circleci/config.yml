@@ -175,8 +175,9 @@ jobs:
         default: .env-production
     steps:
       - run:
+          name: Check for inconsistent data
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/cl2-back:$CIRCLE_BRANCH rake checks:invalid_data"
-          no_output_timeout: 3600
+          no_output_timeout: 60m
 
 
 workflows:
@@ -268,7 +269,7 @@ workflows:
   check-for-inconsistent-data:
     triggers:
       - schedule:
-          cron: "0 2 * * 5"
+          cron: "0 2 * * 1"
           filters:
             branches:
               only:
