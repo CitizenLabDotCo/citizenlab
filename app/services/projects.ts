@@ -16,7 +16,7 @@ export type VotingDisabledReasons = 'project_inactive' | 'not_ideation' | 'votin
 export type SurveyDisabledReasons = 'project_inactive' | 'not_survey' | 'not_permitted';
 export interface IProjectData {
   id: string;
-  type: 'projects';
+  type: 'project';
   attributes: {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
@@ -30,7 +30,7 @@ export interface IProjectData {
     updated_at: string;
     visible_to: Visibility;
     process_type: ProcessType;
-    timeline_active: 'past' | 'present' | 'future' | null;
+    timeline_active?: 'past' | 'present' | 'future' | null;
     participation_method: ParticipationMethod | null;
     posting_enabled: boolean;
     commenting_enabled: boolean;
@@ -44,6 +44,25 @@ export interface IProjectData {
     survey_service?: SurveyServices;
     survey_embed_url?: string;
     ordering: number;
+    action_descriptor: {
+      posting: {
+        enabled: boolean,
+        future_enabled: string | null,
+        disabled_reason: PostingDisabledReasons | null,
+      }
+      commenting: {
+        enabled: boolean,
+        disabled_reason: CommentingDisabledReasons | null,
+      }
+      voting: {
+        enabled: boolean,
+        disabled_reason: VotingDisabledReasons | null,
+      }
+      taking_survey: {
+        enabled: boolean;
+        disabled_reason: SurveyDisabledReasons | null;
+      }
+    }
   };
   relationships: {
     project_images: {
@@ -55,34 +74,13 @@ export interface IProjectData {
     avatars?: {
       data?: IRelationship[]
     }
-    action_descriptor: {
-      data: {
-        posting: {
-          enabled: boolean,
-          future_enabled: string | null,
-          disabled_reason: PostingDisabledReasons | null,
-        }
-        commenting: {
-          enabled: boolean,
-          disabled_reason: CommentingDisabledReasons | null,
-        }
-        voting: {
-          enabled: boolean,
-          disabled_reason: VotingDisabledReasons | null,
-        }
-        taking_survey: {
-          enabled: boolean;
-          disabled_reason: SurveyDisabledReasons | null;
-        }
-      }
-    }
-    current_phase: {
+    current_phase?: {
       data: IRelationship | null;
     }
-    user_basket: {
+    user_basket?: {
       data: IRelationship | null;
     }
-    default_assignee: {
+    default_assignee?: {
       data: IRelationship | null
     }
   };

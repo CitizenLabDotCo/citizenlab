@@ -7,7 +7,7 @@ export type MembershipType = 'manual' | 'rules';
 
 export interface IGroupData {
   id: string;
-  type: 'groups';
+  type: 'group';
   attributes: {
     title_multiloc: Multiloc;
     slug: string;

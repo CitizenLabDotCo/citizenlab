@@ -142,7 +142,7 @@ export interface IUserEngagementScore {
     user: {
       data: {
         id: string;
-        type: 'users';
+        type: 'user';
       }
     }
   };
