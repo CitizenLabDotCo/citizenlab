@@ -68,6 +68,25 @@ resource "Avatars" do
       end
     end
 
+    describe do
+      let(:initiative) { create(:initiative) }
+      let(:context_type) { 'initiative' }
+      let(:context_id) { initiative.id }
+      let(:author_id) { initiative.author.id }
+      let!(:commenter_ids) { 2.times.map{create(:comment, post: initiative).author.id}}
+      let(:limit) { 2 }
+
+      example_request "List random user avatars on an initiative (author and commenters)" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response.dig(:data).map{|d| d.dig(:attributes, :avatar).keys}).to all(eq [:small, :medium, :large])
+        expect(json_response.dig(:data).flat_map{|d| d.dig(:attributes, :avatar).values}).to all(be_present)
+        expect(json_response.dig(:data).map{|d| d.dig(:id)}).to all(satisfy{|id| (commenter_ids + [author_id]).include?(id)})
+        expect(json_response.dig(:meta, :total)).to eq 3
+      end
+    end
+
     context "as an admin" do
       before do
         @user = create(:admin)
