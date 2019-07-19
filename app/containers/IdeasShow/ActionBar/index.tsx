@@ -16,7 +16,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
-import { colors, media, ideaPageContentMaxWidth } from 'utils/styleUtils';
+import { colors, media, postPageContentMaxWidth } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -27,7 +27,7 @@ const Container = styled.div`
 `;
 
 const Inner = styled.div`
-  max-width: ${ideaPageContentMaxWidth};
+  max-width: ${postPageContentMaxWidth};
   height: 100%;
   margin: 0 auto;
   padding-left: 60px;
