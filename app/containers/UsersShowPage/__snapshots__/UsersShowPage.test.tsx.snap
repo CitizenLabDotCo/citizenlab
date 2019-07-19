@@ -37,7 +37,7 @@ exports[`<UsersShowPage /> renders correctly by default 1`] = `
             "data": Array [],
           },
         },
-        "type": "users",
+        "type": "user",
       }
     }
   />
@@ -104,7 +104,7 @@ exports[`<UsersShowPage /> renders correctly on the other tab 1`] = `
             "data": Array [],
           },
         },
-        "type": "users",
+        "type": "user",
       }
     }
   />
