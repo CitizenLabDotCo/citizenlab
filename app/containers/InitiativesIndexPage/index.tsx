@@ -5,7 +5,7 @@ import Footer from 'components/Footer';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
 import SuccessStories from './SuccessStories';
-import ShouldBeInitiatives from './ShouldBeInitiatives';
+import InitiativeCards from 'components/InitiativeCards';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -60,7 +60,7 @@ export default withTheme(memo(({ theme } : any) => (
     <InitiativesIndexMeta />
     <InitiativesHeader />
     <SuccessStories />
-    <ShouldBeInitiatives />
+    <InitiativeCards />
     <FooterBanner>
       <FooterMessage>
         <FormattedMessage {...messages.footer}/>
