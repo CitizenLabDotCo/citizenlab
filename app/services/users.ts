@@ -24,7 +24,7 @@ export interface IUserData {
     last_name: string | null;
     slug: string;
     locale: Locale;
-    avatar: ImageSizes,
+    avatar?: ImageSizes,
     roles?: IRole[],
     highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user',
     bio_multiloc: Multiloc,
@@ -37,7 +37,7 @@ export interface IUserData {
     domicile?: string;
     education?: string;
     unread_notifications?: number;
-    custom_field_values: object;
+    custom_field_values?: object;
     invite_status: 'pending' | 'accepted' | null;
   };
 }

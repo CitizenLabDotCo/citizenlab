@@ -1318,6 +1318,8 @@
   "app.containers.NotificationMenu.projectModerationRightsReceived": "Du er nå en moderator av {projectLink}",
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} entered a new phase",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} will enter a new phase on {phaseStartAt}",
+  "app.containers.NotificationMenu.statusChangeOnCommentedIdea": "",
+  "app.containers.NotificationMenu.statusChangeOnVotedIdea": "",
   "app.containers.NotificationMenu.statusChangedOfYourIdea": "'{ideaTitle}' statusen er endret til {status}",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} aksepterte invitasjonen din",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} kommenterte på idéen din",

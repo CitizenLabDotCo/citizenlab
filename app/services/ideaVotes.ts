@@ -3,7 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 
 export interface IIdeaVoteData {
   id: string;
-  type: 'votes';
+  type: 'vote';
   attributes: {
     mode: 'up' | 'down'
   };
@@ -11,20 +11,29 @@ export interface IIdeaVoteData {
     votable: {
       data: {
         id: string;
-        type: 'votables';
+        type: 'votable';
       }
     },
     user: {
       data: {
         id: string;
-        type: 'users';
+        type: 'user';
       }
     }
   };
 }
 
+interface ILinks {
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
+}
+
 export interface IIdeaVotes {
   data: IIdeaVoteData[];
+  links: ILinks;
 }
 
 export interface IIdeaVote {

@@ -90,8 +90,8 @@ export const UserComments = memo<Props>(({ comments, comments: { commentsList },
     <Container className="e2e-profile-comments">
       {commentsList.reduce(reducer, [[]]).map(commentForIdea => (
         <IdeaCommentGroup
-          key={commentForIdea[0].relationships.post.data.id}
-          ideaId={commentForIdea[0].relationships.post.data.id}
+          key={commentForIdea[0].id}
+          ideaId={commentForIdea[0].relationships.idea.data.id}
           commentsForIdea={commentForIdea}
           userId={userId}
         />

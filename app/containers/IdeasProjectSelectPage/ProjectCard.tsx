@@ -176,7 +176,7 @@ class ProjectCard extends PureComponent<Props, State> {
     const { project, authUser } = this.props;
 
     if (!isNilOrError(project)) {
-      const { enabled, future_enabled: futureEnabled, disabled_reason: disabledReason } = project.relationships.action_descriptor.data.posting;
+      const { enabled, future_enabled: futureEnabled, disabled_reason: disabledReason } = project.attributes.action_descriptor.posting;
       if (enabled) {
         return null;
       } else if (disabledReason === 'not_permitted') {
@@ -224,7 +224,7 @@ class ProjectCard extends PureComponent<Props, State> {
       const disabledMessage = this.disabledMessage();
       const cardState = this.calculateCardState();
       const enabled = (cardState === 'enabled' || cardState === 'enabledBecauseAdmin');
-      const futureEnabledDate = project.relationships.action_descriptor.data.posting.future_enabled;
+      const futureEnabledDate = project.attributes.action_descriptor.posting.future_enabled;
       const formattedFutureEnabledDate = (futureEnabledDate ? moment(futureEnabledDate, 'YYYY-MM-DD').format('LL') : null);
 
       return (
@@ -284,7 +284,7 @@ class ProjectCard extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ project, render }) => <GetProjectImages projectId={get(project, 'id')}>{render}</GetProjectImages>,
-  permission: ({ project, render }) => <GetPermission item="ideas" action="create" context={{ project: (!isError(project) ? project : null) }}>{render}</GetPermission>,
+  permission: ({ project, render }) => <GetPermission item="idea" action="create" context={{ project: (!isError(project) ? project : null) }}>{render}</GetPermission>,
   authUser: <GetAuthUser />,
 });
 

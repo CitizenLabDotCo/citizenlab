@@ -42,7 +42,7 @@ interface IStreamAvatarsParams extends IStreamParams {
 }
 
 export function avatarByIdStream(avatarId: string) {
-  return streams.get<IAvatar>({ apiEndpoint: `${API_PATH}/avatars/${avatarId}` });
+  return streams.get<IAvatar>({ apiEndpoint: `${API_PATH}/avatars/${avatarId}`, cacheStream: false });
 }
 
 export function randomAvatarsStream(streamParams: IStreamAvatarsParams | null = null) {
