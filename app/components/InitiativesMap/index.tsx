@@ -49,13 +49,11 @@ const StyledMap = styled(Map)`
 `;
 
 interface InputProps {
-  projectIds?: string[] | null;
-  phaseId?: string | null;
   className?: string;
 }
 
 interface DataProps {
-  InitiativeMarkers: GetInitiativeMarkersChildProps;
+  initiativeMarkers: GetInitiativeMarkersChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -75,13 +73,13 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
   }
 
   componentDidMount() {
-    const points = this.getPoints(this.props.InitiativeMarkers);
+    const points = this.getPoints(this.props.initiativeMarkers);
     this.setState({ points });
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (prevProps.InitiativeMarkers !== this.props.InitiativeMarkers) {
-      const points = this.getPoints(this.props.InitiativeMarkers);
+    if (prevProps.initiativeMarkers !== this.props.initiativeMarkers) {
+      const points = this.getPoints(this.props.initiativeMarkers);
       this.setState({ points });
     }
   }
@@ -118,12 +116,12 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
   noInitiativesWithLocationMessage = <FormattedMessage {...messages.noInitiativesWithLocation} />;
 
   render() {
-    const { phaseId, projectIds, InitiativeMarkers, className } = this.props;
+    const { initiativeMarkers, className } = this.props;
     const { selectedInitiativeId, points } = this.state;
 
     return (
       <Container className={className}>
-        {InitiativeMarkers && InitiativeMarkers.length > 0 && points.length === 0 &&
+        {initiativeMarkers && initiativeMarkers.length > 0 && points.length === 0 &&
           <StyledWarning text={this.noInitiativesWithLocationMessage} />
         }
 
@@ -131,7 +129,7 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
           points={points}
           onMarkerClick={this.toggleInitiative}
           fitBounds={true}
-          boxContent={selectedInitiativeId ? <InitiativePreview InitiativeId={selectedInitiativeId} /> : null}
+          boxContent={selectedInitiativeId ? <InitiativePreview initiativeId={selectedInitiativeId} /> : null}
           onBoxClose={this.deselectInitiative}
         />
       </Container>
@@ -140,7 +138,7 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
 }
 
 const Data = adopt<DataProps, InputProps>({
-  InitiativeMarkers: ({ projectIds, phaseId, render }) => <GetInitiativeMarkers projectIds={projectIds} phaseId={phaseId}>{render}</GetInitiativeMarkers>
+  initiativeMarkers: <GetInitiativeMarkers />
 });
 
 const InitiativesMapWithRouter = withRouter(InitiativesMap);

@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  test: {
-    id: 'app.components.InitiativesMap.test',
-    defaultMessage: 'test',
+  noInitiativesWithLocation: {
+    id: 'app.components.InitiativesMap.noInitiativesWithLocation',
+    defaultMessage: "The initiatives in this project don't have any location information.",
   },
 });

@@ -12,8 +12,6 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-import VoteControl from 'components/VoteControl';
-import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import InitiativeBody from 'containers/InitiativesShow/InitiativeBody';
 
 // resources

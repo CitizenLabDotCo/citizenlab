@@ -23,6 +23,10 @@ import GetInitiatives, { Sort, GetInitiativesChildProps, InputProps as GetInitia
 import GetInitiativesFilterCounts, { GetInitiativesFilterCountsChildProps } from 'resources/GetInitiativesFilterCounts';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
+// utils
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // i18n
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
@@ -32,9 +36,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { darken, rgba } from 'polished';
-
-// typings
-import { ParticipationMethod } from 'services/participationContexts';
 
 const gapWidth = 35;
 
@@ -362,9 +363,6 @@ const ShowMoreButton = styled(Button)``;
 interface InputProps extends GetInitiativesInputProps  {
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
-  participationMethod?: ParticipationMethod | null;
-  participationContextId?: string | null;
-  participationContextType?: 'Phase' | 'Project' | null;
   className?: string;
 }
 
@@ -527,7 +525,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { selectedView, selectedInitiativeFilters, filtersModalOpened } = this.state;
-    const { participationMethod, participationContextId, participationContextType, initiatives, initiativesFilterCounts, windowSize, className, theme, showViewToggle } = this.props;
+    const { initiatives, initiativesFilterCounts, windowSize, className, theme, showViewToggle } = this.props;
     const { queryParameters, list, hasMore, querying, loadingMore } = initiatives;
     const hasInitiatives = (!isNilOrError(list) && list.length > 0);
     const showCardView = (selectedView === 'card');
@@ -662,9 +660,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                       <StyledInitiativeCard
                         key={initiative.id}
                         initiativeId={initiative.id}
-                        participationMethod={participationMethod}
-                        participationContextId={participationContextId}
-                        participationContextType={participationContextType}
                       />
                     ))}
                   </InitiativesList>
