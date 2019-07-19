@@ -30,6 +30,8 @@ class SortFilterDropdown extends PureComponent<Props, State> {
     this.props.onChange(selectedValue[0]);
   }
 
+  sortTitle = <FormattedMessage {...messages.sortTitle} />;
+
   render() {
     const { alignment } = this.props;
     const { selectedValue } = this.state;
@@ -44,7 +46,7 @@ class SortFilterDropdown extends PureComponent<Props, State> {
     return (
       <FilterSelector
         id="e2e-ideas-sort-filter"
-        title={<FormattedMessage {...messages.sortTitle} />}
+        title={this.sortTitle}
         name="sort"
         selected={selectedValue}
         values={options}
