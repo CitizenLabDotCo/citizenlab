@@ -7,7 +7,7 @@ import { ICommentVoteData, commentVoteStream } from 'services/commentVotes';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
-  voteId: string;
+  voteId?: string;
   resetOnChange?: boolean;
 }
 

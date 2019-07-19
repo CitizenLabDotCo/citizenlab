@@ -99,7 +99,7 @@ class ProfileForm extends PureComponent<Props, State> {
         customFieldsSchemaForUsersStream$
       ).pipe(
         switchMap(([user, locale, customFieldsSchema]) => {
-          const avatarUrl = user.attributes.avatar.medium;
+          const avatarUrl = user.attributes.avatar && user.attributes.avatar.medium;
           const avatar$: Observable<UploadFile | null> = (avatarUrl ? convertUrlToUploadFileObservable(avatarUrl, null, null) : of(null));
 
           return avatar$.pipe(

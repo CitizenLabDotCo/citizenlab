@@ -23,7 +23,7 @@ interface IDeletedComment extends CommentAttributes {
 
 export interface ICommentData {
   id: string;
-  type: 'comments';
+  type: 'comment';
   attributes: IPresentComment | IDeletedComment;
   relationships: {
     idea: {
@@ -35,10 +35,18 @@ export interface ICommentData {
     parent: {
       data: IRelationship | null;
     };
-    user_vote: {
+    user_vote?: {
       data: IRelationship | null;
     }
   };
+}
+
+export interface ICommentLinks {
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
 }
 
 export interface IComment {
@@ -47,9 +55,7 @@ export interface IComment {
 
 export interface IComments {
   data: ICommentData[];
-  meta: {
-    total: number;
-  };
+  links: ICommentLinks;
 }
 
 export interface IUpdatedComment {
