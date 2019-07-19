@@ -9,7 +9,7 @@ import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
@@ -61,11 +61,13 @@ const LoadingMoreMessage = styled.div`
 
 export interface InputProps {
   className?: string;
+  postId: string;
+  postType: 'idea' | 'initiative';
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
+  post: GetPostChildProps;
   comments: GetCommentsChildProps;
   project: GetProjectChildProps;
 }
@@ -161,9 +163,9 @@ const CommentsSection = memo<Props>(({ authUser, idea, comments, project, classN
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  comments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
-  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>
+  post: ({ postId, postType, render }) => <GetPost postId={postId} postType={postType}>{render}</GetPost>,
+  comments: ({ postId, render }) => <GetComments postId={postId} postType={postType}>{render}</GetComments>,
+  project: ({ post, postType, render }) => postType === 'idea' ? <GetProject id={get(post, 'relationships.project.data.id')}>{render}</GetProject> : null
 });
 
 export default memo<InputProps>((inputProps: InputProps) => (
