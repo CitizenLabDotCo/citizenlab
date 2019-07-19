@@ -30,7 +30,7 @@ import Footer from 'components/PostComponents/Footer';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 // import ActionBar from './ActionBar';
-// import TranslateButton from './TranslateButton';
+// import TranslateButton from 'components/UI/TranslateButton';
 
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
@@ -488,7 +488,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             </Content>
           </IdeaContainer>
 
-          {loaded && <Footer post={initiative} />}
+          {loaded && <Footer postId={initiativeId} postType="initiative" />}
         </>
       );
     }
