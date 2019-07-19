@@ -139,7 +139,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
     if (!isNilOrError(user) && hideIfNoAvatar !== true) {
       hasHoverEffect = (isFunction(onClick) || hasHoverEffect);
       const imageSize = (parseInt(size, 10) > 160 ? 'large' : 'medium');
-      const avatarSrc = user.attributes.avatar[imageSize];
+      const avatarSrc = user.attributes.avatar && user.attributes.avatar[imageSize];
       const userName = getUserName(user);
       const containerSize =  `${parseInt(size, 10) + (parseInt(padding as string, 10) * 2) + (parseInt(borderThickness as string, 10) * 2)}px`;
       const numberSize = parseInt(size, 10);

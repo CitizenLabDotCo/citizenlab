@@ -173,7 +173,7 @@ class ParentComment extends PureComponent<Props, State> {
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const ideaId = comment.relationships.idea.data.id;
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
-      const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
+      const commentingEnabled = idea.attributes.action_descriptor.commenting.enabled;
       const showCommentForm = (authUser && commentingEnabled && !commentDeleted);
       const hasChildComments = (this.props.childCommentIds && this.props.childCommentIds.length > 0);
       const childCommentIds = (!isNilOrError(childComments) ? childComments.data.filter((comment) => comment.attributes.publication_status !== 'deleted').map(comment => comment.id) : this.props.childCommentIds);

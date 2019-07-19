@@ -54,19 +54,19 @@ export const getNotification = (
     initiating_user: {
       data: {
         id: 'fe947bd3-9c67-40ed-96a3-9a12c4c73b46',
-        type: 'users'
+        type: 'user'
       }
     },
     idea: ['invite_accepted', 'admin_rights_received'].indexOf(type) === -1 ? {
       data: {
         id: '5dda9f3e-4c3f-45f1-bb09-b88a40776cab',
-        type: 'ideas'
+        type: 'idea'
       }
     } : undefined,
     comment: ['admin_rights_received', 'invite_accepted'].indexOf(type) === -1 ? {
       data: {
         id: '13d121b7-ee79-4a17-ac3e-c4ee51beb980',
-        type: 'comments'
+        type: 'comment'
       }
     } : undefined,
     idea_status: ['status_change_of_your_idea'].indexOf(type) !== -1 ? {
@@ -84,7 +84,7 @@ export const getNotification = (
     project: ['comment_on_your_idea', 'invite_accepted', 'admin_rights_received'].indexOf(type) === -1 ? {
       data: {
         id: '747dcdb1-f547-409f-8b90-8296d36d560a',
-        type: 'projects'
+        type: 'project'
       }
     } : undefined
   }

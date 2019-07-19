@@ -3,7 +3,7 @@ import { IOfficialFeedbacks } from 'services/officialFeedback';
 export const mockOfficialFeedback = {
   data: [
     {
-      type: 'official_feedbacks',
+      type: 'official_feedback',
       id: 'feedbackId1',
       attributes: {
         author_multiloc: {
@@ -17,7 +17,7 @@ export const mockOfficialFeedback = {
       }
     },
     {
-      type: 'official_feedbacks',
+      type: 'official_feedback',
       id: 'feedbackId2',
       attributes: {
         author_multiloc: {
