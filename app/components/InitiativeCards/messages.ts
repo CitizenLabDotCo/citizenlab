@@ -1,6 +1,30 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  trending: {
+    id: 'app.components.InitiativeCards.trending',
+    defaultMessage: 'Trending',
+  },
+  random: {
+    id: 'app.components.InitiativeCards.random',
+    defaultMessage: 'Random',
+  },
+  popular: {
+    id: 'app.components.InitiativeCards.popular',
+    defaultMessage: 'Popular',
+  },
+  newest: {
+    id: 'app.components.InitiativeCards.newest',
+    defaultMessage: 'Newest',
+  },
+  oldest: {
+    id: 'app.components.InitiativeCards.oldest',
+    defaultMessage: 'Oldest',
+  },
+  sortTitle: {
+    id: 'app.components.InitiativeCards.sortTitle',
+    defaultMessage: 'Sorting',
+  },
   filter: {
     id: 'app.components.InitiativeCards.filter',
     defaultMessage: 'Filter',
