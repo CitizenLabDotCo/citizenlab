@@ -81,6 +81,24 @@ export interface IInitiativesFilterCounts {
   total: number;
 }
 
+export interface IGeotaggedInitiativeData {
+  id: string;
+  type: string;
+  attributes: {
+    title_multiloc: Multiloc;
+    location_point_geojson: GeoJSON.Point;
+    location_description: string;
+  };
+}
+
+export interface IInitiativeLinks {
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
+}
+
 export function initiativeByIdStream(initiativeId: string) {
   return streams.get<IInitiative>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}` });
 }
@@ -91,6 +109,14 @@ export function initiativeBySlugStream(initiativeSlug: string) {
 
 export function initiativesStream(streamParams: IStreamParams | null = null) {
   return streams.get<IInitiatives>({ apiEndpoint: `${API_PATH}/initiatives`, ...streamParams });
+}
+
+export function initiativesFilterCountsStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IInitiativesFilterCounts>({ apiEndpoint: `${API_PATH}/initiatives/filter_counts`, ...streamParams, cacheStream: false });
+}
+
+export function initiativesMarkersStream(streamParams: IStreamParams | null = null) {
+  return streams.get<{ data: IGeotaggedInitiativeData[], links: IInitiativeLinks}>({ apiEndpoint: `${API_PATH}/initiatives/as_markers`, ...streamParams, cacheStream: false });
 }
 
 export async function addInitiative(object: IInitiativeAdd) {
