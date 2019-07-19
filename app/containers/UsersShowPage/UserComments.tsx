@@ -91,7 +91,7 @@ export const UserComments = memo<Props>(({ comments, comments: { commentsList },
       {commentsList.reduce(reducer, [[]]).map(commentForIdea => (
         <IdeaCommentGroup
           key={commentForIdea[0].id}
-          ideaId={commentForIdea[0].relationships.idea.data.id}
+          ideaId={commentForIdea[0].relationships.post.data.id}
           commentsForIdea={commentForIdea}
           userId={userId}
         />
