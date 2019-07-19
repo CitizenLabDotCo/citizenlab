@@ -8,6 +8,8 @@ module EmailCampaigns
     allow_lifecycle_stages only: ['active']
 
     recipient_filter :user_filter_moderator_only
+    recipient_filter :user_filter_no_invitees
+
     before_send :is_content_worth_sending?
 
     N_TOP_IDEAS = ENV.fetch("N_MODERATOR_DIGEST_IDEAS", 12).to_i
@@ -53,6 +55,10 @@ module EmailCampaigns
 
     def user_filter_moderator_only users_scope, options={}
       users_scope.where("roles @> '[{\"type\":\"project_moderator\"}]'")
+    end
+
+    def user_filter_no_invitees users_scope, options={}
+      users_scope.active
     end
 
     def is_content_worth_sending? _

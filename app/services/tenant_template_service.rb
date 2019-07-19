@@ -599,13 +599,16 @@ class TenantTemplateService
 
   def yml_memberships
     Membership.all.map do |m|
-      {
-        'group_ref'  => lookup_ref(m.group_id, :group),
-        'user_ref'   => lookup_ref(m.user_id, :user),
-        'created_at' => m.created_at.to_s,
-        'updated_at' => m.updated_at.to_s
-      }
-    end
+      user = lookup_ref(m.user_id, :user)
+      if user
+        {
+          'group_ref'  => lookup_ref(m.group_id, :group),
+          'user_ref'   => user,
+          'created_at' => m.created_at.to_s,
+          'updated_at' => m.updated_at.to_s
+        }
+      end
+    end.compact
   end
 
   def yml_pages
