@@ -38,7 +38,10 @@ module MachineTranslations
             end
           end
 
-          render json: @translation, serializer: ::WebApi::V1::MachineTranslationSerializer
+          render json: ::WebApi::V1::MachineTranslationSerializer.new(
+            @translation, 
+            params: fastjson_params
+            ).serialized_json
         end
 
 

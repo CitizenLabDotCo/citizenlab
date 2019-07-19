@@ -6,11 +6,11 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
     @options = policy_scope(CustomFieldOption)
       .where(custom_field: @custom_field)
       .order(:ordering)
-    render json: @options
+    render json: WebApi::V1::CustomFieldOptionSerializer.new(@options, params: fastjson_params).serialized_json
   end
 
   def show
-    render json: @option
+    render json: WebApi::V1::CustomFieldOptionSerializer.new(@option, params: fastjson_params).serialized_json
   end
 
   def create
@@ -22,7 +22,10 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
 
     if @option.save
       SideFxCustomFieldOptionService.new.after_create(@option, current_user)
-      render json: @option, status: :created
+      render json: WebApi::V1::CustomFieldOptionSerializer.new(
+        @option, 
+        params: fastjson_params
+        ).serialized_json, status: :created
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     end
@@ -34,7 +37,10 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
     authorize @option
     if @option.save
       SideFxCustomFieldOptionService.new.after_update(@option, current_user)
-      render json: @option.reload, status: :ok
+      render json: WebApi::V1::CustomFieldOptionSerializer.new(
+        @option, 
+        params: fastjson_params
+        ).serialized_json, status: :ok
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     end
@@ -43,7 +49,10 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
   def reorder
     if @option.insert_at(permitted_attributes(@option)[:ordering])
       SideFxCustomFieldOptionService.new.after_update(@option, current_user)
-      render json: @option.reload, status: :ok
+      render json: WebApi::V1::CustomFieldOptionSerializer.new(
+        @option.reload, 
+        params: fastjson_params
+        ).serialized_json, status: :ok
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     end

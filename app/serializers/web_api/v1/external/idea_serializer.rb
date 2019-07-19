@@ -3,7 +3,7 @@ class WebApi::V1::External::IdeaSerializer < ActiveModel::Serializer
 
   has_many :topics
   has_many :areas
-  has_many :idea_images, serializer: WebApi::V1::ImageSerializer
+  has_many :idea_images, serializer: WebApi::V1::External::ImageSerializer
 
   def url
     Frontend::UrlService.new.model_to_url object

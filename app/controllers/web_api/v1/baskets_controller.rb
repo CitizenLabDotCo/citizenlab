@@ -2,7 +2,11 @@ class WebApi::V1::BasketsController < ApplicationController
   before_action :set_basket, only: [:show, :update, :destroy]
 
   def show
-    render json: @basket, include: ['ideas', 'baskets_ideas']
+    render json: WebApi::V1::BasketSerializer.new(
+      @basket, 
+      params: fastjson_params, 
+      include: [:ideas]
+      ).serialized_json
   end
 
   def create
@@ -11,7 +15,10 @@ class WebApi::V1::BasketsController < ApplicationController
 
     if @basket.save
       SideFxBasketService.new.after_create @basket, current_user
-      render json: @basket, status: :created
+      render json: WebApi::V1::BasketSerializer.new(
+        @basket, 
+        params: fastjson_params,
+        ).serialized_json, status: :created
     else
       render json: { errors: @basket.errors.details }, status: :unprocessable_entity
     end
@@ -36,7 +43,10 @@ class WebApi::V1::BasketsController < ApplicationController
         raise ClErrors::TransactionError.new(error_key: :unprocessable_basket) if !@basket.save
         SideFxBasketService.new.after_update @basket, current_user 
       end
-      render json: @basket, status: :ok
+      render json: WebApi::V1::BasketSerializer.new(
+        @basket, 
+        params: fastjson_params,
+        ).serialized_json, status: :ok
     rescue ClErrors::TransactionError => e
       case e.error_key
       when :unprocessable_basket

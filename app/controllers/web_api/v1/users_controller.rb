@@ -43,7 +43,7 @@ class WebApi::V1::UsersController < ::ApplicationController
         raise "Unsupported sort method"
     end
 
-    render json: @users
+    render json: linked_json(@users, WebApi::V1::UserSerializer, params: fastjson_params)
   end
 
   def index_xlsx
@@ -59,15 +59,15 @@ class WebApi::V1::UsersController < ::ApplicationController
     skip_authorization
 
     if @user
-      unread_notifications = @user.notifications.unread.count
-      render json: @user, unread_notifications: unread_notifications
+      params = fastjson_params unread_notifications: @user.notifications.unread.size
+      render json: WebApi::V1::UserSerializer.new(@user, params: params).serialized_json
     else
       head 404
     end
   end
 
   def show
-    render json: @user
+    render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
   end
 
   def by_slug
@@ -91,7 +91,10 @@ class WebApi::V1::UsersController < ::ApplicationController
     if @user.save
       SideFxUserService.new.after_create(@user, current_user)
       permissions = Permission.for_user(@user)
-      render json: @user, status: :created, granted_permissions: permissions
+      render json: WebApi::V1::UserSerializer.new(
+        @user, 
+        params: fastjson_params(granted_permissions: permissions)
+        ).serialized_json, status: :created
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -113,7 +116,11 @@ class WebApi::V1::UsersController < ::ApplicationController
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
       permissions = Permission.for_user(@user).where.not(id: permissions_before.ids)
-      render json: @user, include: ['granted_permissions', 'granted_permissions.permittable'], status: :ok, granted_permissions: permissions
+      render json: WebApi::V1::UserSerializer.new(
+        @user, 
+        params: fastjson_params(granted_permissions: permissions),
+        include: [:granted_permissions, :'granted_permissions.permittable']
+        ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -131,7 +138,10 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
-      render json: @user, status: :ok
+      render json: WebApi::V1::UserSerializer.new(
+        @user, 
+        params: fastjson_params
+        ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end

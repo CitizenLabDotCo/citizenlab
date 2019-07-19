@@ -1,6 +1,6 @@
 module Onboarding
-  class WebApi::V1::CampaignSerializer < ActiveModel::Serializer
-    type 'onboarding_campaign'
+  class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
+    set_type 'onboarding_campaign'
 
     attribute :name
     attribute :cta_message_multiloc

@@ -1,11 +1,10 @@
-class WebApi::V1::Notifications::NotificationSerializer < ActiveModel::Serializer
-  type :notification
-  attributes :id, :type, :read_at, :created_at
+class WebApi::V1::Notifications::NotificationSerializer < WebApi::V1::BaseSerializer
+  attributes :read_at, :created_at
 
-  belongs_to :recipient, serializer: WebApi::V1::UserSerializer
-  
-
-  def type
+  # Is this still necessary?
+  attribute :type do |object|
     object.type.demodulize.underscore
   end
+
+  belongs_to :recipient, record_type: :user, serializer: WebApi::V1::UserSerializer
 end

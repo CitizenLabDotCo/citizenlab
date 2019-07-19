@@ -11,8 +11,7 @@ class IdeaPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       elsif user
-        project_ids = Pundit.policy_scope(user, Project).pluck(:id)
-        scope.where(project_id: project_ids, publication_status: ['published', 'closed'])
+        scope.where(project: Pundit.policy_scope(user, Project), publication_status: ['published', 'closed'])
       else
         scope
           .left_outer_joins(:project)

@@ -3,6 +3,7 @@ module AdminApi
 
     def index
       @projects = Project.all
+      # This uses default model serialization
       render json: @projects
     end
 

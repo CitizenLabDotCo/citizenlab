@@ -1,14 +1,7 @@
-class WebApi::V1::AvatarSerializer < ActiveModel::Serializer
+class WebApi::V1::AvatarSerializer < WebApi::V1::BaseSerializer
+  set_type :avatar
 
-  type :avatars
-  attribute :avatar
-
-  def id
-    "#{object.id}-avatar"
-  end
-
-  def avatar
+  attribute :avatar do |object|
     object.avatar && object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
-
 end
