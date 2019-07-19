@@ -16,7 +16,10 @@ class WebApi::V1::UserCommentsController < ApplicationController
       .left_outer_joins(:idea)
     @comments = @comments.order('ideas.published_at DESC, ideas.id DESC, comments.created_at DESC')
 
-    render json: @comments, include: ['idea'], meta: { total_count: @ideas.total_count, total_pages: @ideas.total_pages, current_page: @ideas.current_page }
+    render json: { 
+      **WebApi::V1::CommentSerializer.new(@comments, params: fastjson_params, include: [:idea]).serializable_hash,
+      links: page_links(@ideas)
+    }
   end
 
 

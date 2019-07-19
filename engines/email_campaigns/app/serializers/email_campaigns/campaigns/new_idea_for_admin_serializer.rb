@@ -4,7 +4,7 @@ module EmailCampaigns::Campaigns
 	  belongs_to :idea, serializer: CustomIdeaSerializer
 	  belongs_to :idea_author, serializer: CustomUserSerializer
 	  has_many :idea_images, serializer: CustomImageSerializer
-	  has_many :idea_topics, serializer: ::WebApi::V1::TopicSerializer
+	  has_many :idea_topics, serializer: ::WebApi::V1::External::TopicSerializer
 	  belongs_to :project, serializer: CustomProjectSerializer
 	  has_many :project_images, serializer: CustomImageSerializer
   end

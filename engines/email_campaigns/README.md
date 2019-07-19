@@ -111,11 +111,13 @@ end
 
 3. Create a serializer for the new notification in `serializers/web_api/v1/notifications`.
 
-4. Add a new factory for this type of notification.
+4. Add a mapping to `controllers/web_api/v1/notifications_controller.rb`.
 
-5. Create a frontend task to support the new notification.
+5. Add a new factory for this type of notification.
 
-6. If the `make_notifications_on` method implements relatively complex logic, add a test case to `./spec/models/notification_spec.rb`.
+6. Create a frontend task to support the new notification.
+
+7. If the `make_notifications_on` method implements relatively complex logic, add a test case to `./spec/models/notification_spec.rb`.
 
 
 ## Add the Actual Campaign

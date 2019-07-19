@@ -1,19 +1,19 @@
-class WebApi::V1::TenantSerializer < ActiveModel::Serializer
-  attributes :id, :name, :host, :settings, :style, :logo, :header_bg, :favicon
+class WebApi::V1::TenantSerializer < WebApi::V1::BaseSerializer
+  attributes :name, :host, :style
 
-  def logo
+  attribute :logo do |object|
     object.logo && object.logo.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
 
-  def header_bg
+  attribute :header_bg do |object| 
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
 
-  def favicon
+  attribute :favicon do |object| 
     object.favicon && object.favicon.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
 
-  def settings
+  attribute :settings do |object| 
     object.public_settings
   end
 end

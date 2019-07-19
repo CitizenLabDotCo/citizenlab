@@ -70,6 +70,7 @@ gem "apartment", "~> 2.2.0"
 gem "apartment-sidekiq", "~> 1.2.0"
 gem "carrierwave", "~> 1.2.2"
 gem "kaminari", "~> 1.1.1"
+gem 'api-pagination', "~> 4.8.2"
 gem "activerecord_json_validator", "~> 1.2.0"
 
 gem "rest-client"
@@ -114,6 +115,9 @@ gem 'aws-sdk-s3', '~> 1'
 gem 'rinku', '~> 2'
 gem 'rails_semantic_logger'
 gem 'bootsnap', require: false
+# For serialization of heterogeneous collections (i.e. notifications), see
+# https://github.com/Netflix/fast_jsonapi/pull/410.
+gem 'fast_jsonapi', github: 'dvandersluis/fast_jsonapi', branch: 'heterogeneous-collection'  
 
 gem 'admin_api', path: 'engines/admin_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'
