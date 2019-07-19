@@ -176,6 +176,14 @@ Rails.application.routes.draw do
           get 'ideas_by_area'
         end
 
+        with_options controller: 'stats_initiatives' do
+          get 'initiatives_count'
+          get 'initiatives_by_time'
+          get 'initiatives_by_time_cumulative'
+          get 'initiatives_by_topic'
+          get 'initiatives_by_area'
+        end
+
         with_options controller: 'stats_comments' do
           get 'comments_count'
           get 'comments_by_time'
