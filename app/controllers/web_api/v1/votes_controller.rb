@@ -8,11 +8,18 @@ class WebApi::V1::VotesController < ApplicationController
     @votes = policy_scope(Vote, policy_scope_class: @policy_class::Scope)
       .where(votable_type: @votable_type, votable_id: @votable_id)
       .includes(:user)
-    render json: @votes, include: ['user']
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+
+    render json: linked_json(@votes, WebApi::V1::VoteSerializer, params: fastjson_params, include: [:user])
   end
 
   def show
-    render json: @vote, include: ['user']
+    render json: WebApi::V1::VoteSerializer.new(
+      @vote, 
+      params: fastjson_params, 
+      include: [:user]
+      ).serialized_json
   end
 
   def create
@@ -26,7 +33,10 @@ class WebApi::V1::VotesController < ApplicationController
 
     if @vote.save
       SideFxVoteService.new.after_create(@vote, current_user)
-      render json: @vote, status: :created
+      render json: WebApi::V1::VoteSerializer.new(
+        @vote, 
+        params: fastjson_params
+        ).serialized_json, status: :created
     else
       render json: { errors: @vote.errors.details }, status: :unprocessable_entity
     end
@@ -83,7 +93,10 @@ class WebApi::V1::VotesController < ApplicationController
 
         if @new_vote.save
           SideFxVoteService.new.after_create(@new_vote, current_user)
-          render json: @vote, status: :created
+          render json: WebApi::V1::VoteSerializer.new(
+            @vote, 
+            params: fastjson_params
+            ).serialized_json, status: :created
         else
           render json: {errors: @new_vote.errors.details}, status: :unprocessable_entity
         end
@@ -135,7 +148,16 @@ class WebApi::V1::VotesController < ApplicationController
 
   def user_not_authorized exception
     pcs = ParticipationContextService.new
-    reason = (exception.record.votable_type == 'Idea') && (pcs.voting_disabled_reason_for_idea(exception.record.votable, exception.record.user) || pcs.cancelling_votes_disabled_reason(exception.record.votable, exception.record.user))
+    if exception.record.votable.kind_of? Idea
+      reason = pcs.voting_disabled_reason_for_idea exception.record.votable, exception.record.user
+      reason ||= pcs.cancelling_votes_disabled_reason(exception.record.votable, exception.record.user)
+    elsif exception.record.votable.kind_of?(Initiative) && exception.record.mode == 'down'
+      reason = 'downvoting_not_supported'
+    elsif exception.record.votable.kind_of? Comment
+      reason = pcs.voting_disabled_reason_for_comment exception.record.votable, exception.record.user
+    else
+      raise "No voting disabled reasons can be determined for #{exception.record.votable.class} models"
+    end
     if reason
       render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
       return

@@ -28,5 +28,4 @@ resource "Activities" do
       expect(json_response[:data].size).to eq 4
     end
   end
-
 end

@@ -16,6 +16,14 @@ GIT
       omniauth (~> 1.1)
 
 GIT
+  remote: https://github.com/dvandersluis/fast_jsonapi.git
+  revision: a7b3fc132eb1c8f6d5d135168f520a5f372501a9
+  branch: heterogeneous-collection
+  specs:
+    fast_jsonapi (1.5)
+      activesupport (>= 4.2)
+
+GIT
   remote: https://github.com/gssbzn/ice_cube.git
   revision: 605394a6449c1b8f7f47baea7c362c3059bd1504
   ref: 605394a
@@ -176,6 +184,7 @@ GEM
     apartment-sidekiq (1.2.0)
       apartment (>= 1.0)
       sidekiq (>= 2.11)
+    api-pagination (4.8.2)
     arel (9.0.0)
     attr_required (1.0.1)
     awesome_nested_set (3.1.4)
@@ -325,7 +334,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2018.0812)
     mimemagic (0.3.3)
-    mini_magick (4.9.2)
+    mini_magick (4.9.5)
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
@@ -563,6 +572,7 @@ DEPENDENCIES
   admin_api!
   apartment (~> 2.2.0)
   apartment-sidekiq (~> 1.2.0)
+  api-pagination (~> 4.8.2)
   awesome_nested_set
   aws-sdk-s3 (~> 1)
   axlsx (= 3.0.0.pre)
@@ -578,6 +588,7 @@ DEPENDENCIES
   email_campaigns!
   factory_bot_rails
   faker
+  fast_jsonapi!
   fog-aws
   frontend!
   groupdate
@@ -588,7 +599,7 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   machine_translations!
   mailgun-ruby
-  mini_magick
+  mini_magick (~> 4.9)
   nlp!
   okcomputer
   omniauth

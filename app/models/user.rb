@@ -17,8 +17,10 @@ class User < ApplicationRecord
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
   has_many :default_assigned_projects, class_name: 'Project', foreign_key: :default_assignee_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
+  has_many :official_feedbacks, dependent: :nullify
   has_many :votes, dependent: :nullify
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
+  has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
   has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
   has_many :invites, foreign_key: :inviter_id, dependent: :destroy
   has_many :identities, dependent: :destroy
@@ -84,6 +86,7 @@ class User < ApplicationRecord
     joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id")
     .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
     .reverse_order
+    .group('users.id')
   }
 
   scope :admin, -> { 

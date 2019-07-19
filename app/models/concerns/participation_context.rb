@@ -15,6 +15,7 @@ module ParticipationContext
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :is_timeline_project? do
       validates :participation_method, presence: true, inclusion: {in: PARTICIPATION_METHODS}
+      validate :ideas_allowed_in_participation_method
 
       with_options if: :ideation? do |ideation|
         ideation.validates :posting_enabled, inclusion: {in: [true, false]}
@@ -89,6 +90,12 @@ module ParticipationContext
 
   def set_presentation_mode
     self.presentation_mode ||= 'card'
+  end
+
+  def ideas_allowed_in_participation_method
+    if !can_contain_ideas? && ideas.present?
+      errors.add(:base, :cannot_contain_ideas, ideas_count: ideas.size, message: 'cannot contain ideas with the current participation context')
+    end
   end
 
 end

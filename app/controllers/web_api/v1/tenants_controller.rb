@@ -3,7 +3,7 @@ class WebApi::V1::TenantsController < ApplicationController
   before_action :set_tenant, only: [:current, :update]
 
   def current
-    render json: @tenant
+    render json: WebApi::V1::TenantSerializer.new(@tenant, params: fastjson_params).serialized_json
   end
 
   def update
@@ -27,7 +27,10 @@ class WebApi::V1::TenantsController < ApplicationController
     SideFxTenantService.new.before_update @tenant, current_user
     if @tenant.save
       SideFxTenantService.new.after_update @tenant, current_user
-      render json: @tenant, status: :ok
+      render(
+        json: WebApi::V1::TenantSerializer.new(@tenant, params: fastjson_params).serialized_json, 
+        status: :ok
+        )
     else
       render json: {errors: @tenant.errors.details}, status: :unprocessable_entity
     end

@@ -20,7 +20,7 @@ class CommentVotePolicy < ApplicationPolicy
   end
 
   def create?
-    (user&.active? && (record.user_id == user.id) && can_create_comment?)
+    (user&.active? && (record.user_id == user.id) && !ParticipationContextService.new.voting_disabled_reason_for_comment(record.votable, user))
   end
 
   def show?
@@ -38,14 +38,5 @@ class CommentVotePolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
-  private
-
-  def can_create_comment?
-    "#{record.votable.post_type}CommentPolicy".constantize.new(
-      user, 
-      Comment.new(author: user, post: record.votable.post)
-      ).create?
-  end
-
+  
 end

@@ -35,7 +35,7 @@ namespace :checks do
     end
 
     if issues.present?
-      pp issues
+      pp issues.to_json
       fail 'Some data is invalid.'
     else
       puts 'Success!'
