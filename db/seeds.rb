@@ -361,9 +361,6 @@ if Apartment::Tenant.current == 'localhost'
         }
       });
     end
-
-    # admin_koen[:domicile] = (rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id)
-    # admin_koen[:custom_field_values] = ((rand(2) == 0) ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key})
   end
 
   TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
