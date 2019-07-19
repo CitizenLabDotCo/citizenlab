@@ -55,18 +55,19 @@ const ContentInner = styled.div`
 
 interface Props {
   className?: string;
-  post: IInitiativeData | IIdeaData;
+  postId: string;
+  postType: 'idea' | 'initiative';
 }
 
 const LazyComments = lazy(() => import('./Comments'));
 
-const IdeaFooter = memo<Props>(({ ideaId, className }) => {
+const IdeaFooter = memo<Props>(({ postId, postType, className }) => {
   return (
     <Container className={className}>
       <Content>
         <ContentInner>
           <Suspense fallback={<LoadingComments />}>
-            <LazyComments />
+            <LazyComments postId={postId} postType={postType} />
           </Suspense>
         </ContentInner>
       </Content>
