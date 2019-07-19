@@ -12,7 +12,7 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-import InitiativeBody from 'containers/InitiativesShow/InitiativeBody';
+import Body from 'components/PostComponents/Body';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -26,7 +26,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, media, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 const Container = styled.div`
   flex: 1;
@@ -127,24 +126,6 @@ const CommentIcon = styled(Icon)`
   margin-top: 2px;
 `;
 
-const Unauthenticated = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const RegisterLink = styled.span`
-  color: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.small}px;
-  font-weight: 500;
-  cursor: pointer;
-
-  &:hover {
-    color: ${(props) => darken(0.15, props.theme.colorMain)};
-  }
-`;
-
 interface InputProps {
   initiativeId?: string | null;
   className?: string;
@@ -157,23 +138,9 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  showFooter: 'unauthenticated' | 'votingDisabled' | null;
-}
+interface State {}
 
 class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showFooter: null,
-    };
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.initiative !== prevProps.initiative) {
-      this.setState({ showFooter: null });
-    }
-  }
 
   createInitiativeClickHandler = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -189,14 +156,6 @@ class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> 
     }
   }
 
-  handleUnauthenticatedVoteClick = () => {
-    this.setState({ showFooter: 'unauthenticated' });
-  }
-
-  handleDisabledVoteClick = () => {
-    this.setState({ showFooter: 'votingDisabled' });
-  }
-
   goToLogin = (event: FormEvent) => {
     event.preventDefault();
     clHistory.push('/sign-in');
@@ -208,7 +167,6 @@ class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> 
   }
 
   render() {
-    const { showFooter } = this.state;
     const { initiative, locale, className, localize } = this.props;
 
     if (!isNilOrError(initiative)) {
@@ -229,46 +187,19 @@ class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> 
           }
 
           <Description>
-            <InitiativeBody
-              initiativeId={initiative.id}
-              initiativeBody={initiativeBody}
+            <Body
+              id={initiative.id}
+              postType="initiative"
               locale={locale}
+              body={initiativeBody}
             />
           </Description>
 
           <VoteComments>
-            {!showFooter &&
-              <>
-                <VoteControl
-                  initiativeId={initiative.id}
-                  size="2"
-                  unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
-                  disabledVoteClick={this.handleDisabledVoteClick}
-                />
-                <CommentsCount>
-                  <CommentIcon name="comments" />
-                  {initiative.attributes.comments_count}
-                </CommentsCount>
-              </>
-            }
-
-            {showFooter === 'unauthenticated' &&
-              <Unauthenticated>
-                <Button onClick={this.goToLogin}>
-                  <FormattedMessage {...messages.login} />
-                </Button>
-                <RegisterLink onClick={this.goToRegister}>
-                  <FormattedMessage {...messages.register} />
-                </RegisterLink>
-              </Unauthenticated>
-            }
-
-            {showFooter === 'votingDisabled' &&
-              <VotingDisabled
-                votingDescriptor={initiative.relationships.action_descriptor.data.voting}
-                projectId={initiative.relationships.project.data.id}
-              />
-            }
+            <CommentsCount>
+              <CommentIcon name="comments" />
+              {initiative.attributes.comments_count}
+            </CommentsCount>
           </VoteComments>
 
           <ViewInitiativeButton
