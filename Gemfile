@@ -74,7 +74,7 @@ gem "activerecord_json_validator", "~> 1.2.0"
 
 gem "rest-client"
 gem "fog-aws"
-gem "mini_magick"
+gem "mini_magick", "~> 4.9"
 gem "carrierwave-base64", "~> 2.6"
 gem "awesome_nested_set" # , "~> 3.1.3"
 gem "pg_search", "~> 2.1.2"
