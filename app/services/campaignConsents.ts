@@ -12,8 +12,17 @@ export interface IConsentData {
   };
 }
 
+interface ILinks {
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
+}
+
 export interface IConsents {
   data: IConsentData[];
+  links: ILinks;
 }
 
 export interface IConsent {

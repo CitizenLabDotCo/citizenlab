@@ -129,7 +129,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const definedSize = size || 34;
       const definedOverlap = overlap || 10;
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
-      const avatarsWithImage = avatars.filter(avatar => !isError(avatar) && avatar.attributes.avatar[imageSize]) as IAvatarData[];
+      const avatarsWithImage = avatars.filter(avatar => (!isError(avatar) && avatar.attributes.avatar) && avatar.attributes.avatar[imageSize]) as IAvatarData[];
       const avatarCount = avatarsWithImage.length;
       const userCountBgColor = this.props.userCountBgColor || colors.clIconSecondary;
       const remainingUsers = userCount - avatarCount;

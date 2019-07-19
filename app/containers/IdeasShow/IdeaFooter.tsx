@@ -5,7 +5,7 @@ import LoadingComments from './Comments/LoadingComments';
 
 // styling
 import styled from 'styled-components';
-import { media, ideaPageContentMaxWidth } from 'utils/styleUtils';
+import { media, postPageContentMaxWidth } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const Container = styled.div`
@@ -22,7 +22,7 @@ const Container = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  max-width: ${ideaPageContentMaxWidth};
+  max-width: ${postPageContentMaxWidth};
   margin-left: auto;
   margin-right: auto;
   margin-top: 70px;

@@ -68,8 +68,8 @@ class EmailsDashboard extends React.PureComponent<Props & InjectedIntlProps & Wi
 const EmailsDashboardWithHOCs = withRouter(injectIntl(EmailsDashboard));
 
 const Data = adopt<Props, {}>({
-  canManageAutomatedCampaigns: <GetPermission item="automatedCampaigns" action="manage" />,
-  canManageManualCampaigns: <GetPermission item="manualCampaigns" action="manage" />,
+  canManageAutomatedCampaigns: <GetPermission item="automatedCampaign" action="manage" />,
+  canManageManualCampaigns: <GetPermission item="manualCampaign" action="manage" />,
   manualEmailingEnabled: <GetFeatureFlag name="manual_emailing" />,
   automatedEmailingEnabled: <GetFeatureFlag name="automated_emailing_control" />,
 });

@@ -267,7 +267,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
 
             {showFooter === 'votingDisabled' &&
               <VotingDisabled
-                votingDescriptor={idea.relationships.action_descriptor.data.voting}
+                votingDescriptor={idea.attributes.action_descriptor.voting}
                 projectId={idea.relationships.project.data.id}
               />
             }
