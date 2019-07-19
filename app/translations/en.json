@@ -191,6 +191,7 @@
   "app.components.InitiativeForm.topicsLabelSubtext": "You can select up to 2 topics",
   "app.components.InitiativesCard.imageAltText": "{orgName} - main image for the initiative {initiativeTitle}",
   "app.components.InitiativesMap.noInitiativesWithLocation": "The initiatives in this project don't have any location information.",
+  "app.components.InitiativesMap.seeInitiative": "See initiative",
   "app.components.InitiativesShowPage.goBack": "Go back",
   "app.components.InitiativesShowPage.goBackToList": "Go back to the list",
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "No initiative was found here.",
