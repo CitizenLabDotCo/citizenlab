@@ -10,16 +10,12 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // Components
-import Map from 'components/Map';
+import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import IdeaPreview from './IdeaPreview';
 import IdeaAddButton from './IdeaAddButton';
 
-// Services
-import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
-
 // Resources
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'resources/GetIdeaMarkers';
 
 // i18n
@@ -28,7 +24,7 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { media, viewportWidths } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
 // Typing
 import { IGeotaggedIdeaData } from 'services/ideas';
@@ -45,7 +41,6 @@ const StyledWarning = styled(Warning)`
 
 const StyledMap = styled(Map)`
   height: 600px;
-  margin-bottom: 2rem;
 
   ${media.smallerThanMaxTablet`
     height: 500px;
@@ -63,7 +58,6 @@ interface InputProps {
 }
 
 interface DataProps {
-  windowSize: GetWindowSizeChildProps;
   ideaMarkers: GetIdeaMarkersChildProps;
 }
 
@@ -71,6 +65,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   selectedIdeaId: string | null;
+  points: Point[];
 }
 
 export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
@@ -81,11 +76,24 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
     super(props);
     this.state = {
       selectedIdeaId: null,
+      points: []
     };
   }
 
+  componentDidMount() {
+    const points = this.getPoints(this.props.ideaMarkers);
+    this.setState({ points });
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.ideaMarkers !== this.props.ideaMarkers) {
+      const points = this.getPoints(this.props.ideaMarkers);
+      this.setState({ points });
+    }
+  }
+
   getPoints = (ideas: IGeotaggedIdeaData[] | null | undefined | Error) => {
-    const ideaPoints: any[] = [];
+    const ideaPoints: Point[] = [];
 
     if (!isNilOrError(ideas) && ideas.length > 0) {
       ideas.forEach((idea) => {
@@ -104,15 +112,9 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
   toggleIdea = (ideaId: string) => {
     trackEventByName(tracks.clickOnIdeaMapMarker, { extra: { ideaId } });
 
-    const smallerThanSmallTablet = this.props.windowSize ? this.props.windowSize <= viewportWidths.smallTablet : false;
-
-    if (smallerThanSmallTablet) {
-      this.deselectIdea();
-    } else {
-      this.setState(({ selectedIdeaId }) => {
-        return { selectedIdeaId: (ideaId !== selectedIdeaId ? ideaId : null) };
-      });
-    }
+    this.setState(({ selectedIdeaId }) => {
+      return { selectedIdeaId: (ideaId !== selectedIdeaId ? ideaId : null) };
+    });
   }
 
   deselectIdea = () => {
@@ -154,8 +156,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { phaseId, projectIds, ideaMarkers, className } = this.props;
-    const { selectedIdeaId } = this.state;
-    const points = this.getPoints(ideaMarkers);
+    const { selectedIdeaId, points } = this.state;
 
     return (
       <Container className={className}>
@@ -187,7 +188,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize debounce={50} />,
   ideaMarkers: ({ projectIds, phaseId, render }) => <GetIdeaMarkers projectIds={projectIds} phaseId={phaseId}>{render}</GetIdeaMarkers>
 });
 
