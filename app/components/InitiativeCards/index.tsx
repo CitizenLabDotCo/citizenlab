@@ -19,7 +19,7 @@ import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
 
 // resources
-import GetInitiatives, { Sort, GetInitiativesChildProps, InputProps as GetInitiativesInputProps, IQueryParameters } from 'resources/GetInitiatives';
+import GetInitiatives, { Sort, GetInitiativesChildProps, IQueryParameters } from 'resources/GetInitiatives';
 import GetInitiativesFilterCounts, { GetInitiativesFilterCountsChildProps } from 'resources/GetInitiativesFilterCounts';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
@@ -360,9 +360,7 @@ const Footer = styled.div`
 
 const ShowMoreButton = styled(Button)``;
 
-interface InputProps extends GetInitiativesInputProps  {
-  showViewToggle?: boolean | undefined;
-  defaultView?: 'list' | 'map' | null | undefined;
+interface InputProps  {
   className?: string;
 }
 
@@ -384,14 +382,11 @@ interface State {
 }
 
 class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
-  static defaultProps = {
-    showViewToggle: false
-  };
 
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      selectedView: (props.defaultView || 'list'),
+      selectedView: 'list',
       filtersModalOpened: false,
       selectedInitiativeFilters: get(props.initiatives, 'queryParameters', {}),
       previouslySelectedInitiativeFilters: null
@@ -533,7 +528,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { selectedView, selectedInitiativeFilters, filtersModalOpened } = this.state;
-    const { initiatives, initiativesFilterCounts, windowSize, className, theme, showViewToggle } = this.props;
+    const { initiatives, initiativesFilterCounts, windowSize, className, theme } = this.props;
     const { list, hasMore, querying, loadingMore } = initiatives;
     const hasInitiatives = (!isNilOrError(list) && list.length > 0);
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
@@ -626,24 +621,22 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
-                {showViewToggle &&
-                  <FeatureFlag name="maps">
-                    <ViewButtons>
-                      <CardsButton
-                        onClick={this.selectListView}
-                        className={selectedView === 'list' ? 'active' : ''}
-                      >
-                        <FormattedMessage {...messages.cards} />
-                      </CardsButton>
-                      <MapButton
-                        onClick={this.selectMapView}
-                        className={selectedView === 'map' ? 'active' : ''}
-                      >
-                        <FormattedMessage {...messages.map} />
-                      </MapButton>
-                    </ViewButtons>
-                  </FeatureFlag>
-                }
+                <FeatureFlag name="maps">
+                  <ViewButtons>
+                    <CardsButton
+                      onClick={this.selectListView}
+                      className={selectedView === 'list' ? 'active' : ''}
+                    >
+                      <FormattedMessage {...messages.cards} />
+                    </CardsButton>
+                    <MapButton
+                      onClick={this.selectMapView}
+                      className={selectedView === 'map' ? 'active' : ''}
+                    >
+                      <FormattedMessage {...messages.map} />
+                    </MapButton>
+                  </ViewButtons>
+                </FeatureFlag>
 
                 {!isNilOrError(initiativesFilterCounts) &&
                   <InitiativesCount>
@@ -738,7 +731,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize debounce={50} />,
-  initiatives: ({ render, children, ...getInitiativesInputProps }) => <GetInitiatives {...getInitiativesInputProps} pageSize={12} sort="random">{render}</GetInitiatives>,
+  initiatives: <GetInitiatives type="load-more" publicationStatus="published" />,
   initiativesFilterCounts: ({ initiatives, render }) => <GetInitiativesFilterCounts queryParameters={get(initiatives, 'queryParameters', null)}>{render}</GetInitiativesFilterCounts>
 });
 
