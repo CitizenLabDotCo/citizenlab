@@ -2,7 +2,7 @@ class SpamReport < ApplicationRecord
   REASON_CODES = %w(wrong_content inappropriate other)
 
   belongs_to :spam_reportable, polymorphic: true
-  belongs_to :user
+  belongs_to :user, optional: true
   has_many :notifications, foreign_key: :spam_report_id, dependent: :nullify
 
   validates :spam_reportable, presence: true
@@ -15,6 +15,8 @@ class SpamReport < ApplicationRecord
 
   after_validation :set_reported_at
 
+
+  private
 
   def set_reported_at
     self.reported_at ||= Time.now
