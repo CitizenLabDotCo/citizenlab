@@ -21,11 +21,11 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors, media, ideaPageContentMaxWidth } from 'utils/styleUtils';
+import { fontSizes, colors, media, postPageContentMaxWidth } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  width: calc(${ideaPageContentMaxWidth} - 400px);
+  width: calc(${postPageContentMaxWidth} - 400px);
   display: flex;
   align-items: center;
 
