@@ -35,11 +35,43 @@ namespace :checks do
     end
 
     if issues.present?
-      pp issues.to_json
+      puts JSON.pretty_generate issues
       fail 'Some data is invalid.'
     else
       puts 'Success!'
     end
+  end
+
+  task :analyze_invalid_data => :environment do
+    summary = {}
+    issues = JSON.parse open('issues.txt').read
+    issues.each do |host, host_issues|
+      host_issues.each do |classname, classissues|
+        classissues.each do |id, attributeerrors|
+          attributeerrors.each do |attribute, errors|
+            errors.each do |error|
+              msg = error['error']
+              error_type = "#{classname}_#{attribute}_#{msg}"
+              summary[error_type] ||= {count: 0, hosts: {}}
+              summary[error_type][:count] += 1
+              summary[error_type][:hosts] ||= {}
+              summary[error_type][:hosts][host] ||= []
+              summary[error_type][:hosts][host] += [id]
+            end
+          end
+        end
+      end
+    end
+    summary.to_a.sort_by do |error_type, counts|
+      counts[:count]
+    end.reverse.each do |error_type, counts|
+      puts "#{error_type} (#{counts[:count]})"
+      counts[:hosts].each do |host, ids|
+        puts "  #{host} (#{ids.size}): #{ids.take 5}"
+      end
+      puts ''
+    end
+    nil
   end
 
   def cl2_tenant_models
