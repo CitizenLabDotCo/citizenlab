@@ -51,7 +51,7 @@ class User < ApplicationRecord
   validates :invite_status, inclusion: {in: INVITE_STATUSES}, allow_nil: true
 
   validates :custom_field_values, json: {
-    schema: lambda { CustomFieldService.new.fields_to_json_schema(CustomField.fields_for(User)) },
+    schema: lambda { CustomFieldService.new.fields_to_json_schema(CustomField.fields_for('User')) },
     message: ->(errors) { errors }
   }, if: [:custom_field_values_changed?, :active?]
 
