@@ -37,6 +37,10 @@ case SEED_SIZE
 end
 
 
+def rand_instance scope
+  scope.offset(rand(scope.size)).first
+end
+
 def create_comment_tree(idea, parent, depth=0)
   amount = rand(5/(depth+1))
   amount.times do |i|
@@ -45,7 +49,7 @@ def create_comment_tree(idea, parent, depth=0)
         "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
         "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
       },
-      author: User.normal_user.offset(rand(User.normal_user.count)).first,
+      author: rand_instance(User.normal_user),
       idea: idea,
       parent: parent,
       created_at: Faker::Date.between((parent ? parent.created_at : idea.published_at), Time.now)
@@ -469,7 +473,6 @@ if Apartment::Tenant.current == 'localhost'
           if phase.budgeting?
             phase.update!({
               max_budget: (rand(1000000) + 100).round(-2)
-              # currency: [Faker::Currency.name, Faker::Currency.code, Faker::Currency.symbol, 'cheeseburgers'].shuffle.first
             })
           end
         end
@@ -497,7 +500,7 @@ if Apartment::Tenant.current == 'localhost'
        end
 
       if rand(5) == 0 
-        project.default_assignee = User.admin.or(User.project_moderator(project.id)).shuffle.first
+        project.default_assignee = rand_instance User.admin.or(User.project_moderator(project.id))
         project.save!
       end
     end
@@ -508,20 +511,20 @@ if Apartment::Tenant.current == 'localhost'
 
     num_ideas.times do 
       created_at = Faker::Date.between(Tenant.current.created_at, Time.now)
-      project = Project.offset(rand(Project.count)).first
+      project = rand_instance Project.all
       phases = []
       if project && project.timeline?
-        phases = project.phases.sample(rand(project.phases.count)).select do |phase| 
+        phases = project.phases.sample(rand(project.phases.size)).select do |phase| 
           phase.can_contain_ideas?
         end
       end
       idea = Idea.create!({
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
-        idea_status: IdeaStatus.offset(rand(IdeaStatus.count)).first,
+        idea_status: rand_instance(IdeaStatus.all),
         topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
-        author: User.offset(rand(User.count)).first,
+        author: rand_instance(User.all),
         project: project,
         phases: phases,
         publication_status: 'published',
@@ -530,7 +533,7 @@ if Apartment::Tenant.current == 'localhost'
         location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
         budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1),
-        assignee: rand(5) == 0 ? User.admin.or(User.project_moderator(project.id)).shuffle.first : nil
+        assignee: rand(5) == 0 ? rand_instance(User.admin.or(User.project_moderator(project.id))) : nil
       })
 
       [0,0,1,1,2][rand(5)].times do |i|
@@ -555,7 +558,7 @@ if Apartment::Tenant.current == 'localhost'
         official_feedback = idea.official_feedbacks.create!(
           body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join}, 
           author_multiloc: create_for_some_locales{Faker::FunnyName.name},
-          user: User.admin.shuffle.first
+          user: rand_instance(User.admin)
           )
       end
 
@@ -577,7 +580,7 @@ if Apartment::Tenant.current == 'localhost'
       Page.create!({
         title_multiloc:create_for_some_locales{Faker::Lorem.sentence},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
-        project: rand(2) == 0 ? Project.offset(rand(Project.count)).first : nil,
+        project: rand(2) == 0 ? rand_instance(Project.all) : nil,
       })
     end
 
