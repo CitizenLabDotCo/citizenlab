@@ -20,7 +20,7 @@ const Container = styled.div``;
 
 const InputWrapper = styled.div`
   &:not(.last) {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 `;
 

@@ -22,7 +22,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 const TopicsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const TopicSwitch = styled.button`

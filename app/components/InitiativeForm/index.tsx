@@ -167,6 +167,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
     const status = Object.values(errors).every(val => val === undefined) ? 'enabled' : 'disabled';
 
+    console.log(touched, errors);
+
     return (
       <form>
         <FormSection>
@@ -277,6 +279,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 onChange={this.changeAndSaveImage}
               />
+              {touched.image
+                && errors.image
+                && <Error message={errors.image.message} />}
             </FormLabel>
           </SectionField>
           <SectionField>
