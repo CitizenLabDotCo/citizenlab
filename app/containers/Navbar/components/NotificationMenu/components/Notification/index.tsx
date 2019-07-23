@@ -6,6 +6,8 @@ import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification'
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
 import StatusChangeOfYourIdeaNotification from '../StatusChangeOfYourIdeaNotification';
+import StatusChangeOnCommentedIdeaNotification from '../StatusChangeOnCommentedIdeaNotification';
+import StatusChangeOnVotedIdeaNotification from '../StatusChangeOnVotedIdeaNotification';
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
 import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
@@ -28,6 +30,8 @@ import {
   IMentionInCommentNotificationData,
   IInviteAcceptedNotificationData,
   IStatusChangeOfYourIdeaNotificationData,
+  IStatusChangeOnCommentedIdeaNotificationData,
+  IStatusChangeOnVotedIdeaNotificationData,
   ICommentDeletedByAdminNotificationData,
   IProjectModerationRightsReceivedNotificationData,
   IAdminRightsReceivedNotificationData,
@@ -70,6 +74,10 @@ export default class Notification extends PureComponent<Props> {
         return <InviteAcceptedNotification notification={notification as IInviteAcceptedNotificationData} />;
       case 'status_change_of_your_idea':
         return <StatusChangeOfYourIdeaNotification notification={notification as IStatusChangeOfYourIdeaNotificationData} />;
+      case 'status_change_on_commented_idea':
+        return <StatusChangeOnCommentedIdeaNotification notification={notification as IStatusChangeOnCommentedIdeaNotificationData} />;
+      case 'status_change_on_voted_idea':
+        return <StatusChangeOnVotedIdeaNotification notification={notification as IStatusChangeOnVotedIdeaNotificationData} />;
       case 'comment_deleted_by_admin':
         return <CommentDeletedByAdminNotification notification={notification as ICommentDeletedByAdminNotificationData} />;
       case 'project_moderation_rights_received':

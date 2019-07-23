@@ -34,7 +34,7 @@ export interface IPhaseData {
     project: {
       data: IRelationship;
     }
-    user_basket: {
+    user_basket?: {
       data: IRelationship | null;
     }
   };

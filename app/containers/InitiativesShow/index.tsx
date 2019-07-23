@@ -5,7 +5,7 @@ import { adopt } from 'react-adopt';
 
 // analytics
 import { trackEvent } from 'utils/analytics';
-// import tracks from './tracks';
+import tracks from './tracks';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
@@ -26,11 +26,11 @@ import ContentFooter from 'components/PostComponents/ContentFooter';
 import PostedBy from './PostedBy';
 import Image from 'components/PostComponents/Image';
 // import IdeaAuthor from './IdeaAuthor';
-// import IdeaFooter from './IdeaFooter';
+import Footer from 'components/PostComponents/Footer';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 // import ActionBar from './ActionBar';
-// import TranslateButton from './TranslateButton';
+// import TranslateButton from 'components/UI/TranslateButton';
 
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
@@ -54,7 +54,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, ideaPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { media, colors, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -99,7 +99,7 @@ const Container = styled.div`
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: ${ideaPageContentMaxWidth};
+  max-width: ${postPageContentMaxWidth};
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -318,9 +318,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     this.setState(prevState => {
       // analytics
       if (prevState.translateButtonClicked === true) {
-        trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
+        trackEvent(tracks.clickGoBackToOriginalInitiativeCopyButton);
       } else if (prevState.translateButtonClicked === false) {
-        trackEvent(tracks.clickTranslateIdeaButton);
+        trackEvent(tracks.clickTranslateInitiativeButton);
       }
 
       return ({
@@ -488,7 +488,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             </Content>
           </IdeaContainer>
 
-          {loaded && <IdeaFooter ideaId={ideaId} />}
+          {loaded && <Footer postId={initiativeId} postType="initiative" />}
         </>
       );
     }
