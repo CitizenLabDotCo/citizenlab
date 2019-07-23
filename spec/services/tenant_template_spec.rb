@@ -129,8 +129,12 @@ describe TenantTemplateService do
   describe "tenant_to_template", slow_test: true do
     it "Successfully generates a tenant template from a given tenant" do
       load Rails.root.join("db","seeds.rb")
+      localhost = Tenant.find_by(host: 'localhost')
+      settings = localhost.settings
+      settings['core']['locales'] = Tenant.current.settings.dig('core', 'locales')
+      localhost.update! settings: settings
       Apartment::Tenant.switch('localhost') do
-        load Rails.root.join("db","seeds.rb")  # service.resolve_and_apply_template(YAML.load(open('spec/fixtures/template_without_images.yml').read))
+        load Rails.root.join("db","seeds.rb")
       end
       TenantService.new.clear_images_and_files!(Tenant.find_by(host: 'localhost'))
       template = service.tenant_to_template Tenant.find_by(host: 'localhost')
@@ -142,9 +146,7 @@ describe TenantTemplateService do
         expect(Comment.count).to be > 0
         expect(CustomFieldOption.count).to be > 0
         expect(Event.count).to be > 0
-        expect(GroupsProject.count).to be > 0
         expect(IdeaStatus.count).to be > 0
-        expect(Notification.count).to be > 0
         expect(User.admin.count).to be > 0
         expect(Vote.count).to be > 0
       end

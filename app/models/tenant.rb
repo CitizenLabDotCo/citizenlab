@@ -20,7 +20,7 @@ class Tenant < ApplicationRecord
 
   validate(on: :update) do |record|
     missing_locales = Apartment::Tenant.switch(schema_name) do 
-      User.where.not(locale: settings.dig('core', 'locales')).pluck(&:locale)
+      User.where.not(locale: settings.dig('core', 'locales')).pluck(:locale)
     end
     if missing_locales.present?
       record.errors.add(:settings, "is missing locales that are still in use by some users: #{missing_locales.uniq}")
