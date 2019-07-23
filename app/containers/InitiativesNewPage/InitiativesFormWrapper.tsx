@@ -79,7 +79,7 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     addInitiative({ publication_status: 'draft' }).then(initiative => {
       this.setState({ initiativeId: initiative.data.id });
     });
@@ -137,7 +137,6 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
   handleSave = async () => {
     const changedValues = this.changedValues();
     const { initiativeId, hasBannerChanged, hasImageChanged, image, banner, saving, publishing } = this.state;
-
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
 
@@ -149,7 +148,6 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
 
     try {
       const formAPIValues = await this.getValuesToSend(changedValues, hasBannerChanged, banner);
-
       // save any changes to the initiative data.
       if (!isEmpty(formAPIValues)) {
         let initiative;
@@ -301,7 +299,7 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
   }
 
   render() {
-    const { initiativeId, hasBannerChanged, ...otherProps } = this.state;
+    const { initiativeId, hasBannerChanged, hasImageChanged, ...otherProps } = this.state;
     const { locale } = this.props;
 
     return (
