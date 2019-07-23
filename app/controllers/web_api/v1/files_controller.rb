@@ -21,6 +21,27 @@ class WebApi::V1::FilesController < ApplicationController
       policy_scope_class: ProjectFilePolicy::Scope,
       file_relationship: :project_files,
       container_id: :project_id
+    },
+    'Event' => {
+      container_class: Event,
+      file_class: EventFile,
+      policy_scope_class: EventFilePolicy::Scope,
+      file_relationship: :event_files,
+      container_id: :event_id
+    },
+    'Phase' => {
+      container_class: Phase,
+      file_class: PhaseFile,
+      policy_scope_class: PhaseFilePolicy::Scope,
+      file_relationship: :phase_files,
+      container_id: :phase_id
+    },
+    'Page' => {
+      container_class: Page,
+      file_class: PageFile,
+      policy_scope_class: PageFilePolicy::Scope,
+      file_relationship: :page_files,
+      container_id: :page_id
     }
   }
 
