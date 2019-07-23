@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash-es';
-import styled from 'styled-components';
+import { stripHtmlTags } from 'utils/helperUtils';
 
 // Components
 import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter } from 'components/UI/FormComponents';
@@ -61,10 +61,6 @@ interface State {
   };
 }
 
-const StyledTopicsPicker = styled(TopicsPicker)`
-  margin-bottom: 20px;
-`;
-
 class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
@@ -99,7 +95,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     body_multiloc: () => {
       const { body_multiloc } = this.props;
       const body = body_multiloc ? body_multiloc[this.props.locale] : undefined;
-      if (body && body.length < InitiativeForm.bodyMinLength && body.length > 0) {
+      if (body && stripHtmlTags(body).length < InitiativeForm.bodyMinLength && body.length > 0) {
         return { message: messages.descriptionLengthError };
       } else if (!body || body === '') {
         return { message: messages.descriptionEmptyError };
@@ -188,10 +184,10 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onBlur={this.onBlur('title_multiloc')}
                 shownLocale={locale}
               />
+              {touched.title_multiloc
+                && errors.title_multiloc
+                && <Error message={errors.title_multiloc.message} />}
             </FormLabel>
-            {touched.title_multiloc
-            && errors.title_multiloc
-            && <Error message={errors.title_multiloc.message} />}
           </SectionField>
 
           <SectionField>
@@ -208,10 +204,10 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 noAlign
                 onBlur={this.onBlur('body_multiloc')}
               />
+              {touched.body_multiloc
+                && errors.body_multiloc
+                && <Error message={errors.body_multiloc.message} />}
             </FormLabel>
-            {touched.body_multiloc
-            && errors.body_multiloc
-            && <Error message={errors.body_multiloc.message} />}
           </SectionField>
         </FormSection>
 
@@ -224,15 +220,15 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               subtextMessage={messages.topicsLabelSubtext}
               htmlFor="field-topic-multiple-picker"
             />
-            <StyledTopicsPicker
+            <TopicsPicker
               id="field-topic-multiple-picker"
               max={2}
               value={topic_ids}
               onChange={this.changeAndSaveTopics}
             />
             {touched.topic_ids
-            && errors.topic_ids
-            && <Error message={errors.topic_ids.message} />}
+              && errors.topic_ids
+              && <Error message={errors.topic_ids.message} />}
           </SectionField>
           <SectionField>
             <FormLabel
@@ -289,11 +285,11 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               subtextMessage={messages.fileUploadLabelSubtext}
               optional
             />
-              <FileUploader
-                onFileAdd={onAddFile}
-                onFileRemove={onRemoveFile}
-                files={files}
-              />
+            <FileUploader
+              onFileAdd={onAddFile}
+              onFileRemove={onRemoveFile}
+              files={files}
+            />
           </SectionField>
         </FormSection>
         <FormSubmitFooter
