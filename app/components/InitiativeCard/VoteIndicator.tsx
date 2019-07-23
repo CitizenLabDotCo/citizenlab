@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetInitiativeStatus, { GetInitiativeStatusChildProps } from 'resources/GetInitiativeStatus';
-import { InitiativeStatusCode } from 'services/initiativeStatuses';
 
 import Icon from 'components/UI/Icon';
 
@@ -14,8 +13,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 const Container = styled.div``;
 
@@ -29,17 +26,17 @@ const StatusBadge = styled.div<{color: string}>`
   background-color: ${(props) => props.color};
   display: flex;
   align-items: center;
+  `;
+
+const BadgeLabel = styled.div`
+
 `;
 
-const BadgeIcon = styled(Icon)`
+const AnsweredBadgeIcon = styled(Icon)`
   width: 1.6em;
   height: 1.6em;
   fill: ${colors.clGreenSuccess};
   padding-right: 7px;
-`;
-
-const BadgeLabel = styled.div`
-
 `;
 
 const AnsweredStatusBadge = styled(StatusBadge)`
@@ -47,7 +44,16 @@ const AnsweredStatusBadge = styled(StatusBadge)`
   color: ${colors.clGreenSuccess};
 `;
 
+const IneligibleBadgeIcon = styled(Icon)`
+  width: 1.6em;
+  height: 1.6em;
+  fill: ${colors.clGreyOnGreyBackground};
+  padding-right: 7px;
+`;
+
 const IneligibleStatusBadge = styled(StatusBadge)`
+  background-color: ${colors.lightGreyishBlue};
+  color: ${colors.clGreyOnGreyBackground};
 `;
 
 interface InputProps {
@@ -87,14 +93,21 @@ class VoteIndicator extends PureComponent<Props, State> {
           <AnsweredStatusBadge
             color={initiativeStatus.attributes.color}
           >
-            <BadgeIcon name="round-checkmark" />
+            <AnsweredBadgeIcon name="round-checkmark" />
             <BadgeLabel>
               <T value={initiativeStatus.attributes.title_multiloc} />
             </BadgeLabel>
           </AnsweredStatusBadge>
         }
         {statusCode === 'ineligible' &&
-          <T value={initiativeStatus.attributes.title_multiloc} />
+          <IneligibleStatusBadge
+            color={initiativeStatus.attributes.color}
+          >
+            <IneligibleBadgeIcon name="halt" />
+            <BadgeLabel>
+              <T value={initiativeStatus.attributes.title_multiloc} />
+            </BadgeLabel>
+          </IneligibleStatusBadge>
         }
         {statusCode === 'custom' &&
           <T value={initiativeStatus.attributes.title_multiloc} />
