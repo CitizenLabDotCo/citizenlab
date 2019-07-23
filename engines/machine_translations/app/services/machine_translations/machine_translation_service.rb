@@ -6,8 +6,7 @@ module MachineTranslations
       locale_from = multiloc_to_locale_from multiloc
       text_or_html = multiloc[locale_from]
       MachineTranslation.new(
-        translatable_type: translatable_type, 
-        translatable_id: translatable_id, 
+        translatable: translatable,
         attribute_name: attribute_name, 
         locale_to: locale_to, 
         translation: translate(text_or_html, locale_from, locale_to)

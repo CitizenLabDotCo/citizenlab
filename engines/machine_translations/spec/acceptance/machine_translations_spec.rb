@@ -94,7 +94,7 @@ resource "MachineTranslations" do
       example "[error] Create a translation for an unknown resource" do
         translation.translatable.destroy!
         do_request
-        expect(status).to eq 401  # 404
+        expect(status).to eq 404
       end
     end
 
