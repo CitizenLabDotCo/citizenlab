@@ -38,8 +38,8 @@ Rails.application.routes.draw do
         defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
         
         resources :official_feedback, shallow: true
-        resources :images, defaults: {container_class_name: Idea.name, image_class_name: IdeaImage.name}
-        resources :files, defaults: {container_class_name: Idea.name, file_class_name: IdeaFile.name}
+        resources :images, defaults: {container_type: 'Idea'}
+        resources :files, defaults: {container_type: 'Idea'}
         resources :activities, only: [:index]
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
@@ -51,8 +51,8 @@ Rails.application.routes.draw do
         concerns: [:votable, :spam_reportable, :post], 
         defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
 
-        resources :images, defaults: {container_class_name: Initiative.name, image_class_name: InitiativeImage.name}
-        resources :files, defaults: {container_class_name: Initiative.name, file_class_name: InitiativeFile.name}
+        resources :images, defaults: {container_type: 'Initiative'}
+        resources :files, defaults: {container_type: 'Initiative'}
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
         get :as_markers, on: :collection, action: 'index_initiative_markers'
@@ -121,8 +121,8 @@ Rails.application.routes.draw do
       resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do
         resources :events, only: [:index, :new, :create]
         resources :phases, only: [:index, :new, :create]
-        resources :images, defaults: {container_class_name: Project.name, image_class_name: ProjectImage.name}
-        resources :files, defaults: {container_class_name: Project.name, file_class_name: ProjectFile.name}
+        resources :images, defaults: {container_type: 'Project'}
+        resources :files, defaults: {container_type: 'Project'}
         resources :groups_projects, shallow: true, except: [:update]
         resources :moderators, except: [:update] do
           get :users_search, on: :collection
