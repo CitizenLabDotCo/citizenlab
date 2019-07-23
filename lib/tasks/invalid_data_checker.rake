@@ -42,9 +42,9 @@ namespace :checks do
     end
   end
 
-  task :analyze_invalid_data => :environment do
+  task :analyze_invalid_data, [:logs] => [:environment] do
     summary = {}
-    issues = JSON.parse open('issues.txt').read
+    issues = JSON.parse open(args[:logs]).read
     issues.each do |host, host_issues|
       host_issues.each do |classname, classissues|
         classissues.each do |id, attributeerrors|
