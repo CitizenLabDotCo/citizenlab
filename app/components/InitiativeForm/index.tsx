@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { get } from 'lodash-es';
+import styled from 'styled-components';
 
 // Components
-import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter, FormError } from 'components/UI/FormComponents';
+import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import InputMultiloc from 'components/UI/InputMultiloc';
@@ -11,6 +12,7 @@ import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import LocationInput from 'components/UI/LocationInput';
 import ImageDropzone from 'components/UI/ImageDropzone';
 import FileUploader from 'components/UI/FileUploader';
+import Error from 'components/UI/Error';
 
 // intl
 import messages from './messages';
@@ -58,6 +60,10 @@ interface State {
     [key in keyof FormValues]?: IMessageInfo | undefined;
   };
 }
+
+const StyledTopicsPicker = styled(TopicsPicker)`
+  margin-bottom: 20px;
+`;
 
 class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
   constructor(props) {
@@ -185,7 +191,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             </FormLabel>
             {touched.title_multiloc
             && errors.title_multiloc
-            && <FormError message={errors.title_multiloc.message} />}
+            && <Error message={errors.title_multiloc.message} />}
           </SectionField>
 
           <SectionField>
@@ -205,7 +211,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             </FormLabel>
             {touched.body_multiloc
             && errors.body_multiloc
-            && <FormError message={errors.body_multiloc.message} />}
+            && <Error message={errors.body_multiloc.message} />}
           </SectionField>
         </FormSection>
 
@@ -218,7 +224,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               subtextMessage={messages.topicsLabelSubtext}
               htmlFor="field-topic-multiple-picker"
             />
-            <TopicsPicker
+            <StyledTopicsPicker
               id="field-topic-multiple-picker"
               max={2}
               value={topic_ids}
@@ -226,7 +232,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             />
             {touched.topic_ids
             && errors.topic_ids
-            && <FormError message={errors.topic_ids.message} />}
+            && <Error message={errors.topic_ids.message} />}
           </SectionField>
           <SectionField>
             <FormLabel
@@ -235,6 +241,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               optional
             >
               <LocationInput
+                inCitizen
                 value={position || ''}
                 onChange={onChangePosition}
                 onBlur={this.onBlur('position')}

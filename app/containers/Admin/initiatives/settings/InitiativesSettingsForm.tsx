@@ -119,6 +119,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
               noImages
               noVideos
               noAlign
+              inAdmin
               limitedTextFormatting
             />
           </SectionField>
@@ -133,7 +134,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
               noImages
               noVideos
               noAlign
-              limitedTextFormatting
+              inAdmin
               component={FormikQuillMultiloc}
             />
           </SectionField>

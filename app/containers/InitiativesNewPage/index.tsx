@@ -36,14 +36,7 @@ const Container = styled.div`
 
 const TopLine = styled.div`
   width: 100%;
-  position: fixed; /* IE11 fallback */
-  position: sticky;
-  top: ${({ theme }) => theme.menuHeight}px;
   padding: 30px 40px 0;
-  ${media.smallerThanMaxTablet`
-    position: relative;
-    top: 0;
-  `}
 `;
 
 const Header = styled.div`
@@ -81,7 +74,7 @@ const HeaderTitle: any = styled.h1`
 `;
 
 const ColoredText = styled.span`
-  color: ${({ theme }) => lighten(.3, theme.colorMain)};
+  color: ${({ theme }) => theme.colorSecondary};
 `;
 
 const TwoColumns = styled.div`
@@ -147,7 +140,7 @@ export class InitiativesNewPage extends React.PureComponent<Props> {
     return (
       <Container className="e2e-initiatives-form-page">
         <TopLine>
-          <GoBackButton onClick={this.goBack} />
+          <GoBackButton onClick={this.goBack} inCitizen/>
         </TopLine>
         <Header>
           <HeaderTitle>
