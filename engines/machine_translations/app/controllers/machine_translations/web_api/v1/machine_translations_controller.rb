@@ -63,10 +63,10 @@ module MachineTranslations
         private
 
         def set_translation_attributes
+          translatable_id = params[secure_constantize(:translatable_id)]
           @translation_attributes = {
-            translatable: secure_constantize(:translatable_class).find(secure_constantize(:translatable_id)),
-            **params.require(:machine_translation).permit(:attribute_name, :locale_to)
-          }
+            translatable: secure_constantize(:translatable_class).find(translatable_id)
+          }.merge params.require(:machine_translation).permit(:attribute_name, :locale_to).to_h
         end
 
         def secure_controller?
