@@ -3,6 +3,21 @@ module MachineTranslations
     module V1
       class MachineTranslationsController < ApplicationController
 
+        CONSTANTIZER = {
+          'Idea' => {
+            translatable_class: Idea,
+            translatable_id: :idea_id
+          },
+          'Initiative' => {
+            translatable_class: Initiative,
+            translatable_id: :initiative_id
+          },
+          'Comment' => {
+            translatable_class: Comment,
+            translatable_id: :comment_id
+          }
+        }
+
         def show
           set_translation_attributes
           @translation = MachineTranslation.find_by @translation_attributes
@@ -48,25 +63,18 @@ module MachineTranslations
         private
 
         def set_translation_attributes
-          translatable_type = params[:translatable]
-          translatable_id = params[:"#{translatable_type.underscore}_id"]
-          raise RuntimeError, "must not be blank" if translatable_type.blank? or translatable_id.blank?
-
-          translation_params = params.require(:machine_translation).permit(
-            :attribute_name,
-            :locale_to,
-          )
-
+          translatable_id = params[secure_constantize(:translatable_id)]
           @translation_attributes = {
-            translatable_type: translatable_type,
-            translatable_id: translatable_id,
-            attribute_name: translation_params[:attribute_name],
-            locale_to: translation_params[:locale_to]
-          }
+            translatable: secure_constantize(:translatable_class).find(translatable_id)
+          }.merge params.require(:machine_translation).permit(:attribute_name, :locale_to).to_h.symbolize_keys
         end
 
         def secure_controller?
           false
+        end
+
+        def secure_constantize key
+          CONSTANTIZER.fetch(params[:translatable_type])[key]
         end
 
       end
