@@ -14,6 +14,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 import T from 'components/T';
+import { get } from 'lodash-es';
 
 const Container = styled.div``;
 
@@ -60,6 +61,32 @@ const StyledProgressBar = styled(ProgressBar)`
   width: 120px;
 `;
 
+const VoteCounter = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 4px;
+`;
+
+const VoteText = styled.div`
+  color: ${colors.mediumGrey};
+  font-size: ${fontSizes.small}px;
+  b {
+    font-weight: 600;
+    color: ${({ theme }) => theme.colorText};
+  }
+
+  span.division-bar {
+    padding: 0 4px;
+  }
+`;
+
+const VoteIcon = styled(Icon)`
+  fill: ${colors.label};
+  width: 14px;
+  height: 12px;
+  margin: 0 5px 4px 0;
+`;
+
 interface InputProps {
   initiativeId: string;
   theme: any;
@@ -77,17 +104,27 @@ interface State {}
 class VoteIndicator extends PureComponent<Props, State> {
 
   render() {
-    const { initiative, initiativeStatus, theme } = this.props;
+    const { initiative, initiativeStatus, theme, tenant } = this.props;
     if (isNilOrError(initiative) || isNilOrError(initiativeStatus)) return null;
 
     const statusCode = initiativeStatus.attributes.code;
+    const voteCount: number = initiative.attributes.upvotes_count;
+    const voteLimit: number = get(tenant, 'attributes.settings.initiatives.voting_threshold', 1);
 
     return (
       <Container>
         {statusCode === 'published' &&
           <div>
+            <VoteCounter>
+              <VoteIcon name="upvote" />
+              <VoteText>
+                <b>{voteCount}</b>
+                <span className="division-bar">/</span>
+                {voteLimit}
+              </VoteText>
+            </VoteCounter>
             <StyledProgressBar
-              progress={0.56}
+              progress={voteCount / voteLimit}
               color={theme.colorMain}
               bgColor={colors.lightGreyishBlue}
               bgShaded={false}
