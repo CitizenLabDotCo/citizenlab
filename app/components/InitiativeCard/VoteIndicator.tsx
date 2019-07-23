@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetInitiativeStatus, { GetInitiativeStatusChildProps } from 'resources/GetInitiativeStatus';
 
 import Icon from 'components/UI/Icon';
+import ProgressBar from './ProgressBar';
 
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -28,9 +29,7 @@ const StatusBadge = styled.div<{color: string}>`
   align-items: center;
   `;
 
-const BadgeLabel = styled.div`
-
-`;
+const BadgeLabel = styled.div``;
 
 const AnsweredBadgeIcon = styled(Icon)`
   width: 1.6em;
@@ -56,9 +55,14 @@ const IneligibleStatusBadge = styled(StatusBadge)`
   color: ${colors.clGreyOnGreyBackground};
 `;
 
+const StyledProgressBar = styled(ProgressBar)`
+  height: 9px;
+  width: 120px;
+`;
+
 interface InputProps {
   initiativeId: string;
-
+  theme: any;
 }
 interface DataProps {
   tenant: GetTenantChildProps;
@@ -73,7 +77,7 @@ interface State {}
 class VoteIndicator extends PureComponent<Props, State> {
 
   render() {
-    const { initiative, initiativeStatus } = this.props;
+    const { initiative, initiativeStatus, theme } = this.props;
     if (isNilOrError(initiative) || isNilOrError(initiativeStatus)) return null;
 
     const statusCode = initiativeStatus.attributes.code;
@@ -81,7 +85,14 @@ class VoteIndicator extends PureComponent<Props, State> {
     return (
       <Container>
         {statusCode === 'published' &&
-          <T value={initiativeStatus.attributes.title_multiloc} />
+          <div>
+            <StyledProgressBar
+              progress={0.56}
+              color={theme.colorMain}
+              bgColor={colors.lightGreyishBlue}
+              bgShaded={false}
+            />
+          </div>
         }
         {statusCode === 'expired' &&
           <T value={initiativeStatus.attributes.title_multiloc} />
@@ -129,7 +140,7 @@ const Data = adopt<DataProps, InputProps>({
   }
 });
 
-const VoteIndicatorWithHOCs = VoteIndicator;
+const VoteIndicatorWithHOCs = withTheme(VoteIndicator);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
