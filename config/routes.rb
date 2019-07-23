@@ -97,7 +97,7 @@ Rails.application.routes.draw do
         get :current, on: :collection
       end
       resources :pages do
-        resources :files, defaults: {container_class_name: Page.name, file_class_name: PageFile.name}, shallow: false
+        resources :files, defaults: {container_type: 'Page'}, shallow: false
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
@@ -113,10 +113,10 @@ Rails.application.routes.draw do
       # to be shallow so we can determine their container class. See e.g.
       # https://github.com/rails/rails/pull/24405
       resources :events, only: [:show, :edit, :update, :destroy] do
-        resources :files, defaults: {container_class_name: Event.name, file_class_name: EventFile.name}, shallow: false
+        resources :files, defaults: {container_type: 'Event'}, shallow: false
       end
       resources :phases, only: [:show, :edit, :update, :destroy], concerns: :participation_context, defaults: {parent_param: :phase_id} do
-        resources :files, defaults: {container_class_name: Phase.name, file_class_name: PhaseFile.name}, shallow: false
+        resources :files, defaults: {container_type: 'Phase'}, shallow: false
       end
       resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do
         resources :events, only: [:index, :new, :create]
