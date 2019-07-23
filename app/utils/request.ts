@@ -36,9 +36,9 @@ export default function request<T>(url, data, options, queryParameters): Promise
       return json;
     }
 
-    // const error = new Error(response.statusText);
-    // Object.assign(error, { json });
-    const error = { json };
+    const error = new Error(response.statusText);
+    Object.assign(error, { json });
+
     throw error;
   }).catch((error) => {
     throw error;

@@ -174,9 +174,9 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
       !isUndefined(ideaImage) &&
       !isUndefined(ideaAuthor)
     ) {
-      const votingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['voting'] | null = get(idea, 'relationships.action_descriptor.data.voting', null);
-      const commentingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['commenting'] | null  = get(idea, 'relationships.action_descriptor.data.commenting', null);
-      const budgetingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['budgeting'] | null = get(idea, 'relationships.action_descriptor.data.budgeting', null);
+      const votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting'] | null = get(idea, 'attributes.action_descriptor.voting', null);
+      const commentingDescriptor: IIdeaData['attributes']['action_descriptor']['commenting'] | null  = get(idea, 'attributes.action_descriptor.commenting', null);
+      const budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'] | null = get(idea, 'attributes.action_descriptor.budgeting', null);
       const projectId: string | null = get(idea, 'relationships.project.data.id', null);
       const orgName = localize(tenant.attributes.settings.core.organization_name);
       const ideaTitle = localize(idea.attributes.title_multiloc);

@@ -4,7 +4,7 @@ import { IRelationship, Multiloc } from 'typings';
 
 export interface IOfficialFeedbackData {
   id: string;
-  type: 'official_feedbacks';
+  type: 'official_feedback';
   attributes: {
     body_multiloc: Multiloc;
     author_multiloc: Multiloc;
@@ -38,12 +38,19 @@ export function officialFeedbackStream(officialFeedbackId: string) {
   return streams.get<IOfficialFeedback>({ apiEndpoint: `${API_PATH}/official_feedback/${officialFeedbackId }` });
 }
 
-export function officialFeedbacksForIdeaStream(ideaId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IOfficialFeedbacks>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/official_feedback`, ...streamParams });
+export function updateOfficialFeedback(officialFeedbackId: string, object: INewFeedback) {
+  const bodyData = {
+    official_feedback: object
+  };
+  return streams.update<IOfficialFeedback>(`${API_PATH}/official_feedback/${officialFeedbackId}`, officialFeedbackId, bodyData);
 }
 
-export function officialFeedbacksForInitiativeStream(initiativeId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IOfficialFeedbacks>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/official_feedback`, ...streamParams });
+/*  =====
+    Ideas
+    ===== */
+
+export function officialFeedbacksForIdeaStream(ideaId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IOfficialFeedbacks>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/official_feedback`, ...streamParams });
 }
 
 export async function addOfficialFeedbackToIdea(ideaId: string, feedBack: INewFeedback) {
@@ -60,6 +67,22 @@ export async function addOfficialFeedbackToIdea(ideaId: string, feedBack: INewFe
   return response;
 }
 
+export async function deleteOfficialFeedbackFromIdea(ideaId: string) {
+  const response = await streams.delete(`${API_PATH}/official_feedback/${ideaId}`, ideaId);
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/ideas/${ideaId}/official_feedback`, `${API_PATH}/stats/ideas_count`]
+  });
+  return response;
+}
+
+/*  ===========
+    Initiatives
+    =========== */
+
+export function officialFeedbacksForInitiativeStream(initiativeId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IOfficialFeedbacks>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/official_feedback`, ...streamParams });
+}
+
 export async function addOfficialFeedbackToInitiative(initiativeId: string, feedBack: INewFeedback) {
   const bodyData = {
     official_feedback: feedBack
@@ -71,21 +94,6 @@ export async function addOfficialFeedbackToInitiative(initiativeId: string, feed
     apiEndpoint: [`${API_PATH}/initiatives/${initiativeId}/official_feedback`, `${API_PATH}/stats/initiatives_count`]
   });
 
-  return response;
-}
-
-export function updateOfficialFeedback(officialFeedbackId: string, object: INewFeedback) {
-  const bodyData = {
-    official_feedback: object
-  };
-  return streams.update<IOfficialFeedback>(`${API_PATH}/official_feedback/${officialFeedbackId}`, officialFeedbackId, bodyData);
-}
-
-export async function deleteOfficialFeedbackFromIdea(ideaId: string) {
-  const response = await streams.delete(`${API_PATH}/official_feedback/${ideaId}`, ideaId);
-  await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/ideas/${ideaId}/official_feedback`, `${API_PATH}/stats/ideas_count`]
-  });
   return response;
 }
 

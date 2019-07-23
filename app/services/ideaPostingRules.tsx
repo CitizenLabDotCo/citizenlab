@@ -39,12 +39,12 @@ export const getPostingPermission = ({ project, phase, authUser }: PostingButton
 
   if (!isNilOrError(project) && !isNilOrError(phase)) {
     const inCurrentPhase = (pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present');
-    const { disabled_reason, future_enabled } = project.relationships.action_descriptor.data.posting;
+    const { disabled_reason, future_enabled } = project.attributes.action_descriptor.posting;
 
     if (inCurrentPhase) {
       return {
         show: phase.attributes.participation_method === 'ideation' && phase.attributes.posting_enabled && disabled_reason !== 'not_ideation',
-        enabled: (loggedInAsAdmin || project.relationships.action_descriptor.data.posting.enabled),
+        enabled: (loggedInAsAdmin || project.attributes.action_descriptor.posting.enabled),
         disabledReason: disabledReason(disabled_reason, !!signedIn, future_enabled),
       };
     }
@@ -56,8 +56,8 @@ export const getPostingPermission = ({ project, phase, authUser }: PostingButton
       disabledReason: 'notActivePhase',
     };
   } else if (!isNilOrError(project) && isNilOrError(phase)) { // if not in phase context
-    const enabled = (loggedInAsAdmin || project.relationships.action_descriptor.data.posting.enabled);
-    const { disabled_reason, future_enabled } = project.relationships.action_descriptor.data.posting;
+    const enabled = (loggedInAsAdmin || project.attributes.action_descriptor.posting.enabled);
+    const { disabled_reason, future_enabled } = project.attributes.action_descriptor.posting;
 
     return {
       enabled,

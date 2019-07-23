@@ -11,7 +11,7 @@ export default defineMessages({
   },
   noIdeasWithLocation: {
     id: 'app.components.IdeasMap.noIdeasWithLocation',
-    defaultMessage: `The ideas in this project don't have any location information.`,
+    defaultMessage: "The ideas in this project don't have any location information.",
   },
   login: {
     id: 'app.components.IdeasMap.login',

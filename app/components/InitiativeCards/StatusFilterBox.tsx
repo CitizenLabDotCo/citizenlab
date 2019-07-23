@@ -6,47 +6,44 @@ import { isNilOrError } from 'utils/helperUtils';
 import StatusFilter from 'components/FilterBoxes/StatusFilter';
 
 // resources
-import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
-import GetIdeasFilterCounts, { GetIdeasFilterCountsChildProps } from 'resources/GetIdeasFilterCounts';
+import GetInitiativeStatuses, { GetInitiativeStatusesChildProps } from 'resources/GetInitiativeStatuses';
+import GetInitiativesFilterCounts, { GetInitiativesFilterCountsChildProps } from 'resources/GetInitiativesFilterCounts';
 
 // styling
 import styled from 'styled-components';
 
 // typings
-import { IQueryParameters as IIdeasQueryParameters } from 'resources/GetIdeas';
-import { IQueryParameters as IInitiativesQueryParameters } from 'resources/GetInitiatives';
-
-type IQueryParameters = IIdeasQueryParameters | IInitiativesQueryParameters;
+import { IQueryParameters } from 'resources/GetInitiatives';
 
 const Container = styled.div``;
 
 interface InputProps {
   selectedStatusId: string | null | undefined;
-  selectedIdeaFilters: Partial<IQueryParameters>;
+  selectedInitiativeFilters: Partial<IQueryParameters>;
   onChange: (arg: string | null) => void;
   className?: string;
 }
 
 interface DataProps {
-  ideaStatuses: GetIdeaStatusesChildProps;
-  ideasFilterCounts: GetIdeasFilterCountsChildProps;
+  initiativeStatuses: GetInitiativeStatusesChildProps;
+  initiativesFilterCounts: GetInitiativesFilterCountsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const StatusFilterBox = memo<Props>(({ selectedStatusId, ideaStatuses, ideasFilterCounts, onChange, className }) => {
+const StatusFilterBox = memo<Props>(({ selectedStatusId, initiativeStatuses, initiativesFilterCounts, onChange, className }) => {
 
   const handleOnChange = useCallback((nextSelectedStatusId: string | null) => {
     onChange(nextSelectedStatusId);
   }, []);
 
-  if (!isNilOrError(ideaStatuses) && ideaStatuses.length > 0) {
+  if (!isNilOrError(initiativeStatuses) && initiativeStatuses.length > 0) {
     return (
       <Container className={className}>
         <StatusFilter
-          type="idea"
-          statuses={ideaStatuses}
-          filterCounts={ideasFilterCounts}
+          type="initiative"
+          statuses={initiativeStatuses}
+          filterCounts={initiativesFilterCounts}
           selectedStatusId={selectedStatusId}
           onChange={handleOnChange}
         />
@@ -58,16 +55,16 @@ const StatusFilterBox = memo<Props>(({ selectedStatusId, ideaStatuses, ideasFilt
 });
 
 const Data = adopt<DataProps, InputProps>({
-  ideaStatuses: <GetIdeaStatuses/>,
-  ideasFilterCounts: ({ selectedIdeaFilters, render }) => {
+  initiativeStatuses: <GetInitiativeStatuses/>,
+  initiativesFilterCounts: ({ selectedInitiativeFilters, render }) => {
     const queryParameters = {
-      ...selectedIdeaFilters,
-      idea_status: undefined,
+      ...selectedInitiativeFilters,
+      initiative_status: undefined,
       project_publication_status: 'published',
       publication_status: 'published'
     } as Partial<IQueryParameters>;
 
-    return <GetIdeasFilterCounts queryParameters={queryParameters}>{render}</GetIdeasFilterCounts>;
+    return <GetInitiativesFilterCounts queryParameters={queryParameters}>{render}</GetInitiativesFilterCounts>;
   }
 });
 

@@ -43,7 +43,7 @@ const BoxContainer = styled.div`
   `}
 
   ${media.smallerThanMinTablet`
-    flex: 0 0 80%;
+    flex: 0 0 70%;
   `}
 `;
 
@@ -80,7 +80,7 @@ const CloseButton = styled.div`
 `;
 
 const MapContainer = styled.div`
-  flex: 1 1 100%;
+  flex: 1;
 
   .leaflet-container {
     height: 100%;
@@ -108,7 +108,7 @@ const customIcon = Leaflet.icon({
   iconAnchor: [14, 41],
 });
 
-interface Point extends GeoJSON.Point {
+export interface Point extends GeoJSON.Point {
   data?: any;
   id: string;
   title?: string;
@@ -246,7 +246,6 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   handleMarkerClick = (event) => {
-    console.log(event);
     this.props.onMarkerClick && this.props.onMarkerClick(event.layer.options.id, event.layer.options.data);
   }
 

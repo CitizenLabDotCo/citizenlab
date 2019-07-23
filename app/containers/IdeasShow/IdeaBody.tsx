@@ -47,7 +47,7 @@ const IdeaBody = memo<Props>(({ ideaId, ideaBody, locale, translateButtonClicked
           fontWeight={300}
         >
           {(translateButtonClicked && locale) ?
-            <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={ideaId}>
+            <GetMachineTranslation context="idea" id={ideaId} attributeName="body_multiloc" localeTo={locale}>
               {translation => {
                 if (!isNilOrError(translation)) {
                   return <span dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />;
