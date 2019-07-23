@@ -78,7 +78,7 @@ class UserPolicy < ApplicationPolicy
   def allowed_custom_field_keys
     unchangeable_keys = SingleSignOnService.new.custom_fields_user_cant_change(user)
     enabled_fields = CustomField
-      .fields_for(User)
+      .fields_for('User')
       .where.not(key: unchangeable_keys)
       .enabled
     simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)

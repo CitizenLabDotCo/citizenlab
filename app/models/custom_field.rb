@@ -24,7 +24,7 @@ class CustomField < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_destroy :check_group_references, prepend: true
 
-  scope :fields_for, -> (claz) { where(resource_type: claz.name.to_s) }
+  scope :fields_for, -> (resource_type) { where(resource_type: resource_type) }
   scope :enabled, -> { where(enabled: true) }
   scope :support_multiple_values, -> { where(input_type: 'multiselect') }
   scope :support_single_value, -> { where.not(input_type: 'multiselect') }

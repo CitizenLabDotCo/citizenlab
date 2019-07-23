@@ -1,13 +1,57 @@
 class WebApi::V1::FilesController < ApplicationController
 
+  CONSTANTIZER = {
+    'Idea' => {
+      container_class: Idea,
+      file_class: IdeaFile,
+      policy_scope_class: IdeaFilePolicy::Scope,
+      file_relationship: :idea_files,
+      container_id: :idea_id
+    },
+    'Initiative' => {
+      container_class: Initiative,
+      file_class: InitiativeFile,
+      policy_scope_class: InitiativeFilePolicy::Scope,
+      file_relationship: :initiative_files,
+      container_id: :initiative_id
+    },
+    'Project' => {
+      container_class: Project,
+      file_class: ProjectFile,
+      policy_scope_class: ProjectFilePolicy::Scope,
+      file_relationship: :project_files,
+      container_id: :project_id
+    },
+    'Event' => {
+      container_class: Event,
+      file_class: EventFile,
+      policy_scope_class: EventFilePolicy::Scope,
+      file_relationship: :event_files,
+      container_id: :event_id
+    },
+    'Phase' => {
+      container_class: Phase,
+      file_class: PhaseFile,
+      policy_scope_class: PhaseFilePolicy::Scope,
+      file_relationship: :phase_files,
+      container_id: :phase_id
+    },
+    'Page' => {
+      container_class: Page,
+      file_class: PageFile,
+      policy_scope_class: PageFilePolicy::Scope,
+      file_relationship: :page_files,
+      container_id: :page_id
+    }
+  }
+
   before_action :set_container, only: [:index, :create]
   before_action :set_file, only: [:show, :update, :destroy]
   skip_after_action :verify_policy_scoped
 
   def index
-    @files = @container.send("#{container_association}_files").order(:ordering)
-    policy_scope_class = "#{params['file_class_name']}Policy::Scope".constantize
-    @files = policy_scope_class.new(current_user, @files).resolve
+    @files = @container.send(secure_constantize(:file_relationship)).order(:ordering)
+    @files = secure_constantize(:policy_scope_class).new(current_user, @files).resolve
     render json: WebApi::V1::FileSerializer.new(@files, params: fastjson_params).serialized_json
   end
 
@@ -16,7 +60,7 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def create
-    @file = @container.send("#{container_association}_files").create(file_params)
+    @file = @container.send(secure_constantize(:file_relationship)).create(file_params)
     authorize @file
     if @file.save
       render json: WebApi::V1::FileSerializer.new(
@@ -64,24 +108,22 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def set_file
-    file_class = params['file_class_name'].constantize
-    @file = file_class.find(params[:id])
+    @file = secure_constantize(:file_class).find(params[:id])
     authorize @file
   end
 
   def set_container
-    container_id = params["#{container_association}_id"]
-    container_class = params['container_class_name'].constantize
-    @container = container_class.find(container_id)
-  end
-
-  def container_association
-    params['container_class_name'].downcase
+    container_id = params[secure_constantize(:container_id)]
+    @container = secure_constantize(:container_class).find(container_id)
   end
 
    def transform_errors_details! error_details
     # carrierwave does not return the error code symbols by default
     error_details[:file] = error_details[:file]&.uniq{|e| e[:error]}
     error_details
+  end
+
+  def secure_constantize key
+    CONSTANTIZER.fetch(params[:container_type])[key]
   end
 end

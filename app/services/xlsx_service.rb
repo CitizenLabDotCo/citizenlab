@@ -31,7 +31,7 @@ class XlsxService
 
         areas = Area.all.map{|a| [a.id, a]}.to_h
         fields = user_fields(areas)
-        custom_fields = CustomField.fields_for(User)&.map(&:key)
+        custom_fields = CustomField.fields_for('User')&.map(&:key)
         sheet.add_row fields.keys.concat(custom_fields), style: header_style(s)
 
         users.each do |user|
