@@ -28,7 +28,7 @@ const StatusBadge = styled.div<{color: string}>`
   background-color: ${(props) => props.color};
   display: flex;
   align-items: center;
-  `;
+`;
 
 const BadgeLabel = styled.div``;
 
@@ -53,6 +53,10 @@ const IneligibleBadgeIcon = styled(Icon)`
 
 const IneligibleStatusBadge = styled(StatusBadge)`
   background-color: ${colors.lightGreyishBlue};
+  color: ${colors.clGreyOnGreyBackground};
+`;
+
+const CustomStatusBadge = styled(StatusBadge)`
   color: ${colors.clGreyOnGreyBackground};
 `;
 
@@ -87,10 +91,28 @@ const VoteIcon = styled(Icon)`
   margin: 0 5px 4px 0;
 `;
 
+const ExpiredText = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: ${fontSizes.small}px;
+  text-transform: capitalize;
+  padding-bottom: 4px;
+  color: ${colors.label};
+`;
+
+const ExpiredIcon = styled(Icon)`
+  path {
+    fill: ${colors.clGreyOnGreyBackground};
+  }
+  width: 14px;
+  height: 14px;
+  margin: 0 4px 2px 0;
+`;
+
 interface InputProps {
   initiativeId: string;
-  theme: any;
 }
+
 interface DataProps {
   tenant: GetTenantChildProps;
   initiative: GetInitiativeChildProps;
@@ -99,9 +121,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
-
-class VoteIndicator extends PureComponent<Props, State> {
+class VoteIndicator extends PureComponent<Props & { theme: any }> {
 
   render() {
     const { initiative, initiativeStatus, theme, tenant } = this.props;
@@ -113,6 +133,7 @@ class VoteIndicator extends PureComponent<Props, State> {
 
     return (
       <Container>
+
         {statusCode === 'published' &&
           <div>
             <VoteCounter>
@@ -131,9 +152,22 @@ class VoteIndicator extends PureComponent<Props, State> {
             />
           </div>
         }
+
         {statusCode === 'expired' &&
-          <T value={initiativeStatus.attributes.title_multiloc} />
+          <div>
+            <ExpiredText>
+              <ExpiredIcon name="clock" />
+              <T value={initiativeStatus.attributes.title_multiloc} />
+            </ExpiredText>
+            <StyledProgressBar
+              progress={voteCount / voteLimit}
+              color="#84939E"
+              bgColor={colors.lightGreyishBlue}
+              bgShaded={true}
+            />
+          </div>
         }
+
         {statusCode === 'threshold_reached' &&
           <div>
             <VoteCounter>
@@ -152,6 +186,7 @@ class VoteIndicator extends PureComponent<Props, State> {
             />
           </div>
         }
+
         {statusCode === 'answered' &&
           <AnsweredStatusBadge
             color={initiativeStatus.attributes.color}
@@ -162,6 +197,7 @@ class VoteIndicator extends PureComponent<Props, State> {
             </BadgeLabel>
           </AnsweredStatusBadge>
         }
+
         {statusCode === 'ineligible' &&
           <IneligibleStatusBadge
             color={initiativeStatus.attributes.color}
@@ -172,9 +208,17 @@ class VoteIndicator extends PureComponent<Props, State> {
             </BadgeLabel>
           </IneligibleStatusBadge>
         }
+
         {statusCode === 'custom' &&
-          <T value={initiativeStatus.attributes.title_multiloc} />
+          <CustomStatusBadge
+            color={initiativeStatus.attributes.color}
+          >
+            <BadgeLabel>
+              <T value={initiativeStatus.attributes.title_multiloc} />
+            </BadgeLabel>
+          </CustomStatusBadge>
         }
+
       </Container>
     );
   }
