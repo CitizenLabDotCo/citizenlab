@@ -26,6 +26,7 @@ import { UploadFile } from 'typings';
 const Container = styled.div`
   width: 100%;
   display: column;
+  margin-bottom: 10px;
 `;
 
 const ContentWrapper: any = styled.div`

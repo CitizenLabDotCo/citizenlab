@@ -24,7 +24,7 @@ const Container = styled.div``;
 
 const EditorWrapper = styled.div`
   &:not(.last) {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 `;
 
