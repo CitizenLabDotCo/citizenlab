@@ -1,8 +1,7 @@
 module MachineTranslations
   class MachineTranslationService
 
-    def build_translation_for translatable_type:, translatable_id:, attribute_name:, locale_to:
-      translatable = translatable_type.constantize.find translatable_id # will trigger 404 if not found
+    def build_translation_for translatable:, attribute_name:, locale_to:
       multiloc = translatable[attribute_name]
       locale_from = multiloc_to_locale_from multiloc
       text_or_html = multiloc[locale_from]

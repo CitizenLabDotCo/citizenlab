@@ -30,7 +30,7 @@ module EmailCampaigns
     def create
       @campaign = EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.select do |claz|
         claz.campaign_name == params[:campaign][:campaign_name]
-      end.new(campaign_params)
+      end.first.new(campaign_params)
       @campaign.author ||= current_user
 
       authorize @campaign
