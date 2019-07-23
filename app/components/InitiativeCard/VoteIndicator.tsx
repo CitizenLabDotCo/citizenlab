@@ -72,7 +72,7 @@ const VoteText = styled.div`
   font-size: ${fontSizes.small}px;
   b {
     font-weight: 600;
-    color: ${({ theme }) => theme.colorText};
+    color: ${({ theme }) => theme.colorMain};
   }
 
   span.division-bar {
@@ -125,7 +125,7 @@ class VoteIndicator extends PureComponent<Props, State> {
             </VoteCounter>
             <StyledProgressBar
               progress={voteCount / voteLimit}
-              color={theme.colorMain}
+              color="linear-gradient(270deg, #DE7756 -30.07%, #FF672F 100%)"
               bgColor={colors.lightGreyishBlue}
               bgShaded={false}
             />
@@ -135,7 +135,22 @@ class VoteIndicator extends PureComponent<Props, State> {
           <T value={initiativeStatus.attributes.title_multiloc} />
         }
         {statusCode === 'threshold_reached' &&
-          <T value={initiativeStatus.attributes.title_multiloc} />
+          <div>
+            <VoteCounter>
+              <VoteIcon name="upvote" />
+              <VoteText>
+                <b>{voteCount}</b>
+                <span className="division-bar">/</span>
+                {voteLimit}
+              </VoteText>
+            </VoteCounter>
+            <StyledProgressBar
+              progress={voteCount / voteLimit}
+              color={theme.colorMain}
+              bgColor={colors.lightGreyishBlue}
+              bgShaded={false}
+            />
+          </div>
         }
         {statusCode === 'answered' &&
           <AnsweredStatusBadge

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { clamp } from 'lodash-es';
 
 import Observer from '@researchgate/react-intersection-observer';
 
@@ -62,7 +63,7 @@ class ProgressBar extends PureComponent<Props, State> {
       <Container className={className}>
         <Observer onChange={this.handleIntersection}>
           <ProgressBarOuter bgColor={bgColor}>
-            <ProgressBarInner progress={progress} className={visible ? 'visible' : ''} color={color} />
+            <ProgressBarInner progress={clamp(progress, 0, 1)} className={visible ? 'visible' : ''} color={color} />
           </ProgressBarOuter>
         </Observer>
       </Container>
