@@ -160,6 +160,18 @@ resource "Users" do
           json_response = json_parse(response_body)
           expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id,m1.id,m2.id,@user.id]
         end
+
+        example "List all admins" do
+          p = create(:project)
+          a = create(:admin)
+          m1 = create(:moderator, project: p)
+          m2 = create(:moderator)
+          u = create(:user)
+
+          do_request(can_admin: true)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id, @user.id]
+        end
       end
 
       get "web_api/v1/users/as_xlsx" do
