@@ -164,6 +164,7 @@ const Container: any = styled.div`
       min-height: 300px;
     }
 
+
     .ql-editor.ql-blank::before {
       color: #aaa;
       font-style: normal;
@@ -178,7 +179,7 @@ const Container: any = styled.div`
       top: -3px;
     }
 
-    ${quillEditedContent()}
+    ${(props: any) => props.inAdmin ? quillEditedContent() : quillEditedContent(undefined, props.theme.colorText)}
   }
 `;
 

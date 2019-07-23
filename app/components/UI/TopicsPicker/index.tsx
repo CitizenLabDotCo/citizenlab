@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { orderBy } from 'lodash-es';
 
@@ -7,7 +7,8 @@ import Button from 'components/UI/Button';
 
 // styles
 import styled, { withTheme } from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { darken, lighten } from 'polished';
 
 // resources
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
@@ -23,9 +24,47 @@ const TopicsContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const TopicSwitch = styled(Button)`
-  margin-bottom: 5px;
-  margin-right: 5px;
+const TopicSwitch = styled.button`
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  line-height: normal;
+  display: inline-block;
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  margin: 0px;
+  margin-right: 6px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  user-select: none;
+  border: solid 1px ${colors.separation};
+  border-radius: 5px;
+  transition: all 80ms ease-out;
+
+  &:not(.selected):not(:disabled) {
+    &:hover {
+      color: ${({ theme }) => theme.colorSecondary};
+      border-color: ${({ theme }) => theme.colorSecondary};
+    }
+  }
+
+  &.selected {
+    color: #fff;
+    background: ${({ theme }) => theme.colorSecondary};
+    border-color: ${({ theme }) => theme.colorSecondary};
+
+    &:hover {
+      background: ${({ theme }) => darken(0.15, theme.colorSecondary)};
+      border-color: ${({ theme }) => darken(0.15, theme.colorSecondary)};
+    }
+  }
+
+  &:disabled {
+    background: ${({ theme }) => lighten(0.5, theme.colors.label)};
+    cursor: default;
+  }
 `;
 
 export interface InputProps {
@@ -71,6 +110,9 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, the
   if (isNilOrError(topics)) return null;
 
   const workingTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+  const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+  }, []);
 
   return (
     <TopicsContainer onBlur={onBlur} className={className}>
@@ -81,12 +123,9 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, the
           <TopicSwitch
             key={topic.id}
             onClick={handleOnChange(topic.id)}
-            textColor={isActive ? 'white' : colors.adminSecondaryTextColor}
-            bgColor={isActive ? theme.colorSecondary : 'transparent'}
-            borderColor={isActive ? 'none' : colors.separation}
-            borderHoverColor={!isDisabled ? theme.colorSecondary : 'transparent'}
-            padding="8px 14px"
+            className={isActive ? 'selected' : ''}
             disabled={isDisabled}
+            onMouseDown={removeFocus}
           >
             <T value={topic.attributes.title_multiloc} />
           </TopicSwitch>
