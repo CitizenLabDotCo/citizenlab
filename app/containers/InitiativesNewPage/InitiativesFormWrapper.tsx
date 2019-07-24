@@ -17,7 +17,7 @@ import styled from 'styled-components';
 
 // intl
 import { convertToGeoJson } from 'utils/locationTools';
-import { isEqual, pick, get, omitBy, isEmpty } from 'lodash-es';
+import { isEqual, pick, get, omitBy, isEmpty, debounce } from 'lodash-es';
 import { Point } from 'geojson';
 import { addInitiativeImage, deleteInitiativeImage } from 'services/initiativeImages';
 import { deleteInitiativeFile, addInitiativeFile } from 'services/initiativeFiles';
@@ -89,7 +89,6 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
 
   changedValues = () => {
     const changedKeys = Object.keys(this.initialValues).filter((key) => {
-      console.log(this.initialValues[key], this.state[key], !isEqual(this.initialValues[key], this.state[key]));
       return (
         !isEqual(this.initialValues[key], this.state[key])
       );
@@ -146,7 +145,7 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
 
     // if we're already publishing, do nothing.
-    if (publishing) return;
+    if (saving) return;
 
     // setting flags for user feedback and avoiding double sends.
     this.setState({ saving: true });
@@ -186,22 +185,24 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
         }
         this.setState({ hasImageChanged: false });
       }
+      this.setState({ saving: false });
     } catch (errorResponse) {
       // const apiErrors = get(errorResponse, 'json.errors');
       // saving changes while working should have a minimal error feedback,
       // maybe in the saving indicator, since it's error-resistant, ie what wasn't
       // saved this time will be next time user leaves a field, or on publish call.
       // TODO
+      this.setState({ saving: false });
     }
-    this.setState({ saving: false });
   }
+  debouncedSave = debounce(this.handleSave, 500);
 
   handlePublish = async () => {
     const changedValues = this.changedValues();
     const { initiativeId, hasBannerChanged, hasImageChanged, image, banner, saving, publishing } = this.state;
 
     // if we're already saving, do nothing.
-    if (saving || publishing) return;
+    if (publishing) return;
 
     // setting flags for user feedback and avoiding double sends.
     this.setState({ publishing: true });
@@ -316,7 +317,7 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
     return (
       <StyledInitiativeForm
         onPublish={this.handlePublish}
-        onSave={this.handleSave}
+        onSave={this.debouncedSave}
         locale={locale}
         {...otherProps}
         onChangeTitle={this.onChangeTitle}
