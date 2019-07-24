@@ -216,7 +216,7 @@ class ParentComment extends PureComponent<Props, State> {
 
           {childCommentIds && childCommentIds.length > 0 && childCommentIds.map((childCommentId, index) => (
             <Comment
-              ideaId={idea.id}
+              ideaId={ideaId}
               projectId={projectId}
               key={childCommentId}
               commentId={childCommentId}
