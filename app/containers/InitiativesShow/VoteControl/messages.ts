@@ -13,4 +13,12 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.minutes',
     defaultMessage: 'mins',
   },
+  proposedStatusExplanation: {
+    id: 'app.containers.InitiativesShow.VoteControl.proposedStatusExplanation',
+    defaultMessage: '{votingThreshold} votes needed to get this initiative {proposedStatusExplanationBold}',
+  },
+  proposedStatusExplanationBold: {
+    id: 'app.containers.InitiativesShow.VoteControl.proposedStatusExplanationBold',
+    defaultMessage: 'considered by {orgName}',
+  },
 });
