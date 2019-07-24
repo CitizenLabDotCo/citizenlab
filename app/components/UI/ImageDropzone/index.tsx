@@ -110,7 +110,7 @@ const StyledDropzone = styled(Dropzone)`
   ` : css`
     cursor: pointer !important;
 
-    &:hover {
+    &:hover, &:focus-within {
       border-color: #000;
 
       ${DropzonePlaceholderText},
@@ -161,7 +161,7 @@ const RemoveIcon = styled(Icon)`
   transition: all 100ms ease-out;
 `;
 
-const RemoveButton: any = styled.div`
+const RemoveButton: any = styled.button`
   width: 30px;
   height: 30px;
   display: flex;
@@ -177,7 +177,7 @@ const RemoveButton: any = styled.div`
   background: rgba(0, 0, 0, 0.6);
   transition: all 100ms ease-out;
 
-  &:hover {
+  &:hover, &:focus-within {
     background: #000;
     border-color: #fff;
 
