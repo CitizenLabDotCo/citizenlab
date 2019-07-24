@@ -12,6 +12,7 @@ import { API_PATH } from 'containers/App/constants';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 import { saveAs } from 'file-saver';
+import { reportError } from 'utils/loggingUtils';
 
 interface Props {
   exportQueryParameter: 'all' | string | string[];
@@ -32,7 +33,6 @@ export default class ExportIdeasButton extends React.PureComponent<Props, State>
 
   handleExportIdeas = async () => {
     const { exportQueryParameter } = this.props;
-    console.log(exportQueryParameter);
 
     const queryParametersObject = {};
     if (isString(exportQueryParameter) && exportQueryParameter !== 'all') {
@@ -47,7 +47,7 @@ export default class ExportIdeasButton extends React.PureComponent<Props, State>
       saveAs(blob, 'ideas-export.xlsx');
       this.setState({ exporting: false });
     } catch (error) {
-      console.log(error);
+      reportError(error);
       this.setState({ exporting: false });
     }
 
