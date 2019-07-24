@@ -152,7 +152,7 @@
   "app.components.IdeasShowPage.noIdeaFoundHere": "No idea was found here.",
   "app.components.ImageDropzone.dropYourImageHere": "",
   "app.components.ImageDropzone.errorImageMaxSizeExceeded": "",
-  "app.components.ImageDropzone.errorImagesMaxSizeExceeded": "",
+  "app.components.ImageDropzone.unkownError": "",
   "app.components.InitiativeCards.cards": "",
   "app.components.InitiativeCards.filter": "",
   "app.components.InitiativeCards.map": "",

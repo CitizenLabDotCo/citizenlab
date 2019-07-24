@@ -152,7 +152,7 @@
   "app.components.IdeasShowPage.noIdeaFoundHere": "No idea was found here.",
   "app.components.ImageDropzone.dropYourImageHere": "Drop your image here or click to upload.",
   "app.components.ImageDropzone.errorImageMaxSizeExceeded": "The selected image exceeds the maximum allowed size of {maxFileSize} Mb",
-  "app.components.ImageDropzone.errorImagesMaxSizeExceeded": "One or more selected images exceeds the maximum allowed size of {maxFileSize} Mb per image",
+  "app.components.ImageDropzone.unkownError": "There was an issue uploading your image, please try again later.",
   "app.components.InitiativeCards.cards": "Cards",
   "app.components.InitiativeCards.filter": "Filter",
   "app.components.InitiativeCards.map": "Map",
