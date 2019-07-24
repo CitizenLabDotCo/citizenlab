@@ -1336,6 +1336,8 @@
   "app.containers.InitiativesShow.VoteControl.days": "",
   "app.containers.InitiativesShow.VoteControl.hours": "",
   "app.containers.InitiativesShow.VoteControl.minutes": "",
+  "app.containers.InitiativesShow.VoteControl.proposedStatusExplanation": "",
+  "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationBold": "",
   "app.containers.InitiativesShow.emailSharingBody": "",
   "app.containers.InitiativesShow.emailSharingSubject": "",
   "app.containers.InitiativesShow.learnMore": "",
