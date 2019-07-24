@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN"
+	"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern height="20" id="warning-1" patternContentUnits="userSpaceOnUse" patternUnits="userSpaceOnUse" width="20">
+      <polygon points="0,10 0,0 10,0" style="fill:rgba(0,0,0,0);"/>
+      <polygon points="0,20 20,0 10,0 0,10" style="fill:rgba(0,0,0,0.1);"/>
+      <polygon points="10,20 20,10 20,20" style="fill:rgba(0,0,0,0.1);"/>
+      <polygon points="0,20 10,20 20,10 20,0" style="fill:rgba(0,0,0,0);"/>
+    </pattern>
+  </defs>
+  <rect fill="url(#warning-1)" height="20" width="20" x="0" y="0"/>
+</svg>

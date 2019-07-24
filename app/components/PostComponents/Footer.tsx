@@ -61,7 +61,7 @@ interface Props {
 
 const LazyComments = lazy(() => import('./Comments'));
 
-const IdeaFooter = memo<Props>(({ postId, postType, className }) => {
+const Footer = memo<Props>(({ postId, postType, className }) => {
   return (
     <Container className={className}>
       <Content>
@@ -75,4 +75,4 @@ const IdeaFooter = memo<Props>(({ postId, postType, className }) => {
   );
 });
 
-export default IdeaFooter;
+export default Footer;

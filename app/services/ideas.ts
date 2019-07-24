@@ -6,6 +6,8 @@ import { get } from 'lodash-es';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
+export type IdeaCommentingDisabledReason = 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | null
+
 export interface IIdeaData {
   id: string;
   type: string;
@@ -35,7 +37,7 @@ export interface IIdeaData {
       commenting: {
         enabled: boolean,
         future_enabled: string | null,
-        disabled_reason: 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | null,
+        disabled_reason: IdeaCommentingDisabledReason,
       },
       comment_voting: {
         enabled: boolean

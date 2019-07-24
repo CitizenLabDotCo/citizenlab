@@ -52,7 +52,6 @@ const StyledParentComment = styled(ParentComment)`
 `;
 
 interface Props {
-  ideaId: string;
   comments: ICommentData[];
   sortOrder: CommentsSort;
   loading: boolean;
@@ -60,7 +59,7 @@ interface Props {
   className?: string;
 }
 
-const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, loading, onSortOrderChange, className }) => {
+const CommentsSection = memo<Props>(({ comments, sortOrder, loading, onSortOrderChange, className }) => {
 
   const sortedParentComments = useMemo(() => {
     if (!isNilOrError(comments) && comments.length > 0) {
@@ -105,7 +104,6 @@ const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, loading, onS
           return (
             <StyledParentComment
               key={parentComment.id}
-              ideaId={ideaId}
               commentId={parentComment.id}
               childCommentIds={childCommentIds}
               className={loading ? 'loading' : ''}

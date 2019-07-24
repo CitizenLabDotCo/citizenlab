@@ -7,6 +7,7 @@ import { adopt } from 'react-adopt';
 import Card from 'components/UI/Card';
 import Icon from 'components/UI/Icon';
 import Author from 'components/Author';
+import VoteIndicator from './VoteIndicator';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -142,8 +143,8 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
           }
           footer={
             <FooterInner>
+              <VoteIndicator initiativeId={initiative.id} />
               <Spacer />
-
               <CommentInfo>
                 <CommentIcon name="comments" />
                 <CommentCount className="e2e-initiativecard-comment-count">
