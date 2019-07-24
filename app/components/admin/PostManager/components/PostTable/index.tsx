@@ -226,4 +226,3 @@ export default class PostTable extends React.Component<Props> {
     );
   }
 }
-// TODO check animation nopost

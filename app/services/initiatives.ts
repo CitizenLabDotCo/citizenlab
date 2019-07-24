@@ -126,13 +126,11 @@ export function initiativesMarkersStream(streamParams: IStreamParams | null = nu
 
 export async function addInitiative(object: IInitiativeAdd) {
   const response = await streams.add<IInitiative>(`${API_PATH}/initiatives`, { initiative: object });
-  // TODO refetches if necessary
   return response;
 }
 
 export async function updateInitiative(initiativeId: string, object: Partial<IInitiativeAdd>) {
   const response = await streams.update<IInitiative>(`${API_PATH}/initiatives/${initiativeId}`, initiativeId, { initiative: object });
-  // TODO less refetches? This is the only way I get the initiatives list to refresh when removing a topic
   streams.fetchAllWith({
     apiEndpoint: [`${API_PATH}/stats/initiatives_count`, `${API_PATH}/initiatives`]
   });
@@ -148,8 +146,7 @@ export async function deleteInitiative(initiativeId: string) {
   const authorId = get(initiative, 'relationships.author.data.id', false);
 
   streams.fetchAllWith({
-    apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/initiatives_count`, `${API_PATH}/initiatives/filter_counts`] : [`${API_PATH}/initiatives/filter_counts`])
-    // TODO fix with when switching to count endpoint apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/initiatives_count`] : [])
+    apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/initiatives_count`] : [])
   });
 
   return response;
