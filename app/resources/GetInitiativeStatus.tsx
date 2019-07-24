@@ -2,7 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { IIdeaStatusData, ideaStatusStream } from 'services/ideaStatuses';
+import { IInitiativeStatusData, initiativeStatusStream } from 'services/initiativeStatuses';
 import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -10,26 +10,26 @@ interface InputProps {
   id: string | null;
 }
 
-type children = (renderProps: GetIdeaStatusChildProps) => JSX.Element | null;
+type children = (renderProps: GetInitiativeStatusChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
 }
 
 interface State {
-  ideaStatus: IIdeaStatusData | undefined | null;
+  initiativeStatus: IInitiativeStatusData | undefined | null;
 }
 
-export type GetIdeaStatusChildProps = IIdeaStatusData | undefined | null;
+export type GetInitiativeStatusChildProps = IInitiativeStatusData | undefined | null;
 
-export default class GetIdeaStatus extends React.Component<Props, State> {
+export default class GetInitiativeStatus extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaStatus: undefined
+      initiativeStatus: undefined
     };
   }
 
@@ -44,13 +44,13 @@ export default class GetIdeaStatus extends React.Component<Props, State> {
         filter(({ id }) => isString(id)),
         switchMap(({ id }: { id: string}) => {
           if (isString(id)) {
-            return ideaStatusStream(id).observable;
+            return initiativeStatusStream(id).observable;
           }
 
           return of(null);
         })
-      ).subscribe((ideaStatus) => this.setState({
-        ideaStatus: !isNilOrError(ideaStatus) ? ideaStatus.data : null
+      ).subscribe((initiativeStatus) => this.setState({
+        initiativeStatus: !isNilOrError(initiativeStatus) ? initiativeStatus.data : null
       }))
     ];
   }
@@ -66,7 +66,7 @@ export default class GetIdeaStatus extends React.Component<Props, State> {
 
   render() {
     const { children } = this.props;
-    const { ideaStatus } = this.state;
-    return (children as children)(ideaStatus);
+    const { initiativeStatus } = this.state;
+    return (children as children)(initiativeStatus);
   }
 }
