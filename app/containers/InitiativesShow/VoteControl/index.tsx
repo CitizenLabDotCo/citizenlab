@@ -6,6 +6,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { InitiativeStatusCode, IInitiativeStatusData } from 'services/initiativeStatuses';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetInitiativeStatus, { GetInitiativeStatusChildProps } from 'resources/GetInitiativeStatus';
+import { IInitiativeData } from 'services/initiatives';
+import { ITenantSettings } from 'services/tenant';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 import ProposedVoteControl from './ProposedVoteControl';
 import ExpiredVoteControl from './ExpiredVoteControl';
@@ -14,11 +17,22 @@ import AnsweredVoteControl from './AnsweredVoteControl';
 import IneligibleVoteControl from './IneligibleVoteControl';
 import CustomVoteControl from './CustomVoteControl';
 
-import { IInitiativeData } from 'services/initiatives';
-import { ITenantSettings } from 'services/tenant';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+// Using this to fake the way to component will be embedded in the eventual initiative show page
+const TemporaryOuterContainer = styled.div`
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 45px;
+  padding: 35px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
+  border-radius: ${(props: any) => props.theme.borderRadius};
+`;
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 interface VoteControlComponentProps {
   initiative: IInitiativeData;
@@ -27,6 +41,7 @@ interface VoteControlComponentProps {
 }
 
 const statusCodeToComponent: {[key in InitiativeStatusCode]: React.ComponentType<VoteControlComponentProps>} = {
+  published: ProposedVoteControl,
   proposed: ProposedVoteControl,
   expired: ExpiredVoteControl,
   threshold_reached: ThresholdReachedVoteControl,
@@ -63,13 +78,15 @@ class VoteControl extends PureComponent<Props> {
     const initiativeSettings = tenant.attributes.settings.initiatives;
 
     return (
-      <Container>
-        <StatusComponent
-          initiative={initiative}
-          initiativeStatus={initiativeStatus}
-          initiativeSettings={initiativeSettings}
-        />
-      </Container>
+      <TemporaryOuterContainer>
+        <Container>
+          <StatusComponent
+            initiative={initiative}
+            initiativeStatus={initiativeStatus}
+            initiativeSettings={initiativeSettings}
+          />
+        </Container>
+      </TemporaryOuterContainer>
     );
   }
 }
