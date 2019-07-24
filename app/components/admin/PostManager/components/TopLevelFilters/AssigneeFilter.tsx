@@ -92,7 +92,6 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
   }
 }
 
-// TODO only admins for initiatives
 const Data = adopt<DataProps, InputProps>({
   prospectAssignees: ({ type, projectId, render }) => type === 'ProjectIdeas' && projectId
     ? <GetUsers canModerateProject={projectId} pageSize={250}>{render}</GetUsers>

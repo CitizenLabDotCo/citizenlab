@@ -2,7 +2,7 @@ import React from 'react';
 import { isString, isEmpty, isEqual } from 'lodash-es';
 import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { map, startWith, distinctUntilChanged, tap, debounceTime, switchMap } from 'rxjs/operators';
-import { initiativesCount } from 'services/stats'; // TODO use stats endpoint
+import { initiativesCount } from 'services/stats';
 import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
 
