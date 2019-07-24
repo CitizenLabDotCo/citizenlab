@@ -9,8 +9,9 @@ import messages from './messages';
 import T from 'components/T';
 
 // style
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { get } from 'lodash-es';
 
 interface DataProps {
@@ -20,12 +21,17 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 const Container = styled.div`
   background: ${colors.lightGreyishBlue};
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.base}px;
+  line-height: 20px;
+  border: 1px solid #E7E7E7;
 `;
 
 const TipsTitle = styled.div`
@@ -35,13 +41,13 @@ const TipsTitle = styled.div`
   font-weight: 600;
 `;
 
-const SubP = styled.p`
-  &:not(:last-child) {
-    margin-bottom: 20px;
+const StyledQuillEditedContent = styled(QuillEditedContent)`
+  span:last-child ol, span:last-child ul {
+    margin-bottom: 0px;
   }
 `;
 
-const TipsBox = memo(({ tenant, className }: Props) => {
+const TipsBox = memo(({ tenant, className, theme }: Props) => {
   const eligibilityCriteriaMultiloc = get(tenant, 'attributes.settings.initiatives.eligibility_criteria');
 
   return (
@@ -52,9 +58,9 @@ const TipsBox = memo(({ tenant, className }: Props) => {
       <p>
         <FormattedMessage {...messages.tipsExplanation} />
       </p>
-      <SubP>
+      <p>
         <FormattedMessage {...messages.requirmentsListTitle} />
-      </SubP>
+      </p>
       <ul>
         <li>
           <FormattedMessage
@@ -78,9 +84,9 @@ const TipsBox = memo(({ tenant, className }: Props) => {
           <p>
             <FormattedMessage {...messages.eligibility} />
           </p>
-          <SubP>
-            <T value={eligibilityCriteriaMultiloc}/>
-          </SubP>
+          <StyledQuillEditedContent textColor={theme.colorText}>
+            <T value={eligibilityCriteriaMultiloc}  supportHtml={true}/>
+          </StyledQuillEditedContent>
         </>
       }
     </Container>
@@ -91,8 +97,10 @@ const Data = adopt<DataProps,  InputProps>({
   tenant: <GetTenant/>
 });
 
+const TipsBoxWithTheme = withTheme(TipsBox);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <TipsBox {...inputProps} {...dataProps} />}
+    {dataProps => <TipsBoxWithTheme {...inputProps} {...dataProps} />}
   </Data>
 );
