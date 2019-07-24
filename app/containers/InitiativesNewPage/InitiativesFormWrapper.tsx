@@ -39,7 +39,7 @@ interface InputProps {
 interface DataProps {
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State extends FormValues {
   initiativeId: string | null;
@@ -49,6 +49,7 @@ interface State extends FormValues {
   hasImageChanged: boolean;
   imageId: string | null;
   publishError: boolean;
+  apiErrors: any;
 }
 
 export default class InitiativesFormWrapper extends React.PureComponent<Props, State> {
@@ -75,7 +76,8 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       banner: undefined,
       image: undefined,
       files: [],
-      publishError: false
+      publishError: false,
+      apiErrors: null
     };
   }
 
@@ -86,9 +88,12 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
   }
 
   changedValues = () => {
-    const changedKeys = Object.keys(this.initialValues).filter((key) => (
-      !isEqual(this.initialValues[key], this.state[key])
-    ));
+    const changedKeys = Object.keys(this.initialValues).filter((key) => {
+      console.log(this.initialValues[key], this.state[key], !isEqual(this.initialValues[key], this.state[key]));
+      return (
+        !isEqual(this.initialValues[key], this.state[key])
+      );
+    });
     return pick(this.state, changedKeys);
   }
 
@@ -115,18 +120,18 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
     return { location_point_geojson, location_description };
   }
 
-  async getValuesToSend (changedValues: Partial<FormValues>, hasBannerChanged: boolean, banner: UploadFile | undefined | null) {
+  async getValuesToSend(changedValues: Partial<FormValues>, hasBannerChanged: boolean, banner: UploadFile | undefined | null) {
     // build API readable object
     const { title_multiloc, body_multiloc, topic_ids, position } = changedValues;
     const positionInfo = await this.parsePosition(position);
 
     // removes undefined values, not null values that are used to remove previously used values
     const formAPIValues = omitBy({
-        title_multiloc,
-        body_multiloc,
-        topic_ids,
-        ...positionInfo
-      }, (entry) => (entry === undefined));
+      title_multiloc,
+      body_multiloc,
+      topic_ids,
+      ...positionInfo
+    }, (entry) => (entry === undefined));
 
     if (hasBannerChanged) {
       formAPIValues.header_bg = banner ? banner.base64 : null;
@@ -140,8 +145,8 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
 
-    // if we're already saving, do nothing.
-    if (saving || publishing) return;
+    // if we're already publishing, do nothing.
+    if (publishing) return;
 
     // setting flags for user feedback and avoiding double sends.
     this.setState({ saving: true });
@@ -238,12 +243,12 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
 
       clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
     } catch (errorResponse) {
-      // const apiErrors = get(errorResponse, 'json.errors');
-      this.setState({ publishError: true });
+      console.log(errorResponse);
+      const apiErrors = get(errorResponse, 'json.errors');
+      this.setState((state) => ({ apiErrors: { ...state.apiErrors, ...apiErrors }, publishError: true }));
       setTimeout(() => {
         this.setState({ publishError: false });
       }, 5000);
-      // TODO: pass down API errors.
     }
     this.setState({ publishing: false });
   }
@@ -273,12 +278,18 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       addInitiativeFile(initiativeId, file.base64, file.name).then(res => {
         file.id = res.data.id;
         this.setState(({ files }) => ({ files: [...files, file], saving: false }));
-      }).catch(); // TODO error-handling for onAddFile
+      }).catch(errorResponse => {
+        const apiErrors = get(errorResponse, 'json.errors');
+        this.setState((state) => ({ apiErrors: { ...state.apiErrors, ...apiErrors } }));
+        setTimeout(() => {
+          this.setState(state => ({ apiErrors: { ...state.apiErrors, file: undefined } }));
+        }, 5000);
+      });
     }
   }
   onRemoveFile = (fileToRemove: UploadFile) => {
     const { initiativeId } = this.state;
-    this.setState(({ files }) => ({ files: files.filter(file =>  file.base64 !== fileToRemove.base64) }));
+    this.setState(({ files }) => ({ files: files.filter(file => file.base64 !== fileToRemove.base64) }));
     if (initiativeId && fileToRemove.id) {
       this.setState({ saving: true });
       deleteInitiativeFile(initiativeId, fileToRemove.id).then(() => this.setState({ saving: false }));
@@ -292,8 +303,8 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       return ({
         title_multiloc: get(initiative, 'attributes.title_multiloc', undefined) || undefined,
         body_multiloc: get(initiative, 'attributes.body_multiloc', undefined) || undefined,
-        topic_ids: get(initiative, 'relationships.topic_ids.data', []).map(topic => topic.id),
-        position: get(initiative, 'attributes.location_description', undefined) || undefined,
+        topic_ids: get(initiative, 'relationships.topics.data', []).map(topic => topic.id),
+        position: get(initiative, 'attributes.location_description', undefined) || undefined
       });
     }
   }
