@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
-export type InitiativeStatusCode = 'published' | 'expired' | 'threshold_reached' | 'answered' | 'ineligible' | 'custom';
+export type InitiativeStatusCode = 'proposed' | 'expired' | 'threshold_reached' | 'answered' | 'ineligible' | 'custom';
 
 export interface IInitiativeStatusData {
   id: string;

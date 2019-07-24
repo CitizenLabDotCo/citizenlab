@@ -134,7 +134,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
     return (
       <Container>
 
-        {statusCode === 'published' &&
+        {statusCode === 'proposed' &&
           <div>
             <VoteCounter>
               <VoteIcon name="upvote" />
