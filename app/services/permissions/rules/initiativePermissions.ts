@@ -11,6 +11,10 @@ export const canCommentOnInitiative = (user: IUser) => {
   return !isAdmin(user);
 };
 
+export const canModerateInitiative = (user: IUser) => {
+  return isAdmin(user);
+};
+
 definePermissionRule('initiatives', 'edit', (initiative: IInitiativeData, user: IUser) => {
   return !!(isAuthor(initiative, user) || isAdmin(user));
 });
