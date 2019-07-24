@@ -3,7 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 
 export interface IInviteData {
   id: string;
-  type: 'invites';
+  type: 'invite';
   attributes: {
     token: 'string';
     accepted_at: string;
@@ -15,13 +15,13 @@ export interface IInviteData {
     invitee: {
       data: {
         id: string;
-        type: 'votables';
+        type: 'votable';
       }
     },
     inviter: {
       data: {
         id: string;
-        type: 'users';
+        type: 'user';
       }
     }
   };

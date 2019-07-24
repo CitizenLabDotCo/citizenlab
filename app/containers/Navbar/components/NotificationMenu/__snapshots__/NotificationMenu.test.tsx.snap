@@ -52,7 +52,7 @@ exports[`<NotificationMenu /> renders correctly when everything is there 1`] = `
                 "initiating_user": Object {
                   "data": Object {
                     "id": "fe947bd3-9c67-40ed-96a3-9a12c4c73b46",
-                    "type": "users",
+                    "type": "user",
                   },
                 },
                 "invite": undefined,

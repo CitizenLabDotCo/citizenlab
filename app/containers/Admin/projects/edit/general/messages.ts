@@ -150,5 +150,5 @@ export default defineMessages({
   saveErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.saveErrorMessage',
     defaultMessage: 'An error occurred while saving your data. Please try again.',
-  },
+  }
 });

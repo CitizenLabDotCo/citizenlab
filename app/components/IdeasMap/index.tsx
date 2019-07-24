@@ -1,21 +1,21 @@
-// Libs
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import Leaflet from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
-// Services & utils
+// Utils
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // Components
-import Map from 'components/Map';
+import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import IdeaPreview from './IdeaPreview';
-import IdeaButton from './IdeaAddButton';
+import IdeaAddButton from './IdeaAddButton';
 
-// Injectors
+// Resources
 import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'resources/GetIdeaMarkers';
 
 // i18n
@@ -41,7 +41,6 @@ const StyledWarning = styled(Warning)`
 
 const StyledMap = styled(Map)`
   height: 600px;
-  margin-bottom: 2rem;
 
   ${media.smallerThanMaxTablet`
     height: 500px;
@@ -66,21 +65,35 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   selectedIdeaId: string | null;
+  points: Point[];
 }
 
 export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
-  private createIdeaButton: HTMLDivElement;
+  private addIdeaButtonElement: HTMLElement;
   private savedPosition: Leaflet.LatLng | null = null;
 
   constructor(props) {
     super(props);
     this.state = {
       selectedIdeaId: null,
+      points: []
     };
   }
 
+  componentDidMount() {
+    const points = this.getPoints(this.props.ideaMarkers);
+    this.setState({ points });
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.ideaMarkers !== this.props.ideaMarkers) {
+      const points = this.getPoints(this.props.ideaMarkers);
+      this.setState({ points });
+    }
+  }
+
   getPoints = (ideas: IGeotaggedIdeaData[] | null | undefined | Error) => {
-    const ideaPoints: any[] = [];
+    const ideaPoints: Point[] = [];
 
     if (!isNilOrError(ideas) && ideas.length > 0) {
       ideas.forEach((idea) => {
@@ -111,11 +124,11 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
   onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
     this.savedPosition = position;
 
-    if (this.props.projectIds && this.createIdeaButton) {
+    if (this.props.projectIds && this.addIdeaButtonElement) {
       Leaflet
         .popup()
         .setLatLng(position)
-        .setContent(this.createIdeaButton)
+        .setContent(this.addIdeaButtonElement)
         .openOn(map);
     }
 
@@ -125,6 +138,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
   redirectToIdeaCreation = () => {
     if (this.savedPosition && this.props.params && this.props.params.slug) {
       trackEventByName(tracks.createIdeaFromMap, { position: this.savedPosition, projectSlug: this.props.params.slug });
+
       clHistory.push({
         pathname: `/projects/${this.props.params.slug}/ideas/new`,
         query: { position: `[${this.savedPosition.lat}, ${this.savedPosition.lng}]` }
@@ -134,7 +148,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
 
   bindIdeaCreationButton = (element: HTMLDivElement) => {
     if (element) {
-      this.createIdeaButton = element;
+      this.addIdeaButtonElement = element;
     }
   }
 
@@ -142,8 +156,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { phaseId, projectIds, ideaMarkers, className } = this.props;
-    const { selectedIdeaId } = this.state;
-    const points = this.getPoints(ideaMarkers);
+    const { selectedIdeaId, points } = this.state;
 
     return (
       <Container className={className}>
@@ -162,7 +175,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
 
         {projectIds && projectIds.length === 1 &&
           <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
-            <IdeaButton
+            <IdeaAddButton
               projectId={projectIds[0]}
               phaseId={phaseId}
               onClick={this.redirectToIdeaCreation}
@@ -174,10 +187,14 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
+const Data = adopt<DataProps, InputProps>({
+  ideaMarkers: ({ projectIds, phaseId, render }) => <GetIdeaMarkers projectIds={projectIds} phaseId={phaseId}>{render}</GetIdeaMarkers>
+});
+
 const IdeasMapWithRouter = withRouter(IdeasMap);
 
 export default (inputProps: InputProps) => (
-  <GetIdeaMarkers projectIds={inputProps.projectIds} phaseId={inputProps.phaseId}>
-    {ideaMarkers => <IdeasMapWithRouter {...inputProps} ideaMarkers={ideaMarkers} />}
-  </GetIdeaMarkers>
+  <Data {...inputProps}>
+    {dataProps => <IdeasMapWithRouter {...inputProps} {...dataProps} />}
+  </Data>
 );

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
+import { isFinite, isEqual, isString, omitBy, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -87,10 +87,17 @@ const StyledA = styled.a`
 `;
 const LabelText = styled.div`
   margin-top: 15px;
+
+  &.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
   h3 {
     margin-bottom: 0;
     font-weight: 600;
   }
+
   p {
     color: ${colors.adminSecondaryTextColor};
   }
@@ -128,6 +135,7 @@ interface InputProps {
 interface Props extends DataProps, InputProps { }
 
 interface State extends IParticipationContextConfig {
+  saved_participation_method: ParticipationMethod | null;
   noVotingLimit: JSX.Element | null;
   noBudgetingAmount: JSX.Element | null;
   loaded: boolean;
@@ -139,6 +147,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
+      saved_participation_method: null,
       participation_method: 'ideation',
       posting_enabled: true,
       commenting_enabled: true,
@@ -170,6 +179,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       data$.subscribe((data) => {
         if (data) {
           const participation_method = data.data.attributes.participation_method as ParticipationMethod;
+          const saved_participation_method = participation_method;
           const {
             posting_enabled,
             commenting_enabled,
@@ -183,6 +193,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
           } = data.data.attributes;
 
           this.setState({
+            saved_participation_method,
             participation_method,
             posting_enabled,
             commenting_enabled,
@@ -345,6 +356,8 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
 
   render() {
     const {
+      projectId,
+      phaseId,
       tenant,
       apiErrors,
       surveys_enabled,
@@ -354,6 +367,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
     } = this.props;
     const className = this.props['className'];
     const {
+      saved_participation_method,
       participation_method,
       posting_enabled,
       commenting_enabled,
@@ -369,6 +383,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       noBudgetingAmount,
     } = this.state;
     const tenantCurrency = (!isNilOrError(tenant) ? tenant.attributes.settings.core.currency : '');
+    const hasSavedIdeaOrPBContext = ((isString(phaseId) || isString(projectId)) && (saved_participation_method === 'ideation' || saved_participation_method === 'budgeting'));
 
     if (loaded) {
       return (
@@ -413,15 +428,17 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     </LabelText>)}
                 />
               </FeatureFlag>
-              {surveys_enabled && (google_forms_enabled || survey_monkey_enabled || typeform_enabled) &&
+              {surveys_enabled &&
+               (google_forms_enabled || survey_monkey_enabled || typeform_enabled) &&
                 <Radio
                   onChange={this.handleParticipationMethodOnChange}
                   currentValue={participation_method}
                   value="survey"
                   name="participationmethod"
                   id={'participationmethod-survey'}
+                  disabled={hasSavedIdeaOrPBContext}
                   label={(
-                    <LabelText>
+                    <LabelText className={hasSavedIdeaOrPBContext ? 'disabled' : ''}>
                       <h3>
                         <FormattedMessage {...messages.survey} />
                       </h3>
@@ -437,8 +454,9 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 value="information"
                 name="participationmethod"
                 id="participationmethod-information"
+                disabled={hasSavedIdeaOrPBContext}
                 label={(
-                  <LabelText>
+                  <LabelText className={hasSavedIdeaOrPBContext ? 'disabled' : ''}>
                     <FormattedMessage tagName="h3" {...messages.information} />
                     <FormattedMessage tagName="p" {...messages.informationDescription} />
                   </LabelText>)}

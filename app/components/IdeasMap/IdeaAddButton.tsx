@@ -78,10 +78,6 @@ class IdeaAddButton extends PureComponent<Props, State> {
       authUser
     });
 
-    console.log(project);
-    console.log(show);
-    console.log(enabled);
-
     if (!show || !enabled) {
       return (
         <DisabledText>
@@ -99,7 +95,6 @@ class IdeaAddButton extends PureComponent<Props, State> {
       <Button
         onClick={this.props.onClick}
         icon="plus-circle"
-        style="primary"
         size="2"
         text={<FormattedMessage {...messages.postIdeaHere} />}
         disabled={!enabled}

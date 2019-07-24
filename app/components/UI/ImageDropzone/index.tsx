@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import Dropzone from 'react-dropzone';
 import { size } from 'lodash-es';
+import { reportError } from 'utils/loggingUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -26,6 +27,7 @@ import { UploadFile } from 'typings';
 const Container = styled.div`
   width: 100%;
   display: column;
+  margin-bottom: 10px;
 `;
 
 const ContentWrapper: any = styled.div`
@@ -108,7 +110,7 @@ const StyledDropzone = styled(Dropzone)`
   ` : css`
     cursor: pointer !important;
 
-    &:hover {
+    &:hover, &:focus-within {
       border-color: #000;
 
       ${DropzonePlaceholderText},
@@ -159,7 +161,7 @@ const RemoveIcon = styled(Icon)`
   transition: all 100ms ease-out;
 `;
 
-const RemoveButton: any = styled.div`
+const RemoveButton: any = styled.button`
   width: 30px;
   height: 30px;
   display: flex;
@@ -175,7 +177,7 @@ const RemoveButton: any = styled.div`
   background: rgba(0, 0, 0, 0.6);
   transition: all 100ms ease-out;
 
-  &:hover {
+  &:hover, &:focus-within {
     background: #000;
     border-color: #fff;
 
@@ -239,10 +241,6 @@ class ImageDropzone extends PureComponent<Props & InjectedIntlProps, State> {
       const errorMessage = (this.props.errorMessage && this.props.errorMessage !== this.state.errorMessage ? this.props.errorMessage : this.state.errorMessage);
       const processing = (this.state.canAnimate && !errorMessage && size(image) > size(this.state.image));
 
-      // if (processing) {
-      //   setTimeout(() => this.setState({ processing: false }), 1800);
-      // }
-
       this.setState({
         image,
         errorMessage,
@@ -253,18 +251,18 @@ class ImageDropzone extends PureComponent<Props & InjectedIntlProps, State> {
 
   getImageFiles = async (image: UploadFile | null) => {
     if (image) {
-        if (!image.base64) {
-          try {
-            image.base64 = await getBase64FromFile(image);
-          } catch (error) {
-            console.log(error);
-          }
-        }
-
-        if (!image.url) {
-          image.url = createObjectUrl(image);
+      if (!image.base64) {
+        try {
+          image.base64 = await getBase64FromFile(image);
+        } catch (error) {
+          reportError(error);
         }
       }
+
+      if (!image.url) {
+        image.url = createObjectUrl(image);
+      }
+    }
 
     return image;
   }
@@ -283,6 +281,10 @@ class ImageDropzone extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (images[0].size > maxSize) {
       const errorMessage = formatMessage(messages.errorImageMaxSizeExceeded, { maxFileSize: maxSize / 1000000 });
+      this.setState({ errorMessage });
+      setTimeout(() => this.setState({ errorMessage: null }), 6000);
+    } else {
+      const errorMessage = formatMessage(messages.unkownError);
       this.setState({ errorMessage });
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
     }
@@ -311,9 +313,9 @@ class ImageDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     let { acceptedFileTypes, objectFit } = this.props;
     const className = this.props['className'];
     const { maxImageFileSize,
-            maxImagePreviewWidth,
-            imagePreviewRatio,
-            imageRadius } = this.props;
+      maxImagePreviewWidth,
+      imagePreviewRatio,
+      imageRadius } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage, processing, image } = this.state;
 
@@ -354,13 +356,13 @@ class ImageDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                       <DropzonePlaceholderText>{formatMessage(messages.dropYourImageHere)}</DropzonePlaceholderText>
                     </DropzoneContent>
                   ) : (
-                    <DropzoneContent>
-                      <Spinner />
-                    </DropzoneContent>
-                  )}
+                      <DropzoneContent>
+                        <Spinner />
+                      </DropzoneContent>
+                    )}
                 </StyledDropzone>
               </Box>
-          )}
+            )}
         </ContentWrapper>
 
         <ErrorWrapper>

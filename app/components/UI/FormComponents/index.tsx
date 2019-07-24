@@ -12,7 +12,7 @@ import ContentContainer from 'components/ContentContainer';
 export const FormSection = styled.div`
   background: white;
   border-radius: ${({ theme }) => theme.borderRadius};
-  padding: 30px 40px;
+  padding: 50px 40px 30px;
   color: ${({ theme }) => theme.colorText};
   margin-bottom: 10px;
   max-width: 620px;
@@ -20,6 +20,7 @@ export const FormSection = styled.div`
   ${media.smallerThanMaxTablet`
     min-width: unset;
   `}
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05);
 `;
 
 const TitleContainer = styled.div`
@@ -56,7 +57,7 @@ export const FormSectionTitle = memo(({ message, values, subtitleMessage }: Form
 ));
 
 export const FormLabelStyled: any = styled.label`
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.base}px;
   color: ${({ theme }) => theme.colorText};
   font-weight: ${(props) => (props as any).thin ? 400 : 600};
   line-height: 21px;
@@ -67,16 +68,16 @@ export const FormLabelStyled: any = styled.label`
 `;
 
 export const FormSubtextStyled = styled.span`
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   color: ${colors.label};
-  font-weight: 300;
+  font-weight: 400;
 `;
 
 export const Spacer = styled.div`
   height: 12px;
 `;
 const OptionalText: any = styled.span`
-  font-weight: ${(props) => (props as any).thin ? 400 : 500};
+  font-weight: ${(props) => (props as any).thin ? 300 : 400};
 `;
 
 interface FormLabelGenericProps {

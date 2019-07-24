@@ -21,6 +21,7 @@ const Container = styled.div`
   line-height: 24px;
   padding: 10px 20px;
   margin-bottom: 10px;
+  margin-top: 10px;
 `;
 
 const Paperclip = styled(Icon)`

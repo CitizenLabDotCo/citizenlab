@@ -6,6 +6,8 @@ import { get } from 'lodash-es';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
+export type IdeaCommentingDisabledReason = 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | null
+
 export interface IIdeaData {
   id: string;
   type: string;
@@ -25,6 +27,27 @@ export interface IIdeaData {
     created_at: string;
     updated_at: string;
     published_at: string;
+    action_descriptor: {
+      voting:{
+        enabled: boolean,
+        future_enabled: string | null,
+        disabled_reason: 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'idea_not_in_current_phase' | 'not_permitted' | null
+        cancelling_enabled: boolean,
+      },
+      commenting: {
+        enabled: boolean,
+        future_enabled: string | null,
+        disabled_reason: IdeaCommentingDisabledReason,
+      },
+      comment_voting: {
+        enabled: boolean
+      },
+      budgeting: {
+        enabled: boolean,
+        future_enabled: string | null,
+        disabled_reason: 'project_inactive' | 'idea_not_in_current_phase' | 'not_permitted' | null,
+      }
+    }
   };
   relationships: {
     topics: {
@@ -39,7 +62,7 @@ export interface IIdeaData {
     author: {
       data: IRelationship | null;
     };
-    assignee: {
+    assignee?: {
       data: IRelationship | null;
     };
     phases: {
@@ -51,31 +74,8 @@ export interface IIdeaData {
     idea_status?: {
       data: IRelationship | null;
     },
-    user_vote: {
+    user_vote?: {
       data: IRelationship;
-    },
-    action_descriptor: {
-      data: {
-        voting:{
-          enabled: boolean,
-          future_enabled: string | null,
-          disabled_reason: 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'idea_not_in_current_phase' | 'not_permitted' | null
-          cancelling_enabled: boolean,
-        },
-        commenting: {
-          enabled: boolean,
-          future_enabled: string | null,
-          disabled_reason: 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | null,
-        },
-        comment_voting: {
-          enabled: boolean
-        },
-        budgeting: {
-          enabled: boolean,
-          future_enabled: string | null,
-          disabled_reason: 'project_inactive' | 'idea_not_in_current_phase' | 'not_permitted' | null,
-        }
-      }
     }
   };
 }
@@ -118,7 +118,7 @@ export interface IIdeas {
 
 export interface IdeaActivity {
   id: string;
-  type: 'activities';
+  type: 'activity';
   attributes: {
     action: string;
     acted_at: string;

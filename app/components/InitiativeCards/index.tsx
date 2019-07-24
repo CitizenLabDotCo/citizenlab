@@ -19,9 +19,13 @@ import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
 
 // resources
-import GetInitiatives, { Sort, GetInitiativesChildProps, InputProps as GetInitiativesInputProps, IQueryParameters } from 'resources/GetInitiatives';
+import GetInitiatives, { Sort, GetInitiativesChildProps, IQueryParameters } from 'resources/GetInitiatives';
 import GetInitiativesFilterCounts, { GetInitiativesFilterCountsChildProps } from 'resources/GetInitiativesFilterCounts';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+
+// utils
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import messages from './messages';
@@ -32,9 +36,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { darken, rgba } from 'polished';
-
-// typings
-import { ParticipationMethod } from 'services/participationContexts';
 
 const gapWidth = 35;
 
@@ -359,12 +360,7 @@ const Footer = styled.div`
 
 const ShowMoreButton = styled(Button)``;
 
-interface InputProps extends GetInitiativesInputProps  {
-  showViewToggle?: boolean | undefined;
-  defaultView?: 'card' | 'map' | null | undefined;
-  participationMethod?: ParticipationMethod | null;
-  participationContextId?: string | null;
-  participationContextType?: 'Phase' | 'Project' | null;
+interface InputProps  {
   className?: string;
 }
 
@@ -379,21 +375,18 @@ interface Props extends InputProps, DataProps {
 }
 
 interface State {
-  selectedView: 'card' | 'map';
+  selectedView: 'list' | 'map';
   filtersModalOpened: boolean;
   selectedInitiativeFilters: Partial<IQueryParameters>;
   previouslySelectedInitiativeFilters: Partial<IQueryParameters> | null;
 }
 
 class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
-  static defaultProps = {
-    showViewToggle: false
-  };
 
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      selectedView: (props.defaultView || 'card'),
+      selectedView: 'list',
       filtersModalOpened: false,
       selectedInitiativeFilters: get(props.initiatives, 'queryParameters', {}),
       previouslySelectedInitiativeFilters: null
@@ -511,8 +504,16 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   }
 
-  selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
+  selectListView = (event: FormEvent<any>) => {
     event.preventDefault();
+    const selectedView = 'list';
+    trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
+    this.setState({ selectedView });
+  }
+
+  selectMapView = (event: FormEvent<any>) => {
+    event.preventDefault();
+    const selectedView = 'map';
     trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
     this.setState({ selectedView });
   }
@@ -527,11 +528,9 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { selectedView, selectedInitiativeFilters, filtersModalOpened } = this.state;
-    const { participationMethod, participationContextId, participationContextType, initiatives, initiativesFilterCounts, windowSize, className, theme, showViewToggle } = this.props;
-    const { queryParameters, list, hasMore, querying, loadingMore } = initiatives;
+    const { initiatives, initiativesFilterCounts, windowSize, className, theme } = this.props;
+    const { list, hasMore, querying, loadingMore } = initiatives;
     const hasInitiatives = (!isNilOrError(list) && list.length > 0);
-    const showCardView = (selectedView === 'card');
-    const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
 
@@ -622,18 +621,22 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
-                {showViewToggle &&
-                  <FeatureFlag name="maps">
-                    <ViewButtons className={`${showCardView && 'cardView'}`}>
-                      <CardsButton onClick={this.selectView('card')} className={`${showCardView && 'active'}`}>
-                        <FormattedMessage {...messages.cards} />
-                      </CardsButton>
-                      <MapButton onClick={this.selectView('map')} className={`${showMapView && 'active'}`}>
-                        <FormattedMessage {...messages.map} />
-                      </MapButton>
-                    </ViewButtons>
-                  </FeatureFlag>
-                }
+                <FeatureFlag name="maps">
+                  <ViewButtons>
+                    <CardsButton
+                      onClick={this.selectListView}
+                      className={selectedView === 'list' ? 'active' : ''}
+                    >
+                      <FormattedMessage {...messages.cards} />
+                    </CardsButton>
+                    <MapButton
+                      onClick={this.selectMapView}
+                      className={selectedView === 'map' ? 'active' : ''}
+                    >
+                      <FormattedMessage {...messages.map} />
+                    </MapButton>
+                  </ViewButtons>
+                </FeatureFlag>
 
                 {!isNilOrError(initiativesFilterCounts) &&
                   <InitiativesCount>
@@ -644,7 +647,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
               <Spacer />
 
-              {!showMapView &&
+              {selectedView === 'list' &&
                 <AboveContentRight>
                   <SortFilterDropdown
                     onChange={this.handleSortOnChange}
@@ -656,21 +659,18 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <ContentLeft>
-                {showCardView && !querying && hasInitiatives && list &&
+                {selectedView === 'list' && !querying && hasInitiatives && list &&
                   <InitiativesList id="e2e-initiatives-list">
                     {list.map((initiative) => (
                       <StyledInitiativeCard
                         key={initiative.id}
                         initiativeId={initiative.id}
-                        participationMethod={participationMethod}
-                        participationContextId={participationContextId}
-                        participationContextType={participationContextType}
                       />
                     ))}
                   </InitiativesList>
                 }
 
-                {showCardView && !querying && hasMore &&
+                {selectedView === 'list' && !querying && hasMore &&
                   <Footer>
                     <ShowMoreButton
                       id="e2e-initiative-cards-show-more-button"
@@ -690,7 +690,11 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   </Footer>
                 }
 
-                {showCardView && querying &&
+                {selectedView === 'map' &&
+                  <InitiativesMap />
+                }
+
+                {selectedView === 'list' && querying &&
                   <Loading id="initiatives-loading">
                     <Spinner />
                   </Loading>
@@ -727,7 +731,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize debounce={50} />,
-  initiatives: ({ render, children, ...getInitiativesInputProps }) => <GetInitiatives {...getInitiativesInputProps} pageSize={12} sort="random">{render}</GetInitiatives>,
+  initiatives: <GetInitiatives type="load-more" publicationStatus="published" />,
   initiativesFilterCounts: ({ initiatives, render }) => <GetInitiativesFilterCounts queryParameters={get(initiatives, 'queryParameters', null)}>{render}</GetInitiativesFilterCounts>
 });
 
