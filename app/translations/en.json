@@ -1336,6 +1336,8 @@
   "app.containers.InitiativesShow.VoteControl.days": "days",
   "app.containers.InitiativesShow.VoteControl.hours": "hours",
   "app.containers.InitiativesShow.VoteControl.minutes": "mins",
+  "app.containers.InitiativesShow.VoteControl.proposedStatusExplanation": "{votingThreshold} votes needed to get this initiative {proposedStatusExplanationBold}",
+  "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationBold": "considered by {orgName}",
   "app.containers.InitiativesShow.emailSharingBody": "What do you think of this idea? Vote on it and share the discussion at {initiativeUrl} to make your voice heard!",
   "app.containers.InitiativesShow.emailSharingSubject": "Support my idea: {initiativeTitle}.",
   "app.containers.InitiativesShow.learnMore": "Learn more about initiatives",
