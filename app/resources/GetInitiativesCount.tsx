@@ -2,7 +2,7 @@ import React from 'react';
 import { isString, isEmpty, isEqual } from 'lodash-es';
 import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { map, startWith, distinctUntilChanged, tap, debounceTime, switchMap } from 'rxjs/operators';
-import { initiativesFilterCountsStream } from 'services/initiatives'; // TODO use stats endpoint
+import { initiativesCount } from 'services/stats'; // TODO use stats endpoint
 import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -113,17 +113,17 @@ export default class GetInitiativesCount extends React.Component<Props, State> {
     this.subscriptions = [
       queryParametersOutput$.pipe(
         switchMap((queryParameters) => {
-          return initiativesFilterCountsStream({
+          return initiativesCount({
             queryParameters,
           }).observable.pipe(
-            map(initiativesFilterCountsStream => ({ queryParameters, initiativesFilterCountsStream }))
+            map(initiativesCount => ({ queryParameters, initiativesCount }))
           );
         })
       )
-        .subscribe(({ initiativesFilterCountsStream, queryParameters }) => {
+        .subscribe(({ initiativesCount, queryParameters }) => {
           this.setState({
             queryParameters,
-            count: isNilOrError(initiativesFilterCountsStream) ? initiativesFilterCountsStream : initiativesFilterCountsStream.total,
+            count: isNilOrError(initiativesCount) ? initiativesCount : initiativesCount.count,
             querying: false
           });
         })
