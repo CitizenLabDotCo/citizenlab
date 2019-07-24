@@ -2,11 +2,8 @@ import React, { memo, useCallback, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { orderBy } from 'lodash-es';
 
-// Components
-import Button from 'components/UI/Button';
-
 // styles
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
 
@@ -81,11 +78,9 @@ interface DataProps {
   topics: GetTopicsChildProps;
 }
 
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
+interface Props extends InputProps, DataProps {}
 
-const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, theme, className }: Props & InjectedLocalized) => {
+const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, className }: Props & InjectedLocalized) => {
   const handleOnChange = (topicId: string) => (event) => {
     event.stopPropagation();
     event.preventDefault();
@@ -140,7 +135,7 @@ const Data = adopt<DataProps,  InputProps>({
   topics: <GetTopics />
 });
 
-const TopicsPickerWithHoc = withTheme(injectLocalize(TopicsPicker));
+const TopicsPickerWithHoc = injectLocalize(TopicsPicker);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
