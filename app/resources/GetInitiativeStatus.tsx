@@ -4,6 +4,7 @@ import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IInitiativeStatusData, initiativeStatusStream } from 'services/initiativeStatuses';
 import { isString } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   id: string | null;
@@ -48,7 +49,9 @@ export default class GetInitiativeStatus extends React.Component<Props, State> {
 
           return of(null);
         })
-      ).subscribe((initiativeStatus) => this.setState({ initiativeStatus: initiativeStatus ? initiativeStatus.data : null }))
+      ).subscribe((initiativeStatus) => this.setState({
+        initiativeStatus: !isNilOrError(initiativeStatus) ? initiativeStatus.data : null
+      }))
     ];
   }
 
