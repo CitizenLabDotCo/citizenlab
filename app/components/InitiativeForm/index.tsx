@@ -50,6 +50,7 @@ interface Props extends FormValues, FormProps {
   onRemoveFile: (newValue: UploadFile) => void;
   locale: Locale;
   publishError: boolean;
+  apiErrors: any;
 }
 
 interface State {
@@ -160,14 +161,13 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       onAddFile,
       onRemoveFile,
       publishError,
-      intl: { formatMessage }
+      intl: { formatMessage },
+      apiErrors
     } = this.props;
 
     const { touched, errors } = this.state;
 
     const status = Object.values(errors).every(val => val === undefined) ? 'enabled' : 'disabled';
-
-    console.log(touched, errors);
 
     return (
       <form>
@@ -187,8 +187,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 shownLocale={locale}
               />
               {touched.title_multiloc
-                && errors.title_multiloc
-                && <Error message={errors.title_multiloc.message} />}
+                && errors.title_multiloc ? <Error message={errors.title_multiloc.message} />
+                : apiErrors && apiErrors.title_multiloc && <Error apiErrors={apiErrors.title_multiloc} />
+              }
             </FormLabel>
           </SectionField>
 
@@ -207,8 +208,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onBlur={this.onBlur('body_multiloc')}
               />
               {touched.body_multiloc
-                && errors.body_multiloc
-                && <Error message={errors.body_multiloc.message} />}
+                && errors.body_multiloc ? <Error message={errors.body_multiloc.message} />
+                : apiErrors && apiErrors.body_multiloc && <Error apiErrors={apiErrors.body_multiloc} />
+              }
             </FormLabel>
           </SectionField>
         </FormSection>
@@ -229,8 +231,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               onChange={this.changeAndSaveTopics}
             />
             {touched.topic_ids
-              && errors.topic_ids
-              && <Error message={errors.topic_ids.message} />}
+              && errors.topic_ids ? <Error message={errors.topic_ids.message} />
+              : apiErrors && apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
+            }
           </SectionField>
           <SectionField>
             <FormLabel
@@ -264,6 +267,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 onChange={this.changeAndSaveBanner}
               />
+              {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />
+              }
             </FormLabel>
           </SectionField>
 
@@ -294,6 +299,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               onFileAdd={onAddFile}
               onFileRemove={onRemoveFile}
               files={files}
+              errors={apiErrors}
             />
           </SectionField>
         </FormSection>
