@@ -17,6 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
 import { colors, fontSizes } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
 
 const Container = styled.div``;
 
@@ -62,6 +63,10 @@ const VoteTextRight = styled.div`
 const StyledProgressBar = styled(ProgressBar)`
   height: 12px;
   width: 100%;
+`;
+
+const StyledButton = styled(Button)`
+  margin-top: 20px;
 `;
 
 interface InputProps {
@@ -127,6 +132,12 @@ class ProposedVoteControl extends PureComponent<Props & { theme: any }> {
             bgColor={colors.lightGreyishBlue}
           />
         </VoteCounter>
+        <StyledButton
+          icon="upvote"
+          style="primary"
+        >
+          <FormattedMessage {...messages.vote} />
+        </StyledButton>
       </Container>
     );
   }
