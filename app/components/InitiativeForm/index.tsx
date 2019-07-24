@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { get } from 'lodash-es';
+import { stripHtmlTags } from 'utils/helperUtils';
 
 // Components
-import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter, FormError } from 'components/UI/FormComponents';
+import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import InputMultiloc from 'components/UI/InputMultiloc';
@@ -11,6 +12,7 @@ import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import LocationInput from 'components/UI/LocationInput';
 import ImageDropzone from 'components/UI/ImageDropzone';
 import FileUploader from 'components/UI/FileUploader';
+import Error from 'components/UI/Error';
 
 // intl
 import messages from './messages';
@@ -48,6 +50,7 @@ interface Props extends FormValues, FormProps {
   onRemoveFile: (newValue: UploadFile) => void;
   locale: Locale;
   publishError: boolean;
+  apiErrors: any;
 }
 
 interface State {
@@ -93,7 +96,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     body_multiloc: () => {
       const { body_multiloc } = this.props;
       const body = body_multiloc ? body_multiloc[this.props.locale] : undefined;
-      if (body && body.length < InitiativeForm.bodyMinLength && body.length > 0) {
+      if (body && stripHtmlTags(body).length < InitiativeForm.bodyMinLength && body.length > 0) {
         return { message: messages.descriptionLengthError };
       } else if (!body || body === '') {
         return { message: messages.descriptionEmptyError };
@@ -158,7 +161,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       onAddFile,
       onRemoveFile,
       publishError,
-      intl: { formatMessage }
+      intl: { formatMessage },
+      apiErrors
     } = this.props;
 
     const { touched, errors } = this.state;
@@ -182,10 +186,11 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onBlur={this.onBlur('title_multiloc')}
                 shownLocale={locale}
               />
+              {touched.title_multiloc
+                && errors.title_multiloc ? <Error message={errors.title_multiloc.message} />
+                : apiErrors && apiErrors.title_multiloc && <Error apiErrors={apiErrors.title_multiloc} />
+              }
             </FormLabel>
-            {touched.title_multiloc
-            && errors.title_multiloc
-            && <FormError message={errors.title_multiloc.message} />}
           </SectionField>
 
           <SectionField>
@@ -202,10 +207,11 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 noAlign
                 onBlur={this.onBlur('body_multiloc')}
               />
+              {touched.body_multiloc
+                && errors.body_multiloc ? <Error message={errors.body_multiloc.message} />
+                : apiErrors && apiErrors.body_multiloc && <Error apiErrors={apiErrors.body_multiloc} />
+              }
             </FormLabel>
-            {touched.body_multiloc
-            && errors.body_multiloc
-            && <FormError message={errors.body_multiloc.message} />}
           </SectionField>
         </FormSection>
 
@@ -225,8 +231,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               onChange={this.changeAndSaveTopics}
             />
             {touched.topic_ids
-            && errors.topic_ids
-            && <FormError message={errors.topic_ids.message} />}
+              && errors.topic_ids ? <Error message={errors.topic_ids.message} />
+              : apiErrors && apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
+            }
           </SectionField>
           <SectionField>
             <FormLabel
@@ -235,6 +242,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               optional
             >
               <LocationInput
+                inCitizen
                 value={position || ''}
                 onChange={onChangePosition}
                 onBlur={this.onBlur('position')}
@@ -259,6 +267,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 onChange={this.changeAndSaveBanner}
               />
+              {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />
+              }
             </FormLabel>
           </SectionField>
 
@@ -274,6 +284,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 onChange={this.changeAndSaveImage}
               />
+              {touched.image
+                && errors.image
+                && <Error message={errors.image.message} />}
             </FormLabel>
           </SectionField>
           <SectionField>
@@ -282,11 +295,12 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               subtextMessage={messages.fileUploadLabelSubtext}
               optional
             />
-              <FileUploader
-                onFileAdd={onAddFile}
-                onFileRemove={onRemoveFile}
-                files={files}
-              />
+            <FileUploader
+              onFileAdd={onAddFile}
+              onFileRemove={onRemoveFile}
+              files={files}
+              errors={apiErrors}
+            />
           </SectionField>
         </FormSection>
         <FormSubmitFooter
