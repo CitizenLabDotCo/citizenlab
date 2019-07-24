@@ -86,7 +86,6 @@ const LoadMore = styled.button`
 `;
 
 interface InputProps {
-  ideaId: string;
   commentId: string;
   childCommentIds: string[] | false;
   className?: string;
@@ -171,7 +170,8 @@ class ParentComment extends PureComponent<Props, State> {
     const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
-      const ideaId = comment.relationships.post.data.id;
+      const ideaId = idea.id;
+      const projectId = idea.relationships.project.data.id;
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
       const showCommentForm = (authUser && commentingEnabled && !commentDeleted);
@@ -188,8 +188,8 @@ class ParentComment extends PureComponent<Props, State> {
         <Container className={`e2e-parent-and-childcomments ${className}`}>
           <ParentCommentContainer className={`${commentDeleted && 'deleted'}`}>
             <Comment
-              ideaId={idea.id}
-              projectId={idea.relationships.project.data.id}
+              ideaId={ideaId}
+              projectId={projectId}
               commentId={comment.id}
               commentType="parent"
               hasBottomBorder={!(canLoadMore && !hasLoadedMore)}
@@ -217,7 +217,7 @@ class ParentComment extends PureComponent<Props, State> {
           {childCommentIds && childCommentIds.length > 0 && childCommentIds.map((childCommentId, index) => (
             <Comment
               ideaId={idea.id}
-              projectId={idea.relationships.project.data.id}
+              projectId={projectId}
               key={childCommentId}
               commentId={childCommentId}
               commentType="child"
@@ -229,7 +229,7 @@ class ParentComment extends PureComponent<Props, State> {
           {showCommentForm &&
             <ChildCommentForm
               ideaId={ideaId}
-              projectId={idea.relationships.project.data.id}
+              projectId={projectId}
               parentId={commentId}
               waitForChildCommentsRefetch={!isNilOrError(childComments)}
             />
