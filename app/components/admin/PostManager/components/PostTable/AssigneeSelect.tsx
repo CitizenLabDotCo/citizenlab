@@ -11,6 +11,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+import { ManagerType } from '../..';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -79,7 +80,7 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps> {
 const Data = adopt<DataProps, InputProps>({
   prospectAssignees: ({ projectId, render }) => projectId
     ? <GetUsers canModerateProject={projectId}>{render}</GetUsers>
-    : <GetUsers canModerate>{render}</GetUsers>,
+    : <GetUsers canAdmin>{render}</GetUsers>,
   authUser: <GetAuthUser />
 });
 

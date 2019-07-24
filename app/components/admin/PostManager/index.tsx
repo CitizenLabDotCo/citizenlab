@@ -273,6 +273,7 @@ export class PostManager extends React.PureComponent<Props, State> {
             assignee={selectedAssignee}
             projectId={type === 'ProjectIdeas' ? projectId : null}
             handleAssigneeFilterChange={onChangeAssignee}
+            type={type}
           />
           <FeedbackToggle
             type={type}

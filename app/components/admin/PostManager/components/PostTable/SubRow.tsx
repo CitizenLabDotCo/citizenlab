@@ -21,7 +21,7 @@ interface Props {
   phases?: IPhaseData[];
   selectedTopics?: string[];
   projectId?: string;
-  statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
+  statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | undefined;
   selectedStatus: string | undefined;
   onUpdatePhases: (id: string[]) => void;
   onUpdateTopics: (id: string[]) => void;
