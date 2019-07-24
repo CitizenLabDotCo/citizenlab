@@ -167,7 +167,3 @@ export interface IInitiativesFilterCounts {
   };
   total: number;
 }
-
-export function initiativesFilterCountsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IInitiativesFilterCounts>({ apiEndpoint: `${API_PATH}/initiatives/filter_counts`, ...streamParams, cacheStream: false });
-}

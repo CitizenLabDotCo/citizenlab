@@ -16,6 +16,7 @@ import messages from '../../messages';
 
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
+import { ManagerType } from '../..';
 
 interface DataProps {
   prospectAssignees: GetUsersChildProps;
@@ -26,6 +27,7 @@ interface InputProps {
   handleAssigneeFilterChange: (value: string) => void;
   projectId?: string | null;
   assignee?: string | null;
+  type: ManagerType;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -92,9 +94,10 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
 
 // TODO only admins for initiatives
 const Data = adopt<DataProps, InputProps>({
-  prospectAssignees: ({ projectId, render }) => projectId
+  prospectAssignees: ({ type, projectId, render }) => type === 'ProjectIdeas' && projectId
     ? <GetUsers canModerateProject={projectId} pageSize={250}>{render}</GetUsers>
-    : <GetUsers canModerate pageSize={250}>{render}</GetUsers>,
+    : type === 'AllIdeas' ? <GetUsers canModerate pageSize={250}>{render}</GetUsers>
+    : <GetUsers canAdmin pageSize={250}>{render}</GetUsers>,
   authUser: <GetAuthUser />
 });
 

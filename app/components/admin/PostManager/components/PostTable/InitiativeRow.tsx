@@ -115,7 +115,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
     const selectedStatusObject = statuses && statuses.find(status => status.id === selectedStatus);
 
     if (selectedStatusObject && !isNilOrError(tenant) && tenant.attributes.settings.initiatives) {
-      if (selectedStatusObject.attributes.code === 'published') {
+      if (selectedStatusObject.attributes.code === 'proposed') {
         const startingTime = moment(initiative.attributes.published_at).startOf('day');
         const daysSinceStart = moment().diff(startingTime, 'days');
         const timeSpanDays = tenant.attributes.settings.initiatives.days_limit || 0;
