@@ -81,7 +81,7 @@ interface GlobalState {
   description: string | null;
   selectedTopics: string[];
   budget: number | null;
-  address: string;
+  position: string;
   imageFile: UploadFile[];
   submitError: boolean;
   processing: boolean;
@@ -100,7 +100,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       description: null,
       selectedTopics: [],
       budget: null,
-      address: '',
+      position: '',
       imageFile: [],
       submitError: false,
       processing: false
@@ -118,7 +118,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
         description,
         selectedTopics,
         budget,
-        address,
+        position,
         imageFile,
         submitError,
         processing
@@ -128,7 +128,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           description,
           selectedTopics,
           budget,
-          address,
+          position,
           imageFile,
           submitError,
           processing
@@ -148,13 +148,13 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
   }
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
-    const { title, description, selectedTopics, budget, address, imageFile, ideaFiles } = ideaFormOutput;
-    this.globalState.set({ title, description, selectedTopics, budget, address, imageFile, ideaFiles });
+    const { title, description, selectedTopics, budget, address: position, imageFile, ideaFiles } = ideaFormOutput;
+    this.globalState.set({ title, description, selectedTopics, budget, position, imageFile, ideaFiles });
     this.props.onSubmit();
   }
 
   render() {
-    const { title, description, selectedTopics, budget, address, imageFile, submitError, processing } = this.state;
+    const { title, description, selectedTopics, budget, position, imageFile, submitError, processing } = this.state;
     const { projectId } = this.props;
     const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
@@ -170,7 +170,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           description={description}
           selectedTopics={selectedTopics}
           budget={budget}
-          address={address}
+          address={position}
           imageFile={imageFile}
           onSubmit={this.handleIdeaFormOutput}
         />

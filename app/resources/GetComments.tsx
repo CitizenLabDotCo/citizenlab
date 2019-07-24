@@ -1,15 +1,16 @@
 import React from 'react';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { distinctUntilChanged, mergeScan, map, switchMap, tap } from 'rxjs/operators';
-import { ICommentData, commentsForIdeaStream, CommentsSort } from 'services/comments';
-import { unionBy } from 'lodash-es';
+import { ICommentData, commentsForIdeaStream, commentsForInitiativeStream, CommentsSort } from 'services/comments';
+import { unionBy, isString, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 type children = (renderProps: GetCommentsChildProps) => JSX.Element | null;
 
 interface Props {
-  ideaId: string;
+  postId: string;
   children?: children;
+  postType: 'idea' | 'initiative';
 }
 
 interface State {
@@ -31,7 +32,8 @@ export interface GetCommentsChildProps extends State {
 }
 
 export default class GetComments extends React.Component<Props, State> {
-  private ideaId$: BehaviorSubject<string>;
+  private postId$: BehaviorSubject<string>;
+  private postType$: BehaviorSubject<string>;
   private sort$: BehaviorSubject<CommentsSort>;
   private loadMore$: BehaviorSubject<null>;
   private subscription: Subscription;
@@ -52,15 +54,17 @@ export default class GetComments extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.ideaId$ = new BehaviorSubject(this.props.ideaId);
+    this.postId$ = new BehaviorSubject(this.props.postId);
+    this.postType$ = new BehaviorSubject(this.props.postType);
     this.sort$ = new BehaviorSubject(this.initialQueryParameters.sort);
     this.loadMore$ = new BehaviorSubject(null);
 
     this.subscription = combineLatest(
-      this.ideaId$.pipe(distinctUntilChanged()),
+      this.postId$.pipe(distinctUntilChanged()),
+      this.postType$.pipe(distinctUntilChanged()),
       this.sort$.pipe(distinctUntilChanged())
     ).pipe(
-      switchMap(([ideaId, sort]) => {
+      switchMap(([postId, postType, sort]) => {
         let commentsList: ICommentData[] | undefined | null | Error = undefined;
         let pageNumber = this.initialQueryParameters.pageNumber;
         const pageSize = this.initialQueryParameters.pageSize;
@@ -74,7 +78,9 @@ export default class GetComments extends React.Component<Props, State> {
           mergeScan(() => {
             pageNumber = pageNumber + 1;
 
-            return commentsForIdeaStream(ideaId, {
+            const commentsStream = postType === 'idea' ? commentsForIdeaStream : commentsForInitiativeStream;
+
+            return commentsStream(postId, {
               queryParameters: {
                 sort,
                 'page[number]': pageNumber,
@@ -82,7 +88,9 @@ export default class GetComments extends React.Component<Props, State> {
               }
             }).observable.pipe(
               map((comments) => {
-                hasMore = ((pageNumber * pageSize) < comments.meta.total);
+                const selfLink = get(comments, 'links.self');
+                const lastLink = get(comments, 'links.last');
+                hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
                 commentsList = !isNilOrError(commentsList) ? unionBy(commentsList, comments.data, 'id') : comments.data;
                 return null;
             }));
@@ -101,7 +109,7 @@ export default class GetComments extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    this.ideaId$.next(this.props.ideaId);
+    this.postId$.next(this.props.postId);
   }
 
   componentWillUnmount() {

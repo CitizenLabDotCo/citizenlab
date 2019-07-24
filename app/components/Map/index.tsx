@@ -18,7 +18,7 @@ import 'leaflet.markercluster';
 import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
 import { darken, lighten } from 'polished';
-import { colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 const icon = require('./marker.svg');
 
@@ -37,6 +37,14 @@ const BoxContainer = styled.div`
   padding: 30px;
   position: relative;
   background: #fff;
+
+  ${media.smallerThanMaxTablet`
+    flex: 0 0 40%;
+  `}
+
+  ${media.smallerThanMinTablet`
+    flex: 0 0 70%;
+  `}
 `;
 
 const CloseIcon = styled(Icon)`
@@ -72,7 +80,7 @@ const CloseButton = styled.div`
 `;
 
 const MapContainer = styled.div`
-  flex: 1 1 100%;
+  flex: 1;
 
   .leaflet-container {
     height: 100%;
@@ -100,7 +108,7 @@ const customIcon = Leaflet.icon({
   iconAnchor: [14, 41],
 });
 
-interface Point extends GeoJSON.Point {
+export interface Point extends GeoJSON.Point {
   data?: any;
   id: string;
   title?: string;

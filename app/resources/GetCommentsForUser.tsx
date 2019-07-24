@@ -2,7 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { ICommentData, commentsForUserStream, IComments } from 'services/comments';
-import { get } from 'lodash-es';
+import { get, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -72,10 +72,10 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
           });
         } else {
           const { loadingMore, commentsList } = this.state;
-          // is this the last page ?
-          const selfLink = get(newComments, 'meta.current_page');
-          const lastLink = get(newComments, 'meta.total_pages');
-          const hasMore = (Number.isInteger(selfLink) && Number.isInteger(lastLink) && selfLink !== lastLink);
+          // is this the last page?
+          const selfLink = get(newComments, 'links.self');
+          const lastLink = get(newComments, 'links.last');
+          const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
 
           // if we had not set loading more, we should'nt aggregate the content,
           // it's either first load for this id or a refetch

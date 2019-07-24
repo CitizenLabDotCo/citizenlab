@@ -68,7 +68,7 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => !isNilOrError(idea) ? <GetProject id={idea.relationships.project.data.id} >{render}</GetProject> : null,
   permission: ({ project, render }) => !isNilOrError(project) ? <GetPermission item={project} action="moderate" >{render}</GetPermission> : null,
-  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks ideaId={ideaId}>{render}</GetOfficialFeedbacks>
+  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>
 });
 
 export default (inputProps: InputProps) => (

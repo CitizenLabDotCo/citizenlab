@@ -50,6 +50,14 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.statusChangedOfYourIdea',
     defaultMessage: '\'{ideaTitle}\' status has changed to {status}',
   },
+  statusChangeOnVotedIdea: {
+    id: 'app.containers.NotificationMenu.statusChangeOnVotedIdea',
+    defaultMessage: 'The status of an idea you voted for changed to {status}',
+  },
+  statusChangeOnCommentedIdea: {
+    id: 'app.containers.NotificationMenu.statusChangeOnCommentedIdea',
+    defaultMessage: 'The status of an idea you commented on changed to {status}',
+  },
   userAcceptedYourInvitation: {
     id: 'app.containers.NotificationMenu.userAcceptedYourInvitation',
     defaultMessage: '{name} accepted your invitation',

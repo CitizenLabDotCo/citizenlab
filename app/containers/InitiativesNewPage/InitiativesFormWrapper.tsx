@@ -17,7 +17,7 @@ import styled from 'styled-components';
 
 // intl
 import { convertToGeoJson } from 'utils/locationTools';
-import { isEqual, pick, get, omitBy, isEmpty } from 'lodash-es';
+import { isEqual, pick, get, omitBy, isEmpty, debounce } from 'lodash-es';
 import { Point } from 'geojson';
 import { addInitiativeImage, deleteInitiativeImage } from 'services/initiativeImages';
 import { deleteInitiativeFile, addInitiativeFile } from 'services/initiativeFiles';
@@ -39,7 +39,7 @@ interface InputProps {
 interface DataProps {
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State extends FormValues {
   initiativeId: string | null;
@@ -49,6 +49,7 @@ interface State extends FormValues {
   hasImageChanged: boolean;
   imageId: string | null;
   publishError: boolean;
+  apiErrors: any;
 }
 
 export default class InitiativesFormWrapper extends React.PureComponent<Props, State> {
@@ -75,20 +76,23 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       banner: undefined,
       image: undefined,
       files: [],
-      publishError: false
+      publishError: false,
+      apiErrors: null
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     addInitiative({ publication_status: 'draft' }).then(initiative => {
       this.setState({ initiativeId: initiative.data.id });
     });
   }
 
   changedValues = () => {
-    const changedKeys = Object.keys(this.initialValues).filter((key) => (
-      !isEqual(this.initialValues[key], this.state[key])
-    ));
+    const changedKeys = Object.keys(this.initialValues).filter((key) => {
+      return (
+        !isEqual(this.initialValues[key], this.state[key])
+      );
+    });
     return pick(this.state, changedKeys);
   }
 
@@ -115,18 +119,18 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
     return { location_point_geojson, location_description };
   }
 
-  async getValuesToSend (changedValues: Partial<FormValues>, hasBannerChanged: boolean, banner: UploadFile | undefined | null) {
+  async getValuesToSend(changedValues: Partial<FormValues>, hasBannerChanged: boolean, banner: UploadFile | undefined | null) {
     // build API readable object
     const { title_multiloc, body_multiloc, topic_ids, position } = changedValues;
     const positionInfo = await this.parsePosition(position);
 
     // removes undefined values, not null values that are used to remove previously used values
     const formAPIValues = omitBy({
-        title_multiloc,
-        body_multiloc,
-        topic_ids,
-        ...positionInfo
-      }, (entry) => (entry === undefined));
+      title_multiloc,
+      body_multiloc,
+      topic_ids,
+      ...positionInfo
+    }, (entry) => (entry === undefined));
 
     if (hasBannerChanged) {
       formAPIValues.header_bg = banner ? banner.base64 : null;
@@ -137,19 +141,17 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
   handleSave = async () => {
     const changedValues = this.changedValues();
     const { initiativeId, hasBannerChanged, hasImageChanged, image, banner, saving, publishing } = this.state;
-
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
 
-    // if we're already saving, do nothing.
-    if (saving || publishing) return;
+    // if we're already publishing, do nothing.
+    if (saving) return;
 
     // setting flags for user feedback and avoiding double sends.
     this.setState({ saving: true });
 
     try {
       const formAPIValues = await this.getValuesToSend(changedValues, hasBannerChanged, banner);
-
       // save any changes to the initiative data.
       if (!isEmpty(formAPIValues)) {
         let initiative;
@@ -183,22 +185,24 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
         }
         this.setState({ hasImageChanged: false });
       }
+      this.setState({ saving: false });
     } catch (errorResponse) {
       // const apiErrors = get(errorResponse, 'json.errors');
       // saving changes while working should have a minimal error feedback,
       // maybe in the saving indicator, since it's error-resistant, ie what wasn't
       // saved this time will be next time user leaves a field, or on publish call.
       // TODO
+      this.setState({ saving: false });
     }
-    this.setState({ saving: false });
   }
+  debouncedSave = debounce(this.handleSave, 500);
 
   handlePublish = async () => {
     const changedValues = this.changedValues();
     const { initiativeId, hasBannerChanged, hasImageChanged, image, banner, saving, publishing } = this.state;
 
     // if we're already saving, do nothing.
-    if (saving || publishing) return;
+    if (publishing) return;
 
     // setting flags for user feedback and avoiding double sends.
     this.setState({ publishing: true });
@@ -240,12 +244,12 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
 
       clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
     } catch (errorResponse) {
-      // const apiErrors = get(errorResponse, 'json.errors');
-      this.setState({ publishError: true });
+      console.log(errorResponse);
+      const apiErrors = get(errorResponse, 'json.errors');
+      this.setState((state) => ({ apiErrors: { ...state.apiErrors, ...apiErrors }, publishError: true }));
       setTimeout(() => {
         this.setState({ publishError: false });
       }, 5000);
-      // TODO: pass down API errors.
     }
     this.setState({ publishing: false });
   }
@@ -275,12 +279,18 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       addInitiativeFile(initiativeId, file.base64, file.name).then(res => {
         file.id = res.data.id;
         this.setState(({ files }) => ({ files: [...files, file], saving: false }));
-      }).catch(); // TODO error-handling for onAddFile
+      }).catch(errorResponse => {
+        const apiErrors = get(errorResponse, 'json.errors');
+        this.setState((state) => ({ apiErrors: { ...state.apiErrors, ...apiErrors } }));
+        setTimeout(() => {
+          this.setState(state => ({ apiErrors: { ...state.apiErrors, file: undefined } }));
+        }, 5000);
+      });
     }
   }
   onRemoveFile = (fileToRemove: UploadFile) => {
     const { initiativeId } = this.state;
-    this.setState(({ files }) => ({ files: files.filter(file =>  file.base64 !== fileToRemove.base64) }));
+    this.setState(({ files }) => ({ files: files.filter(file => file.base64 !== fileToRemove.base64) }));
     if (initiativeId && fileToRemove.id) {
       this.setState({ saving: true });
       deleteInitiativeFile(initiativeId, fileToRemove.id).then(() => this.setState({ saving: false }));
@@ -294,20 +304,20 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
       return ({
         title_multiloc: get(initiative, 'attributes.title_multiloc', undefined) || undefined,
         body_multiloc: get(initiative, 'attributes.body_multiloc', undefined) || undefined,
-        topic_ids: get(initiative, 'relationships.topic_ids.data', []).map(topic => topic.id),
-        position: get(initiative, 'attributes.location_description', undefined) || undefined,
+        topic_ids: get(initiative, 'relationships.topics.data', []).map(topic => topic.id),
+        position: get(initiative, 'attributes.location_description', undefined) || undefined
       });
     }
   }
 
   render() {
-    const { initiativeId, hasBannerChanged, ...otherProps } = this.state;
+    const { initiativeId, hasBannerChanged, hasImageChanged, ...otherProps } = this.state;
     const { locale } = this.props;
 
     return (
       <StyledInitiativeForm
         onPublish={this.handlePublish}
-        onSave={this.handleSave}
+        onSave={this.debouncedSave}
         locale={locale}
         {...otherProps}
         onChangeTitle={this.onChangeTitle}

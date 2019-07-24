@@ -6,12 +6,12 @@ import { ImageSizes } from 'typings';
 
 export interface IGroupMembership {
   id: string;
-  type: 'memberships';
+  type: 'membership';
   relationships: {
     user: {
       data: {
         id: string;
-        type: 'users';
+        type: 'user';
       };
     };
   };
@@ -23,13 +23,15 @@ export interface IGroupMemberships {
 
 export interface IGroupMembershipsFoundUserData {
   id: string;
-  type: 'users';
+  type: 'user';
   attributes: {
     first_name: string;
     last_name: string;
     slug: string;
-    avatar: ImageSizes;
+    avatar?: ImageSizes;
     is_member?: boolean;
+    // the is_moderator attribute is absent, except in moderators/users_search if the project_id was provided as a parameter
+    // this is only the case in the findMembership function in moderators.ts at the time of this writing
     is_moderator?: boolean;
     email: string;
   };

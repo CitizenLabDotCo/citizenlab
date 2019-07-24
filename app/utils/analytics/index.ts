@@ -63,7 +63,7 @@ combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
           firstName: user.data.attributes.first_name,
           lastName: user.data.attributes.last_name,
           createdAt: user.data.attributes.created_at,
-          avatar: user.data.attributes.avatar.large,
+          avatar: user.data.attributes.avatar ? user.data.attributes.avatar.large : null,
           birthday: user.data.attributes.birthyear,
           gender: user.data.attributes.gender,
           locale: user.data.attributes.locale,

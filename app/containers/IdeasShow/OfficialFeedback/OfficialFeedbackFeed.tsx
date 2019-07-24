@@ -125,7 +125,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
 }
 
 const Data = adopt<DataProps, InputProps>({
-  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks ideaId={ideaId}>{render}</GetOfficialFeedbacks>
+  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>
 });
 
 const OfficialFeedbackFeedWithIntl = injectIntl<Props>(OfficialFeedbackFeed);
