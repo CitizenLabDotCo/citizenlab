@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.proposedStatusExplanationBold',
     defaultMessage: 'considered by {orgName}',
   },
+  xVotes: {
+    id: 'app.containers.InitiativesShow.VoteControl.xVotes',
+    defaultMessage: '{count, plural, =0 {no votes} one {1 vote} other {# votes}}',
+  },
 });

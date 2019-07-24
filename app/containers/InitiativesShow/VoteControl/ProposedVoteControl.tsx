@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -11,10 +11,12 @@ import { ITenantSettings } from 'services/tenant';
 import CountDown from './CountDown';
 import Icon from 'components/UI/Icon';
 import Tooltip from 'components/UI/Tooltip';
+import ProgressBar from 'components/UI/ProgressBar';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -36,6 +38,32 @@ const StyledTooltip = styled(Tooltip)`
   display: inline;
 `;
 
+const VoteCounter = styled.div`
+  margin-top: 15px;
+`;
+
+const VoteText = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 4px;
+`;
+
+const VoteTextLeft = styled.div`
+  font-size: ${fontSizes.base}px;
+  color: ${props => props.theme.colorMain};
+`;
+
+const VoteTextRight = styled.div`
+  font-size: ${fontSizes.base}px;
+  color: ${props => props.theme.colorText};
+`;
+
+const StyledProgressBar = styled(ProgressBar)`
+  height: 12px;
+  width: 100%;
+`;
+
 interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
@@ -45,9 +73,7 @@ interface DataProps {}
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
-
-class ProposedVoteControl extends PureComponent<Props, State> {
+class ProposedVoteControl extends PureComponent<Props & { theme: any }> {
 
   calculateCountdownTarget = () => {
     const { initiative, initiativeSettings: { days_limit } } = this.props;
@@ -56,7 +82,9 @@ class ProposedVoteControl extends PureComponent<Props, State> {
   }
 
   render() {
-    const { initiativeSettings: { voting_threshold, eligibility_criteria } } = this.props;
+    const { initiative, initiativeSettings: { voting_threshold, eligibility_criteria }, theme } = this.props;
+    const voteCount = initiative.attributes.upvotes_count;
+    const voteLimit = voting_threshold || 1;
     return (
       <Container>
         <CountDownWrapper>
@@ -84,9 +112,24 @@ class ProposedVoteControl extends PureComponent<Props, State> {
             </StyledTooltip>
           }
         </StatusExplanation>
+        <VoteCounter>
+          <VoteText>
+            <VoteTextLeft>
+              <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
+            </VoteTextLeft>
+            <VoteTextRight>
+              {voteLimit}
+            </VoteTextRight>
+          </VoteText>
+          <StyledProgressBar
+            progress={voteCount / voteLimit}
+            color={theme.colorMain}
+            bgColor={colors.lightGreyishBlue}
+          />
+        </VoteCounter>
       </Container>
     );
   }
 }
 
-export default ProposedVoteControl;
+export default withTheme(ProposedVoteControl);
