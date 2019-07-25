@@ -140,7 +140,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
 
   handleSave = async () => {
     const changedValues = this.changedValues();
-    const { initiativeId, hasBannerChanged, hasImageChanged, image, banner, saving, publishing } = this.state;
+    const { initiativeId, hasBannerChanged, hasImageChanged, image, banner, saving } = this.state;
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
 
@@ -199,7 +199,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
 
   handlePublish = async () => {
     const changedValues = this.changedValues();
-    const { initiativeId, hasBannerChanged, hasImageChanged, image, banner, saving, publishing } = this.state;
+    const { initiativeId, hasBannerChanged, hasImageChanged, image, banner, publishing } = this.state;
 
     // if we're already saving, do nothing.
     if (publishing) return;
@@ -216,6 +216,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
         initiative = await updateInitiative(initiativeId, { ...formAPIValues, publication_status: 'published' });
       } else {
         initiative = await addInitiative({ ...formAPIValues, publication_status: 'published' });
+        this.setState({ initiativeId: initiative.data.id });
       }
       // feed back what was saved to the api into the initialValues object
       // so that we can determine with certainty what has changed since last
@@ -281,7 +282,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
         this.setState(({ files }) => ({ files: [...files, file], saving: false }));
       }).catch(errorResponse => {
         const apiErrors = get(errorResponse, 'json.errors');
-        this.setState((state) => ({ apiErrors: { ...state.apiErrors, ...apiErrors } }));
+        this.setState(state => ({ apiErrors: { ...state.apiErrors, ...apiErrors }, saving: false  }));
         setTimeout(() => {
           this.setState(state => ({ apiErrors: { ...state.apiErrors, file: undefined } }));
         }, 5000);
@@ -290,10 +291,10 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
   }
   onRemoveFile = (fileToRemove: UploadFile) => {
     const { initiativeId } = this.state;
-    this.setState(({ files }) => ({ files: files.filter(file => file.base64 !== fileToRemove.base64) }));
+
     if (initiativeId && fileToRemove.id) {
       this.setState({ saving: true });
-      deleteInitiativeFile(initiativeId, fileToRemove.id).then(() => this.setState({ saving: false }));
+      deleteInitiativeFile(initiativeId, fileToRemove.id).then(() => this.setState(({ files }) => ({ files: files.filter(file => file.base64 !== fileToRemove.base64), saving: false })));
     }
   }
 

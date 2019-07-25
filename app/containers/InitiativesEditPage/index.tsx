@@ -10,6 +10,7 @@ import HasPermission from 'components/HasPermission';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
+import GetInitiativeImages, { GetInitiativeImagesChildProps } from 'resources/GetInitiativeImages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -21,6 +22,7 @@ import PageLayout from 'components/InitiativeForm/PageLayout';
 
 interface DataProps {
   initiative: GetInitiativeChildProps;
+  initiativeImages: GetInitiativeImagesChildProps;
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
 }
@@ -45,9 +47,9 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
   }
 
   render() {
-    const { authUser, locale, initiative } = this.props;
+    const { authUser, locale, initiative, initiativeImages } = this.props;
     console.log(initiative);
-    if (isNilOrError(authUser) || isNilOrError(locale) || isNilOrError(initiative)) return null;
+    if (isNilOrError(authUser) || isNilOrError(locale) || isNilOrError(initiative) || initiativeImages === undefined) return null;
 
     return (
       <HasPermission item={initiative} action="edit" context={initiative}>
@@ -56,6 +58,7 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
           <InitiativesEditFormWrapper
             locale={locale}
             initiative={initiative}
+            initiativeImage={isNilOrError(initiativeImages) || initiativeImages.length === 0 ? null : initiativeImages[0]}
           />
         </PageLayout>
       </HasPermission>
@@ -66,7 +69,10 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
 const Data = adopt<DataProps, WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
-  initiative: ({ params, render }) => <GetInitiative id={params.initiativeId}>{render}</GetInitiative>
+  initiative: ({ params, render }) => <GetInitiative id={params.initiativeId}>{render}</GetInitiative>,
+  initiativeImages: ({ params, render }) => (
+    <GetInitiativeImages initiativeId={params.initiativeId}>{render}</GetInitiativeImages>
+  )
 });
 
 export default withRouter((withRouterProps: WithRouterProps) => (

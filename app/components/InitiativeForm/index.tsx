@@ -33,7 +33,7 @@ export interface FormValues extends SimpleFormValues {
 }
 
 export interface FormProps {
-  saving: boolean;
+  saving?: boolean;
   publishing: boolean;
   onSave: () => void;
   onPublish: () => void;
