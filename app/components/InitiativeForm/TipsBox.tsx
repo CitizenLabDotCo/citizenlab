@@ -17,7 +17,7 @@ import { get } from 'lodash-es';
 interface DataProps {
   tenant: GetTenantChildProps;
 }
-interface InputProps {
+export interface InputProps {
   className?: string;
 }
 
