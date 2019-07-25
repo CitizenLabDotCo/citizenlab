@@ -5,7 +5,7 @@ import InitiativeForm, { FormValues, SimpleFormValues } from 'components/Initiat
 
 // services
 import { Locale, Multiloc, UploadFile } from 'typings';
-import { addInitiative, updateInitiative, IInitiativeData, IInitiativeAdd } from 'services/initiatives';
+import { updateInitiative, IInitiativeData, IInitiativeAdd } from 'services/initiatives';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -32,17 +32,13 @@ const StyledInitiativeForm = styled(InitiativeForm)`
   `}
 `;
 
-interface InputProps {
+interface Props {
   locale: Locale;
+  initiative: IInitiativeData;
 }
-
-interface DataProps {
-}
-
-interface Props extends InputProps, DataProps { }
 
 interface State extends FormValues {
-  initiativeId: string | null;
+  initiativeId: string;
   saving: boolean;
   publishing: boolean;
   hasBannerChanged: boolean;
@@ -52,39 +48,31 @@ interface State extends FormValues {
   apiErrors: any;
 }
 
-export default class InitiativesNewFormWrapper extends React.PureComponent<Props, State> {
+function doNothing() {
+  return;
+}
+
+export default class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
   initialValues: SimpleFormValues;
   constructor(props) {
     super(props);
-    // These are the properties that really get matched against back-end before re-send
-    // the rest of formvalues (image, banner, files) get sent on each change.
-    this.initialValues = {
-      title_multiloc: undefined,
-      body_multiloc: undefined,
-      topic_ids: [],
-      position: undefined,
-    };
+
+    this.initialValues = this.getFormValues(props.initiative);
 
     this.state = {
       ...this.initialValues,
-      initiativeId: null,
+      initiativeId: props.initiative.id,
       saving: false,
       publishing: false,
       hasBannerChanged: false,
       hasImageChanged: false,
-      imageId: null,
-      banner: undefined,
-      image: undefined,
-      files: [],
+      imageId: null, // TODO
+      banner: undefined, // TODO
+      image: undefined, // TODO
+      files: [], // TODO
       publishError: false,
       apiErrors: null
     };
-  }
-
-  componentDidMount() {
-    addInitiative({ publication_status: 'draft' }).then(initiative => {
-      this.setState({ initiativeId: initiative.data.id });
-    });
   }
 
   changedValues = () => {
@@ -138,65 +126,6 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
     return formAPIValues as Partial<IInitiativeAdd>;
   }
 
-  handleSave = async () => {
-    const changedValues = this.changedValues();
-    const { initiativeId, hasBannerChanged, hasImageChanged, image, banner, saving, publishing } = this.state;
-    // if nothing has changed, do noting.
-    if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
-
-    // if we're already publishing, do nothing.
-    if (saving) return;
-
-    // setting flags for user feedback and avoiding double sends.
-    this.setState({ saving: true });
-
-    try {
-      const formAPIValues = await this.getValuesToSend(changedValues, hasBannerChanged, banner);
-      // save any changes to the initiative data.
-      if (!isEmpty(formAPIValues)) {
-        let initiative;
-        if (initiativeId) {
-          initiative = await updateInitiative(initiativeId, formAPIValues);
-        } else {
-          initiative = await addInitiative({ ...formAPIValues, publication_status: 'draft' });
-          this.setState({ initiativeId: initiative.data.id });
-        }
-        // feed back what was saved to the api into the initialValues object
-        // so that we can determine with certainty what has changed since last
-        // successful save.
-        this.initialValues = this.getFormValues(initiative.data);
-        this.setState({ hasBannerChanged: false });
-      }
-
-      // save any changes to initiative image.
-      if (hasImageChanged && initiativeId) {
-        if (image && image.base64) {
-          const imageRemote = await addInitiativeImage(initiativeId, image.base64);
-          // save image id in case we need to remove it later.
-          this.setState({ imageId: imageRemote.data.id });
-        } else if (!image && this.state.imageId) {
-          deleteInitiativeImage(initiativeId, this.state.imageId);
-          this.setState({ imageId: null });
-        } else {
-          // Image saving mechanism works on the hypothesis that any defined
-          // image will have a base64 key, and when you need to remove an image
-          // it was previously saved. If not, let's report it so it gets fixed.
-          reportError('There was an error with an initiative image');
-        }
-        this.setState({ hasImageChanged: false });
-      }
-      this.setState({ saving: false });
-    } catch (errorResponse) {
-      // const apiErrors = get(errorResponse, 'json.errors');
-      // saving changes while working should have a minimal error feedback,
-      // maybe in the saving indicator, since it's error-resistant, ie what wasn't
-      // saved this time will be next time user leaves a field, or on publish call.
-      // TODO
-      this.setState({ saving: false });
-    }
-  }
-  debouncedSave = debounce(this.handleSave, 500);
-
   handlePublish = async () => {
     const changedValues = this.changedValues();
     const { initiativeId, hasBannerChanged, hasImageChanged, image, banner, saving, publishing } = this.state;
@@ -209,14 +138,8 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
 
     try {
       const formAPIValues = await this.getValuesToSend(changedValues, hasBannerChanged, banner);
-      let initiative;
+      const   initiative = await updateInitiative(initiativeId, { ...formAPIValues, publication_status: 'published' });
 
-      // save any changes to the initiative data.
-      if (initiativeId) {
-        initiative = await updateInitiative(initiativeId, { ...formAPIValues, publication_status: 'published' });
-      } else {
-        initiative = await addInitiative({ ...formAPIValues, publication_status: 'published' });
-      }
       // feed back what was saved to the api into the initialValues object
       // so that we can determine with certainty what has changed since last
       // successful save.
@@ -224,7 +147,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
       this.setState({ hasBannerChanged: false });
 
       // save any changes to initiative image.
-      if (hasImageChanged && initiativeId) {
+      if (hasImageChanged) {
         if (image && image.base64) {
           const imageRemote = await addInitiativeImage(initiativeId, image.base64);
           // save image id in case we need to remove it later.
@@ -317,7 +240,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
     return (
       <StyledInitiativeForm
         onPublish={this.handlePublish}
-        onSave={this.debouncedSave}
+        onSave={doNothing}
         locale={locale}
         {...otherProps}
         onChangeTitle={this.onChangeTitle}
