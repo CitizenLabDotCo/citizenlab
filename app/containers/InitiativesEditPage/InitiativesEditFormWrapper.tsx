@@ -17,11 +17,11 @@ import styled from 'styled-components';
 
 // intl
 import { convertToGeoJson } from 'utils/locationTools';
-import { isEqual, pick, get, omitBy, isEmpty, debounce } from 'lodash-es';
+import { isEqual, pick, get, omitBy } from 'lodash-es';
 import { Point } from 'geojson';
-import { addInitiativeImage, deleteInitiativeImage } from 'services/initiativeImages';
+import { addInitiativeImage, deleteInitiativeImage, IInitiativeImageData } from 'services/initiativeImages';
 import { deleteInitiativeFile, addInitiativeFile } from 'services/initiativeFiles';
-import { reportError } from 'utils/loggingUtils';
+import { convertUrlToUploadFile } from 'utils/imageTools';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
@@ -35,15 +35,14 @@ const StyledInitiativeForm = styled(InitiativeForm)`
 interface Props {
   locale: Locale;
   initiative: IInitiativeData;
+  initiativeImage: IInitiativeImageData | null;
 }
 
 interface State extends FormValues {
   initiativeId: string;
-  saving: boolean;
   publishing: boolean;
   hasBannerChanged: boolean;
-  hasImageChanged: boolean;
-  imageId: string | null;
+  oldImageId: string | null;
   publishError: boolean;
   apiErrors: any;
 }
@@ -57,22 +56,35 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
   constructor(props) {
     super(props);
 
-    this.initialValues = this.getFormValues(props.initiative);
+    const { initiative, initiativeImage } = props;
+
+    const oldImageId = initiativeImage ? initiativeImage.id : null;
+
+    this.initialValues = this.getFormValues(initiative);
 
     this.state = {
       ...this.initialValues,
-      initiativeId: props.initiative.id,
-      saving: false,
+      oldImageId,
+      image: undefined,
+      initiativeId: initiative.id,
       publishing: false,
       hasBannerChanged: false,
-      hasImageChanged: false,
-      imageId: null, // TODO
       banner: undefined, // TODO
-      image: undefined, // TODO
       files: [], // TODO
       publishError: false,
       apiErrors: null
     };
+  }
+
+  componentDidMount() {
+    const { initiativeImage } = this.props;
+    if (initiativeImage && initiativeImage.attributes.versions.large) {
+      const url = initiativeImage.attributes.versions.large;
+      const id = initiativeImage.id;
+      convertUrlToUploadFile(url, id, null).then((image) => {
+        this.setState({ image });
+      });
+    }
   }
 
   changedValues = () => {
@@ -128,7 +140,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
 
   handlePublish = async () => {
     const changedValues = this.changedValues();
-    const { initiativeId, hasBannerChanged, hasImageChanged, image, banner, saving, publishing } = this.state;
+    const { initiativeId, hasBannerChanged, image, oldImageId, banner, publishing } = this.state;
 
     // if we're already saving, do nothing.
     if (publishing) return;
@@ -138,7 +150,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
 
     try {
       const formAPIValues = await this.getValuesToSend(changedValues, hasBannerChanged, banner);
-      const   initiative = await updateInitiative(initiativeId, { ...formAPIValues, publication_status: 'published' });
+      const initiative = await updateInitiative(initiativeId, { ...formAPIValues, publication_status: 'published' });
 
       // feed back what was saved to the api into the initialValues object
       // so that we can determine with certainty what has changed since last
@@ -147,22 +159,15 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
       this.setState({ hasBannerChanged: false });
 
       // save any changes to initiative image.
-      if (hasImageChanged) {
-        if (image && image.base64) {
-          const imageRemote = await addInitiativeImage(initiativeId, image.base64);
+      if (image && image.base64 && !image.id) {
+        await addInitiativeImage(initiativeId, image.base64);
+      }
+      if (oldImageId) {
+        deleteInitiativeImage(initiativeId, oldImageId).then(() => {
           // save image id in case we need to remove it later.
-          this.setState({ imageId: imageRemote.data.id });
+          this.setState({ oldImageId: null });
           // remove image from remote if it was saved
-        } else if (!image && this.state.imageId) {
-          deleteInitiativeImage(initiativeId, this.state.imageId).then(() => {
-            this.setState({ imageId: null });
-          });
-        } else if (image) {
-          // Image saving mechanism works on the hypothesis that any defined
-          // image will have a base64 key, if not, something wrong has happened.
-          reportError('Unexpected state of initiative image');
-        }
-        this.setState({ hasImageChanged: false });
+        });
       }
 
       clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
@@ -193,15 +198,23 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
     this.setState({ banner: newValue, hasBannerChanged: true });
   }
   onChangeImage = (newValue: UploadFile | null) => {
-    this.setState({ image: newValue, hasImageChanged: true });
+    if (newValue) {
+      this.setState({ image: newValue });
+    } else {
+      this.setState(state => {
+        const currentImageId = state.image && state.image.id;
+        if (currentImageId) {
+          return { ...state, image: newValue, oldImageId: currentImageId };
+        } else return { ...state, image: newValue };
+      });
+    }
   }
   onAddFile = (file: UploadFile) => {
     const { initiativeId } = this.state;
     if (initiativeId) {
-      this.setState({ saving: true });
       addInitiativeFile(initiativeId, file.base64, file.name).then(res => {
         file.id = res.data.id;
-        this.setState(({ files }) => ({ files: [...files, file], saving: false }));
+        this.setState(({ files }) => ({ files: [...files, file] }));
       }).catch(errorResponse => {
         const apiErrors = get(errorResponse, 'json.errors');
         this.setState((state) => ({ apiErrors: { ...state.apiErrors, ...apiErrors } }));
@@ -213,10 +226,10 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
   }
   onRemoveFile = (fileToRemove: UploadFile) => {
     const { initiativeId } = this.state;
-    this.setState(({ files }) => ({ files: files.filter(file => file.base64 !== fileToRemove.base64) }));
+
     if (initiativeId && fileToRemove.id) {
-      this.setState({ saving: true });
-      deleteInitiativeFile(initiativeId, fileToRemove.id).then(() => this.setState({ saving: false }));
+      deleteInitiativeFile(initiativeId, fileToRemove.id)
+        .then(() => this.setState(({ files }) => ({ files: files.filter(file => file.base64 !== fileToRemove.base64) })));
     }
   }
 
@@ -234,7 +247,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
   }
 
   render() {
-    const { initiativeId, hasBannerChanged, hasImageChanged, ...otherProps } = this.state;
+    const { initiativeId, hasBannerChanged, ...otherProps } = this.state;
     const { locale } = this.props;
 
     return (
