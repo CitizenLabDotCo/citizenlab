@@ -16,7 +16,7 @@ import { childCommentsStream, IComments } from 'services/comments';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -94,7 +94,7 @@ interface InputProps {
 interface DataProps {
   authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
-  idea: GetIdeaChildProps;
+  initiative: GetInitiativeChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -106,7 +106,7 @@ interface State {
   childComments: IComments | null;
 }
 
-class ParentComment extends PureComponent<Props, State> {
+class InitiativeParentComment extends PureComponent<Props, State> {
   private loadMore$: BehaviorSubject<boolean>;
   private subscriptions: Subscription[];
 
@@ -166,17 +166,19 @@ class ParentComment extends PureComponent<Props, State> {
   }
 
   render() {
-    const { commentId, authUser, comment, idea, className } = this.props;
+    const { commentId, authUser, comment, initiative, className } = this.props;
     const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } = this.state;
 
-    if (!isNilOrError(comment) && !isNilOrError(idea)) {
-      const ideaId = idea.id;
-      const projectId = idea.relationships.project.data.id;
+    if (!isNilOrError(comment) && !isNilOrError(initiative)) {
+      const initiativeId = initiative.id;
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
-      const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
-      const showCommentForm = (authUser && commentingEnabled && !commentDeleted);
+      const showCommentForm = (authUser && !commentDeleted);
       const hasChildComments = (this.props.childCommentIds && this.props.childCommentIds.length > 0);
-      const childCommentIds = (!isNilOrError(childComments) ? childComments.data.filter((comment) => comment.attributes.publication_status !== 'deleted').map(comment => comment.id) : this.props.childCommentIds);
+      const childCommentIds = (!isNilOrError(childComments) ?
+        childComments.data.filter((comment) => comment.attributes.publication_status !== 'deleted').map(comment => comment.id)
+        :
+        this.props.childCommentIds
+      );
       const canReply = (comment.attributes.publication_status !== 'deleted');
 
       // hide parent comments that are deleted when they have no children
@@ -188,8 +190,7 @@ class ParentComment extends PureComponent<Props, State> {
         <Container className={`e2e-parent-and-childcomments ${className}`}>
           <ParentCommentContainer className={`${commentDeleted && 'deleted'}`}>
             <Comment
-              ideaId={ideaId}
-              projectId={projectId}
+              initiativeId={initiativeId}
               commentId={comment.id}
               commentType="parent"
               hasBottomBorder={!(canLoadMore && !hasLoadedMore)}
@@ -216,8 +217,7 @@ class ParentComment extends PureComponent<Props, State> {
 
           {childCommentIds && childCommentIds.length > 0 && childCommentIds.map((childCommentId, index) => (
             <Comment
-              ideaId={ideaId}
-              projectId={projectId}
+              initiativeId={initiativeId}
               key={childCommentId}
               commentId={childCommentId}
               commentType="child"
@@ -228,8 +228,7 @@ class ParentComment extends PureComponent<Props, State> {
 
           {showCommentForm &&
             <ChildCommentForm
-              ideaId={ideaId}
-              projectId={projectId}
+              initiativeId={initiativeId}
               parentId={commentId}
               waitForChildCommentsRefetch={!isNilOrError(childComments)}
             />
@@ -245,11 +244,11 @@ class ParentComment extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.post.data.id')}>{render}</GetIdea>
+  initiative: ({ comment, render }) => <GetInitiative id={get(comment, 'relationships.post.data.id')}>{render}</GetInitiative>
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ParentComment {...inputProps} {...dataProps} />}
+    {dataProps => <InitiativeParentComment {...inputProps} {...dataProps} />}
   </Data>
 );
