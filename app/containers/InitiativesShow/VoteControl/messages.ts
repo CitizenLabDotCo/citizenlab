@@ -29,6 +29,14 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.ineligibleStatusExplanationBold',
     defaultMessage: 'to be eligible',
   },
+  expiredStatusExplanation: {
+    id: 'app.containers.InitiativesShow.VoteControl.expiredStatusExplanation',
+    defaultMessage: 'This initiative expired as it {expiredStatusExplanationBold}.',
+  },
+  expiredStatusExplanationBold: {
+    id: 'app.containers.InitiativesShow.VoteControl.expiredStatusExplanationBold',
+    defaultMessage: 'didn\'t reach {votingThreshold} votes in time',
+  },
   xVotes: {
     id: 'app.containers.InitiativesShow.VoteControl.xVotes',
     defaultMessage: '{count, plural, =0 {no votes} one {1 vote} other {# votes}}',
@@ -36,6 +44,10 @@ export default defineMessages({
   vote: {
     id: 'app.containers.InitiativesShow.VoteControl.vote',
     defaultMessage: 'Vote',
+  },
+  cancelVote: {
+    id: 'app.containers.InitiativesShow.VoteControl.cancelVote',
+    defaultMessage: 'Cancel vote',
   },
   readAnswer: {
     id: 'app.containers.InitiativesShow.VoteControl.readAnswer',
