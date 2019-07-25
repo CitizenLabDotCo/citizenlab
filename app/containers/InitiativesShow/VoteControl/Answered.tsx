@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -31,8 +31,14 @@ const VoteText = styled.div`
   margin-top: 20px;
 `;
 
-const StyledButton = styled(Button)`
+const Buttons = styled.div`
   margin-top: 20px;
+  display: flex;
+  margin: 20px -3px 0 -3px;
+  & > * {
+    flex: 1;
+    margin: 3px;
+  }
 `;
 
 interface InputProps {
@@ -47,12 +53,11 @@ interface Props extends InputProps, DataProps { }
 
 interface State { }
 
-class ThresholdReachedVoteControl extends PureComponent<Props, State> {
+class Answered extends PureComponent<Props, State> {
   render() {
-    const { initiative, initiativeSettings: { voting_threshold }, initiativeStatus, userVoted } = this.props;
+    const { initiative, initiativeStatus, userVoted } = this.props;
 
     const voteCount = initiative.attributes.upvotes_count;
-    const voteLimit = voting_threshold || 1;
 
     return (
       <Container>
@@ -62,11 +67,11 @@ class ThresholdReachedVoteControl extends PureComponent<Props, State> {
         <StatusIcon name="envelope-check" />
         <StatusExplanation>
           <FormattedMessage
-            {...messages.thresholdReachedStatusExplanation}
+            {...messages.answeredStatusExplanation}
             values={{
-              thresholdReachedStatusExplanationBold: <b>
+              answeredStatusExplanationBold: <b>
                 <FormattedMessage
-                  {...messages.thresholdReachedStatusExplanationBold}
+                  {...messages.answeredStatusExplanationBold}
                 />
               </b>
             }}
@@ -74,23 +79,27 @@ class ThresholdReachedVoteControl extends PureComponent<Props, State> {
         </StatusExplanation>
         <VoteText>
           <FormattedMessage
-            {...messages.xVotesOfY}
+            {...messages.xPeopleVoted}
             values={{
-              votingThreshold: voteLimit,
-              xVotes: <b><FormattedMessage {...messages.xVotes} values={{ count: voteCount }} /></b>
+              xPeople: <b><FormattedMessage {...messages.xPeople} values={{ count: voteCount }} /></b>
             }}
           />
         </VoteText>
-        {!userVoted &&
-          <StyledButton
-            icon="upvote"
-          >
-            <FormattedMessage {...messages.vote} />
-          </StyledButton>
-        }
+        <Buttons>
+          <Button>
+            <FormattedMessage {...messages.readAnswer} />
+          </Button>
+          {userVoted &&
+            <Button
+              style="primary-outlined"
+            >
+              <FormattedMessage {...messages.vote} />
+            </Button>
+          }
+        </Buttons>
       </Container>
     );
   }
 }
 
-export default ThresholdReachedVoteControl;
+export default Answered;

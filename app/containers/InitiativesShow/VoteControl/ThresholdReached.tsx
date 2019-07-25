@@ -8,7 +8,6 @@ import { ITenantSettings } from 'services/tenant';
 
 import Icon from 'components/UI/Icon';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
-import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';
 
 import T from 'components/T';
@@ -19,32 +18,17 @@ const Container = styled.div``;
 
 const StatusIcon = styled(Icon)`
   path {
-    fill: ${colors.clGreyOnGreyBackground};
+    fill: ${props => props.theme.colorText};
   }
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   margin-bottom: 20px;
-`;
-
-const VoteCounter = styled.div`
-  margin-top: 15px;
-`;
-
-const VoteTexts = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-bottom: 4px;
 `;
 
 const VoteText = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${colors.clGreyOnGreyBackground};
-`;
-
-const StyledProgressBar = styled(ProgressBar)`
-  height: 12px;
-  width: 100%;
+  color: ${props => props.theme.colorText};
+  margin-top: 20px;
 `;
 
 const StyledButton = styled(Button)`
@@ -63,7 +47,7 @@ interface Props extends InputProps, DataProps { }
 
 interface State { }
 
-class ExpiredVoteControl extends PureComponent<Props, State> {
+class ThresholdReached extends PureComponent<Props, State> {
   render() {
     const { initiative, initiativeSettings: { voting_threshold }, initiativeStatus, userVoted } = this.props;
 
@@ -75,49 +59,38 @@ class ExpiredVoteControl extends PureComponent<Props, State> {
         <StatusWrapper>
           <T value={initiativeStatus.attributes.title_multiloc} />
         </StatusWrapper>
-        <StatusIcon name="clock" />
+        <StatusIcon name="envelope-check" />
         <StatusExplanation>
           <FormattedMessage
-            {...messages.expiredStatusExplanation}
+            {...messages.thresholdReachedStatusExplanation}
             values={{
-              expiredStatusExplanationBold: <b>
+              thresholdReachedStatusExplanationBold: <b>
                 <FormattedMessage
-                  {...messages.expiredStatusExplanationBold}
-                  values={{ votingThreshold: voting_threshold }}
+                  {...messages.thresholdReachedStatusExplanationBold}
                 />
               </b>
             }}
           />
         </StatusExplanation>
-        <VoteCounter>
-          <VoteTexts>
-            <VoteText>
-              <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
-            </VoteText>
-            <VoteText>
-              {voteLimit}
-            </VoteText>
-          </VoteTexts>
-          <StyledProgressBar
-            progress={voteCount / voteLimit}
-            color="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
-            bgColor={colors.lightGreyishBlue}
-            bgShaded
+        <VoteText>
+          <FormattedMessage
+            {...messages.xVotesOfY}
+            values={{
+              votingThreshold: voteLimit,
+              xVotes: <b><FormattedMessage {...messages.xVotes} values={{ count: voteCount }} /></b>
+            }}
           />
-        </VoteCounter>
-        <StyledButton
-          icon="halt"
-          disabled
-        >
-          {userVoted ?
-            <FormattedMessage {...messages.cancelVote} />
-          :
+        </VoteText>
+        {!userVoted &&
+          <StyledButton
+            icon="upvote"
+          >
             <FormattedMessage {...messages.vote} />
-          }
-        </StyledButton>
+          </StyledButton>
+        }
       </Container>
     );
   }
 }
 
-export default ExpiredVoteControl;
+export default ThresholdReached;

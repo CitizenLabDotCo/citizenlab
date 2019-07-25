@@ -100,7 +100,7 @@ interface DataProps {}
 
 interface Props extends InputProps, DataProps {}
 
-class VotedProposedVoteControl extends PureComponent<Props & { theme: any }> {
+class ProposedVoted extends PureComponent<Props & { theme: any }> {
 
   daysLeft = (): number => {
     const { initiative, initiativeSettings: { days_limit } } = this.props;
@@ -151,4 +151,4 @@ class VotedProposedVoteControl extends PureComponent<Props & { theme: any }> {
   }
 }
 
-export default withTheme(VotedProposedVoteControl);
+export default withTheme(ProposedVoted);
