@@ -13,6 +13,7 @@ import ProgressBar from 'components/UI/ProgressBar';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { deleteVote } from 'services/initiativeVotes';
 
 const Container = styled.div`
   display: flex;
@@ -35,7 +36,7 @@ const StyledIcon = styled(Icon)`
   fill: ${colors.clGreenSuccess};
   width: 63px;
   height: 63px;
-  animation: ${scaleIn} 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  animation: ${scaleIn} 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 `;
 
 const VotedTitle = styled.h4`
@@ -102,6 +103,13 @@ interface Props extends InputProps, DataProps {}
 
 class ProposedVoted extends PureComponent<Props & { theme: any }> {
 
+  handleOnCancelVote = () => {
+    const { initiative: { id, relationships: { user_vote } } } = this.props;
+    if (user_vote && user_vote.data) {
+      deleteVote(id, user_vote.data.id);
+    }
+  }
+
   daysLeft = (): number => {
     const { initiative, initiativeSettings: { days_limit } } = this.props;
     const mStart = moment(initiative.attributes.published_at);
@@ -128,7 +136,9 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
             }}
           />
         </VotedText>
-        <UnvoteLink>
+        <UnvoteLink
+          onClick={this.handleOnCancelVote}
+        >
           <FormattedMessage {...messages.unvoteLink} />
         </UnvoteLink>
         <VoteCounter>

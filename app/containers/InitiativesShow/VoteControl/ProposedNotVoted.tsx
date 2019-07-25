@@ -8,6 +8,7 @@ import { StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
+import { addVote } from 'services/initiativeVotes';
 
 import CountDown from './CountDown';
 import Icon from 'components/UI/Icon';
@@ -81,6 +82,10 @@ interface Props extends InputProps, DataProps {}
 
 class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
 
+  handleOnVote = async () => {
+    await addVote(this.props.initiative.id, { mode: 'up' });
+  }
+
   calculateCountdownTarget = () => {
     const { initiative, initiativeSettings: { days_limit } } = this.props;
     const mStart = moment(initiative.attributes.published_at);
@@ -136,6 +141,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
         <StyledButton
           icon="upvote"
           style="primary"
+          onClick={this.handleOnVote}
         >
           <FormattedMessage {...messages.vote} />
         </StyledButton>

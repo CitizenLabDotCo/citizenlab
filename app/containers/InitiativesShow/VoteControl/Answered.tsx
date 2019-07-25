@@ -13,6 +13,7 @@ import Button from 'components/UI/Button';
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { addVote } from 'services/initiativeVotes';
 
 const Container = styled.div``;
 
@@ -54,6 +55,11 @@ interface Props extends InputProps, DataProps { }
 interface State { }
 
 class Answered extends PureComponent<Props, State> {
+
+  handleOnVote = async () => {
+    await addVote(this.props.initiative.id, { mode: 'up' });
+  }
+
   render() {
     const { initiative, initiativeStatus, userVoted } = this.props;
 
@@ -89,9 +95,10 @@ class Answered extends PureComponent<Props, State> {
           <Button>
             <FormattedMessage {...messages.readAnswer} />
           </Button>
-          {userVoted &&
+          {!userVoted &&
             <Button
               style="primary-outlined"
+              onClick={this.handleOnVote}
             >
               <FormattedMessage {...messages.vote} />
             </Button>
