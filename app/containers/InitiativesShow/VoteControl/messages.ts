@@ -45,6 +45,14 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold',
     defaultMessage: 'The threshold has been reached',
   },
+  answeredStatusExplanation: {
+    id: 'app.containers.InitiativesShow.VoteControl.answeredStatusExplanation',
+    defaultMessage: '{answeredStatusExplanationBold} Voting remains open.',
+  },
+  answeredStatusExplanationBold: {
+    id: 'app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold',
+    defaultMessage: '{orgName} received the initiative and gave an official answer.',
+  },
   xVotes: {
     id: 'app.containers.InitiativesShow.VoteControl.xVotes',
     defaultMessage: '{count, plural, =0 {no votes} one {1 vote} other {# votes}}',
@@ -80,5 +88,13 @@ export default defineMessages({
   xVotesOfY: {
     id: 'app.containers.InitiativesShow.VoteControl.xVotesOfY',
     defaultMessage: '{xVotes} of {votingThreshold}',
+  },
+  xPeopleVoted: {
+    id: 'app.containers.InitiativesShow.VoteControl.xPeopleVoted',
+    defaultMessage: '{xPeople} voted for this initiative',
+  },
+  xPeople: {
+    id: 'app.containers.InitiativesShow.VoteControl.xPeople',
+    defaultMessage: '{count, plural, =0 {No one} one {One person} other {# people}}',
   },
 });

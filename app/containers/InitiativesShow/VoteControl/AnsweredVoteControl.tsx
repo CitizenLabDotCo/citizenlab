@@ -1,33 +1,102 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
+import Icon from 'components/UI/Icon';
+import { StatusWrapper, StatusExplanation } from './SharedStyles';
+import Button from 'components/UI/Button';
+
 import T from 'components/T';
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div``;
+
+const StatusIcon = styled(Icon)`
+  path {
+    fill: ${props => props.theme.colorText};
+  }
+  width: 40px;
+  height: 40px;
+  margin-bottom: 20px;
+`;
+
+const VoteText = styled.div`
+  font-size: ${fontSizes.base}px;
+  color: ${props => props.theme.colorText};
+  margin-top: 20px;
+`;
+
+const Buttons = styled.div`
+  margin-top: 20px;
+  display: flex;
+  margin: 20px -3px 0 -3px;
+  & > * {
+    flex: 1;
+    margin: 3px;
+  }
+`;
 
 interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: ITenantSettings['initiatives'];
+  initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
   userVoted: boolean;
 }
-interface DataProps {}
+interface DataProps { }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class AnsweredVoteControl extends PureComponent<Props, State> {
   render() {
-    const { initiativeStatus } = this.props;
+    const { initiative, initiativeStatus, userVoted } = this.props;
+
+    const voteCount = initiative.attributes.upvotes_count;
 
     return (
       <Container>
-        <T value={initiativeStatus.attributes.title_multiloc} />
+        <StatusWrapper>
+          <T value={initiativeStatus.attributes.title_multiloc} />
+        </StatusWrapper>
+        <StatusIcon name="envelope-check" />
+        <StatusExplanation>
+          <FormattedMessage
+            {...messages.answeredStatusExplanation}
+            values={{
+              answeredStatusExplanationBold: <b>
+                <FormattedMessage
+                  {...messages.answeredStatusExplanationBold}
+                />
+              </b>
+            }}
+          />
+        </StatusExplanation>
+        <VoteText>
+          <FormattedMessage
+            {...messages.xPeopleVoted}
+            values={{
+              xPeople: <b><FormattedMessage {...messages.xPeople} values={{ count: voteCount }} /></b>
+            }}
+          />
+        </VoteText>
+        <Buttons>
+          <Button>
+            <FormattedMessage {...messages.readAnswer} />
+          </Button>
+          {userVoted &&
+            <Button
+              style="primary-outlined"
+            >
+              <FormattedMessage {...messages.vote} />
+            </Button>
+          }
+        </Buttons>
       </Container>
     );
   }
