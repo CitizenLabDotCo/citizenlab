@@ -10,13 +10,13 @@ import { IInitiativeData } from 'services/initiatives';
 import { ITenantSettings } from 'services/tenant';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
-import NotVotedProposedVoteControl from './NotVotedProposedVoteControl';
-import VotedProposedVoteControl from './VotedProposedVoteControl';
-import ExpiredVoteControl from './ExpiredVoteControl';
-import ThresholdReachedVoteControl from './ThresholdReachedVoteControl';
-import AnsweredVoteControl from './AnsweredVoteControl';
-import IneligibleVoteControl from './IneligibleVoteControl';
-import CustomVoteControl from './CustomVoteControl';
+import ProposedNotVoted from './ProposedNotVoted';
+import ProposedVoted from './ProposedVoted';
+import Expired from './Expired';
+import ThresholdReached from './ThresholdReached';
+import Answered from './Answered';
+import Ineligible from './Ineligible';
+import Custom from './Custom';
 
 // Using this to fake the way to component will be embedded in the eventual initiative show page
 const TemporaryOuterContainer = styled.div`
@@ -51,32 +51,32 @@ type TComponentMap = {
 /** Maps the initiative status and whether the user voted or not to the right component to render */
 const componentMap: TComponentMap = {
   published: {
-    voted: VotedProposedVoteControl,
-    notVoted: NotVotedProposedVoteControl,
+    voted: ProposedVoted,
+    notVoted: ProposedNotVoted,
   },
   proposed: {
-    voted: VotedProposedVoteControl,
-    notVoted: NotVotedProposedVoteControl,
+    voted: ProposedVoted,
+    notVoted: ProposedNotVoted,
   },
   expired: {
-    voted: ExpiredVoteControl,
-    notVoted: ExpiredVoteControl,
+    voted: Expired,
+    notVoted: Expired,
   },
   threshold_reached: {
-    voted: ThresholdReachedVoteControl,
-    notVoted: ThresholdReachedVoteControl,
+    voted: ThresholdReached,
+    notVoted: ThresholdReached,
   },
   answered: {
-    voted: AnsweredVoteControl,
-    notVoted: AnsweredVoteControl,
+    voted: Answered,
+    notVoted: Answered,
   },
   ineligible: {
-    voted: IneligibleVoteControl,
-    notVoted: IneligibleVoteControl,
+    voted: Ineligible,
+    notVoted: Ineligible,
   },
   custom: {
-    voted: CustomVoteControl,
-    notVoted: CustomVoteControl,
+    voted: Custom,
+    notVoted: Custom,
   },
 };
 

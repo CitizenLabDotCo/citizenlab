@@ -1,30 +1,38 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import moment from 'moment';
+
+import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import { StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
+import CountDown from './CountDown';
 import Icon from 'components/UI/Icon';
-import { StatusWrapper, StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
 import Tooltip from 'components/UI/Tooltip';
 import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';
 
-import T from 'components/T';
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+import T from 'components/T';
 
 const Container = styled.div``;
 
+const CountDownWrapper = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+`;
+
 const StatusIcon = styled(Icon)`
   path {
-    fill: ${colors.clGreyOnGreyBackground};
+    fill: ${props => props.theme.colorMain};
   }
-  width: 30px;
-  height: 30px;
-  margin-bottom: 20px;
+  width: 31px;
+  height: 31px;
+  margin-bottom: 10px;
 `;
 
 const StyledTooltip = styled(Tooltip)`
@@ -35,16 +43,21 @@ const VoteCounter = styled.div`
   margin-top: 15px;
 `;
 
-const VoteTexts = styled.div`
+const VoteText = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   padding-bottom: 4px;
 `;
 
-const VoteText = styled.div`
+const VoteTextLeft = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${props => props.theme.colorMain};
+`;
+
+const VoteTextRight = styled.div`
+  font-size: ${fontSizes.base}px;
+  color: ${props => props.theme.colorText};
 `;
 
 const StyledProgressBar = styled(ProgressBar)`
@@ -66,26 +79,30 @@ interface DataProps {}
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
 
-class IneligibleVoteControl extends PureComponent<Props, State> {
+  calculateCountdownTarget = () => {
+    const { initiative, initiativeSettings: { days_limit } } = this.props;
+    const mStart = moment(initiative.attributes.published_at);
+    return mStart.add(days_limit, 'day');
+  }
+
   render() {
-    const { initiative, initiativeSettings: { eligibility_criteria, voting_threshold }, initiativeStatus } = this.props;
-
+    const { initiative, initiativeSettings: { voting_threshold, eligibility_criteria }, theme } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold || 1;
-
     return (
       <Container>
-        <StatusWrapper>
-          <T value={initiativeStatus.attributes.title_multiloc} />
-        </StatusWrapper>
-        <StatusIcon name="halt" />
+        <CountDownWrapper>
+          <CountDown targetTime={this.calculateCountdownTarget()} />
+        </CountDownWrapper>
+        <StatusIcon name="bullseye" />
         <StatusExplanation>
           <FormattedMessage
-            {...messages.ineligibleStatusExplanation}
+            {...messages.proposedStatusExplanation}
             values={{
-              ineligibleStatusExplanationBold: <b><FormattedMessage {...messages.ineligibleStatusExplanationBold} /></b>
+              votingThreshold: voting_threshold,
+              proposedStatusExplanationBold: <b><FormattedMessage {...messages.proposedStatusExplanationBold} /></b>
             }}
           />
           {eligibility_criteria &&
@@ -102,26 +119,29 @@ class IneligibleVoteControl extends PureComponent<Props, State> {
           }
         </StatusExplanation>
         <VoteCounter>
-          <VoteTexts>
-            <VoteText>
+          <VoteText>
+            <VoteTextLeft>
               <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
-            </VoteText>
-            <VoteText>
+            </VoteTextLeft>
+            <VoteTextRight>
               {voteLimit}
-            </VoteText>
-          </VoteTexts>
+            </VoteTextRight>
+          </VoteText>
           <StyledProgressBar
             progress={voteCount / voteLimit}
-            color="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
+            color={theme.colorMain}
             bgColor={colors.lightGreyishBlue}
           />
         </VoteCounter>
-        <StyledButton>
-          <FormattedMessage {...messages.readAnswer} />
+        <StyledButton
+          icon="upvote"
+          style="primary"
+        >
+          <FormattedMessage {...messages.vote} />
         </StyledButton>
       </Container>
     );
   }
 }
 
-export default IneligibleVoteControl;
+export default withTheme(ProposedNotVoted);

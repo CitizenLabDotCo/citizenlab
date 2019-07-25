@@ -21,7 +21,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class CustomVoteControl extends PureComponent<Props, State> {
+class Custom extends PureComponent<Props, State> {
   render() {
     const { initiativeStatus } = this.props;
 
@@ -33,4 +33,4 @@ class CustomVoteControl extends PureComponent<Props, State> {
   }
 }
 
-export default CustomVoteControl;
+export default Custom;
