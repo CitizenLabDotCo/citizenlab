@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 
 import styled, { withTheme } from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -12,12 +13,11 @@ import CountDown from './CountDown';
 import Icon from 'components/UI/Icon';
 import Tooltip from 'components/UI/Tooltip';
 import ProgressBar from 'components/UI/ProgressBar';
+import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
-import { colors, fontSizes } from 'utils/styleUtils';
-import Button from 'components/UI/Button';
 
 const Container = styled.div``;
 
