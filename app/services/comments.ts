@@ -114,7 +114,24 @@ export async function addCommentToIdea(ideaId: string,  projectId: string, autho
   return comment;
 }
 
-export async function addCommentToComment(
+export async function addCommentToInitiative(initiativeId: string, authorId: string, body: { [key: string]: string }) {
+  const comment = await streams.add<IComment>(`${API_PATH}/initiatives/${initiativeId}/comments`, {
+    comment: {
+      author_id: authorId,
+      body_multiloc: body
+    }
+  }, true);
+
+  // refetch commentsForUser and comments for user count
+  streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/users/${authorId}/comments`, `${API_PATH}/users/${authorId}/comments_count`],
+    dataId: [initiativeId, comment.data.id]
+  });
+
+  return comment;
+}
+
+export async function addCommentToIdeaComment(
   ideaId: string,
   projectId: string,
   authorId: string,
@@ -143,6 +160,41 @@ export async function addCommentToComment(
   } else {
     streams.fetchAllWith({
       dataId: [ideaId, projectId, parentCommentId, comment.data.id],
+      apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`]
+    });
+  }
+
+  return comment;
+}
+
+export async function addCommentToInitiativeComment(
+  initiativeId: string,
+  authorId: string,
+  parentCommentId: string,
+  body: { [key: string]: string },
+  waitForChildCommentsRefetch = false
+) {
+  const comment = await streams.add<IComment>(`${API_PATH}/initiatives/${initiativeId}/comments`, {
+    comment: {
+      author_id: authorId,
+      parent_id: parentCommentId,
+      body_multiloc: body
+    }
+  }, true);
+
+  // refetch commentsForUser and comments for user count
+  streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/users/${authorId}/comments`, `${API_PATH}/users/${authorId}/comments_count`]
+  });
+
+  if (waitForChildCommentsRefetch) {
+    await streams.fetchAllWith({
+      apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`] ,
+      dataId: [initiativeId, parentCommentId, comment.data.id]
+    });
+  } else {
+    streams.fetchAllWith({
+      dataId: [initiativeId, parentCommentId, comment.data.id],
       apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`]
     });
   }
