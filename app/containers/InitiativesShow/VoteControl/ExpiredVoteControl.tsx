@@ -7,8 +7,7 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
 import Icon from 'components/UI/Icon';
-import { StatusWrapper, StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
-import Tooltip from 'components/UI/Tooltip';
+import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';
 
@@ -25,10 +24,6 @@ const StatusIcon = styled(Icon)`
   width: 30px;
   height: 30px;
   margin-bottom: 20px;
-`;
-
-const StyledTooltip = styled(Tooltip)`
-  display: inline;
 `;
 
 const VoteCounter = styled.div`

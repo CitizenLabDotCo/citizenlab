@@ -37,6 +37,14 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.expiredStatusExplanationBold',
     defaultMessage: 'didn\'t reach {votingThreshold} votes in time',
   },
+  thresholdReachedStatusExplanation: {
+    id: 'app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation',
+    defaultMessage: '{thresholdReachedStatusExplanationBold}. {orgName} got notified and will provide an answer. Voting remains open.',
+  },
+  thresholdReachedStatusExplanationBold: {
+    id: 'app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold',
+    defaultMessage: 'The threshold has been reached',
+  },
   xVotes: {
     id: 'app.containers.InitiativesShow.VoteControl.xVotes',
     defaultMessage: '{count, plural, =0 {no votes} one {1 vote} other {# votes}}',
@@ -68,5 +76,9 @@ export default defineMessages({
   unvoteLink: {
     id: 'app.containers.InitiativesShow.VoteControl.unvoteLink',
     defaultMessage: 'Cancel my vote',
+  },
+  xVotesOfY: {
+    id: 'app.containers.InitiativesShow.VoteControl.xVotesOfY',
+    defaultMessage: '{xVotes} of {votingThreshold}',
   },
 });
