@@ -73,12 +73,13 @@ interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
+  userVoted: boolean;
 }
 interface DataProps {}
 
 interface Props extends InputProps, DataProps {}
 
-class ProposedVoteControl extends PureComponent<Props & { theme: any }> {
+class NotVotedProposedVoteControl extends PureComponent<Props & { theme: any }> {
 
   calculateCountdownTarget = () => {
     const { initiative, initiativeSettings: { days_limit } } = this.props;
@@ -143,4 +144,4 @@ class ProposedVoteControl extends PureComponent<Props & { theme: any }> {
   }
 }
 
-export default withTheme(ProposedVoteControl);
+export default withTheme(NotVotedProposedVoteControl);

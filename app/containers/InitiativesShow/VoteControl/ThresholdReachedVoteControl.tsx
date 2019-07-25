@@ -13,6 +13,7 @@ interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: ITenantSettings['initiatives'];
+  userVoted: boolean;
 }
 interface DataProps {}
 

@@ -10,7 +10,8 @@ import { IInitiativeData } from 'services/initiatives';
 import { ITenantSettings } from 'services/tenant';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
-import ProposedVoteControl from './ProposedVoteControl';
+import NotVotedProposedVoteControl from './NotVotedProposedVoteControl';
+import VotedProposedVoteControl from './VotedProposedVoteControl';
 import ExpiredVoteControl from './ExpiredVoteControl';
 import ThresholdReachedVoteControl from './ThresholdReachedVoteControl';
 import AnsweredVoteControl from './AnsweredVoteControl';
@@ -38,16 +39,45 @@ interface VoteControlComponentProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: ITenantSettings['initiatives'];
+  userVoted: boolean;
 }
 
-const statusCodeToComponent: {[key in InitiativeStatusCode]: React.ComponentType<VoteControlComponentProps>} = {
-  published: ProposedVoteControl,
-  proposed: ProposedVoteControl,
-  expired: ExpiredVoteControl,
-  threshold_reached: ThresholdReachedVoteControl,
-  answered: AnsweredVoteControl,
-  ineligible: IneligibleVoteControl,
-  custom: CustomVoteControl,
+type TComponentMap = {
+  [key in InitiativeStatusCode]: {
+    [key in 'voted' | 'notVoted']: React.ComponentType<VoteControlComponentProps>
+  };
+};
+
+/** Maps the initiative status and whether the user voted or not to the right component to render */
+const componentMap: TComponentMap = {
+  published: {
+    voted: VotedProposedVoteControl,
+    notVoted: NotVotedProposedVoteControl,
+  },
+  proposed: {
+    voted: VotedProposedVoteControl,
+    notVoted: NotVotedProposedVoteControl,
+  },
+  expired: {
+    voted: ExpiredVoteControl,
+    notVoted: ExpiredVoteControl,
+  },
+  threshold_reached: {
+    voted: ThresholdReachedVoteControl,
+    notVoted: ThresholdReachedVoteControl,
+  },
+  answered: {
+    voted: AnsweredVoteControl,
+    notVoted: AnsweredVoteControl,
+  },
+  ineligible: {
+    voted: IneligibleVoteControl,
+    notVoted: IneligibleVoteControl,
+  },
+  custom: {
+    voted: CustomVoteControl,
+    notVoted: CustomVoteControl,
+  },
 };
 
 interface InputProps {
@@ -55,7 +85,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps,
+  tenant: GetTenantChildProps;
   initiative: GetInitiativeChildProps;
   initiativeStatus: GetInitiativeStatusChildProps;
 }
@@ -74,7 +104,8 @@ class VoteControl extends PureComponent<Props> {
     ) return null;
 
     const statusCode = initiativeStatus.attributes.code;
-    const StatusComponent = statusCodeToComponent[statusCode];
+    const userVoted = !!initiative.relationships.user_vote.data;
+    const StatusComponent = componentMap[statusCode][userVoted ? 'voted' : 'notVoted'];
     const initiativeSettings = tenant.attributes.settings.initiatives;
 
     return (
@@ -84,6 +115,7 @@ class VoteControl extends PureComponent<Props> {
             initiative={initiative}
             initiativeStatus={initiativeStatus}
             initiativeSettings={initiativeSettings}
+            userVoted={userVoted}
           />
         </Container>
       </TemporaryOuterContainer>
