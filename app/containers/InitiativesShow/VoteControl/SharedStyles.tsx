@@ -40,4 +40,3 @@ export const HelpIcon = styled(Icon)`
   height: 12px;
   margin-left: 4px;
 `;
-

@@ -41,4 +41,20 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.readAnswer',
     defaultMessage: 'Read answer',
   },
+  votedTitle: {
+    id: 'app.containers.InitiativesShow.VoteControl.votedTitle',
+    defaultMessage: 'Your vote has been submitted!',
+  },
+  votedText: {
+    id: 'app.containers.InitiativesShow.VoteControl.votedText',
+    defaultMessage: 'You\'ll get notified when this initiative goes to the next step. There\'s {xDays} left.',
+  },
+  xDays: {
+    id: 'app.containers.InitiativesShow.VoteControl.xDays',
+    defaultMessage: '{x, plural, =0 {less than a day} one {one day} other {# days}}',
+  },
+  unvoteLink: {
+    id: 'app.containers.InitiativesShow.VoteControl.unvoteLink',
+    defaultMessage: 'Cancel my vote',
+  },
 });
