@@ -53,7 +53,7 @@ class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
           </Button>
         </>
       );
-    } else {
+    } else if (type === 'Initiatives') {
       return (
         <>
           <Button onClick={handleClickEdit}>
@@ -67,6 +67,7 @@ class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
         </>
       );
     }
+    return null;
   }
 }
 

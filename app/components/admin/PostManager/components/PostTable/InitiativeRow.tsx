@@ -48,6 +48,7 @@ interface InputProps {
   type: ManagerType;
   initiative: IInitiativeData;
   statuses?: IInitiativeStatusData[];
+  /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   className?: string;

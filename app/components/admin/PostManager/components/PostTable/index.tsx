@@ -78,6 +78,7 @@ interface Props {
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
   onChangeSort?: (sort: IdeasSort | InitiativesSort) => void;
+  /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   onChangeSelection: (newSelection: Set<string>) => void;
   currentPageNumber?: number;
@@ -97,7 +98,7 @@ export default class PostTable extends React.Component<Props> {
       if (newSortAttribute === oldSortAttribute) {
         newSortSign = oldSortDirection === 'ascending' ? '-' : '';
       }
-      onChangeSort(`${newSortSign}${newSortAttribute}` as IdeasSort); // TODO; ok for now since InitiativesSort is a subset of ideas sort
+      onChangeSort(`${newSortSign}${newSortAttribute}` as IdeasSort | InitiativesSort);
     }
   }
 
@@ -168,19 +169,21 @@ export default class PostTable extends React.Component<Props> {
               toggleSelectAll={this.toggleSelectAll}
               handleSortClick={this.handleSortClick}
             />
-            : <IdeaHeaderRow
-              sortAttribute={sortAttribute}
-              sortDirection={sortDirection}
-              allSelected={this.allSelected()}
-              toggleSelectAll={this.toggleSelectAll}
-              handleSortClick={this.handleSortClick}
-            />
+            : type === 'AllIdeas' || type === 'ProjectIdeas'
+              ? <IdeaHeaderRow
+                sortAttribute={sortAttribute}
+                sortDirection={sortDirection}
+                allSelected={this.allSelected()}
+                toggleSelectAll={this.toggleSelectAll}
+                handleSortClick={this.handleSortClick}
+              />
+              : null
           }
           <Table.Body>
             {!isEmpty(posts) ?
               <TransitionGroup component={null}>
-                {// TODO fix typings here, with the conditional type here, ts complains
-                  (posts as IIdeaData[]).map(post =>
+                {// Cleanest workaround typescript I found
+                  (posts as (IIdeaData | IInitiativeData)[]).map(post =>
                     <CSSTransition classNames="fade" timeout={500} key={post.id}>
                       <Row
                         className="e2e-post-manager-post-row"

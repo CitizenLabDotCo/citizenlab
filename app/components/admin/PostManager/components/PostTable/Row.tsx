@@ -4,6 +4,7 @@ import React from 'react';
 import { IIdeaData } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // style
 import styled from 'styled-components';
@@ -52,6 +53,7 @@ type Props = {
   post: IIdeaData | IInitiativeData,
   phases?: IPhaseData[],
   statuses?: IIdeaStatusData[],
+  /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>,
   onUnselect: () => void,
   onToggleSelect: () => void,
@@ -105,12 +107,12 @@ export default class Row extends React.PureComponent<Props> {
           nothingHappens={nothingHappens}
         />
       );
-    } else {
+    } else if (type === 'Initiatives') {
       return (
         <InitiativeRow
           type={type}
           initiative={post as IInitiativeData}
-          statuses={statuses}
+          statuses={statuses as IInitiativeStatusData[]}
           selection={selection}
           activeFilterMenu={activeFilterMenu}
           className={className}
@@ -121,5 +123,6 @@ export default class Row extends React.PureComponent<Props> {
         />
       );
     }
+    return null;
   }
 }

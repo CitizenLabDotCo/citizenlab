@@ -44,18 +44,18 @@ class ExportButtons extends React.PureComponent<Props> {
               exportQueryParameter={exportQueryParameter}
             />
           </>
-        ) : (
-            <>
-              <ExportIdeasButton
-                exportType={exportType}
-                exportQueryParameter={exportQueryParameter}
-              />
-              <ExportIdeasCommentsButton
-                exportType={exportType}
-                exportQueryParameter={exportQueryParameter}
-              />
-            </>
-          )}
+        ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
+          <>
+            <ExportIdeasButton
+              exportType={exportType}
+              exportQueryParameter={exportQueryParameter}
+            />
+            <ExportIdeasCommentsButton
+              exportType={exportType}
+              exportQueryParameter={exportQueryParameter}
+            />
+          </>
+        ) : null}
       </Container>
     );
   }
