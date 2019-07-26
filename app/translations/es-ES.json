@@ -1543,7 +1543,7 @@
   "app.containers.landing.browseInitiative": "Busca iniciativas",
   "app.containers.landing.cityProjects": "Proyectos",
   "app.containers.landing.completeProfile": "Completa tu perfil",
-  "app.containers.landing.completeYourProfile": "Bienvenido, {firstName}. Completa tu perfíl.",
+  "app.containers.landing.completeYourProfile": "Bienvenido, {firstName}. Completa tu perfil.",
   "app.containers.landing.createAccount": "Crea una cuenta",
   "app.containers.landing.defaultSignedInMessage": "{firstName}, impulsa un cambio hoy!",
   "app.containers.landing.doItLater": "Lo voy a hacer más tarde",
