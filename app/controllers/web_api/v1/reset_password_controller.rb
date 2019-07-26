@@ -21,7 +21,10 @@
         .find_by(reset_password_token: reset_password_params[:token])
       if @user && ResetPasswordService.new.token_valid?(@user, reset_password_params[:token])
         if @user.update(password: reset_password_params[:password], reset_password_token: nil)
-          render json: @user
+          render json: WebApi::V1::UserSerializer.new(
+            @user, 
+            params: fastjson_params
+            ).serialized_json
         else
           render json: {errors: @user.errors.details}, status: :unprocessable_entity
         end

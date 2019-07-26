@@ -25,9 +25,21 @@ resource "Baskets" do
       example_request "Get one basket by id" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
+
         expect(json_response.dig(:data, :id)).to eq @basket.id
-        expect(json_response.dig(:data, :attributes, :total_budget)).to be_present
-        expect(json_response.dig(:data, :attributes, :budget_exceeds_limit?)).not_to eq nil
+        expect(json_response.dig(:data, :type)).to eq 'basket'
+        expect(json_response.dig(:data, :attributes)).to include(
+          total_budget: 2250,
+          budget_exceeds_limit?: false,
+          )
+        expect(json_response.dig(:data, :relationships)).to include(
+          participation_context: {
+            data: {id: @basket.participation_context_id, type: 'project'}
+          },
+          user: {
+            data: {id: @basket.user_id, type: 'user'}
+          }
+          )
         expect(json_response.dig(:data, :relationships, :ideas, :data).map{|h| h[:id]}).to match_array @ideas.map(&:id)
         expect(json_response.dig(:included).map{|h| h.dig(:attributes, :slug)}).to match_array @ideas.map(&:slug)
       end

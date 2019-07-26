@@ -9,7 +9,7 @@ resource "Notifications" do
   before do
     header "Content-Type", "application/json"
     @user = create(:user)
-    create_list(:comment_on_your_comment, 2, recipient: @user)
+    create_list(:comment_on_your_idea, 2, recipient: @user)
     create_list(:comment_on_your_comment, 2, read_at: Time.now, recipient: @user)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
@@ -33,6 +33,8 @@ resource "Notifications" do
       do_request(only_unread: true)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].map{|d| d.dig(:attributes, :read_at)}.uniq).to eq [nil]
+      expect(json_response[:data].first.dig(:attributes, :initiating_user_slug)).to be_present
     end
 
     describe do

@@ -1,10 +1,9 @@
 class WebApi::V1::ActivitiesController < ApplicationController
-
   before_action :set_idea
   skip_after_action :verify_policy_scoped
 
   def index
-    @activities = Activity.where(
+    @activities = policy_scope(Activity).where(
       item: @idea,
       action: ['published', 'changed_status', 'changed_title', 'changed_body']
     )
@@ -13,12 +12,14 @@ class WebApi::V1::ActivitiesController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: @activities, include: :user
+    render json: linked_json(
+      @activities, 
+      WebApi::V1::ActivitySerializer, 
+      params: fastjson_params,
+      include: [:user]
+      )
   end
 
-  def show
-    render json: @area
-  end
 
   private
 

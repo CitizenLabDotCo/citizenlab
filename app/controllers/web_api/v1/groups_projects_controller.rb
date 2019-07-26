@@ -20,11 +20,20 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
         raise "Unsupported sort method"
     end
 
-  	render json: @groups_projects, include: ['group']
+    render json: linked_json(
+      @groups_projects, 
+      WebApi::V1::GroupsProjectSerializer, 
+      params: fastjson_params,
+      include: [:group]
+      )
   end
 
   def show
-    render json: @groups_project, include: ['group'], serializer: WebApi::V1::GroupsProjectSerializer
+    render json: WebApi::V1::GroupsProjectSerializer.new(
+      @groups_project, 
+      params: fastjson_params,
+      include: [:group]
+      ).serialized_json
   end
 
   # insert
@@ -33,7 +42,11 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     @groups_project.project_id = params[:project_id]
     authorize @groups_project
     if @groups_project.save
-      render json: @groups_project.reload, include: ['group'], status: :created
+      render json: WebApi::V1::GroupsProjectSerializer.new(
+        @groups_project.reload, 
+        params: fastjson_params,
+        include: [:group]
+        ).serialized_json, status: :created
     else
       render json: { errors: @groups_project.errors.details }, status: :unprocessable_entity
     end

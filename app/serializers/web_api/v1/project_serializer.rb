@@ -1,39 +1,23 @@
-class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
+class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   include WebApi::V1::ParticipationContextSerializer
 
-  attributes :id, :title_multiloc, :description_multiloc, :description_preview_multiloc, :slug, :header_bg, :visible_to, :process_type, :ideas_count, :comments_count, :avatars_count, :allocated_budget, :internal_role, :publication_status, :created_at, :updated_at, :ordering
-  attribute :timeline_active, if: :timeline?
+  attributes :title_multiloc, :description_multiloc, :description_preview_multiloc, :slug, :visible_to, :process_type, :ideas_count, :comments_count, :internal_role, :publication_status, :created_at, :updated_at, :ordering
 
-  has_many :project_images, serializer: WebApi::V1::ImageSerializer
-  has_many :areas
-  has_many :topics
-  has_many :avatars, serializer: WebApi::V1::AvatarSerializer
-  
-  has_one :action_descriptor
-  has_one :user_basket
-  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, unless: :is_participation_context?
-
-  belongs_to :default_assignee, if: :can_moderate?
-
-  def header_bg
+  attribute :header_bg do |object|
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
 
-  def current_phase
-    TimelineService.new.current_phase(object)
-  end
-
-  def action_descriptor
+  attribute :action_descriptor do |object, params|
     @participation_context_service ||= ParticipationContextService.new
-    posting_disabled_reason = @participation_context_service.posting_disabled_reason_for_project object, current_user
-    commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_project object, current_user
-    voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_project object, current_user
-    taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason_for_project object, current_user
+    posting_disabled_reason = @participation_context_service.posting_disabled_reason_for_project object, current_user(params)
+    commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_project object, current_user(params)
+    voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_project object, current_user(params)
+    taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason_for_project object, current_user(params)
     {
       posting: {
         enabled: !posting_disabled_reason,
         disabled_reason: posting_disabled_reason,
-        future_enabled: posting_disabled_reason && @participation_context_service.future_posting_enabled_phase(object, current_user)&.start_at
+        future_enabled: posting_disabled_reason && @participation_context_service.future_posting_enabled_phase(object, current_user(params))&.start_at
       },
       commenting: {
         enabled: !commenting_disabled_reason,
@@ -55,57 +39,67 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
     }
   end
 
-  def user_basket
-    if @instance_options[:user_baskets]
-      @instance_options.dig(:user_baskets, object.id)&.first
-    else
-      current_user&.baskets&.find_by(participation_context_id: object.id, participation_context_type: 'Project')
-    end
+  attribute :avatars_count do |object, params|
+    avatars_for_project(object, params)[:total_count]
   end
 
-  def avatars_count
-    avatars_for_project[:total_count]
-  end
-
-  def avatars
-    avatars_for_project[:users]
-  end
-
-  def allocated_budget
-    if @instance_options[:allocated_budgets]
-      @instance_options.dig(:allocated_budgets, object.id)
+  attribute :allocated_budget do |object, params|
+    if params[:allocated_budgets]
+      params.dig(:allocated_budgets, object.id)
     else
       ParticipationContextService.new.allocated_budget object
     end
   end
 
-  # checked by included ParticipationContextSerializer
-  def is_participation_context?
-    object.is_participation_context?
-  end
-
-  def timeline?
+  attribute :timeline_active, if: Proc.new { |object, params|
     object.timeline?
-  end
-
-  def timeline_active
-    if @instance_options[:timeline_active]
-      @instance_options.dig(:timeline_active, object.id)
+  } do |object, params|
+    if params[:timeline_active]
+      params.dig(:timeline_active, object.id)
     else
       TimelineService.new.timeline_active object
     end
   end
 
-  def can_moderate?
-    ProjectPolicy.new(scope, object).moderate?
+  has_many :project_images, serializer: WebApi::V1::ImageSerializer
+  has_many :areas
+  has_many :topics
+  has_many :avatars, serializer: WebApi::V1::AvatarSerializer do |object, params|
+    avatars_for_project(object, params)[:users]
+  end
+  
+  has_one :user_basket, record_type: :basket, if: Proc.new { |object, params|
+    signed_in? object, params
+  } do |object, params|
+    user_basket object, params
+  end
+  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase, if: Proc.new { |object, params|
+    !object.is_participation_context?
+  } do |object|
+    TimelineService.new.current_phase(object)
   end
 
-  private
+  belongs_to :default_assignee, record_type: :assignee, if: Proc.new { |object, params|
+    can_moderate? object, params
+  }
 
-  def avatars_for_project
-    @avatars_for_project ||= AvatarsService.new.avatars_for_project(object, limit: 3)
+  
+  def self.avatars_for_project object, params
+    # TODO call only once (not a second time for counts)
+    AvatarsService.new.avatars_for_project(object, limit: 3)
+  end  
+
+  def self.user_basket object, params
+    if params[:user_baskets]
+      params.dig(:user_baskets, [object.id, 'Project'])&.first
+    else
+      current_user(params)&.baskets&.find do |basket|
+        basket.participation_context_id == object.id && basket.participation_context_type == 'Project'
+      end
+    end
   end
 
-
-
+  def self.can_moderate? object, params
+    ProjectPolicy.new(current_user(params), object).moderate?
+  end
 end
