@@ -133,9 +133,9 @@ class IdeaSettings extends PureComponent<PropsWithHoCs> {
       assignee_id: assigneeId
     });
 
-    trackEventByName(tracks.ideaReviewAssignment, {
+    trackEventByName(tracks.changePostAssignment, {
       tenant: tenantId,
-      location: 'Idea preview/popup',
+      location: 'Idea preview',
       idea: ideaId,
       assignee: assigneeId,
       adminAtWork: adminAtWorkId

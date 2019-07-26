@@ -2,6 +2,7 @@ import 'whatwg-fetch';
 import { from } from 'rxjs';
 import { UploadFile } from 'typings';
 import { isString } from 'lodash-es';
+import { reportError } from 'utils/loggingUtils';
 
 export const imageSizes = {
   headerBg: {
@@ -68,7 +69,7 @@ export async function convertUrlToUploadFile(url: string, id: string | null, fil
     uploadFile.id = (id || undefined);
     return uploadFile;
   } catch (error) {
-    console.log(error);
+    reportError(error);
     return null;
   }
 }

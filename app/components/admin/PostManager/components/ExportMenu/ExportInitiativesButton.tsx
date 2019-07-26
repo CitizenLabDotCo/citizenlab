@@ -12,6 +12,7 @@ import { API_PATH } from 'containers/App/constants';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 import { saveAs } from 'file-saver';
+import { reportError } from 'utils/loggingUtils';
 
 interface Props {
   exportQueryParameter: 'all' | string | string[];
@@ -22,7 +23,7 @@ interface State {
   exporting: boolean;
 }
 
-export default class ExportIdeasButton extends React.PureComponent<Props, State> {
+export default class ExportInitiativesButton extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -30,29 +31,28 @@ export default class ExportIdeasButton extends React.PureComponent<Props, State>
     };
   }
 
-  handleExportIdeas = async () => {
+  handleExportInitiatives = async () => {
     const { exportQueryParameter } = this.props;
-    console.log(exportQueryParameter);
 
     const queryParametersObject = {};
     if (isString(exportQueryParameter) && exportQueryParameter !== 'all') {
       queryParametersObject['project'] = exportQueryParameter;
     } else if (!isString(exportQueryParameter)) {
-      queryParametersObject['ideas'] = exportQueryParameter;
+      queryParametersObject['initiatives'] = exportQueryParameter;
     }
 
     try {
       this.setState({ exporting: true });
-      const blob = await requestBlob(`${API_PATH}/ideas/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', queryParametersObject);
-      saveAs(blob, 'ideas-export.xlsx');
+      const blob = await requestBlob(`${API_PATH}/initiatives/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', queryParametersObject);
+      saveAs(blob, 'initiatives-export.xlsx');
       this.setState({ exporting: false });
     } catch (error) {
-      console.log(error);
+      reportError(error);
       this.setState({ exporting: false });
     }
 
     // track this click for user analytics
-    trackEventByName(tracks.clickExportIdeas.name);
+    trackEventByName(tracks.clickExportInitiatives.name);
   }
 
   render() {
@@ -61,14 +61,14 @@ export default class ExportIdeasButton extends React.PureComponent<Props, State>
     return (
       <Button
         style="text"
-        onClick={this.handleExportIdeas}
+        onClick={this.handleExportInitiatives}
         processing={exporting}
         padding="0"
         fontSize={`${fontSizes.small}px`}
       >
-        {exportType === 'all' && <FormattedMessage {...messages.exportIdeas} />}
-        {exportType === 'project' && <FormattedMessage {...messages.exportIdeasProjects} />}
-        {exportType === 'selected_posts' && <FormattedMessage {...messages.exportSelectedIdeas} />}
+        {exportType === 'all' && <FormattedMessage {...messages.exportInitiatives} />}
+        {exportType === 'project' && <FormattedMessage {...messages.exportInitiativesProjects} />}
+        {exportType === 'selected_posts' && <FormattedMessage {...messages.exportSelectedInitiatives} />}
       </Button>
     );
   }

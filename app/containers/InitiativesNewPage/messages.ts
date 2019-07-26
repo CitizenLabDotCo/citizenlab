@@ -7,7 +7,7 @@ export default defineMessages({
   },
   metaDescription: {
     id: 'app.containers.InitiativesNewPage.metaDescription',
-    defaultMessage: 'Start your own initiative and make your voice heard by '
+    defaultMessage: 'Start your own initiative and make your voice heard by {orgName}'
   },
   header: {
     id: 'app.containers.InitiativesNewPage.header',

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { IInitiativeStatusData, initiativeStatusesStream } from 'services/initiativeStatuses';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
 
@@ -30,7 +31,7 @@ export default class GetInitiativeStatuses extends React.Component<Props, State>
     this.subscriptions = [
       initiativeStatusesStream().observable.subscribe((initiativeStatuses) => {
         this.setState({
-          initiativeStatuses: (initiativeStatuses ? initiativeStatuses.data : null),
+          initiativeStatuses: (!isNilOrError(initiativeStatuses) ? initiativeStatuses.data : null),
         });
       })
     ];

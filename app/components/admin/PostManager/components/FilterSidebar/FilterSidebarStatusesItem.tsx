@@ -51,7 +51,7 @@ class FilterSidebarStatusesItem extends React.PureComponent<Props> {
 const statusTarget = {
   drop(props) {
     return {
-      type: 'ideaStatus',
+      type: 'status',
       id: props.status.id
     };
   },
