@@ -31,7 +31,7 @@ const ProjectLink = styled.span`
 
 interface InputProps {
   projectId: string;
-  votingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['voting'];
+  votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting'];
 }
 
 interface DataProps {

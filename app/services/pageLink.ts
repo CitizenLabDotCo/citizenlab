@@ -5,7 +5,7 @@ import streams from 'utils/streams';
 const apiEndpoint = `${API_PATH}/page_links`;
 
 export interface PageLink {
-  type: 'page_links';
+  type: 'page_link';
   id: string;
   attributes: {
     linked_page_slug: string;

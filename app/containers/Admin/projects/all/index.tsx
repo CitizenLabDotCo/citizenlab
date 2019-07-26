@@ -210,7 +210,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
                 <Spacer />
 
-                <HasPermission item="projects" action="reorder">
+                <HasPermission item="project" action="reorder">
                   <FeatureFlag name="manual_project_sorting" onlyCheckAllowed>
                     <ToggleWrapper>
                       <ToggleLabel htmlFor="manual-sorting-toggle">
@@ -225,7 +225,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   </FeatureFlag>
                 </HasPermission>
               </ListHeader>
-              <HasPermission item="projects" action="reorder">
+              <HasPermission item="project" action="reorder">
                 {(tenant.attributes.settings.manual_project_sorting as any).enabled ?
                   <SortableList
                     items={publishedProjects}
@@ -277,7 +277,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 </ListHeaderTitle>
                 <InfoTooltip {...messages.draftTooltip} />
               </ListHeader>
-              <HasPermission item="projects" action="reorder">
+              <HasPermission item="project" action="reorder">
                 <SortableList
                   items={draftProjects}
                   onReorder={this.handleReorder}
@@ -321,17 +321,44 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 </ListHeaderTitle>
                 <InfoTooltip {...messages.archivedTooltip} />
               </ListHeader>
-              <List id="e2e-admin-archived-projects-list">
-                {archivedProjects.map((project, index) => (
-                  <Row
-                    className="e2e-admin-projects-list-item"
-                    key={project.id}
-                    lastItem={(index === archivedProjects.length - 1)}
-                  >
-                    {row(project)}
-                  </Row>
-                ))}
-              </List>
+              <HasPermission item="project" action="reorder">
+                <SortableList
+                  items={archivedProjects}
+                  onReorder={this.handleReorder}
+                  className="e2e-admin-projects-list"
+                  id="e2e-admin-archived-projects-list"
+                >
+                  {({ itemsList, handleDragRow, handleDropRow }) => (
+                    itemsList.map((project: IProjectData, index: number) => (
+                      <SortableRow
+                        key={project.id}
+                        id={project.id}
+                        className="e2e-admin-projects-list-item"
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        lastItem={index === archivedProjects.length - 1}
+                      >
+                        {row(project)}
+                      </SortableRow>
+                    ))
+                  )}
+                </SortableList>
+
+                <HasPermission.No>
+                  <List id="e2e-admin-archived-projects-list">
+                    {archivedProjects.map((project, index) => (
+                      <Row
+                        className="e2e-admin-projects-list-item"
+                        key={project.id}
+                        lastItem={(index === archivedProjects.length - 1)}
+                      >
+                        {row(project)}
+                      </Row>
+                    ))}
+                  </List>
+                </HasPermission.No>
+              </HasPermission>
             </>
           }
         </>

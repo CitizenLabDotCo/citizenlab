@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isString, has, get, isEmpty, last, sortBy } from 'lodash-es';
+import { isString, get, isEmpty, last, sortBy } from 'lodash-es';
 import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
@@ -311,7 +311,7 @@ export default class VoteControl extends PureComponent<Props, State> {
       idea$
     ).pipe(
       switchMap(([authUser, idea]) => {
-        if (authUser && idea && has(idea, 'data.relationships.user_vote.data') && idea.data.relationships.user_vote.data !== null) {
+        if (authUser && idea && idea.data.relationships.user_vote && idea.data.relationships.user_vote.data !== null) {
           const voteId = idea.data.relationships.user_vote.data.id;
           const vote$ = voteStream(voteId).observable;
 
@@ -366,10 +366,10 @@ export default class VoteControl extends PureComponent<Props, State> {
       ).subscribe(({ idea, project, phases }) => {
         const upvotesCount = idea.data.attributes.upvotes_count;
         const downvotesCount = idea.data.attributes.downvotes_count;
-        const votingEnabled = idea.data.relationships.action_descriptor.data.voting.enabled;
-        const cancellingEnabled = idea.data.relationships.action_descriptor.data.voting.cancelling_enabled;
-        const votingDisabledReason = idea.data.relationships.action_descriptor.data.voting.disabled_reason;
-        const votingFutureEnabled = idea.data.relationships.action_descriptor.data.voting.future_enabled;
+        const votingEnabled = idea.data.attributes.action_descriptor.voting.enabled;
+        const cancellingEnabled = idea.data.attributes.action_descriptor.voting.cancelling_enabled;
+        const votingDisabledReason = idea.data.attributes.action_descriptor.voting.disabled_reason;
+        const votingFutureEnabled = idea.data.attributes.action_descriptor.voting.future_enabled;
 
         this.setState({
           idea,

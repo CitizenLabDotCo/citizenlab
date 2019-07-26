@@ -26,7 +26,7 @@ describe('GetArea with streams', () => {
     const httpResponse = {
       data: {
         id: 'f93ad1a1-3a0c-4c3d-b225-e1b63ca782cb',
-        type: 'areas',
+        type: 'area',
         attributes: {
           title_multiloc: {
             en: 'Westside',

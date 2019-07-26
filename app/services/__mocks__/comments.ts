@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export const makeCommentData = (id = 'commentId', attributes = {}, ideaId?: string, authorId?: string, parentId?: string) : ICommentData => ({
   id,
-  type: 'comments',
+  type: 'comment',
   attributes: {
     body_multiloc: { en: 'Just a comment' },
     publication_status: 'published',
@@ -18,20 +18,20 @@ export const makeCommentData = (id = 'commentId', attributes = {}, ideaId?: stri
     idea: {
       data: {
         id: ideaId ? ideaId : 'ideaId',
-        type: 'ideas'
+        type: 'idea'
       }
     },
     author: {
       data: {
         id: authorId ? authorId : 'authorId',
-        type: 'users'
+        type: 'user'
       }
     },
     parent: {
       data: parentId ?
         {
           id: parentId,
-          type: 'comments'
+          type: 'comment'
         } : null
     },
     user_vote: {
@@ -46,8 +46,12 @@ export const makeComment = (id = 'commentId', attributes = {}, ideaId?: string, 
 
 export const makeComments = (argumentsArray = [{ id: undefined, attributes: {}, ideaId: undefined, authorId: undefined, parentId: undefined }]) : IComments => ({
   data: argumentsArray.map(args => makeCommentData(args.id, args.attributes, args.ideaId, args.authorId, args.parentId)),
-  meta: {
-    total: 10
+  links: {
+    self: 'self',
+    first: 'first',
+    last: 'last',
+    prev: 'prev',
+    next: 'next'
   }
 });
 

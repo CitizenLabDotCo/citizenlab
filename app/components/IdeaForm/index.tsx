@@ -320,7 +320,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     let budgetError: JSX.Element | null = null;
 
     if (pbContext) {
-      if (budget === null && (pbContext.type === 'projects' || (pbContext.type === 'phases' && pastPresentOrFuture([(pbContext as IPhaseData).attributes.start_at, (pbContext as IPhaseData).attributes.end_at]) === 'present'))) {
+      if (budget === null && (pbContext.type === 'project' || (pbContext.type === 'phase' && pastPresentOrFuture([(pbContext as IPhaseData).attributes.start_at, (pbContext as IPhaseData).attributes.end_at]) === 'present'))) {
         budgetError = <FormattedMessage {...messages.noBudgetError} />;
       } else if (budget === 0) {
         budgetError = <FormattedMessage {...messages.budgetIsZeroError} />;
@@ -489,7 +489,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         {pbContext &&
           <FeatureFlag name="participatory_budgeting">
             <HasPermission
-              item="ideas"
+              item="idea"
               action="assignBudget"
               context={{ projectId }}
             >

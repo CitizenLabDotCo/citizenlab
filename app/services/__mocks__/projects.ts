@@ -36,6 +36,25 @@ export const getMockProject = (id: string, processType: ProcessType, participati
     survey_service: surveyService,
     survey_embed_url: `mockProject${id}${surveyService}Url`,
     ordering: 0,
+    action_descriptor: {
+      posting: {
+        enabled: true,
+        future_enabled: null, // string | null,
+        disabled_reason: null // PostingDisabledReasons | null,
+      },
+      commenting: {
+        enabled: true,
+        disabled_reason: null,
+      },
+      voting: {
+        enabled: true,
+        disabled_reason: null,
+      },
+      taking_survey: {
+        enabled: true,
+        disabled_reason: null // SurveyDisabledReasons | null,
+      }
+    }
   },
   relationships: {
     project_images: {
@@ -49,27 +68,6 @@ export const getMockProject = (id: string, processType: ProcessType, participati
     },
     current_phase: {
       data: null
-    },
-    action_descriptor: {
-      data: {
-        posting: {
-          enabled: true,
-          future_enabled: null, // string | null,
-          disabled_reason: null // PostingDisabledReasons | null,
-        },
-        commenting: {
-          enabled: true,
-          disabled_reason: null,
-        },
-        voting: {
-          enabled: true,
-          disabled_reason: null,
-        },
-        taking_survey: {
-          enabled: true,
-          disabled_reason: null // SurveyDisabledReasons | null,
-        }
-      }
     },
     user_basket: {
       data: null // IRelationship | null,
