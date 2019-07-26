@@ -7,10 +7,12 @@ module AdminApi
     def index
       @tenants = Tenant.all.order(name: :asc)
       @tenants = @tenants.where("name LIKE ?", params[:search] + '%') if params[:search]
+      # This uses default model serialization
       render json: @tenants
     end
 
     def show
+      # This uses default model serialization
       render json: @tenant
     end
 
@@ -28,6 +30,7 @@ module AdminApi
           TenantTemplateService.new.resolve_and_apply_template template, external_subfolder: 'release'
         end
         SideFxTenantService.new.after_apply_template @tenant, nil
+        # This uses default model serialization
         render json: @tenant, status: :created
       else
         render json: {errors: @tenant.errors.details}, status: :unprocessable_entity
@@ -49,6 +52,7 @@ module AdminApi
 
       if @tenant.save
         SideFxTenantService.new.after_update(@tenant, nil)
+        # This uses default model serialization
         render json: @tenant, status: :ok
       else
         render json: {errors: @tenant.errors.details}, status: :unprocessable_entity

@@ -1,5 +1,5 @@
-class WebApi::V1::GroupsProjectSerializer < ActiveModel::Serializer
-  attributes :id, :created_at
+class WebApi::V1::GroupsProjectSerializer < WebApi::V1::BaseSerializer
+  attributes :created_at
 
   belongs_to :group
 end

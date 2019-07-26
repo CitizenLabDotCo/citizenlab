@@ -1,5 +1,5 @@
-class WebApi::V1::MachineTranslationSerializer < ActiveModel::Serializer
-  attributes :id, :attribute_name, :locale_to, :translation
+class WebApi::V1::MachineTranslationSerializer < ::WebApi::V1::BaseSerializer
+  attributes :attribute_name, :locale_to, :translation
 
-  belongs_to :translatable
+  belongs_to :translatable, polymorphic: true
 end

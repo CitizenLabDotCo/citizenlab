@@ -6,8 +6,8 @@ class WebApi::V1::IdeasController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   def index
-    @ideas = policy_scope(Idea).includes(:author, :assignee, :topics, :areas, :phases, :idea_images, project: [:phases])
-      .left_outer_joins(:idea_status).left_outer_joins(:idea_trending_info)
+    @ideas = policy_scope(Idea).includes(:topics, :areas, :idea_images, project: [:phases, :permissions], phases: [:permissions], author: [:unread_notifications], assignee: [:unread_notifications])
+      .left_outer_joins(:idea_trending_info)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
@@ -56,16 +56,26 @@ class WebApi::V1::IdeasController < ApplicationController
         end
     end
 
-    @idea_ids = @ideas.map(&:id)
 
-    if current_user
-      votes = Vote.where(user: current_user, votable_id: @idea_ids, votable_type: 'Idea')
+
+    serialization_options = if current_user
+      # I have no idea why but the trending query part
+      # breaks if you don't fetch the ids in this way.
+      idea_ids = @ideas.map(&:id)
+      votes = Vote.where(user: current_user, votable_id: idea_ids, votable_type: 'Idea')
       votes_by_idea_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @ideas, include: ['author', 'user_vote', 'idea_images', 'assignee'], vbii: votes_by_idea_id, pcs: ParticipationContextService.new
+      {
+        params: fastjson_params(vbii: votes_by_idea_id, pcs: ParticipationContextService.new),
+        include: [:author, :user_vote, :idea_images, :assignee]
+      }
     else
-      render json: @ideas, include: ['author', 'idea_images'], pcs: ParticipationContextService.new
+      {
+        params: fastjson_params(pcs: ParticipationContextService.new),
+        include: [:author, :idea_images]
+      }
     end
 
+    render json: linked_json(@ideas, WebApi::V1::IdeaSerializer, serialization_options)
   end
 
   def index_idea_markers
@@ -76,7 +86,7 @@ class WebApi::V1::IdeasController < ApplicationController
     @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
-    render json: @ideas, each_serializer: WebApi::V1::IdeaMarkerSerializer
+    render json: linked_json(@ideas, WebApi::V1::IdeaMarkerSerializer, params: fastjson_params)
   end
 
   def index_xlsx
@@ -116,7 +126,11 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def show
-    render json: @idea, include: ['author','topics','areas','user_vote','idea_images'], serializer: WebApi::V1::IdeaSerializer
+    render json: WebApi::V1::IdeaSerializer.new(
+      @idea, 
+      params: fastjson_params, 
+      include: [:author, :topics, :areas, :user_vote, :idea_images]
+      ).serialized_json
   end
 
   def by_slug
@@ -138,7 +152,11 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       if @idea.save
         service.after_create(@idea, current_user)
-        render json: @idea.reload, status: :created, include: ['author','topics','areas','phases','user_vote','idea_images']
+        render json: WebApi::V1::IdeaSerializer.new(
+          @idea.reload, 
+          params: fastjson_params, 
+          include: [:author, :topics, :areas, :phases, :user_vote, :idea_images]
+          ).serialized_json, status: :created
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
       end
@@ -162,7 +180,11 @@ class WebApi::V1::IdeasController < ApplicationController
       if @idea.save
         authorize @idea
         service.after_update(@idea, current_user)
-        render json: @idea.reload, status: :ok, include: ['author','topics','areas','user_vote','idea_images']
+        render json: WebApi::V1::IdeaSerializer.new(
+          @idea.reload, 
+          params: fastjson_params, 
+          include: [:author, :topics, :areas, :user_vote, :idea_images]
+          ).serialized_json, status: :ok
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
       end

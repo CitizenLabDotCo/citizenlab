@@ -1,33 +1,31 @@
-class WebApi::V1::UserSerializer < ActiveModel::Serializer
-  include Knock::Authenticable
+class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
+  attributes :first_name, :last_name, :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
+  
+  attribute :email, if: Proc.new { |object, params|
+    view_private_attributes? object, params
+  }
 
-  attributes :id, :first_name, :last_name, :slug, :locale, :avatar, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
-  attribute :email, if: :view_private_attributes?
+  attribute :custom_field_values, if: Proc.new { |object, params|
+    view_private_attributes? object, params
+  }
 
-  attribute :custom_field_values, if: :view_private_attributes?
-
-  attribute :unread_notifications, if: :unread_notifications
-
-  has_many :granted_permissions, serializer: WebApi::V1::PermissionSerializer
-
-
-  def view_private_attributes?
-    Pundit.policy!(current_user, object).view_private_attributes?
+  attribute :avatar, if: Proc.new { |object|
+    object.avatar
+  } do |object|
+    object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
 
-  def avatar
-    object.avatar && object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
+  attribute :unread_notifications do |object|
+    object.unread_notifications.size
   end
 
-  def unread_notifications
-    # TODO Optimize this. The (rails cached, but still) query is executed
-    # everytime the current_user is rendered, except if coming from the /me
-    # endpoint
-    instance_options[:unread_notifications] || (scope && scope.notifications.unread.count)
+  has_many :granted_permissions, record_type: :permission, serializer: WebApi::V1::PermissionSerializer do |object, params|
+    params[:granted_permissions]
   end
 
-  def granted_permissions
-    @instance_options[:granted_permissions]
+
+  def self.view_private_attributes? object, params={}
+    Pundit.policy!(current_user(params), object).view_private_attributes?
   end
 
 end

@@ -24,7 +24,6 @@ describe "seedfile", slow_test: true do
       expect(ProjectImage.count).to be > 0
       expect(Comment.count).to be > 0
       expect(Page.count).to be 17 # 8 generated + 5 legal pages + 1 initiatives + 3 success stories
-      expect(Notification.count).to be > 0
       expect(IdeaStatus.count).to be > 0
       expect(Group.count).to be > 0
       expect(CustomField.count).to be > 0
