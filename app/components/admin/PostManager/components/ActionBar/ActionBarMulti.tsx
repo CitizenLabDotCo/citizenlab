@@ -9,6 +9,7 @@ import { ManagerType } from '../..';
 
 interface Props {
   type: ManagerType;
+  /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   resetSelection: () => void;
 }
@@ -51,7 +52,7 @@ class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
           <FormattedMessage {...messages.deleteAllSelectedIdeas} values={{ count: selection.size }} />
         </Button>
       );
-    } else {
+    } else if (type === 'Initiatives') {
       return (
         <Button negative={true} basic={true} onClick={this.handleClickDeleteInitiatives}>
           <Icon name="trash" />
@@ -59,6 +60,7 @@ class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
         </Button>
       );
     }
+    return null;
   }
 }
 

@@ -11,7 +11,6 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import { ManagerType } from '../..';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -34,12 +33,10 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps> {
   getAssigneeOptions = memoize(
     (prospectAssignees, authUser) => {
       const { intl: { formatMessage } } = this.props;
-      let assigneeOptions;
+      let assigneeOptions = [] as { value: string, text: string, id?: string, className?:string }[];
 
-      if (isNilOrError(prospectAssignees.usersList) || isNilOrError(authUser)) {
-        assigneeOptions = [];
-      } else {
-        assigneeOptions = prospectAssignees.usersList.filter(assignee => assignee.id !== authUser.id)
+      if (!isNilOrError(prospectAssignees.usersList) && !isNilOrError(authUser)) {
+        const dynamicOptions = prospectAssignees.usersList.filter(assignee => assignee.id !== authUser.id)
           .map(assignee => ({
             value: assignee.id,
             text: formatMessage(messages.assignedTo, {
@@ -49,9 +46,12 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps> {
           }));
 
         // Order of assignee filter options:
-        // All ideas > Assigned to me > Unassigned > Assigned to X (other admins/mods)
-        assigneeOptions.unshift({ value: 'unassigned', text: formatMessage(messages.noOne), id: 'e2e-assignee-select-unassigned' });
-        assigneeOptions.unshift({ value: authUser.id, text: formatMessage(messages.assignedToMe), id: 'e2e-assignee-select-assigned-to-user' });
+        // Assigned to me > Unassigned > Assigned to X (other admins/mods)
+        assigneeOptions = [
+          { value: authUser.id, text: formatMessage(messages.assignedToMe), id: 'e2e-assignee-select-assigned-to-user' },
+          { value: 'unassigned', text: formatMessage(messages.noOne), id: 'e2e-assignee-select-unassigned' },
+          ...dynamicOptions
+        ];
       }
       return assigneeOptions;
     }

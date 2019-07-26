@@ -41,6 +41,7 @@ type InputProps = {
   idea: IIdeaData,
   phases?: IPhaseData[],
   statuses?: IIdeaStatusData[],
+  /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>,
   activeFilterMenu: TFilterMenu;
   className?: string;

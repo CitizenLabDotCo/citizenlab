@@ -112,6 +112,7 @@ interface Props extends InputProps, DataProps { }
 export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 
 interface State {
+  /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   searchTerm: string | undefined;
@@ -241,7 +242,7 @@ export class PostManager extends React.PureComponent<Props, State> {
         selectedPhase: undefined,
         selectedStatus: posts.queryParameters.initiative_status
       });
-    } else {
+    } else if (type === 'AllIdeas' || 'ProjectIdeas') {
       const posts = this.props.posts as GetIdeasChildProps;
       return ({
         onChangePhase: posts.onChangePhase,
@@ -249,6 +250,11 @@ export class PostManager extends React.PureComponent<Props, State> {
         selectedStatus: posts.queryParameters.idea_status
       });
     }
+    return ({
+      onChangePhase: () => {},
+      selectedPhase: null,
+      selectedStatus: null
+    });
   }
 
   render() {
@@ -311,15 +317,17 @@ export class PostManager extends React.PureComponent<Props, State> {
                 searchTerm={searchTerm}
                 assignee={selectedAssignee}
               />
-              : <IdeasCount
-                feedbackNeeded={feedbackNeeded}
-                project={selectedProject}
-                phase={selectedPhase}
-                topics={selectedTopics}
-                ideaStatus={selectedStatus}
-                searchTerm={searchTerm}
-                assignee={selectedAssignee}
-              />
+              : type === 'AllIdeas' || type === 'ProjectIdeas'
+                ? <IdeasCount
+                  feedbackNeeded={feedbackNeeded}
+                  project={selectedProject}
+                  phase={selectedPhase}
+                  topics={selectedTopics}
+                  ideaStatus={selectedStatus}
+                  searchTerm={searchTerm}
+                  assignee={selectedAssignee}
+                />
+                : null
             }
             <StyledInput icon="search" onChange={this.handleSearchChange} />
           </MiddleColumnTop>
