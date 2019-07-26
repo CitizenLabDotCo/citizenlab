@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_01_091036) do
+ActiveRecord::Schema.define(version: 2019_07_24_095644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -361,6 +361,19 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["initiative_id"], name: "index_initiative_images_on_initiative_id"
+  end
+
+  create_table "initiative_status_changes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "initiative_id"
+    t.uuid "initiative_status_id"
+    t.uuid "official_feedback_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["initiative_id"], name: "index_initiative_status_changes_on_initiative_id"
+    t.index ["initiative_status_id"], name: "index_initiative_status_changes_on_initiative_status_id"
+    t.index ["official_feedback_id"], name: "index_initiative_status_changes_on_official_feedback_id"
+    t.index ["user_id"], name: "index_initiative_status_changes_on_user_id"
   end
 
   create_table "initiative_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
