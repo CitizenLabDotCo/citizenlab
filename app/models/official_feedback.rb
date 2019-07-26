@@ -4,6 +4,7 @@ class OfficialFeedback < ApplicationRecord
 
   belongs_to :user, optional: true
   has_many :notifications, foreign_key: :official_feedback_id, dependent: :nullify
+  has_many :initiative_status_changes, dependent: :nullify
 
   validates :body_multiloc, presence: true, multiloc: {presence: true}
   validates :author_multiloc, presence: true, multiloc: {presence: true}

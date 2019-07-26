@@ -55,7 +55,7 @@ class InitiativePolicy < ApplicationPolicy
       area_ids: []
     ]
     if user&.admin?
-      [:initiative_status_id, :assignee_id, *shared]
+      [:assignee_id, *shared]
     else
       shared
     end
