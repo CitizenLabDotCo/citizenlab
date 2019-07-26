@@ -11,6 +11,8 @@ jest.mock('utils/cl-router/history');
 jest.mock('utils/locationTools');
 jest.mock('utils/loggingUtils');
 
+jest.mock('lodash-es/debounce', () => jest.fn(fn => fn));
+
 import { addInitiative, updateInitiative } from 'services/initiatives';
 
 import InitiativesFormWrapper from './InitiativesFormWrapper';
