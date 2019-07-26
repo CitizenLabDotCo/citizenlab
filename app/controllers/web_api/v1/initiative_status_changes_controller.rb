@@ -1,0 +1,67 @@
+class WebApi::V1::InitiativeStatusChangesController < ApplicationController
+  before_action :set_initiative, only: [:index, :create]
+  before_action :set_change, only: [:show]
+
+  def index
+    @changes = policy_scope(InitiativeStatusChange)
+      .where(initiative: @initiative)
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+      .order(created_at: :desc)
+
+    render json: linked_json(@changes, WebApi::V1::InitiativeStatusChangeSerializer, params: fastjson_params)
+  end
+
+  def show
+    render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
+      @change, 
+      params: fastjson_params
+      ).serialized_json
+  end
+
+  def create
+    @change = InitiativeStatusChange.new status_change_params
+    @change.initiative = initiative
+    @change.user ||= current_user
+    authorize @change
+    # SideFxInitiativeStatusChangeService.new.before_create @change, current_user
+    if @change.save
+      # SideFxInitiativeStatusChangeService.new.after_create @change, current_user
+      render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
+        @change, 
+        params: fastjson_params
+        ).serialized_json, status: :created
+    else
+      render json: { errors: @change.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def set_change
+    @change = InitiativeStatusChange.find params[:id]
+    authorize @change
+  end
+
+  def set_initiative
+    @initiative = Initiative.find(params[:initiative_id])
+  end
+
+  def status_change_params
+    params.require(:initiative_status_change).permit(
+      :initiative_status_id,
+      :user_id,
+      #### :official_feedback_id,
+      official_feedback_attributes: [ 
+        :id, ####
+        body_multiloc: CL2_SUPPORTED_LOCALES,
+        author_multiloc: CL2_SUPPORTED_LOCALES 
+      ]
+    )
+  end
+
+  def secure_controller?
+    false
+  end
+
+end
