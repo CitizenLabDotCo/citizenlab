@@ -14,10 +14,10 @@ function isString(wat: any) {
 }
 
 export function reportError(error: any) {
-  if (isEmpty(error)) {
-    captureMessage('An empty error has been thrown');
-  } else if (isErrorOrErrorEvent(error)) {
+  if (isErrorOrErrorEvent(error)) {
     captureException(error);
+  } else if (isEmpty(error)) {
+    captureMessage('An empty error has been thrown');
   } else if (isObject(error)) {
     captureMessage(JSON.stringify(error, null, 4));
   } else if (isString(error)) {
