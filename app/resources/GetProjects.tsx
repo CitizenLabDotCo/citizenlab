@@ -4,9 +4,10 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
 import { projectsStream, IProjectData } from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
+import { isNilOrError } from 'utils/helperUtils';
 
 export type SortAttribute = 'new' | 'trending' | 'popular';
-export type Sort =  'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
+export type Sort = 'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
 export type SelectedPublicationStatus = 'all' | 'published' | 'archived';
 
@@ -117,7 +118,13 @@ export default class GetProjects extends Component<Props, State> {
             return {
               queryParameters,
               hasMore,
-              projects: (!isLoadingMore ? projects.data : [...(acc.projects || []), ...projects.data])
+              projects: (
+                isNilOrError(projects)
+                  ? null
+                  : !isLoadingMore
+                    ? projects.data
+                    : [...(acc.projects || []), ...projects.data]
+              )
             };
           }));
         }, startAccumulatorValue)
