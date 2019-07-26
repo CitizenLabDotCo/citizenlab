@@ -10,6 +10,7 @@ class Initiative < ApplicationRecord
   has_many :topics, through: :initiatives_topics
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
+  has_many :initiative_status_changes, dependent: :destroy
 
   belongs_to :initiative_status, optional: true
 

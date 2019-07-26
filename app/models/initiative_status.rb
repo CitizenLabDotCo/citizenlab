@@ -3,6 +3,7 @@ class InitiativeStatus < ApplicationRecord
   CODES = %w(published expired threshold_reached answered ineligible custom)
 
   has_many :initiatives, dependent: :nullify
+  has_many :initiative_status_changes, dependent: :nullify
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :code, inclusion: {in: CODES}
