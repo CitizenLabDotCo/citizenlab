@@ -125,13 +125,9 @@ export default class GetProjects extends Component<Props, State> {
             return {
               queryParameters,
               hasMore,
-              projects: (
-                isNilOrError(projects)
-                  ? null
-                  : !isLoadingMore
-                    ? projects.data
-                    : [...(acc.projects || []), ...projects.data]
-              )
+              projects: !isLoadingMore
+                ? projects.data
+                : [...(acc.projects || []), ...projects.data]
             };
           }));
         }, startAccumulatorValue)
