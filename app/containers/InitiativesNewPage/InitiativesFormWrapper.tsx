@@ -244,7 +244,6 @@ export default class InitiativesFormWrapper extends React.PureComponent<Props, S
 
       clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
     } catch (errorResponse) {
-      console.log(errorResponse);
       const apiErrors = get(errorResponse, 'json.errors');
       this.setState((state) => ({ apiErrors: { ...state.apiErrors, ...apiErrors }, publishError: true }));
       setTimeout(() => {

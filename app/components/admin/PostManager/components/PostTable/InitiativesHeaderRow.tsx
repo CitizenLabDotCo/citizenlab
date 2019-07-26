@@ -10,7 +10,7 @@ export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, ha
   <Table.Header>
     <Table.Row>
       <Table.HeaderCell width={1}>
-        <Checkbox value={!!allSelected} onChange={toggleSelectAll} size="17px"/>
+        <Checkbox value={!!allSelected} onChange={toggleSelectAll} size="17px" />
       </Table.HeaderCell>
       <Table.HeaderCell width={4}>
         <TableHeaderCellText>
@@ -28,7 +28,7 @@ export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, ha
           onToggle={handleSortClick('new')}
         >
           <TableHeaderCellText>
-            <FormattedMessage {...messages.publication_date} />
+            <FormattedMessage {...messages.remainingTime} />
           </TableHeaderCellText>
         </SortableTableHeader>
       </Table.HeaderCell>
@@ -38,9 +38,14 @@ export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, ha
           onToggle={handleSortClick('upvotes_count')}
         >
           <TableHeaderCellText>
-            <FormattedMessage {...messages.up} />
+            <FormattedMessage {...messages.votes} />
           </TableHeaderCellText>
         </SortableTableHeader>
+      </Table.HeaderCell >
+      <Table.HeaderCell width={1}>
+        <TableHeaderCellText>
+          <FormattedMessage {...messages.comments} />
+        </TableHeaderCellText>
       </Table.HeaderCell >
     </Table.Row>
   </Table.Header>
