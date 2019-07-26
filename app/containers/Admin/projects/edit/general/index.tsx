@@ -15,7 +15,7 @@ import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 import HasPermission from 'components/HasPermission';
@@ -165,7 +165,7 @@ interface State {
   locale: Locale;
   currentTenant: ITenant | null;
   areasOptions: IOption[];
-  submitState: 'disabled' | 'enabled' | 'error' | 'success';
+  submitState: ISubmitState;
   processingDelete: boolean;
   deleteError: string | null;
 }
@@ -567,6 +567,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
           this.processing$.next(false);
         }
       } catch (errors) {
+        // const cannotContainIdeasError = get(errors, 'json.errors.base', []).some((item) => get(item, 'error') === 'cannot_contain_ideas');
         const apiErrors = get(errors, 'json.errors', formatMessage(messages.saveErrorMessage));
         const submitState = 'error';
         this.setState({ apiErrors, submitState });

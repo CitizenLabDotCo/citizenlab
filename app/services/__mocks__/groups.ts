@@ -8,7 +8,7 @@ export const mockGetGroups = {
   groupsList: [
     {
       id: 'test_group_id',
-      type: 'groups',
+      type: 'group',
       attributes: {
         title_multiloc: {
           en: 'Test Group',

@@ -1,5 +1,19 @@
 # Changelog
 
+## 2019-07-26
+
+### Fixed
+
+- The project moderator email and notification now link to the admin idea manager instead of citizen side
+- The widget no longer shows the `Multiloc`, but the real idea titles for some platforms
+
+### Added
+
+- Speed improvements to data requests to the backend throughout the whole paltform
+- Changing the participation method from ideation to information/survey when there are ideas present is now prevented by the UI
+- It's now possible to manually reorder archived projects
+- There's new in-platform notifications for a status change on an idea you commented or voted on
+
 ## 2019-07-18
 
 ### Fixed

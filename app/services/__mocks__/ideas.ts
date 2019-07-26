@@ -17,7 +17,7 @@ export const ideasStream = jest.fn((_ideas) => {
 export const getIdea = (id, enTitle) => (
   {
     id,
-    type: 'ideas',
+    type: 'idea',
     attributes: {
       title_multiloc: { en: enTitle, 'nl-BE':'Doloribus quam molestiae ut.' },
       body_multiloc: { 'nl-BE':'\u003cp\u003eEa ea aut. Quasi corrupti iste. Delectus eum voluptates.\u003c/p\u003e\u003cp\u003eEst harum voluptates. Et fugit enim. Suscipit inventore ullam.\u003c/p\u003e\u003cp\u003eEos mollitia omnis. Laudantium porro perferendis. Minus in aut.\u003c/p\u003e' },
@@ -37,7 +37,25 @@ export const getIdea = (id, enTitle) => (
       updated_at: '2019-03-26T14: 32: 32.000Z',
       published_at: '2019-03-19T00: 00: 00.000Z',
       budget: 60,
-      baskets_count: 0
+      baskets_count: 0,
+      action_descriptor: {
+        voting: {
+          enabled: true,
+          disabled_reason: null,
+          future_enabled: null,
+          cancelling_enabled: true
+        },
+        commenting: {
+          enabled: false,
+          disabled_reason: 'not_permitted',
+          future_enabled: null
+        },
+        budgeting: {
+          enabled: false,
+          disabled_reason: 'not_permitted',
+          future_enabled: null
+        }
+      }
     },
     relationships: {
       topics: {
@@ -54,27 +72,7 @@ export const getIdea = (id, enTitle) => (
       project:{ data:{ id:'d2adf974-8e9b-4a3c-8f0e-ff307d53821f',
       type:'projects' } },
       idea_status:{ data:{ id:'6a968b06-87ea-450a-887c-70b8e8dd4343',
-      type:'idea_statuses' } },
-      action_descriptor: {
-        data: {
-          voting: {
-            enabled: true,
-            disabled_reason: null,
-            future_enabled: null,
-            cancelling_enabled: true
-          },
-          commenting: {
-            enabled: false,
-            disabled_reason: 'not_permitted',
-            future_enabled: null
-          },
-          budgeting: {
-            enabled: false,
-            disabled_reason: 'not_permitted',
-            future_enabled: null
-         }
-       }
-     }
-   }
- }
+      type:'idea_statuses' } }
+    }
+  }
 );
