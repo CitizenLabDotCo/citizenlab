@@ -38,76 +38,56 @@ resource "InitiativeStatusChange" do
     end
   end
 
-  # context "when authenticated" do
-  #   before do
-  #     @user = create(:admin)
-  #     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
-  #     header 'Authorization', "Bearer #{token}"
-  #   end
+  context "when authenticated" do
+    before do
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      header 'Authorization', "Bearer #{token}"
 
-  #   post "web_api/v1/initiatives/:initiative_id/official_feedback" do
-  #     with_options scope: :official_feedback do
-  #       parameter :body_multiloc, "Multi-locale field with the feedback body", required: true
-  #       parameter :author_multiloc, "Multi-locale field with describing the author", required: true
-  #     end
-  #     ValidationErrorHelper.new.error_fields(self, OfficialFeedback)
+      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+      create(:initiative_status_change, initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'published'))
+    end
 
-  #     let(:initiative_id) { @initiative.id }
-  #     let(:feedback) { build(:official_feedback) }
-  #     let(:body_multiloc) { feedback.body_multiloc }
-  #     let(:author_multiloc) { feedback.author_multiloc }
+    post "web_api/v1/initiatives/:initiative_id/initiative_status_changes" do
+      with_options scope: :initiative_status_change do
+        parameter :initiative_status_id, "Wagawaga urlughozhlomwugazo", required: true
+        parameter :user_id, "Wagawaga urlughozhlomwugazo", required: false
+      end
+      with_options scope: [:initiative_status_change, :official_feedback_attributes] do
+        parameter :id, "Wagawaga urlughozhlomwugazo", required: false
+        parameter :body_multiloc, "Wagawaga urlughozhlomwugazo", required: false
+        parameter :author_multiloc, "Wagawaga urlughozhlomwugazo", required: false
+      end
+      ValidationErrorHelper.new.error_fields(self, OfficialFeedback)
 
-  #     example_request "Create an official feedback on an initiative" do
-  #       expect(response_status).to eq 201
-  #       json_response = json_parse(response_body)
-  #       expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
-  #       expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
-  #       expect(json_response.dig(:data,:attributes,:author_multiloc).stringify_keys).to match author_multiloc
-  #       expect(json_response.dig(:data,:relationships,:post,:data,:id)).to eq initiative_id
-  #       expect(@initiative.reload.official_feedbacks_count).to eq 3
-  #     end
+      let(:initiative_id) { @initiative.id }
+      let(:initiative_status_id) { InitiativeStatus.find_by(code: 'answered').id }
+      let(:feedback) { build(:official_feedback) }
+      let(:body_multiloc) { feedback.body_multiloc }
+      let(:author_multiloc) { feedback.author_multiloc }
 
-  #     describe do
-  #       let(:body_multiloc) { {"en" => ""} }
+      example_request "Create a status change on an initiative" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @admin.id
+        
+        # expect(json_response.dig(:data,:relationships,:body_multiloc).stringify_keys).to match body_multiloc
+        # expect(json_response.dig(:data,:attributes,:author_multiloc).stringify_keys).to match author_multiloc
+        # expect(json_response.dig(:data,:relationships,:post,:data,:id)).to eq initiative_id
+        # expect(@initiative.reload.official_feedbacks_count).to eq 3
+      end
 
-  #       example_request "[error] Create an invalid official feedback on an initiative" do
-  #         expect(response_status).to eq 422
-  #         json_response = json_parse(response_body)
-  #         expect(json_response.dig(:errors, :body_multiloc)).to eq [{error: 'blank'}]
-  #       end
-  #     end
-  #   end
+      # describe do
+      #   let(:body_multiloc) { {"en" => ""} }
 
-  #   patch "web_api/v1/official_feedback/:id" do
-  #     with_options scope: :official_feedback do
-  #       parameter :body_multiloc, "Multi-locale field with the feedback body", required: true
-  #       parameter :author_multiloc, "Multi-locale field with describing the author", required: true
-  #     end
-  #     ValidationErrorHelper.new.error_fields(self, OfficialFeedback)
-
-  #     let(:official_feedback) { create(:official_feedback, user: @user, post: @initiative) }
-  #     let(:id) { official_feedback.id }
-  #     let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
-
-  #     example_request "Update an official feedback for an initiative" do
-  #       expect(response_status).to eq 200
-  #       json_response = json_parse(response_body)
-  #       expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
-  #       expect(@initiative.reload.official_feedbacks_count).to eq 3
-  #     end
-  #   end
-
-  #   delete "web_api/v1/official_feedback/:id" do
-  #     let(:official_feedback) { create(:official_feedback, user: @user, post: @initiative) }
-  #     let(:id) { official_feedback.id }
-  #     example_request "Delete an official feedback from an initiative" do
-  #       expect(response_status).to eq 200
-  #       expect{OfficialFeedback.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-  #       expect(@initiative.reload.official_feedbacks_count).to eq 2
-  #     end
-  #   end
-
-  # end
+      #   example_request "[error] Create an invalid official feedback on an initiative" do
+      #     expect(response_status).to eq 422
+      #     json_response = json_parse(response_body)
+      #     expect(json_response.dig(:errors, :body_multiloc)).to eq [{error: 'blank'}]
+      #   end
+      # end
+    end
+  end
 
   # context "when authenticated as normal user" do
   #   before do

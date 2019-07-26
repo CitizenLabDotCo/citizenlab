@@ -20,19 +20,25 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
   end
 
   def create
-    @change = InitiativeStatusChange.new status_change_params
-    @change.initiative = initiative
+    attributes = status_change_params.to_h
+    attributes[:official_feedback_attributes].merge! post_id: @initiative.id
+    @change = InitiativeStatusChange.new attributes
+    @change.initiative = @initiative
     @change.user ||= current_user
     authorize @change
     # SideFxInitiativeStatusChangeService.new.before_create @change, current_user
-    if @change.save
-      # SideFxInitiativeStatusChangeService.new.after_create @change, current_user
-      render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
-        @change, 
-        params: fastjson_params
-        ).serialized_json, status: :created
+    if InitiativeStatusService.new.transition_allowed? @initiative, @initiative.initiative_status, @change.initiative_status
+      if @change.save
+        # SideFxInitiativeStatusChangeService.new.after_create @change, current_user
+        render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
+          @change, 
+          params: fastjson_params
+          ).serialized_json, status: :created
+      else
+        render json: { errors: @change.errors.details }, status: :unprocessable_entity
+      end
     else
-      render json: { errors: @change.errors.details }, status: :unprocessable_entity
+      render json: { errors: { base: [{ error: 'initiative_status_transition_not_allowed' }] } }, status: :unprocessable_entity
     end
   end
 
@@ -44,7 +50,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
   end
 
   def set_initiative
-    @initiative = Initiative.find(params[:initiative_id])
+    @initiative = Initiative.find params[:initiative_id]
   end
 
   def status_change_params
