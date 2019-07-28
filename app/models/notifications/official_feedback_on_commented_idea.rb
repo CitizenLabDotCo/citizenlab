@@ -26,14 +26,19 @@ module Notifications
 
       if official_feedback_id && idea_id && initiator_id
         idea.comments.pluck(:author_id).map do |recipient_id|
-          if (recipient_id != initiator_id) && (recipient_id != idea.author_id)
-            self.create(
+        User.active
+          .joins(:comments).
+          .where(comments: {idea_id: idea_id})
+          .ids
+          .select{|recipient_id| recipient_id != initiator_id && recipient_id != idea.author_id}
+          .map do |recipient_id|
+            self.create!(
               recipient_id: recipient_id,
               initiating_user: User.find(initiator_id),
               idea_id: idea_id,
               official_feedback_id: official_feedback_id,
               project_id: project_id
-              )
+            )
           end
         end
       else
