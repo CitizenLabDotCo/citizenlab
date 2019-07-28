@@ -26,7 +26,7 @@ module Notifications
       project_id = idea&.project_id
 
       if official_feedback_id && idea_id && recipient_id && initiator_id && (recipient_id != initiator_id)
-        [self.create(
+        [self.create!(
            recipient_id: recipient_id,
            initiating_user: User.find(initiator_id),
            idea_id: idea_id,
