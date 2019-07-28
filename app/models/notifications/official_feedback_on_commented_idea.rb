@@ -25,10 +25,10 @@ module Notifications
       project_id = idea&.project_id
 
       if official_feedback_id && idea_id && initiator_id
-        idea.comments.pluck(:author_id).map do |recipient_id|
         User.active
-          .joins(:comments).
-          .where(comments: {idea_id: idea_id})
+          .joins(:comments).merge(Comment.published)
+          .where(comments: {idea: idea})
+          .distinct
           .ids
           .select{|recipient_id| recipient_id != initiator_id && recipient_id != idea.author_id}
           .map do |recipient_id|
@@ -40,7 +40,6 @@ module Notifications
               project_id: project_id
             )
           end
-        end
       else
         []
       end.compact
