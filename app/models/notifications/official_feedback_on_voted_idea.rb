@@ -25,17 +25,24 @@ module Notifications
       project_id = idea&.project_id
 
       if official_feedback_id && idea_id && initiator_id
-        comment_author_ids = idea.comments.pluck(:author_id)
-        idea.votes.pluck(:user_id).map do |recipient_id|
-          if (recipient_id != initiator_id) && !(comment_author_ids + [idea.author_id]).include?(recipient_id)
-            self.create(
-              recipient_id: recipient_id,
-              initiating_user: User.find(initiator_id),
-              idea_id: idea_id,
-              official_feedback_id: official_feedback_id,
-              project_id: project_id
-              )
-          end
+        comment_author_ids = User.active
+          .joins(:comments).merge(Comment.published)
+          .where(comments: {idea: idea})
+          .distinct
+          .ids
+        voter_ids = User.active
+          .joins(:votes).where(votes: {votable: idea})
+          .distinct
+          .ids
+
+        (voter_ids - [initiator_id, *comment_author_ids, idea.author_id]).map do |recipient_id|
+          self.create!(
+            recipient_id: recipient_id,
+            initiating_user: User.find(initiator_id),
+            idea_id: idea_id,
+            official_feedback_id: official_feedback_id,
+            project_id: project_id
+            )
         end
       else
         []
