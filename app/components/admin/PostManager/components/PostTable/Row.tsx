@@ -4,6 +4,7 @@ import React from 'react';
 import { IIdeaData } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // style
 import styled from 'styled-components';
@@ -42,11 +43,17 @@ export const TitleLink = styled.a`
   }
 `;
 
+function nothingHappens(event) {
+  event.preventDefault();
+  event.stopPropagation();
+}
+
 type Props = {
   type: ManagerType;
   post: IIdeaData | IInitiativeData,
   phases?: IPhaseData[],
   statuses?: IIdeaStatusData[],
+  /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>,
   onUnselect: () => void,
   onToggleSelect: () => void,
@@ -70,8 +77,6 @@ export default class Row extends React.PureComponent<Props> {
     }
   }
 
-  // TODO TOPICS removal fix
-
   onClickCheckbox = (event) => {
     event.stopPropagation();
     this.props.onToggleSelect();
@@ -82,11 +87,6 @@ export default class Row extends React.PureComponent<Props> {
     event.stopPropagation();
     const { post, openPreview } = this.props;
     openPreview(post.id);
-  }
-
-  nothingHappens = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
   }
 
   render() {
@@ -104,22 +104,22 @@ export default class Row extends React.PureComponent<Props> {
           onClickRow={this.onClickRow}
           onClickCheckbox={this.onClickCheckbox}
           onClickTitle={this.onClickTitle}
-          nothingHappens={this.nothingHappens}
+          nothingHappens={nothingHappens}
         />
       );
-    } else {
+    } else if (type === 'Initiatives') {
       return (
         <InitiativeRow
           type={type}
           initiative={post as IInitiativeData}
-          // statuses={statuses}
+          statuses={statuses as IInitiativeStatusData[]}
           selection={selection}
           activeFilterMenu={activeFilterMenu}
           className={className}
           onClickRow={this.onClickRow}
           onClickCheckbox={this.onClickCheckbox}
           onClickTitle={this.onClickTitle}
-          nothingHappens={this.nothingHappens}
+          nothingHappens={nothingHappens}
         />
       );
     }

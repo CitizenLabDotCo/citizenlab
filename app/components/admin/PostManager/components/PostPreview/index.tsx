@@ -52,14 +52,14 @@ export default class PostPreview extends PureComponent<Props> {
         opened={!!postId}
         close={onClose}
       >
-        {mode === 'view' && (type === 'AllIdeas' || type === 'ProjectIdeas') &&
+        {mode === 'view' && (type === 'AllIdeas' || type === 'ProjectIdeas') && postId &&
           <IdeaContent
             ideaId={postId}
             closePreview={onClose}
             handleClickEdit={onSwitchPreviewMode}
           />
         }
-        {mode === 'edit' && postId && (type === 'AllIdeas' || type === 'ProjectIdeas') &&
+        {mode === 'edit' && postId && (type === 'AllIdeas' || type === 'ProjectIdeas') && postId &&
           <IdeaEdit
             ideaId={postId}
             goBack={onSwitchPreviewMode}

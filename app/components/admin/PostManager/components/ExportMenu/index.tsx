@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 // components
 import Dropdown from 'components/UI/Dropdown';
 import Icon from 'components/UI/Icon';
-import ExportButtons from '../ExportButtons';
+import ExportButtons from './ExportButtons';
 
 // style
 import styled from 'styled-components';
@@ -13,6 +13,7 @@ import { darken } from 'polished';
 // typings
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+import { ManagerType } from '../../';
 
 const DropdownButton = styled.button`
   cursor: pointer;
@@ -61,8 +62,10 @@ const Container = styled.div`
 export type exportType = 'selected_posts' | 'project' | 'all';
 
 export interface Props {
-  exportType: exportType;
-  exportQueryParameter: 'all' | string | string[];
+  type: ManagerType;
+  /** A set of ids of ideas/initiatives that are currently selected */
+  selection: Set<string>;
+  selectedProject: string | undefined;
   className?: string;
 }
 
@@ -78,6 +81,25 @@ export default class ExportMenu extends PureComponent<Props, State> {
     };
   }
 
+  getExportQueryParameters = () => {
+    const { selection, selectedProject } = this.props;
+
+    let exportQueryParameter;
+    let exportType: null | exportType = null;
+    if (selection.size > 0) {
+      exportQueryParameter = [...selection];
+      exportType = 'selected_posts';
+    } else if (selectedProject) {
+      exportQueryParameter = selectedProject;
+      exportType = 'project';
+    } else {
+      exportQueryParameter = 'all';
+      exportType = 'all';
+    }
+
+    return { exportQueryParameter, exportType };
+  }
+
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
   }
@@ -88,33 +110,35 @@ export default class ExportMenu extends PureComponent<Props, State> {
   }
 
   render() {
-    const { exportQueryParameter, exportType, className } = this.props;
+    const { className, type } = this.props;
     const { dropdownOpened } = this.state;
+    const { exportQueryParameter, exportType } = this.getExportQueryParameters();
 
-      return (
-        <Container className={className} onMouseDown={this.removeFocus} onClick={this.toggleDropdown}>
-          <DropdownButton>
-            <DropdownButtonText>
-              <FormattedMessage {...messages.exports} />
-            </DropdownButtonText>
-            <DropdownButtonIcon name="download" />
-          </DropdownButton>
+    return (
+      <Container className={className} onMouseDown={this.removeFocus} onClick={this.toggleDropdown}>
+        <DropdownButton>
+          <DropdownButtonText>
+            <FormattedMessage {...messages.exports} />
+          </DropdownButtonText>
+          <DropdownButtonIcon name="download" />
+        </DropdownButton>
 
-          <Dropdown
-            width="100%"
-            top="30px"
-            right="-5px"
-            mobileRight="-5px"
-            opened={dropdownOpened}
-            onClickOutside={this.toggleDropdown}
-            content={(
-              <ExportButtons
-                exportQueryParameter={exportQueryParameter}
-                exportType={exportType}
-              />
-            )}
-          />
-        </Container>
-      );
+        <Dropdown
+          width="100%"
+          top="30px"
+          right="-5px"
+          mobileRight="-5px"
+          opened={dropdownOpened}
+          onClickOutside={this.toggleDropdown}
+          content={(
+            <ExportButtons
+              type={type}
+              exportQueryParameter={exportQueryParameter}
+              exportType={exportType}
+            />
+          )}
+        />
+      </Container>
+    );
   }
 }

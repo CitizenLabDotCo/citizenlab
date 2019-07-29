@@ -10,6 +10,7 @@ import { FilterCell } from './Row';
 import { TFilterMenu } from '../..';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 interface Props {
   active: boolean;
@@ -19,8 +20,8 @@ interface Props {
   selectedPhases?: string[];
   phases?: IPhaseData[];
   selectedTopics?: string[];
-  projectId: string;
-  statuses?: IIdeaStatusData[] | undefined;
+  projectId?: string;
+  statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | undefined;
   selectedStatus: string | undefined;
   onUpdatePhases: (id: string[]) => void;
   onUpdateTopics: (id: string[]) => void;
@@ -58,7 +59,7 @@ export default ({
            onUpdateTopics={onUpdateTopics}
          />
        }
-       {activeFilterMenu === 'projects' &&
+       {activeFilterMenu === 'projects' && projectId &&
          <ProjectSelector projectId={projectId} />
        }
        {activeFilterMenu === 'statuses' && statuses &&
