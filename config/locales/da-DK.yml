@@ -13,8 +13,8 @@ da:
     rejected: afvist
     rejected_description: Denne ide er blevet afvist
   initiative_statuses:
-    published: published
-    published_description: published
+    proposed: proposed
+    proposed_description: proposed
     expired: expired
     expired_description: expired
     threshold_reached: threshold reached

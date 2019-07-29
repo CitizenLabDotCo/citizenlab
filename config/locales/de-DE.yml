@@ -13,8 +13,8 @@ de:
     rejected: abgelehnt
     rejected_description: Diese Idee wurde abgelehnt
   initiative_statuses:
-    published: published
-    published_description: published
+    proposed: published
+    proposed_description: published
     expired: expired
     expired_description: expired
     threshold_reached: threshold reached

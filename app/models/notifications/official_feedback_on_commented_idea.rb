@@ -19,23 +19,27 @@ module Notifications
       official_feedback = activity.item
 
       official_feedback_id = official_feedback&.id
-      idea = official_feedback&.idea
-      idea_id = official_feedback&.idea_id
+      idea = official_feedback&.post
+      idea_id = official_feedback&.post_id
       initiator_id = official_feedback&.user_id
       project_id = idea&.project_id
 
-      if official_feedback_id && idea_id && initiator_id
-        idea.comments.pluck(:author_id).map do |recipient_id|
-          if (recipient_id != initiator_id) && (recipient_id != idea.author_id)
-            self.create(
+      if (official_feedback&.post_type == 'Idea') && official_feedback_id && idea_id && initiator_id
+        User.active
+          .joins(:comments).merge(Comment.published)
+          .where(comments: {post: idea})
+          .distinct
+          .ids
+          .select{|recipient_id| recipient_id != initiator_id && recipient_id != idea.author_id}
+          .map do |recipient_id|
+            self.create!(
               recipient_id: recipient_id,
               initiating_user: User.find(initiator_id),
               idea_id: idea_id,
               official_feedback_id: official_feedback_id,
               project_id: project_id
-              )
+            )
           end
-        end
       else
         []
       end.compact

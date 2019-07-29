@@ -24,6 +24,7 @@ class PostsFilteringService
     initiatives = initiatives.with_some_areas(params[:areas]) if params[:areas].present?
     initiatives = initiatives.where(initiative_status_id: params[:initiative_status]) if params[:initiative_status].present?
     initiatives = initiatives.where(assignee_id: params[:assignee]) if params[:assignee].present?
+    initiatives = initiatives.feedback_needed if params[:feedback_needed].present?
 
     initiatives
   end

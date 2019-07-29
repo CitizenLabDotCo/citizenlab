@@ -13,8 +13,8 @@ es-CL:
     rejected: rechazada
     rejected_description: Esta idea ha sido rechazada
   initiative_statuses:
-    published: published
-    published_description: published
+    proposed: proposed
+    proposed_description: proposed
     expired: expired
     expired_description: expired
     threshold_reached: threshold reached

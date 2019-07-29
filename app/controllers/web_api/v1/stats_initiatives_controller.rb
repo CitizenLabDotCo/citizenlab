@@ -17,7 +17,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
     initiatives = StatInitiativePolicy::Scope.new(current_user, Initiative.published).resolve
 
     initiatives = apply_group_filter(initiatives)
-    # initiatives = apply_feedback_needed_filter(initiatives)
+    initiatives = apply_feedback_needed_filter(initiatives)
 
     serie = initiatives
       .where(published_at: @start_at..@end_at)
@@ -35,7 +35,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
 
     initiatives = apply_group_filter(initiatives)
     initiatives = apply_topic_filter(initiatives)
-    # initiatives = apply_feedback_needed_filter(initiatives)
+    initiatives = apply_feedback_needed_filter(initiatives)
 
     serie = initiatives
       .where(published_at: @start_at..@end_at)
@@ -52,7 +52,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
 
     initiatives = apply_group_filter(initiatives)
     initiatives = apply_topic_filter(initiatives)
-    # initiatives = apply_feedback_needed_filter(initiatives)
+    initiatives = apply_feedback_needed_filter(initiatives)
 
     serie = @@stats_service.group_by_time(
       initiatives,
@@ -69,7 +69,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
 
     initiatives = apply_group_filter(initiatives)
     initiatives = apply_topic_filter(initiatives)
-    # initiatives = apply_feedback_needed_filter(initiatives)
+    initiatives = apply_feedback_needed_filter(initiatives)
 
     serie = @@stats_service.group_by_time_cumulative(
       initiatives,
@@ -101,13 +101,13 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
     end
   end
 
-  # def apply_feedback_needed_filter initiatives
-  #   if params[:feedback_needed].present?
-  #     initiatives.feedback_needed
-  #   else
-  #     initiatives
-  #   end
-  # end
+  def apply_feedback_needed_filter initiatives
+    if params[:feedback_needed].present?
+      initiatives.feedback_needed
+    else
+      initiatives
+    end
+  end
 
   def render_no_data
     if @no_data
