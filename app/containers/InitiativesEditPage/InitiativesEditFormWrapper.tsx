@@ -10,11 +10,6 @@ import { updateInitiative, IInitiativeData, IInitiativeAdd } from 'services/init
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// style
-import { media } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
-import styled from 'styled-components';
-
 // intl
 import { convertToGeoJson } from 'utils/locationTools';
 import { isEqual, pick, get, omitBy } from 'lodash-es';
@@ -23,19 +18,11 @@ import { addInitiativeImage, deleteInitiativeImage, IInitiativeImageData } from 
 import { deleteInitiativeFile, addInitiativeFile } from 'services/initiativeFiles';
 import { convertUrlToUploadFile } from 'utils/imageTools';
 
-const StyledInitiativeForm = styled(InitiativeForm)`
-  width: 100%;
-  min-width: 530px;
-  height: 900px;
-  ${media.smallerThanMaxTablet`
-    min-width: 230px;
-  `}
-`;
-
 interface Props {
   locale: Locale;
   initiative: IInitiativeData;
   initiativeImage: IInitiativeImageData | null;
+  onPublished: () => void;
 }
 
 interface State extends FormValues {
@@ -56,15 +43,13 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
   constructor(props) {
     super(props);
 
-    const { initiative, initiativeImage } = props;
-
-    const oldImageId = initiativeImage ? initiativeImage.id : null;
+    const { initiative } = props;
 
     this.initialValues = this.getFormValues(initiative);
 
     this.state = {
       ...this.initialValues,
-      oldImageId,
+      oldImageId: null,
       image: undefined,
       initiativeId: initiative.id,
       publishing: false,
@@ -141,6 +126,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
   handlePublish = async () => {
     const changedValues = this.changedValues();
     const { initiativeId, hasBannerChanged, image, oldImageId, banner, publishing } = this.state;
+    const { onPublished } = this.props;
 
     // if we're already saving, do nothing.
     if (publishing) return;
@@ -170,7 +156,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
         });
       }
 
-      clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
+      onPublished();
     } catch (errorResponse) {
       console.log(errorResponse);
       const apiErrors = get(errorResponse, 'json.errors');
@@ -204,8 +190,8 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
       this.setState(state => {
         const currentImageId = state.image && state.image.id;
         if (currentImageId) {
-          return { ...state, image: newValue, oldImageId: currentImageId };
-        } else return { ...state, image: newValue };
+          return { image: newValue, oldImageId: currentImageId };
+        } else return { image: newValue, oldImageId: state.oldImageId };
       });
     }
   }
@@ -248,10 +234,12 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
 
   render() {
     const { initiativeId, hasBannerChanged, ...otherProps } = this.state;
-    const { locale } = this.props;
+    const { locale, initiativeImage } = this.props;
+
+    if (this.state.image === undefined && initiativeImage) return null;
 
     return (
-      <StyledInitiativeForm
+      <InitiativeForm
         onPublish={this.handlePublish}
         onSave={doNothing}
         locale={locale}

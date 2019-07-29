@@ -20,6 +20,19 @@ import InitiativesEditMeta from './InitiativesEditMeta';
 import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
 
+// style
+import { media } from 'utils/styleUtils';
+import styled from 'styled-components';
+
+const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
+  width: 100%;
+  min-width: 530px;
+  height: 900px;
+  ${media.smallerThanMaxTablet`
+    min-width: 230px;
+  `}
+`;
+
 interface DataProps {
   initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
@@ -46,19 +59,26 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
     }
   }
 
+  onPublished = () => {
+    const { initiative } = this.props;
+    if (!isNilOrError(initiative)) {
+      clHistory.push(`/initiatives/${initiative.attributes.slug}`);
+    }
+  }
+
   render() {
     const { authUser, locale, initiative, initiativeImages } = this.props;
-    console.log(initiative);
     if (isNilOrError(authUser) || isNilOrError(locale) || isNilOrError(initiative) || initiativeImages === undefined) return null;
 
     return (
       <HasPermission item={initiative} action="edit" context={initiative}>
         <InitiativesEditMeta />
         <PageLayout className="e2e-initiative-edit-page">
-          <InitiativesEditFormWrapper
+          <StyledInitiativesEditFormWrapper
             locale={locale}
             initiative={initiative}
             initiativeImage={isNilOrError(initiativeImages) || initiativeImages.length === 0 ? null : initiativeImages[0]}
+            onPublished={this.onPublished}
           />
         </PageLayout>
       </HasPermission>
