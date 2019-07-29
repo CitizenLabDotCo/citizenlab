@@ -54,7 +54,7 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
     return (
       <HasPermission item={initiative} action="edit" context={initiative}>
         <InitiativesEditMeta />
-        <PageLayout>
+        <PageLayout className="e2e-initiative-edit-page">
           <InitiativesEditFormWrapper
             locale={locale}
             initiative={initiative}
