@@ -31,6 +31,7 @@ export const Container = styled.div<{ bgColor: string}>`
 
 export const Top = styled.div<{ bgColor: string}>`
   display: flex;
+  align-items: center;
   position: fixed;
   top: 0;
   height: 50px;
