@@ -19,7 +19,7 @@ export default defineMessages({
   },
   anyAssignment: {
     id: 'app.components.admin.PostManager.anyAssignment',
-    defaultMessage: 'All ideas',
+    defaultMessage: 'Any administrator',
   },
   unassignedIdeas: {
     id: 'app.components.admin.PostManager.unassignedIdeas',
