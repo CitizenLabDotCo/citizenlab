@@ -12,27 +12,29 @@ import { IProjectData } from 'services/projects';
 
 // resources
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
+import GetInitiativeStatuses, { GetInitiativeStatusesChildProps } from 'resources/GetInitiativeStatuses';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
+import GetInitiatives, { GetInitiativesChildProps } from 'resources/GetInitiatives';
+import { GetPhasesChildProps } from 'resources/GetPhases';
 
 // components
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import PostTable from './components/PostTable';
 import InfoSidebar from './components/InfoSidebar';
-import ExportMenu, { exportType, Props as ExportMenuProps } from './components/ExportMenu';
+import ExportMenu from './components/ExportMenu';
 import IdeasCount from './components/IdeasCount';
+import InitiativesCount from './components/InitiativesCount';
 import { Input, Message } from 'semantic-ui-react';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+import PostPreview from './components/PostPreview';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { GetPhasesChildProps } from 'resources/GetPhases';
-import PostPreview from './components/PostPreview';
-import GetInitiatives from 'resources/GetInitiatives';
 
-const StyledExportMenu = styled(ExportMenu)<ExportMenuProps>`
+const StyledExportMenu = styled(ExportMenu)`
   margin-left: auto;
 `;
 
@@ -88,7 +90,7 @@ interface InputProps {
   // this prop is used for the test.
   type: ManagerType;
 
-  // When the PostManager is used in admin/projects, we pass down the current projects id as a prop
+  // When the PostManager is used in admin/projects, we pass down the current project id as a prop
   projectId?: string | null;
 
   // filters settings
@@ -101,8 +103,8 @@ interface InputProps {
 }
 
 interface DataProps {
-  posts: GetIdeasChildProps;
-  postStatuses: GetIdeaStatusesChildProps;
+  posts: GetIdeasChildProps | GetInitiativesChildProps;
+  postStatuses: GetIdeaStatusesChildProps | GetInitiativeStatusesChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -110,6 +112,7 @@ interface Props extends InputProps, DataProps { }
 export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 
 interface State {
+  /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   searchTerm: string | undefined;
@@ -117,7 +120,7 @@ interface State {
   previewMode: 'view' | 'edit';
 }
 
-class PostManager extends React.PureComponent<Props, State> {
+export class PostManager extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IAdminFullWidth>;
 
   constructor(props: Props) {
@@ -148,9 +151,12 @@ class PostManager extends React.PureComponent<Props, State> {
     }
   }
 
- // Filtering handlers
+  // Filtering handlers
   getSelectedProject = () => {
-    const { posts: { queryParameters } } = this.props;
+    const { posts, type } = this.props;
+    if (type === 'Initiatives') return undefined;
+
+    const { queryParameters } = posts as GetIdeasChildProps;
     return Array.isArray(queryParameters.projects) && queryParameters.projects.length === 1
       ? queryParameters.projects[0]
       : undefined;
@@ -168,9 +174,9 @@ class PostManager extends React.PureComponent<Props, State> {
 
   onChangeProjects = (projectIds: string[] | undefined) => {
     const { projects, posts, type } = this.props;
-    const { onChangeProjects } = posts;
-
     if (type !== 'AllIdeas') return;
+
+    const { onChangeProjects } = posts as GetIdeasChildProps;
 
     const accessibleProjectsIds = projects ? projects.map(project => project.id) : null;
 
@@ -193,26 +199,6 @@ class PostManager extends React.PureComponent<Props, State> {
 
   handleChangeSelection = (selection: Set<string>) => {
     this.setState({ selection });
-  }
-
-  getExportQueryParameters = () => {
-    const { selection } = this.state;
-    const selectedProject = this.getSelectedProject();
-
-    let exportQueryParameter;
-    let exportType: null | exportType = null;
-    if (selection.size > 0) {
-      exportQueryParameter = [...selection];
-      exportType = 'selected_posts';
-    } else if (selectedProject) {
-      exportQueryParameter = selectedProject;
-      exportType = 'project';
-    } else {
-      exportQueryParameter = 'all';
-      exportType = 'all';
-    }
-
-    return { exportQueryParameter, exportType };
   }
   // End selection management
 
@@ -247,23 +233,44 @@ class PostManager extends React.PureComponent<Props, State> {
   }
   // End Modal Preview
 
+  getNonSharedParams = () => {
+    const { type } = this.props;
+    if (type === 'Initiatives') {
+      const posts = this.props.posts as GetInitiativesChildProps;
+      return ({
+        onChangePhase: undefined,
+        selectedPhase: undefined,
+        selectedStatus: posts.queryParameters.initiative_status
+      });
+    } else if (type === 'AllIdeas' || 'ProjectIdeas') {
+      const posts = this.props.posts as GetIdeasChildProps;
+      return ({
+        onChangePhase: posts.onChangePhase,
+        selectedPhase: posts.queryParameters.phase,
+        selectedStatus: posts.queryParameters.idea_status
+      });
+    }
+    return ({
+      onChangePhase: () => {},
+      selectedPhase: null,
+      selectedStatus: null
+    });
+  }
+
   render() {
     const { searchTerm, previewPostId, previewMode, selection, activeFilterMenu } = this.state;
     const { type, projectId, projects, posts, phases, postStatuses, visibleFilterMenus } = this.props;
-    const { list, onChangePhase, onChangeTopics, onChangeStatus, queryParameters, onChangeAssignee, onChangeFeedbackFilter, onResetParams } = posts;
+    const { list, onChangeTopics, onChangeStatus, queryParameters, onChangeAssignee, onChangeFeedbackFilter, onResetParams } = posts;
 
     const selectedTopics = queryParameters.topics;
-    const selectedPhase = queryParameters.phase;
     const selectedAssignee = queryParameters.assignee;
-    const selectedStatus = queryParameters.idea_status;
-    const selectedProject = this.getSelectedProject();
     const feedbackNeeded = queryParameters.feedback_needed || false;
 
+    const selectedProject = this.getSelectedProject();
+
+    const { onChangePhase, selectedPhase, selectedStatus } = this.getNonSharedParams();
+
     const multipleIdeasSelected = this.isSelectionMultiple();
-
-    const { exportType, exportQueryParameter } = this.getExportQueryParameters();
-
-    console.log(type === 'Initiatives' ? 'TODO FeedbackToggle' : '');
 
     return (
       <>
@@ -272,23 +279,23 @@ class PostManager extends React.PureComponent<Props, State> {
             assignee={selectedAssignee}
             projectId={type === 'ProjectIdeas' ? projectId : null}
             handleAssigneeFilterChange={onChangeAssignee}
+            type={type}
           />
-          {type === 'ProjectIdeas' || type === 'AllIdeas' &&
-            <FeedbackToggle
-              type={type}
-              value={feedbackNeeded}
-              onChange={onChangeFeedbackFilter}
-              project={selectedProject}
-              phase={selectedPhase}
-              topics={selectedTopics}
-              status={selectedStatus}
-              assignee={selectedAssignee}
-              searchTerm={searchTerm}
-            />
-          }
+          <FeedbackToggle
+            type={type}
+            value={feedbackNeeded}
+            onChange={onChangeFeedbackFilter}
+            project={selectedProject}
+            phase={selectedPhase}
+            topics={selectedTopics}
+            status={selectedStatus}
+            assignee={selectedAssignee}
+            searchTerm={searchTerm}
+          />
           <StyledExportMenu
-            exportType={exportType}
-            exportQueryParameter={exportQueryParameter}
+            type={type}
+            selection={selection}
+            selectedProject={selectedProject}
           />
         </TopActionBar>
 
@@ -296,22 +303,33 @@ class PostManager extends React.PureComponent<Props, State> {
           <LeftColumn>
             <ActionBar
               type={type}
-              postIds={[...selection]}
+              selection={selection}
               resetSelection={this.resetSelection}
               handleClickEdit={this.openPreviewEdit}
             />
           </LeftColumn>
           <MiddleColumnTop>
-            <IdeasCount
-              feedbackNeeded={feedbackNeeded}
-              project={selectedProject}
-              phase={selectedPhase}
-              topics={selectedTopics}
-              ideaStatus={selectedStatus}
-              searchTerm={searchTerm}
-              assignee={selectedAssignee}
-            />
-            <StyledInput icon="search" onChange={this.handleSearchChange}/>
+            {type === 'Initiatives'
+              ? <InitiativesCount
+                feedbackNeeded={feedbackNeeded}
+                topics={selectedTopics}
+                initiativeStatus={selectedStatus}
+                searchTerm={searchTerm}
+                assignee={selectedAssignee}
+              />
+              : type === 'AllIdeas' || type === 'ProjectIdeas'
+                ? <IdeasCount
+                  feedbackNeeded={feedbackNeeded}
+                  project={selectedProject}
+                  phase={selectedPhase}
+                  topics={selectedTopics}
+                  ideaStatus={selectedStatus}
+                  searchTerm={searchTerm}
+                  assignee={selectedAssignee}
+                />
+                : null
+            }
+            <StyledInput icon="search" onChange={this.handleSearchChange} />
           </MiddleColumnTop>
         </ThreeColumns>
         <ThreeColumns>
@@ -389,21 +407,23 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetInitiatives>
   ) : (
-    <GetIdeas
-      type="paginated"
-      pageSize={10}
-      sort="new"
-      projectIds={type === 'ProjectIdeas' && projectId
-        ? [projectId]
-        : type === 'AllIdeas' && projects
-        ? projects.map(project => project.id)
-        : undefined
-      }
-    >
-      {render}
-    </GetIdeas>
-  ),
-  postStatuses: <GetIdeaStatuses />,
+      <GetIdeas
+        type="paginated"
+        pageSize={10}
+        sort="new"
+        projectIds={type === 'ProjectIdeas' && projectId
+          ? [projectId]
+          : type === 'AllIdeas' && projects
+            ? projects.map(project => project.id)
+            : undefined
+        }
+      >
+        {render}
+      </GetIdeas>
+    ),
+  postStatuses: ({ type, render }) => type === 'Initiatives'
+    ? <GetInitiativeStatuses>{render}</GetInitiativeStatuses>
+    : <GetIdeaStatuses>{render}</GetIdeaStatuses>
 });
 
 const PostManagerWithDragDropContext = DragDropContext(HTML5Backend)(PostManager);

@@ -13,10 +13,13 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // resources
 import GetIdeasCount, { GetIdeasCountChildProps } from 'resources/GetIdeasCount';
+import GetInitiativesCount, { GetInitiativesCountChildProps } from 'resources/GetInitiativesCount';
+
+// typings
+import { ManagerType } from '../..';
 
 // components
 import CountBadge from 'components/UI/CountBadge';
-import { ManagerType } from '../..';
 
 const size = 21;
 const padding = 4;
@@ -98,10 +101,10 @@ interface InputProps {
 }
 
 interface DataProps {
-  feedbackNeededCount: GetIdeasCountChildProps;
+  feedbackNeededCount: GetIdeasCountChildProps | GetInitiativesCountChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 type State = {};
 
@@ -110,7 +113,7 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
   componentDidUpdate(prevProps) {
     if (prevProps.searchTerm !== this.props.searchTerm) {
       if (isFunction(this.props.feedbackNeededCount.onChangeSearchTerm)) {
-        this.props.feedbackNeededCount.onChangeSearchTerm(this.props.searchTerm);
+        this.props.feedbackNeededCount.onChangeSearchTerm(this.props.searchTerm || '');
       }
     }
   }
@@ -120,20 +123,25 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { value, feedbackNeededCount } = this.props;
+    const { value, feedbackNeededCount, type } = this.props;
 
     return (
       <Container id="e2e-feedback_needed_filter_toggle" className="feedback_needed_filter_toggle">
         <StyledLabel onClick={this.handleOnClick}>
-          <FormattedMessage {...messages.anyFeedbackStatus} />
+          { type === 'Initiatives'
+            ? <FormattedMessage {...messages.anyFeedbackStatusInitiatives} />
+            : type === 'AllIdeas' || type === 'ProjectIdeas'
+              ? <FormattedMessage {...messages.anyFeedbackStatusIdeas} />
+              : null
+          }
         </StyledLabel>
         <ToggleContainer onClick={this.handleOnClick} checked={value}>
-          <input type="checkbox" role="checkbox" aria-checked={value}/>
+          <input type="checkbox" role="checkbox" aria-checked={value} />
           <i />
         </ToggleContainer>
         <StyledLabel onClick={this.handleOnClick}>
           <FormattedMessage {...messages.needFeedback} />
-          {!isNilOrError(feedbackNeededCount.count) && <CountBadge count={feedbackNeededCount.count}/>}
+          {!isNilOrError(feedbackNeededCount.count) && <CountBadge count={feedbackNeededCount.count} />}
         </StyledLabel>
       </Container>
     );
@@ -141,26 +149,36 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt({
-  ideasCount: ({ project, phase, topics, ideaStatus, assignee, render }) => {
+  feedbackNeededCount: ({ project, phase, topics, status, assignee, render, type }) => {
     const projectIds = [project];
 
-    return (
-      <GetIdeasCount
-        feedbackNeeded={true}
-        assignee={assignee}
-        projectIds={projectIds}
-        phaseId={phase}
-        topics={topics}
-        ideaStatusId={ideaStatus}
-      >
-        {render}
-      </GetIdeasCount>
-    );
+    return type === 'Initiatives'
+      ? (
+        <GetInitiativesCount
+          feedbackNeeded={true}
+          assignee={assignee}
+          topics={topics}
+          initiativeStatusId={status}
+        >
+          {render}
+        </GetInitiativesCount>
+      ) : (
+        <GetIdeasCount
+          feedbackNeeded={true}
+          assignee={assignee}
+          projectIds={projectIds}
+          phaseId={phase}
+          topics={topics}
+          ideaStatusId={status}
+        >
+          {render}
+        </GetIdeasCount>
+      );
   }
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <FeedbackToggle {...inputProps} feedbackNeededCount={dataProps.ideasCount}/>}
+    {dataProps => <FeedbackToggle {...inputProps} {...dataProps} />}
   </Data>
 );

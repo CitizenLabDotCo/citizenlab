@@ -197,7 +197,7 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
   const response = await streams.update<IIdea>(`${API_PATH}/ideas/${ideaId}`, ideaId, { idea: object });
   streams.fetchAllWith({
     dataId: [response.data.relationships.project.data.id],
-    apiEndpoint: [`${API_PATH}/stats/ideas_count`]
+    apiEndpoint: [`${API_PATH}/stats/ideas_count`, `${API_PATH}/ideas`]
   });
   return response;
 }
@@ -213,7 +213,7 @@ export async function deleteIdea(ideaId: string) {
 
   streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/ideas_count`] : [])
+    apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/ideas_count`, `${API_PATH}/stats/ideas_count`] : [`${API_PATH}/stats/ideas_count`])
   });
 
   return response;
