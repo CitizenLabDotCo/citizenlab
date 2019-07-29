@@ -2,7 +2,7 @@ class InitiativeStatusService
 
   def manual_transitions 
     {
-      'published' => {
+      'proposed' => {
         'ineligible' => {
           feedback_required: true
         }
@@ -30,7 +30,7 @@ class InitiativeStatusService
 
   def auto_transitions 
     {
-      'published' => {
+      'proposed' => {
         'threshold_reached' => method(:threshold_reached?),
         'expired' => method(:expired?)
       }
