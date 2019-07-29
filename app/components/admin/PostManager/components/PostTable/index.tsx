@@ -4,33 +4,29 @@ import styled from 'styled-components';
 
 // components
 import { Table } from 'semantic-ui-react';
-import { FormattedMessage } from 'utils/cl-intl';
-import SortableTableHeader from 'components/admin/SortableTableHeader';
 import Row from './Row';
 import Pagination from 'components/admin/Pagination';
-import Checkbox from 'components/UI/Checkbox';
-import FeatureFlag from 'components/FeatureFlag';
 import NoPost from './NoPost';
+import IdeaHeaderRow from './IdeaHeaderRow';
+import InitiativesHeaderRow from './InitiativesHeaderRow';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 // services
 import { IIdeaData } from 'services/ideas';
+import { IInitiativeData } from 'services/initiatives';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // resources
-import { Sort, SortAttribute } from 'resources/GetIdeas';
+import { Sort as IdeasSort, SortAttribute as IdeasSortAttribute } from 'resources/GetIdeas';
+import { Sort as InitiativesSort, SortAttribute as InitiativesSortAttribute } from 'resources/GetInitiatives';
 
 // utils
 import { SortDirection } from 'utils/paginationUtils';
 
 // i18n
-import messages from '../../messages';
-import InfoTooltip from 'components/admin/InfoTooltip';
 import { ManagerType, TFilterMenu } from '../..';
-import NoInitiatives from './NoInitiatives';
-import IdeaHeaderRow from './IdeaHeaderRow';
-import InitiativesHeaderRow from './InitiativesHeaderRow';
 
 const Container = styled.div`
   .ui.table {
@@ -76,12 +72,13 @@ export const TableHeaderCellText = styled.span`
 
 interface Props {
   type: ManagerType;
-  sortAttribute?: SortAttribute;
+  sortAttribute?: IdeasSortAttribute | InitiativesSortAttribute;
   sortDirection?: SortDirection;
-  posts?: IIdeaData[];
+  posts?: IIdeaData[] | IInitiativeData[];
   phases?: IPhaseData[];
-  statuses?: IIdeaStatusData[];
-  onChangeSort?: (sort: Sort) => void;
+  statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
+  onChangeSort?: (sort: IdeasSort | InitiativesSort) => void;
+  /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   onChangeSelection: (newSelection: Set<string>) => void;
   currentPageNumber?: number;
@@ -92,16 +89,16 @@ interface Props {
   openPreview: (ideaId: string) => void;
 }
 
-export default class IdeaTable extends React.Component<Props> {
+export default class PostTable extends React.Component<Props> {
 
-  handleSortClick = (newSortAttribute: SortAttribute) => () => {
+  handleSortClick = (newSortAttribute: IdeasSortAttribute | InitiativesSortAttribute) => () => {
     const { sortAttribute: oldSortAttribute, sortDirection: oldSortDirection, onChangeSort } = this.props;
     if (isFunction(onChangeSort)) {
       let newSortSign = '-';
       if (newSortAttribute === oldSortAttribute) {
         newSortSign = oldSortDirection === 'ascending' ? '-' : '';
       }
-      onChangeSort(`${newSortSign}${newSortAttribute}` as Sort);
+      onChangeSort(`${newSortSign}${newSortAttribute}` as IdeasSort | InitiativesSort);
     }
   }
 
@@ -116,7 +113,7 @@ export default class IdeaTable extends React.Component<Props> {
     const { selection, onChangeSelection } = this.props;
     const newSelection = new Set(selection);
     const success = newSelection.delete(postId);
-    onChangeSelection(newSelection);
+    success && onChangeSelection(newSelection);
     return success;
   }
 
@@ -129,16 +126,13 @@ export default class IdeaTable extends React.Component<Props> {
     if (this.allSelected()) {
       onChangeSelection(new Set());
     } else {
-      posts && onChangeSelection(new Set(posts.map(post => post.id)));
+      // TODO fix typings here, with the conditional type here, ts complains
+      posts && onChangeSelection(new Set((posts as IIdeaData[]).map(post => post.id)));
     }
   }
 
   singleSelect = (postId: string) => () => {
     this.props.onChangeSelection(new Set([postId]));
-  }
-
-  clearSelection = () => () => {
-    this.props.onChangeSelection(new Set());
   }
 
   handlePaginationClick = (page) => {
@@ -147,7 +141,7 @@ export default class IdeaTable extends React.Component<Props> {
 
   allSelected = () => {
     const { posts, selection } = this.props;
-    return !isEmpty(posts) && every(posts, (post) => selection.has(post.id));
+    return !isEmpty(posts) && every(posts, (post: IIdeaData | IInitiativeData) => selection.has(post.id));
   }
 
   render() {
@@ -169,45 +163,48 @@ export default class IdeaTable extends React.Component<Props> {
         <Table sortable size="small">
           {type === 'Initiatives'
             ? <InitiativesHeaderRow
+              sortAttribute={sortAttribute}
+              sortDirection={sortDirection}
+              allSelected={this.allSelected()}
+              toggleSelectAll={this.toggleSelectAll}
+              handleSortClick={this.handleSortClick}
+            />
+            : type === 'AllIdeas' || type === 'ProjectIdeas'
+              ? <IdeaHeaderRow
                 sortAttribute={sortAttribute}
                 sortDirection={sortDirection}
                 allSelected={this.allSelected()}
                 toggleSelectAll={this.toggleSelectAll}
                 handleSortClick={this.handleSortClick}
-            />
-            : <IdeaHeaderRow
-                sortAttribute={sortAttribute}
-                sortDirection={sortDirection}
-                allSelected={this.allSelected()}
-                toggleSelectAll={this.toggleSelectAll}
-                handleSortClick={this.handleSortClick}
-            />
+              />
+              : null
           }
           <Table.Body>
-            {!!posts && posts.length > 0 ?
+            {!isEmpty(posts) ?
               <TransitionGroup component={null}>
-                {posts.map((post) =>
-                  <CSSTransition classNames="fade" timeout={500} key={post.id}>
-                    <Row
-                      className="e2e-post-manager-post-row"
-                      key={post.id}
-                      type={type}
-                      post={post}
-                      phases={phases}
-                      statuses={statuses}
-                      onUnselect={this.unselect(post.id)}
-                      onToggleSelect={this.toggleSelect(post.id)}
-                      onSingleSelect={this.singleSelect(post.id)}
-                      selection={selection}
-                      activeFilterMenu={activeFilterMenu}
-                      openPreview={openPreview}
-                    />
-                  </CSSTransition>
-                )}
+                {// Cleanest workaround typescript I found
+                  (posts as (IIdeaData | IInitiativeData)[]).map(post =>
+                    <CSSTransition classNames="fade" timeout={500} key={post.id}>
+                      <Row
+                        className="e2e-post-manager-post-row"
+                        key={post.id}
+                        type={type}
+                        post={post}
+                        phases={phases}
+                        statuses={statuses}
+                        onUnselect={this.unselect(post.id)}
+                        onToggleSelect={this.toggleSelect(post.id)}
+                        onSingleSelect={this.singleSelect(post.id)}
+                        selection={selection}
+                        activeFilterMenu={activeFilterMenu}
+                        openPreview={openPreview}
+                      />
+                    </CSSTransition>
+                  )}
               </TransitionGroup> : null
             }
           </Table.Body>
-          {!!posts && posts.length > 0 &&
+          {!isEmpty(posts) &&
             <Table.Footer fullWidth={true}>
               <Table.Row>
                 <Table.HeaderCell colSpan="7">
@@ -221,13 +218,13 @@ export default class IdeaTable extends React.Component<Props> {
             </Table.Footer>
           }
         </Table>
-        <TransitionGroup component={null}>
-          {!posts || posts.length === 0 &&
+        {isEmpty(posts) &&
+          <TransitionGroup component={null}>
             <CSSTransition classNames="fade" timeout={500}>
               <NoPost handleSeeAll={handleSeeAll} type={type} />
             </CSSTransition>
-          }
-        </TransitionGroup>
+          </TransitionGroup>
+        }
       </Container>
     );
   }

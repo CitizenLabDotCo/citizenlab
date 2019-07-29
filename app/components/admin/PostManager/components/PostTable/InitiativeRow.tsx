@@ -1,13 +1,16 @@
 import React from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { uniq, isEmpty, get } from 'lodash-es';
+import { uniq, get } from 'lodash-es';
 import { findDOMNode } from 'react-dom';
 import { DragSource } from 'react-dnd';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
+import moment from 'moment';
 
 // services
 import { IInitiativeData, updateInitiative, initiativeByIdStream } from 'services/initiatives';
-// import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // components
 import { Table, Icon } from 'semantic-ui-react';
@@ -15,14 +18,14 @@ import WrappedRow from './WrappedRow';
 import T from 'components/T';
 
 import Checkbox from 'components/UI/Checkbox';
+import StatusLabel from 'components/UI/StatusLabel';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // i18n
-import { FormattedRelative, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from '../../messages';
 
 // style
 import AssigneeSelect from './AssigneeSelect';
@@ -34,22 +37,30 @@ import { TFilterMenu, ManagerType } from '../..';
 import { TitleLink, StyledRow } from './Row';
 import SubRow from './SubRow';
 
-type InputProps = {
+// resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+
+interface DataProps {
+  tenant: GetTenantChildProps;
+}
+
+interface InputProps {
   type: ManagerType;
-  initiative: IInitiativeData,
-//  statuses?: IInitiativeStatusData[],
-  selection: Set<string>,
+  initiative: IInitiativeData;
+  statuses?: IInitiativeStatusData[];
+  /** A set of ids of ideas/initiatives that are currently selected */
+  selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   className?: string;
   onClickRow: (event) => void;
   onClickCheckbox: (event) => void;
   onClickTitle: (event) => void;
   nothingHappens: (event) => void;
-};
+}
 
-type Props = InputProps & {
+interface Props extends InputProps, DataProps {
   connectDragSource: any;
-};
+}
 
 class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLocalized> {
   onUpdateInitiativePhases = (selectedPhases) => {
@@ -65,7 +76,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
   }
 
   onUpdateInitiativeStatus = (statusId) => {
-    const { initiative }  = this.props;
+    const { initiative } = this.props;
     const initiativeId = initiative.id;
 
     updateInitiative(initiativeId, {
@@ -79,14 +90,57 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
     });
   }
 
+  onUpdateInitiativeAssignee = (assigneeId) => {
+    const { initiative } = this.props;
+    const initiativeId = initiative.id;
+
+    updateInitiative(initiativeId, {
+      assignee_id: assigneeId,
+    });
+
+    trackEventByName(tracks.changePostAssignment, {
+      location: 'Initiative Manager',
+      method: 'Changed through the dropdown in the table overview',
+      initiative: initiativeId
+    });
+  }
+
+  renderTimingCell = () => {
+    const {
+      initiative,
+      tenant,
+      statuses
+    } = this.props;
+
+    const selectedStatus: string | undefined = get(initiative, 'relationships.initiative_status.data.id');
+    const selectedStatusObject = statuses && statuses.find(status => status.id === selectedStatus);
+
+    if (selectedStatusObject && !isNilOrError(tenant) && tenant.attributes.settings.initiatives) {
+      if (selectedStatusObject.attributes.code === 'proposed') {
+        const startingTime = moment(initiative.attributes.published_at).startOf('day');
+        const daysSinceStart = moment().diff(startingTime, 'days');
+        const timeSpanDays = tenant.attributes.settings.initiatives.days_limit || 0;
+
+        return timeSpanDays - daysSinceStart;
+      } else {
+        return (
+          <StatusLabel
+            text={<T value={selectedStatusObject.attributes.title_multiloc} />}
+            color={selectedStatusObject.attributes.color}
+          />
+        );
+      }
+    }
+    return null;
+  }
+
   render() {
     const {
-      type,
       initiative,
       selection,
       connectDragSource,
       activeFilterMenu,
-  //    statuses,
+      statuses,
       className,
       onClickRow,
       onClickCheckbox,
@@ -98,7 +152,8 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
     const selectedTopics = initiative.relationships.topics.data.map((p) => p.id);
     const attrs = initiative.attributes;
     const active = selection.has(initiative.id);
-    const projectId = get(initiative, 'relationships.project.data.id');
+    const assigneeId = get(initiative, 'relationships.assignee.data.id');
+
     return (
       <>
         <WrappedRow
@@ -109,20 +164,28 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
           ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}
         >
           <Table.Cell collapsing={true}>
-            <Checkbox value={!!active} onChange={onClickCheckbox} size="17px"/>
+            <Checkbox value={!!active} onChange={onClickCheckbox} size="17px" />
           </Table.Cell>
           <Table.Cell>
             <TitleLink className="e2e-initiative-manager-initiative-title" onClick={onClickTitle}>
               <T value={attrs.title_multiloc} />
             </TitleLink>
           </Table.Cell>
-          <Table.Cell onClick={nothingHappens} singleLine><AssigneeSelect type={type} post={initiative}/></Table.Cell>
+          <Table.Cell onClick={nothingHappens} singleLine>
+            <AssigneeSelect
+              onAssigneeChange={this.onUpdateInitiativeAssignee}
+              assigneeId={assigneeId}
+            />
+          </Table.Cell>
           <Table.Cell>
-            <FormattedRelative value={attrs.published_at} />
+            {this.renderTimingCell()}
           </Table.Cell>
           <Table.Cell singleLine>
             <Icon name="thumbs up" />
             {attrs.upvotes_count}
+          </Table.Cell>
+          <Table.Cell>
+            {attrs.comments_count}
           </Table.Cell>
         </WrappedRow>
         <SubRow
@@ -132,8 +195,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
             className,
             activeFilterMenu,
             selectedTopics,
-            projectId,
-          //  statuses,
+            statuses,
             selectedStatus
           }}
           onUpdatePhases={this.onUpdateInitiativePhases}
@@ -157,7 +219,7 @@ const initiativeSource = {
     const dropResult = monitor.getDropResult();
     const { selection } = props;
 
-    if (dropResult && dropResult.type === 'initiativeStatus') {
+    if (dropResult && dropResult.type === 'status') {
       selection.has(item.id) && selection.forEach((initiativeId) => {
         updateInitiative(initiativeId, {
           initiative_status_id: dropResult.id,
@@ -176,8 +238,8 @@ const initiativeSource = {
     } else if (dropResult && dropResult.type) {
 
       const observables = selection.has(item.id)
-      ? [...selection].map((id) => initiativeByIdStream(id).observable)
-      : [initiativeByIdStream(item.id).observable];
+        ? [...selection].map((id) => initiativeByIdStream(id).observable)
+        : [initiativeByIdStream(item.id).observable];
 
       if (dropResult.type === 'topic') {
         combineLatest(observables).pipe(take(1)).subscribe((initiatives) => {
@@ -202,4 +264,14 @@ function collect(connect, monitor) {
   };
 }
 
-export default injectIntl<InputProps>(localize<InputProps & InjectedIntlProps>(DragSource('IDEA', initiativeSource, collect)(InitiativeRow)));
+const InitiativesRowWithHocs = injectIntl<InputProps>(localize<InputProps & InjectedIntlProps>(DragSource('IDEA', initiativeSource, collect)(InitiativeRow)));
+
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <InitiativesRowWithHocs {...inputProps} {...dataProps} />}
+  </Data>
+);

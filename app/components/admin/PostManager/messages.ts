@@ -5,9 +5,13 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.header',
     defaultMessage: 'Ideas',
   },
-  anyFeedbackStatus: {
-    id: 'app.components.admin.PostManager.anyFeedbackStatus',
+  anyFeedbackStatusIdeas: {
+    id: 'app.components.admin.PostManager.anyFeedbackStatusIdeas',
     defaultMessage: 'All ideas',
+  },
+  anyFeedbackStatusInitiatives: {
+    id: 'app.components.admin.PostManager.anyFeedbackStatusInitiatives',
+    defaultMessage: 'All initiatives',
   },
   needFeedback: {
     id: 'app.components.admin.PostManager.needFeedback',
@@ -41,6 +45,18 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.deleteIdeasConfirmation',
     defaultMessage: 'Are you sure you want to delete {count} ideas?',
   },
+  deleteAllSelectedInitiatives: {
+    id: 'app.components.admin.PostManager.deleteAllSelectedInitiatives',
+    defaultMessage: 'Delete {count} selected initiatives',
+  },
+  deleteInitiativeConfirmation: {
+    id: 'app.components.admin.PostManager.deleteInitiativeConfirmation',
+    defaultMessage: 'Are you sure you want to delete this initiative?',
+  },
+  deleteInitiativesConfirmation: {
+    id: 'app.components.admin.PostManager.deleteInitiativesConfirmation',
+    defaultMessage: 'Are you sure you want to delete {count} initiatives?',
+  },
   losePhaseInfoConfirmation: {
     id: 'app.components.admin.PostManager.losePhaseInfoConfirmation',
     defaultMessage: 'Moving \'{ideaTitle}\' away from its current project will lose the information about its assigned phases. Do you want to proceed?',
@@ -69,9 +85,21 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.publication_date',
     defaultMessage: 'Published on',
   },
+  remainingTime: {
+    id: 'app.components.admin.PostManager.remainingTime',
+    defaultMessage: 'Days Remaining',
+  },
   up: {
     id: 'app.components.admin.PostManager.up',
     defaultMessage: 'Up',
+  },
+  votes: {
+    id: 'app.components.admin.PostManager.votes',
+    defaultMessage: 'Votes',
+  },
+  comments: {
+    id: 'app.components.admin.PostManager.comments',
+    defaultMessage: 'Comments',
   },
   down: {
     id: 'app.components.admin.PostManager.down',
@@ -141,17 +169,37 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exportSelectedIdeas',
     defaultMessage: 'Export selected ideas (.xslx)',
   },
-  exportComments: {
-    id: 'app.components.admin.PostManager.exportComments',
+  exportIdeasComments: {
+    id: 'app.components.admin.PostManager.exportIdeasComments',
     defaultMessage: 'Export all comments (.xslx)',
   },
-  exportCommentsProjects: {
-    id: 'app.components.admin.PostManager.exportCommentsProjects',
+  exportIdeasCommentsProjects: {
+    id: 'app.components.admin.PostManager.exportIdeasCommentsProjects',
     defaultMessage: 'Export comments for this project (.xslx)',
   },
-  exportSelectedComments: {
-    id: 'app.components.admin.PostManager.exportSelectedComments',
+  exportSelectedIdeasComments: {
+    id: 'app.components.admin.PostManager.exportSelectedIdeasComments',
     defaultMessage: 'Export comments for selected ideas (.xslx)',
+  },
+  exportInitiatives: {
+    id: 'app.components.admin.PostManager.exportInitiatives',
+    defaultMessage: 'Export all initiatives (.xslx)',
+  },
+  exportInitiativesProjects: {
+    id: 'app.components.admin.PostManager.exportInitiativesProjects',
+    defaultMessage: 'Export initiatives for this project (.xslx)',
+  },
+  exportSelectedInitiatives: {
+    id: 'app.components.admin.PostManager.exportSelectedInitiatives',
+    defaultMessage: 'Export selected initiatives (.xslx)',
+  },
+  exportInitiativesComments: {
+    id: 'app.components.admin.PostManager.exportInitiativesComments',
+    defaultMessage: 'Export all comments (.xslx)',
+  },
+  exportSelectedInitiativesComments: {
+    id: 'app.components.admin.PostManager.exportSelectedInitiativesComments',
+    defaultMessage: 'Export comments for selected initiatives (.xslx)',
   },
   noOne: {
     id: 'app.components.admin.PostManager.noOne',
@@ -200,5 +248,13 @@ export default defineMessages({
   multipleIdeas: {
     id: 'app.components.admin.PostManager.multipleIdeas',
     defaultMessage: '{ideaCount} ideas',
+  },
+  oneInitiative: {
+    id: 'app.components.admin.PostManager.oneInitiative',
+    defaultMessage: '1 initiative',
+  },
+  multipleInitiatives: {
+    id: 'app.components.admin.PostManager.multipleInitiatives',
+    defaultMessage: '{initiativesCount} initiatives',
   },
 });

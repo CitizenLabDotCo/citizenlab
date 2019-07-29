@@ -7,6 +7,12 @@ import { makeIdeasCount } from 'services/stats';
 jest.mock('services/stats');
 jest.mock('utils/cl-intl');
 
+// mocking dependencies
+jest.mock('resources/GetIdeasCount', () => 'GetIdeasCount');
+jest.mock('resources/GetInitiativesCount', () => 'GetInitiativesCount');
+jest.mock('components/UI/CountBadge', () => 'CountBadge');
+jest.mock('utils/cl-intl');
+
 import 'jest-styled-components';
 
 describe('<FeedbackToggle />', () => {
@@ -15,11 +21,12 @@ describe('<FeedbackToggle />', () => {
     onChange = jest.fn();
   });
 
-  it('renders correctly unchecked', () => {
-    const ideasCount = makeIdeasCount(6);
+  it('renders correctly unchecked for ideas', () => {
+    const ideasCount = { count: 6 };
 
     const wrapper = shallow(
       <FeedbackToggle
+        type="AllIdeas"
         assignee="me"
         feedbackNeededCount={ideasCount}
         value={false}
@@ -28,14 +35,14 @@ describe('<FeedbackToggle />', () => {
     );
     expect(wrapper).toMatchSnapshot();
   });
-
-  it('renders correctly checked', () => {
-    const ideasCount = makeIdeasCount(6);
+  it('renders correctly checked for initiatives', () => {
+    const initiativesCount = { count: 6 };
 
     const wrapper = shallow(
       <FeedbackToggle
+        type="Initiatives"
         assignee="me"
-        feedbackNeededCount={ideasCount}
+        feedbackNeededCount={initiativesCount}
         value={true}
         onChange={onChange}
       />
@@ -43,11 +50,30 @@ describe('<FeedbackToggle />', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it('calls onChange when clicked', () => {
-    const ideasCount = makeIdeasCount(6);
+  it('has coherent aria checked attibutes', () => {
+    const ideasCount = { count: 6 };
 
     const wrapper = shallow(
       <FeedbackToggle
+        type="AllIdeas"
+        assignee="me"
+        feedbackNeededCount={ideasCount}
+        value={true}
+        onChange={onChange}
+      />
+    );
+    const Toggle = wrapper.find('FeedbackToggle__ToggleContainer');
+    expect(Toggle.props().checked).toBeTruthy;
+    const Input = wrapper.find('input');
+    expect(Input.props()['aria-checked']).toBeTruthy;
+  });
+
+  it('calls onChange when clicked', () => {
+    const ideasCount = { count: 6 };
+
+    const wrapper = shallow(
+      <FeedbackToggle
+        type="Initiatives"
         assignee="me"
         feedbackNeededCount={ideasCount}
         value={false}
@@ -57,5 +83,25 @@ describe('<FeedbackToggle />', () => {
     wrapper.find('FeedbackToggle__ToggleContainer').simulate('click', { preventDefault() { }, stopPropagation() { } });
 
     expect(onChange).toHaveBeenCalled();
+  });
+
+  it('reacts to search change', () => {
+    const onChangeSearchTerm = jest.fn();
+    const ideasCount = {
+      count: 6,
+      onChangeSearchTerm
+    };
+
+    const wrapper = shallow(
+      <FeedbackToggle
+        assignee="me"
+        feedbackNeededCount={ideasCount}
+        value={false}
+        onChange={onChange}
+      />
+    );
+    wrapper.setProps({ searchTerm: 'lalalalalala' });
+
+    expect(onChangeSearchTerm).toHaveBeenCalledWith('lalalalalala');
   });
 });
