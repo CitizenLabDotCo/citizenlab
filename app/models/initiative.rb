@@ -15,7 +15,8 @@ class Initiative < ApplicationRecord
   belongs_to :assignee, class_name: 'User', optional: true
 
   with_options unless: :draft? do |initiative|
-    initiative.validates :initiative_status_changes, presence: true
+    # Problem is that this validation happens too soon, as the first idea status change is created after create.
+    # initiative.validates :initiative_status_changes, presence: true
     initiative.validate :assignee_can_moderate_initiatives
 
     initiative.before_validation :set_initiative_status
@@ -81,8 +82,9 @@ class Initiative < ApplicationRecord
   end
 
   def set_initiative_status
-    if self.initiative_status_changes.empty? && !self.draft?
-      self.initiative_status_changes.create!(initiative_status: InitiativeStatus.find_by!(code: 'proposed')) 
+    initial_status = InitiativeStatus.find_by code: 'proposed'
+    if initial_status && self.initiative_status_changes.empty? && !self.draft?
+      self.initiative_status_changes.create!(initiative_status: initial_status) 
     end
   end
 
