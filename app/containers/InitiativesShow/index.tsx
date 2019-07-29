@@ -12,7 +12,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Sharing from 'components/Sharing';
-// import IdeaMeta from './IdeaMeta';
+import InitiativeMeta from './InitiativeMeta';
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
 // import IdeaSharingModalContent from './IdeaSharingModalContent';
@@ -376,7 +376,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
       content = (
         <>
-          <IdeaMeta ideaId={ideaId} />
+          <InitiativeMeta initiativeId={initiativeId} />
 
           <ActionBar
             ideaId={ideaId}
