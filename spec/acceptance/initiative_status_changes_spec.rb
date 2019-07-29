@@ -45,7 +45,7 @@ resource "InitiativeStatusChange" do
       header 'Authorization', "Bearer #{token}"
 
       TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
-      create(:initiative_status_change, initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'published'))
+      create(:initiative_status_change, initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'proposed'))
     end
 
     post "web_api/v1/initiatives/:initiative_id/initiative_status_changes" do
