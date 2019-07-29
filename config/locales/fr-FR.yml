@@ -13,8 +13,8 @@ fr:
     rejected: rejetée
     rejected_description: Cette idée a été rejetée
   initiative_statuses:
-    published: published
-    published_description: published
+    proposed: proposed
+    proposed_description: proposed
     expired: expired
     expired_description: expired
     threshold_reached: threshold reached

@@ -13,8 +13,8 @@ en-GB:
     rejected: rejected
     rejected_description: This idea has been rejected
   initiative_statuses:
-    published: published
-    published_description: published
+    proposed: proposed
+    proposed_description: proposed
     expired: expired
     expired_description: expired
     threshold_reached: threshold reached

@@ -39,21 +39,21 @@ resource "Stats - Initiatives" do
     Tenant.current.update!(created_at: now - 3.year)
     @timezone = Tenant.settings('core','timezone')
 
-    @published = create(:initiative_status, code: 'published')
+    @proposed = create(:initiative_status, code: 'proposed')
     @initiatives_with_topics = []
     @initiatives_with_areas = []
     travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year - 1.months do
-      i = create(:initiative, initiative_status: @published)
+      i = create(:initiative, initiative_status: @proposed)
       create(:official_feedback, post: i)
     end
     travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 2.months do
-      @initiatives_with_topics += create_list(:initiative_with_topics, 2, initiative_status: @published)
-      @initiatives_with_areas += create_list(:initiative_with_areas, 3, initiative_status: @published)
+      @initiatives_with_topics += create_list(:initiative_with_topics, 2, initiative_status: @proposed)
+      @initiatives_with_areas += create_list(:initiative_with_areas, 3, initiative_status: @proposed)
     end
     travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 5.months do
-      @initiatives_with_topics += create_list(:initiative_with_topics, 3, initiative_status: @published)
-      @initiatives_with_areas += create_list(:initiative_with_areas, 2, initiative_status: @published)
-      create(:initiative, initiative_status: @published)
+      @initiatives_with_topics += create_list(:initiative_with_topics, 3, initiative_status: @proposed)
+      @initiatives_with_areas += create_list(:initiative_with_areas, 2, initiative_status: @proposed)
+      create(:initiative, initiative_status: @proposed)
     end
   end
 
@@ -80,7 +80,7 @@ resource "Stats - Initiatives" do
 
     #   example "Count all initiatives that need feedback for a specific assignee" do
     #     assignee = create(:admin)
-    #     create(:initiative, initiative_status: @published, assignee: assignee)
+    #     create(:initiative, initiative_status: @proposed, assignee: assignee)
     #     do_request assignee: assignee.id
         
     #     expect(response_status).to eq 200

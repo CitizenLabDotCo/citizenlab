@@ -288,7 +288,7 @@ resource "Initiatives" do
 
   post "web_api/v1/initiatives" do
     before do
-      create(:initiative_status, code: 'published')
+      create(:initiative_status, code: 'proposed')
     end
 
     with_options scope: :initiative do
@@ -364,7 +364,7 @@ resource "Initiatives" do
 
   patch "web_api/v1/initiatives/:id" do
     before do
-      create(:initiative_status, code: 'published')
+      create(:initiative_status, code: 'proposed')
       @initiative =  create(:initiative, author: @user)
     end
 

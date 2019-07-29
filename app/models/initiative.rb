@@ -66,7 +66,7 @@ class Initiative < ApplicationRecord
   end
 
   def set_initiative_status
-    self.initiative_status ||= InitiativeStatus.find_by!(code: 'published') unless self.draft?
+    self.initiative_status ||= InitiativeStatus.find_by!(code: 'proposed') unless self.draft?
   end
 
 end
