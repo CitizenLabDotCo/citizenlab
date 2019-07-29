@@ -12,12 +12,10 @@ class Initiative < ApplicationRecord
   has_many :areas, through: :areas_initiatives
   has_many :initiative_status_changes, dependent: :destroy
 
-  belongs_to :initiative_status, optional: true
-
   belongs_to :assignee, class_name: 'User', optional: true
 
   with_options unless: :draft? do |initiative|
-    initiative.validates :initiative_status, presence: true
+    initiative.validates :initiative_status_changes, presence: true
     initiative.validate :assignee_can_moderate_initiatives
 
     initiative.before_validation :set_initiative_status
@@ -49,14 +47,25 @@ class Initiative < ApplicationRecord
   end)
 
   scope :order_status, -> (direction=:desc) {
-    joins(:initiative_status)
+    join_initiative_status
     .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
   }
 
   scope :feedback_needed, -> {
-    joins(:initiative_status).where(initiative_statuses: {code: 'threshold_reached'})
+    join_initiative_status.where(initiative_statuses: {code: 'threshold_reached'})
       .where('initiatives.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
+
+  def initiative_status
+    InitiativeStatus.find initiative_status_changes.order(created_at: :desc).first.initiative_status_id
+  end
+
+  def join_initiative_status
+    joins(:initiative_status_change)
+      .group('initiative_status_changes.initiative_id')
+      .maximum('initiative_status_changes.created_at')
+      .joins("INNER JOIN initiative_statuses ON initiative_statuses.id = initiative_status_changes.initiative_status_id")
+  end
 
 
   private
@@ -72,7 +81,9 @@ class Initiative < ApplicationRecord
   end
 
   def set_initiative_status
-    self.initiative_status ||= InitiativeStatus.find_by!(code: 'proposed') unless self.draft?
+    if self.initiative_status_changes.empty? && !self.draft?
+      self.initiative_status_changes.create!(initiative_status: InitiativeStatus.find_by!(code: 'proposed')) 
+    end
   end
 
 end
