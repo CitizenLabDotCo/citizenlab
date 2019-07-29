@@ -38,7 +38,6 @@ class InitiativeStatusService
   end
 
   def transition_allowed? initiative, status1, status2
-    byebug
     manual_transitions[status1.code]&.include? status2.code
   end
 
