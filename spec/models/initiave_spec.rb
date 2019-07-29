@@ -7,7 +7,8 @@ RSpec.describe Initiative, type: :model do
 
   context "Default factory" do
     it "is valid" do
-      expect(build(:initiative)).to be_valid
+      # Using create instead of build because it otherwise doesn't have status changes yet which are required by validation.
+      expect(create(:initiative)).to be_valid
     end
   end
 
