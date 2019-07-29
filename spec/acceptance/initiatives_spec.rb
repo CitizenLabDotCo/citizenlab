@@ -27,6 +27,7 @@ resource "Initiatives" do
     parameter :initiative_status, 'Filter by status (initiative status id)', required: false
     parameter :assignee, 'Filter by assignee (user id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
+    parameter :feedback_needed, "Filter out initiatives that need feedback", required: false
     parameter :sort, "Either 'new', '-new', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'status', '-status', 'random'", required: false
 
     example_request "List all published initiatives (default behaviour)" do
@@ -101,6 +102,16 @@ resource "Initiatives" do
       i = create(:initiative, assignee: a)
 
       do_request assignee: a.id
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq i.id
+    end
+
+    example "List all initiatives that need feedback" do
+      TenantTemplateService.new.resolve_and_apply_template('base')
+      i = create(:initiative, initiative_status: InitiativeStatus.find_by(code: 'threshold_reached'))
+
+      do_request feedback_needed: true
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id

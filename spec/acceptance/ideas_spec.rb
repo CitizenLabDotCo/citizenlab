@@ -190,7 +190,6 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i.id
     end
 
-
     example "Search for ideas" do
       u = create(:user)
       i1 = create(:idea, title_multiloc: {en: "This idea is uniqque"})
