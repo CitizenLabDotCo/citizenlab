@@ -206,7 +206,7 @@ export default defineMessages({
     defaultMessage: 'Export survey results',
   },
   titleIdeas: {
-    id: 'app.components.admin.PostManager.titleIdeas', // TODO
+    id: 'app.components.admin.PostManager.titleIdeas',
     defaultMessage: 'Manage idea',
   },
   subtitleIdeas: {
