@@ -11,8 +11,11 @@ FactoryBot.define do
     sequence(:slug) {|n| "turbines-on-kanals-#{n}"}
     publication_status { "published" }
     author
-    initiative_status
     assignee { nil }
+
+    after :create do |initiative|
+      create_list :initiative_status_change, 1, initiative: initiative
+    end
 
     factory :initiative_with_topics do
       transient do
