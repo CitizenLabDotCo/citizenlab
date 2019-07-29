@@ -15,11 +15,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import Button from 'components/UI/Button';
 import { Content, Top, Container } from '.';
+import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { colors } from 'utils/styleUtils';
+
+import { Locale } from 'typings';
 
 interface InputProps {
   initiativeId: string;
@@ -34,10 +37,33 @@ interface DataProps {
 
 interface Props extends DataProps, InputProps { }
 
-export class InitiativesEditPage extends React.PureComponent<Props> {
+interface State {
+  selectedLocale: GetLocaleChildProps;
+}
+
+export class InitiativesEditPage extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props as any);
+    this.state = {
+      selectedLocale: props.locale,
+    };
+  }
+
+  componentWillReceiveProps(nextProps : Props) {
+    const { locale } = nextProps;
+    if (!this.state.selectedLocale && this.props.locale !== locale) {
+      this.setState({ selectedLocale: locale });
+    }
+  }
+
+  onLocaleChange = (locale: Locale) => () => {
+    this.setState({ selectedLocale: locale });
+  }
+
   render() {
     const { locale, initiative, initiativeImages, goBack } = this.props;
-    if (isNilOrError(locale) || isNilOrError(initiative) || initiativeImages === undefined) return null;
+    const { selectedLocale } = this.state;
+    if (isNilOrError(locale) || !selectedLocale || isNilOrError(initiative) || initiativeImages === undefined) return null;
 
     return (
       <Container bgColor={colors.adminBackground}>
@@ -50,10 +76,16 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
           >
             <FormattedMessage {...messages.cancelEdit} />
           </Button>
+          <FormLocaleSwitcher
+            onLocaleChange={this.onLocaleChange}
+            selectedLocale={selectedLocale}
+            values={{}}
+            noMargin
+          />
         </Top>
         <Content>
           <InitiativesEditFormWrapper
-            locale={locale}
+            locale={selectedLocale}
             initiative={initiative}
             initiativeImage={isNilOrError(initiativeImages) || initiativeImages.length === 0 ? null : initiativeImages[0]}
             onPublished={goBack}
