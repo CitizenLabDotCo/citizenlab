@@ -170,7 +170,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     const status = Object.values(errors).every(val => val === undefined) ? 'enabled' : 'disabled';
 
     return (
-      <form>
+      <form id="initiative-form">
         <FormSection>
           <FormSectionTitle message={messages.formGeneralSectionTitle} />
 
@@ -181,6 +181,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             >
               <InputMultiloc
                 type="text"
+                id="e2e-initiative-title-input"
                 valueMultiloc={title_multiloc || {}}
                 onChange={onChangeTitle}
                 onBlur={this.onBlur('title_multiloc')}
@@ -242,6 +243,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               optional
             >
               <LocationInput
+                className="e2e-initiative-location-input"
                 inCitizen
                 value={position || ''}
                 onChange={onChangePosition}
@@ -261,7 +263,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               optional
             >
               <ImageDropzone
-                id="idea-img-dropzone"
+                id="iniatiative-banner-dropzone"
                 image={banner || null}
                 imagePreviewRatio={360 / 1440}
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -278,7 +280,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               subtextMessage={messages.imageUploadLabelSubtext}
             >
               <ImageDropzone
-                id="idea-img-dropzone"
+                id="iniatiative-img-dropzone"
                 image={image || null}
                 imagePreviewRatio={135 / 298}
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -296,6 +298,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               optional
             />
             <FileUploader
+              id="e2e-initiative-file-upload"
               onFileAdd={onAddFile}
               onFileRemove={onRemoveFile}
               files={files}
@@ -304,6 +307,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
           </SectionField>
         </FormSection>
         <FormSubmitFooter
+          className="e2e-initiative-publish-button"
           message={messages.publishButton}
           disabled={status === 'disabled'}
           error={publishError}
