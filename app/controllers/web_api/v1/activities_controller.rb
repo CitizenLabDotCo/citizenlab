@@ -24,9 +24,9 @@ class WebApi::V1::ActivitiesController < ApplicationController
   private
 
   def set_idea
-     @idea = Idea.find(params[:idea_id])
-     authorize @idea, :get_activities?
-   end
+    @idea = Idea.find(params[:idea_id])
+    authorize @idea, :get_activities?
+  end
 
   def secure_controller?
     false

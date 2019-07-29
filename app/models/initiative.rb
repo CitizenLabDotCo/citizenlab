@@ -50,7 +50,12 @@ class Initiative < ApplicationRecord
 
   scope :order_status, -> (direction=:desc) {
     joins(:initiative_status)
-    .order("initiative_statuses.ordering #{direction}")
+    .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
+  }
+
+  scope :feedback_needed, -> {
+    joins(:initiative_status).where(initiative_statuses: {code: 'threshold_reached'})
+      .where('initiatives.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
 
@@ -67,7 +72,7 @@ class Initiative < ApplicationRecord
   end
 
   def set_initiative_status
-    self.initiative_status ||= InitiativeStatus.find_by!(code: 'published') unless self.draft?
+    self.initiative_status ||= InitiativeStatus.find_by!(code: 'proposed') unless self.draft?
   end
 
 end

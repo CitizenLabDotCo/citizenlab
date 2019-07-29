@@ -20,9 +20,9 @@ def topic_filter_parameter s
   s.parameter :topic, "Topic ID. Only count initiatives that have the given topic assigned", required: false
 end
 
-# def feedback_needed_filter_parameter s
-#   s.parameter :feedback_needed, "Only count initiatives that need feedback", required: false
-# end
+def feedback_needed_filter_parameter s
+  s.parameter :feedback_needed, "Only count initiatives that need feedback", required: false
+end
 
 
 resource "Stats - Initiatives" do
@@ -39,21 +39,21 @@ resource "Stats - Initiatives" do
     Tenant.current.update!(created_at: now - 3.year)
     @timezone = Tenant.settings('core','timezone')
 
-    @published = create(:initiative_status, code: 'published')
+    @threshold_reached = create(:initiative_status, code: 'threshold_reached')
     @initiatives_with_topics = []
     @initiatives_with_areas = []
     travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year - 1.months do
-      i = create(:initiative, initiative_status: @published)
+      i = create(:initiative, initiative_status: @threshold_reached)
       create(:official_feedback, post: i)
     end
     travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 2.months do
-      @initiatives_with_topics += create_list(:initiative_with_topics, 2, initiative_status: @published)
-      @initiatives_with_areas += create_list(:initiative_with_areas, 3, initiative_status: @published)
+      @initiatives_with_topics += create_list(:initiative_with_topics, 2, initiative_status: @threshold_reached)
+      @initiatives_with_areas += create_list(:initiative_with_areas, 3, initiative_status: @threshold_reached)
     end
     travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 5.months do
-      @initiatives_with_topics += create_list(:initiative_with_topics, 3, initiative_status: @published)
-      @initiatives_with_areas += create_list(:initiative_with_areas, 2, initiative_status: @published)
-      create(:initiative, initiative_status: @published)
+      @initiatives_with_topics += create_list(:initiative_with_topics, 3, initiative_status: @threshold_reached)
+      @initiatives_with_areas += create_list(:initiative_with_areas, 2, initiative_status: @threshold_reached)
+      create(:initiative, initiative_status: @threshold_reached)
     end
   end
 
@@ -61,7 +61,7 @@ resource "Stats - Initiatives" do
     time_boundary_parameters self
     group_filter_parameter self
     topic_filter_parameter self
-    # feedback_needed_filter_parameter self
+    feedback_needed_filter_parameter self
 
     example_request "Count all initiatives" do
       expect(response_status).to eq 200
@@ -69,31 +69,31 @@ resource "Stats - Initiatives" do
       expect(json_response[:count]).to eq Initiative.published.count
     end
 
-    # describe "with feedback_needed filter" do
-    #   let(:feedback_needed) { true }
+    describe "with feedback_needed filter" do
+      let(:feedback_needed) { true }
 
-    #   example_request "Count all initiatives that need feedback" do
-    #     expect(response_status).to eq 200
-    #     json_response = json_parse(response_body)
-    #     expect(json_response[:count]).to eq Initiative.published.count - 1
-    #   end
+      example_request "Count all initiatives that need feedback" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:count]).to eq Initiative.published.count - 1
+      end
 
-    #   example "Count all initiatives that need feedback for a specific assignee" do
-    #     assignee = create(:admin)
-    #     create(:initiative, initiative_status: @published, assignee: assignee)
-    #     do_request assignee: assignee.id
+      example "Count all initiatives that need feedback for a specific assignee" do
+        assignee = create(:admin)
+        create(:initiative, initiative_status: @threshold_reached, assignee: assignee)
+        do_request assignee: assignee.id
         
-    #     expect(response_status).to eq 200
-    #     json_response = json_parse(response_body)
-    #     expect(json_response[:count]).to eq 1
-    #   end
-    # end
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:count]).to eq 1
+      end
+    end
   end
 
   get "web_api/v1/stats/initiatives_by_topic" do
     time_boundary_parameters self
     group_filter_parameter self
-    # feedback_needed_filter_parameter self
+    feedback_needed_filter_parameter self
 
     describe "with time filters only" do
       let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
@@ -121,11 +121,11 @@ resource "Stats - Initiatives" do
 
       let(:group) { @group.id }
 
-      # example_request "Initiatives by topic filtered by group" do
-      #   expect(response_status).to eq 200
-      #   json_response = json_parse(response_body)
-      #   expect(json_response[:series][:initiatives].values.inject(&:+)).to eq 2
-      # end
+      example_request "Initiatives by topic filtered by group" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:series][:initiatives].values.inject(&:+)).to eq 2
+      end
     end
   end
 
@@ -133,7 +133,7 @@ resource "Stats - Initiatives" do
     time_boundary_parameters self
     topic_filter_parameter self
     group_filter_parameter self
-    # feedback_needed_filter_parameter self
+    feedback_needed_filter_parameter self
 
     let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
     let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
@@ -151,7 +151,7 @@ resource "Stats - Initiatives" do
     time_series_parameters self
     topic_filter_parameter self
     group_filter_parameter self
-    # feedback_needed_filter_parameter self
+    feedback_needed_filter_parameter self
 
     let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
     let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
@@ -169,7 +169,7 @@ resource "Stats - Initiatives" do
     time_series_parameters self
     topic_filter_parameter self
     group_filter_parameter self
-    # feedback_needed_filter_parameter self
+    feedback_needed_filter_parameter self
 
     describe "without time filters" do
       let(:interval) { 'day' }

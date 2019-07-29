@@ -13,8 +13,8 @@ nl-BE:
     rejected: afgewezen
     rejected_description: Dit idee is afgewezen
   initiative_statuses:
-    published: published
-    published_description: published
+    proposed: proposed
+    proposed_description: proposed
     expired: expired
     expired_description: expired
     threshold_reached: threshold reached
