@@ -38,7 +38,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
     if @option.save
       SideFxCustomFieldOptionService.new.after_update(@option, current_user)
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
-        @option, 
+        @option.reload, 
         params: fastjson_params
         ).serialized_json, status: :ok
     else

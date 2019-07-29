@@ -43,7 +43,7 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     authorize @groups_project
     if @groups_project.save
       render json: WebApi::V1::GroupsProjectSerializer.new(
-        @groups_project, 
+        @groups_project.reload, 
         params: fastjson_params,
         include: [:group]
         ).serialized_json, status: :created
