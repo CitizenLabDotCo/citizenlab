@@ -70,11 +70,7 @@ resource "InitiativeStatusChange" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @admin.id
-        
-        # expect(json_response.dig(:data,:relationships,:body_multiloc).stringify_keys).to match body_multiloc
-        # expect(json_response.dig(:data,:attributes,:author_multiloc).stringify_keys).to match author_multiloc
-        # expect(json_response.dig(:data,:relationships,:post,:data,:id)).to eq initiative_id
-        # expect(@initiative.reload.official_feedbacks_count).to eq 3
+        expect(@initiative.reload.official_feedbacks_count).to eq 1
       end
 
       # describe do
