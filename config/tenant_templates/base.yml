@@ -38,11 +38,11 @@ models:
       description_multiloc: idea_statuses.implemented_description
   initiative_status:
     - 
-      title_multiloc: initiative_statuses.published
+      title_multiloc: initiative_statuses.proposed
       ordering: 100
-      code: published
+      code: proposed
       color: '#687782'
-      description_multiloc: initiative_statuses.published_description
+      description_multiloc: initiative_statuses.proposed_description
     - 
       title_multiloc: initiative_statuses.expired
       ordering: 200

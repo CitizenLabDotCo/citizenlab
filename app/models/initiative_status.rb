@@ -1,6 +1,6 @@
 class InitiativeStatus < ApplicationRecord
 
-  CODES = %w(published expired threshold_reached answered ineligible custom)
+  CODES = %w(proposed expired threshold_reached answered ineligible custom)
 
   has_many :initiatives, dependent: :nullify
 
