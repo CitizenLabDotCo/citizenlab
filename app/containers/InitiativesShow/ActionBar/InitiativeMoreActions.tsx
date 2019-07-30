@@ -18,7 +18,7 @@ import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 
 // services
-import { deleteIdea, IIdeaData } from 'services/ideas';
+import { deleteInitiative, IInitiativeData } from 'services/initiatives';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -31,7 +31,7 @@ const Container = styled.div``;
 const MoreActionsMenuWrapper = styled.div``;
 
 interface InputProps {
-  idea: IIdeaData;
+  initiative: IInitiativeData;
   id: string;
   className?: string;
 }
@@ -46,7 +46,7 @@ interface State {
   spamModalVisible: boolean;
 }
 
-class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
+class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
 
   constructor(props) {
     super(props);
@@ -63,27 +63,27 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
     this.setState({ spamModalVisible: false });
   }
 
-  onEditIdea = () => {
-    clHistory.push(`/ideas/edit/${this.props.idea.id}`);
+  onEditInitiative = () => {
+    clHistory.push(`/initiatives/edit/${this.props.initiative.id}`);
   }
 
-  onDeleteIdea = (ideaId: string) => () => {
-    const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
+  onDeleteInitiative = (initiativeId: string) => () => {
+    const message = this.props.intl.formatMessage(messages.deleteInitiativeConfirmation);
 
     if (window.confirm(message)) {
-      deleteIdea(ideaId);
+      deleteInitiative(initiativeId);
       clHistory.goBack();
     }
   }
 
   render() {
-    const { idea, id, className, authUser } = this.props;
+    const { initiative, id, className, authUser } = this.props;
     const { spamModalVisible } = this.state;
 
-    return !isNilOrError(authUser) && !isNilOrError(idea) ? (
+    return !isNilOrError(authUser) && !isNilOrError(initiative) ? (
       <Container className={className}>
         <MoreActionsMenuWrapper id={id}>
-          <HasPermission item={idea} action="edit" context={idea}>
+          <HasPermission item={initiative} action="edit" context={initiative}>
             <MoreActionsMenu
               actions={[
                 {
@@ -91,17 +91,17 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
                   handler: this.openSpamModal,
                 },
                 {
-                  label: <FormattedMessage {...messages.editIdea} />,
-                  handler: this.onEditIdea,
+                  label: <FormattedMessage {...messages.editInitiative} />,
+                  handler: this.onEditInitiative,
                 },
                 {
-                  label: <FormattedMessage {...messages.deleteIdea} />,
-                  handler: this.onDeleteIdea(idea.id),
+                  label: <FormattedMessage {...messages.deleteInitiative} />,
+                  handler: this.onDeleteInitiative(initiative.id),
                 }
               ]}
               label={<FormattedMessage {...messages.moreOptions} />}
               fontSize={fontSizes.small}
-              id="e2e-idea-more-actions-menu"
+              id="e2e-initiative-more-actions-menu"
             />
             <HasPermission.No>
               <MoreActionsMenu
@@ -118,12 +118,12 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
         <Modal
           opened={spamModalVisible}
           close={this.closeSpamModal}
-          label={this.props.intl.formatMessage(messages.spamModalLabelIdea)}
+          label={this.props.intl.formatMessage(messages.spamModalLabelInitiative)}
           header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
         >
           <SpamReportForm
-            resourceId={idea.id}
-            resourceType="ideas"
+            resourceId={initiative.id}
+            resourceType="initiatives"
           />
         </Modal>
       </Container>
@@ -133,7 +133,7 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
   }
 
 }
-const IdeaMoreActionsWithHOCs = injectIntl(IdeaMoreActions);
+const InitiativeMoreActionsWithHOCs = injectIntl(InitiativeMoreActions);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
@@ -141,6 +141,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaMoreActionsWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <InitiativeMoreActionsWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
