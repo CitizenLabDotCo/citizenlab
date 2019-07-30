@@ -567,7 +567,7 @@ if Apartment::Tenant.current == 'localhost'
 
     num_initiatives.times do 
       created_at = Faker::Date.between(Tenant.current.created_at, Time.now)
-      initiative = Initiative.create!({
+      initiative = Initiative.create!(
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
         author: User.offset(rand(User.count)).first,
@@ -580,11 +580,13 @@ if Apartment::Tenant.current == 'localhost'
         topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
         assignee: rand(5) == 0 ? User.admin.shuffle.first : nil,
-        # TODO make initiative statuses correspond with required votes reached
-        initiative_status: InitiativeStatus.offset(rand(InitiativeStatus.count)).first  
-      })
-
-      LogActivityJob.perform_later(initiative, 'created', initiative.author, initiative.created_at.to_i)
+      )
+      # TODO make initiative statuses correspond with required votes reached
+      InitiativeStatusChange.create!(
+        created_at: initiative.published_at,
+        initiative: initiative,
+        initiative_status: InitiativeStatus.offset(rand(InitiativeStatus.count)).first
+      )
 
       [0,0,1,1,2][rand(5)].times do |i|
         initiative.initiative_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
@@ -608,7 +610,6 @@ if Apartment::Tenant.current == 'localhost'
           author_multiloc: create_for_some_locales{Faker::FunnyName.name},
           user: User.admin.shuffle.first
           )
-        LogActivityJob.perform_later(official_feedback, 'created', official_feedback.user, official_feedback.created_at.to_i)
       end
 
       create_comment_tree(initiative, nil)

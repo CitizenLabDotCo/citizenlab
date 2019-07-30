@@ -11,6 +11,8 @@ class Initiative < ApplicationRecord
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
   has_many :initiative_status_changes, dependent: :destroy
+  has_one :initiative_initiative_status
+  has_one :initiative_status, through: :initiative_initiative_status
 
   belongs_to :assignee, class_name: 'User', optional: true
 
@@ -62,47 +64,7 @@ class Initiative < ApplicationRecord
   }
 
 
-  def self.join_initiative_status
-    # This would have been nice but doesn't work.
-    # joins(:initiative_status_changes)
-    #   .select('initiatives.*, max(initiative_status_changes.created_at)')
-    #   .group('initiatives.id')
-    #   .joins("INNER JOIN initiative_statuses ON initiative_statuses.id = initiative_status_changes.initiative_status_id")
-    with_last_status_changed_at
-      .joins("""
-        INNER JOIN initiative_status_changes 
-        ON initiatives.id = initiative_status_changes.initiative_id 
-        AND last_status_changed_at = initiative_status_changes.created_at
-        """)
-      .joins("""
-        INNER JOIN initiative_statuses 
-        ON initiative_statuses.id = initiative_status_changes.initiative_status_id
-        """)
-  end
-
-
-  def initiative_status
-    # byebug if !initiative_status_changes.order(created_at: :desc).first
-    InitiativeStatus.find initiative_status_changes.order(created_at: :desc).first.initiative_status_id
-  end
-
-
   private
-
-  def self.with_last_status_changed_at
-    # This would have been nice but doesn't work.
-    # joins(:initiative_status_changes)
-    #   .select('initiatives.id, max(initiative_status_changes.created_at) AS initiatives.last_status_changed_at')
-    #   .group('initiatives.id')
-    joins("""
-      INNER JOIN (
-        SELECT initiative_id, max(initiative_status_changes.created_at) AS last_status_changed_at 
-        FROM initiative_status_changes 
-        GROUP BY initiative_status_changes.initiative_id
-        ) AS aardvark 
-      ON initiatives.id = aardvark.initiative_id
-      """)
-  end
 
   def assignee_can_moderate_initiatives
     if self.assignee && !InitiativePolicy.new(self.assignee, self).moderate?

@@ -226,7 +226,6 @@ resource "Initiatives" do
       @i2 = create(:initiative, topics: [@t1], areas: [@a1, @a2], initiative_status: @s2)
       @i3 = create(:initiative, topics: [@t2], areas: [], initiative_status: @s2)
       @i4 = create(:initiative, topics: [], areas: [@a1], initiative_status: @s2)
-      # byebug
 
       # a1 -> 3
       # a2 -> 1

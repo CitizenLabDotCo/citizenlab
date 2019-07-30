@@ -71,8 +71,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   def index_xlsx
     I18n.with_locale(current_user&.locale) do
       @initiatives = policy_scope(Initiative)
-        .includes(:author, :topics, :areas)
-        .join_initiative_status
+        .includes(:author, :topics, :areas, :initiative_status)
         .where(publication_status: 'published')
       @initiatives = @initiatives.where(id: params[:initiatives]) if params[:initiatives].present?
       xlsx = XlsxService.new.generate_initiatives_xlsx @initiatives
@@ -88,28 +87,40 @@ class WebApi::V1::InitiativesController < ApplicationController
       'area_id' => {},
       'topic_id' => {}
     } 
-    grouping_sets = ActiveRecord::Base.connection.execute("""
-      SELECT initiative_statuses.id AS initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) AS count
-      FROM initiatives
-      INNER JOIN (
-              SELECT initiative_id, max(initiative_status_changes.created_at) AS last_status_changed_at 
-              FROM initiative_status_changes 
-              GROUP BY initiative_status_changes.initiative_id
-              ) AS aardvark 
-            ON initiatives.id = aardvark.initiative_id
-      INNER JOIN initiative_status_changes ON initiatives.id = initiative_status_changes.initiative_id AND last_status_changed_at = initiative_status_changes.created_at
-      INNER JOIN initiative_statuses ON initiative_statuses.id = initiative_status_changes.initiative_status_id
-      FULL OUTER JOIN initiatives_topics ON initiatives_topics.initiative_id = initiatives.id
-      FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id
-      WHERE initiatives.id IN (#{@initiatives.ids.map{|id| "'#{id}'"}.join ', '})
-      GROUP BY GROUPING SETS (initiative_statuses.id, areas_initiatives.area_id, initiatives_topics.topic_id)
-      """)
-    grouping_sets.each do |record|
-      %w(initiative_status_id area_id topic_id).each do |attribute|
-        id = record[attribute]
-        counts[attribute][id] = record['count'] if id
+    @initiatives
+      .joins('FULL OUTER JOIN initiatives_topics ON initiatives_topics.initiative_id = initiatives.id')
+      .joins('FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id')
+      .select('initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) as count')
+      .reorder(nil)  # Avoids SQL error on GROUP BY when a search string was used
+      .group('GROUPING SETS (initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id)')
+      .each do |record|
+        %w(initiative_status_id area_id topic_id).each do |attribute|
+          id = record.send attribute
+          counts[attribute][id] = record.count if id
+        end
       end
-    end
+    # grouping_sets = ActiveRecord::Base.connection.execute("""
+    #   SELECT initiative_statuses.id AS initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) AS count
+    #   FROM initiatives
+    #   INNER JOIN (
+    #           SELECT initiative_id, max(initiative_status_changes.created_at) AS last_status_changed_at 
+    #           FROM initiative_status_changes 
+    #           GROUP BY initiative_status_changes.initiative_id
+    #           ) AS aardvark 
+    #         ON initiatives.id = aardvark.initiative_id
+    #   INNER JOIN initiative_status_changes ON initiatives.id = initiative_status_changes.initiative_id AND last_status_changed_at = initiative_status_changes.created_at
+    #   INNER JOIN initiative_statuses ON initiative_statuses.id = initiative_status_changes.initiative_status_id
+    #   FULL OUTER JOIN initiatives_topics ON initiatives_topics.initiative_id = initiatives.id
+    #   FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id
+    #   WHERE initiatives.id IN (#{@initiatives.ids.map{|id| "'#{id}'"}.join ', '})
+    #   GROUP BY GROUPING SETS (initiative_statuses.id, areas_initiatives.area_id, initiatives_topics.topic_id)
+    #   """)
+    # grouping_sets.each do |record|
+    #   %w(initiative_status_id area_id topic_id).each do |attribute|
+    #     id = record[attribute]
+    #     counts[attribute][id] = record['count'] if id
+    #   end
+    # end
     counts['total'] = @initiatives.count
     render json: counts
   end
