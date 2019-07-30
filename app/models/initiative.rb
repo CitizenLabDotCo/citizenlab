@@ -61,22 +61,6 @@ class Initiative < ApplicationRecord
       .where('initiatives.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
-  def initiative_status
-    InitiativeStatus.find initiative_status_changes.order(created_at: :desc).first.initiative_status_id
-  end
-
-  def self.with_last_status_changed_at
-    # This would have been nice but doesn't work.
-    # joins(:initiative_status_changes)
-    #   .select('initiatives.id, max(initiative_status_changes.created_at) AS initiatives.last_status_changed_at')
-    #   .group('initiatives.id')
-    joins("""
-      INNER JOIN (SELECT initiative_id, max(initiative_status_changes.created_at) AS last_status_changed_at 
-                  FROM initiative_status_changes 
-                  GROUP BY initiative_status_changes.initiative_id) AS aardvark 
-      ON initiatives.id = aardvark.initiative_id
-      """)
-  end
 
   def self.join_initiative_status
     # This would have been nice but doesn't work.
@@ -97,7 +81,28 @@ class Initiative < ApplicationRecord
   end
 
 
+  def initiative_status
+    # byebug if !initiative_status_changes.order(created_at: :desc).first
+    InitiativeStatus.find initiative_status_changes.order(created_at: :desc).first.initiative_status_id
+  end
+
+
   private
+
+  def self.with_last_status_changed_at
+    # This would have been nice but doesn't work.
+    # joins(:initiative_status_changes)
+    #   .select('initiatives.id, max(initiative_status_changes.created_at) AS initiatives.last_status_changed_at')
+    #   .group('initiatives.id')
+    joins("""
+      INNER JOIN (
+        SELECT initiative_id, max(initiative_status_changes.created_at) AS last_status_changed_at 
+        FROM initiative_status_changes 
+        GROUP BY initiative_status_changes.initiative_id
+        ) AS aardvark 
+      ON initiatives.id = aardvark.initiative_id
+      """)
+  end
 
   def assignee_can_moderate_initiatives
     if self.assignee && !InitiativePolicy.new(self.assignee, self).moderate?
