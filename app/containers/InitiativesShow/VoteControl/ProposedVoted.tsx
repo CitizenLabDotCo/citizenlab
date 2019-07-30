@@ -132,7 +132,11 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
           <FormattedMessage
             {...messages.votedText}
             values={{
-              xDays: <b><FormattedMessage {...messages.xDays} values={{ x: this.daysLeft() }} /></b>,
+              xDays: (
+                <b>
+                  <FormattedMessage {...messages.xDays} values={{ x: this.daysLeft() }} />
+                </b>
+              )
             }}
           />
         </VotedText>

@@ -75,11 +75,13 @@ class Answered extends PureComponent<Props, State> {
           <FormattedMessage
             {...messages.answeredStatusExplanation}
             values={{
-              answeredStatusExplanationBold: <b>
-                <FormattedMessage
-                  {...messages.answeredStatusExplanationBold}
-                />
-              </b>
+              answeredStatusExplanationBold: (
+                <b>
+                  <FormattedMessage
+                    {...messages.answeredStatusExplanationBold}
+                  />
+                </b>
+              )
             }}
           />
         </StatusExplanation>

@@ -107,7 +107,11 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
             {...messages.proposedStatusExplanation}
             values={{
               votingThreshold: voting_threshold,
-              proposedStatusExplanationBold: <b><FormattedMessage {...messages.proposedStatusExplanationBold} /></b>
+              proposedStatusExplanationBold: (
+                <b>
+                  <FormattedMessage {...messages.proposedStatusExplanationBold} />
+                </b>
+              )
             }}
           />
           {eligibility_criteria &&
