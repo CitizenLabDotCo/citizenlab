@@ -13,21 +13,22 @@ FactoryBot.define do
     author
     assignee { nil }
 
-    # initiative_status_changes { build_list(:initiative_status_change, 1) }
-
-    # after :create do |initiative|
-    #   create_list :initiative_status_change, 1, initiative: initiative
-    # end
-
-    # before :create do |initiative|
-    #   prrt = create!(:initiative_status)
-    #   initiative.initiative_status_changes.create!(initiative_status: prrt)
-    #   byebug
-    #   # build_list(:initiative_status_change, 1, initiative: initiative)
-    # end
+    transient do
+      initiative_status { nil }
+    end
 
     before :create do |initiative|
       initiative.initiative_status_changes << build(:initiative_status_change, initiative: initiative)
+    end
+
+    after(:create) do |initiative, evaluator|
+      if evaluator.initiative_status
+        initiative.initiative_status_changes << create(
+          :initiative_status_change, 
+          initiative: initiative,
+          initiative_status: evaluator.initiative_status
+          )
+      end
     end
 
     factory :initiative_with_topics do

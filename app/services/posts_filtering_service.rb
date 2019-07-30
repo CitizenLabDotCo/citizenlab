@@ -22,7 +22,7 @@ class PostsFilteringService
     initiatives = apply_common_post_index_filters initiatives, params
     initiatives = initiatives.with_some_topics(params[:topics]) if params[:topics].present?
     initiatives = initiatives.with_some_areas(params[:areas]) if params[:areas].present?
-    initiatives = initiatives.where(initiative_status_id: params[:initiative_status]) if params[:initiative_status].present?
+    initiatives = initiatives.with_status(params[:initiative_status]) if params[:initiative_status].present?
     initiatives = initiatives.where(assignee_id: params[:assignee]) if params[:assignee].present?
     initiatives = initiatives.feedback_needed if params[:feedback_needed].present?
 
