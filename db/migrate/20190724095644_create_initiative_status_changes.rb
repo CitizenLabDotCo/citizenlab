@@ -9,7 +9,10 @@ class CreateInitiativeStatusChanges < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    migrate_initiative_status_changes
+    # Commented out because rails cannot find 
+    # initiative_status of initiative because 
+    # relation in model was removed.
+    # migrate_initiative_status_changes
 
     remove_column :initiatives, :initiative_status_id
   end

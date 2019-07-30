@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_24_095644) do
+ActiveRecord::Schema.define(version: 2019_07_30_131947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -404,9 +404,7 @@ ActiveRecord::Schema.define(version: 2019_07_24_095644) do
     t.string "header_bg"
     t.uuid "assignee_id"
     t.integer "official_feedbacks_count", default: 0, null: false
-    t.uuid "initiative_status_id"
     t.index ["author_id"], name: "index_initiatives_on_author_id"
-    t.index ["initiative_status_id"], name: "index_initiatives_on_initiative_status_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
     t.index ["slug"], name: "index_initiatives_on_slug"
   end
@@ -769,7 +767,6 @@ ActiveRecord::Schema.define(version: 2019_07_24_095644) do
   add_foreign_key "identities", "users"
   add_foreign_key "initiative_files", "initiatives"
   add_foreign_key "initiative_images", "initiatives"
-  add_foreign_key "initiatives", "initiative_statuses"
   add_foreign_key "initiatives", "users", column: "assignee_id"
   add_foreign_key "initiatives", "users", column: "author_id"
   add_foreign_key "initiatives_topics", "initiatives"
@@ -968,6 +965,18 @@ ActiveRecord::Schema.define(version: 2019_07_24_095644) do
       initiatives.slug,
       initiatives.official_feedbacks_count
      FROM initiatives;
+  SQL
+
+  create_view "initiative_initiative_statuses",  sql_definition: <<-SQL
+      SELECT initiative_status_changes.initiative_id,
+      initiative_status_changes.initiative_status_id
+     FROM (((initiatives
+       JOIN ( SELECT initiative_status_changes_1.initiative_id,
+              max(initiative_status_changes_1.created_at) AS last_status_changed_at
+             FROM initiative_status_changes initiative_status_changes_1
+            GROUP BY initiative_status_changes_1.initiative_id) initiatives_with_last_status_change ON ((initiatives.id = initiatives_with_last_status_change.initiative_id)))
+       JOIN initiative_status_changes ON (((initiatives.id = initiative_status_changes.initiative_id) AND (initiatives_with_last_status_change.last_status_changed_at = initiative_status_changes.created_at))))
+       JOIN initiative_statuses ON ((initiative_statuses.id = initiative_status_changes.initiative_status_id)));
   SQL
 
 end
