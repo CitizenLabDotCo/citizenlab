@@ -29,7 +29,7 @@ import Image from 'components/PostComponents/Image';
 import Footer from 'components/PostComponents/Footer';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
-// import ActionBar from './ActionBar';
+import ActionBar from './ActionBar';
 // import TranslateButton from 'components/UI/TranslateButton';
 
 // resources
@@ -314,7 +314,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     this.setState({ ideaIdForSocialSharing: null });
   }
 
-  onTranslateIdea = () => {
+  onTranslateInitiative = () => {
     this.setState(prevState => {
       // analytics
       if (prevState.translateButtonClicked === true) {
@@ -379,9 +379,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           <InitiativeMeta initiativeId={initiativeId} />
 
           <ActionBar
-            ideaId={ideaId}
+            initiativeId={initiativeId}
             translateButtonClicked={translateButtonClicked}
-            onTranslateIdea={this.onTranslateIdea}
+            onTranslateInitiative={this.onTranslateInitiative}
           />
 
           <IdeaContainer>
@@ -389,7 +389,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
               {showTranslateButton && smallerThanSmallTablet &&
                 <StyledTranslateButtonMobile
                   translateButtonClicked={translateButtonClicked}
-                  onClick={this.onTranslateIdea}
+                  onClick={this.onTranslateInitiative}
                 />
               }
             </FeatureFlag>

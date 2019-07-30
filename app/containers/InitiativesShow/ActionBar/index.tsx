@@ -1,57 +1,58 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 
 // components
 import BreadCrumbs from 'components/PostComponents/Breadcrumbs';
 import ActionBarLayout from 'components/PostComponents/ActionBar';
-import IdeaMoreActions from './IdeaMoreActions';
+import InitiativeMoreActions from './InitiativeMoreActions';
 
 // resource
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+
+import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
-  ideaId: string;
-  onTranslateIdea: () => void;
+  initiativeId: string;
+  onTranslateInitiative: () => void;
   translateButtonClicked: boolean;
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps;
+  initiative: GetInitiativeChildProps;
   locale: GetLocaleChildProps;
-  project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
 
-const ActionBar = memo<Props>(({ project, onTranslateIdea, translateButtonClicked, idea, locale }) => {
+const ActionBar = memo<Props>(({ onTranslateInitiative, translateButtonClicked, initiative, locale }) => {
 
   const showTranslateButton = (
-    !isNilOrError(idea) &&
+    !isNilOrError(initiative) &&
     !isNilOrError(locale) &&
-    !idea.attributes.title_multiloc[locale]
+    !initiative.attributes.title_multiloc[locale]
   );
 
   return (
     <ActionBarLayout
-      leftContent={!isNilOrError(project) ? (
+      leftContent={
         <BreadCrumbs
           links={[{
-            text: project.attributes.title_multiloc,
-            to: `/projects/${project.attributes.slug}`
+            text: {
+              message: messages.allInitiatives
+            },
+            to: '/initiatives'
           }]}
         />
-      ) : null}
-      rightContent={isNilOrError(idea)
+      }
+      rightContent={isNilOrError(initiative)
         ? null
-        : <IdeaMoreActions id="e2e-idea-more-actions" idea={idea} />}
+        : <InitiativeMoreActions id="e2e-initiative-more-actions" initiative={initiative} />}
       showTranslateButton={showTranslateButton}
-      onTranslate={onTranslateIdea}
+      onTranslate={onTranslateInitiative}
       translateButtonClicked={translateButtonClicked}
     />
   );
@@ -59,8 +60,7 @@ const ActionBar = memo<Props>(({ project, onTranslateIdea, translateButtonClicke
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
+  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
 });
 
 export default (inputProps: InputProps) => (
