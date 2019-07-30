@@ -9,4 +9,12 @@ export default defineMessages({
     id: 'app.components.PostComponents.createdTimeAgo',
     defaultMessage: 'Created {timeAgo}',
   },
+  seeTranslation: {
+    id: 'app.components.PostComponents.seeTranslation',
+    defaultMessage: 'See translation',
+  },
+  seeOriginal: {
+    id: 'app.components.PostComponents.seeOriginal',
+    defaultMessage: 'See original',
+  },
 });

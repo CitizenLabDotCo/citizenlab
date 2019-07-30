@@ -1,28 +1,21 @@
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 // i18n
 import localize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // components
 import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 
-// resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-
 // styles
 import styled from 'styled-components';
 import { fontSizes, colors, media, postPageContentMaxWidth } from 'utils/styleUtils';
 import { darken } from 'polished';
+
+import { Multiloc } from 'typings';
 
 const Container = styled.div`
   width: calc(${postPageContentMaxWidth} - 400px);
@@ -68,7 +61,7 @@ const Separator = styled.div`
   `}
 `;
 
-const ProjectLink = styled(Link)`
+const StyledLink = styled(Link)`
   font-size: ${fontSizes.small}px;
   color: ${colors.label};
   text-decoration: none;
@@ -84,46 +77,25 @@ const ProjectLink = styled(Link)`
 
 const LinkText = styled.span``;
 
-interface InputProps {
-  ideaId: string;
+interface Props {
   className?: string;
+  linkTo: string;
+  linkText: Multiloc | string;
 }
 
-interface DataProps {
-  idea: GetIdeaChildProps;
-  project: GetProjectChildProps;
-}
+const Breadcrumbs = memo(({ localize, intl, className, linkTo, linkText }: Props & InjectedLocalized & InjectedIntlProps) => {
 
-interface Props extends DataProps, InputProps {}
-
-const Breadcrumbs = memo(({ project, localize, intl, className }: Props & InjectedLocalized & InjectedIntlProps) => {
-
-  if (!isNilOrError(project)) {
     return (
       <Container className={className}>
         <HomeLink id="e2e-home-page-link" to="/">
           <HomeIcon title={intl.formatMessage(messages.linkToHomePage)} name="homeFilled" />
         </HomeLink>
         <Separator>/</Separator>
-        <ProjectLink id="e2e-project-link" to={`/projects/${project.attributes.slug}`}>
-          <LinkText>{localize(project.attributes.title_multiloc)}</LinkText>
-        </ProjectLink>
+        <StyledLink id="e2e-other-link" to={linkTo}>
+          <LinkText>{typeof linkText === 'string' ? linkText : localize(linkText)}</LinkText>
+        </StyledLink>
       </Container>
     );
-  }
-
-  return null;
 });
 
-const BreadcrumbsWithHOCs = injectIntl(localize(Breadcrumbs));
-
-const Data = adopt({
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <BreadcrumbsWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default injectIntl(localize<Props & InjectedIntlProps>(Breadcrumbs));
