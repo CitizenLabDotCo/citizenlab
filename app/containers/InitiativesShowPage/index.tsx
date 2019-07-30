@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { adopt } from 'react-adopt';
 
 // components
-// import InitiativesShow from 'containers/InitiativesShow';
+import InitiativesShow from 'containers/InitiativesShow';
 import Button from 'components/UI/Button';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 
@@ -19,7 +19,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
-import VoteControl from 'containers/InitiativesShow/VoteControl';
 
 const InitiativeNotFoundWrapper = styled.div`
   height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -83,7 +82,7 @@ const InitiativesShowPage = memo<Props>(({ initiative }) => {
         <StyledInitiativeShowPageTopBar initiativeId={initiative.id} />
         {/* Temporary change to develop the VoteControl while showpage is WIP */}
         {/* <StyledInitiativesShow initiativeId={initiative.id} /> */}
-        <VoteControl initiativeId={initiative.id} />
+        <InitiativesShow initiativeId={initiative.id} />
       </Container>
     );
   }
