@@ -66,7 +66,15 @@ export default defineMessages({
     defaultMessage: 'Are you sure you want to delete this initiative?',
   },
   reportAsSpamModalTitle: {
-    id: 'app.containers.IdeasShow.reportAsSpamModalTitle',
+    id: 'app.containers.InitiativesShow.reportAsSpamModalTitle',
     defaultMessage: 'Why do you want to report this as spam?',
+  },
+  skipSharing: {
+    id: 'app.components.InitiativesShow.skipSharing',
+    defaultMessage: "Skip it, I'll do it later",
+  },
+  modalShareLabel: {
+    id: 'app.components.InitiativesShow.modalShareLabel',
+    defaultMessage: 'Your initiative was posted, share it now to reach more votes!',
   },
 });

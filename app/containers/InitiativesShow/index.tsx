@@ -15,7 +15,7 @@ import Sharing from 'components/Sharing';
 import InitiativeMeta from './InitiativeMeta';
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-// import IdeaSharingModalContent from './IdeaSharingModalContent';
+import SharingModalContent from 'components/PostComponents/sharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import Topics from 'components/PostComponents/Topics';
 import Title from 'components/PostComponents/Title';
@@ -248,7 +248,7 @@ interface Props extends DataProps, InputProps {}
 interface State {
   loaded: boolean;
   spamModalVisible: boolean;
-  ideaIdForSocialSharing: string | null;
+  initiativeIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
 }
 
@@ -260,19 +260,19 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     this.state = {
       loaded: false,
       spamModalVisible: false,
-      ideaIdForSocialSharing: null,
+      initiativeIdForSocialSharing: null,
       translateButtonClicked: false,
     };
   }
 
   componentDidMount() {
-    const newIdeaId = get(this.props.location.query, 'new_idea_id');
+    const newInitiativeId = get(this.props.location.query, 'new_initiative_id');
 
     this.setLoaded();
 
-    if (newIdeaId) {
+    if (newInitiativeId) {
       setTimeout(() => {
-        this.setState({ ideaIdForSocialSharing: newIdeaId });
+        this.setState({ initiativeIdForSocialSharing: newInitiativeId });
       }, 1500);
 
       window.history.replaceState(null, '', window.location.pathname);
@@ -292,8 +292,8 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     }
   }
 
-  closeIdeaSocialSharingModal = () => {
-    this.setState({ ideaIdForSocialSharing: null });
+  closeInitiativeSocialSharingModal = () => {
+    this.setState({ initiativeIdForSocialSharing: null });
   }
 
   onTranslateInitiative = () => {
@@ -323,7 +323,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       className,
       postOfficialFeedbackPermission
     } = this.props;
-    const { loaded, ideaIdForSocialSharing, translateButtonClicked } = this.state;
+    const { loaded, initiativeIdForSocialSharing, translateButtonClicked } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
@@ -343,11 +343,11 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
       const utmParams = !isNilOrError(authUser) ? {
-        source: 'share_idea',
+        source: 'share_initiative',
         campaign: 'share_content',
         content: authUser.id
       } : {
-        source: 'share_idea',
+        source: 'share_initiative',
         campaign: 'share_content'
       };
       const showTranslateButton = (
@@ -493,24 +493,24 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           enter={true}
           exit={false}
         >
-          <Container id="e2e-idea-show" className={className}>
+          <Container id="e2e-initiative-show" className={className}>
             {content}
           </Container>
         </CSSTransition>
 
-        {/* <FeatureFlag name="ideaflow_social_sharing">
+        <FeatureFlag name="initiativeflow_social_sharing">
           <Modal
-            opened={!!ideaIdForSocialSharing}
-            close={this.closeIdeaSocialSharingModal}
+            opened={!!initiativeIdForSocialSharing}
+            close={this.closeInitiativeSocialSharingModal}
             hasSkipButton={true}
             skipText={<FormattedMessage {...messages.skipSharing} />}
             label={formatMessage(messages.modalShareLabel)}
           >
-            {ideaIdForSocialSharing &&
-              <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
+            {initiativeIdForSocialSharing &&
+              <SharingModalContent postType="initiative" postId={initiativeIdForSocialSharing} />
             }
           </Modal>
-        </FeatureFlag> */}
+        </FeatureFlag>
       </>
     );
   }
