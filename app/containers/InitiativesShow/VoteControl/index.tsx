@@ -104,7 +104,7 @@ class VoteControl extends PureComponent<Props> {
     ) return null;
 
     const statusCode = initiativeStatus.attributes.code;
-    const userVoted = !!initiative.relationships.user_vote.data;
+    const userVoted = !!initiative.relationships.user_vote && !!initiative.relationships.user_vote.data;
     const StatusComponent = componentMap[statusCode][userVoted ? 'voted' : 'notVoted'];
     const initiativeSettings = tenant.attributes.settings.initiatives;
 

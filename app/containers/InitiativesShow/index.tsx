@@ -30,6 +30,7 @@ import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostComponents/TranslateButton';
+import VoteControl from 'containers/InitiativesShow/VoteControl';
 
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
@@ -243,7 +244,7 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends DataProps, InputProps {}
+interface Props extends DataProps, InputProps { }
 
 interface State {
   loaded: boolean;
@@ -454,7 +455,8 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
                   <MetaContent>
-                  < SharingWrapper>
+                    <VoteControl initiativeId={initiative.id} />
+                    <SharingWrapper>
                       <Sharing
                         context="initiative"
                         url={initiativeUrl}
@@ -520,7 +522,7 @@ const InitiativesShowWithHOCs = injectLocalize<Props>(injectIntl(withRouter(Init
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  authUser: <GetAuthUser/>,
+  authUser: <GetAuthUser />,
   windowSize: <GetWindowSize debounce={50} />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   initiativeImages: ({ initiativeId, render }) => <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>,
