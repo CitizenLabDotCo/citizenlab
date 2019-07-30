@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.components.PostComponents.seeOriginal',
     defaultMessage: 'See original',
   },
+  linkToHomePage: {
+    id: 'app.components.IdeasShow.linkToHomePage',
+    defaultMessage: 'Link to home page'
+  }
 });
