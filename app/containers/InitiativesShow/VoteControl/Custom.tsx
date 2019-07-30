@@ -80,7 +80,7 @@ class Custom extends PureComponent<Props & { theme: any }> {
   render() {
     const { initiative, initiativeStatus, initiativeSettings: { voting_threshold }, theme, userVoted } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
-    const voteLimit = voting_threshold || 1;
+    const voteLimit = voting_threshold;
     return (
       <Container>
         <CountDownWrapper>
