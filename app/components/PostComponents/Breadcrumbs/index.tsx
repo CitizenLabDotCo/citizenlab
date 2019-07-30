@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // i18n
 import localize, { InjectedLocalized } from 'utils/localize';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
@@ -77,25 +77,40 @@ const StyledLink = styled(Link)`
 
 const LinkText = styled.span``;
 
-interface Props {
-  className?: string;
-  linkTo: string;
-  linkText: Multiloc | string;
+interface ILink {
+  to: string;
+  text: Multiloc | IMessageInfo;
 }
 
-const Breadcrumbs = memo(({ localize, intl, className, linkTo, linkText }: Props & InjectedLocalized & InjectedIntlProps) => {
+function isIMessageInfo(text: IMessageInfo | Multiloc): text is IMessageInfo {
+  return (text as IMessageInfo).message !== undefined;
+}
 
-    return (
-      <Container className={className}>
-        <HomeLink id="e2e-home-page-link" to="/">
-          <HomeIcon title={intl.formatMessage(messages.linkToHomePage)} name="homeFilled" />
-        </HomeLink>
-        <Separator>/</Separator>
-        <StyledLink id="e2e-other-link" to={linkTo}>
-          <LinkText>{typeof linkText === 'string' ? linkText : localize(linkText)}</LinkText>
+interface Props {
+  className?: string;
+  links: ILink[];
+}
+
+const Breadcrumbs = memo(({ localize, intl, className, links }: Props & InjectedLocalized & InjectedIntlProps) => {
+
+  return (
+    <Container className={className}>
+      <HomeLink id="e2e-home-page-link" to="/">
+        <HomeIcon title={intl.formatMessage(messages.linkToHomePage)} name="homeFilled" />
+      </HomeLink>
+      <Separator>/</Separator>
+      {links.map(link => (
+        <StyledLink key={link.to} id="e2e-other-link" to={link.to}>
+          <LinkText>
+            {isIMessageInfo(link.text) ? (
+              <FormattedMessage {...link.text.message} values={link.text.values} />
+            ) : localize(link.text)}
+          </LinkText>
         </StyledLink>
-      </Container>
-    );
+      ))
+      }
+    </Container>
+  );
 });
 
 export default injectIntl(localize<Props & InjectedIntlProps>(Breadcrumbs));

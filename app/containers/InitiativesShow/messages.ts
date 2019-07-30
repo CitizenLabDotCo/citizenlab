@@ -33,4 +33,40 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.emailSharingBody',
     defaultMessage: 'What do you think of this initiative? Vote on it and share the discussion at {initiativeUrl} to make your voice heard!',
   },
+  allInitiatives: {
+    id: 'app.containers.InitiativesShow.allInitiatives',
+    defaultMessage: 'All Initiatves'
+  },
+  moreOptions: {
+    id: 'app.components.InitiativesShow.moreOptions',
+    defaultMessage: 'More options',
+  },
+  reportAsSpam: {
+    id: 'app.components.InitiativesShow.reportAsSpam',
+    defaultMessage: 'Report as spam',
+  },
+  spamModalLabelInitiative: {
+    id: 'app.components.InitiativesShow.spamModalLabelInitiative',
+    defaultMessage: 'Report initiative as spam : select reason',
+  },
+  spanModalLabelComment: {
+    id: 'app.components.InitiativesShow.spanModalLabelComment',
+    defaultMessage: 'Report comment as spam : select reason',
+  },
+  editInitiative: {
+    id: 'app.components.InitiativesShow.editInitiative',
+    defaultMessage: 'Edit initiative',
+  },
+  deleteInitiative: {
+    id: 'app.components.InitiativesShow.deleteInitiative',
+    defaultMessage: 'Delete initiative',
+  },
+  deleteInitiativeConfirmation: {
+    id: 'app.components.InitiativesShow.deleteInitiativeConfirmation',
+    defaultMessage: 'Are you sure you want to delete this initiative?',
+  },
+  reportAsSpamModalTitle: {
+    id: 'app.containers.IdeasShow.reportAsSpamModalTitle',
+    defaultMessage: 'Why do you want to report this as spam?',
+  },
 });
