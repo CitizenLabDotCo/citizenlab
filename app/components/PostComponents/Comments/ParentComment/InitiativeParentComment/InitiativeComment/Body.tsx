@@ -227,7 +227,7 @@ class CommentBody extends PureComponent<Props, State> {
           <CommentWrapper className={`e2e-comment-body ${commentType}`}>
             <QuillEditedContent fontWeight={300}>
               {translateButtonClicked ? (
-                <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} commentId={commentId}>
+                <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} context="comment" id={commentId}>
                   {translation => {
                     let text: string = commentContent;
 

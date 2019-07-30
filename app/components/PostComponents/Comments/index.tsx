@@ -119,6 +119,7 @@ const CommentsSection = memo<Props>(({ postId, postType, comments, className }) 
           {commentingWarnings()}
 
           <Comments
+            postType={postType}
             comments={commentsList}
             sortOrder={sortOrder}
             loading={loadingInital}

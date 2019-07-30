@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 // components
 import Author from 'components/Author';
-import AdminBadge from './AdminBadge';
+import AdminBadge from './ParentComment/AdminBadge';
 
 // style
 import styled from 'styled-components';

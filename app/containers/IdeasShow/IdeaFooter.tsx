@@ -66,7 +66,7 @@ const IdeaFooter = memo<Props>(({ ideaId, className }) => {
       <Content>
         <ContentInner>
           <Suspense fallback={<LoadingComments />}>
-            <LazyComments ideaId={ideaId} />
+            <LazyComments postId={ideaId} postType="idea" />
           </Suspense>
         </ContentInner>
       </Content>
