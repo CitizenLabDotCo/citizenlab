@@ -25,17 +25,16 @@ import ContentFooter from 'components/PostComponents/ContentFooter';
 
 import PostedBy from './PostedBy';
 import Image from 'components/PostComponents/Image';
-// import IdeaAuthor from './IdeaAuthor';
 import Footer from 'components/PostComponents/Footer';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 import ActionBar from './ActionBar';
-// import TranslateButton from 'components/UI/TranslateButton';
+import TranslateButton from 'components/PostComponents/TranslateButton';
 
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
+import GetInitiativeImages, { GetInitiativeImagesChildProps } from 'resources/GetInitiativeImages';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
@@ -97,7 +96,7 @@ const Container = styled.div`
   }
 `;
 
-const IdeaContainer = styled.div`
+const InitiativeContainer = styled.div`
   width: 100%;
   max-width: ${postPageContentMaxWidth};
   display: flex;
@@ -166,30 +165,13 @@ const InitiativeHeader = styled.div`
   `}
 `;
 
-const IdeaImage = styled.img`
-  width: 100%;
-  height: auto;
-  margin-bottom: 25px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${colors.separation};
-`;
+// const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
+//   margin-top: 4px;
 
-const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
-  margin-top: 4px;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
-const StyledIdeaAuthor = styled(IdeaAuthor)`
-  margin-left: -4px;
-  margin-bottom: 50px;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
-`;
+//   ${media.biggerThanMaxTablet`
+//     display: none;
+//   `}
+// `;
 
 const StyledLoadableDropdownMap = styled(LoadableDropdownMap)`
   margin-bottom: 40px;
@@ -247,7 +229,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 interface DataProps {
   initiative: GetInitiativeChildProps;
   locale: GetLocaleChildProps;
-  ideaImages: GetIdeaImagesChildProps;
+  initiativeImages: GetInitiativeImagesChildProps;
   initiativeFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
@@ -303,9 +285,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
   setLoaded = () => {
     const { loaded } = this.state;
-    const { initiative, ideaImages, officialFeedbacks } = this.props;
+    const { initiative, initiativeImages, officialFeedbacks } = this.props;
 
-    if (!loaded && !isNilOrError(initiative) && !isUndefined(ideaImages) && !isUndefined(officialFeedbacks.officialFeedbacksList)) {
+    if (!loaded && !isNilOrError(initiative) && !isUndefined(initiativeImages) && !isUndefined(officialFeedbacks.officialFeedbacksList)) {
       this.setState({ loaded: true });
     }
   }
@@ -335,7 +317,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       locale,
       initiative,
       localize,
-      ideaImages,
+      initiativeImages,
       authUser,
       windowSize,
       className,
@@ -350,7 +332,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       const initiativeCreatedAt = initiative.attributes.created_at;
       const titleMultiloc = initiative.attributes.title_multiloc;
       const initiativeTitle = localize(titleMultiloc);
-      const ideaImageLarge: string | null = get(ideaImages, '[0].attributes.versions.large', null);
+      const initiativeImageLarge: string | null = get(initiativeImages, '[0].attributes.versions.large', null);
       const initiativeGeoPosition = (initiative.attributes.location_point_geojson || null);
       const initiativeAddress = (initiative.attributes.location_description || null);
       const topicIds = (initiative.relationships.topics.data ? initiative.relationships.topics.data.map(item => item.id) : []);
@@ -384,7 +366,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             onTranslateInitiative={this.onTranslateInitiative}
           />
 
-          <IdeaContainer>
+          <InitiativeContainer>
             <FeatureFlag name="machine_translations">
               {showTranslateButton && smallerThanSmallTablet &&
                 <StyledTranslateButtonMobile
@@ -406,9 +388,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                     translateButtonClicked={translateButtonClicked}
                   />
 
-                  {smallerThanLargeTablet &&
+                  {/* {smallerThanLargeTablet &&
                     <StyledMobileIdeaPostedBy authorId={authorId} />
-                  }
+                  } */}
                 </InitiativeHeader>
 
                 {biggerThanLargeTablet &&
@@ -417,9 +399,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   />
                 }
 
-                {ideaImageLarge &&
+                {initiativeImageLarge &&
                   <Image
-                    src={ideaImageLarge}
+                    src={initiativeImageLarge}
                     postType="initiative"
                     className="e2e-initiativeImage"
                   />
@@ -486,9 +468,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 </RightColumnDesktop>
               }
             </Content>
-          </IdeaContainer>
+          </InitiativeContainer>
 
-          {loaded && <Footer postId={initiativeId} postType="initiative" />}
+          {/* {loaded && <Footer postId={initiativeId} postType="initiative" />} */}
         </>
       );
     }
@@ -516,7 +498,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           </Container>
         </CSSTransition>
 
-        <FeatureFlag name="ideaflow_social_sharing">
+        {/* <FeatureFlag name="ideaflow_social_sharing">
           <Modal
             opened={!!ideaIdForSocialSharing}
             close={this.closeIdeaSocialSharingModal}
@@ -528,7 +510,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
               <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
             }
           </Modal>
-        </FeatureFlag>
+        </FeatureFlag> */}
       </>
     );
   }
@@ -541,7 +523,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,
   windowSize: <GetWindowSize debounce={50} />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
-  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
+  initiativeImages: ({ initiativeId, render }) => <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>,
   initiativeFiles: ({ initiativeId, render }) => <GetResourceFiles resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFiles>,
   officialFeedbacks: ({ initiativeId, render }) => <GetOfficialFeedbacks postId={initiativeId} postType="initiative">{render}</GetOfficialFeedbacks>,
   postOfficialFeedbackPermission: ({ initiative, render }) => !isNilOrError(initiative) ? <GetPermission item={initiative} action="moderate" >{render}</GetPermission> : null,
