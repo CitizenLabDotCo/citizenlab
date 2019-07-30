@@ -73,7 +73,7 @@ class Ineligible extends PureComponent<Props, State> {
     const { initiative, initiativeSettings: { eligibility_criteria, voting_threshold }, initiativeStatus } = this.props;
 
     const voteCount = initiative.attributes.upvotes_count;
-    const voteLimit = voting_threshold || 1;
+    const voteLimit = voting_threshold;
 
     return (
       <Container>

@@ -95,7 +95,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
   render() {
     const { initiative, initiativeSettings: { voting_threshold, eligibility_criteria }, theme } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
-    const voteLimit = voting_threshold || 1;
+    const voteLimit = voting_threshold;
     return (
       <Container>
         <CountDownWrapper>

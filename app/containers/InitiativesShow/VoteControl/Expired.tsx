@@ -68,7 +68,7 @@ class Expired extends PureComponent<Props, State> {
     const { initiative, initiativeSettings: { voting_threshold }, initiativeStatus, userVoted } = this.props;
 
     const voteCount = initiative.attributes.upvotes_count;
-    const voteLimit = voting_threshold || 1;
+    const voteLimit = voting_threshold;
 
     return (
       <Container>
