@@ -7,8 +7,21 @@ RSpec.describe Initiative, type: :model do
 
   context "Default factory" do
     it "is valid" do
-      # Using create instead of build because it otherwise doesn't have status changes yet which are required by validation.
+      # Using create instead of build because it otherwise 
+      # doesn't have status changes yet which are required 
+      # by validation.
       expect(create(:initiative)).to be_valid
+    end
+  end
+
+  context "with_status" do
+    it "returns initiatives with that status" do
+      s1 = create(:initiative_status)
+      s2 = create(:initiative_status)
+      initiatives_1 = create_list(:initiative, 2, initiative_status: s1)
+      initiatives_2 = create_list(:initiative, 3, initiative_status: s2)
+      expect(Initiative.with_status(s1.id).count).to eq 2
+      expect(Initiative.with_status(s2.id).count).to eq 3
     end
   end
 
