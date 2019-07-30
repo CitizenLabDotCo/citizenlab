@@ -54,7 +54,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -173,6 +173,54 @@ const InitiativeHeader = styled.div`
 //     display: none;
 //   `}
 // `;
+
+const InitiativeBannerContainer = styled.div`
+  width: 100%;
+  height: 163px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  position: relative;
+  z-index: 3;
+  background: #767676;
+
+  ${media.smallerThanMinTablet`
+    min-height: 200px;
+  `}
+`;
+
+const InitiativeBannerImage = styled.div<{ src: string | null }>`
+  background-image: url(${({ src }) => src});
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -2;
+`;
+
+const InitiativeHeaderOverlay = styled.div`
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+`;
+
+const OnlyMobile = styled.div`
+  ${media.biggerThanPhone`
+    display: none;
+  `}
+`;
 
 const StyledLoadableDropdownMap = styled(LoadableDropdownMap)`
   margin-bottom: 40px;
@@ -329,6 +377,8 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     let content: JSX.Element | null = null;
 
     if (!isNilOrError(initiative) && !isNilOrError(locale) && loaded) {
+      const initiativeHeaderImageLarge = (initiative.attributes.header_bg.large || null);
+
       const authorId: string | null = get(initiative, 'relationships.author.data.id', null);
       const initiativeCreatedAt = initiative.attributes.created_at;
       const titleMultiloc = initiative.attributes.title_multiloc;
@@ -348,9 +398,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         campaign: 'share_content',
         content: authUser.id
       } : {
-        source: 'share_idea',
-        campaign: 'share_content'
-      };
+          source: 'share_idea',
+          campaign: 'share_content'
+        };
       const showTranslateButton = (
         !isNilOrError(initiative) &&
         !isNilOrError(locale) &&
@@ -360,6 +410,20 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       content = (
         <>
           <InitiativeMeta initiativeId={initiativeId} />
+
+          <InitiativeBannerContainer>
+            <InitiativeBannerImage src={initiativeHeaderImageLarge} />
+            <OnlyMobile>
+              <InitiativeHeaderOverlay />
+              <Title
+                id={initiativeId}
+                context="initiative"
+                title={initiativeTitle}
+                locale={locale}
+                translateButtonClicked={translateButtonClicked}
+              />
+            </OnlyMobile>
+          </InitiativeBannerContainer>
 
           <ActionBar
             initiativeId={initiativeId}
