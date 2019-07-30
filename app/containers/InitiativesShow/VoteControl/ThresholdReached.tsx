@@ -70,11 +70,13 @@ class ThresholdReached extends PureComponent<Props, State> {
           <FormattedMessage
             {...messages.thresholdReachedStatusExplanation}
             values={{
-              thresholdReachedStatusExplanationBold: <b>
-                <FormattedMessage
-                  {...messages.thresholdReachedStatusExplanationBold}
-                />
-              </b>
+              thresholdReachedStatusExplanationBold: (
+                <b>
+                  <FormattedMessage
+                    {...messages.thresholdReachedStatusExplanationBold}
+                  />
+                </b>
+              )
             }}
           />
         </StatusExplanation>

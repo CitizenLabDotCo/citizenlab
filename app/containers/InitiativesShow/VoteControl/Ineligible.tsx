@@ -85,7 +85,11 @@ class Ineligible extends PureComponent<Props, State> {
           <FormattedMessage
             {...messages.ineligibleStatusExplanation}
             values={{
-              ineligibleStatusExplanationBold: <b><FormattedMessage {...messages.ineligibleStatusExplanationBold} /></b>
+              ineligibleStatusExplanationBold: (
+                <b>
+                  <FormattedMessage {...messages.ineligibleStatusExplanationBold} />
+                </b>
+              )
             }}
           />
           {eligibility_criteria &&

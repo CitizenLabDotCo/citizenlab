@@ -80,12 +80,14 @@ class Expired extends PureComponent<Props, State> {
           <FormattedMessage
             {...messages.expiredStatusExplanation}
             values={{
-              expiredStatusExplanationBold: <b>
-                <FormattedMessage
-                  {...messages.expiredStatusExplanationBold}
-                  values={{ votingThreshold: voting_threshold }}
-                />
-              </b>
+              expiredStatusExplanationBold: (
+                <b>
+                  <FormattedMessage
+                    {...messages.expiredStatusExplanationBold}
+                    values={{ votingThreshold: voting_threshold }}
+                  />
+                </b>
+              )
             }}
           />
         </StatusExplanation>
