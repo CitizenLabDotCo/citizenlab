@@ -8,7 +8,7 @@ resource "InitiativeStatusChange" do
 
   before do
     header "Content-Type", "application/json"
-    @initiative = create(:initiative)
+    @initiative = create(:initiative, initiative_status: create(:initiative_status, code: 'threshold_reached'))
     @changes = create_list(:initiative_status_change, 2, initiative: @initiative)
   end
 
@@ -23,7 +23,7 @@ resource "InitiativeStatusChange" do
     example_request "List all status changes of an initiative" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].size).to eq 3
       expect(json_response.dig(:data,0,:attributes,:created_at)).to be_present
     end
   end
