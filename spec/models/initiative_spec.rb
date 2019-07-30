@@ -14,17 +14,6 @@ RSpec.describe Initiative, type: :model do
     end
   end
 
-  context "with_status" do
-    it "returns initiatives with that status" do
-      s1 = create(:initiative_status)
-      s2 = create(:initiative_status)
-      initiatives_1 = create_list(:initiative, 2, initiative_status: s1)
-      initiatives_2 = create_list(:initiative, 3, initiative_status: s2)
-      expect(Initiative.with_status(s1.id).count).to eq 2
-      expect(Initiative.with_status(s2.id).count).to eq 3
-    end
-  end
-
   context "hooks" do
     it "should set the author name on creation" do
       u = create(:user)
