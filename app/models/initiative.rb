@@ -49,17 +49,17 @@ class Initiative < ApplicationRecord
       .where(areas_initiatives: {area_id: area_ids})
   end)
 
-  scope :with_status, (Proc.new do |status_id|
-    join_initiative_status.where('initiative_statuses.id = ?', status_id)
-  end)
-
   scope :order_status, -> (direction=:desc) {
-    join_initiative_status
+    left_outer_joins(:initiative_initiative_status)
     .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
   }
 
   scope :feedback_needed, -> {
-    join_initiative_status.where(initiative_statuses: {code: 'threshold_reached'})
+    # join_initiative_status.where(initiative_statuses: {code: 'threshold_reached'})
+    #   .where('initiatives.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
+    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
+      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
+      .where('initiative_statuses.code = ?', 'threshold_reached')
       .where('initiatives.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
