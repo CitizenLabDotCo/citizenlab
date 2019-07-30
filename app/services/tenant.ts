@@ -79,17 +79,17 @@ export interface ITenantSettings {
   maps?: TenantMapSettings;
   participatory_budgeting?: TenantFeature;
   initiatives?: {
-    allowed?: boolean;
-    enabled?: boolean;
-    days_limit?: number;
-    eligibility_criteria?: Multiloc;
+    allowed: boolean;
+    enabled: boolean;
+    days_limit: number;
+    eligibility_criteria: Multiloc;
     success_stories?: {
       image_url: string;
       location: string;
       page_slug: string;
     }[];
-    threshold_reached_message?: Multiloc;
-    voting_threshold?: number;
+    threshold_reached_message: Multiloc;
+    voting_threshold: number;
   };
 }
 

@@ -42,7 +42,7 @@ export interface IInitiativeData {
       data: IRelationship | null;
     };
     user_vote: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
   };
 }
