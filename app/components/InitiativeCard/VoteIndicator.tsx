@@ -6,7 +6,7 @@ import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative'
 import GetInitiativeStatus, { GetInitiativeStatusChildProps } from 'resources/GetInitiativeStatus';
 
 import Icon from 'components/UI/Icon';
-import ProgressBar from './ProgressBar';
+import ProgressBar from 'components/UI/ProgressBar';
 
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
