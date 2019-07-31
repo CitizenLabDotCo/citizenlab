@@ -21,8 +21,10 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
 
   def create
     attributes = status_change_params.to_h
-    if attributes[:official_feedback_attributes].present?  # If not nil or empty hash
+    if attributes[:official_feedback_attributes].present?  # If not nil nor empty hash
       attributes[:official_feedback_attributes].merge! post_id: @initiative.id, post_type: 'Initiative'
+    else
+      attributes.except! :official_feedback_attributes
     end
     @change = InitiativeStatusChange.new attributes
     @change.initiative = @initiative
@@ -33,7 +35,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
       @initiative, 
       @initiative.initiative_status, 
       @change.initiative_status,
-      with_feedback: attributes[:official_feedback_attributes].present?
+      with_feedback: (attributes[:official_feedback_attributes].present? || attributes[:official_feedback_id])
       )
       if @change.save
         # SideFxInitiativeStatusChangeService.new.after_create @change, current_user
@@ -64,9 +66,8 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
     params.require(:initiative_status_change).permit(
       :initiative_status_id,
       :user_id,
-      #### :official_feedback_id,
-      official_feedback_attributes: [ 
-        :id, ####
+      :official_feedback_id,
+      official_feedback_attributes: [
         body_multiloc: CL2_SUPPORTED_LOCALES,
         author_multiloc: CL2_SUPPORTED_LOCALES 
       ]

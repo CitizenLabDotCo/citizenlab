@@ -53,13 +53,13 @@ resource "InitiativeStatusChange" do
 
     post "web_api/v1/initiatives/:initiative_id/initiative_status_changes" do
       with_options scope: :initiative_status_change do
-        parameter :initiative_status_id, "Wagawaga urlughozhlomwugazo", required: true
-        parameter :user_id, "Wagawaga urlughozhlomwugazo", required: false
+        parameter :initiative_status_id, "The new initiative status", required: true
+        parameter :user_id, "The user who made the status change", required: false
+        parameter :official_feedback_id, "An existing official feedback can be used", required: false
       end
       with_options scope: [:initiative_status_change, :official_feedback_attributes] do
-        parameter :id, "Wagawaga urlughozhlomwugazo", required: false
-        parameter :body_multiloc, "Wagawaga urlughozhlomwugazo", required: false
-        parameter :author_multiloc, "Wagawaga urlughozhlomwugazo", required: false
+        parameter :body_multiloc, "Multi-locale field with the feedback body", required: false
+        parameter :author_multiloc, "Multi-locale field with describing the author", required: false
       end
       ValidationErrorHelper.new.error_fields(self, OfficialFeedback)
 
@@ -69,22 +69,23 @@ resource "InitiativeStatusChange" do
       let(:body_multiloc) { feedback.body_multiloc }
       let(:author_multiloc) { feedback.author_multiloc }
 
-      example_request "Create a status change on an initiative" do
+      example_request "Create a status change on an initiative with new feedback" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
         expect(@initiative.reload.official_feedbacks_count).to eq 1
       end
 
-      # describe do
-      #   let(:body_multiloc) { {"en" => ""} }
+      describe do
+        let(:official_feedback_id) { create(:official_feedback, post: @initiative).id }
+        let(:body_multiloc) { nil }
+        let(:author_multiloc) { nil }
 
-      #   example_request "[error] Create an invalid official feedback on an initiative" do
-      #     expect(response_status).to eq 422
-      #     json_response = json_parse(response_body)
-      #     expect(json_response.dig(:errors, :body_multiloc)).to eq [{error: 'blank'}]
-      #   end
-      # end
+        example_request "Create a status change on an initiative using an existing feedback" do
+          expect(response_status).to eq 201
+          expect(@initiative.reload.official_feedbacks_count).to eq 1
+        end
+      end
     end
   end
 
