@@ -1,32 +1,30 @@
 class InitiativeStatusService
 
-  def manual_transitions 
-    {
-      'proposed' => {
-        'ineligible' => {
-          feedback_required: true
-        }
-      },
-      'threshold_reached' => {
-        'answered' => {
-          feedback_required: true
-        },
-        'ineligible' => {
-          feedback_required: true
-        }
-      },
+  MANUAL_TRANSITIONS = {
+    'proposed' => {
+      'ineligible' => {
+        feedback_required: true
+      }
+    },
+    'threshold_reached' => {
       'answered' => {
-        'ineligible' => {
-          feedback_required: true
-        }
+        feedback_required: true
       },
       'ineligible' => {
-        'answered' => {
-          feedback_required: true
-        }
+        feedback_required: true
+      }
+    },
+    'answered' => {
+      'ineligible' => {
+        feedback_required: true
+      }
+    },
+    'ineligible' => {
+      'answered' => {
+        feedback_required: true
       }
     }
-  end
+  }
 
   def auto_transitions 
     {
@@ -37,8 +35,9 @@ class InitiativeStatusService
     }
   end
 
-  def transition_allowed? initiative, status1, status2
-    manual_transitions[status1.code]&.include? status2.code
+  def transition_allowed? initiative, status1, status2, with_feedback: false
+    transition_possibility = MANUAL_TRANSITIONS.dig status1.code, status2.code
+    transition_possibility && (!transition_possibility[:feedback_required] || with_feedback)
   end
 
   # def transition! initiative, status1, status2, official_feedback_params: nil
@@ -58,8 +57,10 @@ class InitiativeStatusService
 
   def allowed_transitions initiative
     return [] if !initiative.initiative_status_id
-    codes = manual_transitions[initiative.initiative_status.code].keys
-    InitiativeStatus.where(code: codes).ids
+    codes = MANUAL_TRANSITIONS[initiative.initiative_status.code]
+    InitiativeStatus.where(code: codes.keys).pluck(:code, :id).map do |code id|
+      [id, codes[code]]
+    end.to_h
   end
 
   def threshold_reached? initiative
@@ -72,13 +73,6 @@ class InitiativeStatusService
 
   def expiration_time initiative
     initiative.published_at + Tenant.current.settings.dig('initiatives', 'days_limit').days
-  end
-
-
-  private
-
-  def log_status_change initiative
-    LogActivityJob.perform_later(initiative, 'changed_status', user, initiative.updated_at.to_i, payload: {change: initiative.initiative_status_id_previous_change})
   end
 
 end
