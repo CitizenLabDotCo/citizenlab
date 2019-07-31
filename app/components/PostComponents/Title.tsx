@@ -24,6 +24,7 @@ const Title = styled.h1`
   word-break: break-word;
   margin: 0;
   padding: 0;
+  z-index: 1;
 
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxl}px;

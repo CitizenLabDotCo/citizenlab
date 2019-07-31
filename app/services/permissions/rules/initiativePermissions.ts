@@ -15,14 +15,14 @@ export const canModerateInitiative = (user: IUser) => {
   return isAdmin(user);
 };
 
-definePermissionRule('initiatives', 'edit', (initiative: IInitiativeData, user: IUser) => {
+definePermissionRule('initiative', 'edit', (initiative: IInitiativeData, user: IUser) => {
   return !!(isAuthor(initiative, user) || isAdmin(user));
 });
 
-definePermissionRule('initiatives', 'markAsSpam', () => {
+definePermissionRule('initiative', 'markAsSpam', () => {
   return true;
 });
 
-definePermissionRule('initiatives', 'moderate', (_initiative: IInitiativeData, user: IUser) => {
+definePermissionRule('initiative', 'moderate', (_initiative: IInitiativeData, user: IUser) => {
   return isAdmin(user);
 });
