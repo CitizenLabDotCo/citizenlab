@@ -9,6 +9,8 @@ import GetInitiativeStatus, { GetInitiativeStatusChildProps } from 'resources/Ge
 import { IInitiativeData } from 'services/initiatives';
 import { ITenantSettings } from 'services/tenant';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { addVote, deleteVote } from 'services/initiativeVotes';
 
 import ProposedNotVoted from './ProposedNotVoted';
 import ProposedVoted from './ProposedVoted';
@@ -17,6 +19,7 @@ import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
 import Ineligible from './Ineligible';
 import Custom from './Custom';
+import VotingPopContainer from 'containers/IdeasShow/VotingPopContainer';
 
 // Using this to fake the way to component will be embedded in the eventual initiative show page
 const TemporaryOuterContainer = styled.div`
@@ -40,6 +43,8 @@ interface VoteControlComponentProps {
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: ITenantSettings['initiatives'];
   userVoted: boolean;
+  onVote?: () => void;
+  onCancelVote?: () => void;
 }
 
 type TComponentMap = {
@@ -88,14 +93,43 @@ interface DataProps {
   tenant: GetTenantChildProps;
   initiative: GetInitiativeChildProps;
   initiativeStatus: GetInitiativeStatusChildProps;
+  user: GetAuthUserChildProps;
+}
+
+interface State {
+  showUnauthenticated: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
 
-class VoteControl extends PureComponent<Props> {
+class VoteControl extends PureComponent<Props, State> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      showUnauthenticated: false,
+    };
+  }
+
+  handleOnvote = async () => {
+    const { initiative, user } = this.props;
+    if (isNilOrError(user)) {
+      this.setState({ showUnauthenticated: true });
+    } else if (!isNilOrError(initiative)) {
+      await addVote(initiative.id, { mode: 'up' });
+    }
+  }
+
+  handleOnCancelVote = async () => {
+    const { initiative } = this.props;
+    if (!isNilOrError(initiative) && initiative.relationships.user_vote && initiative.relationships.user_vote.data) {
+      await deleteVote(initiative.id, initiative.relationships.user_vote.data.id);
+    }
+  }
 
   render() {
     const { initiative, initiativeStatus, tenant } = this.props;
+    const { showUnauthenticated } = this.state;
 
     if (isNilOrError(initiative) ||
       isNilOrError(initiativeStatus) ||
@@ -104,19 +138,28 @@ class VoteControl extends PureComponent<Props> {
     ) return null;
 
     const statusCode = initiativeStatus.attributes.code;
-    const userVoted = !!initiative.relationships.user_vote && !!initiative.relationships.user_vote.data;
+    const userVoted = !!(initiative.relationships.user_vote && initiative.relationships.user_vote.data);
     const StatusComponent = componentMap[statusCode][userVoted ? 'voted' : 'notVoted'];
     const initiativeSettings = tenant.attributes.settings.initiatives;
 
     return (
       <TemporaryOuterContainer>
         <Container>
-          <StatusComponent
-            initiative={initiative}
-            initiativeStatus={initiativeStatus}
-            initiativeSettings={initiativeSettings}
-            userVoted={userVoted}
-          />
+          {showUnauthenticated
+            ?
+              <VotingPopContainer icon="lock-outlined">
+                <b>Unauthenticated</b>
+              </VotingPopContainer>
+            :
+              <StatusComponent
+                initiative={initiative}
+                initiativeStatus={initiativeStatus}
+                initiativeSettings={initiativeSettings}
+                userVoted={userVoted}
+                onVote={this.handleOnvote}
+                onCancelVote={this.handleOnCancelVote}
+              />
+          }
         </Container>
       </TemporaryOuterContainer>
     );
@@ -125,6 +168,7 @@ class VoteControl extends PureComponent<Props> {
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
+  user: <GetAuthUser />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   initiativeStatus: ({ initiative, render }) => {
     if (!isNilOrError(initiative) && initiative.relationships.initiative_status && initiative.relationships.initiative_status.data) {
@@ -132,7 +176,7 @@ const Data = adopt<DataProps, InputProps>({
     } else {
       return null;
     }
-  }
+  },
 });
 
 export default (inputProps: InputProps) => (
