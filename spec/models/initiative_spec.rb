@@ -79,4 +79,16 @@ RSpec.describe Initiative, type: :model do
     end
   end
 
+  describe "slug" do
+    it "is set properly upon publication" do
+      i1 = create(:initiative, title_multiloc: nil, slug: nil, publication_status: 'draft')
+      i1.update!(title_multiloc: {'en' => 'My stupendous idea'}, publication_status: 'published')
+      expect(i1.slug).to be_present
+
+      i2 = create(:initiative, title_multiloc: nil, slug: nil, publication_status: 'draft')
+      i2.update!(title_multiloc: {'en' => 'My sublime idea'}, publication_status: 'published')
+      expect(i1.slug).to be_present
+    end
+  end
+
 end

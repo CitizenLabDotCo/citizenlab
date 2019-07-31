@@ -38,7 +38,7 @@ module Post
       post.before_validation :strip_title
       post.before_validation :sanitize_body_multiloc, if: :body_multiloc
       post.before_validation :set_author_name
-      post.before_validation :generate_slug, on: :create
+      post.before_validation :generate_slug
       post.after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
     end
 
