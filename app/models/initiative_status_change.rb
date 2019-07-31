@@ -7,5 +7,5 @@ class InitiativeStatusChange < ApplicationRecord
   accepts_nested_attributes_for :official_feedback
 
   validates :initiative_status, :initiative, presence: true
-  # TODO created_at must be unique to guarantee unique last
+  validates :created_at, uniqueness: { scope: :initiative_id }
 end

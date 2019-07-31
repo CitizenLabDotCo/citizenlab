@@ -22,7 +22,7 @@ class Initiative < ApplicationRecord
     initiative.validates :initiative_status_changes, presence: true
     initiative.validate :assignee_can_moderate_initiatives
 
-    initiative.before_validation :set_initiative_status
+    initiative.before_validation :initialize_initiative_status_changes
   end
 
 
@@ -76,7 +76,7 @@ class Initiative < ApplicationRecord
     end
   end
 
-  def set_initiative_status
+  def initialize_initiative_status_changes
     initial_status = InitiativeStatus.find_by code: 'proposed'
     if initial_status && self.initiative_status_changes.empty? && !self.draft?
       self.initiative_status_changes.build(initiative_status: initial_status) 
