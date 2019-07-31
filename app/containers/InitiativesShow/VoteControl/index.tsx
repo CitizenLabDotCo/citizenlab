@@ -19,7 +19,8 @@ import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
 import Ineligible from './Ineligible';
 import Custom from './Custom';
-import VotingPopContainer from 'containers/IdeasShow/VotingPopContainer';
+import PopContainer from 'components/UI/PopContainer';
+import Unauthenticated from './Unauthenticated';
 
 // Using this to fake the way to component will be embedded in the eventual initiative show page
 const TemporaryOuterContainer = styled.div`
@@ -147,9 +148,9 @@ class VoteControl extends PureComponent<Props, State> {
         <Container>
           {showUnauthenticated
             ?
-              <VotingPopContainer icon="lock-outlined">
-                <b>Unauthenticated</b>
-              </VotingPopContainer>
+              <PopContainer icon="lock-outlined">
+                <Unauthenticated />
+              </PopContainer>
             :
               <StatusComponent
                 initiative={initiative}

@@ -97,4 +97,12 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.xPeople',
     defaultMessage: '{count, plural, =0 {No one} one {One person} other {# people}}',
   },
+  login: {
+    id: 'app.containers.InitiativesShow.VoteControl.login',
+    defaultMessage: 'Login',
+  },
+  register: {
+    id: 'app.containers.InitiativesShow.VoteControl.register',
+    defaultMessage: 'Create an account',
+  },
 });
