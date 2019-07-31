@@ -34,14 +34,14 @@ const Title = styled.h1`
 
 interface Props {
   id: string;
-  context: 'idea' | 'initiative';
+  postType: 'idea' | 'initiative';
   title: string;
   locale?: Locale;
   translateButtonClicked?: boolean;
   className?: string;
 }
 
-const PostTitle = memo<Props>(({ id, context, title, locale, translateButtonClicked, className }) => {
+const PostTitle = memo<Props>(({ id, postType, title, locale, translateButtonClicked, className }) => {
   return (
     <Container className={className}>
       {(locale && translateButtonClicked) ? (
@@ -49,7 +49,7 @@ const PostTitle = memo<Props>(({ id, context, title, locale, translateButtonClic
           attributeName="title_multiloc"
           localeTo={locale}
           id={id}
-          context={context}
+          context={postType}
         >
           {translation => {
             if (!isNilOrError(translation)) {
@@ -60,7 +60,7 @@ const PostTitle = memo<Props>(({ id, context, title, locale, translateButtonClic
           }}
         </GetMachineTranslation>
       ) : (
-        <Title className={`e2e-${context}title`}>{title}</Title>
+        <Title className={`e2e-${postType}title`}>{title}</Title>
       )}
     </Container>
   );

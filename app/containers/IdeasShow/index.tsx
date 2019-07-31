@@ -21,8 +21,8 @@ import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
-import IdeaTopics from './IdeaTopics';
-import IdeaTitle from './IdeaTitle';
+import Topics from 'components/PostComponents/Topics';
+import Title from 'components/PostComponents/Title';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
@@ -125,20 +125,6 @@ const IdeaContainer = styled.div`
     padding-top: 25px;
     padding-left: 15px;
     padding-right: 15px;
-  `}
-`;
-
-const StyledIdeaTopics = styled(IdeaTopics)`
-  padding-right: ${rightColumnWidthDesktop + columnsGapDesktop}px;
-  margin-bottom: 10px;
-
-  ${media.tablet`
-    padding-right: ${rightColumnWidthTablet + columnsGapTablet}px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    padding-right: 0px;
-    margin-bottom: 5px;
   `}
 `;
 
@@ -538,14 +524,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               }
             </FeatureFlag>
 
-            <StyledIdeaTopics topicIds={topicIds} />
-
             <Content>
               <LeftColumn>
+                <Topics topicIds={topicIds} />
                 <IdeaHeader>
-                  <IdeaTitle
-                    ideaId={ideaId}
-                    ideaTitle={ideaTitle}
+                  <Title
+                    postType="idea"
+                    id={ideaId}
+                    title={ideaTitle}
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}
                   />
