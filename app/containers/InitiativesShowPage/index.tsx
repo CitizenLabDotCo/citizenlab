@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { adopt } from 'react-adopt';
 
 // components
-// import InitiativesShow from 'containers/InitiativesShow';
+import InitiativesShow from 'containers/InitiativesShow';
 import Button from 'components/UI/Button';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 
@@ -19,7 +19,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
-import VoteControl from 'containers/InitiativesShow/VoteControl';
 
 const InitiativeNotFoundWrapper = styled.div`
   height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -43,14 +42,14 @@ const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
   z-index: 1000;
 `;
 
-// const StyledInitiativesShow = styled(InitiativesShow)`
-//   background: #fff;
-//   margin-top: ${props => props.theme.mobileTopBarHeight}px;
+const StyledInitiativesShow = styled(InitiativesShow)`
+  background: #fff;
+  margin-top: ${props => props.theme.mobileTopBarHeight}px;
 
-//   ${media.biggerThanMaxTablet`
-//     margin-top: 0px;
-//   `}
-// `;
+  ${media.biggerThanMaxTablet`
+    margin-top: 0px;
+  `}
+`;
 
 interface InputProps {}
 
@@ -81,9 +80,7 @@ const InitiativesShowPage = memo<Props>(({ initiative }) => {
     return (
       <Container>
         <StyledInitiativeShowPageTopBar initiativeId={initiative.id} />
-        {/* Temporary change to develop the VoteControl while showpage is WIP */}
-        {/* <StyledInitiativesShow initiativeId={initiative.id} /> */}
-        <VoteControl initiativeId={initiative.id} />
+        <StyledInitiativesShow initiativeId={initiative.id} />
       </Container>
     );
   }
