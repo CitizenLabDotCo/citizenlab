@@ -5,7 +5,6 @@ import { fontSizes } from 'utils/styleUtils';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
-import { addVote } from 'services/initiativeVotes';
 
 import Icon from 'components/UI/Icon';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
@@ -41,6 +40,7 @@ interface InputProps {
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
   userVoted: boolean;
+  onVote: () => void;
 }
 interface DataProps { }
 
@@ -50,8 +50,8 @@ interface State { }
 
 class ThresholdReached extends PureComponent<Props, State> {
 
-  handleOnVote = async () => {
-    await addVote(this.props.initiative.id, { mode: 'up' });
+  handleOnVote = () => {
+    this.props.onVote();
   }
 
   render() {

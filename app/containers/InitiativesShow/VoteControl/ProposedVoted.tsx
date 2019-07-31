@@ -13,7 +13,6 @@ import ProgressBar from 'components/UI/ProgressBar';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { deleteVote } from 'services/initiativeVotes';
 
 const Container = styled.div`
   display: flex;
@@ -96,6 +95,7 @@ interface InputProps {
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
   userVoted: boolean;
+  onCancelVote: () => void;
 }
 interface DataProps {}
 
@@ -104,10 +104,7 @@ interface Props extends InputProps, DataProps {}
 class ProposedVoted extends PureComponent<Props & { theme: any }> {
 
   handleOnCancelVote = () => {
-    const { initiative: { id, relationships: { user_vote } } } = this.props;
-    if (user_vote && user_vote.data) {
-      deleteVote(id, user_vote.data.id);
-    }
+    this.props.onCancelVote();
   }
 
   daysLeft = (): number => {
