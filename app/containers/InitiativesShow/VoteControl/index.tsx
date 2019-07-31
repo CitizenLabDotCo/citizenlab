@@ -22,9 +22,7 @@ import Custom from './Custom';
 import PopContainer from 'components/UI/PopContainer';
 import Unauthenticated from './Unauthenticated';
 
-// Using this to fake the way to component will be embedded in the eventual initiative show page
-const TemporaryOuterContainer = styled.div`
-  width: 300px;
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 45px;
@@ -32,11 +30,6 @@ const TemporaryOuterContainer = styled.div`
   border: 1px solid #e0e0e0;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
   border-radius: ${(props: any) => props.theme.borderRadius};
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 interface VoteControlComponentProps {
@@ -56,10 +49,6 @@ type TComponentMap = {
 
 /** Maps the initiative status and whether the user voted or not to the right component to render */
 const componentMap: TComponentMap = {
-  published: {
-    voted: ProposedVoted,
-    notVoted: ProposedNotVoted,
-  },
   proposed: {
     voted: ProposedVoted,
     notVoted: ProposedNotVoted,
@@ -144,25 +133,23 @@ class VoteControl extends PureComponent<Props, State> {
     const initiativeSettings = tenant.attributes.settings.initiatives;
 
     return (
-      <TemporaryOuterContainer>
-        <Container>
-          {showUnauthenticated
-            ?
-              <PopContainer icon="lock-outlined">
-                <Unauthenticated />
-              </PopContainer>
-            :
-              <StatusComponent
-                initiative={initiative}
-                initiativeStatus={initiativeStatus}
-                initiativeSettings={initiativeSettings}
-                userVoted={userVoted}
-                onVote={this.handleOnvote}
-                onCancelVote={this.handleOnCancelVote}
-              />
-          }
-        </Container>
-      </TemporaryOuterContainer>
+      <Container>
+        {showUnauthenticated
+          ?
+            <PopContainer icon="lock-outlined">
+              <Unauthenticated />
+            </PopContainer>
+          :
+            <StatusComponent
+              initiative={initiative}
+              initiativeStatus={initiativeStatus}
+              initiativeSettings={initiativeSettings}
+              userVoted={userVoted}
+              onVote={this.handleOnvote}
+              onCancelVote={this.handleOnCancelVote}
+            />
+        }
+      </Container>
     );
   }
 }
