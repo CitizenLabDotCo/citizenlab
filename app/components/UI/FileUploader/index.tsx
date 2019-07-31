@@ -5,6 +5,8 @@ import FileInput from './FileInput';
 import FileDisplay from './FileDisplay';
 import Error from 'components/UI/Error';
 
+import { isFileUploadSupported } from 'utils/fileTools';
+
 // typings
 import { CLError, UploadFile } from 'typings';
 
@@ -30,7 +32,7 @@ export default class FileUploader extends React.PureComponent<Props, State>{
   render() {
     const { files, errors } = this.props;
 
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    if (!isFileUploadSupported()) {
       return null;
     }
 
