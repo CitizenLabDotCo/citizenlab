@@ -18,7 +18,9 @@ FactoryBot.define do
     end
 
     before :create do |initiative|
-      initiative.initiative_status_changes << build(:initiative_status_change, initiative: initiative)
+      if initiative.initiative_status_changes.blank?
+        initiative.initiative_status_changes << build(:initiative_status_change, initiative: initiative)
+      end
     end
 
     after(:create) do |initiative, evaluator|

@@ -8,7 +8,7 @@ resource "InitiativeStatusChange" do
 
   before do
     header "Content-Type", "application/json"
-    @initiative = create(:initiative, initiative_status: create(:initiative_status, code: 'threshold_reached'))
+    @initiative = create(:initiative)
     @changes = create_list(:initiative_status_change, 2, initiative: @initiative)
   end
 
@@ -45,7 +45,10 @@ resource "InitiativeStatusChange" do
       header 'Authorization', "Bearer #{token}"
 
       TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
-      create(:initiative_status_change, initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'proposed'))
+      create(
+        :initiative_status_change, 
+        initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'threshold_reached')
+        )
     end
 
     post "web_api/v1/initiatives/:initiative_id/initiative_status_changes" do
@@ -69,7 +72,7 @@ resource "InitiativeStatusChange" do
       example_request "Create a status change on an initiative" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @admin.id
+        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
         expect(@initiative.reload.official_feedbacks_count).to eq 1
       end
 
