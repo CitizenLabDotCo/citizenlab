@@ -8,11 +8,11 @@ import Spinner from 'components/UI/Spinner';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import {  InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -111,10 +111,13 @@ interface InputProps {
   postType: 'idea' | 'initiative';
   postId: string | null;
   className?: string;
+  title: string;
+  subtitle: string;
 }
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
   post: GetPostChildProps;
 }
@@ -134,20 +137,12 @@ class SharingModalContent extends PureComponent<Props & InjectedIntlProps & Inje
   }
 
   render() {
-    const { postType, post, authUser, localize, locale, className } = this.props;
+    const { postType, post, authUser, localize, locale, className, title, subtitle } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (!isNilOrError(post) && !isNilOrError(authUser)) {
       const postTitle = localize(post.attributes.title_multiloc);
       const postUrl = `${location.origin}/${locale}/${postType}s/${post.attributes.slug}`;
-      const shareTitle = {
-        idea: messages.ideaShareTitle,
-        initiative: messages.initiativeShareTitle,
-      }[postType];
-      const shareSubtitle = {
-        idea: messages.ideaShareSubtitle,
-        initiative: messages.initiativeSubtitle,
-      }[postType];
       const emailSharingSubject = {
         idea: messages.ideaEmailSharingSubject,
         initiative: messages.initiativeEmailSharingSubject,
@@ -161,16 +156,10 @@ class SharingModalContent extends PureComponent<Props & InjectedIntlProps & Inje
         <Container className={className}>
           <Rocket src={rocket} alt="rocket" />
           <Title className={`e2e-${postType}-social-sharing-modal-title`}>
-            <FormattedMessage
-              values={{ postType }}
-              {...shareTitle}
-            />
+            {title}
           </Title>
           <Subtitle>
-            <FormattedMessage
-              values={{ postType }}
-              {...shareSubtitle}
-            />
+            {subtitle}
           </Subtitle>
           <SharingWrapper>
             <Sharing
@@ -203,6 +192,7 @@ const SharingModalContentWithHoCs = injectIntl<Props>(localize(SharingModalConte
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  tenant: <GetTenant />,
   authUser: <GetAuthUser />,
   post: ({ postId, postType, render }) => <GetPost postId={postId} postType={postType}>{render}</GetPost>
 });
