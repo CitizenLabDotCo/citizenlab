@@ -21,7 +21,7 @@ import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import styled from 'styled-components';
 
 // utils
-import { convertUrlToUploadFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 import getSubmitState from 'utils/getSubmitState';
 import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
