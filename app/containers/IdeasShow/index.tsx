@@ -17,6 +17,7 @@ import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableD
 import Topics from 'components/PostComponents/Topics';
 import Title from 'components/PostComponents/Title';
 import Body from 'components/PostComponents/Body';
+import ContentFooter from 'components/PostComponents/ContentFooter';
 import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
@@ -30,7 +31,6 @@ import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
-import IdeaContentFooter from './IdeaContentFooter';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostComponents/TranslateButton';
 
@@ -600,9 +600,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   ideaId={ideaId}
                 />
 
-                <IdeaContentFooter
-                  ideaId={ideaId}
-                  ideaCreatedAt={ideaCreatedAt}
+                <ContentFooter
+                  postType="idea"
+                  id={ideaId}
+                  createdAt={ideaCreatedAt}
                   commentsCount={idea.attributes.comments_count}
                 />
 
