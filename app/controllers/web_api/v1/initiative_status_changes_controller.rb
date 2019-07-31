@@ -22,7 +22,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
   def create
     attributes = status_change_params.to_h
     if attributes[:official_feedback_attributes].present?  # If not nil or empty hash
-      attributes[:official_feedback_attributes].merge! post_id: @initiative.id
+      attributes[:official_feedback_attributes].merge! post_id: @initiative.id, post_type: 'Initiative'
     end
     @change = InitiativeStatusChange.new attributes
     @change.initiative = @initiative
