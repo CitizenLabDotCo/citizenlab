@@ -13,7 +13,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
-import IdeaMap from './IdeaMapLoadable';
+import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
 import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
@@ -219,7 +219,7 @@ const StyledIdeaAuthor = styled(IdeaAuthor)`
   `}
 `;
 
-const StyledIdeaMap = styled(IdeaMap)`
+const StyledLoadableDropdownMap = styled(LoadableDropdownMap)`
   margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
@@ -576,7 +576,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 {ideaGeoPosition && ideaAddress &&
-                  <StyledIdeaMap
+                  <StyledLoadableDropdownMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
                   />
