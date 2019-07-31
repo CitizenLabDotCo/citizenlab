@@ -66,7 +66,11 @@ export default defineMessages({
     defaultMessage: 'Are you sure you want to delete this initiative?',
   },
   reportAsSpamModalTitle: {
-    id: 'app.containers.IdeasShow.reportAsSpamModalTitle',
+    id: 'app.containers.InitiativesShow.reportAsSpamModalTitle',
     defaultMessage: 'Why do you want to report this as spam?',
+  },
+  imageAltText: {
+    id: 'app.containers.InitiativesShow.imageAltText',
+    defaultMessage: 'Main image for the initiative {initiativeTitle}',
   },
 });

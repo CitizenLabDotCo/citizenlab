@@ -417,7 +417,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
               <InitiativeHeaderOverlay />
               <Title
                 id={initiativeId}
-                context="initiative"
+                postType="initiative"
                 title={initiativeTitle}
                 locale={locale}
                 translateButtonClicked={translateButtonClicked}
@@ -467,7 +467,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 {initiativeImageLarge &&
                   <Image
                     src={initiativeImageLarge}
-                    postType="initiative"
+                    alt={formatMessage(messages.imageAltText, { initiativeTitle })}
                     className="e2e-initiativeImage"
                   />
                 }
