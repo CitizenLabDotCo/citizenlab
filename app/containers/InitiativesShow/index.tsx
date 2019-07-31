@@ -41,6 +41,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -284,6 +285,7 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
+  tenant: GetTenantChildProps;
 }
 
 interface InputProps {
@@ -370,15 +372,18 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       authUser,
       windowSize,
       className,
-      postOfficialFeedbackPermission
+      postOfficialFeedbackPermission,
+      tenant
     } = this.props;
     const { loaded, initiativeIdForSocialSharing, translateButtonClicked } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
+    const initiativeSettings = !isNilOrError(tenant) ? tenant.attributes.settings.initiatives : null;
 
-    if (!isNilOrError(initiative) && !isNilOrError(locale) && loaded) {
+    if (initiativeSettings && !isNilOrError(initiative) && !isNilOrError(locale) && loaded) {
       const initiativeHeaderImageLarge = (initiative.attributes.header_bg.large || null);
-
+      const votingThreshold = initiativeSettings.voting_threshold;
+      const daysLimit = initiativeSettings.days_limit;
       const authorId: string | null = get(initiative, 'relationships.author.data.id', null);
       const initiativeCreatedAt = initiative.attributes.created_at;
       const titleMultiloc = initiative.attributes.title_multiloc;
@@ -539,46 +544,53 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           {/* {loaded && <Footer postId={initiativeId} postType="initiative" />} */}
         </>
       );
+
+      return (
+        <>
+          {!loaded &&
+            <Loading>
+              <Spinner />
+            </Loading>
+          }
+
+          <CSSTransition
+            classNames="content"
+            in={loaded}
+            timeout={{
+              enter: contentFadeInDuration + contentFadeInDelay,
+              exit: 0
+            }}
+            enter={true}
+            exit={false}
+          >
+            <Container id="e2e-initiative-show" className={className}>
+              {content}
+            </Container>
+          </CSSTransition>
+
+          <FeatureFlag name="initiativeflow_social_sharing">
+            <Modal
+              opened={!!initiativeIdForSocialSharing}
+              close={this.closeInitiativeSocialSharingModal}
+              hasSkipButton={true}
+              skipText={<FormattedMessage {...messages.skipSharing} />}
+              label={formatMessage(messages.modalShareLabel)}
+            >
+              {initiativeIdForSocialSharing &&
+                <SharingModalContent
+                  postType="initiative"
+                  postId={initiativeIdForSocialSharing}
+                  title={formatMessage(messages.shareTitle)}
+                  subtitle={formatMessage(messages.shareSubtitle, { votingThreshold, daysLimit })}
+                />
+              }
+            </Modal>
+          </FeatureFlag>
+        </>
+      );
     }
 
-    return (
-      <>
-        {!loaded &&
-          <Loading>
-            <Spinner />
-          </Loading>
-        }
-
-        <CSSTransition
-          classNames="content"
-          in={loaded}
-          timeout={{
-            enter: contentFadeInDuration + contentFadeInDelay,
-            exit: 0
-          }}
-          enter={true}
-          exit={false}
-        >
-          <Container id="e2e-initiative-show" className={className}>
-            {content}
-          </Container>
-        </CSSTransition>
-
-        <FeatureFlag name="initiativeflow_social_sharing">
-          <Modal
-            opened={!!initiativeIdForSocialSharing}
-            close={this.closeInitiativeSocialSharingModal}
-            hasSkipButton={true}
-            skipText={<FormattedMessage {...messages.skipSharing} />}
-            label={formatMessage(messages.modalShareLabel)}
-          >
-            {initiativeIdForSocialSharing &&
-              <SharingModalContent postType="initiative" postId={initiativeIdForSocialSharing} />
-            }
-          </Modal>
-        </FeatureFlag>
-      </>
-    );
+    return null;
   }
 }
 
@@ -586,6 +598,7 @@ const InitiativesShowWithHOCs = injectLocalize<Props>(injectIntl(withRouter(Init
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  tenant: <GetTenant />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize debounce={50} />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,

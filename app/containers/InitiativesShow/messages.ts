@@ -77,4 +77,12 @@ export default defineMessages({
     id: 'app.components.InitiativesShow.modalShareLabel',
     defaultMessage: 'Your initiative was posted, share it now to reach more votes!',
   },
+  shareTitle: {
+    id: 'app.components.InitiativesShow.shareTitle',
+    defaultMessage: 'Congratulations, your initiative was successfully posted!',
+  },
+  shareSubtitle: {
+    id: 'app.components.InitiativesShow.shareSubtitle',
+    defaultMessage: 'Share your initiative to reach {votingThreshold} votes in {daysLimit} days.',
+  },
 });
