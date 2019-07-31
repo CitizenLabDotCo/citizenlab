@@ -14,6 +14,9 @@ import { withRouter, WithRouterProps } from 'react-router';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
+import Topics from 'components/PostComponents/Topics';
+import Title from 'components/PostComponents/Title';
+import Body from 'components/PostComponents/Body';
 import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
@@ -21,15 +24,12 @@ import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
-import Topics from 'components/PostComponents/Topics';
-import Title from 'components/PostComponents/Title';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
-import IdeaBody from './IdeaBody';
 import IdeaContentFooter from './IdeaContentFooter';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostComponents/TranslateButton';
@@ -568,10 +568,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   />
                 }
 
-                <IdeaBody
-                  ideaId={ideaId}
+                <Body
+                  postType="idea"
+                  id={ideaId}
                   locale={locale}
-                  ideaBody={ideaBody}
+                  body={ideaBody}
                   translateButtonClicked={translateButtonClicked}
                 />
 
