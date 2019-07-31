@@ -118,6 +118,7 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
     const { initiative, initiativeSettings: { voting_threshold }, theme } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
+    const daysLeft = this.daysLeft();
 
     return (
       <Container>
@@ -129,9 +130,13 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
           <FormattedMessage
             {...messages.votedText}
             values={{
+              x: daysLeft,
               xDays: (
                 <b>
-                  <FormattedMessage {...messages.xDays} values={{ x: this.daysLeft() }} />
+                  <FormattedMessage
+                    {...messages.xDays}
+                    values={{ x: daysLeft }}
+                  />
                 </b>
               )
             }}
