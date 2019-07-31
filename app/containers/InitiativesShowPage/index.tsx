@@ -42,14 +42,14 @@ const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
   z-index: 1000;
 `;
 
-// const StyledInitiativesShow = styled(InitiativesShow)`
-//   background: #fff;
-//   margin-top: ${props => props.theme.mobileTopBarHeight}px;
+const StyledInitiativesShow = styled(InitiativesShow)`
+  background: #fff;
+  margin-top: ${props => props.theme.mobileTopBarHeight}px;
 
-//   ${media.biggerThanMaxTablet`
-//     margin-top: 0px;
-//   `}
-// `;
+  ${media.biggerThanMaxTablet`
+    margin-top: 0px;
+  `}
+`;
 
 interface InputProps {}
 
@@ -80,9 +80,7 @@ const InitiativesShowPage = memo<Props>(({ initiative }) => {
     return (
       <Container>
         <StyledInitiativeShowPageTopBar initiativeId={initiative.id} />
-        {/* Temporary change to develop the VoteControl while showpage is WIP */}
-        {/* <StyledInitiativesShow initiativeId={initiative.id} /> */}
-        <InitiativesShow initiativeId={initiative.id} />
+        <StyledInitiativesShow initiativeId={initiative.id} />
       </Container>
     );
   }
