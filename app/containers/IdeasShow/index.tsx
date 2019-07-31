@@ -19,6 +19,7 @@ import Title from 'components/PostComponents/Title';
 import Body from 'components/PostComponents/Body';
 import ContentFooter from 'components/PostComponents/ContentFooter';
 import Image from 'components/PostComponents/Image';
+import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
@@ -31,7 +32,6 @@ import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
-import OfficialFeedback from './OfficialFeedback';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostComponents/TranslateButton';
 
@@ -48,6 +48,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
+import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -305,6 +306,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
+  postOfficialFeedbackPermission: GetPermissionChildProps;
 }
 
 interface InputProps {
@@ -453,7 +455,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       ideaImages,
       authUser,
       windowSize,
-      className
+      className,
+      postOfficialFeedbackPermission
     } = this.props;
     const { loaded, ideaIdForSocialSharing, translateButtonClicked, actionInfos } = this.state;
     const { formatMessage } = this.props.intl;
@@ -590,7 +593,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 <StyledOfficialFeedback
-                  ideaId={ideaId}
+                  postId={ideaId}
+                  postType="idea"
+                  permissionToPost={postOfficialFeedbackPermission}
                 />
 
                 <ContentFooter
@@ -729,7 +734,8 @@ const Data = adopt<DataProps, InputProps>({
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
   phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>,
-  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>
+  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>,
+  postOfficialFeedbackPermission: ({ project, render }) => !isNilOrError(project) ? <GetPermission item={project} action="moderate" >{render}</GetPermission> : null,
 });
 
 export default (inputProps: InputProps) => (
