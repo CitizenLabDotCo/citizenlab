@@ -21,13 +21,20 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
 
   def create
     attributes = status_change_params.to_h
-    attributes[:official_feedback_attributes].merge! post_id: @initiative.id
+    if attributes[:official_feedback_attributes].present?  # If not nil or empty hash
+      attributes[:official_feedback_attributes].merge! post_id: @initiative.id
+    end
     @change = InitiativeStatusChange.new attributes
     @change.initiative = @initiative
     @change.user ||= current_user
     authorize @change
     # SideFxInitiativeStatusChangeService.new.before_create @change, current_user
-    if InitiativeStatusService.new.transition_allowed? @initiative, @initiative.initiative_status, @change.initiative_status
+    if InitiativeStatusService.new.transition_allowed?(
+      @initiative, 
+      @initiative.initiative_status, 
+      @change.initiative_status,
+      with_feedback: attributes[:official_feedback_attributes].present?
+      )
       if @change.save
         # SideFxInitiativeStatusChangeService.new.after_create @change, current_user
         render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
