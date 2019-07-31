@@ -18,6 +18,7 @@ import Topics from 'components/PostComponents/Topics';
 import Title from 'components/PostComponents/Title';
 import Body from 'components/PostComponents/Body';
 import ContentFooter from 'components/PostComponents/ContentFooter';
+import Image from 'components/PostComponents/Image';
 import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
@@ -170,14 +171,6 @@ const IdeaHeader = styled.div`
     margin-top: 0px;
     margin-bottom: 45px;
   `}
-`;
-
-const IdeaImage = styled.img`
-  width: 100%;
-  height: auto;
-  margin-bottom: 25px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${colors.separation};
 `;
 
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
@@ -554,7 +547,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 {ideaImageLarge &&
-                  <IdeaImage
+                  <Image
                     src={ideaImageLarge}
                     alt={formatMessage(messages.imageAltText, { ideaTitle })}
                     className="e2e-ideaImage"
