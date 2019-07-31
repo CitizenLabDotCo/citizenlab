@@ -446,8 +446,8 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 <Topics topicIds={topicIds} />
                 <InitiativeHeader>
                   <Title
+                    postType="initiative"
                     id={initiativeId}
-                    context="initiative"
                     title={initiativeTitle}
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}

@@ -12,7 +12,6 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
 import { transparentize } from 'polished';
-import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 // typings
 import { ITopicData } from 'services/topics';
@@ -20,15 +19,9 @@ import { ITopicData } from 'services/topics';
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  padding-right: ${rightColumnWidthDesktop + columnsGapDesktop}px;
   margin-bottom: 10px;
 
-  ${media.tablet`
-    padding-right: ${rightColumnWidthTablet + columnsGapTablet}px;
-  `}
-
   ${media.smallerThanMaxTablet`
-    padding-right: 0px;
     margin-bottom: 5px;
   `}
 `;
