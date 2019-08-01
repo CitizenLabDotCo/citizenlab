@@ -14,7 +14,7 @@ const VerticalContainer = styled.div`
   justify-content: center;
 `;
 
-const StyledButton = styled(Button)`
+const LoginButton = styled(Button)`
   margin-bottom: 8px;
 `;
 
@@ -55,7 +55,7 @@ export default class Unauthenticated extends React.PureComponent {
   render() {
     return (
       <VerticalContainer>
-        <StyledButton className="e2e-login-button" onClick={this.goToLogin}><FormattedMessage {...messages.login} /></StyledButton>
+        <LoginButton className="e2e-login-button" onClick={this.goToLogin}><FormattedMessage {...messages.login} /></LoginButton>
         <Separator>or</Separator>
         <RegisterLink className="e2e-register-button" onClick={this.goToRegister}><FormattedMessage {...messages.register} /></RegisterLink>
       </VerticalContainer>
