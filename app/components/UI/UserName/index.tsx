@@ -18,8 +18,8 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 // components
 import Link from 'utils/cl-router/Link';
 
-const Name: any = styled.span`
-  color: ${({ theme }) => theme.colorText};
+const Name: any = styled.span<{color?: string}>`
+  color: ${({ color, theme }) => color || theme.colorText};
   font-weight: ${({ emphasize }: any) => emphasize ? '500' : 'normal'};
   text-decoration: none;
   hyphens: auto;
@@ -27,7 +27,7 @@ const Name: any = styled.span`
   &.linkToProfile {
     &:hover {
       cursor: pointer;
-      color: ${({ theme }) => darken(0.15, theme.colorText)};
+      color: ${({ color, theme }) => darken(0.15, color || theme.colorText)};
       text-decoration: underline;
     }
 
@@ -56,14 +56,15 @@ interface InputProps {
   linkToProfile?: boolean;
   emphasize?: boolean;
   canModerate?: boolean;
+  color?: string;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const UserName = React.memo<Props>(({ user, className, hideLastName, linkToProfile, emphasize, canModerate }) => {
+const UserName = React.memo<Props>(({ user, className, hideLastName, linkToProfile, emphasize, canModerate, color }) => {
   if (isNilOrError(user)) {
     return (
-      <Name className={`${className} deleted-user e2e-username`}>
+      <Name color={color} className={`${className} deleted-user e2e-username`}>
         <FormattedMessage {...messages.deletedUser} />
       </Name>
     );
@@ -81,6 +82,7 @@ const UserName = React.memo<Props>(({ user, className, hideLastName, linkToProfi
         ${canModerate ? 'canModerate' : ''}
         e2e-username`
       }
+      color={color}
     >
       {`${firstName} ${hideLastName ? '' : lastName}`}
     </Name>
