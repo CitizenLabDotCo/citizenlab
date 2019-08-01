@@ -34,9 +34,9 @@ const Content: any = styled(clickOutside)`
   }
 `;
 
-const ContentInner: any = styled.div`
+const ContentInner: any = styled.div<{ position?: 'bottom-left'}>`
   position: relative;
-  left: -50%;
+  left: ${({ position }) => position === 'bottom-left' ? '-85%' : '-50%'};
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
   border-radius: ${(props: any) => props.theme.borderRadius};
   background-color: ${(props: any) => props.backgroundColor};
@@ -56,7 +56,7 @@ const ContentInner: any = styled.div`
 
   ::after {
     top: -20px;
-    left: 0;
+    left:  ${({ position }) => position === 'bottom-left' ? '75%' : '0'};
     right: 0;
     margin: 0 auto;
     border-color: transparent transparent ${(props: any) => props.backgroundColor} transparent;
@@ -65,7 +65,7 @@ const ContentInner: any = styled.div`
 
   ::before {
     top: -22px;
-    left: 0;
+    left: ${({ position }) => position === 'bottom-left' ? '75%' : '0'};
     right: 0;
     margin: 0 auto;
     border-color: transparent transparent ${(props: any) => props.borderColor || colors.separation} transparent;
@@ -83,11 +83,12 @@ export interface Props {
   dropdownOpened: boolean;
   className?: string;
   id?: string;
+  position?: 'bottom-left';
 }
 
 export default class Popover extends PureComponent<Props> {
   render() {
-    const { onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, top, className, id } = this.props;
+    const { onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, top, className, id, position } = this.props;
 
     return (
       <Container className={className}>
@@ -102,7 +103,7 @@ export default class Popover extends PureComponent<Props> {
           exit={false}
         >
           <Content onClickOutside={onClickOutside} top={top} className="tooltip-container">
-            <ContentInner id={id} backgroundColor={backgroundColor} textColor={textColor} borderColor={borderColor} className="tooltip-content">
+            <ContentInner id={id} backgroundColor={backgroundColor} textColor={textColor} borderColor={borderColor} className="tooltip-content" position={position}>
               {content}
             </ContentInner>
           </Content>

@@ -19,7 +19,7 @@ const Container = styled.div`
 `;
 
 interface Props {
-  resourceType: 'comments' | 'ideas';
+  resourceType: 'comments' | 'ideas' | 'initiatives';
   resourceId: string;
   className?: string;
 }

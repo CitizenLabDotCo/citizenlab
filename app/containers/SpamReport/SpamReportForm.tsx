@@ -74,7 +74,7 @@ interface Props extends CRUDParams {
   onReasonChange: {(value: Report['reason_code']): void};
   onTextChange: {(value: string): void};
   onSubmit: {(event): void};
-  itemType: 'ideas' | 'comments';
+  itemType: 'ideas' | 'comments' | 'initiatives';
 }
 
 interface State {}

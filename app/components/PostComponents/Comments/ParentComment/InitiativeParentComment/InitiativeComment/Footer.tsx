@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
-import CommentVote from './CommentVote';
+import CommentVote from '../../CommentVote';
 import CommentsMoreActions from './CommentsMoreActions';
 
 // services
@@ -14,7 +14,6 @@ import eventEmitter from 'utils/eventEmitter';
 // resources
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -31,7 +30,6 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import GetInitiative from 'resources/GetInitiative';
 
 const Container = styled.div`
   display: flex;
@@ -120,7 +118,6 @@ interface DataProps {
   tenantLocales: GetTenantLocalesChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
   comment: GetCommentChildProps;
   author: GetUserChildProps;
 }
@@ -195,15 +192,14 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
 
   render() {
-    const { commentType, initiativeId, commentId, className, comment, tenantLocales, locale, authUser, idea, canReply } = this.props;
+    const { commentType, commentId, className, comment, tenantLocales, locale, authUser, canReply } = this.props;
     const { translateButtonClicked } = this.state;
 
-    if (!isNilOrError(initiative) && !isNilOrError(comment) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
+    if (!isNilOrError(comment) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
-      const commentVotingEnabled = (!isNilOrError(idea) ? get(idea.attributes.action_descriptor.comment_voting, 'enabled', false) : false);
       const upvoteCount = comment.attributes.upvotes_count;
-      const showVoteComponent = (commentVotingEnabled || (!commentVotingEnabled && upvoteCount > 0));
-      const showReplyButton = !!(authUser && commentingEnabled && canReply);
+      const showVoteComponent = upvoteCount > 0;
+      const showReplyButton = !!(authUser && canReply);
       const showTranslateButton = !!(commentBodyMultiloc && !commentBodyMultiloc[locale] && tenantLocales.length > 1);
 
       return (
@@ -212,10 +208,11 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
             {showVoteComponent &&
               <>
                 <CommentVote
-                  ideaId={ideaId}
+                  postId={ideaId}
+                  postType="initiative"
                   commentId={commentId}
                   commentType={commentType}
-                  votingEnabled={commentVotingEnabled}
+                  votingEnabled={true}
                 />
                 {/* // Make sure there's a next item before adding a separator */}
                 {(showReplyButton || showTranslateButton) && <Separator className="vote">•</Separator>}
@@ -264,7 +261,6 @@ const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetTenantLocales />,
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
 });

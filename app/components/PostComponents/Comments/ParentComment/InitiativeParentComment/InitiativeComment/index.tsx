@@ -170,7 +170,6 @@ class InitiativeComment extends PureComponent<Props & InjectedIntlProps, State> 
               <>
                 <Header
                   authorId={authorId}
-                  commentId={commentId}
                   commentType={commentType}
                   commentCreatedAt={comment.attributes.created_at}
                   moderator={moderator}

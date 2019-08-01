@@ -12,7 +12,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Sharing from 'components/Sharing';
-// import IdeaMeta from './IdeaMeta';
+import InitiativeMeta from './InitiativeMeta';
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
 // import IdeaSharingModalContent from './IdeaSharingModalContent';
@@ -24,18 +24,20 @@ import Body from 'components/PostComponents/Body';
 import ContentFooter from 'components/PostComponents/ContentFooter';
 
 import PostedBy from './PostedBy';
+import PostedByMobile from './PostedByMobile';
 import Image from 'components/PostComponents/Image';
-// import IdeaAuthor from './IdeaAuthor';
 import Footer from 'components/PostComponents/Footer';
 import Spinner from 'components/UI/Spinner';
 import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
-// import ActionBar from './ActionBar';
-// import TranslateButton from 'components/UI/TranslateButton';
+import ActionBar from './ActionBar';
+import TranslateButton from 'components/PostComponents/TranslateButton';
+import VoteControl from 'containers/InitiativesShow/VoteControl';
+import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
+import GetInitiativeImages, { GetInitiativeImagesChildProps } from 'resources/GetInitiativeImages';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
@@ -54,7 +56,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -97,7 +99,7 @@ const Container = styled.div`
   }
 `;
 
-const IdeaContainer = styled.div`
+const InitiativeContainer = styled.div`
   width: 100%;
   max-width: ${postPageContentMaxWidth};
   display: flex;
@@ -166,29 +168,72 @@ const InitiativeHeader = styled.div`
   `}
 `;
 
-const IdeaImage = styled.img`
+// const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
+//   margin-top: 4px;
+
+//   ${media.biggerThanMaxTablet`
+//     display: none;
+//   `}
+// `;
+
+const InitiativeBannerContainer = styled.div`
   width: 100%;
-  height: auto;
-  margin-bottom: 25px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${colors.separation};
+  height: 163px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  position: relative;
+  z-index: 3;
+  background: #767676;
+
+  ${media.smallerThanMinTablet`
+    min-height: 200px;
+  `}
 `;
 
-const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
-  margin-top: 4px;
+const InitiativeBannerImage = styled.div<{ src: string | null }>`
+  background-image: url(${({ src }) => src});
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -2;
+`;
 
-  ${media.biggerThanMaxTablet`
+const InitiativeHeaderOverlay = styled.div`
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+`;
+
+const NotOnDesktop = styled.div`
+  ${media.biggerThanMinTablet`
     display: none;
   `}
 `;
 
-const StyledIdeaAuthor = styled(IdeaAuthor)`
-  margin-left: -4px;
-  margin-bottom: 50px;
-
-  ${media.smallerThanMaxTablet`
+const OnlyOnDesktop = styled.div`
+  ${media.smallerThanMinTablet`
     display: none;
   `}
+`;
+
+const MobileMoreActionContainer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
 `;
 
 const StyledLoadableDropdownMap = styled(LoadableDropdownMap)`
@@ -247,7 +292,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 interface DataProps {
   initiative: GetInitiativeChildProps;
   locale: GetLocaleChildProps;
-  ideaImages: GetIdeaImagesChildProps;
+  initiativeImages: GetInitiativeImagesChildProps;
   initiativeFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
@@ -261,7 +306,7 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends DataProps, InputProps {}
+interface Props extends DataProps, InputProps { }
 
 interface State {
   loaded: boolean;
@@ -303,9 +348,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
   setLoaded = () => {
     const { loaded } = this.state;
-    const { initiative, ideaImages, officialFeedbacks } = this.props;
+    const { initiative, initiativeImages, officialFeedbacks } = this.props;
 
-    if (!loaded && !isNilOrError(initiative) && !isUndefined(ideaImages) && !isUndefined(officialFeedbacks.officialFeedbacksList)) {
+    if (!loaded && !isNilOrError(initiative) && !isUndefined(initiativeImages) && !isUndefined(officialFeedbacks.officialFeedbacksList)) {
       this.setState({ loaded: true });
     }
   }
@@ -314,7 +359,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     this.setState({ ideaIdForSocialSharing: null });
   }
 
-  onTranslateIdea = () => {
+  onTranslateInitiative = () => {
     this.setState(prevState => {
       // analytics
       if (prevState.translateButtonClicked === true) {
@@ -335,7 +380,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       locale,
       initiative,
       localize,
-      ideaImages,
+      initiativeImages,
       authUser,
       windowSize,
       className,
@@ -346,11 +391,13 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     let content: JSX.Element | null = null;
 
     if (!isNilOrError(initiative) && !isNilOrError(locale) && loaded) {
+      const initiativeHeaderImageLarge = (initiative.attributes.header_bg.large || null);
+
       const authorId: string | null = get(initiative, 'relationships.author.data.id', null);
       const initiativeCreatedAt = initiative.attributes.created_at;
       const titleMultiloc = initiative.attributes.title_multiloc;
       const initiativeTitle = localize(titleMultiloc);
-      const ideaImageLarge: string | null = get(ideaImages, '[0].attributes.versions.large', null);
+      const initiativeImageLarge: string | null = get(initiativeImages, '[0].attributes.versions.large', null);
       const initiativeGeoPosition = (initiative.attributes.location_point_geojson || null);
       const initiativeAddress = (initiative.attributes.location_description || null);
       const topicIds = (initiative.relationships.topics.data ? initiative.relationships.topics.data.map(item => item.id) : []);
@@ -365,9 +412,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         campaign: 'share_content',
         content: authUser.id
       } : {
-        source: 'share_idea',
-        campaign: 'share_content'
-      };
+          source: 'share_idea',
+          campaign: 'share_content'
+        };
       const showTranslateButton = (
         !isNilOrError(initiative) &&
         !isNilOrError(locale) &&
@@ -376,20 +423,49 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
       content = (
         <>
-          <IdeaMeta ideaId={ideaId} />
+          <InitiativeMeta initiativeId={initiativeId} />
 
-          <ActionBar
-            ideaId={ideaId}
-            translateButtonClicked={translateButtonClicked}
-            onTranslateIdea={this.onTranslateIdea}
-          />
+          <InitiativeBannerContainer>
+            <InitiativeBannerImage src={initiativeHeaderImageLarge} />
+            <NotOnDesktop>
+              <InitiativeHeaderOverlay />
+              <MobileMoreActionContainer>
+                <InitiativeMoreActions
+                  initiative={initiative}
+                  id="e2e-initiative-more-actions-mobile"
+                  color="white"
+                  tooltipPosition="bottom-left"
+                />
+              </MobileMoreActionContainer>
+              <Title
+                id={initiativeId}
+                context="initiative"
+                title={initiativeTitle}
+                locale={locale}
+                translateButtonClicked={translateButtonClicked}
+                color="white"
+                align="left"
+              />
+              <PostedByMobile
+                authorId={authorId}
+              />
+            </NotOnDesktop>
+          </InitiativeBannerContainer>
 
-          <IdeaContainer>
+          <OnlyOnDesktop>
+            <ActionBar
+              initiativeId={initiativeId}
+              translateButtonClicked={translateButtonClicked}
+              onTranslateInitiative={this.onTranslateInitiative}
+            />
+          </OnlyOnDesktop>
+
+          <InitiativeContainer>
             <FeatureFlag name="machine_translations">
               {showTranslateButton && smallerThanSmallTablet &&
                 <StyledTranslateButtonMobile
                   translateButtonClicked={translateButtonClicked}
-                  onClick={this.onTranslateIdea}
+                  onClick={this.onTranslateInitiative}
                 />
               }
             </FeatureFlag>
@@ -397,19 +473,22 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             <Content>
               <LeftColumn>
                 <Topics topicIds={topicIds} />
-                <InitiativeHeader>
-                  <Title
-                    id={initiativeId}
-                    context="initiative"
-                    title={initiativeTitle}
-                    locale={locale}
-                    translateButtonClicked={translateButtonClicked}
-                  />
 
-                  {smallerThanLargeTablet &&
-                    <StyledMobileIdeaPostedBy authorId={authorId} />
-                  }
-                </InitiativeHeader>
+                <OnlyOnDesktop>
+                  <InitiativeHeader>
+                    <Title
+                      id={initiativeId}
+                      context="initiative"
+                      title={initiativeTitle}
+                      locale={locale}
+                      translateButtonClicked={translateButtonClicked}
+                    />
+
+                    {/* {smallerThanLargeTablet &&
+                      <StyledMobileIdeaPostedBy authorId={authorId} />
+                    } */}
+                  </InitiativeHeader>
+                </OnlyOnDesktop>
 
                 {biggerThanLargeTablet &&
                   <PostedBy
@@ -417,9 +496,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   />
                 }
 
-                {ideaImageLarge &&
+                {initiativeImageLarge &&
                   <Image
-                    src={ideaImageLarge}
+                    src={initiativeImageLarge}
                     postType="initiative"
                     className="e2e-initiativeImage"
                   />
@@ -472,7 +551,8 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
                   <MetaContent>
-                  < SharingWrapper>
+                    <VoteControl initiativeId={initiative.id} />
+                    <SharingWrapper>
                       <Sharing
                         context="initiative"
                         url={initiativeUrl}
@@ -486,9 +566,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 </RightColumnDesktop>
               }
             </Content>
-          </IdeaContainer>
+          </InitiativeContainer>
 
-          {loaded && <Footer postId={initiativeId} postType="initiative" />}
+          {/* {loaded && <Footer postId={initiativeId} postType="initiative" />} */}
         </>
       );
     }
@@ -516,7 +596,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           </Container>
         </CSSTransition>
 
-        <FeatureFlag name="ideaflow_social_sharing">
+        {/* <FeatureFlag name="ideaflow_social_sharing">
           <Modal
             opened={!!ideaIdForSocialSharing}
             close={this.closeIdeaSocialSharingModal}
@@ -528,7 +608,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
               <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
             }
           </Modal>
-        </FeatureFlag>
+        </FeatureFlag> */}
       </>
     );
   }
@@ -538,10 +618,10 @@ const InitiativesShowWithHOCs = injectLocalize<Props>(injectIntl(withRouter(Init
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  authUser: <GetAuthUser/>,
+  authUser: <GetAuthUser />,
   windowSize: <GetWindowSize debounce={50} />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
-  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
+  initiativeImages: ({ initiativeId, render }) => <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>,
   initiativeFiles: ({ initiativeId, render }) => <GetResourceFiles resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFiles>,
   officialFeedbacks: ({ initiativeId, render }) => <GetOfficialFeedbacks postId={initiativeId} postType="initiative">{render}</GetOfficialFeedbacks>,
   postOfficialFeedbackPermission: ({ initiative, render }) => !isNilOrError(initiative) ? <GetPermission item={initiative} action="moderate" >{render}</GetPermission> : null,

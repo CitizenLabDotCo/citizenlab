@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 // components
 import Author from 'components/Author';
-import AdminBadge from './AdminBadge';
+import AdminBadge from '../../AdminBadge';
 
 // style
 import styled from 'styled-components';
@@ -35,7 +35,6 @@ const StyledAuthor = styled(Author)`
 
 interface InputProps {
   authorId: string | null;
-  commentId: string;
   commentType: 'parent' | 'child';
   commentCreatedAt: string;
   moderator: boolean;
