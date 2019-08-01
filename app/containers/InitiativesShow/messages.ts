@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.postedBy',
     defaultMessage: 'Initiative posted by {authorName}',
   },
+  postedByShort: {
+    id: 'app.containers.InitiativesShow.postedByShort',
+    defaultMessage: 'Posted by {authorName}',
+  },
   twitterMessage: {
     id: 'app.containers.InitiativesShow.twitterMessage',
     defaultMessage: 'Vote for {initiativeTitle} on',

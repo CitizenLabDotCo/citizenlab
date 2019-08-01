@@ -24,6 +24,7 @@ import Body from 'components/PostComponents/Body';
 import ContentFooter from 'components/PostComponents/ContentFooter';
 
 import PostedBy from './PostedBy';
+import PostedByMobile from './PostedByMobile';
 import Image from 'components/PostComponents/Image';
 import Footer from 'components/PostComponents/Footer';
 import Spinner from 'components/UI/Spinner';
@@ -180,7 +181,7 @@ const InitiativeBannerContainer = styled.div`
   height: 163px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 40px;
@@ -443,6 +444,10 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 locale={locale}
                 translateButtonClicked={translateButtonClicked}
                 color="white"
+                align="left"
+              />
+              <PostedByMobile
+                authorId={authorId}
               />
             </NotOnDesktop>
           </InitiativeBannerContainer>
