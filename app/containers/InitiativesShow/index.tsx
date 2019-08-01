@@ -15,7 +15,7 @@ import Sharing from 'components/Sharing';
 import InitiativeMeta from './InitiativeMeta';
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-// import IdeaSharingModalContent from './IdeaSharingModalContent';
+import SharingModalContent from 'components/PostComponents/sharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import Topics from 'components/PostComponents/Topics';
 import Title from 'components/PostComponents/Title';
@@ -43,6 +43,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -298,6 +299,7 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
+  tenant: GetTenantChildProps;
 }
 
 interface InputProps {
@@ -311,7 +313,7 @@ interface Props extends DataProps, InputProps { }
 interface State {
   loaded: boolean;
   spamModalVisible: boolean;
-  ideaIdForSocialSharing: string | null;
+  initiativeIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
 }
 
@@ -323,19 +325,19 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     this.state = {
       loaded: false,
       spamModalVisible: false,
-      ideaIdForSocialSharing: null,
+      initiativeIdForSocialSharing: null,
       translateButtonClicked: false,
     };
   }
 
   componentDidMount() {
-    const newIdeaId = get(this.props.location.query, 'new_idea_id');
+    const newInitiativeId = get(this.props.location.query, 'new_initiative_id');
 
     this.setLoaded();
 
-    if (newIdeaId) {
+    if (newInitiativeId) {
       setTimeout(() => {
-        this.setState({ ideaIdForSocialSharing: newIdeaId });
+        this.setState({ initiativeIdForSocialSharing: newInitiativeId });
       }, 1500);
 
       window.history.replaceState(null, '', window.location.pathname);
@@ -355,8 +357,8 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     }
   }
 
-  closeIdeaSocialSharingModal = () => {
-    this.setState({ ideaIdForSocialSharing: null });
+  closeInitiativeSocialSharingModal = () => {
+    this.setState({ initiativeIdForSocialSharing: null });
   }
 
   onTranslateInitiative = () => {
@@ -384,15 +386,18 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       authUser,
       windowSize,
       className,
-      postOfficialFeedbackPermission
+      postOfficialFeedbackPermission,
+      tenant
     } = this.props;
-    const { loaded, ideaIdForSocialSharing, translateButtonClicked } = this.state;
+    const { loaded, initiativeIdForSocialSharing, translateButtonClicked } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
+    const initiativeSettings = !isNilOrError(tenant) ? tenant.attributes.settings.initiatives : null;
 
-    if (!isNilOrError(initiative) && !isNilOrError(locale) && loaded) {
+    if (initiativeSettings && !isNilOrError(initiative) && !isNilOrError(locale) && loaded) {
       const initiativeHeaderImageLarge = (initiative.attributes.header_bg.large || null);
-
+      const votingThreshold = initiativeSettings.voting_threshold;
+      const daysLimit = initiativeSettings.days_limit;
       const authorId: string | null = get(initiative, 'relationships.author.data.id', null);
       const initiativeCreatedAt = initiative.attributes.created_at;
       const titleMultiloc = initiative.attributes.title_multiloc;
@@ -408,13 +413,13 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
       const utmParams = !isNilOrError(authUser) ? {
-        source: 'share_idea',
+        source: 'share_initiative',
         campaign: 'share_content',
         content: authUser.id
       } : {
-          source: 'share_idea',
-          campaign: 'share_content'
-        };
+        source: 'share_initiative',
+        campaign: 'share_content'
+      };
       const showTranslateButton = (
         !isNilOrError(initiative) &&
         !isNilOrError(locale) &&
@@ -571,46 +576,53 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           {/* {loaded && <Footer postId={initiativeId} postType="initiative" />} */}
         </>
       );
+
+      return (
+        <>
+          {!loaded &&
+            <Loading>
+              <Spinner />
+            </Loading>
+          }
+
+          <CSSTransition
+            classNames="content"
+            in={loaded}
+            timeout={{
+              enter: contentFadeInDuration + contentFadeInDelay,
+              exit: 0
+            }}
+            enter={true}
+            exit={false}
+          >
+            <Container id="e2e-initiative-show" className={className}>
+              {content}
+            </Container>
+          </CSSTransition>
+
+          <FeatureFlag name="initiativeflow_social_sharing">
+            <Modal
+              opened={!!initiativeIdForSocialSharing}
+              close={this.closeInitiativeSocialSharingModal}
+              hasSkipButton={true}
+              skipText={<FormattedMessage {...messages.skipSharing} />}
+              label={formatMessage(messages.modalShareLabel)}
+            >
+              {initiativeIdForSocialSharing &&
+                <SharingModalContent
+                  postType="initiative"
+                  postId={initiativeIdForSocialSharing}
+                  title={formatMessage(messages.shareTitle)}
+                  subtitle={formatMessage(messages.shareSubtitle, { votingThreshold, daysLimit })}
+                />
+              }
+            </Modal>
+          </FeatureFlag>
+        </>
+      );
     }
 
-    return (
-      <>
-        {!loaded &&
-          <Loading>
-            <Spinner />
-          </Loading>
-        }
-
-        <CSSTransition
-          classNames="content"
-          in={loaded}
-          timeout={{
-            enter: contentFadeInDuration + contentFadeInDelay,
-            exit: 0
-          }}
-          enter={true}
-          exit={false}
-        >
-          <Container id="e2e-idea-show" className={className}>
-            {content}
-          </Container>
-        </CSSTransition>
-
-        {/* <FeatureFlag name="ideaflow_social_sharing">
-          <Modal
-            opened={!!ideaIdForSocialSharing}
-            close={this.closeIdeaSocialSharingModal}
-            hasSkipButton={true}
-            skipText={<FormattedMessage {...messages.skipSharing} />}
-            label={formatMessage(messages.modalShareLabel)}
-          >
-            {ideaIdForSocialSharing &&
-              <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
-            }
-          </Modal>
-        </FeatureFlag> */}
-      </>
-    );
+    return null;
   }
 }
 
@@ -618,6 +630,7 @@ const InitiativesShowWithHOCs = injectLocalize<Props>(injectIntl(withRouter(Init
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  tenant: <GetTenant />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize debounce={50} />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
