@@ -416,6 +416,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const secondUrlSegment = urlSegments[1];
     const lastUrlSegment = urlSegments[urlSegments.length - 1];
     const onIdeaPage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'ideas' && lastUrlSegment !== 'new');
+    const onInitiativePage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'initiatives' && lastUrlSegment !== 'new');
 
     return (
       <>
@@ -426,7 +427,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
         <Container
           role="navigation"
           id="navbar"
-          className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage ? 'hideNavbar' : ''}`}
+          className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
         >
           <ContainerInner>
             <Left>

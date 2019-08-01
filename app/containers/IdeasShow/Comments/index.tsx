@@ -60,7 +60,8 @@ const LoadingMoreMessage = styled.div`
 `;
 
 export interface InputProps {
-  ideaId: string;
+  postId: string;
+  postType: 'idea' | 'initiative';
   className?: string;
 }
 
@@ -73,7 +74,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project, className }) => {
+const CommentsSection = memo<Props>(({ postId, authUser, idea, comments, project, className }) => {
   const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
   const [posting, setPosting] = useState(false);
   const { commentsList, hasMore, onLoadMore, loadingInital, loadingMore, onChangeSort } = comments;
@@ -112,7 +113,7 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
             Show warning messages when there are no comments and you're looged in as an admin.
             Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
           */}
-          {isModerator && commentsList && commentsList.length === 0 && !commentingDisabledReason &&
+          {true &&
             <StyledWarning>
               <FormattedMessage {...messages.noComments} />
             </StyledWarning>
@@ -126,7 +127,7 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
           />
 
           <Comments
-            ideaId={ideaId}
+            ideaId={postId}
             comments={commentsList}
             sortOrder={sortOrder}
             loading={loadingInital}
@@ -148,7 +149,7 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
           }
 
           <ParentCommentForm
-            ideaId={ideaId}
+            ideaId={postId}
             postingComment={handleCommentPosting}
           />
         </>
@@ -161,8 +162,8 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  comments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
+  idea: ({ postId, render }) => <GetIdea id={postId}>{render}</GetIdea>,
+  comments: ({ postId, render }) => <GetComments postId={postId} postType="idea">{render}</GetComments>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>
 });
 

@@ -11,11 +11,11 @@ export default defineMessages({
   },
   wrong_content: {
     id: 'app.containers.SpamReport.wrong_content',
-    defaultMessage: 'This content is not an {itemType, select, ideas {idea} comments {comment}} and does not belong here',
+    defaultMessage: 'This content is not an {itemType, select, ideas {idea} comments {comment} initiatives {initiative}} and does not belong here',
   },
   inappropriate: {
     id: 'app.containers.SpamReport.inappropriate',
-    defaultMessage: 'I find this {itemType, select, ideas {idea} comments {comment}} inappropriate or offensive',
+    defaultMessage: 'I find this {itemType, select, ideas {idea} comments {comment} initiatives {initiative}} inappropriate or offensive',
   },
   other: {
     id: 'app.containers.SpamReport.other',

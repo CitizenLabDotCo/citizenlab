@@ -1,69 +1,19 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
+import { get } from 'lodash-es';
 
 // components
-import BreadCrumbs from './Breadcrumbs';
+import BreadCrumbs from 'components/PostComponents/Breadcrumbs';
+import ActionBarLayout from 'components/PostComponents/ActionBar';
 import IdeaMoreActions from './IdeaMoreActions';
-import TranslateButton from '../TranslateButton';
-import FeatureFlag from 'components/FeatureFlag';
 
 // resource
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
-// styles
-import styled from 'styled-components';
-import { colors, media, postPageContentMaxWidth } from 'utils/styleUtils';
-
-const Container = styled.div`
-  width: 100%;
-  height: 50px;
-  background-color: rgba(132, 147, 158, 0.06);
-  color: ${colors.label};
-  border-bottom: 1px solid ${colors.adminSeparation};
-`;
-
-const Inner = styled.div`
-  max-width: ${postPageContentMaxWidth};
-  height: 100%;
-  margin: 0 auto;
-  padding-left: 60px;
-  padding-right: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-    max-width: auto;
-    padding-left: 15px;
-    padding-right: 15px;
-  `}
-`;
-
-const Left = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-`;
-
-const Right = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const StyledTranslateButton = styled(TranslateButton)`
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
-`;
-
-const StyledIdeaMoreActions = styled(IdeaMoreActions)`
-  margin-left: 35px;
-`;
 
 interface InputProps {
   ideaId: string;
@@ -74,11 +24,12 @@ interface InputProps {
 interface DataProps {
   idea: GetIdeaChildProps;
   locale: GetLocaleChildProps;
+  project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-const ActionBar = memo<Props>(({ ideaId, onTranslateIdea, translateButtonClicked, idea, locale }) => {
+const ActionBar = memo<Props>(({ project, onTranslateIdea, translateButtonClicked, idea, locale }) => {
 
   const showTranslateButton = (
     !isNilOrError(idea) &&
@@ -87,30 +38,29 @@ const ActionBar = memo<Props>(({ ideaId, onTranslateIdea, translateButtonClicked
   );
 
   return (
-    <Container>
-      <Inner>
-        <Left>
-          <BreadCrumbs ideaId={ideaId} />
-        </Left>
-        <Right>
-          <FeatureFlag name="machine_translations">
-            {showTranslateButton &&
-              <StyledTranslateButton
-                translateButtonClicked={translateButtonClicked}
-                onClick={onTranslateIdea}
-              />
-            }
-          </FeatureFlag>
-          <StyledIdeaMoreActions id="e2e-idea-more-actions" ideaId={ideaId} />
-        </Right>
-      </Inner>
-    </Container>
+    <ActionBarLayout
+      leftContent={!isNilOrError(project) ? (
+        <BreadCrumbs
+          links={[{
+            text: project.attributes.title_multiloc,
+            to: `/projects/${project.attributes.slug}`
+          }]}
+        />
+      ) : null}
+      rightContent={isNilOrError(idea)
+        ? null
+        : <IdeaMoreActions id="e2e-idea-more-actions" idea={idea} />}
+      showTranslateButton={showTranslateButton}
+      onTranslate={onTranslateIdea}
+      translateButtonClicked={translateButtonClicked}
+    />
   );
 });
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
 });
 
 export default (inputProps: InputProps) => (

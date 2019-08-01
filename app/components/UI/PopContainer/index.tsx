@@ -74,7 +74,8 @@ type Props = {
   children?: JSX.Element | null;
 };
 
-export default class Unauthenticated extends React.PureComponent<Props> {
+/** A bordered container with an icon that animates in with a bouncy animation */
+export default class PopContainer extends React.PureComponent<Props> {
 
   render() {
     return (

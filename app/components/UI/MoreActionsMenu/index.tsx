@@ -15,10 +15,10 @@ const Container = styled.div`
   display: inline-block;
 `;
 
-const MoreOptionsIcon = styled(Icon)`
+const MoreOptionsIcon = styled(Icon)<{color?: string}>`
   width: 20px;
   height: 6px;
-  fill: ${colors.label};
+  fill: ${({ color }) => color || colors.label};
   transition: all 100ms ease-out;
 `;
 
@@ -108,6 +108,8 @@ export interface Props {
   className?: string;
   fontSize?: number;
   id?: string;
+  color?: string;
+  tooltipPosition?: 'bottom-left';
 }
 
 interface State {
@@ -143,7 +145,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
   }
 
   render() {
-    const { actions, ariaLabel, fontSize, id } = this.props;
+    const { actions, ariaLabel, fontSize, id, color, tooltipPosition } = this.props;
     const { visible } = this.state;
     const className = this.props.className;
 
@@ -155,6 +157,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
       <Container className={className} >
         <Popover
           id={id}
+          position={tooltipPosition}
           content={
             <List>
               {actions.map((action, index) => {
@@ -186,7 +189,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
             onMouseDown={this.removeFocus}
             onClick={this.toggleMenu}
           >
-            <MoreOptionsIcon title={this.props.label} name="more-options" />
+            <MoreOptionsIcon title={this.props.label} name="more-options" color={color} />
             {this.props.label && <MoreOptionsLabel fontSize={fontSize}>{this.props.label}</MoreOptionsLabel>}
           </MoreOptions>
         </Popover>

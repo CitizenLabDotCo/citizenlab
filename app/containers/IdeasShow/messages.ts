@@ -143,7 +143,7 @@ export default defineMessages({
   },
   metaTitle: {
     id: 'app.containers.IdeasShow.metaTitle',
-    defaultMessage: 'Idea  • {ideaTitle}',
+    defaultMessage: 'Idea • {ideaTitle}',
   },
   metaOgTitle: {
     id: 'app.containers.IdeasShow.metaOgTitle',
@@ -317,14 +317,6 @@ export default defineMessages({
   modalShareLabel: {
     id: 'app.components.IdeasShow.modalShareLabel',
     defaultMessage: 'Your idea was posted, share it now to reach more votes!',
-  },
-  seeTranslation: {
-    id: 'app.components.IdeasShow.seeTranslation',
-    defaultMessage: 'See translation',
-  },
-  seeOriginal: {
-    id: 'app.components.IdeasShow.seeOriginal',
-    defaultMessage: 'See original',
   },
   similarIdeas: {
     id: 'app.components.IdeasShow.similarIdeas',

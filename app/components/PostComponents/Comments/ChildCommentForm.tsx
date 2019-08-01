@@ -34,7 +34,7 @@ import { hideVisually } from 'polished';
 import { media, viewportWidths } from 'utils/styleUtils';
 
 // typings
-import { ICommentReplyClicked } from './CommentFooter';
+import { ICommentReplyClicked } from './ParentComment/IdeaParentComment/IdeaComment/CommentFooter';
 
 const Container = styled.div``;
 
