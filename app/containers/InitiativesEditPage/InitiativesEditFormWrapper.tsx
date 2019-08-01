@@ -22,6 +22,7 @@ interface Props {
   locale: Locale;
   initiative: IInitiativeData;
   initiativeImage: IInitiativeImageData | null;
+  initiativeFiles: UploadFile[] | null;
   onPublished: () => void;
 }
 
@@ -32,6 +33,7 @@ interface State extends FormValues {
   oldImageId: string | null;
   publishError: boolean;
   apiErrors: any;
+  filesToRemove: UploadFile[];
 }
 
 function doNothing() {
@@ -43,7 +45,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
   constructor(props) {
     super(props);
 
-    const { initiative } = props;
+    const { initiative, initiativeFiles } = props;
 
     this.initialValues = this.getFormValues(initiative);
 
@@ -54,20 +56,27 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
       initiativeId: initiative.id,
       publishing: false,
       hasBannerChanged: false,
-      banner: undefined, // TODO
-      files: [], // TODO
+      banner: undefined,
+      files: initiativeFiles || [],
       publishError: false,
-      apiErrors: null
+      apiErrors: null,
+      filesToRemove: []
     };
   }
 
   componentDidMount() {
-    const { initiativeImage } = this.props;
+    const { initiativeImage, initiative } = this.props;
     if (initiativeImage && initiativeImage.attributes.versions.large) {
       const url = initiativeImage.attributes.versions.large;
       const id = initiativeImage.id;
       convertUrlToUploadFile(url, id, null).then((image) => {
         this.setState({ image });
+      });
+    }
+    if (initiative && initiative.attributes.header_bg.large) {
+      const url = initiative.attributes.header_bg.large;
+      convertUrlToUploadFile(url, null, null).then((banner) => {
+        this.setState({ banner });
       });
     }
   }
@@ -125,7 +134,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
 
   handlePublish = async () => {
     const changedValues = this.changedValues();
-    const { initiativeId, hasBannerChanged, image, oldImageId, banner, publishing } = this.state;
+    const { initiativeId, hasBannerChanged, image, oldImageId, banner, publishing, filesToRemove, files } = this.state;
     const { onPublished } = this.props;
 
     // if we're already saving, do nothing.
@@ -155,6 +164,32 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
           // remove image from remote if it was saved
         });
       }
+
+      // saves changes to files
+      filesToRemove.map(file => {
+        deleteInitiativeFile(initiativeId, file.id as string)
+        // we checked for id before adding them in this array
+        .catch(errorResponse => {
+          const apiErrors = get(errorResponse, 'json.errors');
+          this.setState((state) => ({ apiErrors: { ...state.apiErrors, ...apiErrors } }));
+          setTimeout(() => {
+            this.setState(state => ({ apiErrors: { ...state.apiErrors, file: undefined } }));
+          }, 5000);
+        });
+      });
+      files.map(file => {
+        if (!file.id) {
+          addInitiativeFile(initiativeId, file.base64, file.name).then(res => {
+            file.id = res.data.id;
+          }).catch(errorResponse => {
+            const apiErrors = get(errorResponse, 'json.errors');
+            this.setState((state) => ({ apiErrors: { ...state.apiErrors, ...apiErrors } }));
+            setTimeout(() => {
+              this.setState(state => ({ apiErrors: { ...state.apiErrors, file: undefined } }));
+            }, 5000);
+          });
+        }
+      });
 
       onPublished();
     } catch (errorResponse) {
@@ -196,26 +231,14 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
     }
   }
   onAddFile = (file: UploadFile) => {
-    const { initiativeId } = this.state;
-    if (initiativeId) {
-      addInitiativeFile(initiativeId, file.base64, file.name).then(res => {
-        file.id = res.data.id;
-        this.setState(({ files }) => ({ files: [...files, file] }));
-      }).catch(errorResponse => {
-        const apiErrors = get(errorResponse, 'json.errors');
-        this.setState((state) => ({ apiErrors: { ...state.apiErrors, ...apiErrors } }));
-        setTimeout(() => {
-          this.setState(state => ({ apiErrors: { ...state.apiErrors, file: undefined } }));
-        }, 5000);
-      });
-    }
+    this.setState(({ files }) => ({ files: [...files, file] }));
   }
-  onRemoveFile = (fileToRemove: UploadFile) => {
-    const { initiativeId } = this.state;
 
-    if (initiativeId && fileToRemove.id) {
-      deleteInitiativeFile(initiativeId, fileToRemove.id)
-        .then(() => this.setState(({ files }) => ({ files: files.filter(file => file.base64 !== fileToRemove.base64) })));
+  onRemoveFile = (fileToRemove: UploadFile) => {
+    console.log(fileToRemove);
+    this.setState(({ files }) => ({ files: [...files].filter(file => file.base64 !== fileToRemove.base64) }));
+    if (fileToRemove.id) {
+      this.setState(({ filesToRemove }) => ({ filesToRemove: [...filesToRemove, fileToRemove] }));
     }
   }
 

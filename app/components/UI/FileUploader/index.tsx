@@ -31,10 +31,6 @@ export default class FileUploader extends PureComponent<Props, State>{
   render() {
     const { files, errors, id } = this.props;
 
-    // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    //   return null;
-    // }
-
     return (
       <>
         <FileInput

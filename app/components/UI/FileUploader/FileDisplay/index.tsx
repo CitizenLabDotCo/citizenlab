@@ -86,6 +86,7 @@ interface Props {
 
 const FileDisplay = ({ file, onDeleteClick }: Props) => {
   if (file && !isError(file)) {
+    console.log(file);
     return (
       <Container>
         <Paperclip name="paperclip" />
