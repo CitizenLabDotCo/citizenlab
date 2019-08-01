@@ -9,6 +9,8 @@ import GetInitiativeStatus, { GetInitiativeStatusChildProps } from 'resources/Ge
 import { IInitiativeData } from 'services/initiatives';
 import { ITenantSettings } from 'services/tenant';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { addVote, deleteVote } from 'services/initiativeVotes';
 
 import ProposedNotVoted from './ProposedNotVoted';
 import ProposedVoted from './ProposedVoted';
@@ -17,10 +19,10 @@ import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
 import Ineligible from './Ineligible';
 import Custom from './Custom';
+import PopContainer from 'components/UI/PopContainer';
+import Unauthenticated from './Unauthenticated';
 
-// Using this to fake the way to component will be embedded in the eventual initiative show page
-const TemporaryOuterContainer = styled.div`
-  width: 300px;
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 45px;
@@ -30,16 +32,13 @@ const TemporaryOuterContainer = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 interface VoteControlComponentProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: ITenantSettings['initiatives'];
   userVoted: boolean;
+  onVote?: () => void;
+  onCancelVote?: () => void;
 }
 
 type TComponentMap = {
@@ -50,10 +49,6 @@ type TComponentMap = {
 
 /** Maps the initiative status and whether the user voted or not to the right component to render */
 const componentMap: TComponentMap = {
-  published: {
-    voted: ProposedVoted,
-    notVoted: ProposedNotVoted,
-  },
   proposed: {
     voted: ProposedVoted,
     notVoted: ProposedNotVoted,
@@ -88,14 +83,43 @@ interface DataProps {
   tenant: GetTenantChildProps;
   initiative: GetInitiativeChildProps;
   initiativeStatus: GetInitiativeStatusChildProps;
+  user: GetAuthUserChildProps;
+}
+
+interface State {
+  showUnauthenticated: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
 
-class VoteControl extends PureComponent<Props> {
+class VoteControl extends PureComponent<Props, State> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      showUnauthenticated: false,
+    };
+  }
+
+  handleOnvote = async () => {
+    const { initiative, user } = this.props;
+    if (isNilOrError(user)) {
+      this.setState({ showUnauthenticated: true });
+    } else if (!isNilOrError(initiative)) {
+      await addVote(initiative.id, { mode: 'up' });
+    }
+  }
+
+  handleOnCancelVote = async () => {
+    const { initiative } = this.props;
+    if (!isNilOrError(initiative) && initiative.relationships.user_vote && initiative.relationships.user_vote.data) {
+      await deleteVote(initiative.id, initiative.relationships.user_vote.data.id);
+    }
+  }
 
   render() {
     const { initiative, initiativeStatus, tenant } = this.props;
+    const { showUnauthenticated } = this.state;
 
     if (isNilOrError(initiative) ||
       isNilOrError(initiativeStatus) ||
@@ -104,27 +128,35 @@ class VoteControl extends PureComponent<Props> {
     ) return null;
 
     const statusCode = initiativeStatus.attributes.code;
-    const userVoted = !!initiative.relationships.user_vote && !!initiative.relationships.user_vote.data;
+    const userVoted = !!(initiative.relationships.user_vote && initiative.relationships.user_vote.data);
     const StatusComponent = componentMap[statusCode][userVoted ? 'voted' : 'notVoted'];
     const initiativeSettings = tenant.attributes.settings.initiatives;
 
     return (
-      <TemporaryOuterContainer>
-        <Container>
-          <StatusComponent
-            initiative={initiative}
-            initiativeStatus={initiativeStatus}
-            initiativeSettings={initiativeSettings}
-            userVoted={userVoted}
-          />
-        </Container>
-      </TemporaryOuterContainer>
+      <Container>
+        {showUnauthenticated
+          ?
+            <PopContainer icon="lock-outlined">
+              <Unauthenticated />
+            </PopContainer>
+          :
+            <StatusComponent
+              initiative={initiative}
+              initiativeStatus={initiativeStatus}
+              initiativeSettings={initiativeSettings}
+              userVoted={userVoted}
+              onVote={this.handleOnvote}
+              onCancelVote={this.handleOnCancelVote}
+            />
+        }
+      </Container>
     );
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
+  user: <GetAuthUser />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   initiativeStatus: ({ initiative, render }) => {
     if (!isNilOrError(initiative) && initiative.relationships.initiative_status && initiative.relationships.initiative_status.data) {
@@ -132,7 +164,7 @@ const Data = adopt<DataProps, InputProps>({
     } else {
       return null;
     }
-  }
+  },
 });
 
 export default (inputProps: InputProps) => (
