@@ -3,7 +3,6 @@ import { get } from 'lodash-es';
 
 // components
 import SuccessCard from './SuccessCard';
-import ContentContainer from 'components/ContentContainer';
 import Icon from 'components/UI/Icon';
 
 // style
@@ -26,13 +25,24 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const StyledContentContainer: any = styled(ContentContainer)`
-  background: ${colors.background};
+const StyledContentContainer: any = styled.div`
+  width: 100%;
+  max-width: 1345px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   padding-top: 80px;
-  padding-bottom: 80px;
+  padding-bottom: 100px;
+
   ${media.smallerThanMinTablet`
     display: none !important;
   `}
+
+  @media (max-width: 1279px) {
+    max-width: 1000px;
+  }
 `;
 
 const SuccessIcon = styled(Icon)`
