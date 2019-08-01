@@ -216,8 +216,14 @@ const InitiativeHeaderOverlay = styled.div`
   z-index: -1;
 `;
 
-const OnlyMobile = styled.div`
-  ${media.biggerThanPhone`
+const NotOnDesktop = styled.div`
+  ${media.biggerThanMinTablet`
+    display: none;
+  `}
+`;
+
+const OnlyOnDesktop = styled.div`
+  ${media.smallerThanMinTablet`
     display: none;
   `}
 `;
@@ -413,7 +419,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
           <InitiativeBannerContainer>
             <InitiativeBannerImage src={initiativeHeaderImageLarge} />
-            <OnlyMobile>
+            <NotOnDesktop>
               <InitiativeHeaderOverlay />
               <Title
                 id={initiativeId}
@@ -422,14 +428,16 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 locale={locale}
                 translateButtonClicked={translateButtonClicked}
               />
-            </OnlyMobile>
+            </NotOnDesktop>
           </InitiativeBannerContainer>
 
-          <ActionBar
-            initiativeId={initiativeId}
-            translateButtonClicked={translateButtonClicked}
-            onTranslateInitiative={this.onTranslateInitiative}
-          />
+          <OnlyOnDesktop>
+            <ActionBar
+              initiativeId={initiativeId}
+              translateButtonClicked={translateButtonClicked}
+              onTranslateInitiative={this.onTranslateInitiative}
+            />
+          </OnlyOnDesktop>
 
           <InitiativeContainer>
             <FeatureFlag name="machine_translations">
@@ -444,19 +452,22 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             <Content>
               <LeftColumn>
                 <Topics topicIds={topicIds} />
-                <InitiativeHeader>
-                  <Title
-                    id={initiativeId}
-                    context="initiative"
-                    title={initiativeTitle}
-                    locale={locale}
-                    translateButtonClicked={translateButtonClicked}
-                  />
 
-                  {/* {smallerThanLargeTablet &&
-                    <StyledMobileIdeaPostedBy authorId={authorId} />
-                  } */}
-                </InitiativeHeader>
+                <OnlyOnDesktop>
+                  <InitiativeHeader>
+                    <Title
+                      id={initiativeId}
+                      context="initiative"
+                      title={initiativeTitle}
+                      locale={locale}
+                      translateButtonClicked={translateButtonClicked}
+                    />
+
+                    {/* {smallerThanLargeTablet &&
+                      <StyledMobileIdeaPostedBy authorId={authorId} />
+                    } */}
+                  </InitiativeHeader>
+                </OnlyOnDesktop>
 
                 {biggerThanLargeTablet &&
                   <PostedBy
