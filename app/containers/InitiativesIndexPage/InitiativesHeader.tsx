@@ -26,17 +26,20 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import T from 'components/T';
 
-const illustration = require('assets/img/initiativesHeaderImage.png');
+const illustrationSrc: string = require('assets/img/initiativesHeaderImage.png');
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  ${media.smallerThanMinTablet`
+    background-color: ${colors.background};
+  `}
 `;
 
 const Header = styled.div`
   width: 100%;
-  min-height: 450px;
+  min-height: 350px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -44,14 +47,6 @@ const Header = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  ${media.desktop`
-    min-height: 450px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    min-height: 350px;
-  `}
 
   ${media.smallerThanMinTablet`
     min-height: 300px;
@@ -63,7 +58,6 @@ const HeaderContent = styled.div`
   height: 100%;
   max-width: ${(props) => props.theme.maxPageWidth + 60}px;
   padding-top: 50px;
-  padding-bottom: 50px;
   padding-left: 30px;
   padding-right: 30px;
   display: flex;
@@ -101,10 +95,14 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 `;
 
 const StartInitiative = styled(Button)`
-  margin-top: 38px;
+  margin-bottom: 50px;
+  margin-top: 18px;
 
   ${media.smallerThanMinTablet`
-    margin-top: 30px;
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 20px;
   `}
 `;
 
@@ -178,7 +176,7 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-interface State {}
+interface State { }
 
 class SignedOutHeader extends PureComponent<Props, State> {
   startInitiative = () => {
@@ -202,29 +200,28 @@ class SignedOutHeader extends PureComponent<Props, State> {
             <HeaderTitle>
               <FormattedMessage
                 {...messages.header}
-                values={{ styledOrgName: <ColoredText><T value={tenant.attributes.settings.core.organization_name}/></ColoredText> }}
+                values={{ styledOrgName: <ColoredText><T value={tenant.attributes.settings.core.organization_name} /></ColoredText> }}
               />
             </HeaderTitle>
 
             <StyledAvatarBubbles onClick={this.handleAvatarBubblesOnClick} />
 
-              <StartInitiative
-                fontWeight="500"
-                padding="13px 22px"
-                bgColor={theme.colorMain}
-                textColor="#FFF"
-                icon="arrowLeft"
-                iconPos="right"
-                onClick={this.startInitiative}
-                text={<FormattedMessage {...messages.startInitiative} />}
-                className="e2e-initiatives-header-cta-button"
-              />
-
           </HeaderContent>
+          <StartInitiative
+            fontWeight="500"
+            padding="13px 22px"
+            bgColor={theme.colorMain}
+            textColor="#FFF"
+            icon="arrowLeft"
+            iconPos="right"
+            onClick={this.startInitiative}
+            text={<FormattedMessage {...messages.startInitiative} />}
+            className="e2e-initiatives-header-cta-button"
+          />
         </Header>
         <Manual>
           <ManualContent>
-            <Illustration src={illustration} alt="" />
+            <Illustration src={illustrationSrc} alt="" />
             <ManualText>
               <ManualTitle>
                 <FormattedMessage {...messages.explanationTitle} />
@@ -243,7 +240,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
                       />
                     </Bold>
                   ),
-                  link: <Link to="/pages/initiatives"><FormattedMessage {...messages.readMore}/></Link>
+                  link: <Link to="/pages/initiatives"><FormattedMessage {...messages.readMore} /></Link>
                 }}
               />
             </ManualText>
