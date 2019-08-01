@@ -75,6 +75,18 @@ const StyledButton = styled(Button)`
   margin-top: 20px;
 `;
 
+const OnDesktop = styled.div`
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
+`;
+
+const OnMobile = styled.div`
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
 interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
@@ -97,6 +109,13 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
     return mStart.add(days_limit, 'day');
   }
 
+  daysLeft = (): number => {
+    const { initiative, initiativeSettings: { days_limit } } = this.props;
+    const mStart = moment(initiative.attributes.published_at);
+    const mTarget = mStart.add(days_limit, 'day');
+    return moment.duration(mTarget.diff(moment())).days();
+  }
+
   render() {
     const { initiative, initiativeSettings: { voting_threshold, eligibility_criteria }, theme } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
@@ -108,17 +127,33 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
         </CountDownWrapper>
         <StatusIcon name="bullseye" />
         <StatusExplanation>
-          <FormattedMessage
-            {...messages.proposedStatusExplanation}
-            values={{
-              votingThreshold: voting_threshold,
-              proposedStatusExplanationBold: (
-                <b>
-                  <FormattedMessage {...messages.proposedStatusExplanationBold} />
-                </b>
-              )
-            }}
-          />
+          <OnDesktop>
+            <FormattedMessage
+              {...messages.proposedStatusExplanation}
+              values={{
+                votingThreshold: voting_threshold,
+                proposedStatusExplanationBold: (
+                  <b>
+                    <FormattedMessage {...messages.proposedStatusExplanationBold} />
+                  </b>
+                )
+              }}
+            />
+          </OnDesktop>
+          <OnMobile>
+            <FormattedMessage
+              {...messages.proposedStatusExplanationMobile}
+              values={{
+                daysLeft: this.daysLeft(),
+                votingThreshold: voting_threshold,
+                proposedStatusExplanationMobileBold: (
+                  <b>
+                    <FormattedMessage {...messages.proposedStatusExplanationMobileBold} />
+                  </b>
+                )
+              }}
+            />
+          </OnMobile>
           {eligibility_criteria &&
             <StyledTooltip
               content={
