@@ -517,6 +517,16 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+      "initiativeflow_social_sharing": {
+        "type": "object",
+        "description":  "A social sharing option is presented after posting an initiative",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
       "granular_permissions": {
         "type": "object",
         "description":  "Choose which users are permitted to take which actions (e.g. posting, voting) in which projects/phases",
