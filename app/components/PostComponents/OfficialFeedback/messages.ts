@@ -29,13 +29,13 @@ export default defineMessages({
     id: 'app.components.PostComponents.OfficialFeedback.officialNamePlaceholder',
     defaultMessage: 'Choose how people see your name',
   },
-  officialFeedbackPlaceholder: {
-    id: 'app.components.PostComponents.OfficialFeedback.officialFeedbackPlaceholder',
+  textAreaPlaceholder: {
+    id: 'app.components.PostComponents.OfficialFeedback.textAreaPlaceholder',
     defaultMessage: 'Give an update...',
   },
-  updateButtonSave: {
-    id: 'app.components.PostComponents.OfficialFeedback.updateButtonSave',
-    defaultMessage: 'Give an update',
+  publishButtonText: {
+    id: 'app.components.PostComponents.OfficialFeedback.publishButtonText',
+    defaultMessage: 'Publish',
   },
   updateButtonSaveEditForm: {
     id: 'app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm',
