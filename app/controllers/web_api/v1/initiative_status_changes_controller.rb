@@ -21,7 +21,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
 
   def create
     attributes = status_change_params.to_h
-    if attributes[:initiative_status_id] == @initiative_status.initiative_status_id
+    if attributes[:initiative_status_id] == @change.initiative_status_id
       render json: { errors: { base: [{ error: 'initiative_status_transition_without_change' }] } }, status: :unprocessable_entity
       return
     end
