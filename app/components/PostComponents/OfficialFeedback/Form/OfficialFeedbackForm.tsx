@@ -81,7 +81,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
   renderFormikMentionsTextAreaMultiloc = (props) => (
     <FormikMentionsTextAreaMultiloc
       shownLocale={this.state.selectedLocale}
-      placeholder={this.props.intl.formatMessage(messages.officialFeedbackPlaceholder)}
+      placeholder={this.props.intl.formatMessage(messages.textAreaPlaceholder)}
       rows={8}
       padding="12px"
       fontSize={fontSizes.base}
@@ -126,7 +126,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
             textColor="white"
             fullWidth
             messages={{
-              buttonSave: editForm ? messages.updateButtonSaveEditForm : messages.updateButtonSave,
+              buttonSave: editForm ? messages.updateButtonSaveEditForm : messages.publishButtonText,
               buttonError: messages.updateButtonError,
               buttonSuccess: messages.updateButtonSuccess,
               messageError: messages.updateMessageError,
