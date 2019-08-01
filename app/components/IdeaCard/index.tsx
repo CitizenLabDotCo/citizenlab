@@ -142,7 +142,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
       eventEmitter.emit<IOpenPostPageModalEvent>('IdeaCard', 'cardClick', {
         id: idea.id,
         slug: idea.attributes.slug,
-        type: 'initiative'
+        type: 'idea'
       });
     }
   }
