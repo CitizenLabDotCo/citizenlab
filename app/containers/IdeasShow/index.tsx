@@ -24,7 +24,7 @@ import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
 import FileAttachments from 'components/UI/FileAttachments';
-import IdeaSharingModalContent from './IdeaSharingModalContent';
+import SharingModalContent from 'components/PostComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
 import IdeaStatus from './IdeaStatus';
@@ -706,18 +706,23 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         </CSSTransition>
 
         <FeatureFlag name="ideaflow_social_sharing">
-          <Modal
-            opened={!!ideaIdForSocialSharing}
-            close={this.closeIdeaSocialSharingModal}
-            hasSkipButton={true}
-            skipText={<FormattedMessage {...messages.skipSharing} />}
-            label={formatMessage(messages.modalShareLabel)}
-          >
-            {ideaIdForSocialSharing &&
-              <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
-            }
-          </Modal>
-        </FeatureFlag>
+            <Modal
+              opened={!!ideaIdForSocialSharing}
+              close={this.closeIdeaSocialSharingModal}
+              hasSkipButton={true}
+              skipText={<FormattedMessage {...messages.skipSharing} />}
+              label={formatMessage(messages.modalShareLabel)}
+            >
+              {ideaIdForSocialSharing &&
+                <SharingModalContent
+                  postType="idea"
+                  postId={ideaIdForSocialSharing}
+                  title={formatMessage(messages.shareTitle)}
+                  subtitle={formatMessage(messages.shareSubtitle)}
+                />
+              }
+            </Modal>
+          </FeatureFlag>
       </>
     );
   }
