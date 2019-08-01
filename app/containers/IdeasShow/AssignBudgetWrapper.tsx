@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 // components
-import VotingPopContainer from './VotingPopContainer';
+import PopContainer from 'components/UI/PopContainer';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Unauthenticated from './Unauthenticated';
@@ -56,20 +56,20 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
 
     if (error === 'budgetingDisabled') {
       return (
-        <VotingPopContainer icon="lock-outlined">
+        <PopContainer icon="lock-outlined">
           <AssignBudgetDisabled
             budgetingDescriptor={budgetingDescriptor}
             projectId={projectId}
           />
-        </VotingPopContainer>
+        </PopContainer>
       );
     }
 
     if (error === 'unauthenticated') {
       return (
-        <VotingPopContainer icon="lock-outlined">
+        <PopContainer icon="lock-outlined">
           <Unauthenticated />
-        </VotingPopContainer>
+        </PopContainer>
       );
     }
 
