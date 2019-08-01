@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 
 import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -24,6 +24,9 @@ const Container = styled.div``;
 const CountDownWrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const StatusIcon = styled(Icon)`
@@ -41,6 +44,9 @@ const StyledTooltip = styled(Tooltip)`
 
 const VoteCounter = styled.div`
   margin-top: 15px;
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const VoteText = styled.div`
@@ -69,6 +75,18 @@ const StyledButton = styled(Button)`
   margin-top: 20px;
 `;
 
+const OnDesktop = styled.div`
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
+`;
+
+const OnMobile = styled.div`
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
 interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
@@ -91,6 +109,13 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
     return mStart.add(days_limit, 'day');
   }
 
+  daysLeft = (): number => {
+    const { initiative, initiativeSettings: { days_limit } } = this.props;
+    const mStart = moment(initiative.attributes.published_at);
+    const mTarget = mStart.add(days_limit, 'day');
+    return moment.duration(mTarget.diff(moment())).days();
+  }
+
   render() {
     const { initiative, initiativeSettings: { voting_threshold, eligibility_criteria }, theme } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
@@ -102,17 +127,33 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
         </CountDownWrapper>
         <StatusIcon name="bullseye" />
         <StatusExplanation>
-          <FormattedMessage
-            {...messages.proposedStatusExplanation}
-            values={{
-              votingThreshold: voting_threshold,
-              proposedStatusExplanationBold: (
-                <b>
-                  <FormattedMessage {...messages.proposedStatusExplanationBold} />
-                </b>
-              )
-            }}
-          />
+          <OnDesktop>
+            <FormattedMessage
+              {...messages.proposedStatusExplanation}
+              values={{
+                votingThreshold: voting_threshold,
+                proposedStatusExplanationBold: (
+                  <b>
+                    <FormattedMessage {...messages.proposedStatusExplanationBold} />
+                  </b>
+                )
+              }}
+            />
+          </OnDesktop>
+          <OnMobile>
+            <FormattedMessage
+              {...messages.proposedStatusExplanationMobile}
+              values={{
+                daysLeft: this.daysLeft(),
+                votingThreshold: voting_threshold,
+                proposedStatusExplanationMobileBold: (
+                  <b>
+                    <FormattedMessage {...messages.proposedStatusExplanationMobileBold} />
+                  </b>
+                )
+              }}
+            />
+          </OnMobile>
           {eligibility_criteria &&
             <StyledTooltip
               content={
