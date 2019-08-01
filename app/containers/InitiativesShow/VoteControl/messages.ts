@@ -75,7 +75,7 @@ export default defineMessages({
   },
   votedText: {
     id: 'app.containers.InitiativesShow.VoteControl.votedText',
-    defaultMessage: 'You\'ll get notified when this initiative goes to the next step. There\'s {xDays} left.',
+    defaultMessage: 'You\'ll get notified when this initiative goes to the next step. {x, plural, =0 {There\'s {xDays} left.} one {There\'s {xDays} left.} other {There are {xDays} left.}}',
   },
   xDays: {
     id: 'app.containers.InitiativesShow.VoteControl.xDays',
@@ -96,5 +96,13 @@ export default defineMessages({
   xPeople: {
     id: 'app.containers.InitiativesShow.VoteControl.xPeople',
     defaultMessage: '{count, plural, =0 {No one} one {One person} other {# people}}',
+  },
+  login: {
+    id: 'app.containers.InitiativesShow.VoteControl.login',
+    defaultMessage: 'Login',
+  },
+  register: {
+    id: 'app.containers.InitiativesShow.VoteControl.register',
+    defaultMessage: 'Create an account',
   },
 });

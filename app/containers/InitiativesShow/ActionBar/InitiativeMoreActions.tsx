@@ -34,6 +34,8 @@ interface InputProps {
   initiative: IInitiativeData;
   id: string;
   className?: string;
+  color?: string;
+  tooltipPosition?: 'bottom-left';
 }
 
 interface DataProps {
@@ -77,7 +79,7 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
   }
 
   render() {
-    const { initiative, id, className, authUser } = this.props;
+    const { initiative, id, className, authUser, color, tooltipPosition } = this.props;
     const { spamModalVisible } = this.state;
 
     return !isNilOrError(authUser) && !isNilOrError(initiative) ? (
@@ -102,6 +104,8 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
               label={<FormattedMessage {...messages.moreOptions} />}
               fontSize={fontSizes.small}
               id="e2e-initiative-more-actions-menu"
+              color={color}
+              tooltipPosition={tooltipPosition}
             />
             <HasPermission.No>
               <MoreActionsMenu

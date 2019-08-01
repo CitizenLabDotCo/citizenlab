@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
-import GetMachineTranslation from 'resources/GetMachineTranslation';
+import GetMachineTranslation, { GetMachineTranslationChildProps } from 'resources/GetMachineTranslation';
 
 // typings
 import { Locale } from 'typings';
@@ -11,11 +11,13 @@ import { Locale } from 'typings';
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div``;
+const Container = styled.div<{ align: 'left' | 'center' }>`
+  width: ${({ align }) => align === 'left' ? '100%' : 'auto'};
+`;
 
-const Title = styled.h1`
+const Title = styled.h1<{ color: string | undefined, align: 'left' | 'center' }>`
   width: 100%;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ color, theme }) => color || theme.colorText};
   font-size: ${fontSizes.xxxl}px;
   font-weight: 500;
   line-height: 40px;
@@ -39,11 +41,21 @@ interface Props {
   locale?: Locale;
   translateButtonClicked?: boolean;
   className?: string;
+  color?: string;
+  align?: 'left' | 'center';
 }
 
-const PostTitle = memo<Props>(({ id, postType, title, locale, translateButtonClicked, className }) => {
+const parseTranslation = (translation: GetMachineTranslationChildProps, title) => {
+  if (!isNilOrError(translation)) {
+    return translation.attributes.translation;
+  }
+
+  return title;
+};
+
+const PostTitle = memo<Props>(({ id, postType, title, locale, translateButtonClicked, className, color, align = 'center' }) => {
   return (
-    <Container className={className}>
+    <Container className={className} align={align}>
       {(locale && translateButtonClicked) ? (
         <GetMachineTranslation
           attributeName="title_multiloc"
@@ -51,16 +63,14 @@ const PostTitle = memo<Props>(({ id, postType, title, locale, translateButtonCli
           id={id}
           context={postType}
         >
-          {translation => {
-            if (!isNilOrError(translation)) {
-              return <Title>{translation.attributes.translation}</Title>;
-            }
-
-            return <Title>{title}</Title>;
-          }}
+          {translation => (
+            <Title color={color} align={align}>
+              {parseTranslation(translation, title)}
+            </Title>
+          )}
         </GetMachineTranslation>
       ) : (
-        <Title className={`e2e-${postType}title`}>{title}</Title>
+        <Title color={color} align={align} className={`e2e-${postType}title`}>{title}</Title>
       )}
     </Container>
   );
