@@ -21,6 +21,14 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.proposedStatusExplanationBold',
     defaultMessage: 'considered by {orgName}',
   },
+  proposedStatusExplanationMobile: {
+    id: 'app.containers.InitiativesShow.VoteControl.proposedStatusExplanationMobile',
+    defaultMessage: '{votingThreshold} votes needed within {daysLeft, plural, =0 {less than a day} one {one day} other {# days}} to get this initiative {proposedStatusExplanationMobileBold}',
+  },
+  proposedStatusExplanationMobileBold: {
+    id: 'app.containers.InitiativesShow.VoteControl.proposedStatusExplanationMobileBold',
+    defaultMessage: 'considered by {orgName}',
+  },
   ineligibleStatusExplanation: {
     id: 'app.containers.InitiativesShow.VoteControl.ineligibleStatusExplanation',
     defaultMessage: 'This initiative doesn\'t meet the criteria {ineligibleStatusExplanationBold}',
