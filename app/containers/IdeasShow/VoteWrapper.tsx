@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import VotingPopContainer from './VotingPopContainer';
+import PopContainer from 'components/UI/PopContainer';
 import VoteControl from 'components/VoteControl';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import Unauthenticated from './Unauthenticated';
@@ -48,17 +48,17 @@ class VoteWrapper extends PureComponent<Props, State> {
           />
         }
         {error === 'votingDisabled' &&
-          <VotingPopContainer icon="lock-outlined">
+          <PopContainer icon="lock-outlined">
             <VotingDisabled
               votingDescriptor={votingDescriptor}
               projectId={projectId}
             />
-          </VotingPopContainer>
+          </PopContainer>
         }
         {error === 'unauthenticated' &&
-          <VotingPopContainer icon="lock-outlined">
+          <PopContainer icon="lock-outlined">
             <Unauthenticated />
-          </VotingPopContainer>
+          </PopContainer>
         }
       </>
     );
