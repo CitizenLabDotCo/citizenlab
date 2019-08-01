@@ -60,6 +60,7 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
         get :as_markers, on: :collection, action: 'index_initiative_markers'
         get :filter_counts, on: :collection
+        get :allowed_transitions, on: :member
       end
 
       resources :idea_statuses, only: [:index, :show]

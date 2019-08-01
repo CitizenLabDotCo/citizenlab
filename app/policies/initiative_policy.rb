@@ -42,6 +42,10 @@ class InitiativePolicy < ApplicationPolicy
     update?
   end
 
+  def allowed_transitions?
+    user&.admin?
+  end
+
   def permitted_attributes
     shared = [
       :publication_status,
