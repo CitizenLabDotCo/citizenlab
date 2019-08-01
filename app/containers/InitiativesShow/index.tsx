@@ -31,6 +31,7 @@ import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostComponents/TranslateButton';
 import VoteControl from 'containers/InitiativesShow/VoteControl';
+import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
@@ -228,6 +229,12 @@ const OnlyOnDesktop = styled.div`
   `}
 `;
 
+const MobileMoreActionContainer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
+
 const StyledLoadableDropdownMap = styled(LoadableDropdownMap)`
   margin-bottom: 40px;
 
@@ -421,12 +428,21 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             <InitiativeBannerImage src={initiativeHeaderImageLarge} />
             <NotOnDesktop>
               <InitiativeHeaderOverlay />
+              <MobileMoreActionContainer>
+                <InitiativeMoreActions
+                  initiative={initiative}
+                  id="e2e-initiative-more-actions-mobile"
+                  color="white"
+                  tooltipPosition="bottom-left"
+                />
+              </MobileMoreActionContainer>
               <Title
                 id={initiativeId}
                 context="initiative"
                 title={initiativeTitle}
                 locale={locale}
                 translateButtonClicked={translateButtonClicked}
+                color="white"
               />
             </NotOnDesktop>
           </InitiativeBannerContainer>
