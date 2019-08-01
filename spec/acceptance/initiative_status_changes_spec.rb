@@ -61,7 +61,7 @@ resource "InitiativeStatusChange" do
         parameter :body_multiloc, "Multi-locale field with the feedback body", required: false
         parameter :author_multiloc, "Multi-locale field with describing the author", required: false
       end
-      ValidationErrorHelper.new.error_fields(self, OfficialFeedback)
+      ValidationErrorHelper.new.error_fields(self, InitiativeStatusChange)
 
       let(:initiative_id) { @initiative.id }
       let(:initiative_status_id) { InitiativeStatus.find_by(code: 'answered').id }
@@ -86,31 +86,72 @@ resource "InitiativeStatusChange" do
           expect(@initiative.reload.official_feedbacks_count).to eq 1
         end
       end
+
+      describe do
+        let(:body_multiloc) { nil }
+        let(:author_multiloc) { nil }
+
+        example_request "[error] Create a status change on an initiative without feedback" do
+          expect(response_status).to eq 422
+        end
+      end
+
+      describe do
+        let(:initiative_status_id) { InitiativeStatus.find_by(code: 'expired').id }
+
+        example_request "[error] Create a status change through an invalid transition" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :base)).to eq [{error: 'initiative_status_transition_not_allowed'}]
+        end
+      end
+
+      describe do
+        let(:initiative_status_id) { InitiativeStatus.find_by(code: 'threshold_reached').id }
+
+        example_request "[error] Create a status change to the same status" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :base)).to eq [{error: 'initiative_status_transition_without_change'}]
+        end
+      end
     end
   end
 
-  # context "when authenticated as normal user" do
-  #   before do
-  #     @user = create(:user)
-  #     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
-  #     header 'Authorization', "Bearer #{token}"
-  #   end
+  context "when authenticated as normal user" do
+    before do
+      @user = create(:user)
+      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      header 'Authorization', "Bearer #{token}"
 
-  #   post "web_api/v1/initiatives/:initiative_id/official_feedback" do
-  #     with_options scope: :official_feedback do
-  #       parameter :body_multiloc, "Multi-locale field with the feedback body", required: true
-  #       parameter :author_multiloc, "Multi-locale field with describing the author", required: true
-  #     end
-  #     ValidationErrorHelper.new.error_fields(self, OfficialFeedback)
+      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+      create(
+        :initiative_status_change, 
+        initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'threshold_reached')
+        )
+    end
 
-  #     let(:initiative_id) { @initiative.id }
-  #     let(:feedback) { build(:official_feedback) }
-  #     let(:body_multiloc) { feedback.body_multiloc }
-  #     let(:author_multiloc) { feedback.author_multiloc }
+    post "web_api/v1/initiatives/:initiative_id/initiative_status_changes" do
+      with_options scope: :initiative_status_change do
+        parameter :initiative_status_id, "The new initiative status", required: true
+        parameter :user_id, "The user who made the status change", required: false
+        parameter :official_feedback_id, "An existing official feedback can be used", required: false
+      end
+      with_options scope: [:initiative_status_change, :official_feedback_attributes] do
+        parameter :body_multiloc, "Multi-locale field with the feedback body", required: false
+        parameter :author_multiloc, "Multi-locale field with describing the author", required: false
+      end
+      ValidationErrorHelper.new.error_fields(self, InitiativeStatusChange)
 
-  #     example_request "[error] Create an official feedback on an initiative" do
-  #       expect(response_status).to eq 401
-  #     end
-  #   end
-  # end
+      let(:initiative_id) { @initiative.id }
+      let(:initiative_status_id) { InitiativeStatus.find_by(code: 'answered').id }
+      let(:feedback) { build(:official_feedback) }
+      let(:body_multiloc) { feedback.body_multiloc }
+      let(:author_multiloc) { feedback.author_multiloc }
+
+      example_request "[error] Create an official feedback on an initiative" do
+        expect(response_status).to eq 401
+      end
+    end
+  end
 end
