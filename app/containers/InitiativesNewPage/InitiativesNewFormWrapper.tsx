@@ -243,7 +243,10 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
         this.setState({ hasImageChanged: false });
       }
 
-      clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
+      clHistory.push({
+        pathname: `/initiatives/${initiative.data.attributes.slug}`,
+        search: `?new_initiative_id=${initiative.data.id}`
+      });
     } catch (errorResponse) {
       const apiErrors = get(errorResponse, 'json.errors');
       this.setState((state) => ({ apiErrors: { ...state.apiErrors, ...apiErrors }, publishError: true }));
@@ -281,7 +284,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
         this.setState(({ files }) => ({ files: [...files, file], saving: false }));
       }).catch(errorResponse => {
         const apiErrors = get(errorResponse, 'json.errors');
-        this.setState(state => ({ apiErrors: { ...state.apiErrors, ...apiErrors }, saving: false  }));
+        this.setState(state => ({ apiErrors: { ...state.apiErrors, ...apiErrors }, saving: false }));
         setTimeout(() => {
           this.setState(state => ({ apiErrors: { ...state.apiErrors, file: undefined } }));
         }, 5000);
