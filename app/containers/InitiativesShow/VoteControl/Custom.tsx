@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 
 import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -22,6 +22,10 @@ const Container = styled.div``;
 const CountDownWrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const VoteCounter = styled.div`

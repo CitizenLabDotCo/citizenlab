@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 
 import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -24,6 +24,9 @@ const Container = styled.div``;
 const CountDownWrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const StatusIcon = styled(Icon)`
@@ -41,6 +44,9 @@ const StyledTooltip = styled(Tooltip)`
 
 const VoteCounter = styled.div`
   margin-top: 15px;
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const VoteText = styled.div`
