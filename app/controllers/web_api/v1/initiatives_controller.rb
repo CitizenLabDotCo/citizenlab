@@ -1,6 +1,6 @@
 class WebApi::V1::InitiativesController < ApplicationController
 
-  before_action :set_initiative, only: [:show, :update, :destroy]
+  before_action :set_initiative, only: [:show, :update, :destroy, :allowed_transitions]
   skip_after_action :verify_authorized, only: [:index_xlsx, :index_initiative_markers, :filter_counts]
   
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -100,28 +100,6 @@ class WebApi::V1::InitiativesController < ApplicationController
           counts[attribute][id] = record.count if id
         end
       end
-    # grouping_sets = ActiveRecord::Base.connection.execute("""
-    #   SELECT initiative_statuses.id AS initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) AS count
-    #   FROM initiatives
-    #   INNER JOIN (
-    #           SELECT initiative_id, max(initiative_status_changes.created_at) AS last_status_changed_at 
-    #           FROM initiative_status_changes 
-    #           GROUP BY initiative_status_changes.initiative_id
-    #           ) AS aardvark 
-    #         ON initiatives.id = aardvark.initiative_id
-    #   INNER JOIN initiative_status_changes ON initiatives.id = initiative_status_changes.initiative_id AND last_status_changed_at = initiative_status_changes.created_at
-    #   INNER JOIN initiative_statuses ON initiative_statuses.id = initiative_status_changes.initiative_status_id
-    #   FULL OUTER JOIN initiatives_topics ON initiatives_topics.initiative_id = initiatives.id
-    #   FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id
-    #   WHERE initiatives.id IN (#{@initiatives.ids.map{|id| "'#{id}'"}.join ', '})
-    #   GROUP BY GROUPING SETS (initiative_statuses.id, areas_initiatives.area_id, initiatives_topics.topic_id)
-    #   """)
-    # grouping_sets.each do |record|
-    #   %w(initiative_status_id area_id topic_id).each do |attribute|
-    #     id = record[attribute]
-    #     counts[attribute][id] = record['count'] if id
-    #   end
-    # end
     counts['total'] = @initiatives.count
     render json: counts
   end
@@ -202,6 +180,11 @@ class WebApi::V1::InitiativesController < ApplicationController
     else
       head 500
     end
+  end
+
+  def allowed_transitions
+    authorize @initiative
+    render json: InitiativeStatusService.new.allowed_transitions(@initiative)
   end
 
 
