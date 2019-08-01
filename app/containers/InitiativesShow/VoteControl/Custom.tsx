@@ -8,7 +8,6 @@ import { StatusExplanation } from './SharedStyles';
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
-import { addVote } from 'services/initiativeVotes';
 
 import CountDown from './CountDown';
 import ProgressBar from 'components/UI/ProgressBar';
@@ -60,6 +59,7 @@ interface InputProps {
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
   userVoted: boolean;
+  onVote: () => void;
 }
 interface DataProps { }
 
@@ -67,8 +67,8 @@ interface Props extends InputProps, DataProps { }
 
 class Custom extends PureComponent<Props & { theme: any }> {
 
-  handleOnVote = async () => {
-    await addVote(this.props.initiative.id, { mode: 'up' });
+  handleOnVote = () => {
+    this.props.onVote();
   }
 
   calculateCountdownTarget = () => {
