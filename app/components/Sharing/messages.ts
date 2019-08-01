@@ -4,31 +4,31 @@ import {
 
 export default defineMessages({
   shareOnFacebook: {
-    id: 'app.containers.IdeasShow.shareOnFacebook',
+    id: 'app.components.Sharing.shareOnFacebook',
     defaultMessage: 'Share on Facebook',
   },
   shareViaMessenger: {
-    id: 'app.containers.IdeasShow.shareViaMessenger',
+    id: 'app.components.Sharing..shareViaMessenger',
     defaultMessage: 'Share via Messenger',
   },
   shareOnTwitter: {
-    id: 'app.containers.IdeasShow.shareOnTwitter',
+    id: 'app.components.Sharing.shareOnTwitter',
     defaultMessage: 'Share on Twitter',
   },
   shareByEmail: {
-    id: 'app.containers.IdeasShow.shareByEmail',
+    id: 'app.components.Sharing.shareByEmail',
     defaultMessage: 'Share by email',
   },
   shareThisInitiative: {
-    id: 'app.containers.IdeasShow.shareThisInitiative',
+    id: 'app.components.Sharing.shareThisInitiative',
     defaultMessage: 'Share this initiative',
   },
   shareThisProject: {
-    id: 'app.containers.IdeasShow.shareThisProject',
+    id: 'app.components.Sharing.shareThisProject',
     defaultMessage: 'Share this project',
   },
   shareThisIdea: {
-    id: 'app.containers.IdeasShow.shareThisIdea',
+    id: 'app.components.Sharing.shareThisIdea',
     defaultMessage: 'Share this idea',
   },
 });
