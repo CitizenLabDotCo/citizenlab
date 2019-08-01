@@ -18,21 +18,9 @@ import { darken } from 'polished';
 import { Multiloc } from 'typings';
 
 const Container = styled.div`
-  width: calc(${postPageContentMaxWidth} - 400px);
+  width: 100%;
   display: flex;
-  align-items: center;
-
-  ${media.smallerThan1200px`
-    width: calc(100vw - 400px);
-  `}
-
-  ${media.smallerThanMaxTablet`
-    width: calc(100vw - 300px);
-  `}
-
-  ${media.smallerThanMinTablet`
-    width: calc(100vw - 100px);
-  `}
+  align-items: flex-start;
 `;
 
 const HomeLink = styled(Link)`

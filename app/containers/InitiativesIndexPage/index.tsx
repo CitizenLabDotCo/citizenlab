@@ -6,6 +6,7 @@ import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
 import SuccessStories from './SuccessStories';
 import InitiativeCards from 'components/InitiativeCards';
+import ContentContainer from 'components/ContentContainer';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,7 +14,7 @@ import messages from './messages';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 
 // tracks
@@ -37,7 +38,7 @@ const FooterBanner: any = styled.div`
   padding-bottom: 60px;
 `;
 
- const FooterMessage = styled.p`
+const FooterMessage = styled.p`
     color: #fff;
     font-size: ${fontSizes.xxxl}px;
     line-height: normal;
@@ -51,19 +52,31 @@ const FooterBanner: any = styled.div`
     `}
 `;
 
+const StyledContentContainer = styled(ContentContainer)`
+  width: 100%;
+  background-color: ${colors.background};
+  padding-bottom: 150px;
+
+  ${media.smallerThanMaxTablet`
+    padding-bottom: 80px;
+  `}
+`;
+
 const trackInitiative = () => {
   trackEventByName(tracks.clickStartInitiativesCTA, { extra: { location: 'initiatives footer' } });
 };
 
-export default withTheme(memo(({ theme } : any) => (
+export default withTheme(memo(({ theme }: any) => (
   <>
     <InitiativesIndexMeta />
     <InitiativesHeader />
-    <SuccessStories />
-    <InitiativeCards />
+    <StyledContentContainer maxWidth="100%">
+      <SuccessStories />
+      <InitiativeCards />
+    </StyledContentContainer>
     <FooterBanner>
       <FooterMessage>
-        <FormattedMessage {...messages.footer}/>
+        <FormattedMessage {...messages.footer} />
       </FooterMessage>
 
       <Button

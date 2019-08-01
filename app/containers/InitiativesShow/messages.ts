@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.postedBy',
     defaultMessage: 'Initiative posted by {authorName}',
   },
+  postedByShort: {
+    id: 'app.containers.InitiativesShow.postedByShort',
+    defaultMessage: 'Posted by {authorName}',
+  },
   twitterMessage: {
     id: 'app.containers.InitiativesShow.twitterMessage',
     defaultMessage: 'Vote for {initiativeTitle} on',
@@ -71,6 +75,22 @@ export default defineMessages({
   },
   imageAltText: {
     id: 'app.containers.InitiativesShow.imageAltText',
-    defaultMessage: 'Main image for the initiative {initiativeTitle}',
+    defaultMessage: 'Main image for the initiative {initiativeTitle}'
+  },
+  skipSharing: {
+    id: 'app.components.InitiativesShow.skipSharing',
+    defaultMessage: "Skip it, I'll do it later",
+  },
+  modalShareLabel: {
+    id: 'app.components.InitiativesShow.modalShareLabel',
+    defaultMessage: 'Your initiative was posted, share it now to reach more votes!',
+  },
+  shareTitle: {
+    id: 'app.components.InitiativesShow.shareTitle',
+    defaultMessage: 'Congratulations, your initiative was successfully posted!',
+  },
+  shareSubtitle: {
+    id: 'app.components.InitiativesShow.shareSubtitle',
+    defaultMessage: 'Share your initiative to reach {votingThreshold} votes in {daysLimit} days.',
   },
 });
