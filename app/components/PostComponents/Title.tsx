@@ -13,9 +13,9 @@ import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
-const Title = styled.h1`
+const Title = styled.h1<{ color: string | undefined }>`
   width: 100%;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ color, theme }) => color || theme.colorText};
   font-size: ${fontSizes.xxxl}px;
   font-weight: 500;
   line-height: 40px;
@@ -39,9 +39,10 @@ interface Props {
   locale?: Locale;
   translateButtonClicked?: boolean;
   className?: string;
+  color?: string;
 }
 
-const PostTitle = memo<Props>(({ id, context, title, locale, translateButtonClicked, className }) => {
+const PostTitle = memo<Props>(({ id, context, title, locale, translateButtonClicked, className, color }) => {
   return (
     <Container className={className}>
       {(locale && translateButtonClicked) ? (
@@ -53,14 +54,14 @@ const PostTitle = memo<Props>(({ id, context, title, locale, translateButtonClic
         >
           {translation => {
             if (!isNilOrError(translation)) {
-              return <Title>{translation.attributes.translation}</Title>;
+              return <Title color={color}>{translation.attributes.translation}</Title>;
             }
 
-            return <Title>{title}</Title>;
+            return <Title color={color}>{title}</Title>;
           }}
         </GetMachineTranslation>
       ) : (
-        <Title className={`e2e-${context}title`}>{title}</Title>
+        <Title color={color} className={`e2e-${context}title`}>{title}</Title>
       )}
     </Container>
   );
