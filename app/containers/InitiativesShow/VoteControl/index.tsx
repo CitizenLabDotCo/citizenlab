@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { media } from 'utils/styleUtils';
 
 import { InitiativeStatusCode, IInitiativeStatusData } from 'services/initiativeStatuses';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
@@ -23,13 +24,16 @@ import PopContainer from 'components/UI/PopContainer';
 import Unauthenticated from './Unauthenticated';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 45px;
-  padding: 35px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  ${media.biggerThanMaxTablet`
+    margin-bottom: 45px;
+    padding: 35px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
+    border-radius: ${(props: any) => props.theme.borderRadius};
+  `}
+  ${media.smallerThanMaxTablet`
+    padding: 15px;
+  `}
 `;
 
 interface VoteControlComponentProps {

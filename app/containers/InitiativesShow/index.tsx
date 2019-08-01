@@ -465,6 +465,10 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             />
           </OnlyOnDesktop>
 
+          <NotOnDesktop>
+            <VoteControl initiativeId={initiativeId} />
+          </NotOnDesktop>
+
           <InitiativeContainer>
             <FeatureFlag name="machine_translations">
               {showTranslateButton && smallerThanSmallTablet &&
