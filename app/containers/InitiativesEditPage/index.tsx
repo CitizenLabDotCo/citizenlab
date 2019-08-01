@@ -11,9 +11,11 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetInitiativeImages, { GetInitiativeImagesChildProps } from 'resources/GetInitiativeImages';
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { isError } from 'util';
 
 // components
 import InitiativesEditMeta from './InitiativesEditMeta';
@@ -36,6 +38,7 @@ const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
 interface DataProps {
   initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
+  initiativeFiles: GetResourceFileObjectsChildProps;
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
 }
@@ -67,8 +70,8 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
   }
 
   render() {
-    const { authUser, locale, initiative, initiativeImages } = this.props;
-    if (isNilOrError(authUser) || isNilOrError(locale) || isNilOrError(initiative) || initiativeImages === undefined) return null;
+    const { authUser, locale, initiative, initiativeImages, initiativeFiles } = this.props;
+    if (isNilOrError(authUser) || isNilOrError(locale) || isNilOrError(initiative) || initiativeImages === undefined || initiativeFiles === undefined || isError(initiativeFiles)) return null;
 
     return (
       <HasPermission item={initiative} action="edit" context={initiative}>
@@ -79,6 +82,7 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
             initiative={initiative}
             initiativeImage={isNilOrError(initiativeImages) || initiativeImages.length === 0 ? null : initiativeImages[0]}
             onPublished={this.onPublished}
+            initiativeFiles={initiativeFiles}
           />
         </PageLayout>
       </HasPermission>
@@ -92,7 +96,8 @@ const Data = adopt<DataProps, WithRouterProps>({
   initiative: ({ params, render }) => <GetInitiative id={params.initiativeId}>{render}</GetInitiative>,
   initiativeImages: ({ params, render }) => (
     <GetInitiativeImages initiativeId={params.initiativeId}>{render}</GetInitiativeImages>
-  )
+  ),
+  initiativeFiles: ({ params, render }) => <GetResourceFileObjects resourceId={params.initiativeId} resourceType="initiative">{render}</GetResourceFileObjects>,
 });
 
 export default withRouter((withRouterProps: WithRouterProps) => (
