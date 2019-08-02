@@ -14,7 +14,7 @@ import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import VoteControl from 'components/VoteControl';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
-import IdeaBody from 'containers/IdeasShow/IdeaBody';
+import Body from 'components/PostComponents/Body';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -231,10 +231,11 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
           }
 
           <Description>
-            <IdeaBody
-              ideaId={idea.id}
-              ideaBody={ideaBody}
+            <Body
+              id={idea.id}
+              body={ideaBody}
               locale={locale}
+              postType="idea"
             />
           </Description>
 
