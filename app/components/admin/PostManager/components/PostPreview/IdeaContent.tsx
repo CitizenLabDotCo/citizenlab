@@ -5,9 +5,9 @@ import { get } from 'lodash-es';
 
 // components
 import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
-import IdeaTitle from 'containers/IdeasShow/IdeaTitle';
-import IdeaBody from 'containers/IdeasShow/IdeaBody';
-import IdeaMap from 'containers/IdeasShow/IdeaMap';
+// import IdeaTitle from 'containers/IdeasShow/IdeaTitle';
+// import IdeaBody from 'containers/IdeasShow/IdeaBody';
+// import IdeaMap from 'containers/IdeasShow/IdeaMap';
 import OfficialFeedback from 'containers/IdeasShow/OfficialFeedback';
 import Comments from 'containers/IdeasShow/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
@@ -40,9 +40,9 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const StyledIdeaTitle = styled(IdeaTitle)`
-  margin-bottom: 30px;
-`;
+// const StyledIdeaTitle = styled(IdeaTitle)`
+//   margin-bottom: 30px;
+// `;
 
 const Row = styled.div`
   display: flex;
@@ -87,13 +87,13 @@ const IdeaImage = styled.img`
   border: 1px solid ${colors.separation};
 `;
 
-const StyledIdeaBody = styled(IdeaBody)`
-  margin-bottom: 20px;
-`;
+// const StyledIdeaBody = styled(IdeaBody)`
+//   margin-bottom: 20px;
+// `;
 
-const StyledIdeaMap = styled(IdeaMap)`
-  margin-bottom: 40px;
-`;
+// const StyledIdeaMap = styled(IdeaMap)`
+//   margin-bottom: 40px;
+// `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
@@ -221,10 +221,10 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
               </BelongsToProject>
             }
 
-            <StyledIdeaTitle
+            {/* <StyledIdeaTitle
               ideaId={idea.id}
               ideaTitle={ideaTitle}
-            />
+            /> */}
             <Row>
               <Left>
                 {ideaImageLarge &&
@@ -235,7 +235,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   ideaCreatedAt={idea.attributes.created_at}
                   ideaId={idea.id}
                 />
-
+{/*
                 <StyledIdeaBody
                   ideaId={idea.id}
                   ideaBody={localize(idea.attributes.body_multiloc)}
@@ -247,7 +247,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                     position={ideaGeoPosition}
                     id={idea.id}
                   />
-                }
+                } */}
 
                 {ideaFiles && !isNilOrError(ideaFiles) &&
                   <FileAttachments files={ideaFiles} />
@@ -257,7 +257,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   ideaId={idea.id}
                 />
 
-                <StyledComments ideaId={idea.id} />
+                {/* <StyledComments ideaId={idea.id} /> */}
               </Left>
               <Right>
                 <VotePreview ideaId={idea.id}/>
