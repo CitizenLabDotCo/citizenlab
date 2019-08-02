@@ -33,7 +33,7 @@ export interface FormValues extends SimpleFormValues {
 }
 
 export interface FormProps {
-  saving: boolean;
+  saving?: boolean;
   publishing: boolean;
   onSave: () => void;
   onPublish: () => void;
@@ -82,6 +82,31 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     this.setState({ errors });
   }
 
+  componentDidUpdate(prevProps: Props) {
+    // we generally validate on blur, but when the form is almost ready to be
+    // sent, we want to have the publish button active as soon as it's usable
+
+    // getting the non null errors
+    const errorEntries = Object.entries(this.state.errors).filter(entry => entry[1]);
+    // if there's only one
+    if (errorEntries.length === 1) {
+      // if the value of this field was changed
+      if (prevProps[errorEntries[0][0]] !== this.props[errorEntries[0][0]]) {
+        // run validation for that field
+        this.validate(errorEntries[0][0]);
+      }
+    }
+    // also, when the form is in a publishable state, if we modify a field we
+    // want to make sure detect the form is no longer valid as soon as possible
+
+    // if the form is valid
+    if (errorEntries.length === 0) {
+      // find what prop whas changed and run its validation
+      Object.entries(prevProps).filter(entry => entry[1] !== this.props[entry[0]])
+        .forEach(entry => this.validations[entry[0]] && this.validate(entry[0]));
+    }
+  }
+
   validations = {
     title_multiloc: () => {
       const { title_multiloc } = this.props;
@@ -118,6 +143,12 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       return undefined;
     },
   };
+
+  validate = (fieldName: string) => {
+    const errors = Object.assign({}, this.state.errors);
+    errors[fieldName] = get(this.validations, fieldName, () => undefined)();
+    this.setState({ errors });
+  }
 
   onBlur = (fieldName: string) => () => {
     // making sure the props are updated before validation and save.
@@ -170,7 +201,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     const status = Object.values(errors).every(val => val === undefined) ? 'enabled' : 'disabled';
 
     return (
-      <form>
+      <form id="initiative-form">
         <FormSection>
           <FormSectionTitle message={messages.formGeneralSectionTitle} />
 
@@ -181,6 +212,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             >
               <InputMultiloc
                 type="text"
+                id="e2e-initiative-title-input"
                 valueMultiloc={title_multiloc || {}}
                 onChange={onChangeTitle}
                 onBlur={this.onBlur('title_multiloc')}
@@ -242,6 +274,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               optional
             >
               <LocationInput
+                className="e2e-initiative-location-input"
                 inCitizen
                 value={position || ''}
                 onChange={onChangePosition}
@@ -261,7 +294,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               optional
             >
               <ImageDropzone
-                id="idea-img-dropzone"
+                id="iniatiative-banner-dropzone"
                 image={banner || null}
                 imagePreviewRatio={360 / 1440}
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -278,7 +311,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               subtextMessage={messages.imageUploadLabelSubtext}
             >
               <ImageDropzone
-                id="idea-img-dropzone"
+                id="iniatiative-img-dropzone"
                 image={image || null}
                 imagePreviewRatio={135 / 298}
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -296,6 +329,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               optional
             />
             <FileUploader
+              id="e2e-initiative-file-upload"
               onFileAdd={onAddFile}
               onFileRemove={onRemoveFile}
               files={files}
@@ -304,6 +338,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
           </SectionField>
         </FormSection>
         <FormSubmitFooter
+          className="e2e-initiative-publish-button"
           message={messages.publishButton}
           disabled={status === 'disabled'}
           error={publishError}

@@ -1,3 +1,5 @@
+import 'cypress-file-upload';
+
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -15,7 +17,9 @@ declare global {
       getUserBySlug: typeof getUserBySlug;
       getAuthUser: typeof getAuthUser;
       apiCreateIdea: typeof apiCreateIdea;
+      apiCreateInitiative: typeof apiCreateInitiative;
       apiRemoveIdea: typeof apiRemoveIdea;
+      apiRemoveInitiative: typeof apiRemoveInitiative;
       apiCreateOfficialFeedback: typeof apiCreateOfficialFeedback;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
@@ -306,6 +310,65 @@ export function apiRemoveIdea(ideaId: string) {
   });
 }
 
+export function apiCreateInitiative(
+  initiativeTitle: string,
+  initiativeContent: string,
+  locationGeoJSON?: {'type': string, 'coordinates': number[]},
+  locationDescription?: string,
+  jwt?: string
+) {
+  let headers: { 'Content-Type': string; Authorization: string; } | null = null;
+
+  if (jwt) {
+    headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`
+    };
+  }
+
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: headers || {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'POST',
+      url: 'web_api/v1/initiatives',
+      body: {
+        initiative: {
+          publication_status: 'published',
+          title_multiloc: {
+            'en-GB': initiativeTitle,
+            'nl-BE': initiativeTitle
+          },
+          body_multiloc: {
+            'en-GB': initiativeContent,
+            'nl-BE': initiativeContent
+          },
+          location_point_geojson: locationGeoJSON,
+          location_description: locationDescription
+        }
+      }
+    });
+  });
+}
+export function apiRemoveInitiative(initiativeId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'DELETE',
+      url: `web_api/v1/initiatives/${initiativeId}`,
+    });
+  });
+}
+
 export function apiCreateOfficialFeedback(
   ideaId: string,
   officialFeedbackContent: string,
@@ -574,6 +637,8 @@ Cypress.Commands.add('getUserBySlug', getUserBySlug);
 Cypress.Commands.add('getAuthUser', getAuthUser);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
+Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
+Cypress.Commands.add('apiRemoveInitiative', apiRemoveInitiative);
 Cypress.Commands.add('apiCreateOfficialFeedback', apiCreateOfficialFeedback);
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
