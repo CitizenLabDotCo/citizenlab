@@ -501,6 +501,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 {biggerThanLargeTablet &&
                   <PostedBy
                     authorId={authorId}
+                    showAboutInitiatives
                   />
                 }
 
