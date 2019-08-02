@@ -288,6 +288,12 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 80px;
 `;
 
+const StyledVoteControl = styled(VoteControl)`
+  box-shadow: 1px 0px 15px rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 25px
+`;
+
 interface DataProps {
   initiative: GetInitiativeChildProps;
   locale: GetLocaleChildProps;
@@ -464,7 +470,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           </OnlyOnDesktop>
 
           <NotOnDesktop>
-            <VoteControl initiativeId={initiativeId} />
+            <StyledVoteControl initiativeId={initiativeId} />
           </NotOnDesktop>
 
           <InitiativeContainer>
