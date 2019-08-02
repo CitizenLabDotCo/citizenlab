@@ -125,6 +125,15 @@ export default function createRoutes() {
           })
         },
         {
+          path: 'initiatives/edit/:initiativeId',
+          name: 'InitiativesEditPage',
+          component: Loadable({
+            loader: () => import('containers/InitiativesEditPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
+        },
+        {
           path: 'initiatives/new',
           name: 'initiativesNewPage',
           component: Loadable({

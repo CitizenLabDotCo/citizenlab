@@ -52,6 +52,7 @@ const Label = styled.label`
 interface Props {
   onAdd: (file: UploadFile) => void;
   className?: string;
+  id?: string;
 }
 
 export default class FileInput extends PureComponent<Props> {
@@ -88,10 +89,10 @@ export default class FileInput extends PureComponent<Props> {
   }
 
   render() {
-    const { className } = this.props;
+    const { className, id } = this.props;
 
     return (
-      <Container className={className}>
+      <Container className={className} id={id}>
         <Input
           id="file-attachment-uploader"
           onChange={this.onChange}

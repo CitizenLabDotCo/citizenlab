@@ -58,10 +58,10 @@ describe('Idea new page', () => {
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // add a topic
-    cy.get('.e2e-idea-form-topics-multiple-select-box input').click({ force: true }).type('Education and youth{enter}', { force: true });
+    cy.get('.e2e-topics-picker').find('button').eq(3).click();
 
     // verify that the topic has been selected
-    cy.get('.e2e-idea-form-topics-multiple-select-box').contains('Education and youth');
+    cy.get('.e2e-topics-picker').find('button.selected').should('have.length', 1);
 
     // add a location
     cy.get('.e2e-idea-form-location-input-field input').type('antwerp{enter}');
@@ -84,7 +84,7 @@ describe('Idea new page', () => {
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show').find('.e2e-ideatitle').contains(ideaTitle);
     cy.get('#e2e-idea-show').find('#e2e-idea-description').contains(ideaContent);
-    cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1).contains('Education and youth');
+    cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
     cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
     cy.get('#e2e-idea-show').find('.e2e-idea-author-link .e2e-username').contains(`${firstName} ${lastName}`);
   });
