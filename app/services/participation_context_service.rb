@@ -159,7 +159,7 @@ class ParticipationContextService
     end
   end
 
-  def cancelling_votes_disabled_reason idea, user
+  def cancelling_votes_disabled_reason_for_idea idea, user
     context = get_participation_context idea.project
     if !context
       VOTING_DISABLED_REASONS[:project_inactive]
