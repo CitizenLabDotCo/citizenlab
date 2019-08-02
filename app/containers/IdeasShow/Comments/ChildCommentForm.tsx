@@ -20,7 +20,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services
-import { addCommentToComment } from 'services/comments';
+// import { addCommentToComment } from 'services/comments';
 import eventEmitter from 'utils/eventEmitter';
 
 // resources

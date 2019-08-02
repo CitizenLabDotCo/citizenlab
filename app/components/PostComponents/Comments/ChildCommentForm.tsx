@@ -20,7 +20,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services
-import { addCommentToComment } from 'services/comments';
+// import { addCommentToComment } from 'services/comments';
 import eventEmitter from 'utils/eventEmitter';
 
 // resources
@@ -34,7 +34,7 @@ import { hideVisually } from 'polished';
 import { media, viewportWidths } from 'utils/styleUtils';
 
 // typings
-import { ICommentReplyClicked } from './ParentComment/IdeaParentComment/IdeaComment/CommentFooter';
+// import { ICommentReplyClicked } from './ParentComment/IdeaParentComment/IdeaComment/CommentFooter';
 
 const Container = styled.div``;
 
