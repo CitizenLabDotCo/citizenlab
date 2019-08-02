@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.InitiativesMap.seeInitiative',
     defaultMessage: 'See initiative',
   },
+  postInitiativeHere: {
+    id: 'app.components.InitiativesMap.postInitiativeHere',
+    defaultMessage: 'Post an initiative here',
+  },
 });
