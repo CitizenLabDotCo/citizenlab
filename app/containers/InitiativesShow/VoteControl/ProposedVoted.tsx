@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 
 import styled, { keyframes, withTheme } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -66,6 +66,9 @@ const UnvoteLink = styled.a`
 const VoteCounter = styled.div`
   margin-top: 15px;
   width: 100%;
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const VoteText = styled.div`

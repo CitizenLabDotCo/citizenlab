@@ -8,18 +8,18 @@ import Spinner from 'components/UI/Spinner';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetPost, { GetPostChildProps } from 'resources/GetPost';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import {  InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import localize, { InjectedLocalized } from 'utils/localize';
-import messages from 'containers/LandingPage/messages';
+import messages from './messages';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
@@ -108,57 +108,70 @@ const SharingWrapper = styled.div`
 `;
 
 interface InputProps {
-  ideaId: string | null;
+  postType: 'idea' | 'initiative';
+  postId: string | null;
   className?: string;
+  title: string;
+  subtitle: string;
 }
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
+  post: GetPostChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-interface Tracks {
-  sharingModalOpened: Function;
-}
-
-class IdeaSharingModalContent extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & Tracks, State> {
+class SharingModalContent extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   componentDidMount() {
-    this.props.sharingModalOpened();
+    const { postId, postType } = this.props;
+
+    trackEventByName(tracks.sharingModalOpened.name, {
+      postId,
+      postType
+    });
   }
 
   render() {
-    const { idea, authUser, localize, locale, className } = this.props;
+    const { postType, post, authUser, localize, locale, className, title, subtitle } = this.props;
     const { formatMessage } = this.props.intl;
 
-    if (!isNilOrError(idea) && !isNilOrError(authUser)) {
-      const ideaTitle = localize(idea.attributes.title_multiloc);
-      const ideaUrl = `${location.origin}/${locale}/ideas/${idea.attributes.slug}`;
+    if (!isNilOrError(post) && !isNilOrError(authUser)) {
+      const postTitle = localize(post.attributes.title_multiloc);
+      const postUrl = `${location.origin}/${locale}/${postType}s/${post.attributes.slug}`;
+      const emailSharingSubject = {
+        idea: messages.ideaEmailSharingSubject,
+        initiative: messages.initiativeEmailSharingSubject,
+      }[postType];
+      const emailSharingBody = {
+        idea: messages.ideaEmailSharingBody,
+        initiative: messages.initiativeEmailSharingBody,
+      }[postType];
 
       return (
         <Container className={className}>
           <Rocket src={rocket} alt="rocket" />
-          <Title className="e2e-idea-social-sharing-modal-title">
-            <FormattedMessage {...messages.shareTitle} />
+          <Title className={`e2e-${postType}-social-sharing-modal-title`}>
+            {title}
           </Title>
           <Subtitle>
-            <FormattedMessage {...messages.shareSubtitle} />
+            {subtitle}
           </Subtitle>
           <SharingWrapper>
             <Sharing
-              context="idea"
+              context={postType}
               location="modal"
-              url={ideaUrl}
-              twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
-              emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-              emailBody={formatMessage(messages.emailSharingBody, { ideaTitle, ideaUrl })}
+              url={postUrl}
+              twitterMessage={formatMessage(messages.twitterMessage, { postTitle })}
+              emailSubject={formatMessage(emailSharingSubject, { postTitle })}
+              emailBody={formatMessage(emailSharingBody, { postUrl })}
               utmParams={{
-                source: 'share_idea',
-                campaign: 'ideaflow',
+                source: `share_${postType}`,
+                campaign: `${postType}flow`,
                 content: authUser.id
               }}
             />
@@ -175,18 +188,17 @@ class IdeaSharingModalContent extends PureComponent<Props & InjectedIntlProps & 
   }
 }
 
-const IdeaSharingModalContentWithHoCs = injectTracks<Props>({
-  sharingModalOpened: tracks.sharingModalOpened,
-})(injectIntl(localize(IdeaSharingModalContent)));
+const SharingModalContentWithHoCs = injectIntl<Props>(localize(SharingModalContent));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
+  post: ({ postId, postType, render }) => <GetPost postId={postId} postType={postType}>{render}</GetPost>
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaSharingModalContentWithHoCs {...inputProps} {...dataProps} />}
+    {dataProps => <SharingModalContentWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

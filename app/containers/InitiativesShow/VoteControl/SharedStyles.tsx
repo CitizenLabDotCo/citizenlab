@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 
 export const StatusWrapper = styled.div`
@@ -12,6 +12,10 @@ export const StatusWrapper = styled.div`
   &.answered {
     color: ${colors.clGreen};
   }
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 export const StatusExplanation = styled.div`
