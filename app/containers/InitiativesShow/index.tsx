@@ -57,7 +57,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { media, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -179,15 +179,16 @@ const InitiativeBannerContainer = styled.div`
   width: 100%;
   height: 163px;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: flex-start;
+  justify-content: center;
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 40px;
   padding-bottom: 40px;
   position: relative;
   z-index: 3;
-  background: #767676;
+  flex-direction: column;
+  background: ${({ theme }) => theme.colorMain};
 
   ${media.smallerThanMinTablet`
     min-height: 200px;
@@ -195,7 +196,7 @@ const InitiativeBannerContainer = styled.div`
 `;
 
 const InitiativeBannerImage = styled.div<{ src: string | null }>`
-  background-image: url(${({ src }) => src});
+  ${({ src }) => src ? `background-image: url(${src});` : ''}
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -421,9 +422,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         campaign: 'share_content',
         content: authUser.id
       } : {
-        source: 'share_initiative',
-        campaign: 'share_content'
-      };
+          source: 'share_initiative',
+          campaign: 'share_content'
+        };
       const showTranslateButton = (
         !isNilOrError(initiative) &&
         !isNilOrError(locale) &&
@@ -434,10 +435,18 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         <>
           <InitiativeMeta initiativeId={initiativeId} />
 
-          <InitiativeBannerContainer>
-            <InitiativeBannerImage src={initiativeHeaderImageLarge} />
-            <NotOnDesktop>
-              <InitiativeHeaderOverlay />
+          {initiativeHeaderImageLarge &&
+            <OnlyOnDesktop>
+              <InitiativeBannerContainer>
+                <InitiativeBannerImage src={initiativeHeaderImageLarge} />
+              </InitiativeBannerContainer>
+            </OnlyOnDesktop>
+          }
+
+          <NotOnDesktop>
+            <InitiativeBannerContainer>
+              <InitiativeBannerImage src={initiativeHeaderImageLarge} />
+              {initiativeHeaderImageLarge && <InitiativeHeaderOverlay />}
               <MobileMoreActionContainer>
                 <InitiativeMoreActions
                   initiative={initiative}
@@ -458,8 +467,8 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
               <PostedByMobile
                 authorId={authorId}
               />
-            </NotOnDesktop>
-          </InitiativeBannerContainer>
+            </InitiativeBannerContainer>
+          </NotOnDesktop>
 
           <OnlyOnDesktop>
             <ActionBar
