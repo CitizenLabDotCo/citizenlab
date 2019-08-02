@@ -12,7 +12,7 @@ resource "Votes" do
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     @initiative = create(:initiative)
-    @votes = create_list(:vote, 2, votable: @initiative)
+    @votes = create_list(:vote, 2, votable: @initiative, mode: 'up')
   end
 
   get "web_api/v1/initiatives/:initiative_id/votes" do
