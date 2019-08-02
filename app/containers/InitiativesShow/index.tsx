@@ -15,7 +15,7 @@ import Sharing from 'components/Sharing';
 import InitiativeMeta from './InitiativeMeta';
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-import SharingModalContent from 'components/PostComponents/sharingModalContent';
+import SharingModalContent from 'components/PostComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import Topics from 'components/PostComponents/Topics';
 import Title from 'components/PostComponents/Title';
