@@ -65,16 +65,16 @@ class InitiativeStatusService
   end
 
   def automated_transitions!
-    AUTO_TRANSITIONS.each do |status_code_from, transtitions|
+    AUTO_TRANSITIONS.each do |status_code_from, transitions|
       transitions.each do |status_code_to, transition_instructions|
         # Get the initiatives that need to make the transtion.
         initiatives = Initiative.published
           .joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
           .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-          .where('initiative_statuses.code', status_code_from)
+          .where('initiative_statuses.code = ?', status_code_from)
         initiatives = transition_instructions[:scope_contition].call initiatives
         # Create the status changes.
-        status_id_to = InitiativeStatus.where(code: status_code_to).id
+        status_id_to = InitiativeStatus.find_by(code: status_code_to).id
         changes = InitiativeStatusChange.create!(initiatives.ids.map{ |id|
           {
             initiative_id: id,
@@ -82,7 +82,7 @@ class InitiativeStatusService
           }
         })
         # Log the status change activities.
-        InitiativeStatusChange.where(id: changes.ids).includes(:initiative).each do |change|
+        InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative).each do |change|
           log_status_change change
         end
       end

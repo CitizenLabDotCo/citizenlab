@@ -150,7 +150,7 @@ class AnonymizeUserService
 
   def random_bio locales
     locales.map do |locale|
-      bio = case %w(greek hipster movie rick_and_morty game_of_thrones nil)
+      bio = case %w(greek hipster movie rick_and_morty game_of_thrones nil).shuffle.first
       when 'greek'
         Faker::GreekPhilosophers.quote
       when 'hipster'
