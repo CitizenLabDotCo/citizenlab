@@ -79,8 +79,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px);
-  background: #fff;
-  opacity: 0;
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
