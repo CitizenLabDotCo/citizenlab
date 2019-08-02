@@ -5,7 +5,7 @@ class SideFxInitiativeStatusChangeService
   end
 
   def after_create change, user
-    LogActivityJob.perform_later(change.initiative, 'changed_status', user, change.created_at.to_i)
+    InitiativeStatusService.new.log_status_change change, user: user
   end
 
 end
