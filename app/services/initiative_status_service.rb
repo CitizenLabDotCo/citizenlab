@@ -2,11 +2,22 @@ class InitiativeStatusService
 
   MANUAL_TRANSITIONS = {
     'proposed' => {
+      'answered' => {
+        feedback_required: true
+      },
       'ineligible' => {
         feedback_required: true
       }
     },
     'threshold_reached' => {
+      'answered' => {
+        feedback_required: true
+      },
+      'ineligible' => {
+        feedback_required: true
+      }
+    },
+    'expired' => {
       'answered' => {
         feedback_required: true
       },
@@ -26,34 +37,57 @@ class InitiativeStatusService
     }
   }
 
-  def auto_transitions 
-    {
-      'proposed' => {
-        'threshold_reached' => method(:threshold_reached?),
-        'expired' => method(:expired?)
+  AUTO_TRANSITIONS = {
+    'proposed' => {
+      'threshold_reached' => {
+        scope_contition: lambda{ |initiative_scope|
+          initiative_scope.where(
+            'initiatives.upvotes_count >= ?', 
+            Tenant.current.settings.dig('initiatives', 'voting_threshold')
+            )
+        }
+      },
+      'expired' => {
+        scope_contition: lambda{ |initiative_scope|
+          initiative_scope.where(
+            'initiatives.published_at < ?', 
+            (Time.now - Tenant.current.settings.dig('initiatives', 'days_limit').days)
+            )
+        }
       }
     }
-  end
+  }
+
 
   def transition_allowed? initiative, status1, status2, with_feedback: false
     transition_possibility = MANUAL_TRANSITIONS.dig status1.code, status2.code
     transition_possibility && (!transition_possibility[:feedback_required] || with_feedback)
   end
 
-  # def transition! initiative, status1, status2, official_feedback_params: nil
-  #   if manual_transitions[status1.code]&.include? status2.code
-  #     ActiveRecord::Base.transaction do
-  #       initiative.update! idea_status: status2
-  #       initiative.official_feedbacks.create! official_feedback_params
-  #     end
-  #     log_status_change initiative
-  #   elsif auto_transitions.dig(status1.code, status2.code)&.call(initiative)
-  #     initiative.update! idea_status: status2
-  #     log_status_change initiative
-  #   else
-  #     raise 'Transition not permitted!'  # TODO make transaction error
-  #   end
-  # end
+  def automated_transitions!
+    AUTO_TRANSITIONS.each do |status_code_from, transtitions|
+      transitions.each do |status_code_to, transition_instructions|
+        # Get the initiatives that need to make the transtion.
+        initiatives = Initiative.published
+          .joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
+          .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
+          .where('initiative_statuses.code', status_code_from)
+        initiatives = transition_instructions[:scope_contition].call initiatives
+        # Create the status changes.
+        status_id_to = InitiativeStatus.where(code: status_code_to).id
+        changes = InitiativeStatusChange.create!(initiatives.ids.map{ |id|
+          {
+            initiative_id: id,
+            initiative_status_id: status_id_to
+          }
+        })
+        # Log the status change activities.
+        InitiativeStatusChange.where(id: changes.ids).includes(:initiative).each do |change|
+          log_status_change change
+        end
+      end
+    end
+  end
 
   def allowed_transitions initiative
     return [] if !initiative.initiative_status_id
@@ -63,16 +97,8 @@ class InitiativeStatusService
     end.to_h
   end
 
-  def threshold_reached? initiative
-    initiative.upvotes >= Tenant.current.settings.dig('initiatives', 'voting_threshold')
-  end
-
-  def expired? initiative
-    expiration_time(initiative) < Time.now
-  end
-
-  def expiration_time initiative
-    initiative.published_at + Tenant.current.settings.dig('initiatives', 'days_limit').days
+  def log_status_change change, user: nil
+    LogActivityJob.perform_later(change.initiative, 'changed_status', user, change.created_at.to_i)
   end
 
 end
