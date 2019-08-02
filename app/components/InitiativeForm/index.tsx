@@ -82,6 +82,31 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     this.setState({ errors });
   }
 
+  componentDidUpdate(prevProps: Props) {
+    // we generally validate on blur, but when the form is almost ready to be
+    // sent, we want to have the publish button active as soon as it's usable
+
+    // getting the non null errors
+    const errorEntries = Object.entries(this.state.errors).filter(entry => entry[1]);
+    // if there's only one
+    if (errorEntries.length === 1) {
+      // if the value of this field was changed
+      if (prevProps[errorEntries[0][0]] !== this.props[errorEntries[0][0]]) {
+        // run validation for that field
+        this.validate(errorEntries[0][0]);
+      }
+    }
+    // also, when the form is in a publishable state, if we modify a field we
+    // want to make sure detect the form is no longer valid as soon as possible
+
+    // if the form is valid
+    if (errorEntries.length === 0) {
+      // find what prop whas changed and run its validation
+      Object.entries(prevProps).filter(entry => entry[1] !== this.props[entry[0]])
+        .forEach(entry => this.validations[entry[0]] && this.validate(entry[0]));
+    }
+  }
+
   validations = {
     title_multiloc: () => {
       const { title_multiloc } = this.props;
@@ -118,6 +143,12 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       return undefined;
     },
   };
+
+  validate = (fieldName: string) => {
+    const errors = Object.assign({}, this.state.errors);
+    errors[fieldName] = get(this.validations, fieldName, () => undefined)();
+    this.setState({ errors });
+  }
 
   onBlur = (fieldName: string) => () => {
     // making sure the props are updated before validation and save.
