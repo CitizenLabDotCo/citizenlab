@@ -43,7 +43,6 @@ const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
 `;
 
 const StyledInitiativesShow = styled(InitiativesShow)`
-  background: #fff;
   margin-top: ${props => props.theme.mobileTopBarHeight}px;
 
   ${media.biggerThanMaxTablet`
@@ -62,7 +61,6 @@ interface Props extends InputProps, DataProps {}
 const goBackToListMessage = <FormattedMessage {...messages.goBackToList} />;
 
 const InitiativesShowPage = memo<Props>(({ initiative }) => {
-
   if (isError(initiative)) {
     return (
       <InitiativeNotFoundWrapper>
