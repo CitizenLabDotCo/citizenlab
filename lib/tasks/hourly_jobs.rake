@@ -4,8 +4,8 @@ namespace :cl2back do
     now = Time.now
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        InitiativeStatusService.new.automated_transitions!
-        ActivitiesService.new.create_periodic_activities_for_current_tenant now: now
+        AutomatedTransitionJob.perform_later
+        CreatePeriodicActivitiesJob.perform_later now
       end
     end
   end
