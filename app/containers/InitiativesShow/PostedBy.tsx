@@ -54,9 +54,10 @@ const AboutInitiativesLink = styled(Link)`
 interface Props {
   authorId: string | null;
   className?: string;
+  showAboutInitiatives: boolean;
 }
 
-const PostedBy = memo<Props>(({ authorId, className }) => {
+const PostedBy = memo<Props>(({ authorId, className, showAboutInitiatives }) => {
 
   if (authorId) {
     const authorName = <UserName userId={authorId} emphasize linkToProfile hideLastName />;
@@ -68,11 +69,13 @@ const PostedBy = memo<Props>(({ authorId, className }) => {
           <PostedByText>
             <FormattedMessage {...messages.postedBy} values={{ authorName }} />
           </PostedByText>
-          <AboutInitiativesLink
-            to="/pages/initiatives"
-          >
-            <FormattedMessage {...messages.learnMore} />
-          </AboutInitiativesLink>
+          {showAboutInitiatives &&
+            <AboutInitiativesLink
+              to="/pages/initiatives"
+            >
+              <FormattedMessage {...messages.learnMore} />
+            </AboutInitiativesLink>
+          }
         </PostedByWrapper>
       </Container>
     );
