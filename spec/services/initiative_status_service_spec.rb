@@ -29,5 +29,30 @@ describe InitiativeStatusService do
       expect(@initiative.reload.initiative_status.code).to eq 'threshold_reached'
     end
 
+    it "transitions when expired" do 
+      create(
+        :initiative_status_change, 
+        initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'proposed')
+        )
+
+      travel_to (Time.now + 22.days) do
+        service.automated_transitions!
+        expect(@initiative.reload.initiative_status.code).to eq 'expired'
+      end
+    end
+
+    it "remains proposed if not expired nor threshold reached" do 
+      create(
+        :initiative_status_change, 
+        initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'proposed')
+        )
+      create_list(:vote, 1, votable: @initiative, mode: 'up')
+
+      travel_to (Time.now + 15.days) do
+        service.automated_transitions!
+        expect(@initiative.reload.initiative_status.code).to eq 'proposed'
+      end
+    end
+
   end
 end
