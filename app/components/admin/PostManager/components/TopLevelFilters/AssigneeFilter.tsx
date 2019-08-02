@@ -58,7 +58,7 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
         // Order of assignee filter options:
         // All ideas > Assigned to me > Unassigned > Assigned to X (other admins/mods)
         assigneeOptions = [
-          { value: 'all', text: formatMessage(messages.anyAssignment), id: 'e2e-assignee-filter-all-ideas' },
+          { value: 'all', text: formatMessage(messages.anyAssignment), id: 'e2e-assignee-filter-all-posts' },
           { value: authUser.id, text: formatMessage(messages.assignedToMe), id: 'e2e-assignee-filter-assigned-to-user' },
           { value: 'unassigned', text: formatMessage(messages.noOne), id: 'e2e-assignee-filter-unassigned' },
           ...dynamicOptions
@@ -82,7 +82,7 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
 
     return (
       <Dropdown
-        id="e2e-idea-select-assignee-filter"
+        id="e2e-select-assignee-filter"
         options={this.getAssigneeOptions(prospectAssignees, authUser)}
         onChange={this.onAssigneeChange}
         value={assignee || 'all'}

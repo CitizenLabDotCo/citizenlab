@@ -348,7 +348,7 @@
   "app.components.admin.PostManager.allProjects": "All projects",
   "app.components.admin.PostManager.allStatuses": "All statuses",
   "app.components.admin.PostManager.allTopics": "All topics",
-  "app.components.admin.PostManager.anyAssignment": "All ideas",
+  "app.components.admin.PostManager.anyAssignment": "Any assignment",
   "app.components.admin.PostManager.anyFeedbackStatusIdeas": "All ideas",
   "app.components.admin.PostManager.anyFeedbackStatusInitiatives": "All initiatives",
   "app.components.admin.PostManager.assignedTo": "Assigned to {assigneeName}",

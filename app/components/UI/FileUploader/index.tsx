@@ -13,6 +13,7 @@ interface Props {
   onFileRemove: (fileToRemove: UploadFile) => void;
   files: UploadFile[] | null | Error | undefined;
   errors?: { [fieldName: string]: CLError[] } | null;
+  id?: string;
 }
 
 interface State {}
@@ -28,16 +29,13 @@ export default class FileUploader extends PureComponent<Props, State>{
   }
 
   render() {
-    const { files, errors } = this.props;
-
-    // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    //   return null;
-    // }
+    const { files, errors, id } = this.props;
 
     return (
       <>
         <FileInput
           onAdd={this.handleFileOnAdd}
+          id={id}
         />
 
         {errors && <Error fieldName="file" apiErrors={errors.file} />}
