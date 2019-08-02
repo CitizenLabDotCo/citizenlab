@@ -228,7 +228,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             <Row>
               <Left>
                 {ideaImageLarge &&
-                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { ideaTitle })} className="e2e-ideaImage"/>
+                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { postTitle: ideaTitle })} className="e2e-ideaImage"/>
                 }
                 <IdeaAuthor
                   authorId={get(idea, 'relationships.author.data.id', null)}

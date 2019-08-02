@@ -15,7 +15,7 @@ export default defineMessages({
   },
   imageAltText: {
     id: 'app.components.admin.PostManager.PostPreview.imageAltText',
-    defaultMessage: 'Image for idea {ideaTitle}',
+    defaultMessage: 'Image for idea {postTitle}',
   },
   upvoteCount: {
     id: 'app.components.admin.PostManager.PostPreview.upvoteCount',
