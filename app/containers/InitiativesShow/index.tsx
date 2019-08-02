@@ -444,7 +444,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
               </MobileMoreActionContainer>
               <Title
                 id={initiativeId}
-                context="initiative"
+                postType="initiative"
                 title={initiativeTitle}
                 locale={locale}
                 translateButtonClicked={translateButtonClicked}
@@ -486,13 +486,12 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 <OnlyOnDesktop>
                   <InitiativeHeader>
                     <Title
+                      postType="initiative"
                       id={initiativeId}
-                      context="initiative"
                       title={initiativeTitle}
                       locale={locale}
                       translateButtonClicked={translateButtonClicked}
                     />
-
                     {/* {smallerThanLargeTablet &&
                       <StyledMobileIdeaPostedBy authorId={authorId} />
                     } */}
@@ -508,7 +507,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 {initiativeImageLarge &&
                   <Image
                     src={initiativeImageLarge}
-                    postType="initiative"
+                    alt={formatMessage(messages.imageAltText, { initiativeTitle })}
                     className="e2e-initiativeImage"
                   />
                 }
