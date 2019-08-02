@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import SideModal from 'components/UI/SideModal';
 import IdeaEdit from './IdeaEdit';
+import InitiativeEdit from './InitiativeEdit';
 import IdeaContent from './IdeaContent';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { ManagerType } from '../..';
 
 interface DataProps {}
@@ -19,18 +19,21 @@ interface InputProps {
 interface Props extends InputProps, DataProps {}
 
 export const Container = styled.div`
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const Top = styled.div`
   display: flex;
+  align-items: center;
   position: fixed;
   top: 0;
   height: 50px;
   width: 100%;
-  background-color: ${colors.adminBackground};
   padding-left: 10px;
   padding-right: 50px;
   z-index: 1;
@@ -62,6 +65,12 @@ export default class PostPreview extends PureComponent<Props> {
         {mode === 'edit' && postId && (type === 'AllIdeas' || type === 'ProjectIdeas') && postId &&
           <IdeaEdit
             ideaId={postId}
+            goBack={onSwitchPreviewMode}
+          />
+        }
+        {mode === 'edit' && postId && (type === 'Initiatives') &&
+          <InitiativeEdit
+            initiativeId={postId}
             goBack={onSwitchPreviewMode}
           />
         }

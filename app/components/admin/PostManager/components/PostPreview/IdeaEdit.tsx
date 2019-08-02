@@ -13,6 +13,7 @@ import clHistory from 'utils/cl-router/history';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
+import { Content, Top, Container } from '.';
 
 // services
 import { localeStream } from 'services/locale';
@@ -40,7 +41,6 @@ import styled from 'styled-components';
 
 // resource components
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
-import { Content, Top, Container } from '.';
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -245,8 +245,8 @@ class IdeaEdit extends PureComponent<Props, State> {
       const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
       return (
-        <Container>
-          <Top>
+        <Container bgColor="white">
+          <Top bgColor={colors.adminBackground}>
             <Button
               icon="arrow-back"
               style="text"
