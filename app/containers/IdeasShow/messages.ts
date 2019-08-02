@@ -11,7 +11,7 @@ export default defineMessages({
   },
   imageAltText: {
     id: 'app.containers.IdeasShow.imageAltText',
-    defaultMessage: '{orgName} - main image for the idea {ideaTitle}',
+    defaultMessage: 'Main image for the idea {ideaTitle}',
   },
   Map: {
     id: 'app.containers.IdeasShow.Map',
@@ -152,6 +152,14 @@ export default defineMessages({
   ideaOgDescription: {
     id: 'app.containers.IdeasShow.ideaOgDescription',
     defaultMessage: 'What do you think of this idea? Join the discussion and vote to make your voice heard.',
+  },
+  shareTitle: {
+    id: 'app.containers.IdeasShow.shareTitle',
+    defaultMessage: 'Congratulations, your idea was successfully posted!',
+  },
+  shareSubtitle: {
+    id: 'app.containers.IdeasShow.shareSubtitle',
+    defaultMessage: 'Share your idea to reach more people, receive more votes and have more impact.',
   },
   twitterMessage: {
     id: 'app.containers.IdeasShow.twitterMessage',
