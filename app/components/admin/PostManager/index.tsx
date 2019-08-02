@@ -385,13 +385,13 @@ export class PostManager extends React.PureComponent<Props, State> {
             openPreview={this.openPreview}
           />
         </ThreeColumns>
-        <PostPreview
+        {/* <PostPreview
           type={type}
           postId={previewPostId}
           mode={previewMode}
           onClose={this.closePreview}
           onSwitchPreviewMode={this.switchPreviewMode}
-        />
+        /> */}
       </>
     );
   }
