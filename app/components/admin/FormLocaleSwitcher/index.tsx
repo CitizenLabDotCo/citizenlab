@@ -8,9 +8,9 @@ import { colors } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 import { darken } from 'polished';
 
-const Container = styled.div<{ noMargin: boolean }>`
+const Container = styled.div`
   display: flex;
-  margin-bottom: ${({ noMargin }) => noMargin ? 0 : '10px'};
+  margin-bottom: 10px;
   width: 100%;
   justify-content: flex-end;
   & > :not(:last-child) {
@@ -49,7 +49,6 @@ interface InputProps {
   onLocaleChange: (loc: Locale) => () => void;
   values: MultilocFormValues;
   selectedLocale: Locale;
-  noMargin?: boolean;
 }
 
 interface DataProps {
@@ -67,11 +66,11 @@ class FormLocaleSwitcher extends PureComponent<Props> {
   }
 
   render() {
-    const { tenantLocales, onLocaleChange, selectedLocale, noMargin } = this.props;
+    const { tenantLocales, onLocaleChange, selectedLocale } = this.props;
 
     if (!isNilOrError(tenantLocales) && tenantLocales.length > 1) {
       return (
-        <Container noMargin={noMargin}>
+        <Container>
           {tenantLocales.map(locale => (
             <StyledButton
               key={locale}

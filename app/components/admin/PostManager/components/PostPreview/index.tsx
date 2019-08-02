@@ -4,7 +4,6 @@ import IdeaEdit from './IdeaEdit';
 import InitiativeEdit from './InitiativeEdit';
 import IdeaContent from './IdeaContent';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { ManagerType } from '../..';
 
 interface DataProps {}
@@ -19,24 +18,22 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-export const Container = styled.div<{ bgColor: string}>`
+export const Container = styled.div`
   min-height: 100%;
   width: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${({ bgColor }) => bgColor};
 `;
 
-export const Top = styled.div<{ bgColor: string}>`
+export const Top = styled.div`
   display: flex;
   align-items: center;
   position: fixed;
   top: 0;
   height: 50px;
   width: 100%;
-  background-color: ${({ bgColor }) => bgColor};
   padding-left: 10px;
   padding-right: 50px;
   z-index: 1;
