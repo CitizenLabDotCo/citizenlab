@@ -13,24 +13,25 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
-import IdeaMap from './IdeaMapLoadable';
+import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
+import Topics from 'components/PostComponents/Topics';
+import Title from 'components/PostComponents/Title';
+import Body from 'components/PostComponents/Body';
+import ContentFooter from 'components/PostComponents/ContentFooter';
+import Image from 'components/PostComponents/Image';
+import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
 import FileAttachments from 'components/UI/FileAttachments';
-import IdeaSharingModalContent from './IdeaSharingModalContent';
+import SharingModalContent from 'components/PostComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
-import IdeaTopics from './IdeaTopics';
-import IdeaTitle from './IdeaTitle';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import IdeaFooter from './IdeaFooter';
 import Spinner from 'components/UI/Spinner';
-import OfficialFeedback from './OfficialFeedback';
-import IdeaBody from './IdeaBody';
-import IdeaContentFooter from './IdeaContentFooter';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostComponents/TranslateButton';
 
@@ -47,6 +48,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
+import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -128,20 +130,6 @@ const IdeaContainer = styled.div`
   `}
 `;
 
-const StyledIdeaTopics = styled(IdeaTopics)`
-  padding-right: ${rightColumnWidthDesktop + columnsGapDesktop}px;
-  margin-bottom: 10px;
-
-  ${media.tablet`
-    padding-right: ${rightColumnWidthTablet + columnsGapTablet}px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    padding-right: 0px;
-    margin-bottom: 5px;
-  `}
-`;
-
 const Content = styled.div`
   width: 100%;
   display: flex;
@@ -186,14 +174,6 @@ const IdeaHeader = styled.div`
   `}
 `;
 
-const IdeaImage = styled.img`
-  width: 100%;
-  height: auto;
-  margin-bottom: 25px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${colors.separation};
-`;
-
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
   margin-top: 4px;
 
@@ -219,7 +199,7 @@ const StyledIdeaAuthor = styled(IdeaAuthor)`
   `}
 `;
 
-const StyledIdeaMap = styled(IdeaMap)`
+const StyledLoadableDropdownMap = styled(LoadableDropdownMap)`
   margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
@@ -326,6 +306,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
+  postOfficialFeedbackPermission: GetPermissionChildProps;
 }
 
 interface InputProps {
@@ -474,7 +455,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       ideaImages,
       authUser,
       windowSize,
-      className
+      className,
+      postOfficialFeedbackPermission
     } = this.props;
     const { loaded, ideaIdForSocialSharing, translateButtonClicked, actionInfos } = this.state;
     const { formatMessage } = this.props.intl;
@@ -538,14 +520,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               }
             </FeatureFlag>
 
-            <StyledIdeaTopics topicIds={topicIds} />
-
             <Content>
               <LeftColumn>
+                <Topics topicIds={topicIds} />
                 <IdeaHeader>
-                  <IdeaTitle
-                    ideaId={ideaId}
-                    ideaTitle={ideaTitle}
+                  <Title
+                    postType="idea"
+                    id={ideaId}
+                    title={ideaTitle}
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}
                   />
@@ -568,7 +550,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 {ideaImageLarge &&
-                  <IdeaImage
+                  <Image
                     src={ideaImageLarge}
                     alt={formatMessage(messages.imageAltText, { ideaTitle })}
                     className="e2e-ideaImage"
@@ -576,16 +558,17 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 {ideaGeoPosition && ideaAddress &&
-                  <StyledIdeaMap
+                  <StyledLoadableDropdownMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
                   />
                 }
 
-                <IdeaBody
-                  ideaId={ideaId}
+                <Body
+                  postType="idea"
+                  id={ideaId}
                   locale={locale}
-                  ideaBody={ideaBody}
+                  body={ideaBody}
                   translateButtonClicked={translateButtonClicked}
                 />
 
@@ -610,12 +593,15 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 <StyledOfficialFeedback
-                  ideaId={ideaId}
+                  postId={ideaId}
+                  postType="idea"
+                  permissionToPost={postOfficialFeedbackPermission}
                 />
 
-                <IdeaContentFooter
-                  ideaId={ideaId}
-                  ideaCreatedAt={ideaCreatedAt}
+                <ContentFooter
+                  postType="idea"
+                  id={ideaId}
+                  createdAt={ideaCreatedAt}
                   commentsCount={idea.attributes.comments_count}
                 />
 
@@ -720,18 +706,23 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         </CSSTransition>
 
         <FeatureFlag name="ideaflow_social_sharing">
-          <Modal
-            opened={!!ideaIdForSocialSharing}
-            close={this.closeIdeaSocialSharingModal}
-            hasSkipButton={true}
-            skipText={<FormattedMessage {...messages.skipSharing} />}
-            label={formatMessage(messages.modalShareLabel)}
-          >
-            {ideaIdForSocialSharing &&
-              <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
-            }
-          </Modal>
-        </FeatureFlag>
+            <Modal
+              opened={!!ideaIdForSocialSharing}
+              close={this.closeIdeaSocialSharingModal}
+              hasSkipButton={true}
+              skipText={<FormattedMessage {...messages.skipSharing} />}
+              label={formatMessage(messages.modalShareLabel)}
+            >
+              {ideaIdForSocialSharing &&
+                <SharingModalContent
+                  postType="idea"
+                  postId={ideaIdForSocialSharing}
+                  title={formatMessage(messages.shareTitle)}
+                  subtitle={formatMessage(messages.shareSubtitle)}
+                />
+              }
+            </Modal>
+          </FeatureFlag>
       </>
     );
   }
@@ -748,7 +739,8 @@ const Data = adopt<DataProps, InputProps>({
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
   phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>,
-  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>
+  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>,
+  postOfficialFeedbackPermission: ({ project, render }) => !isNilOrError(project) ? <GetPermission item={project} action="moderate" >{render}</GetPermission> : null,
 });
 
 export default (inputProps: InputProps) => (

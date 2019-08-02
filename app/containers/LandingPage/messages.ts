@@ -41,14 +41,6 @@ export default defineMessages({
     id: 'app.containers.landing.exploreAllProjects',
     defaultMessage: 'Explore all projects',
   },
-  shareTitle: {
-    id: 'app.containers.landing.shareTitle',
-    defaultMessage: 'Congratulations, your idea was successfully posted!',
-  },
-  shareSubtitle: {
-    id: 'app.containers.landing.shareSubtitle',
-    defaultMessage: 'Share your idea to reach more people, receive more votes and have more impact.',
-  },
   twitterMessage: {
     id: 'app.containers.landing.twitterMessage',
     defaultMessage: 'Vote for {ideaTitle} on',

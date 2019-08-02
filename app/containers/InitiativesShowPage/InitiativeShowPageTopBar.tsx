@@ -2,8 +2,8 @@ import React, { memo, useCallback, MouseEvent } from 'react';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import VoteControl from 'components/VoteControl';
 import Icon from 'components/UI/Icon';
+import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -117,10 +117,6 @@ const InitiativeShowPageTopBar = memo<Props>(({ initiativeId, insideModal, class
     }
   }, []);
 
-  const onUnauthenticatedVoteClick = useCallback(() => {
-    clHistory.push('/sign-in');
-  }, []);
-
   return (
     <Container className={className}>
       <TopBarInner>
@@ -132,13 +128,9 @@ const InitiativeShowPageTopBar = memo<Props>(({ initiativeId, insideModal, class
             <FormattedMessage {...messages.goBack} />
           </GoBackLabel>
         </Left>
-        {/* <Right>
-          <VoteControl
-            ideaId={ideaId}
-            unauthenticatedVoteClick={onUnauthenticatedVoteClick}
-            size="1"
-          />
-        </Right> */}
+        <Right>
+          <VoteIndicator initiativeId={initiativeId} />
+        </Right>
       </TopBarInner>
     </Container>
   );

@@ -13,18 +13,15 @@ const Image = styled.img`
 
 interface Props {
   src: string;
-  postType: 'idea' | 'initiative';
+  alt: string;
   className?: string;
 }
 
-export default memo(({ src, postType, className }: Props) => {
+export default memo(({ src, alt, className }: Props) => {
   return (
     <Image
       src={src}
-      // alt={formatMessage(messages.imageAltText, {
-      //   postContext: formatMessage(messages.initiative),
-      //   title: initiativeTitle
-      // })}
+      alt={alt}
       className={className}
     />
   );
