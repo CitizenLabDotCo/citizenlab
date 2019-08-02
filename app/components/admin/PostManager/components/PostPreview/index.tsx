@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import SideModal from 'components/UI/SideModal';
 import IdeaEdit from './IdeaEdit';
 import IdeaContent from './IdeaContent';
+import InitiativeContent from './InitiativeContent';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { ManagerType } from '../..';
@@ -45,26 +46,32 @@ export default class PostPreview extends PureComponent<Props> {
 
   render() {
     const { type, postId, onClose, onSwitchPreviewMode, mode } = this.props;
-    console.log(type === 'Initiatives' ? 'TODO PostPreview' : '');
 
     return (
       <SideModal
         opened={!!postId}
         close={onClose}
       >
-        {mode === 'view' && (type === 'AllIdeas' || type === 'ProjectIdeas') && postId &&
+        {/* {mode === 'view' && (type === 'AllIdeas' || type === 'ProjectIdeas') && postId &&
           <IdeaContent
             ideaId={postId}
             closePreview={onClose}
             handleClickEdit={onSwitchPreviewMode}
           />
+        } */}
+        {mode === 'view' && type === 'Initiatives' && postId &&
+          <InitiativeContent
+            initiativeId={postId}
+            closePreview={onClose}
+            handleClickEdit={onSwitchPreviewMode}
+          />
         }
-        {mode === 'edit' && postId && (type === 'AllIdeas' || type === 'ProjectIdeas') && postId &&
+        {/* {mode === 'edit' && postId && (type === 'AllIdeas' || type === 'ProjectIdeas') && postId &&
           <IdeaEdit
             ideaId={postId}
             goBack={onSwitchPreviewMode}
           />
-        }
+        } */}
       </SideModal>
     );
   }
