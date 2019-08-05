@@ -180,8 +180,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
     const upvoteCount = get(this.props.comment, 'attributes.upvotes_count');
 
     // Whenever the upvote count number returned by the GetComment resource component has changed
-    // we update the value kept in the state to make sure we always use the 'correct' upvote count
-    // whenever it's being returned from the back-end
+    // we update the value kept in the state to make sure we always use the correct and up-to-date upvote count coming back from the server
     if (upvoteCount !== prevUpvoteCount && isNumber(upvoteCount)) {
       this.setState({ upvoteCount });
     }
