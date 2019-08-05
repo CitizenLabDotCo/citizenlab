@@ -75,8 +75,8 @@ resource "Comment Votes" do
       before do
         @comment.update! post: create(:initiative)
       end
-      
-      example_request "Create a vote on a comment of an initiative" do
+
+      example_request "Create a vote on a comment of an initiative", document: false do
         expect(response_status).to eq 201
       end
     end
