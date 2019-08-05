@@ -57,7 +57,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { media, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -574,7 +574,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             </Content>
           </InitiativeContainer>
 
-          {/* {loaded && <Footer postId={initiativeId} postType="initiative" />} */}
+          {loaded && <Footer postId={initiativeId} postType="initiative" />}
         </>
       );
 

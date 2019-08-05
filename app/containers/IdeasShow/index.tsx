@@ -30,7 +30,7 @@ import SimilarIdeas from './SimilarIdeas';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
-import IdeaFooter from './IdeaFooter';
+import Footer from 'components/PostComponents/Footer';
 import Spinner from 'components/UI/Spinner';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostComponents/TranslateButton';
@@ -677,7 +677,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             </Content>
           </IdeaContainer>
 
-          {loaded && <IdeaFooter ideaId={ideaId} />}
+          {loaded && <Footer postId={ideaId} postType="idea" />}
         </>
       );
     }

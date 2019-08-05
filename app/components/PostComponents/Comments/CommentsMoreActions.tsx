@@ -10,7 +10,7 @@ import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
 
 // Services
-import { ICommentData, markForDeletion, DeleteReason } from 'services/comments';
+import { ICommentData, markForDeletion } from 'services/comments';
 import { hasPermission } from 'services/permissions';
 
 // Components
