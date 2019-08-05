@@ -2,6 +2,7 @@ module Notifications
   class IdeaAssignedToYou < Notification
     
     belongs_to :initiating_user, class_name: 'User', optional: true
+    belongs_to :idea
 
     ACTIVITY_TRIGGERS = {'Idea' => {'changed_assignee' => true}}
     EVENT_NAME = 'Idea assigned to you'

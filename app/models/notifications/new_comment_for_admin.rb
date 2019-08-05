@@ -2,8 +2,11 @@ module Notifications
   class NewCommentForAdmin < Notification
     
     belongs_to :initiating_user, class_name: 'User'
+    belongs_to :comment
+    belongs_to :idea, optional: true
+    belongs_to :project, optional: true
 
-    validates :initiating_user, presence: true
+    validates :initiating_user, :comment, presence: true
 
     ACTIVITY_TRIGGERS = {'Comment' => {'created' => true}}
     EVENT_NAME = 'New comment for admin'
