@@ -70,6 +70,16 @@ resource "Comment Votes" do
       expect(json_response.dig(:data,:attributes,:mode)).to eq "up"
       expect(@comment.reload.upvotes_count).to eq 3
     end
+
+    describe do
+      before do
+        @comment.update! post: create(:initiative)
+      end
+      
+      example_request "Create a vote on a comment of an initiative" do
+        expect(response_status).to eq 201
+      end
+    end
   end
 
   post "web_api/v1/comments/:comment_id/votes/up" do

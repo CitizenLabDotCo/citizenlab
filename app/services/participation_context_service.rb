@@ -120,7 +120,14 @@ class ParticipationContextService
   end
 
   def voting_disabled_reason_for_comment comment, user
-    commenting_disabled_reason_for_idea comment.post, user
+    case comment.post_type
+    when 'Idea'
+      commenting_disabled_reason_for_idea comment.post, user
+    when 'Initiative'
+      voting_disabled_reason_for_initiative comment.post, user
+    else
+      raise "No support for post type #{comment.post_type}"
+    end
   end
 
   def voting_disabled_reason_for_idea idea, user
@@ -132,6 +139,10 @@ class ParticipationContextService
     else
       voting_disabled_reason_for_project(idea.project, user)
     end
+  end
+
+  def voting_disabled_reason_for_initiative initiative, user
+    nil
   end
 
   def voting_disabled_reason_for_project project, user
