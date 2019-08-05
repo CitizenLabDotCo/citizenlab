@@ -64,6 +64,15 @@ class Initiative < ApplicationRecord
   }
 
 
+  def votes_needed tenant=Tenant.current
+    [tenant.settings.dig('initiatives', 'voting_threshold') - upvotes_count, 0].max
+  end
+
+  def expires_at tenant=Tenant.current
+    published_at + tenant.settings.dig('initiatives', 'days_limit').days
+  end
+
+
   private
 
   def assignee_can_moderate_initiatives

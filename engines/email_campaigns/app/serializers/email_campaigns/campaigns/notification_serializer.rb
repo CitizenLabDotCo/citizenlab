@@ -85,6 +85,22 @@ module EmailCampaigns
       end
     end
 
+    class CustomInitiativeSerializer < ActiveModel::Serializer
+      attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :url, :published_at, :created_at, :author_name, :votes_needed
+
+      def published_at
+        object.published_at.iso8601
+      end
+
+      def created_at
+        object.created_at.iso8601
+      end
+
+      def url
+        Frontend::UrlService.new.model_to_url object
+      end
+    end
+
     class CustomImageSerializer < ActiveModel::Serializer
       attributes :id, :versions, :ordering
 

@@ -1,14 +1,5 @@
 
 class Notification < ApplicationRecord
-
-  belongs_to :recipient, class_name: 'User'
-  belongs_to :initiating_user, class_name: 'User', optional: true
-  belongs_to :project, optional: true
-  belongs_to :idea, optional: true
-  belongs_to :comment, optional: true
-  belongs_to :spam_report, optional: true
-  belongs_to :invite, optional: true
-
   scope :unread,  -> {where(read_at: nil)}
 
 
@@ -20,7 +11,7 @@ class Notification < ApplicationRecord
   end
 
   def event_bus_item_name
-    "Notification for #{self.class::EVENT_NAME}"
+    "Notification for #{event_name}"
   end
 
   # We implement a custom item_content, since we don't want the whole content
@@ -35,5 +26,12 @@ class Notification < ApplicationRecord
 
   def policy_class
     NotificationPolicy
+  end
+
+
+  private
+
+  def event_name
+    self.class::EVENT_NAME
   end
 end
