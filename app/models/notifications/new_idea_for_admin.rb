@@ -2,8 +2,10 @@ module Notifications
   class NewIdeaForAdmin < Notification
     
     belongs_to :initiating_user, class_name: 'User'
+    belongs_to :idea
+    belongs_to :project, optional: true
 
-    validates :initiating_user, presence: true
+    validates :initiating_user, :idea, presence: true
 
     ACTIVITY_TRIGGERS = {'Idea' => {'published' => true}}
     EVENT_NAME = 'New idea for admin'
