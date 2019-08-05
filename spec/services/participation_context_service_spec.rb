@@ -324,19 +324,19 @@ describe ParticipationContextService do
       it "returns nil when voting is enabled in the current phase" do
         project = create(:project_with_current_phase, with_permissions: true)
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to be_nil
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to be_nil
       end
 
       it "returns `idea_not_in_current_phase` when it's not in the current phase" do
         project = create(:project_with_current_phase, with_permissions: true)
         idea = create(:idea, project: project, phases: [project.phases[1]])
-        expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to eq reasons[:idea_not_in_current_phase]
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:idea_not_in_current_phase]
       end
 
       it "returns 'voting_disabled' if it's in the current phase and voting is disabled" do
         project = create(:project_with_current_phase, current_phase_attrs: {voting_enabled: false})
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to eq reasons[:voting_disabled]
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:voting_disabled]
       end
 
       it "returns 'not_permitted' if it's in the current phase and voting is not permitted" do
@@ -345,13 +345,13 @@ describe ParticipationContextService do
           current_phase_attrs: {voting_permitted: false} 
           )
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to eq reasons[:not_permitted]
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:not_permitted]
       end
 
       it "returns 'project_inactive' when the timeline has past" do
         project = create(:project_with_past_phases, with_permissions: true)
         idea = create(:idea, project: project, phases: project.phases)
-        expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to eq reasons[:project_inactive]
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
       end
 
       it "returns `not_ideation` when we're in a participatory budgeting context" do
@@ -360,7 +360,7 @@ describe ParticipationContextService do
           current_phase_attrs: {participation_method: 'budgeting', max_budget: 1200}
           )
         idea = create(:idea, project: project, phases: project.phases)
-        expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to eq 'not_ideation'
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_ideation'
       end
     end
 
@@ -368,13 +368,13 @@ describe ParticipationContextService do
       it "returns nil when voting is enabled in the current project with unlimited voting" do
         project = create(:continuous_project, with_permissions: true)
         idea = create(:idea, project: project)
-        expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to be_nil
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to be_nil
       end
 
       it "returns 'voting_disabled' if voting is disabled" do
         project = create(:continuous_project, voting_enabled: false)
         idea = create(:idea, project: project)
-        expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to eq reasons[:voting_disabled]
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:voting_disabled]
       end
 
       it "returns 'not_permitted' if voting is not permitted" do
@@ -384,13 +384,13 @@ describe ParticipationContextService do
         permission.update!(permitted_by: 'groups', 
           group_ids: create_list(:group, 2).map(&:id)
           )
-        expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to eq reasons[:not_permitted]
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:not_permitted]
       end
 
       it "returns 'project_inactive' when the project is archived" do
         project = create(:continuous_project, publication_status: 'archived')
         idea = create(:idea, project: project, phases: project.phases)
-        expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to eq reasons[:project_inactive]
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
       end
     end
   end
