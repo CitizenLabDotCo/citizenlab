@@ -1,9 +1,13 @@
 // libraries
 import React, { memo, useState, useCallback } from 'react';
+import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import Observer from '@researchgate/react-intersection-observer';
 
 // resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetPost, { GetPostChildProps } from 'resources/GetPost';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // utils
@@ -11,11 +15,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import LoadingComments from './LoadingComments';
-import IdeaParentCommentForm from './ParentCommentForm/IdeaParentCommentForm';
-import InitiativeParentCommentForm from './ParentCommentForm/InitiativeParentCommentForm';
+import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
-import IdeaCommentingWarnings from './CommentingWarnings/IdeaCommentingWarnings';
-import InitiativeCommentingWarnings from './CommentingWarnings/InitiativeCommentingWarnings';
+import CommentingDisabled from './CommentingDisabled';
+import Warning from 'components/UI/Warning';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,6 +32,10 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { CommentsSort } from 'services/comments';
 
 const Container = styled.div``;
+
+const StyledWarning = styled(Warning)`
+  margin-bottom: 20px;
+`;
 
 const LoadMore = styled.div`
   width: 100%;
@@ -50,18 +57,21 @@ const LoadingMoreMessage = styled.div`
 `;
 
 export interface InputProps {
-  className?: string;
   postId: string;
   postType: 'idea' | 'initiative';
+  className?: string;
 }
 
 interface DataProps {
+  authUser: GetAuthUserChildProps;
+  post: GetPostChildProps;
   comments: GetCommentsChildProps;
+  project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const CommentsSection = memo<Props>(({ postId, postType, comments, className }) => {
+const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comments, project, className }) => {
   const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
   const [posting, setPosting] = useState(false);
   const { commentsList, hasMore, onLoadMore, loadingInital, loadingMore, onChangeSort } = comments;
@@ -88,37 +98,32 @@ const CommentsSection = memo<Props>(({ postId, postType, comments, className }) 
     }, []
   );
 
-  const commentingWarnings = () => {
-    return ({
-      idea: <IdeaCommentingWarnings ideaId={postId} />,
-      initiative: <InitiativeCommentingWarnings initiativeId={postId} />
-    })[postType];
-  };
-
-  const parentCommentForm = () => {
-    return ({
-      idea: (
-        <IdeaParentCommentForm
-          ideaId={postId}
-          postingComment={handleCommentPosting}
-        />
-      ),
-      initiative: (
-        <InitiativeParentCommentForm
-          initiativeId={postId}
-          postingComment={handleCommentPosting}
-        />
-      )
-    })[postType];
-  };
+  const commentingEnabled: boolean = get(post, 'attributes.action_descriptor.commenting.enabled', true);
+  const commentingDisabledReason = get(post, 'attributes.action_descriptor.commenting.disabled_reason', null);
 
   return (
     <Container className={className}>
-      {(!isNilOrError(commentsList)) ? (
+      {(!isNilOrError(post) && !isNilOrError(commentsList) && !isNilOrError(project)) ? (
         <>
-          {commentingWarnings()}
+          {/*
+            Show warning messages when there are no comments and you're looged in as an admin.
+            Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
+          */}
+          {true &&
+            <StyledWarning>
+              <FormattedMessage {...messages.noComments} />
+            </StyledWarning>
+          }
+
+          <CommentingDisabled
+            isLoggedIn={!!authUser}
+            commentingEnabled={commentingEnabled}
+            commentingDisabledReason={commentingDisabledReason}
+            projectId={project.id}
+          />
 
           <Comments
+            postId={postId}
             postType={postType}
             comments={commentsList}
             sortOrder={sortOrder}
@@ -140,7 +145,11 @@ const CommentsSection = memo<Props>(({ postId, postType, comments, className }) 
             </LoadingMore>
           }
 
-          {parentCommentForm()}
+          <ParentCommentForm
+            postId={postId}
+            postType={postType}
+            postingComment={handleCommentPosting}
+          />
         </>
       ) : (
         <LoadingComments />
@@ -150,7 +159,10 @@ const CommentsSection = memo<Props>(({ postId, postType, comments, className }) 
 });
 
 const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  post: ({ postId, postType, render }) => <GetPost id={postId} type={postType}>{render}</GetPost>,
   comments: ({ postId, postType, render }) => <GetComments postId={postId} postType={postType}>{render}</GetComments>,
+  project: ({ post, render }) => <GetProject id={get(post, 'relationships.project.data.id')}>{render}</GetProject>
 });
 
 export default memo<InputProps>((inputProps: InputProps) => (

@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { IIdeaData } from 'services/ideas';
-import messages from '../messages';
+import messages from './messages';
 
 const Container = styled.div`
   margin-bottom: 40px;
@@ -62,7 +62,7 @@ class CommentingDisabled extends PureComponent<Props> {
       const messageDescriptor = this.calculateMessageDescriptor();
       const projectTitle = (!isNilOrError(project) ? project.attributes.title_multiloc : null);
 
-      if (!messageDescriptor) return null;
+      if (isNilOrError(project) || !messageDescriptor) return null;
 
       return (
         <Container>

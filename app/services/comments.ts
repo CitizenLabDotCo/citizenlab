@@ -213,15 +213,19 @@ export async function updateComment(commentId: string, object: IUpdatedComment) 
   return response;
 }
 
-export async function markForDeletion(projectId: string, commentId: string, reason?: DeleteReason, authorId?: string) {
-  if (reason && reason.reason_code !== 'other') { delete reason.other_reason; }
-  const response = await request(`${API_PATH}/comments/${commentId}/mark_as_deleted`, { comment: reason }, { method: 'POST' }, {});
-
-  // refetch commentsForUser and comments for user count
-  if (authorId) {
-    streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users/${authorId}/comments`, `${API_PATH}/users/${authorId}/comments_count`] });
+export async function markForDeletion(commentId: string,  authorId?: string, projectId?: string | null, reason?: DeleteReason) {
+  if (reason && reason.reason_code !== 'other') {
+    delete reason.other_reason;
   }
 
-  streams.fetchAllWith({ dataId: [commentId, projectId] });
+  const response = await request(`${API_PATH}/comments/${commentId}/mark_as_deleted`, { comment: reason }, { method: 'POST' }, {});
+  const dataIdsToRefetch = projectId ? [commentId, projectId] : [commentId];
+  const apiEndpointsToRefetch = authorId ? [`${API_PATH}/users/${authorId}/comments`, `${API_PATH}/users/${authorId}/comments_count`] : [];
+
+  streams.fetchAllWith({
+    dataId: dataIdsToRefetch,
+    apiEndpoint: apiEndpointsToRefetch
+  });
+
   return response;
 }
