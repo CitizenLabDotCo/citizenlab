@@ -3,9 +3,10 @@ module Notifications
     
     belongs_to :idea
     belongs_to :project, optional: true
-    belongs_to :idea_status, optional: true
+    belongs_to :idea_status
+    belongs_to :initiating_user, class_name: 'User'
 
-    validates :idea_id, presence: true
+    validates :idea, :idea_status, presence: true
 
 
     ACTIVITY_TRIGGERS = {'Idea' => {'changed_status' => true}}
