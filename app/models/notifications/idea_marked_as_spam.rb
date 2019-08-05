@@ -2,8 +2,9 @@ module Notifications
   class IdeaMarkedAsSpam < MarkedAsSpam
     
     belongs_to :idea
+    belongs_to :project, optional: true
 
-    validates :idea_id, presence: true
+    validates :idea, presence: true
 
     ACTIVITY_TRIGGERS = {'SpamReport' => {'created' => true}}
     EVENT_NAME = 'Idea marked as spam'

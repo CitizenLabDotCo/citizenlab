@@ -3,8 +3,9 @@ module Notifications
     
     belongs_to :comment
     belongs_to :idea
+    belongs_to :project, optional: true
 
-    validates :comment_id, presence: true
+    validates :comment, presence: true
 
     ACTIVITY_TRIGGERS = {'SpamReport' => {'created' => true}}
     EVENT_NAME = 'Comment marked as spam'
