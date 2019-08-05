@@ -1,6 +1,6 @@
 // libraries
 import React, { memo, useState, useCallback } from 'react';
-import { get, isUndefined } from 'lodash-es';
+import { get, isUndefined, isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import Observer from '@researchgate/react-intersection-observer';
 
@@ -12,6 +12,7 @@ import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'services/permissions/roles';
 
 // components
 import LoadingComments from './LoadingComments';
@@ -100,6 +101,7 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
 
   const commentingEnabled: boolean = get(post, 'attributes.action_descriptor.commenting.enabled', true);
   const commentingDisabledReason = get(post, 'attributes.action_descriptor.commenting.disabled_reason', null);
+  const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data : authUser }) : false;
 
   return (
     <Container className={className}>
@@ -109,7 +111,7 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
             Show warning messages when there are no comments and you're logged in as an admin.
             Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
           */}
-          {true &&
+          {isEmpty(commentsList) && userIsAdmin &&
             <StyledWarning>
               <FormattedMessage {...messages.noComments} />
             </StyledWarning>
