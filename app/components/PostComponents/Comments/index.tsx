@@ -1,6 +1,6 @@
 // libraries
 import React, { memo, useState, useCallback } from 'react';
-import { get } from 'lodash-es';
+import { get, isUndefined } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import Observer from '@researchgate/react-intersection-observer';
 
@@ -103,10 +103,10 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
 
   return (
     <Container className={className}>
-      {(!isNilOrError(post) && !isNilOrError(commentsList) && !isNilOrError(project)) ? (
+      {(!isNilOrError(post) && !isNilOrError(commentsList) && !isUndefined(project)) ? (
         <>
           {/*
-            Show warning messages when there are no comments and you're looged in as an admin.
+            Show warning messages when there are no comments and you're logged in as an admin.
             Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
           */}
           {true &&
@@ -119,7 +119,7 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
             isLoggedIn={!!authUser}
             commentingEnabled={commentingEnabled}
             commentingDisabledReason={commentingDisabledReason}
-            projectId={project.id}
+            projectId={!isNilOrError(project) ? project.id : null}
           />
 
           <Comments
