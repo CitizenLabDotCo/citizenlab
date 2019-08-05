@@ -57,7 +57,7 @@ class IdeaVotePolicy < ApplicationPolicy
     pcs = ParticipationContextService.new
 
     idea = vote.votable
-    idea && !pcs.cancelling_votes_disabled_reason(idea, user)
+    idea && !pcs.cancelling_votes_disabled_reason_for_idea(idea, user)
   end
 
 end
