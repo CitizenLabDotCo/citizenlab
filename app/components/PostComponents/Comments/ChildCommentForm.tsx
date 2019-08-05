@@ -17,10 +17,10 @@ import tracks from './tracks';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // services
-import { addCommentToComment } from 'services/comments';
+import { addCommentToIdeaComment, addCommentToInitiativeComment } from 'services/comments';
 import eventEmitter from 'utils/eventEmitter';
 
 // resources
@@ -34,7 +34,7 @@ import { hideVisually } from 'polished';
 import { media, viewportWidths } from 'utils/styleUtils';
 
 // typings
-import { ICommentReplyClicked } from './ParentComment/IdeaParentComment/IdeaComment/CommentFooter';
+import { ICommentReplyClicked } from './CommentFooter';
 
 const Container = styled.div``;
 
@@ -87,8 +87,9 @@ const ButtonWrapper = styled.div`
 `;
 
 interface InputProps {
-  ideaId: string;
-  projectId: string;
+  postId: string;
+  postType: 'idea' | 'initiative';
+  projectId?: string | null;
   parentId: string;
   waitForChildCommentsRefetch: boolean;
   className?: string;
@@ -201,10 +202,13 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleTextareaOnFocus = () => {
+    const { postId, postType, parentId } = this.props;
+
     trackEventByName(tracks.focusChildCommentEditor, {
       extra: {
-        ideaId: this.props.ideaId,
-        parentId: this.props.parentId
+        postId,
+        postType,
+        parentId
       }
     });
 
@@ -218,11 +222,15 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   handleSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
 
-    const { locale, authUser, ideaId, projectId, parentId, waitForChildCommentsRefetch } = this.props;
+    const { postId, postType, projectId, parentId, waitForChildCommentsRefetch, locale, authUser } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue, canSubmit } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(authUser) && canSubmit) {
+      const commentBodyMultiloc = {
+        [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2')
+      };
+
       this.setState({
         processing: true,
         canSubmit: false
@@ -230,14 +238,21 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
       trackEventByName(tracks.clickChildCommentPublish, {
         extra: {
-          ideaId,
+          postId,
+          postType,
           parentId,
           content: inputValue,
         }
       });
 
       try {
-        await addCommentToComment(ideaId, projectId, authUser.id, parentId, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') }, waitForChildCommentsRefetch);
+        if (postType === 'idea' && projectId) {
+          await addCommentToIdeaComment(postId, projectId, authUser.id, parentId, commentBodyMultiloc, waitForChildCommentsRefetch);
+        }
+
+        if (postType === 'initiative') {
+          await addCommentToInitiativeComment(postId, authUser.id, parentId, commentBodyMultiloc, waitForChildCommentsRefetch);
+        }
 
         this.setState({
           inputValue: '',
@@ -262,7 +277,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   placeholder = this.props.intl.formatMessage(messages.childCommentBodyPlaceholder);
 
   render() {
-    const { ideaId, parentId, authUser, windowSize, className } = this.props;
+    const { postId, postType, parentId, authUser, windowSize, className } = this.props;
 
     if (!isNilOrError(authUser)) {
       const { inputValue, canSubmit, processing, errorMessage, visible, focused } = this.state;
@@ -279,13 +294,14 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
               <FormInner>
                 <TextareaWrapper>
                   <MentionsTextArea
+                    postId={postId}
+                    postType={postType}
                     name="comment"
                     className={`childcommentform-${parentId}`}
                     placeholder={this.placeholder}
                     rows={smallerThanSmallTablet ? 2 : 1}
                     value={inputValue}
                     error={errorMessage}
-                    ideaId={ideaId}
                     onChange={this.handleTextareaOnChange}
                     onFocus={this.handleTextareaOnFocus}
                     onBlur={this.handleTextareaOnBlur}

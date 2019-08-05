@@ -16,11 +16,11 @@ import { childCommentsStream, IComments } from 'services/comments';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetPost, { GetPostChildProps } from 'resources/GetPost';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -86,6 +86,8 @@ const LoadMore = styled.button`
 `;
 
 interface InputProps {
+  postId: string;
+  postType: 'idea' | 'initiative';
   commentId: string;
   childCommentIds: string[] | false;
   className?: string;
@@ -94,7 +96,7 @@ interface InputProps {
 interface DataProps {
   authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
-  idea: GetIdeaChildProps;
+  post: GetPostChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -166,14 +168,13 @@ class ParentComment extends PureComponent<Props, State> {
   }
 
   render() {
-    const { commentId, authUser, comment, idea, className } = this.props;
+    const { postId, postType, commentId, authUser, comment, post, className } = this.props;
     const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } = this.state;
 
-    if (!isNilOrError(comment) && !isNilOrError(idea)) {
-      const ideaId = idea.id;
-      const projectId = idea.relationships.project.data.id;
+    if (!isNilOrError(comment) && !isNilOrError(post)) {
+      const projectId: string | null = get(post, 'relationships.project.data.id', null);
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
-      const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
+      const commentingEnabled = get(post, 'attributes.action_descriptor.commenting.enabled', true);
       const showCommentForm = (authUser && commentingEnabled && !commentDeleted);
       const hasChildComments = (this.props.childCommentIds && this.props.childCommentIds.length > 0);
       const childCommentIds = (!isNilOrError(childComments) ? childComments.data.filter((comment) => comment.attributes.publication_status !== 'deleted').map(comment => comment.id) : this.props.childCommentIds);
@@ -188,7 +189,8 @@ class ParentComment extends PureComponent<Props, State> {
         <Container className={`e2e-parent-and-childcomments ${className}`}>
           <ParentCommentContainer className={`${commentDeleted && 'deleted'}`}>
             <Comment
-              ideaId={ideaId}
+              postId={postId}
+              postType={postType}
               projectId={projectId}
               commentId={comment.id}
               commentType="parent"
@@ -216,7 +218,8 @@ class ParentComment extends PureComponent<Props, State> {
 
           {childCommentIds && childCommentIds.length > 0 && childCommentIds.map((childCommentId, index) => (
             <Comment
-              ideaId={ideaId}
+              postId={postId}
+              postType={postType}
               projectId={projectId}
               key={childCommentId}
               commentId={childCommentId}
@@ -228,7 +231,8 @@ class ParentComment extends PureComponent<Props, State> {
 
           {showCommentForm &&
             <ChildCommentForm
-              ideaId={ideaId}
+              postId={postId}
+              postType={postType}
               projectId={projectId}
               parentId={commentId}
               waitForChildCommentsRefetch={!isNilOrError(childComments)}
@@ -245,7 +249,7 @@ class ParentComment extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.post.data.id')}>{render}</GetIdea>
+  post: ({ comment, postType, render }) => <GetPost id={get(comment, 'relationships.post.data.id')} type={postType}>{render}</GetPost>
 });
 
 export default (inputProps: InputProps) => (

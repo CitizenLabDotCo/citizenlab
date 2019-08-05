@@ -1,7 +1,7 @@
 import React, { memo, Suspense, lazy } from 'react';
 
 // components
-import LoadingComments from './Comments/LoadingComments';
+import LoadingComments from 'components/PostComponents/Comments/LoadingComments';
 
 // styling
 import styled from 'styled-components';
@@ -58,7 +58,7 @@ interface Props {
   className?: string;
 }
 
-const LazyComments = lazy(() => import('./Comments'));
+const LazyComments = lazy(() => import('../../components/PostComponents/Comments'));
 
 const IdeaFooter = memo<Props>(({ ideaId, className }) => {
   return (

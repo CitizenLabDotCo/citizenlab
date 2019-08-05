@@ -14,7 +14,7 @@ import eventEmitter from 'utils/eventEmitter';
 // resources
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -26,7 +26,7 @@ import tracks from './tracks';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
@@ -107,8 +107,9 @@ export interface ICommentReplyClicked {
 }
 
 interface InputProps {
-  ideaId: string;
-  projectId: string;
+  postId: string;
+  postType: 'idea' | 'initiative';
+  projectId?: string | null;
   commentId: string;
   commentType: 'parent' | 'child';
   onEditing: () => void;
@@ -120,7 +121,7 @@ interface DataProps {
   tenantLocales: GetTenantLocalesChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
+  post: GetPostChildProps;
   comment: GetCommentChildProps;
   author: GetUserChildProps;
 }
@@ -195,13 +196,13 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
 
   render() {
-    const { commentType, ideaId, projectId, commentId, className, comment, tenantLocales, locale, authUser, idea, canReply } = this.props;
+    const { commentType, postId, postType, projectId, commentId, className, comment, tenantLocales, locale, authUser, post, canReply } = this.props;
     const { translateButtonClicked } = this.state;
 
-    if (!isNilOrError(idea) && !isNilOrError(comment) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
+    if (!isNilOrError(post) && !isNilOrError(comment) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
-      const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
-      const commentVotingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.comment_voting, 'enabled', false) : false);
+      const commentingEnabled = get(post, 'attributes.action_descriptor.commenting.enabled', true);
+      const commentVotingEnabled = get(post, 'attributes.action_descriptor.comment_voting.enabled', true);
       const upvoteCount = comment.attributes.upvotes_count;
       const showVoteComponent = (commentVotingEnabled || (!commentVotingEnabled && upvoteCount > 0));
       const showReplyButton = !!(authUser && commentingEnabled && canReply);
@@ -213,7 +214,8 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
             {showVoteComponent &&
               <>
                 <CommentVote
-                  ideaId={ideaId}
+                  postId={postId}
+                  postType={postType}
                   commentId={commentId}
                   commentType={commentType}
                   votingEnabled={commentVotingEnabled}
@@ -265,7 +267,7 @@ const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetTenantLocales />,
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  post: ({ postId, postType, render }) => <GetPost id={postId} type={postType}>{render}</GetPost>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
 });

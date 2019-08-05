@@ -9,7 +9,7 @@ import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
 // import IdeaBody from 'containers/IdeasShow/IdeaBody';
 // import IdeaMap from 'containers/IdeasShow/IdeaMap';
 import OfficialFeedback from 'containers/IdeasShow/OfficialFeedback';
-import Comments from 'containers/IdeasShow/Comments';
+import Comments from 'components/PostComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSettings from './IdeaSettings';
 import VotePreview from './VotePreview';
