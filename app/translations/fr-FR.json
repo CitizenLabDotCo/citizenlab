@@ -568,6 +568,7 @@
   "app.containers.AdminPage.DashboardPage.numberOfVotesDown": "Votes contre",
   "app.containers.AdminPage.DashboardPage.numberOfVotesTotal": "Total des votes",
   "app.containers.AdminPage.DashboardPage.numberOfVotesUp": "Votes pour",
+  "app.containers.AdminPage.DashboardPage.outsideArea": "",
   "app.containers.AdminPage.DashboardPage.participationPerProject": "Participation par projet",
   "app.containers.AdminPage.DashboardPage.participationPerTopic": "Participation par thème",
   "app.containers.AdminPage.DashboardPage.previous30Days": "30 derniers jours",
