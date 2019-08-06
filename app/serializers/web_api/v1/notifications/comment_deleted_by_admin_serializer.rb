@@ -17,8 +17,13 @@ class WebApi::V1::Notifications::CommentDeletedByAdminSerializer < WebApi::V1::N
     object.idea&.title_multiloc
   end
 
+  attribute :initiative_title do |object|
+    object.initiative&.title_multiloc
+  end
+
   belongs_to :initiating_user, record_type: :user, serializer: WebApi::V1::UserSerializer
-  belongs_to :idea, record_type: :idea, serializer: WebApi::V1::IdeaSerializer
-  belongs_to :comment, record_type: :comment, serializer: WebApi::V1::CommentSerializer
-  belongs_to :project, record_type: :project, serializer: WebApi::V1::ProjectSerializer
+  belongs_to :idea
+  belongs_to :initiative
+  belongs_to :comment
+  belongs_to :project
 end
