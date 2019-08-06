@@ -4,7 +4,7 @@ module Notifications
     belongs_to :idea
     belongs_to :project, optional: true
     belongs_to :idea_status
-    belongs_to :initiating_user, class_name: 'User'
+    belongs_to :initiating_user, class_name: 'User', optional: true
 
     validates :idea, :idea_status, presence: true
 
