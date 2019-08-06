@@ -17,7 +17,7 @@ import InfoTooltip from 'components/admin/InfoTooltip';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
-import { Top, Content, Container } from '.';
+import { Top, Content, Container } from '..';
 
 // srvices
 import { deleteIdea } from 'services/ideas';
@@ -33,7 +33,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps, FormattedNumber } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // style
 import styled from 'styled-components';
@@ -228,7 +228,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             <Row>
               <Left>
                 {ideaImageLarge &&
-                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { ideaTitle })} className="e2e-ideaImage"/>
+                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { postTitle: ideaTitle })} className="e2e-ideaImage"/>
                 }
                 <IdeaAuthor
                   authorId={get(idea, 'relationships.author.data.id', null)}
