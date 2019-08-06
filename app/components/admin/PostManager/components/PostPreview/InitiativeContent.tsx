@@ -32,6 +32,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import VotePreview from './Idea/VotePreview';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 30px;
@@ -194,6 +195,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
                 {/* <StyledComments InitiativeId={Initiative.id} /> */}
               </Left>
               <Right>
+                {/* <VotePreview initiativeId={initiativeId} /> */}
                 <PostSettings
                   postId={initiative.id}
                   postType="initiative"
