@@ -86,7 +86,7 @@ module EmailCampaigns
     end
 
     class CustomInitiativeSerializer < ActiveModel::Serializer
-      attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :url, :published_at, :created_at, :author_name, :votes_needed
+      attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :url, :published_at, :created_at, :author_name, :votes_needed, :expires_at, :header_bg
 
       def published_at
         object.published_at.iso8601
@@ -96,8 +96,16 @@ module EmailCampaigns
         object.created_at.iso8601
       end
 
+      def expires_at
+        object.expires_at.iso8601
+      end
+
       def url
         Frontend::UrlService.new.model_to_url object
+      end
+
+      def header_bg
+        object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
       end
     end
 
@@ -156,6 +164,18 @@ module EmailCampaigns
 
     def idea_topics
       object.idea&.topics
+    end
+
+    def initiative_author
+      object.initiative&.author
+    end
+
+    def initiative_images
+      object.initiative&.initiative_images
+    end
+
+    def initiative_topics
+      object.initiative&.topics
     end
 
     def project_images
