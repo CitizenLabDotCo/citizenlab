@@ -33,6 +33,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :comment_on_your_initiative_campaign, class: EmailCampaigns::Campaigns::CommentOnYourInitiative do
+    enabled { true }
+  end
+
   factory :first_idea_published_campaign, class: EmailCampaigns::Campaigns::FirstIdeaPublished do
     enabled { true }
   end
