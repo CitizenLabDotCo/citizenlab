@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { IIdeaData } from 'services/ideas';
-import messages from '../messages';
+import messages from './messages';
 
 const Container = styled.div`
   margin-bottom: 40px;
@@ -37,33 +37,32 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 class CommentingDisabled extends PureComponent<Props> {
-    calculateMessageDescriptor = () => {
-      const { isLoggedIn, commentingEnabled, commentingDisabledReason } = this.props;
+  calculateMessageDescriptor = () => {
+    const { isLoggedIn, commentingEnabled, commentingDisabledReason } = this.props;
 
-      if (commentingEnabled && isLoggedIn) {
-        return null;
-      } else if (commentingDisabledReason === 'project_inactive') {
-        return messages.commentingDisabledProjectInactive;
-      } else if (commentingDisabledReason === 'commenting_disabled') {
-        return messages.commentingDisabledInContext;
-      } else if (commentingDisabledReason === 'idea_not_in_current_phase') {
-        return messages.commentingDisabledIdeaNotInCurrentPhase;
-      } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
-        return messages.commentingNotPermitted;
-      } else if (!isLoggedIn && commentingDisabledReason === 'not_permitted') {
-        return messages.commentingMaybeNotPermitted;
-      } else {
-        return messages.signInToComment;
-      }
+    if (commentingEnabled && isLoggedIn) {
+      return null;
+    } else if (commentingDisabledReason === 'project_inactive') {
+      return messages.commentingDisabledProjectInactive;
+    } else if (commentingDisabledReason === 'commenting_disabled') {
+      return messages.commentingDisabledInContext;
+    } else if (commentingDisabledReason === 'idea_not_in_current_phase') {
+      return messages.commentingDisabledIdeaNotInCurrentPhase;
+    } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
+      return messages.commentingNotPermitted;
+    } else if (!isLoggedIn && commentingDisabledReason === 'not_permitted') {
+      return messages.commentingMaybeNotPermitted;
     }
 
-    render() {
-      const { project } = this.props;
-      const messageDescriptor = this.calculateMessageDescriptor();
-      const projectTitle = (!isNilOrError(project) ? project.attributes.title_multiloc : null);
+    return messages.signInToComment;
+  }
 
-      if (!messageDescriptor) return null;
+  render() {
+    const { project } = this.props;
+    const messageDescriptor = this.calculateMessageDescriptor();
+    const projectTitle = (!isNilOrError(project) ? project.attributes.title_multiloc : null);
 
+    if (messageDescriptor) {
       return (
         <Container>
           <Warning>
@@ -78,6 +77,9 @@ class CommentingDisabled extends PureComponent<Props> {
         </Container>
       );
     }
+
+    return null;
+  }
 }
 
 export default (inputProps: InputProps) => (

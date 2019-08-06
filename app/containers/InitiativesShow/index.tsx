@@ -505,9 +505,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                       locale={locale}
                       translateButtonClicked={translateButtonClicked}
                     />
-                    {/* {smallerThanLargeTablet &&
-                      <StyledMobileIdeaPostedBy authorId={authorId} />
-                    } */}
                   </InitiativeHeader>
                 </OnlyOnDesktop>
 
@@ -589,7 +586,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             </Content>
           </InitiativeContainer>
 
-          {/* {loaded && <Footer postId={initiativeId} postType="initiative" />} */}
+          {loaded && <Footer postId={initiativeId} postType="initiative" />}
         </>
       );
 
