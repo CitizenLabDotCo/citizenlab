@@ -568,6 +568,7 @@
   "app.containers.AdminPage.DashboardPage.numberOfVotesDown": "Stemmen tegen",
   "app.containers.AdminPage.DashboardPage.numberOfVotesTotal": "Totaal aantal stemmen",
   "app.containers.AdminPage.DashboardPage.numberOfVotesUp": "Stemmen voor",
+  "app.containers.AdminPage.DashboardPage.outsideArea": "",
   "app.containers.AdminPage.DashboardPage.participationPerProject": "Participatie per project",
   "app.containers.AdminPage.DashboardPage.participationPerTopic": "Participatie per thema",
   "app.containers.AdminPage.DashboardPage.previous30Days": "Laatste 30 dagen",
