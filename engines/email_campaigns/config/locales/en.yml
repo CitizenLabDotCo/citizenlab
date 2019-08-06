@@ -4,6 +4,7 @@ en:
       "manual": Direct messages sent by administrators or moderators
       "comment_on_your_comment": When someone replies to my comment
       "comment_on_your_idea": When someone replies to my idea
+      "comment_on_your_initiative": When someone replies to my initiative
       "admin_rights_received": When I'm given admin rights
       "comment_deleted_by_admin": When an admin deletes my comment
       "comment_marked_as_spam": When a comment is marked as spam
@@ -39,6 +40,7 @@ en:
       "manual": Direct messages sent by administrators or moderators
       "comment_on_your_comment": When a user receives a reply on their comment
       "comment_on_your_idea": When a user receives a reply on their idea
+      "comment_on_your_initiative": When someone replies to my initiative
       "admin_rights_received": When a user is given admin rights
       "comment_deleted_by_admin": When an admin deletes my comment
       "comment_marked_as_spam": When a user marks a comment as spam (for administrators and moderators)
