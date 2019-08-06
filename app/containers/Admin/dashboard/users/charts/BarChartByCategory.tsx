@@ -26,14 +26,14 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // types
 import { IStreamParams, IStream } from 'utils/streams';
-import { IUsersByBirthyear, IUsersByRegistrationField } from 'services/stats';
+import { IUsersByBirthyear, IUsersByRegistrationField, IUsersByDomicile } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 interface DataProps {
   serie: IGraphFormat;
 }
 
-type ISupportedDataType = IUsersByBirthyear | IUsersByRegistrationField;
+type ISupportedDataType = IUsersByBirthyear | IUsersByRegistrationField | IUsersByDomicile;
 
 interface InputProps {
   stream: (streamParams?: IStreamParams | null, customId?: string) => IStream<ISupportedDataType>;
