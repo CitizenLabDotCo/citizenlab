@@ -15,12 +15,17 @@ class WebApi::V1::Notifications::MentionInOfficialFeedbackSerializer < WebApi::V
     object.idea&.title_multiloc
   end
 
+  attribute :initiative_title do |object|
+    object.idea&.title_multiloc
+  end
+
   attribute :official_feedback_author do |object|
     object.official_feedback&.author_multiloc
   end
 
   belongs_to :initiating_user, record_type: :user, serializer: WebApi::V1::UserSerializer
-  belongs_to :idea, serializer: WebApi::V1::IdeaSerializer
-  belongs_to :official_feedback, serializer: WebApi::V1::OfficialFeedbackSerializer
-  belongs_to :project, serializer: WebApi::V1::ProjectSerializer
+  belongs_to :idea
+  belongs_to :initiative
+  belongs_to :official_feedback
+  belongs_to :project
 end
