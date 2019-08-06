@@ -5,10 +5,10 @@ import { get } from 'lodash-es';
 
 // components
 import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
-import IdeaTitle from 'containers/IdeasShow/IdeaTitle';
-import IdeaBody from 'containers/IdeasShow/IdeaBody';
-import IdeaMap from 'containers/IdeasShow/IdeaMap';
-import OfficialFeedback from 'containers/IdeasShow/OfficialFeedback';
+import Title from 'components/PostComponents/Title';
+import Body from 'components/PostComponents/Body';
+import LoadableDropdownMap from 'components/PostComponents/DropdownMap';
+import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 import Comments from 'containers/IdeasShow/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSettings from './IdeaSettings';
@@ -40,7 +40,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const StyledIdeaTitle = styled(IdeaTitle)`
+const StyledTitle = styled(Title)`
   margin-bottom: 30px;
 `;
 
@@ -87,11 +87,11 @@ const IdeaImage = styled.img`
   border: 1px solid ${colors.separation};
 `;
 
-const StyledIdeaBody = styled(IdeaBody)`
+const StyledBody = styled(Body)`
   margin-bottom: 20px;
 `;
 
-const StyledIdeaMap = styled(IdeaMap)`
+const StyledMap = styled(LoadableDropdownMap)`
   margin-bottom: 40px;
 `;
 
@@ -221,9 +221,10 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
               </BelongsToProject>
             }
 
-            <StyledIdeaTitle
-              ideaId={idea.id}
-              ideaTitle={ideaTitle}
+            <StyledTitle
+              id={idea.id}
+              postType="idea"
+              title={ideaTitle}
             />
             <Row>
               <Left>
@@ -236,16 +237,16 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   ideaId={idea.id}
                 />
 
-                <StyledIdeaBody
-                  ideaId={idea.id}
-                  ideaBody={localize(idea.attributes.body_multiloc)}
+                <StyledBody
+                  id={idea.id}
+                  postType="idea"
+                  body={localize(idea.attributes.body_multiloc)}
                 />
 
                 {ideaGeoPosition && ideaAddress &&
-                  <StyledIdeaMap
+                  <StyledMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
-                    id={idea.id}
                   />
                 }
 
@@ -254,10 +255,12 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                 }
 
                 <StyledOfficialFeedback
-                  ideaId={idea.id}
+                  postId={idea.id}
+                  postType="idea"
+                  permissionToPost
                 />
 
-                <StyledComments ideaId={idea.id} />
+                {/* <StyledComments ideaId={idea.id} /> */}
               </Left>
               <Right>
                 <VotePreview ideaId={idea.id}/>
