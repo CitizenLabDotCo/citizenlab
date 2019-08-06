@@ -13,7 +13,7 @@ import { SectionField } from 'components/admin/Section';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
