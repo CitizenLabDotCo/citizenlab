@@ -16,12 +16,12 @@ import { isError } from 'util';
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 import Button from 'components/UI/Button';
-import { Content, Top, Container } from '.';
+import { Content, Top, Container } from '..';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 
