@@ -19,7 +19,7 @@ FactoryBot.define do
 
   factory :comment_marked_as_spam, parent: :notification, class: 'Notifications::CommentMarkedAsSpam' do
     comment
-    idea
+    spam_report
   end
 
   factory :comment_on_your_comment, parent: :notification, class: 'Notifications::CommentOnYourComment' do
@@ -35,6 +35,7 @@ FactoryBot.define do
 
   factory :idea_marked_as_spam, parent: :notification, class: 'Notifications::IdeaMarkedAsSpam' do
     idea
+    spam_report
   end
 
   factory :invite_accepted, parent: :notification, class: 'Notifications::InviteAccepted' do
