@@ -2,7 +2,8 @@ module Notifications
   class CommentMarkedAsSpam < MarkedAsSpam
     
     belongs_to :comment
-    belongs_to :idea
+    belongs_to :initiative, optional: true
+    belongs_to :idea, optional: true
     belongs_to :project, optional: true
 
     validates :comment, presence: true
