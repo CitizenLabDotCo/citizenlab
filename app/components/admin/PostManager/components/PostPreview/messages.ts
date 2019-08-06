@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.deleteIdeaConfirmation',
     defaultMessage: 'Are you sure you want to delete this idea?',
   },
+  deleteInitiativeConfirmation: {
+    id: 'app.components.admin.PostManager.PostPreview.deleteInitiativeConfirmation',
+    defaultMessage: 'Are you sure you want to delete this initiative?',
+  },
   imageAltText: {
     id: 'app.components.admin.PostManager.PostPreview.imageAltText',
     defaultMessage: 'Image for idea {postTitle}',
