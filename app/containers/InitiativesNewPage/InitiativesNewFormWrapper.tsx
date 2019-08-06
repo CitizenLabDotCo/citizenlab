@@ -34,6 +34,8 @@ const StyledInitiativeForm = styled(InitiativeForm)`
 
 interface InputProps {
   locale: Locale;
+  location_description?: string;
+  location_point_geojson?: Point;
 }
 
 interface DataProps {
@@ -50,6 +52,7 @@ interface State extends FormValues {
   imageId: string | null;
   publishError: boolean;
   apiErrors: any;
+  location_point_geojson?: Point;
 }
 
 export default class InitiativesNewFormWrapper extends React.PureComponent<Props, State> {
@@ -77,7 +80,9 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
       image: undefined,
       files: [],
       publishError: false,
-      apiErrors: null
+      apiErrors: null,
+      position: props.location_description,
+      location_point_geojson: props.location_point_geojson,
     };
   }
 
@@ -120,9 +125,18 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
   }
 
   async getValuesToSend(changedValues: Partial<FormValues>, hasBannerChanged: boolean, banner: UploadFile | undefined | null) {
-    // build API readable object
     const { title_multiloc, body_multiloc, topic_ids, position } = changedValues;
-    const positionInfo = await this.parsePosition(position);
+    const { location_point_geojson } = this.state;
+
+    let positionInfo;
+    if (location_point_geojson) {
+      positionInfo = {
+        location_point_geojson,
+        location_description: position
+      };
+    } else {
+      positionInfo = await this.parsePosition(position);
+    }
 
     // removes undefined values, not null values that are used to remove previously used values
     const formAPIValues = omitBy({
@@ -242,6 +256,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
         }
         this.setState({ hasImageChanged: false });
       }
+      this.setState({ publishing: false });
 
       clHistory.push({
         pathname: `/initiatives/${initiative.data.attributes.slug}`,
@@ -254,7 +269,6 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
         this.setState({ publishError: false });
       }, 5000);
     }
-    this.setState({ publishing: false });
   }
 
   onChangeTitle = (title_multiloc: Multiloc) => {
@@ -267,7 +281,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
     this.setState({ topic_ids });
   }
   onChangePosition = (position: string) => {
-    this.setState({ position });
+    this.setState({ position, location_point_geojson: undefined });
   }
   onChangeBanner = (newValue: UploadFile | null) => {
     this.setState({ banner: newValue, hasBannerChanged: true });
