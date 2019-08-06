@@ -1,4 +1,4 @@
-class WebApi::V1::Notifications::CommentMarkedAsSpamSerializer < WebApi::V1::Notifications::NotificationSerializer
+class WebApi::V1::Notifications::InitiativeMarkedAsSpamSerializer < WebApi::V1::Notifications::NotificationSerializer
   attribute :initiating_user_first_name do |object|
     object.initiating_user&.first_name
   end
@@ -11,10 +11,11 @@ class WebApi::V1::Notifications::CommentMarkedAsSpamSerializer < WebApi::V1::Not
     object.initiating_user&.slug
   end
 
+  attribute :initiative_title do |object|
+    object.initiative&.title_multiloc
+  end
+
   belongs_to :initiating_user, record_type: :user, serializer: WebApi::V1::UserSerializer
-  belongs_to :spam_report
-  belongs_to :idea
   belongs_to :initiative
-  belongs_to :comment
-  belongs_to :project
+  belongs_to :spam_report
 end

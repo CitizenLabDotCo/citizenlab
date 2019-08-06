@@ -15,16 +15,27 @@ module Notifications
     def self.make_notifications_on activity
       spam_report = activity.item
       initiating_user = User.find(spam_report&.user_id)
-      if (spam_report.spam_reportable_type == 'Comment') && (spam_report.spam_reportable.post_type == 'Idea')
-        project_id = spam_report.spam_reportable&.post&.project_id
+      if spam_report.spam_reportable_type == 'Comment'
+        post_attributes = case spam_report.spam_reportable.post_type
+        when 'Idea'
+          {
+            idea: spam_report.spam_reportable.post,
+            project_id: spam_report.spam_reportable.post&.project_id
+          }
+        when 'Initiative'
+          {
+            initiative_id: spam_report.spam_reportable.post_id
+          }
+        else
+          raise "Unsupported post type #{spam_report.spam_reportable.post_type}"
+        end
         self.recipient_ids(initiating_user, project_id).map do |recipient_id|
           self.create(
             recipient_id: recipient_id,
-            initiating_user: initiating_user,
+            initiating_user_id: spam_report.user_id,
             spam_report: spam_report,
-            comment_id: spam_report.spam_reportable&.id,
-            idea_id: ((spam_report.spam_reportable&.post_type == 'Idea') && spam_report.spam_reportable&.post_id),
-            project_id: project_id
+            comment_id: spam_report.spam_reportable_id,
+            **post_attributes
           )
         end
       else

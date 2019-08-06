@@ -10,6 +10,7 @@ class WebApi::V1::NotificationsController < ApplicationController
     ::Notifications::CommentOnYourInitiative         => WebApi::V1::Notifications::CommentOnYourInitiativeSerializer,
     ::Notifications::IdeaAssignedToYou               => WebApi::V1::Notifications::IdeaAssignedToYouSerializer,
     ::Notifications::IdeaMarkedAsSpam                => WebApi::V1::Notifications::IdeaMarkedAsSpamSerializer,
+    ::Notifications::InitiativeMarkedAsSpam          => WebApi::V1::Notifications::InitiativeMarkedAsSpamSerializer,
     ::Notifications::InviteAccepted                  => WebApi::V1::Notifications::InviteAcceptedSerializer,
     ::Notifications::MentionInComment                => WebApi::V1::Notifications::MentionInCommentSerializer,
     ::Notifications::NewCommentForAdmin              => WebApi::V1::Notifications::NewCommentForAdminSerializer,
