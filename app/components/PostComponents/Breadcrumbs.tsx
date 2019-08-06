@@ -12,7 +12,7 @@ import Link from 'utils/cl-router/Link';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors, media, postPageContentMaxWidth } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 import { Multiloc } from 'typings';

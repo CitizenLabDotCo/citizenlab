@@ -490,9 +490,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                       locale={locale}
                       translateButtonClicked={translateButtonClicked}
                     />
-                    {/* {smallerThanLargeTablet &&
-                      <StyledMobileIdeaPostedBy authorId={authorId} />
-                    } */}
                   </InitiativeHeader>
                 </OnlyOnDesktop>
 

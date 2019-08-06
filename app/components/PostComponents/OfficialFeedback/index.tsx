@@ -22,11 +22,6 @@ interface Props {
 interface State {}
 
 export default class OfficialFeedback extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
     const { postId, postType, permissionToPost, className } = this.props;
 
