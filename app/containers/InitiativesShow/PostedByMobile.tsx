@@ -1,14 +1,11 @@
 import React, { memo } from 'react';
 
 // components
-import Icon from 'components/UI/Icon';
 import UserName from 'components/UI/UserName';
-import Link from 'utils/cl-router/Link';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { fontSizes } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';

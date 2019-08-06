@@ -194,7 +194,7 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  post: ({ postId, postType, render }) => <GetPost postId={postId} postType={postType}>{render}</GetPost>
+  post: ({ postId, postType, render }) => <GetPost id={postId} type={postType}>{render}</GetPost>
 });
 
 export default (inputProps: InputProps) => (

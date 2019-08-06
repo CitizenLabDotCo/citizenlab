@@ -92,10 +92,12 @@ const StyledTipsBox = styled(TipsBox)`
   ${media.smallerThanMaxTablet`
     display: none;
   `}
+  margin-bottom: 10px;
 `;
 
 interface Props {
   children: JSX.Element | null;
+  className?: string;
 }
 
 export default class PageLayout extends React.PureComponent<Props> {
@@ -104,10 +106,10 @@ export default class PageLayout extends React.PureComponent<Props> {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, className } = this.props;
 
     return (
-      <Container className="e2e-initiatives-form-page">
+      <Container className={className}>
         <TopLine>
           <GoBackButton onClick={this.goBack} inCitizen />
         </TopLine>

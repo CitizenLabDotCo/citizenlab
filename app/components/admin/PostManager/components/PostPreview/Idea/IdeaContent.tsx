@@ -9,7 +9,7 @@ import Title from 'components/PostComponents/Title';
 import Body from 'components/PostComponents/Body';
 import LoadableDropdownMap from 'components/PostComponents/DropdownMap';
 import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
-import Comments from 'containers/IdeasShow/Comments';
+import Comments from 'components/PostComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSettings from './IdeaSettings';
 import VotePreview from './VotePreview';
@@ -248,7 +248,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                     address={ideaAddress}
                     position={ideaGeoPosition}
                   />
-                }
+                } */}
 
                 {ideaFiles && !isNilOrError(ideaFiles) &&
                   <FileAttachments files={ideaFiles} />

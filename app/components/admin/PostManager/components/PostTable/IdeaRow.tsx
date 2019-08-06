@@ -122,7 +122,7 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
     return (
       <>
         <WrappedRow
-          className={className}
+          className={`${className} e2e-idea-manager-idea-row`}
           as={StyledRow}
           active={active}
           onClick={onClickRow}

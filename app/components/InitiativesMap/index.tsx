@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import Leaflet from 'leaflet';
+import clHistory from 'utils/cl-router/history';
+
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -10,6 +13,7 @@ import tracks from './tracks';
 // Components
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
+import Button from 'components/UI/Button';
 import InitiativePreview from './InitiativePreview';
 
 // Resources
@@ -24,10 +28,10 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // Typing
-import { IGeotaggedInitiativeData } from 'services/Initiatives';
+import { IGeotaggedInitiativeData } from 'services/initiatives';
 
 const Container = styled.div`
-  > .create-Initiative-wrapper {
+  > .create-initiative-wrapper {
     display: none;
   }
 `;
@@ -56,7 +60,7 @@ interface DataProps {
   initiativeMarkers: GetInitiativeMarkersChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   selectedInitiativeId: string | null;
@@ -64,6 +68,9 @@ interface State {
 }
 
 export class InitiativesMap extends PureComponent<Props & WithRouterProps, State> {
+  private addInitiativeButtonElement: HTMLElement;
+  private savedPosition: Leaflet.LatLng | null = null;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -81,6 +88,12 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
     if (prevProps.initiativeMarkers !== this.props.initiativeMarkers) {
       const points = this.getPoints(this.props.initiativeMarkers);
       this.setState({ points });
+    }
+  }
+
+  bindInitiativeCreationButton = (element: HTMLDivElement) => {
+    if (element) {
+      this.addInitiativeButtonElement = element;
     }
   }
 
@@ -113,6 +126,31 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
     this.setState({ selectedInitiativeId: null });
   }
 
+  onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
+    this.savedPosition = position;
+
+    if (this.addInitiativeButtonElement) {
+      Leaflet
+        .popup()
+        .setLatLng(position)
+        .setContent(this.addInitiativeButtonElement)
+        .openOn(map);
+    }
+
+    return;
+  }
+
+  redirectToInitiativeCreation = () => {
+    if (this.savedPosition) {
+      trackEventByName(tracks.createInitiativeFromMap, { position: this.savedPosition });
+
+      clHistory.push({
+        pathname: '/initiatives/new',
+        query: { position: `[${this.savedPosition.lat}, ${this.savedPosition.lng}]` }
+      });
+    }
+  }
+
   noInitiativesWithLocationMessage = <FormattedMessage {...messages.noInitiativesWithLocation} />;
 
   render() {
@@ -131,7 +169,17 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
           fitBounds={true}
           boxContent={selectedInitiativeId ? <InitiativePreview initiativeId={selectedInitiativeId} /> : null}
           onBoxClose={this.deselectInitiative}
+          onMapClick={this.onMapClick}
         />
+
+        <div className="create-initiative-wrapper" ref={this.bindInitiativeCreationButton}>
+          <Button
+            onClick={this.redirectToInitiativeCreation}
+            icon="plus-circle"
+            size="2"
+            text={<FormattedMessage {...messages.postInitiativeHere} />}
+          />
+        </div>
       </Container>
     );
   }
