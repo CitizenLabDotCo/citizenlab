@@ -9,19 +9,7 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectModerationRightsReceived, type:
 
   describe '#generate_command' do
   	let(:campaign) { create(:project_moderation_rights_received_campaign) }
-    let(:project) { create(:project) }
-    let(:recipient) { create(:moderator, project: project) }
-    let(:initiator) { create(:admin) }
-    let(:serialized_initiator) { 
-      ActiveModelSerializers::SerializableResource.new(initiator, {
-        serializer: WebApi::V1::External::UserSerializer,
-        adapter: :json
-      }).serializable_hash 
-    }
-    let(:moderator_activity) { 
-      create(:activity, item: recipient, user: initiator, action: 'project_moderation_rights_given', payload: {project_id: project.id}) 
-    }
-    let(:notification) { Notifications::ProjectModerationRightsReceived.make_notifications_on(moderator_activity)&.first }
+    let(:notification) {create(:project_moderation_rights_received) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
   	it "generates a command with the desired payload and tracked content" do
@@ -32,13 +20,13 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectModerationRightsReceived, type:
 
       expect(
       	command.dig(:event_payload, :recipient, :id)
-      	).to eq(recipient.id)
+      	).to eq(notification.recipient_id)
       expect(
       	command.dig(:event_payload, :initiating_user, :id)
-      	).to eq(initiator.id)
+      	).to eq(notification.initiating_user_id)
       expect(
         command.dig(:event_payload, :project, :id)
-        ).to eq(project.id)
+        ).to eq(notification.project_id)
   	end
   end
 end
