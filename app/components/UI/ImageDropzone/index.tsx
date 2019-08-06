@@ -315,7 +315,9 @@ class ImageDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     const { maxImageFileSize,
       maxImagePreviewWidth,
       imagePreviewRatio,
-      imageRadius } = this.props;
+      imageRadius,
+      id
+     } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage, processing, image } = this.state;
 
@@ -323,7 +325,7 @@ class ImageDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     objectFit = (objectFit || 'cover');
 
     return (
-      <Container className={className}>
+      <Container className={className} id={id}>
         <ContentWrapper>
           {image && image.url ? (
             <Box

@@ -146,7 +146,8 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
       label: <FormattedMessage {...messages.deleteOfficialFeedbackPost} />,
       handler: this.deletePost(postId),
       name: 'delete'
-    }] as IAction[]
+    }
+  ] as IAction[]
 
   getPostBodyText = (postBodyMultiloc: Multiloc, locale: Locale, tenantLocales: Locale[]) => {
     const postBodyText = getLocalized(postBodyMultiloc, locale, tenantLocales);

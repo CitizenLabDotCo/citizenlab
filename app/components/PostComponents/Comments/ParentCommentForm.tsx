@@ -1,5 +1,5 @@
 import React, { PureComponent, MouseEvent } from 'react';
-import { isString, trim } from 'lodash-es';
+import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -10,7 +10,7 @@ import Author from 'components/Author';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
+import tracks from './tracks';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -18,12 +18,13 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { addCommentToInitiative } from 'services/comments';
-import { canCommentOnInitiative } from 'services/permissions/rules/initiativePermissions';
+import { addCommentToIdea, addCommentToInitiative } from 'services/comments';
+import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetPost, { GetPostChildProps } from 'resources/GetPost';
 
 // style
 import styled from 'styled-components';
@@ -79,7 +80,8 @@ const ButtonWrapper = styled.div`
 `;
 
 interface InputProps {
-  initiativeId: string;
+  postId: string;
+  postType: 'idea' | 'initiative';
   postingComment: (arg: boolean) => void;
   className?: string;
 }
@@ -87,6 +89,7 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
+  post: GetPostChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -98,7 +101,7 @@ interface State {
   errorMessage: string | null;
 }
 
-class InitiativeParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
+class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,10 +127,12 @@ class InitiativeParentCommentForm extends PureComponent<Props & InjectedIntlProp
   }
 
   onFocus = () => {
+    const { postId, postType } = this.props;
+
     trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
-        postType: 'initiative',
-        initiativeId: this.props.initiativeId
+        postId,
+        postType
       }
     });
 
@@ -141,9 +146,10 @@ class InitiativeParentCommentForm extends PureComponent<Props & InjectedIntlProp
   onSubmit = async (event: MouseEvent<any>) => {
     event.preventDefault();
 
-    const { locale, authUser, initiativeId } = this.props;
+    const { locale, authUser, postId, postType, post } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue } = this.state;
+    const projectId: string | null = get(post, 'relationships.project.data.id', null);
 
     this.setState({
       focused: false,
@@ -152,17 +158,29 @@ class InitiativeParentCommentForm extends PureComponent<Props & InjectedIntlProp
     });
 
     if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
+      const commentBodyMultiloc = {
+        [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2')
+      };
+
       trackEventByName(tracks.clickParentCommentPublish, {
         extra: {
-          initiativeId,
-          postType: 'initiative',
+          postId,
+          postType,
           content: inputValue
         }
       });
 
       try {
         this.setState({ processing: true });
-        await addCommentToInitiative(initiativeId, authUser.id, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
+
+        if (postType === 'idea' && projectId) {
+          await addCommentToIdea(postId, projectId, authUser.id, commentBodyMultiloc);
+        }
+
+        if (postType === 'initiative') {
+          await addCommentToInitiative(postId, authUser.id, commentBodyMultiloc);
+        }
+
         this.setState({ inputValue: '', processing: false });
       } catch (error) {
         const errorMessage = formatMessage(messages.addCommentError);
@@ -178,20 +196,24 @@ class InitiativeParentCommentForm extends PureComponent<Props & InjectedIntlProp
   placeholder = this.props.intl.formatMessage(messages.commentBodyPlaceholder);
 
   render() {
-    const { authUser, initiativeId, className } = this.props;
+    const { authUser, post, postId, className } = this.props;
     const { inputValue, focused, processing, errorMessage } = this.state;
+    const commentingEnabled =  get(post, 'attributes.action_descriptor.commenting.enabled', true);
+    const projectId: string | null = get(post, 'relationships.project.data.id', null);
     const commentButtonDisabled = (!inputValue || inputValue === '');
-    const canComment = !isNilOrError(authUser) && canCommentOnInitiative({ data: authUser });
+    const isModerator = !isNilOrError(authUser) && canModerate(projectId, { data: authUser });
+    const canComment = (authUser && commentingEnabled && !isModerator);
 
     return (
       <Container className={className}>
         {(authUser && canComment) &&
-          <CommentContainer className={focused ? 'focused' : ''}>
+          <CommentContainer className={`ideaCommentForm ${focused ? 'focused' : ''}`}>
             <AuthorWrapper>
               <StyledAuthor
                 authorId={authUser.id}
                 notALink={authUser.id ? false : true}
                 size="32px"
+                showModeration={isModerator}
                 avatarBadgeBgColor="#f1f2f4"
               />
             </AuthorWrapper>
@@ -208,8 +230,7 @@ class InitiativeParentCommentForm extends PureComponent<Props & InjectedIntlProp
                   name="comment"
                   placeholder={this.placeholder}
                   rows={5}
-                  postType="initiative"
-                  postId={initiativeId}
+                  postId={postId}
                   value={inputValue}
                   error={errorMessage}
                   onChange={this.onChange}
@@ -244,12 +265,13 @@ class InitiativeParentCommentForm extends PureComponent<Props & InjectedIntlProp
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
+  post: ({ postId, postType, render }) => <GetPost id={postId} type={postType}>{render}</GetPost>
 });
 
-const InitiativeParentCommentFormWithHoCs = injectIntl<Props>(InitiativeParentCommentForm);
+const ParentCommentFormWithHoCs = injectIntl<Props>(ParentCommentForm);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <InitiativeParentCommentFormWithHoCs {...inputProps} {...dataProps} />}
+    {dataProps => <ParentCommentFormWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

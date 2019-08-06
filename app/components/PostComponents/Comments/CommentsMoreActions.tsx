@@ -5,12 +5,12 @@ import { map, switchMap } from 'rxjs/operators';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
 
 // Services
-import { ICommentData, markForDeletion, DeleteReason } from 'services/comments';
+import { ICommentData, markForDeletion } from 'services/comments';
 import { hasPermission } from 'services/permissions';
 
 // Components
@@ -52,7 +52,7 @@ const AcceptButton = styled(Button)`
 
 // Typing
 export interface Props {
-  projectId: string;
+  projectId?: string | null;
   comment: ICommentData;
   onCommentEdit: () => void;
   className?: string;
@@ -81,15 +81,17 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
   }
 
   componentDidMount() {
-    this.comment$ = new BehaviorSubject(this.props.comment);
+    const { projectId, onCommentEdit, comment } = this.props;
+
+    this.comment$ = new BehaviorSubject(comment);
 
     this.subscriptions = [
       this.comment$.pipe(
         switchMap((comment) => {
           return combineLatest([
-            hasPermission({ item: comment, action: 'markAsSpam', context: { projectId: this.props.projectId } }),
-            hasPermission({ item: comment, action: 'delete', context: { projectId: this.props.projectId } }),
-            hasPermission({ item: comment, action: 'edit', context: { projectId: this.props.projectId } }),
+            hasPermission({ item: comment, action: 'markAsSpam', context: { projectId } }),
+            hasPermission({ item: comment, action: 'delete', context: { projectId } }),
+            hasPermission({ item: comment, action: 'edit', context: { projectId } }),
           ]);
         }),
         map(([canReport, canDelete, canEdit]) => {
@@ -98,7 +100,7 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
           // Actions based on permissions
           if (canReport) actions.push({ label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal });
           if (canDelete) actions.push({ label: <FormattedMessage {...messages.deleteComment} />, handler: this.openDeleteModal });
-          if (canEdit) actions.push({ label: <FormattedMessage {...messages.editComment} />, handler: this.props.onCommentEdit });
+          if (canEdit) actions.push({ label: <FormattedMessage {...messages.editComment} />, handler: onCommentEdit });
 
           return actions;
         })
@@ -128,25 +130,13 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
     eventEmitter.emit('modal', 'modalClosed', null);
   }
 
-  deleteComment = (reason: DeleteReason | FormEvent<HTMLButtonElement>) => {
-    function isDeleteReason(reason: any): reason is DeleteReason {
-      return reason.reason_code;
-    }
-
-    this.setState({
-      loading_deleteComment: true,
-    });
-
-    const { comment } = this.props;
-
+  deleteComment = (reason) => {
+    const { projectId, comment } = this.props;
+    const commentId = comment.id;
     const authorId = get(comment, 'relationships.author.data.id', undefined);
-
-    if (!isDeleteReason(reason)) {
-      markForDeletion(this.props.projectId, this.props.comment.id, undefined, authorId);
-    } else {
-      markForDeletion(this.props.projectId, this.props.comment.id, reason, authorId);
-    }
-
+    const reasonObj = get(reason, 'reason_code') ? reason : undefined;
+    this.setState({ loading_deleteComment: true });
+    markForDeletion(commentId, authorId, projectId, reasonObj);
     eventEmitter.emit('modal', 'modalClosed', null);
   }
 

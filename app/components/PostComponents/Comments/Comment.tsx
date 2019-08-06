@@ -20,7 +20,7 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
@@ -104,8 +104,9 @@ const DeletedIcon = styled(Icon)`
 `;
 
 interface InputProps {
-  ideaId: string;
-  projectId: string;
+  postId: string;
+  postType: 'idea' | 'initiative';
+  projectId?: string | null;
   commentId: string;
   commentType: 'parent' | 'child';
   hasBottomBorder?: boolean;
@@ -154,7 +155,7 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { comment, author, ideaId, projectId, commentType, hasBottomBorder, hasChildComments, last, className, canReply } = this.props;
+    const { postId, postType, projectId, commentType, comment, author, hasBottomBorder, hasChildComments, last, className, canReply } = this.props;
     const { editing } = this.state;
 
     if (!isNilOrError(comment)) {
@@ -188,8 +189,9 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
                     />
                     <CommentFooter
                       className={commentType}
+                      postId={postId}
+                      postType={postType}
                       projectId={projectId}
-                      ideaId={ideaId}
                       commentId={commentId}
                       commentType={commentType}
                       onEditing={this.onEditing}

@@ -109,7 +109,7 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, cla
   }, []);
 
   return (
-    <TopicsContainer onBlur={onBlur} className={className}>
+    <TopicsContainer onBlur={onBlur} className={`${className} e2e-topics-picker`}>
       {orderBy(workingTopics, topic => localize(topic.attributes.title_multiloc)).map((topic) => {
         const isActive = value && !!value.find(id => id === topic.id);
         const isDisabled = !isActive && value.length >= max;
