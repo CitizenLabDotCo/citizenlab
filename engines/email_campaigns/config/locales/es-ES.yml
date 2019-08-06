@@ -10,6 +10,7 @@ es:
       "comment_marked_as_spam": Cuando un comentario se ha marcado como spam
       "idea_assigned_to_you": Cuando se me ha asignado una idea
       "idea_marked_as_spam": Cuando una idea es marcada como spam
+      "initiative_marked_as_spam": When an initiative is marked as spam
       "invite_received": Cuando alguien me invita a la plataforma
       "invite_reminder": Cuando alguien me invitó a la plataforma (recordatorio después de 3 días)
       "invite_accepted": Cuando alguien acepta mi invitación
@@ -46,6 +47,7 @@ es:
       "comment_marked_as_spam": Cuando un usuario marca un comentario como spam (para los administradores y moderadores)
       "idea_assigned_to_you": Cuando se me ha asignado una idea
       "idea_marked_as_spam": Cuando un usuario marca una idea como spam (para los administradores y moderadores)
+      "initiative_marked_as_spam": When an initiative is marked as spam
       "invite_received": Cuando un usuario es invitado a la plataforma
       "invite_reminder": Cuando alguien me invitó a la plataforma (recordatorio después de 3 días)
       "invite_accepted": Cuando un usuario acepta mi invitación
