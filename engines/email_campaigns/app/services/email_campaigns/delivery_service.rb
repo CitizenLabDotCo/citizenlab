@@ -9,6 +9,7 @@ module EmailCampaigns
       Campaigns::CommentMarkedAsSpam,
       Campaigns::CommentOnYourComment,
       Campaigns::CommentOnYourIdea,
+      Campaigns::CommentOnYourInitiative,
       Campaigns::FirstIdeaPublished,
       Campaigns::IdeaAssignedToYou,
       Campaigns::IdeaMarkedAsSpam,
