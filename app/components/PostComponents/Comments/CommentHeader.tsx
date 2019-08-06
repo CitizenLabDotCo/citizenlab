@@ -34,7 +34,7 @@ const StyledAuthor = styled(Author)`
 `;
 
 interface InputProps {
-  projectId: string;
+  projectId?: string | null;
   authorId: string | null;
   commentId: string;
   commentType: 'parent' | 'child';

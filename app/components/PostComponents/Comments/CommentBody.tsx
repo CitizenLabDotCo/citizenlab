@@ -19,7 +19,7 @@ import GetMachineTranslation from 'resources/GetMachineTranslation';
 // i18n
 import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // Components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -227,7 +227,12 @@ class CommentBody extends PureComponent<Props, State> {
           <CommentWrapper className={`e2e-comment-body ${commentType}`}>
             <QuillEditedContent fontWeight={300}>
               {translateButtonClicked ? (
-                <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} context="comment" id={commentId}>
+                <GetMachineTranslation
+                  attributeName="body_multiloc"
+                  localeTo={locale}
+                  id={commentId}
+                  context="comment"
+                >
                   {translation => {
                     let text: string = commentContent;
 

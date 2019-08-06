@@ -48,7 +48,7 @@ type Props = {
   placeholder?: string;
   rows: number;
   postId?: string;
-  postType?: string;
+  postType?: 'idea' | 'initiative';
   error?: string | null;
   onChange?: (arg: string) => void;
   onFocus?: () => void;

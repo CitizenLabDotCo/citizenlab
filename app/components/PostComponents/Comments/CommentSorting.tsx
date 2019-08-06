@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 import styled from 'styled-components';
 import { CommentsSort } from 'services/comments';
 

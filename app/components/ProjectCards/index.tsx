@@ -32,7 +32,7 @@ import tracks from './tracks';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
-import { darken, rgba } from 'polished';
+import { rgba } from 'polished';
 
 const EmptyProjectsImageSrc: string = require('assets/img/landingpage/no_projects_image.svg');
 
