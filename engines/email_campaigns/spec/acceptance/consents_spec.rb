@@ -19,6 +19,7 @@ resource "Campaign consents" do
       @campaigns = [
         create(:comment_on_your_comment_campaign),
         create(:comment_on_your_idea_campaign),
+        create(:comment_on_your_initiative_campaign),
         create(:idea_assigned_to_you),
         create(:idea_published_campaign),
         create(:mention_in_comment_campaign),
