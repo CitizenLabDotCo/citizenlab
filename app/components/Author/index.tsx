@@ -71,7 +71,7 @@ export interface InputProps {
   size: string;
   notALink?: boolean;
   message?: Message | ReactIntl.FormattedMessage.MessageDescriptor;
-  projectId?: string;
+  projectId?: string | null;
   showAvatar?: boolean;
   avatarBadgeBgColor?: string;
   showModeration?: boolean; // will show red styling on admins and moderators of projectId

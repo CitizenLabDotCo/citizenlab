@@ -45,15 +45,14 @@ const StyledCommentSorting = styled(CommentSorting)`
   `}
 `;
 
-const styleParentComment = (parentComment) => {
-  return styled(parentComment)`
-    &.loading {
-      opacity: 0;
-    }
-  `;
-};
+const StyledParentComment = styled(ParentComment)`
+  &.loading {
+    opacity: 0;
+  }
+`;
 
 interface Props {
+  postId: string;
   postType: 'idea' | 'initiative';
   comments: ICommentData[];
   sortOrder: CommentsSort;
@@ -62,7 +61,7 @@ interface Props {
   className?: string;
 }
 
-const CommentsSection = memo<Props>(({ postType, comments, sortOrder, loading, onSortOrderChange, className }) => {
+const CommentsSection = memo<Props>(({ postId, postType, comments, sortOrder, loading, onSortOrderChange, className }) => {
 
   const sortedParentComments = useMemo(() => {
     if (!isNilOrError(comments) && comments.length > 0) {
@@ -104,25 +103,11 @@ const CommentsSection = memo<Props>(({ postType, comments, sortOrder, loading, o
             return false;
           }).map(comment => comment.id));
 
-          let ParentComment;
-          switch (postType) {
-            case 'idea':
-              ParentComment = React.lazy(() => import('./ParentComment/IdeaParentComment'));
-            case 'initiative':
-              ParentComment = React.lazy(() => import('./ParentComment/InitiativeParentComment'));
-
-            const StyledParentComment = styleParentComment(ParentComment);
-            return (<StyledParentComment
-              key={parentComment.id}
-              commentId={parentComment.id}
-              childCommentIds={childCommentIds}
-              className={loading ? 'loading' : ''}
-            />);
-          }
-
           return (
             <StyledParentComment
               key={parentComment.id}
+              postId={postId}
+              postType={postType}
               commentId={parentComment.id}
               childCommentIds={childCommentIds}
               className={loading ? 'loading' : ''}

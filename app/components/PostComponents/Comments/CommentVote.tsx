@@ -22,7 +22,7 @@ import tracks from './tracks';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
@@ -136,7 +136,8 @@ const Container = styled.div`
 `;
 
 interface InputProps {
-  ideaId: string;
+  postId: string;
+  postType: 'idea' | 'initiative';
   commentId: string;
   commentType: 'parent' | 'child' | undefined;
   votingEnabled: boolean;
@@ -179,8 +180,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
     const upvoteCount = get(this.props.comment, 'attributes.upvotes_count');
 
     // Whenever the upvote count number returned by the GetComment resource component has changed
-    // we update the value kept in the state to make sure we always use the 'correct' upvote count
-    // whenever it's being returned from the back-end
+    // we update the value kept in the state to make sure we always use the correct and up-to-date upvote count coming back from the server
     if (upvoteCount !== prevUpvoteCount && isNumber(upvoteCount)) {
       this.setState({ upvoteCount });
     }
@@ -204,13 +204,14 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
     if (this.props.votingEnabled) {
       const oldVotedValue = cloneDeep(this.state.voted);
       const oldUpvoteCount = cloneDeep(this.state.upvoteCount);
-      const { ideaId, commentId, commentType, authUser, comment, commentVote } = this.props;
+      const { postId, postType, commentId, commentType, authUser, comment, commentVote } = this.props;
 
       if (!isNilOrError(authUser)) {
         if (!oldVotedValue) {
           try {
             this.setState(state => ({ voted: true, upvoteCount: state.upvoteCount + 1 }));
-            await addCommentVote(ideaId, commentId, {
+
+            await addCommentVote(postId, postType, commentId, {
               user_id: authUser.id,
               mode: 'up'
             });

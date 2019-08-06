@@ -58,6 +58,7 @@ class ProgressBar extends PureComponent<Props, State> {
       unobserve();
     }
   }
+
   render() {
     const { progress, color, bgColor, className, bgShaded } = this.props;
     const { visible } = this.state;

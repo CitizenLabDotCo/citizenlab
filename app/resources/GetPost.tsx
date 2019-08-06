@@ -10,10 +10,10 @@ import { GetIdeaChildProps } from 'resources/GetIdea';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 
 interface InputProps {
-  postId?: string | null;
+  id?: string | null;
   slug?: string | null;
+  type: 'idea' | 'initiative';
   resetOnChange?: boolean;
-  postType: 'idea' | 'initiative';
 }
 
 type children = (renderProps: GetPostChildProps) => JSX.Element | null;
@@ -44,29 +44,29 @@ export default class GetPost extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { postId, slug, resetOnChange, postType } = this.props;
+    const { id, slug, resetOnChange, type } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ postId, slug, postType });
+    this.inputProps$ = new BehaviorSubject({ id, slug, type });
 
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         tap(() => resetOnChange && this.setState({ post: undefined })),
-        switchMap(({ postId, slug, postType }) => {
-          if (isString(postId)) {
-            switch (postType) {
-              case 'idea':
-                return ideaByIdStream(postId).observable;
-              case 'initiative':
-                return initiativeByIdStream(postId).observable;
-            }
-          } else if (isString(slug)) {
-            switch (postType) {
-              case 'idea':
-                return ideaBySlugStream(slug).observable;
-              case 'initiative':
-                return initiativeBySlugStream(slug).observable;
-            }
+        switchMap(({ id, slug, type }) => {
+          if (isString(id) && type === 'idea') {
+            return ideaByIdStream(id).observable;
+          }
+
+          if (isString(id) && type === 'initiative') {
+            return initiativeByIdStream(id).observable;
+          }
+
+          if (isString(slug) && type === 'idea') {
+            return ideaBySlugStream(slug).observable;
+          }
+
+          if (isString(slug) && type === 'initiative') {
+            return initiativeBySlugStream(slug).observable;
           }
 
           return of(null);
@@ -79,8 +79,8 @@ export default class GetPost extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { postId, slug, postType } = this.props;
-    this.inputProps$.next({ postId, slug, postType });
+    const { id, slug, type } = this.props;
+    this.inputProps$.next({ id, slug, type });
   }
 
   componentWillUnmount() {
