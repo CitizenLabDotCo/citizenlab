@@ -8,7 +8,8 @@ class InitiativeStatusChangePolicy < ApplicationPolicy
     end
 
     def resolve
-      scope
+      # Disabled
+      scope.none
     end
   end
 
@@ -17,7 +18,8 @@ class InitiativeStatusChangePolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    # Disabled
+    false
   end
 
 end
