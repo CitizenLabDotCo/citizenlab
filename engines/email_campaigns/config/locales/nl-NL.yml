@@ -4,6 +4,7 @@ nl:
       "manual": Directe berichten verzonden door beheerders of moderatoren
       "comment_on_your_comment": Iemand reageert op mijn reactie
       "comment_on_your_idea": Iemand reageert op mijn idee
+      "comment_on_your_initiative": When someone replies to my initiative
       "admin_rights_received": Beheerdersrechten ontvangen
       "comment_deleted_by_admin": Een beheerder verwijdert mijn reactie
       "comment_marked_as_spam": Een reactie is aangeduid als spam (voor beheerders en moderatoren)
@@ -39,6 +40,7 @@ nl:
       "manual": Directe berichten verzonden door beheerders of moderatoren
       "comment_on_your_comment": Wanneer een gebruiker een reactie ontvangt op een eigen reactie
       "comment_on_your_idea": Wanneer een gebruiker een reactie ontvangt op een eigen idee
+      "comment_on_your_initiative": When someone replies to my initiative
       "admin_rights_received": Wanneer een gebruiker beheerdersrechten ontvangt
       "comment_deleted_by_admin": Wanneer een beheerder mijn reactie verwijdert
       "comment_marked_as_spam": Wanneer een gebruiker een reactie aanduidt als spam (voor beheerders en moderatoren)

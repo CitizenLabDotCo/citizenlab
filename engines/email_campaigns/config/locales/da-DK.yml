@@ -4,6 +4,7 @@ da:
       "manual": Direkte meddelelser sendt af administratorer eller moderatorer
       "comment_on_your_comment": Når nogen svarer på min kommentar
       "comment_on_your_idea": Når nogen svarer på min idé
+      "comment_on_your_initiative": When someone replies to my initiative
       "admin_rights_received": Når jeg får administratorrettigheder
       "comment_deleted_by_admin": Når en administrator sletter min kommentar
       "comment_marked_as_spam": Når en kommentar bliver markeret som spam
@@ -39,6 +40,7 @@ da:
       "manual": Direkte meddelelser sendt af administratorer eller moderatorer
       "comment_on_your_comment": Når en bruger modtager et svar på deres kommentar
       "comment_on_your_idea": Når en bruger modtager et svar på deres idé
+      "comment_on_your_initiative": When someone replies to my initiative
       "admin_rights_received": Når en bruger får administratorrettigheder
       "comment_deleted_by_admin": Når en administrator sletter min kommentar
       "comment_marked_as_spam": Når en bruger markerer en kommentar som spam (for administratorer og moderatorer)

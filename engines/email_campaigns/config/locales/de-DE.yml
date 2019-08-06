@@ -4,6 +4,7 @@ de:
       "manual": Direkte Nachrichten, die von Administratoren oder Moderatoren gesendet wurden
       "comment_on_your_comment": Wenn jemand auf meinen Kommentar antwortet
       "comment_on_your_idea": Wenn jemand auf meine Idee antwortet
+      "comment_on_your_initiative": When someone replies to my initiative
       "admin_rights_received": Wenn mir Administratorrechte erteilt werden
       "comment_deleted_by_admin": Wenn ein Administrator meinen Kommentar löscht
       "comment_marked_as_spam": Wenn ein Kommentar als Spam markiert ist
@@ -39,6 +40,7 @@ de:
       "manual": Direkte Nachrichten, die von Administratoren oder Moderatoren gesendet wurden
       "comment_on_your_comment": Wenn ein Benutzer eine Antwort auf seinen Kommentar erhält
       "comment_on_your_idea": Wenn ein Benutzer eine Antwort auf seine Idee erhält
+      "comment_on_your_initiative": When someone replies to my initiative
       "admin_rights_received": Wenn einem Benutzer Administratorrechte zugewiesen werden
       "comment_deleted_by_admin": Wenn ein Administrator meinen Kommentar löscht
       "comment_marked_as_spam": Wenn ein Benutzer einen Kommentar als Spam markiert (für Administratoren und Moderatoren)
