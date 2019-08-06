@@ -11,12 +11,12 @@ module Notifications
     ACTIVITY_TRIGGERS = {'SpamReport' => {'created' => true}}
 
     def self.recipient_ids initiating_user=nil, project_id=nil
-      admin_ids = User.admin.map(&:id)
+      admin_ids = User.admin.ids
       moderator_ids = []
       if project_id
         moderator_ids = User
           .project_moderator(project_id)
-          .map(&:id)
+          .ids
       end
       ids = (admin_ids + moderator_ids).uniq
       if initiating_user
