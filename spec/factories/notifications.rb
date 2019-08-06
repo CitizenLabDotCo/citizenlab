@@ -48,6 +48,12 @@ FactoryBot.define do
     idea
   end
 
+  factory :comment_on_your_initiative, parent: :notification, class: 'Notifications::CommentOnYourInitiative' do
+    initiating_user
+    comment
+    initiative
+  end
+
   factory :mention_in_comment, parent: :notification, class: 'Notifications::MentionInComment' do
     initiating_user
     comment
