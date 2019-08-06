@@ -93,6 +93,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
               return (
                 <OfficialFeedbackPost
                   key={officialFeedbackPost.id}
+                  postType="idea"
                   editingAllowed={editingAllowed}
                   officialFeedbackPost={officialFeedbackPost}
                   last={index === officialFeedbacksList.data.length - 1}

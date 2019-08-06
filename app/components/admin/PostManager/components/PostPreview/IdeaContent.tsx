@@ -9,7 +9,6 @@ import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
 // import IdeaBody from 'containers/IdeasShow/IdeaBody';
 // import IdeaMap from 'containers/IdeasShow/IdeaMap';
 import OfficialFeedback from 'containers/IdeasShow/OfficialFeedback';
-import Comments from 'components/PostComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSettings from './IdeaSettings';
 import VotePreview from './VotePreview';
@@ -87,20 +86,8 @@ const IdeaImage = styled.img`
   border: 1px solid ${colors.separation};
 `;
 
-// const StyledIdeaBody = styled(IdeaBody)`
-//   margin-bottom: 20px;
-// `;
-
-// const StyledIdeaMap = styled(IdeaMap)`
-//   margin-bottom: 40px;
-// `;
-
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
-`;
-
-const StyledComments = styled(Comments)`
-  margin-top: 30px;
 `;
 
 const Right = styled.div`
@@ -183,8 +170,6 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
     if (!isNilOrError(idea)) {
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const ideaImageLarge = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
-      const ideaGeoPosition = (idea.attributes.location_point_geojson || null);
-      const ideaAddress = (idea.attributes.location_description || null);
 
       return (
         <Container>
@@ -235,7 +220,8 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   ideaCreatedAt={idea.attributes.created_at}
                   ideaId={idea.id}
                 />
-{/*
+
+                {/*
                 <StyledIdeaBody
                   ideaId={idea.id}
                   ideaBody={localize(idea.attributes.body_multiloc)}
@@ -247,7 +233,8 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                     position={ideaGeoPosition}
                     id={idea.id}
                   />
-                } */}
+                }
+                */}
 
                 {ideaFiles && !isNilOrError(ideaFiles) &&
                   <FileAttachments files={ideaFiles} />
@@ -293,11 +280,11 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
 }
 
 const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
-  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
-  tenant: <GetTenant />,
+  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
 });
 
 const IdeaContentWithHOCs = injectIntl(injectLocalize(IdeaContent));

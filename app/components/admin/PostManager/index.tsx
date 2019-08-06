@@ -28,7 +28,6 @@ import InitiativesCount from './components/InitiativesCount';
 import { Input, Message } from 'semantic-ui-react';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
-import PostPreview from './components/PostPreview';
 
 // i18n
 import messages from './messages';
@@ -258,7 +257,7 @@ export class PostManager extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { searchTerm, previewPostId, previewMode, selection, activeFilterMenu } = this.state;
+    const { searchTerm, selection, activeFilterMenu } = this.state;
     const { type, projectId, projects, posts, phases, postStatuses, visibleFilterMenus } = this.props;
     const { list, onChangeTopics, onChangeStatus, queryParameters, onChangeAssignee, onChangeFeedbackFilter, onResetParams } = posts;
 
