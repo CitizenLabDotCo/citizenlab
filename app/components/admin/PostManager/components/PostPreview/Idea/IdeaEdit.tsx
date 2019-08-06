@@ -24,7 +24,7 @@ import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -40,7 +40,7 @@ import styled from 'styled-components';
 
 // resource components
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
-import { Content, Top, Container } from '.';
+import { Content, Top, Container } from '..';
 
 const ButtonWrapper = styled.div`
   display: flex;

@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from './messages';
+import messages from '../messages';
 
 // typings
 import { IOption } from 'typings';
@@ -32,7 +32,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
+import tracks from '../../../tracks';
 import { InjectedIntlProps } from 'react-intl';
 
 const StyledLabel = styled(Label)`
@@ -133,7 +133,7 @@ class IdeaSettings extends PureComponent<PropsWithHoCs> {
       assignee_id: assigneeId
     });
 
-    trackEventByName(tracks.changePostAssignment, {
+    trackEventByName(tracks.changeIdeaAssignment, {
       tenant: tenantId,
       location: 'Idea preview',
       idea: ideaId,
