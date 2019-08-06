@@ -10,6 +10,7 @@ da:
       "comment_marked_as_spam": Når en kommentar bliver markeret som spam
       "idea_assigned_to_you": Når en idé er blevet tildelt mig
       "idea_marked_as_spam": Når en idé bliver markeret som spam
+      "initiative_marked_as_spam": When an initiative is marked as spam
       "invite_received": Når nogen inviterer til mig platformen
       "invite_reminder": Når nogen inviterede mig til platformen (påmindelse efter 3 dage)
       "invite_accepted": Når nogen accepterer min invitation
@@ -46,6 +47,7 @@ da:
       "comment_marked_as_spam": Når en bruger markerer en kommentar som spam (for administratorer og moderatorer)
       "idea_assigned_to_you": Når en idé er blevet tildelt mig
       "idea_marked_as_spam": Når en bruger markerer en idé som spam (for administratorer og moderatorer)
+      "initiative_marked_as_spam": When an initiative is marked as spam
       "invite_received": Når en bruger bliver inviteret til platformen
       "invite_reminder": Når nogen inviterede mig til platformen (påmindelse efter 3 dage)
       "invite_accepted": Når en bruger accepterer min invitation
