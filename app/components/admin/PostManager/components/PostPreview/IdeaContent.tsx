@@ -8,7 +8,7 @@ import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
 // import IdeaTitle from 'containers/IdeasShow/IdeaTitle';
 // import IdeaBody from 'containers/IdeasShow/IdeaBody';
 // import IdeaMap from 'containers/IdeasShow/IdeaMap';
-import OfficialFeedback from 'containers/IdeasShow/OfficialFeedback';
+import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSettings from './IdeaSettings';
 import VotePreview from './VotePreview';
@@ -27,6 +27,7 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -138,6 +139,7 @@ interface DataProps {
   ideaFiles: GetResourceFilesChildProps;
   tenant: GetTenantChildProps;
   project: GetProjectChildProps;
+  postOfficialFeedbackPermission: GetPermissionChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -241,7 +243,9 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                 }
 
                 <StyledOfficialFeedback
-                  ideaId={idea.id}
+                  postId={idea.id}
+                  postType="idea"
+                  permissionToPost={true}
                 />
 
                 {/* <StyledComments ideaId={idea.id} /> */}
@@ -284,7 +288,8 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
-  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
+  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
+  postOfficialFeedbackPermission: ({ idea, render }) => !isNilOrError(idea) ? <GetPermission item={idea} action="moderate" >{render}</GetPermission> : null,
 });
 
 const IdeaContentWithHOCs = injectIntl(injectLocalize(IdeaContent));
