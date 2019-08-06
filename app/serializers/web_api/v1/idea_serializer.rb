@@ -5,7 +5,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     @participation_context_service = params[:pcs] || ParticipationContextService.new
     commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_idea(object, current_user(params))
     voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_idea(object, current_user(params))
-    cancelling_votes_disabled_reason = @participation_context_service.cancelling_votes_disabled_reason(object, current_user(params))
+    cancelling_votes_disabled_reason = @participation_context_service.cancelling_votes_disabled_reason_for_idea(object, current_user(params))
     budgeting_disabled_reason = @participation_context_service.budgeting_disabled_reason_for_idea(object, current_user(params))
     comment_voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_comment(Comment.new(post: object), current_user(params))
 
