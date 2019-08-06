@@ -1,6 +1,6 @@
 module EmailCampaigns::Campaigns
   class CommentDeletedByAdminSerializer < NotificationSerializer
-    attributes :reason_code, :other_reason
+    attributes :reason_code, :other_reason, :post_type
 
     belongs_to :initiating_user, serializer: CustomUserSerializer
     belongs_to :comment, serializer: CustomCommentSerializer
@@ -15,5 +15,10 @@ module EmailCampaigns::Campaigns
     has_many :idea_topics, serializer: ::WebApi::V1::External::TopicSerializer
     belongs_to :project, serializer: CustomProjectSerializer
     has_many :project_images, serializer: CustomImageSerializer
+
+
+    def post_type
+      object.comment.post_type
+    end
   end
 end
