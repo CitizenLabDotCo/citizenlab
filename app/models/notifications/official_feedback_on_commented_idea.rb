@@ -32,7 +32,7 @@ module Notifications
           .ids
           .select{|recipient_id| recipient_id != initiator_id && recipient_id != idea.author_id}
           .map do |recipient_id|
-            self.create!(
+            self.new(
               recipient_id: recipient_id,
               initiating_user: User.find(initiator_id),
               idea_id: idea_id,

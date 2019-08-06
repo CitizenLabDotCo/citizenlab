@@ -22,7 +22,7 @@ module Notifications
       idea_status_id = idea&.idea_status_id
 
       if idea_id && recipient_id && recipient_id != initiator_id
-        [self.create!(
+        [self.new(
            recipient_id: recipient_id,
            initiating_user: User.find(initiator_id),
            idea_id: idea_id,
