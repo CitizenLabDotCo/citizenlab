@@ -16,7 +16,6 @@ module Notifications
 
     def self.make_notifications_on activity
       comment = activity.item
-      post = comment.post
       recipient_id = comment.parent&.author_id
       initiator_id = comment&.author_id
 
