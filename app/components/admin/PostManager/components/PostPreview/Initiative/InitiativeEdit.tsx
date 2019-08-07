@@ -79,7 +79,15 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
   render() {
     const { locale, initiative, initiativeImages, goBack, initiativeFiles } = this.props;
     const { selectedLocale } = this.state;
-    if (isNilOrError(locale) || !selectedLocale || isNilOrError(initiative) || initiativeImages === undefined || initiativeFiles === undefined || isError(initiativeFiles)) return null;
+
+    if (
+      isNilOrError(locale) ||
+      !selectedLocale ||
+      isNilOrError(initiative) ||
+      initiativeImages === undefined ||
+      initiativeFiles === undefined ||
+      isError(initiativeFiles)
+    ) return null;
 
     return (
       <StyledContainer>
