@@ -92,7 +92,7 @@ const AllStatus = styled(Status)``;
 
 interface Props {
   type: 'idea' | 'initiative';
-  statuses: IIdeaStatusData[] | IInitiativeStatusData[];
+  statuses: (IIdeaStatusData | IInitiativeStatusData)[];
   filterCounts: IIdeasFilterCounts | IInitiativesFilterCounts | null | undefined;
   selectedStatusId: string | null | undefined;
   onChange: (arg: string | null) => void;

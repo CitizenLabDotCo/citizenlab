@@ -1,8 +1,9 @@
 import React from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, of } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { TPermissionItem, hasPermission } from 'services/permissions';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   item: TPermissionItem | null;
@@ -17,10 +18,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  permission: boolean | null;
+  permission: boolean | undefined;
 }
 
-export type GetPermissionChildProps = boolean | null;
+export type GetPermissionChildProps = boolean | undefined;
 
 export default class GetPermission extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -29,7 +30,7 @@ export default class GetPermission extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      permission: null
+      permission: undefined
     };
   }
 
@@ -41,7 +42,13 @@ export default class GetPermission extends React.Component<Props, State> {
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ item, action, context }) => hasPermission({ item, action, context }))
+        switchMap(({ item, action, context }) => {
+          if (!isNilOrError(item)) {
+            return hasPermission({ item, action, context });
+          }
+
+          return of(false);
+        })
       ).subscribe((permission) => this.setState({ permission }))
     ];
   }
