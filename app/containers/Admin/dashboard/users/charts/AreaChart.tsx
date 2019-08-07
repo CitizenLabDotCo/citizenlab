@@ -25,6 +25,21 @@ interface Props {
 }
 
 const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
+
+  const areaKeyToAreaName = (areas: IUsersByDomicile['areas'], key: string) : string => {
+    const { intl: { formatMessage }, localize } = props;
+
+    if (key === '_blank') {
+      return formatMessage(messages._blank);
+    } else if (key === 'outside') {
+        return formatMessage(messages.outsideArea);
+    } else if (areas[key]) {
+      return localize(areas[key].title_multiloc);
+    } else {
+      return key;
+    }
+  };
+
   const convertToGraphFormat = (data: IUsersByDomicile) => {
     if (!isNilOrError(data)) {
       const {
@@ -33,24 +48,12 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
         },
         areas
       } = data;
-      const {
-        localize,
-        intl: {
-          formatMessage
-        }
-      } = props;
-      const res = map(users, (value, key) => {
-        return ({
-          value,
-          name: areas && areas[key]
-            ? localize(areas[key].title_multiloc)
-            : (key === '_blank'
-              ? formatMessage(messages[key])
-              : key
-            ),
-          code: key,
-        });
-      });
+
+      const res = map(users, (value, key) => ({
+        value,
+        name: areaKeyToAreaName(areas, key),
+        code: key,
+      }));
 
       return res.length > 0 ? res : null;
     }
