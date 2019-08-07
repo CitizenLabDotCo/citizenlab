@@ -100,6 +100,10 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
 `;
 
+const StyledComments = styled(Comments)`
+  margin-top: 30px;
+`;
+
 const Right = styled.div`
   flex: 2;
   position: sticky;
@@ -179,6 +183,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
     } = this.props;
 
     if (!isNilOrError(idea)) {
+      const ideaId = idea.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const ideaImageLarge = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
       const ideaGeoPosition = (idea.attributes.location_point_geojson || null);
@@ -220,7 +225,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             }
 
             <StyledTitle
-              id={idea.id}
+              id={ideaId}
               postType="idea"
               title={ideaTitle}
             />
@@ -232,11 +237,11 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                 <IdeaAuthor
                   authorId={get(idea, 'relationships.author.data.id', null)}
                   ideaCreatedAt={idea.attributes.created_at}
-                  ideaId={idea.id}
+                  ideaId={ideaId}
                 />
 
                 <StyledBody
-                  id={idea.id}
+                  id={ideaId}
                   postType="idea"
                   body={localize(idea.attributes.body_multiloc)}
                 />
@@ -253,15 +258,18 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                 }
 
                 <StyledOfficialFeedback
-                  postId={idea.id}
+                  postId={ideaId}
                   postType="idea"
                   permissionToPost
                 />
 
-                {/* <StyledComments ideaId={idea.id} /> */}
+                <StyledComments
+                  postId={ideaId}
+                  postType="idea"
+                />
               </Left>
               <Right>
-                <VotePreview ideaId={idea.id}/>
+                <VotePreview ideaId={ideaId}/>
 
                 {idea.attributes.budget && !isNilOrError(tenant) &&
                   <>
@@ -282,7 +290,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   </>
                 }
 
-                <IdeaSettings ideaId={idea.id}/>
+                <IdeaSettings ideaId={ideaId}/>
               </Right>
             </Row>
           </Content>
