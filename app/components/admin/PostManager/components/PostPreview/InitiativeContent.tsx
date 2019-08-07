@@ -9,7 +9,7 @@ import Body from 'components/PostComponents/Body';
 import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
 import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 import PostedBy from 'containers/InitiativesShow/PostedBy';
-// import Comments from 'containers/InitiativesShow/Comments';
+import Comments from 'components/PostComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import PostSettings from './PostSettings';
 import Button from 'components/UI/Button';
@@ -69,9 +69,9 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
 `;
 
-// const StyledComments = styled(Comments)`
-//   margin-top: 30px;
-// `;
+const StyledComments = styled(Comments)`
+  margin-top: 30px;
+`;
 
 const Right = styled.div`
   flex: 2;
@@ -192,7 +192,10 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
                   permissionToPost
                 />
 
-                {/* <StyledComments InitiativeId={Initiative.id} /> */}
+                <StyledComments
+                  postId={initiativeId}
+                  postType="initiative"
+                />
               </Left>
               <Right>
                 {/* <VotePreview initiativeId={initiativeId} /> */}
