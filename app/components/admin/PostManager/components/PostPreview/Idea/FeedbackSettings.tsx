@@ -58,7 +58,7 @@ interface Props extends InputProps, DataProps {}
 
 interface PropsWithHoCs extends Props, InjectedLocalized, InjectedIntlProps {}
 
-class IdeaSettings extends PureComponent<PropsWithHoCs> {
+class FeedbackSettings extends PureComponent<PropsWithHoCs> {
 
   getStatusOptions = memoize(
     (statuses) => {
@@ -186,10 +186,10 @@ const Data = adopt<DataProps, InputProps>({
   prospectAssignees: ({ idea, render }) => <GetUsers canModerateProject={get(idea, 'relationships.project.data.id')}>{render}</GetUsers>
 });
 
-const IdeaSettingsWithHOCs = injectIntl(injectLocalize(IdeaSettings));
+const FeedbackSettingsWithHOCs = injectIntl(injectLocalize(FeedbackSettings));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaSettingsWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <FeedbackSettingsWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
