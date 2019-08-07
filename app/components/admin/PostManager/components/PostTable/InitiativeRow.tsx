@@ -6,7 +6,6 @@ import { findDOMNode } from 'react-dom';
 import { DragSource } from 'react-dnd';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import moment from 'moment';
 
 // services
 import { IInitiativeData, updateInitiative, initiativeByIdStream } from 'services/initiatives';
@@ -39,6 +38,7 @@ import SubRow from './SubRow';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 interface DataProps {
   tenant: GetTenantChildProps;
@@ -117,11 +117,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
 
     if (selectedStatusObject && !isNilOrError(tenant) && tenant.attributes.settings.initiatives) {
       if (selectedStatusObject.attributes.code === 'proposed') {
-        const startingTime = moment(initiative.attributes.published_at).startOf('day');
-        const daysSinceStart = moment().diff(startingTime, 'days');
-        const timeSpanDays = tenant.attributes.settings.initiatives.days_limit || 0;
-
-        return timeSpanDays - daysSinceStart;
+        return getDaysRemainingUntil(initiative.attributes.expires_at);
       } else {
         return (
           <StatusLabel
