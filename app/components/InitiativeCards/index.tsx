@@ -730,7 +730,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize debounce={50} />,
+  windowSize: <GetWindowSize />,
   initiatives: <GetInitiatives type="load-more" publicationStatus="published" />,
   initiativesFilterCounts: ({ initiatives, render }) => <GetInitiativesFilterCounts queryParameters={get(initiatives, 'queryParameters', null)}>{render}</GetInitiativesFilterCounts>
 });

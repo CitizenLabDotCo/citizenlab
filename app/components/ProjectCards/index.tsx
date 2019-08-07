@@ -470,7 +470,7 @@ const ProjectCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(ProjectCards
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  windowSize: <GetWindowSize debounce={50} />,
+  windowSize: <GetWindowSize />,
   projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>
 });
 

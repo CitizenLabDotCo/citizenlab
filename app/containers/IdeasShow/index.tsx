@@ -733,7 +733,7 @@ const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl(withRouter(IdeasShow)
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser/>,
-  windowSize: <GetWindowSize debounce={50} />,
+  windowSize: <GetWindowSize />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,

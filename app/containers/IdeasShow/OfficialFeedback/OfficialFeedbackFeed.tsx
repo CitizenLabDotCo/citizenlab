@@ -46,8 +46,8 @@ const LoadMoreButton = styled(Button)`
 
 interface InputProps {
   ideaId: string;
-  permission: boolean | null;
-  editingAllowed: boolean | null;
+  permission: boolean | null | undefined;
+  editingAllowed: boolean | null | undefined;
   className?: string;
 }
 
@@ -94,7 +94,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                 <OfficialFeedbackPost
                   key={officialFeedbackPost.id}
                   postType="idea"
-                  editingAllowed={editingAllowed}
+                  editingAllowed={editingAllowed || null}
                   officialFeedbackPost={officialFeedbackPost}
                   last={index === officialFeedbacksList.data.length - 1}
                 />
