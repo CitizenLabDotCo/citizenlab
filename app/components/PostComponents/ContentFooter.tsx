@@ -70,7 +70,7 @@ const CommentsCount = styled.div`
 interface InputProps {
   id: string;
   postType: 'idea' | 'initiative';
-  createdAt: string;
+  publishedAt: string;
   commentsCount: number;
   className?: string;
 }
@@ -83,7 +83,7 @@ interface Props extends InputProps, DataProps {}
 
 const avatarLimit = 3;
 
-const IdeaContentFooter = memo<Props>(({ createdAt, commentsCount, randomAvatars, className }) => {
+const IdeaContentFooter = memo<Props>(({ publishedAt, commentsCount, randomAvatars, className }) => {
 
   const avatarIds = (!isNilOrError(randomAvatars) && randomAvatars.data.length > 0 ? randomAvatars.data.map(avatar => avatar.id) : []);
   const userCount = !isNilOrError(randomAvatars) ? randomAvatars.meta.total : undefined;
@@ -101,7 +101,7 @@ const IdeaContentFooter = memo<Props>(({ createdAt, commentsCount, randomAvatars
         }
 
         <TimeAgo>
-          <FormattedMessage {...messages.createdTimeAgo} values={{ timeAgo: <FormattedRelative value={createdAt} /> }} />
+          <FormattedMessage {...messages.createdTimeAgo} values={{ timeAgo: <FormattedRelative value={publishedAt} /> }} />
         </TimeAgo>
       </Left>
 

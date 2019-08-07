@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import moment, { Moment, Duration } from 'moment';
+import moment, { Duration } from 'moment';
 import { padStart } from 'lodash-es';
 
 import styled from 'styled-components';
@@ -39,7 +39,7 @@ const Unit = styled.div`
 `;
 
 interface InputProps {
-  targetTime: Moment;
+  targetTime: string;
   className?: string;
 }
 interface DataProps {}
@@ -71,7 +71,7 @@ class CountDown extends PureComponent<Props, State> {
   }
 
   calculateDuration = () => {
-    return moment.duration(this.props.targetTime.diff(moment()));
+    return moment.duration(moment(this.props.targetTime).diff(moment()));
   }
 
   daysLeft = (): string => {

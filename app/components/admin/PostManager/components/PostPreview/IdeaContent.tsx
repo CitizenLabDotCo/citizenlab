@@ -219,7 +219,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                 }
                 <IdeaAuthor
                   authorId={get(idea, 'relationships.author.data.id', null)}
-                  ideaCreatedAt={idea.attributes.created_at}
+                  ideaPublishedAt={idea.attributes.published_at}
                   ideaId={idea.id}
                 />
 
