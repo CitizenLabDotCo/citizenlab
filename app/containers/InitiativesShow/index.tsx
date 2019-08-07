@@ -404,7 +404,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       const votingThreshold = initiativeSettings.voting_threshold;
       const daysLimit = initiativeSettings.days_limit;
       const authorId: string | null = get(initiative, 'relationships.author.data.id', null);
-      const initiativeCreatedAt = initiative.attributes.created_at;
+      const initiativePublishedAt = initiative.attributes.published_at;
       const titleMultiloc = initiative.attributes.title_multiloc;
       const initiativeTitle = localize(titleMultiloc);
       const initiativeImageLarge: string | null = get(initiativeImages, '[0].attributes.versions.large', null);
@@ -550,7 +550,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 <ContentFooter
                   postType="initiative"
                   id={initiativeId}
-                  createdAt={initiativeCreatedAt}
+                  publishedAt={initiativePublishedAt}
                   commentsCount={initiative.attributes.comments_count}
                 />
 
