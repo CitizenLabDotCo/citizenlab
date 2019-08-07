@@ -7,6 +7,7 @@ import { adopt } from 'react-adopt';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetInitiativeImages, { GetInitiativeImagesChildProps } from 'resources/GetInitiativeImages';
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -14,9 +15,8 @@ import { isError } from 'util';
 
 // components
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
-import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 import Button from 'components/UI/Button';
-import { Content, Top, Container } from '.';
+import { Content } from './index';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 
 // i18n
@@ -31,12 +31,25 @@ const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
   margin: 0;
 `;
 
-const StyledContainer = styled(Container)`
-  background-color: white;
+const Container = styled.div`
+  min-height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
-const StyledTop = styled(Top)`
-  background-color: ${colors.background};
+const Top = styled.div`
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  height: 50px;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 50px;
+  z-index: 1;
 `;
 
 interface InputProps {
@@ -82,8 +95,8 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
     if (isNilOrError(locale) || !selectedLocale || isNilOrError(initiative) || initiativeImages === undefined || initiativeFiles === undefined || isError(initiativeFiles)) return null;
 
     return (
-      <StyledContainer>
-        <StyledTop>
+      <Container>
+        <Top>
           <Button
             icon="arrow-back"
             style="text"
@@ -97,7 +110,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
             selectedLocale={selectedLocale}
             values={{}}
           />
-        </StyledTop>
+        </Top>
         <Content>
           <InitiativesEditFormWrapper
             locale={selectedLocale}
@@ -107,17 +120,15 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
             initiativeFiles={initiativeFiles}
           />
         </Content>
-      </StyledContainer>
+      </Container>
     );
   }
 }
 
-const Data = adopt<DataProps>({
+const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
-  initiativeImages: ({ initiativeId, render }) => (
-    <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>
-  ),
+  initiativeImages: ({ initiativeId, render }) => <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>,
   initiativeFiles: ({ initiativeId, render }) => <GetResourceFileObjects resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFileObjects>,
 });
 
