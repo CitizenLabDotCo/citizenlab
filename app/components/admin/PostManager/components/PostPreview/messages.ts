@@ -81,4 +81,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.postedIn',
     defaultMessage: 'Posted in {projectLink}',
   },
+  xDaysLeft: {
+    id: 'app.containers.IdeasShow.xDaysLeft',
+    defaultMessage: '{x, plural, =0 {Less than a day} one {One day} other {# days}} left',
+  },
 });
