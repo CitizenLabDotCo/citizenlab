@@ -65,7 +65,7 @@ class IdeaDashboard extends React.PureComponent<Props> {
             <PostManager
               type="AllIdeas"
               visibleFilterMenus={['projects', 'topics', 'statuses']}
-              projects={!isNilOrError(projects.projectsList) ? projects.projectsList : null}
+              projects={projects.projectsList}
             />
           }
         </PageWrapper>
