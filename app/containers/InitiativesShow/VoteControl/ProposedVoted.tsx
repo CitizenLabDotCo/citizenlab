@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import moment from 'moment';
 
 import styled, { keyframes, withTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
+import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -110,18 +110,11 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
     this.props.onCancelVote();
   }
 
-  daysLeft = (): number => {
-    const { initiative, initiativeSettings: { days_limit } } = this.props;
-    const mStart = moment(initiative.attributes.published_at);
-    const mTarget =  mStart.add(days_limit, 'day');
-    return moment.duration(mTarget.diff(moment())).days();
-  }
-
   render() {
     const { initiative, initiativeSettings: { voting_threshold }, theme } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
-    const daysLeft = this.daysLeft();
+    const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
 
     return (
       <Container>
