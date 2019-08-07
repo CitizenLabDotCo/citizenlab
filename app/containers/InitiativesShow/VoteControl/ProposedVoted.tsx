@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 
 import styled, { keyframes, withTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
+import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -12,7 +13,6 @@ import ProgressBar from 'components/UI/ProgressBar';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 const Container = styled.div`
   display: flex;

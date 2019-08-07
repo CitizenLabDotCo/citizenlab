@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
+import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -17,7 +18,6 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
-import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 const Container = styled.div``;
 
