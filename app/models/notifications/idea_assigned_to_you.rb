@@ -16,7 +16,7 @@ module Notifications
       # initiator
       if recipient && initiator_id && recipient.id != initiator_id
         [
-          self.create(
+          self.new(
            recipient_id: recipient.id,
            idea_id: idea.id,
            project_id: idea.project_id,
