@@ -56,13 +56,13 @@ export default class PostPreview extends PureComponent<Props> {
         opened={!!postId}
         close={onClose}
       >
-        {mode === 'view' && (type === 'AllIdeas' || type === 'ProjectIdeas') && postId &&
+        {/* {mode === 'view' && (type === 'AllIdeas' || type === 'ProjectIdeas') && postId &&
           <IdeaContent
             ideaId={postId}
             closePreview={onClose}
             handleClickEdit={onSwitchPreviewMode}
           />
-        }
+        } */}
         {mode === 'view' && type === 'Initiatives' && postId &&
           <InitiativeContent
             initiativeId={postId}
@@ -70,12 +70,12 @@ export default class PostPreview extends PureComponent<Props> {
             handleClickEdit={onSwitchPreviewMode}
           />
         }
-        {mode === 'edit' && postId && (type === 'AllIdeas' || type === 'ProjectIdeas') && postId &&
+        {/* {mode === 'edit' && postId && (type === 'AllIdeas' || type === 'ProjectIdeas') &&
           <IdeaEdit
             ideaId={postId}
             goBack={onSwitchPreviewMode}
           />
-        }
+        } */}
         {mode === 'edit' && postId && (type === 'Initiatives') &&
           <InitiativeEdit
             initiativeId={postId}
