@@ -66,7 +66,7 @@ const Body = memo<Props>(({ id, body, locale, translateButtonClicked, theme, win
 const BodyWithHOCs = withTheme(Body);
 
 const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize debounce={50} />
+  windowSize: <GetWindowSize />
 });
 
 export default (inputProps: InputProps) => (

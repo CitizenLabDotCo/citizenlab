@@ -167,14 +167,6 @@ const InitiativeHeader = styled.div`
   `}
 `;
 
-// const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
-//   margin-top: 4px;
-
-//   ${media.biggerThanMaxTablet`
-//     display: none;
-//   `}
-// `;
-
 const InitiativeBannerContainer = styled.div`
   width: 100%;
   height: 163px;
@@ -422,9 +414,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         campaign: 'share_content',
         content: authUser.id
       } : {
-          source: 'share_initiative',
-          campaign: 'share_content'
-        };
+        source: 'share_initiative',
+        campaign: 'share_content'
+      };
       const showTranslateButton = (
         !isNilOrError(initiative) &&
         !isNilOrError(locale) &&
@@ -645,12 +637,12 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  windowSize: <GetWindowSize debounce={50} />,
+  windowSize: <GetWindowSize />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   initiativeImages: ({ initiativeId, render }) => <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>,
   initiativeFiles: ({ initiativeId, render }) => <GetResourceFiles resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFiles>,
   officialFeedbacks: ({ initiativeId, render }) => <GetOfficialFeedbacks postId={initiativeId} postType="initiative">{render}</GetOfficialFeedbacks>,
-  postOfficialFeedbackPermission: ({ initiative, render }) => !isNilOrError(initiative) ? <GetPermission item={initiative} action="moderate" >{render}</GetPermission> : null,
+  postOfficialFeedbackPermission: ({ initiative, render }) => <GetPermission item={!isNilOrError(initiative) ? initiative : null} action="moderate" >{render}</GetPermission>
 });
 
 export default (inputProps: InputProps) => (

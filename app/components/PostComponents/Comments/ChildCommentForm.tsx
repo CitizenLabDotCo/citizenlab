@@ -340,7 +340,7 @@ const ChildCommentFormWithHoCs = injectIntl<Props>(ChildCommentForm);
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  windowSize: <GetWindowSize debounce={50} />
+  windowSize: <GetWindowSize />
 });
 
 export default (inputProps: InputProps) => (
