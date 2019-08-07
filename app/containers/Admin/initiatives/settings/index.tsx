@@ -13,19 +13,41 @@ import { SectionTitle } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+import { Multiloc } from 'typings';
+
 interface DataProps {
   tenant: GetTenantChildProps;
 }
 
+interface IInitiativeSettingsFormValues {
+  days_limit: number;
+  eligibility_criteria: Multiloc;
+  threshold_reached_message: Multiloc;
+  voting_threshold: number;
+};
+
 class InitiativesSettingsPage extends PureComponent<DataProps> {
 
-    initialValues = () => {
-      const initiativesSettings = get(this.props.tenant, 'attributes.settings.initiatives');
-      // TODO don't omit enabled (i3)
-      if (initiativesSettings) return pick(initiativesSettings, ['days_limit', 'eligibility_criteria', 'threshold_reached_message', 'voting_threshold']);
-      return null;
+  initialValues = () => {
+    const { tenant } = this.props;
+    const initiativesSettings = !isNilOrError(tenant) ? tenant.attributes.settings.initiatives : null;
+
+    // TODO don't omit enabled (i3)
+
+    if (initiativesSettings) {
+      const { days_limit, eligibility_criteria, threshold_reached_message, voting_threshold } = initiativesSettings;
+      const initialFormValues: IInitiativeSettingsFormValues = {
+        days_limit,
+        eligibility_criteria,
+        threshold_reached_message,
+        voting_threshold
+      }
+
+      return initialFormValues;
     }
 
+    return null;
+  }
   changedValues = (initialValues, newValues) => {
     const changedKeys = keys(newValues).filter((key) => (
       !isEqual(initialValues[key], newValues[key])
@@ -35,13 +57,14 @@ class InitiativesSettingsPage extends PureComponent<DataProps> {
 
   handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus, resetForm }) => {
     const { tenant } = this.props;
+
     if (isNilOrError(tenant)) return;
 
     updateTenant(tenant.id, {
       settings: {
         initiatives: {
           ...this.changedValues(this.initialValues(), values)
-        }
+        } as any
       }
     })
       .then(() => {

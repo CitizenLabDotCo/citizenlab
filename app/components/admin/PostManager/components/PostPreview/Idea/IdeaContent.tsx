@@ -28,6 +28,7 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -99,10 +100,6 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
 `;
 
-const StyledComments = styled(Comments)`
-  margin-top: 30px;
-`;
-
 const Right = styled.div`
   flex: 2;
   position: sticky;
@@ -151,6 +148,7 @@ interface DataProps {
   ideaFiles: GetResourceFilesChildProps;
   tenant: GetTenantChildProps;
   project: GetProjectChildProps;
+  postOfficialFeedbackPermission: GetPermissionChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -296,11 +294,12 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
 }
 
 const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
-  tenant: <GetTenant />,
+  postOfficialFeedbackPermission: ({ idea, render }) => !isNilOrError(idea) ? <GetPermission item={idea} action="moderate" >{render}</GetPermission> : null,
 });
 
 const IdeaContentWithHOCs = injectIntl(injectLocalize(IdeaContent));
