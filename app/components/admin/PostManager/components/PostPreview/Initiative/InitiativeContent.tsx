@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
+import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 // components
 import Title from 'components/PostComponents/Title';
@@ -16,7 +17,7 @@ import Button from 'components/UI/Button';
 import { Top, Content, Container } from '..';
 import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
 
-// srvices
+// services
 import { deleteInitiative } from 'services/initiatives';
 
 // resources
@@ -130,6 +131,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
       const initiativeImageLarge = !isNilOrError(initiativeImages) && initiativeImages.length > 0 ? get(initiativeImages[0], 'attributes.versions.large', null) : null;
       const initiativeGeoPosition = (initiative.attributes.location_point_geojson || null);
       const initiativeAddress = (initiative.attributes.location_description || null);
+      const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
 
       return (
         <Container>
@@ -201,10 +203,10 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
               </Left>
               <Right>
                 <DaysLeft>
-                  {/* <FormattedMessage
+                  <FormattedMessage
                     {...messages.xDaysLeft}
                     values={{ x: daysLeft }}
-                  /> */}
+                  />
                 </DaysLeft>
                 <VoteIndicator initiativeId={initiativeId} />
                 <FeedbackSettings
