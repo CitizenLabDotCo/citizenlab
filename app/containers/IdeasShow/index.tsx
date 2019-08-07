@@ -465,7 +465,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
       // If the user deletes their profile, authorId can be null
       const authorId: string | null = get(idea, 'relationships.author.data.id', null);
-      const ideaCreatedAt = idea.attributes.created_at;
+      const ideaPublishedAt = idea.attributes.published_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
       // If you're not an admin/mod, statusId can be null
@@ -545,7 +545,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <StyledIdeaAuthor
                     ideaId={ideaId}
                     authorId={authorId}
-                    ideaCreatedAt={ideaCreatedAt}
+                    ideaPublishedAt={ideaPublishedAt}
                   />
                 }
 
@@ -601,7 +601,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 <ContentFooter
                   postType="idea"
                   id={ideaId}
-                  createdAt={ideaCreatedAt}
+                  publishedAt={ideaPublishedAt}
                   commentsCount={idea.attributes.comments_count}
                 />
 

@@ -24,6 +24,7 @@ export interface IInitiativeData {
     updated_at: string;
     published_at: string;
     header_bg: ImageSizes;
+    expires_at: string;
   };
   relationships: {
     topics: {
