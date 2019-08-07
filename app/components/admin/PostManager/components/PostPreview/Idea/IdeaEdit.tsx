@@ -245,9 +245,9 @@ class IdeaEdit extends PureComponent<Props, State> {
       const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
       return (
-        // <Container bgColor="white">
-        //   <Top bgColor={colors.adminBackground}>
-        <Container >
+      //  <Container bgColor="white">
+      //     <Top bgColor={colors.adminBackground}>
+        <Container>
           <Top>
             <Button
               icon="arrow-back"
