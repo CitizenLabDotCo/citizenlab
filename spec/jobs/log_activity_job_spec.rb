@@ -49,9 +49,9 @@ RSpec.describe LogActivityJob, type: :job do
     end
 
     it "enqueues a EmailCampaigns::TriggerOnActivityJob" do
-      idea = create(:spam_report)
+      spam_report = create(:spam_report)
       user = create(:user)
-      expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(EmailCampaigns::TriggerOnActivityJob)
+      expect{job.perform(spam_report, "created", user, Time.now)}.to have_enqueued_job(EmailCampaigns::TriggerOnActivityJob)
     end
 
     it "enqueues a LogToEventbusJob when bunny is initialized" do

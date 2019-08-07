@@ -7,8 +7,12 @@ class MakeNotificationsForClassJob < ApplicationJob
     notifications.each(&:validate!)
 
     notifications.each do |notification|
-      notification.save!
-    	LogActivityJob.set(wait: 10.seconds).perform_later(notification, 'created', notification.recipient, notification.created_at.to_i)
+      begin
+        notification.save!
+        LogActivityJob.set(wait: 10.seconds).perform_later(notification, 'created', notification.recipient, notification.created_at.to_i)
+      rescue ActiveRecord::RecordInvalid => exception
+        Raven.capture_exception(exception)
+      end
     end
   end
 
