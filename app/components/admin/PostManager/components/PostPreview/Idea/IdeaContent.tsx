@@ -11,7 +11,7 @@ import LoadableDropdownMap from 'components/PostComponents/DropdownMap';
 import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 import Comments from 'components/PostComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
-import IdeaSettings from './IdeaSettings';
+import FeedbackSettings from './FeedbackSettings';
 import VotePreview from './VotePreview';
 import InfoTooltip from 'components/admin/InfoTooltip';
 import Button from 'components/UI/Button';
@@ -290,7 +290,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   </>
                 }
 
-                <IdeaSettings ideaId={ideaId}/>
+                <FeedbackSettings ideaId={ideaId}/>
               </Right>
             </Row>
           </Content>
