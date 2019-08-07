@@ -9,11 +9,12 @@ import Body from 'components/PostComponents/Body';
 import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
 import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 import PostedBy from 'containers/InitiativesShow/PostedBy';
-// import Comments from 'containers/IdeasShow/Comments';
+// import Comments from 'containers/InitiativesShow/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import Button from 'components/UI/Button';
 import { Top, Content, Container } from '..';
+import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
 
 // srvices
 import { deleteInitiative } from 'services/initiatives';
@@ -82,6 +83,8 @@ const Right = styled.div`
   line-height: 19px;
 `;
 
+const DaysLeft = styled.span``;
+
 interface State {}
 
 interface InputProps {
@@ -98,10 +101,10 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-export class IdeaContent extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
+export class InitiativeContent extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
   handleClickDelete = () => {
     const { initiative, closePreview } = this.props;
-    const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
+    const message = this.props.intl.formatMessage(messages.deleteInitiativeConfirmation);
 
     if (!isNilOrError(initiative)) {
       if (window.confirm(message)) {
@@ -157,7 +160,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             <Row>
               <Left>
                 {initiativeImageLarge &&
-                  <Image src={initiativeImageLarge} alt={formatMessage(messages.imageAltText, { postTitle: initiativeTitle })} className="e2e-ideaImage"/>
+                  <Image src={initiativeImageLarge} alt={formatMessage(messages.imageAltText, { postTitle: initiativeTitle })} className="e2e-initiativeImage"/>
                 }
 
                 <PostedBy
@@ -191,12 +194,18 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   permissionToPost
                 />
 
-                {/* <StyledComments ideaId={idea.id} /> */}
+                {/* <StyledComments InitiativeId={Initiative.id} /> */}
               </Left>
               <Right>
-                {/* <VotePreview /> */}
+                <DaysLeft>
+                  {/* <FormattedMessage
+                    {...messages.xDaysLeft}
+                    values={{ x: daysLeft }}
+                  /> */}
+                </DaysLeft>
+                <VoteIndicator initiativeId={initiativeId} />
                 <FeedbackSettings
-                  initiativeId={initiative.id}
+                  initiativeId={initiativeId}
                 />
               </Right>
             </Row>
@@ -214,12 +223,12 @@ const Data = adopt<DataProps, InputProps>({
   initiativeImages: ({ initiativeId, render }) => <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>,
 });
 
-const IdeaContentWithHOCs = injectIntl(injectLocalize(IdeaContent));
+const InitiativeContentWithHOCs = injectIntl(injectLocalize(InitiativeContent));
 
-const WrappedIdeaContent = (inputProps: InputProps) => (
+const WrappedInitiativeContent = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaContentWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <InitiativeContentWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
 
-export default WrappedIdeaContent;
+export default WrappedInitiativeContent;
