@@ -31,3 +31,7 @@ export function pastPresentOrFuture(input: string | [string, string]) {
 export function getIsoDate(date: string) {
   return moment(date).format('YYYY-MM-DD');
 }
+
+export function getDaysRemainingUntil(date: string) : number {
+  return moment(date).diff(moment(), 'days');
+}

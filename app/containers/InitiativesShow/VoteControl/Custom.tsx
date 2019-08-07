@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import moment from 'moment';
 
 import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
@@ -75,20 +74,15 @@ class Custom extends PureComponent<Props & { theme: any }> {
     this.props.onVote();
   }
 
-  calculateCountdownTarget = () => {
-    const { initiative, initiativeSettings: { days_limit } } = this.props;
-    const mStart = moment(initiative.attributes.published_at);
-    return mStart.add(days_limit, 'day');
-  }
-
   render() {
     const { initiative, initiativeStatus, initiativeSettings: { voting_threshold }, theme, userVoted } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
+
     return (
       <Container>
         <CountDownWrapper>
-          <CountDown targetTime={this.calculateCountdownTarget()} />
+          <CountDown targetTime={initiative.attributes.expires_at} />
         </CountDownWrapper>
         <StatusExplanation>
           <T value={initiativeStatus.attributes.description_multiloc} />
