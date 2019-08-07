@@ -248,7 +248,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                     address={ideaAddress}
                     position={ideaGeoPosition}
                   />
-                } */}
+                }
 
                 {ideaFiles && !isNilOrError(ideaFiles) &&
                   <FileAttachments files={ideaFiles} />
