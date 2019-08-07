@@ -33,5 +33,5 @@ export function getIsoDate(date: string) {
 }
 
 export function getDaysRemainingUntil(date: string) : number {
-  return moment(date).diff(moment(), 'days');
+  return moment(date).diff(moment({ hours: 0 }), 'days');
 }
