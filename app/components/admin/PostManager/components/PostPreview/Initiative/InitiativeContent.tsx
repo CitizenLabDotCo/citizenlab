@@ -84,7 +84,17 @@ const Right = styled.div`
   line-height: 19px;
 `;
 
-const DaysLeft = styled.span``;
+const VotePreview = styled.div`
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.05);
+  border-radius: 3px;
+  padding: 20px;
+`;
+
+const DaysLeft = styled.div`
+  color: ${colors.label};
+  margin-bottom: 20px;
+`;
 
 interface State {}
 
@@ -202,13 +212,16 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
                 />
               </Left>
               <Right>
-                <DaysLeft>
-                  <FormattedMessage
-                    {...messages.xDaysLeft}
-                    values={{ x: daysLeft }}
-                  />
-                </DaysLeft>
-                <VoteIndicator initiativeId={initiativeId} />
+                <VotePreview>
+                  <DaysLeft>
+                    <FormattedMessage
+                      {...messages.xDaysLeft}
+                      values={{ x: daysLeft }}
+                    />
+                  </DaysLeft>
+                  <VoteIndicator initiativeId={initiativeId} />
+                </VotePreview>
+
                 <FeedbackSettings
                   initiativeId={initiativeId}
                 />
