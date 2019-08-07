@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import moment from 'moment';
 
 import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
@@ -18,6 +17,7 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
+import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 const Container = styled.div``;
 
@@ -103,27 +103,16 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
     this.props.onVote();
   }
 
-  calculateCountdownTarget = () => {
-    const { initiative, initiativeSettings: { days_limit } } = this.props;
-    const mStart = moment(initiative.attributes.published_at);
-    return mStart.add(days_limit, 'day');
-  }
-
-  daysLeft = (): number => {
-    const { initiative, initiativeSettings: { days_limit } } = this.props;
-    const mStart = moment(initiative.attributes.published_at);
-    const mTarget = mStart.add(days_limit, 'day');
-    return moment.duration(mTarget.diff(moment())).days();
-  }
-
   render() {
     const { initiative, initiativeSettings: { voting_threshold, eligibility_criteria }, theme } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
+    const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
+
     return (
       <Container>
         <CountDownWrapper>
-          <CountDown targetTime={this.calculateCountdownTarget()} />
+          <CountDown targetTime={initiative.attributes.expires_at} />
         </CountDownWrapper>
         <StatusIcon name="bullseye" />
         <StatusExplanation>
@@ -144,7 +133,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
             <FormattedMessage
               {...messages.proposedStatusExplanationMobile}
               values={{
-                daysLeft: this.daysLeft(),
+                daysLeft,
                 votingThreshold: voting_threshold,
                 proposedStatusExplanationMobileBold: (
                   <b>
