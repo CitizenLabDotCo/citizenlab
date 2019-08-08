@@ -63,10 +63,10 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
   getStatusOptions = memoize(
     (statuses) => {
       const { localize } = this.props;
-      if (isNilOrError(statuses)) {
-        return [];
-      } else {
+      if (!isNilOrError(statuses)) {
         return statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
+      } else {
+        return [];
       }
     }
   );
@@ -75,13 +75,11 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
     (initiative: GetInitiativeChildProps, statuses) => {
       const { localize } = this.props;
       if (
-        isNilOrError(initiative) ||
-        !initiative.relationships.initiative_status ||
-        !initiative.relationships.initiative_status.data ||
-        isNilOrError(statuses)
+        !isNilOrError(initiative) &&
+        initiative.relationships.initiative_status &&
+        initiative.relationships.initiative_status.data &&
+        !isNilOrError(statuses)
       ) {
-        return null;
-      } else {
         const initiativeStatus = statuses.find(status => status.id === get(initiative, 'relationships.initiative_status.data.id'));
         if (initiativeStatus) {
           return {
@@ -90,8 +88,11 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
             color: initiativeStatus.attributes.color
           };
         }
+
         return null;
       }
+
+      return null;
     }, (initiative: GetInitiativeChildProps, statuses) => (JSON.stringify({
       initiativeId: isNilOrError(initiative) ? undefined : get(initiative, 'relationships.initiative_status.data.id'),
       statusesId: isNilOrError(statuses) ? undefined : statuses.map(status => status.id)
@@ -101,9 +102,7 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
   getAssigneeOptions = memoize(
     (prospectAssignees) => {
       const {  intl: { formatMessage } } = this.props;
-      if (isNilOrError(prospectAssignees.usersList)) {
-        return [];
-      } else {
+      if (!isNilOrError(prospectAssignees.usersList)) {
         const assigneeOptions = prospectAssignees.usersList.map(assignee => ({
           value: assignee.id,
           label: `${assignee.attributes.first_name} ${assignee.attributes.last_name}`
@@ -111,6 +110,8 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
         assigneeOptions.push({ value: 'unassigned', label: formatMessage(messages.noOne) });
         return assigneeOptions;
       }
+
+      return [];
     }
   );
 

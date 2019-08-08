@@ -63,20 +63,23 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
   getStatusOptions = memoize(
     (statuses) => {
       const { localize } = this.props;
-      if (isNilOrError(statuses)) {
-        return [];
-      } else {
+      if (!isNilOrError(statuses)) {
         return statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
       }
+
+      return [];
     }
   );
 
   getIdeaStatusOption = memoize(
     (idea: GetIdeaChildProps, statuses) => {
       const { localize } = this.props;
-      if (isNilOrError(idea) || !idea.relationships.idea_status || !idea.relationships.idea_status.data || isNilOrError(statuses)) {
-        return null;
-      } else {
+      if (
+        !isNilOrError(idea) &&
+        idea.relationships.idea_status &&
+        idea.relationships.idea_status.data &&
+        !isNilOrError(statuses)
+      ) {
         const ideaStatus = statuses.find(status => status.id === get(idea, 'relationships.idea_status.data.id'));
         if (ideaStatus) {
           return {
@@ -85,8 +88,11 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
             color: ideaStatus.attributes.color
           };
         }
+
         return null;
       }
+
+      return null;
     }, (idea: GetIdeaChildProps, statuses) => (JSON.stringify({
       ideaId: isNilOrError(idea) ? undefined : get(idea, 'relationships.idea_status.data.id'),
       statusesId: isNilOrError(statuses) ? undefined : statuses.map(status => status.id)
@@ -96,13 +102,13 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
   getAssigneeOptions = memoize(
     (prospectAssignees) => {
       const {  intl: { formatMessage } } = this.props;
-      if (isNilOrError(prospectAssignees.usersList)) {
-        return [];
-      } else {
+      if (!isNilOrError(prospectAssignees.usersList)) {
         const assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, label: `${assignee.attributes.first_name} ${assignee.attributes.last_name}` }));
         assigneeOptions.push({ value: 'unassigned', label: formatMessage(messages.noOne) });
         return assigneeOptions;
       }
+
+      return [];
     }
   );
 
@@ -148,7 +154,7 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
     const statusOptions = this.getStatusOptions(statuses);
     const ideaStatusOption = this.getIdeaStatusOption(idea, statuses);
     const assigneeOptions = this.getAssigneeOptions(prospectAssignees);
-    const ideaAssigneeOption = get(idea, 'relationships.assignee.data.id') || 'unassigned';
+    const ideaAssigneeOption = get(idea, 'relationships.assignee.data.id', 'unassigned');
 
     if (!isNilOrError(idea)) {
       return (
