@@ -117,4 +117,10 @@ RSpec.describe Notification, type: :model do
       expect(notifications.map(&:recipient_id)).to match_array [other_moderator.id, user.id]
     end
   end
+
+  it "deleting a phase with notifications referencing to it" do
+    phase = create(:phase)
+    create(:project_phase_started, phase: phase)
+    phase.destroy!
+  end
 end
