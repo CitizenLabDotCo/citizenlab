@@ -37,6 +37,10 @@ const CancelButton = styled(Button)`
   margin-top: 10px;
 `;
 
+const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
+  margin-bottom: 10px;
+`;
+
 interface DataProps {
   locale: GetLocaleChildProps;
 }
@@ -101,7 +105,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
     return (
       <Form>
         <Section>
-          <FormLocaleSwitcher
+          <StyledFormLocaleSwitcher
             onLocaleChange={this.onLocaleChange}
             selectedLocale={selectedLocale}
             values={values}

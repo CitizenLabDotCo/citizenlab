@@ -23,12 +23,8 @@ import { Content, Top, Container } from '..';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { colors } from 'utils/styleUtils';
-import styled from 'styled-components';
 
 import { Locale } from 'typings';
-
-const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
-`;
 
 interface InputProps {
   initiativeId: string;
@@ -91,7 +87,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
           >
             <FormattedMessage {...messages.cancelEdit} />
           </Button>
-          <StyledFormLocaleSwitcher
+          <FormLocaleSwitcher
             onLocaleChange={this.onLocaleChange}
             selectedLocale={selectedLocale}
             values={{}}
