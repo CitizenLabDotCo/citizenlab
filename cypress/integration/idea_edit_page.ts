@@ -88,7 +88,7 @@ describe('Idea form page', () => {
     // verify modal with edit changelog
     cy.get('#e2e-idea-show').find('.e2e-idea-last-modified-button').click();
     cy.wait(1000);
-    cy.get('.e2e-activities-changelog').find('.e2e-activities-changelog-entry').should('have.length', 2);
+    cy.get('.e2e-activities-changelog').find('.e2e-idea-changelog-entry').should('have.length', 2);
   });
 
   after(() => {
