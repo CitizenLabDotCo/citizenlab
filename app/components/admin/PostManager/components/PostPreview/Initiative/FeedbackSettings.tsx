@@ -190,7 +190,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   statuses: <GetInitiativeStatuses/>,
-  prospectAssignees: ({ render }) => <GetUsers canAdmin>{render}</GetUsers>,
+  prospectAssignees: <GetUsers canAdmin />,
 });
 
 const FeedbackSettingsWithHOCs = injectIntl(injectLocalize(FeedbackSettings));
