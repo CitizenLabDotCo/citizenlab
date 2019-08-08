@@ -35,6 +35,7 @@ FactoryBot.define do
 
   factory :idea_marked_as_spam, parent: :notification, class: 'Notifications::IdeaMarkedAsSpam' do
     idea
+    spam_report
   end
 
   factory :invite_accepted, parent: :notification, class: 'Notifications::InviteAccepted' do
@@ -107,16 +108,25 @@ FactoryBot.define do
   factory :status_change_of_your_idea, parent: :notification, class: 'Notifications::StatusChangeOfYourIdea' do
     idea
     idea_status
+    before(:create) do |notification|
+      notification.idea.idea_status = notification.idea_status
+    end
   end
 
   factory :status_change_on_commented_idea, parent: :notification, class: 'Notifications::StatusChangeOnCommentedIdea' do
     idea
     idea_status
+    before(:create) do |notification|
+      notification.idea.idea_status = notification.idea_status
+    end
   end
 
   factory :status_change_on_voted_idea, parent: :notification, class: 'Notifications::StatusChangeOnVotedIdea' do
     idea
     idea_status
+    before(:create) do |notification|
+      notification.idea.idea_status = notification.idea_status
+    end
   end
   
 end

@@ -30,7 +30,7 @@ module Notifications
       participant_ids.uniq!
 
       if official_feedback_id && idea_id && recipient_id && initiator_id && (recipient_id != initiator_id) && !participant_ids.include?(recipient_id)
-        [self.create(
+        [self.new(
            recipient_id: recipient_id,
            initiating_user: User.find(initiator_id),
            idea_id: idea_id,
