@@ -16,7 +16,7 @@ import { isEqual, pick, get, omitBy } from 'lodash-es';
 import { Point } from 'geojson';
 import { addInitiativeImage, deleteInitiativeImage, IInitiativeImageData } from 'services/initiativeImages';
 import { deleteInitiativeFile, addInitiativeFile } from 'services/initiativeFiles';
-import { convertUrlToUploadFile } from 'utils/imageTools';
+import { convertUrlToUploadFile } from 'utils/fileTools';
 
 interface Props {
   locale: Locale;

@@ -20,8 +20,9 @@ import { getJwt, decode } from 'utils/auth/jwt';
 // components
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { convertUrlToUploadFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 import { SectionField } from 'components/admin/Section';
+import { FormSection, FormLabel, FormSectionTitle } from 'components/UI/FormComponents';
 import CustomFieldsForm from 'components/CustomFieldsForm';
 import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
@@ -40,8 +41,6 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 // typings
 import { IOption, UploadFile, CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-
-import { FormSection, FormLabel, FormSectionTitle } from 'components/UI/FormComponents';
 
 // Types
 interface InputProps {
