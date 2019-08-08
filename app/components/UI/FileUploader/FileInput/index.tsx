@@ -1,5 +1,5 @@
 import React, { PureComponent, createRef, FormEvent, KeyboardEvent } from 'react';
-import { getBase64FromFile, createObjectUrl } from 'utils/imageTools';
+import { getBase64FromFile, createObjectUrl } from 'utils/fileTools';
 import { UploadFile } from 'typings';
 
 // i18n
@@ -25,8 +25,12 @@ const StyledIcon = styled(Icon)`
 `;
 
 const Input = styled.input`
-   display: none;
- `;
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+`;
 
 const Label = styled.label`
   display: flex;

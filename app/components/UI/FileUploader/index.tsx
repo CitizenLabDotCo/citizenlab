@@ -5,6 +5,8 @@ import FileInput from './FileInput';
 import FileDisplay from './FileDisplay';
 import Error from 'components/UI/Error';
 
+import { isFileUploadSupported } from 'utils/fileTools';
+
 // typings
 import { CLError, UploadFile } from 'typings';
 
@@ -30,6 +32,10 @@ export default class FileUploader extends PureComponent<Props, State>{
 
   render() {
     const { files, errors, id } = this.props;
+
+    if (!isFileUploadSupported()) {
+      return null;
+    }
 
     return (
       <>

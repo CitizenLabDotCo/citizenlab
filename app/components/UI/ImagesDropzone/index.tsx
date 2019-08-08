@@ -15,7 +15,7 @@ import messages from './messages';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';
-import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/imageTools';
+import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/fileTools';
 
 // style
 import styled, { css } from 'styled-components';

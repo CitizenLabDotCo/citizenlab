@@ -11,6 +11,7 @@ import bowser from 'bowser';
 
 // components
 import Input from 'components/UI/Input';
+import Label from 'components/UI/Label';
 import LocationInput from 'components/UI/LocationInput';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
@@ -31,6 +32,7 @@ import { phasesStream, IPhaseData } from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
 import { getLocalized } from 'utils/i18n';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isFileUploadSupported } from 'utils/fileTools';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -489,14 +491,18 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           </FeatureFlag>
         )}
 
-        <FormElement id="e2e-idea-file-upload">
-          <FormLabel labelMessage={messages.fileUploadLabel}/>
-          <FileUploader
-            onFileAdd={this.handleIdeaFileOnAdd}
-            onFileRemove={this.handleIdeaFileOnRemove}
-            files={ideaFiles}
-          />
-        </FormElement>
+        {isFileUploadSupported() &&
+          <FormElement id="e2e-idea-file-upload">
+            <Label>
+              <FormattedMessage {...messages.fileUploadLabel} />
+            </Label>
+            <FileUploader
+              onFileAdd={this.handleIdeaFileOnAdd}
+              onFileRemove={this.handleIdeaFileOnRemove}
+              files={ideaFiles}
+            />
+          </FormElement>
+        }
       </Form>
     );
   }
