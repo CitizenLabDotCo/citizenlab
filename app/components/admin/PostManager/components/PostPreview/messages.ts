@@ -13,9 +13,13 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.deleteIdeaConfirmation',
     defaultMessage: 'Are you sure you want to delete this idea?',
   },
+  deleteInitiativeConfirmation: {
+    id: 'app.components.admin.PostManager.PostPreview.deleteInitiativeConfirmation',
+    defaultMessage: 'Are you sure you want to delete this initiative?',
+  },
   imageAltText: {
     id: 'app.components.admin.PostManager.PostPreview.imageAltText',
-    defaultMessage: 'Image for idea {ideaTitle}',
+    defaultMessage: 'Image for idea {postTitle}',
   },
   upvoteCount: {
     id: 'app.components.admin.PostManager.PostPreview.upvoteCount',
@@ -76,5 +80,9 @@ export default defineMessages({
   postedIn: {
     id: 'app.containers.IdeasShow.postedIn',
     defaultMessage: 'Posted in {projectLink}',
+  },
+  xDaysLeft: {
+    id: 'app.containers.IdeasShow.xDaysLeft',
+    defaultMessage: '{x, plural, =0 {Less than a day} one {One day} other {# days}} left',
   },
 });

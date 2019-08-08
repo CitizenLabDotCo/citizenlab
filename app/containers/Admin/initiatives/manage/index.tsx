@@ -10,7 +10,7 @@ const StyledDiv = styled.div`
   margin-bottom: 30px;
 `;
 
-export default class InitiativesSettingsPage extends PureComponent {
+export default class InitiativesManagePage extends PureComponent {
 
   render() {
     return (

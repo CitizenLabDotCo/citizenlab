@@ -13,7 +13,7 @@ import clHistory from 'utils/cl-router/history';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
-import { Content, Top, Container } from '.';
+import { Content, Top, Container } from '../';
 
 // services
 import { localeStream } from 'services/locale';
@@ -25,7 +25,7 @@ import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
