@@ -48,7 +48,6 @@ export default class PostPreview extends PureComponent<Props> {
 
   render() {
     const { type, postId, onClose, onSwitchPreviewMode, mode } = this.props;
-    console.log(type === 'Initiatives' ? 'TODO PostPreview' : '');
 
     return (
       <SideModal
