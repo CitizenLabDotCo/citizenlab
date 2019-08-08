@@ -388,7 +388,7 @@ export class PostManager extends React.PureComponent<Props, State> {
             openPreview={this.openPreview}
           />
         </ThreeColumns>
-        <Suspense fallback={FullPageSpinner}>
+        <Suspense fallback={null}>
           <PostPreview
             type={type}
             postId={previewPostId}
