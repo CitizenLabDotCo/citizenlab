@@ -9,18 +9,7 @@ RSpec.describe EmailCampaigns::Campaigns::AdminRightsReceived, type: :model do
 
   describe '#generate_command' do
   	let(:campaign) { create(:admin_rights_received_campaign) }
-    let(:recipient) { create(:admin) }
-    let(:initiator) { create(:admin) }
-    let(:serialized_initiator) { 
-      ActiveModelSerializers::SerializableResource.new(initiator, {
-        serializer: WebApi::V1::External::UserSerializer,
-        adapter: :json
-      }).serializable_hash 
-    }
-    let(:admin_activity) { 
-      create(:activity, item: recipient, user: initiator, action: 'admin_rights_given') 
-    }
-    let(:notification) { Notifications::AdminRightsReceived.make_notifications_on(admin_activity)&.first }
+    let(:notification) { create(:admin_rights_received) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
   	it "generates a command with the desired payload and tracked content" do
@@ -31,10 +20,10 @@ RSpec.describe EmailCampaigns::Campaigns::AdminRightsReceived, type: :model do
 
       expect(
       	command.dig(:event_payload, :recipient, :id)
-      	).to eq(recipient.id)
+      	).to eq(notification.recipient_id)
       expect(
       	command.dig(:event_payload, :initiating_user, :id)
-      	).to eq(initiator.id)
+      	).to eq(notification.initiating_user_id)
   	end
   end
 end

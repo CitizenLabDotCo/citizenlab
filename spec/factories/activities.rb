@@ -58,6 +58,11 @@ FactoryBot.define do
       association :item, factory: :comment_vote
       action { "comment_upvoted" }
     end
+
+    factory :admin_rights_given_activity do
+      association :item, factory: :admin
+      action { 'admin_rights_given' }
+    end
   end
 
 

@@ -31,7 +31,7 @@ module Notifications
           # other transactions.
           ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.map do |recipient|
             if service.participation_possible_for_context? phase, recipient
-              self.create!(
+              self.new(
                  recipient_id: recipient.id,
                  phase_id: phase_id,
                  project_id: project_id
