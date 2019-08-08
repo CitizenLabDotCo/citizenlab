@@ -26,7 +26,7 @@ module Notifications
 
       if child_comment_id && (parent_comment.post_type == 'Idea') && recipient_id && initiator_id && (recipient_id != initiator_id)
         project_id = idea&.project_id
-        [self.create(
+        [self.new(
            recipient_id: recipient_id,
            initiating_user: User.find(initiator_id),
            idea_id: idea_id,

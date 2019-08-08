@@ -9,15 +9,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin, type: :model do
 
   describe '#generate_command' do
   	let(:campaign) { create(:comment_deleted_by_admin_campaign) }
-    let(:comment) { create(:comment) }
-    let(:admin) { create(:admin) }
-    let(:comment_activity) { 
-      create(
-        :activity, item: comment, action: 'marked_as_deleted', user: admin, 
-        payload: {reason_code: 'other', other_reason: 'too boring'}
-        )
-    }
-    let(:notification) { Notifications::CommentDeletedByAdmin.make_notifications_on(comment_activity)&.first }
+    let(:notification) { create(:comment_deleted_by_admin) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
   	it "generates a command with the desired payload and tracked content" do
@@ -28,13 +20,13 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin, type: :model do
 
       expect(
       	command.dig(:event_payload, :recipient, :id)
-      	).to eq(comment.author_id)
+      	).to eq(notification.recipient_id)
       expect(
       	command.dig(:event_payload, :initiating_user, :id)
-      	).to eq(admin.id)
+      	).to eq(notification.initiating_user_id)
       expect(
       	command.dig(:event_payload, :comment, :id)
-      	).to eq(comment.id)
+      	).to eq(notification.comment_id)
   	end
   end
 end
