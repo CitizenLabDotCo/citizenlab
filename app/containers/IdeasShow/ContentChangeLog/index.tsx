@@ -49,7 +49,7 @@ interface State {
   modalOpen: boolean;
 }
 
-class ChangeLog extends PureComponent<Props, State> {
+class ContentChangeLog extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -104,6 +104,6 @@ class ChangeLog extends PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetIdeaActivities ideaId={inputProps.ideaId}>
-    {ideaActivities => <ChangeLog {...inputProps} ideaActivities={ideaActivities} />}
+    {ideaActivities => <ContentChangeLog {...inputProps} ideaActivities={ideaActivities} />}
   </GetIdeaActivities>
 );
