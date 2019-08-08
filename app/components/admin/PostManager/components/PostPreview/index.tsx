@@ -6,6 +6,7 @@ import InitiativeContent from './Initiative/InitiativeContent';
 import InitiativeEdit from './Initiative/InitiativeEdit';
 
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 import { ManagerType } from '../..';
 
 interface DataProps {}
@@ -30,6 +31,8 @@ export const Container = styled.div`
 `;
 
 export const Top = styled.div`
+  background-color: white;
+  border-bottom: 1px solid ${colors.separation};
   display: flex;
   align-items: center;
   position: fixed;
