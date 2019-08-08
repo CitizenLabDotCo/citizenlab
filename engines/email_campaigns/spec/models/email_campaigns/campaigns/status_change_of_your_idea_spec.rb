@@ -9,16 +9,7 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfYourIdea, type: :model d
 
   describe '#generate_command' do
   	let(:campaign) { create(:status_change_of_your_idea_campaign) }
-    let(:old_status) { create(:idea_status) }
-    let(:idea) { create(:idea, idea_status: create(:idea_status)) }
-    let(:initiator) { create(:admin) }
-    let(:status_activity) { 
-      create(
-        :activity, item: idea, action: 'changed_status', user: initiator, 
-        payload: {change: [old_status.id, idea.idea_status.id]}
-        ) 
-    }
-    let(:notification) { Notifications::StatusChangeOfYourIdea.make_notifications_on(status_activity)&.first }
+    let(:notification) { create(:status_change_of_your_idea) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
   	it "generates a command with the desired payload and tracked content" do
@@ -29,10 +20,10 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfYourIdea, type: :model d
 
       expect(
       	command.dig(:event_payload, :recipient, :id)
-      	).to eq(idea.author_id)
+      	).to eq(notification.recipient_id)
       expect(
       	command.dig(:event_payload, :idea_status, :id)
-      	).to eq(idea.idea_status.id)
+      	).to eq(notification.idea_status.id)
   	end
   end
 end
