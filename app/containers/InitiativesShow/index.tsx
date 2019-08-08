@@ -11,27 +11,28 @@ import tracks from './tracks';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import Sharing from 'components/Sharing';
-import InitiativeMeta from './InitiativeMeta';
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-import SharingModalContent from 'components/PostComponents/SharingModalContent';
+import Spinner from 'components/UI/Spinner';
+import Sharing from 'components/Sharing';
 import FeatureFlag from 'components/FeatureFlag';
+import SharingModalContent from 'components/PostComponents/SharingModalContent';
+
 import Topics from 'components/PostComponents/Topics';
 import Title from 'components/PostComponents/Title';
 import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
 import Body from 'components/PostComponents/Body';
-import ContentFooter from 'components/PostComponents/ContentFooter';
-
-import PostedBy from './PostedBy';
-import PostedByMobile from './PostedByMobile';
 import Image from 'components/PostComponents/Image';
 import Footer from 'components/PostComponents/Footer';
-import Spinner from 'components/UI/Spinner';
+import ContentFooter from 'components/PostComponents/ContentFooter';
 import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
-import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostComponents/TranslateButton';
-import VoteControl from 'containers/InitiativesShow/VoteControl';
+
+import InitiativeMeta from './InitiativeMeta';
+import PostedBy from './PostedBy';
+import PostedByMobile from './PostedByMobile';
+import ActionBar from './ActionBar';
+import VoteControl from './VoteControl';
 import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 
 // resources
@@ -503,6 +504,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 {biggerThanLargeTablet &&
                   <PostedBy
                     authorId={authorId}
+                    showAboutInitiatives
                   />
                 }
 

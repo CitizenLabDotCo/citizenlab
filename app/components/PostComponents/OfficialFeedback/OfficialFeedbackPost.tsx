@@ -95,7 +95,7 @@ interface DataProps {
 }
 
 interface InputProps {
-  editingAllowed: boolean | null;
+  editingAllowed: boolean | undefined;
   officialFeedbackPost: IOfficialFeedbackData;
   last: boolean;
   postType: 'idea' | 'initiative';

@@ -98,7 +98,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
       assignee_id: assigneeId,
     });
 
-    trackEventByName(tracks.changePostAssignment, {
+    trackEventByName(tracks.changeInitiativeAssignment, {
       location: 'Initiative Manager',
       method: 'Changed through the dropdown in the table overview',
       initiative: initiativeId

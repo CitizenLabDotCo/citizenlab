@@ -90,7 +90,7 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
       assignee_id: assigneeId,
     });
 
-    trackEventByName(tracks.changePostAssignment, {
+    trackEventByName(tracks.changeIdeaAssignment, {
       location: 'Idea Manager',
       method: 'Changed through the dropdown n the table overview',
       idea: ideaId

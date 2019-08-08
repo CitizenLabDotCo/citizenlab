@@ -47,8 +47,8 @@ const LoadMoreButton = styled(Button)`
 interface InputProps {
   postId: string;
   postType: 'idea' | 'initiative';
-  permission: boolean | null;
-  editingAllowed: boolean | null;
+  permission: boolean | undefined;
+  editingAllowed: boolean | undefined;
   className?: string;
 }
 

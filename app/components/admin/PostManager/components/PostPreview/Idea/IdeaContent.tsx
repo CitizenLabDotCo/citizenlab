@@ -5,18 +5,19 @@ import { get } from 'lodash-es';
 
 // components
 import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
-// import IdeaTitle from 'containers/IdeasShow/IdeaTitle';
-// import IdeaBody from 'containers/IdeasShow/IdeaBody';
-// import IdeaMap from 'containers/IdeasShow/IdeaMap';
+import Title from 'components/PostComponents/Title';
+import Body from 'components/PostComponents/Body';
+import LoadableDropdownMap from 'components/PostComponents/DropdownMap';
 import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
+import Comments from 'components/PostComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
-import IdeaSettings from './IdeaSettings';
+import FeedbackSettings from './FeedbackSettings';
 import VotePreview from './VotePreview';
 import InfoTooltip from 'components/admin/InfoTooltip';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
-import { Top, Content, Container } from '.';
+import { Top, Content, Container } from '..';
 
 // srvices
 import { deleteIdea } from 'services/ideas';
@@ -33,16 +34,16 @@ import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission'
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps, FormattedNumber } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-// const StyledIdeaTitle = styled(IdeaTitle)`
-//   margin-bottom: 30px;
-// `;
+const StyledTitle = styled(Title)`
+  margin-bottom: 30px;
+`;
 
 const Row = styled.div`
   display: flex;
@@ -87,8 +88,20 @@ const IdeaImage = styled.img`
   border: 1px solid ${colors.separation};
 `;
 
+const StyledBody = styled(Body)`
+  margin-bottom: 20px;
+`;
+
+const StyledMap = styled(LoadableDropdownMap)`
+  margin-bottom: 40px;
+`;
+
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-top: 70px;
+`;
+
+const StyledComments = styled(Comments)`
+  margin-top: 30px;
 `;
 
 const Right = styled.div`
@@ -170,8 +183,11 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
     } = this.props;
 
     if (!isNilOrError(idea)) {
+      const ideaId = idea.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const ideaImageLarge = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
+      const ideaGeoPosition = (idea.attributes.location_point_geojson || null);
+      const ideaAddress = (idea.attributes.location_description || null);
 
       return (
         <Container>
@@ -208,50 +224,52 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
               </BelongsToProject>
             }
 
-            {/* <StyledIdeaTitle
-              ideaId={idea.id}
-              ideaTitle={ideaTitle}
-            /> */}
+            <StyledTitle
+              id={ideaId}
+              postType="idea"
+              title={ideaTitle}
+            />
             <Row>
               <Left>
                 {ideaImageLarge &&
-                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { ideaTitle })} className="e2e-ideaImage"/>
+                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { postTitle: ideaTitle })} className="e2e-ideaImage"/>
                 }
                 <IdeaAuthor
                   authorId={get(idea, 'relationships.author.data.id', null)}
                   ideaPublishedAt={idea.attributes.published_at}
-                  ideaId={idea.id}
+                  ideaId={ideaId}
                 />
 
-                {/*
-                <StyledIdeaBody
-                  ideaId={idea.id}
-                  ideaBody={localize(idea.attributes.body_multiloc)}
+                <StyledBody
+                  id={ideaId}
+                  postType="idea"
+                  body={localize(idea.attributes.body_multiloc)}
                 />
 
                 {ideaGeoPosition && ideaAddress &&
-                  <StyledIdeaMap
+                  <StyledMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
-                    id={idea.id}
                   />
                 }
-                */}
 
                 {ideaFiles && !isNilOrError(ideaFiles) &&
                   <FileAttachments files={ideaFiles} />
                 }
 
                 <StyledOfficialFeedback
-                  postId={idea.id}
+                  postId={ideaId}
                   postType="idea"
-                  permissionToPost={true}
+                  permissionToPost
                 />
 
-                {/* <StyledComments ideaId={idea.id} /> */}
+                <StyledComments
+                  postId={ideaId}
+                  postType="idea"
+                />
               </Left>
               <Right>
-                <VotePreview ideaId={idea.id}/>
+                <VotePreview ideaId={ideaId}/>
 
                 {idea.attributes.budget && !isNilOrError(tenant) &&
                   <>
@@ -272,7 +290,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   </>
                 }
 
-                <IdeaSettings ideaId={idea.id}/>
+                <FeedbackSettings ideaId={ideaId}/>
               </Right>
             </Row>
           </Content>
