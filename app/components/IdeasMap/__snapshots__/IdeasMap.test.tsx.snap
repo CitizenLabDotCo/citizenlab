@@ -1,22 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`IdeasMap renders correctly 1`] = `
-<Fragment>
-  <IdeasMap__MapWrapper>
-    <IdeasMap__StyledMap
-      onMapClick={[Function]}
-      onMarkerClick={[Function]}
-      points={Array []}
+<IdeasMap__Container>
+  <IdeasMap__StyledMap
+    boxContent={null}
+    fitBounds={true}
+    onBoxClose={[Function]}
+    onMapClick={[Function]}
+    onMarkerClick={[Function]}
+    points={Array []}
+  />
+  <div
+    className="create-idea-wrapper"
+  >
+    <WrappedIdeaAddButton
+      onClick={[Function]}
+      phaseId="c43968d3-171e-570c-8b71-f5fc0e55bbfa"
+      projectId="379cac45-d26b-505c-9215-b2677a693d37"
     />
-    <div
-      className="create-idea-wrapper"
-    >
-      <WrappedIdeaAddButton
-        onClick={[Function]}
-        phaseId="c43968d3-171e-570c-8b71-f5fc0e55bbfa"
-        projectId="379cac45-d26b-505c-9215-b2677a693d37"
-      />
-    </div>
-  </IdeasMap__MapWrapper>
-</Fragment>
+  </div>
+</IdeasMap__Container>
 `;
