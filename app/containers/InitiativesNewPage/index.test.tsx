@@ -1,6 +1,8 @@
 import React from 'react';
-
 import { shallow } from 'enzyme';
+import { makeUser } from '../../services/__mocks__/users';
+import clHistory from '../../utils/cl-router/history';
+import { InitiativesNewPage } from './';
 
 jest.mock('components/UI/GoBackButton', () => 'GoBackButton');
 jest.mock('./TipsBox', () => 'TipsBox');
@@ -11,11 +13,6 @@ jest.mock('utils/cl-intl/FormattedMessage', () => 'FormattedMessage');
 jest.mock('./InitiativesFormWrapper', () => 'InitiativesFormWrapper');
 jest.mock('utils/cl-router/history');
 jest.mock('services/users');
-
-import { makeUser } from 'services/users';
-import clHistory from 'utils/cl-router/history';
-
-import { InitiativesNewPage } from './';
 
 describe('InitiativesNewPage', () => {
 

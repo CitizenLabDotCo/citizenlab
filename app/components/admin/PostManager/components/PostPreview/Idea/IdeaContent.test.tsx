@@ -1,9 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-
-import { localizeProps } from 'utils/testUtils/localizeProps';
-import { intl } from 'utils/cl-intl';
-import { getIdea } from 'services/ideas';
+import { localizeProps } from '../../../../../utils/testUtils/localizeProps';
+import Intl from '../../../../../utils/cl-intl/__mocks__/index';
+import { getIdea } from '../../../../../services/__mocks__/ideas';
 
 jest.mock('resources/GetUsers', () => 'GetUsers');
 jest.mock('resources/GetResourceFiles', () => 'GetResourceFiles');
@@ -35,6 +34,9 @@ import { IdeaContent } from './IdeaContent';
 describe('<IdeaContent />', () => {
   let closePreview: jest.Mock;
   let handleClickEdit: jest.Mock;
+
+  const { intl } = Intl;
+
   beforeEach(() => {
     closePreview = jest.fn();
     handleClickEdit = jest.fn();
