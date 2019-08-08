@@ -687,6 +687,7 @@
   "app.containers.AdminPage.DashboardPage.numberOfVotesDown": "",
   "app.containers.AdminPage.DashboardPage.numberOfVotesTotal": "",
   "app.containers.AdminPage.DashboardPage.numberOfVotesUp": "",
+  "app.containers.AdminPage.DashboardPage.outsideArea": "",
   "app.containers.AdminPage.DashboardPage.participationPerProject": "",
   "app.containers.AdminPage.DashboardPage.participationPerTopic": "",
   "app.containers.AdminPage.DashboardPage.previous30Days": "",

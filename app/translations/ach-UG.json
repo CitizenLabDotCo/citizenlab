@@ -1226,6 +1226,8 @@
   "app.containers.NotificationMenu.projectModerationRightsReceived": "crwdns18610:0{projectLink}crwdne18610:0",
   "app.containers.NotificationMenu.projectPhaseStarted": "crwdns26382:0{projectTitle}crwdne26382:0",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "crwdns26384:0{projectTitle}crwdnd26384:0{phaseStartAt}crwdne26384:0",
+  "app.containers.NotificationMenu.statusChangeOnCommentedIdea": "crwdns26938:0{status}crwdne26938:0",
+  "app.containers.NotificationMenu.statusChangeOnVotedIdea": "crwdns26940:0{status}crwdne26940:0",
   "app.containers.NotificationMenu.statusChangedOfYourIdea": "crwdns18518:0{ideaTitle}crwdnd18518:0{status}crwdne18518:0",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "crwdns18560:0{name}crwdne18560:0",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "crwdns18108:0{name}crwdne18108:0",

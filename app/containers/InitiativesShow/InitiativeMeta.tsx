@@ -21,7 +21,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 // utils
 import { stripHtml } from 'utils/textUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/imageTools';
+import { imageSizes } from 'utils/fileTools';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 

@@ -29,7 +29,7 @@ import messages from '../messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToUploadFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 import { convertToGeoJson } from 'utils/locationTools';
 
 // typings

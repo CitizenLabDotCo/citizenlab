@@ -27,6 +27,17 @@ export const imageSizes = {
   },
 };
 
+export function isFileUploadSupported() {
+  // cf https://caniuse.com/#feat=input-file-multiple
+  // https://caniuse.com/#feat=input-file-accept
+  // https://caniuse.com/#feat=fileapi
+  // webOS being firefox mobile
+  // We should support fileupload for mobile devices that have it working (most of them),
+  // but the accept param with extensions is not well supported and we don't have a good enough error handling
+  // in IdeaForm to have unsupported files in the form, for now.
+  return !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
 export async function getBase64FromFile(file: File) {
   return new Promise<string>((resolve, reject) => {
     if (file && !isString(file)) {
