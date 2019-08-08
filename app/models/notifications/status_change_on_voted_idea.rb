@@ -20,7 +20,7 @@ module Notifications
         comment_author_ids = User.joins(:comments).where(comments: {idea_id: idea.id}).distinct.ids
         User.joins(:votes).where(votes: {votable_id: idea.id, votable_type: 'Idea'}).distinct.ids.map do |recipient_id|
           if (recipient_id != initiator_id) && !(comment_author_ids + [idea.author_id]).include?(recipient_id)
-            self.create!(
+            self.new(
               recipient_id: recipient_id,
               initiating_user_id: initiator_id,
               idea_id: idea.id,

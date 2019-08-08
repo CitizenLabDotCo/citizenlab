@@ -34,12 +34,13 @@ module Notifications
           raise "Unsupported post type #{comment.post_type}"
         end
 
-        [self.create(
-          recipient_id: recipient_id,
-          initiating_user: User.find(initiator_id),
-          comment: comment,
-          **post_attributes
-          )]
+        [self.new(
+           recipient_id: recipient_id,
+           initiating_user: User.find(initiator_id),
+           idea_id: idea_id,
+           comment_id: child_comment_id,
+           project_id: project_id
+         )]
       else
         []
       end

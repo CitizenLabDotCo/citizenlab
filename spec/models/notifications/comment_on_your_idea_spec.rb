@@ -7,9 +7,8 @@ RSpec.describe Notifications::CommentOnYourIdea, type: :model do
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created')
 
-      Notifications::CommentOnYourIdea.make_notifications_on activity
-      notification = Notification.first
-      expect(notification).to have_attributes(
+      notifications = Notifications::CommentOnYourIdea.make_notifications_on activity
+      expect(notifications.first).to have_attributes(
         recipient_id: comment.idea.author_id,
         initiating_user_id: comment.author_id,
         idea_id: comment.post_id,
