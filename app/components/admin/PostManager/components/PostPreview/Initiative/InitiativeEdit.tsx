@@ -16,41 +16,15 @@ import { isError } from 'util';
 // components
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import Button from 'components/UI/Button';
-import { Content } from './index';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+import { Content, Top, Container } from '../';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import { colors } from 'utils/styleUtils';
-import styled from 'styled-components';
 
 import { Locale } from 'typings';
-
-const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
-  margin: 0;
-`;
-
-const Container = styled.div`
-  min-height: 100%;
-  width: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Top = styled.div`
-  display: flex;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  height: 50px;
-  width: 100%;
-  padding-left: 10px;
-  padding-right: 50px;
-  z-index: 1;
-`;
 
 interface InputProps {
   initiativeId: string;
@@ -92,7 +66,15 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
   render() {
     const { locale, initiative, initiativeImages, goBack, initiativeFiles } = this.props;
     const { selectedLocale } = this.state;
-    if (isNilOrError(locale) || !selectedLocale || isNilOrError(initiative) || initiativeImages === undefined || initiativeFiles === undefined || isError(initiativeFiles)) return null;
+
+    if (
+      isNilOrError(locale) ||
+      !selectedLocale ||
+      isNilOrError(initiative) ||
+      initiativeImages === undefined ||
+      initiativeFiles === undefined ||
+      isError(initiativeFiles)
+    ) return null;
 
     return (
       <Container>
@@ -105,7 +87,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
           >
             <FormattedMessage {...messages.cancelEdit} />
           </Button>
-          <StyledFormLocaleSwitcher
+          <FormLocaleSwitcher
             onLocaleChange={this.onLocaleChange}
             selectedLocale={selectedLocale}
             values={{}}

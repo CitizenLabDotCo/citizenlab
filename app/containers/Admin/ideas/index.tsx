@@ -1,6 +1,5 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -65,7 +64,7 @@ class IdeaDashboard extends React.PureComponent<Props> {
             <PostManager
               type="AllIdeas"
               visibleFilterMenus={['projects', 'topics', 'statuses']}
-              projects={!isNilOrError(projects.projectsList) ? projects.projectsList : null}
+              projects={projects.projectsList}
             />
           }
         </PageWrapper>

@@ -24,7 +24,7 @@ interface IInitiativeSettingsFormValues {
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
   voting_threshold: number;
-};
+}
 
 class InitiativesSettingsPage extends PureComponent<DataProps> {
 
@@ -41,7 +41,7 @@ class InitiativesSettingsPage extends PureComponent<DataProps> {
         eligibility_criteria,
         threshold_reached_message,
         voting_threshold
-      }
+      };
 
       return initialFormValues;
     }
