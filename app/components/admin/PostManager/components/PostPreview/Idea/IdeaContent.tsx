@@ -307,7 +307,7 @@ const Data = adopt<DataProps, InputProps>({
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
-  postOfficialFeedbackPermission: ({ idea, render }) => !isNilOrError(idea) ? <GetPermission item={idea} action="moderate" >{render}</GetPermission> : null,
+  postOfficialFeedbackPermission: ({ project, render }) => !isNilOrError(project) ? <GetPermission item={project} action="moderate" >{render}</GetPermission> : null,
 });
 
 const IdeaContentWithHOCs = injectIntl(injectLocalize(IdeaContent));
