@@ -4,9 +4,11 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
 import { projectsStream, IProjectData } from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
+import { isNilOrError } from 'utils/helperUtils';
+import { reportError } from 'utils/loggingUtils';
 
 export type SortAttribute = 'new' | 'trending' | 'popular';
-export type Sort =  'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
+export type Sort = 'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
 export type SelectedPublicationStatus = 'all' | 'published' | 'archived';
 
@@ -114,10 +116,18 @@ export default class GetProjects extends Component<Props, State> {
             const lastLink = get(projects, 'links.last');
             const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
 
+            if (isNilOrError(projects)) {
+              reportError({
+                message: 'There was an incorrect response for projects',
+                response: projects
+              });
+            }
             return {
               queryParameters,
               hasMore,
-              projects: (!isLoadingMore ? projects.data : [...(acc.projects || []), ...projects.data])
+              projects: !isLoadingMore
+                ? projects.data
+                : [...(acc.projects || []), ...projects.data]
             };
           }));
         }, startAccumulatorValue)

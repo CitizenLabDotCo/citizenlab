@@ -234,6 +234,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage._blank',
     defaultMessage: 'unknown',
   },
+  outsideArea: {
+    id: 'app.containers.AdminPage.DashboardPage.outsideArea',
+    defaultMessage: 'Somewhere else',
+  },
   top10activeUsersDescription: {
     id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
     defaultMessage: 'A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote.'
