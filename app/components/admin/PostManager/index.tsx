@@ -28,7 +28,6 @@ import InitiativesCount from './components/InitiativesCount';
 import { Input, Message } from 'semantic-ui-react';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 // lazy-loaded components
 const PostPreview = lazy(() => import('./components/PostPreview'));
