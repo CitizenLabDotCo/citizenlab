@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import Avatar from 'components/Avatar';
-import Activities from './Activities/Activities';
+import ChangeLog from './ChangeLog';
 import IdeaPostedBy from './IdeaPostedBy';
 
 // resources
@@ -73,7 +73,7 @@ const IdeaAuthor = memo<Props>(({ ideaId, ideaPublishedAt, authorId, author, cla
         {ideaPublishedAt &&
           <TimeAgo>
             <FormattedRelative value={ideaPublishedAt} />
-            <Activities ideaId={ideaId} />
+            <ChangeLog ideaId={ideaId} />
           </TimeAgo>
         }
       </AuthorMeta>

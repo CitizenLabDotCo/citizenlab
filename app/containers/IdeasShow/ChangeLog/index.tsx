@@ -5,7 +5,7 @@ import React, { PureComponent } from 'react';
 import GetIdeaActivities, { GetIdeaActivitiesChildProps } from 'resources/GetIdeaActivities';
 
 // Components
-import ActivitiesChangeLog from './ActivitiesChangelog';
+import Entry from './ChangeLogEntry';
 import Modal from 'components/UI/Modal';
 
 // i18n
@@ -31,7 +31,7 @@ const LinkButton = styled.button`
   }
 `;
 
-const Activities = styled.div`
+const Entries = styled.div`
   padding: 30px;
 `;
 
@@ -49,7 +49,7 @@ interface State {
   modalOpen: boolean;
 }
 
-class IdeaActivities extends PureComponent<Props, State> {
+class ChangeLog extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -88,11 +88,11 @@ class IdeaActivities extends PureComponent<Props, State> {
             header={<FormattedMessage {...messages.lastChangesTitle} />}
             fixedHeight={true}
           >
-            <Activities className="e2e-activities-changelog">
+            <Entries className="e2e-activities-changelog">
               {ideaActivities.map((activity) => (
-                <ActivitiesChangeLog key={activity.id} activity={activity} />
+                <Entry key={activity.id} activity={activity} />
               ))}
-            </Activities>
+            </Entries>
           </Modal>
         </>
       );
@@ -104,6 +104,6 @@ class IdeaActivities extends PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetIdeaActivities ideaId={inputProps.ideaId}>
-    {ideaActivities => <IdeaActivities {...inputProps} ideaActivities={ideaActivities} />}
+    {ideaActivities => <ChangeLog {...inputProps} ideaActivities={ideaActivities} />}
   </GetIdeaActivities>
 );

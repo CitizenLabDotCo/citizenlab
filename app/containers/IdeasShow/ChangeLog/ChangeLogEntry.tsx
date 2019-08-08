@@ -17,7 +17,7 @@ import messages from '../messages';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-const ChangeLogEntry = styled.div`
+const Entry = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 25px;
@@ -44,11 +44,11 @@ interface Props {
   activity: IdeaActivity;
 }
 
-const ActivityChangeLog = memo<Props>(({ activity }) => {
+const ChangeLogEntry = memo<Props>(({ activity }) => {
   const userId = activity.relationships.user.data.id;
 
   return (
-    <ChangeLogEntry className="e2e-activities-changelog-entry">
+    <Entry className="e2e-idea-changelog-entry">
       <Avatar userId={userId} size="36px" />
       <TextWrapper>
         <p>
@@ -75,8 +75,8 @@ const ActivityChangeLog = memo<Props>(({ activity }) => {
           />
         </p>
       </TextWrapper>
-    </ChangeLogEntry>
+    </Entry>
   );
 });
 
-export default ActivityChangeLog;
+export default ChangeLogEntry;
