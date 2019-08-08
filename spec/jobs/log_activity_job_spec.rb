@@ -5,7 +5,6 @@ RSpec.describe LogActivityJob, type: :job do
   subject(:job) { LogActivityJob.new }
 
   describe '#perform' do
-    let(:uri) { URI.parse('http://example.com/webhook') }
     it "logs an activity with a GlobalID" do
       idea = create(:idea)
       user = create(:user)
@@ -32,16 +31,27 @@ RSpec.describe LogActivityJob, type: :job do
       expect(Activity.last.item_type).to eq area.class.name
     end
 
-    it "enqueues a MakeNotificationsJob" do
-      idea = create(:idea)
+    it "enqueues a MakeNotificationsForClassJob when there's a matching notification" do
+      admin = create(:admin)
       user = create(:user)
-      expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(MakeNotificationsJob)
+      t = Time.now
+      expect{job.perform(user, "admin_rights_given", admin, t)}
+        .to have_enqueued_job(MakeNotificationsForClassJob)
+        .with do |notification_class, activity|
+          expect(notification_class).to eq 'Notifications::AdminRightsReceived'
+          expect(activity.item).to match ({
+            item: user,
+            user: admin,
+            action: 'admin_rights_given',
+            acted_at: t
+          })
+        end
     end
 
     it "enqueues a EmailCampaigns::TriggerOnActivityJob" do
-      idea = create(:idea)
+      spam_report = create(:spam_report)
       user = create(:user)
-      expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(EmailCampaigns::TriggerOnActivityJob)
+      expect{job.perform(spam_report, "created", user, Time.now)}.to have_enqueued_job(EmailCampaigns::TriggerOnActivityJob)
     end
 
     it "enqueues a LogToEventbusJob when bunny is initialized" do

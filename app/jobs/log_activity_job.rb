@@ -22,7 +22,9 @@ class LogActivityJob < ApplicationJob
 
     activity.save!
 
-    MakeNotificationsJob.perform_later(activity)
+    Notification.classes_for(activity).each do |notification_class|
+      MakeNotificationsForClassJob.perform_later(notification_class.name, activity)
+    end
     EmailCampaigns::TriggerOnActivityJob.perform_later(activity)
     LogToEventbusJob.perform_later(activity) if BUNNY_CON
 

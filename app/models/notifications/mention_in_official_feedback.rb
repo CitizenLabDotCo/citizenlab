@@ -38,7 +38,7 @@ module Notifications
         else
           raise "Unsupported post type #{official_feedback.post_type}"
         end
-        [self.create(
+        [self.new(
            recipient_id: recipient_id,
            initiating_user_id: initiator_id,
            official_feedback: official_feedback_id,

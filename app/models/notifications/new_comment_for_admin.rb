@@ -18,7 +18,7 @@ module Notifications
       
       if initiator && (comment.post_type == 'Idea') && !(initiator&.admin? || initiator.project_moderator?(comment.post.project.id))
         User.admin.or(User.project_moderator(comment.post.project.id)).map do |recipient|
-          self.create(
+          self.new(
            recipient_id: recipient.id,
            initiating_user: initiator,
            comment_id: comment.id,

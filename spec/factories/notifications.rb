@@ -122,16 +122,25 @@ FactoryBot.define do
   factory :status_change_of_your_idea, parent: :notification, class: 'Notifications::StatusChangeOfYourIdea' do
     idea
     idea_status
+    before(:create) do |notification|
+      notification.idea.idea_status = notification.idea_status
+    end
   end
 
   factory :status_change_on_commented_idea, parent: :notification, class: 'Notifications::StatusChangeOnCommentedIdea' do
     idea
     idea_status
+    before(:create) do |notification|
+      notification.idea.idea_status = notification.idea_status
+    end
   end
 
   factory :status_change_on_voted_idea, parent: :notification, class: 'Notifications::StatusChangeOnVotedIdea' do
     idea
     idea_status
+    before(:create) do |notification|
+      notification.idea.idea_status = notification.idea_status
+    end
   end
   
 end

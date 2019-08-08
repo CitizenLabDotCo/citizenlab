@@ -15,7 +15,7 @@ module Notifications
       if spam_report.spam_reportable_type == 'Idea'
         project_id = spam_report.spam_reportable&.project_id
         self.recipient_ids(initiating_user, project_id).map do |recipient_id|
-          self.create(
+          self.new(
             recipient_id: recipient_id,
             initiating_user_id: spam_report.user_id,
             spam_report: spam_report,
