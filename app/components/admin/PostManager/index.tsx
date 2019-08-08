@@ -258,7 +258,7 @@ export class PostManager extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { searchTerm, selection, previewPostId, previewMode, activeFilterMenu } = this.state;
+    const { previewPostId, previewMode, searchTerm, selection, activeFilterMenu } = this.state;
     const { type, projectId, projects, posts, phases, postStatuses, visibleFilterMenus } = this.props;
     const { list, onChangeTopics, onChangeStatus, queryParameters, onChangeAssignee, onChangeFeedbackFilter, onResetParams } = posts;
 
