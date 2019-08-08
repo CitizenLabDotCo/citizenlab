@@ -1,6 +1,5 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
