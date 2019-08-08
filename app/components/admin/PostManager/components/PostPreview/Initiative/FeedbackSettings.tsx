@@ -156,7 +156,7 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
     const statusOptions = this.getStatusOptions(statuses);
     const initiativeStatusOption = this.getInitiativeStatusOption(initiative, statuses);
     const assigneeOptions = this.getAssigneeOptions(prospectAssignees);
-    const initiativeAssigneeOption = get(initiative, 'relationships.assignee.data.id') || 'unassigned';
+    const initiativeAssigneeOption = get(initiative, 'relationships.assignee.data.id', 'unassigned');
 
     if (!isNilOrError(initiative)) {
       return (
