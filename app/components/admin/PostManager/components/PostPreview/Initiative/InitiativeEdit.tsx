@@ -16,8 +16,8 @@ import { isError } from 'util';
 // components
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import Button from 'components/UI/Button';
-import { Content } from '../index';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+import { Content, Top, Container } from '..';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,28 +28,6 @@ import styled from 'styled-components';
 import { Locale } from 'typings';
 
 const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
-  margin: 0;
-`;
-
-const Container = styled.div`
-  min-height: 100%;
-  width: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Top = styled.div`
-  display: flex;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  height: 50px;
-  width: 100%;
-  padding-left: 10px;
-  padding-right: 50px;
-  z-index: 1;
 `;
 
 interface InputProps {
