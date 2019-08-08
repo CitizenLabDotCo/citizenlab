@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
@@ -28,7 +28,10 @@ import InitiativesCount from './components/InitiativesCount';
 import { Input, Message } from 'semantic-ui-react';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
-import PostPreview from './components/PostPreview';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+
+// lazy-loaded components
+const PostPreview = lazy(() => import('./components/PostPreview'));
 
 // i18n
 import messages from './messages';
@@ -385,13 +388,15 @@ export class PostManager extends React.PureComponent<Props, State> {
             openPreview={this.openPreview}
           />
         </ThreeColumns>
-        <PostPreview
-          type={type}
-          postId={previewPostId}
-          mode={previewMode}
-          onClose={this.closePreview}
-          onSwitchPreviewMode={this.switchPreviewMode}
-        />
+        <Suspense fallback={FullPageSpinner}>
+          <PostPreview
+            type={type}
+            postId={previewPostId}
+            mode={previewMode}
+            onClose={this.closePreview}
+            onSwitchPreviewMode={this.switchPreviewMode}
+          />
+        </Suspense>
       </>
     );
   }
