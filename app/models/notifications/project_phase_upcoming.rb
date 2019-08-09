@@ -20,7 +20,7 @@ module Notifications
       if project_id
         user_scope = User.admin.or(User.project_moderator(project_id))
         ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.map do |recipient|
-          self.create!(
+          self.new(
              recipient_id: recipient.id,
              phase_id: phase_id,
              project_id: project_id

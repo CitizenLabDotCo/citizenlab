@@ -9,12 +9,7 @@ RSpec.describe EmailCampaigns::Campaigns::MentionInComment, type: :model do
 
   describe '#generate_command' do
   	let(:campaign) { create(:mention_in_comment_campaign) }
-    let(:mentioned_user) { create(:user) }
-    let(:comment) { create(:comment_with_mentions, mentioned_users: [mentioned_user]) }
-    let(:comment_activity) { 
-      create(:activity, item: comment, action: 'mentioned', user: comment.author, payload: {mentioned_user: mentioned_user.id})
-    }
-    let(:notification) { Notifications::MentionInComment.make_notifications_on(comment_activity)&.first }
+    let(:notification) { create(:mention_in_comment) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
   	it "generates a command with the desired payload and tracked content" do
@@ -25,13 +20,13 @@ RSpec.describe EmailCampaigns::Campaigns::MentionInComment, type: :model do
 
       expect(
       	command.dig(:event_payload, :recipient, :id)
-      	).to eq(mentioned_user.id)
+      	).to eq(notification.recipient_id)
       expect(
       	command.dig(:event_payload, :initiating_user, :id)
-      	).to eq(comment.author_id)
+      	).to eq(notification.initiating_user_id)
       expect(
       	command.dig(:event_payload, :comment, :id)
-      	).to eq(comment.id)
+      	).to eq(notification.comment.id)
   	end
   end
 end
