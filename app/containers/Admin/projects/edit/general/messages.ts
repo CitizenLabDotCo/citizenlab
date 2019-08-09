@@ -105,7 +105,7 @@ export default defineMessages({
   },
   headerImageLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.headerImageLabelTooltip',
-    defaultMessage: 'This image will be shown on top of the project page. The ideal dimensions are 1440x330.',
+    defaultMessage: 'This image will be shown on top of the project page. The ideal dimensions are described in {imageSupportArticleLink}.',
   },
   projectImageLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.projectImageLabel',
@@ -113,7 +113,7 @@ export default defineMessages({
   },
   projectImageLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.projectImageLabelTooltip',
-    defaultMessage: 'The first added project image will be shown on the project card on the home page. All images are shown on the project page. The ideal dimensions are 800x800.',
+    defaultMessage: 'The first added project image will be shown on the project card on the home page. All images are shown on the project page. The ideal dimensions are described in {imageSupportArticleLink}.',
   },
   fileUploadLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabel',
@@ -150,5 +150,13 @@ export default defineMessages({
   saveErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.saveErrorMessage',
     defaultMessage: 'An error occurred while saving your data. Please try again.',
-  }
+  },
+  imageSupportArticleLinkTarget: {
+    id: 'app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget',
+    defaultMessage: 'http://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+  },
+  imageSupportArticleLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkText',
+    defaultMessage: 'this article',
+  },
 });
