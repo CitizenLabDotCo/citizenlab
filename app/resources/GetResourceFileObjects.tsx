@@ -9,7 +9,7 @@ import { phaseFilesStream, IPhaseFiles } from 'services/phaseFiles';
 import { pageFilesStream, IPageFiles } from 'services/pageFiles';
 import { eventFilesStream, IEventFiles } from 'services/eventFiles';
 import { ideaFilesStream, IIdeaFiles } from 'services/ideaFiles';
-import { convertUrlToUploadFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 import { UploadFile } from 'typings';
 
 // Converted file objects (to JS objects of type File).

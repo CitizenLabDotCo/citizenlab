@@ -48,7 +48,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import eventEmitter from 'utils/eventEmitter';
 
 // utils
-import { convertUrlToUploadFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 
 // style
 import styled from 'styled-components';
@@ -799,7 +799,18 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <StyledSectionField>
               <Label>
                 <FormattedMessage {...messages.headerImageLabel} />
-                <InfoTooltip {...messages.headerImageLabelTooltip} />
+                <InfoTooltip
+                  {...messages.headerImageLabelTooltip}
+                  values={{
+                    // tslint:disable-next-line:react-a11y-anchors
+                    imageSupportArticleLink: <a
+                      target="_blank"
+                      href={this.props.intl.formatMessage(messages.imageSupportArticleLinkTarget)}
+                    >
+                      <FormattedMessage {...messages.imageSupportArticleLinkText} />
+                    </a>
+                  }}
+                />
               </Label>
               <StyledImagesDropzone
                 images={projectHeaderImage}
@@ -816,7 +827,18 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <StyledSectionField>
               <Label>
                 <FormattedMessage {...messages.projectImageLabel} />
-                <InfoTooltip {...messages.projectImageLabelTooltip} />
+                <InfoTooltip
+                  {...messages.projectImageLabelTooltip}
+                  values={{
+                    // tslint:disable-next-line:react-a11y-anchors
+                    imageSupportArticleLink: <a
+                      target="_blank"
+                      href={this.props.intl.formatMessage(messages.imageSupportArticleLinkTarget)}
+                    >
+                      <FormattedMessage {...messages.imageSupportArticleLinkText} />
+                    </a>
+                  }}
+                />
               </Label>
               <StyledImagesDropzone
                 images={projectImages}

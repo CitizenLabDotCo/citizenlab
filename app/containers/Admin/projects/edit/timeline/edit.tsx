@@ -18,7 +18,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // Utils
 import shallowCompare from 'utils/shallowCompare';
-import { convertUrlToUploadFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 
 // Components
 import Label from 'components/UI/Label';
