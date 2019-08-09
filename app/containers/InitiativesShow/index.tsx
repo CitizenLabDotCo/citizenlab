@@ -487,7 +487,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
             <Content>
               <LeftColumn>
-                <Topics topicIds={topicIds} />
+                <Topics postType="initiative" topicIds={topicIds} />
 
                 <OnlyOnDesktop>
                   <InitiativeHeader>
