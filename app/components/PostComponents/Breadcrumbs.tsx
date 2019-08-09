@@ -77,9 +77,10 @@ function isIMessageInfo(text: IMessageInfo | Multiloc): text is IMessageInfo {
 interface Props {
   className?: string;
   links: ILink[];
+  postType: 'idea' | 'initiative';
 }
 
-const Breadcrumbs = memo(({ localize, intl, className, links }: Props & InjectedLocalized & InjectedIntlProps) => {
+const Breadcrumbs = memo(({ localize, intl, className, links, postType }: Props & InjectedLocalized & InjectedIntlProps) => {
 
   return (
     <Container className={className}>
@@ -88,7 +89,7 @@ const Breadcrumbs = memo(({ localize, intl, className, links }: Props & Injected
       </HomeLink>
       <Separator>/</Separator>
       {links.map(link => (
-        <StyledLink key={link.to} id="e2e-other-link" to={link.to}>
+        <StyledLink key={link.to} id={`e2e-${postType}-other-link`} to={link.to}>
           <LinkText>
             {isIMessageInfo(link.text) ? (
               <FormattedMessage {...link.text.message} values={link.text.values} />

@@ -19,7 +19,7 @@ describe('Idea Page', () => {
     });
 
     it('shows the link to the project page with correct href', () => {
-      cy.get('#e2e-project-link').should('have.attr', 'href').and('include', '/en-GB/projects/an-idea-bring-it-to-your-council');
+      cy.get('#e2e-idea-other-link').should('have.attr', 'href').and('include', '/en-GB/projects/an-idea-bring-it-to-your-council');
     });
 
     it('shows the idea Title', () => {
