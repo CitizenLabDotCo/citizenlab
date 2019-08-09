@@ -692,7 +692,7 @@
   "app.containers.AdminPage.ProjectEdit.ideasTab": "Ideas",
   "app.containers.AdminPage.ProjectEdit.ideation": "Recepción de ideas",
   "app.containers.AdminPage.ProjectEdit.ideationDescription": "Usuarios pueden publicar ideas, comentar sobre otras ideas o votar.",
-  "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget": "http://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget": "http://support.citizenlab.co/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkText": "this article",
   "app.containers.AdminPage.ProjectEdit.information": "Información",
   "app.containers.AdminPage.ProjectEdit.informationDescription": "Los usuarios sólo pueden leer la información que proporcionas, no participan activamente.",
