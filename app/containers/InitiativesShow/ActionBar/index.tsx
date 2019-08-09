@@ -40,6 +40,7 @@ const ActionBar = memo<Props>(({ onTranslateInitiative, translateButtonClicked, 
     <ActionBarLayout
       leftContent={
         <BreadCrumbs
+          postType="initiative"
           links={[{
             text: {
               message: messages.allInitiatives
