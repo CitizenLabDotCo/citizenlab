@@ -4,11 +4,11 @@
 
 ### Fixed
 
-- Fixed a but that sometimes prevented voting on comments
+- Fixed a bug that sometimes prevented voting on comments
 - When editing a comment, a mention in the comment no longer shows up as html
 - In the dashboard, the domicile value 'outside' is now properly translated
 - Some fixes were made to improve loading of the dashboard map with data edge cases
-- Deleting a phase now still works when users receiving notifications about the phase have deleted their account
+- Deleting a phase now still works when users that reveived notifications about the phase have deleted their account
 - New releases should no longer require a hard refresh, avoiding landing page crashing issues we had
 
 ### Added
