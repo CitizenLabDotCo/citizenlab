@@ -17,7 +17,7 @@ module Notifications
         User.admin.or(User.project_moderator(idea.project_id)).select do |recipient|
           recipient&.id != idea&.assignee_id
         end.map do |recipient|
-          self.create(
+          self.new(
            recipient_id: recipient.id,
            initiating_user: initiator,
            idea_id: idea.id,

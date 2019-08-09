@@ -9,9 +9,7 @@ RSpec.describe EmailCampaigns::Campaigns::InviteAccepted, type: :model do
 
   describe '#generate_command' do
   	let(:campaign) { create(:invite_accepted_campaign) }
-    let(:invite) { create(:accepted_invite) }
-    let(:invite_activity) { create(:activity, item: invite, action: 'accepted', user: invite.invitee) }
-    let(:notification) { Notifications::InviteAccepted.make_notifications_on(invite_activity)&.first }
+    let(:notification) { create(:invite_accepted, invite: create(:accepted_invite)) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
   	it "generates a command with the desired payload and tracked content" do
@@ -22,13 +20,13 @@ RSpec.describe EmailCampaigns::Campaigns::InviteAccepted, type: :model do
 
       expect(
       	command.dig(:event_payload, :recipient, :id)
-      	).to eq(invite.inviter.id)
+      	).to eq(notification.recipient_id)
       expect(
       	command.dig(:event_payload, :initiating_user, :id)
-      	).to eq(invite.invitee.id)
+      	).to eq(notification.initiating_user_id)
       expect(
       	command.dig(:event_payload, :invite, :id)
-      	).to eq(invite.id)
+      	).to eq(notification.invite.id)
   	end
   end
 end

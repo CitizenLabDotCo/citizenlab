@@ -15,7 +15,7 @@ module Notifications
       
       if initiator && !(initiator&.admin? || initiator.project_moderator?(comment.project.id))
         User.admin.or(User.project_moderator(comment.project.id)).map do |recipient|
-          self.create(
+          self.new(
            recipient_id: recipient.id,
            initiating_user: initiator,
            comment_id: comment.id,
