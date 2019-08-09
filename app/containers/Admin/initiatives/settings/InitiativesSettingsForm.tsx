@@ -67,13 +67,6 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
       <Form>
         <Section>
           <SectionField>
-            <FormLocaleSwitcher
-              onLocaleChange={this.onLocaleChange}
-              selectedLocale={selectedLocale}
-              values={multilocValues}
-            />
-          </SectionField>
-          <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldVotingThreshold} />
             </Label>
@@ -107,6 +100,13 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
             />}
           </SectionField>
 
+          <SectionField>
+            <FormLocaleSwitcher
+              onLocaleChange={this.onLocaleChange}
+              selectedLocale={selectedLocale}
+              values={multilocValues}
+            />
+          </SectionField>
           <SectionField>
             <Field
               component={FormikQuillMultiloc}

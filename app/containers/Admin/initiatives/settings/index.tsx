@@ -9,6 +9,7 @@ import { updateTenant } from 'services/tenant';
 
 import InitiativesSettingsForm, { FormValues } from './InitiativesSettingsForm';
 import { SectionTitle } from 'components/admin/Section';
+import Toggle from 'components/UI/Toggle';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -19,6 +20,10 @@ interface DataProps {
   tenant: GetTenantChildProps;
 }
 
+interface State {
+  initiativesEnabled: boolean;
+}
+
 interface IInitiativeSettingsFormValues {
   days_limit: number;
   eligibility_criteria: Multiloc;
@@ -26,7 +31,14 @@ interface IInitiativeSettingsFormValues {
   voting_threshold: number;
 }
 
-class InitiativesSettingsPage extends PureComponent<DataProps> {
+class InitiativesSettingsPage extends PureComponent<DataProps, State> {
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      initiativesEnabled: false
+    };
+  }
 
   initialValues = () => {
     const { tenant } = this.props;
@@ -86,12 +98,17 @@ class InitiativesSettingsPage extends PureComponent<DataProps> {
     )
   )
 
+  toggleInitiatives = () => {
+
+  }
+
   render() {
     const { tenant } = this.props;
 
     if (!isNilOrError(tenant)) {
       return (
         <>
+          <Toggle value={this.state.initiativesEnabled} onChange={this.toggleInitiatives} />
           <SectionTitle>
             <FormattedMessage {...messages.titleSettingsTab} />
           </SectionTitle>
