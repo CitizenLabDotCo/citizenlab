@@ -21,7 +21,7 @@ import { getJwt, decode } from 'utils/auth/jwt';
 import LabelWithTooltip from './LabelWithTooltip';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { convertUrlToUploadFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
 import CustomFieldsForm from 'components/CustomFieldsForm';
 import Input from 'components/UI/Input';

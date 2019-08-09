@@ -289,6 +289,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
       return idea;
     } catch (error) {
+      // TODO Better. If file or image fails, for now the form says "there's been an error tyr again"
+      // but the idea itself is posted. Might lead to duplicates.
       throw 'error';
     }
   }
