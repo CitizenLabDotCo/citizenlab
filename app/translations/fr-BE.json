@@ -692,6 +692,8 @@
   "app.containers.AdminPage.ProjectEdit.ideasTab": "Idées",
   "app.containers.AdminPage.ProjectEdit.ideation": "Idéation",
   "app.containers.AdminPage.ProjectEdit.ideationDescription": "Les utilisateurs peuvent publier une idée, commenter les idées publiées par les autres citoyens et/ou voter.",
+  "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget": "",
+  "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkText": "",
   "app.containers.AdminPage.ProjectEdit.information": "Information",
   "app.containers.AdminPage.ProjectEdit.informationDescription": "Les utilisateurs peuvent seulement lire les informations, ils ne peuvent pas participer \"activement\".",
   "app.containers.AdminPage.ProjectEdit.limited": "Limité",

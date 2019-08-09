@@ -692,6 +692,8 @@
   "app.containers.AdminPage.ProjectEdit.ideasTab": "Ideas",
   "app.containers.AdminPage.ProjectEdit.ideation": "Recepción de ideas",
   "app.containers.AdminPage.ProjectEdit.ideationDescription": "Usuarios pueden publicar ideas, comentar sobre otras ideas o votar.",
+  "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget": "",
+  "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkText": "",
   "app.containers.AdminPage.ProjectEdit.information": "Información",
   "app.containers.AdminPage.ProjectEdit.informationDescription": "Los usuarios sólo pueden leer la información que proporcionas, no participan activamente.",
   "app.containers.AdminPage.ProjectEdit.limited": "Limitada",
