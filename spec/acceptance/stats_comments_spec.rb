@@ -58,11 +58,12 @@ resource "Stats - Comments" do
         header 'Authorization', "Bearer #{token}"
         initiative = create(:initiative)
         create(:comment, post: initiative)
+        create(:comment, post: create(:idea, project: create(:private_admins_project)))
       end
       example_request "Count all comments (as a moderator)", document: false do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq Comment.published.count
+        expect(json_response[:count]).to eq Comment.published.count - 1
       end
     end
 
