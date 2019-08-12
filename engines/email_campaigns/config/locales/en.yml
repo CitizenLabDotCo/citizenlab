@@ -71,7 +71,9 @@ en:
       "idea_published": When my idea gets published
       "new_comment_for_admin": When a new comment was written in a project I can moderate
       "new_comment_on_commented_idea": When a new comment has been placed on an idea the user commented on
+      "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
       "new_comment_on_voted_idea": When a new comment has been placed on an idea the user voted for
+      "new_comment_on_voted_initiative": When a new comment has been placed on an initiative I voted for
       "new_idea_for_admin": When an idea is published in a project I can moderate
       "new_initiative_for_admin": When an initiative is published
       "official_feedback_on_commented_idea": When a new official feedback has been placed on an idea I commented on

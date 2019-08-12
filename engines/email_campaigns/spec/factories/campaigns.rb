@@ -85,7 +85,15 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :new_comment_on_commented_initiative_campaign, class: EmailCampaigns::Campaigns::NewCommentOnCommentedInitiative do
+    enabled { true }
+  end
+
   factory :new_comment_on_voted_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnVotedIdea do
+    enabled { true }
+  end
+
+  factory :new_comment_on_voted_initiative_campaign, class: EmailCampaigns::Campaigns::NewCommentOnVotedInitiative do
     enabled { true }
   end
 
@@ -93,7 +101,15 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :new_initiative_for_admin_campaign, class: EmailCampaigns::Campaigns::NewInitiativeForAdmin do
+    enabled { true }
+  end
+
   factory :official_feedback_on_commented_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedIdea do
+    enabled { true }
+  end
+
+  factory :official_feedback_on_commented_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedInitiative do
     enabled { true }
   end
 
@@ -101,7 +117,15 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :official_feedback_on_voted_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnVotedInitiative do
+    enabled { true }
+  end
+
   factory :official_feedback_on_your_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnYourIdea do
+    enabled { true }
+  end
+
+  factory :official_feedback_on_your_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnYourInitiative do
     enabled { true }
   end
 
