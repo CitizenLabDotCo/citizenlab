@@ -10,6 +10,7 @@ de:
       "comment_marked_as_spam": Wenn ein Kommentar als Spam markiert ist
       "idea_assigned_to_you": Wenn mir eine Idee zugeteilt wurde
       "idea_marked_as_spam": Wenn eine Idee als Spam markiert ist
+      "initiative_assigned_to_you": When an initiative has been assigned to me
       "initiative_marked_as_spam": When an initiative is marked as spam
       "invite_received": Wenn mich jemand auf die Plattform einlädt
       "invite_reminder": Wenn jemand mich auf die Seite eingeladen hat (Erinnerung nach 3 Tagen)
@@ -26,11 +27,17 @@ de:
       "idea_published": Wenn meine Idee veröffentlicht wird
       "new_comment_for_admin": Wenn ein neuer Kommentar in einem Projekt, das ich moderieren kann, geschrieben wurde
       "new_comment_on_commented_idea": Wenn ein neuer Kommentar zu einer Idee abgegeben wurde, die ich kommentiert habe
+      "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
       "new_comment_on_voted_idea": Wenn ein neuer Kommentar zu einer Idee abgegeben wurde, für die ich gestimmt habe
+      "new_comment_on_voted_initiative": When a new comment has been placed on an initiative I voted for
       "new_idea_for_admin": Wenn eine Idee in einem Projekt, das ich moderieren kann, veröffentlicht wird
+      "new_initiative_for_admin": When an initiative is published
       "official_feedback_on_commented_idea": Wenn ein neues offizielles Feedback zu einer Idee abgegeben wurde, die ich kommentiert habe
+      "official_feedback_on_commented_initiative": When a new official feedback has been placed on an initiative I commented on
       "official_feedback_on_voted_idea": Wenn ein neues offizielles Feedback zu einer Idee abgegeben wurde, für die ich gestimmt habe
+      "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
       "official_feedback_on_your_idea": Wenn ein neues offizielles Feedback zu meiner Idee abgegeben wurde
+      "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
       "status_change_of_commented_idea": Wenn der Status einer Idee, die ich kommentiert habe, geändert wurde
       "status_change_of_voted_idea": Wenn der Status einer Idee, für die ich gestimmt habe, geändert wurde
       "admin_digest": Eine wöchentliche Übersicht über die Aktivität auf der Plattform (nur für Administratoren)
@@ -47,6 +54,7 @@ de:
       "comment_marked_as_spam": Wenn ein Benutzer einen Kommentar als Spam markiert (für Administratoren und Moderatoren)
       "idea_assigned_to_you": Wenn mir eine Idee zugeteilt wurde
       "idea_marked_as_spam": Wenn ein Benutzer eine Idee als Spam markiert (für Administratoren und Moderatoren)
+      "initiative_assigned_to_you": When an initiative has been assigned to me
       "initiative_marked_as_spam": When an initiative is marked as spam
       "invite_received": Wenn ein Benutzer auf die Plattform eingeladen wird
       "invite_reminder": Wenn jemand mich auf die Seite eingeladen hat (Erinnerung nach 3 Tagen)
@@ -63,11 +71,17 @@ de:
       "idea_published": Wenn meine Idee veröffentlicht wird
       "new_comment_for_admin": Wenn ein neuer Kommentar in einem Projekt, das ich moderieren kann, geschrieben wurde
       "new_comment_on_commented_idea": Wenn ein neuer Kommentar zu einer Idee abgegeben wurde, die der Benutzer kommentiert hat
+      "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
       "new_comment_on_voted_idea": Wenn ein neuer Kommentar zu einer Idee abgegeben wurde, für die der Benutzer gestimmt hat
+      "new_comment_on_voted_initiative": When a new comment has been placed on an initiative I voted for
       "new_idea_for_admin": Wenn eine Idee in einem Projekt, das ich moderieren kann, veröffentlicht wird
+      "new_initiative_for_admin": When an initiative is published
       "official_feedback_on_commented_idea": Wenn ein neues offizielles Feedback zu einer Idee abgegeben wurde, die ich kommentiert habe
+      "official_feedback_on_commented_initiative": When a new official feedback has been placed on an initiative I commented on
       "official_feedback_on_voted_idea": Wenn ein neues offizielles Feedback zu einer Idee abgegeben wurde, für die ich gestimmt habe
+      "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
       "official_feedback_on_your_idea": Wenn ein neues offizielles Feedback zu meiner Idee abgegeben wurde
+      "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
       "status_change_of_commented_idea": Wenn der Status einer Idee, zu der der Benutzer einen Kommentar abgegeben hat, geändert wurde
       "status_change_of_voted_idea": Wenn der Status einer Idee, für die der Benutzer gestimmt hat, geändert wurde
       "admin_digest": Eine wöchentliche Übersicht über die Aktivität auf der Plattform (nur für Administratoren)

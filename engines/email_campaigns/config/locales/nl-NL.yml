@@ -10,6 +10,7 @@ nl:
       "comment_marked_as_spam": Een reactie is aangeduid als spam (voor beheerders en moderatoren)
       "idea_assigned_to_you": Wanneer een idee aan mij wordt toegewezen
       "idea_marked_as_spam": Een idee is aangeduid als spam (voor beheerders en moderatoren)
+      "initiative_assigned_to_you": When an initiative has been assigned to me
       "initiative_marked_as_spam": When an initiative is marked as spam
       "invite_received": Iemand mij uitnodigt op het platform
       "invite_reminder": Wanneer iemand me uitnodigde naar het platform (herinnering na 3 dagen)
@@ -26,11 +27,17 @@ nl:
       "idea_published": Mijn idee wordt gepubliceerd
       "new_comment_for_admin": Bij een nieuwe reactie in een project dat ik modereer
       "new_comment_on_commented_idea": Iemand reageert op een idee waar ik ook op reageerde
+      "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
       "new_comment_on_voted_idea": Iemand reageerde op een idee waarvoor ik heb gestemd
+      "new_comment_on_voted_initiative": When a new comment has been placed on an initiative I voted for
       "new_idea_for_admin": Bij een nieuw idee in een project dat ik modereer
+      "new_initiative_for_admin": When an initiative is published
       "official_feedback_on_commented_idea": Er werd een officiële update geplaatst bij een idee waar ik op reageerde
+      "official_feedback_on_commented_initiative": When a new official feedback has been placed on an initiative I commented on
       "official_feedback_on_voted_idea": Er werd een officiële update geplaatst bij een idee waar ik op stemde
+      "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
       "official_feedback_on_your_idea": Er werd een officiële update geplaatst bij mijn idee
+      "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
       "status_change_of_commented_idea": De status van een idee waarop ik reageerde, verandert
       "status_change_of_voted_idea": De status van een idee waarop ik heb gestemd, verandert
       "admin_digest": Een weekoverzicht (voor beheerders)
@@ -47,6 +54,7 @@ nl:
       "comment_marked_as_spam": Wanneer een gebruiker een reactie aanduidt als spam (voor beheerders en moderatoren)
       "idea_assigned_to_you": Wanneer een idee aan mij wordt toegewezen
       "idea_marked_as_spam": Wanneer een gebruiker een idee aanduidt als spam (voor beheerders en moderatoren)
+      "initiative_assigned_to_you": When an initiative has been assigned to me
       "initiative_marked_as_spam": When an initiative is marked as spam
       "invite_received": Wanneer een gebruiker uitgenodigd wordt op het platform
       "invite_reminder": Wanneer iemand me uitnodigde naar het platform (herinnering na 3 dagen)
@@ -63,11 +71,17 @@ nl:
       "idea_published": Wanneer mijn idee gepubliceerd wordt
       "new_comment_for_admin": Bij een nieuwe reactie in een project dat ik modereer
       "new_comment_on_commented_idea": Wanneer een nieuwe reactie wordt geplaatst op een idee waar de gebruiker ook op reageerde
+      "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
       "new_comment_on_voted_idea": Wanneer een nieuwe reactie wordt geplaatst op een idee waar de gebruiker op stemde
+      "new_comment_on_voted_initiative": When a new comment has been placed on an initiative I voted for
       "new_idea_for_admin": Bij een nieuw idee in een project dat ik modereer
+      "new_initiative_for_admin": When an initiative is published
       "official_feedback_on_commented_idea": Er werd een officiële update geplaatst bij een idee waar ik op reageerde
+      "official_feedback_on_commented_initiative": When a new official feedback has been placed on an initiative I commented on
       "official_feedback_on_voted_idea": Er werd een officiële update geplaatst bij een idee waar ik op stemde
+      "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
       "official_feedback_on_your_idea": Er werd een officiële update geplaatst bij mijn idee
+      "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
       "status_change_of_commented_idea": Wanneer de status van een idee waarop de gebruiker heeft gereageerd, verandert
       "status_change_of_voted_idea": Wanneer de status van een idee waarop de gebruiker heeft gestemd, verandert
       "admin_digest": Een weekoverzicht (voor beheerders)

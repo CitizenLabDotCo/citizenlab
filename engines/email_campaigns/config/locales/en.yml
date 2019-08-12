@@ -10,6 +10,7 @@ en:
       "comment_marked_as_spam": When a comment is marked as spam
       "idea_assigned_to_you": When an idea has been assigned to me
       "idea_marked_as_spam": When an idea is marked as spam
+      "initiative_assigned_to_you": When an initiative has been assigned to me
       "initiative_marked_as_spam": When an initiative is marked as spam
       "invite_received": When someone invites me to the platform
       "invite_reminder": When someone invited me to the platform (reminder after 3 days)
@@ -26,11 +27,17 @@ en:
       "idea_published": When my idea gets published
       "new_comment_for_admin": When a new comment was written in a project I can moderate
       "new_comment_on_commented_idea": When a new comment has been placed on an idea I commented on
+      "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
       "new_comment_on_voted_idea": When a new comment has been placed on an idea I voted for
+      "new_comment_on_voted_initiative": When a new comment has been placed on an initiative I voted for
       "new_idea_for_admin": When an idea is published in a project I can moderate
+      "new_initiative_for_admin": When an initiative is published
       "official_feedback_on_commented_idea": When a new official feedback has been placed on an idea I commented on
+      "official_feedback_on_commented_initiative": When a new official feedback has been placed on an initiative I commented on
       "official_feedback_on_voted_idea": When a new official feedback has been placed on an idea I voted for
+      "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
       "official_feedback_on_your_idea": When a new official feedback has been placed on my idea
+      "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
       "status_change_of_commented_idea": When the status of an idea I commented on has been changed
       "status_change_of_voted_idea": When the status of an idea I voted for has been changed
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
@@ -47,6 +54,7 @@ en:
       "comment_marked_as_spam": When a user marks a comment as spam (for administrators and moderators)
       "idea_assigned_to_you": When an idea has been assigned to me
       "idea_marked_as_spam": When a user marks an idea as spam (for administrators and moderators)
+      "initiative_assigned_to_you": When an initiative has been assigned to me
       "initiative_marked_as_spam": When an initiative is marked as spam
       "invite_received": When a user gets invited to the platform
       "invite_reminder": When someone invited me to the platform (reminder after 3 days)
@@ -65,9 +73,13 @@ en:
       "new_comment_on_commented_idea": When a new comment has been placed on an idea the user commented on
       "new_comment_on_voted_idea": When a new comment has been placed on an idea the user voted for
       "new_idea_for_admin": When an idea is published in a project I can moderate
+      "new_initiative_for_admin": When an initiative is published
       "official_feedback_on_commented_idea": When a new official feedback has been placed on an idea I commented on
+      "official_feedback_on_commented_initiative": When a new official feedback has been placed on an initiative I commented on
       "official_feedback_on_voted_idea": When a new official feedback has been placed on an idea I voted for
+      "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
       "official_feedback_on_your_idea": When a new official feedback has been placed on my idea
+      "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
       "status_change_of_commented_idea": When the status of an idea the user commented on has been changed
       "status_change_of_voted_idea": When the status of an idea the user voted for has been changed
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
