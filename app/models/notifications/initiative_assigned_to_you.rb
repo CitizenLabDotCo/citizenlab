@@ -1,5 +1,5 @@
 module Notifications
-  class IdeaAssignedToYou < Notification
+  class InitiativeAssignedToYou < Notification
     
     belongs_to :initiating_user, class_name: 'User', optional: true
     belongs_to :initiative

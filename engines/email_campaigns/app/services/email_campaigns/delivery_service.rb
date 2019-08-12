@@ -13,6 +13,7 @@ module EmailCampaigns
       Campaigns::FirstIdeaPublished,
       Campaigns::IdeaAssignedToYou,
       Campaigns::IdeaMarkedAsSpam,
+      Campaigns::InitiativeAssignedToYou,
       Campaigns::InitiativeMarkedAsSpam,
       Campaigns::IdeaPublished,
       Campaigns::InviteAccepted,

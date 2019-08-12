@@ -10,6 +10,7 @@ es:
       "comment_marked_as_spam": Cuando un comentario se ha marcado como spam
       "idea_assigned_to_you": Cuando se me ha asignado una idea
       "idea_marked_as_spam": Cuando una idea es marcada como spam
+      "initiative_assigned_to_you": When an initiative has been assigned to me
       "initiative_marked_as_spam": When an initiative is marked as spam
       "invite_received": Cuando alguien me invita a la plataforma
       "invite_reminder": Cuando alguien me invitó a la plataforma (recordatorio después de 3 días)
@@ -26,11 +27,17 @@ es:
       "idea_published": Cuando mi idea se publique
       "new_comment_for_admin": Cuando un nuevo comentario fue escrito en un proyecto que modero
       "new_comment_on_commented_idea": Cuando se ha escrito un nuevo comentario sobre una idea que he comentado
+      "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
       "new_comment_on_voted_idea": Cuando se ha escrito un nuevo comentario sobre una idea por la cual he votado
+      "new_comment_on_voted_initiative": When a new comment has been placed on an initiative I voted for
       "new_idea_for_admin": Cuando una idea se publica en un proyecto que puedo moderar
+      "new_initiative_for_admin": When an initiative is published
       "official_feedback_on_commented_idea": Cuando se ha publicado nueva información oficial sobre una idea que he comentado
+      "official_feedback_on_commented_initiative": When a new official feedback has been placed on an initiative I commented on
       "official_feedback_on_voted_idea": Cuando nueva información oficial ha sido publicada en una idea por la que he votado
+      "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
       "official_feedback_on_your_idea": Cuando nueva información oficial ha sido publicada en mi idea
+      "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
       "status_change_of_commented_idea": Cuando ha cambiado el estatus de una idea que he comentado
       "status_change_of_voted_idea": Cuando ha cambiado el estatus de una idea por la que he votado
       "admin_digest": Resumen semanal de las actividad en la plataforma (sólo para administradores)
@@ -47,6 +54,7 @@ es:
       "comment_marked_as_spam": Cuando un usuario marca un comentario como spam (para los administradores y moderadores)
       "idea_assigned_to_you": Cuando se me ha asignado una idea
       "idea_marked_as_spam": Cuando un usuario marca una idea como spam (para los administradores y moderadores)
+      "initiative_assigned_to_you": When an initiative has been assigned to me
       "initiative_marked_as_spam": When an initiative is marked as spam
       "invite_received": Cuando un usuario es invitado a la plataforma
       "invite_reminder": Cuando alguien me invitó a la plataforma (recordatorio después de 3 días)
@@ -63,11 +71,17 @@ es:
       "idea_published": Cuando mi idea sea publicada
       "new_comment_for_admin": Cuando un nuevo comentario fue escrito en un proyecto que puedo moderar 
       "new_comment_on_commented_idea": Cuando se ha escrito un nuevo comentario en una idea que el usuario ha comentado
+      "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
       "new_comment_on_voted_idea": Cuando se ha escrito un nuevo comentario en una idea por la cual el usuario ha votado a favor
+      "new_comment_on_voted_initiative": When a new comment has been placed on an initiative I voted for
       "new_idea_for_admin": Cuando una idea se publica en un proyecto el cual puedo moderar
+      "new_initiative_for_admin": When an initiative is published
       "official_feedback_on_commented_idea": Cuando nueva retroalimentación oficial se ha publicado sobre una idea que he comentado
+      "official_feedback_on_commented_initiative": When a new official feedback has been placed on an initiative I commented on
       "official_feedback_on_voted_idea": Cuando nueva retroalimentación oficial se ha publicado en una idea por la que he votado
+      "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
       "official_feedback_on_your_idea": Cuando nueva reacción oficial ha sido publicada en mi idea
+      "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
       "status_change_of_commented_idea": Cuando cambia de estatus una idea comentada por el usuario
       "status_change_of_voted_idea": Cuando cambia de estatus una idea votada por el usuario
       "admin_digest": Resumen semanal de las actividad en la plataforma (sólo para administradores)
