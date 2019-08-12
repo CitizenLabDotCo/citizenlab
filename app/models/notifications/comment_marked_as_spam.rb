@@ -16,11 +16,13 @@ module Notifications
       spam_report = activity.item
       initiating_user = User.find(spam_report&.user_id)
       if spam_report.spam_reportable_type == 'Comment'
+        project_id = nil
         post_attributes = case spam_report.spam_reportable.post_type
         when 'Idea'
+          project_id = spam_report.spam_reportable.post&.project_id
           {
             idea: spam_report.spam_reportable.post,
-            project_id: spam_report.spam_reportable.post&.project_id
+            project_id: project_id
           }
         when 'Initiative'
           {
