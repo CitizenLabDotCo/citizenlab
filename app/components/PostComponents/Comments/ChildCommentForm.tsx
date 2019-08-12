@@ -2,7 +2,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { trim, isEmpty, capitalize } from 'lodash-es';
+import { trim, isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
