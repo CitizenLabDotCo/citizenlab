@@ -102,16 +102,34 @@ FactoryBot.define do
     idea
   end
 
+  factory :official_feedback_on_commented_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnCommentedInitiative' do
+    initiating_user
+    official_feedback
+    initiative
+  end
+
   factory :official_feedback_on_voted_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnVotedIdea' do
     initiating_user
     official_feedback
     idea
   end
 
+  factory :official_feedback_on_voted_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnVotedInitiative' do
+    initiating_user
+    official_feedback
+    initiative
+  end
+
   factory :official_feedback_on_your_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnYourIdea' do
     initiating_user
     official_feedback
     idea
+  end
+
+  factory :official_feedback_on_your_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnYourInitiative' do
+    initiating_user
+    official_feedback
+    initiative
   end
 
   factory :project_moderation_rights_received, parent: :notification, class: 'Notifications::ProjectModerationRightsReceived' do
