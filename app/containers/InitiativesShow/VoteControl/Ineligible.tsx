@@ -64,6 +64,7 @@ interface InputProps {
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
   userVoted: boolean;
+  onScrollToOfficialFeedback: () => void;
 }
 interface DataProps {}
 
@@ -72,6 +73,11 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class Ineligible extends PureComponent<Props, State> {
+
+  handleOnReadAnswer = () => {
+    this.props.onScrollToOfficialFeedback();
+  }
+
   render() {
     const { initiative, initiativeSettings: { eligibility_criteria, voting_threshold }, initiativeStatus } = this.props;
 
@@ -123,7 +129,7 @@ class Ineligible extends PureComponent<Props, State> {
             bgColor={colors.lightGreyishBlue}
           />
         </VoteCounter>
-        <StyledButton>
+        <StyledButton onClick={this.handleOnReadAnswer}>
           <FormattedMessage {...messages.readAnswer} />
         </StyledButton>
       </Container>
