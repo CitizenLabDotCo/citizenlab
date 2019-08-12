@@ -37,9 +37,8 @@ module Notifications
         [self.new(
            recipient_id: recipient_id,
            initiating_user: User.find(initiator_id),
-           idea_id: idea_id,
            comment_id: child_comment_id,
-           project_id: project_id
+           **post_attributes
          )]
       else
         []
