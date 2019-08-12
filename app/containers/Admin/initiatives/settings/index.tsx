@@ -2,19 +2,20 @@ import React, { PureComponent } from 'react';
 import { get, keys, isEqual, pick } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { Formik } from 'formik';
-
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import { Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
+
+// services
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { updateTenant } from 'services/tenant';
 
+// components
 import InitiativesSettingsForm, { FormValues } from './InitiativesSettingsForm';
 import { SectionTitle } from 'components/admin/Section';
-import Toggle from 'components/UI/Toggle';
 
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-
-import { Multiloc } from 'typings';
 
 interface DataProps {
   tenant: GetTenantChildProps;
@@ -29,6 +30,7 @@ interface IInitiativeSettingsFormValues {
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
   voting_threshold: number;
+  enabled: boolean;
 }
 
 class InitiativesSettingsPage extends PureComponent<DataProps, State> {
@@ -44,15 +46,14 @@ class InitiativesSettingsPage extends PureComponent<DataProps, State> {
     const { tenant } = this.props;
     const initiativesSettings = !isNilOrError(tenant) ? tenant.attributes.settings.initiatives : null;
 
-    // TODO don't omit enabled (i3)
-
     if (initiativesSettings) {
-      const { days_limit, eligibility_criteria, threshold_reached_message, voting_threshold } = initiativesSettings;
+      const { days_limit, eligibility_criteria, threshold_reached_message, voting_threshold, enabled } = initiativesSettings;
       const initialFormValues: IInitiativeSettingsFormValues = {
         days_limit,
         eligibility_criteria,
         threshold_reached_message,
-        voting_threshold
+        voting_threshold,
+        enabled
       };
 
       return initialFormValues;
@@ -60,6 +61,7 @@ class InitiativesSettingsPage extends PureComponent<DataProps, State> {
 
     return null;
   }
+
   changedValues = (initialValues, newValues) => {
     const changedKeys = keys(newValues).filter((key) => (
       !isEqual(initialValues[key], newValues[key])
@@ -108,7 +110,6 @@ class InitiativesSettingsPage extends PureComponent<DataProps, State> {
     if (!isNilOrError(tenant)) {
       return (
         <>
-          <Toggle value={this.state.initiativesEnabled} onChange={this.toggleInitiatives} />
           <SectionTitle>
             <FormattedMessage {...messages.titleSettingsTab} />
           </SectionTitle>
