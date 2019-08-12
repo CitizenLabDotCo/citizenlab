@@ -69,7 +69,11 @@ class Initiative < ApplicationRecord
   end
 
   def expires_at tenant=Tenant.current
-    published_at + tenant.settings.dig('initiatives', 'days_limit').days
+    if published?
+      published_at + tenant.settings.dig('initiatives', 'days_limit').days
+    else
+      nil
+    end
   end
 
 
