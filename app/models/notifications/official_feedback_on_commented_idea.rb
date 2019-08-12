@@ -22,7 +22,7 @@ module Notifications
       if official_feedback.post_type == 'Idea' && initiator_id
         User.active
           .joins(:comments).merge(Comment.published)
-          .where(comments: {post: idea})
+          .where(comments: {post: official_feedback.post})
           .distinct
           .ids
           .select{|recipient_id| recipient_id != initiator_id && recipient_id != official_feedback.post.author_id}
