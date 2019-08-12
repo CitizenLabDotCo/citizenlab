@@ -22,7 +22,7 @@ export interface IIdeaData {
     comments_count: number;
     baskets_count: number;
     location_point_geojson: GeoJSON.Point;
-    location_description: string;
+    location_description: string | null;
     budget: number | null;
     created_at: string;
     updated_at: string;

@@ -27,33 +27,38 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
     </Button>
   </Top>
   <Content>
-    <IdeaContent__StyledIdeaTitle
-      ideaId="myIdeasiD"
-      ideaTitle="Doloribus quam molestiae ut."
+    <IdeaContent__StyledTitle
+      id="myIdeasiD"
+      postType="idea"
+      title="Doloribus quam molestiae ut."
     />
     <IdeaContent__Row>
       <IdeaContent__Left>
         <IdeaAuthor
           authorId="8ea3a61c-e1bd-4756-a54d-c092553abccd"
-          ideaCreatedAt="2019-03-12T00: 00: 00.000Z"
           ideaId="myIdeasiD"
+          ideaPublishedAt="2019-03-19T00: 00: 00.000Z"
         />
-        <IdeaContent__StyledIdeaBody
-          ideaBody="<p>Ea ea aut. Quasi corrupti iste. Delectus eum voluptates.</p><p>Est harum voluptates. Et fugit enim. Suscipit inventore ullam.</p><p>Eos mollitia omnis. Laudantium porro perferendis. Minus in aut.</p>"
-          ideaId="myIdeasiD"
+        <IdeaContent__StyledBody
+          body="<p>Ea ea aut. Quasi corrupti iste. Delectus eum voluptates.</p><p>Est harum voluptates. Et fugit enim. Suscipit inventore ullam.</p><p>Eos mollitia omnis. Laudantium porro perferendis. Minus in aut.</p>"
+          id="myIdeasiD"
+          postType="idea"
         />
         <IdeaContent__StyledOfficialFeedback
-          ideaId="myIdeasiD"
+          permissionToPost={true}
+          postId="myIdeasiD"
+          postType="idea"
         />
         <IdeaContent__StyledComments
-          ideaId="myIdeasiD"
+          postId="myIdeasiD"
+          postType="idea"
         />
       </IdeaContent__Left>
       <IdeaContent__Right>
         <VotePreview
           ideaId="myIdeasiD"
         />
-        <IdeaSettings
+        <FeedbackSettings
           ideaId="myIdeasiD"
         />
       </IdeaContent__Right>

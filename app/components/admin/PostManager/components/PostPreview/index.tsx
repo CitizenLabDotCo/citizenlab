@@ -4,11 +4,9 @@ import IdeaEdit from './Idea/IdeaEdit';
 import IdeaContent from './Idea/IdeaContent';
 import InitiativeContent from './Initiative/InitiativeContent';
 import InitiativeEdit from './Initiative/InitiativeEdit';
-
+import { ManagerType } from 'components/admin/PostManager';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { ManagerType } from '../..';
-
 interface DataProps {}
 
 interface InputProps {
