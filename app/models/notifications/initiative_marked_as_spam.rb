@@ -1,5 +1,5 @@
 module Notifications
-  class IdeaMarkedAsSpam < MarkedAsSpam
+  class InitiativeMarkedAsSpam < MarkedAsSpam
     
     belongs_to :initiative
     belongs_to :project, optional: true
