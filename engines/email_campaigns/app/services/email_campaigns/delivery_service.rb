@@ -27,6 +27,7 @@ module EmailCampaigns
       Campaigns::NewCommentOnCommentedIdea,
       Campaigns::NewCommentOnVotedIdea,
       Campaigns::NewIdeaForAdmin,
+      Campaigns::NewInitiativeForAdmin,
       Campaigns::OfficialFeedbackOnCommentedIdea,
       Campaigns::OfficialFeedbackOnVotedIdea,
       Campaigns::OfficialFeedbackOnYourIdea,
