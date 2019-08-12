@@ -489,7 +489,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 }
 
                 <FeatureFlag name="ideas_overview">
-                  <NavigationItem to="/ideas" activeClassName="active">
+                  <NavigationItem
+                    to="/ideas"
+                    activeClassName="active"
+                    className={secondUrlSegment === 'ideas' ? 'active' : ''}
+                  >
                     <NavigationItemText>
                       <FormattedMessage {...messages.pageIdeas} />
                     </NavigationItemText>
@@ -497,7 +501,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 </FeatureFlag>
 
                 <FeatureFlag name="initiatives">
-                  <NavigationItem to="/initiatives" activeClassName="active">
+                  <NavigationItem
+                    to="/initiatives"
+                    activeClassName="active"
+                    className={secondUrlSegment === 'initiatives' ? 'active' : ''}
+                  >
                     <NavigationItemText>
                       <FormattedMessage {...messages.pageInitiatives} />
                     </NavigationItemText>
