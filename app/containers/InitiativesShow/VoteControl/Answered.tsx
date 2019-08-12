@@ -47,6 +47,7 @@ interface InputProps {
   initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
   userVoted: boolean;
   onVote: () => void;
+  onScrollToOfficialFeedback: () => void;
 }
 interface DataProps { }
 
@@ -58,6 +59,10 @@ class Answered extends PureComponent<Props, State> {
 
   handleOnVote = () => {
     this.props.onVote();
+  }
+
+  handleOnReadAnswer = () => {
+    this.props.onScrollToOfficialFeedback();
   }
 
   render() {
@@ -94,7 +99,7 @@ class Answered extends PureComponent<Props, State> {
           />
         </VoteText>
         <Buttons>
-          <Button>
+          <Button onClick={this.handleOnReadAnswer}>
             <FormattedMessage {...messages.readAnswer} />
           </Button>
           {!userVoted &&
