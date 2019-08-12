@@ -56,6 +56,8 @@ resource "Stats - Comments" do
       before do
         token = Knock::AuthToken.new(payload: { sub: create(:moderator).id }).token
         header 'Authorization', "Bearer #{token}"
+        initiative = create(:initiative)
+        create(:comment, post: initiative)
       end
       example_request "Count all comments (as a moderator)", document: false do
         expect(response_status).to eq 200
