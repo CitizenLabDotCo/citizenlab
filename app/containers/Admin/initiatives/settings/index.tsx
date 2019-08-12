@@ -21,10 +21,6 @@ interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface State {
-  initiativesEnabled: boolean;
-}
-
 interface IInitiativeSettingsFormValues {
   days_limit: number;
   eligibility_criteria: Multiloc;
@@ -33,21 +29,19 @@ interface IInitiativeSettingsFormValues {
   enabled: boolean;
 }
 
-class InitiativesSettingsPage extends PureComponent<DataProps, State> {
-
-  constructor (props) {
-    super(props);
-    this.state = {
-      initiativesEnabled: false
-    };
-  }
-
+class InitiativesSettingsPage extends PureComponent<DataProps> {
   initialValues = () => {
     const { tenant } = this.props;
     const initiativesSettings = !isNilOrError(tenant) ? tenant.attributes.settings.initiatives : null;
 
     if (initiativesSettings) {
-      const { days_limit, eligibility_criteria, threshold_reached_message, voting_threshold, enabled } = initiativesSettings;
+      const {
+        days_limit,
+        eligibility_criteria,
+        threshold_reached_message,
+        voting_threshold,
+        enabled
+      } = initiativesSettings;
       const initialFormValues: IInitiativeSettingsFormValues = {
         days_limit,
         eligibility_criteria,
@@ -99,10 +93,6 @@ class InitiativesSettingsPage extends PureComponent<DataProps, State> {
       <InitiativesSettingsForm {...props} />
     )
   )
-
-  toggleInitiatives = () => {
-
-  }
 
   render() {
     const { tenant } = this.props;
