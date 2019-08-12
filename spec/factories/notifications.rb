@@ -40,7 +40,7 @@ FactoryBot.define do
     initiating_user
   end
 
-  factory :initiaitve_assigned_to_you, parent: :notification, class: 'Notifications::InitiaitveAssignedToYou' do
+  factory :initiative_assigned_to_you, parent: :notification, class: 'Notifications::InitiaitveAssignedToYou' do
     initiating_user
     initiaitve
   end
