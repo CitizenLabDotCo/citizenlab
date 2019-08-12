@@ -1,15 +1,17 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-jest.mock('components/UI/SideModal', () => 'SideModal');
-jest.mock('./IdeaContent', () => 'IdeaContent');
-jest.mock('./IdeaEdit', () => 'IdeaEdit');
+jest.mock('./Idea/IdeaEdit', () => 'IdeaEdit');
+jest.mock('./Idea/IdeaContent', () => 'IdeaContent');
+jest.mock('./Initiative/InitiativeContent', () => 'InitiativeContent');
+jest.mock('./Initiative/InitiativeEdit', () => 'InitiativeEdit');
 
 import PostPreview from './';
 
 describe('<PostPreview />', () => {
   let closePreview: jest.Mock;
   let onSwitchPreviewMode: jest.Mock;
+
   beforeEach(() => {
     closePreview = jest.fn();
     onSwitchPreviewMode = jest.fn();

@@ -42,16 +42,19 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
       locationInfo: undefined
     };
   }
+
   redirectToSignUpPage = () => {
     clHistory.push('/sign-up');
   }
+
   componentDidMount() {
     const { location, authUser } = this.props;
 
     if (authUser === null) {
       this.redirectToSignUpPage();
     }
-    if (location.query.position) {
+
+    if (location && location.query && location.query.position) {
       const coordinates = JSON.parse(location.query.position);
       const lat = coordinates[0];
       const lng = coordinates[1];
@@ -72,11 +75,13 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
       this.setState({ locationInfo: null });
     }
   }
+
   componentDidUpdate(prevProps: Props) {
     if (prevProps.authUser !== this.props.authUser && this.props.authUser === null) {
       this.redirectToSignUpPage();
     }
   }
+
   render() {
     const { authUser, locale } = this.props;
     const { locationInfo } = this.state;
