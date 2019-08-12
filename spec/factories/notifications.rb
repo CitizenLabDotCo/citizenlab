@@ -40,9 +40,9 @@ FactoryBot.define do
     initiating_user
   end
 
-  factory :initiative_assigned_to_you, parent: :notification, class: 'Notifications::InitiaitveAssignedToYou' do
+  factory :initiative_assigned_to_you, parent: :notification, class: 'Notifications::InitiativeAssignedToYou' do
     initiating_user
-    initiaitve
+    initiative
   end
 
   factory :initiative_marked_as_spam, parent: :notification, class: 'Notifications::InitiativeMarkedAsSpam' do
@@ -89,6 +89,11 @@ FactoryBot.define do
   factory :new_idea_for_admin, parent: :notification, class: 'Notifications::NewIdeaForAdmin' do
     initiating_user
     idea
+  end
+
+  factory :new_initiative_for_admin, parent: :notification, class: 'Notifications::NewInitiativeForAdmin' do
+    initiating_user
+    initiative
   end
 
   factory :official_feedback_on_commented_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnCommentedIdea' do
