@@ -1,7 +1,7 @@
 {
   "//": [
     "** Use this section to describe why certain dependencies are used and versioned as they are **",
-    ""
+    "react-dropzone: Currently locked to 5.x since there are significant API changes to following major versions, which requires some refactoring"
   ],
   "name": "cl2-front",
   "version": "1.0.0",
