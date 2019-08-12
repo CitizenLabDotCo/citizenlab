@@ -7,8 +7,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikInput from 'components/UI/FormikInput';
-// TODO add enabled toggle (i3)
-// import FormikToggle from 'components/UI/FormikToggle';
+import FormikToggle from 'components/UI/FormikToggle';
 import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors, FormikProps } from 'formik';
@@ -66,6 +65,15 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
     return (
       <Form>
         <Section>
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.fieldEnable} />
+            </Label>
+            <Field
+              name="enabled"
+              component={FormikToggle}
+            />
+          </SectionField>
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldVotingThreshold} />
