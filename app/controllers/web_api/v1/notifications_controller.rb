@@ -16,6 +16,7 @@ class WebApi::V1::NotificationsController < ApplicationController
     ::Notifications::MentionInComment                => WebApi::V1::Notifications::MentionInCommentSerializer,
     ::Notifications::NewCommentForAdmin              => WebApi::V1::Notifications::NewCommentForAdminSerializer,
     ::Notifications::NewIdeaForAdmin                 => WebApi::V1::Notifications::NewIdeaForAdminSerializer,
+    ::Notifications::NewInitiativeForAdmin           => WebApi::V1::Notifications::NewInitiativeForAdminSerializer,
     ::Notifications::OfficialFeedbackOnCommentedIdea => WebApi::V1::Notifications::OfficialFeedbackOnCommentedIdeaSerializer,
     ::Notifications::OfficialFeedbackOnVotedIdea     => WebApi::V1::Notifications::OfficialFeedbackOnVotedIdeaSerializer,
     ::Notifications::OfficialFeedbackOnYourIdea      => WebApi::V1::Notifications::OfficialFeedbackOnYourIdeaSerializer,
