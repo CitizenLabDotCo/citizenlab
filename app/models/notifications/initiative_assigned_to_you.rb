@@ -2,17 +2,17 @@ module Notifications
   class IdeaAssignedToYou < Notification
     
     belongs_to :initiating_user, class_name: 'User', optional: true
-    belongs_to :idea
+    belongs_to :initiative
 
-    validates :idea, presence: true
+    validates :initiative, presence: true
 
-    ACTIVITY_TRIGGERS = {'Idea' => {'changed_assignee' => true}}
-    EVENT_NAME = 'Idea assigned to you'
+    ACTIVITY_TRIGGERS = {'Initiative' => {'changed_assignee' => true}}
+    EVENT_NAME = 'Initiative assigned to you'
 
 
     def self.make_notifications_on activity
-      idea = activity.item
-      recipient_id = idea.assignee_id
+      initiative = activity.item
+      recipient_id = initiative.assignee_id
       initiator_id = activity.user_id
 
       # We only notify manual assignments, meaning there needs to be an
@@ -21,8 +21,7 @@ module Notifications
         [
           self.new(
            recipient_id: recipient_id,
-           idea_id: idea.id,
-           project_id: idea.project_id,
+           initiative_id: initiative.id,
            initiating_user_id: initiator_id
          )
         ]

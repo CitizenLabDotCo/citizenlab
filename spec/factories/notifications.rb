@@ -40,6 +40,11 @@ FactoryBot.define do
     initiating_user
   end
 
+  factory :initiaitve_assigned_to_you, parent: :notification, class: 'Notifications::InitiaitveAssignedToYou' do
+    initiating_user
+    initiaitve
+  end
+
   factory :initiative_marked_as_spam, parent: :notification, class: 'Notifications::InitiativeMarkedAsSpam' do
     initiative
     spam_report
