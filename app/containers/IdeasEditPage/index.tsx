@@ -96,7 +96,7 @@ interface State {
   descriptionMultiloc: Multiloc | null;
   selectedTopics: string[];
   budget: number | null;
-  address: string;
+  address: string | null;
   imageFile: UploadFile[];
   imageId: string | null;
   submitError: boolean;
@@ -117,7 +117,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
       descriptionMultiloc: null,
       selectedTopics: [],
       budget: null,
-      address: '',
+      address: null,
       imageFile: [],
       imageId: null,
       submitError: false,
@@ -286,7 +286,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
               description={description}
               selectedTopics={selectedTopics}
               budget={budget}
-              address={address}
+              address={address || ''}
               imageFile={imageFile}
               onSubmit={this.handleIdeaFormOutput}
               remoteIdeaFiles={!isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null}
