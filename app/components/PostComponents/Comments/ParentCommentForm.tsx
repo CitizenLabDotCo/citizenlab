@@ -230,6 +230,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
                   placeholder={placeholder}
                   rows={5}
                   postId={postId}
+                  postType={postType}
                   value={inputValue}
                   error={errorMessage}
                   onChange={this.onChange}

@@ -104,7 +104,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
   }
 
   render() {
-    const { initiative, initiativeSettings: { voting_threshold, eligibility_criteria }, theme } = this.props;
+    const { initiative, initiativeSettings: { voting_threshold, threshold_reached_message }, theme } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
     const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
@@ -143,11 +143,11 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
               }}
             />
           </OnMobile>
-          {eligibility_criteria &&
+          {threshold_reached_message &&
             <StyledTooltip
               content={
                 <TooltipWrapper>
-                  <T value={eligibility_criteria} supportHtml />
+                  <T value={threshold_reached_message} supportHtml />
                 </TooltipWrapper>
               }
               top="20"
