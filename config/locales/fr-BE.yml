@@ -105,6 +105,12 @@ fr-BE:
     initiatives_title: Initiatives
     initiatives_body: >
       <p>Explications à propos des initiatives</p>
+    initiatives_success_1_title: ""
+    initiatives_success_1_body: ""
+    initiatives_success_2_title: ""
+    initiatives_success_2_body: ""
+    initiatives_success_3_title: ""
+    initiatives_success_3_body: ""
   projects:
     open_idea_project_title: Une idée? Apportez-la à votre conseil communal!
     open_idea_project_description_preview: Vous avez une idée qui ne correspond pas à l'un des projets existants? Ensuite, affichez-la ici, obtenez du soutien et inscrivez-la à l'ordre du jour politique!

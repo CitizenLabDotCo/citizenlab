@@ -245,17 +245,17 @@ if ['public','example_org'].include? Apartment::Tenant.current
         ),
         success_stories: [
           {
-            "page_slug": "success_story_1",
+            "page_slug": "initiatives-success-1",
             "location": Faker::Address.city,
             "image_url": "https://www.quebecoriginal.com/en/listing/images/800x600/7fd3e9f7-aec9-4966-9751-bc0a1ab56127/parc-des-deux-rivieres-parc-des-deux-rivieres-en-ete.jpg",
           },
           {
-            "page_slug": "success_story_2",
+            "page_slug": "initiatives-success-2",
             "location": Faker::Address.city,
             "image_url": "https://www.washingtonpost.com/resizer/I9IJifRLgy3uHVKcwZlvdjUBirc=/1484x0/arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/ZQIB4NHDUMI6RKZMWMO42U6KNM.jpg",
           },
           {
-            "page_slug": "success_story_3",
+            "page_slug": "initiatives-success-3",
             "location": Faker::Address.city,
             "image_url": "http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg",
           }
