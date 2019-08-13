@@ -38,6 +38,7 @@ resource "Stats - Comments" do
     header "Content-Type", "application/json"
     @timezone = Tenant.settings('core','timezone')
     Tenant.current.update!(created_at: now - 3.month)
+    create_list(:comment, 2)
     create(:comment, publication_status: 'deleted')
   end
 
@@ -49,6 +50,31 @@ resource "Stats - Comments" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:count]).to eq Comment.published.count
+    end
+
+    describe do
+      before do
+        token = Knock::AuthToken.new(payload: { sub: create(:moderator).id }).token
+        header 'Authorization', "Bearer #{token}"
+        initiative = create(:initiative)
+        create(:comment, post: initiative)
+        create(:comment, post: create(:idea, project: create(:private_admins_project)))
+      end
+      example_request "Count all comments (as a moderator)", document: false do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:count]).to eq Comment.published.count - 1
+      end
+    end
+
+    describe do
+      before do
+        token = Knock::AuthToken.new(payload: { sub: create(:user).id }).token
+        header 'Authorization', "Bearer #{token}"
+      end
+      example_request "[error] Count all comments (as a user)", document: false do
+        expect(response_status).to eq 401
+      end
     end
   end
 
