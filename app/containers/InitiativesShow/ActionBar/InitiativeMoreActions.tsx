@@ -28,7 +28,10 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div``;
 
-const MoreActionsMenuWrapper = styled.div``;
+const MoreActionsMenuWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 interface InputProps {
   initiative: IInitiativeData;
