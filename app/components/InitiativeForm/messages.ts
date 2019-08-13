@@ -38,7 +38,7 @@ export default defineMessages({
   // Form Messages
   formGeneralSectionTitle: {
     id: 'app.components.InitiativeForm.formGeneralSectionTitle',
-    defaultMessage: 'What is your initiative ?',
+    defaultMessage: 'What is your initiative?',
   },
   titleEmptyError: {
     id: 'app.components.InitiativeForm.titleEmptyError',
@@ -58,7 +58,7 @@ export default defineMessages({
   },
   descriptionLabel: {
     id: 'app.components.InitiativeForm.descriptionLabel',
-    defaultMessage: 'What is your initiative about ?',
+    defaultMessage: 'What is your initiative about?',
   },
   descriptionLabelSubtext: {
     id: 'app.components.InitiativeForm.descriptionLabelSubtext',
@@ -102,7 +102,7 @@ export default defineMessages({
   },
   locationLabelSubtext: {
     id: 'app.components.InitiativeForm.locationLabelSubtext',
-    defaultMessage: 'Where is your initiative located ?',
+    defaultMessage: 'Where is your initiative located?',
   },
   locationPlaceholder: {
     id: 'app.components.InitiativeForm.locationPlaceholder',
