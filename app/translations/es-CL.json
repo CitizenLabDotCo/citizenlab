@@ -1720,8 +1720,6 @@
   "app.containers.landing.createAccount": "Crea una cuenta",
   "app.containers.landing.defaultSignedInMessage": "{firstName}, impulsa un cambio hoy!",
   "app.containers.landing.doItLater": "Lo voy a hacer más tarde",
-  "app.containers.landing.emailSharingBody": "Vota por {ideaTitle} en {ideaUrl}",
-  "app.containers.landing.emailSharingSubject": "Vota por mi idea: {ideaTitle}",
   "app.containers.landing.explore": "Explora",
   "app.containers.landing.exploreAllIdeas": "Todas las ideas",
   "app.containers.landing.exploreAllProjects": "Todos los proyectos",

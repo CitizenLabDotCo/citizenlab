@@ -1720,8 +1720,6 @@
   "app.containers.landing.createAccount": "Créer un compte",
   "app.containers.landing.defaultSignedInMessage": "{orgName} vous écoute. Faites entendre votre voix !",
   "app.containers.landing.doItLater": "Je le ferai plus tard",
-  "app.containers.landing.emailSharingBody": "Votez pour {ideaTitle} sur {ideaUrl}",
-  "app.containers.landing.emailSharingSubject": "Votez pour {ideaTitle}",
   "app.containers.landing.explore": "Explorer",
   "app.containers.landing.exploreAllIdeas": "Toutes les idées",
   "app.containers.landing.exploreAllProjects": "{tenantName, select, frw {Toutes les communes} other {Tous les projets}}",

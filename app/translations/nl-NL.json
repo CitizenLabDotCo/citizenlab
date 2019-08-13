@@ -1720,8 +1720,6 @@
   "app.containers.landing.createAccount": "Maak een account aan",
   "app.containers.landing.defaultSignedInMessage": "{orgName} luistert naar je. Laat je stem horen!",
   "app.containers.landing.doItLater": "Ik doe het later",
-  "app.containers.landing.emailSharingBody": "Stem voor {ideaTitle} op {ideaUrl}",
-  "app.containers.landing.emailSharingSubject": "Stem voor mijn idee: {ideaTitle}",
   "app.containers.landing.explore": "Verkennen",
   "app.containers.landing.exploreAllIdeas": "Alle ideeën",
   "app.containers.landing.exploreAllProjects": "Alle projecten",
