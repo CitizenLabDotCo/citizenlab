@@ -174,10 +174,6 @@ export default defineMessages({
     id: 'app.components.IdeasShow.ideaPostedBy',
     defaultMessage: 'Idea posted by {userName}',
   },
-  linkToHomePage: {
-    id: 'app.components.IdeasShow.linkToHomePage',
-    defaultMessage: 'Link to home page'
-  },
   createdTimeAgo: {
     id: 'app.components.IdeasShow.createdTimeAgo',
     defaultMessage: 'Created {timeAgo}'
