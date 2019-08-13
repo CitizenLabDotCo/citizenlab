@@ -601,7 +601,7 @@
         "type": "object",
         "description":  "Initiatives are citizen-originating proposals that need to reach a number of votes in a limited time for the organization to take action",
         "additionalProperties": false,
-        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
+        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria","success_stories"],
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -636,6 +636,23 @@
           },
           "success_stories": {
             "type": "array",
+            "default": [
+              {
+                "page_slug": "initiatives-success-1",
+                "location": "Willebroek (BE)",
+                "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1565686136/e061565a-6107-44ae-accf-aec43e3d3c1b_babr9c.jpg"
+              },
+              {
+                "page_slug": "initiatives-success-2",
+                "location": "Schaerbeek (BE)",
+                "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg"
+              },
+              {
+                "page_slug": "initiatives-success-3",
+                "location": "Sint-Jans-Molenbeek (BE)",
+                "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1565687109/IMG_0687_bw61ky.jpg"
+              }
+            ],
             "items": {
               "type": "object",
               "additionalProperties": false,

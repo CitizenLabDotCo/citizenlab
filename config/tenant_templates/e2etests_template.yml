@@ -123,6 +123,18 @@ models:
     title_multiloc: pages.initiatives_title
     body_multiloc: pages.initiatives_body
     slug: initiatives
+  -
+    title_multiloc: pages.initiatives_success_1_title
+    body_multiloc: pages.initiatives_success_1_body
+    slug: initiatives-success-1
+  -
+    title_multiloc: pages.initiatives_success_2_title
+    body_multiloc: pages.initiatives_success_2_body
+    slug: initiatives-success-2
+  -
+    title_multiloc: pages.initiatives_success_3_title
+    body_multiloc: pages.initiatives_success_3_body
+    slug: initiatives-success-3
   page_link:
   - linking_page_ref: *1
     linked_page_ref: *2
