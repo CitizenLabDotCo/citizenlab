@@ -1720,8 +1720,6 @@
   "app.containers.landing.createAccount": "Opprett en konto",
   "app.containers.landing.defaultSignedInMessage": "{firstName}, inspirer forandring i dag!",
   "app.containers.landing.doItLater": "Jeg vil gjøre det senere",
-  "app.containers.landing.emailSharingBody": "Stem på {ideaTitle} på {ideaUrl}",
-  "app.containers.landing.emailSharingSubject": "Stem på ideen min: {ideaTitle}",
   "app.containers.landing.explore": "Utforsk",
   "app.containers.landing.exploreAllIdeas": "Alle ideer",
   "app.containers.landing.exploreAllProjects": "Alle prosjekter",
