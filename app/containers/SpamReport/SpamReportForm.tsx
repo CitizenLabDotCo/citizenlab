@@ -74,7 +74,6 @@ interface Props extends CRUDParams {
   onReasonChange: {(value: Report['reason_code']): void};
   onTextChange: {(value: string): void};
   onSubmit: {(event): void};
-  itemType: 'ideas' | 'comments' | 'initiatives';
 }
 
 interface State {}
@@ -86,7 +85,6 @@ class SpamReportForm extends React.PureComponent<Props & InjectedIntlProps, Stat
   }
 
   render () {
-    const { itemType } = this.props;
     const { formatMessage } = this.props.intl;
     const submitStatus = getSubmitState({ errors: this.props.errors, saved: this.props.saved, diff: this.props.diff });
 
@@ -98,7 +96,7 @@ class SpamReportForm extends React.PureComponent<Props & InjectedIntlProps, Stat
               onChange={this.props.onReasonChange}
               currentValue={this.props.diff ? this.props.diff.reason_code : ''}
               name="reasonCode"
-              label={formatMessage(messages[reasonCode], { itemType })}
+              label={formatMessage(messages[reasonCode])}
               value={reasonCode}
               id={`reason-${reasonCode}`}
               key={reasonCode}
