@@ -54,7 +54,7 @@ export default defineMessages({
   },
   titleLabelSubtext: {
     id: 'app.components.InitiativeForm.titleLabelSubtext',
-    defaultMessage: 'Choose a clear and attractive title (min. 10 characters)',
+    defaultMessage: 'Choose a descriptive, yet concise title (min. 10 characters)',
   },
   descriptionLabel: {
     id: 'app.components.InitiativeForm.descriptionLabel',
@@ -62,7 +62,7 @@ export default defineMessages({
   },
   descriptionLabelSubtext: {
     id: 'app.components.InitiativeForm.descriptionLabelSubtext',
-    defaultMessage: 'Give others a good understanding of your initiative (min. 500 characters)',
+    defaultMessage: 'Describe your initiative clearly (min. 500 characters)',
   },
   descriptionEmptyError: {
     id: 'app.components.InitiativeForm.descriptionEmptyError',
@@ -82,11 +82,11 @@ export default defineMessages({
   },
   topicsLabel: {
     id: 'app.components.InitiativeForm.topicsLabel',
-    defaultMessage: 'Select the topic of your iniative',
+    defaultMessage: 'Select the topic of your initiative',
   },
   topicsLabelSubtext: {
     id: 'app.components.InitiativeForm.topicsLabelSubtext',
-    defaultMessage: 'You can select up to 2 topics',
+    defaultMessage: 'You can select up to two topics',
   },
   projectsLabel: {
     id: 'app.components.InitiativeForm.projectsLabel',
