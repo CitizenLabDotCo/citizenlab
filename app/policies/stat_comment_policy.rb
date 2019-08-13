@@ -11,9 +11,12 @@ class StatCommentPolicy < ApplicationPolicy
     def resolve
       if user&.active? && user.admin?
         scope.all
-      else user&.active? && user.project_moderator?
-        projects = ProjectPolicy::Scope.new(user, Project.all).moderatable
-        scope.joins(:idea).where(ideas: {project_id: projects})
+      elsif user&.active? && user.project_moderator?
+        projects = ProjectPolicy::Scope.new(user, Project.all).resolve
+        scope.joins('FULL OUTER JOIN ideas ON ideas.id = comments.post_id').where(ideas: {project_id: projects})
+          .or(scope.joins('FULL OUTER JOIN ideas ON ideas.id = comments.post_id').where(post_type: 'Initiative'))
+      else
+        scope.none
       end
     end
   end
