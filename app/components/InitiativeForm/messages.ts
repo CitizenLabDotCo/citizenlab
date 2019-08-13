@@ -54,7 +54,7 @@ export default defineMessages({
   },
   titleLabelSubtext: {
     id: 'app.components.InitiativeForm.titleLabelSubtext',
-    defaultMessage: 'Choose a title that describes your initiative in a clear and attractive way',
+    defaultMessage: 'Choose a clear and attractive title (min. 10 characters)',
   },
   descriptionLabel: {
     id: 'app.components.InitiativeForm.descriptionLabel',
