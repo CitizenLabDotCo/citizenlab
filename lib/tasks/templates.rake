@@ -22,7 +22,7 @@ namespace :templates do
       host.ends_with? ENV.fetch('TEMPLATE_URL_SUFFIX','.localhost') # '.template.citizenlab.co'
     end
 
-    s3 = Aws::S3::Resource.new
+    s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
     template_hosts.each do |host|
       template = TenantTemplateService.new.tenant_to_template(Tenant.find_by(host: host))
       template_name = "#{host.split('.').first}_template.yml"
@@ -35,7 +35,7 @@ namespace :templates do
   end
 
   task :release, [] => [:environment] do |t, args|
-    s3 = Aws::S3::Resource.new
+    s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
     bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
     bucket.objects(prefix: 'test').each do |template|
       template_name = "#{template.key}"

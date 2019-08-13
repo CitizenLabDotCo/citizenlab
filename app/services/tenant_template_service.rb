@@ -232,7 +232,7 @@ class TenantTemplateService
   private
 
   def available_external_templates external_subfolder: 'release'
-    s3 = Aws::S3::Resource.new
+    s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
     bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
     bucket.objects(prefix: external_subfolder).map(&:key).map do |template_name|
       template_name.slice! "#{external_subfolder}/"
@@ -247,7 +247,7 @@ class TenantTemplateService
       if File.exists? internal_path
         YAML.load open(internal_path).read
       else
-        s3 = Aws::S3::Resource.new
+        s3 = Aws::S3::Resource.new client:  Aws::S3::Client.new(region: 'eu-central-1')
         bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
         object = bucket.object("#{external_subfolder}/#{template_name}.yml")
         YAML.load object.get.body.read
