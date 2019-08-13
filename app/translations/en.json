@@ -1720,8 +1720,6 @@
   "app.containers.landing.createAccount": "Create an account",
   "app.containers.landing.defaultSignedInMessage": "{orgName} is listening to you. It’s your turn to make your voice heard!",
   "app.containers.landing.doItLater": "I'll do it later",
-  "app.containers.landing.emailSharingBody": "What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!",
-  "app.containers.landing.emailSharingSubject": "Vote for my idea: {ideaTitle}",
   "app.containers.landing.explore": "Explore",
   "app.containers.landing.exploreAllIdeas": "All ideas",
   "app.containers.landing.exploreAllProjects": "All projects",
