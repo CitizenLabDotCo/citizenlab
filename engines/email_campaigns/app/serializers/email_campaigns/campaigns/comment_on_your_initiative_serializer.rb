@@ -1,5 +1,5 @@
 module EmailCampaigns::Campaigns
-  class CommentOnYourIdeaSerializer < NotificationSerializer
+  class CommentOnYourInitiativeSerializer < NotificationSerializer
 	  belongs_to :initiating_user, serializer: CustomUserSerializer
 	  belongs_to :comment, serializer: CustomCommentSerializer
 	  belongs_to :comment_author, serializer: CustomUserSerializer
