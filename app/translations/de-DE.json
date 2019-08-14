@@ -654,6 +654,7 @@
   "app.containers.Admin.initiatives.fieldDaysLimit": "Tage zum Erreichen des Schwellenwerts",
   "app.containers.Admin.initiatives.fieldEligibilityCriteria": "Die Kriterien für eine Initiative",
   "app.containers.Admin.initiatives.fieldEligibilityCriteriaInfo": "Dies wird Benutzern angezeigt, die eine Initiative posten. Diese Kriterien definieren, wann eine Initiative zulässig sein kann, oder wann nicht",
+  "app.containers.Admin.initiatives.fieldEnable": "",
   "app.containers.Admin.initiatives.fieldThresholdReachedMessage": "What can people expect when their initiatives reach the threshold in time?",
   "app.containers.Admin.initiatives.fieldThresholdReachedMessageInfo": "This will be visible to all and shown with every initiative",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Voting threshold",

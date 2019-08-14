@@ -654,6 +654,7 @@
   "app.containers.Admin.initiatives.fieldDaysLimit": "Dage til at nå grænsen",
   "app.containers.Admin.initiatives.fieldEligibilityCriteria": "Kriterierne for et initiativ",
   "app.containers.Admin.initiatives.fieldEligibilityCriteriaInfo": "Dette vil blive vist til brugere, der poster et initiativ. Disse kriterier definerer hvornår et initiativ er kvalificeret eller ej",
+  "app.containers.Admin.initiatives.fieldEnable": "",
   "app.containers.Admin.initiatives.fieldThresholdReachedMessage": "What can people expect when their initiatives reach the threshold in time?",
   "app.containers.Admin.initiatives.fieldThresholdReachedMessageInfo": "This will be visible to all and shown with every initiative",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Voting threshold",
