@@ -38,7 +38,7 @@ export default defineMessages({
   // Form Messages
   formGeneralSectionTitle: {
     id: 'app.components.InitiativeForm.formGeneralSectionTitle',
-    defaultMessage: 'What is your initiative ?',
+    defaultMessage: 'What is your initiative?',
   },
   titleEmptyError: {
     id: 'app.components.InitiativeForm.titleEmptyError',
@@ -54,15 +54,15 @@ export default defineMessages({
   },
   titleLabelSubtext: {
     id: 'app.components.InitiativeForm.titleLabelSubtext',
-    defaultMessage: 'Choose a title that describes your initiative in a clear and attractive way',
+    defaultMessage: 'Choose a descriptive, yet concise title (min. 10 characters)',
   },
   descriptionLabel: {
     id: 'app.components.InitiativeForm.descriptionLabel',
-    defaultMessage: 'What is your initiative about ?',
+    defaultMessage: 'What is your initiative about?',
   },
   descriptionLabelSubtext: {
     id: 'app.components.InitiativeForm.descriptionLabelSubtext',
-    defaultMessage: 'Give others a good understanding of your initiative (min. 500 characters)',
+    defaultMessage: 'Describe your initiative clearly (min. 500 characters)',
   },
   descriptionEmptyError: {
     id: 'app.components.InitiativeForm.descriptionEmptyError',
@@ -82,11 +82,11 @@ export default defineMessages({
   },
   topicsLabel: {
     id: 'app.components.InitiativeForm.topicsLabel',
-    defaultMessage: 'Select the topic of your iniative',
+    defaultMessage: 'Select the topic of your initiative',
   },
   topicsLabelSubtext: {
     id: 'app.components.InitiativeForm.topicsLabelSubtext',
-    defaultMessage: 'You can select up to 2 topics',
+    defaultMessage: 'You can select up to two topics',
   },
   projectsLabel: {
     id: 'app.components.InitiativeForm.projectsLabel',
@@ -102,7 +102,7 @@ export default defineMessages({
   },
   locationLabelSubtext: {
     id: 'app.components.InitiativeForm.locationLabelSubtext',
-    defaultMessage: 'Where is your initiative located ?',
+    defaultMessage: 'Where is your initiative located?',
   },
   locationPlaceholder: {
     id: 'app.components.InitiativeForm.locationPlaceholder',

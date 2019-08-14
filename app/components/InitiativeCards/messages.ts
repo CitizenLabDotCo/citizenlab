@@ -63,7 +63,7 @@ export default defineMessages({
   },
   noInitiativesForFilter: {
     id: 'app.ccomponents.InitiativeCards.noInitiativesForFilter',
-    defaultMessage: 'No ideas found',
+    defaultMessage: 'No initiatives found',
   },
   tryOtherFilter: {
     id: 'app.components.InitiativeCards.tryOtherFilter',

@@ -177,7 +177,6 @@ const InitiativeIcon = styled(Icon)`
 `;
 
 const EmptyMessage = styled.div`
-  max-width: 400px;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
