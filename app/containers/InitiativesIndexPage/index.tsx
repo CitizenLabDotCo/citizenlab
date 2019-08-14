@@ -62,6 +62,13 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
+const Padding = styled.div`
+  width: 100%;
+  height: 100px;
+`;
+
+const StyledInitiativeCards = styled(InitiativeCards)``;
+
 const trackInitiative = () => {
   trackEventByName(tracks.clickStartInitiativesCTA, { extra: { location: 'initiatives footer' } });
 };
@@ -72,7 +79,8 @@ export default withTheme(memo(({ theme }: any) => (
     <InitiativesHeader />
     <StyledContentContainer maxWidth="100%">
       <SuccessStories />
-      <InitiativeCards />
+      <Padding />
+      <StyledInitiativeCards />
     </StyledContentContainer>
     <FooterBanner>
       <FooterMessage>
