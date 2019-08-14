@@ -210,7 +210,7 @@
     "typescript": "3.5.3",
     "typescript-styled-plugin": "0.14.0",
     "url-loader": "2.1.0",
-    "webpack": "4.39.1",
+    "webpack": "4.39.2",
     "webpack-bundle-analyzer": "3.4.1",
     "webpack-cli": "3.3.6",
     "webpack-dashboard": "3.0.7",
