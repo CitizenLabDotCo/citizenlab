@@ -26,7 +26,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import T from 'components/T';
 
-const illustrationSrc: string = require('assets/img/initiativesHeaderImage.png');
+const illustrationSrc: string = require('./initiativesHeaderImage.png');
 
 const Container = styled.div`
   width: 100%;
