@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetUserStats, { GetUserStatsChildProps } from 'resources/GetUserStats';
 
 // styles
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, media, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 import { rgba } from 'polished';
 
@@ -32,21 +32,28 @@ const UserNavbarWrapper = styled.nav`
   height: 54px;
 
   ${media.smallerThanMaxTablet`
-    top: 0;
+    top: 0px;
   `}
+`;
+
+const Border = styled.div`
+  height: 3px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  background: transparent;
 `;
 
 const UserNavbarButton = styled.ul`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
-  padding: 0 30px;
+  padding: 0 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 100ms ease;
-  border-top: 3px solid transparent;
-  border-bottom: 3px solid transparent;
   white-space: nowrap;
   height: 100%;
   position: relative;
@@ -56,12 +63,16 @@ const UserNavbarButton = styled.ul`
   &:focus,
   &:hover {
     color: ${({ theme }) => theme.colorText};
-    border-top-color: ${({ theme }) => rgba(theme.colorMain, 0.3)};
+
+    ${Border} {
+      background: ${({ theme }) => rgba(theme.colorMain, 0.3)};
+    }
   }
 
   &.active {
-    border-top-color: ${({ theme }) => theme.colorMain};
-    border-bottom-color: ${({ theme }) => rgba(theme.colorMain, 0.05)};
+    ${Border} {
+      background: ${({ theme }) => theme.colorMain};
+    }
 
     &:before {
       content: "";
@@ -76,14 +87,16 @@ const UserNavbarButton = styled.ul`
       pointer-events: none;
     }
   }
+
   ${media.smallerThanMinTablet`
     flex: 1;
   `}
 `;
 
 const TabIcon = styled(Icon)`
-  height: 20px;
-  margin-right: 8px;
+  color: ${colors.label};
+  height: 22px;
+  margin-right: 10px;
 `;
 
 interface InputProps {
@@ -107,7 +120,8 @@ const UserNavbar = memo<Props>(props => {
         onClick={selectTab('ideas')}
         className={currentTab === 'ideas' ? 'active' : ''}
       >
-        <TabIcon name="lightBulb" />
+        <Border />
+        <TabIcon name="idea2" />
         {!isNilOrError(ideasCount) &&
           <FormattedMessage {...messages.ideasWithCount} values={{ ideasCount }} />
         }
@@ -116,7 +130,8 @@ const UserNavbar = memo<Props>(props => {
         onClick={selectTab('comments')}
         className={`e2e-comment-section-nav ${currentTab === 'comments' ? 'active' : ''}`}
       >
-        <TabIcon name="bubbles" />
+        <Border />
+        <TabIcon name="comments" />
         {!isNilOrError(commentsCount) &&
           <FormattedMessage {...messages.commentsWithCount} values={{ commentsCount }} />
         }

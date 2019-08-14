@@ -50,7 +50,9 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
-interface InputProps {}
+interface InputProps {
+  className?: string;
+}
 
 interface DataProps {
   user: GetUserChildProps;
@@ -81,14 +83,14 @@ export class UsersShowPage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, className } = this.props;
     const { currentTab } = this.state;
 
     if (!isNilOrError(user)) {
       return (
         <>
           <UsersShowPageMeta user={user} />
-          <Container id="e2e-usersshowpage" className={this.props['className']}>
+          <Container id="e2e-usersshowpage" className={className}>
             <UserHeader userSlug={user.attributes.slug}/>
 
             <UserNavbar
