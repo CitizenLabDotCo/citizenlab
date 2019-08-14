@@ -196,7 +196,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
   placeholder = this.props.intl.formatMessage(messages.commentBodyPlaceholder);
 
   render() {
-    const { authUser, post, postId, className } = this.props;
+    const { authUser, post, postId, postType, className } = this.props;
     const { inputValue, focused, processing, errorMessage } = this.state;
     const commentingEnabled =  get(post, 'attributes.action_descriptor.commenting.enabled', true);
     const projectId: string | null = get(post, 'relationships.project.data.id', null);
@@ -231,6 +231,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
                   placeholder={this.placeholder}
                   rows={5}
                   postId={postId}
+                  postType={postType}
                   value={inputValue}
                   error={errorMessage}
                   onChange={this.onChange}

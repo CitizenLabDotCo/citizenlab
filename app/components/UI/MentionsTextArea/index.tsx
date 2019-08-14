@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isString, isEmpty } from 'lodash-es';
+import { isString, isEmpty, capitalize } from 'lodash-es';
 import { first } from 'rxjs/operators';
 
 // libraries
@@ -197,7 +197,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
 
       if (postId && postType) {
         queryParameters['post_id'] = postId;
-        queryParameters['post_type'] = postType;
+        queryParameters['post_type'] = capitalize(postType);
       }
 
       const response = await mentionsStream({ queryParameters }).observable.pipe(first()).toPromise();

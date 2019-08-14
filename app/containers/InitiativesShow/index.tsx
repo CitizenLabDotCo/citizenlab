@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, createRef } from 'react';
 import { get, isUndefined } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
@@ -317,6 +317,7 @@ interface State {
 
 export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
   initialState: State;
+  officialFeedbackElement = createRef<HTMLDivElement>();
 
   constructor(props) {
     super(props);
@@ -372,6 +373,16 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         translateButtonClicked: !prevState.translateButtonClicked
       });
     });
+  }
+
+  onScrollToOfficialFeedback = () => {
+    if (this.officialFeedbackElement.current) {
+      this.officialFeedbackElement.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center'
+      });
+    }
   }
 
   render() {
@@ -472,7 +483,10 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           </OnlyOnDesktop>
 
           <NotOnDesktop>
-            <StyledVoteControl initiativeId={initiativeId} />
+            <StyledVoteControl
+              initiativeId={initiativeId}
+              onScrollToOfficialFeedback={this.onScrollToOfficialFeedback}
+            />
           </NotOnDesktop>
 
           <InitiativeContainer>
@@ -535,11 +549,13 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   <FileAttachments files={initiativeFiles} />
                 }
 
-                <StyledOfficialFeedback
-                  postId={initiativeId}
-                  postType="initiative"
-                  permissionToPost={postOfficialFeedbackPermission}
-                />
+                <div ref={this.officialFeedbackElement}>
+                  <StyledOfficialFeedback
+                    postId={initiativeId}
+                    postType="initiative"
+                    permissionToPost={postOfficialFeedbackPermission}
+                  />
+                </div>
 
                 <ContentFooter
                   postType="initiative"
@@ -563,7 +579,10 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
                   <MetaContent>
-                    <VoteControl initiativeId={initiative.id} />
+                    <VoteControl
+                      initiativeId={initiative.id}
+                      onScrollToOfficialFeedback={this.onScrollToOfficialFeedback}
+                    />
                     <SharingWrapper>
                       <Sharing
                         context="initiative"
