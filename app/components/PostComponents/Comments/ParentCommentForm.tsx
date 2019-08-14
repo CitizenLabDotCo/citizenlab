@@ -201,7 +201,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     const commentButtonDisabled = (!inputValue || inputValue === '');
     const isModerator = !isNilOrError(authUser) && canModerate(projectId, { data: authUser });
     const canComment = (authUser && commentingEnabled && !isModerator);
-    const placeholder = formatMessage(messages.commentBodyPlaceholder, { postType: formatMessage(messages[postType]) });
+    const placeholder = formatMessage(messages[`${postType}CommentBodyPlaceholder`]);
 
     return (
       <Container className={className}>
