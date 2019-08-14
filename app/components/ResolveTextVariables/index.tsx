@@ -32,11 +32,16 @@ class ResolveTextVariables extends PureComponent<Props> {
       };
 
       const initiatives = tenant.attributes.settings.initiatives;
-      if (initiatives && initiatives.eligibility_criteria) {
-          textVariables.initiativesEligibilityCriteria = localize(initiatives.eligibility_criteria);
+      if (initiatives) {
+        if (initiatives.eligibility_criteria) {
+            textVariables.initiativesEligibilityCriteria = localize(initiatives.eligibility_criteria);
+          }
+        if (initiatives.threshold_reached_message) {
+          textVariables.initiativesThresholdReachedMessage = localize(initiatives.threshold_reached_message);
         }
-      if (initiatives && initiatives.threshold_reached_message) {
-        textVariables.initiativesthresholdReachedMessage = localize(initiatives.threshold_reached_message);
+
+        textVariables.initiativesVotingThreshold = initiatives.voting_threshold.toString();
+        textVariables.initiativesDaysLimit = initiatives.days_limit.toString();
       }
 
       return textVariables;
@@ -51,7 +56,10 @@ class ResolveTextVariables extends PureComponent<Props> {
     return mapValues(this.props.value, (text) => (
       reduce(
         variables,
-        (input, replacement, pattern) => (input || '').replace(`$|${pattern}|`, replacement || ''),
+        (input, replacement, pattern) => {
+          const re = new RegExp(`\\$\\|${pattern}\\|`, 'g');
+          return (input || '').replace(re, replacement || '');
+        },
         text
       )
     ));

@@ -215,7 +215,7 @@ export default defineMessages({
   },
   noInitiativesHere: {
     id: 'app.components.admin.PostManager.noInitiativesHere',
-    defaultMessage: 'No initiative match the current filters',
+    defaultMessage: 'No initiatives match the current filters',
   },
   resetFiltersDescription: {
     id: 'app.components.admin.PostManager.resetFiltersDescription',

@@ -193,16 +193,15 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     }
   }
 
-  placeholder = this.props.intl.formatMessage(messages.commentBodyPlaceholder);
-
   render() {
-    const { authUser, post, postId, className } = this.props;
+    const { authUser, post, postId, postType, className, intl: { formatMessage } } = this.props;
     const { inputValue, focused, processing, errorMessage } = this.state;
     const commentingEnabled =  get(post, 'attributes.action_descriptor.commenting.enabled', true);
     const projectId: string | null = get(post, 'relationships.project.data.id', null);
     const commentButtonDisabled = (!inputValue || inputValue === '');
     const isModerator = !isNilOrError(authUser) && canModerate(projectId, { data: authUser });
     const canComment = (authUser && commentingEnabled && !isModerator);
+    const placeholder = formatMessage(messages[`${postType}CommentBodyPlaceholder`]);
 
     return (
       <Container className={className}>
@@ -228,9 +227,10 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
                   id="submit-comment"
                   className="e2e-parent-comment-form"
                   name="comment"
-                  placeholder={this.placeholder}
+                  placeholder={placeholder}
                   rows={5}
                   postId={postId}
+                  postType={postType}
                   value={inputValue}
                   error={errorMessage}
                   onChange={this.onChange}

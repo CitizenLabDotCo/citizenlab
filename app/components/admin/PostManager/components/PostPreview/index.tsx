@@ -1,13 +1,17 @@
-import React, { PureComponent } from 'react';
+import React, { lazy, Suspense, PureComponent } from 'react';
 import SideModal from 'components/UI/SideModal';
-import IdeaEdit from './Idea/IdeaEdit';
-import IdeaContent from './Idea/IdeaContent';
-import InitiativeContent from './Initiative/InitiativeContent';
-import InitiativeEdit from './Initiative/InitiativeEdit';
-
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { ManagerType } from '../..';
+
+// components
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+
+// lazy-loaded components
+const IdeaEdit = lazy(() => import('./Idea/IdeaEdit'));
+const IdeaContent = lazy(() => import('./Idea/IdeaContent'));
+const InitiativeContent = lazy(() => import('./Initiative/InitiativeContent'));
+const InitiativeEdit = lazy(() => import('./Initiative/InitiativeEdit'));
 
 interface DataProps {}
 
@@ -35,8 +39,9 @@ export const Top = styled.div`
   border-bottom: 1px solid ${colors.separation};
   display: flex;
   align-items: center;
-  position: fixed;
+  position: absolute;
   top: 0;
+  left: 0;
   height: 50px;
   width: 100%;
   padding-left: 10px;
@@ -47,44 +52,63 @@ export const Top = styled.div`
 export const Content = styled.div`
   padding: 30px;
   margin-top: 50px;
+  width: 100%;
 `;
 
 export default class PostPreview extends PureComponent<Props> {
+  previewComponent = () => {
+    const { type, postId, onClose, onSwitchPreviewMode, mode } = this.props;
+    const postType = (type === 'AllIdeas' || type === 'ProjectIdeas') ? 'idea' : 'initiative';
+
+    if (postId) {
+      return ({
+        view: {
+          idea: (
+            <IdeaContent
+              ideaId={postId}
+              closePreview={onClose}
+              handleClickEdit={onSwitchPreviewMode}
+            />
+          ),
+          initiative: (
+            <InitiativeContent
+              initiativeId={postId}
+              closePreview={onClose}
+              handleClickEdit={onSwitchPreviewMode}
+            />
+          )
+        },
+        edit: {
+          idea: (
+            <IdeaEdit
+              ideaId={postId}
+              goBack={onSwitchPreviewMode}
+            />
+          ),
+          initiative: (
+            <InitiativeEdit
+              initiativeId={postId}
+              goBack={onSwitchPreviewMode}
+            />
+          )
+        }
+      }[mode][postType]);
+    }
+
+    return null;
+  }
 
   render() {
-    const { type, postId, onClose, onSwitchPreviewMode, mode } = this.props;
+    const { postId, onClose } = this.props;
 
     return (
       <SideModal
         opened={!!postId}
         close={onClose}
       >
-        {mode === 'view' && (type === 'AllIdeas' || type === 'ProjectIdeas') && postId &&
-          <IdeaContent
-            ideaId={postId}
-            closePreview={onClose}
-            handleClickEdit={onSwitchPreviewMode}
-          />
-        }
-        {mode === 'view' && type === 'Initiatives' && postId &&
-          <InitiativeContent
-            initiativeId={postId}
-            closePreview={onClose}
-            handleClickEdit={onSwitchPreviewMode}
-          />
-        }
-        {mode === 'edit' && postId && (type === 'AllIdeas' || type === 'ProjectIdeas') &&
-          <IdeaEdit
-            ideaId={postId}
-            goBack={onSwitchPreviewMode}
-          />
-        }
-        {mode === 'edit' && postId && (type === 'Initiatives') &&
-          <InitiativeEdit
-            initiativeId={postId}
-            goBack={onSwitchPreviewMode}
-          />
-        }
+        <Suspense fallback={<FullPageSpinner />}>
+          {this.previewComponent()}
+        </Suspense>
       </SideModal>
     );
   }
