@@ -35,8 +35,6 @@ class SortFilterDropdown extends PureComponent<Props, State> {
     const { selectedValue } = this.state;
     const options = [
       { text: <FormattedMessage {...messages.random} />, value: 'random' },
-      { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
-      { text: <FormattedMessage {...messages.popular} />, value: 'popular' },
       { text: <FormattedMessage {...messages.newest} />, value: 'new' },
       { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
     ];

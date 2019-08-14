@@ -288,39 +288,42 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
           <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
 
           <SectionField>
+            {/* Contrary to other form fields, the image uploads are not wrapped
+            in the label tag because they trigger a double file dialog issue in our
+            current version of react-dropzone
+            https://stackoverflow.com/questions/49671325/react-dropzone-opens-files-chooser-twice
+            */}
             <FormLabel
               labelMessage={messages.bannerUploadLabel}
               subtextMessage={messages.bannerUploadLabelSubtext}
               optional
-            >
-              <ImageDropzone
-                id="iniatiative-banner-dropzone"
-                image={banner || null}
-                imagePreviewRatio={360 / 1440}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                onChange={this.changeAndSaveBanner}
-              />
-              {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />
-              }
-            </FormLabel>
+            />
+            <ImageDropzone
+              id="iniatiative-banner-dropzone"
+              image={banner || null}
+              imagePreviewRatio={360 / 1440}
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              onChange={this.changeAndSaveBanner}
+            />
+            {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />
+            }
           </SectionField>
 
           <SectionField>
             <FormLabel
               labelMessage={messages.imageUploadLabel}
               subtextMessage={messages.imageUploadLabelSubtext}
-            >
-              <ImageDropzone
-                id="iniatiative-img-dropzone"
-                image={image || null}
-                imagePreviewRatio={135 / 298}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                onChange={this.changeAndSaveImage}
-              />
-              {touched.image
-                && errors.image
-                && <Error message={errors.image.message} />}
-            </FormLabel>
+            />
+            <ImageDropzone
+              id="iniatiative-img-dropzone"
+              image={image || null}
+              imagePreviewRatio={135 / 298}
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              onChange={this.changeAndSaveImage}
+            />
+            {touched.image
+              && errors.image
+              && <Error message={errors.image.message} />}
           </SectionField>
           <SectionField>
             <FormLabel

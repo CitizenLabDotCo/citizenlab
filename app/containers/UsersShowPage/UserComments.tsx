@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
+import { groupBy } from 'lodash-es';
 
 // components
-import IdeaCommentGroup from './IdeaCommentGroup';
+import PostCommentGroup from './PostCommentGroup';
 import Button from 'components/UI/Button';
 
 // resources
@@ -85,55 +86,82 @@ export const reducer = (acc: ICommentData[][], current: ICommentData) => {
 
 };
 
-export const UserComments = memo<Props>(({ comments, comments: { commentsList }, userId, theme, authUser }) => (
-  !isNilOrError(commentsList) && commentsList.length > 0) ? (
-    <Container className="e2e-profile-comments">
-      {commentsList.reduce(reducer, [[]]).map(commentForIdea => (
-        <IdeaCommentGroup
-          key={commentForIdea[0].id}
-          ideaId={commentForIdea[0].relationships.post.data.id}
-          commentsForIdea={commentForIdea}
-          userId={userId}
-        />
-      ))}
-      {comments.hasMore &&
-        <Footer>
-          <Button
-            onClick={comments.loadMore}
-            processing={comments.loadingMore}
-            icon="showMore"
-            textColor={theme.colorText}
-            textHoverColor={darken(0.1, theme.colorText)}
-            bgColor={rgba(theme.colorText, 0.08)}
-            bgHoverColor={rgba(theme.colorText, 0.12)}
-            height="50px"
-          >
-            <FormattedMessage {...messages.loadMoreComments} />
-          </Button>
-        </Footer>
+export const UserComments = memo<Props>(({ comments, userId, theme, authUser }) => {
+
+  if (!isNilOrError(comments)) {
+    const { commentsList } = comments;
+
+    if (commentsList === undefined) {
+      return (
+        <MessageContainer>
+          <FormattedMessage {...messages.loadingComments} />
+        </MessageContainer>
+      );
+    }
+
+    if (commentsList === null || !isNilOrError(commentsList) && commentsList.length === 0) {
+      if (!isNilOrError(authUser) && userId === authUser.id) {
+        return (
+          <MessageContainer>
+            <FormattedMessage {...messages.noCommentsForYou} />
+          </MessageContainer>
+        );
       }
-    </Container>
-  ) : (commentsList === undefined ? (
+
+      return (
+        <MessageContainer>
+          <FormattedMessage {...messages.noCommentsForUser} />
+        </MessageContainer>
+      );
+    }
+
+    if (!isNilOrError(commentsList) && commentsList.length > 0) {
+      const commentGroups = groupBy(commentsList, (comment) => comment.relationships.post.data.id);
+
+      return (
+        <Container className="e2e-profile-comments">
+          <>
+            {Object.keys(commentGroups).map((postId) => {
+              const commentGroup = commentGroups[postId];
+              const postType = commentGroup[0].relationships.post.data.type as 'idea' | 'initiative';
+
+              return <PostCommentGroup
+                key={postId}
+                postId={postId}
+                postType={postType}
+                comments={commentGroup}
+                userId={userId}
+              />;
+            })}
+          </>
+
+          {comments.hasMore &&
+            <Footer>
+              <Button
+                onClick={comments.loadMore}
+                processing={comments.loadingMore}
+                icon="showMore"
+                textColor={theme.colorText}
+                textHoverColor={darken(0.1, theme.colorText)}
+                bgColor={rgba(theme.colorText, 0.08)}
+                bgHoverColor={rgba(theme.colorText, 0.12)}
+                height="50px"
+              >
+                <FormattedMessage {...messages.loadMoreComments} />
+              </Button>
+            </Footer>
+          }
+        </Container>
+      );
+    }
+  }
+
+  return (
     <MessageContainer>
-        <FormattedMessage {...messages.loadingComments} />
+      <FormattedMessage {...messages.tryAgain} />
     </MessageContainer>
-  ) : (commentsList === null || Array.isArray(commentsList) && commentsList.length === 0 ? (
-    !isNilOrError(authUser) && userId === authUser.id ? (
-      <MessageContainer>
-        <FormattedMessage {...messages.noCommentsForYou} />
-      </MessageContainer>
-    ) : (
-      <MessageContainer>
-        <FormattedMessage {...messages.noCommentsForUser} />
-      </MessageContainer>
-    )
-  ) : (
-    <MessageContainer>
-        <FormattedMessage {...messages.tryAgain} />
-    </MessageContainer>
-  ))
-  )
-);
+  );
+});
 
 const Data = adopt<DataProps, InputProps>({
   comments: ({ userId, render }) =>  <GetCommentsForUser userId={userId}>{render}</GetCommentsForUser>,
