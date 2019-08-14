@@ -169,9 +169,13 @@ export default defineMessages({
     id: 'app.containers.Comments.placeholderComment',
     defaultMessage: 'Tell us your thoughts!',
   },
-  commentBodyPlaceholder: {
-    id: 'app.containers.Comments.commentBodyPlaceholder',
-    defaultMessage: 'What do you think about this {postType}?',
+  ideaCommentBodyPlaceholder: {
+    id: 'app.containers.Comments.ideaCommentBodyPlaceholder',
+    defaultMessage: 'What do you think about this idea?',
+  },
+  initiativeCommentBodyPlaceholder: {
+    id: 'app.containers.Comments.initiativeCommentBodyPlaceholder',
+    defaultMessage: 'What do you think about this initiative?',
   },
   yourComment: {
     id: 'app.components.Comments.yourComment',
@@ -180,13 +184,5 @@ export default defineMessages({
   showMoreActions: {
     id: 'app.containers.Comments.showMoreActions',
     defaultMessage: 'Show more actions',
-  },
-  idea: {
-    id: 'app.containers.Comments.idea',
-    defaultMessage: 'idea',
-  },
-  initiative: {
-    id: 'app.containers.Comments.initiative',
-    defaultMessage: 'initiative',
   },
 });
