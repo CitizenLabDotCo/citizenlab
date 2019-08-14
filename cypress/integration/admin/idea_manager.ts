@@ -47,8 +47,6 @@ describe('Assignee filter', () => {
 
 describe('Need feedback toggle', () => {
   it('Filters on ideas that need feedback', () => {
-    cy.visit('/admin/ideas/');
-
     cy.getAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
@@ -72,6 +70,8 @@ describe('Need feedback toggle', () => {
 
           // Create one idea without official feedback
           cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2). then(() => {
+            cy.visit('/admin/ideas/');
+
             // Select the newly create project as a filter and check if it just shows our two created ideas
             cy.get('.e2e-idea-manager-project-filter-item').first().click();
             cy.get('.e2e-idea-manager-idea-row').should('have.length', 2);
