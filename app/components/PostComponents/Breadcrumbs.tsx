@@ -20,7 +20,7 @@ import { Multiloc } from 'typings';
 const Container = styled.div`
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
 `;
 
 const HomeLink = styled(Link)`
