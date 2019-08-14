@@ -285,7 +285,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 const StyledVoteControl = styled(VoteControl)`
   box-shadow: 1px 0px 15px rgba(0,0,0,0.06);
   border-bottom: 1px solid rgba(0,0,0,0.06);
-  padding: 25px
+  padding: 25px;
 `;
 
 interface DataProps {
@@ -402,11 +402,11 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
     const initiativeSettings = !isNilOrError(tenant) ? tenant.attributes.settings.initiatives : null;
+    const votingThreshold = initiativeSettings ? initiativeSettings.voting_threshold : null;
+    const daysLimit = initiativeSettings ? initiativeSettings.days_limit : null;
 
     if (initiativeSettings && !isNilOrError(initiative) && !isNilOrError(locale) && loaded) {
       const initiativeHeaderImageLarge = (initiative.attributes.header_bg.large || null);
-      const votingThreshold = initiativeSettings.voting_threshold;
-      const daysLimit = initiativeSettings.days_limit;
       const authorId: string | null = get(initiative, 'relationships.author.data.id', null);
       const initiativePublishedAt = initiative.attributes.published_at;
       const titleMultiloc = initiative.attributes.title_multiloc;
@@ -602,53 +602,51 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           {loaded && <Footer postId={initiativeId} postType="initiative" />}
         </>
       );
-
-      return (
-        <>
-          {!loaded &&
-            <Loading>
-              <Spinner />
-            </Loading>
-          }
-
-          <CSSTransition
-            classNames="content"
-            in={loaded}
-            timeout={{
-              enter: contentFadeInDuration + contentFadeInDelay,
-              exit: 0
-            }}
-            enter={true}
-            exit={false}
-          >
-            <Container id="e2e-initiative-show" className={className}>
-              {content}
-            </Container>
-          </CSSTransition>
-
-          <FeatureFlag name="initiativeflow_social_sharing">
-            <Modal
-              opened={!!initiativeIdForSocialSharing}
-              close={this.closeInitiativeSocialSharingModal}
-              hasSkipButton={true}
-              skipText={<FormattedMessage {...messages.skipSharing} />}
-              label={formatMessage(messages.modalShareLabel)}
-            >
-              {initiativeIdForSocialSharing &&
-                <SharingModalContent
-                  postType="initiative"
-                  postId={initiativeIdForSocialSharing}
-                  title={formatMessage(messages.shareTitle)}
-                  subtitle={formatMessage(messages.shareSubtitle, { votingThreshold, daysLimit })}
-                />
-              }
-            </Modal>
-          </FeatureFlag>
-        </>
-      );
     }
 
-    return null;
+    return (
+      <>
+        {!loaded &&
+          <Loading>
+            <Spinner />
+          </Loading>
+        }
+
+        <CSSTransition
+          classNames="content"
+          in={loaded}
+          timeout={{
+            enter: contentFadeInDuration + contentFadeInDelay,
+            exit: 0
+          }}
+          enter={true}
+          exit={false}
+        >
+          <Container id="e2e-initiative-show" className={className}>
+            {content}
+          </Container>
+        </CSSTransition>
+
+        <FeatureFlag name="initiativeflow_social_sharing">
+          <Modal
+            opened={!!initiativeIdForSocialSharing}
+            close={this.closeInitiativeSocialSharingModal}
+            hasSkipButton={true}
+            skipText={<FormattedMessage {...messages.skipSharing} />}
+            label={formatMessage(messages.modalShareLabel)}
+          >
+            {initiativeIdForSocialSharing &&
+              <SharingModalContent
+                postType="initiative"
+                postId={initiativeIdForSocialSharing}
+                title={formatMessage(messages.shareTitle)}
+                subtitle={formatMessage(messages.shareSubtitle, { votingThreshold, daysLimit })}
+              />
+            }
+          </Modal>
+        </FeatureFlag>
+      </>
+    );
   }
 }
 

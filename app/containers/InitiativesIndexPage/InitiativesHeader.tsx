@@ -158,9 +158,14 @@ const ManualTitle = styled.h2`
 const ManualText = styled.div`
   margin: 30px 0;
   color: ${colors.label};
+
   a {
     text-decoration: underline;
     color: inherit;
+
+    &:hover {
+      color: #000;
+    }
   }
 `;
 
