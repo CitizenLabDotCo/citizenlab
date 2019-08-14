@@ -71,7 +71,12 @@ class CountDown extends PureComponent<Props, State> {
   }
 
   calculateDuration = () => {
-    return moment.duration(moment(this.props.targetTime).diff(moment()));
+    const duration = moment.duration(moment(this.props.targetTime).diff(moment()));
+    if (duration.asMilliseconds() < 0) {
+      return moment.duration(0);
+    } else {
+      return duration;
+    }
   }
 
   daysLeft = (): string => {

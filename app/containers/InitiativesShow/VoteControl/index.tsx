@@ -43,6 +43,7 @@ interface VoteControlComponentProps {
   userVoted: boolean;
   onVote?: () => void;
   onCancelVote?: () => void;
+  onScrollToOfficialFeedback?: () => void;
 }
 
 type TComponentMap = {
@@ -82,6 +83,7 @@ const componentMap: TComponentMap = {
 interface InputProps {
   initiativeId: string;
   className?: string;
+  onScrollToOfficialFeedback: () => void;
 }
 
 interface DataProps {
@@ -123,7 +125,7 @@ class VoteControl extends PureComponent<Props, State> {
   }
 
   render() {
-    const { initiative, initiativeStatus, tenant, className } = this.props;
+    const { initiative, initiativeStatus, tenant, className, onScrollToOfficialFeedback } = this.props;
     const { showUnauthenticated } = this.state;
 
     if (isNilOrError(initiative) ||
@@ -152,6 +154,7 @@ class VoteControl extends PureComponent<Props, State> {
               userVoted={userVoted}
               onVote={this.handleOnvote}
               onCancelVote={this.handleOnCancelVote}
+              onScrollToOfficialFeedback={onScrollToOfficialFeedback}
             />
         }
       </Container>
