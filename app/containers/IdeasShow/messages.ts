@@ -47,7 +47,7 @@ export default defineMessages({
   },
   metaOgTitle: {
     id: 'app.containers.IdeasShow.metaOgTitle',
-    defaultMessage: 'Support this idea : {ideaTitle}',
+    defaultMessage: 'Support this idea: {ideaTitle}',
   },
   ideaOgDescription: {
     id: 'app.containers.IdeasShow.ideaOgDescription',
@@ -111,7 +111,7 @@ export default defineMessages({
   },
   spamModalLabelIdea: {
     id: 'app.components.IdeasShow.spamModalLabelIdea',
-    defaultMessage: 'Report idea as spam : select reason',
+    defaultMessage: 'Report idea as spam: select reason',
   },
   editIdea: {
     id: 'app.components.IdeasShow.editIdea',
@@ -173,10 +173,6 @@ export default defineMessages({
   ideaPostedBy: {
     id: 'app.components.IdeasShow.ideaPostedBy',
     defaultMessage: 'Idea posted by {userName}',
-  },
-  linkToHomePage: {
-    id: 'app.components.IdeasShow.linkToHomePage',
-    defaultMessage: 'Link to home page'
   },
   createdTimeAgo: {
     id: 'app.components.IdeasShow.createdTimeAgo',
