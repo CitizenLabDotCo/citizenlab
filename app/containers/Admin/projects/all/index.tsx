@@ -230,6 +230,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                     items={publishedProjects}
                     onReorder={this.handleReorder}
                     className="e2e-admin-projects-list"
+                    id="e2e-admin-published-projects-list"
                   >
                     {({ itemsList, handleDragRow, handleDropRow }) => (
                       itemsList.map((project: IProjectData, index: number) => (
