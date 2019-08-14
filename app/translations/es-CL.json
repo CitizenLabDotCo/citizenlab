@@ -1659,6 +1659,7 @@
   "app.containers.UsersShowPage.noCommentsForUser": "Este usuario no ha publicado ningún comentario todavía.",
   "app.containers.UsersShowPage.noCommentsForYou": "Todavía no has publicado un comentario.",
   "app.containers.UsersShowPage.seeIdea": "Ver la idea",
+  "app.containers.UsersShowPage.seeInitiative": "",
   "app.containers.UsersShowPage.tryAgain": "Un error ha ocurrido, por favor inténtalo más tarde.",
   "app.containers.admin.ideas.all.header": "Ideas",
   "app.containers.admin.ideas.all.headerSubtitle": "Agrega temas a las ideas, actualiza su estado o cambia el proyecto en el que se muestran. Contáctanos si desea usar temas o estatus personalizados.",
