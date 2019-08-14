@@ -42,6 +42,7 @@ const VotedTitle = styled.h4`
   color: ${props => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   margin: 25px 0 0 0;
+  width: 100%;
 `;
 
 const VotedText = styled.p`
@@ -50,6 +51,7 @@ const VotedText = styled.p`
   line-height: 21px;
   text-align: center;
   margin: 0 0 20px 0;
+  width: 100%;
 `;
 
 const UnvoteLink = styled.a`
