@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -18,7 +18,7 @@ import { UserTab } from './';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const UserNavbarWrapper = styled.nav`
+const UserNavbarWrapper = styled.div`
   width: 100%;
   background-color: white;
   position: sticky;
@@ -45,7 +45,7 @@ const Border = styled.div`
   background: transparent;
 `;
 
-const UserNavbarButton = styled.ul`
+const UserNavbarButton = styled.button`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -114,9 +114,15 @@ interface Props extends InputProps, DataProps {}
 
 const UserNavbar = memo<Props>(props => {
   const { currentTab, selectTab, ideasCount, commentsCount } = props;
+
+  const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+  }, []);
+
   return (
     <UserNavbarWrapper>
       <UserNavbarButton
+        onMouseDown={removeFocus}
         onClick={selectTab('ideas')}
         className={currentTab === 'ideas' ? 'active' : ''}
       >
@@ -127,6 +133,7 @@ const UserNavbar = memo<Props>(props => {
         }
       </UserNavbarButton>
       <UserNavbarButton
+        onMouseDown={removeFocus}
         onClick={selectTab('comments')}
         className={`e2e-comment-section-nav ${currentTab === 'comments' ? 'active' : ''}`}
       >
