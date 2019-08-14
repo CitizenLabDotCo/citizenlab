@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.warningTresholdSettings',
     defaultMessage: 'Changing this will impact all active initiatives'
   },
+  fieldEnable: {
+    id: 'app.containers.Admin.initiatives.fieldEnable',
+    defaultMessage: 'Enable initiatives'
+  },
   fieldVotingThreshold: {
     id: 'app.containers.Admin.initiatives.fieldVotingThreshold',
     defaultMessage: 'Voting threshold'
