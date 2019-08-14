@@ -654,6 +654,7 @@
   "app.containers.Admin.initiatives.fieldDaysLimit": "Jours pour atteindre le seuil",
   "app.containers.Admin.initiatives.fieldEligibilityCriteria": "Critères pour une initiative",
   "app.containers.Admin.initiatives.fieldEligibilityCriteriaInfo": "Ceci sera montré aux utilisateurs désirant poster une initiative. Ces critères définissent quand une initiative est éligible ou pas",
+  "app.containers.Admin.initiatives.fieldEnable": "",
   "app.containers.Admin.initiatives.fieldThresholdReachedMessage": "Quelles sont les attentes qu'un utilisateur peut avoir lorsqu'il atteint le seuil d'une initiative à temps?",
   "app.containers.Admin.initiatives.fieldThresholdReachedMessageInfo": "Cela sera visible par tout le monde et montré sur chaque initiative",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Seuil de vote",

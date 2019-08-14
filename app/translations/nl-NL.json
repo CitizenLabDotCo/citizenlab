@@ -654,6 +654,7 @@
   "app.containers.Admin.initiatives.fieldDaysLimit": "Aantal dagen om stemmen te halen",
   "app.containers.Admin.initiatives.fieldEligibilityCriteria": "De voorwaarden voor een initiatief",
   "app.containers.Admin.initiatives.fieldEligibilityCriteriaInfo": "Dit wordt getoond aan gebruikers die een initiatief plaatsen. Deze voorwaarden duiden aan wanneer een initiatief ontvankelijk is en wanneer niet",
+  "app.containers.Admin.initiatives.fieldEnable": "",
   "app.containers.Admin.initiatives.fieldThresholdReachedMessage": "Wat mogen mensen verwachten wanneer hun initiatief tijdig het aantal stemmen haalt?",
   "app.containers.Admin.initiatives.fieldThresholdReachedMessageInfo": "Dit is zichtbaar voor iedereen en wordt bij elk initiatief getoond",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Benodigd aantal stemmen",

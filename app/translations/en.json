@@ -654,6 +654,7 @@
   "app.containers.Admin.initiatives.fieldDaysLimit": "Days to reach threshold",
   "app.containers.Admin.initiatives.fieldEligibilityCriteria": "The criteria for an initiative",
   "app.containers.Admin.initiatives.fieldEligibilityCriteriaInfo": "This will be shown to users posting an initiative. These criteria define when an initiative can be eligible or not",
+  "app.containers.Admin.initiatives.fieldEnable": "Enable initiatives",
   "app.containers.Admin.initiatives.fieldThresholdReachedMessage": "What can people expect when their initiatives reach the threshold in time?",
   "app.containers.Admin.initiatives.fieldThresholdReachedMessageInfo": "This will be visible to all and shown with every initiative",
   "app.containers.Admin.initiatives.fieldVotingThreshold": "Voting threshold",
