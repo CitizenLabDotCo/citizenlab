@@ -33,8 +33,9 @@ export const Top = styled.div`
   border-bottom: 1px solid ${colors.separation};
   display: flex;
   align-items: center;
-  position: fixed;
+  position: absolute;
   top: 0;
+  left: 0;
   height: 50px;
   width: 100%;
   padding-left: 10px;
@@ -45,6 +46,7 @@ export const Top = styled.div`
 export const Content = styled.div`
   padding: 30px;
   margin-top: 50px;
+  width: 100%;
 `;
 
 export default class PostPreview extends PureComponent<Props> {
