@@ -55,7 +55,7 @@ export default defineMessages({
   },
   signInToComment: {
     id: 'app.containers.Comments.signInToComment',
-    defaultMessage: 'Please {signInLink} to spread your wisdom.',
+    defaultMessage: 'Please {signInLink} to comment.',
   },
   signInLinkText: {
     id: 'app.containers.Comments.signInLinkText',
@@ -83,7 +83,7 @@ export default defineMessages({
   },
   spanModalLabelComment: {
     id: 'app.components.Comments.spanModalLabelComment',
-    defaultMessage: 'Report comment as spam : select reason',
+    defaultMessage: 'Report comment as spam: select reason',
   },
   confirmCommentDeletion: {
     id: 'app.containers.Comments.confirmCommentDeletion',
@@ -116,14 +116,6 @@ export default defineMessages({
   upvoteComment: {
     id: 'app.components.Comments.upvoteComment',
     defaultMessage: 'Upvote this comment'
-  },
-  commentEditorHeader: {
-    id: 'app.containers.Comments.commentEditorHeader',
-    defaultMessage: 'Comment the idea!',
-  },
-  commentEditorLabel: {
-    id: 'app.containers.Comments.commentEditorLabel',
-    defaultMessage: 'Comment the idea!',
   },
   commentUpvote: {
     id: 'app.containers.Comments.commentUpvote',
@@ -177,9 +169,13 @@ export default defineMessages({
     id: 'app.containers.Comments.placeholderComment',
     defaultMessage: 'Tell us your thoughts!',
   },
-  commentBodyPlaceholder: {
-    id: 'app.containers.Comments.commentBodyPlaceholder',
+  ideaCommentBodyPlaceholder: {
+    id: 'app.containers.Comments.ideaCommentBodyPlaceholder',
     defaultMessage: 'What do you think about this idea?',
+  },
+  initiativeCommentBodyPlaceholder: {
+    id: 'app.containers.Comments.initiativeCommentBodyPlaceholder',
+    defaultMessage: 'What do you think about this initiative?',
   },
   yourComment: {
     id: 'app.components.Comments.yourComment',

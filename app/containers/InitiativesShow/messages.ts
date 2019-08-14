@@ -51,11 +51,11 @@ export default defineMessages({
   },
   spamModalLabelInitiative: {
     id: 'app.components.InitiativesShow.spamModalLabelInitiative',
-    defaultMessage: 'Report initiative as spam : select reason',
+    defaultMessage: 'Report initiative as spam: select reason',
   },
   spanModalLabelComment: {
     id: 'app.components.InitiativesShow.spanModalLabelComment',
-    defaultMessage: 'Report comment as spam : select reason',
+    defaultMessage: 'Report comment as spam: select reason',
   },
   editInitiative: {
     id: 'app.components.InitiativesShow.editInitiative',
