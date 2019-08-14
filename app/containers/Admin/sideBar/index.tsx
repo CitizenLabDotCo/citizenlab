@@ -166,7 +166,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
       {
         id: 'initiatives',
         link: '/admin/initiatives',
-        iconName: 'initiatives',
+        iconName: 'initiativesAdminMenuIcon',
         message: 'initiatives',
         featureName: 'initiatives',
         onlyCheckAllowed: true,
