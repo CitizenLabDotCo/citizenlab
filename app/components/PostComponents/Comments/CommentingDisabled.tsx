@@ -1,13 +1,21 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+
+// components
 import Warning from 'components/UI/Warning';
-import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import T from 'components/T';
+
+// resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+
+// services
 import { IIdeaData } from 'services/ideas';
+
+// i18n
 import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   margin-bottom: 40px;
