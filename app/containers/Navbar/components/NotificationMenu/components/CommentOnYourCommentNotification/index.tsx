@@ -12,6 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import NotificationWrapper from '../NotificationWrapper';
 import { DeletedUser } from '../Notification';
 import Link from 'utils/cl-router/Link';
+import { reportError } from 'utils/loggingUtils';
 
 interface Props {
   notification: ICommentOnYourCommentNotificationData;
@@ -30,8 +31,7 @@ const CommentOnYourCommentNotification = memo<Props>(props => {
     case 'Initiative':
       linkTo = `/initiatives/${notification.attributes.post_slug}`;
     default:
-      // Throw error
-     console.log(`Unsupported post type ${notification.attributes.post_type}`);
+     reportError(`Unsupported post type ${notification.attributes.post_type}`);
   }
 
   return (
