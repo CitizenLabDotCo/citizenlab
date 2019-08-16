@@ -177,7 +177,6 @@ const InitiativeIcon = styled(Icon)`
 `;
 
 const EmptyMessage = styled.div`
-  max-width: 400px;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -294,7 +293,7 @@ const Spacer = styled.div`
 
 const ViewButtons = styled.div`
   display: flex;
-  margin-right: 10px;
+  margin-right: 15px;
 `;
 
 const ViewButton = styled.div`

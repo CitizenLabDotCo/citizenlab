@@ -20,7 +20,7 @@ export interface ICommentOnYourCommentNotificationData extends IBaseNotification
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
     idea_title: Multiloc;
-    idea_slug: string;
+    idea_slug: string | null;
   };
 }
 
@@ -41,7 +41,7 @@ export interface ICommentOnYourIdeaNotificationData extends IBaseNotificationDat
         type: string;
       }
     }
-    post: {
+    idea: {
       data?: {
         id: string;
         type: string;
@@ -73,7 +73,7 @@ export interface IMentionInCommentNotificationData extends IBaseNotificationData
         type: string;
       }
     }
-    post: {
+    idea: {
       data?: {
         id: string;
         type: string;
@@ -111,7 +111,7 @@ export interface IIdeaMarkedAsSpamNotificationData extends IBaseNotificationData
         type: string;
       }
     }
-    post: {
+    idea: {
       data?: {
         id: string;
         type: string;
@@ -149,7 +149,7 @@ export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationD
         type: string;
       }
     }
-    post: {
+    idea: {
       data?: {
         id: string;
         type: string;
@@ -172,7 +172,7 @@ export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificati
     idea_title: Multiloc;
   };
   relationships: {
-    post: {
+    idea: {
       data?: {
         id: string;
         type: string;
@@ -295,7 +295,7 @@ export interface ICommentDeletedByAdminNotificationData extends IBaseNotificatio
         type: string;
       }
     }
-    post: {
+    idea: {
       data?: {
         id: string;
         type: string;
@@ -371,7 +371,7 @@ export interface IIdeaForAdminNotificationData extends IBaseNotificationData {
         type: string;
       }
     }
-    post: {
+    idea: {
       data?: {
         id: string;
         type: string;
@@ -403,7 +403,7 @@ export interface ICommentForAdminNotificationData extends IBaseNotificationData 
         type: string;
       }
     }
-    post: {
+    idea: {
       data?: {
         id: string;
         type: string;
@@ -442,7 +442,7 @@ export interface IOfficialFeedbackOnYourIdeaNotificationData extends IBaseNotifi
         type: string;
       }
     }
-    post: {
+    idea: {
       data?: {
         id: string;
         type: string;
@@ -481,7 +481,7 @@ export interface IOfficialFeedbackOnVotedIdeaNotificationData extends IBaseNotif
         type: string;
       }
     }
-    post: {
+    idea: {
       data?: {
         id: string;
         type: string;
@@ -520,7 +520,7 @@ export interface IOfficialFeedbackOnCommentedIdeaNotificationData extends IBaseN
         type: string;
       }
     }
-    post: {
+    idea: {
       data?: {
         id: string;
         type: string;
@@ -559,7 +559,7 @@ export interface IMentionInOfficialFeedbackNotificationData extends IBaseNotific
         type: string;
       }
     }
-    post: {
+    idea: {
       data?: {
         id: string;
         type: string;

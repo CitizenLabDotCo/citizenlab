@@ -219,7 +219,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ focused: false });
   }
 
-  handleSubmit = async (event: FormEvent<any>) => {
+  handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     const { postId, postType, projectId, parentId, waitForChildCommentsRefetch, locale, authUser } = this.props;

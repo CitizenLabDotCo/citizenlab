@@ -64,10 +64,10 @@ const MentionInCommentNotification = memo<Props>(props => {
 export default (inputProps: InputProps) => {
   const { notification } = inputProps;
 
-  if (!notification.relationships.post.data) return null;
+  if (!notification.relationships.idea.data) return null;
 
   return (
-    <GetIdea id={notification.relationships.post.data.id}>
+    <GetIdea id={notification.relationships.idea.data.id}>
       {idea => <MentionInCommentNotification notification={notification} idea={idea} />}
     </GetIdea>
   );
