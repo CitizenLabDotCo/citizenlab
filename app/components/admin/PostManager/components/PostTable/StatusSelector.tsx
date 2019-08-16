@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { Popup } from 'semantic-ui-react';
 import T from 'components/T';
+import { IInitiativeAllowedTransitions } from 'services/initiatives';
 
 const Container = styled.div`
   display: flex;
@@ -23,6 +24,7 @@ type Props = {
   selectedStatus?: string,
   statuses: IIdeaStatusData[],
   onUpdateStatus: (statusId: string) => void;
+  allowedTransitions: IInitiativeAllowedTransitions | null;
 };
 
 class StatusSelector extends React.PureComponent<Props> {
@@ -37,8 +39,8 @@ class StatusSelector extends React.PureComponent<Props> {
   }
 
   render() {
-    const { statuses } = this.props;
-
+    const { statuses, allowedTransitions } = this.props;
+    console.log(allowedTransitions);
     return (
       <Container>
         {statuses.map((status) => (

@@ -38,10 +38,12 @@ import SubRow from './SubRow';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetInitiativeAllowedTransitions, { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiativeAllowedTransitions';
 import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 interface DataProps {
   tenant: GetTenantChildProps;
+  allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
 }
 
 interface InputProps {
@@ -141,7 +143,8 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
       onClickRow,
       onClickCheckbox,
       onClickTitle,
-      nothingHappens
+      nothingHappens,
+      allowedTransitions
     } = this.props;
 
     const selectedStatus: string | undefined = get(initiative, 'relationships.initiative_status.data.id');
@@ -192,7 +195,8 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
             activeFilterMenu,
             selectedTopics,
             statuses,
-            selectedStatus
+            selectedStatus,
+            allowedTransitions
           }}
           onUpdatePhases={this.onUpdateInitiativePhases}
           onUpdateTopics={this.onUpdateInitiativeTopics}
@@ -216,21 +220,8 @@ const initiativeSource = {
     const { selection } = props;
 
     if (dropResult && dropResult.type === 'status') {
-      selection.has(item.id) && selection.forEach((initiativeId) => {
-        updateInitiative(initiativeId, {
-          initiative_status_id: dropResult.id,
-        });
-      });
-
-      !selection.has(item.id) &&
-        updateInitiative(item.id, {
-          initiative_status_id: dropResult.id,
-        });
-
-      trackEventByName(tracks.initiativeStatusChange, {
-        location: 'Initiative overview',
-        method: 'Dragged and dropped initiative(s) in manager',
-      });
+      // // TODO
+      console.log('TODO');
     } else if (dropResult && dropResult.type) {
 
       const observables = selection.has(item.id)
@@ -263,7 +254,8 @@ function collect(connect, monitor) {
 const InitiativesRowWithHocs = injectIntl<InputProps>(localize<InputProps & InjectedIntlProps>(DragSource('IDEA', initiativeSource, collect)(InitiativeRow)));
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />
+  tenant: <GetTenant />,
+  allowedTransitions: ({ initiative, render }) => <GetInitiativeAllowedTransitions id={initiative.id}>{render}</GetInitiativeAllowedTransitions>
 });
 
 export default (inputProps: InputProps) => (

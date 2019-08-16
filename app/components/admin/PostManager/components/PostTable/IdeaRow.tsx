@@ -109,7 +109,7 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
       onClickRow,
       onClickCheckbox,
       onClickTitle,
-      nothingHappens
+      nothingHappens,
     } = this.props;
 
     const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.data.id');
@@ -173,6 +173,7 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
             statuses,
             selectedStatus
           }}
+          allowedTransitions={null}
           onUpdatePhases={this.onUpdateIdeaPhases}
           onUpdateTopics={this.onUpdateIdeaTopics}
           onUpdateStatus={this.onUpdateIdeaStatus}
