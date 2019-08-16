@@ -45,14 +45,6 @@ export default defineMessages({
     id: 'app.containers.landing.twitterMessage',
     defaultMessage: 'Vote for {ideaTitle} on',
   },
-  emailSharingSubject: {
-    id: 'app.containers.landing.emailSharingSubject',
-    defaultMessage: 'Support my idea: {ideaTitle}.',
-  },
-  emailSharingBody: {
-    id: 'app.containers.landing.emailSharingBody',
-    defaultMessage: 'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
-  },
   completeYourProfile: {
     id: 'app.containers.landing.completeYourProfile',
     defaultMessage: "Welcome {firstName}. It's time to complete your profile.",

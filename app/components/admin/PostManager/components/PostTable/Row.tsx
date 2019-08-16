@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
+import { ManagerType, TFilterMenu } from '../..';
 
 // services
 import { IIdeaData } from 'services/ideas';
+import { IInitiativeData } from 'services/initiatives';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -9,10 +11,9 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 // style
 import styled from 'styled-components';
 
-import IdeaRow from './IdeaRow';
-import { ManagerType, TFilterMenu } from '../..';
-import InitiativeRow from './InitiativeRow';
-import { IInitiativeData } from 'services/initiatives';
+// lazy-loaded components
+const IdeaRow = lazy(() => import('./IdeaRow'));
+const InitiativeRow = lazy(() => import('./InitiativeRow'));
 
 export const StyledRow = styled.tr`
   height: 5.7rem !important;
@@ -93,34 +94,39 @@ export default class Row extends React.PureComponent<Props> {
     const { type, post, selection, activeFilterMenu, phases, statuses, className } = this.props;
     if (type === 'AllIdeas' || type === 'ProjectIdeas') {
       return (
-        <IdeaRow
-          type={type}
-          idea={post as IIdeaData}
-          phases={phases}
-          statuses={statuses}
-          selection={selection}
-          activeFilterMenu={activeFilterMenu}
-          className={className}
-          onClickRow={this.onClickRow}
-          onClickCheckbox={this.onClickCheckbox}
-          onClickTitle={this.onClickTitle}
-          nothingHappens={nothingHappens}
-        />
+        <Suspense fallback={null}>
+          <IdeaRow
+            type={type}
+            idea={post as IIdeaData}
+            phases={phases}
+            statuses={statuses}
+            selection={selection}
+            activeFilterMenu={activeFilterMenu}
+            className={className}
+            onClickRow={this.onClickRow}
+            onClickCheckbox={this.onClickCheckbox}
+            onClickTitle={this.onClickTitle}
+            nothingHappens={nothingHappens}
+          />
+        </Suspense>
+
       );
     } else if (type === 'Initiatives') {
       return (
-        <InitiativeRow
-          type={type}
-          initiative={post as IInitiativeData}
-          statuses={statuses as IInitiativeStatusData[]}
-          selection={selection}
-          activeFilterMenu={activeFilterMenu}
-          className={className}
-          onClickRow={this.onClickRow}
-          onClickCheckbox={this.onClickCheckbox}
-          onClickTitle={this.onClickTitle}
-          nothingHappens={nothingHappens}
-        />
+        <Suspense fallback={null}>
+          <InitiativeRow
+            type={type}
+            initiative={post as IInitiativeData}
+            statuses={statuses as IInitiativeStatusData[]}
+            selection={selection}
+            activeFilterMenu={activeFilterMenu}
+            className={className}
+            onClickRow={this.onClickRow}
+            onClickCheckbox={this.onClickCheckbox}
+            onClickTitle={this.onClickTitle}
+            nothingHappens={nothingHappens}
+          />
+        </Suspense>
       );
     }
     return null;

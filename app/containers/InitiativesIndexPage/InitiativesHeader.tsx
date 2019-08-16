@@ -26,7 +26,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import T from 'components/T';
 
-const illustrationSrc: string = require('assets/img/initiativesHeaderImage.png');
+const illustrationSrc: string = require('./initiativesHeaderImage.png');
 
 const Container = styled.div`
   width: 100%;
@@ -158,9 +158,14 @@ const ManualTitle = styled.h2`
 const ManualText = styled.div`
   margin: 30px 0;
   color: ${colors.label};
+
   a {
     text-decoration: underline;
     color: inherit;
+
+    &:hover {
+      color: #000;
+    }
   }
 `;
 
