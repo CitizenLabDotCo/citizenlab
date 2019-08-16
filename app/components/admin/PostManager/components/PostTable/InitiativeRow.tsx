@@ -81,9 +81,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
     const { initiative } = this.props;
     const initiativeId = initiative.id;
 
-    updateInitiative(initiativeId, {
-      initiative_status_id: statusId,
-    });
+    // TODO open the modal.
 
     trackEventByName(tracks.initiativeStatusChange, {
       location: 'Initiative overview',
@@ -160,7 +158,8 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
           as={StyledRow}
           active={active}
           onClick={onClickRow}
-          ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}
+          undraggable={activeFilterMenu === 'statuses'}
+          ref={(instance) => { instance && activeFilterMenu !== 'statuses' && connectDragSource(findDOMNode(instance)); }}
         >
           <Table.Cell collapsing={true}>
             <Checkbox value={!!active} onChange={onClickCheckbox} size="17px" />
@@ -219,10 +218,7 @@ const initiativeSource = {
     const dropResult = monitor.getDropResult();
     const { selection } = props;
 
-    if (dropResult && dropResult.type === 'status') {
-      // // TODO
-      console.log('TODO');
-    } else if (dropResult && dropResult.type) {
+    if (dropResult && dropResult.type) {
 
       const observables = selection.has(item.id)
         ? [...selection].map((id) => initiativeByIdStream(id).observable)
