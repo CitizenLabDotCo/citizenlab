@@ -19,8 +19,9 @@ export interface ICommentOnYourCommentNotificationData extends IBaseNotification
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    idea_title: Multiloc;
-    idea_slug: string | null;
+    post_type: string;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
   };
 }
 

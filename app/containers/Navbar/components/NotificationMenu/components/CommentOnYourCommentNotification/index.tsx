@@ -22,9 +22,21 @@ const CommentOnYourCommentNotification = memo<Props>(props => {
 
   const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
+  let linkTo;
+
+  switch (notification.attributes.post_type) {
+    case 'Idea':
+      linkTo = `/ideas/${notification.attributes.post_slug}`;
+    case 'Initiative':
+      linkTo = `/initiatives/${notification.attributes.post_slug}`;
+    default:
+      // Throw error
+     console.log(`Unsupported post type ${notification.attributes.post_type}`);
+  }
+
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${notification.attributes.idea_slug}`}
+      linkTo={linkTo}
       timing={notification.attributes.created_at}
       icon="notification_comment"
       isRead={!!notification.attributes.read_at}
