@@ -1659,6 +1659,7 @@
   "app.containers.UsersShowPage.noCommentsForUser": "This user hasn't posted any comments yet.",
   "app.containers.UsersShowPage.noCommentsForYou": "You haven't posted any comments yet.",
   "app.containers.UsersShowPage.seeIdea": "See idea",
+  "app.containers.UsersShowPage.seeInitiative": "See initiative",
   "app.containers.UsersShowPage.tryAgain": "An error has occurred, please try again later.",
   "app.containers.admin.ideas.all.header": "Ideas",
   "app.containers.admin.ideas.all.headerSubtitle": "Add topics to ideas, update their status or change the project in which they are shown. Contact us if you want to use custom topics or statuses.",

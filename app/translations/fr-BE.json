@@ -1659,6 +1659,7 @@
   "app.containers.UsersShowPage.noCommentsForUser": "Cet utilisateur n'a pas encore posté de commentaire.",
   "app.containers.UsersShowPage.noCommentsForYou": "Vous n'avez pas encore posté de commentaire.",
   "app.containers.UsersShowPage.seeIdea": "Voir l'idée",
+  "app.containers.UsersShowPage.seeInitiative": "",
   "app.containers.UsersShowPage.tryAgain": "Une erreur s’est produite, veuillez réessayer ",
   "app.containers.admin.ideas.all.header": "Idées",
   "app.containers.admin.ideas.all.headerSubtitle": "Thématisez les idées, mettez à jour leur statut ou modifiez le projet dans lequel elles sont visibles. Contactez-nous si vous souhaitez utiliser des thématiques ou des statuts personnalisés.",
