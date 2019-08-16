@@ -1,6 +1,7 @@
 module Notifications
   class StatusChangeOnCommentedIdea < Notification
     
+    belongs_to :initiating_user, class_name: 'User', optional: true
     belongs_to :idea
     belongs_to :project, optional: true
     belongs_to :idea_status, optional: true
