@@ -261,8 +261,32 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.changeStatusModalLabel',
     defaultMessage: 'Give feedback to explain this status change.',
   },
-  changeStatusModalTitle: {
-    id: 'app.components.admin.PostManager.changeStatusModalTitle',
-    defaultMessage: 'Change this initiative\'s status',
+  // changeStatusModalTitle: { TODO either use or remove
+  //   id: 'app.components.admin.PostManager.changeStatusModalTitle',
+  //   defaultMessage: 'Change this initiative\'s status',
+  // },
+  statusChange: {
+    id: 'app.components.admin.PostManager.statusChange',
+    defaultMessage: 'To change the initiative\'s status to {newStatus}, you must provide feedback to the community.',
+  },
+  feedbackBodyPlaceholder: {
+    id: 'app.components.admin.PostManager.feedbackBodyPlaceholder',
+    defaultMessage: 'Justify status change',
+  },
+  officialUpdateBody: {
+    id: 'app.components.admin.PostManager.officialUpdateBody',
+    defaultMessage: 'Justify status change',
+  },
+  officialUpdateAuthor: {
+    id: 'app.components.admin.PostManager.officialUpdateAuthor',
+    defaultMessage: 'Choose how people will see your name',
+  },
+  feedbackAuthorPlaceholder: {
+    id: 'app.components.admin.PostManager.feedbackAuthorPlaceholder',
+    defaultMessage: 'Choose how people will see your name',
+  },
+  statusChangeSave: {
+    id: 'app.components.admin.PostManager.statusChangeSave',
+    defaultMessage: 'Change status',
   },
 });
