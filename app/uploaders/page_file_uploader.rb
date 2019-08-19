@@ -3,7 +3,7 @@ class PageFileUploader < CarrierWave::Uploader::Base
 
 
   def extension_whitelist
-    %w(pdf doc docx xls xlsx ppt pptx txt sxw sxc sxi sdw sdc sdd csv mp3 mp4 mkv avi)
+    %w(pdf, doc, docx, odt, xls, xlsx, ods, ppt, pptx, odp, txt, csv, mp3, mp4, avi, mkv)
   end
 
   def size_range
