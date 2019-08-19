@@ -32,7 +32,6 @@ import { phasesStream, IPhaseData } from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
 import { getLocalized } from 'utils/i18n';
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { isFileUploadSupported } from 'utils/fileTools';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -491,18 +490,17 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           </FeatureFlag>
         )}
 
-        {isFileUploadSupported() &&
-          <FormElement id="e2e-idea-file-upload">
-            <Label>
-              <FormattedMessage {...messages.fileUploadLabel} />
-            </Label>
-            <FileUploader
-              onFileAdd={this.handleIdeaFileOnAdd}
-              onFileRemove={this.handleIdeaFileOnRemove}
-              files={ideaFiles}
-            />
-          </FormElement>
-        }
+        <FormElement id="e2e-idea-file-upload">
+          <Label>
+            <FormattedMessage {...messages.fileUploadLabel} />
+          </Label>
+          <FileUploader
+            onFileAdd={this.handleIdeaFileOnAdd}
+            onFileRemove={this.handleIdeaFileOnRemove}
+            files={ideaFiles}
+          />
+        </FormElement>
+
       </Form>
     );
   }
