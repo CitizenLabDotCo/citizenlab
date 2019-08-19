@@ -77,7 +77,7 @@ const ButtonWrapper = styled.div`
 const StyledButton = styled(Button)`
   &:hover {
     circle {
-      fill: ${colors.clBlueLightest}; !important;
+      fill: ${colors.clBlueLightest} !important;
     }
   }
 `;
