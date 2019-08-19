@@ -1,9 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
-import { IIdeaStatusData } from 'services/ideaStatuses';
 import { Popup } from 'semantic-ui-react';
-import T from 'components/T';
+import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeAllowedTransitions } from 'services/initiatives';
+import T from 'components/T';
+import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -48,11 +48,10 @@ class StatusSelector extends React.PureComponent<Props> {
   }
 
   render() {
-    const { statuses, allowedTransitions } = this.props;
-    console.log(allowedTransitions);
+    const { statuses } = this.props;
     return (
       <Container>
-        {statuses.map((status, index) => (
+        {statuses.map((status) => (
           <Popup
             key={status.id}
             basic
