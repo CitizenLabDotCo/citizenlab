@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
-import { IIdeaForAdminNotificationData } from 'services/notifications';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import { INewIdeaForAdminNotificationData } from 'services/notifications';
 
 // i18n
 import messages from '../../messages';
@@ -14,35 +13,26 @@ import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
 import T from 'components/T';
 
-interface InputProps {
-  notification: IIdeaForAdminNotificationData;
+interface Props {
+  notification: INewIdeaForAdminNotificationData;
 }
-interface DataProps {
-  idea: GetIdeaChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 const NewIdeaForAdminNotification = memo<Props>(props => {
-  const { notification, idea } = props;
-
-  if (isNilOrError(idea)) return null;
-
-  const { slug } = idea.attributes;
+  const { notification } = props;
 
   const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${slug}`}
+      linkTo={`/ideas/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
-      icon="notification_comment"
+      icon="idea2"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.userPostedIdea}
+        {...messages.userPostedPost}
         values={{
-          ideaAuthorFirstName: deletedUser ?
+          name: deletedUser ?
             <DeletedUser>
               <FormattedMessage {...messages.deletedUser} />
             </DeletedUser>
@@ -52,11 +42,11 @@ const NewIdeaForAdminNotification = memo<Props>(props => {
             >
               {notification.attributes.initiating_user_first_name}
             </Link>,
-          idea: <Link
-            to={`/ideas/${slug}`}
+          post: <Link
+            to={`/ideas/${notification.attributes.post_slug}`}
             onClick={stopPropagation}
           >
-            <T value={notification.attributes.idea_title} />
+            <T value={notification.attributes.post_title_multiloc} />
           </Link>
         }}
       />
@@ -64,14 +54,4 @@ const NewIdeaForAdminNotification = memo<Props>(props => {
   );
 });
 
-export default (inputProps: InputProps) => {
-  const { notification } = inputProps;
-
-  if (!notification.relationships.idea.data) return null;
-
-  return (
-    <GetIdea id={notification.relationships.idea.data.id}>
-      {idea => <NewIdeaForAdminNotification notification={notification} idea={idea} />}
-    </GetIdea>
-  );
-};
+export default NewIdeaForAdminNotification;
