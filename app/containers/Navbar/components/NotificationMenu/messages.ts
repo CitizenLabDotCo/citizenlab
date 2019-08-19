@@ -46,9 +46,9 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userMarkedCommentAsSpam',
     defaultMessage: '{name} reported a comment on \'{postTitle}\' as spam',
   },
-  userMarkedIdeaAsSpam: {
-    id: 'app.containers.NotificationMenu.userMarkedIdeaAsSpam',
-    defaultMessage: '{name} reported \'{ideaTitle}\' as spam',
+  userMarkedPostAsSpam: {
+    id: 'app.containers.NotificationMenu.userMarkedPostAsSpam',
+    defaultMessage: '{name} reported \'{postTitle}\' as spam',
   },
   statusChangedOfYourIdea: {
     id: 'app.containers.NotificationMenu.statusChangedOfYourIdea',
@@ -124,12 +124,12 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.projectPhaseUpcoming',
     defaultMessage: '{projectTitle} will enter a new phase on {phaseStartAt}',
   },
-  ideaAssignedToYou: {
-    id: 'app.containers.NotificationMenu.ideaAssignedToYou',
-    defaultMessage: '{ideaTitle} was assigned to you',
+  postAssignedToYou: {
+    id: 'app.containers.NotificationMenu.postAssignedToYou',
+    defaultMessage: '{postTitle} was assigned to you',
   },
-  xAssignedIdeaToYou: {
-    id: 'app.containers.NotificationMenu.xAssignedIdeaToYou',
-    defaultMessage: '{name} assigned {ideaTitle} to you',
+  xAssignedPostToYou: {
+    id: 'app.containers.NotificationMenu.xAssignedPostToYou',
+    defaultMessage: '{name} assigned {postTitle} to you',
   },
 });

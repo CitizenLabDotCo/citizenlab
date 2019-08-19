@@ -12,20 +12,20 @@ import { DeletedUser } from '../Notification';
 import T from 'components/T';
 
 // services
-import { IIdeaMarkedAsSpamNotificationData } from 'services/notifications';
+import { IInitiativeMarkedAsSpamNotificationData } from 'services/notifications';
 
 interface Props {
-  notification: IIdeaMarkedAsSpamNotificationData;
+  notification: IInitiativeMarkedAsSpamNotificationData;
 }
 
-const IdeaMarkedAsSpamNotification = memo<Props>(props => {
+const InitiativeMarkedAsSpamNotification = memo<Props>(props => {
   const { notification } = props;
 
   const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${notification.attributes.post_slug}`}
+      linkTo={`/initiatives/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
       icon="idea2"
       isRead={!!notification.attributes.read_at}
@@ -51,4 +51,4 @@ const IdeaMarkedAsSpamNotification = memo<Props>(props => {
   );
 });
 
-export default IdeaMarkedAsSpamNotification;
+export default InitiativeMarkedAsSpamNotification;
