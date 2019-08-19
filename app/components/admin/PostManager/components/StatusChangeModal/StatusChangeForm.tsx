@@ -11,6 +11,9 @@ import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative'
 import GetInitiativeStatus, { GetInitiativeStatusChildProps } from 'resources/GetInitiativeStatus';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 
+// services
+import { updateInitiativeStatusWithExistingFeedback, updateInitiativeStatusAddFeedback } from 'services/initiativeStatusChanges';
+
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -25,6 +28,7 @@ import { Section } from 'components/admin/Section';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import MentionsTextAreaMultiloc from 'components/UI/MentionsTextAreaMultiloc';
 import InputMultiloc from 'components/UI/InputMultiloc';
+import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
 
 // Typings
@@ -39,6 +43,7 @@ const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
 interface InputProps {
   initiativeId: string;
   newStatusId: string;
+  closeModal: () => void;
 }
 
 interface DataProps {
@@ -60,6 +65,7 @@ interface State {
   selectedLocale: Locale;
   loading: boolean;
   touched: boolean;
+  error: boolean;
 }
 
 class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
@@ -73,7 +79,8 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
       },
       selectedLocale: props.intl.locale as Locale,
       loading: false,
-      touched: false
+      touched: false,
+      error: false
     };
   }
   handleRadioClick = (event) => {
@@ -177,9 +184,28 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
     );
   }
 
+  submit = () => {
+    const { initiativeId, newStatusId, closeModal, officialFeedbacks } = this.props;
+    const { mode, newOfficialFeedback : { body_multiloc, author_multiloc } } = this.state;
+    if (mode === 'new') {
+      this.setState({ loading: true });
+      updateInitiativeStatusAddFeedback(initiativeId, newStatusId, body_multiloc, author_multiloc)
+        .then(() => closeModal())
+        .catch(err => {
+          this.setState({ loading: false, error: true });
+        });
+    } else if (mode === 'latest' && !isNilOrError(officialFeedbacks.officialFeedbacksList)) {
+      updateInitiativeStatusWithExistingFeedback(initiativeId, newStatusId, officialFeedbacks.officialFeedbacksList.data[0].id)
+      .then(() => closeModal())
+      .catch(err => {
+        this.setState({ loading: false, error: true });
+      });
+    }
+  }
+
   render() {
-    const { initiative, newStatus, officialFeedbacks } = this.props;
-    const { loading } = this.state;
+    const { initiative, newStatus, officialFeedbacks, intl: { formatMessage } } = this.props;
+    const { loading, error } = this.state;
 
     if (isNilOrError(initiative) || isNilOrError(newStatus) || officialFeedbacks.officialFeedbacksList === undefined) return null;
 
@@ -201,9 +227,11 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
         <Button
           processing={loading}
           disabled={!this.validate()}
+          onClick={this.submit}
         >
           <FormattedMessage {...messages.statusChangeSave}/>
         </Button>
+        {error && <Error text={formatMessage(messages.statusChangeGenericError)}/>}
       </Container>
     );
   }

@@ -289,4 +289,8 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.statusChangeSave',
     defaultMessage: 'Change status',
   },
+  statusChangeGenericError: {
+    id: 'app.components.admin.PostManager.statusChangeGenericError',
+    defaultMessage: 'There was an error, please try again later or contact support.',
+  },
 });

@@ -37,7 +37,7 @@ export type IInitiativeStatusChange = {
 //   }
 // };
 
-export async function updateInitiativeStatusWithExistingFeedback(initiativeId, statusId, feedbackId) {
+export async function updateInitiativeStatusWithExistingFeedback(initiativeId: string, statusId: string, feedbackId: string) {
   const response = await streams.add<IInitiativeStatusChange>(`${API_PATH}/initiatives/${initiativeId}/initiative_status_changes`, {
     initiative_status_change: {
       initiative_status_id: statusId,
@@ -45,12 +45,12 @@ export async function updateInitiativeStatusWithExistingFeedback(initiativeId, s
     }
   });
   streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/initiatives`, `${API_PATH}/initiatives/filter_counts`]
+    apiEndpoint: [`${API_PATH}/initiatives`, `${API_PATH}/initiatives/filter_counts`, `${API_PATH}/initiatives/${initiativeId}/allowed_transitions`]
   });
   return response;
 }
 
-export async function updateInitiativeStatusAddFeedback(initiativeId, statusId, body_multiloc, author_multiloc) {
+export async function updateInitiativeStatusAddFeedback(initiativeId: string, statusId: string, body_multiloc: Multiloc, author_multiloc: Multiloc) {
   const response = await streams.add<IInitiativeStatusChange>(`${API_PATH}/initiatives/${initiativeId}/initiative_status_changes`, {
     initiative_status_change: {
       initiative_status_id: statusId,
@@ -59,9 +59,14 @@ export async function updateInitiativeStatusAddFeedback(initiativeId, statusId, 
         author_multiloc
       }
     }
-   });
-   streams.fetchAllWith({
-     apiEndpoint: [`${API_PATH}/initiatives`, `${API_PATH}/initiatives/filter_counts`]
-   });
+  });
+  streams.fetchAllWith({
+    apiEndpoint: [
+      `${API_PATH}/initiatives`,
+      `${API_PATH}/initiatives/filter_counts`,
+      `${API_PATH}/initiatives/${initiativeId}/official_feedback`,
+      `${API_PATH}/initiatives/${initiativeId}/allowed_transitions`
+    ]
+  });
   return response;
 }
