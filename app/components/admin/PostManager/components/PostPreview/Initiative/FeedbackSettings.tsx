@@ -66,9 +66,8 @@ interface PropsWithHoCs extends Props, InjectedLocalized, InjectedIntlProps {}
 
 class FeedbackSettings extends PureComponent<PropsWithHoCs> {
 
-  getStatusOptions = memoize(
-    (statuses) => {
-      const { localize, allowedTransitions } = this.props;
+  getStatusOptions = (statuses, allowedTransitions) => {
+      const { localize } = this.props;
       if (!isNilOrError(statuses)) {
         return statuses.map(status => ({
           value: status.id,
@@ -79,7 +78,6 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
         return [];
       }
     }
-  );
 
   getInitiativeStatusOption = memoize(
     (initiative: GetInitiativeChildProps, statuses) => {
@@ -160,9 +158,9 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
   }
 
   render() {
-    const { initiative, className, statuses, prospectAssignees } = this.props;
+    const { initiative, className, statuses, prospectAssignees, allowedTransitions } = this.props;
 
-    const statusOptions = this.getStatusOptions(statuses);
+    const statusOptions = this.getStatusOptions(statuses, allowedTransitions);
     const initiativeStatusOption = this.getInitiativeStatusOption(initiative, statuses);
     const assigneeOptions = this.getAssigneeOptions(prospectAssignees);
     const initiativeAssigneeOption = get(initiative, 'relationships.assignee.data.id', 'unassigned');
