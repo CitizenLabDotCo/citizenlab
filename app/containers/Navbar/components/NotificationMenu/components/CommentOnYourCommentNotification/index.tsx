@@ -12,31 +12,28 @@ import { FormattedMessage } from 'utils/cl-intl';
 import NotificationWrapper from '../NotificationWrapper';
 import { DeletedUser } from '../Notification';
 import Link from 'utils/cl-router/Link';
-import { reportError } from 'utils/loggingUtils';
 
 interface Props {
   notification: ICommentOnYourCommentNotificationData;
 }
+
+const mapPostTypeToLink = (notification: ICommentOnYourCommentNotificationData) : string => {
+  switch (notification.attributes.post_type) {
+    case 'Idea':
+      return `/ideas/${notification.attributes.post_slug}`;
+    case 'Initiative':
+      return `/initiatives/${notification.attributes.post_slug}`;
+  }
+};
 
 const CommentOnYourCommentNotification = memo<Props>(props => {
   const { notification } = props;
 
   const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
-  let linkTo;
-
-  switch (notification.attributes.post_type) {
-    case 'Idea':
-      linkTo = `/ideas/${notification.attributes.post_slug}`;
-    case 'Initiative':
-      linkTo = `/initiatives/${notification.attributes.post_slug}`;
-    default:
-     reportError(`Unsupported post type ${notification.attributes.post_type}`);
-  }
-
   return (
     <NotificationWrapper
-      linkTo={linkTo}
+      linkTo={mapPostTypeToLink(notification)}
       timing={notification.attributes.created_at}
       icon="notification_comment"
       isRead={!!notification.attributes.read_at}
