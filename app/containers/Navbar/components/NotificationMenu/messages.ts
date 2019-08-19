@@ -42,8 +42,8 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.mentionInComment',
     defaultMessage: '{name} mentioned you in a comment',
   },
-  userMarkedCommentAsSpam: {
-    id: 'app.containers.NotificationMenu.userMarkedCommentAsSpam',
+  userReportedCommentAsSpam: {
+    id: 'app.containers.NotificationMenu.userReportedCommentAsSpam',
     defaultMessage: '{name} reported a comment on \'{postTitle}\' as spam',
   },
   userMarkedPostAsSpam: {
@@ -66,8 +66,8 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userAcceptedYourInvitation',
     defaultMessage: '{name} accepted your invitation',
   },
-  commentDeletedByAdmin: {
-    id: 'app.containers.NotificationMenu.commentDeletedByAdmin',
+  commentDeletedByAdminFor: {
+    id: 'app.containers.NotificationMenu.commentDeletedByAdminFor',
     defaultMessage: `Your comment on '{postTitle}' has been deleted by an admin because
       {reasonCode, select,
         irrelevant {it is irrelevant}
@@ -93,7 +93,7 @@ export default defineMessages({
     defaultMessage: 'Deleted user',
   },
   userPostedPost: {
-    id: 'app.containers.NotificationMenu.userPostedIdea',
+    id: 'app.containers.NotificationMenu.userPostedPost',
     defaultMessage: '{name} posted {post}',
   },
   userPostedComment: {
