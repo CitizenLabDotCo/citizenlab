@@ -1659,6 +1659,7 @@
   "app.containers.UsersShowPage.noCommentsForUser": "Denne bruger har endnu ikke slået nogen kommentarer op.",
   "app.containers.UsersShowPage.noCommentsForYou": "Du har endnu ikke slået nogen kommentarer op.",
   "app.containers.UsersShowPage.seeIdea": "Se ide ",
+  "app.containers.UsersShowPage.seeInitiative": "",
   "app.containers.UsersShowPage.tryAgain": "Der opstod en fejl, prøv venligst igen senere. ",
   "app.containers.admin.ideas.all.header": "Ideas",
   "app.containers.admin.ideas.all.headerSubtitle": "Add topics to ideas, update their status or change the project in which they are shown. Contact us if you want to use custom topics or statuses.",
