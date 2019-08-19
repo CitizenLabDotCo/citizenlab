@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import Modal from 'components/UI/Modal';
 import { Subscription } from 'rxjs';
 
 // i18n
@@ -10,6 +9,10 @@ import messages from '../../messages';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import events, { StatusChangeModalOpen } from '../../events';
+
+// components
+import Modal from 'components/UI/Modal';
+import StatusChangeForm from './StatusChangeForm';
 
 interface Props {}
 
@@ -32,8 +35,8 @@ class StatusChangeModal extends PureComponent<Props & InjectedIntlProps, State> 
 
   componentDidMount() {
     this.subscriptions = [
-      eventEmitter.observeEvent<StatusChangeModalOpen>(events.statusChangeModalOpen).subscribe(({ eventValue }) => {
-        console.log(eventValue);
+      eventEmitter.observeEvent<StatusChangeModalOpen>(events.statusChangeModalOpen).subscribe(({ eventValue: { initiativeId,  newStatusId } }) => {
+        this.setState({ initiativeId, newStatusId });
       })
     ];
   }
@@ -42,17 +45,26 @@ class StatusChangeModal extends PureComponent<Props & InjectedIntlProps, State> 
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  close = () => {
+    this.setState({ initiativeId: null, newStatusId: null });
+  }
+
   render() {
     const { intl: { formatMessage } } = this.props;
-    const { initiativeId } = this.state;
+    const { initiativeId, newStatusId } = this.state;
+
     return (
       <Modal
-        opened={!!initiativeId}
-        close={close}
+        opened={!!initiativeId && !!newStatusId}
+        close={this.close}
         label={formatMessage(messages.changeStatusModalLabel)}
-        header={<FormattedMessage {...messages.changeStatusModalTitle} />}
+        // header={<FormattedMessage {...messages.changeStatusModalTitle} />}
       >
-        "Hi"
+        {!!initiativeId && !!newStatusId &&
+          <StatusChangeForm
+            {... { initiativeId, newStatusId }}
+          />
+        }
       </Modal>
     );
   }
