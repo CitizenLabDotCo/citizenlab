@@ -2,11 +2,10 @@ module Notifications
   class CommentMarkedAsSpam < MarkedAsSpam
     
     belongs_to :comment
-    belongs_to :initiative, optional: true
-    belongs_to :idea, optional: true
+    belongs_to :post
     belongs_to :project, optional: true
 
-    validates :comment, presence: true
+    validates :comment, :post, presence: true
 
     ACTIVITY_TRIGGERS = {'SpamReport' => {'created' => true}}
     EVENT_NAME = 'Comment marked as spam'
@@ -14,30 +13,25 @@ module Notifications
 
     def self.make_notifications_on activity
       spam_report = activity.item
-      initiating_user = User.find(spam_report&.user_id)
+      initiating_user_id = spam_report&.user_id
       if spam_report.spam_reportable_type == 'Comment'
-        project_id = nil
-        post_attributes = case spam_report.spam_reportable.post_type
-        when 'Idea'
-          project_id = spam_report.spam_reportable.post&.project_id
-          {
-            idea: spam_report.spam_reportable.post,
-            project_id: project_id
-          }
-        when 'Initiative'
-          {
-            initiative_id: spam_report.spam_reportable.post_id
-          }
-        else
-          raise "Unsupported post type #{spam_report.spam_reportable.post_type}"
+        attributes = [
+          initiating_user_id: initiating_user_id,
+          spam_report: spam_report,
+          comment_id: spam_report.spam_reportable.id,
+          post_id: spam_report.spam_reportable.post_id,
+          post_type: spam_report.spam_reportable.post_type,
+          reason_code: activity.payload['reason_code'],
+          other_reason: activity.payload['other_reason'],
+        ]
+        if attributes[:post_type] == 'Idea'
+          attributes[:project_id] = comment.post.project_id
         end
-        self.recipient_ids(initiating_user, project_id).map do |recipient_id|
+
+        self.recipient_ids(initiating_user_id, project_id).map do |recipient_id|
           self.new(
             recipient_id: recipient_id,
-            initiating_user_id: spam_report.user_id,
-            spam_report: spam_report,
-            comment_id: spam_report.spam_reportable_id,
-            **post_attributes
+            **attributes
           )
         end
       else
