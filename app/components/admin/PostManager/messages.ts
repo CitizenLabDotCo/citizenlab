@@ -257,4 +257,12 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.multipleInitiatives',
     defaultMessage: '{initiativesCount} initiatives',
   },
+  changeStatusModalLabel: {
+    id: 'app.components.admin.PostManager.changeStatusModalLabel',
+    defaultMessage: 'Give feedback to explain this status change.',
+  },
+  changeStatusModalTitle: {
+    id: 'app.components.admin.PostManager.changeStatusModalTitle',
+    defaultMessage: 'Change this initiative\'s status',
+  },
 });

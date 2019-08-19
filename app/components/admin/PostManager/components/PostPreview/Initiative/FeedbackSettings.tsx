@@ -36,6 +36,10 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
 import { InjectedIntlProps } from 'react-intl';
 
+// events
+import eventEmitter from 'utils/eventEmitter';
+import events, { StatusChangeModalOpen } from 'components/admin/PostManager/events';
+
 const StyledLabel = styled(Label)`
   margin-top: 20px;
 `;
@@ -126,7 +130,7 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
     const adminAtWorkId = authUser ? authUser.id : null;
     const tenantId = !isNilOrError(tenant) && tenant.id;
 
-    // TODO open modal
+    eventEmitter.emit<StatusChangeModalOpen>('initiativeManager', events.statusChangeModalOpen, { initiativeId, newStatusId: statusOption.value });
 
     trackEventByName(tracks.initiativeStatusChange, {
       tenant: tenantId,

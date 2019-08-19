@@ -41,6 +41,10 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetInitiativeAllowedTransitions, { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiativeAllowedTransitions';
 import { getDaysRemainingUntil } from 'utils/dateUtils';
 
+// events
+import eventEmitter from 'utils/eventEmitter';
+import events, { StatusChangeModalOpen } from 'components/admin/PostManager/events';
+
 interface DataProps {
   tenant: GetTenantChildProps;
   allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
@@ -81,7 +85,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
     const { initiative } = this.props;
     const initiativeId = initiative.id;
 
-    // TODO open the modal.
+    eventEmitter.emit<StatusChangeModalOpen>('initiativeManager', events.statusChangeModalOpen, { initiativeId, newStatusId: statusId });
 
     trackEventByName(tracks.initiativeStatusChange, {
       location: 'Initiative overview',
