@@ -21,7 +21,7 @@ module Notifications
       recipient_id = comment&.author_id
       initiator_id = activity.user_id
 
-      if recipient_id != initiator_id
+      if recipient_id && (recipient_id != initiator_id)
         attributes = [
           recipient_id: recipient_id,
           initiating_user_id: initiator_id,

@@ -2,9 +2,11 @@ module Notifications
   class IdeaAssignedToYou < Notification
     
     belongs_to :initiating_user, class_name: 'User', optional: true
-    belongs_to :idea
+    belongs_to :post
+    belongs_to :project
 
-    validates :idea, presence: true
+    validates :post, :project, presence: true
+    validates :post_type, inclusion: { in: ['Idea'] }
 
     ACTIVITY_TRIGGERS = {'Idea' => {'changed_assignee' => true}}
     EVENT_NAME = 'Idea assigned to you'
@@ -21,7 +23,7 @@ module Notifications
         [
           self.new(
            recipient_id: recipient_id,
-           idea_id: idea.id,
+           post: idea,
            project_id: idea.project_id,
            initiating_user_id: initiator_id
          )
