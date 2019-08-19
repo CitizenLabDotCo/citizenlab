@@ -30,6 +30,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userCommentedOnYourIdea',
     defaultMessage: '{name} commented on your idea',
   },
+  userCommentedOnYourInitiative: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourInitiative',
+    defaultMessage: '{name} commented on your initiative',
+  },
   userReactedToYourComment: {
     id: 'app.containers.NotificationMenu.userReactedToYourComment',
     defaultMessage: '{name} reacted to your comment',
@@ -40,7 +44,7 @@ export default defineMessages({
   },
   userMarkedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userMarkedCommentAsSpam',
-    defaultMessage: '{name} reported a comment on \'{ideaTitle}\' as spam',
+    defaultMessage: '{name} reported a comment on \'{postTitle}\' as spam',
   },
   userMarkedIdeaAsSpam: {
     id: 'app.containers.NotificationMenu.userMarkedIdeaAsSpam',
@@ -64,7 +68,7 @@ export default defineMessages({
   },
   commentDeletedByAdmin: {
     id: 'app.containers.NotificationMenu.commentDeletedByAdmin',
-    defaultMessage: `Your comment on '{ideaTitle}' has been deleted by an admin because
+    defaultMessage: `Your comment on '{postTitle}' has been deleted by an admin because
       {reasonCode, select,
         irrelevant {it is irrelevant}
         inappropriate {its content is inappropriate}
