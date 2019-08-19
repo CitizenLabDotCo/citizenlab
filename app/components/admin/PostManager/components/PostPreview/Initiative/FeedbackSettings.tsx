@@ -26,6 +26,7 @@ import { updateInitiative } from 'services/initiatives';
 // resources
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetInitiativeStatuses, { GetInitiativeStatusesChildProps } from 'resources/GetInitiativeStatuses';
+import GetInitiativeAllowedTransitions, { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiativeAllowedTransitions';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -47,6 +48,7 @@ interface DataProps {
   statuses: GetInitiativeStatusesChildProps;
   initiative: GetInitiativeChildProps;
   prospectAssignees: GetUsersChildProps;
+  allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
 }
 
 interface InputProps {
@@ -62,9 +64,13 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
 
   getStatusOptions = memoize(
     (statuses) => {
-      const { localize } = this.props;
+      const { localize, allowedTransitions } = this.props;
       if (!isNilOrError(statuses)) {
-        return statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
+        return statuses.map(status => ({
+          value: status.id,
+          label: localize(status.attributes.title_multiloc),
+          isDisabled: allowedTransitions && allowedTransitions[status.id] === undefined
+        }));
       } else {
         return [];
       }
@@ -120,9 +126,7 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
     const adminAtWorkId = authUser ? authUser.id : null;
     const tenantId = !isNilOrError(tenant) && tenant.id;
 
-    updateInitiative(initiativeId, {
-      initiative_status_id: statusOption.value
-    });
+    // TODO open modal
 
     trackEventByName(tracks.initiativeStatusChange, {
       tenant: tenantId,
@@ -192,6 +196,7 @@ const Data = adopt<DataProps, InputProps>({
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   statuses: <GetInitiativeStatuses/>,
   prospectAssignees: <GetUsers canAdmin />,
+  allowedTransitions: ({ initiativeId, render }) => <GetInitiativeAllowedTransitions id={initiativeId}>{render}</GetInitiativeAllowedTransitions>
 });
 
 const FeedbackSettingsWithHOCs = injectIntl(injectLocalize(FeedbackSettings));
