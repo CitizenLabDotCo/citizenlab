@@ -135,7 +135,7 @@ describe('Assignee select', () => {
       // Pick first idea in idea table and assign it to our user
       cy.wait(500);
       cy.get('.e2e-idea-manager-idea-row').first()
-        .find('.e2e-post-manager-post-row-assignee-select').click()
+        .find('.e2e-post-manager-post-row-assignee-select').scrollIntoView().click()
         .contains(`${newAdminFirstName} ${newAdminLastName}`).click();
       // Select this user in the assignee filter
       cy.get('#e2e-select-assignee-filter').click()
@@ -145,6 +145,5 @@ describe('Assignee select', () => {
       cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
     });
 
-// TODO cleanup
   });
 });
