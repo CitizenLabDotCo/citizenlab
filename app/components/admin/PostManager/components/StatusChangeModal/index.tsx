@@ -63,6 +63,7 @@ class StatusChangeModal extends PureComponent<Props & InjectedIntlProps, State> 
         {!!initiativeId && !!newStatusId &&
           <StatusChangeForm
             {... { initiativeId, newStatusId }}
+            closeModal={this.close}
           />
         }
       </Modal>
