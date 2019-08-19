@@ -45,7 +45,7 @@ export async function updateInitiativeStatusWithExistingFeedback(initiativeId: s
     }
   });
   streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/initiatives`, `${API_PATH}/initiatives/filter_counts`, `${API_PATH}/initiatives/${initiativeId}/allowed_transitions`]
+    apiEndpoint: [`${API_PATH}/initiatives`, `${API_PATH}/initiatives/${initiativeId}`, `${API_PATH}/initiatives/filter_counts`, `${API_PATH}/initiatives/${initiativeId}/allowed_transitions`]
   });
   return response;
 }
@@ -63,6 +63,7 @@ export async function updateInitiativeStatusAddFeedback(initiativeId: string, st
   streams.fetchAllWith({
     apiEndpoint: [
       `${API_PATH}/initiatives`,
+      `${API_PATH}/initiatives/${initiativeId}`,
       `${API_PATH}/initiatives/filter_counts`,
       `${API_PATH}/initiatives/${initiativeId}/official_feedback`,
       `${API_PATH}/initiatives/${initiativeId}/allowed_transitions`

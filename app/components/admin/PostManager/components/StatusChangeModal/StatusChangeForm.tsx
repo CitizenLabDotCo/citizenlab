@@ -159,7 +159,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
         />
 
         <MentionsTextAreaMultiloc
-          shownLocale={this.state.selectedLocale}
+          shownLocale={selectedLocale}
           placeholder={formatMessage(messages.feedbackBodyPlaceholder)}
           rows={8}
           padding="12px"
@@ -173,7 +173,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
         />
 
         <InputMultiloc
-          shownLocale={this.state.selectedLocale}
+          shownLocale={selectedLocale}
           placeholder={formatMessage(messages.feedbackAuthorPlaceholder)}
           ariaLabel={formatMessage(messages.officialUpdateAuthor)}
           valueMultiloc={newOfficialFeedback.author_multiloc}
