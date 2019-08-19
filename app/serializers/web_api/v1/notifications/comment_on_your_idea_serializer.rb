@@ -11,12 +11,11 @@ class WebApi::V1::Notifications::CommentOnYourIdeaSerializer < WebApi::V1::Notif
     object.initiating_user&.slug
   end
 
-  attribute :idea_title do |object|
-    object.idea&.title_multiloc
+  attribute :post_title_multiloc do |object|
+    object.post&.title_multiloc
   end
 
-  belongs_to :initiating_user, record_type: :user, serializer: WebApi::V1::UserSerializer
-  belongs_to :idea, record_type: :idea, serializer: WebApi::V1::IdeaSerializer
-  belongs_to :comment, record_type: :comment, serializer: WebApi::V1::CommentSerializer
-  belongs_to :project, record_type: :project, serializer: WebApi::V1::ProjectSerializer
+  attribute :post_slug do |object|
+    object.post&.slug
+  end
 end
