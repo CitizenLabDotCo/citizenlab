@@ -10,7 +10,4 @@ class WebApi::V1::Notifications::InviteAcceptedSerializer < WebApi::V1::Notifica
   attribute :initiating_user_slug do |object|
     object.initiating_user&.slug
   end
-
-  belongs_to :initiating_user, record_type: :user, serializer: WebApi::V1::UserSerializer
-  belongs_to :invite, serializer: WebApi::V1::InviteSerializer
 end

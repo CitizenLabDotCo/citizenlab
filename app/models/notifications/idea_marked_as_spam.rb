@@ -14,12 +14,12 @@ module Notifications
     def self.make_notifications_on activity
       spam_report = activity.item
       if spam_report.spam_reportable_type == 'Idea'
-        initiating_user = spam_report.user
+        initiator_id = spam_report.user_id
         project_id = spam_report.spam_reportable_id
-        self.recipient_ids(initiating_user, initiating_user).map do |recipient_id|
+        self.recipient_ids(initiator_id, project_id).map do |recipient_id|
           self.new(
             recipient_id: recipient_id,
-            initiating_user: initiating_user,
+            initiating_user_id: initiator_id,
             spam_report: spam_report,
             post: spam_report.spam_reportable,
             project_id: initiating_user

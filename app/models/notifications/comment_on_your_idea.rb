@@ -20,11 +20,11 @@ module Notifications
       recipient_id = idea&.author_id
       initiator_id = comment&.author_id
 
-      if recipient_id && (comment.post_type == 'Idea') && (recipient_id != initiator_id)
+      if recipient_id && initiator_id && (comment.post_type == 'Idea') && (recipient_id != initiator_id)
         [self.new(
            recipient_id: recipient_id,
            initiating_user_id: initiator_id,
-           idea: idea,
+           post: idea,
            comment: comment,
            project_id: idea&.project_id
          )]

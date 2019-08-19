@@ -13,10 +13,10 @@ module Notifications
 
     def self.make_notifications_on activity
       spam_report = activity.item
-      initiating_user_id = spam_report&.user_id
-      if spam_report.spam_reportable_type == 'Comment'
+      initiator_id = spam_report&.user_id
+      if spam_report.spam_reportable_type == 'Comment' && initiator_id
         attributes = [
-          initiating_user_id: initiating_user_id,
+          initiating_user_id: initiator_id,
           spam_report: spam_report,
           comment_id: spam_report.spam_reportable.id,
           post_id: spam_report.spam_reportable.post_id,
@@ -28,7 +28,7 @@ module Notifications
           attributes[:project_id] = comment.post.project_id
         end
 
-        self.recipient_ids(initiating_user_id, project_id).map do |recipient_id|
+        self.recipient_ids(initiator_id, attributes[:project_id).map do |recipient_id|
           self.new(
             recipient_id: recipient_id,
             **attributes
