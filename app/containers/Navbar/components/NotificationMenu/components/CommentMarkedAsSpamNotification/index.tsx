@@ -40,7 +40,7 @@ const CommentMarkedAsSpamNotification = memo<Props>(props => {
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.userMarkedCommentAsSpam}
+        {...messages.userReportedCommentAsSpam}
         values={{
           name: deletedUser ?
             <DeletedUser>

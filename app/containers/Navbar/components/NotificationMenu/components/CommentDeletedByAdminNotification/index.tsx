@@ -29,7 +29,7 @@ export const CommentDeletedByAdminNotification = memo<Props>(props => {
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.commentDeletedByAdmin}
+        {...messages.commentDeletedByAdminFor}
         values={{
           postTitle: <T value={notification.attributes.post_title_multiloc} />,
           reasonCode: notification.attributes.reason_code,
