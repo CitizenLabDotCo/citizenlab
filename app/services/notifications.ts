@@ -11,6 +11,47 @@ interface IBaseNotificationData {
   type: string;
 }
 
+export interface IAdminRightsReceivedNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'admin_rights_received';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+  };
+}
+
+export interface ICommentDeletedByAdminNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'comment_deleted_by_admin';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+    post_type: 'Initiative' | 'Idea';
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+    reason_code: 'irrelevant' | 'inappropriate' | 'other';
+    other_reason: string;
+  };
+}
+
+export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'comment_marked_as_spam';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_type: 'Initiative' | 'Idea';
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
 export interface ICommentOnYourCommentNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'comment_on_your_comment';
@@ -33,27 +74,21 @@ export interface ICommentOnYourIdeaNotificationData extends IBaseNotificationDat
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    idea_title: Multiloc;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
   };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    comment: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
+}
+
+export interface ICommentOnYourInitiativeNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'comment_on_your_initiative';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
   };
 }
 
@@ -119,38 +154,6 @@ export interface IIdeaMarkedAsSpamNotificationData extends IBaseNotificationData
       }
     }
     comment: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'comment_marked_as_spam';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
       data?: {
         id: string;
         type: string;
@@ -277,46 +280,6 @@ export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
   };
 }
 
-export interface ICommentDeletedByAdminNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'comment_deleted_by_admin';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string;
-    initiating_user_last_name: string;
-    initiating_user_slug: string;
-    idea_title: Multiloc;
-    reason_code: 'irrelevant' | 'inappropriate' | 'other';
-    other_reason: string;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    comment: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
 export interface IProjectModerationRightsReceivedNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'project_moderation_rights_received';
@@ -331,22 +294,6 @@ export interface IProjectModerationRightsReceivedNotificationData extends IBaseN
       }
     }
     project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface IAdminRightsReceivedNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'admin_rights_received';
-    read_at: string | null;
-    created_at: string;
-  };
-  relationships: {
-    initiating_user: {
       data?: {
         id: string;
         type: string;
@@ -655,27 +602,28 @@ export interface IIdeaAssignedToYouNotificationData extends IBaseNotificationDat
 }
 
 export type TNotificationData =
+  IAdminRightsReceivedNotificationData |
+  ICommentDeletedByAdminNotificationData |
+  ICommentForAdminNotificationData |
+  ICommentMarkedAsSpamNotificationData |
   ICommentOnYourCommentNotificationData |
   ICommentOnYourIdeaNotificationData |
-  ICommentMarkedAsSpamNotificationData |
-  IIdeaMarkedAsSpamNotificationData |
-  IMentionInCommentNotificationData |
-  IInviteAcceptedNotificationData |
-  IStatusChangeOfYourIdeaNotificationData |
-  IStatusChangeOnCommentedIdeaNotificationData |
-  IStatusChangeOnVotedIdeaNotificationData |
-  ICommentDeletedByAdminNotificationData |
-  IProjectModerationRightsReceivedNotificationData |
-  IAdminRightsReceivedNotificationData |
+  ICommentOnYourInitiativeNotificationData |
   IIdeaForAdminNotificationData |
-  ICommentForAdminNotificationData |
-  IOfficialFeedbackOnYourIdeaNotificationData |
-  IOfficialFeedbackOnVotedIdeaNotificationData |
-  IOfficialFeedbackOnCommentedIdeaNotificationData |
+  IIdeaMarkedAsSpamNotificationData |
+  IIdeaAssignedToYouNotificationData |
+  IInviteAcceptedNotificationData |
+  IMentionInCommentNotificationData |
   IMentionInOfficialFeedbackNotificationData |
+  IOfficialFeedbackOnCommentedIdeaNotificationData |
+  IOfficialFeedbackOnVotedIdeaNotificationData |
+  IOfficialFeedbackOnYourIdeaNotificationData |
+  IProjectModerationRightsReceivedNotificationData |
   IProjectPhaseStartedNotificationData |
   IProjectPhaseUpcomingNotificationData |
-  IIdeaAssignedToYouNotificationData;
+  IStatusChangeOfYourIdeaNotificationData |
+  IStatusChangeOnCommentedIdeaNotificationData |
+  IStatusChangeOnVotedIdeaNotificationData;
 
 export interface INotificationLinks {
   self: string;

@@ -1,30 +1,29 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { ICommentDeletedByAdminNotificationData } from 'services/notifications';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
-interface InputProps {
+interface Props {
   notification: ICommentDeletedByAdminNotificationData;
 }
 
-interface DataProps {
-  idea: GetIdeaChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
+const mapPostTypeToLink = (notification: ICommentDeletedByAdminNotificationData) : string => {
+  switch (notification.attributes.post_type) {
+    case 'Idea':
+      return `/ideas/${notification.attributes.post_slug}`;
+    case 'Initiative':
+      return `/initiatives/${notification.attributes.post_slug}`;
+  }
+};
 
 export const CommentDeletedByAdminNotification = memo<Props>(props => {
-  const { notification, idea } = props;
-
-  if (isNilOrError(idea)) return null;
+  const { notification } = props;
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${idea.attributes.slug}`}
+      linkTo={mapPostTypeToLink(notification)}
       timing={notification.attributes.created_at}
       icon="notification_comment"
       isRead={!!notification.attributes.read_at}
@@ -32,7 +31,7 @@ export const CommentDeletedByAdminNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.commentDeletedByAdmin}
         values={{
-          ideaTitle: <T value={idea.attributes.title_multiloc} />,
+          postTitle: <T value={notification.attributes.post_title_multiloc} />,
           reasonCode: notification.attributes.reason_code,
           otherReason: notification.attributes.other_reason,
         }}
@@ -41,14 +40,4 @@ export const CommentDeletedByAdminNotification = memo<Props>(props => {
   );
 });
 
-export default (inputProps: InputProps) => {
-  const { notification } = inputProps;
-
-  if (!notification.relationships.idea.data) return null;
-
-  return (
-    <GetIdea id={notification.relationships.idea.data.id}>
-      {idea => <CommentDeletedByAdminNotification notification={notification} idea={idea} />}
-    </GetIdea>
-  );
-};
+export default CommentDeletedByAdminNotification;
