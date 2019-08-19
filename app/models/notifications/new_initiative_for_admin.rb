@@ -2,9 +2,9 @@ module Notifications
   class NewInitiativeForAdmin < Notification
     
     belongs_to :initiating_user, class_name: 'User'
-    belongs_to :initiative
+    belongs_to :post
 
-    validates :initiating_user, :initiative, presence: true
+    validates :initiating_user, :post, presence: true
 
     ACTIVITY_TRIGGERS = {'Initiative' => {'published' => true}}
     EVENT_NAME = 'New initiative for admin'
@@ -15,13 +15,13 @@ module Notifications
       initiator = initiative.author
       
       if initiator && !initiator.admin?
-        User.admin.select do |recipient|
-          recipient&.id != initiative&.assignee_id
-        end.map do |recipient|
+        User.admin.ids.select do |recipient_id|
+          recipient_id != initiative&.assignee_id
+        end.map do |recipient_id|
           self.new(
-           recipient_id: recipient.id,
+           recipient_id: recipient_id,
            initiating_user: initiator,
-           initiative_id: initiative.id,
+           post: initiative,
          )
         end
       else
