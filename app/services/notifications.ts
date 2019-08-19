@@ -144,6 +144,17 @@ export interface IInitiativeMarkedAsSpamNotificationData extends IBaseNotificati
   };
 }
 
+export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'invite_accepted';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+  };
+}
+
 export interface IMentionInCommentNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'mention_in_comment';
@@ -152,33 +163,64 @@ export interface IMentionInCommentNotificationData extends IBaseNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    idea_title: Multiloc;
+    post_type: 'Initiative' | 'Idea';
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
   };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    comment: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
+}
+
+export interface IMentionInOfficialFeedbackNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'mention_in_official_feedback';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    official_feedback_author: Multiloc;
+    post_type: 'Initiative' | 'Idea';
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface INewCommentForAdminNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'new_comment_for_admin';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_type: 'Initiative' | 'Idea';
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface INewIdeaForAdminNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'new_idea_for_admin';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface INewInitiativeForAdminNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'new_initiative_for_admin';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
   };
 }
 
@@ -269,31 +311,6 @@ export interface IStatusChangeOnVotedIdeaNotificationData extends IBaseNotificat
   };
 }
 
-export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'invite_accepted';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    invite: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
 export interface IProjectModerationRightsReceivedNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'project_moderation_rights_received';
@@ -302,76 +319,6 @@ export interface IProjectModerationRightsReceivedNotificationData extends IBaseN
   };
   relationships: {
     initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface IIdeaForAdminNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'new_idea_for_admin';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea_author: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface ICommentForAdminNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'new_comment_for_admin';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    comment: {
       data?: {
         id: string;
         type: string;
@@ -467,45 +414,6 @@ export interface IOfficialFeedbackOnVotedIdeaNotificationData extends IBaseNotif
 export interface IOfficialFeedbackOnCommentedIdeaNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'official_feedback_on_commented_idea';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-    official_feedback_author: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    official_feedback: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface IMentionInOfficialFeedbackNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'mention_in_official_feedback';
     read_at: string | null;
     created_at: string;
     initiating_user_first_name: string | null;
