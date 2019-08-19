@@ -11,14 +11,11 @@ class WebApi::V1::Notifications::InitiativeAssignedToYouSerializer < WebApi::V1:
     object.initiating_user&.slug
   end
 
-  attribute :initiative_title_multiloc do |object|
-    object.initiative&.title_multiloc
+  attribute :post_title_multiloc do |object|
+    object.post&.title_multiloc
   end
 
-  attribute :initiative_slug do |object|
-    object.initiative&.slug
+  attribute :post_slug do |object|
+    object.post&.slug
   end
-
-  belongs_to :initiating_user, record_type: :user, serializer: WebApi::V1::UserSerializer
-  belongs_to :initiative, serializer: WebApi::V1::InitiativeSerializer
 end

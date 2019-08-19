@@ -1,10 +1,10 @@
 module Notifications
   class InitiativeMarkedAsSpam < MarkedAsSpam
     
-    belongs_to :initiative
-    belongs_to :project, optional: true
+    belongs_to :post
 
-    validates :initiative, presence: true
+    validates :post, presence: true
+    validates :post_type, inclusion: { in: ['Initiative'] }
 
     ACTIVITY_TRIGGERS = {'SpamReport' => {'created' => true}}
     EVENT_NAME = 'Initiative marked as spam'
@@ -13,12 +13,13 @@ module Notifications
     def self.make_notifications_on activity
       spam_report = activity.item
       if spam_report.spam_reportable_type == 'Initiative'
-        self.recipient_ids(initiating_user, project_id).map do |recipient_id|
-          self.create(
+        initiating_user = spam_report.user
+        self.recipient_ids(initiating_user).map do |recipient_id|
+          self.new(
             recipient_id: recipient_id,
-            initiating_user_id: spam_report.user_id,
+            initiating_user: initiating_user,
             spam_report: spam_report,
-            initiative_id: spam_report.spam_reportable_id,
+            post: spam_report.spam_reportable
           )
         end
       else

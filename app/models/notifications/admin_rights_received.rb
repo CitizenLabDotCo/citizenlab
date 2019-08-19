@@ -14,7 +14,7 @@ module Notifications
       recipient_id = admin.id
       initiator_id = activity.user_id
       
-      if recipient_id && initiator_id && (recipient_id != initiator_id)
+      if recipient_id && (recipient_id != initiator_id)
         [self.new(
            recipient_id: admin.id,
            initiating_user: User.find(initiator_id)
