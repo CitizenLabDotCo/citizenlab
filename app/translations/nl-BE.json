@@ -1659,6 +1659,7 @@
   "app.containers.UsersShowPage.noCommentsForUser": "Deze persoon heeft nog geen reacties geplaatst.",
   "app.containers.UsersShowPage.noCommentsForYou": "Jij hebt nog geen reacties geplaatst.",
   "app.containers.UsersShowPage.seeIdea": "Bekijk idee",
+  "app.containers.UsersShowPage.seeInitiative": "",
   "app.containers.UsersShowPage.tryAgain": "Er ging iets fout, probeer het later opnieuw.",
   "app.containers.admin.ideas.all.header": "Ideeën",
   "app.containers.admin.ideas.all.headerSubtitle": "Voeg thema's toe aan ideeën, pas hun status aan of wijzig het project waarin ze zichtbaar zijn. Contacteer ons als je eigen thema's of statussen wil gebruiken.",
