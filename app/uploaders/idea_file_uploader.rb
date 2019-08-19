@@ -38,7 +38,7 @@ class IdeaFileUploader < CarrierWave::Uploader::Base
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_whitelist
-    %w(pdf, doc, docx, odt, xls, xlsx, ods, ppt, pptx, odp, txt, csv, mp3, mp4, avi, mkv)
+    %w(pdf doc docx odt xls xlsx ods ppt pptx odp txt csv mp3 mp4 avi mkv)
   end
 
 

@@ -3,7 +3,7 @@ class PhaseFileUploader < CarrierWave::Uploader::Base
 
 
   def extension_whitelist
-    %w(pdf, doc, docx, odt, xls, xlsx, ods, ppt, pptx, odp, txt, csv, mp3, mp4, avi, mkv)
+    %w(pdf doc docx odt xls xlsx ods ppt pptx odp txt csv mp3 mp4 avi mkv)
   end
 
   def size_range
