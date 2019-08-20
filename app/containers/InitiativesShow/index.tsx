@@ -538,7 +538,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 }
 
                 <Body
-                  id={initiativeId}
+                  postId={initiativeId}
                   postType="initiative"
                   locale={locale}
                   body={initiativeBody}
