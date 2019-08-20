@@ -9,10 +9,10 @@ resource "Activities" do
   get "web_api/v1/ideas/:idea_id/activities" do
     before do
       @idea = create(:idea)
-      create(:idea_published_activity, item: @idea)
-      create(:idea_changed_title_activity, item: @idea)
-      create(:idea_changed_body_activity, item: @idea)
-      create(:idea_changed_status_activity, item: @idea)
+      create(:published_activity, item: @idea)
+      create(:changed_title_activity, item: @idea)
+      create(:changed_body_activity, item: @idea)
+      create(:changed_status_activity, item: @idea)
     end
     
     with_options scope: :page do
