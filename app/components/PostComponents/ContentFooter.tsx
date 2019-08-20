@@ -83,13 +83,13 @@ interface Props extends InputProps, DataProps {}
 
 const avatarLimit = 3;
 
-const IdeaContentFooter = memo<Props>(({ publishedAt, commentsCount, randomAvatars, className }) => {
+const ContentFooter = memo<Props>(({ postType, publishedAt, commentsCount, randomAvatars, className }) => {
 
   const avatarIds = (!isNilOrError(randomAvatars) && randomAvatars.data.length > 0 ? randomAvatars.data.map(avatar => avatar.id) : []);
   const userCount = !isNilOrError(randomAvatars) ? randomAvatars.meta.total : undefined;
 
   return (
-    <Container id="e2e-idea-content-footer" className={className}>
+    <Container id={`e2e-${postType}-content-footer`} className={className || ''}>
       <Left>
         {!isEmpty(avatarIds) &&
           <StyledAvatarBubbles
@@ -119,6 +119,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaContentFooter {...inputProps} {...dataProps} />}
+    {dataProps => <ContentFooter {...inputProps} {...dataProps} />}
   </Data>
 );
