@@ -86,7 +86,7 @@ describe('Idea new page', () => {
     cy.get('#e2e-idea-show').find('#e2e-idea-description').contains(ideaContent);
     cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
     cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
-    cy.get('#e2e-idea-show').find('.e2e-idea-author-link .e2e-username').contains(`${firstName} ${lastName}`);
+    cy.get('#e2e-idea-show').find('.e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
   });
 
 });
