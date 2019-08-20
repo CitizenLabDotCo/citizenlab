@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { IOfficialFeedbackOnVotedIdeaNotificationData } from 'services/notifications';
+import { IOfficialFeedbackOnVotedInitiativeNotificationData } from 'services/notifications';
 
 // i18n
 import messages from '../../messages';
@@ -11,21 +11,21 @@ import NotificationWrapper from '../NotificationWrapper';
 import T from 'components/T';
 
 interface Props {
-  notification: IOfficialFeedbackOnVotedIdeaNotificationData;
+  notification: IOfficialFeedbackOnVotedInitiativeNotificationData;
 }
 
-const OfficialFeedbackOnVotedIdeaNotification = memo<Props>(props => {
+const OfficialFeedbackOnVotedInitiativeNotification = memo<Props>(props => {
   const { notification } = props;
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${notification.attributes.post_slug}`}
+      linkTo={`/initiatives/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
       icon="notification_comment"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.officialFeedbackOnVotedIdea}
+        {...messages.officialFeedbackOnVotedInitiative}
         values={{
           officialName: <T value={notification.attributes.official_feedback_author} />
         }}
@@ -34,4 +34,4 @@ const OfficialFeedbackOnVotedIdeaNotification = memo<Props>(props => {
   );
 });
 
-export default OfficialFeedbackOnVotedIdeaNotification;
+export default OfficialFeedbackOnVotedInitiativeNotification;

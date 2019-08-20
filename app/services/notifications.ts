@@ -224,6 +224,72 @@ export interface INewInitiativeForAdminNotificationData extends IBaseNotificatio
   };
 }
 
+export interface IOfficialFeedbackOnCommentedIdeaNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'official_feedback_on_commented_idea';
+    read_at: string | null;
+    created_at: string;
+    official_feedback_author: Multiloc;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface IOfficialFeedbackOnCommentedInitiativeNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'official_feedback_on_commented_initiative';
+    read_at: string | null;
+    created_at: string;
+    official_feedback_author: Multiloc;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface IOfficialFeedbackOnVotedIdeaNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'official_feedback_on_voted_idea';
+    read_at: string | null;
+    created_at: string;
+    official_feedback_author: Multiloc;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface IOfficialFeedbackOnVotedInitiativeNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'official_feedback_on_voted_initiative';
+    read_at: string | null;
+    created_at: string;
+    official_feedback_author: Multiloc;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface IOfficialFeedbackOnYourIdeaNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'official_feedback_on_your_idea';
+    read_at: string | null;
+    created_at: string;
+    official_feedback_author: Multiloc;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface IOfficialFeedbackOnYourInitiativeNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'official_feedback_on_your_initiative';
+    read_at: string | null;
+    created_at: string;
+    official_feedback_author: Multiloc;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
 export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'status_change_of_your_idea';
@@ -333,123 +399,6 @@ export interface IProjectModerationRightsReceivedNotificationData extends IBaseN
   };
 }
 
-export interface IOfficialFeedbackOnYourIdeaNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'official_feedback_on_your_idea';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-    official_feedback_author: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    official_feedback: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface IOfficialFeedbackOnVotedIdeaNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'official_feedback_on_voted_idea';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-    official_feedback_author: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    official_feedback: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface IOfficialFeedbackOnCommentedIdeaNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'official_feedback_on_commented_idea';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-    official_feedback_author: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    official_feedback: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
 export interface IProjectPhaseStartedNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'project_phase_started';
@@ -505,20 +454,26 @@ export interface IProjectPhaseUpcomingNotificationData extends IBaseNotification
 export type TNotificationData =
   IAdminRightsReceivedNotificationData |
   ICommentDeletedByAdminNotificationData |
-  ICommentForAdminNotificationData |
   ICommentMarkedAsSpamNotificationData |
   ICommentOnYourCommentNotificationData |
   ICommentOnYourIdeaNotificationData |
   ICommentOnYourInitiativeNotificationData |
-  IIdeaForAdminNotificationData |
-  IIdeaMarkedAsSpamNotificationData |
   IIdeaAssignedToYouNotificationData |
+  IIdeaMarkedAsSpamNotificationData |
+  IInitiativeAssignedToYouNotificationData |
+  IInitiativeMarkedAsSpamNotificationData |
   IInviteAcceptedNotificationData |
   IMentionInCommentNotificationData |
   IMentionInOfficialFeedbackNotificationData |
+  INewCommentForAdminNotificationData |
+  INewIdeaForAdminNotificationData |
+  INewInitiativeForAdminNotificationData |
   IOfficialFeedbackOnCommentedIdeaNotificationData |
+  IOfficialFeedbackOnCommentedInitiativeNotificationData |
   IOfficialFeedbackOnVotedIdeaNotificationData |
+  IOfficialFeedbackOnVotedInitiativeNotificationData |
   IOfficialFeedbackOnYourIdeaNotificationData |
+  IOfficialFeedbackOnYourInitiativeNotificationData |
   IProjectModerationRightsReceivedNotificationData |
   IProjectPhaseStartedNotificationData |
   IProjectPhaseUpcomingNotificationData |
