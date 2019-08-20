@@ -20,11 +20,13 @@ import Link from 'utils/cl-router/Link';
 
 const Name: any = styled.span<{color?: string}>`
   color: ${({ color, theme }) => color || theme.colorText};
-  font-weight: ${({ emphasize }: any) => emphasize ? '500' : 'normal'};
+  font-weight: ${({ emphasize }: any) => emphasize ? '600' : 'normal'};
   text-decoration: none;
   hyphens: auto;
 
   &.linkToProfile {
+    transition: all 100ms ease-out;
+
     &:hover {
       cursor: pointer;
       color: ${({ color, theme }) => darken(0.15, color || theme.colorText)};

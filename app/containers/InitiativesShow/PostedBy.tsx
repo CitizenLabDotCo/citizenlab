@@ -47,7 +47,8 @@ const AboutInitiativesLink = styled(Link)`
   text-decoration: underline;
 
   &:hover {
-    color: ${darken(0.15, colors.clGreyOnGreyBackground)};
+    color: ${darken(0.2, colors.clGreyOnGreyBackground)};
+    text-decoration: underline;
   }
 `;
 

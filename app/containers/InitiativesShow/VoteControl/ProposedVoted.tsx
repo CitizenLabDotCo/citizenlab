@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 
 import styled, { keyframes, withTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
+import { darken } from 'polished';
+
 import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -41,13 +43,18 @@ const StyledIcon = styled(Icon)`
 const VotedTitle = styled.h4`
   color: ${props => props.theme.colorText};
   font-size: ${fontSizes.base}px;
-  margin: 25px 0 0 0;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+  margin-top: 25px;
+  margin-bottom: 5px;
   width: 100%;
 `;
 
 const VotedText = styled.p`
   color: ${props => props.theme.colorText};
   font-size: ${fontSizes.base}px;
+  font-weight: 300;
   line-height: 21px;
   text-align: center;
   margin: 0 0 20px 0;
@@ -58,8 +65,9 @@ const UnvoteLink = styled.a`
   color: ${props => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   text-decoration: underline;
+
   &:hover {
-    color: ${props => props.theme.colorText};
+    color: ${props => darken(0.12, props.theme.colorText)};
     text-decoration: underline;
     cursor: pointer;
   }

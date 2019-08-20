@@ -41,8 +41,8 @@ describe('Idea card component', () => {
     cy.get('#e2e-ideas-list');
 
     // sort ideas by newest first
-    cy.get('#e2e-ideas-sort-filter').click();
-    cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-new').click();
+    cy.get('#e2e-ideas-sort-dropdown').click();
+    cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
 
     cy.wait(2000);
     cy.get('#e2e-ideas-list');
