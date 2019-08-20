@@ -3,12 +3,11 @@ module Notifications
     
     belongs_to :initiating_user, class_name: 'User'
     belongs_to :official_feedback
-    belongs_to :idea
-    belongs_to :project, optional: true
+    belongs_to :post
+    belongs_to :project
 
-    validates :official_feedback, presence: true
-    validates :initiating_user, presence: true
-    validates :idea, presence: true
+    validates :initiating_user, :official_feedback, :post, :project, presence: true
+    validates :post_type, inclusion: { in: ['Idea'] }
 
 
     ACTIVITY_TRIGGERS = {'OfficialFeedback' => {'created' => true}}
@@ -24,7 +23,7 @@ module Notifications
           [self.new(
              recipient_id: recipient_id,
              initiating_user_id: initiator_id,
-             idea: official_feedback.post,
+             post: official_feedback.post,
              official_feedback: official_feedback,
              project_id: official_feedback.post.project_id
            )]
