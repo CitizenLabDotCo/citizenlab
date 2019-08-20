@@ -8,6 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // typings
@@ -33,7 +34,6 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
-import { InjectedIntlProps } from 'react-intl';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;

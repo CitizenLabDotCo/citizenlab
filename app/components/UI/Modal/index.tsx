@@ -109,7 +109,7 @@ const Overlay = styled(FocusTrap)`
   padding-top: 50px;
   padding-bottom: 60px;
   overflow: hidden;
-  z-index: 1000000;
+  z-index: 1000001;
   will-change: opacity, transform;
 
   ${media.biggerThanMinTablet`
