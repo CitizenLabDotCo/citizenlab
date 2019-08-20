@@ -1,9 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
-// services
-import { IMentionInOfficialFeedbackNotificationData } from 'services/notifications';
-
 // i18n
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -14,36 +11,29 @@ import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
 import T from 'components/T';
 
+// services
+import { IInitiativeMarkedAsSpamNotificationData } from 'services/notifications';
+
 interface Props {
-  notification: IMentionInOfficialFeedbackNotificationData;
+  notification: IInitiativeMarkedAsSpamNotificationData;
 }
 
-const mapPostTypeToLink = (notification: IMentionInOfficialFeedbackNotificationData) : string => {
-  switch (notification.attributes.post_type) {
-    case 'Idea':
-      return `/ideas/${notification.attributes.post_slug}`;
-    case 'Initiative':
-      return `/initiatives/${notification.attributes.post_slug}`;
-  }
-};
-
-const MentionInCommentNotification = memo<Props>(props => {
+const InitiativeMarkedAsSpamNotification = memo<Props>(props => {
   const { notification } = props;
 
-  const officialFeedbackAuthorMultiloc = notification.attributes.official_feedback_author;
-  const deletedUser = isNilOrError(notification.attributes.initiating_user_slug);
+  const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
-      linkTo={mapPostTypeToLink(notification)}
+      linkTo={`/initiatives/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
-      icon="notification_mention"
+      icon="idea2"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.mentionInOfficialFeedback}
+        {...messages.userMarkedPostAsSpam}
         values={{
-          officialName: deletedUser ?
+          name: deletedUser ?
             <DeletedUser>
               <FormattedMessage {...messages.deletedUser} />
             </DeletedUser>
@@ -52,12 +42,13 @@ const MentionInCommentNotification = memo<Props>(props => {
               to={`/profile/${notification.attributes.initiating_user_slug}`}
               onClick={stopPropagation}
             >
-              <T value={officialFeedbackAuthorMultiloc} />
+              {notification.attributes.initiating_user_first_name}
             </Link>,
+          postTitle: <T value={notification.attributes.post_title_multiloc} />
         }}
       />
     </NotificationWrapper>
   );
 });
 
-export default MentionInCommentNotification;
+export default InitiativeMarkedAsSpamNotification;

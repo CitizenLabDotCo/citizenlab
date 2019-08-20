@@ -30,6 +30,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userCommentedOnYourIdea',
     defaultMessage: '{name} commented on your idea',
   },
+  userCommentedOnYourInitiative: {
+    id: 'app.containers.NotificationMenu.userCommentedOnYourInitiative',
+    defaultMessage: '{name} commented on your initiative',
+  },
   userReactedToYourComment: {
     id: 'app.containers.NotificationMenu.userReactedToYourComment',
     defaultMessage: '{name} reacted to your comment',
@@ -38,13 +42,13 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.mentionInComment',
     defaultMessage: '{name} mentioned you in a comment',
   },
-  userMarkedCommentAsSpam: {
-    id: 'app.containers.NotificationMenu.userMarkedCommentAsSpam',
-    defaultMessage: '{name} reported a comment on \'{ideaTitle}\' as spam',
+  userReportedCommentAsSpam: {
+    id: 'app.containers.NotificationMenu.userReportedCommentAsSpam',
+    defaultMessage: '{name} reported a comment on \'{postTitle}\' as spam',
   },
-  userMarkedIdeaAsSpam: {
-    id: 'app.containers.NotificationMenu.userMarkedIdeaAsSpam',
-    defaultMessage: '{name} reported \'{ideaTitle}\' as spam',
+  userMarkedPostAsSpam: {
+    id: 'app.containers.NotificationMenu.userMarkedPostAsSpam',
+    defaultMessage: '{name} reported \'{postTitle}\' as spam',
   },
   statusChangedOfYourIdea: {
     id: 'app.containers.NotificationMenu.statusChangedOfYourIdea',
@@ -62,9 +66,9 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userAcceptedYourInvitation',
     defaultMessage: '{name} accepted your invitation',
   },
-  commentDeletedByAdmin: {
-    id: 'app.containers.NotificationMenu.commentDeletedByAdmin',
-    defaultMessage: `Your comment on '{ideaTitle}' has been deleted by an admin because
+  commentDeletedByAdminFor: {
+    id: 'app.containers.NotificationMenu.commentDeletedByAdminFor',
+    defaultMessage: `Your comment on '{postTitle}' has been deleted by an admin because
       {reasonCode, select,
         irrelevant {it is irrelevant}
         inappropriate {its content is inappropriate}
@@ -88,9 +92,9 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.deletedUser',
     defaultMessage: 'Deleted user',
   },
-  userPostedIdea: {
-    id: 'app.containers.NotificationMenu.userPostedIdea',
-    defaultMessage: '{ideaAuthorFirstName} posted {idea}',
+  userPostedPost: {
+    id: 'app.containers.NotificationMenu.userPostedPost',
+    defaultMessage: '{name} posted {post}',
   },
   userPostedComment: {
     id: 'app.containers.NotificationMenu.userPostedComment',
@@ -120,12 +124,12 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.projectPhaseUpcoming',
     defaultMessage: '{projectTitle} will enter a new phase on {phaseStartAt}',
   },
-  ideaAssignedToYou: {
-    id: 'app.containers.NotificationMenu.ideaAssignedToYou',
-    defaultMessage: '{ideaTitle} was assigned to you',
+  postAssignedToYou: {
+    id: 'app.containers.NotificationMenu.postAssignedToYou',
+    defaultMessage: '{postTitle} was assigned to you',
   },
-  xAssignedIdeaToYou: {
-    id: 'app.containers.NotificationMenu.xAssignedIdeaToYou',
-    defaultMessage: '{name} assigned {ideaTitle} to you',
+  xAssignedPostToYou: {
+    id: 'app.containers.NotificationMenu.xAssignedPostToYou',
+    defaultMessage: '{name} assigned {postTitle} to you',
   },
 });
