@@ -1,28 +1,19 @@
 import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
 
 // Styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // resources
-import { isNilOrError } from 'utils/helperUtils';
-import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
-import GetInitiativeStatus, { GetInitiativeStatusChildProps } from 'resources/GetInitiativeStatus';
-import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
-
-// services
-import { updateInitiativeStatusWithExistingFeedback, updateInitiativeStatusAddFeedback } from 'services/initiativeStatusChanges';
+import { IOfficialFeedbackData } from 'services/officialFeedback';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import T from 'components/T';
 
 // components
 import OfficialFeedbackPost from 'components/PostComponents/OfficialFeedback/OfficialFeedbackPost';
-import OfficialFeedbackForm from 'components/PostComponents/OfficialFeedback/Form/OfficialFeedbackForm';
 import Radio from 'components/UI/Radio';
 import { Section } from 'components/admin/Section';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
@@ -34,87 +25,75 @@ import Button from 'components/UI/Button';
 // Typings
 import { Multiloc, Locale, MultilocFormValues } from 'typings';
 
-const Container = styled.div``;
-
 const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
   margin: 10px 0;
 `;
 
-interface InputProps {
-  initiativeId: string;
-  newStatusId: string;
-  closeModal: () => void;
-}
-
-interface DataProps {
-  initiative: GetInitiativeChildProps;
-  newStatus: GetInitiativeStatusChildProps;
-  officialFeedbacks: GetOfficialFeedbacksChildProps;
-}
-
-interface Props extends DataProps, InputProps { }
+const StyledRadio = styled(Radio)`
+  margin-top: 25px;
+`;
+const StyledButton = styled(Button)`
+  margin-top: 25px;
+`;
 
 export interface FormValues extends MultilocFormValues {
   author_multiloc: Multiloc;
   body_multiloc: Multiloc;
 }
 
-interface State {
-  mode: 'latest' | 'new';
-  newOfficialFeedback: FormValues;
-  selectedLocale: Locale;
+interface Props {
   loading: boolean;
-  touched: boolean;
   error: boolean;
+  newOfficialFeedback: FormValues;
+  mode: 'latest' | 'new';
+  latestOfficialFeedback: IOfficialFeedbackData | null;
+  onChangeMode: (value) => void;
+  onChangeBody: (value) => void;
+  onChangeAuthor: (value) => void;
+  submit: () => void;
+  valid: boolean;
+}
+
+interface State {
+  selectedLocale: Locale;
 }
 
 class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      mode: 'new',
-      newOfficialFeedback: {
-        author_multiloc: {},
-        body_multiloc: {}
-      },
-      selectedLocale: props.intl.locale as Locale,
-      loading: false,
-      touched: false,
-      error: false
+      selectedLocale: props.intl.locale as Locale
     };
   }
-  handleRadioClick = (event) => {
-    this.setState({ mode: event });
-  }
+
   renderFullForm = () => {
-    const { mode } = this.state;
-    const { initiative, officialFeedbacks } = this.props;
-    if (isNilOrError(initiative) || isNilOrError(officialFeedbacks.officialFeedbacksList)) return null;
+    const { latestOfficialFeedback, mode, onChangeMode, intl: { formatMessage } } = this.props;
+    if (!latestOfficialFeedback) return null;
 
     return (
       <>
-        <Radio
-          onChange={this.handleRadioClick}
+        <StyledRadio
+          onChange={onChangeMode}
           currentValue={mode}
           value="new"
           name="statusChangeMethod"
-          label="Write a new feedback"
+          label={formatMessage(messages.newFeedbackMode)}
         />
         {mode === 'new' &&
           this.renderFeedbackForm()
         }
-        <Radio
-          onChange={this.handleRadioClick}
+        <StyledRadio
+          onChange={onChangeMode}
           currentValue={mode}
           value="latest"
           name="statusChangeMethod"
-          label="Use latest feedback"
+          label={formatMessage(messages.latestFeedbackMode)}
         />
 
         {mode === 'latest' &&
           <OfficialFeedbackPost
             editingAllowed={false}
-            officialFeedbackPost={officialFeedbacks.officialFeedbacksList.data[0]}
+            officialFeedbackPost={latestOfficialFeedback}
             postType="initiative"
             last={false}
           />
@@ -127,28 +106,9 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ selectedLocale: locale });
   }
 
-  onChangeBody = (value) => {
-    this.setState((state) => ({ newOfficialFeedback: { ...state.newOfficialFeedback, body_multiloc: value }, touched: true }));
-  }
-  onChangeAuthor = (value) => {
-    this.setState((state) => ({ newOfficialFeedback: { ...state.newOfficialFeedback, author_multiloc: value }, touched: true }));
-  }
-
-  validate = () => {
-    const { mode, newOfficialFeedback, touched } = this.state;
-    if (mode === 'new') {
-      const validation = OfficialFeedbackForm.validate(newOfficialFeedback);
-      return Object.keys(validation).length === 0 && touched;
-    } else {
-      return true;
-    }
-  }
-
   renderFeedbackForm = () => {
-    const { initiative, intl: { formatMessage } } = this.props;
-    const { selectedLocale, newOfficialFeedback } = this.state;
-
-    if (isNilOrError(initiative)) return null;
+    const { intl: { formatMessage }, newOfficialFeedback, onChangeBody, onChangeAuthor } = this.props;
+    const { selectedLocale } = this.state;
 
     return (
       <Section>
@@ -169,7 +129,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           ariaLabel={formatMessage(messages.officialUpdateBody)}
           name="body_multiloc"
           valueMultiloc={newOfficialFeedback.body_multiloc}
-          onChange={this.onChangeBody}
+          onChange={onChangeBody}
         />
 
         <InputMultiloc
@@ -177,76 +137,34 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           placeholder={formatMessage(messages.feedbackAuthorPlaceholder)}
           ariaLabel={formatMessage(messages.officialUpdateAuthor)}
           valueMultiloc={newOfficialFeedback.author_multiloc}
-          onChange={this.onChangeAuthor}
+          onChange={onChangeAuthor}
           type="text"
         />
       </Section>
     );
   }
 
-  submit = () => {
-    const { initiativeId, newStatusId, closeModal, officialFeedbacks } = this.props;
-    const { mode, newOfficialFeedback : { body_multiloc, author_multiloc } } = this.state;
-    if (mode === 'new') {
-      this.setState({ loading: true });
-      updateInitiativeStatusAddFeedback(initiativeId, newStatusId, body_multiloc, author_multiloc)
-        .then(() => closeModal())
-        .catch(err => {
-          this.setState({ loading: false, error: true });
-        });
-    } else if (mode === 'latest' && !isNilOrError(officialFeedbacks.officialFeedbacksList)) {
-      updateInitiativeStatusWithExistingFeedback(initiativeId, newStatusId, officialFeedbacks.officialFeedbacksList.data[0].id)
-      .then(() => closeModal())
-      .catch(err => {
-        this.setState({ loading: false, error: true });
-      });
-    }
-  }
-
   render() {
-    const { initiative, newStatus, officialFeedbacks, intl: { formatMessage } } = this.props;
-    const { loading, error } = this.state;
-
-    if (isNilOrError(initiative) || isNilOrError(newStatus) || officialFeedbacks.officialFeedbacksList === undefined) return null;
+    const { latestOfficialFeedback, intl: { formatMessage }, submit, loading, error, valid } = this.props;
 
     return (
-      <Container>
-        <h1>
-          <T value={initiative.attributes.title_multiloc} />
-        </h1>
-        <FormattedMessage
-          {...messages.statusChange}
-          values={{
-            newStatus: <T value={newStatus.attributes.title_multiloc} />
-          }}
-        />
-        {!isNilOrError(officialFeedbacks.officialFeedbacksList) && officialFeedbacks.officialFeedbacksList.data.length > 0
+      <>
+        {latestOfficialFeedback
           ? this.renderFullForm()
           : this.renderFeedbackForm()
         }
-        <Button
+        <StyledButton
           processing={loading}
-          disabled={!this.validate()}
-          onClick={this.submit}
+          disabled={!valid}
+          onClick={submit}
+          bgColor={colors.clBlue}
         >
           <FormattedMessage {...messages.statusChangeSave}/>
-        </Button>
+        </StyledButton>
         {error && <Error text={formatMessage(messages.statusChangeGenericError)}/>}
-      </Container>
+      </>
     );
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
-  newStatus: ({ newStatusId, render }) => <GetInitiativeStatus id={newStatusId}>{render}</GetInitiativeStatus>,
-  officialFeedbacks: ({ initiativeId, render }) => <GetOfficialFeedbacks postId={initiativeId} postType="initiative">{render}</GetOfficialFeedbacks>
-});
-
-const StatusChangeFormWithHocs = injectIntl(StatusChangeForm);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <StatusChangeFormWithHocs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default injectIntl(StatusChangeForm);
