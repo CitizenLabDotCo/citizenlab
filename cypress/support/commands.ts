@@ -400,7 +400,7 @@ export function apiCreateOfficialFeedback(
   });
 }
 
-export function apiAddComment(ideaId: string, commentContent: string, commentParentId?: string, jwt?: string) {
+export function apiAddComment(postId: string, postType: 'idea' | 'initiative', commentContent: string, commentParentId?: string, jwt?: string) {
   if (jwt) {
     return cy.request({
       headers: {
@@ -408,7 +408,7 @@ export function apiAddComment(ideaId: string, commentContent: string, commentPar
         Authorization: `Bearer ${jwt}`
       },
       method: 'POST',
-      url: `web_api/v1/ideas/${ideaId}/comments`,
+      url: `web_api/v1/${postType}s/${postId}/comments`,
       body: {
         comment: {
           body_multiloc: {
@@ -429,7 +429,7 @@ export function apiAddComment(ideaId: string, commentContent: string, commentPar
           Authorization: `Bearer ${adminJwt}`
         },
         method: 'POST',
-        url: `web_api/v1/ideas/${ideaId}/comments`,
+        url: `web_api/v1/ideas/${postId}/comments`,
         body: {
           comment: {
             body_multiloc: {
