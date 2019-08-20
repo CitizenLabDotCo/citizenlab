@@ -42,8 +42,8 @@ describe('IdeaCards without filter sidebar component', () => {
 
   it('lets you sort the ideas', () => {
     // sort by newest first
-    cy.get('#e2e-ideas-sort-filter').click();
-    cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-new').click();
+    cy.get('#e2e-ideas-sort-dropdown').click();
+    cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
     cy.wait(1000);
 
     // find and check first idea card
@@ -51,8 +51,8 @@ describe('IdeaCards without filter sidebar component', () => {
     cy.get('.e2e-idea-card').first().contains(ideaTitle2);
 
     // sort by trending
-    cy.get('#e2e-ideas-sort-filter').click();
-    cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-trending').click();
+    cy.get('#e2e-ideas-sort-dropdown').click();
+    cy.get('.e2e-sort-items').find('.e2e-sort-item-trending').click();
     cy.wait(1000);
 
     // find and check first idea card
@@ -60,8 +60,8 @@ describe('IdeaCards without filter sidebar component', () => {
     cy.get('.e2e-idea-card').first().contains(ideaTitle2);
 
     // sort by most voted
-    cy.get('#e2e-ideas-sort-filter').click();
-    cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-popular').click();
+    cy.get('#e2e-ideas-sort-dropdown').click();
+    cy.get('.e2e-sort-items').find('.e2e-sort-item-popular').click();
     cy.wait(1000);
 
     // find and check first idea card
@@ -69,8 +69,8 @@ describe('IdeaCards without filter sidebar component', () => {
     cy.get('.e2e-idea-card').first().contains('Repellendus reprehenderit quae voluptas quia');
 
     // sort by oldest first
-    cy.get('#e2e-ideas-sort-filter').click();
-    cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-old').click();
+    cy.get('#e2e-ideas-sort-dropdown').click();
+    cy.get('.e2e-sort-items').find('.e2e-sort-item-old').click();
     cy.wait(1000);
 
     // find and check first idea card
@@ -80,7 +80,7 @@ describe('IdeaCards without filter sidebar component', () => {
 
   it('lets you filter the ideas by topic', () => {
     cy.get('#e2e-idea-filter-selector').click();
-    cy.get('.e2e-filter-selector-dropdown-list').contains('waste').click();
+    cy.get('.e2e-sort-items').contains('waste').click();
     cy.get('#e2e-ideas-container').find('.e2e-idea-card').should('have.length', 1).contains('The idea about waste');
   });
 

@@ -16,14 +16,13 @@ describe('Idea card component', () => {
   before(() => {
     cy.apiSignup(firstName, lastName, email, password).then(userResponse => {
       userId = userResponse.body.data.id;
-    });
-
-    cy.apiCreateInitiative(projectId, initiativeTitle, initiativeContent).then((initiative) => {
-      initiativeId = initiative.body.data.id;
-      return cy.apiAddCommentToIdea(initiativeId, commentContent);
+      return cy.apiCreateInitiative(initiativeTitle, initiativeContent);
+    }).then((initiaitve) => {
+      initiativeId = initiaitve.body.data.id;
+      return cy.apiAddComment(initiativeId, 'initiative', commentContent);
     }).then((parentComment) => {
       parentCommentId = parentComment.body.data.id;
-      return cy.apiAddCommentToIdea(initiativeId, commentContent, parentCommentId);
+      return cy.apiAddComment(initiativeId, 'initiative', commentContent, parentCommentId);
     }).then((childComment) => {
       childCommentId = childComment.body.data.id;
       cy.login(email, password);
@@ -31,23 +30,23 @@ describe('Idea card component', () => {
   });
 
   beforeEach(() => {
-    // visit ideas page and sort idea cards by newest first
-    cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
+    // visit initiatives page and sort initiative cards by newest first
+    cy.visit('/initiaitves');
 
     cy.wait(2000);
-    cy.get('#e2e-ideas-list');
+    cy.get('#e2e-initiatives-list');
 
-    // sort ideas by newest first
-    cy.get('#e2e-ideas-sort-filter').click();
-    cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-new').click();
+    // sort initiatives by newest first
+    cy.get('#e2e-initiatives-sort-dropdown').click();
+    cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
 
     cy.wait(2000);
-    cy.get('#e2e-ideas-list');
+    cy.get('#e2e-initiatives-list');
   });
 
   it('increments and decrements the vote count accordingly when the up and downvote buttons are clicked', () => {
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').contains(initiativeTitle).closest('.e2e-idea-card').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').contains(initiativeTitle).closest('.e2e-idea-card').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
+    cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').contains(initiativeTitle).closest('.e2e-initiative-card').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
+    cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').contains(initiativeTitle).closest('.e2e-initiative-card').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
 
     // check initial upvotes & downvotes
     cy.get('@upvoteBtn').contains('1');
@@ -73,13 +72,13 @@ describe('Idea card component', () => {
   });
 
   it('shows the correct comment count', () => {
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').contains(initiativeTitle).closest('.e2e-idea-card').find('.e2e-ideacard-comment-count').contains('2');
+    cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').contains(initiativeTitle).closest('.e2e-initiative-card').find('.e2e-ideacard-comment-count').contains('2');
   });
 
   after(() => {
     cy.apiRemoveComment(childCommentId);
     cy.apiRemoveComment(parentCommentId);
-    cy.apiRemoveIdea(initiativeId);
+    cy.apiRemoveInitiative(initiativeId);
     cy.apiRemoveUser(userId);
   });
 });

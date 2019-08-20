@@ -285,7 +285,7 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 const StyledVoteControl = styled(VoteControl)`
   box-shadow: 1px 0px 15px rgba(0,0,0,0.06);
   border-bottom: 1px solid rgba(0,0,0,0.06);
-  padding: 25px
+  padding: 25px;
 `;
 
 interface DataProps {

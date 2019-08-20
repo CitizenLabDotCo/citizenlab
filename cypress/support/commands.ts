@@ -429,7 +429,7 @@ export function apiAddComment(postId: string, postType: 'idea' | 'initiative', c
           Authorization: `Bearer ${adminJwt}`
         },
         method: 'POST',
-        url: `web_api/v1/ideas/${postId}/comments`,
+        url: `web_api/v1/${postType}s/${postId}/comments`,
         body: {
           comment: {
             body_multiloc: {
