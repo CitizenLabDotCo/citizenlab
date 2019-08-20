@@ -28,7 +28,7 @@ module Notifications
           attributes[:project_id] = comment.post.project_id
         end
 
-        self.recipient_ids(initiator_id, attributes[:project_id).map do |recipient_id|
+        self.recipient_ids(initiator_id, attributes[:project_id]).map do |recipient_id|
           self.new(
             recipient_id: recipient_id,
             **attributes
