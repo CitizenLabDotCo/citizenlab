@@ -23,19 +23,19 @@ describe('Idea Page', () => {
     });
 
     it('shows the idea Title', () => {
-      cy.get('.e2e-ideatitle');
+      cy.get('#e2e-idea-title');
     });
 
     it('shows the idea Image', () => {
-      cy.get('.e2e-ideaImage');
+      cy.get('#e2e-idea-image');
     });
 
     it('shows idea body', () => {
-      cy.get('#e2e-idea-show').contains('With a lot of comments');
+      cy.get('#e2e-idea-description');
     });
 
     it('shows a link to author profile', () => {
-      cy.get('.e2e-idea-author .e2e-idea-author-link').click();
+      cy.get('.e2e-idea-author .e2e-author-link').click();
       cy.location('pathname').should('eq', '/en-GB/profile/casey-luettgen');
     });
 

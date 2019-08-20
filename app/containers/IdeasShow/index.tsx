@@ -526,7 +526,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 <IdeaHeader>
                   <Title
                     postType="idea"
-                    id={ideaId}
+                    postId={ideaId}
                     title={ideaTitle}
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}
@@ -553,7 +553,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <Image
                     src={ideaImageLarge}
                     alt={formatMessage(messages.imageAltText, { ideaTitle })}
-                    className="e2e-ideaImage"
+                    id="e2e-idea-image"
                   />
                 }
 
@@ -566,7 +566,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <Body
                   postType="idea"
-                  id={ideaId}
+                  postId={ideaId}
                   locale={locale}
                   body={ideaBody}
                   translateButtonClicked={translateButtonClicked}
