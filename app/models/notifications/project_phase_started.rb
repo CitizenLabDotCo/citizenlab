@@ -2,9 +2,9 @@ module Notifications
   class ProjectPhaseStarted < Notification
     
     belongs_to :phase
-    belongs_to :project, optional: true
+    belongs_to :project
 
-    validates :phase_id, presence: true
+    validates :phase, :project, presence: true
 
 
     ACTIVITY_TRIGGERS = {'Phase' => {'started' => true}}
@@ -15,11 +15,8 @@ module Notifications
       service = ParticipationContextService.new
       phase = activity.item
 
-      phase_id = phase&.id
-      project_id = phase&.project_id
-
-      if project_id
-        user_scope = User.where.not(id: User.admin.or(User.project_moderator(project_id)).ids)
+      if phase.project
+        user_scope = User.where.not(id: User.admin.or(User.project_moderator(phase.project_id)).ids)
         ActiveRecord::Base.transaction do
           # We're using a transaction to garantee that 
           # created notifications are rolled back when 
@@ -29,12 +26,12 @@ module Notifications
           # PostgreSQL's default repeatable read isolation
           # level, this transaction cannot be obstructed by
           # other transactions.
-          ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.map do |recipient|
+          ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.ids.map do |recipient_id|
             if service.participation_possible_for_context? phase, recipient
               self.new(
-                 recipient_id: recipient.id,
-                 phase_id: phase_id,
-                 project_id: project_id
+                 recipient_id: recipient_id,
+                 phase: phase,
+                 project: phase.project
                )
             end
           end.compact

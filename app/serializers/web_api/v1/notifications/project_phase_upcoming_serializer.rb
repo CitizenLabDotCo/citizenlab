@@ -16,7 +16,4 @@ class WebApi::V1::Notifications::ProjectPhaseUpcomingSerializer < WebApi::V1::No
   attribute :project_title_multiloc do |object|
     object.project&.title_multiloc
   end
-
-  belongs_to :phase, serializer: WebApi::V1::PhaseSerializer
-  belongs_to :project, serializer: WebApi::V1::ProjectSerializer
 end
