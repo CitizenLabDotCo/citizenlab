@@ -1,11 +1,11 @@
 module Notifications
   class IdeaAssignedToYou < Notification
     
-    belongs_to :initiating_user, class_name: 'User', optional: true
+    belongs_to :initiating_user, class_name: 'User'
     belongs_to :post, polymorphic: true
     belongs_to :project
 
-    validates :post, :project, presence: true
+    validates :initiating_user, :post, :project, presence: true
     validates :post_type, inclusion: { in: ['Idea'] }
 
     ACTIVITY_TRIGGERS = {'Idea' => {'changed_assignee' => true}}

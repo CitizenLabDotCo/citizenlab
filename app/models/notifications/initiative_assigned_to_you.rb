@@ -1,10 +1,10 @@
 module Notifications
   class InitiativeAssignedToYou < Notification
     
-    belongs_to :initiating_user, class_name: 'User', optional: true
+    belongs_to :initiating_user, class_name: 'User'
     belongs_to :post, polymorphic: true
 
-    validates :post, presence: true
+    validates :initiating_user, :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }
 
     ACTIVITY_TRIGGERS = {'Initiative' => {'changed_assignee' => true}}
