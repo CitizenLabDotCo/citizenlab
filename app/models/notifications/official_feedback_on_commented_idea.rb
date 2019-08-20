@@ -29,7 +29,7 @@ module Notifications
             self.new(
               recipient_id: recipient_id,
               initiating_user_id: initiator_id,
-              idea: official_feedback.post,
+              post: official_feedback.post,
               official_feedback: official_feedback,
               project_id: official_feedback.post.project_id
             )
