@@ -55,4 +55,18 @@ describe InitiativeStatusService do
     end
 
   end
+
+  describe "transition_type" do
+    before do
+      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+    end
+
+    it "labels the threshold_reached status as automatic" do
+      expect(service.transition_type(InitiativeStatus.find_by(code: 'threshold_reached'))).to eq 'automatic'
+    end
+
+    it "labels the ineligible status as manual" do
+      expect(service.transition_type(InitiativeStatus.find_by(code: 'ineligible'))).to eq 'manual'
+    end
+  end
 end
