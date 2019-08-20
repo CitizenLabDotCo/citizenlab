@@ -261,21 +261,21 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.changeStatusModalLabel',
     defaultMessage: 'Give feedback to explain this status change.',
   },
-  // changeStatusModalTitle: { TODO either use or remove
-  //   id: 'app.components.admin.PostManager.changeStatusModalTitle',
-  //   defaultMessage: 'Change this initiative\'s status',
-  // },
+  changeStatusModalTitle: {
+    id: 'app.components.admin.PostManager.changeStatusModalTitle',
+    defaultMessage: 'Change this initiative\'s status',
+  },
   statusChange: {
     id: 'app.components.admin.PostManager.statusChange',
-    defaultMessage: 'To change the initiative\'s status to {newStatus}, you must provide feedback to the community.',
+    defaultMessage: 'To change {initiativeTitle}\'s status to {newStatus}, please provide feedback to the community.',
   },
   feedbackBodyPlaceholder: {
     id: 'app.components.admin.PostManager.feedbackBodyPlaceholder',
-    defaultMessage: 'Justify status change',
+    defaultMessage: 'Justify this status change',
   },
   officialUpdateBody: {
     id: 'app.components.admin.PostManager.officialUpdateBody',
-    defaultMessage: 'Justify status change',
+    defaultMessage: 'Justify this status change',
   },
   officialUpdateAuthor: {
     id: 'app.components.admin.PostManager.officialUpdateAuthor',
@@ -292,5 +292,13 @@ export default defineMessages({
   statusChangeGenericError: {
     id: 'app.components.admin.PostManager.statusChangeGenericError',
     defaultMessage: 'There was an error, please try again later or contact support.',
+  },
+  newFeedbackMode: {
+    id: 'app.components.admin.PostManager.newFeedbackMode',
+    defaultMessage: 'Write a new official update to explain this change',
+  },
+  latestFeedbackMode: {
+    id: 'app.components.admin.PostManager.latestFeedbackMode',
+    defaultMessage: 'Use the latest existing official update as an explanation',
   },
 });

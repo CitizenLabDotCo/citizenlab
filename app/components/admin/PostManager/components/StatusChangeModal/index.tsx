@@ -12,7 +12,7 @@ import events, { StatusChangeModalOpen } from '../../events';
 
 // components
 import Modal from 'components/UI/Modal';
-import StatusChangeForm from './StatusChangeForm';
+import StatusChangeFormWrapper from './StatusChangeFormWrapper';
 
 interface Props {}
 
@@ -58,10 +58,10 @@ class StatusChangeModal extends PureComponent<Props & InjectedIntlProps, State> 
         opened={!!initiativeId && !!newStatusId}
         close={this.close}
         label={formatMessage(messages.changeStatusModalLabel)}
-        // header={<FormattedMessage {...messages.changeStatusModalTitle} />}
+        header={<FormattedMessage {...messages.changeStatusModalTitle} />}
       >
         {!!initiativeId && !!newStatusId &&
-          <StatusChangeForm
+          <StatusChangeFormWrapper
             {... { initiativeId, newStatusId }}
             closeModal={this.close}
           />
