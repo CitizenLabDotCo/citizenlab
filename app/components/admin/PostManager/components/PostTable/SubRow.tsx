@@ -11,6 +11,7 @@ import { TFilterMenu } from '../..';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiativeAllowedTransitions';
 
 interface Props {
   active: boolean;
@@ -26,6 +27,8 @@ interface Props {
   onUpdatePhases: (id: string[]) => void;
   onUpdateTopics: (id: string[]) => void;
   onUpdateStatus: (id: string) => void;
+  allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
+  /* set allowedTransitions to null to allow all */
 }
 
 export default ({
@@ -41,7 +44,8 @@ export default ({
   selectedStatus,
   onUpdatePhases,
   onUpdateTopics,
-  onUpdateStatus
+  onUpdateStatus,
+  allowedTransitions
 }: Props) => (
   <Table.Row active={active} onClick={onClickRow} className={className}>
      <Table.Cell as={FilterCell} collapsing={true} />
@@ -62,11 +66,12 @@ export default ({
        {activeFilterMenu === 'projects' && projectId &&
          <ProjectSelector projectId={projectId} />
        }
-       {activeFilterMenu === 'statuses' && statuses &&
+       {activeFilterMenu === 'statuses' && statuses && allowedTransitions !== undefined &&
          <StatusSelector
            statuses={statuses}
            selectedStatus={selectedStatus}
            onUpdateStatus={onUpdateStatus}
+           allowedTransitions={allowedTransitions}
          />
        }
      </Table.Cell>

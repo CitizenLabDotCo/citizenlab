@@ -31,6 +31,7 @@ import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 
 // lazy-loaded components
 const PostPreview = lazy(() => import('./components/PostPreview'));
+const StatusChangeModal = lazy(() => import('./components/StatusChangeModal'));
 
 // i18n
 import messages from './messages';
@@ -396,6 +397,11 @@ export class PostManager extends React.PureComponent<Props, State> {
             onSwitchPreviewMode={this.switchPreviewMode}
           />
         </Suspense>
+        {type === 'Initiatives' &&
+          <Suspense fallback={null}>
+            <StatusChangeModal />
+          </Suspense>
+        }
       </>
     );
   }

@@ -1,14 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
-import { IIdeaStatusData } from 'services/ideaStatuses';
 import { Popup } from 'semantic-ui-react';
+import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IInitiativeAllowedTransitions } from 'services/initiatives';
 import T from 'components/T';
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
 `;
 
-const ColorIndicator = styled.div<{ active: boolean }>`
+const ColorIndicator = styled.div<{ active: boolean, disabled: boolean }>`
   width: 1rem;
   height: 1rem;
   border: 1px solid ${props => props.color};
@@ -16,6 +18,10 @@ const ColorIndicator = styled.div<{ active: boolean }>`
   margin-right: 0.5rem;
   cursor: pointer;
   margin: 0 0.25rem;
+  ${props => props.disabled ? `
+    background-color: ${colors.mediumGrey};
+    cursor: not-allowed;
+  ` : '' /* line order matters here so active element is displayed correctly */}
   ${props => props.active ? `background-color: ${props.color};` : ''}
 `;
 
@@ -23,12 +29,17 @@ type Props = {
   selectedStatus?: string,
   statuses: IIdeaStatusData[],
   onUpdateStatus: (statusId: string) => void;
+  allowedTransitions: IInitiativeAllowedTransitions | null;
 };
 
 class StatusSelector extends React.PureComponent<Props> {
 
   isActive = (statusId) => {
     return this.props.selectedStatus === statusId;
+  }
+
+  isAllowed = (statusId) => {
+    return this.props.allowedTransitions && this.props.allowedTransitions[statusId] !== undefined;
   }
 
   handleStatusClick = (statusId) => (event) => {
@@ -38,7 +49,6 @@ class StatusSelector extends React.PureComponent<Props> {
 
   render() {
     const { statuses } = this.props;
-
     return (
       <Container>
         {statuses.map((status) => (
@@ -47,6 +57,7 @@ class StatusSelector extends React.PureComponent<Props> {
             basic
             trigger={
               <ColorIndicator
+                disabled={!this.isAllowed(status.id)}
                 color={status.attributes.color}
                 active={this.isActive(status.id)}
                 onClick={this.handleStatusClick(status.id)}
