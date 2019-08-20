@@ -98,7 +98,7 @@ export default defineMessages({
   },
   userPostedComment: {
     id: 'app.containers.NotificationMenu.userPostedComment',
-    defaultMessage: '{commentAuthorFirstName} commented on {idea}',
+    defaultMessage: '{commentAuthorFirstName} commented on {post}',
   },
   officialFeedbackOnYourIdea: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnYourIdea',
