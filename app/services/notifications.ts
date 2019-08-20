@@ -290,6 +290,40 @@ export interface IOfficialFeedbackOnYourInitiativeNotificationData extends IBase
   };
 }
 
+export interface IProjectModerationRightsReceivedNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'project_moderation_rights_received';
+    read_at: string | null;
+    created_at: string;
+    project_id: string;
+    project_title_multiloc: Multiloc;
+  };
+}
+
+export interface IProjectPhaseStartedNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'project_phase_started';
+    read_at: string | null;
+    created_at: string;
+    phase_title_multiloc: Multiloc;
+    phase_start_at: string;
+    project_slug: string;
+    project_title_multiloc: Multiloc;
+  };
+}
+
+export interface IProjectPhaseUpcomingNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'project_phase_upcoming';
+    read_at: string | null;
+    created_at: string;
+    phase_title_multiloc: Multiloc;
+    phase_start_at: string;
+    project_slug: string;
+    project_title_multiloc: Multiloc;
+  };
+}
+
 export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'status_change_of_your_idea';
@@ -363,80 +397,6 @@ export interface IStatusChangeOnVotedIdeaNotificationData extends IBaseNotificat
       }
     }
     idea_status: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface IProjectModerationRightsReceivedNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'project_moderation_rights_received';
-    read_at: string | null;
-    created_at: string;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface IProjectPhaseStartedNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'project_phase_started';
-    read_at: string | null;
-    created_at: string;
-    phase_title_multiloc: Multiloc;
-    phase_start_at: string;
-    project_slug: string;
-    project_title_multiloc: Multiloc;
-  };
-  relationships: {
-    phase: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface IProjectPhaseUpcomingNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'project_phase_upcoming';
-    read_at: string | null;
-    created_at: string;
-    phase_title_multiloc: Multiloc;
-    phase_start_at: string;
-    project_slug: string;
-    project_title_multiloc: Multiloc;
-  };
-  relationships: {
-    phase: {
       data?: {
         id: string;
         type: string;
