@@ -1,12 +1,12 @@
 module Notifications
   class StatusChangeOnCommentedIdea < Notification
     
+    belongs_to :idea_status
+    belongs_to :post
+    belongs_to :project
     belongs_to :initiating_user, class_name: 'User', optional: true
-    belongs_to :idea
-    belongs_to :project, optional: true
-    belongs_to :idea_status, optional: true
 
-    validates :idea_id, presence: true
+    validates :idea_status, :post, :project, presence: true
 
 
     ACTIVITY_TRIGGERS = {'Idea' => {'changed_status' => true}}
@@ -15,15 +15,14 @@ module Notifications
 
     def self.make_notifications_on activity
       idea = activity.item
-      initiator_id = activity.user_id
 
       if idea.present?
-        User.joins(:comments).where(comments: {idea_id: idea.id}).distinct.ids.map do |recipient_id|
-          if (recipient_id != initiator_id) && (recipient_id != idea.author_id)
+        User.joins(:comments).where(comments: {post: idea}).distinct.ids.map do |recipient_id|
+          if recipient_id != idea.author_id
             self.new(
               recipient_id: recipient_id,
-              initiating_user_id: initiator_id,
-              idea_id: idea.id,
+              initiating_user_id: activity.user_id,
+              post: idea,
               project_id: idea.project_id,
               idea_status_id: idea.idea_status_id
             )

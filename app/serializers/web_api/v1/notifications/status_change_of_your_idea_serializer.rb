@@ -1,9 +1,13 @@
 class WebApi::V1::Notifications::StatusChangeOfYourIdeaSerializer < WebApi::V1::Notifications::NotificationSerializer
-  attribute :idea_title do |object|
-    object.idea&.title_multiloc
+  attribute :post_title_multiloc do |object|
+    object.post&.title_multiloc
   end
 
-  belongs_to :idea, serializer: WebApi::V1::IdeaSerializer
-  belongs_to :idea_status, serializer: WebApi::V1::IdeaStatusSerializer  
-  belongs_to :project, serializer: WebApi::V1::ProjectSerializer
+  attribute :post_slug do |object|
+    object.post&.slug
+  end
+
+  attribute :idea_status_title_multiloc do |object|
+    object.idea_status&.title_multiloc
+  end
 end
