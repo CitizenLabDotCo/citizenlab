@@ -4,7 +4,7 @@ module Notifications
     belongs_to :initiating_user, class_name: 'User', optional: true
     belongs_to :project
 
-    validates :project presence: true
+    validates :project, presence: true
 
     ACTIVITY_TRIGGERS = {'User' => {'project_moderation_rights_given' => true}}
     EVENT_NAME = 'Project moderation rights received'

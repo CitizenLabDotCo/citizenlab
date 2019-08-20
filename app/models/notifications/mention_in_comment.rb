@@ -6,7 +6,7 @@ module Notifications
     belongs_to :post
     belongs_to :project, optional: true
 
-    validates :initiating_user, :comment, :post presence: true
+    validates :initiating_user, :comment, :post, presence: true
 
 
     ACTIVITY_TRIGGERS = {'Comment' => {'mentioned' => true}}

@@ -6,6 +6,6 @@ class UpdateNotificationsWithPolymorphicPost < ActiveRecord::Migration[5.2]
 
     add_index :notifications, [:post_id, :post_type]
 
-    Notification.where('idea_id IS NOT NULL').update_all(post_type: 'Idea')
+    Notification.where('post_id IS NOT NULL').update_all(post_type: 'Idea')
   end
 end
