@@ -17,6 +17,15 @@ interface Props {
   notification: ICommentOnYourCommentNotificationData;
 }
 
+const mapPostTypeToLink = (notification: ICommentOnYourCommentNotificationData) : string => {
+  switch (notification.attributes.post_type) {
+    case 'Idea':
+      return `/ideas/${notification.attributes.post_slug}`;
+    case 'Initiative':
+      return `/initiatives/${notification.attributes.post_slug}`;
+  }
+};
+
 const CommentOnYourCommentNotification = memo<Props>(props => {
   const { notification } = props;
 
@@ -24,7 +33,7 @@ const CommentOnYourCommentNotification = memo<Props>(props => {
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${notification.attributes.idea_slug}`}
+      linkTo={mapPostTypeToLink(notification)}
       timing={notification.attributes.created_at}
       icon="notification_comment"
       isRead={!!notification.attributes.read_at}

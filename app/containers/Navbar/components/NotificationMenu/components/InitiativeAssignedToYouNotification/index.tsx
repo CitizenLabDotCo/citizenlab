@@ -1,6 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { IIdeaAssignedToYouNotificationData } from 'services/notifications';
+import { IInitiativeAssignedToYouNotificationData } from 'services/notifications';
 
 // i18n
 import messages from '../../messages';
@@ -12,12 +12,12 @@ import Link from 'utils/cl-router/Link';
 import T from 'components/T';
 
 type Props = {
-  notification: IIdeaAssignedToYouNotificationData;
+  notification: IInitiativeAssignedToYouNotificationData;
 };
 
 type State = {};
 
-export default class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
+export default class InitiativeAssignedToYouNotification extends React.PureComponent<Props, State> {
 
   onClickUserName = (event) => {
     event.stopPropagation();
@@ -63,7 +63,7 @@ export default class IdeaAssignedToYouNotification extends React.PureComponent<P
 
     return (
       <NotificationWrapper
-        linkTo={`/ideas/${notification.attributes.post_slug}`}
+        linkTo={`/initiatives/${notification.attributes.post_slug}`}
         timing={notification.attributes.created_at}
         icon="idea2"
         isRead={!!notification.attributes.read_at}
