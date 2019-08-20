@@ -5,11 +5,11 @@ FactoryBot.define do
     acted_at {Time.now}
     user
 
-    factory :idea_published_activity do
+    factory :published_activity do
       action { "published" }
     end
 
-    factory :idea_changed_title_activity do
+    factory :changed_title_activity do
       action { "changed_title" }
       payload {{
         "change" => [
@@ -19,7 +19,7 @@ FactoryBot.define do
       }}
     end
 
-    factory :idea_changed_body_activity do
+    factory :changed_body_activity do
       action { "changed_body" }
       payload {{
         "change" => [
@@ -29,7 +29,7 @@ FactoryBot.define do
       }}
     end
 
-    factory :idea_changed_status_activity do
+    factory :changed_status_activity do
       action { "changed_status" }
       payload {{
         "change" => [
