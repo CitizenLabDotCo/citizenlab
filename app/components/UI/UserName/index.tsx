@@ -62,42 +62,41 @@ interface InputProps {
 interface Props extends InputProps, DataProps {}
 
 const UserName = React.memo<Props>(({ user, className, hideLastName, linkToProfile, emphasize, canModerate, color }) => {
-  if (isNilOrError(user)) {
-    return (
-      <Name color={color} className={`${className} deleted-user e2e-username`}>
-        <FormattedMessage {...messages.deletedUser} />
+  if (!isNilOrError(user)) {
+    // Make sure to have a fall-back for both null and undefined
+    const firstName = isString(get(user, 'attributes.first_name')) ? get(user, 'attributes.first_name') : '';
+    const lastName = isString(get(user, 'attributes.last_name')) ? get(user, 'attributes.last_name') : '';
+    const nameComponent = (
+      <Name
+        emphasize={emphasize}
+        className={
+          `${className || ''}
+          ${linkToProfile ? 'linkToProfile' : ''}
+          ${canModerate ? 'canModerate' : ''}
+          e2e-username`
+        }
+        color={color}
+      >
+        {`${firstName} ${hideLastName ? '' : lastName}`}
       </Name>
     );
+
+    if (linkToProfile) {
+      return (
+        <Link to={`/profile/${user.attributes.slug}`} className="e2e-author-link">
+          {nameComponent}
+        </Link>
+      );
+    }
+
+    return nameComponent;
   }
 
-  // Make sure to have a fall-back for both null and undefined
-  const firstName = isString(get(user, 'attributes.first_name')) ? get(user, 'attributes.first_name') : '';
-  const lastName = isString(get(user, 'attributes.last_name')) ? get(user, 'attributes.last_name') : '';
-  const nameComponent = (
-    <Name
-      emphasize={emphasize}
-      className={
-        `${className || ''}
-        ${linkToProfile ? 'linkToProfile' : ''}
-        ${canModerate ? 'canModerate' : ''}
-        e2e-username`
-      }
-      color={color}
-    >
-      {`${firstName} ${hideLastName ? '' : lastName}`}
+  return (
+    <Name color={color} className={`${className} deleted-user e2e-username`}>
+      <FormattedMessage {...messages.deletedUser} />
     </Name>
   );
-
-  if (linkToProfile) {
-    return (
-      <Link to={`/profile/${user.attributes.slug}`} className="e2e-idea-author-link">
-        {nameComponent}
-      </Link>
-    );
-  }
-
-  return nameComponent;
-
 });
 
 const Data = adopt<DataProps, InputProps>({

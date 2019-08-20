@@ -82,7 +82,7 @@ describe('Idea form page', () => {
     cy.get('#e2e-idea-show').find('#e2e-idea-description').contains(newIdeaContent);
     cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
     cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
-    cy.get('#e2e-idea-show').find('.e2e-idea-author-link .e2e-username').contains(`${firstName} ${lastName}`);
+    cy.get('#e2e-idea-show').find('.e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
     cy.get('#e2e-idea-show').find('.e2e-idea-last-modified-button').contains('Last modified');
 
     // verify modal with edit changelog
