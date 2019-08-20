@@ -13,35 +13,25 @@ import T from 'components/T';
 
 // services
 import { IIdeaMarkedAsSpamNotificationData } from 'services/notifications';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
-interface InputProps {
+interface Props {
   notification: IIdeaMarkedAsSpamNotificationData;
 }
-interface DataProps {
-  idea: GetIdeaChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 const IdeaMarkedAsSpamNotification = memo<Props>(props => {
-  const { notification, idea } = props;
-
-  if (isNilOrError(idea)) return null;
-
-  const { slug, title_multiloc } = idea.attributes;
+  const { notification } = props;
 
   const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${slug}`}
+      linkTo={`/ideas/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
-      icon="notification_comment"
+      icon="idea2"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.userMarkedIdeaAsSpam}
+        {...messages.userMarkedPostAsSpam}
         values={{
           name: deletedUser ?
             <DeletedUser>
@@ -54,21 +44,11 @@ const IdeaMarkedAsSpamNotification = memo<Props>(props => {
             >
               {notification.attributes.initiating_user_first_name}
             </Link>,
-          ideaTitle: <T value={title_multiloc} />
+          postTitle: <T value={notification.attributes.post_title_multiloc} />
         }}
       />
     </NotificationWrapper>
   );
 });
 
-export default (inputProps: InputProps) => {
-  const { notification } = inputProps;
-
-  if (!notification.relationships.idea.data) return null;
-
-  return (
-    <GetIdea id={notification.relationships.idea.data.id}>
-      {idea => <IdeaMarkedAsSpamNotification notification={notification} idea={idea} />}
-    </GetIdea>
-  );
-};
+export default IdeaMarkedAsSpamNotification;
