@@ -585,6 +585,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                     />
                     <SharingWrapper>
                       <Sharing
+                        id="e2e-initiative-sharing-component"
                         context="initiative"
                         url={initiativeUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, { initiativeTitle })}

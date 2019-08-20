@@ -140,7 +140,7 @@ class VoteControl extends PureComponent<Props, State> {
     const initiativeSettings = tenant.attributes.settings.initiatives;
 
     return (
-      <Container className={className}>
+      <Container id="e2e-initiative-vote-control" className={className || ''}>
         {showUnauthenticated
           ?
             <PopContainer icon="lock-outlined">
