@@ -149,6 +149,7 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
           />
         </VotedText>
         <UnvoteLink
+          id="e2e-initiative-cancel-upvote-button"
           onClick={this.handleOnCancelVote}
         >
           <FormattedMessage {...messages.unvoteLink} />
