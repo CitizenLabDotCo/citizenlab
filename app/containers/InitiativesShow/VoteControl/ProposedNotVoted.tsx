@@ -175,6 +175,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
           icon="upvote"
           style="primary"
           onClick={this.handleOnVote}
+          id="e2e-initiative-upvote-button"
         >
           <FormattedMessage {...messages.vote} />
         </StyledButton>
