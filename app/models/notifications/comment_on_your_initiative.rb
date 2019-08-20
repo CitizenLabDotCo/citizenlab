@@ -3,7 +3,7 @@ module Notifications
 
     belongs_to :initiating_user, class_name: 'User'
     belongs_to :comment
-    belongs_to :post
+    belongs_to :post, polymorphic: true
 
     validates :comment, :initiating_user, :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }

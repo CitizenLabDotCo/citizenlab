@@ -2,7 +2,7 @@ module Notifications
   class InitiativeAssignedToYou < Notification
     
     belongs_to :initiating_user, class_name: 'User', optional: true
-    belongs_to :post
+    belongs_to :post, polymorphic: true
 
     validates :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }

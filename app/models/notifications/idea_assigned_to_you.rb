@@ -2,7 +2,7 @@ module Notifications
   class IdeaAssignedToYou < Notification
     
     belongs_to :initiating_user, class_name: 'User', optional: true
-    belongs_to :post
+    belongs_to :post, polymorphic: true
     belongs_to :project
 
     validates :post, :project, presence: true

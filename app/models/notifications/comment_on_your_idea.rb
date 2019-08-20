@@ -3,7 +3,7 @@ module Notifications
     
     belongs_to :initiating_user, class_name: 'User'
     belongs_to :comment
-    belongs_to :post
+    belongs_to :post, polymorphic: true
     belongs_to :project
 
     validates :comment, :initiating_user, :post, :project, presence: true

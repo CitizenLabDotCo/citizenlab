@@ -11,7 +11,7 @@ FactoryBot.define do
 
   factory :comment_deleted_by_admin, parent: :notification, class: 'Notifications::CommentDeletedByAdmin' do
     comment
-    idea
+    association :post, factory: :idea
     initiating_user
     reason_code { 'irrelevant' }
     other_reason { nil }
@@ -19,6 +19,7 @@ FactoryBot.define do
 
   factory :comment_marked_as_spam, parent: :notification, class: 'Notifications::CommentMarkedAsSpam' do
     comment
+    association :post, factory: :idea
     spam_report
     initiating_user
   end
@@ -26,27 +27,29 @@ FactoryBot.define do
   factory :comment_on_your_comment, parent: :notification, class: 'Notifications::CommentOnYourComment' do
     initiating_user
     comment
-    idea
+    association :post, factory: :idea
   end
 
   factory :idea_assigned_to_you, parent: :notification, class: 'Notifications::IdeaAssignedToYou' do
     initiating_user
-    idea
+    association :post, factory: :idea
+    project
   end
 
   factory :idea_marked_as_spam, parent: :notification, class: 'Notifications::IdeaMarkedAsSpam' do
-    idea
+    association :post, factory: :idea
+    project
     spam_report
     initiating_user
   end
 
   factory :initiative_assigned_to_you, parent: :notification, class: 'Notifications::InitiativeAssignedToYou' do
     initiating_user
-    initiative
+    association :post, factory: :initiative
   end
 
   factory :initiative_marked_as_spam, parent: :notification, class: 'Notifications::InitiativeMarkedAsSpam' do
-    initiative
+    association :post, factory: :initiative
     spam_report
     initiating_user
   end
@@ -59,77 +62,82 @@ FactoryBot.define do
   factory :comment_on_your_idea, parent: :notification, class: 'Notifications::CommentOnYourIdea' do
     initiating_user
     comment
-    idea
+    association :post, factory: :idea
+    project
   end
 
   factory :comment_on_your_initiative, parent: :notification, class: 'Notifications::CommentOnYourInitiative' do
     initiating_user
     comment
-    initiative
+    association :post, factory: :initiative
   end
 
   factory :mention_in_comment, parent: :notification, class: 'Notifications::MentionInComment' do
     initiating_user
     comment
-    idea
+    association :post, factory: :idea
   end
 
   factory :mention_in_official_feedback, parent: :notification, class: 'Notifications::MentionInOfficialFeedback' do
     initiating_user
     official_feedback
-    idea
+    association :post, factory: :idea
   end
 
   factory :new_comment_for_admin, parent: :notification, class: 'Notifications::NewCommentForAdmin' do
     initiating_user
     comment
-    idea
+    association :post, factory: :idea
   end
 
   factory :new_idea_for_admin, parent: :notification, class: 'Notifications::NewIdeaForAdmin' do
     initiating_user
-    idea
+    association :post, factory: :idea
+    project
   end
 
   factory :new_initiative_for_admin, parent: :notification, class: 'Notifications::NewInitiativeForAdmin' do
     initiating_user
-    initiative
+    association :post, factory: :initiative
   end
 
   factory :official_feedback_on_commented_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnCommentedIdea' do
     initiating_user
     official_feedback
-    idea
+    association :post, factory: :idea
+    project
   end
 
   factory :official_feedback_on_commented_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnCommentedInitiative' do
     initiating_user
     official_feedback
-    initiative
+    association :post, factory: :initiative
   end
 
   factory :official_feedback_on_voted_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnVotedIdea' do
     initiating_user
     official_feedback
-    idea
+    association :post, factory: :idea
+    project
   end
 
   factory :official_feedback_on_voted_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnVotedInitiative' do
     initiating_user
     official_feedback
-    initiative
+    association :post, factory: :initiative
   end
 
   factory :official_feedback_on_your_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnYourIdea' do
     initiating_user
     official_feedback
-    idea
+    association :post, factory: :idea
+    project
   end
 
   factory :official_feedback_on_your_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnYourInitiative' do
     initiating_user
     official_feedback
-    initiative
+    association :post, factory: :initiative
   end
 
   factory :project_moderation_rights_received, parent: :notification, class: 'Notifications::ProjectModerationRightsReceived' do
@@ -148,26 +156,29 @@ FactoryBot.define do
   end
 
   factory :status_change_of_your_idea, parent: :notification, class: 'Notifications::StatusChangeOfYourIdea' do
-    idea
+    association :post, factory: :idea
+    project
     idea_status
     before(:create) do |notification|
-      notification.idea.idea_status = notification.idea_status
+      notification.post.idea_status = notification.idea_status
     end
   end
 
   factory :status_change_on_commented_idea, parent: :notification, class: 'Notifications::StatusChangeOnCommentedIdea' do
-    idea
+    association :post, factory: :idea
+    project
     idea_status
     before(:create) do |notification|
-      notification.idea.idea_status = notification.idea_status
+      notification.post.idea_status = notification.idea_status
     end
   end
 
   factory :status_change_on_voted_idea, parent: :notification, class: 'Notifications::StatusChangeOnVotedIdea' do
-    idea
+    association :post, factory: :idea
+    project
     idea_status
     before(:create) do |notification|
-      notification.idea.idea_status = notification.idea_status
+      notification.post.idea_status = notification.idea_status
     end
   end
   

@@ -2,7 +2,7 @@ module Notifications
   class CommentMarkedAsSpam < MarkedAsSpam
     
     belongs_to :comment
-    belongs_to :post
+    belongs_to :post, polymorphic: true
     belongs_to :project, optional: true
 
     validates :comment, :post, presence: true
