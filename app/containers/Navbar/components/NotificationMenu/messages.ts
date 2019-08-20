@@ -104,13 +104,25 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.officialFeedbackOnYourIdea',
     defaultMessage: '{officialName} gave an official update on {idea}',
   },
+  officialFeedbackOnYourInitiative: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnYourInitiative',
+    defaultMessage: '{officialName} gave an official update on {initiative}',
+  },
   officialFeedbackOnVotedIdea: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnVotedIdea',
     defaultMessage: '{officialName} gave an official update on an idea you voted for',
   },
+  officialFeedbackOnVotedInitiative: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedInitiative',
+    defaultMessage: '{officialName} gave an official update on an initiative you voted for',
+  },
   officialFeedbackOnCommentedIdea: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedIdea',
     defaultMessage: '{officialName} gave an official update on an idea you commented on',
+  },
+  officialFeedbackOnCommentedInitiative: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedInitiative',
+    defaultMessage: '{officialName} gave an official update on an initiative you commented on',
   },
   mentionInOfficialFeedback: {
     id: 'app.containers.NotificationMenu.mentionInOfficialFeedback',

@@ -1,8 +1,6 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 import { IOfficialFeedbackOnCommentedIdeaNotificationData } from 'services/notifications';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
 import messages from '../../messages';
@@ -12,27 +10,16 @@ import { FormattedMessage } from 'utils/cl-intl';
 import NotificationWrapper from '../NotificationWrapper';
 import T from 'components/T';
 
-interface InputProps {
+interface Props {
   notification: IOfficialFeedbackOnCommentedIdeaNotificationData;
 }
-interface DataProps {
-  idea: GetIdeaChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 const OfficialFeedbackOnCommentedIdeaNotification = memo<Props>(props => {
-  const { notification, idea } = props;
-
-  if (isNilOrError(idea)) return null;
-
-  const { slug } = idea.attributes;
-
-  const officialFeedbackAuthorMultiloc = notification.attributes.official_feedback_author;
+  const { notification } = props;
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${slug}`}
+      linkTo={`/ideas/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
       icon="notification_comment"
       isRead={!!notification.attributes.read_at}
@@ -40,21 +27,11 @@ const OfficialFeedbackOnCommentedIdeaNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.officialFeedbackOnCommentedIdea}
         values={{
-          officialName: <T value={officialFeedbackAuthorMultiloc} />
+          officialName: <T value={notification.attributes.official_feedback_author} />
         }}
       />
     </NotificationWrapper>
   );
 });
 
-export default (inputProps: InputProps) => {
-  const { notification } = inputProps;
-
-  if (!notification.relationships.idea.data) return null;
-
-  return (
-    <GetIdea id={notification.relationships.idea.data.id}>
-      {idea => <OfficialFeedbackOnCommentedIdeaNotification notification={notification} idea={idea} />}
-    </GetIdea>
-  );
-};
+export default OfficialFeedbackOnCommentedIdeaNotification;
