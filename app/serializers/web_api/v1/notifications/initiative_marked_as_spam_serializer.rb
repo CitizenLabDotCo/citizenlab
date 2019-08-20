@@ -11,11 +11,11 @@ class WebApi::V1::Notifications::InitiativeMarkedAsSpamSerializer < WebApi::V1::
     object.initiating_user&.slug
   end
 
-  attribute :initiative_title do |object|
-    object.initiative&.title_multiloc
+  attribute :post_title_multiloc do |object|
+    object.post&.title_multiloc
   end
 
-  belongs_to :initiating_user, record_type: :user, serializer: WebApi::V1::UserSerializer
-  belongs_to :initiative
-  belongs_to :spam_report
+  attribute :post_slug do |object|
+    object.post&.slug
+  end
 end
