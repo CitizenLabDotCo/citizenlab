@@ -329,27 +329,9 @@ export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificati
     type: 'status_change_of_your_idea';
     read_at: string | null;
     created_at: string;
-    idea_title: Multiloc;
-  };
-  relationships: {
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea_status: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+    idea_status_title_multiloc: Multiloc;
   };
 }
 
@@ -358,27 +340,9 @@ export interface IStatusChangeOnCommentedIdeaNotificationData extends IBaseNotif
     type: 'status_change_on_commented_idea';
     read_at: string | null;
     created_at: string;
-    idea_title: Multiloc;
-  };
-  relationships: {
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea_status: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+    idea_status_title_multiloc: Multiloc;
   };
 }
 
@@ -387,27 +351,9 @@ export interface IStatusChangeOnVotedIdeaNotificationData extends IBaseNotificat
     type: 'status_change_on_voted_idea';
     read_at: string | null;
     created_at: string;
-    idea_title: Multiloc;
-  };
-  relationships: {
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea_status: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+    idea_status_title_multiloc: Multiloc;
   };
 }
 
