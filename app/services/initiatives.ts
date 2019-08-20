@@ -153,6 +153,16 @@ export async function deleteInitiative(initiativeId: string) {
   return response;
 }
 
+export interface IInitiativeAllowedTransitions {
+  [key: string]: {
+    feedback_needed: boolean;
+  };
+}
+
+export function initiativeAllowedTransitionsStream(initiativeId: string) {
+  return streams.get<IInitiativeAllowedTransitions>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/allowed_transitions` });
+}
+
 export interface IInitiativesFilterCounts {
   idea_status_id: {
     [key: string]: number;

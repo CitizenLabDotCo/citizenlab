@@ -257,4 +257,48 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.multipleInitiatives',
     defaultMessage: '{initiativesCount} initiatives',
   },
+  changeStatusModalLabel: {
+    id: 'app.components.admin.PostManager.changeStatusModalLabel',
+    defaultMessage: 'Give feedback to explain this status change.',
+  },
+  changeStatusModalTitle: {
+    id: 'app.components.admin.PostManager.changeStatusModalTitle',
+    defaultMessage: 'Change this initiative\'s status',
+  },
+  statusChange: {
+    id: 'app.components.admin.PostManager.statusChange',
+    defaultMessage: 'To change {initiativeTitle}\'s status to {newStatus}, please provide feedback to the community.',
+  },
+  feedbackBodyPlaceholder: {
+    id: 'app.components.admin.PostManager.feedbackBodyPlaceholder',
+    defaultMessage: 'Justify this status change',
+  },
+  officialUpdateBody: {
+    id: 'app.components.admin.PostManager.officialUpdateBody',
+    defaultMessage: 'Justify this status change',
+  },
+  officialUpdateAuthor: {
+    id: 'app.components.admin.PostManager.officialUpdateAuthor',
+    defaultMessage: 'Choose how people will see your name',
+  },
+  feedbackAuthorPlaceholder: {
+    id: 'app.components.admin.PostManager.feedbackAuthorPlaceholder',
+    defaultMessage: 'Choose how people will see your name',
+  },
+  statusChangeSave: {
+    id: 'app.components.admin.PostManager.statusChangeSave',
+    defaultMessage: 'Change status',
+  },
+  statusChangeGenericError: {
+    id: 'app.components.admin.PostManager.statusChangeGenericError',
+    defaultMessage: 'There was an error, please try again later or contact support.',
+  },
+  newFeedbackMode: {
+    id: 'app.components.admin.PostManager.newFeedbackMode',
+    defaultMessage: 'Write a new official update to explain this change',
+  },
+  latestFeedbackMode: {
+    id: 'app.components.admin.PostManager.latestFeedbackMode',
+    defaultMessage: 'Use the latest existing official update as an explanation',
+  },
 });
