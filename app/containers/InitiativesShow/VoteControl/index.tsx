@@ -84,6 +84,7 @@ interface InputProps {
   initiativeId: string;
   className?: string;
   onScrollToOfficialFeedback: () => void;
+  id?: string;
 }
 
 interface DataProps {
@@ -125,7 +126,7 @@ class VoteControl extends PureComponent<Props, State> {
   }
 
   render() {
-    const { initiative, initiativeStatus, tenant, className, onScrollToOfficialFeedback } = this.props;
+    const { initiative, initiativeStatus, tenant, className, onScrollToOfficialFeedback, id } = this.props;
     const { showUnauthenticated } = this.state;
 
     if (isNilOrError(initiative) ||
@@ -140,7 +141,7 @@ class VoteControl extends PureComponent<Props, State> {
     const initiativeSettings = tenant.attributes.settings.initiatives;
 
     return (
-      <Container id="e2e-initiative-vote-control" className={className || ''}>
+      <Container id={id || ''} className={className || ''}>
         {showUnauthenticated
           ?
             <PopContainer icon="lock-outlined">
