@@ -63,7 +63,7 @@ const PostedBy = memo<Props>(({ authorId, className, showAboutInitiatives }) => 
     const authorName = <UserName userId={authorId} emphasize linkToProfile hideLastName />;
 
     return (
-      <Container className={`e2e-idea-author ${className || ''}`}>
+      <Container id="e2e-initiative-posted-by" className={className || ''}>
         <InitiativesIcon name="initiatives"/>
         <PostedByWrapper>
           <PostedByText>
