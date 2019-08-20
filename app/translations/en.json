@@ -414,7 +414,7 @@
   "app.components.admin.PostManager.remainingTime": "Days Remaining",
   "app.components.admin.PostManager.resetFiltersButton": "Reset filters",
   "app.components.admin.PostManager.resetFiltersDescription": "Reset the filters to see all ideas.",
-  "app.components.admin.PostManager.statusChange": "To change the initiative's status to {newStatus}, you must provide feedback to the community.",
+  "app.components.admin.PostManager.statusChange": "To change {initiativeTitle}'s status to {newStatus}, please provide feedback to the community.",
   "app.components.admin.PostManager.statusChangeGenericError": "There was an error, please try again later or contact support.",
   "app.components.admin.PostManager.statusChangeSave": "Change status",
   "app.components.admin.PostManager.statusesTab": "Status",
