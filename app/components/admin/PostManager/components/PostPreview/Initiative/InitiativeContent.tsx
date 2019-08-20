@@ -165,7 +165,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
           </Top>
           <Content>
             <StyledTitle
-              id={initiativeId}
+              postId={initiativeId}
               title={initiativeTitle}
               postType="initiative"
             />
@@ -181,7 +181,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
                 />
 
                 <StyledBody
-                  id={initiativeId}
+                  postId={initiativeId}
                   postType="initiative"
                   body={localize(initiative.attributes.body_multiloc)}
                 />
