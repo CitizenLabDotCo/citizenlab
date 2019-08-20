@@ -582,6 +582,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                     <VoteControl
                       initiativeId={initiative.id}
                       onScrollToOfficialFeedback={this.onScrollToOfficialFeedback}
+                      id="e2e-initiative-vote-control"
                     />
                     <SharingWrapper>
                       <Sharing
