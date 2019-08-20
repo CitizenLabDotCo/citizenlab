@@ -2,7 +2,7 @@ module Notifications
   class StatusChangeOnCommentedIdea < Notification
     
     belongs_to :idea_status
-    belongs_to :post
+    belongs_to :post, polymorphic: true
     belongs_to :project
     belongs_to :initiating_user, class_name: 'User', optional: true
 

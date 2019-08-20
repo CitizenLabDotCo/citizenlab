@@ -4,7 +4,7 @@ module Notifications
     belongs_to :phase
     belongs_to :project, optional: true
 
-    validates :phase_id, presence: true
+    validates :phase, presence: true
 
 
     ACTIVITY_TRIGGERS = {'Phase' => {'upcoming' => true}}

@@ -2,7 +2,7 @@ module Notifications
   class NewInitiativeForAdmin < Notification
     
     belongs_to :initiating_user, class_name: 'User'
-    belongs_to :post
+    belongs_to :post, polymorphic: true
 
     validates :initiating_user, :post, presence: true
 

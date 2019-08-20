@@ -1,7 +1,7 @@
 module Notifications
   class InitiativeMarkedAsSpam < MarkedAsSpam
     
-    belongs_to :post
+    belongs_to :post, polymorphic: true
 
     validates :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }

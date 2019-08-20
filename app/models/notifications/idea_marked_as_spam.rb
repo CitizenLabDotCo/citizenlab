@@ -1,7 +1,7 @@
 module Notifications
   class IdeaMarkedAsSpam < MarkedAsSpam
     
-    belongs_to :post
+    belongs_to :post, polymorphic: true
     belongs_to :project
 
     validates :post, :project, presence: true
