@@ -44,31 +44,17 @@ describe('Idea card component', () => {
     cy.get('#e2e-initiatives-list');
   });
 
-  it('increments and decrements the vote count accordingly when the up and downvote buttons are clicked', () => {
-    cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').contains(initiativeTitle).closest('.e2e-initiative-card').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
-    cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').contains(initiativeTitle).closest('.e2e-initiative-card').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
+  it('bleh', () => {
+    // find and save the initiative card
+    cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').contains(initiativeTitle).closest('.e2e-initiative-card').as('initiativeCard');
 
-    // check initial upvotes & downvotes
-    cy.get('@upvoteBtn').contains('1');
-    cy.get('@downvoteBtn').contains('0');
+    // the first card should be the one for the initaitive we just created
+    cy.get('.e2e-initiative-card').first().contains(initiativeTitle);
 
-    // add upvote
-    cy.get('@upvoteBtn').wait(500).click().wait(1000).contains('2');
+    // the card should contai the title
+    cy.get('@initiativeCard').contains(initiativeTitle);
 
-    // remove upvote
-    cy.get('@upvoteBtn').wait(500).click().wait(1000).contains('1');
-
-    // add downvote
-    cy.get('@downvoteBtn').wait(500).click().wait(1000).contains('1');
-
-    // remove downvote
-    cy.get('@downvoteBtn').wait(500).click().wait(1000).contains('0');
-
-    // add downvote, then upvote
-    cy.get('@downvoteBtn').wait(500).click().wait(1000);
-    cy.get('@upvoteBtn').wait(500).click().wait(1000);
-    cy.get('@downvoteBtn').contains('0');
-    cy.get('@upvoteBtn').contains('2');
+    // the card should contain one vote
   });
 
   it('shows the correct comment count', () => {

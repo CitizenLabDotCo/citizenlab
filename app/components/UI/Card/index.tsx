@@ -66,12 +66,14 @@ const Title = styled.h3`
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  line-height: 26px;
+  line-height: 24px;
   max-height: 78px;
   margin: 0;
+  margin-top: 20px;
   margin-bottom: 13px;
-  padding: 20px;
-  padding-bottom: 0px;
+  padding: 0;
+  padding-left: 20px;
+  padding-right: 20px;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
