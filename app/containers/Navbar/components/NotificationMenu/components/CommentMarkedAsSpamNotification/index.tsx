@@ -53,7 +53,7 @@ const CommentMarkedAsSpamNotification = memo<Props>(props => {
             >
               {notification.attributes.initiating_user_first_name}
             </Link>,
-          ideaTitle: <T value={notification.attributes.post_title_multiloc} />
+          postTitle: <T value={notification.attributes.post_title_multiloc} />
         }}
       />
     </NotificationWrapper>
