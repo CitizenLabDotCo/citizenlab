@@ -16,9 +16,6 @@ export interface IAdminRightsReceivedNotificationData extends IBaseNotificationD
     type: 'admin_rights_received';
     read_at: string | null;
     created_at: string;
-    initiating_user_first_name: string;
-    initiating_user_last_name: string;
-    initiating_user_slug: string;
   };
 }
 
@@ -27,9 +24,6 @@ export interface ICommentDeletedByAdminNotificationData extends IBaseNotificatio
     type: 'comment_deleted_by_admin';
     read_at: string | null;
     created_at: string;
-    initiating_user_first_name: string;
-    initiating_user_last_name: string;
-    initiating_user_slug: string;
     post_type: 'Initiative' | 'Idea';
     post_slug: string | null;
     post_title_multiloc: Multiloc;
