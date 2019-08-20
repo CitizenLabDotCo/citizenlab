@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // data
-import { ICommentOnYourIdeaNotificationData } from 'services/notifications';
+import { ICommentOnYourInitiativeNotificationData } from 'services/notifications';
 
 // i18n
 import messages from '../../messages';
@@ -14,23 +14,23 @@ import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
 
 interface Props {
-  notification: ICommentOnYourIdeaNotificationData;
+  notification: ICommentOnYourInitiativeNotificationData;
 }
 
-const CommentOnYourIdeaNotification = memo<Props>(props => {
+const CommentOnYourInitiativeNotification = memo<Props>(props => {
   const { notification } = props;
 
   const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${notification.attributes.post_slug}`}
+      linkTo={`/initiatives/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
       icon="notification_comment"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.userCommentedOnYourIdea}
+        {...messages.userCommentedOnYourInitiative}
         values={{
           name: deletedUser ?
           <DeletedUser>
@@ -49,4 +49,4 @@ const CommentOnYourIdeaNotification = memo<Props>(props => {
   );
 });
 
-export default CommentOnYourIdeaNotification;
+export default CommentOnYourInitiativeNotification;

@@ -11,124 +11,30 @@ interface IBaseNotificationData {
   type: string;
 }
 
-export interface ICommentOnYourCommentNotificationData extends IBaseNotificationData {
+export interface IAdminRightsReceivedNotificationData extends IBaseNotificationData {
   attributes: {
-    type: 'comment_on_your_comment';
+    type: 'admin_rights_received';
     read_at: string | null;
     created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-    idea_slug: string | null;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
   };
 }
 
-export interface ICommentOnYourIdeaNotificationData extends IBaseNotificationData {
+export interface ICommentDeletedByAdminNotificationData extends IBaseNotificationData {
   attributes: {
-    type: 'comment_on_your_idea';
+    type: 'comment_deleted_by_admin';
     read_at: string | null;
     created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    comment: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface IMentionInCommentNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'mention_in_comment';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    comment: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface IIdeaMarkedAsSpamNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'idea_marked_as_spam';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    comment: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+    post_type: 'Initiative' | 'Idea';
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+    reason_code: 'irrelevant' | 'inappropriate' | 'other';
+    other_reason: string;
   };
 }
 
@@ -140,27 +46,181 @@ export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationD
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    idea_title: Multiloc;
+    post_type: 'Initiative' | 'Idea';
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
   };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
+}
+
+export interface ICommentOnYourCommentNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'comment_on_your_comment';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_type: 'Initiative' | 'Idea';
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface ICommentOnYourIdeaNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'comment_on_your_idea';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface ICommentOnYourInitiativeNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'comment_on_your_initiative';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface IIdeaAssignedToYouNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'idea_assigned_to_you';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+  };
+}
+
+export interface IIdeaMarkedAsSpamNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'idea_marked_as_spam';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+  };
+}
+
+export interface IInitiativeAssignedToYouNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'initiative_assigned_to_you';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+  };
+}
+
+export interface IInitiativeMarkedAsSpamNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'initiative_marked_as_spam';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+  };
+}
+
+export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'invite_accepted';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+  };
+}
+
+export interface IMentionInCommentNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'mention_in_comment';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_type: 'Initiative' | 'Idea';
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface IMentionInOfficialFeedbackNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'mention_in_official_feedback';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    official_feedback_author: Multiloc;
+    post_type: 'Initiative' | 'Idea';
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface INewCommentForAdminNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'new_comment_for_admin';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_type: 'Initiative' | 'Idea';
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface INewIdeaForAdminNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'new_idea_for_admin';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
+  };
+}
+
+export interface INewInitiativeForAdminNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'new_initiative_for_admin';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
+    post_title_multiloc: Multiloc;
   };
 }
 
@@ -251,71 +311,6 @@ export interface IStatusChangeOnVotedIdeaNotificationData extends IBaseNotificat
   };
 }
 
-export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'invite_accepted';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    invite: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface ICommentDeletedByAdminNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'comment_deleted_by_admin';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string;
-    initiating_user_last_name: string;
-    initiating_user_slug: string;
-    idea_title: Multiloc;
-    reason_code: 'irrelevant' | 'inappropriate' | 'other';
-    other_reason: string;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    comment: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
 export interface IProjectModerationRightsReceivedNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'project_moderation_rights_received';
@@ -324,92 +319,6 @@ export interface IProjectModerationRightsReceivedNotificationData extends IBaseN
   };
   relationships: {
     initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface IAdminRightsReceivedNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'admin_rights_received';
-    read_at: string | null;
-    created_at: string;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface IIdeaForAdminNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'new_idea_for_admin';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea_author: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
-export interface ICommentForAdminNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'new_comment_for_admin';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    comment: {
       data?: {
         id: string;
         type: string;
@@ -541,45 +450,6 @@ export interface IOfficialFeedbackOnCommentedIdeaNotificationData extends IBaseN
   };
 }
 
-export interface IMentionInOfficialFeedbackNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'mention_in_official_feedback';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title: Multiloc;
-    official_feedback_author: Multiloc;
-  };
-  relationships: {
-    initiating_user: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    idea: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    official_feedback: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
 export interface IProjectPhaseStartedNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'project_phase_started';
@@ -632,49 +502,29 @@ export interface IProjectPhaseUpcomingNotificationData extends IBaseNotification
   };
 }
 
-export interface IIdeaAssignedToYouNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'idea_assigned_to_you';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    idea_title_multiloc: Multiloc;
-    idea_slug: string;
-  };
-  relationships: {
-    project: {
-      data?: {
-        id: string;
-        type: string;
-      }
-    }
-  };
-}
-
 export type TNotificationData =
+  IAdminRightsReceivedNotificationData |
+  ICommentDeletedByAdminNotificationData |
+  ICommentForAdminNotificationData |
+  ICommentMarkedAsSpamNotificationData |
   ICommentOnYourCommentNotificationData |
   ICommentOnYourIdeaNotificationData |
-  ICommentMarkedAsSpamNotificationData |
-  IIdeaMarkedAsSpamNotificationData |
-  IMentionInCommentNotificationData |
-  IInviteAcceptedNotificationData |
-  IStatusChangeOfYourIdeaNotificationData |
-  IStatusChangeOnCommentedIdeaNotificationData |
-  IStatusChangeOnVotedIdeaNotificationData |
-  ICommentDeletedByAdminNotificationData |
-  IProjectModerationRightsReceivedNotificationData |
-  IAdminRightsReceivedNotificationData |
+  ICommentOnYourInitiativeNotificationData |
   IIdeaForAdminNotificationData |
-  ICommentForAdminNotificationData |
-  IOfficialFeedbackOnYourIdeaNotificationData |
-  IOfficialFeedbackOnVotedIdeaNotificationData |
-  IOfficialFeedbackOnCommentedIdeaNotificationData |
+  IIdeaMarkedAsSpamNotificationData |
+  IIdeaAssignedToYouNotificationData |
+  IInviteAcceptedNotificationData |
+  IMentionInCommentNotificationData |
   IMentionInOfficialFeedbackNotificationData |
+  IOfficialFeedbackOnCommentedIdeaNotificationData |
+  IOfficialFeedbackOnVotedIdeaNotificationData |
+  IOfficialFeedbackOnYourIdeaNotificationData |
+  IProjectModerationRightsReceivedNotificationData |
   IProjectPhaseStartedNotificationData |
   IProjectPhaseUpcomingNotificationData |
-  IIdeaAssignedToYouNotificationData;
+  IStatusChangeOfYourIdeaNotificationData |
+  IStatusChangeOnCommentedIdeaNotificationData |
+  IStatusChangeOnVotedIdeaNotificationData;
 
 export interface INotificationLinks {
   self: string;

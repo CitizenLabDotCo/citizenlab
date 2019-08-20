@@ -103,7 +103,39 @@ export default class FileInput extends PureComponent<Props> {
           onClick={this.onClick}
           type="file"
           ref={this.fileInput}
-          accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .sxw, .sxc, .sxi, .sdw, .sdc, .sdd, .csv, .mp3, .mp4, .mkv, .avi"
+          accept="
+            .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .sxw, .sxc, .sxi, .sdw, .sdc, .sdd, .csv, .mp3, .mp4, .mkv, .avi,
+            application/pdf,
+            application/doc,
+            application/ms-doc,
+            application/msword,
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+            application/excel,
+            application/vnd.ms-excel,
+            application/x-excel,
+            application/x-msexcel,
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+            application/mspowerpoint,
+            application/powerpoint,
+            application/vnd.ms-powerpoint,
+            application/x-mspowerpoint,
+            application/vnd.openxmlformats-officedocument.presentationml.presentation,
+            text/plain,
+            text/rtf,
+            text/csv,
+            audio/mpeg3,
+            audio/x-mpeg-3,
+            audio/mpeg3,
+            audio/mp4,
+            video/mpeg,
+            video/x-mpeg,
+            video/mp4,
+            application/mp4,
+            video/avi,
+            video/msvideo,
+            video/x-msvideo,
+            video/x-matroska
+          "
         />
         <Label htmlFor="file-attachment-uploader">
           <StyledIcon name="upload-file" />
