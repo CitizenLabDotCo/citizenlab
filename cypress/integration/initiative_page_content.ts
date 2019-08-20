@@ -22,6 +22,10 @@ describe('when logged out', () => {
     cy.get('#e2e-initiative-title');
   });
 
+  it('shows a link to author profile', () => {
+    cy.get('#e2e-initiative-posted-by .e2e-author-link').click();
+    cy.location('pathname').should('eq', '/en-GB/profile/casey-luettgen');
+  });
   it('shows the initiative image', () => {
     cy.get('#e2e-initiative-image');
   });
@@ -30,9 +34,12 @@ describe('when logged out', () => {
     cy.get('#e2e-initiative-description');
   });
 
-  it('shows a link to author profile', () => {
-    cy.get('#e2e-initiative-posted-by .e2e-author-link').click();
-    cy.location('pathname').should('eq', '/en-GB/profile/casey-luettgen');
+  it('shows the vote control', () => {
+    cy.get('#e2e-initiative-vote-control');
+  });
+
+  it('shows the sharing component', () => {
+    cy.get('#e2e-initiative-sharing-component');
   });
 
   it('shows the comments correctly', () => {
