@@ -26,7 +26,7 @@ describe('Profile Page', () => {
       return cy.apiCreateIdea(projectId, ideaTitle, ideaContent, undefined, undefined, jwt);
     }).then((idea) => {
       ideaId = idea.body.data.id;
-      return cy.apiAddComment(ideaId, commentContent, undefined, jwt);
+      return cy.apiAddComment(ideaId, 'idea', commentContent, undefined, jwt);
     }).then((comment) => {
       commentId = comment.body.data.id;
     });

@@ -5,11 +5,10 @@ describe('Idea card component', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
-  const ideaTitle = randomString();
-  const ideaContent = Math.random().toString(36);
+  const initiativeTitle = randomString();
+  const initiativeContent = Math.random().toString(36);
   const commentContent = randomString();
-  let projectId: string;
-  let ideaId: string;
+  let initiativeId: string;
   let userId: string;
   let parentCommentId: string;
   let childCommentId: string;
@@ -18,15 +17,13 @@ describe('Idea card component', () => {
     cy.apiSignup(firstName, lastName, email, password).then(userResponse => {
       userId = userResponse.body.data.id;
     });
-    cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
-      projectId = project.body.data.id;
-      return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
-    }).then((idea) => {
-      ideaId = idea.body.data.id;
-      return cy.apiAddComment(ideaId, 'idea', commentContent);
+
+    cy.apiCreateInitiative(projectId, initiativeTitle, initiativeContent).then((initiative) => {
+      initiativeId = initiative.body.data.id;
+      return cy.apiAddCommentToIdea(initiativeId, commentContent);
     }).then((parentComment) => {
       parentCommentId = parentComment.body.data.id;
-      return cy.apiAddComment(ideaId, 'idea', commentContent, parentCommentId);
+      return cy.apiAddCommentToIdea(initiativeId, commentContent, parentCommentId);
     }).then((childComment) => {
       childCommentId = childComment.body.data.id;
       cy.login(email, password);
@@ -49,8 +46,8 @@ describe('Idea card component', () => {
   });
 
   it('increments and decrements the vote count accordingly when the up and downvote buttons are clicked', () => {
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
+    cy.get('#e2e-ideas-list').find('.e2e-idea-card').contains(initiativeTitle).closest('.e2e-idea-card').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
+    cy.get('#e2e-ideas-list').find('.e2e-idea-card').contains(initiativeTitle).closest('.e2e-idea-card').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
 
     // check initial upvotes & downvotes
     cy.get('@upvoteBtn').contains('1');
@@ -76,13 +73,13 @@ describe('Idea card component', () => {
   });
 
   it('shows the correct comment count', () => {
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-comment-count').contains('2');
+    cy.get('#e2e-ideas-list').find('.e2e-idea-card').contains(initiativeTitle).closest('.e2e-idea-card').find('.e2e-ideacard-comment-count').contains('2');
   });
 
   after(() => {
     cy.apiRemoveComment(childCommentId);
     cy.apiRemoveComment(parentCommentId);
-    cy.apiRemoveIdea(ideaId);
+    cy.apiRemoveIdea(initiativeId);
     cy.apiRemoveUser(userId);
   });
 });
