@@ -6405,6 +6405,9 @@ models:
   idea_image:
   - remote_image_url: http://test.hanvecforum.fr/wp-content/uploads/2015/11/covoiturage2.jpg
     idea_ref: *controversial_idea
+  initiative_image:
+  - remote_image_url: http://test.hanvecforum.fr/wp-content/uploads/2015/11/covoiturage2.jpg
+    initiative_ref: *initiative1
   phase:
   - title_multiloc:
       en-GB: Quidem corrupti et ab ducimus ratione saepe illo doloribus.
