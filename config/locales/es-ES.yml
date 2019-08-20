@@ -69,6 +69,12 @@ es:
     initiatives_title: Iniciativas
     initiatives_body: >
       <p>Explicación sobre las iniciativas</p>
+    initiatives_success_1_title: ""
+    initiatives_success_1_body: ""
+    initiatives_success_2_title: ""
+    initiatives_success_2_body: ""
+    initiatives_success_3_title: ""
+    initiatives_success_3_body: ""
   projects:
     open_idea_project_title: '¿Tienes una idea? Proponla en la plataforma!'
     open_idea_project_description_preview: '¿Quizás tienes una idea que no encaja con uno de los proyectos existentes? Entonces publícalo aquí, reúne apoyo y ponlo en la agenda política!'
