@@ -460,7 +460,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 />
               </MobileMoreActionContainer>
               <Title
-                id={initiativeId}
+                postId={initiativeId}
                 postType="initiative"
                 title={initiativeTitle}
                 locale={locale}
@@ -507,7 +507,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   <InitiativeHeader>
                     <Title
                       postType="initiative"
-                      id={initiativeId}
+                      postId={initiativeId}
                       title={initiativeTitle}
                       locale={locale}
                       translateButtonClicked={translateButtonClicked}
@@ -526,7 +526,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   <Image
                     src={initiativeImageLarge}
                     alt={formatMessage(messages.imageAltText, { initiativeTitle })}
-                    className="e2e-initiativeImage"
+                    id="e2e-initiative-image"
                   />
                 }
 
