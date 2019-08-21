@@ -2,6 +2,7 @@ import 'whatwg-fetch';
 import { from } from 'rxjs';
 import { UploadFile } from 'typings';
 import { isString } from 'lodash-es';
+import { reportError } from 'utils/loggingUtils';
 
 export const imageSizes = {
   headerBg: {
@@ -19,24 +20,18 @@ export const imageSizes = {
     medium: [298, 135],
     small: [96, 96],
   },
+  initiativeImg: {
+    fb: [1200, 630],
+    medium: [298, 135],
+    small: [96, 96],
+  },
 };
-
-export function isFileUploadSupported() {
-  // cf https://caniuse.com/#feat=input-file-multiple
-  // https://caniuse.com/#feat=input-file-accept
-  // https://caniuse.com/#feat=fileapi
-  // webOS being firefox mobile
-  // We should support fileupload for mobile devices that have it working (most of them),
-  // but the accept param with extensions is not well supported and we don't have a good enough error handling
-  // in IdeaForm to have unsupported files in the form, for now.
-  return !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
 
 export async function getBase64FromFile(file: File) {
   return new Promise<string>((resolve, reject) => {
     if (file && !isString(file)) {
       const reader = new FileReader();
-      reader.onload = (event: any) => resolve(event.target.result);
+      reader.onloadend = (event: any) => resolve(event.target.result);
       reader.onerror = () => reject(new Error('error for getBase64()'));
       reader.readAsDataURL(file);
     } else {
@@ -79,7 +74,7 @@ export async function convertUrlToUploadFile(url: string, id: string | null, fil
     uploadFile.id = (id || undefined);
     return uploadFile;
   } catch (error) {
-    console.log(error);
+    reportError(error);
     return null;
   }
 }

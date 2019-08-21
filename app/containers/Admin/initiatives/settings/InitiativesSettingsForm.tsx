@@ -7,8 +7,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikInput from 'components/UI/FormikInput';
-// TODO add enabled toggle (i3)
-// import FormikToggle from 'components/UI/FormikToggle';
+import FormikToggle from 'components/UI/FormikToggle';
 import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors, FormikProps } from 'formik';
@@ -67,10 +66,12 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
       <Form>
         <Section>
           <SectionField>
-            <FormLocaleSwitcher
-              onLocaleChange={this.onLocaleChange}
-              selectedLocale={selectedLocale}
-              values={multilocValues}
+            <Label>
+              <FormattedMessage {...messages.fieldEnable} />
+            </Label>
+            <Field
+              name="enabled"
+              component={FormikToggle}
             />
           </SectionField>
           <SectionField>
@@ -108,6 +109,13 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
           </SectionField>
 
           <SectionField>
+            <FormLocaleSwitcher
+              onLocaleChange={this.onLocaleChange}
+              selectedLocale={selectedLocale}
+              values={multilocValues}
+            />
+          </SectionField>
+          <SectionField>
             <Field
               component={FormikQuillMultiloc}
               shownLocale={this.state.selectedLocale}
@@ -119,6 +127,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
               noImages
               noVideos
               noAlign
+              inAdmin
               limitedTextFormatting
             />
           </SectionField>
@@ -133,7 +142,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
               noImages
               noVideos
               noAlign
-              limitedTextFormatting
+              inAdmin
               component={FormikQuillMultiloc}
             />
           </SectionField>

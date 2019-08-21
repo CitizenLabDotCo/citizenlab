@@ -5,11 +5,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container: any = styled.div`
   display: inline-block;
   cursor: pointer;
-  color: ${colors.label};
-  fill: ${colors.label};
+  color: ${(props: any) => props.inCitizen ? props.theme.colorText : colors.label};
+  fill: ${(props: any) => props.inCitizen ? props.theme.colorText : colors.label};
 
   &:hover {
     fill: #000;
@@ -37,6 +37,7 @@ const GoBackText = styled.div`
 
 type Props = {
   onClick: (arg: FormEvent) => void;
+  inCitizen?: boolean;
 };
 
 type State = {};
@@ -44,9 +45,10 @@ type State = {};
 export default class GoBackButton extends PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
+    const { inCitizen, onClick } = this.props;
 
     return (
-      <Container className={className} onClick={this.props.onClick}>
+      <Container className={className} onClick={onClick} inCitizen={inCitizen}>
         <ContainerInner>
           <GoBackIcon name="arrow-back" />
           <GoBackText>

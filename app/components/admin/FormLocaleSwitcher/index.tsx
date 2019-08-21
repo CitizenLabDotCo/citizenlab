@@ -10,7 +10,6 @@ import { darken } from 'polished';
 
 const Container = styled.div`
   display: flex;
-  margin-bottom: 10px;
   width: 100%;
   justify-content: flex-end;
   & > :not(:last-child) {
@@ -49,6 +48,7 @@ interface InputProps {
   onLocaleChange: (loc: Locale) => () => void;
   values: MultilocFormValues;
   selectedLocale: Locale;
+  className?: string;
 }
 
 interface DataProps {
@@ -66,11 +66,11 @@ class FormLocaleSwitcher extends PureComponent<Props> {
   }
 
   render() {
-    const { tenantLocales, onLocaleChange, selectedLocale } = this.props;
+    const { tenantLocales, onLocaleChange, selectedLocale, className } = this.props;
 
     if (!isNilOrError(tenantLocales) && tenantLocales.length > 1) {
       return (
-        <Container>
+        <Container className={className}>
           {tenantLocales.map(locale => (
             <StyledButton
               key={locale}

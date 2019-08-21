@@ -416,6 +416,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const secondUrlSegment = urlSegments[1];
     const lastUrlSegment = urlSegments[urlSegments.length - 1];
     const onIdeaPage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'ideas' && lastUrlSegment !== 'new');
+    const onInitiativePage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'initiatives' && lastUrlSegment !== 'new');
 
     return (
       <>
@@ -426,7 +427,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
         <Container
           role="navigation"
           id="navbar"
-          className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage ? 'hideNavbar' : ''}`}
+          className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
         >
           <ContainerInner>
             <Left>
@@ -488,7 +489,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 }
 
                 <FeatureFlag name="ideas_overview">
-                  <NavigationItem to="/ideas" activeClassName="active">
+                  <NavigationItem
+                    to="/ideas"
+                    activeClassName="active"
+                    className={secondUrlSegment === 'ideas' ? 'active' : ''}
+                  >
                     <NavigationItemText>
                       <FormattedMessage {...messages.pageIdeas} />
                     </NavigationItemText>
@@ -496,7 +501,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 </FeatureFlag>
 
                 <FeatureFlag name="initiatives">
-                  <NavigationItem to="/initiatives" activeClassName="active">
+                  <NavigationItem
+                    to="/initiatives"
+                    activeClassName="active"
+                    className={secondUrlSegment === 'initiatives' ? 'active' : ''}
+                  >
                     <NavigationItemText>
                       <FormattedMessage {...messages.pageInitiatives} />
                     </NavigationItemText>

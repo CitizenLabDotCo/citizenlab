@@ -6,6 +6,8 @@ import { get } from 'lodash-es';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
+export type IdeaCommentingDisabledReason = 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | null;
+
 export interface IIdeaData {
   id: string;
   type: string;
@@ -20,7 +22,7 @@ export interface IIdeaData {
     comments_count: number;
     baskets_count: number;
     location_point_geojson: GeoJSON.Point;
-    location_description: string;
+    location_description: string | null;
     budget: number | null;
     created_at: string;
     updated_at: string;
@@ -35,7 +37,7 @@ export interface IIdeaData {
       commenting: {
         enabled: boolean,
         future_enabled: string | null,
-        disabled_reason: 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | null,
+        disabled_reason: IdeaCommentingDisabledReason,
       },
       comment_voting: {
         enabled: boolean
@@ -182,10 +184,12 @@ export function geotaggedIdeasStream(streamParams: IStreamParams | null = null) 
 
 export async function addIdea(object: IIdeaAdd) {
   const response = await streams.add<IIdea>(`${API_PATH}/ideas/`, { idea: object });
+
   streams.fetchAllWith({
     dataId: [response.data.relationships.project.data.id],
     apiEndpoint: [`${API_PATH}/users/${object.author_id}/ideas_count`]
   });
+
   return response;
 }
 
@@ -193,7 +197,7 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
   const response = await streams.update<IIdea>(`${API_PATH}/ideas/${ideaId}`, ideaId, { idea: object });
   streams.fetchAllWith({
     dataId: [response.data.relationships.project.data.id],
-    apiEndpoint: [`${API_PATH}/stats/ideas_count`]
+    apiEndpoint: [`${API_PATH}/stats/ideas_count`, `${API_PATH}/ideas`]
   });
   return response;
 }
@@ -209,7 +213,7 @@ export async function deleteIdea(ideaId: string) {
 
   streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/ideas_count`] : [])
+    apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/ideas_count`, `${API_PATH}/stats/ideas_count`] : [`${API_PATH}/stats/ideas_count`])
   });
 
   return response;

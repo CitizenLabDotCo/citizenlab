@@ -56,7 +56,7 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
     return messages.budgetingDisabled;
   }
 
-  handleProjectLinkClick = (event: FormEvent<any>) => {
+  handleProjectLinkClick = (event: FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
 

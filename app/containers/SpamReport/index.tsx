@@ -19,7 +19,7 @@ const Container = styled.div`
 `;
 
 interface Props {
-  resourceType: 'comments' | 'ideas';
+  resourceType: 'comments' | 'ideas' | 'initiatives';
   resourceId: string;
   className?: string;
 }
@@ -94,7 +94,6 @@ class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
           loading={this.state.loading}
           saved={this.state.saved}
           errors={this.state.errors}
-          itemType={this.props.resourceType}
         />
       </Container>
     );

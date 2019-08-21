@@ -8,12 +8,13 @@ import { phaseFilesStream, IPhaseFileData, IPhaseFiles } from 'services/phaseFil
 import { eventFilesStream, IEventFileData, IEventFiles } from 'services/eventFiles';
 import { pageFilesStream, IPageFileData, IPageFiles } from 'services/pageFiles';
 import { ideaFilesStream, IIdeaFileData, IIdeaFiles } from 'services/ideaFiles';
+import { initiativeFilesStream, IInitiativeFileData, IInitiativeFiles } from 'services/initiativeFiles';
 
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   resetOnChange?: boolean;
-  resourceType: 'project' | 'phase' | 'event' | 'page' | 'idea';
+  resourceType: 'project' | 'phase' | 'event' | 'page' | 'idea' | 'initiative';
   resourceId: string | null;
 }
 
@@ -24,7 +25,7 @@ interface Props extends InputProps {
 }
 
 interface State {
-  files: IProjectFileData[] | IPhaseFileData[] | IEventFileData[] | IPageFileData[] | IIdeaFileData[] | undefined | null | Error;
+  files: IProjectFileData[] | IPhaseFileData[] | IEventFileData[] | IPageFileData[] | IIdeaFileData[] | IInitiativeFileData[] | undefined | null | Error;
 }
 
 export type GetResourceFilesChildProps = State['files'];
@@ -61,8 +62,11 @@ export default class GetResourceFiles extends React.Component<Props, State> {
           if (resourceType === 'event') streamFn = eventFilesStream;
           if (resourceType === 'page') streamFn = pageFilesStream;
           if (resourceType === 'idea') streamFn = ideaFilesStream;
+          if (resourceType === 'initiative') streamFn = initiativeFilesStream;
 
-          return streamFn(resourceId).observable as Observable<IProjectFiles | IPhaseFiles | IEventFiles | IPageFiles | IIdeaFiles | null>;
+          return streamFn(resourceId).observable as Observable<
+            IProjectFiles | IPhaseFiles | IEventFiles | IPageFiles | IIdeaFiles | IInitiativeFiles | null
+          >;
         })
       )
       .subscribe((files) => {

@@ -33,7 +33,7 @@ export interface IAvatars {
 */
 interface IAvatarsQueryParams {
   limit?: number | null;
-  context_type?: 'group' | 'project' | 'idea' | null;
+  context_type?: 'group' | 'project' | 'idea' | 'initiative' | null;
   context_id?: string | null;
 }
 

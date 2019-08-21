@@ -82,6 +82,10 @@ export default defineMessages({
     id: 'app.containers.app.navbar.mobilePageIdeas',
     defaultMessage: 'Ideas',
   },
+  mobilePageInitiatives: {
+    id: 'app.containers.app.navbar.mobilePageInitiatives',
+    defaultMessage: 'Initiatives',
+  },
   mobilePageProjects: {
     id: 'app.containers.app.navbar.mobilePageProjects',
     defaultMessage: 'Projects',

@@ -8,6 +8,7 @@ import Avatar from 'components/Avatar';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // resources
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
@@ -18,7 +19,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
@@ -78,10 +79,17 @@ const Bio = styled.div`
 
 const EditProfile = styled(Link)`
   margin-top: 10px;
-  color: ${({ theme }) => theme.colorText};
+  padding: 6px 10px;
+  color: ${colors.label};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  display: flex;
+  align-items: center;
+  transition: all 100ms ease-out;
 
-  &:hover, &:focus {
-    color: ${({ theme }) => darken(0.15, theme.colorText)};
+  &:hover,
+  &:focus {
+    color: ${darken(0.2, colors.label)};
+    background: ${colors.background};
   }
 `;
 
@@ -94,6 +102,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  windowSize: GetWindowSizeChildProps;
   user: GetUserChildProps;
   authUser: GetAuthUserChildProps;
 }
@@ -101,14 +110,16 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 export const UserHeader = memo<Props>(props => {
-    const { user, authUser } = props;
+    const { user, authUser, windowSize } = props;
+    const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
     if (!isNilOrError(user)) {
       const memberSinceMoment = moment(user.attributes.created_at).format('LL');
+
       return (
         <Container>
           <UserAvatar>
-            <Avatar userId={user.id} size="105px" />
+            <Avatar userId={user.id} size={smallerThanSmallTablet ? '120px' : '150px'} />
           </UserAvatar>
 
           <UserInfo>
@@ -139,6 +150,7 @@ export const UserHeader = memo<Props>(props => {
 );
 
 const Data = adopt<DataProps, InputProps>({
+    windowSize: <GetWindowSize />,
     authUser: <GetAuthUser />,
     user: ({ userSlug, render }) => <GetUser slug={userSlug}>{render}</GetUser>
 });

@@ -1,4 +1,4 @@
-import { isNil, get } from 'lodash-es';
+import { isNil, get, isString } from 'lodash-es';
 import { ITenant } from 'services/tenant';
 import { css } from 'styled-components';
 import { darken, transparentize } from 'polished';
@@ -13,7 +13,7 @@ export const viewportWidths = {
   largeTablet: 1023
 };
 
-export const ideaPageContentMaxWidth = '1210px';
+export const postPageContentMaxWidth = '1210px';
 
 export const media = {
   smallPhone: (style: any, ...args) => css`
@@ -381,8 +381,8 @@ export function getTheme(tenant: ITenant | null) {
 }
 
 // Utils
-export function booleanClass(value: any, className: string) {
-  if (!!value) {
+export function booleanClass(value: any, className: string | undefined) {
+  if (!!value && isString(className)) {
     return ` ${className}`;
   }
 
