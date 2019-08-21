@@ -294,7 +294,7 @@ resource "Stats - Users" do
             create_list(:activity, 2, user: user)
             create(:activity)
             non_active_user = create(:user)
-            create(:idea_changed_title_activity, user: non_active_user)
+            create(:changed_title_activity, user: non_active_user)
           end
           travel_to(start_at + 8.days) do
             create_list(:activity, 2)
@@ -319,9 +319,9 @@ resource "Stats - Users" do
           travel_to start_at + 18.days do
             @project = create(:project)
             @idea1 = create(:idea, project: @project)
-            create(:idea_published_activity, item: @idea1, user: @idea1.author)
+            create(:published_activity, item: @idea1, user: @idea1.author)
             @idea2 = create(:idea)
-            create(:idea_published_activity, item: @idea2, user: @idea2.author)
+            create(:published_activity, item: @idea2, user: @idea2.author)
           end
         end
 
@@ -407,7 +407,7 @@ resource "Stats - Users" do
       before do
         @u1, @u2, @u3 = create_list(:user, 3)
         travel_to(start_at - 1.day) do
-          create(:idea_published_activity, user: @u2)
+          create(:published_activity, user: @u2)
         end
 
         travel_to start_at + 4.days do
@@ -417,7 +417,7 @@ resource "Stats - Users" do
 
           create(:comment_created_activity, user: @u1)
           create(:idea_upvoted_activity, user: @u1)
-          create(:idea_published_activity, user: @u2)
+          create(:published_activity, user: @u2)
           create(:idea_downvoted_activity, user: @u2)
           create(:comment_created_activity, user: @u3)
         end
