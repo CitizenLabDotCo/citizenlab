@@ -20,7 +20,8 @@ declare global {
       apiCreateInitiative: typeof apiCreateInitiative;
       apiRemoveIdea: typeof apiRemoveIdea;
       apiRemoveInitiative: typeof apiRemoveInitiative;
-      apiCreateOfficialFeedback: typeof apiCreateOfficialFeedback;
+      apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
+      apiCreateOfficialFeedbackForInitiative: typeof apiCreateOfficialFeedbackForInitiative;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
@@ -371,7 +372,7 @@ export function apiRemoveInitiative(initiativeId: string) {
   });
 }
 
-export function apiCreateOfficialFeedback(
+export function apiCreateOfficialFeedbackForIdea(
   ideaId: string,
   officialFeedbackContent: string,
   officialFeedbackAuthor: string
@@ -386,6 +387,37 @@ export function apiCreateOfficialFeedback(
       },
       method: 'POST',
       url: `web_api/v1/ideas/${ideaId}/official_feedback`,
+      body: {
+        official_feedback: {
+          body_multiloc: {
+            'en-GB': officialFeedbackContent,
+            'nl-BE': officialFeedbackContent
+          },
+          author_multiloc: {
+            'en-GB': officialFeedbackAuthor,
+            'nl-BE': officialFeedbackAuthor
+          },
+        }
+      }
+    });
+  });
+}
+
+export function apiCreateOfficialFeedbackForInitiative(
+  initiativeId: string,
+  officialFeedbackContent: string,
+  officialFeedbackAuthor: string
+) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'POST',
+      url: `web_api/v1/initiatives/${initiativeId}/official_feedback`,
       body: {
         official_feedback: {
           body_multiloc: {
@@ -641,7 +673,8 @@ Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
 Cypress.Commands.add('apiRemoveInitiative', apiRemoveInitiative);
-Cypress.Commands.add('apiCreateOfficialFeedback', apiCreateOfficialFeedback);
+Cypress.Commands.add('apiCreateOfficialFeedbackForIdea', apiCreateOfficialFeedbackForIdea);
+Cypress.Commands.add('apiCreateOfficialFeedbackForInitiative', apiCreateOfficialFeedbackForInitiative);
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
