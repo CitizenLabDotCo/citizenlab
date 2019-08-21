@@ -158,7 +158,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
         </StatusExplanation>
         <VoteCounter>
           <VoteText>
-            <VoteTextLeft>
+            <VoteTextLeft id="e2e-initiative-not-voted-vote-count">
               <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
             </VoteTextLeft>
             <VoteTextRight>
