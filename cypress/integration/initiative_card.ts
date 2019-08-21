@@ -31,7 +31,7 @@ describe('Initiaitve card component', () => {
 
   beforeEach(() => {
     // visit initiatives page and sort initiative cards by newest first
-    cy.visit('/initiaitves');
+    cy.visit('/initiatives');
 
     cy.wait(2000);
     cy.get('#e2e-initiatives-list');
@@ -52,10 +52,10 @@ describe('Initiaitve card component', () => {
     cy.get('.e2e-initiative-card').first().contains(initiativeTitle);
 
     // the card should contain the title
-    cy.get('@initiativeCard').find('.e2e-card-component-title').contains(initiativeTitle);
+    cy.get('@initiativeCard').find('.e2e-card-title').contains(initiativeTitle);
 
     // the card should contain the full initiative author name
-    cy.get('@initiativeCard').find('.e2e-username').contains(`${firstName} ${lastName}`);
+    cy.get('@initiativeCard').find('.e2e-username').contains('Sylvester Kalinoski');
 
     // the card should contain the vote indicator component
     cy.get('@initiativeCard').find('.e2e-initiative-card-vote-indicator');
