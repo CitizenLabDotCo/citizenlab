@@ -97,6 +97,20 @@ class InitiativeStatusService
     end.to_h
   end
 
+  
+
+  def transition_type initiative_status
+    if manual_status_ids.include? initiative_status.id
+      'manual'
+    else
+      'automatic'
+    end
+  end
+
+  def manual_status_ids
+    InitiativeStatus.where(code: MANUAL_TRANSITIONS.values.map(&:keys).flatten.uniq).ids
+  end
+
   def log_status_change change, user: nil
     LogActivityJob.perform_later(change.initiative, 'changed_status', user, change.created_at.to_i)
   end
