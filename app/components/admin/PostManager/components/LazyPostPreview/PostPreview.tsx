@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, PureComponent } from 'react';
+import React, { Suspense, PureComponent } from 'react';
 import SideModal from 'components/UI/SideModal';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -8,10 +8,8 @@ import { ManagerType } from '../..';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import LazyIdeaEdit from './Idea/LazyIdeaEdit';
 import LazyIdeaContent from './Idea/LazyIdeaContent';
-
-// lazy-loaded components
-const InitiativeContent = lazy(() => import('./Initiative/InitiativeContent'));
-const InitiativeEdit = lazy(() => import('./Initiative/InitiativeEdit'));
+import LazyInitiativeEdit from './Initiative/LazyInitiativeEdit';
+import LazyInitiativeContent from './Initiative/LazyInitiativeContent';
 
 interface DataProps {}
 
@@ -71,7 +69,7 @@ export default class PostPreview extends PureComponent<Props> {
             />
           ),
           initiative: (
-            <InitiativeContent
+            <LazyInitiativeContent
               initiativeId={postId}
               closePreview={onClose}
               handleClickEdit={onSwitchPreviewMode}
@@ -86,7 +84,7 @@ export default class PostPreview extends PureComponent<Props> {
             />
           ),
           initiative: (
-            <InitiativeEdit
+            <LazyInitiativeEdit
               initiativeId={postId}
               goBack={onSwitchPreviewMode}
             />

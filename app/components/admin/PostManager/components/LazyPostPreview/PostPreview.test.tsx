@@ -3,8 +3,8 @@ import { shallow } from 'enzyme';
 
 jest.mock('./Idea/LazyIdeaEdit', () => 'LazyIdeaEdit');
 jest.mock('./Idea/LazyIdeaContent', () => 'LazyIdeaContent');
-jest.mock('./Initiative/InitiativeContent', () => 'InitiativeContent');
-jest.mock('./Initiative/InitiativeEdit', () => 'InitiativeEdit');
+jest.mock('./Initiative/LazyInitiativeContent', () => 'LazyInitiativeContent');
+jest.mock('./Initiative/LazyInitiativeEdit', () => 'LazyInitiativeEdit');
 
 import PostPreview from './PostPreview';
 
@@ -27,10 +27,11 @@ describe('<PostPreview />', () => {
         mode="view"
       />
     );
-    expect(Wrapper).toMatchSnapshot();
     expect(Wrapper.find('SideModal').exists()).toBe(true);
     expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(false);
     expect(Wrapper.find('LazyIdeaContent').exists()).toBe(false);
+    expect(Wrapper.find('LazyInitiativeEdit').exists()).toBe(false);
+    expect(Wrapper.find('LazyInitiativeContent').exists()).toBe(false);
   });
 
   it('renders idea content', () => {
@@ -43,11 +44,11 @@ describe('<PostPreview />', () => {
         mode="view"
       />
     );
-    expect(Wrapper).toMatchSnapshot();
-
     expect(Wrapper.find('SideModal').exists()).toBe(true);
     expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(false);
     expect(Wrapper.find('LazyIdeaContent').exists()).toBe(true);
+    expect(Wrapper.find('LazyInitiativeEdit').exists()).toBe(false);
+    expect(Wrapper.find('LazyInitiativeContent').exists()).toBe(false);
   });
 
   it('renders idea edit', () => {
@@ -60,10 +61,44 @@ describe('<PostPreview />', () => {
         mode="edit"
       />
     );
-    expect(Wrapper).toMatchSnapshot();
-
     expect(Wrapper.find('SideModal').exists()).toBe(true);
     expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(true);
+    expect(Wrapper.find('LazyIdeaContent').exists()).toBe(false);
+    expect(Wrapper.find('LazyInitiativeEdit').exists()).toBe(false);
+    expect(Wrapper.find('LazyInitiativeContent').exists()).toBe(false);
+  });
+
+  it('renders initiative content', () => {
+    const Wrapper = shallow(
+      <PostPreview
+        type="Initiatives"
+        onClose={closePreview}
+        postId="GreatInitiative"
+        onSwitchPreviewMode={onSwitchPreviewMode}
+        mode="view"
+      />
+    );
+    expect(Wrapper.find('SideModal').exists()).toBe(true);
+    expect(Wrapper.find('LazyInitiativeEdit').exists()).toBe(false);
+    expect(Wrapper.find('LazyInitiativeContent').exists()).toBe(true);
+    expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(false);
+    expect(Wrapper.find('LazyIdeaContent').exists()).toBe(false);
+  });
+
+  it('renders initiative edit', () => {
+    const Wrapper = shallow(
+      <PostPreview
+        type="Initiatives"
+        onClose={closePreview}
+        postId="GreatInitiative"
+        onSwitchPreviewMode={onSwitchPreviewMode}
+        mode="edit"
+      />
+    );
+    expect(Wrapper.find('SideModal').exists()).toBe(true);
+    expect(Wrapper.find('LazyInitiativeEdit').exists()).toBe(true);
+    expect(Wrapper.find('LazyInitiativeContent').exists()).toBe(false);
+    expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(false);
     expect(Wrapper.find('LazyIdeaContent').exists()).toBe(false);
   });
 
