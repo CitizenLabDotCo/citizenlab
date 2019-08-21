@@ -38,31 +38,31 @@ models:
       color: '#04884C'
       description_multiloc: idea_statuses.implemented_description
   initiative_status:
-    - 
+    - &initiative_proposed
       title_multiloc: initiative_statuses.proposed
       ordering: 100
       code: proposed
       color: '#687782'
       description_multiloc: initiative_statuses.proposed_description
-    - 
+    - &initiative_expired
       title_multiloc: initiative_statuses.expired
       ordering: 200
       code: expired
       color: '#01A1B1'
       description_multiloc: initiative_statuses.expired_description
-    - 
+    - &initiative_threshold_reached
       title_multiloc: initiative_statuses.threshold_reached
       ordering: 300
       code: threshold_reached
       color: '#04884C'
       description_multiloc: initiative_statuses.threshold_reached_description
-    -
+    - &initiative_answered
       title_multiloc: initiative_statuses.answered
       ordering: 500
       code: answered
       color: '#04884C'
       description_multiloc: initiative_statuses.answered_description
-    - 
+    - &initiative_ineligible
       title_multiloc: initiative_statuses.ineligible
       ordering: 400
       code: ineligible
@@ -123,6 +123,18 @@ models:
     title_multiloc: pages.initiatives_title
     body_multiloc: pages.initiatives_body
     slug: initiatives
+  -
+    title_multiloc: pages.initiatives_success_1_title
+    body_multiloc: pages.initiatives_success_1_body
+    slug: initiatives-success-1
+  -
+    title_multiloc: pages.initiatives_success_2_title
+    body_multiloc: pages.initiatives_success_2_body
+    slug: initiatives-success-2
+  -
+    title_multiloc: pages.initiatives_success_3_title
+    body_multiloc: pages.initiatives_success_3_body
+    slug: initiatives-success-3
   page_link:
   - linking_page_ref: *1
     linked_page_ref: *2
@@ -1471,6 +1483,33 @@ models:
     published_at: '2018-03-20 00:00:00'
     created_at: '2018-02-04 00:00:00'
     updated_at: '2018-03-28 13:35:24'
+  initiative:
+  - &initiative1
+    title_multiloc:
+      en-GB: Cleaning the sidewalks party
+    body_multiloc:
+      en-GB: "<p>Let's get together to have a cleaning party!<p>
+      <p>A lot of the sidewalks are very dirty and the municipal cleaning services can't keep up. To raise awareness and improve the situation, let's rent a van, install a DJ on top and drive through the streets while we all pick up the garbage</p>"
+    publication_status: published
+    author_ref: *mortal1
+    location_description: 8185 Austen Green
+    published_at_timediff: -1440 # 24*60
+    created_at_timediff: -1440 # 24*60
+    updated_at_timediff: -1440 # 24*60
+    initiative_status_ref: *initiative_proposed
+  - &initiative2
+    title_multiloc:
+      en-GB: Planting flowers
+    body_multiloc:
+      en-GB: "<p>ollapod stipendless scriptitious orgulous reconfuse tritetartemorion ruche tridecylene exemption competitiveness octopetalous asfetida polygenistic monotonousness Intertype fumado prominimum chopstick Bashilange petary overrusset triolet Coelata mousery<p>
+      <p>aureomycin unlowered furan scobiform tridiurnal Heterodera uncementing hydronitrous soapfish clairaudient pyropen ceraunograph punchproof waistcoateer tractrix erythrine acquittal Notogaeal versatility underhive recrimination unrooted coraciiform gesithcund</p>"
+    publication_status: published
+    author_ref: *mortal2
+    location_description: Brussels Bourse
+    published_at_timediff: -2400 # 24*100
+    created_at_timediff: -2400 # 24*100
+    updated_at_timediff: -2400 # 24*100
+    initiative_status_ref: *initiative_expired
   comment:
   - &bicycle_comment
     body_multiloc:
@@ -3614,6 +3653,22 @@ models:
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:24'
     parent_ref: *490
+  - &initiative1_comment
+    body_multiloc:
+      en-GB: "<p>preactively urogenous overcorrect abidance sool entoolitic gentleman lowdah acclimature wankly campagnol sphaeridia Triconodonta unqualifying populator poindable osone flowerist lobeless genin sodioaluminic alternatingly storiology accusable</p>"
+      nl-BE: "<p>aerose sailingly pfui Donatism meteorography disanoint Sinic Camacan isocrymic baggie proscriptive premeditation Sardanapalus chemiphotic methyl intramarginal passably inerudition populin timbersome unguarded sanctuary underagency diffusate</p>"
+    author_ref: *114
+    post_ref: *initiative1
+    created_at_timediff: -960
+    updated_at_timediff: -960
+  - body_multiloc:
+      en-GB: "<p>proctostenosis extractiform yellowthroat bilinigrin feasibleness wearying gunny splanchnopleuric predecay tonelessly unattractable stoothing aftermarriage propagand steenkirk rudderless herby crematorium lower idol alimentative metempsychic ulcery oxblood</p>"
+      nl-BE: "<p>enumerative ates espave orthopedics derivedly parochine serophthisis veneficious reimprint spondylolisthetic subvirate monotype blessedly fixative recurrently siluroid phonestheme premillennially antispermotoxin helonin disastrously leucotomy adhibit actinometer</p>"
+    author_ref: *86
+    post_ref: *initiative1
+    created_at_timediff: -958
+    updated_at_timediff: -958
+    parent_ref: *initiative1_comment
   project_image:
   - project_ref: *76
     remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
@@ -6342,6 +6397,11 @@ models:
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:24'
     votable_ref: *209
+  - mode: up
+    user_ref: *mortal1
+    created_at_timediff: -1440
+    updated_at_timediff: -1440
+    votable_ref: *initiative1
   idea_image:
   - remote_image_url: http://test.hanvecforum.fr/wp-content/uploads/2015/11/covoiturage2.jpg
     idea_ref: *controversial_idea

@@ -19,6 +19,7 @@ Rails.application.routes.draw do
         end
       end
       concern :post do
+        resources :activities, only: [:index]
         resources :comments, shallow: true, 
           concerns: [:votable, :spam_reportable], 
           defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
@@ -40,7 +41,6 @@ Rails.application.routes.draw do
         resources :images, defaults: {container_type: 'Idea'}
         resources :files, defaults: {container_type: 'Idea'}
 
-        resources :activities, only: [:index]
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
