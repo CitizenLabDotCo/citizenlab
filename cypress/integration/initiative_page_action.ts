@@ -16,36 +16,36 @@ describe('Initiative show page actions', () => {
     // });
   });
 
-  // describe('logged in as admin', () => {
-  //   before(() => {
-  //     cy.login('admin@citizenlab.co', 'testtest');
-  //     cy.visit('/ideas/controversial-idea');
-  //     cy.acceptCookies();
-  //     cy.get('#e2e-idea-show');
-  //   });
+  describe('logged in as admin', () => {
+    before(() => {
+      cy.login('admin@citizenlab.co', 'testtest');
+      cy.visit('/initiatives/cleaning-the-sidewalks-party');
+      cy.acceptCookies();
+      cy.get('#e2e-initiative-show');
+    });
 
-  //   it('saves a new official feedback, shows it and deletes it', () => {
-  //     const officialFeedback = randomString(30);
-  //     // input
-  //     cy.get('input').first().type(officialFeedback);
-  //     cy.get('textarea').first().type(officialFeedback);
+    it('saves a new official feedback, shows it and deletes it', () => {
+      const officialFeedback = randomString(30);
+      // input
+      cy.get('input').first().type(officialFeedback);
+      cy.get('textarea').first().type(officialFeedback);
 
-  //     // save
-  //     cy.get('.e2e-submit-wrapper-button').click();
-  //     cy.get('.e2e-submit-wrapper-button').should('have.class', 'disabled');
-  //     cy.wait(1000);
+      // save
+      cy.get('.e2e-submit-wrapper-button').click();
+      cy.get('.e2e-submit-wrapper-button').should('have.class', 'disabled');
+      cy.wait(1000);
 
-  //     cy.get('.e2e-official-feedback-post').contains(officialFeedback);
-  //     cy.get('.e2e-official-feedback-post').contains(officialFeedback);
+      cy.get('.e2e-official-feedback-post').contains(officialFeedback);
+      cy.get('.e2e-official-feedback-post').contains(officialFeedback);
 
-  //     // delete
-  //     cy.get('.e2e-official-feedback-post').find('button').first().click();
-  //     cy.get('.e2e-official-feedback-post').find('.e2e-action-delete').click();
+      // delete
+      cy.get('.e2e-official-feedback-post').find('button').first().click();
+      cy.get('.e2e-official-feedback-post').find('.e2e-action-delete').click();
 
-  //     cy.wait(1000);
-  //     cy.get('.e2e-official-feedback-post').should('not.exist');
-  //   });
-  // });
+      cy.wait(1000);
+      cy.get('.e2e-official-feedback-post').should('not.exist');
+    });
+  });
 
   describe('logged in as normal user', () => {
     describe('Vote', () => {
