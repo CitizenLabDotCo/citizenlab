@@ -21,7 +21,8 @@ declare global {
       apiRemoveIdea: typeof apiRemoveIdea;
       apiRemoveInitiative: typeof apiRemoveInitiative;
       apiUpvoteInitiative: typeof apiUpvoteInitiative;
-      apiCreateOfficialFeedback: typeof apiCreateOfficialFeedback;
+      apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
+      apiCreateOfficialFeedbackForInitiative: typeof apiCreateOfficialFeedbackForInitiative;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
@@ -314,6 +315,7 @@ export function apiRemoveIdea(ideaId: string) {
 export function apiCreateInitiative(
   initiativeTitle: string,
   initiativeContent: string,
+  assigneeId?: string,
   locationGeoJSON?: {'type': string, 'coordinates': number[]},
   locationDescription?: string,
   jwt?: string
@@ -349,7 +351,8 @@ export function apiCreateInitiative(
             'nl-BE': initiativeContent
           },
           location_point_geojson: locationGeoJSON,
-          location_description: locationDescription
+          location_description: locationDescription,
+          assignee_id: assigneeId
         }
       }
     });
@@ -385,7 +388,7 @@ export function apiUpvoteInitiative(email: string, password: string, initiativeI
   });
 }
 
-export function apiCreateOfficialFeedback(
+export function apiCreateOfficialFeedbackForIdea(
   ideaId: string,
   officialFeedbackContent: string,
   officialFeedbackAuthor: string
@@ -400,6 +403,37 @@ export function apiCreateOfficialFeedback(
       },
       method: 'POST',
       url: `web_api/v1/ideas/${ideaId}/official_feedback`,
+      body: {
+        official_feedback: {
+          body_multiloc: {
+            'en-GB': officialFeedbackContent,
+            'nl-BE': officialFeedbackContent
+          },
+          author_multiloc: {
+            'en-GB': officialFeedbackAuthor,
+            'nl-BE': officialFeedbackAuthor
+          },
+        }
+      }
+    });
+  });
+}
+
+export function apiCreateOfficialFeedbackForInitiative(
+  initiativeId: string,
+  officialFeedbackContent: string,
+  officialFeedbackAuthor: string
+) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'POST',
+      url: `web_api/v1/initiatives/${initiativeId}/official_feedback`,
       body: {
         official_feedback: {
           body_multiloc: {
@@ -644,7 +678,8 @@ Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
 Cypress.Commands.add('apiRemoveInitiative', apiRemoveInitiative);
 Cypress.Commands.add('apiUpvoteInitiative', apiUpvoteInitiative);
-Cypress.Commands.add('apiCreateOfficialFeedback', apiCreateOfficialFeedback);
+Cypress.Commands.add('apiCreateOfficialFeedbackForIdea', apiCreateOfficialFeedbackForIdea);
+Cypress.Commands.add('apiCreateOfficialFeedbackForInitiative', apiCreateOfficialFeedbackForInitiative);
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);

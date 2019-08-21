@@ -66,7 +66,7 @@ describe('Need feedback toggle', () => {
           const ideaId = idea.body.data.id;
           const officialFeedbackContent = randomString();
           const officialFeedbackAuthor = randomString();
-          cy.apiCreateOfficialFeedback(ideaId, officialFeedbackContent, officialFeedbackAuthor);
+          cy.apiCreateOfficialFeedbackForIdea(ideaId, officialFeedbackContent, officialFeedbackAuthor);
 
           // Create one idea without official feedback
           cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2). then(() => {

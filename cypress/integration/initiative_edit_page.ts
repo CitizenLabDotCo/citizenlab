@@ -17,7 +17,7 @@ describe('Initiative form page', () => {
     cy.apiSignup(firstName, lastName, email, password);
     cy.apiLogin(email, password).then((user) => {
       jwt = user.body.jwt;
-      return cy.apiCreateInitiative(initiativeTitle, initiativeContent, undefined, undefined, jwt);
+      return cy.apiCreateInitiative(initiativeTitle, initiativeContent, undefined, undefined, undefined, jwt);
     }).then((initiative) => {
       initiativeId = initiative.body.data.id;
       initiativeSlug = initiative.body.data.attributes.slug;
