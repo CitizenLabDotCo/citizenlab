@@ -133,13 +133,13 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
     const voteLimit: number = get(tenant, 'attributes.settings.initiatives.voting_threshold', 1);
 
     return (
-      <Container>
+      <Container className="e2e-initiative-card-vote-indicator">
         {statusCode === 'proposed' &&
           <div>
-            <VoteCounter className="e2e-initiative-card-vote-indicator">
+            <VoteCounter>
               <VoteIcon name="upvote" />
               <VoteText>
-                <b  className="e2e-initiative-card-vote-indicator-count">{voteCount}</b>
+                <b  className="e2e-initiative-card-vote-count">{voteCount}</b>
                 <span className="division-bar">/</span>
                 {voteLimit}
               </VoteText>

@@ -109,7 +109,7 @@ const Card = memo<Props>(({ to, onClick, imageUrl, imageAltText, header, title, 
     <Container
       onClick={onClick}
       to={to}
-      className={`${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
+      className={`e2e-card ${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
     >
       <>
         <Header>
@@ -124,7 +124,7 @@ const Card = memo<Props>(({ to, onClick, imageUrl, imageAltText, header, title, 
           </HeaderContentWrapper>
         </Header>
 
-        <Title className="e2e-card-component-title">
+        <Title className="e2e-card-title">
           {title}
         </Title>
 

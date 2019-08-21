@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('Idea card component', () => {
+describe('Initiaitve card component', () => {
   const firstName = randomString();
   const lastName = randomString();
   const email = randomEmail();
@@ -44,7 +44,7 @@ describe('Idea card component', () => {
     cy.get('#e2e-initiatives-list');
   });
 
-  it('bleh', () => {
+  it('has a working initiative card', () => {
     // find and save the initiative card
     cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').contains(initiativeTitle).closest('.e2e-initiative-card').as('initiativeCard');
 
@@ -54,12 +54,23 @@ describe('Idea card component', () => {
     // the card should contain the title
     cy.get('@initiativeCard').find('.e2e-card-component-title').contains(initiativeTitle);
 
-    // the card should contain one vote
-    cy.get('@initiativeCard').find('.e2e-initiative-card-vote-indicator-count').contains(1);
-  });
+    // the card should contain the full initiative author name
+    cy.get('@initiativeCard').find('.e2e-username').contains(`${firstName} ${lastName}`);
 
-  it('shows the correct comment count', () => {
-    cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').contains(initiativeTitle).closest('.e2e-initiative-card').find('.e2e-ideacard-comment-count').contains('2');
+    // the card should contain the vote indicator component
+    cy.get('@initiativeCard').find('.e2e-initiative-card-vote-indicator');
+
+    // the card should contain a vote count of 1
+    cy.get('@initiativeCard').find('.e2e-initiative-card-vote-count').contains(1);
+
+    // the card should contain a comment count of 2
+    cy.get('@initiativeCard').find('.e2e-initiativecard-comment-count').contains('2');
+
+    // the card should redirect to the initiative showpage when clicked
+    cy.get('@initiativeCard').click();
+    cy.wait(3000);
+    cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeTitle}`);
+    cy.get('#e2e-initiative-show');
   });
 
   after(() => {
