@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-jest.mock('./Idea/IdeaEdit', () => 'IdeaEdit');
-jest.mock('./Idea/IdeaContent', () => 'IdeaContent');
+jest.mock('./Idea/LazyIdeaEdit', () => 'LazyIdeaEdit');
+jest.mock('./Idea/LazyIdeaContent', () => 'LazyIdeaContent');
 jest.mock('./Initiative/InitiativeContent', () => 'InitiativeContent');
 jest.mock('./Initiative/InitiativeEdit', () => 'InitiativeEdit');
 
-import PostPreview from './';
+import PostPreview from './PostPreview';
 
 describe('<PostPreview />', () => {
   let closePreview: jest.Mock;
@@ -27,9 +27,10 @@ describe('<PostPreview />', () => {
         mode="view"
       />
     );
+    expect(Wrapper).toMatchSnapshot();
     expect(Wrapper.find('SideModal').exists()).toBe(true);
-    expect(Wrapper.find('IdeaEdit').exists()).toBe(false);
-    expect(Wrapper.find('IdeaContent').exists()).toBe(false);
+    expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(false);
+    expect(Wrapper.find('LazyIdeaContent').exists()).toBe(false);
   });
 
   it('renders idea content', () => {
@@ -42,9 +43,11 @@ describe('<PostPreview />', () => {
         mode="view"
       />
     );
+    expect(Wrapper).toMatchSnapshot();
+
     expect(Wrapper.find('SideModal').exists()).toBe(true);
-    expect(Wrapper.find('IdeaEdit').exists()).toBe(false);
-    expect(Wrapper.find('IdeaContent').exists()).toBe(true);
+    expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(false);
+    expect(Wrapper.find('LazyIdeaContent').exists()).toBe(true);
   });
 
   it('renders idea edit', () => {
@@ -57,9 +60,11 @@ describe('<PostPreview />', () => {
         mode="edit"
       />
     );
+    expect(Wrapper).toMatchSnapshot();
+
     expect(Wrapper.find('SideModal').exists()).toBe(true);
-    expect(Wrapper.find('IdeaEdit').exists()).toBe(true);
-    expect(Wrapper.find('IdeaContent').exists()).toBe(false);
+    expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(true);
+    expect(Wrapper.find('LazyIdeaContent').exists()).toBe(false);
   });
 
 });

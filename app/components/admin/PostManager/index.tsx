@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
@@ -28,9 +28,7 @@ import InitiativesCount from './components/InitiativesCount';
 import { Input, Message } from 'semantic-ui-react';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
-
-// lazy-loaded components
-const PostPreview = lazy(() => import('./components/PostPreview'));
+import LazyPostPreview from './components/LazyPostPreview';
 
 // i18n
 import messages from './messages';
@@ -388,7 +386,7 @@ export class PostManager extends React.PureComponent<Props, State> {
           />
         </ThreeColumns>
         <Suspense fallback={null}>
-          <PostPreview
+          <LazyPostPreview
             type={type}
             postId={previewPostId}
             mode={previewMode}

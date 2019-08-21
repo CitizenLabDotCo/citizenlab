@@ -6,10 +6,10 @@ import { ManagerType } from '../..';
 
 // components
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+import LazyIdeaEdit from './Idea/LazyIdeaEdit';
+import LazyIdeaContent from './Idea/LazyIdeaContent';
 
 // lazy-loaded components
-const IdeaEdit = lazy(() => import('./Idea/IdeaEdit'));
-const IdeaContent = lazy(() => import('./Idea/IdeaContent'));
 const InitiativeContent = lazy(() => import('./Initiative/InitiativeContent'));
 const InitiativeEdit = lazy(() => import('./Initiative/InitiativeEdit'));
 
@@ -64,7 +64,7 @@ export default class PostPreview extends PureComponent<Props> {
       return ({
         view: {
           idea: (
-            <IdeaContent
+            <LazyIdeaContent
               ideaId={postId}
               closePreview={onClose}
               handleClickEdit={onSwitchPreviewMode}
@@ -80,7 +80,7 @@ export default class PostPreview extends PureComponent<Props> {
         },
         edit: {
           idea: (
-            <IdeaEdit
+            <LazyIdeaEdit
               ideaId={postId}
               goBack={onSwitchPreviewMode}
             />
