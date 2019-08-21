@@ -91,39 +91,39 @@ describe('Initiative show page actions', () => {
       });
     });
 
-  //   describe('Comments', () => {
-  //     const email = randomEmail();
-  //     const password = randomString();
+    describe('Comments', () => {
+      const email = randomEmail();
+      const password = randomString();
 
-  //     before(() => {
-  //       const firstName = randomString();
-  //       const lastName = randomString();
-  //       cy.apiSignup(firstName, lastName, email, password);
-  //     });
+      before(() => {
+        const firstName = randomString();
+        const lastName = randomString();
+        cy.apiSignup(firstName, lastName, email, password);
+      });
 
-  //     beforeEach(() => {
-  //       cy.login(email, password);
-  //       cy.visit('/ideas/controversial-idea');
-  //       cy.acceptCookies();
-  //       cy.get('#e2e-idea-show');
-  //     });
+      beforeEach(() => {
+        cy.login(email, password);
+        cy.visit('/ideas/controversial-idea');
+        cy.acceptCookies();
+        cy.get('#e2e-idea-show');
+      });
 
-  //     it('shows a working comment input', () => {
-  //       const commentBody = randomString();
-  //       cy.get('#submit-comment').type(commentBody).should('have.value', commentBody);
-  //     });
+      it('shows a working comment input', () => {
+        const commentBody = randomString();
+        cy.get('#submit-comment').type(commentBody).should('have.value', commentBody);
+      });
 
-  //     describe('Comment', () => {
-  //       it('lets a logged in user reply to a parent comment', () => {
-  //         const commentBody = randomString();
-  //         cy.get('.e2e-comment-reply-button').first().click();
-  //         cy.wait(1000);
-  //         cy.get('.e2e-childcomment-form textarea').first().type(commentBody);
-  //         cy.get('.e2e-submit-childcomment').first().click();
-  //         cy.wait(2000);
-  //         cy.get('#e2e-parent-and-childcomments').get('.e2e-childcomment').last().contains(commentBody);
-  //       });
-  //     });
-  //   });
+      describe('Comment', () => {
+        it('lets a logged in user reply to a parent comment', () => {
+          const commentBody = randomString();
+          cy.get('.e2e-comment-reply-button').first().click();
+          cy.wait(1000);
+          cy.get('.e2e-childcomment-form textarea').first().type(commentBody);
+          cy.get('.e2e-submit-childcomment').first().click();
+          cy.wait(2000);
+          cy.get('#e2e-parent-and-childcomments').get('.e2e-childcomment').last().contains(commentBody);
+        });
+      });
+    });
   });
 });
