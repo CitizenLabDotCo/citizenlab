@@ -156,7 +156,7 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
         </UnvoteLink>
         <VoteCounter>
           <VoteText>
-            <VoteTextLeft>
+            <VoteTextLeft id="e2e-initiative-voted-vote-count">
               <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
             </VoteTextLeft>
             <VoteTextRight>
