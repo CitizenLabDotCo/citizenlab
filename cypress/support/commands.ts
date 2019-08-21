@@ -20,6 +20,7 @@ declare global {
       apiCreateInitiative: typeof apiCreateInitiative;
       apiRemoveIdea: typeof apiRemoveIdea;
       apiRemoveInitiative: typeof apiRemoveInitiative;
+      apiUpvoteInitiative: typeof apiUpvoteInitiative;
       apiCreateOfficialFeedback: typeof apiCreateOfficialFeedback;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
@@ -369,6 +370,21 @@ export function apiRemoveInitiative(initiativeId: string) {
   });
 }
 
+export function apiUpvoteInitiative(email: string, password: string, initiativeId: string) {
+  return cy.apiLogin(email, password).then((response) => {
+    const jwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`
+      },
+      method: 'POST',
+      url: `web_api/v1/initiatives/${initiativeId}/votes/up`,
+    });
+  });
+}
+
 export function apiCreateOfficialFeedback(
   ideaId: string,
   officialFeedbackContent: string,
@@ -538,18 +554,6 @@ export function apiCreatePhase(
   surveyUrl?: string,
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms'
 ) {
-
-  /*
-  end_at: "2019-07-31"
-  participation_method: "survey"
-  start_at: "2019-06-01"
-  survey_embed_url: "https://citizenlabco.typeform.com/to/Yv6B7V"
-  survey_service: "typeform"
-  title_multiloc:
-  en-GB: "Survey phase"
-  nl-BE: "Survey phase"
-  */
-
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -639,6 +643,7 @@ Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
 Cypress.Commands.add('apiRemoveInitiative', apiRemoveInitiative);
+Cypress.Commands.add('apiUpvoteInitiative', apiUpvoteInitiative);
 Cypress.Commands.add('apiCreateOfficialFeedback', apiCreateOfficialFeedback);
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
