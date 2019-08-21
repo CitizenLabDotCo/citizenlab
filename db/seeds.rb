@@ -634,15 +634,6 @@ if Apartment::Tenant.current == 'localhost'
       })
     end
 
-    # success stories
-    3.times do |i|
-      Page.create!({
-        title_multiloc:create_for_some_locales{Faker::Lorem.sentence},
-        slug: "success_story_#{i+1}",
-        body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
-      })
-    end
-
     3.times do
       Group.create!({
         membership_type: 'manual',
