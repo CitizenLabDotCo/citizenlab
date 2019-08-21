@@ -12,37 +12,31 @@ describe('Assignee filter', () => {
     cy.get('#e2e-select-assignee-filter').click();
     // click on All initiatives filter
     cy.get('#e2e-assignee-filter-all-posts').click();
-    // check that number of initiatives on first page is 10
-    cy.get('.e2e-idea-manager-idea-row').should('have.length', 10);
+    // check that number of initiatives on first page is 2
+    cy.get('.e2e-idea-manager-idea-row').should('have.length', 2);
   });
 
-  // it('Filters on Assigned to me', () => {
+  it('Filters on Assigned to me', () => {
 
-  //   cy.getAuthUser().then((user) => {
-  //     const projectTitle = randomString();
-  //     const projectDescriptionPreview = randomString();
-  //     const projectDescription = randomString();
-  //     const userId = user.body.data.id;
+    cy.getAuthUser().then((user) => {
+      const userId = user.body.data.id;
 
-  //     // create project with signed-in admin/user as default assignee
-  //     cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published', userId).then((project) => {
-  //       const projectId = project.body.data.id;
-  //       const ideaTitle = randomString();
-  //       const ideaContent = randomString();
+      // create initiative with signed-in admin/user as default assignee
+      const initiativeTitle = randomString();
+      const initiativeContent = randomString();
 
-  //       cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+      cy.apiCreateInitiative(initiativeTitle, initiativeContent, userId);
 
-  //       // do a refresh for the new idea to appear
-  //       cy.visit('/admin/ideas/');
-  //       // grab and open assignee filter menu
-  //       cy.get('#e2e-select-assignee-filter').click();
-  //       // click on Assigned to me filter
-  //       cy.get('#e2e-assignee-filter-assigned-to-user').click();
-  //       // Check whether the newly created idea is assigned to the user
-  //       cy.get('.e2e-idea-manager-idea-row').contains(ideaTitle);
-  //     });
-  //   });
-  // });
+      // do a refresh for the new initiative to appear
+      cy.visit('/admin/initiatives/manage');
+      // grab and open assignee filter menu
+      cy.get('#e2e-select-assignee-filter').click();
+      // click on Assigned to me filter
+      cy.get('#e2e-assignee-filter-assigned-to-user').click();
+      // Check whether the newly created idea is assigned to the user
+      cy.get('.e2e-post-manager-post-row').contains(initiativeTitle);
+    });
+  });
 });
 
 // describe('Need feedback toggle', () => {
