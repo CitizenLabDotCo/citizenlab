@@ -54,43 +54,40 @@ describe('Initiative show page actions', () => {
         const lastName = randomString();
         const email = randomEmail();
         const password = randomString();
+        const initiativeTitle = randomString();
+        const initiativeContent = randomString();
 
+        cy.apiCreateInitiative(initiativeTitle, initiativeContent);
         cy.apiSignup(firstName, lastName, email, password);
         cy.login(email, password);
-        cy.visit('/initiatives/cleaning-the-sidewalks-party');
-        cy.acceptCookies();
+        cy.visit(`/initiatives/${initiativeTitle}`);
+        cy.wait(3000);
         cy.get('#e2e-initiative-show');
       });
 
       it('adds a vote when you click the upvote button', () => {
-        cy.get('#e2e-initiative-vote-control #e2e-initiative-upvote-button').click();
-        cy.get('#e2e-initiative-vote-control #e2e-initiative-cancel-upvote-button').click();
+        // get upvote button
+        cy.get('#e2e-initiative-vote-control').find('#e2e-initiative-upvote-button').as('voteButton');
 
-        // cy.get('.e2e-vote-controls-desktop').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
-        // cy.get('.e2e-vote-controls-desktop').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
+        // get initial vote count
+        cy.get('#e2e-initiative-not-voted-vote-count').contains('1 vote');
+        // upvote initiative
+        cy.get('@voteButton').click();
+        cy.wait(1000);
+        cy.get('#e2e-initiative-voted-vote-count').contains('2 votes');
+      });
 
-        // // initial upvote & downvote values
-        // cy.get('@upvoteBtn').contains('1');
-        // cy.get('@downvoteBtn').contains('0');
+      it('removes a vote when you click the cancel vote button', () => {
+        // current vote count
+        cy.get('#e2e-initiative-voted-vote-count').contains('2 votes');
 
-        // // add upvote
-        // cy.get('@upvoteBtn').click().wait(1000).contains('2');
+        cy.get('#e2e-initiative-vote-control').find('#e2e-initiative-cancel-upvote-button').as('cancelVoteButton');
+        cy.get('@cancelVoteButton').click();
+        cy.wait(2500);
 
-        // // remove upvote
-        // cy.get('@upvoteBtn').click().wait(1000).contains('1');
+        // confirm vote count went down
+        cy.get('#e2e-initiative-not-voted-vote-count').contains('1 vote');
 
-        // // add downvote
-        // cy.get('@downvoteBtn').click().wait(1000).contains('1');
-
-        // // remove downvote
-        // cy.get('@downvoteBtn').click().wait(1000).contains('0');
-
-        // // add downvote, then upvote
-        // cy.get('@downvoteBtn').click().wait(1000);
-        // cy.get('@upvoteBtn').click().wait(1000);
-        // cy.get('@downvoteBtn').contains('0');
-        // cy.get('@upvoteBtn').contains('2');
-        // cy.get('@upvoteBtn').click().wait(1000);
       });
     });
 
