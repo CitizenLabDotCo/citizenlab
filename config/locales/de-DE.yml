@@ -1,5 +1,5 @@
 de:
-  statuses:
+  idea_statuses:
     proposed: vorgeschlagen
     proposed_description: Diese Idee wurde der Stadtverwaltung vorgestellt
     viewed: angesehen
@@ -12,6 +12,17 @@ de:
     implemented_description: Diese Idee wurde von der Stadtverwaltung umgesetzt
     rejected: abgelehnt
     rejected_description: Diese Idee wurde abgelehnt
+  initiative_statuses:
+    proposed: published
+    proposed_description: published
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   topics:
     infrastructure: Straßen und Plätze
     infrastructure_description: Straßen und Plätze
@@ -293,6 +304,12 @@ de:
     initiatives_title: Initiativen
     initiatives_body: >
       <p>Erläuterung zu Initiativen</p>
+    initiatives_success_1_title: ""
+    initiatives_success_1_body: ""
+    initiatives_success_2_title: ""
+    initiatives_success_2_body: ""
+    initiatives_success_3_title: ""
+    initiatives_success_3_body: ""
   projects:
     open_idea_project_title: Offene Ideen-Box
     open_idea_project_description_preview: Vielleicht haben Sie eine Idee, die nicht zu einem der bestehenden Projekte passt? Dann posten Sie es hier, sammeln Sie Unterstützung und bringen Sie es auf die politische Agenda!

@@ -21,6 +21,12 @@ FactoryBot.define do
           "color_main" => "#335533",
           "color_secondary" => Faker::Color.hex_color,
           "color_text" => Faker::Color.hex_color,
+        },
+        "initiatives" => {
+          "enabled" => true,
+          "allowed" => true,
+          "voting_threshold" => 300,
+          "days_limit" => 90
         }
       }
     }
@@ -47,6 +53,12 @@ FactoryBot.define do
           "color_main" => "#335533",
           "color_secondary" => Faker::Color.hex_color,
           "color_text" => Faker::Color.hex_color,
+        },
+        "initiatives" => {
+          "enabled" => true,
+          "allowed" => true,
+          "voting_threshold" => 300,
+          "days_limit" => 90
         }
       }
     }

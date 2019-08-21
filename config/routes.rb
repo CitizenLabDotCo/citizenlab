@@ -12,31 +12,34 @@ Rails.application.routes.draw do
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
 
-      get 'comments/as_xlsx' => 'comments#index_xlsx'
-
       concern :votable do
         resources :votes, except: [:update], shallow: true do
           post :up, on: :collection
           post :down, on: :collection
         end
       end
+      concern :post do
+        resources :comments, shallow: true, 
+          concerns: [:votable, :spam_reportable], 
+          defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
+         
+          get :children, on: :member
+          post :mark_as_deleted, on: :member
+        end
+        get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
+        resources :official_feedback, shallow: true
+      end
       concern :spam_reportable do
         resources :spam_reports, shallow: true
       end
 
       resources :ideas, 
-        concerns: [:votable, :spam_reportable], 
-        defaults: { votable: 'Idea', spam_reportable: 'Idea' } do
-
-        resources :comments, shallow: true, 
-          concerns: [:votable, :spam_reportable], 
-          defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
-          get :children, on: :member
-          post :mark_as_deleted, on: :member
-        end
+        concerns: [:votable, :spam_reportable, :post], 
+        defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
+        
         resources :official_feedback, shallow: true
-        resources :images, defaults: {container_class_name: Idea.name, image_class_name: IdeaImage.name}
-        resources :files, defaults: {container_class_name: Idea.name, file_class_name: IdeaFile.name}
+        resources :images, defaults: {container_type: 'Idea'}
+        resources :files, defaults: {container_type: 'Idea'}
         resources :activities, only: [:index]
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
@@ -44,7 +47,20 @@ Rails.application.routes.draw do
         get :filter_counts, on: :collection
       end
 
+      resources :initiatives, 
+        concerns: [:votable, :spam_reportable, :post], 
+        defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
+
+        resources :images, defaults: {container_type: 'Initiative'}
+        resources :files, defaults: {container_type: 'Initiative'}
+        get :as_xlsx, on: :collection, action: 'index_xlsx'
+        get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
+        get :as_markers, on: :collection, action: 'index_initiative_markers'
+        get :filter_counts, on: :collection
+      end
+
       resources :idea_statuses, only: [:index, :show]
+      resources :initiative_statuses, only: [:index, :show]
 
       # auth
       post 'user_token' => 'user_token#create'
@@ -70,6 +86,7 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
+        get 'initiatives_count', on: :member
         get 'comments_count', on: :member
       end
 
@@ -80,7 +97,7 @@ Rails.application.routes.draw do
         get :current, on: :collection
       end
       resources :pages do
-        resources :files, defaults: {container_class_name: Page.name, file_class_name: PageFile.name}, shallow: false
+        resources :files, defaults: {container_type: 'Page'}, shallow: false
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
@@ -96,16 +113,16 @@ Rails.application.routes.draw do
       # to be shallow so we can determine their container class. See e.g.
       # https://github.com/rails/rails/pull/24405
       resources :events, only: [:show, :edit, :update, :destroy] do
-        resources :files, defaults: {container_class_name: Event.name, file_class_name: EventFile.name}, shallow: false
+        resources :files, defaults: {container_type: 'Event'}, shallow: false
       end
       resources :phases, only: [:show, :edit, :update, :destroy], concerns: :participation_context, defaults: {parent_param: :phase_id} do
-        resources :files, defaults: {container_class_name: Phase.name, file_class_name: PhaseFile.name}, shallow: false
+        resources :files, defaults: {container_type: 'Phase'}, shallow: false
       end
       resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do
         resources :events, only: [:index, :new, :create]
         resources :phases, only: [:index, :new, :create]
-        resources :images, defaults: {container_class_name: Project.name, image_class_name: ProjectImage.name}
-        resources :files, defaults: {container_class_name: Project.name, file_class_name: ProjectFile.name}
+        resources :images, defaults: {container_type: 'Project'}
+        resources :files, defaults: {container_type: 'Project'}
         resources :groups_projects, shallow: true, except: [:update]
         resources :moderators, except: [:update] do
           get :users_search, on: :collection
@@ -157,6 +174,14 @@ Rails.application.routes.draw do
           get 'ideas_by_topic'
           get 'ideas_by_project'
           get 'ideas_by_area'
+        end
+
+        with_options controller: 'stats_initiatives' do
+          get 'initiatives_count'
+          get 'initiatives_by_time'
+          get 'initiatives_by_time_cumulative'
+          get 'initiatives_by_topic'
+          get 'initiatives_by_area'
         end
 
         with_options controller: 'stats_comments' do

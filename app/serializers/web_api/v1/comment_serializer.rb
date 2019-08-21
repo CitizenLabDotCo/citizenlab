@@ -13,8 +13,8 @@ class WebApi::V1::CommentSerializer < WebApi::V1::BaseSerializer
     object.author&.admin?
   end
 
-  belongs_to :idea
-  belongs_to :parent
+  belongs_to :post, polymorphic: true
+  belongs_to :parent, record_type: :comment, serializer: WebApi::V1::CommentSerializer
 
   belongs_to :author, record_type: :user, serializer: WebApi::V1::UserSerializer do |object|
     if object.publication_status != 'deleted'

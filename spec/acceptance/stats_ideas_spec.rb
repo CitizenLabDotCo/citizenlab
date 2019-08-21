@@ -51,7 +51,7 @@ resource "Stats - Ideas" do
     @ideas_with_areas = []
     travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year - 1.months do
       i = create(:idea, project: @project3, idea_status: @proposed)
-      create(:official_feedback, idea: i)
+      create(:official_feedback, post: i)
     end
     travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 2.months do
       @ideas_with_topics += create_list(:idea_with_topics, 2, project: @project1, idea_status: @proposed)

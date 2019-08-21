@@ -13,14 +13,14 @@ module Notifications
       comment = activity.item
       initiator = comment.author
       
-      if initiator && !(initiator&.admin? || initiator.project_moderator?(comment.project.id))
-        User.admin.or(User.project_moderator(comment.project.id)).map do |recipient|
+      if initiator && (comment.post_type == 'Idea') && !(initiator&.admin? || initiator.project_moderator?(comment.post.project.id))
+        User.admin.or(User.project_moderator(comment.post.project.id)).map do |recipient|
           self.new(
            recipient_id: recipient.id,
            initiating_user: initiator,
            comment_id: comment.id,
-           idea_id: comment.idea_id,
-           project_id: comment.project.id
+           idea_id: comment.post_id,
+           project_id: comment.post.project.id
          )
         end
       else

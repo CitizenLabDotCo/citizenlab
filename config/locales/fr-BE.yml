@@ -1,5 +1,5 @@
 fr-BE:
-  statuses:
+  idea_statuses:
     proposed: soumise
     proposed_description: Cette idée à été proposée à l'administration
     viewed: vu
@@ -12,6 +12,17 @@ fr-BE:
     implemented_description: Cette idée a été mise en place par l'administration
     rejected: rejetée
     rejected_description: Cette idée a été rejetée
+  initiative_statuses:
+    proposed: proposed
+    proposed_description: proposed
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   topics:
     infrastructure: Espace public
     infrastructure_description: Espace public
@@ -94,6 +105,12 @@ fr-BE:
     initiatives_title: Initiatives
     initiatives_body: >
       <p>Explications à propos des initiatives</p>
+    initiatives_success_1_title: ""
+    initiatives_success_1_body: ""
+    initiatives_success_2_title: ""
+    initiatives_success_2_body: ""
+    initiatives_success_3_title: ""
+    initiatives_success_3_body: ""
   projects:
     open_idea_project_title: Une idée? Apportez-la à votre conseil communal!
     open_idea_project_description_preview: Vous avez une idée qui ne correspond pas à l'un des projets existants? Ensuite, affichez-la ici, obtenez du soutien et inscrivez-la à l'ordre du jour politique!

@@ -1,5 +1,5 @@
 en:
-  statuses:
+  idea_statuses:
     proposed: proposed
     proposed_description: This idea has been proposed to the city
     viewed: viewed
@@ -12,6 +12,17 @@ en:
     implemented_description: This idea has been implemented by the city
     rejected: rejected
     rejected_description: This idea has been rejected
+  initiative_statuses:
+    proposed: proposed
+    proposed_description: proposed
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   topics:
     infrastructure: Squares and streets
     infrastructure_description: Squares and streets
@@ -96,6 +107,12 @@ en:
     initiatives_title: Initiatives
     initiatives_body: >
       <p>Explanation about initiatives</p>
+    initiatives_success_1_title: ""
+    initiatives_success_1_body: ""
+    initiatives_success_2_title: ""
+    initiatives_success_2_body: ""
+    initiatives_success_3_title: ""
+    initiatives_success_3_body: ""
   projects:
     open_idea_project_title: An idea? Bring it to your council!
     open_idea_project_description_preview: Maybe you have an idea that doesn't fit with one of the existing projects? Than post it here, gather support and get it on the political agenda!

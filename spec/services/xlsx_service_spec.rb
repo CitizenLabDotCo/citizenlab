@@ -43,10 +43,10 @@ describe XlsxService do
 
   end
 
-  describe "generate_comments_xlsx" do
+  describe "generate_idea_comments_xlsx" do
 
-    let(:comments) { create_list(:comment, 5) }
-    let(:xlsx) { service.generate_comments_xlsx(comments) }
+    let(:comments) { create_list(:comment, 5, post: create(:idea)) }
+    let(:xlsx) { service.generate_idea_comments_xlsx(comments) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
@@ -57,6 +57,20 @@ describe XlsxService do
     it "contains a row for every comment" do
       expect(worksheet.sheet_data.size).to eq (comments.size + 1)
       expect(worksheet[comments.size].cells.map(&:value)[worksheet[0].cells.map(&:value).index('project')]).to eq comments.last.idea.project.title_multiloc.values.first
+    end
+  end
+
+  describe "generate_initiative_comments_xlsx" do
+
+    let(:comments) { create_list(:comment, 5, post: create(:initiative)) }
+    let(:xlsx) { service.generate_initiative_comments_xlsx(comments) }
+    let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
+    let(:worksheet) { workbook.worksheets[0] }
+
+    it "exports a valid excel file and contains a row for every comment" do
+      expect{ workbook }.to_not raise_error
+      expect(worksheet.sheet_data.size).to eq (comments.size + 1)
+      expect(worksheet[comments.size].cells.map(&:value)[worksheet[0].cells.map(&:value).index('parent')]).to eq comments.last.parent_id
     end
   end
 

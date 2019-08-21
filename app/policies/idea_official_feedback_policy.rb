@@ -1,4 +1,4 @@
-class OfficialFeedbackPolicy < ApplicationPolicy
+class IdeaOfficialFeedbackPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -8,16 +8,16 @@ class OfficialFeedbackPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(idea: Pundit.policy_scope(user, Idea))
+      scope.where(post: Pundit.policy_scope(user, Idea))
     end
   end
 
   def create? 
-    user&.active_admin_or_moderator?(record.project.id)
+    user&.active_admin_or_moderator?(record.post.project.id)
   end
 
   def show?
-    IdeaPolicy.new(user, record.idea).show?
+    IdeaPolicy.new(user, record.post).show?
   end
 
   def update?

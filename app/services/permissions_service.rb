@@ -2,15 +2,17 @@ require 'rubyXL'
 
 class PermissionsService
 
-  INFORMATION_ACTIONS = %w()
-  IDEATION_ACTIONS = %w(posting voting commenting)
-  SURVEY_ACTIONS = %w(taking_survey)
-  BUDGETING_ACTIONS = %w(commenting budgeting)
+  ACTIONS = {
+    'information' => %w(),
+    'ideation' => %w(posting voting commenting),
+    'survey' => %w(taking_survey),
+    'budgeting' => %w(commenting budgeting)
+  }
 
 
   def update_permissions_for participation_context
     if participation_context.is_participation_context?
-      actions = "#{self.class.name}::#{participation_context.participation_method.upcase}_ACTIONS".constantize
+      actions = ACTIONS[participation_context.participation_method]
       participation_context.permissions.where.not(action: actions).each(&:destroy!)
       actions.select do |action|
         !participation_context.permissions.find_by action: action

@@ -21,19 +21,23 @@ SEED_SIZE = ENV.fetch('SEED_SIZE','medium')
 num_users = 10
 num_projects = 4
 num_ideas = 5
+num_initiatives = 4
 case SEED_SIZE
   when 'small'
     num_users = 5
     num_projects = 1
     num_ideas = 4
+    num_initiatives = 3
   when 'medium'
     num_users = 20
     num_projects = 5
     num_ideas = 35
+    num_initiatives = 20
   when 'large'
     num_users = 50
     num_projects = 20
     num_ideas = 100
+    num_initiatives = 60
 end
 
 
@@ -41,7 +45,7 @@ def rand_instance scope
   scope.offset(rand(scope.size)).first
 end
 
-def create_comment_tree(idea, parent, depth=0)
+def create_comment_tree(post, parent, depth=0)
   amount = rand(5/(depth+1))
   amount.times do |i|
     c = Comment.create!({
@@ -50,16 +54,16 @@ def create_comment_tree(idea, parent, depth=0)
         "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
       },
       author: rand_instance(User.normal_user),
-      idea: idea,
+      post: post,
       parent: parent,
-      created_at: Faker::Date.between((parent ? parent.created_at : idea.published_at), Time.now)
+      created_at: Faker::Date.between((parent ? parent.created_at : post.published_at), Time.now)
     })
     User.all.each do |u|
       if rand(5) < 2
         Vote.create!(votable: c, user: u, mode: "up", created_at: Faker::Date.between(c.created_at, Time.now))
       end
     end
-    create_comment_tree(idea, c, depth+1)
+    create_comment_tree(post, c, depth+1)
   end
 end
 
@@ -155,10 +159,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
-      surveys: {
-       enabled: true,
-       allowed: true,
-      },
       maps: {
         enabled: true,
         allowed: true,
@@ -245,17 +245,17 @@ if ['public','example_org'].include? Apartment::Tenant.current
         ),
         success_stories: [
           {
-            "page_slug": "success_story_1",
+            "page_slug": "initiatives-success-1",
             "location": Faker::Address.city,
             "image_url": "https://www.quebecoriginal.com/en/listing/images/800x600/7fd3e9f7-aec9-4966-9751-bc0a1ab56127/parc-des-deux-rivieres-parc-des-deux-rivieres-en-ete.jpg",
           },
           {
-            "page_slug": "success_story_2",
+            "page_slug": "initiatives-success-2",
             "location": Faker::Address.city,
             "image_url": "https://www.washingtonpost.com/resizer/I9IJifRLgy3uHVKcwZlvdjUBirc=/1484x0/arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/ZQIB4NHDUMI6RKZMWMO42U6KNM.jpg",
           },
           {
-            "page_slug": "success_story_3",
+            "page_slug": "initiatives-success-3",
             "location": Faker::Address.city,
             "image_url": "http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg",
           }
@@ -563,6 +563,55 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       create_comment_tree(idea, nil)
+    end
+
+    num_initiatives.times do 
+      created_at = Faker::Date.between(Tenant.current.created_at, Time.now)
+      initiative = Initiative.create!({
+        title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
+        body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
+        author: User.offset(rand(User.count)).first,
+        publication_status: 'published',
+        published_at: Faker::Date.between(created_at, Time.now),
+        created_at: created_at,
+        location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
+        location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
+        header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+        topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
+        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
+        assignee: rand(5) == 0 ? User.admin.shuffle.first : nil,
+        # TODO make initiative statuses correspond with required votes reached
+        initiative_status: InitiativeStatus.offset(rand(InitiativeStatus.count)).first  
+      })
+
+      LogActivityJob.perform_later(initiative, 'created', initiative.author, initiative.created_at.to_i)
+
+      [0,0,1,1,2][rand(5)].times do |i|
+        initiative.initiative_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+      end
+      if rand(5) == 0
+        (rand(3)+1).times do
+          initiative.initiative_files.create!(generate_file_attributes)
+        end
+      end
+
+      User.all.each do |u|
+        r = rand(5)
+        if r < 2
+          Vote.create!(votable: initiative, user: u, mode: "up", created_at: Faker::Date.between(initiative.published_at, Time.now))
+        end
+      end
+
+      rand(5).times do
+        official_feedback = initiative.official_feedbacks.create!(
+          body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join}, 
+          author_multiloc: create_for_some_locales{Faker::FunnyName.name},
+          user: User.admin.shuffle.first
+          )
+        LogActivityJob.perform_later(official_feedback, 'created', official_feedback.user, official_feedback.created_at.to_i)
+      end
+
+      create_comment_tree(initiative, nil)
     end
 
     Phase.where(participation_method: 'budgeting').each do |phase|

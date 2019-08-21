@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :comment do
     author
-    idea
+    association :post, factory: :idea
     parent { nil }
     publication_status { 'published' }
     body_multiloc {{
@@ -27,7 +27,7 @@ FactoryBot.define do
 
   factory :nested_comment do
     author
-    idea
+    association :post, factory: :idea
     association :parent, factory: :comment
     publication_status { 'published' }
     body_multiloc {{

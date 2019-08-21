@@ -183,9 +183,9 @@ module EmailCampaigns
         .group(:votable_id).count
       new_downvotes_counts = new_votes.where(mode: 'down')
         .group(:votable_id).count
-      new_comments_counts = Comment.where(idea_id: idea_ids)
+      new_comments_counts = Comment.where(post_id: idea_ids)
         .where('created_at > ?', Time.now - days_ago)
-        .group(:idea_id).count
+        .group(:post_id).count
       idea_ids.map do |idea_id|
         upvotes = (new_upvotes_counts[idea_id] || 0)
         downvotes = (new_downvotes_counts[idea_id] || 0)

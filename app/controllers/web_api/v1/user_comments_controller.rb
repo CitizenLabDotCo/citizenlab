@@ -1,24 +1,37 @@
 class WebApi::V1::UserCommentsController < ApplicationController
+  skip_after_action :verify_policy_scoped
+  
 
   def index
-    @comments = policy_scope(Comment)
+    # Get the posts the user is allowed to see
+    comment_allowed_ideas = IdeaCommentPolicy::Scope.new(current_user, Comment).resolve
+      .published
+      .where(author_id: params[:user_id])
+    comment_allowed_initiatives = InitiativeCommentPolicy::Scope.new(current_user, Comment).resolve
       .published
       .where(author_id: params[:user_id])
 
-    @ideas = policy_scope(Idea)
-      .where(id: @comments.pluck(:idea_id))
+    # Apply pagination to the posts, using the union_posts
+    # view and ordering by publication date.
+    joined_posts = UnionPost.joins('INNER JOIN comments ON comments.post_id = union_posts.id')
+    paged_posts = joined_posts.where(comments: {id: comment_allowed_ideas})
+      .or(joined_posts.where(comments: {id: comment_allowed_initiatives}))
+      .order(published_at: :desc)
+      .group('union_posts.id, union_posts.published_at')  # Remove union_post duplicates
+      .select('union_posts.id')
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    @comments = @comments
-      .where(idea: @ideas)
-      .includes(:idea)
-      .left_outer_joins(:idea)
-    @comments = @comments.order('ideas.published_at DESC, ideas.id DESC, comments.created_at DESC')
+    # Get the comments, grouped by the corresponding posts
+    # page.
+    comments = Comment.where(post_id: paged_posts)
+      .includes(:post)
+      .joins('LEFT OUTER JOIN union_posts ON comments.post_id = union_posts.id')
+      .order('union_posts.published_at DESC, union_posts.id DESC, comments.created_at DESC')
 
     render json: { 
-      **WebApi::V1::CommentSerializer.new(@comments, params: fastjson_params, include: [:idea]).serializable_hash,
-      links: page_links(@ideas)
+      **WebApi::V1::CommentSerializer.new(comments, params: fastjson_params, include: [:post]).serializable_hash,
+      links: page_links(paged_posts)
     }
   end
 

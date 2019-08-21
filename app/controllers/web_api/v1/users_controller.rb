@@ -1,7 +1,7 @@
 class WebApi::V1::UsersController < ::ApplicationController
 
   # before_action :authenticate_user, except: [:create]
-  before_action :set_user, only: [:show, :update, :destroy, :ideas_count, :comments_count]
+  before_action :set_user, only: [:show, :update, :destroy, :ideas_count, :initiatives_count, :comments_count]
   skip_after_action :verify_authorized, only: [:index_xlsx]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -19,6 +19,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
     @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
+    @users = @users.admin if params[:can_admin].present?
     
     @users = case params[:sort]
       when "created_at"
@@ -161,8 +162,26 @@ class WebApi::V1::UsersController < ::ApplicationController
     render json: {count: policy_scope(@user.ideas.published).count}, status: :ok
   end
 
+  def initiatives_count
+    render json: {count: policy_scope(@user.initiatives.published).count}, status: :ok
+  end
+
   def comments_count
-    render json: {count: policy_scope(@user.comments.published).count}, status: :ok
+    count = 0
+    published_comments = @user.comments.published
+    if !params[:post_type] || params[:post_type] == 'Idea'
+      count += policy_scope(
+        published_comments.where(post_type: 'Idea'), 
+        policy_scope_class: IdeaCommentPolicy::Scope
+        ).count
+    end
+    if !params[:post_type] || params[:post_type] == 'Initiative'
+      count += policy_scope(
+        published_comments.where(post_type: 'Initiative'), 
+        policy_scope_class: InitiativeCommentPolicy::Scope
+        ).count
+    end
+    render json: {count: count}, status: :ok
   end
 
   private

@@ -1,5 +1,5 @@
 es:
-  statuses:
+  idea_statuses:
     proposed: propuesta
     proposed_description: Esta idea ha sido propuesta
     viewed: revisado
@@ -12,6 +12,17 @@ es:
     implemented_description: Esta idea ha sido implementada
     rejected: rechazada
     rejected_description: Esta idea ha sido rechazada
+  initiative_statuses:
+    proposed: proposed
+    proposed_description: proposed
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   topics:
     infrastructure: Plazas y calles
     infrastructure_description: Plazas y calles
@@ -58,6 +69,12 @@ es:
     initiatives_title: Iniciativas
     initiatives_body: >
       <p>Explicación sobre las iniciativas</p>
+    initiatives_success_1_title: ""
+    initiatives_success_1_body: ""
+    initiatives_success_2_title: ""
+    initiatives_success_2_body: ""
+    initiatives_success_3_title: ""
+    initiatives_success_3_body: ""
   projects:
     open_idea_project_title: '¿Tienes una idea? Proponla en la plataforma!'
     open_idea_project_description_preview: '¿Quizás tienes una idea que no encaja con uno de los proyectos existentes? Entonces publícalo aquí, reúne apoyo y ponlo en la agenda política!'

@@ -13,7 +13,8 @@ class StatCommentPolicy < ApplicationPolicy
         scope.all
       elsif user&.active? && user.project_moderator?
         projects = ProjectPolicy::Scope.new(user, Project.all).resolve
-        scope.joins(:idea).where(ideas: {project_id: projects})
+        scope.joins('FULL OUTER JOIN ideas ON ideas.id = comments.post_id').where(ideas: {project_id: projects})
+          .or(scope.joins('FULL OUTER JOIN ideas ON ideas.id = comments.post_id').where(post_type: 'Initiative'))
       else
         scope.none
       end

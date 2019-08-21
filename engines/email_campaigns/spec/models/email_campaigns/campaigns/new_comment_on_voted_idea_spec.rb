@@ -11,7 +11,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentOnVotedIdea, type: :model do
   	let(:campaign) { create(:new_comment_on_voted_idea_campaign) }
     let(:idea) { create(:idea) }
     let!(:vote) { create(:vote, votable: idea) }
-    let(:comment) { create(:comment, idea: idea) }
+    let(:comment) { create(:comment, post: idea) }
     let(:activity) { create(:activity, item: comment, action: 'created', user: comment.author) }
 
   	it "generates a command with the desired payload and tracked content" do
