@@ -9,7 +9,7 @@ end
 RSpec.describe EmailCampaigns::ActivityTriggerable, type: :model do
   before do
     @campaign = ActivityTriggerableCampaign.create
-    @activity = create(:idea_published_activity)
+    @activity = create(:published_activity)
   end
   
   describe "run_before_send_hooks" do
