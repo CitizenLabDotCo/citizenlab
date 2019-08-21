@@ -39,45 +39,43 @@ describe('Assignee filter', () => {
   });
 });
 
+// TODO: Need feedback toggle test (i3)
+
 // describe('Need feedback toggle', () => {
-//   it('Filters on ideas that need feedback', () => {
+//   before(() => {
 //     cy.getAuthUser().then((user) => {
-//       const projectTitle = randomString();
-//       const projectDescriptionPreview = randomString();
-//       const projectDescription = randomString();
 //       const userId = user.body.data.id;
 
-//       // create project with signed-in admin/user as default assignee
-//       cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published', userId).then((project) => {
-//         const projectId = project.body.data.id;
-//         const ideaTitle1 = randomString();
-//         const ideaTitle2 = randomString();
-//         const ideaContent1 = randomString();
-//         const ideaContent2 = randomString();
+//       const initiativeTitle1 = randomString();
+//       const initiativeContent1 = randomString();
+//       const initiativeTitle2 = randomString();
+//       const initiativeContent2 = randomString();
 
-//         // Create one idea with official feedback
-//         cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1).then(idea => {
-//           const ideaId = idea.body.data.id;
-//           const officialFeedbackContent = randomString();
-//           const officialFeedbackAuthor = randomString();
-//           cy.apiCreateOfficialFeedback(ideaId, officialFeedbackContent, officialFeedbackAuthor);
-
-//           // Create one idea without official feedback
-//           cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2). then(() => {
-//             cy.visit('/admin/ideas/');
-
-//             // Select the newly create project as a filter and check if it just shows our two created ideas
-//             cy.get('.e2e-idea-manager-project-filter-item').first().click();
-//             cy.get('.e2e-idea-manager-idea-row').should('have.length', 2);
-
-//             // Turn the 'need feedback' toggle on and check whether it only shows the idea without official feedback
-//             cy.get('#e2e-feedback_needed_filter_toggle').click();
-//             cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
-//           });
-//         });
-
+//       // create initiative with signed-in admin/user as default assignee and give feedback
+//       cy.apiCreateInitiative(initiativeTitle1, initiativeContent1, userId).then(initiative => {
+//         const initiativeId = initiative.body.data.id;
+//         const officialFeedbackContent = randomString();
+//         const officialFeedbackAuthor = randomString();
+//         cy.apiCreateOfficialFeedbackForInitiative(initiativeId, officialFeedbackContent, officialFeedbackAuthor);
 //       });
+
+//       // create second initiative with same assignee but no feedback (so feedback is still needed)
+//       cy.apiCreateInitiative(initiativeTitle2, initiativeContent2, userId);
 //     });
+//   });
+
+//   it('Filters on ideas that need feedback', () => {
+//     cy.visit('/admin/initiatives/manage');
+
+//     // grab and open assignee filter menu
+//     cy.get('#e2e-select-assignee-filter').click();
+//     // click on Assigned to me filter
+//     cy.get('#e2e-assignee-filter-assigned-to-user').click();
+//     cy.visit('/admin/initiatives/manage');
+
+//     // Turn the 'need feedback' toggle on and check whether it only shows the idea assigned to user without official feedback
+//     cy.get('#e2e-feedback_needed_filter_toggle').click();
+//     cy.get('.e2e-post-manager-post-row').should('have.length', 1);
 //   });
 // });
 
