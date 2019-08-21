@@ -34,7 +34,10 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def show?
-    record.draft? ||
+    (
+      user&.active? &&
+      record.author_id == user.id
+    ) ||
     user&.active_admin_or_moderator?(record.project_id) ||
     (
       ProjectPolicy.new(user, record.project).show? &&

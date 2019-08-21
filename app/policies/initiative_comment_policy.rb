@@ -1,4 +1,4 @@
-class CommentPolicy < ApplicationPolicy
+class InitiativeCommentPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -8,7 +8,7 @@ class CommentPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(idea: Pundit.policy_scope(user, Idea))
+      scope.where(post_type: 'Initiative')
     end
   end
 
@@ -16,10 +16,9 @@ class CommentPolicy < ApplicationPolicy
     (
       user&.active? && 
       (record.author_id == user.id) &&
-      ProjectPolicy.new(user, record.project).show? &&
       check_commenting_allowed(record, user)
     ) || 
-    user&.active_admin_or_moderator?(record.project.id)
+    (user&.active? && user.admin?)
   end
 
   def children?
@@ -27,7 +26,7 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def show?
-    IdeaPolicy.new(user, record.idea).show?
+    InitiativePolicy.new(user, record.post).show?
   end
 
   def update?
@@ -54,8 +53,7 @@ class CommentPolicy < ApplicationPolicy
   private
 
   def check_commenting_allowed comment, user
-    pcs = ParticipationContextService.new
-    !pcs.commenting_disabled_reason_for_idea comment.idea, user
+    true
   end
 
 end

@@ -85,7 +85,7 @@ describe TrendingIdeaService do
                created_at: Faker::Time.between(published_at, DateTime.now))
       end
       (if is_popular then rand(10) else rand(3) end).times do |i| 
-        create(:comment, idea: idea, 
+        create(:comment, post: idea, 
                created_at: Faker::Time.between(published_at, DateTime.now))
       end
     end

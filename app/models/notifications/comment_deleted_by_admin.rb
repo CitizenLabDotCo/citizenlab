@@ -11,7 +11,6 @@ module Notifications
 
     validates :comment_id, presence: true
     validates :initiating_user, presence: true
-    validates :idea_id, presence: true
     validates :reason_code, inclusion: { in: REASON_CODES }, presence: true
 
 
@@ -24,12 +23,12 @@ module Notifications
       recipient_id = comment&.author_id
 
       comment_id = comment&.id
-      idea = comment&.idea
-      idea_id = comment&.idea_id
+      idea = comment&.post
+      idea_id = idea&.id
       initiator_id = activity.user_id
       project_id = idea&.project_id
 
-      if comment_id && recipient_id && initiator_id && (recipient_id != initiator_id)
+      if comment_id && (comment.post_type == 'Idea') && recipient_id && initiator_id && (recipient_id != initiator_id)
         [self.new(
            recipient_id: recipient_id,
            initiating_user: User.find(initiator_id),

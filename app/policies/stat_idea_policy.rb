@@ -11,9 +11,11 @@ class StatIdeaPolicy < ApplicationPolicy
     def resolve
       if user&.active? && user.admin?
         scope.all
-      else user&.active? && user.project_moderator?
+      elsif user&.active? && user.project_moderator?
         projects = ProjectPolicy::Scope.new(user, Project.all).moderatable
         scope.where(project: projects)
+      else
+        scope.none
       end
     end
   end

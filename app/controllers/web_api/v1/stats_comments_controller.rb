@@ -53,7 +53,8 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
     serie = comments
       .where(created_at: @start_at..@end_at)
-      .joins(idea: :ideas_topics)
+      .joins("INNER JOIN ideas ON ideas.id = comments.post_id")
+      .joins("INNER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id")
       .group("ideas_topics.topic_id")
       .order("ideas_topics.topic_id")
       .count
@@ -69,7 +70,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
     serie = comments
       .where(created_at: @start_at..@end_at)
-      .joins(:idea)
+      .joins("INNER JOIN ideas ON ideas.id = comments.post_id")
       .group("ideas.project_id")
       .order("ideas.project_id")
       .count
@@ -81,7 +82,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def apply_project_filter comments
     if params[:project]
-      comments.joins(:idea).where(ideas: {project_id: params[:project]})
+      comments.joins("INNER JOIN ideas ON ideas.id = comments.post_id").where(ideas: {project_id: params[:project]})
     else
       comments
     end
@@ -90,7 +91,8 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   def apply_topic_filter comments
     if params[:topic]
       comments
-        .joins(idea: :ideas_topics)
+        .joins("INNER JOIN ideas ON ideas.id = comments.post_id")
+        .joins("INNER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id")
         .where(ideas: {ideas_topics: {topic_id: params[:topic]}})
     else
       comments

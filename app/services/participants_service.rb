@@ -45,7 +45,7 @@ class ParticipantsService
       participants = participants.or(User.where(id: ideas_since.select(:author_id)))
     end
     # Commenting
-    comments = Comment.where(idea_id: ideas)
+    comments = Comment.where(post_id: ideas)
     if actions.include? :commenting 
       comments_since = if since
         comments.where('created_at::date >= (?)::date', since) 

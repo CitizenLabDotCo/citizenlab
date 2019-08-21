@@ -6,12 +6,12 @@ RSpec.describe Notifications::OfficialFeedbackOnCommentedIdea, type: :model do
 
     it "generates exactly one notification for each user that commented on the idea" do
       idea = create(:idea)
-      comment1 = create(:comment, idea: idea)
-      comment2 = create(:comment, idea: idea)
-      comment3 = create(:comment, idea: idea, author: comment2.author)
+      comment1 = create(:comment, post: idea)
+      comment2 = create(:comment, post: idea)
+      comment3 = create(:comment, post: idea, author: comment2.author)
       create(:comment)
 
-      official_feedback = create(:official_feedback, idea: idea)
+      official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)
 
       notifications = subject.class.make_notifications_on(activity)
@@ -20,10 +20,10 @@ RSpec.describe Notifications::OfficialFeedbackOnCommentedIdea, type: :model do
 
     it "doesn't generate (invalid) notifications for comments attributed to a deleted user" do
       idea = create(:idea)
-      comment = create(:comment, idea: idea)
+      comment = create(:comment, post: idea)
       comment.author.destroy!
 
-      official_feedback = create(:official_feedback, idea: idea)
+      official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)
 
       notifications = subject.class.make_notifications_on(activity)
@@ -32,9 +32,9 @@ RSpec.describe Notifications::OfficialFeedbackOnCommentedIdea, type: :model do
 
     it "doesn't generate notifications for the idea author" do
       idea = create(:idea)
-      comment = create(:comment, idea: idea, author: idea.author)
+      comment = create(:comment, post: idea, author: idea.author)
 
-      official_feedback = create(:official_feedback, idea: idea)
+      official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)
 
       notifications = subject.class.make_notifications_on(activity)

@@ -8,8 +8,7 @@ class ProjectImagePolicy < ApplicationPolicy
     end
 
     def resolve
-      project_ids = Pundit.policy_scope(user, Project).pluck(:id)
-      scope.where(project_id: project_ids)
+      scope.where(project: Pundit.policy_scope(user, Project))
     end
   end
 
