@@ -313,6 +313,7 @@ export function apiRemoveIdea(ideaId: string) {
 export function apiCreateInitiative(
   initiativeTitle: string,
   initiativeContent: string,
+  assigneeId?: string,
   locationGeoJSON?: {'type': string, 'coordinates': number[]},
   locationDescription?: string,
   jwt?: string
@@ -348,7 +349,8 @@ export function apiCreateInitiative(
             'nl-BE': initiativeContent
           },
           location_point_geojson: locationGeoJSON,
-          location_description: locationDescription
+          location_description: locationDescription,
+          assignee_id: assigneeId
         }
       }
     });
