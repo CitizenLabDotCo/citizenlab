@@ -51,10 +51,11 @@ describe('Idea card component', () => {
     // the first card should be the one for the initaitive we just created
     cy.get('.e2e-initiative-card').first().contains(initiativeTitle);
 
-    // the card should contai the title
-    cy.get('@initiativeCard').contains(initiativeTitle);
+    // the card should contain the title
+    cy.get('@initiativeCard').find('.e2e-card-component-title').contains(initiativeTitle);
 
     // the card should contain one vote
+    cy.get('@initiativeCard').find('.e2e-initiative-card-vote-indicator-count').contains(1);
   });
 
   it('shows the correct comment count', () => {
