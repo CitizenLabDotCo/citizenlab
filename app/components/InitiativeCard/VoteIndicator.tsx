@@ -136,10 +136,10 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
       <Container>
         {statusCode === 'proposed' &&
           <div>
-            <VoteCounter>
+            <VoteCounter className="e2e-initiative-card-vote-indicator">
               <VoteIcon name="upvote" />
               <VoteText>
-                <b>{voteCount}</b>
+                <b  className="e2e-initiative-card-vote-indicator-count">{voteCount}</b>
                 <span className="division-bar">/</span>
                 {voteLimit}
               </VoteText>

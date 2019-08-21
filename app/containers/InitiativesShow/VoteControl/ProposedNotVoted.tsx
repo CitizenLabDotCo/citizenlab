@@ -40,6 +40,8 @@ const StatusIcon = styled(Icon)`
 
 const StyledTooltip = styled(Tooltip)`
   display: inline;
+  margin-left: 4px;
+  cursor: pointer;
 `;
 
 const VoteCounter = styled.div`
@@ -73,15 +75,23 @@ const StyledProgressBar = styled(ProgressBar)`
 
 const StyledButton = styled(Button)`
   margin-top: 20px;
+
+  svg {
+    margin-top: -2px;
+  }
 `;
 
 const OnDesktop = styled.div`
+  display: inline;
+
   ${media.smallerThanMaxTablet`
     display: none;
   `}
 `;
 
 const OnMobile = styled.div`
+  display: inline;
+
   ${media.biggerThanMaxTablet`
     display: none;
   `}
@@ -150,7 +160,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
                   <T value={threshold_reached_message} supportHtml />
                 </TooltipWrapper>
               }
-              top="20"
+              top="25px"
             >
               <HelpIcon name="info" />
             </StyledTooltip>
