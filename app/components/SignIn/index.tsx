@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get, isFunction } from 'lodash-es';
-import { Subscription } from 'rxjs';
+import { get } from 'lodash-es';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // libraries
 import Link from 'utils/cl-router/Link';
-import clHistory from 'utils/cl-router/history';
-import { Location } from 'history';
 
 // components
 import Input from 'components/UI/Input';
@@ -17,11 +15,10 @@ import AuthProviderButton, { Providers } from 'components/AuthProviderButton';
 
 // resources
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // services
 import { signIn } from 'services/auth';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -34,7 +31,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 
 // style
 import { darken } from 'polished';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // logos
@@ -113,7 +110,7 @@ const ButtonWrapper = styled.div`
   padding-top: 10px;
 `;
 
-const CreateAnAccountStyle = css`
+const CreateAnAccountLink = styled(Link)`
   color: ${(props) => props.theme.colorMain};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
@@ -125,14 +122,6 @@ const CreateAnAccountStyle = css`
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
   }
-`;
-
-const CreateAnAccountDiv: any = styled.div`
-  ${CreateAnAccountStyle}
-`;
-
-const CreateAnAccountLink: any = styled(Link)`
-  ${CreateAnAccountStyle}
 `;
 
 const Separator = styled.div`
@@ -186,10 +175,10 @@ const SubSocialButtonLink = styled.a`
 interface InputProps {
   onSignedIn: (userId: string) => void;
   title?: string | JSX.Element;
-  goToSignUpForm?: () => void;
 }
 
 interface DataProps {
+  tenant: GetTenantChildProps;
   passwordLoginEnabled: boolean | null;
   googleLoginEnabled: boolean | null;
   facebookLoginEnabled: boolean | null;
@@ -200,69 +189,46 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 type State = {
-  location: Location | null;
-  currentTenant: ITenant | null;
   email: string | null;
   password: string | null;
   processing: boolean;
   emailError: string | null;
   passwordError: string | null;
   signInError: string | null;
-  socialLoginUrlParameter: string;
-  loading: boolean;
 };
 
-class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Subscription[];
+class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
   constructor(props) {
     super(props);
     this.state = {
-      location: clHistory.getCurrentLocation(),
-      currentTenant: null,
       email: null,
       password: null,
       processing: false,
       emailError: null,
       passwordError: null,
-      signInError: null,
-      socialLoginUrlParameter: '',
-      loading: true
+      signInError: null
     };
-    this.subscriptions = [];
     this.emailInputElement = null;
     this.passwordInputElement = null;
   }
 
-  componentDidMount() {
-    const globalState$ = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage').observable;
-    const currentTenant$ = currentTenantStream().observable;
-
-    this.subscriptions = [
-      currentTenant$.subscribe((currentTenant) => {
-        this.setState({ currentTenant, loading: false });
-      }),
-
-      globalState$.subscribe((globalState) => {
-        this.setState({
-          socialLoginUrlParameter: (globalState && globalState.ideaId && globalState.ideaSlug ? `?new_idea_id=${globalState.ideaId}&new_idea_slug=${globalState.ideaSlug}&publish=true` : '')
-        });
-      })
-    ];
+  handleEmailOnChange = (email: string) => {
+    this.setState({
+      email,
+      emailError: null,
+      signInError: null
+    });
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  handleEmailOnChange = (email) => {
-    this.setState({ email, emailError: null, signInError: null });
-  }
-
-  handlePasswordOnChange = (password) => {
-    this.setState({ password, passwordError: null, signInError: null });
+  handlePasswordOnChange = (password: string) => {
+    this.setState({
+      password,
+      passwordError: null,
+      signInError: null
+    });
   }
 
   validate(email: string | null, password: string | null) {
@@ -284,7 +250,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     return (!emailError && !passwordError);
   }
 
-  handleOnSubmit = async (event: React.FormEvent<any>) => {
+  handleOnSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const { onSignedIn } = this.props;
@@ -315,120 +281,86 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.passwordInputElement = element;
   }
 
-  goToSignUpForm = (event) => {
-    event.preventDefault();
-
-    if (isFunction(this.props.goToSignUpForm)) {
-      this.props.goToSignUpForm();
-    }
-  }
-
   handleOnSSOClick = (provider: Providers) => () => {
-    window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
+    window.location.href = `${AUTH_PATH}/${provider}`;
   }
 
   render() {
-    const {
-      location,
-      currentTenant,
-      email,
-      password,
-      processing,
-      emailError,
-      passwordError,
-      signInError,
-      loading
-    } = this.state;
-    const {
-      title,
-      passwordLoginEnabled,
-      googleLoginEnabled,
-      facebookLoginEnabled,
-      azureAdLoginEnabled,
-      franceconnectLoginEnabled,
-    } = this.props;
+    const { email, password, processing, emailError, passwordError, signInError } = this.state;
+    const { title, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
     const { formatMessage } = this.props.intl;
     const externalLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled);
-    const azureAdLogo: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
-    const tenantLoginMechanismName: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name');
+    const azureAdLogo: string | null = get(tenant, 'data.attributes.settings.azure_ad_login.logo_url', null);
+    const tenantLoginMechanismName: string | null = get(tenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name', null);
 
-    const createAccount = ((location && location.pathname.replace(/\/$/, '').endsWith('ideas/new')) ? (
-      <CreateAnAccountDiv onClick={this.goToSignUpForm}>
-        <FormattedMessage {...messages.createAnAccount} />
-      </CreateAnAccountDiv>
-    ) : (
-      <CreateAnAccountLink to="/sign-up" className="e2e-sign-up-link">
-        <FormattedMessage {...messages.createAnAccount} />
-      </CreateAnAccountLink>
-    ));
+    return (
+      <Container>
+        <Title>{title || <FormattedMessage {...messages.title} />}</Title>
 
-    if (!loading) {
-      return (
-        <Container>
-          <Title>{title || <FormattedMessage {...messages.title} />}</Title>
+        <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
+          {passwordLoginEnabled &&
+            <PasswordLogin>
+              <FormElement>
+                <StyledInput
+                  ariaLabel={formatMessage(messages.emailPlaceholder)}
+                  type="email"
+                  id="email"
+                  value={email}
+                  placeholder={formatMessage(messages.emailPlaceholder)}
+                  error={emailError}
+                  onChange={this.handleEmailOnChange}
+                  setRef={this.handleEmailInputSetRef}
+                />
+              </FormElement>
 
-          <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
-            {passwordLoginEnabled &&
-              <PasswordLogin>
-                <FormElement>
-                  <StyledInput
-                    ariaLabel={formatMessage(messages.emailPlaceholder)}
-                    type="email"
-                    id="email"
-                    value={email}
-                    placeholder={formatMessage(messages.emailPlaceholder)}
-                    error={emailError}
-                    onChange={this.handleEmailOnChange}
-                    setRef={this.handleEmailInputSetRef}
+              <FormElement>
+                <PasswordInput
+                  ariaLabel={formatMessage(messages.passwordPlaceholder)}
+                  type="password"
+                  id="password"
+                  value={password}
+                  placeholder={formatMessage(messages.passwordPlaceholder)}
+                  error={passwordError}
+                  onChange={this.handlePasswordOnChange}
+                  setRef={this.handlePasswordInputSetRef}
+                />
+                <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
+                  <FormattedMessage {...messages.forgotPassword} />
+                </ForgotPassword>
+              </FormElement>
+
+              <FormElement>
+                <ButtonWrapper>
+                  <Button
+                    onClick={this.handleOnSubmit}
+                    size="1"
+                    processing={processing}
+                    text={formatMessage(messages.submit)}
+                    className="e2e-submit-signin"
                   />
-                </FormElement>
+                  <CreateAnAccountLink to="/sign-up" className="e2e-sign-up-link">
+                    <FormattedMessage {...messages.createAnAccount} />
+                  </CreateAnAccountLink>
+                </ButtonWrapper>
+                <Error marginTop="10px" text={signInError} />
+              </FormElement>
+            </PasswordLogin>
+          }
 
-                <FormElement>
-                  <PasswordInput
-                    ariaLabel={formatMessage(messages.passwordPlaceholder)}
-                    type="password"
-                    id="password"
-                    value={password}
-                    placeholder={formatMessage(messages.passwordPlaceholder)}
-                    error={passwordError}
-                    onChange={this.handlePasswordOnChange}
-                    setRef={this.handlePasswordInputSetRef}
-                  />
-                  <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
-                    <FormattedMessage {...messages.forgotPassword} />
-                  </ForgotPassword>
-                </FormElement>
+          {passwordLoginEnabled && externalLoginEnabled &&
+            <Separator />
+          }
 
-                <FormElement>
-                  <ButtonWrapper>
-                    <Button
-                      onClick={this.handleOnSubmit}
-                      size="1"
-                      processing={processing}
-                      text={formatMessage(messages.submit)}
-                      circularCorners={false}
-                      className="e2e-submit-signin"
-                    />
-                    {createAccount}
-                  </ButtonWrapper>
-                  <Error marginTop="10px" text={signInError} />
-                </FormElement>
-              </PasswordLogin>
-            }
-
-            {passwordLoginEnabled && externalLoginEnabled &&
-              <Separator />
-            }
-
-            {externalLoginEnabled &&
-              <Footer>
-                {(passwordLoginEnabled &&
-                  <SocialLoginText>
-                    {formatMessage(messages.orLogInWith)}
-                  </SocialLoginText>
-                )}
-                <AuthProviderButtons>
-                  <FeatureFlag name="azure_ad_login">
+          {externalLoginEnabled &&
+            <Footer>
+              {(passwordLoginEnabled &&
+                <SocialLoginText>
+                  {formatMessage(messages.orLogInWith)}
+                </SocialLoginText>
+              )}
+              <AuthProviderButtons>
+                <FeatureFlag name="azure_ad_login">
+                  {azureAdLogo && tenantLoginMechanismName &&
                     <AuthProviderButton
                       logoUrl={azureAdLogo}
                       logoHeight="45px"
@@ -438,7 +370,9 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                       acceptText={messages.alreadyAcceptTermsAndConditions}
                       altText={messages.signInButtonAltText}
                     />
-                  </FeatureFlag>
+                  }
+                </FeatureFlag>
+
                 <FeatureFlag name="franceconnect_login">
                   <FranceConnectButton role="button" onClick={this.handleOnSSOClick('franceconnect')}>
                     <img
@@ -453,48 +387,50 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                     <FormattedMessage {...messages.whatIsFranceConnect} />
                   </SubSocialButtonLink>
                 </FeatureFlag>
-                  <FeatureFlag name="google_login">
-                    <AuthProviderButton
-                      logoUrl={googleLogo}
-                      logoHeight="29px"
-                      provider="google"
-                      providerName="Google"
-                      onAccept={this.handleOnSSOClick('google')}
-                      acceptText={messages.alreadyAcceptTermsAndConditions}
-                      altText={messages.signInButtonAltText}
-                    />
-                  </FeatureFlag>
-                  <FeatureFlag name="facebook_login">
-                    <AuthProviderButton
-                      logoUrl={facebookLogo}
-                      logoHeight="21px"
-                      provider="facebook"
-                      providerName="Facebook"
-                      onAccept={this.handleOnSSOClick('facebook')}
-                      acceptText={messages.alreadyAcceptTermsAndConditions}
-                      altText={messages.signInButtonAltText}
-                    />
-                  </FeatureFlag>
-                </AuthProviderButtons>
-                {!passwordLoginEnabled &&
-                  <CreateAccount>
-                    {createAccount}
-                  </CreateAccount>
-                }
-              </Footer>
-            }
-          </Form>
-        </Container>
-      );
-    }
 
-    return null;
+                <FeatureFlag name="google_login">
+                  <AuthProviderButton
+                    logoUrl={googleLogo}
+                    logoHeight="29px"
+                    provider="google"
+                    providerName="Google"
+                    onAccept={this.handleOnSSOClick('google')}
+                    acceptText={messages.alreadyAcceptTermsAndConditions}
+                    altText={messages.signInButtonAltText}
+                  />
+                </FeatureFlag>
+                <FeatureFlag name="facebook_login">
+                  <AuthProviderButton
+                    logoUrl={facebookLogo}
+                    logoHeight="21px"
+                    provider="facebook"
+                    providerName="Facebook"
+                    onAccept={this.handleOnSSOClick('facebook')}
+                    acceptText={messages.alreadyAcceptTermsAndConditions}
+                    altText={messages.signInButtonAltText}
+                  />
+                </FeatureFlag>
+              </AuthProviderButtons>
+
+              {!passwordLoginEnabled &&
+                <CreateAccount>
+                  <CreateAnAccountLink to="/sign-up" className="e2e-sign-up-link">
+                    <FormattedMessage {...messages.createAnAccount} />
+                  </CreateAnAccountLink>
+                </CreateAccount>
+              }
+            </Footer>
+          }
+        </Form>
+      </Container>
+    );
   }
 }
 
-const SignInWithInjectedIntl = injectIntl<Props>(SignIn);
+const SignInWithInjectedIntl = withRouter<Props>(injectIntl(SignIn));
 
 const Data = adopt<DataProps, {}>({
+  tenant: <GetTenant />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,

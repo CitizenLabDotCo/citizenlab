@@ -5,8 +5,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 // components
-import ProfileSection from './ProfileSection';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
 
 // intl
@@ -55,9 +54,8 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <>
-      <ProfileSection>
-        <SectionTitle><FormattedMessage {...messages.deletionSection} /></SectionTitle>
-        <SectionSubtitle><FormattedMessage {...messages.deletionSubtitle} /></SectionSubtitle>
+      <FormSection>
+        <FormSectionTitle message={messages.deletionSection} subtitleMessage={messages.deletionSubtitle}/>
         <Row>
           <Button
             style="delete"
@@ -70,7 +68,7 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
             <FormattedMessage {...messages.deleteMyAccount} />
           </Button>
         </Row>
-      </ProfileSection>
+      </FormSection>
       <LoadableModal
         opened={dialogOpened}
         close={this.onCloseDialog}

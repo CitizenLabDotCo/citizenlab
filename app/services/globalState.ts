@@ -6,25 +6,22 @@ import { isObject, isEmpty, has } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 // typings
-import { IOption, UploadFile } from 'typings';
-import { setTimeout } from 'timers';
+import { UploadFile } from 'typings';
 
 export interface IIdeasNewPageGlobalState {
   title: string | null;
   description: string | null;
-  selectedTopics: IOption[] | null;
+  selectedTopics: string[];
   budget: number | null;
-  address: string;
-  geojson_position_coordinates: GeoJSON.Point | null;
+  position: string;
+  position_coordinates: GeoJSON.Point | null;
   submitError: boolean;
   processing: boolean;
   ideaId: string | null;
   ideaSlug: string | null;
   imageFile: UploadFile[];
   imageId: string | null;
-  imageChanged: boolean;
   ideaFiles: UploadFile[];
-  ideaFilesToRemove: UploadFile[];
 }
 
 export interface IAdminFullWidth {

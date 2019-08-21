@@ -4,7 +4,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { get, isArray, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, IMessageInfo  } from 'utils/cl-intl';
 import { darken } from 'polished';
 import { CLError, Message } from 'typings';
 import { IInviteError } from 'services/invites';
@@ -175,6 +175,7 @@ interface Props extends DefaultProps {
   fieldName?: string | undefined;
   errors?: string[];
   apiErrors?: (CLError | IInviteError)[] | null;
+  message?: IMessageInfo['message'];
 }
 
 interface State {}
@@ -203,17 +204,17 @@ export default class Error extends PureComponent<Props, State> {
   }
 
   render() {
-    const { text, errors, apiErrors, fieldName, size, marginTop, marginBottom, showIcon, showBackground, className, animate } = this.props;
+    const { text, errors, apiErrors, fieldName, size, marginTop, marginBottom, showIcon, showBackground, className, animate, message } = this.props;
     const timeout = { enter: 400, exit: 350 };
 
-    const errorElement = (text || errors || apiErrors) && (
+    const errorElement = (text || errors || apiErrors || message) && (
       <CSSTransition
         classNames="error"
         timeout={timeout}
         enter={animate}
         exit={animate}
       >
-        <StyledErrorMessage tabIndex={0} className={`e2e-error-message ${className}`} size={size} marginTop={marginTop} marginBottom={marginBottom}>
+        <StyledErrorMessage tabIndex={-1} className={`e2e-error-message ${className}`} size={size} marginTop={marginTop} marginBottom={marginBottom}>
           <StyledErrorMessageInner showBackground={showBackground} className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}>
             {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
 
@@ -235,6 +236,11 @@ export default class Error extends PureComponent<Props, State> {
 
                 return null;
               })}
+              {message && (
+                <p>
+                  <FormattedMessage {...message} />
+                </p>
+              )}
 
               {apiErrors && isArray(apiErrors) && !isEmpty(apiErrors) &&
                 <ErrorList>

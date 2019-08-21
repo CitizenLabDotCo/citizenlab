@@ -7,9 +7,9 @@ import IdeaCard from 'components/IdeaCard';
 import IdeasMap from 'components/IdeasMap';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
-import SelectTopics from './SelectTopics';
-import SelectSort from './SelectSort';
-import SelectProjects from './SelectProjects';
+import TopicFilterDropdown from './TopicFilterDropdown';
+import SelectSort from './SortFilterDropdown';
+import ProjectFilterDropdown from './ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
@@ -165,15 +165,10 @@ const ViewButton = styled.div`
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: normal;
-    padding-left: 18px;
-    padding-right: 18px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-
-    ${media.smallerThanMinTablet`
-      padding-top: 9px;
-      padding-bottom: 9px;
-    `}
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 `;
 
@@ -346,12 +341,12 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     } = this.props;
     const {
       queryParameters,
-      ideasList,
+      list,
       hasMore,
       querying,
       loadingMore
     } = ideas;
-    const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
+    const hasIdeas = (!isNilOrError(list) && list.length > 0);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
@@ -372,8 +367,8 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           <RightFilterArea>
             <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'}`}>
               <SelectSort onChange={this.handleSortOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
-              {allowProjectsFilter && <SelectProjects onChange={this.handleProjectsOnChange} />}
-              <SelectTopics onChange={this.handleTopicsOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
+              {allowProjectsFilter && <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />}
+              <TopicFilterDropdown onChange={this.handleTopicsOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
             </DropdownFilters>
 
             <Spacer />
@@ -410,9 +405,9 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </EmptyContainer>
         }
 
-        {showCardView && !querying && hasIdeas && ideasList &&
+        {showCardView && !querying && hasIdeas && list &&
           <IdeasList id="e2e-ideas-list">
-            {ideasList.map((idea) => (
+            {list.map((idea) => (
               <StyledIdeaCard
                 key={idea.id}
                 ideaId={idea.id}
@@ -454,7 +449,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
 }
 
 const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize debounce={50} />,
+  windowSize: <GetWindowSize />,
   ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>
 });
 

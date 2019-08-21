@@ -38,6 +38,10 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.seeIdea',
     defaultMessage: 'See idea',
   },
+  seeInitiative: {
+    id: 'app.containers.UsersShowPage.seeInitiative',
+    defaultMessage: 'See initiative',
+  },
   loadingUser: {
     id: 'app.containers.UsersShowPage.loadingUser',
     defaultMessage: 'Loading...',

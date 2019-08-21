@@ -5,7 +5,8 @@ import Footer from 'components/Footer';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
 import SuccessStories from './SuccessStories';
-import ShouldBeInitiatives from './ShouldBeInitiatives';
+import InitiativeCards from 'components/InitiativeCards';
+import ContentContainer from 'components/ContentContainer';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,7 +14,7 @@ import messages from './messages';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 
 // tracks
@@ -37,7 +38,7 @@ const FooterBanner: any = styled.div`
   padding-bottom: 60px;
 `;
 
- const FooterMessage = styled.p`
+const FooterMessage = styled.p`
     color: #fff;
     font-size: ${fontSizes.xxxl}px;
     line-height: normal;
@@ -51,19 +52,39 @@ const FooterBanner: any = styled.div`
     `}
 `;
 
+const StyledContentContainer = styled(ContentContainer)`
+  width: 100%;
+  background-color: ${colors.background};
+  padding-bottom: 150px;
+
+  ${media.smallerThanMaxTablet`
+    padding-bottom: 80px;
+  `}
+`;
+
+const Padding = styled.div`
+  width: 100%;
+  height: 100px;
+`;
+
+const StyledInitiativeCards = styled(InitiativeCards)``;
+
 const trackInitiative = () => {
   trackEventByName(tracks.clickStartInitiativesCTA, { extra: { location: 'initiatives footer' } });
 };
 
-export default withTheme(memo(({ theme } : any) => (
+export default withTheme(memo(({ theme }: any) => (
   <>
     <InitiativesIndexMeta />
     <InitiativesHeader />
-    <SuccessStories />
-    <ShouldBeInitiatives />
+    <StyledContentContainer maxWidth="100%">
+      <SuccessStories />
+      <Padding />
+      <StyledInitiativeCards />
+    </StyledContentContainer>
     <FooterBanner>
       <FooterMessage>
-        <FormattedMessage {...messages.footer}/>
+        <FormattedMessage {...messages.footer} />
       </FooterMessage>
 
       <Button
@@ -71,7 +92,7 @@ export default withTheme(memo(({ theme } : any) => (
         padding="13px 22px"
         bgColor="#fff"
         textColor={theme.colorText}
-        linkTo="/projects/an-idea-bring-it-to-your-council/ideas/new"
+        linkTo="/initiatives/new"
         onClick={trackInitiative}
         icon="arrowLeft"
         iconPos="right"

@@ -165,7 +165,7 @@ const InitiativesCTABox = withTheme(memo((props: Props) => {
           fontWeight="500"
           padding="13px 22px"
           bgColor={theme.colorMain}
-          linkTo="/projects/an-idea-bring-it-to-your-council/ideas/new"
+          linkTo="/initiatives/new"
           textColor="#FFF"
           text={<FormattedMessage {...messages.startInitiative} />}
           className="e2e-initiatives-landing-CTA-new"

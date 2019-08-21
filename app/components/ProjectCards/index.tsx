@@ -32,7 +32,7 @@ import tracks from './tracks';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
-import { darken, rgba } from 'polished';
+import { rgba } from 'polished';
 
 const EmptyProjectsImageSrc: string = require('assets/img/landingpage/no_projects_image.svg');
 
@@ -450,7 +450,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
                 icon="showMore"
                 iconPos="left"
                 textColor={theme.colorText}
-                textHoverColor={darken(0.1, theme.colorText)}
+                textHoverColor="red"
                 bgColor={rgba(theme.colorText, 0.08)}
                 bgHoverColor={rgba(theme.colorText, 0.12)}
                 fontWeight="500"
@@ -470,7 +470,7 @@ const ProjectCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(ProjectCards
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  windowSize: <GetWindowSize debounce={50} />,
+  windowSize: <GetWindowSize />,
   projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>
 });
 

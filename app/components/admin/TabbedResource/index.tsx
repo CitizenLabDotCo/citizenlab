@@ -166,7 +166,6 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
               style="cl-blue"
               icon="eye"
               linkTo={resource.publicLink}
-              circularCorners={false}
             >
               <FormattedMessage {...messages.viewPublicResource} />
             </Button>

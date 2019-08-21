@@ -4,6 +4,7 @@ import { get } from 'lodash-es';
 
 // components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
+// since it will only be seen by admins, making the whoice of using the admin Label component for now.
 import Label from 'components/UI/Label';
 
 // services
@@ -43,7 +44,8 @@ export type Props = {
   placeholder?: string | undefined;
   errorMultiloc?: Multiloc | null;
   shownLocale?: Locale;
-  ideaId?: string | undefined
+  postId?: string;
+  postType?: 'idea' | 'initiative';
   padding?: string | undefined;
   onBlur?: () => void;
   onFocus?: () => void | undefined;
@@ -102,7 +104,8 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
     const { onBlur,
       onFocus,
       padding,
-      ideaId,
+      postId,
+      postType,
       rows,
       shownLocale,
       label,
@@ -136,7 +139,8 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
               value={value}
               placeholder={placeholder}
               rows={rows}
-              ideaId={ideaId}
+              postId={postId}
+              postType={postType}
               padding={padding}
               error={error}
               onChange={this.handleOnChange(shownLocale)}
@@ -174,7 +178,8 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
                     value={value}
                     placeholder={placeholder}
                     rows={rows}
-                    ideaId={ideaId}
+                    postId={postId}
+                    postType={postType}
                     padding={padding}
                     error={error}
                     onChange={this.handleOnChange(currentTenantLocale)}

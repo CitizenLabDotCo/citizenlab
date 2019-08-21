@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import Dropzone from 'react-dropzone';
 import { size, compact, isEmpty } from 'lodash-es';
+import { reportError } from 'utils/loggingUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -303,7 +304,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
           try {
             images[i].base64 = await getBase64FromFile(images[i]);
           } catch (error) {
-            console.log(error);
+            reportError(error);
           }
         }
 

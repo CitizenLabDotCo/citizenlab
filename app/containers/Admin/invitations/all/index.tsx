@@ -110,7 +110,6 @@ class InvitesTable extends React.PureComponent<Props, State> {
               icon="download"
               onClick={this.handleInvitesExport}
               processing={exporting}
-              circularCorners={false}
             >
               <FormattedMessage {...messages.exportInvites} />
             </Button>

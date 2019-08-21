@@ -55,7 +55,7 @@ export default () => ({
           path: '/:locale/admin/projects/:projectId/ideas',
           name: 'admin projects ideas manager',
           component: Loadable({
-            loader: () => import('components/admin/IdeaManager'),
+            loader: () => import('containers/Admin/projects/edit/ideas'),
             loading: () => null
           }),
         },

@@ -38,8 +38,7 @@ interface State {}
 export class OfficialFeedback extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   render() {
@@ -67,9 +66,9 @@ export class OfficialFeedback extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  project: ({ idea, render }) => !isNilOrError(idea) ? <GetProject id={idea.relationships.project.data.id} >{render}</GetProject> : null,
-  permission: ({ project, render }) => !isNilOrError(project) ? <GetPermission item={project} action="moderate" >{render}</GetPermission> : null,
-  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks ideaId={ideaId}>{render}</GetOfficialFeedbacks>
+  project: ({ idea, render }) => <GetProject id={!isNilOrError(idea) ? idea.relationships.project.data.id : null} >{render}</GetProject>,
+  permission: ({ project, render }) => <GetPermission item={!isNilOrError(project) ? project : null} action="moderate" >{render}</GetPermission>,
+  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>
 });
 
 export default (inputProps: InputProps) => (

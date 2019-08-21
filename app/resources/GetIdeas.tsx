@@ -69,18 +69,19 @@ export type GetIdeasChildProps = State & {
   onChangeSorting: (sort: Sort) => void;
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
-  onChangeIdeaStatus: (ideaStatus: string | null) => void;
+  onChangeStatus: (ideaStatus: string | null) => void;
   onChangePublicationStatus: (publicationStatus: PublicationStatus) => void;
   onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
   onChangeAssignee: (assignee: string | undefined) => void;
   onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
   onIdeaFiltering: (partialQueryParameters: Partial<IQueryParameters>) => void;
   onResetParams: (paramsToOmit?: (keyof IQueryParameters)[]) => void;
+  type: 'ideas'
 };
 
 interface State {
   queryParameters: IQueryParameters;
-  ideasList: IIdeaData[] | undefined | null;
+  list: IIdeaData[] | undefined | null;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;
@@ -124,7 +125,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     this.state = {
       // defaults
       queryParameters,
-      ideasList: undefined,
+      list: undefined,
       hasMore: false,
       querying: true,
       loadingMore: false,
@@ -181,7 +182,7 @@ export default class GetIdeas extends React.Component<Props, State> {
             );
           }, startAccumulatorValue)
         ).subscribe(({ ideas, queryParameters, hasMore }) => {
-          this.setState({ queryParameters, hasMore, ideasList: ideas, querying: false, loadingMore: false });
+          this.setState({ queryParameters, hasMore, list: ideas, querying: false, loadingMore: false });
         })
       ];
     } else {
@@ -203,7 +204,7 @@ export default class GetIdeas extends React.Component<Props, State> {
         ).subscribe(({ ideas, queryParameters }) => {
           this.setState({
             queryParameters,
-            ideasList: (ideas ? ideas.data : null),
+            list: (ideas ? ideas.data : null),
             querying: false,
             loadingMore: false,
             sortAttribute: getSortAttribute<Sort, SortAttribute>(queryParameters.sort),
@@ -357,7 +358,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
 
-  handleIdeaStatusOnChange = (ideaStatus: string | null) => {
+  handleStatusOnChange = (ideaStatus: string | null) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       idea_status: (ideaStatus || undefined),
@@ -430,13 +431,14 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeSorting: this.handleSortOnChange,
       onChangeTopics: this.handleTopicsOnChange,
       onChangeAreas: this.handleAreasOnchange,
-      onChangeIdeaStatus: this.handleIdeaStatusOnChange,
+      onChangeStatus: this.handleStatusOnChange,
       onChangePublicationStatus: this.handlePublicationStatusOnChange,
       onChangeProjectPublicationStatus: this.handleProjectPublicationStatusOnChange,
       onChangeAssignee: this.handleAssigneeOnChange,
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
       onIdeaFiltering: this.handleIdeaFiltering,
       onResetParams: this.handleResetParamsToProps,
+      type: 'ideas'
     });
   }
 }

@@ -29,17 +29,9 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.topics',
     defaultMessage: 'Topics',
   },
-  areas: {
-    id: 'app.containers.IdeaCards.areas',
-    defaultMessage: 'Areas',
-  },
   projectFilterTitle: {
     id: 'app.containers.IdeaCards.projectFilterTitle',
     defaultMessage: 'Projects',
-  },
-  topicsTitle: {
-    id: 'app.containers.IdeaCards.topicsTitle',
-    defaultMessage: 'Topics',
   },
   statusTitle: {
     id: 'app.containers.IdeaCards.statusTitle',
@@ -48,6 +40,10 @@ export default defineMessages({
   sortTitle: {
     id: 'app.containers.IdeaCards.sortTitle',
     defaultMessage: 'Sorting',
+  },
+  topicsTitle: {
+    id: 'app.containers.IdeaCards.topicsTitle',
+    defaultMessage: 'Topics',
   },
   trending: {
     id: 'app.containers.IdeaCards.trending',
@@ -77,14 +73,6 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.cards',
     defaultMessage: 'Cards',
   },
-  selectYourArea: {
-    id: 'app.containers.IdeaCards.selectYourArea',
-    defaultMessage: 'Select your area',
-  },
-  filterPerArea: {
-    id: 'app.containers.IdeaCards.filterPerArea',
-    defaultMessage: 'Filter per area',
-  },
   searchPlaceholder: {
     id: 'app.containers.IdeaCards.searchPlaceholder',
     defaultMessage: 'Search for an idea',
@@ -109,10 +97,6 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.filter',
     defaultMessage: 'Filter',
   },
-  filters: {
-    id: 'app.containers.IdeaCards.filters',
-    defaultMessage: 'Filters',
-  },
   showIdeas: {
     id: 'app.containers.IdeaCards.showIdeas',
     defaultMessage: 'Show ideas',
@@ -121,8 +105,8 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.showXIdeas',
     defaultMessage: 'Show {ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
-  clearAll: {
-    id: 'app.containers.IdeaCards.clearAll',
-    defaultMessage: 'Clear filters',
-  },
+  resetFilters: {
+    id: 'app.containers.IdeaCards.resetFilters',
+    defaultMessage: 'Reset filters',
+  }
 });

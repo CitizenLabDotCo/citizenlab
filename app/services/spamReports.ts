@@ -28,6 +28,6 @@ export interface SpamReportResponse {
   links: ILinks;
 }
 
-export function sendSpamReport(targetType: 'comments' | 'ideas', targetId: string, spamReport: Report) {
+export function sendSpamReport(targetType: 'comments' | 'ideas' | 'initiatives', targetId: string, spamReport: Report) {
   return streams.add<SpamReportResponse>(`${API_PATH}/${targetType}/${targetId}/spam_reports`, { spam_report: spamReport });
 }

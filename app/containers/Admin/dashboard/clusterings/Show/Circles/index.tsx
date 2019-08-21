@@ -94,7 +94,7 @@ class Circles extends PureComponent<Props, State> {
 
   calculateNodePositions = () => {
     if (this.containerRef) {
-      const ideasById = keyBy(this.props.ideas.ideasList, 'id');
+      const ideasById = keyBy(this.props.ideas.list, 'id');
       const rootNode = hierarchy(this.props.structure).sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1) : 1);
       const svgWidth = this.containerRef.offsetWidth;
       const svgHeight = this.containerRef.offsetHeight;
@@ -313,6 +313,6 @@ class Circles extends PureComponent<Props, State> {
 }
 export default (inputProps: InputProps) => (
   <GetIdeas type="load-more" pageSize={1000} sort="new">
-    {(ideasProps) => ideasProps.ideasList ? <Circles {...inputProps} ideas={ideasProps} /> : null}
+    {(ideasProps) => ideasProps.list ? <Circles {...inputProps} ideas={ideasProps} /> : null}
   </GetIdeas>
 );

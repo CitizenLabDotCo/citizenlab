@@ -4,6 +4,7 @@ import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IIdeaStatusData, ideaStatusStream } from 'services/ideaStatuses';
 import { isString } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   id: string | null;
@@ -48,7 +49,9 @@ export default class GetIdeaStatus extends React.Component<Props, State> {
 
           return of(null);
         })
-      ).subscribe((ideaStatus) => this.setState({ ideaStatus: ideaStatus ? ideaStatus.data : null }))
+      ).subscribe((ideaStatus) => this.setState({
+        ideaStatus: !isNilOrError(ideaStatus) ? ideaStatus.data : null
+      }))
     ];
   }
 

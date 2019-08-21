@@ -140,7 +140,6 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
             <Button
               className="e2e-add-custom-field-btn"
               style="cl-blue"
-              circularCorners={false}
               icon="plus-circle"
               linkTo="/admin/settings/registration/custom_fields/new"
             >
