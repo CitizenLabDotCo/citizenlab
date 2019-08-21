@@ -124,7 +124,7 @@ const Card = memo<Props>(({ to, onClick, imageUrl, imageAltText, header, title, 
           </HeaderContentWrapper>
         </Header>
 
-        <Title>
+        <Title className="e2e-card-component-title">
           {title}
         </Title>
 
