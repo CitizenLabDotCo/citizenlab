@@ -2,18 +2,18 @@ import { randomString, randomEmail } from '../support/commands';
 
 describe('Initiative show page actions', () => {
   describe('not logged in', () => {
-    // before(() => {
-    //   cy.visit('/initiatives/cleaning-the-sidewalks-party');
-    //   cy.acceptCookies();
-    //   cy.get('#e2e-initiative-show');
-    // });
+    before(() => {
+      cy.visit('/initiatives/cleaning-the-sidewalks-party');
+      cy.acceptCookies();
+      cy.get('#e2e-initiative-show');
+    });
 
-    // it('asks unauthorised users to log in or sign up before they vote', () => {
-    //   cy.wait(1000);
-    //   cy.get('#e2e-initiative-vote-control').find('#e2e-initiative-upvote-button').click();
-    //   cy.get('#e2e-initiative-vote-control').find('.e2e-login-button');
-    //   cy.get('#e2e-initiative-vote-control').find('.e2e-register-button');
-    // });
+    it('asks unauthorised users to log in or sign up before they vote', () => {
+      cy.wait(1000);
+      cy.get('#e2e-initiative-vote-control').find('#e2e-initiative-upvote-button').click();
+      cy.get('#e2e-initiative-vote-control').find('.e2e-login-button');
+      cy.get('#e2e-initiative-vote-control').find('.e2e-register-button');
+    });
   });
 
   describe('logged in as admin', () => {
@@ -49,19 +49,22 @@ describe('Initiative show page actions', () => {
 
   describe('logged in as normal user', () => {
     describe('Vote', () => {
-      before(() => {
-        const firstName = randomString();
-        const lastName = randomString();
-        const email = randomEmail();
-        const password = randomString();
-        const initiativeTitle = randomString();
-        const initiativeContent = randomString();
+      const firstName = randomString();
+      const lastName = randomString();
+      const email = randomEmail();
+      const password = randomString();
+      const initiativeTitle = randomString();
+      const initiativeContent = randomString();
 
+      before(() => {
         cy.apiCreateInitiative(initiativeTitle, initiativeContent);
         cy.apiSignup(firstName, lastName, email, password);
+      });
+
+      beforeEach(() => {
         cy.login(email, password);
         cy.visit(`/initiatives/${initiativeTitle}`);
-        cy.wait(3000);
+        cy.wait(1000);
         cy.get('#e2e-initiative-show');
       });
 
@@ -103,9 +106,9 @@ describe('Initiative show page actions', () => {
 
       beforeEach(() => {
         cy.login(email, password);
-        cy.visit('/ideas/controversial-idea');
+        cy.visit('/initiatives/cleaning-the-sidewalks-party');
         cy.acceptCookies();
-        cy.get('#e2e-idea-show');
+        cy.get('#e2e-initiative-show');
       });
 
       it('shows a working comment input', () => {
