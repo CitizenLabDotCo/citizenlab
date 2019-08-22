@@ -11,20 +11,28 @@ import HasPermission from 'components/HasPermission';
 
 const Text = styled.div`
   flex: 1;
-  color: ${colors.adminLightText};
+  color: #fff;
+  opacity: 0.7;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 19px;
   margin-left: 10px;
   display: flex;
   align-items: center;
+  transition: all 100ms ease-out;
 
   ${media.smallerThan1200px`
     display: none;
   `}
 `;
 
-const MenuItemLink: any = styled(Link) `
+const ArrowIcon = styled(Icon)`
+  fill: #fff;
+  opacity: 0;
+  transition: all 150ms ease-out;
+`;
+
+const MenuItemLink = styled(Link) `
   flex: 0 0 auto;
   width: 210px;
   display: flex;
@@ -36,38 +44,37 @@ const MenuItemLink: any = styled(Link) `
   margin-bottom: 8px;
   cursor: pointer;
   border-radius: ${(props: any) => props.theme.borderRadius};
+  transition: background 100ms ease-out;
 
-  &:hover {
+  &:hover:not(.selected) {
+    background: rgba(0, 0, 0, 0.15);
+
     ${Text} {
-      color: #fff;
-    };
-
-    .cl-icon {
-      .cl-icon-primary {
-        fill: ${colors.clIconAccent}
-      }
-      .cl-icon-accent {
-        fill: ${colors.clIconPrimary}
-      }
-    };
+      opacity: 1;
+    }
   }
 
   &.selected {
     background: rgba(0, 0, 0, 0.25);
 
     ${Text} {
-      color: #fff;
-    };
+      opacity: 1;
+    }
+
+    ${ArrowIcon} {
+      opacity: 1;
+    }
 
     .cl-icon {
       .cl-icon-primary {
-        fill: ${colors.clIconAccent}
+        fill: ${colors.clIconAccent};
       }
       .cl-icon-accent {
-        fill: ${colors.clIconPrimary}
+        fill: ${colors.clIconPrimary};
       }
-    };
+    }
   }
+
   ${media.smallerThan1200px`
     width: 70px;
   `}
@@ -96,7 +103,7 @@ export default ({ route }: Props) => {
           <FormattedMessage {...messages[route.message]} />
           {!!route.count && <CountBadge count={route.count} />}
         </Text>
-        {route.isActive(pathname) && <Icon name="arrowLeft" />}
+        <ArrowIcon name="arrowLeft" />
       </MenuItemLink>
     </HasPermission>
   );
