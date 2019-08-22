@@ -17,5 +17,21 @@ module EmailCampaigns
     def activity_triggers
       {'Notifications::IdeaMarkedAsSpam' => {'created' => true}}
     end
+
+    def generate_commands recipient:, activity:, time: nil
+      notification = activity.item
+      [{
+        event_payload: {
+          initiating_user_first_name: notification.initiating_user&.first_name,
+          initiating_user_last_name: notification.initiating_user&.last_name,
+          post_created_at: notification.post&.created_at.iso8601,
+          post_title_multiloc: notification.post&.title_multiloc,
+          post_author_name: notification.post&.author_name,
+          post_url: Frontend::UrlService.new.model_to_url(notification),
+          spam_report_reason_code: notification.spam_report&.reason_code,
+          spam_report_other_reason: notification.spam_report&.other_reason,
+        }
+      }]
+    end
   end
 end
