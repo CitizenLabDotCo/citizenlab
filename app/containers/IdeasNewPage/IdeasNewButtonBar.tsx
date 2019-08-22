@@ -44,6 +44,7 @@ interface Props {
 interface GlobalState {
   submitError: boolean;
   processing: boolean;
+  fileOrImageError: boolean;
 }
 
 interface State extends GlobalState {}
@@ -56,7 +57,8 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
     super(props);
     this.state = {
       submitError: false,
-      processing: false
+      processing: false,
+      fileOrImageError: false
     };
     this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage');
     this.subscriptions = [];
@@ -66,8 +68,8 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
     const globalState$ = this.globalState.observable;
 
     this.subscriptions = [
-      globalState$.subscribe(({ submitError, processing }) => {
-        this.setState({ submitError, processing });
+      globalState$.subscribe(({ submitError, processing, fileOrImageError }) => {
+        this.setState({ submitError, processing, fileOrImageError });
       })
     ];
   }
@@ -81,9 +83,13 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
   }
 
   render() {
-    const { processing, submitError } = this.state;
+    const { processing, fileOrImageError, submitError } = this.state;
     let { form } = this.props;
-    const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
+    const submitErrorMessage = submitError
+      ? <FormattedMessage {...messages.submitError} />
+      : fileOrImageError
+        ? <FormattedMessage {...messages.fileOrImageError} />
+        : null;
 
     form = (form || '');
 
@@ -98,7 +104,9 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
             text={<FormattedMessage {...messages.submit} />}
             onClick={this.handleOnSubmitButtonClick}
           />
-          <Error text={submitErrorMessage} marginTop="0px" showBackground={false} showIcon={true} />
+          {submitErrorMessage &&
+            <Error text={submitErrorMessage} marginTop="0px" showBackground={false} showIcon={true} />
+          }
         </ButtonBarInner>
       </ButtonBar>
     );
