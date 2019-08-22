@@ -34,7 +34,6 @@ const StyledContentContainer: any = styled.div`
   flex-direction: column;
   align-items: stretch;
   padding-top: 80px;
-  padding-bottom: 100px;
 
   ${media.smallerThanMinTablet`
     display: none !important;

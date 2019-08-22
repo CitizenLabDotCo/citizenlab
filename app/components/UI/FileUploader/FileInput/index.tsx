@@ -1,4 +1,4 @@
-import React, { PureComponent, createRef, FormEvent, KeyboardEvent } from 'react';
+import React, { PureComponent, FormEvent, ChangeEvent } from 'react';
 import { getBase64FromFile, createObjectUrl } from 'utils/fileTools';
 import { UploadFile } from 'typings';
 
@@ -43,6 +43,7 @@ const Label = styled.label`
   color: ${colors.label};
   background: transparent;
 
+  &:focus,
   &:hover {
     color: #000;
     border-color: #000;
@@ -60,7 +61,6 @@ interface Props {
 }
 
 export default class FileInput extends PureComponent<Props> {
-  private fileInput = createRef<HTMLInputElement>();
 
   onClick = (event: FormEvent<any>) => {
     // reset the value of the input field
@@ -68,15 +68,14 @@ export default class FileInput extends PureComponent<Props> {
     event.currentTarget.value = null;
   }
 
-  onChange = () => {
-    const current = this.fileInput.current;
+  onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
 
-    if (current && current.files && current.files.length > 0) {
-      const file = current.files[0] as UploadFile;
-
-      getBase64FromFile(file).then((res) => {
+    if (files && files.length > 0) {
+      Array.from(files).forEach(async (file: UploadFile) => {
+        const base64 = await getBase64FromFile(file);
         file.filename = file.name;
-        file.base64 = res;
+        file.base64 = base64;
         file.url = createObjectUrl(file);
         file.remote = false;
         this.props.onAdd(file);
@@ -84,16 +83,11 @@ export default class FileInput extends PureComponent<Props> {
     }
   }
 
-  handleKeyPress = (event: KeyboardEvent<any>) => {
-    const fileInput = this.fileInput.current;
-
-    if (fileInput && event.key === 'Enter') {
-      fileInput.click();
-    }
-  }
-
   render() {
     const { className, id } = this.props;
+
+    // accepted file extensions:
+    // pdf, doc, docx, odt, xls, xlsx, ods, ppt, pptx, odp, txt, csv, mp3, mp4, avi, mkv
 
     return (
       <Container className={className} id={id}>
@@ -102,19 +96,71 @@ export default class FileInput extends PureComponent<Props> {
           onChange={this.onChange}
           onClick={this.onClick}
           type="file"
-          ref={this.fileInput}
-          accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .sxw, .sxc, .sxi, .sdw, .sdc, .sdd, .csv, .mp3, .mp4, .mkv, .avi"
+          accept="
+            .pdf,
+            application/pdf,
+
+            .doc,
+            application/doc,
+            application/ms-doc,
+            application/msword,
+
+            .docx,
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+
+            .odt,
+            application/vnd.oasis.opendocument.text,
+
+            .xls,
+            application/excel,
+            application/vnd.ms-excel,
+            application/x-excel,
+            application/x-msexcel,
+
+            .xlsx,
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+
+            .ods,
+            application/vnd.oasis.opendocument.spreadsheet,
+
+            .ppt,
+            application/mspowerpoint,
+            application/powerpoint,
+            application/vnd.ms-powerpoint,
+            application/x-mspowerpoint,
+
+            .pptx,
+            application/vnd.openxmlformats-officedocument.presentationml.presentation,
+
+            .odp,
+            application/vnd.oasis.opendocument.presentation,
+
+            .txt,
+            text/plain,
+
+            .csv,
+            text/csv,
+
+            .mp3,
+            audio/mpeg,
+            audio/mpeg3,
+            audio/x-mpeg-3,
+
+            .mp4,
+            video/mp4,
+
+            .avi,
+            video/avi,
+            video/msvideo,
+            video/x-msvideo,
+
+            .mkv,
+            video/x-matroska
+          "
         />
         <Label htmlFor="file-attachment-uploader">
           <StyledIcon name="upload-file" />
-          <span
-            role="button"
-            aria-controls="file-attachment-uploader"
-            tabIndex={0}
-            onKeyPress={this.handleKeyPress}
-          >
-            <FormattedMessage {...messages.fileInputDescription} />
-          </span>
+          <FormattedMessage {...messages.fileInputDescription} />
         </Label>
       </Container>
     );

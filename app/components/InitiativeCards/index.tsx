@@ -293,7 +293,7 @@ const Spacer = styled.div`
 
 const ViewButtons = styled.div`
   display: flex;
-  margin-right: 10px;
+  margin-right: 15px;
 `;
 
 const ViewButton = styled.div`
