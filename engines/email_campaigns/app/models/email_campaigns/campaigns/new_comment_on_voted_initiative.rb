@@ -23,43 +23,18 @@ module EmailCampaigns
         .where.not(id: activity.item.post.comments.pluck(:author_id))
     end
 
-    def generate_commands recipient:, activity: 
+    def generate_commands recipient:, activity:, time: nil
       comment = activity.item
-      if comment.post_type == 'Initiative'
-        initiative = comment.post
-        author = comment.author
-        [{
-          event_payload: {
-            comment: {
-              id: comment.id,
-              body_multiloc: comment.body_multiloc,
-              url: Frontend::UrlService.new.model_to_url(comment, locale: recipient.locale),
-              created_at: comment.created_at.iso8601
-            },
-            comment_author: {
-              id: author.id,
-              first_name: author.first_name,
-              last_name: author.last_name,
-              avatar_url: author.avatar_url
-            },
-            initiative: {
-              id: initiative.id,
-              title_multiloc: initiative.title_multiloc,
-              body_multiloc: initiative.body_multiloc,
-              url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale),
-              published_at: initiative.published_at.iso8601,
-              initiative_images: initiative.initiative_images.map{ |image|
-                {
-                  ordering: image.ordering,
-                  versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
-                }
-              }
-            }
-          }
-        }]
-      else
-        []
-      end
+      [{
+        event_payload: {
+          initiating_user_first_name: comment.author&.first_name,
+          initiating_user_last_name: comment.author&.last_name,          
+          post_published_at: comment.post.published_at.iso8601,         
+          post_title_multiloc: comment.post.title_multiloc,
+          comment_body_multiloc: comment.body_multiloc,
+          comment_url: Frontend::UrlService.new.model_to_url(comment, locale: recipient.locale)
+        }
+      }]
     end
 
     def set_enabled
