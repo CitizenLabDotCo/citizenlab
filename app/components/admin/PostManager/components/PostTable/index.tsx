@@ -186,7 +186,6 @@ export default class PostTable extends React.Component<Props> {
                   (posts as (IIdeaData | IInitiativeData)[]).map(post =>
                     <CSSTransition classNames="fade" timeout={500} key={post.id}>
                       <Row
-                        className="e2e-post-manager-post-row"
                         key={post.id}
                         type={type}
                         post={post}

@@ -33,7 +33,7 @@ beforeEach(() => {
 //       // click on Assigned to me filter
 //       cy.get('#e2e-assignee-filter-assigned-to-user').click();
 //       // Check whether the newly created idea is assigned to the user
-//       cy.get('.e2e-post-manager-post-row').contains(initiativeTitle);
+//       cy.get('.e2e-initiative-row').contains(initiativeTitle);
 //     });
 //   });
 // });
@@ -74,57 +74,57 @@ beforeEach(() => {
 
 //     // Turn the 'need feedback' toggle on and check whether it only shows the idea assigned to user without official feedback
 //     cy.get('#e2e-feedback_needed_filter_toggle').click();
-//     cy.get('.e2e-post-manager-post-row').should('have.length', 1);
+//     cy.get('.e2e-initiative-row').should('have.length', 1);
 //   });
 // });
 
-describe('Initiative preview ', () => {
-  it('Opens when you click an initiative title and closes again when you click the X (close button)', () => {
-    cy.visit('/admin/initiatives/manage/');
-    // grab and open assignee filter menu
-    cy.get('#e2e-select-assignee-filter').click();
-    // click on All ideas filter
-    cy.get('#e2e-assignee-filter-all-posts').click();
-    // click on title of first initiative
-    cy.get('.e2e-initiative-manager-initiative-title').first().click().then(initiativeTitle => {
-      // check if the modal popped out and has the initiative in it
-      cy.get('#e2e-side-modal-content').find('#e2e-initiative-title').contains(initiativeTitle.text());
+// describe('Initiative preview ', () => {
+//   it('Opens when you click an initiative title and closes again when you click the X (close button)', () => {
+//     cy.visit('/admin/initiatives/manage/');
+//     // grab and open assignee filter menu
+//     cy.get('#e2e-select-assignee-filter').click();
+//     // click on All ideas filter
+//     cy.get('#e2e-assignee-filter-all-posts').click();
+//     // click on title of first initiative
+//     cy.get('.e2e-initiative-manager-initiative-title').first().click().then(initiativeTitle => {
+//       // check if the modal popped out and has the initiative in it
+//       cy.get('#e2e-side-modal-content').find('#e2e-initiative-title').contains(initiativeTitle.text());
+//     });
+//     // close modal
+//     cy.get('.e2e-modal-close-button').click();
+//     // check if the modal is no longer on the page
+//     cy.get('#e2e-modal-container').should('have.length', 0);
+//   });
+// });
+
+describe('Assignee select', () => {
+  it('Assigns a user to an idea', () => {
+    const firstName = randomString(5);
+    const lastName = randomString(5);
+    const email = randomEmail();
+    const password = randomString();
+
+    cy.apiCreateAdmin(firstName, lastName, email, password).then(newAdmin => {
+      const newAdminFirstName = newAdmin.body.data.attributes.first_name;
+      const newAdminLastName = newAdmin.body.data.attributes.last_name;
+
+      // Refresh page to make sure new admin is picked up
+      cy.visit('/admin/initiatives/manage/');
+      // Select unassigned in assignee filter
+      cy.get('#e2e-select-assignee-filter').click();
+      cy.get('#e2e-assignee-filter-unassigned').click();
+      // Pick first idea in initiative table and assign it to our user
+      cy.wait(500);
+      cy.get('.e2e-initiative-row').first()
+        .find('.e2e-post-manager-post-row-assignee-select').scrollIntoView().click()
+        .contains(`${newAdminFirstName} ${newAdminLastName}`).click();
+      // Select this user in the assignee filter
+      cy.get('#e2e-select-assignee-filter').click()
+        .find('.e2e-assignee-filter-other-user')
+        .contains(`Assigned to ${newAdminFirstName} ${newAdminLastName}`).click();
+      cy.wait(500);
+      // Check if initiative is there
+      cy.get('.e2e-initiative-row').should('have.length', 1);
     });
-    // close modal
-    cy.get('.e2e-modal-close-button').click();
-    // check if the modal is no longer on the page
-    cy.get('#e2e-modal-container').should('have.length', 0);
   });
 });
-
-// describe('Assignee select', () => {
-//   it('Assigns a user to an idea', () => {
-//     const firstName = randomString(5);
-//     const lastName = randomString(5);
-//     const email = randomEmail();
-//     const password = randomString();
-
-//     cy.apiCreateAdmin(firstName, lastName, email, password).then(newAdmin => {
-//       const newAdminFirstName = newAdmin.body.data.attributes.first_name;
-//       const newAdminLastName = newAdmin.body.data.attributes.last_name;
-
-//       // Refresh page to make sure new admin is picked up
-//       cy.visit('/admin/ideas/');
-//       // Select unassigned in assignee filter
-//       cy.get('#e2e-select-assignee-filter').click();
-//       cy.get('#e2e-assignee-filter-unassigned').click();
-//       // Pick first idea in idea table and assign it to our user
-//       cy.wait(500);
-//       cy.get('.e2e-idea-manager-idea-row').first()
-//         .find('.e2e-post-manager-post-row-assignee-select').scrollIntoView().click()
-//         .contains(`${newAdminFirstName} ${newAdminLastName}`).click();
-//       // Select this user in the assignee filter
-//       cy.get('#e2e-select-assignee-filter').click()
-//         .find('.e2e-assignee-filter-other-user')
-//         .contains(`Assigned to ${newAdminFirstName} ${newAdminLastName}`).click();
-//       // Check if idea is there
-//       cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
-//     });
-
-//   });
-// });
