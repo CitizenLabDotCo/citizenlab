@@ -4,40 +4,39 @@ beforeEach(() => {
   cy.login('admin@citizenlab.co', 'testtest');
 });
 
-describe('Assignee filter', () => {
-  it('Filters on All initiatives', () => {
-    cy.visit('/admin/initiatives/manage');
+// describe('Assignee filter', () => {
+//   it('Filters on All initiatives', () => {
+//     cy.visit('/admin/initiatives/manage');
 
-    // grab and open assignee filter menu
-    cy.get('#e2e-select-assignee-filter').click();
-    // click on All initiatives filter
-    cy.get('#e2e-assignee-filter-all-posts').click();
-    // check that number of initiatives on first page is 2
-    cy.get('.e2e-idea-manager-idea-row').should('have.length', 2);
-  });
+//     // grab and open assignee filter menu
+//     cy.get('#e2e-select-assignee-filter').click();
+//     // click on All initiatives filter
+//     cy.get('#e2e-assignee-filter-all-posts').click();
+//     // check that number of initiatives on first page is 2
+//     cy.get('.e2e-idea-manager-idea-row').should('have.length', 2);
+//   });
+//  it('Filters on Assigned to me', () => {
 
-  it('Filters on Assigned to me', () => {
+//     cy.getAuthUser().then((user) => {
+//       const userId = user.body.data.id;
 
-    cy.getAuthUser().then((user) => {
-      const userId = user.body.data.id;
+//       // create initiative with signed-in admin/user as default assignee
+//       const initiativeTitle = randomString();
+//       const initiativeContent = randomString();
 
-      // create initiative with signed-in admin/user as default assignee
-      const initiativeTitle = randomString();
-      const initiativeContent = randomString();
+//       cy.apiCreateInitiative(initiativeTitle, initiativeContent, userId);
 
-      cy.apiCreateInitiative(initiativeTitle, initiativeContent, userId);
-
-      // do a refresh for the new initiative to appear
-      cy.visit('/admin/initiatives/manage');
-      // grab and open assignee filter menu
-      cy.get('#e2e-select-assignee-filter').click();
-      // click on Assigned to me filter
-      cy.get('#e2e-assignee-filter-assigned-to-user').click();
-      // Check whether the newly created idea is assigned to the user
-      cy.get('.e2e-post-manager-post-row').contains(initiativeTitle);
-    });
-  });
-});
+//       // do a refresh for the new initiative to appear
+//       cy.visit('/admin/initiatives/manage');
+//       // grab and open assignee filter menu
+//       cy.get('#e2e-select-assignee-filter').click();
+//       // click on Assigned to me filter
+//       cy.get('#e2e-assignee-filter-assigned-to-user').click();
+//       // Check whether the newly created idea is assigned to the user
+//       cy.get('.e2e-post-manager-post-row').contains(initiativeTitle);
+//     });
+//   });
+// });
 
 // TODO: Need feedback toggle test (i3)
 
@@ -79,34 +78,24 @@ describe('Assignee filter', () => {
 //   });
 // });
 
-// describe('Idea preview ', () => {
-//   it('Opens when you click an idea title', () => {
-//     cy.visit('/admin/ideas/');
-//     // grab and open assignee filter menu
-//     cy.get('#e2e-select-assignee-filter').click();
-//     // click on All ideas filter
-//     cy.get('#e2e-assignee-filter-all-posts').click();
-//     // click on title of first idea
-//     cy.get('.e2e-idea-manager-idea-title').first().click().then(ideaTitle => {
-//     // check if the modal popped out and has the idea in it
-//     cy.get('#e2e-modal-container').find('.e2e-ideatitle').contains(ideaTitle.text());
-//     });
-//   });
-
-//   it('Closes when you click the X (close button)', () => {
-//     cy.visit('/admin/ideas/');
-//     // grab and open assignee filter menu
-//     cy.get('#e2e-select-assignee-filter').click();
-//     // click on All ideas filter
-//     cy.get('#e2e-assignee-filter-all-posts').click();
-//     // click on title of first idea to open modal
-//     cy.get('.e2e-idea-manager-idea-title').first().click();
-//     // close modal
-//     cy.get('.e2e-modal-close-button').click();
-//     // check if the modal is no longer on the page
-//     cy.get('#e2e-modal-container').should('have.length', 0);
-//   });
-// });
+describe('Initiative preview ', () => {
+  it('Opens when you click an initiative title and closes again when you click the X (close button)', () => {
+    cy.visit('/admin/initiatives/manage/');
+    // grab and open assignee filter menu
+    cy.get('#e2e-select-assignee-filter').click();
+    // click on All ideas filter
+    cy.get('#e2e-assignee-filter-all-posts').click();
+    // click on title of first initiative
+    cy.get('.e2e-initiative-manager-initiative-title').first().click().then(initiativeTitle => {
+      // check if the modal popped out and has the initiative in it
+      cy.get('#e2e-side-modal-content').find('#e2e-initiative-title').contains(initiativeTitle.text());
+    });
+    // close modal
+    cy.get('.e2e-modal-close-button').click();
+    // check if the modal is no longer on the page
+    cy.get('#e2e-modal-container').should('have.length', 0);
+  });
+});
 
 // describe('Assignee select', () => {
 //   it('Assigns a user to an idea', () => {
