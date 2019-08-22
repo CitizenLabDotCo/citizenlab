@@ -47,9 +47,9 @@ describe('InitiativeCards without filter sidebar component', () => {
   });
 
   it('lets you filter the initiatives by topic', () => {
-    cy.get('#e2e-initiative-filter-selector').click();
-    cy.get('.e2e-sort-items').contains('waste').click();
-    cy.get('#e2e-initiatives-container').find('.e2e-initiative-card').should('have.length', 1).contains('The initiative about waste');
+    cy.get('.e2e-topics-filters').find('.e2e-topic').contains('Education and youth').click();
+    cy.wait(1000);
+    cy.get('#e2e-initiatives-container').find('.e2e-initiative-card').should('have.length', 1).contains(initiativeTitle);
   });
 
   after(() => {
