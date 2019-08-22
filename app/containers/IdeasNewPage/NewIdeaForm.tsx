@@ -85,6 +85,7 @@ interface GlobalState {
   imageFile: UploadFile[];
   submitError: boolean;
   processing: boolean;
+  fileOrImageError: boolean;
 }
 
 interface State extends GlobalState {}
@@ -103,7 +104,8 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       position: '',
       imageFile: [],
       submitError: false,
-      processing: false
+      processing: false,
+      fileOrImageError: false
     };
     this.globalState = globalState.init('IdeasNewPage');
     this.subscriptions = [];
@@ -121,7 +123,8 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
         position,
         imageFile,
         submitError,
-        processing
+        processing,
+        fileOrImageError
       }) => {
         const newState: State = {
           title,
@@ -131,7 +134,8 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           position,
           imageFile,
           submitError,
-          processing
+          processing,
+          fileOrImageError
         };
 
         this.setState(newState);
@@ -154,9 +158,13 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
   }
 
   render() {
-    const { title, description, selectedTopics, budget, position, imageFile, submitError, processing } = this.state;
+    const { title, description, selectedTopics, budget, position, imageFile, submitError, processing, fileOrImageError } = this.state;
     const { projectId } = this.props;
-    const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
+    const submitErrorMessage = submitError
+      ? <FormattedMessage {...messages.submitError} />
+      : fileOrImageError
+        ? <FormattedMessage {...messages.fileOrImageError} />
+        : null;
 
     return (
       <Container id="e2e-new-idea-form">
@@ -187,7 +195,9 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
                     text={<FormattedMessage {...messages.submit} />}
                     onClick={this.handleOnSubmitButtonClick}
                   />
-                  <Error text={submitErrorMessage} marginTop="0px" />
+                  {submitErrorMessage &&
+                    <Error text={submitErrorMessage} marginTop="0px" />
+                  }
                 </MobileButton>
               );
             }
