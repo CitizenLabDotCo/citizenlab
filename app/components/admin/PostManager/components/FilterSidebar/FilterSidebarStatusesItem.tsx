@@ -1,10 +1,15 @@
 import React from 'react';
 import { IIdeaStatusData } from 'services/ideaStatuses';
-import { flow } from 'lodash-es';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
+import { flow, get } from 'lodash-es';
 import styled from 'styled-components';
 import { Menu } from 'semantic-ui-react';
 import { DropTarget } from 'react-dnd';
 import T from 'components/T';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -19,8 +24,12 @@ const ColorIndicator = styled.div`
   margin-right: 0.5rem;
 `;
 
+const StyledText = styled.span`
+  font-weight: 300;
+`;
+
 interface Props {
-  status: IIdeaStatusData;
+  status: IIdeaStatusData | IInitiativeStatusData;
   active: boolean;
   onClick: any;
   isOver: boolean;
@@ -31,6 +40,7 @@ interface Props {
 class FilterSidebarStatusesItem extends React.PureComponent<Props> {
   render() {
     const { status, active, onClick, connectDropTarget, isOver, canDrop } = this.props;
+    console.log(status);
 
     return connectDropTarget(
       <div>
@@ -40,7 +50,14 @@ class FilterSidebarStatusesItem extends React.PureComponent<Props> {
         >
           <ItemWrapper>
             <ColorIndicator color={status.attributes.color} />
-            <T value={status.attributes.title_multiloc} />
+            <div>
+              <T value={status.attributes.title_multiloc} />
+              {get(status, 'attributes.transition_type') === 'automatic' &&
+                <StyledText>
+                  <FormattedMessage {...messages.automatic} />
+                </StyledText>
+              }
+            </div>
           </ItemWrapper>
         </Menu.Item>
       </div>
