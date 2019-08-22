@@ -7,15 +7,19 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // components
-import Icon  from 'components/UI/Icon';
+import Icon from 'components/UI/Icon';
 import { isError } from 'util';
 import { UploadFile } from 'typings';
 
-const Container = styled.div`
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+
+const Container = styled.div<{error: boolean}>`
   display: flex;
   align-items: center;
-  color: ${colors.label};
-  border: 1px solid ${lighten(.4, colors.label)};
+  color: ${({ error }) => error ? colors.clRed : colors.label};
+  border: 1px solid ${({ error }) => error ? lighten(.4, colors.clRed) : lighten(.4, colors.label)};
   border-radius: ${(props: any) => props.theme.borderRadius};
   font-size: ${fontSizes.base}px;
   line-height: 24px;
@@ -33,8 +37,8 @@ const Paperclip = styled(Icon)`
   margin-right: 15px;
 `;
 
-const FileDownloadLink = styled.a`
-  color: ${colors.label};
+const FileDownloadLink = styled.a<{error: boolean}>`
+  color: ${({ error }) => error ? colors.clRed : colors.label};
   display: inline-block;
   margin-right: 10px;
   hyphens: auto;
@@ -87,16 +91,19 @@ interface Props {
 const FileDisplay = ({ file, onDeleteClick }: Props) => {
   if (file && !isError(file)) {
     return (
-      <Container>
+      <Container error={!!file.error}>
         <Paperclip name="paperclip" />
-        <FileDownloadLink href={file.url} download={file.filename} target="_blank" rel="noopener noreferrer">
-          {file.filename}
+        <FileDownloadLink error={!!file.error} href={file.url} download={file.filename} target="_blank" rel="noopener noreferrer">
+          {!!file.error
+            ? <FormattedMessage {...messages[file.error[0]]} values={{ fileName: file.filename }} />
+            : file.filename
+          }
         </FileDownloadLink>
         <FileSize>({returnFileSize(file.size)})</FileSize>
         {onDeleteClick &&
-        <DeleteButton onClick={onDeleteClick}>
-          <StyledIcon name="delete" />
-        </DeleteButton>
+          <DeleteButton onClick={onDeleteClick}>
+            <StyledIcon name="delete" />
+          </DeleteButton>
         }
       </Container>
     );
