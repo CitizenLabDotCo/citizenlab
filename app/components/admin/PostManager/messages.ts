@@ -301,4 +301,8 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.latestFeedbackMode',
     defaultMessage: 'Use the latest existing official update as an explanation',
   },
+  automatic: {
+    id: 'app.components.admin.PostManager.automatic',
+    defaultMessage: '(automatic)',
+  },
 });

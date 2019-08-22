@@ -12,7 +12,8 @@ export interface IInitiativeStatusData {
     color: string;
     code: InitiativeStatusCode;
     ordering: number;
-    description_multiloc: Multiloc
+    description_multiloc: Multiloc;
+    transition_type: 'manual' | 'automatic';
   };
 }
 
