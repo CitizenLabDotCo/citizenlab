@@ -161,7 +161,6 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         };
 
         const idea = await addIdea(ideaObject);
-
         const imageToAddPromise = (imageFile && imageFile[0] ? addIdeaImage(idea.data.id, imageFile[0].base64, 0) : Promise.resolve(null));
         const filesToAddPromises = ideaFiles.map(file => addIdeaFile(idea.data.id, file.base64, file.name));
 

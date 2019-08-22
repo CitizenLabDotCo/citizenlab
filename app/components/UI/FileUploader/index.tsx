@@ -5,10 +5,15 @@ import FileInput from './FileInput';
 import FileDisplay from './FileDisplay';
 import Error from 'components/UI/Error';
 
-import { isFileUploadSupported } from 'utils/fileTools';
-
 // typings
 import { CLError, UploadFile } from 'typings';
+
+// style
+import styled from 'styled-components';
+
+const Container = styled.div`
+  width: 100%;
+`;
 
 interface Props {
   onFileAdd: (fileToAdd: UploadFile) => void;
@@ -16,6 +21,7 @@ interface Props {
   files: UploadFile[] | null | Error | undefined;
   errors?: { [fieldName: string]: CLError[] } | null;
   id?: string;
+  className?: string;
 }
 
 interface State {}
@@ -31,14 +37,10 @@ export default class FileUploader extends PureComponent<Props, State>{
   }
 
   render() {
-    const { files, errors, id } = this.props;
-
-    if (!isFileUploadSupported()) {
-      return null;
-    }
+    const { files, errors, id, className } = this.props;
 
     return (
-      <>
+      <Container className={className}>
         <FileInput
           onAdd={this.handleFileOnAdd}
           id={id}
@@ -53,7 +55,7 @@ export default class FileUploader extends PureComponent<Props, State>{
             file={file}
           />)
         )}
-      </>
+      </Container>
     );
   }
 }
