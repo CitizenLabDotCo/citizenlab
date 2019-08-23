@@ -45,8 +45,8 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
 <UserComments__Container
   className="e2e-profile-comments"
 >
-  <WrappedIdeaComments
-    commentsForIdea={
+  <WrappedPostComments
+    comments={
       Array [
         Object {
           "attributes": Object {
@@ -85,11 +85,12 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
         },
       ]
     }
-    ideaId="idea1"
-    key="commentId"
+    key="idea1"
+    postId="idea1"
+    postType="idea"
   />
-  <WrappedIdeaComments
-    commentsForIdea={
+  <WrappedPostComments
+    comments={
       Array [
         Object {
           "attributes": Object {
@@ -163,8 +164,9 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
         },
       ]
     }
-    ideaId="idea2"
-    key="commentId"
+    key="idea2"
+    postId="idea2"
+    postType="idea"
   />
 </UserComments__Container>
 `;
