@@ -6,6 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import AvatarBubbles from 'components/AvatarBubbles';
 import Icon from 'components/UI/Icon';
+import ContentChangeLog from 'components/PostComponents/ContentChangeLog';
 
 // resources
 import GetRandomAvatars, { GetRandomAvatarsChildProps } from 'resources/GetRandomAvatars';
@@ -83,7 +84,7 @@ interface Props extends InputProps, DataProps {}
 
 const avatarLimit = 3;
 
-const IdeaContentFooter = memo<Props>(({ publishedAt, commentsCount, randomAvatars, className }) => {
+const IdeaContentFooter = memo<Props>(({ publishedAt, commentsCount, randomAvatars, className, postType, id }) => {
 
   const avatarIds = (!isNilOrError(randomAvatars) && randomAvatars.data.length > 0 ? randomAvatars.data.map(avatar => avatar.id) : []);
   const userCount = !isNilOrError(randomAvatars) ? randomAvatars.meta.total : undefined;
@@ -102,6 +103,7 @@ const IdeaContentFooter = memo<Props>(({ publishedAt, commentsCount, randomAvata
 
         <TimeAgo>
           <FormattedMessage {...messages.createdTimeAgo} values={{ timeAgo: <FormattedRelative value={publishedAt} /> }} />
+          <ContentChangeLog postId={id} postType={postType} />
         </TimeAgo>
       </Left>
 
