@@ -72,7 +72,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
   }
   static titleMinLength = 10;
   static bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 500;
-  static requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids', 'image'];
+  static requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
 
   componentDidMount() {
     const errors = {};
@@ -313,6 +313,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.imageUploadLabel}
               subtextMessage={messages.imageUploadLabelSubtext}
+              optional
             />
             <ImageDropzone
               id="iniatiative-img-dropzone"
