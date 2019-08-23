@@ -323,14 +323,21 @@ export function apiRemoveIdea(ideaId: string) {
   });
 }
 
-export function apiCreateInitiative(
+export function apiCreateInitiative({
+  initiativeTitle,
+  initiativeContent,
+  assigneeId,
+  locationGeoJSON,
+  locationDescription,
+  jwt
+} : {
   initiativeTitle: string,
   initiativeContent: string,
   assigneeId?: string,
   locationGeoJSON?: {'type': string, 'coordinates': number[]},
   locationDescription?: string,
   jwt?: string
-) {
+}) {
   let adminJwt: string;
   let headers: { 'Content-Type': string; Authorization: string; } | null = null;
 

@@ -6,7 +6,7 @@ describe('InitiativeCards without filter sidebar component', () => {
   let initiativeId: string;
 
   before(() => {
-    cy.apiCreateInitiative(initiativeTitle, initiativeContent).then((initiative) => {
+    cy.apiCreateInitiative({ initiativeTitle, initiativeContent }).then((initiative) => {
       initiativeId = initiative.body.data.id;
     });
   });
