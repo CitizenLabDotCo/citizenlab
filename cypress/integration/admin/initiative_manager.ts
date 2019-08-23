@@ -29,20 +29,34 @@ describe('Assignee filter', () => {
     // so we can check with greater certainty that all initiatives are being show in the tests
     cy.apiCreateAdmin(firstName1, lastName1, email1, password1).then(user => {
       const userId = user.body.data.id;
-      cy.apiCreateInitiative(initiativeTitle1, initiativeContent1, userId).then(initiative => {
+      cy.apiCreateInitiative({
+        initiativeTitle: initiativeTitle1,
+        initiativeContent: initiativeContent1,
+        assigneeId: userId
+      }).then((initiative) => {
         initiativeId1 = initiative.body.data.id;
       });
     });
+
     cy.apiCreateAdmin(firstName2, lastName2, email2, password2).then(user => {
       const userId = user.body.data.id;
-      cy.apiCreateInitiative(initiativeTitle2, initiativeContent2, userId).then(initiative => {
+      cy.apiCreateInitiative({
+        initiativeTitle: initiativeTitle2,
+        initiativeContent: initiativeContent2,
+        assigneeId: userId
+      }).then((initiative) => {
         initiativeId2 = initiative.body.data.id;
       });
     });
+
     cy.getAuthUser().then((user) => {
       const userId = user.body.data.id;
 
-      cy.apiCreateInitiative(initiativeAssignedToUserTitle, initiativeAssignedToUserContent, userId).then(initiative => {
+      cy.apiCreateInitiative({
+        initiativeTitle: initiativeAssignedToUserTitle,
+        initiativeContent: initiativeAssignedToUserContent,
+        assigneeId: userId
+      }).then((initiative) => {
         initiativeId3 = initiative.body.data.id;
       });
     });
@@ -145,7 +159,7 @@ describe('Assignee select', () => {
   let initiativeId: string;
 
   before(() => {
-    cy.apiCreateInitiative(initiativeTitle, initiativeContent).then(initiative => {
+    cy.apiCreateInitiative({ initiativeTitle, initiativeContent }).then((initiative) => {
       initiativeId = initiative.body.data.id;
     });
   });

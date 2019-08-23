@@ -36,7 +36,7 @@ describe('Initiaitve card component', () => {
   before(() => {
     cy.apiSignup(firstName, lastName, email, password).then(userResponse => {
       userId = userResponse.body.data.id;
-      return cy.apiCreateInitiative(initiativeTitle, initiativeContent);
+      return cy.apiCreateInitiative({ initiativeTitle, initiativeContent });
     }).then((initiaitve) => {
       initiativeId = initiaitve.body.data.id;
     });

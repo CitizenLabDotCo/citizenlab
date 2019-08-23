@@ -57,7 +57,7 @@ describe('Initiative show page actions', () => {
       const initiativeContent = randomString();
 
       before(() => {
-        cy.apiCreateInitiative(initiativeTitle, initiativeContent);
+        cy.apiCreateInitiative({ initiativeTitle, initiativeContent });
         cy.apiSignup(firstName, lastName, email, password);
       });
 
