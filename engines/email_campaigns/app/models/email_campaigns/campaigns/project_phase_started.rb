@@ -1,5 +1,5 @@
 module EmailCampaigns
-  class Campaigns::ProjectPhaseStarted < Campaigns::NotificationCampaign
+  class Campaigns::ProjectPhaseStarted < Campaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
@@ -14,12 +14,25 @@ module EmailCampaigns
       {'Notifications::ProjectPhaseStarted' => {'created' => true}}
     end
 
-    def generate_commands recipient:, activity:
-      commands = super
-      commands.map do |command|
-        command[:delay] = 8.hours.to_i
-        command
-      end
+    def filter_notification_recipient users_scope, activity:, time: nil
+      users_scope.where(id: activity.item.recipient.id)
+    end
+
+    def generate_commands recipient:, activity:, time: nil
+      notification = activity.item
+      [{
+        event_payload: {
+          phase_title_multiloc: notification.phase.title_multiloc,
+          phase_body_multiloc: notification.phase.body_multiloc,
+          phase_start_at: notification.phase.start_at,
+          phase_end_at: notification.phase.end_at,
+          phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: recipient.locale),
+          project_title_multiloc: notification.project.title_multiloc,
+          project_description_multiloc: notification.project.description_multiloc
+          
+        },
+        delay: 8.hours.to_i
+      }]
     end
   end
 end
