@@ -105,6 +105,19 @@ export interface IInitiativeLinks {
   last: string;
 }
 
+export interface InitiativeActivity {
+  id: string;
+  type: 'activity';
+  attributes: {
+    action: string;
+    acted_at: string;
+    change: string[] | {[key: string]: string}[] | null;
+  };
+  relationships: {
+    user: { data: IRelationship };
+  };
+}
+
 export function initiativeByIdStream(initiativeId: string) {
   return streams.get<IInitiative>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}` });
 }
@@ -133,7 +146,7 @@ export async function addInitiative(object: IInitiativeAdd) {
 export async function updateInitiative(initiativeId: string, object: Partial<IInitiativeAdd>) {
   const response = await streams.update<IInitiative>(`${API_PATH}/initiatives/${initiativeId}`, initiativeId, { initiative: object });
   streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/stats/initiatives_count`, `${API_PATH}/initiatives`]
+    apiEndpoint: [`${API_PATH}/stats/initiatives_count`, `${API_PATH}/initiatives`, `${API_PATH}/initiatives/${initiativeId}/activities`]
   });
   return response;
 }
@@ -164,7 +177,7 @@ export function initiativeAllowedTransitionsStream(initiativeId: string) {
 }
 
 export interface IInitiativesFilterCounts {
-  idea_status_id: {
+  initiative_status_id: {
     [key: string]: number;
   };
   area_id: {
@@ -174,4 +187,8 @@ export interface IInitiativesFilterCounts {
     [key: string]: number;
   };
   total: number;
+}
+
+export function initiativeActivities(initiativeId: string) {
+  return streams.get<{ data: InitiativeActivity[] }>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/activities` });
 }
