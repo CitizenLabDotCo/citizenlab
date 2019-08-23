@@ -163,6 +163,7 @@ describe('Assignee select', () => {
       initiativeId = initiative.body.data.id;
     });
   });
+
   it('Assigns a user to an idea', () => {
     cy.apiCreateAdmin(firstName, lastName, email, password).then(newAdmin => {
       const newAdminFirstName = newAdmin.body.data.attributes.first_name;
