@@ -6,8 +6,11 @@ describe('InitiativeCards without filter sidebar component', () => {
   let initiativeId: string;
 
   before(() => {
-    cy.apiCreateInitiative({ initiativeTitle, initiativeContent }).then((initiative) => {
-      initiativeId = initiative.body.data.id;
+    cy.getTopics().then((topics) => {
+      const topicIds = [topics.body.data[0].id];
+      return cy.apiCreateInitiative({ initiativeTitle, initiativeContent, topicIds });
+    }).then((initiaitve) => {
+      initiativeId = initiaitve.body.data.id;
     });
   });
 
@@ -23,12 +26,6 @@ describe('InitiativeCards without filter sidebar component', () => {
     cy.get('#e2e-initiatives-list');
     cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').should('have.length', 1).contains(initiativeTitle);
   });
-
-  // it('lets you load more initiatives', () => {
-  //   cy.get('#e2e-initiative-cards-show-more-button').click();
-  //   cy.wait(1000);
-  //   cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').its('length').should('be.gte', 12);
-  // });
 
   it('lets you sort the initiatives', () => {
     // sort by newest first
@@ -50,6 +47,23 @@ describe('InitiativeCards without filter sidebar component', () => {
     cy.get('.e2e-topics-filters').find('.e2e-topic').contains('Education and youth').click();
     cy.wait(1000);
     cy.get('#e2e-initiatives-container').find('.e2e-initiative-card').should('have.length', 1).contains(initiativeTitle);
+  });
+
+  it('lets you filter the initiatives by status', () => {
+    // sort by newest first
+    cy.get('#e2e-initiatives-sort-dropdown').click();
+    cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
+    cy.wait(1000);
+
+    // should contain the generated initiative as first card when the status 'Proposed' is selected
+    cy.get('.e2e-statuses-filters').find('.e2e-status').contains('Proposed').click();
+    cy.wait(1000);
+    cy.get('#e2e-initiatives-container').find('.e2e-initiative-card').first().contains(initiativeTitle);
+
+    // should be empty when the 'Threshold reached' status is selected
+    cy.get('.e2e-statuses-filters').find('.e2e-status').contains('Threshold reached').click();
+    cy.wait(1000);
+    cy.get('.e2e-initiative-cards-empty');
   });
 
   after(() => {

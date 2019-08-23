@@ -15,6 +15,7 @@ declare global {
       getIdeaById: typeof getIdeaById;
       getProjectBySlug: typeof getProjectBySlug;
       getTopics: typeof getTopics;
+      getInitiativeStatuses: typeof getInitiativeStatuses;
       getUserBySlug: typeof getUserBySlug;
       getAuthUser: typeof getAuthUser;
       apiCreateIdea: typeof apiCreateIdea;
@@ -231,6 +232,16 @@ export function getTopics() {
   });
 }
 
+export function getInitiativeStatuses() {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'GET',
+    url: 'web_api/v1/topics'
+  });
+}
+
 export function getAuthUser() {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
@@ -329,14 +340,16 @@ export function apiCreateInitiative({
   assigneeId,
   locationGeoJSON,
   locationDescription,
-  jwt
+  jwt,
+  topicIds
 } : {
   initiativeTitle: string,
   initiativeContent: string,
   assigneeId?: string,
   locationGeoJSON?: {'type': string, 'coordinates': number[]},
   locationDescription?: string,
-  jwt?: string
+  jwt?: string,
+  topicIds?: string[]
 }) {
   let adminJwt: string;
   let headers: { 'Content-Type': string; Authorization: string; } | null = null;
@@ -350,9 +363,6 @@ export function apiCreateInitiative({
 
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     adminJwt = response.body.jwt;
-    return cy.getTopics();
-  }).then((topics: any) => {
-    const topicId = topics.body.data[0].id;
 
     return cy.request({
       headers: headers || {
@@ -375,7 +385,7 @@ export function apiCreateInitiative({
           location_point_geojson: locationGeoJSON,
           location_description: locationDescription,
           assignee_id: assigneeId,
-          topic_ids: [topicId]
+          topic_ids: topicIds
         }
       }
     });
@@ -696,6 +706,7 @@ Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getIdeaById', getIdeaById);
 Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
 Cypress.Commands.add('getTopics', getTopics);
+Cypress.Commands.add('getInitiativeStatuses', getInitiativeStatuses);
 Cypress.Commands.add('getUserBySlug', getUserBySlug);
 Cypress.Commands.add('getAuthUser', getAuthUser);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
