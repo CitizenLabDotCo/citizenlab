@@ -8,17 +8,14 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
 
-    recipient_filter :filter_recipient
+    recipient_filter :filter_notification_recipient
 
     def activity_triggers
       {'Notifications::StatusChangeOfYourIdea' => {'created' => true}}
     end
 
-    def filter_recipient users_scope, activity:, time: nil
-      users_scope
-        .where(id: activity.item.post.votes.pluck(:user_id))
-        .where.not(id: activity.item.post.author_id)
-        .where.not(id: activity.item.post.comments.pluck(:author_id))
+    def filter_notification_recipient users_scope, activity:, time: nil
+      users_scope.where(id: activity.item.recipient.id)
     end
 
     def generate_commands recipient:, activity: 

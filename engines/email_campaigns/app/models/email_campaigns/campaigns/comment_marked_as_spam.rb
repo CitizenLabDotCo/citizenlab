@@ -30,7 +30,7 @@ module EmailCampaigns
           initiating_user_last_name: notification.initiating_user&.last_name,
           post_title_multiloc: notification.post.title_multiloc,
           comment_author_name: notification.comment.author_name,
-          comment_body_multiloc: notification.comment_body_multiloc,
+          comment_body_multiloc: notification.comment.body_multiloc,
           comment_url: Frontend::UrlService.new.model_to_url(notification.comment, locale: recipient.locale),
           spam_report_reason_code: notification.spam_report.reason_code,
           spam_report_other_reason: notification.spam_report.other_reason
