@@ -1,5 +1,5 @@
 module EmailCampaigns
-  class Campaigns::InitiativeAssignedToYou < Campaigns::NotificationCampaign
+  class Campaigns::InitiativeAssignedToYou < Campaign
     include Consentable
     include ActivityTriggerable
     include Disableable

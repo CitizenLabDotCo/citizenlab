@@ -34,8 +34,9 @@ module EmailCampaigns
             {
               ordering: image.ordering,
               versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
-            },
-          idea_status_id: status.id
+            }
+          },
+          idea_status_id: status.id,
           idea_status_title_multiloc: status.title_multiloc,
           idea_status_code: status.code,
           idea_status_color: status.color

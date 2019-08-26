@@ -1,5 +1,5 @@
 module EmailCampaigns
-  class Campaigns::CommentOnYourInitiative < Campaigns::NotificationCampaign
+  class Campaigns::CommentOnYourInitiative < Campaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable

@@ -31,6 +31,11 @@ module EmailCampaigns
         .where('published_at > ?', (time - 1.week))
         .order(published_at: :desc)
         .take(N_TOP_IDEAS)
+      assigned = assigned_initiatives(recipient: recipient, time: time)
+      succesful = succesful_assigned_initiatives(recipient: recipient, time: time)
+      initiative_ids = (assigned + succesful).map do |d|
+        d[:id]
+      end.compact
       if @assigned_ideas.present?
         [{
           event_payload: {
@@ -46,10 +51,13 @@ module EmailCampaigns
                 comments_count: idea.comments_count,
               }
             },
-            need_feedback_assigned_ideas_count: StatIdeaPolicy::Scope.new(recipient, Idea.published).resolve.where(assignee: recipient).feedback_needed.count
+            need_feedback_assigned_ideas_count: StatIdeaPolicy::Scope.new(recipient, Idea.published).resolve.where(assignee: recipient).feedback_needed.count,
+            assigned_initiatives: assigned,
+            succesful_assigned_initiatives: succesful
           },
           tracked_content: {
-            idea_ids: @assigned_ideas.map{|i| i.id}
+            idea_ids: @assigned_ideas.map{|i| i.id},
+            initiative_ids: initiative_ids
           }
         }]
       else 
@@ -62,6 +70,49 @@ module EmailCampaigns
 
     def user_filter_admins_moderators_only users_scope, options={}
       users_scope.admin.or(users_scope.project_moderator)
+    end
+
+    def assigned_initiatives recipient:, time:
+      recipient.assigned_initiatives.published
+        .where('published_at > ?', time - 1.week)
+        .map do |initiative|
+        {
+          id: initiative.id,
+          title_multiloc: initiative.title_multiloc,
+          url: Frontend::UrlService.new.model_to_url(initiative),
+          published_at: initiative.published_at.iso8601,
+          author_name: initiative.author_name,
+          upvotes_count: initiative.upvotes_count,
+          upvotes_increment: activity_counts.dig(initiative.id, :upvotes),
+          comments_count: initiative.comments_count,
+          comments_increment: activity_counts.dig(initiative.id, :comments)
+        }
+      end
+    end
+
+    def succesful_assigned_initiatives recipient:, time:
+      recipient.assigned_initiatives
+        .left_outer_joins(:initiative_status_changes)
+        .where(
+          'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?', 
+          InitiativeStatus.where(code: 'threshold_reached').ids.first, 
+          (time - 1.week)
+          )
+        .feedback_needed
+        .map do |initiative|
+        {
+          id: initiative.id,
+          title_multiloc: initiative.title_multiloc,
+          url: Frontend::UrlService.new.model_to_url(initiative),
+          published_at: initiative.published_at.iso8601,
+          author_name: initiative.author_name,
+          upvotes_count: initiative.upvotes_count,
+          upvotes_increment: activity_counts.dig(initiative.id, :upvotes),
+          comments_count: initiative.comments_count,
+          comments_increment: activity_counts.dig(initiative.id, :comments),
+          threshold_reached_at: initiative.initiative_status_changes.order(:created_at).pluck(:created_at).last
+        }
+      end
     end
 
   end

@@ -8,7 +8,7 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
 
-    recipient_filter :filter_notification_recipient
+    recipient_filter :filter_recipient
 
     def activity_triggers
       {'Notifications::StatusChangeOfYourIdea' => {'created' => true}}
@@ -16,13 +16,13 @@ module EmailCampaigns
 
     def filter_recipient users_scope, activity:, time: nil
       users_scope
-        .where(id: activity.item.votes.pluck(:user_id))
-        .where.not(id: activity.item.author_id)
-        .where.not(id: activity.item.comments.pluck(:author_id))
+        .where(id: activity.item.post.votes.pluck(:user_id))
+        .where.not(id: activity.item.post.author_id)
+        .where.not(id: activity.item.post.comments.pluck(:author_id))
     end
 
     def generate_commands recipient:, activity: 
-      idea = activity.item
+      idea = activity.item.post
       status = idea.idea_status
       [{
         event_payload: {
@@ -34,8 +34,9 @@ module EmailCampaigns
             {
               ordering: image.ordering,
               versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
-            },
-          idea_status_id: status.id
+            }
+          },
+          idea_status_id: status.id,
           idea_status_title_multiloc: status.title_multiloc,
           idea_status_code: status.code,
           idea_status_color: status.color
