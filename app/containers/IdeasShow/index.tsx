@@ -520,7 +520,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               }
             </FeatureFlag>
 
-            <Content>
+            <Content id="e2e-idea-show-page-content">
               <LeftColumn>
                 <Topics
                   postType="idea"

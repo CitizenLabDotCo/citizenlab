@@ -15,8 +15,9 @@ describe('Idea edit page', () => {
   let ideaSlug: string;
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password);
-    cy.apiLogin(email, password).then((user) => {
+    cy.apiSignup(firstName, lastName, email, password).then(() => {
+      return cy.apiLogin(email, password);
+    }).then((user) => {
       jwt = user.body.jwt;
       return cy.getProjectBySlug('an-idea-bring-it-to-your-council');
     }).then((project) => {

@@ -175,6 +175,7 @@ const SubSocialButtonLink = styled.a`
 interface InputProps {
   onSignedIn: (userId: string) => void;
   title?: string | JSX.Element;
+  className?: string;
 }
 
 interface DataProps {
@@ -287,14 +288,14 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
 
   render() {
     const { email, password, processing, emailError, passwordError, signInError } = this.state;
-    const { title, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
+    const { className, title, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
     const { formatMessage } = this.props.intl;
     const externalLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled);
     const azureAdLogo: string | null = get(tenant, 'data.attributes.settings.azure_ad_login.logo_url', null);
     const tenantLoginMechanismName: string | null = get(tenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name', null);
 
     return (
-      <Container>
+      <Container className={`e2e-sign-in-container ${className}`}>
         <Title>{title || <FormattedMessage {...messages.title} />}</Title>
 
         <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>

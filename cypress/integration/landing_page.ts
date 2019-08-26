@@ -47,6 +47,7 @@ describe('Landing page', () => {
 
     beforeEach(() => {
       cy.login(email, password);
+      cy.goToLandingPage();
     });
 
     it('shows the "complete your profile" header by default', () => {

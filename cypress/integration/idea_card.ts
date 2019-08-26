@@ -29,11 +29,12 @@ describe('Idea card component', () => {
       return cy.apiAddComment(ideaId, 'idea', commentContent, parentCommentId);
     }).then((childComment) => {
       childCommentId = childComment.body.data.id;
-      cy.login(email, password);
     });
   });
 
   beforeEach(() => {
+    cy.login(email, password);
+
     // visit ideas page and sort idea cards by newest first
     cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
 
