@@ -97,7 +97,7 @@ describe('Idea preview ', () => {
     // click on title of first idea
     cy.get('.e2e-idea-manager-idea-title').first().click().then(ideaTitle => {
     // check if the modal popped out and has the idea in it
-    cy.get('#e2e-modal-container').find('.e2e-ideatitle').contains(ideaTitle.text());
+    cy.get('#e2e-modal-container').find('#e2e-idea-title').contains(ideaTitle.text());
     });
   });
 

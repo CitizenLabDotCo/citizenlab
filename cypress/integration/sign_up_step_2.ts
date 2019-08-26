@@ -2,14 +2,6 @@ import { randomString, randomEmail } from '../support/commands';
 
 describe('Sign up step 2 page', () => {
 
-  const navigateToLandingPage = () => {
-    cy.wait(1000);
-    cy.visit('/');
-    cy.wait(1000);
-    cy.get('#e2e-landing-page');
-    cy.wait(1000);
-  };
-
   describe('No custom fields', () => {
     const firstName = randomString();
     const lastName = randomString();
@@ -41,7 +33,7 @@ describe('Sign up step 2 page', () => {
         customFieldId = response.body.data.id;
         cy.apiSignup(firstName, lastName, email, password);
         cy.login(email, password);
-        navigateToLandingPage();
+        cy.goToLandingPage();
       });
     });
 
@@ -71,7 +63,7 @@ describe('Sign up step 2 page', () => {
         customFieldId = response.body.data.id;
         cy.apiSignup(firstName, lastName, email, password);
         cy.login(email, password);
-        navigateToLandingPage();
+        cy.goToLandingPage();
       });
     });
 
@@ -104,7 +96,7 @@ describe('Sign up step 2 page', () => {
         customFieldId = response.body.data.id;
         cy.apiSignup(firstName, lastName, email, password);
         cy.login(email, password);
-        navigateToLandingPage();
+        cy.goToLandingPage();
       });
     });
 

@@ -1,23 +1,17 @@
 import { randomString } from '../support/commands';
 
-describe('IdeaCards without filter sidebar component', () => {
-  const ideaTitle1 = randomString();
-  const ideaContent1 = randomString();
-  const ideaTitle2 = randomString();
-  const ideaContent2 = randomString();
+describe('Idea cards without filter sidebar sorting and filtering', () => {
+  const ideaTitle = randomString();
+  const ideaContent = randomString();
   let projectId: string;
-  let ideaId1: string;
-  let ideaId2: string;
+  let ideaId: string;
 
   before(() => {
     cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
       projectId = project.body.data.id;
-      return cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1);
+      return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
     }).then((idea1) => {
-      ideaId1 = idea1.body.data.id;
-      return cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2);
-    }).then((idea2) => {
-      ideaId2 = idea2.body.data.id;
+      ideaId = idea1.body.data.id;
     });
   });
 
@@ -27,17 +21,11 @@ describe('IdeaCards without filter sidebar component', () => {
   });
 
   it('lets you search the ideas', () => {
-    cy.get('.e2e-search-input').type(ideaTitle2);
+    cy.get('.e2e-search-input').type(ideaTitle);
     cy.wait(1000);
-    cy.get('.e2e-search-input').should('have.value', ideaTitle2);
+    cy.get('.e2e-search-input').should('have.value', ideaTitle);
     cy.get('#e2e-ideas-list');
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').should('have.length', 1).contains(ideaTitle2);
-  });
-
-  it('lets you load more ideas', () => {
-    cy.get('#e2e-idea-cards-show-more-button').click();
-    cy.wait(1000);
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').its('length').should('be.gte', 12);
+    cy.get('#e2e-ideas-list').find('.e2e-idea-card').should('have.length', 1).contains(ideaTitle);
   });
 
   it('lets you sort the ideas', () => {
@@ -48,7 +36,7 @@ describe('IdeaCards without filter sidebar component', () => {
 
     // find and check first idea card
     cy.get('#e2e-ideas-list');
-    cy.get('.e2e-idea-card').first().contains(ideaTitle2);
+    cy.get('.e2e-idea-card').first().contains(ideaTitle);
 
     // sort by trending
     cy.get('#e2e-ideas-sort-dropdown').click();
@@ -57,7 +45,7 @@ describe('IdeaCards without filter sidebar component', () => {
 
     // find and check first idea card
     cy.get('#e2e-ideas-list');
-    cy.get('.e2e-idea-card').first().contains(ideaTitle2);
+    cy.get('.e2e-idea-card').first().contains(ideaTitle);
 
     // sort by most voted
     cy.get('#e2e-ideas-sort-dropdown').click();
@@ -85,8 +73,41 @@ describe('IdeaCards without filter sidebar component', () => {
   });
 
   after(() => {
+    cy.apiRemoveIdea(ideaId);
+  });
+});
+
+describe('Idea cards without filter sidebar pagination', () => {
+  const ideaTitle1 = randomString();
+  const ideaContent1 = randomString();
+  const ideaTitle2 = randomString();
+  const ideaContent2 = randomString();
+  let projectId: string;
+  let ideaId1: string;
+  let ideaId2: string;
+
+  before(() => {
+    cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
+      projectId = project.body.data.id;
+      return cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1);
+    }).then((idea1) => {
+      ideaId1 = idea1.body.data.id;
+      return cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2);
+    }).then((idea2) => {
+      ideaId2 = idea2.body.data.id;
+      cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
+      cy.wait(1000);
+    });
+  });
+
+  it('lets you load more ideas', () => {
+    cy.get('#e2e-idea-cards-show-more-button').click();
+    cy.wait(1000);
+    cy.get('#e2e-ideas-list').find('.e2e-idea-card').its('length').should('be.gte', 12);
+  });
+
+  after(() => {
     cy.apiRemoveIdea(ideaId1);
     cy.apiRemoveIdea(ideaId2);
   });
-
 });

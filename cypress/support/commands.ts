@@ -4,6 +4,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
+      goToLandingPage: typeof goToLandingPage;
       login: typeof login;
       apiLogin: typeof apiLogin;
       apiSignup: typeof apiSignup;
@@ -62,15 +63,23 @@ export function unregisterServiceWorkers() {
   }
 }
 
+export function goToLandingPage() {
+  cy.visit('/');
+  cy.wait(5000);
+  cy.get('#e2e-landing-page');
+
+  // cy.visit('/').then(() => {
+  //   return cy.get('#e2e-landing-page');
+  // });
+}
+
 export function login(email: string, password: string) {
   cy.visit('/sign-in');
   cy.get('#email').type(email);
   cy.get('#password').type(password);
   cy.get('.e2e-submit-signin').click();
-  cy.wait(1000);
-  cy.visit('/');
-  cy.wait(1000);
-  cy.get('#e2e-landing-page');
+  cy.wait(3000);
+  cy.goToLandingPage();
 }
 
 export function apiLogin(email: string, password: string) {
@@ -695,6 +704,7 @@ export function apiRemoveCustomField(fieldId: string) {
 }
 
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
+Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);

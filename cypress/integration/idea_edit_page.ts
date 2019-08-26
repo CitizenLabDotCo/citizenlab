@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('Idea form page', () => {
+describe('Idea edit page', () => {
   const firstName = randomString();
   const lastName = randomString();
   const email = randomEmail();
@@ -78,7 +78,7 @@ describe('Idea form page', () => {
     // verify updated idea page
     cy.location('pathname').should('eq', `/en-GB/ideas/${ideaSlug}`);
     cy.get('#e2e-idea-show');
-    cy.get('#e2e-idea-show').find('.e2e-ideatitle').contains(newIdeaTitle);
+    cy.get('#e2e-idea-show').find('#e2e-idea-title').contains(newIdeaTitle);
     cy.get('#e2e-idea-show').find('#e2e-idea-description').contains(newIdeaContent);
     cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
     cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');

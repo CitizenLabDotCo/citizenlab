@@ -70,7 +70,13 @@ const PostTitle = memo<Props>(({ postId, postType, title, locale, translateButto
           )}
         </GetMachineTranslation>
       ) : (
-        <Title color={color} align={align} id={`e2e-${postType}-title`}>{title}</Title>
+        <Title
+          id={`e2e-${postType}-title`}
+          color={color}
+          align={align}
+        >
+          {title}
+        </Title>
       )}
     </Container>
   );
