@@ -27,6 +27,11 @@ module EmailCampaigns
     def generate_commands recipient:, time: nil
       top_ideas = top_ideas recipient
       discover_projects = discover_projects recipient
+      @new_initiatives ||= new_initiatives time: time
+      @succesful_initiatives ||= succesful_initiatives time: time
+      @initiative_ids ||= (@new_initiatives + @succesful_initiatives).map do |d|
+        d[:id]
+      end.compact
       [{
         event_payload: {
           top_ideas: top_ideas.map{ |idea|
@@ -34,11 +39,14 @@ module EmailCampaigns
           },
           discover_projects: discover_projects.map{ |project|
             discover_projects_payload project, recipient
-          }
+          },
+          new_initiatives: @new_initiatives,
+          succesful_initiatives: @succesful_initiatives
         },
         tracked_content: {
-          idea_ids: top_ideas.map(&:id),
-          project_ids: discover_projects.map(&:id)
+          idea_ids: top_ideas.ids,
+          initiative_ids: @initiative_ids,
+          project_ids: discover_projects.ids
         }
       }]
     end
@@ -117,6 +125,47 @@ module EmailCampaigns
         url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
         created_at: project.created_at.iso8601
       }
+    end
+
+    def new_initiatives time:
+      Initiative.published.where('published_at > ?', (time - 1.week)).map do |initiative|
+        {
+          id: initiative.id,
+          title_multiloc: initiative.title_multiloc,
+          url: Frontend::UrlService.new.model_to_url(initiative),
+          published_at: initiative.published_at.iso8601,
+          author_name: initiative.author_name,
+          upvotes_count: initiative.upvotes_count,
+          upvotes_increment: activity_counts.dig(initiative.id, :upvotes),
+          comments_count: initiative.comments_count,
+          comments_increment: activity_counts.dig(initiative.id, :comments)
+        }
+      end
+    end
+
+    def succesful_initiatives time:
+      Initiative.published
+        .left_outer_joins(:initiative_status_changes)
+        .where(
+          'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?', 
+          InitiativeStatus.where(code: 'threshold_reached').ids.first, 
+          (time - 1.week)
+          )
+        .feedback_needed
+        .map do |initiative|
+        {
+          id: initiative.id,
+          title_multiloc: initiative.title_multiloc,
+          url: Frontend::UrlService.new.model_to_url(initiative),
+          published_at: initiative.published_at.iso8601,
+          author_name: initiative.author_name,
+          upvotes_count: initiative.upvotes_count,
+          upvotes_increment: activity_counts.dig(initiative.id, :upvotes),
+          comments_count: initiative.comments_count,
+          comments_increment: activity_counts.dig(initiative.id, :comments),
+          threshold_reached_at: initiative.initiative_status_changes.order(:created_at).pluck(:created_at).last
+        }
+      end
     end
 
   end

@@ -26,11 +26,6 @@ module EmailCampaigns
           invite_text: activity.item.invite_text,
           activate_invite_url: Frontend::UrlService.new.invite_url(object.token, locale: object.invitee.locale)
         }
-
-
-
-
-        serialize_campaign(activity.item)
       }]
     end
   end
