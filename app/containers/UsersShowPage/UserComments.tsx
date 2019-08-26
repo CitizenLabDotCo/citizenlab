@@ -67,25 +67,6 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-export const reducer = (acc: ICommentData[][], current: ICommentData) => {
-  const accLen = acc.length;
-  const lastArray = acc[accLen - 1];
-
-  if (lastArray.length === 0) {
-    return [[current]];
-  }
-
-  if (current.attributes.publication_status === 'published') {
-    if (current.relationships.post.data.id === lastArray[lastArray.length - 1].relationships.post.data.id) {
-      lastArray.push(current);
-    } else {
-      acc.push([current]);
-    }
-  }
-  return acc;
-
-};
-
 export const UserComments = memo<Props>(({ comments, userId, theme, authUser }) => {
 
   if (!isNilOrError(comments)) {
