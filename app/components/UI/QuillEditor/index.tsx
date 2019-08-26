@@ -159,6 +159,8 @@ const Container: any = styled.div`
     border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     -webkit-appearance: none;
+    max-height: 70vh;
+    overflow-y: auto;
 
     .ql-editor {
       min-height: 300px;
