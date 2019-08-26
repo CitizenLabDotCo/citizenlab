@@ -82,7 +82,7 @@ describe('Idea new page', () => {
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en-GB/ideas/${ideaTitle}`);
     cy.get('#e2e-idea-show');
-    cy.get('#e2e-idea-show').find('.e2e-ideatitle').contains(ideaTitle);
+    cy.get('#e2e-idea-show').find('#e2e-idea-title').contains(ideaTitle);
     cy.get('#e2e-idea-show').find('#e2e-idea-description').contains(ideaContent);
     cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
     cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');

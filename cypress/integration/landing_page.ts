@@ -2,8 +2,7 @@ import { randomString, randomEmail } from '../support/commands';
 
 describe('Landing page', () => {
   beforeEach(() => {
-    cy.visit('/');
-    cy.wait(1000);
+    cy.goToLandingPage();
   });
 
   it('shows the page', () => {
@@ -45,10 +44,9 @@ describe('Landing page', () => {
         userId = userResponse.body.data.id;
       });
     });
+
     beforeEach(() => {
       cy.login(email, password);
-      cy.visit('/');
-      cy.wait(1000);
     });
 
     it('shows the "complete your profile" header by default', () => {

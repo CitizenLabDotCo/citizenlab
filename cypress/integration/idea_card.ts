@@ -15,10 +15,10 @@ describe('Idea card component', () => {
   let childCommentId: string;
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password).then(userResponse => {
-      userId = userResponse.body.data.id;
-    });
-    cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
+    cy.apiSignup(firstName, lastName, email, password).then((user) => {
+      userId = user.body.data.id;
+      return cy.getProjectBySlug('an-idea-bring-it-to-your-council');
+    }).then((project) => {
       projectId = project.body.data.id;
       return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
     }).then((idea) => {

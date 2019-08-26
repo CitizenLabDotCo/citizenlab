@@ -522,7 +522,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
             <Content>
               <LeftColumn>
-                <Topics postType="idea" topicIds={topicIds} />
+                <Topics
+                  postType="idea"
+                  topicIds={topicIds}
+                />
+
                 <IdeaHeader>
                   <Title
                     postType="idea"
