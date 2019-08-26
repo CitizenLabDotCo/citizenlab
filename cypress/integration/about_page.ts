@@ -1,16 +1,4 @@
-import { randomString, randomEmail } from '../support/commands';
-
 describe('About page', () => {
-  const firstName = randomString();
-  const lastName = randomString();
-  const email = randomEmail();
-  const password = randomString();
-
-  before(() => {
-    cy.apiSignup(firstName, lastName, email, password);
-    cy.login(email, password);
-  });
-
   beforeEach(() => {
     cy.visit('/pages/information');
   });

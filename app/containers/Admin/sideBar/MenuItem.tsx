@@ -19,7 +19,7 @@ const Text = styled.div`
   margin-left: 10px;
   display: flex;
   align-items: center;
-  transition: all 100ms ease-out;
+  transition: all 80ms ease-out;
 
   ${media.smallerThan1200px`
     display: none;
@@ -29,7 +29,7 @@ const Text = styled.div`
 const ArrowIcon = styled(Icon)`
   fill: #fff;
   opacity: 0;
-  transition: all 150ms ease-out;
+  transition: all 80ms ease-out;
 `;
 
 const MenuItemLink = styled(Link) `
@@ -44,7 +44,7 @@ const MenuItemLink = styled(Link) `
   margin-bottom: 8px;
   cursor: pointer;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  transition: background 100ms ease-out;
+  transition: background 80ms ease-out;
 
   &:hover:not(.selected) {
     background: rgba(0, 0, 0, 0.15);
@@ -55,7 +55,7 @@ const MenuItemLink = styled(Link) `
   }
 
   &.selected {
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.3);
 
     ${Text} {
       opacity: 1;

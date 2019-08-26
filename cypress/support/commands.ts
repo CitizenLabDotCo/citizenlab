@@ -65,21 +65,16 @@ export function unregisterServiceWorkers() {
 
 export function goToLandingPage() {
   cy.visit('/');
-  cy.wait(5000);
   cy.get('#e2e-landing-page');
-
-  // cy.visit('/').then(() => {
-  //   return cy.get('#e2e-landing-page');
-  // });
 }
 
 export function login(email: string, password: string) {
   cy.visit('/sign-in');
+  cy.get('.e2e-sign-in-container');
   cy.get('#email').type(email);
   cy.get('#password').type(password);
   cy.get('.e2e-submit-signin').click();
-  cy.wait(3000);
-  cy.goToLandingPage();
+  cy.wait(5000);
 }
 
 export function apiLogin(email: string, password: string) {
