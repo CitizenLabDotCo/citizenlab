@@ -27,9 +27,9 @@ module EmailCampaigns
       [{
         event_payload: {
           phase_title_multiloc: notification.phase.title_multiloc,
-          phase_body_multiloc: notification.phase.body_multiloc,
-          phase_start_at: notification.phase.start_at,
-          phase_end_at: notification.phase.end_at,
+          phase_description_multiloc: notification.phase.description_multiloc,
+          phase_start_at: notification.phase.start_at.iso8601,
+          phase_end_at: notification.phase.end_at.iso8601,
           phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: recipient.locale),
           project_title_multiloc: notification.project.title_multiloc,
           project_description_multiloc: notification.project.description_multiloc
@@ -37,14 +37,6 @@ module EmailCampaigns
         },
         delay: 8.hours.to_i
       }]
-    end
-
-    def generate_commands recipient:, activity:
-      commands = super
-      commands.map do |command|
-        command[:delay] = 8.hours.to_i
-        command
-      end
     end
   end
 end
