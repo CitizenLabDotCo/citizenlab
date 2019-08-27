@@ -64,8 +64,10 @@ export function unregisterServiceWorkers() {
 }
 
 export function goToLandingPage() {
+  cy.wait(1000);
   cy.visit('/');
   cy.get('#e2e-landing-page');
+  cy.wait(1000);
 }
 
 export function login(email: string, password: string) {

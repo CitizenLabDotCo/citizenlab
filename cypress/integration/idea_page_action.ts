@@ -13,6 +13,10 @@ describe('Idea show page actions', () => {
       cy.get('.e2e-vote-controls-desktop').find('.e2e-login-button');
       cy.get('.e2e-vote-controls-desktop').find('.e2e-register-button');
     });
+
+    after(() => {
+      cy.wait(1000);
+    });
   });
 
   describe('logged in as admin', () => {
@@ -25,6 +29,7 @@ describe('Idea show page actions', () => {
 
     it('saves a new official feedback, shows it and deletes it', () => {
       const officialFeedback = randomString(30);
+
       // input
       cy.get('input').first().type(officialFeedback);
       cy.get('textarea').first().type(officialFeedback);
