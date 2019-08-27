@@ -108,7 +108,8 @@ const GetStartedLink = styled(Link)`
   }
 
   ${media.smallerThan1200px`
-    width: 70px;
+    width: 56px;
+    padding-right: 5px;
 
     ${Text} {
       display: none;
