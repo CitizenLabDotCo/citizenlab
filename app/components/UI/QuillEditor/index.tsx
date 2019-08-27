@@ -3,6 +3,7 @@ import { isFunction } from 'lodash-es';
 
 // Quill editor & modules
 import ReactQuill, { Quill } from 'react-quill';
+import Delta from 'quill-delta';
 import 'react-quill/dist/quill.snow.css';
 
 // Image & video resize modules
@@ -94,7 +95,39 @@ import tracks from './tracks';
 
 // Styling
 import styled from 'styled-components';
-import { fontSizes, colors, quillEditedContent } from 'utils/styleUtils';
+import { fontSizes, colors, quillEditedContent, media } from 'utils/styleUtils';
+
+const Clipboard = Quill.import('modules/clipboard');
+
+class PlainTextClipboard extends Clipboard {
+  onPaste (e) {
+    if (e.defaultPrevented || !this.quill.isEnabled()) return;
+    const range = this.quill.getSelection();
+    let delta = new Delta().retain(range.index);
+
+    if (e && e.clipboardData && e.clipboardData.types && e.clipboardData.getData) {
+      const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+      const cleanedText = this.convert(text);
+
+      // Stop the data from actually being pasted
+      e.stopPropagation();
+      e.preventDefault();
+
+      // Process cleaned text
+      delta = delta.concat(cleanedText).delete(range.length);
+          // @ts-ignore: wrong types? works anyway
+      this.quill.updateContents(delta, Quill.sources.USER);
+      // range.length contributes to delta.length()
+      // @ts-ignore: wrong types? works anyway
+      this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
+
+      return false;
+    }
+    return true;
+  }
+}
+
+Quill.register('modules/clipboard', PlainTextClipboard);
 
 const Container: any = styled.div`
   .ql-snow.ql-toolbar button:hover .ql-stroke, .ql-snow .ql-toolbar button:hover .ql-stroke, .ql-snow.ql-toolbar button:focus .ql-stroke, .ql-snow .ql-toolbar button:focus .ql-stroke, .ql-snow.ql-toolbar button.ql-active .ql-stroke, .ql-snow .ql-toolbar button.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow.ql-toolbar button:hover .ql-stroke-miter, .ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, .ql-snow .ql-toolbar button:focus .ql-stroke-miter, .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-picker-label:focus .ql-stroke, .ql-picker-item:focus .ql-stroke {
@@ -159,7 +192,10 @@ const Container: any = styled.div`
     border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     -webkit-appearance: none;
-    max-height: 70vh;
+    max-height: ${({ theme: { menuHeight } }) => `calc(80vh - ${menuHeight}px)`};
+    ${media.smallerThanMaxTablet`
+      max-height: ${({ theme: { mobileMenuHeight } }) => `calc(80vh - ${mobileMenuHeight}px)`};
+    `}
     overflow-y: auto;
 
     .ql-editor {
