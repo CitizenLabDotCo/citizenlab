@@ -22,13 +22,13 @@ module EmailCampaigns
       notification = activity.item
       [{
         event_payload: {
-          initiating_user_first_name: notification.initiating_user&.first_name,
-          initiating_user_last_name: notification.initiating_user&.last_name,
           post_published_at: notification.post.published_at.iso8601,
-          post_title_multiloc: notification.post.title_multiloc,
-          post_body_multiloc: notification.post.body_multiloc,  
+          post_title_multiloc: notification.post.title_multiloc, 
           post_author_name: notification.post.author_name,
-          comment_url: Frontend::UrlService.new.model_to_url(notification.comment, locale: recipient.locale)
+          post_type: notification.post_type,
+          official_feedback_author_multiloc: notification.official_feedback.author_multiloc,
+          official_feedback_body_multiloc: notification.official_feedback.body_multiloc,
+          official_feedback_url: Frontend::UrlService.new.model_to_url(notification.official_feedback, locale: recipient.locale)
         }
       }]
     end
