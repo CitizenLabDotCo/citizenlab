@@ -35,7 +35,6 @@ const TopContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   position: relative;
-  border: solid 2px red;
 `;
 
 const ActionsContainer = styled.div`

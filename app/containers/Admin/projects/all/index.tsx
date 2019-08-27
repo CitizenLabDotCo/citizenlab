@@ -152,7 +152,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
       const row = (project: IProjectData) => {
         return (
-          <RowContent>
+          <RowContent className="e2e-admin-projects-list-item">
             <RowContentInner className="expand primary">
               <RowTitle value={project.attributes.title_multiloc} />
               {project.attributes.visible_to === 'groups' &&

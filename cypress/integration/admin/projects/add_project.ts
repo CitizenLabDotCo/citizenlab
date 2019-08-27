@@ -30,6 +30,8 @@ describe('Admin: add project', () => {
     cy.get('.e2e-admin-add-project').click();
     // go to the project creation form
     cy.location('pathname').should('eq', '/en-GB/admin/projects/new');
+    // check that the page container is loaded
+    cy.get('.e2e-project-general-form');
   });
 
   context('Type: Timeline', () => {

@@ -69,6 +69,7 @@ export function goToLandingPage() {
 }
 
 export function login(email: string, password: string) {
+  cy.wait(1000);
   cy.visit('/sign-in');
   cy.get('.e2e-sign-in-container');
   cy.get('#email').type(email);

@@ -30,6 +30,10 @@ const ArrowIcon = styled(Icon)`
   fill: #fff;
   opacity: 0;
   transition: all 80ms ease-out;
+
+  ${media.smallerThan1200px`
+    display: none;
+  `}
 `;
 
 const MenuItemLink = styled(Link) `
@@ -76,7 +80,8 @@ const MenuItemLink = styled(Link) `
   }
 
   ${media.smallerThan1200px`
-    width: 70px;
+    width: 56px;
+    padding-right: 5px;
   `}
 `;
 
