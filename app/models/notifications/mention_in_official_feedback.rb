@@ -20,8 +20,8 @@ module Notifications
       recipient_id = activity.payload["mentioned_user"]
 
       official_feedback_id = official_feedback&.id
-      idea = official_feedback&.idea
-      idea_id = official_feedback&.idea_id
+      idea = official_feedback&.post
+      idea_id = official_feedback&.post_id
       initiator_id = official_feedback&.user_id
       project_id = idea&.project_id
       participant_ids = [idea.author_id]
@@ -29,7 +29,7 @@ module Notifications
       participant_ids += idea.comments.pluck(:author_id)
       participant_ids.uniq!
 
-      if official_feedback_id && idea_id && recipient_id && initiator_id && (recipient_id != initiator_id) && !participant_ids.include?(recipient_id)
+      if (official_feedback&.post_type == 'Idea') && official_feedback_id && idea_id && recipient_id && initiator_id && (recipient_id != initiator_id) && !participant_ids.include?(recipient_id)
         [self.new(
            recipient_id: recipient_id,
            initiating_user: User.find(initiator_id),

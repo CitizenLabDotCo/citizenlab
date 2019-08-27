@@ -22,9 +22,10 @@ module Notifications
       idea = comment&.post
       idea_id = idea&.id
       initiator_id = comment&.author_id
-      project_id = idea&.project_id
 
       if comment_id && (comment.post_type == 'Idea') && recipient_id && initiator_id && (recipient_id != initiator_id)
+        project_id = idea&.project_id
+        
         [self.new(
            recipient_id: recipient_id,
            initiating_user: User.find(initiator_id),
