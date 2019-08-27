@@ -27,7 +27,8 @@ module EmailCampaigns
           comment_author_name: notification.comment.author_name,
           comment_body_multiloc: notification.comment.body_multiloc,
           comment_url: Frontend::UrlService.new.model_to_url(notification.comment, locale: recipient.locale),
-          post_title_multiloc: notification.post.title_multiloc
+          post_title_multiloc: notification.post.title_multiloc,
+          post_type: notification.post_type
         }
       }]
     end
