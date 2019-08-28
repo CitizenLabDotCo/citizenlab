@@ -114,7 +114,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
 
   if (!isNilOrError(statuses) && statuses.length > 0) {
     return (
-      <Container className={className}>
+      <Container className={`e2e-statuses-filters ${className}`}>
         <Header>
           <Title>
             <FormattedMessage {...messages.statusTitle} />
@@ -140,7 +140,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
               data-id={status.id}
               onMouseDown={removeFocus}
               onClick={handleOnClick}
-              className={selectedStatusId === status.id ? 'selected' : ''}
+              className={`e2e-status ${selectedStatusId === status.id ? 'selected' : ''}`}
             >
               <T value={status.attributes.title_multiloc}>
                 {statusTitle => <>{capitalize(statusTitle)}</>}
