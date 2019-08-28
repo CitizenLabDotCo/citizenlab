@@ -281,17 +281,20 @@ export class PostManager extends React.PureComponent<Props, State> {
             handleAssigneeFilterChange={onChangeAssignee}
             type={type}
           />
-          <FeedbackToggle
-            type={type}
-            value={feedbackNeeded}
-            onChange={onChangeFeedbackFilter}
-            project={selectedProject}
-            phase={selectedPhase}
-            topics={selectedTopics}
-            status={selectedStatus}
-            assignee={selectedAssignee}
-            searchTerm={searchTerm}
-          />
+          {(type === 'AllIdeas' || type === 'ProjectIdeas') ?
+            <FeedbackToggle
+              type={type}
+              value={feedbackNeeded}
+              onChange={onChangeFeedbackFilter}
+              project={selectedProject}
+              phase={selectedPhase}
+              topics={selectedTopics}
+              status={selectedStatus}
+              assignee={selectedAssignee}
+              searchTerm={searchTerm}
+            />
+            : null
+          }
           <StyledExportMenu
             type={type}
             selection={selection}

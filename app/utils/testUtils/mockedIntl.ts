@@ -1,7 +1,8 @@
-import { InjectedIntl } from 'react-intl'
+import { InjectedIntl } from 'react-intl';
 
 export const getDummyIntlObject = (messages?: any) => {
   const intl: InjectedIntl = {
+    messages,
     defaultFormats: undefined,
     defaultLocale: 'en',
     formatDate: jest.fn(),
@@ -13,10 +14,9 @@ export const getDummyIntlObject = (messages?: any) => {
     formatTime: jest.fn(),
     formats: undefined,
     locale: 'en',
-    messages,
     now: jest.fn(),
     onError: jest.fn(),
-  }
+  };
 
   return intl;
-}
+};
