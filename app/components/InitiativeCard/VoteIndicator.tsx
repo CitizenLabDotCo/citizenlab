@@ -68,12 +68,13 @@ const StyledProgressBar = styled(ProgressBar)`
 const VoteCounter = styled.div`
   display: flex;
   align-items: center;
-  padding-bottom: 4px;
+  padding-bottom: 5px;
 `;
 
 const VoteText = styled.div`
   color: ${colors.mediumGrey};
   font-size: ${fontSizes.small}px;
+
   b {
     font-weight: 600;
     color: ${({ theme }) => theme.colorMain};
@@ -86,9 +87,9 @@ const VoteText = styled.div`
 
 const VoteIcon = styled(Icon)`
   fill: ${colors.label};
-  width: 14px;
-  height: 12px;
-  margin: 0 5px 4px 0;
+  width: 16px;
+  margin-top: -4px;
+  margin-right: 10px;
 `;
 
 const ExpiredText = styled.div`
@@ -96,7 +97,7 @@ const ExpiredText = styled.div`
   align-items: center;
   font-size: ${fontSizes.small}px;
   text-transform: capitalize;
-  padding-bottom: 4px;
+  padding-bottom: 5px;
   color: ${colors.label};
 `;
 
@@ -128,18 +129,17 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
     if (isNilOrError(initiative) || isNilOrError(initiativeStatus)) return null;
 
     const statusCode = initiativeStatus.attributes.code;
-    const voteCount: number = initiative.attributes.upvotes_count;
+    const voteCount = initiative.attributes.upvotes_count;
     const voteLimit: number = get(tenant, 'attributes.settings.initiatives.voting_threshold', 1);
 
     return (
-      <Container>
-
+      <Container className="e2e-initiative-card-vote-indicator">
         {statusCode === 'proposed' &&
           <div>
             <VoteCounter>
               <VoteIcon name="upvote" />
               <VoteText>
-                <b>{voteCount}</b>
+                <b  className="e2e-initiative-card-vote-count">{voteCount}</b>
                 <span className="division-bar">/</span>
                 {voteLimit}
               </VoteText>
@@ -161,7 +161,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
             </ExpiredText>
             <StyledProgressBar
               progress={voteCount / voteLimit}
-              color="#84939E"
+              color={colors.secondaryText}
               bgColor={colors.lightGreyishBlue}
               bgShaded={true}
             />
@@ -218,7 +218,6 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
             </BadgeLabel>
           </CustomStatusBadge>
         }
-
       </Container>
     );
   }
@@ -227,13 +226,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
-  initiativeStatus: ({ initiative, render }) => {
-    if (!isNilOrError(initiative) && initiative.relationships.initiative_status && initiative.relationships.initiative_status.data) {
-      return <GetInitiativeStatus id={initiative.relationships.initiative_status.data.id}>{render}</GetInitiativeStatus>;
-    } else {
-      return null;
-    }
-  }
+  initiativeStatus: ({ initiative, render }) => <GetInitiativeStatus id={get(initiative, 'relationships.initiative_status.data.id')}>{render}</GetInitiativeStatus>
 });
 
 const VoteIndicatorWithHOCs = withTheme(VoteIndicator);

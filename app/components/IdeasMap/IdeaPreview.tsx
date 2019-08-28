@@ -232,7 +232,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
 
           <Description>
             <Body
-              id={idea.id}
+              postId={idea.id}
               body={ideaBody}
               locale={locale}
               postType="idea"

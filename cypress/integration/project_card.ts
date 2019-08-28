@@ -18,9 +18,7 @@ describe('Project card component', () => {
       cy.apiCreatePhase(projectId, phaseTitle, '2018-03-01', '2025-01-01', 'ideation', true, true, true);
 
       // navigate to the landing page
-      cy.visit('/');
-      cy.wait(1000);
-      cy.get('#e2e-landing-page');
+      cy.goToLandingPage();
     });
   });
 
