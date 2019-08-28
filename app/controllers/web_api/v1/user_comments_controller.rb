@@ -25,6 +25,7 @@ class WebApi::V1::UserCommentsController < ApplicationController
     # Get the comments, grouped by the corresponding posts
     # page.
     comments = Comment.where(post_id: paged_posts)
+      .where(author_id: params[:user_id])
       .includes(:post)
       .joins('LEFT OUTER JOIN union_posts ON comments.post_id = union_posts.id')
       .order('union_posts.published_at DESC, union_posts.id DESC, comments.created_at DESC')
