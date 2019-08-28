@@ -19,13 +19,14 @@ module Notifications
       official_feedback = activity.item
 
       official_feedback_id = official_feedback&.id
-      idea = official_feedback&.idea
-      idea_id = official_feedback&.idea_id
+      idea = official_feedback&.post
+      idea_id = official_feedback&.post_id
       recipient_id = idea&.author_id
       initiator_id = official_feedback&.user_id
-      project_id = idea&.project_id
 
-      if official_feedback_id && idea_id && recipient_id && initiator_id && (recipient_id != initiator_id)
+      if (official_feedback&.post_type == 'Idea') && official_feedback_id && idea_id && recipient_id && initiator_id && (recipient_id != initiator_id)
+        project_id = idea&.project_id
+
         [self.new(
            recipient_id: recipient_id,
            initiating_user: User.find(initiator_id),

@@ -52,7 +52,7 @@ resource "Stats - Comments" do
       expect(json_response[:count]).to eq Comment.published.count
     end
 
-    describe do
+    context "as a moderator" do
       before do
         token = Knock::AuthToken.new(payload: { sub: create(:moderator).id }).token
         header 'Authorization', "Bearer #{token}"
@@ -63,11 +63,11 @@ resource "Stats - Comments" do
       example_request "Count all comments (as a moderator)", document: false do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq Comment.published.count - 1
+        expect(json_response[:count]).to eq Comment.published.count - 2
       end
     end
 
-    describe do
+    context "as a user" do
       before do
         token = Knock::AuthToken.new(payload: { sub: create(:user).id }).token
         header 'Authorization', "Bearer #{token}"
@@ -160,6 +160,26 @@ resource "Stats - Comments" do
           expect(json_response).to eq({series: { comments: {} }})
         end
       end
+
+      context "as a moderator" do
+        before do
+          token = Knock::AuthToken.new(payload: { sub: create(:moderator).id }).token
+          header 'Authorization', "Bearer #{token}"
+          initiative = create(:initiative)
+          @project = create(:project)
+          create(:comment, post: initiative)
+          create(:comment, post: create(:idea, project: @project))
+        end
+
+        let(:project) { @project.id }
+
+        example_request "Count all comments filtered by project", document: false do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:series][:comments].values.last).to eq 1
+        end
+      end
+
     end
   end
 
