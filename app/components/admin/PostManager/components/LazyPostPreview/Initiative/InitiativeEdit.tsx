@@ -26,7 +26,7 @@ import { colors } from 'utils/styleUtils';
 
 import { Locale } from 'typings';
 
-interface InputProps {
+export interface InputProps {
   initiativeId: string;
   goBack: () => void;
 }
