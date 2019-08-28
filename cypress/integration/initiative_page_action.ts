@@ -1,35 +1,31 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('Idea show page actions', () => {
+describe('Initiative show page actions', () => {
   describe('not logged in', () => {
     before(() => {
-      cy.visit('/ideas/controversial-idea');
+      cy.visit('/initiatives/cleaning-the-sidewalks-party');
       cy.acceptCookies();
-      cy.get('#e2e-idea-show');
+      cy.get('#e2e-initiative-show');
     });
 
     it('asks unauthorised users to log in or sign up before they vote', () => {
-      cy.get('.e2e-vote-controls-desktop').find('.e2e-ideacard-upvote-button').click();
-      cy.get('.e2e-vote-controls-desktop').find('.e2e-login-button');
-      cy.get('.e2e-vote-controls-desktop').find('.e2e-register-button');
-    });
-
-    after(() => {
       cy.wait(1000);
+      cy.get('#e2e-initiative-vote-control').find('#e2e-initiative-upvote-button').click();
+      cy.get('#e2e-initiative-vote-control').find('.e2e-login-button');
+      cy.get('#e2e-initiative-vote-control').find('.e2e-register-button');
     });
   });
 
   describe('logged in as admin', () => {
     before(() => {
       cy.login('admin@citizenlab.co', 'testtest');
-      cy.visit('/ideas/controversial-idea');
+      cy.visit('/initiatives/cleaning-the-sidewalks-party');
       cy.acceptCookies();
-      cy.get('#e2e-idea-show');
+      cy.get('#e2e-initiative-show');
     });
 
     it('saves a new official feedback, shows it and deletes it', () => {
       const officialFeedback = randomString(30);
-
       // input
       cy.get('input').first().type(officialFeedback);
       cy.get('textarea').first().type(officialFeedback);
@@ -53,51 +49,48 @@ describe('Idea show page actions', () => {
 
   describe('logged in as normal user', () => {
     describe('Vote', () => {
-      before(() => {
-        const firstName = randomString();
-        const lastName = randomString();
-        const email = randomEmail();
-        const password = randomString();
-        const ideaTitle = randomString();
-        const ideaContent = randomString();
+      const firstName = randomString();
+      const lastName = randomString();
+      const email = randomEmail();
+      const password = randomString();
+      const initiativeTitle = randomString();
+      const initiativeContent = randomString();
 
-        cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
-          const projectId = project.body.data.id;
-          cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
-          cy.apiSignup(firstName, lastName, email, password);
-          cy.login(email, password);
-          cy.visit(`/ideas/${ideaTitle}`);
-          cy.wait(3000);
-          cy.get('#e2e-idea-show');
-        });
+      before(() => {
+        cy.apiCreateInitiative({ initiativeTitle, initiativeContent });
+        cy.apiSignup(firstName, lastName, email, password);
       });
 
-      it('has working up and downvote buttons', () => {
-        cy.get('.e2e-vote-controls-desktop').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
-        cy.get('.e2e-vote-controls-desktop').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
+      beforeEach(() => {
+        cy.login(email, password);
+        cy.visit(`/initiatives/${initiativeTitle}`);
+        cy.wait(1000);
+        cy.get('#e2e-initiative-show');
+      });
 
-        // initial upvote & downvote values
-        cy.get('@upvoteBtn').contains('1');
-        cy.get('@downvoteBtn').contains('0');
+      it('adds a vote when you click the upvote button', () => {
+        // get upvote button
+        cy.get('#e2e-initiative-vote-control').find('#e2e-initiative-upvote-button').as('voteButton');
 
-        // add upvote
-        cy.get('@upvoteBtn').click().wait(1000).contains('2');
+        // get initial vote count
+        cy.get('#e2e-initiative-not-voted-vote-count').contains('1 vote');
+        // upvote initiative
+        cy.get('@voteButton').click();
+        cy.wait(1000);
+        cy.get('#e2e-initiative-voted-vote-count').contains('2 votes');
+      });
 
-        // remove upvote
-        cy.get('@upvoteBtn').click().wait(1000).contains('1');
+      it('removes a vote when you click the cancel vote button', () => {
+        // current vote count
+        cy.get('#e2e-initiative-voted-vote-count').contains('2 votes');
 
-        // add downvote
-        cy.get('@downvoteBtn').click().wait(1000).contains('1');
+        cy.get('#e2e-initiative-vote-control').find('#e2e-initiative-cancel-upvote-button').as('cancelVoteButton');
+        cy.get('@cancelVoteButton').click();
+        cy.wait(2500);
 
-        // remove downvote
-        cy.get('@downvoteBtn').click().wait(1000).contains('0');
+        // confirm vote count went down
+        cy.get('#e2e-initiative-not-voted-vote-count').contains('1 vote');
 
-        // add downvote, then upvote
-        cy.get('@downvoteBtn').click().wait(1000);
-        cy.get('@upvoteBtn').click().wait(1000);
-        cy.get('@downvoteBtn').contains('0');
-        cy.get('@upvoteBtn').contains('2');
-        cy.get('@upvoteBtn').click().wait(1000);
       });
     });
 
@@ -113,9 +106,9 @@ describe('Idea show page actions', () => {
 
       beforeEach(() => {
         cy.login(email, password);
-        cy.visit('/ideas/controversial-idea');
+        cy.visit('/initiatives/cleaning-the-sidewalks-party');
         cy.acceptCookies();
-        cy.get('#e2e-idea-show');
+        cy.get('#e2e-initiative-show');
       });
 
       it('shows a working comment input', () => {

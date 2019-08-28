@@ -188,7 +188,7 @@ class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> 
 
           <Description>
             <Body
-              id={initiative.id}
+              postId={initiative.id}
               postType="initiative"
               locale={locale}
               body={initiativeBody}
