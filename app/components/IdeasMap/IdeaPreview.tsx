@@ -186,7 +186,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
       eventEmitter.emit<IOpenPostPageModalEvent>('IdeaPreview', 'cardClick', {
         id: idea.id,
         slug: idea.attributes.slug,
-        type: 'initiative'
+        type: 'idea'
       });
     }
   }

@@ -140,7 +140,7 @@ const Picks = styled.div`
 
 interface State {}
 
-interface InputProps {
+export interface InputProps {
   ideaId: string | null;
   closePreview: () => void;
   handleClickEdit: () => void;
