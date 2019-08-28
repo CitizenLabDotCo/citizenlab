@@ -100,7 +100,6 @@ const TopicsFilter = memo<Props>(({ topics, selectedTopicIds, onChange, classNam
   }, []);
 
   if (!isNilOrError(topics) && topics.length > 0) {
-    console.log(topics);
     return (
       <Container className={className}>
         <Header>
