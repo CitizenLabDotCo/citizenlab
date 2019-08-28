@@ -29,6 +29,7 @@ resource "Comments" do
         @c3 = create(:comment, post: @i2, author: @user, created_at: Time.now)
         @c4 = create(:comment)
         @c5 = create(:comment, post: @i3, author: @user)
+        @c6 = create(:comment, post: @i1)
       end
 
       let(:user_id) { @user.id }
