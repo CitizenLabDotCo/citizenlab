@@ -20,9 +20,6 @@ import messages from './messages';
 import { darken, rgba } from 'polished';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
-// typings
-import { ICommentData } from 'services/comments';
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
