@@ -65,7 +65,7 @@ export default class InitiativeAssignedToYouNotification extends React.PureCompo
       <NotificationWrapper
         linkTo={`/initiatives/${notification.attributes.post_slug}`}
         timing={notification.attributes.created_at}
-        icon="idea2"
+        icon="initiative"
         isRead={!!notification.attributes.read_at}
       >
         {this.getNotificationMessage()}
