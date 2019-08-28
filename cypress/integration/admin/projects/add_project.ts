@@ -1,4 +1,5 @@
 import { get } from 'lodash-es';
+import { randomString } from '../../../support/commands';
 
 describe('Admin: add project', () => {
 
@@ -29,13 +30,15 @@ describe('Admin: add project', () => {
     cy.get('.e2e-admin-add-project').click();
     // go to the project creation form
     cy.location('pathname').should('eq', '/en-GB/admin/projects/new');
+    // check that the page container is loaded
+    cy.get('.e2e-project-general-form');
   });
 
   context('Type: Timeline', () => {
     context('Areas: All areas', () => {
       it('creates a draft project', () => {
-        const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
-        const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
+        const projectTitleEN = randomString();
+        const projectTitleNL = randomString();
 
         // Select 'Draft' publication status
         cy.get('.e2e-projecstatus-draft').click();
@@ -55,8 +58,8 @@ describe('Admin: add project', () => {
       });
 
       it('creates a published project', () => {
-        const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
-        const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
+        const projectTitleEN = randomString();
+        const projectTitleNL = randomString();
 
         // Select 'Published' publication status
         cy.get('.e2e-projecstatus-published').click();
@@ -76,8 +79,8 @@ describe('Admin: add project', () => {
       });
 
       it('creates an archived project', () => {
-        const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
-        const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
+        const projectTitleEN = randomString();
+        const projectTitleNL = randomString();
 
         // Select 'Archived' publication status
         cy.get('.e2e-projecstatus-archived').click();
@@ -99,8 +102,8 @@ describe('Admin: add project', () => {
 
     context('Areas: Selection', () => {
       it('creates a published project with the correct area', () => {
-        const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
-        const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
+        const projectTitleEN = randomString();
+        const projectTitleNL = randomString();
 
         // Select 'Published' publication status
         cy.get('.e2e-projecstatus-published').click();
