@@ -1,5 +1,6 @@
 describe('when logged out', () => {
   beforeEach(() => {
+    cy.wait(1000);
     cy.visit('/initiatives/cleaning-the-sidewalks-party');
     cy.wait(1000);
     cy.get('#e2e-initiative-show');
@@ -26,9 +27,6 @@ describe('when logged out', () => {
     cy.get('#e2e-initiative-posted-by .e2e-author-link').click();
     cy.location('pathname').should('eq', '/en-GB/profile/casey-luettgen');
   });
-  it('shows the initiative image', () => {
-    cy.get('#e2e-initiative-image');
-  });
 
   it('shows the initiative body', () => {
     cy.get('#e2e-initiative-description');
@@ -44,12 +42,10 @@ describe('when logged out', () => {
 
   it('shows the comments correctly', () => {
     // Get parent comment
-    cy.get('#e2e-parent-and-childcomments')
-      .find('.e2e-parentcomment');
+    cy.get('#e2e-parent-and-childcomments').find('.e2e-parentcomment');
 
     // Get child comment
-    cy.get('#e2e-parent-and-childcomments')
-      .find('.e2e-childcomment');
+    cy.get('#e2e-parent-and-childcomments').find('.e2e-childcomment');
   });
 
   it('shows the initiative content footer', () => {
@@ -65,5 +61,8 @@ describe('when logged in as an admin', () => {
     cy.wait(1000);
     cy.get('#e2e-initiative-more-actions').click();
     cy.get('#e2e-initiative-more-actions-menu');
+    cy.get('#e2e-initiative-more-actions-menu button').eq(0).contains('Report as spam');
+    cy.get('#e2e-initiative-more-actions-menu button').eq(1).contains('Edit initiative');
+    cy.get('#e2e-initiative-more-actions-menu button').eq(2).contains('Delete initiative');
   });
 });
