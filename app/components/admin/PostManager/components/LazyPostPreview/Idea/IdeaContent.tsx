@@ -17,7 +17,7 @@ import InfoTooltip from 'components/admin/InfoTooltip';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
-import { Top, Content, Container } from '../';
+import { Top, Content, Container } from '../PostPreview';
 
 // services
 import { deleteIdea } from 'services/ideas';
@@ -140,7 +140,7 @@ const Picks = styled.div`
 
 interface State {}
 
-interface InputProps {
+export interface InputProps {
   ideaId: string | null;
   closePreview: () => void;
   handleClickEdit: () => void;
