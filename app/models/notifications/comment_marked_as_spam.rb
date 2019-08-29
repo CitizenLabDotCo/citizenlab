@@ -15,7 +15,7 @@ module Notifications
       spam_report = activity.item
       initiator_id = spam_report&.user_id
       if spam_report.spam_reportable_type == 'Comment' && initiator_id
-        attributes = [
+        attributes = {
           initiating_user_id: initiator_id,
           spam_report: spam_report,
           comment_id: spam_report.spam_reportable.id,
@@ -23,7 +23,7 @@ module Notifications
           post_type: spam_report.spam_reportable.post_type,
           reason_code: activity.payload['reason_code'],
           other_reason: activity.payload['other_reason'],
-        ]
+        }
         if attributes[:post_type] == 'Idea'
           attributes[:project_id] = comment.post.project_id
         end

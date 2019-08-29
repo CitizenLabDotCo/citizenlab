@@ -14,25 +14,26 @@ module Notifications
 
     def self.make_notifications_on activity
       comment = activity.item
-      initiator_id = comment.author_id
+      initiator = comment.author
       
-      if initiator_id && !(initiator&.admin? || initiator.project_moderator?(comment.post.project.id))
-        attributes = [
-          initiating_user_id: initiator_id,
+      if initiator && !initiator&.admin? 
+        attributes = {
+          initiating_user: initiator,
           comment: comment,
           post_id: comment.post_id,
           post_type: comment.post_type,
-        ]
+        }
         recipients = User.admin
         if attributes[:post_type] == 'Idea'
+          return nil if initiator.project_moderator?(comment.post.project.id)
           attributes[:project_id] = comment.post.project_id
           recipients = recipients.or(User.project_moderator(comment.post.project.id))
         end
         recipients.ids.map do |recipient_id|
-        self.new(
-          **attributes,
-          recipient_id: recipient_id
-        )
+          self.new(
+            **attributes,
+            recipient_id: recipient_id
+          )
         end
       else
         []

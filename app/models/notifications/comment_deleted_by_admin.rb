@@ -22,7 +22,7 @@ module Notifications
       initiator_id = activity.user_id
 
       if recipient_id && (recipient_id != initiator_id)
-        attributes = [
+        attributes = {
           recipient_id: recipient_id,
           initiating_user_id: initiator_id,
           comment_id: comment.id,
@@ -30,7 +30,7 @@ module Notifications
           post_type: comment.post_type,
           reason_code: activity.payload['reason_code'],
           other_reason: activity.payload['other_reason'],
-        ]
+        }
         if attributes[:post_type] == 'Idea'
           attributes[:project_id] = comment.post.project_id
         end
