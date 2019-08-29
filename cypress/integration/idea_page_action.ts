@@ -13,6 +13,10 @@ describe('Idea show page actions', () => {
       cy.get('.e2e-vote-controls-desktop').find('.e2e-login-button');
       cy.get('.e2e-vote-controls-desktop').find('.e2e-register-button');
     });
+
+    after(() => {
+      cy.wait(1000);
+    });
   });
 
   describe('logged in as admin', () => {
@@ -25,14 +29,16 @@ describe('Idea show page actions', () => {
 
     it('saves a new official feedback, shows it and deletes it', () => {
       const officialFeedback = randomString(30);
+
       // input
       cy.get('input').first().type(officialFeedback);
       cy.get('textarea').first().type(officialFeedback);
 
       // save
       cy.get('.e2e-submit-wrapper-button').click();
+      cy.wait(2000);
       cy.get('.e2e-submit-wrapper-button').should('have.class', 'disabled');
-      cy.wait(1000);
+      cy.wait(2000);
 
       cy.get('.e2e-official-feedback-post').contains(officialFeedback);
       cy.get('.e2e-official-feedback-post').contains(officialFeedback);
@@ -126,7 +132,7 @@ describe('Idea show page actions', () => {
           cy.get('.e2e-childcomment-form textarea').first().type(commentBody);
           cy.get('.e2e-submit-childcomment').first().click();
           cy.wait(2000);
-          cy.get('.e2e-parent-and-childcomments').first().get('.e2e-childcomment').last().contains(commentBody);
+          cy.get('#e2e-parent-and-childcomments').get('.e2e-childcomment').last().contains(commentBody);
         });
       });
     });

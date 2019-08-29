@@ -19,7 +19,7 @@ describe('Project overview page', () => {
 
   it('shows all archived projects when the archived filter is selected', () => {
     cy.get('.e2e-filter-selector-publicationstatus').click().wait(500);
-    cy.get('.e2e-projects-filter-archived').click();
+    cy.get('.e2e-sort-item-archived').click();
     cy.wait(1000);
     cy.get('#e2e-projects-list');
     cy.get('.e2e-filter-selector-publicationstatus').contains('Archived projects');

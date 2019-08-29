@@ -17,7 +17,7 @@ const Container = styled.div`
 
 const Content: any = styled(clickOutside)`
   position: absolute;
-  top: ${(props: any) => props.top || '0px'};
+  top: ${(props: any) => parseInt(props.top, 10) || 0}px;
   left: 50%;
   transform-origin: top left;
   z-index: 3;

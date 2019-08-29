@@ -162,6 +162,7 @@ interface InputProps {
   emailSubject?: string;
   emailBody?: string;
   utmParams?: UtmParams;
+  id?: string;
 }
 
 interface DataProps {
@@ -200,7 +201,8 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
       emailBody,
       className,
       intl: { formatMessage },
-      location
+      location,
+      id
     } = this.props;
 
     if (!isNilOrError(tenant)) {
@@ -278,7 +280,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
       ) : null);
 
       return (
-        <Container className={className}>
+        <Container id={id || ''} className={className || ''}>
           <Title location={location}>
             <ShareIcon name="share" />
             {context === 'idea' && <FormattedMessage {...messages.shareThisIdea} />}

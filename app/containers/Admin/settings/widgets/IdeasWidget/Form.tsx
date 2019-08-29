@@ -4,7 +4,7 @@ import { Form, Field, InjectedFormikProps } from 'formik';
 // Components
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import { Section, SubSection, SectionField } from 'components/admin/Section';
-import Error from 'components/UI/Error';
+import { default as ErrorxBox } from 'components/UI/Error';
 import FormikInput from 'components/UI/FormikInput';
 import Label from 'components/UI/Label';
 import Collapse from 'components/admin/Collapse';
@@ -131,7 +131,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                   component={FormikInput}
                   type="number"
                 />
-              {touched.width && <Error
+              {touched.width && <ErrorxBox
                 fieldName="width"
                 apiErrors={errors.width as any}
               />}
@@ -146,7 +146,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                 component={FormikInput}
                 type="number"
               />
-              {touched.height && <Error
+              {touched.height && <ErrorxBox
                 fieldName="height"
                 apiErrors={errors.height as any}
               />}
@@ -161,7 +161,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                 component={FormikInput}
                 type="number"
               />
-              {touched.fontSize && <Error
+              {touched.fontSize && <ErrorxBox
                 fieldName="fontSize"
                 apiErrors={errors.fontSize as any}
               />}
@@ -185,7 +185,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                 name="siteBgColor"
                 component={FormikColorPickerInput}
               />
-              {touched.siteBgColor && <Error
+              {touched.siteBgColor && <ErrorxBox
                 fieldName="siteBgColor"
                 apiErrors={errors.siteBgColor as any}
               />}
@@ -198,7 +198,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                 name="bgColor"
                 component={FormikColorPickerInput}
               />
-              {touched.bgColor && <Error
+              {touched.bgColor && <ErrorxBox
                 fieldName="bgColor"
                 apiErrors={errors.bgColor as any}
               />}
@@ -211,7 +211,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                 name="textColor"
                 component={FormikColorPickerInput}
               />
-              {touched.textColor && <Error
+              {touched.textColor && <ErrorxBox
                 fieldName="textColor"
                 apiErrors={errors.textColor as any}
               />}
@@ -224,7 +224,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                 name="accentColor"
                 component={FormikColorPickerInput}
               />
-              {touched.accentColor && <Error
+              {touched.accentColor && <ErrorxBox
                 fieldName="accentColor"
                 apiErrors={errors.accentColor as any}
               />}
@@ -243,7 +243,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                   values={{ googleFontsLink: <a href="https://fonts.google.com" target="_blank">Google Fonts</a> }}
                 />
               </p>
-              {touched.font && <Error
+              {touched.font && <ErrorxBox
                 fieldName="font"
                 apiErrors={errors.font as any}
               />}
@@ -274,7 +274,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                     />
                   )}
                 </GetProjects>
-                {touched.relativeLink && <Error
+                {touched.relativeLink && <ErrorxBox
                   fieldName="relativeLink"
                   apiErrors={errors.relativeLink as any}
                 />}
@@ -286,7 +286,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                   component={FormikToggle}
                   label={<FormattedMessage {...messages.fieldShowHeader} />}
                 />
-                {touched.showHeader && <Error
+                {touched.showHeader && <ErrorxBox
                   fieldName="showHeader"
                   apiErrors={errors.showHeader as any}
                 />}
@@ -300,7 +300,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                       component={FormikToggle}
                       label={<FormattedMessage {...messages.fieldShowLogo} />}
                     />
-                    {touched.showLogo && <Error
+                    {touched.showLogo && <ErrorxBox
                       fieldName="showLogo"
                       apiErrors={errors.showLogo as any}
                     />}
@@ -314,7 +314,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                       component={FormikInput}
                       type="text"
                     />
-                    {touched.headerText && <Error
+                    {touched.headerText && <ErrorxBox
                       fieldName="headerText"
                       apiErrors={errors.headerText as any}
                     />}
@@ -328,7 +328,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                     component={FormikInput}
                     type="text"
                   />
-                  {touched.headerSubText && <Error
+                  {touched.headerSubText && <ErrorxBox
                     fieldName="headerSubText"
                     apiErrors={errors.headerSubText as any}
                   />}
@@ -345,7 +345,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                   component={FormikToggle}
                   label={<FormattedMessage {...messages.fieldShowFooter} />}
                 />
-                {touched.showFooter && <Error
+                {touched.showFooter && <ErrorxBox
                   fieldName="showFooter"
                   apiErrors={errors.showFooter as any}
                 />}
@@ -362,7 +362,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                       component={FormikInput}
                       type="text"
                     />
-                    {touched.buttonText && <Error
+                    {touched.buttonText && <ErrorxBox
                       fieldName="buttonText"
                       apiErrors={errors.buttonText as any}
                     />}
@@ -432,7 +432,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                 component={FormikInput}
                 type="number"
               />
-              {touched.limit && <Error
+              {touched.limit && <ErrorxBox
                 fieldName="limit"
                 apiErrors={errors.limit as any}
               />}

@@ -16,7 +16,7 @@ jest.mock('components/admin/Pagination', () => 'Pagination');
 
 import PostTable from './';
 
-describe('<PostManager />', () => {
+describe('<PostTable />', () => {
   let onChangeSort: jest.Mock;
   let handleChangeSelection: jest.Mock;
   let onChangePage: jest.Mock;
