@@ -12,7 +12,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
           "handler": [Function],
           "label": <FormattedMessage
             defaultMessage="Edit"
-            id="app.components.IdeasShow.OfficialFeedback.editOfficialFeedbackPost"
+            id="app.components.PostComponents.OfficialFeedback.editOfficialFeedbackPost"
           />,
           "name": "edit",
         },
@@ -20,7 +20,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
           "handler": [Function],
           "label": <FormattedMessage
             defaultMessage="Delete"
-            id="app.components.IdeasShow.OfficialFeedback.deleteOfficialFeedbackPost"
+            id="app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost"
           />,
           "name": "delete",
         },
@@ -28,7 +28,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
     }
     ariaLabel="Show more actions"
   />
-  <WithTheme(QuillEditedContent)>
+  <QuillEditedContent>
     <OfficialFeedbackPost__Body>
       <div
         dangerouslySetInnerHTML={
@@ -59,7 +59,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
       <OfficialFeedbackPost__DateEdited>
         <FormattedMessage
           defaultMessage="Last edited on {date}"
-          id="app.components.IdeasShow.OfficialFeedback.lastEdition"
+          id="app.components.PostComponents.OfficialFeedback.lastEdition"
           values={
             Object {
               "date": <FormattedDate
@@ -73,7 +73,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
         />
       </OfficialFeedbackPost__DateEdited>
     </OfficialFeedbackPost__Footer>
-  </WithTheme(QuillEditedContent)>
+  </QuillEditedContent>
 </OfficialFeedbackPost__PostContainer>
 `;
 
@@ -82,7 +82,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
   className="e2e-official-feedback-post "
   key="feedbackId1"
 >
-  <WithTheme(QuillEditedContent)>
+  <QuillEditedContent>
     <OfficialFeedbackPost__Body>
       <div
         dangerouslySetInnerHTML={
@@ -113,7 +113,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
       <OfficialFeedbackPost__DateEdited>
         <FormattedMessage
           defaultMessage="Last edited on {date}"
-          id="app.components.IdeasShow.OfficialFeedback.lastEdition"
+          id="app.components.PostComponents.OfficialFeedback.lastEdition"
           values={
             Object {
               "date": <FormattedDate
@@ -127,6 +127,6 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
         />
       </OfficialFeedbackPost__DateEdited>
     </OfficialFeedbackPost__Footer>
-  </WithTheme(QuillEditedContent)>
+  </QuillEditedContent>
 </OfficialFeedbackPost__PostContainer>
 `;
