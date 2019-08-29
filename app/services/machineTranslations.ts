@@ -28,3 +28,7 @@ export function machineTranslationByIdeaIdStream(ideaId: string, streamParams: I
 export function machineTranslationByCommentIdStream(commentId: string, streamParams: IStreamParams | null = null) {
   return streams.get<IMachineTranslation>({ apiEndpoint: `${API_PATH}/comments/${commentId}/machine_translation`, ...streamParams });
 }
+
+export function machineTranslationByInitiativeIdStream(initiativeId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IMachineTranslation>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/machine_translation`, ...streamParams });
+}

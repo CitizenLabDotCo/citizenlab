@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import Avatar from 'components/Avatar';
-import Activities from './Activities/Activities';
+import ContentChangeLog from './ContentChangeLog';
 import IdeaPostedBy from './IdeaPostedBy';
 
 // resources
@@ -40,7 +40,7 @@ const TimeAgo = styled.div`
 
 interface InputProps {
   authorId: string | null;
-  ideaCreatedAt: string;
+  ideaPublishedAt: string;
   ideaId: string;
   className?: string;
 }
@@ -51,7 +51,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author, className }) => {
+const IdeaAuthor = memo<Props>(({ ideaId, ideaPublishedAt, authorId, author, className }) => {
   const goToUserProfile = () => {
     if (!isNilOrError(author)) {
       clHistory.push(`/profile/${author.attributes.slug}`);
@@ -70,10 +70,10 @@ const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author, class
       <AuthorMeta>
         <IdeaPostedBy authorId={authorId} />
 
-        {ideaCreatedAt &&
+        {ideaPublishedAt &&
           <TimeAgo>
-            <FormattedRelative value={ideaCreatedAt} />
-            <Activities ideaId={ideaId} />
+            <FormattedRelative value={ideaPublishedAt} />
+            <ContentChangeLog ideaId={ideaId} />
           </TimeAgo>
         }
       </AuthorMeta>

@@ -84,3 +84,11 @@ export function isAdminPage(pathName: string, specificAdminPage?: string) {
 export function stopPropagation(event) {
   event.stopPropagation();
 }
+
+export function stripHtmlTags(str: string | null | undefined) {
+  if ((str === null) || (str === undefined) || (str === '')) {
+    return '';
+  } else {
+    return str.replace(/<\/?(p|div|span|ul|ol|li|br|em|img|strong|a)[^>]{0,}\/?>/g, '');
+  }
+}

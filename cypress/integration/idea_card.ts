@@ -15,25 +15,26 @@ describe('Idea card component', () => {
   let childCommentId: string;
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password).then(userResponse => {
-      userId = userResponse.body.data.id;
-    });
-    cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
+    cy.apiSignup(firstName, lastName, email, password).then((user) => {
+      userId = user.body.data.id;
+      return cy.getProjectBySlug('an-idea-bring-it-to-your-council');
+    }).then((project) => {
       projectId = project.body.data.id;
       return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
     }).then((idea) => {
       ideaId = idea.body.data.id;
-      return cy.apiAddComment(ideaId, commentContent);
+      return cy.apiAddComment(ideaId, 'idea', commentContent);
     }).then((parentComment) => {
       parentCommentId = parentComment.body.data.id;
-      return cy.apiAddComment(ideaId, commentContent, parentCommentId);
+      return cy.apiAddComment(ideaId, 'idea', commentContent, parentCommentId);
     }).then((childComment) => {
       childCommentId = childComment.body.data.id;
-      cy.login(email, password);
     });
   });
 
   beforeEach(() => {
+    cy.login(email, password);
+
     // visit ideas page and sort idea cards by newest first
     cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
 
@@ -41,8 +42,8 @@ describe('Idea card component', () => {
     cy.get('#e2e-ideas-list');
 
     // sort ideas by newest first
-    cy.get('#e2e-ideas-sort-filter').click();
-    cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-new').click();
+    cy.get('#e2e-ideas-sort-dropdown').click();
+    cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
 
     cy.wait(2000);
     cy.get('#e2e-ideas-list');

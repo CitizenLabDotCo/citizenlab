@@ -3,56 +3,46 @@ import { randomString } from '../support/commands';
 describe('Idea Page', () => {
 
   describe('Various Idea Page Components', () => {
-    beforeEach(() => {
+    before(() => {
+      cy.login('admin@citizenlab.co', 'testtest');
       cy.visit('/ideas/controversial-idea');
-      cy.wait(1000);
-      cy.get('#e2e-idea-show');
-      cy.acceptCookies();
+      cy.wait(3000);
     });
 
-    it('shows the page', () => {
+    it('shows the correct content', () => {
+      // shows the page container
       cy.get('#e2e-idea-show');
-    });
 
-    it('shows the home page link with correct href', () => {
+      // shows the page content container
+      cy.get('#e2e-idea-show-page-content');
+
+      // shows the home page link with correct href
       cy.get('#e2e-home-page-link').should('have.attr', 'href').and('include', '/en-GB/');
-    });
 
-    it('shows the link to the project page with correct href', () => {
-      cy.get('#e2e-project-link').should('have.attr', 'href').and('include', '/en-GB/projects/an-idea-bring-it-to-your-council');
-    });
+      // shows the link to the project page with correct href
+      cy.get('#e2e-idea-other-link').should('have.attr', 'href').and('include', '/en-GB/projects/an-idea-bring-it-to-your-council');
 
-    it('shows the idea Title', () => {
-      cy.get('.e2e-ideatitle');
-    });
+      // shows the idea Title
+      cy.get('#e2e-idea-title');
 
-    it('shows the idea Image', () => {
-      cy.get('.e2e-ideaImage');
-    });
+      // shows the idea Image
+      cy.get('#e2e-idea-image');
 
-    it('shows idea body', () => {
-      cy.get('#e2e-idea-show').contains('With a lot of comments');
-    });
+      // shows the idea body
+      cy.get('#e2e-idea-description');
 
-    it('shows a link to author profile', () => {
-      cy.get('.e2e-idea-author .e2e-author-link').click();
-      cy.location('pathname').should('eq', '/en-GB/profile/casey-luettgen');
-    });
+      // shows a link to author profile
+      cy.get('.e2e-idea-author .e2e-author-link').should('have.attr', 'href').and('include', '/en-GB/profile/casey-luettgen');
 
-    it('shows the comments content correctly', () => {
+      // shows the comments content correctly
       cy.get('.e2e-comments-container').contains('Great idea, we stand behind you! I\'ll come riding a bicycle');
       cy.get('.e2e-comments-container').contains('I\'ve never seen you riding a bicycle..');
       cy.get('.e2e-comments-container').contains('No no no no no');
-    });
 
-    it('shows the idea content footer', () => {
+      // shows the idea content footer'
       cy.get('#e2e-idea-content-footer');
-    });
 
-    it('has the More Options menu (when logged in as an admin) and opens it', () => {
-      cy.login('admin@citizenlab.co', 'testtest');
-      cy.visit('/ideas/controversial-idea');
-      cy.wait(1000);
+      // has the More Options menu and opens it
       cy.get('#e2e-idea-more-actions').click();
       cy.get('#e2e-idea-more-actions-menu');
     });
@@ -76,6 +66,7 @@ describe('Idea Page', () => {
       }).then((idea) => {
         ideaId = idea.body.data.id;
         cy.visit(`/ideas/${ideaTitle}`);
+        cy.get('#e2e-idea-show-page-content');
         cy.wait(1000);
       });
     });
@@ -107,6 +98,7 @@ describe('Idea Page', () => {
       }).then((idea) => {
         ideaId = idea.body.data.id;
         cy.visit(`/ideas/${ideaTitle}`);
+        cy.get('#e2e-idea-show-page-content');
         cy.wait(1000);
       });
     });

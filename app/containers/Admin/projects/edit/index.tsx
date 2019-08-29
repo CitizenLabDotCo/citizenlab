@@ -177,7 +177,6 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
                 icon="eye"
                 id="to-project"
                 linkTo={`/projects/${project.attributes.slug}`}
-                circularCorners={false}
               >
                 <FormattedMessage {...messages.viewPublicProject} />
               </Button>

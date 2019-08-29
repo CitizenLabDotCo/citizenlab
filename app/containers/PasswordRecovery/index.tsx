@@ -202,7 +202,6 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
               processing={processing}
               text={resetPassword}
               onClick={this.handleOnSubmit}
-              circularCorners={false}
               className="e2e-submit-reset"
             />
 

@@ -1,36 +1,112 @@
 import React from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { adopt } from 'react-adopt';
 import styled from 'styled-components';
-import { IUserData } from 'services/users';
-import { get } from 'lodash-es';
+import { get, isString } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
-const User = styled.span`
+// styles
+import { darken } from 'polished';
+import { colors } from 'utils/styleUtils';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
+// resources
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
+
+// components
+import Link from 'utils/cl-router/Link';
+
+const Name: any = styled.span<{color?: string}>`
+  color: ${({ color, theme }) => color || theme.colorText};
+  font-weight: ${({ emphasize }: any) => emphasize ? '600' : 'normal'};
+  text-decoration: none;
   hyphens: auto;
+
+  &.linkToProfile {
+    transition: all 100ms ease-out;
+
+    &:hover {
+      cursor: pointer;
+      color: ${({ color, theme }) => darken(0.15, color || theme.colorText)};
+      text-decoration: underline;
+    }
+
+    &.canModerate {
+      color: ${colors.clRedError};
+
+      &:hover {
+        color: ${darken(0.15, colors.clRedError)};
+      }
+    }
+  }
 
   &.deleted-user {
     font-style: italic;
   }
 `;
 
-interface Props {
-  user: IUserData | null;
-  hideLastName?: boolean;
-  className?: string;
+interface DataProps {
+  user: GetUserChildProps;
 }
 
-export default React.memo<Props>(({ user, className, hideLastName }) => {
+interface InputProps {
+  userId: string | null;
+  hideLastName?: boolean;
+  className?: string;
+  linkToProfile?: boolean;
+  emphasize?: boolean;
+  canModerate?: boolean;
+  color?: string;
+}
 
-  const firstName = get(user, 'attributes.first_name', '');
-  const lastName = get(user, 'attributes.last_name', '');
+interface Props extends InputProps, DataProps {}
+
+const UserName = React.memo<Props>(({ user, className, hideLastName, linkToProfile, emphasize, canModerate, color }) => {
+  if (!isNilOrError(user)) {
+    // Make sure to have a fall-back for both null and undefined
+    const firstName = isString(get(user, 'attributes.first_name')) ? get(user, 'attributes.first_name') : '';
+    const lastName = isString(get(user, 'attributes.last_name')) ? get(user, 'attributes.last_name') : '';
+    const nameComponent = (
+      <Name
+        emphasize={emphasize}
+        className={
+          `${className || ''}
+          ${linkToProfile ? 'linkToProfile' : ''}
+          ${canModerate ? 'canModerate' : ''}
+          e2e-username`
+        }
+        color={color}
+      >
+        {`${firstName} ${hideLastName ? '' : lastName}`}
+      </Name>
+    );
+
+    if (linkToProfile) {
+      return (
+        <Link to={`/profile/${user.attributes.slug}`} className="e2e-author-link">
+          {nameComponent}
+        </Link>
+      );
+    }
+
+    return nameComponent;
+  }
 
   return (
-    <User className={`${className} ${!user ? 'deleted-user' : ''} e2e-username`}>
-      {user ? (
-        `${firstName} ${!hideLastName && lastName ? lastName : ''}`
-      ) : (
-        <FormattedMessage {...messages.deletedUser} />
-      )}
-    </User>
+    <Name color={color} className={`${className} deleted-user e2e-username`}>
+      <FormattedMessage {...messages.deletedUser} />
+    </Name>
   );
 });
+
+const Data = adopt<DataProps, InputProps>({
+  user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <UserName {...inputProps} {...dataProps} />}
+  </Data>
+);

@@ -125,10 +125,38 @@ export default function createRoutes() {
           })
         },
         {
-          path: 'projects/:slug/ideas/new',
-          name: 'IdeasNewPage2',
+          path: 'initiatives/edit/:initiativeId',
+          name: 'InitiativesEditPage',
           component: Loadable({
-            loader: () => import('containers/IdeasNewPage2'),
+            loader: () => import('containers/InitiativesEditPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
+        },
+        {
+          path: 'initiatives/new',
+          name: 'initiativesNewPage',
+          component: Loadable({
+            loader: () => import('containers/InitiativesNewPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
+        },
+        // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
+        {
+          path: 'initiatives/:slug',
+          name: 'initiativesShow',
+          component: Loadable({
+            loader: () => import('containers/InitiativesShowPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 10
+          })
+        },
+        {
+          path: 'projects/:slug/ideas/new',
+          name: 'IdeasNewPage',
+          component: Loadable({
+            loader: () => import('containers/IdeasNewPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           })

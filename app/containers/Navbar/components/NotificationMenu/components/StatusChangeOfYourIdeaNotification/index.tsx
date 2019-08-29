@@ -50,7 +50,7 @@ const Data = adopt<DataProps, { ideaId: string }>({
 });
 
 export default (inputProps: InputProps) => {
-  const ideaId: string | null = get(inputProps, 'notification.relationships.idea.data.id', null);
+  const ideaId: string | null = get(inputProps, 'notification.relationships.post.data.id', null);
 
   if (ideaId === null) return null;
 

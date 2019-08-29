@@ -19,7 +19,7 @@ exports[`<UserHeader /> renders correctly on some user without a bio 1`] = `
 <UserHeader__Container>
   <UserHeader__UserAvatar>
     <WrappedAvatar
-      size="105px"
+      size="150px"
       userId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
     />
   </UserHeader__UserAvatar>

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
 import styled from 'styled-components';
+import { adopt } from 'react-adopt';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -17,33 +17,30 @@ import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-
 // services
-import { deleteIdea } from 'services/ideas';
+import { deleteIdea, IIdeaData } from 'services/ideas';
 
 // router
 import clHistory from 'utils/cl-router/history';
 import { fontSizes } from 'utils/styleUtils';
 
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
 const Container = styled.div``;
 
 const MoreActionsMenuWrapper = styled.div``;
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
-}
-
 interface InputProps {
-  ideaId: string;
+  idea: IIdeaData;
   id: string;
   className?: string;
 }
 
-interface Props extends DataProps, InputProps {}
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   spamModalVisible: boolean;
@@ -67,7 +64,7 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
   }
 
   onEditIdea = () => {
-    clHistory.push(`/ideas/edit/${this.props.ideaId}`);
+    clHistory.push(`/ideas/edit/${this.props.idea.id}`);
   }
 
   onDeleteIdea = (ideaId: string) => () => {
@@ -80,7 +77,7 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
   }
 
   render() {
-    const { authUser, idea, ideaId, id, className } = this.props;
+    const { idea, id, className, authUser } = this.props;
     const { spamModalVisible } = this.state;
 
     return !isNilOrError(authUser) && !isNilOrError(idea) ? (
@@ -99,7 +96,7 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
                 },
                 {
                   label: <FormattedMessage {...messages.deleteIdea} />,
-                  handler: this.onDeleteIdea(ideaId),
+                  handler: this.onDeleteIdea(idea.id),
                 }
               ]}
               label={<FormattedMessage {...messages.moreOptions} />}
@@ -125,7 +122,7 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
           header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
         >
           <SpamReportForm
-            resourceId={ideaId}
+            resourceId={idea.id}
             resourceType="ideas"
           />
         </Modal>
@@ -136,12 +133,10 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
   }
 
 }
-
 const IdeaMoreActionsWithHOCs = injectIntl(IdeaMoreActions);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
 });
 
 export default (inputProps: InputProps) => (

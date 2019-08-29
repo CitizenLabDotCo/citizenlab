@@ -20,7 +20,7 @@ const Container = styled.div``;
 
 const InputWrapper = styled.div`
   &:not(.last) {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -94,7 +94,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
 
   render() {
     const { locale, currentTenant } = this.state;
-    const { shownLocale, label, placeholder, valueMultiloc, errorMultiloc, ariaLabel  } = this.props;
+    const { shownLocale, label, placeholder, valueMultiloc, errorMultiloc, ariaLabel } = this.props;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;

@@ -178,6 +178,7 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
       return (
         <Container id="e2e-signup-step2">
           <CustomFieldsForm
+            id="e2e-custom-signup-form"
             formData={authUser.data.attributes.custom_field_values}
             onSubmit={this.handleCustomFieldsFormOnSubmit}
           />
@@ -185,12 +186,11 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
           <FormElement>
             <ButtonWrapper>
               <Button
-                className="e2e-signup-step2-button"
+                id="e2e-signup-step2-button"
                 size="1"
                 processing={processing}
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmitButtonClick}
-                circularCorners={false}
               />
               {!hasRequiredFields &&
                 <SkipButton

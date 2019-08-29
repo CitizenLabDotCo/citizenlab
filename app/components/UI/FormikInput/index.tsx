@@ -11,14 +11,13 @@ class FormikInput extends React.Component<FieldProps & VanillaInputProps, State>
   }
 
   render() {
-    const { name, value, onBlur } = this.props.field;
+    const { name, value } = this.props.field;
     return (
       <Input
         {...this.props}
         name={name}
         value={value}
         onChange={this.handleOnChange}
-        onBlur={onBlur}
       />
     );
   }

@@ -6,13 +6,14 @@ import { IPhaseFileData } from 'services/phaseFiles';
 import { IEventFileData } from 'services/eventFiles';
 import { IPageFileData } from 'services/pageFiles';
 import { IIdeaFileData } from 'services/ideaFiles';
+import { IInitiativeFileData } from 'services/initiativeFiles';
 
 const Container = styled.div`
   margin-top: 25px;
 `;
 
 interface Props {
-  files: IProjectFileData[] | IPhaseFileData[] | IEventFileData[] | IPageFileData[] | IIdeaFileData[];
+  files: IProjectFileData[] | IPhaseFileData[] | IEventFileData[] | IPageFileData[] | IIdeaFileData[] | IInitiativeFileData[];
   className?: string;
 }
 

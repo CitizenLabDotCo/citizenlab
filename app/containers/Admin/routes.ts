@@ -3,7 +3,6 @@
 // See http://blog.mxstbr.com/2016/01/react-apps-with-pages for more information
 // about the code splitting business
 import dashboardRoutes from './dashboard/routes';
-import ideasRoutes from './ideas/routes';
 import initiativesRoutes from './initiatives/routes';
 import usersRoutes from './users/routes';
 import invitationsRoutes from './invitations/routes';
@@ -41,7 +40,7 @@ const isUserAuthorized = (nextState, replace) => {
       } else if (isModerator(authUser)) {
         replace(`${urlLocale && `/${urlLocale}`}/`);
       } else {
-        replace(`${urlLocale && `/${urlLocale}`}/sign-in/`);
+        replace(`${urlLocale && `/${urlLocale}`}/sign-in`);
       }
     }
   });
@@ -64,7 +63,6 @@ export default () => ({
   },
   childRoutes: [
     dashboardRoutes(),
-    ideasRoutes(),
     initiativesRoutes(),
     usersRoutes(),
     projectsRoutes(),
@@ -77,6 +75,14 @@ export default () => ({
     pagesRoutes(),
     invitationsRoutes(),
     emailsRoutes(),
+    {
+      path: 'ideas',
+      component: Loadable({
+        loader: () => import('containers/Admin/ideas'),
+        loading: LoadableLoadingAdmin,
+        delay: 500
+      }),
+    },
     {
       path: 'favicon',
       component: Loadable({

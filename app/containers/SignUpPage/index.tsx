@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import { get, isString, isEmpty } from 'lodash-es';
+import { get } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -112,7 +112,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
   static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
     const previousPathName = (nextProps.previousPathName ? removeLocale(nextProps.previousPathName).pathname : null);
-    const goBackToUrl = (isString(previousPathName) && !isEmpty(previousPathName) && previousPathName !== '/sign-in' ? previousPathName : '/');
+    const goBackToUrl = (previousPathName && !(previousPathName.endsWith('/sign-up') || previousPathName.endsWith('/sign-in')) ? previousPathName : '/');
     return { goBackToUrl };
   }
 

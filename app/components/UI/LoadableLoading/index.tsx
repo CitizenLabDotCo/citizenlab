@@ -3,6 +3,9 @@ import FullPageSpinner from '../FullPageSpinner';
 import { LoadingComponentProps } from 'react-loadable';
 
 export const LoadableLoadingCitizen = (props: LoadingComponentProps) => {
+  if (process.env.NODE_ENV === 'development' && props.error) {
+    console.log(props.error);
+  }
   if (props.pastDelay) {
     return <FullPageSpinner />;
   }

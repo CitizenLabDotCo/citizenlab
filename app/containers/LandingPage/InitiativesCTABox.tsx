@@ -65,14 +65,12 @@ const Container = styled.div`
 `;
 
 const BackgroundIcon = styled(Icon)`
+  fill: rgba(4, 77, 108, 0.03);
   height: 500px;
   width: auto;
   position: absolute;
   top: -200px;
   right: -150px;
-  .cl-icon-primary {
-    fill: rgba(4, 77, 108, 0.03);
-  }
 `;
 const NewLabel = styled.div`
  position: absolute;
@@ -165,7 +163,7 @@ const InitiativesCTABox = withTheme(memo((props: Props) => {
           fontWeight="500"
           padding="13px 22px"
           bgColor={theme.colorMain}
-          linkTo="/projects/an-idea-bring-it-to-your-council/ideas/new"
+          linkTo="/initiatives/new"
           textColor="#FFF"
           text={<FormattedMessage {...messages.startInitiative} />}
           className="e2e-initiatives-landing-CTA-new"
