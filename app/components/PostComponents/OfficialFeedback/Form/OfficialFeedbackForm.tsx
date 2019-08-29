@@ -104,7 +104,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
 
     return (
       <Form>
-        <Section>
+        <Section id="official-feedback-form">
           <StyledFormLocaleSwitcher
             onLocaleChange={this.onLocaleChange}
             selectedLocale={selectedLocale}

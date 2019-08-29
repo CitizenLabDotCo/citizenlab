@@ -186,11 +186,11 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
           }
 
           <QuillEditedContent>
-            <Body>
+            <Body className="e2e-official-feedback-post-body">
               <div dangerouslySetInnerHTML={{ __html: this.getPostBodyText(body_multiloc, locale, tenantLocales) }} />
             </Body>
             <Footer>
-              <Author>
+              <Author className="e2e-official-feedback-post-author">
                 <T value={author_multiloc} />
               </Author>
 
