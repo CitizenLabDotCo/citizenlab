@@ -24,7 +24,10 @@ export default class OfficialFeedbackNew extends PureComponent<Props, State> {
   handleSubmit = async (values: FormValues, { setErrors, setSubmitting, setStatus, resetForm }) => {
     const formattedMentionsBodyMultiloc = formatMentionsBodyMultiloc(values.body_multiloc);
     const { postId, postType } = this.props;
-    const feedbackValues = { ...values, ...{ body_multiloc: formattedMentionsBodyMultiloc } };
+    const feedbackValues = {
+      ...(values || {}),
+      body_multiloc: formattedMentionsBodyMultiloc
+    };
 
     setSubmitting(true);
 
