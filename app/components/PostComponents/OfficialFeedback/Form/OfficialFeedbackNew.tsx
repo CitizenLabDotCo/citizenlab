@@ -29,12 +29,12 @@ export default class OfficialFeedbackNew extends PureComponent<Props, State> {
     setSubmitting(true);
 
     try {
-      switch (postType) {
-        case 'idea':
-          await addOfficialFeedbackToIdea(postId, feedbackValues);
-        case 'initiative':
-          await addOfficialFeedbackToInitiative(postId, feedbackValues);
+      if (postType === 'idea') {
+        await addOfficialFeedbackToIdea(postId, feedbackValues);
+      } else if (postType === 'initiative') {
+        await addOfficialFeedbackToInitiative(postId, feedbackValues);
       }
+
       setSubmitting(false);
       resetForm();
       setStatus('success');
@@ -45,16 +45,16 @@ export default class OfficialFeedbackNew extends PureComponent<Props, State> {
       } else {
         setStatus('error');
       }
+
       setSubmitting(false);
     }
 
     // analytics
-    switch (postType) {
-      case 'idea':
-        trackEventByName(tracks.officialFeedbackGiven, { location: isAdminPage(location.pathname) ? 'Admin/idea manager' : 'Citizen/idea page' });
-      case 'initiative':
-        trackEventByName(tracks.officialFeedbackGiven, { location: isAdminPage(location.pathname) ? 'Admin/initiative manager' : 'Citizen/initiative page' });
-      }
+    if (postType === 'idea') {
+      trackEventByName(tracks.officialFeedbackGiven, { location: isAdminPage(location.pathname) ? 'Admin/idea manager' : 'Citizen/idea page' });
+    } else if (postType === 'initiative') {
+      trackEventByName(tracks.officialFeedbackGiven, { location: isAdminPage(location.pathname) ? 'Admin/initiative manager' : 'Citizen/initiative page' });
+    }
   }
 
   renderFn = (props) => {

@@ -32,17 +32,18 @@ describe('Initiative show page actions', () => {
 
       // save
       cy.get('.e2e-submit-wrapper-button').click();
+      cy.wait(2000);
       cy.get('.e2e-submit-wrapper-button').should('have.class', 'disabled');
-      cy.wait(1000);
+      cy.wait(2000);
 
+      cy.get('.e2e-official-feedback-post');
       cy.get('.e2e-official-feedback-post').contains(officialFeedback);
       cy.get('.e2e-official-feedback-post').contains(officialFeedback);
 
       // delete
       cy.get('.e2e-official-feedback-post').find('button').first().click();
       cy.get('.e2e-official-feedback-post').find('.e2e-action-delete').click();
-
-      cy.wait(1000);
+      cy.wait(2000);
       cy.get('.e2e-official-feedback-post').should('not.exist');
     });
   });
