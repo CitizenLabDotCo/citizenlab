@@ -41,6 +41,7 @@ const ActionBar = memo<Props>(({ project, onTranslateIdea, translateButtonClicke
     <ActionBarLayout
       leftContent={!isNilOrError(project) ? (
         <BreadCrumbs
+          postType="idea"
           links={[{
             text: project.attributes.title_multiloc,
             to: `/projects/${project.attributes.slug}`

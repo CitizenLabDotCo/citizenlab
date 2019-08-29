@@ -31,9 +31,11 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 const Menu = styled.div`
   flex: 0 0 auto;
   width: 260px;
+
   @media print {
     display: none;
   }
+
   ${media.smallerThan1200px`
     width: 80px;
   `}
@@ -84,30 +86,34 @@ const Spacer = styled.div`
 
 const GetStartedLink = styled(Link)`
   flex: 0 0 auto;
-  width: 230px;
+  width: 210px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 10px;
+  padding-left: 5px;
   padding-right: 15px;
-  padding-bottom: 5px;
-  padding-top: 5px;
+  padding-bottom: 1px;
   margin-bottom: 25px;
   cursor: pointer;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${lighten(.05, colors.adminMenuBackground)};
+  transition: all 100ms ease-out;
 
   &:hover {
     background: ${lighten(.1, colors.adminMenuBackground)};
+
     ${Text} {
       color: #fff;
-    };
+    }
   }
+
   ${media.smallerThan1200px`
-    width: 70px;
+    width: 56px;
+    padding-right: 5px;
+
     ${Text} {
       display: none;
-    };
+    }
   `}
 `;
 

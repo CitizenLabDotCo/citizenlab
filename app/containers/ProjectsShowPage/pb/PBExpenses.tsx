@@ -39,7 +39,7 @@ const Container = styled.div``;
 const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: strech;
+  align-items: stretch;
   padding: 30px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;

@@ -62,7 +62,7 @@ const TimeAgo = styled.div`
   font-weight: 300;
   font-size: ${fontSizes.small}px;
   line-height: 17px;
-  margin-top: 2px;
+  margin-top: 3px;
 `;
 
 export interface InputProps {

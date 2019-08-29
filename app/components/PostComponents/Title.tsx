@@ -35,7 +35,7 @@ const Title = styled.h1<{ color: string | undefined, align: 'left' | 'center' }>
 `;
 
 interface Props {
-  id: string;
+  postId: string;
   postType: 'idea' | 'initiative';
   title: string;
   locale?: Locale;
@@ -53,14 +53,14 @@ const parseTranslation = (translation: GetMachineTranslationChildProps, title) =
   return title;
 };
 
-const PostTitle = memo<Props>(({ id, postType, title, locale, translateButtonClicked, className, color, align = 'center' }) => {
+const PostTitle = memo<Props>(({ postId, postType, title, locale, translateButtonClicked, className, color, align = 'center' }) => {
   return (
     <Container className={className} align={align}>
       {(locale && translateButtonClicked) ? (
         <GetMachineTranslation
           attributeName="title_multiloc"
           localeTo={locale}
-          id={id}
+          id={postId}
           context={postType}
         >
           {translation => (
@@ -70,7 +70,13 @@ const PostTitle = memo<Props>(({ id, postType, title, locale, translateButtonCli
           )}
         </GetMachineTranslation>
       ) : (
-        <Title color={color} align={align} className={`e2e-${postType}title`}>{title}</Title>
+        <Title
+          id={`e2e-${postType}-title`}
+          color={color}
+          align={align}
+        >
+          {title}
+        </Title>
       )}
     </Container>
   );
