@@ -1,4 +1,4 @@
-import { IRelationship, Multiloc } from 'typings';
+import { IRelationship, Multiloc, ILinks } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
@@ -7,14 +7,6 @@ const apiEndpoint = `${API_PATH}/campaigns`;
 export interface ICampaignsData {
   data: ICampaignData[];
   links: ILinks;
-}
-
-interface ILinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
 }
 
 export interface ICampaignData {

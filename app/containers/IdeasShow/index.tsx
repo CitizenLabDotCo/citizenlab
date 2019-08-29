@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { has, isString, sortBy, last, get, isEmpty, isUndefined } from 'lodash-es';
-import { Subscription, combineLatest, of } from 'rxjs';
+import { sortBy, last, get, isUndefined } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -9,36 +8,35 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // router
-import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
-import IdeaMap from './IdeaMapLoadable';
+import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
+import Topics from 'components/PostComponents/Topics';
+import Title from 'components/PostComponents/Title';
+import Body from 'components/PostComponents/Body';
+import ContentFooter from 'components/PostComponents/ContentFooter';
+import Image from 'components/PostComponents/Image';
+import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
 import FileAttachments from 'components/UI/FileAttachments';
-import IdeaSharingModalContent from './IdeaSharingModalContent';
+import SharingModalContent from 'components/PostComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
-import IdeaTopics from './IdeaTopics';
-import IdeaTitle from './IdeaTitle';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
-import IdeaFooter from './IdeaFooter';
+import Footer from 'components/PostComponents/Footer';
 import Spinner from 'components/UI/Spinner';
-import OfficialFeedback from './OfficialFeedback';
-import IdeaBody from './IdeaBody';
-import IdeaContentFooter from './IdeaContentFooter';
 import ActionBar from './ActionBar';
-import TranslateButton from './TranslateButton';
+import TranslateButton from 'components/PostComponents/TranslateButton';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
@@ -50,10 +48,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
-
-// services
-import { updateIdea } from 'services/ideas';
-import { authUserStream } from 'services/auth';
+import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -67,7 +62,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, ideaPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -112,7 +107,7 @@ const Container = styled.div`
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: ${ideaPageContentMaxWidth};
+  max-width: ${postPageContentMaxWidth};
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -132,20 +127,6 @@ const IdeaContainer = styled.div`
     padding-top: 25px;
     padding-left: 15px;
     padding-right: 15px;
-  `}
-`;
-
-const StyledIdeaTopics = styled(IdeaTopics)`
-  padding-right: ${rightColumnWidthDesktop + columnsGapDesktop}px;
-  margin-bottom: 10px;
-
-  ${media.tablet`
-    padding-right: ${rightColumnWidthTablet + columnsGapTablet}px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    padding-right: 0px;
-    margin-bottom: 5px;
   `}
 `;
 
@@ -193,14 +174,6 @@ const IdeaHeader = styled.div`
   `}
 `;
 
-const IdeaImage = styled.img`
-  width: 100%;
-  height: auto;
-  margin-bottom: 25px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${colors.separation};
-`;
-
 const StyledMobileIdeaPostedBy = styled(IdeaPostedBy)`
   margin-top: 4px;
 
@@ -226,7 +199,7 @@ const StyledIdeaAuthor = styled(IdeaAuthor)`
   `}
 `;
 
-const StyledIdeaMap = styled(IdeaMap)`
+const StyledLoadableDropdownMap = styled(LoadableDropdownMap)`
   margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
@@ -333,6 +306,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
+  postOfficialFeedbackPermission: GetPermissionChildProps;
 }
 
 interface InputProps {
@@ -359,9 +333,8 @@ interface State {
   actionInfos: IActionInfos | null;
 }
 
-export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
   initialState: State;
-  subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
@@ -375,45 +348,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     };
     this.initialState = initialState;
     this.state = initialState;
-    this.subscriptions = [];
   }
 
   componentDidMount() {
-    const authUser$ = authUserStream().observable;
-    const query = clHistory.getCurrentLocation().query;
-    const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
-    const newIdea$ = urlHasNewIdeaQueryParam ? of({
-      id: get(query, 'new_idea_id'),
-      publish: get(query, 'publish')
-    }) : of(null);
+    const newIdeaId = get(this.props.location.query, 'new_idea_id');
 
     this.setLoaded();
 
-    this.subscriptions = [
-      combineLatest(
-        authUser$,
-        newIdea$
-      ).subscribe(async ([authUser, newIdea]) => {
-        if (newIdea && isString(newIdea.id) && !isEmpty(newIdea.id)) {
-          if (authUser) {
-            setTimeout(() => {
-              this.setState({ ideaIdForSocialSharing: newIdea.id });
-            }, 2000);
+    if (newIdeaId) {
+      setTimeout(() => {
+        this.setState({ ideaIdForSocialSharing: newIdeaId });
+      }, 1500);
 
-            if (newIdea.publish === 'true') {
-              await updateIdea(newIdea.id, { author_id: authUser.data.id, publication_status: 'published' });
-
-              streams.fetchAllWith({
-                dataId: [newIdea.id],
-                apiEndpoint: [`${API_PATH}/ideas`]
-              });
-            }
-          }
-
-          window.history.replaceState(null, '', window.location.pathname);
-        }
-      })
-    ];
+      window.history.replaceState(null, '', window.location.pathname);
+    }
   }
 
   componentDidUpdate() {
@@ -470,10 +418,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     return stateToUpdate;
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
   setLoaded = () => {
     const { loaded } = this.state;
     const { idea, ideaImages, project, officialFeedbacks } = this.props;
@@ -511,15 +455,17 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       ideaImages,
       authUser,
       windowSize,
-      className
+      className,
+      postOfficialFeedbackPermission
     } = this.props;
     const { loaded, ideaIdForSocialSharing, translateButtonClicked, actionInfos } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
     if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
+      // If the user deletes their profile, authorId can be null
       const authorId: string | null = get(idea, 'relationships.author.data.id', null);
-      const ideaCreatedAt = idea.attributes.created_at;
+      const ideaPublishedAt = idea.attributes.published_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
       // If you're not an admin/mod, statusId can be null
@@ -574,14 +520,18 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               }
             </FeatureFlag>
 
-            <StyledIdeaTopics topicIds={topicIds} />
-
-            <Content>
+            <Content id="e2e-idea-show-page-content">
               <LeftColumn>
+                <Topics
+                  postType="idea"
+                  topicIds={topicIds}
+                />
+
                 <IdeaHeader>
-                  <IdeaTitle
-                    ideaId={ideaId}
-                    ideaTitle={ideaTitle}
+                  <Title
+                    postType="idea"
+                    postId={ideaId}
+                    title={ideaTitle}
                     locale={locale}
                     translateButtonClicked={translateButtonClicked}
                   />
@@ -599,30 +549,30 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <StyledIdeaAuthor
                     ideaId={ideaId}
                     authorId={authorId}
-                    ideaCreatedAt={ideaCreatedAt}
+                    ideaPublishedAt={ideaPublishedAt}
                   />
                 }
 
                 {ideaImageLarge &&
-                  <IdeaImage
+                  <Image
                     src={ideaImageLarge}
                     alt={formatMessage(messages.imageAltText, { ideaTitle })}
-                    className="e2e-ideaImage"
+                    id="e2e-idea-image"
                   />
                 }
 
                 {ideaGeoPosition && ideaAddress &&
-                  <StyledIdeaMap
+                  <StyledLoadableDropdownMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
-                    id={ideaId}
                   />
                 }
 
-                <IdeaBody
-                  ideaId={ideaId}
+                <Body
+                  postType="idea"
+                  postId={ideaId}
                   locale={locale}
-                  ideaBody={ideaBody}
+                  body={ideaBody}
                   translateButtonClicked={translateButtonClicked}
                 />
 
@@ -647,12 +597,15 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 <StyledOfficialFeedback
-                  ideaId={ideaId}
+                  postId={ideaId}
+                  postType="idea"
+                  permissionToPost={postOfficialFeedbackPermission}
                 />
 
-                <IdeaContentFooter
-                  ideaId={ideaId}
-                  ideaCreatedAt={ideaCreatedAt}
+                <ContentFooter
+                  postType="idea"
+                  id={ideaId}
+                  publishedAt={ideaPublishedAt}
                   commentsCount={idea.attributes.comments_count}
                 />
 
@@ -728,7 +681,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             </Content>
           </IdeaContainer>
 
-          {loaded && <IdeaFooter ideaId={ideaId} />}
+          {loaded && <Footer postId={ideaId} postType="idea" />}
         </>
       );
     }
@@ -757,35 +710,41 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         </CSSTransition>
 
         <FeatureFlag name="ideaflow_social_sharing">
-          <Modal
-            opened={!!ideaIdForSocialSharing}
-            close={this.closeIdeaSocialSharingModal}
-            hasSkipButton={true}
-            skipText={<FormattedMessage {...messages.skipSharing} />}
-            label={formatMessage(messages.modalShareLabel)}
-          >
-            {ideaIdForSocialSharing &&
-              <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
-            }
-          </Modal>
-        </FeatureFlag>
+            <Modal
+              opened={!!ideaIdForSocialSharing}
+              close={this.closeIdeaSocialSharingModal}
+              hasSkipButton={true}
+              skipText={<FormattedMessage {...messages.skipSharing} />}
+              label={formatMessage(messages.modalShareLabel)}
+            >
+              {ideaIdForSocialSharing &&
+                <SharingModalContent
+                  postType="idea"
+                  postId={ideaIdForSocialSharing}
+                  title={formatMessage(messages.shareTitle)}
+                  subtitle={formatMessage(messages.shareSubtitle)}
+                />
+              }
+            </Modal>
+          </FeatureFlag>
       </>
     );
   }
 }
 
-const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl<Props & InjectedLocalized>(IdeasShow));
+const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl(withRouter(IdeasShow)));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser/>,
-  windowSize: <GetWindowSize debounce={50} />,
+  windowSize: <GetWindowSize />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
   phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>,
-  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks ideaId={ideaId}>{render}</GetOfficialFeedbacks>
+  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>,
+  postOfficialFeedbackPermission: ({ project, render }) => <GetPermission item={!isNilOrError(project) ? project : null} action="moderate" >{render}</GetPermission>
 });
 
 export default (inputProps: InputProps) => (

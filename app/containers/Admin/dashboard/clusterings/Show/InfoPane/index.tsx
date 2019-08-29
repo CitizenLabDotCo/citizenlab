@@ -39,7 +39,7 @@ const TabbedNav = styled.nav`
   border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
   padding-left: 30px;
   display: flex;
-  align-items: strech;
+  align-items: stretch;
   border: solid 1px ${colors.separation};
   border-bottom: none;
 `;

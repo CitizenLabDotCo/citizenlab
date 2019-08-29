@@ -332,3 +332,11 @@ export function votesByBirthyearStream(streamParams: IStreamParams | null = null
 export function votesByDomicileStream(streamParams: IStreamParams | null = null) {
   return streams.get<IVotesByDomicile>({ apiEndpoint: `${apiEndpoint}/votes_by_domicile`, ...streamParams });
 }
+
+export interface IInitiativesCount {
+  count: number;
+}
+
+export function initiativesCount(streamParams: IStreamParams | null = null) {
+  return streams.get<IInitiativesCount>({ apiEndpoint: `${apiEndpoint}/initiatives_count`, ...streamParams });
+}

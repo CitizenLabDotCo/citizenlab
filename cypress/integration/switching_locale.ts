@@ -1,6 +1,6 @@
 describe('Locale switcher', () => {
   beforeEach(() => {
-    cy.visit('/');
+    cy.goToLandingPage();
   });
 
   it('shows the en-GB version of the page by default', () => {
@@ -19,7 +19,7 @@ describe('Locale switcher', () => {
     cy.get('.e2e-langage-dropdown-toggle').click();
     cy.get('.e2e-langage-nl-BE').click();
     cy.location('pathname').should('eq', '/nl-BE/');
-    cy.visit('/');
+    cy.goToLandingPage();
     cy.location('pathname').should('eq', '/nl-BE/');
     cy.visit('/en-GB/');
     cy.location('pathname').should('eq', '/nl-BE/');

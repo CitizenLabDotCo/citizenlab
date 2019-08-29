@@ -21,7 +21,7 @@ export default class GetWindowSize extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    debounce: 0
+    debounce: 50
   };
 
   constructor(props: Props) {

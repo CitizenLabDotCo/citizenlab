@@ -139,6 +139,17 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
           </NavigationItem>
         </FeatureFlag>
 
+        <FeatureFlag name="initiatives">
+          <NavigationItem to="/initiatives" className={secondUrlSegment === 'initiatives' ? 'active' : ''}>
+            <NavigationIconWrapper>
+              <NavigationIcon name="initiatives" />
+            </NavigationIconWrapper>
+            <NavigationLabel>
+              <FormattedMessage {...messages.mobilePageInitiatives} />
+            </NavigationLabel>
+          </NavigationItem>
+        </FeatureFlag>
+
       </Container>
     );
   }

@@ -70,9 +70,10 @@ const InnerContainer = styled.div`
   }
 `;
 
-export interface IIdeaCardClickEvent {
-  ideaId: string;
-  ideaSlug: string;
+export interface IOpenPostPageModalEvent {
+  id: string;
+  slug: string;
+  type: 'idea' | 'initiative';
 }
 
 type Props = {};
@@ -81,14 +82,15 @@ type State = {
   previousPathname: string | null;
   tenant: ITenant | null;
   authUser: IUser | null;
-  ideaId: string | null;
-  ideaSlug: string | null;
+  modalId: string | null;
+  modalSlug: string | null;
+  modalType: 'idea' | 'initiative' | null;
   visible: boolean;
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
 };
 
-const IdeaPageFullscreenModal = lazy(() => import('./IdeaPageFullscreenModal'));
+const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 class App extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
@@ -100,8 +102,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       previousPathname: null,
       tenant: null,
       authUser: null,
-      ideaId: null,
-      ideaSlug: null,
+      modalId: null,
+      modalSlug: null,
+      modalType: null,
       visible: true,
       userDeletedModalOpened: false,
       userActuallyDeleted: false
@@ -120,7 +123,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       const nextPathname = newLocation.pathname;
       const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
 
-      this.setState({ previousPathname });
+      this.setState((state) => ({
+        previousPathname: !(previousPathname.endsWith('/sign-up') || previousPathname.endsWith('/sign-in')) ? previousPathname : state.previousPathname
+      }));
 
       trackPage(newLocation.pathname);
 
@@ -174,16 +179,13 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         }
       }),
 
-      eventEmitter.observeEvent<IIdeaCardClickEvent>('ideaCardClick').subscribe(({ eventValue }) => {
-        const { ideaId, ideaSlug } = eventValue;
-
-        if (ideaId) {
-          this.openIdeaPageModal(ideaId, ideaSlug);
-        }
+      eventEmitter.observeEvent<IOpenPostPageModalEvent>('cardClick').subscribe(({ eventValue }) => {
+        const { id, slug, type } = eventValue;
+        this.openPostPageModal(id, slug, type);
       }),
 
       eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
-        this.closeIdeaPageModal();
+        this.closePostPageModal();
       }),
 
       eventEmitter.observeEvent('tryAndDeleteProfile').subscribe(() => {
@@ -203,12 +205,20 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  openIdeaPageModal = (ideaId: string, ideaSlug: string) => {
-    this.setState({ ideaId, ideaSlug });
+  openPostPageModal = (id: string, slug: string, type: 'idea' | 'initiative') => {
+    this.setState({
+      modalId: id,
+      modalSlug: slug,
+      modalType: type
+    });
   }
 
-  closeIdeaPageModal = () => {
-    this.setState({ ideaId: null, ideaSlug: null });
+  closePostPageModal = () => {
+    this.setState({
+      modalId: null,
+      modalSlug: null,
+      modalType: null
+    });
   }
 
   closeUserDeletedModal = () => {
@@ -220,8 +230,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const {
       previousPathname,
       tenant,
-      ideaId,
-      ideaSlug,
+      modalId,
+      modalSlug,
+      modalType,
       visible,
       userDeletedModalOpened,
       userActuallyDeleted
@@ -242,7 +253,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <IdeaPageFullscreenModal ideaId={ideaId} ideaSlug={ideaSlug} close={this.closeIdeaPageModal} />
+                      <PostPageFullscreenModal
+                        type={modalType}
+                        id={modalId}
+                        slug={modalSlug}
+                        close={this.closePostPageModal}
+                      />
                     </Suspense>
                   </ErrorBoundary>
 

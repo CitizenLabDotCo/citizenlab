@@ -99,7 +99,7 @@ export class GroupCreationStep1 extends React.PureComponent<Props & InjectedIntl
             <FormattedMessage {...messages.step1TypeDescriptionNormal} />
           </GroupDescription>
           <MoreInfoLink href={formattedLink} target="_blank" ><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
-          <Step2Button className="e2e-create-normal-group-button" style="cl-blue" onClick={this.createStep2Handler('manual')} circularCorners={false}>
+          <Step2Button className="e2e-create-normal-group-button" style="cl-blue" onClick={this.createStep2Handler('manual')}>
             <FormattedMessage {...messages.step1CreateButtonNormal} />
           </Step2Button>
         </GroupType>
@@ -112,7 +112,7 @@ export class GroupCreationStep1 extends React.PureComponent<Props & InjectedIntl
             <FormattedMessage {...messages.step1TypeDescriptionSmart} />
           </GroupDescription>
           <MoreInfoLink href={formattedLink} target="_blank" ><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
-          <Step2Button className="e2e-create-rules-group-button" style="cl-blue" onClick={this.createStep2Handler('rules')} circularCorners={false}>
+          <Step2Button className="e2e-create-rules-group-button" style="cl-blue" onClick={this.createStep2Handler('rules')}>
             <FormattedMessage {...messages.step1CreateButtonSmart} />
           </Step2Button>
         </GroupType>

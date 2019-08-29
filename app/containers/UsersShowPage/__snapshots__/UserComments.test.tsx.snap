@@ -1,19 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<UserComments /> lets reducer splits the array returned  by the back-end into arrays of comments belonging to the same idea 1`] = `
-Array [
-  Array [
-    "idea1",
-    "idea1",
-    "idea1",
-  ],
-  Array [
-    "idea2",
-    "idea2",
-  ],
-]
-`;
-
 exports[`<UserComments /> renders correctly when empty 1`] = `
 <UserComments__MessageContainer>
   <FormattedMessage
@@ -45,8 +31,8 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
 <UserComments__Container
   className="e2e-profile-comments"
 >
-  <WrappedIdeaComments
-    commentsForIdea={
+  <WrappedPostComments
+    comments={
       Array [
         Object {
           "attributes": Object {
@@ -68,15 +54,15 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
                 "type": "user",
               },
             },
-            "idea": Object {
+            "parent": Object {
+              "data": null,
+            },
+            "post": Object {
               "data": Object {
                 "id": "idea1",
                 "type": "idea",
               },
             },
-            "parent": Object {
-              "data": null,
-            },
             "user_vote": Object {
               "data": null,
             },
@@ -85,11 +71,12 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
         },
       ]
     }
-    ideaId="idea1"
-    key="commentId"
+    key="idea1"
+    postId="idea1"
+    postType="idea"
   />
-  <WrappedIdeaComments
-    commentsForIdea={
+  <WrappedPostComments
+    comments={
       Array [
         Object {
           "attributes": Object {
@@ -111,14 +98,14 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
                 "type": "user",
               },
             },
-            "idea": Object {
+            "parent": Object {
+              "data": null,
+            },
+            "post": Object {
               "data": Object {
                 "id": "idea2",
                 "type": "idea",
               },
-            },
-            "parent": Object {
-              "data": null,
             },
             "user_vote": Object {
               "data": null,
@@ -146,14 +133,14 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
                 "type": "user",
               },
             },
-            "idea": Object {
+            "parent": Object {
+              "data": null,
+            },
+            "post": Object {
               "data": Object {
                 "id": "idea2",
                 "type": "idea",
               },
-            },
-            "parent": Object {
-              "data": null,
             },
             "user_vote": Object {
               "data": null,
@@ -163,8 +150,9 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
         },
       ]
     }
-    ideaId="idea2"
-    key="commentId"
+    key="idea2"
+    postId="idea2"
+    postType="idea"
   />
 </UserComments__Container>
 `;

@@ -3,10 +3,11 @@ import { get, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
-import { IOfficialFeedbacks, officialFeedbacksForIdeaStream } from 'services/officialFeedback';
+import { IOfficialFeedbacks, officialFeedbacksForIdeaStream, officialFeedbacksForInitiativeStream } from 'services/officialFeedback';
 
 export interface InputProps {
-  ideaId: string | null;
+  postId: string | null;
+  postType: 'idea' | 'initiative';
 }
 
 type children = (renderProps: GetOfficialFeedbacksChildProps) => JSX.Element | null;
@@ -28,7 +29,7 @@ interface State {
 
 export default class GetOfficialFeedbacks extends React.Component<Props, State> {
   private initialState: State;
-  private ideaId$: BehaviorSubject<string | null>;
+  private postId$: BehaviorSubject<string | null>;
   private pageSize$: BehaviorSubject<number>;
   private subscriptions: Subscription[];
 
@@ -42,18 +43,19 @@ export default class GetOfficialFeedbacks extends React.Component<Props, State> 
     };
     this.initialState = initialState;
     this.state = initialState;
-    this.ideaId$ = new BehaviorSubject(props.ideaId);
+    this.postId$ = new BehaviorSubject(props.postId);
     this.pageSize$ = new BehaviorSubject(1);
     this.subscriptions = [];
   }
 
   componentDidMount() {
+    const { postType } = this.props;
     this.subscriptions = [
-      this.ideaId$.pipe(
+      this.postId$.pipe(
         distinctUntilChanged(),
-        filter(ideaId => isString(ideaId)),
+        filter(postId => isString(postId)),
         tap(() => this.setState(this.initialState)),
-        switchMap((ideaId: string) => {
+        switchMap((postId: string) => {
           return this.pageSize$.pipe(
             distinctUntilChanged(),
             switchMap((pageSize) => {
@@ -68,7 +70,12 @@ export default class GetOfficialFeedbacks extends React.Component<Props, State> 
                 loadingMore: isLoadingMore,
               });
 
-              return officialFeedbacksForIdeaStream(ideaId, { queryParameters }).observable;
+              switch (postType) {
+                case 'idea':
+                  return officialFeedbacksForIdeaStream(postId, { queryParameters }).observable;
+                case 'initiative':
+                  return officialFeedbacksForInitiativeStream(postId, { queryParameters }).observable;
+              }
             })
           );
         })
@@ -88,9 +95,9 @@ export default class GetOfficialFeedbacks extends React.Component<Props, State> 
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.ideaId !== prevProps.ideaId) {
+    if (this.props.postId !== prevProps.postId) {
       this.pageSize$.next(1);
-      this.ideaId$.next(this.props.ideaId);
+      this.postId$.next(this.props.postId);
     }
   }
 

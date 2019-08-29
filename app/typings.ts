@@ -24,12 +24,22 @@ export interface ITheme {
   };
 }
 
+export interface ILinks {
+  self: string;
+  first: string;
+  prev: string;
+  next: string;
+  last: string;
+}
+
 export interface UploadFile extends File {
   filename: string;
   base64: string;
   url: string;
   id?: string;
   remote: boolean;
+  extension?: string;
+  error?: string[];
 }
 
 export interface IOption {

@@ -18,36 +18,29 @@ import { hasCustomFields } from 'utils/customFields';
 import { getJwt, decode } from 'utils/auth/jwt';
 
 // components
-import LabelWithTooltip from './LabelWithTooltip';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFileObservable } from 'utils/fileTools';
-import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
+import { SectionField } from 'components/admin/Section';
+import { FormSection, FormLabel, FormSectionTitle } from 'components/UI/FormComponents';
 import CustomFieldsForm from 'components/CustomFieldsForm';
 import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
 import QuillEditor from 'components/UI/QuillEditor';
-import ProfileSection from './ProfileSection';
 
 // i18n
 import { appLocalePairs, API_PATH } from 'containers/App/constants';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // styling
-import styled from 'styled-components';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { hideVisually } from 'polished';
 
 // typings
 import { IOption, UploadFile, CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-
-const HiddenLabel = styled.span`
-  ${hideVisually() as any}
-`;
 
 // Types
 interface InputProps {
@@ -243,35 +236,30 @@ class ProfileForm extends PureComponent<Props, State> {
     const usingFranceConnect = !!this.usingFranceConnect();
 
     return (
-      <ProfileSection>
+      <FormSection>
         <form className="e2e-profile-edit-form">
-          <SectionTitle><FormattedMessage {...messages.h1} /></SectionTitle>
-          <SectionSubtitle><FormattedMessage {...messages.h1sub} /></SectionSubtitle>
+          <FormSectionTitle message={messages.h1} subtitleMessage={messages.h1sub}/>
 
           <SectionField>
             {/* Wrapping image dropzone with a label for accesibility */}
-            <label htmlFor="images-dropzone">
-              <HiddenLabel>
-                <FormattedMessage {...messages.imageDropzonePlaceholder} />
-              </HiddenLabel>
-              <ImagesDropzone
-                id="images-dropzone"
-                images={this.state.avatar}
-                imagePreviewRatio={1}
-                maxImagePreviewWidth="160px"
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                maxImageFileSize={5000000}
-                maxNumberOfImages={1}
-                onAdd={handleAvatarOnAdd}
-                onRemove={handleAvatarOnRemove}
-                imageRadius="50%"
-              />
-            </label>
+            <FormLabel thin labelMessage={messages.imageDropzonePlaceholder} hidden />
+            <ImagesDropzone
+              id="images-dropzone"
+              images={this.state.avatar}
+              imagePreviewRatio={1}
+              maxImagePreviewWidth="160px"
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              maxImageFileSize={5000000}
+              maxNumberOfImages={1}
+              onAdd={handleAvatarOnAdd}
+              onRemove={handleAvatarOnRemove}
+              imageRadius="50%"
+            />
             <Error apiErrors={errors.avatar} />
           </SectionField>
 
           <SectionField>
-            <LabelWithTooltip htmlFor="firstName" translateId="firstNames" />
+            <FormLabel thin htmlFor="firstName" labelMessage={messages.firstNames} />
             <Input
               type="text"
               name="first_name"
@@ -285,7 +273,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <LabelWithTooltip htmlFor="lastName" translateId="lastName" />
+            <FormLabel thin htmlFor="lastName" labelMessage={messages.lastName} />
             <Input
               type="text"
               name="last_name"
@@ -299,7 +287,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <LabelWithTooltip htmlFor="email" translateId="email" />
+            <FormLabel thin htmlFor="email" labelMessage={messages.email} />
             <Input
               type="email"
               name="email"
@@ -312,7 +300,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <LabelWithTooltip translateId="bio" />
+            <FormLabel thin labelMessage={messages.bio} />
             <QuillEditor
               id="bio_multiloc"
               noImages
@@ -328,7 +316,7 @@ class ProfileForm extends PureComponent<Props, State> {
 
           {!usingFranceConnect &&
             <SectionField>
-              <LabelWithTooltip htmlFor="password" translateId="password" />
+              <FormLabel thin htmlFor="password" labelMessage={messages.password} />
               <Input
                 type="password"
                 name="password"
@@ -342,7 +330,7 @@ class ProfileForm extends PureComponent<Props, State> {
           }
 
           <SectionField>
-            <LabelWithTooltip htmlFor="language" translateId="language" />
+            <FormLabel thin htmlFor="language" labelMessage={messages.language} />
             <Select
               inputId="language"
               onChange={createChangeHandler('locale')}
@@ -375,7 +363,7 @@ class ProfileForm extends PureComponent<Props, State> {
             messageError: messages.messageError,
           }}
         />
-      </ProfileSection>
+      </FormSection>
     );
   }
 

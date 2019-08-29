@@ -6,13 +6,13 @@ import Icon, { Props as IconProps } from 'components/UI/Icon';
 
 interface Props {
   text: JSX.Element | string;
-  color: keyof typeof colors;
+  color: keyof typeof colors | string;
   icon?: IconProps['name'];
 }
 
 const Container: any = styled.div`
   height: 28px;
-  color: ${(props: Props) => colors[props.color]};
+  color: ${(props: Props) => colors[props.color] || props.color};
   font-size: ${fontSizes.xs}px;
   font-weight: 500;
   line-height: ${fontSizes.xs}px;
@@ -22,7 +22,7 @@ const Container: any = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${(props: Props) => rgba(colors[props.color], .15)};
+  background: ${(props: Props) => rgba(colors[props.color] || props.color, .15)};
   padding-left: 10px;
   padding-right: 10px;
 `;

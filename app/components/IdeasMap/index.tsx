@@ -1,21 +1,21 @@
-// Libs
-import React from 'react';
+import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import Leaflet from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
-// Services & utils
+// Utils
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // Components
-import Map from 'components/Map';
+import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
-import IdeaBox from './IdeaBox';
-import IdeaButton from './IdeaButton';
+import IdeaPreview from './IdeaPreview';
+import IdeaAddButton from './IdeaAddButton';
 
-// Injectors
+// Resources
 import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'resources/GetIdeaMarkers';
 
 // i18n
@@ -29,52 +29,32 @@ import { media } from 'utils/styleUtils';
 // Typing
 import { IGeotaggedIdeaData } from 'services/ideas';
 
-const timeout = 40000;
-
-const StyledWarning = styled(Warning)`
-  margin-bottom: 10px;
-`;
-
-const MapWrapper = styled.div`
-  height: 400px;
-  display: flex;
-  align-items: stretch;
-  margin-bottom: 2rem;
-
-  ${media.biggerThanPhone`
-    height: 600px;
-  `}
-
+const Container = styled.div`
   > .create-idea-wrapper {
     display: none;
   }
 `;
 
-const StyledIdeaBox = styled(IdeaBox)`
-  flex: 0 0 400px;
-
-  ${media.smallerThanMaxTablet`
-    flex: 0 0 40%;
-  `}
-
-  ${media.smallerThanMinTablet`
-    flex: 0 0 80%;
-  `}
+const StyledWarning = styled(Warning)`
+  margin-bottom: 10px;
 `;
 
 const StyledMap = styled(Map)`
-  flex: 1;
-  height: 100%;
-  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  height: 600px;
 
-  ${media.biggerThanPhone`
-    flex-basis: 60%;
+  ${media.smallerThanMaxTablet`
+    height: 500px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    height: 400px;
   `}
 `;
 
 interface InputProps {
   projectIds?: string[] | null;
   phaseId?: string | null;
+  className?: string;
 }
 
 interface DataProps {
@@ -85,21 +65,35 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   selectedIdeaId: string | null;
+  points: Point[];
 }
 
-export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
-  private createIdeaButton: HTMLDivElement;
+export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
+  private addIdeaButtonElement: HTMLElement;
   private savedPosition: Leaflet.LatLng | null = null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       selectedIdeaId: null,
+      points: []
     };
   }
 
+  componentDidMount() {
+    const points = this.getPoints(this.props.ideaMarkers);
+    this.setState({ points });
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.ideaMarkers !== this.props.ideaMarkers) {
+      const points = this.getPoints(this.props.ideaMarkers);
+      this.setState({ points });
+    }
+  }
+
   getPoints = (ideas: IGeotaggedIdeaData[] | null | undefined | Error) => {
-    const ideaPoints: any[] = [];
+    const ideaPoints: Point[] = [];
 
     if (!isNilOrError(ideas) && ideas.length > 0) {
       ideas.forEach((idea) => {
@@ -130,11 +124,11 @@ export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State
   onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
     this.savedPosition = position;
 
-    if (this.props.projectIds) {
+    if (this.props.projectIds && this.addIdeaButtonElement) {
       Leaflet
         .popup()
         .setLatLng(position)
-        .setContent(this.createIdeaButton)
+        .setContent(this.addIdeaButtonElement)
         .openOn(map);
     }
 
@@ -144,6 +138,7 @@ export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State
   redirectToIdeaCreation = () => {
     if (this.savedPosition && this.props.params && this.props.params.slug) {
       trackEventByName(tracks.createIdeaFromMap, { position: this.savedPosition, projectSlug: this.props.params.slug });
+
       clHistory.push({
         pathname: `/projects/${this.props.params.slug}/ideas/new`,
         query: { position: `[${this.savedPosition.lat}, ${this.savedPosition.lng}]` }
@@ -153,53 +148,53 @@ export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State
 
   bindIdeaCreationButton = (element: HTMLDivElement) => {
     if (element) {
-      this.createIdeaButton = element;
+      this.addIdeaButtonElement = element;
     }
   }
 
+  noIdeasWithLocationMessage = <FormattedMessage {...messages.noIdeasWithLocation} />;
+
   render() {
-    const { phaseId, projectIds, ideaMarkers } = this.props;
-    const { selectedIdeaId } = this.state;
-    const points = this.getPoints(ideaMarkers);
+    const { phaseId, projectIds, ideaMarkers, className } = this.props;
+    const { selectedIdeaId, points } = this.state;
 
     return (
-      <>
+      <Container className={className}>
         {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 &&
-          <StyledWarning text={<FormattedMessage {...messages.noIdeasWithLocation} />} />
+          <StyledWarning text={this.noIdeasWithLocationMessage} />
         }
 
-        <MapWrapper>
-          {selectedIdeaId &&
-            <StyledIdeaBox
-              ideaId={selectedIdeaId}
-              onClose={this.deselectIdea}
-            />
-          }
+        <StyledMap
+          points={points}
+          onMarkerClick={this.toggleIdea}
+          onMapClick={this.onMapClick}
+          fitBounds={true}
+          boxContent={selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null}
+          onBoxClose={this.deselectIdea}
+        />
 
-          <StyledMap
-            points={points}
-            onMarkerClick={this.toggleIdea}
-            onMapClick={this.onMapClick}
-          />
-          {projectIds && projectIds.length === 1 &&
-            <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
-              <IdeaButton
-                projectId={projectIds[0]}
-                phaseId={phaseId}
-                onClick={this.redirectToIdeaCreation}
-              />
-            </div>
-          }
-        </MapWrapper>
-      </>
+        {projectIds && projectIds.length === 1 &&
+          <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
+            <IdeaAddButton
+              projectId={projectIds[0]}
+              phaseId={phaseId}
+              onClick={this.redirectToIdeaCreation}
+            />
+          </div>
+        }
+      </Container>
     );
   }
 }
 
+const Data = adopt<DataProps, InputProps>({
+  ideaMarkers: ({ projectIds, phaseId, render }) => <GetIdeaMarkers projectIds={projectIds} phaseId={phaseId}>{render}</GetIdeaMarkers>
+});
+
 const IdeasMapWithRouter = withRouter(IdeasMap);
 
 export default (inputProps: InputProps) => (
-  <GetIdeaMarkers projectIds={inputProps.projectIds} phaseId={inputProps.phaseId}>
-    {ideaMarkers => <IdeasMapWithRouter {...inputProps} ideaMarkers={ideaMarkers} />}
-  </GetIdeaMarkers>
+  <Data {...inputProps}>
+    {dataProps => <IdeasMapWithRouter {...inputProps} {...dataProps} />}
+  </Data>
 );

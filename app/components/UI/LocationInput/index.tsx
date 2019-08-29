@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
-import PlacesAutocomplete, { geocodeByPlaceId } from 'react-places-autocomplete';
+import PlacesAutocomplete, { geocodeByPlaceId, } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
-const LocationInputWrapper = styled.div`
+const LocationInputWrapper: any = styled.div`
   width: 100%;
 
   input {
     width: 100%;
-    color: #333;
+    color: ${(props: any) => props.inCitizen ? props.theme.colorText : '#000'};
     font-size: ${fontSizes.base}px;
     line-height: 26px;
     font-weight: 400;
@@ -34,7 +34,7 @@ const LocationInputWrapper = styled.div`
   }
 `;
 
-const StyledAutocompleteItem = styled.div`
+const StyledAutocompleteItem: any = styled.div`
   width: 100%;
   color: #999;
   font-size: ${fontSizes.base}px;
@@ -44,8 +44,8 @@ const StyledAutocompleteItem = styled.div`
   z-index: 2;
 
   strong {
-    color: #000;
     font-weight: 600;
+    color: ${(props: any) => props.inCitizen ? props.theme.colorText : '#000'};
   }
 
   &:hover {
@@ -53,12 +53,14 @@ const StyledAutocompleteItem = styled.div`
   }
 `;
 
-type Props = {
+export type Props = {
   id?: string;
   value: string;
   placeholder: string;
   onChange: (arg: string) => void;
   className?: string;
+  onBlur?: () => void;
+  inCitizen?: boolean; // If true, component uses textColor instead of black.
 };
 
 type State = {};
@@ -68,17 +70,16 @@ export default class LocationInput extends PureComponent<Props, State> {
     super(props as any);
   }
 
-  handleOnChange = (value: string) => {
-    this.props.onChange(value);
-  }
-
   handleSelect = async (adress: string, placeId: string) => {
-    this.props.onChange(adress);
+    const { onBlur, onChange } = this.props;
+
+    onChange(adress);
+    onBlur && onBlur();
     return geocodeByPlaceId(placeId).then(results => results);
   }
 
   render() {
-    const { id, className } = this.props;
+    const { id, className, onChange, inCitizen } = this.props;
     let { value, placeholder } = this.props;
 
     value = (value || '');
@@ -87,7 +88,7 @@ export default class LocationInput extends PureComponent<Props, State> {
     const inputProps = {
       value,
       placeholder,
-      onChange: this.handleOnChange,
+      onChange,
       type: 'search',
       autoFocus: false,
     };
@@ -109,13 +110,13 @@ export default class LocationInput extends PureComponent<Props, State> {
     };
 
     const AutocompleteItem = ({ formattedSuggestion }) => (
-      <StyledAutocompleteItem className="autocompleteItemInner">
+      <StyledAutocompleteItem className="autocompleteItemInner" inCitizen={inCitizen}>
         <strong>{formattedSuggestion.mainText}</strong>{' '}{formattedSuggestion.secondaryText}
       </StyledAutocompleteItem>
     );
 
     return (
-      <LocationInputWrapper className={className}>
+      <LocationInputWrapper className={className} inCitizen={inCitizen}>
         <PlacesAutocomplete
           id={id}
           highlightFirstSuggestion={true}

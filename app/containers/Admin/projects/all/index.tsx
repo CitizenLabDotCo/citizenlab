@@ -152,7 +152,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
       const row = (project: IProjectData) => {
         return (
-          <RowContent>
+          <RowContent className="e2e-admin-projects-list-item">
             <RowContentInner className="expand primary">
               <RowTitle value={project.attributes.title_multiloc} />
               {project.attributes.visible_to === 'groups' &&
@@ -189,7 +189,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
               className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] ? project.attributes.title_multiloc['en-GB'] : ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
               linkTo={`/admin/projects/${project.id}/edit`}
               style="secondary"
-              circularCorners={false}
               icon="edit"
             >
               <FormattedMessage {...messages.editButtonLabel} />
@@ -231,6 +230,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                     items={publishedProjects}
                     onReorder={this.handleReorder}
                     className="e2e-admin-projects-list"
+                    id="e2e-admin-published-projects-list"
                   >
                     {({ itemsList, handleDragRow, handleDropRow }) => (
                       itemsList.map((project: IProjectData, index: number) => (
@@ -382,7 +382,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
         <PageWrapper>
           <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
             <ListHeader>
-              <Button className="e2e-admin-add-project" linkTo="/admin/projects/new" style="cl-blue" circularCorners={false} icon="plus-circle">
+              <Button className="e2e-admin-add-project" linkTo="/admin/projects/new" style="cl-blue" icon="plus-circle">
                 <FormattedMessage {...messages.addNewProject} />
               </Button>
             </ListHeader>
