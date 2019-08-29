@@ -25,26 +25,18 @@ describe('Initiative show page actions', () => {
     });
 
     it('saves a new official feedback, shows it and deletes it', () => {
-      const officialFeedback = randomString(30);
+      const officialFeedbackBody = randomString(30);
+      const officialFeedbackAuthor = randomString();
+
       // input
-      cy.get('input').first().type(officialFeedback);
-      cy.get('textarea').first().type(officialFeedback);
+      cy.get('#official-feedback-form textarea').type(officialFeedbackBody);
+      cy.get('#official-feedback-form input').type(officialFeedbackAuthor);
 
       // save
       cy.get('.e2e-submit-wrapper-button').click();
       cy.wait(2000);
-      cy.get('.e2e-submit-wrapper-button').should('have.class', 'disabled');
-      cy.wait(2000);
-
-      cy.get('.e2e-official-feedback-post');
-      cy.get('.e2e-official-feedback-post').contains(officialFeedback);
-      cy.get('.e2e-official-feedback-post').contains(officialFeedback);
-
-      // delete
-      cy.get('.e2e-official-feedback-post').find('button').first().click();
-      cy.get('.e2e-official-feedback-post').find('.e2e-action-delete').click();
-      cy.wait(2000);
-      cy.get('.e2e-official-feedback-post').should('not.exist');
+      cy.get('.e2e-official-feedback-post-body').contains(officialFeedbackBody);
+      cy.get('.e2e-official-feedback-post-author').contains(officialFeedbackAuthor);
     });
   });
 
