@@ -17,7 +17,7 @@ import { isError } from 'util';
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import Button from 'components/UI/Button';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
-import { Content, Top, Container } from '../';
+import { Content, Top, Container } from '../PostPreview';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -26,7 +26,7 @@ import { colors } from 'utils/styleUtils';
 
 import { Locale } from 'typings';
 
-interface InputProps {
+export interface InputProps {
   initiativeId: string;
   goBack: () => void;
 }
