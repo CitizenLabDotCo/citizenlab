@@ -225,7 +225,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             }
 
             <StyledTitle
-              id={ideaId}
+              postId={ideaId}
               postType="idea"
               title={ideaTitle}
             />
@@ -241,7 +241,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                 />
 
                 <StyledBody
-                  id={ideaId}
+                  postId={ideaId}
                   postType="idea"
                   body={localize(idea.attributes.body_multiloc)}
                 />

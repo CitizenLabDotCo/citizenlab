@@ -460,7 +460,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 />
               </MobileMoreActionContainer>
               <Title
-                id={initiativeId}
+                postId={initiativeId}
                 postType="initiative"
                 title={initiativeTitle}
                 locale={locale}
@@ -501,13 +501,13 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
             <Content>
               <LeftColumn>
-                <Topics topicIds={topicIds} />
+                <Topics postType="initiative" topicIds={topicIds} />
 
                 <OnlyOnDesktop>
                   <InitiativeHeader>
                     <Title
                       postType="initiative"
-                      id={initiativeId}
+                      postId={initiativeId}
                       title={initiativeTitle}
                       locale={locale}
                       translateButtonClicked={translateButtonClicked}
@@ -526,7 +526,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   <Image
                     src={initiativeImageLarge}
                     alt={formatMessage(messages.imageAltText, { initiativeTitle })}
-                    className="e2e-initiativeImage"
+                    id="e2e-initiative-image"
                   />
                 }
 
@@ -538,7 +538,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 }
 
                 <Body
-                  id={initiativeId}
+                  postId={initiativeId}
                   postType="initiative"
                   locale={locale}
                   body={initiativeBody}
@@ -582,9 +582,11 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                     <VoteControl
                       initiativeId={initiative.id}
                       onScrollToOfficialFeedback={this.onScrollToOfficialFeedback}
+                      id="e2e-initiative-vote-control"
                     />
                     <SharingWrapper>
                       <Sharing
+                        id="e2e-initiative-sharing-component"
                         context="initiative"
                         url={initiativeUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, { initiativeTitle })}

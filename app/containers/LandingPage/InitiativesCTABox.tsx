@@ -65,14 +65,12 @@ const Container = styled.div`
 `;
 
 const BackgroundIcon = styled(Icon)`
+  fill: rgba(4, 77, 108, 0.03);
   height: 500px;
   width: auto;
   position: absolute;
   top: -200px;
   right: -150px;
-  .cl-icon-primary {
-    fill: rgba(4, 77, 108, 0.03);
-  }
 `;
 const NewLabel = styled.div`
  position: absolute;

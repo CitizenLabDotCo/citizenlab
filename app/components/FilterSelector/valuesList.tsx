@@ -127,13 +127,12 @@ export default class ValuesList extends PureComponent<Props, State> {
         mobileRight={mobileRight}
         opened={opened}
         content={(
-          <List className="e2e-filter-selector-dropdown-list">
+          <List className="e2e-sort-items">
             {values && values.map((entry, index) => {
               const checked = includes(selected, entry.value);
               const last = (index === values.length - 1);
               const classNames = [
-                'e2e-filter-list-item',
-                `e2e-projects-filter-${entry.value !== '-new' ? entry.value : 'old'}`,
+                `e2e-sort-item-${entry.value !== '-new' ? entry.value : 'old'}`,
                 !multiple && checked ? 'selected' : null,
                 last ? 'last' : null,
               ].filter(item => !isNil(item)).join(' ');

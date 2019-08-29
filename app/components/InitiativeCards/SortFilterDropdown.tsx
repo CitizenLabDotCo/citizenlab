@@ -41,7 +41,7 @@ class SortFilterDropdown extends PureComponent<Props, State> {
 
     return (
       <FilterSelector
-        id="e2e-initiatives-sort-filter"
+        id="e2e-initiatives-sort-dropdown"
         title={<FormattedMessage {...messages.sortTitle} />}
         name="sort"
         selected={selectedValue}
