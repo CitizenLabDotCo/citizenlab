@@ -1220,7 +1220,7 @@
   "app.containers.CookiePolicy.informationPageName": "Informationsside",
   "app.containers.CookiePolicy.intro": "Som de fleste hjemmesider bruger vi cookies for at optimere den oplevelse, du og andre besøgende har på denne platform.\nFordi vi ønsker at være fuldt gennemsigtig om hvorfor & hvordan denne cookie bruges, finder du alle detaljer nedenfor, så klart som muligt.\n",
   "app.containers.CookiePolicy.privacy-policyPageName": "Privatlivspolitik",
-  "app.containers.CookiePolicy.terms-and-conditionsPageName": "Vilkår og Betingelser",
+  "app.containers.CookiePolicy.terms-and-conditionsPageName": "Vilkår og betingelser",
   "app.containers.CookiePolicy.whatAreCookiesContent": "Cookies er små tekstfiler, som gemmes i browseren eller på harddisken på din computer eller mobilenhed, når du besøger en webside eller et program.\nCookies husker dine handlinger og præferencer.\nLogget i sidste gang? En cookie sikrer, at du automatisk logges ind næste gang du besøger os.\nBesøg platformen for to uger siden? En cookie vil vise sig nyttigt for at fremhæve, hvad der er blevet tilføjet til platformen i de sidste to uger.\nMere information om cookies generelt, findes i {wikipediaCookieLink}.",
   "app.containers.CookiePolicy.whatAreCookiesTitle": "Hvad er cookies?",
   "app.containers.CookiePolicy.whatCookiesContent": "Flere tredjepartsværktøjer bruges på hver af vores deltagelsesplatforme. Disse værktøjer bruger igen cookies for at kunne fungere.",
