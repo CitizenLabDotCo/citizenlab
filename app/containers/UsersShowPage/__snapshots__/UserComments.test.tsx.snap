@@ -1,19 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<UserComments /> lets reducer splits the array returned  by the back-end into arrays of comments belonging to the same idea 1`] = `
-Array [
-  Array [
-    "idea1",
-    "idea1",
-    "idea1",
-  ],
-  Array [
-    "idea2",
-    "idea2",
-  ],
-]
-`;
-
 exports[`<UserComments /> renders correctly when empty 1`] = `
 <UserComments__MessageContainer>
   <FormattedMessage

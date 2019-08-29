@@ -36,6 +36,14 @@ const FeedbackTitle = styled.h4`
   font-weight: 500;
 `;
 
+const StyledOfficialFeedbackPost = styled(OfficialFeedbackPost)`
+  margin-bottom: 10px;
+
+  &:last {
+    margin-bottom: 0;
+  }
+`;
+
 const StyledSpan = styled.span`
   font-weight: 500;
 `;
@@ -47,7 +55,6 @@ const LoadMoreButton = styled(Button)`
 interface InputProps {
   postId: string;
   postType: 'idea' | 'initiative';
-  permission: boolean | undefined;
   editingAllowed: boolean | undefined;
   className?: string;
 }
@@ -62,7 +69,7 @@ interface State {}
 
 class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { officialFeedbacks, editingAllowed, permission, className } = this.props;
+    const { officialFeedbacks, editingAllowed, className } = this.props;
 
     if (officialFeedbacks) {
       const { officialFeedbacksList, querying, hasMore, loadingMore, onLoadMore } = officialFeedbacks;
@@ -79,7 +86,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
         );
 
         return (
-          <Container className={`${className} ${permission ? 'hasTopMargin' : ''}`}>
+          <Container className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}>
             <FeedbackHeader>
               <FeedbackTitle>
                 <FormattedMessage {...messages.officialUpdates} />
@@ -90,13 +97,12 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                 />
             </FeedbackHeader>
 
-            {officialFeedbacksList.data.map((officialFeedbackPost, index) => {
+            {officialFeedbacksList.data.map((officialFeedbackPost) => {
               return (
-                <OfficialFeedbackPost
+                <StyledOfficialFeedbackPost
                   key={officialFeedbackPost.id}
                   editingAllowed={editingAllowed}
                   officialFeedbackPost={officialFeedbackPost}
-                  last={index === officialFeedbacksList.data.length - 1}
                   postType="initiative"
                 />
               );

@@ -38,6 +38,8 @@ export interface UploadFile extends File {
   url: string;
   id?: string;
   remote: boolean;
+  extension?: string;
+  error?: string[];
 }
 
 export interface IOption {
