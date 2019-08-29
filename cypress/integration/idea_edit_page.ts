@@ -75,16 +75,18 @@ describe('Idea edit page', () => {
     // save the form
     cy.get('#e2e-idea-edit-save-button').click();
     cy.wait(3000);
+    cy.location('pathname').should('eq', `/en-GB/ideas/${ideaSlug}`);
 
     // verify updated idea page
-    cy.location('pathname').should('eq', `/en-GB/ideas/${ideaSlug}`);
+    cy.visit(`/ideas/${ideaSlug}`);
+    cy.wait(3000);
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show').find('#e2e-idea-title').contains(newIdeaTitle);
     cy.get('#e2e-idea-show').find('#e2e-idea-description').contains(newIdeaContent);
     cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
     cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
     cy.get('#e2e-idea-show').find('.e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
-    cy.get('#e2e-idea-show').find('.e2e-idea-last-modified-button').contains('Last modified');
+    cy.get('#e2e-idea-show').find('.e2e-idea-last-modified-button').contains('Edited');
 
     // verify modal with edit changelog
     cy.get('#e2e-idea-show').find('.e2e-idea-last-modified-button').click();
