@@ -45,4 +45,8 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.skipSocialSharing',
     defaultMessage: "Skip it, I'll do it later",
   },
+  fileOrImageError: {
+    id: 'app.containers.IdeasNewPage2.fileOrImageError',
+    defaultMessage: 'Your idea was submitted, but a file failed to be uploaded, please edit your idea to try again.',
+  },
 });
