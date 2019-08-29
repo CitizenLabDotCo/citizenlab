@@ -179,11 +179,10 @@ class SignUp extends PureComponent<Props, State> {
   render() {
     const { visibleStep } = this.state;
     const { isInvitation, token, step1Title, step2Title, tenant } = this.props;
-
     const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
 
     return (
-      <Container>
+      <Container className="e2e-sign-up-container">
         <ContainerInner>
           <TransitionGroup>
             {visibleStep === 'step1' &&

@@ -20,9 +20,6 @@ import messages from './messages';
 import { darken, rgba } from 'polished';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
-// typings
-import { ICommentData } from 'services/comments';
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -66,25 +63,6 @@ interface DataProps {
 interface Props extends InputProps, DataProps {
   theme: any;
 }
-
-export const reducer = (acc: ICommentData[][], current: ICommentData) => {
-  const accLen = acc.length;
-  const lastArray = acc[accLen - 1];
-
-  if (lastArray.length === 0) {
-    return [[current]];
-  }
-
-  if (current.attributes.publication_status === 'published') {
-    if (current.relationships.post.data.id === lastArray[lastArray.length - 1].relationships.post.data.id) {
-      lastArray.push(current);
-    } else {
-      acc.push([current]);
-    }
-  }
-  return acc;
-
-};
 
 export const UserComments = memo<Props>(({ comments, userId, theme, authUser }) => {
 

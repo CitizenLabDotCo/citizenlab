@@ -46,6 +46,7 @@ export interface Props {
   formData?: object;
   onSubmit?: (arg: any) => void;
   onChange?: (arg: any) => void;
+  id?: string;
 }
 
 interface State {
@@ -313,6 +314,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { locale, schema, uiSchema } = this.state;
+    const { id } = this.props;
 
     const widgets: any = {
       TextWidget: this.CustomInput,
@@ -323,7 +325,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
     };
 
     return (
-      <Container className={this.props['className']}>
+      <Container id={id ? id : ''} className={this.props['className']}>
         {locale && schema && uiSchema &&
           <Form
             schema={schema[locale]}

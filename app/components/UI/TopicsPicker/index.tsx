@@ -60,7 +60,8 @@ const TopicSwitch = styled.button`
   }
 
   &:disabled {
-    background: ${({ theme }) => lighten(0.5, theme.colors.label)};
+    color: ${({ theme }) => lighten(0.4, theme.colors.label)};
+    border-color: ${({ theme }) => lighten(0.45, theme.colors.label)};
     cursor: default;
   }
 `;

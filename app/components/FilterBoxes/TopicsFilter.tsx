@@ -108,14 +108,14 @@ const TopicsFilter = memo<Props>(({ topics, selectedTopicIds, onChange, classNam
           </Title>
         </Header>
 
-        <Topics>
+        <Topics className="e2e-topics-filters">
           {topics.filter(topic => !isError(topic)).map((topic: ITopicData) => (
             <Topic
               key={topic.id}
               data-id={topic.id}
               onMouseDown={removeFocus}
               onClick={handleOnClick}
-              className={includes(selectedTopicIds, topic.id) ? 'selected' : ''}
+              className={`e2e-topic ${includes(selectedTopicIds, topic.id) ? 'selected' : ''}`}
             >
               <T value={topic.attributes.title_multiloc} />
             </Topic>
