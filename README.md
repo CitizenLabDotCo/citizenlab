@@ -185,3 +185,16 @@ require './engines/blorgh/spec/factories/blorghs.rb'
 2. Execute the requests you want to profile
 
 3. Go to http://localhost:4000/profiler.html?pp=normal-backtrace
+
+
+## Finding back JSON-formatted events from RabbitMQ
+
+1. Run the backend
+
+2. Navigate to `http://localhost:8088` -> `Admin` -> `Tracing`
+
+3. Add a new trace in TEXT (not JSON) format
+
+4. Generate the desired events
+
+5. Click on the trace log file you created on `http://localhost:8088` to see the events

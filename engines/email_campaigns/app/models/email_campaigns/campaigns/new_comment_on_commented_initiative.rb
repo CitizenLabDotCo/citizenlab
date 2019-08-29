@@ -29,6 +29,7 @@ module EmailCampaigns
 
     def generate_commands recipient:, activity:, time: nil
       comment = activity.item
+      return [] if comment.post_type != 'Initiative'
       [{
         event_payload: {
           initiating_user_first_name: comment.author&.first_name,

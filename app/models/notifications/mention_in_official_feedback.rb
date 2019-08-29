@@ -23,13 +23,13 @@ module Notifications
       participant_ids.uniq!
 
       if recipient_id && initiator_id && (recipient_id != initiator_id) && !participant_ids.include?(recipient_id)
-        attributes = [
+        attributes = {
           recipient_id: recipient_id,
           initiating_user_id: initiator_id,
           official_feedback: official_feedback,
           post_id: official_feedback.post_id,
           post_type: official_feedback.post_type
-        ]
+        }
         if attributes[:post_type] == 'Idea'
           attributes[:project_id] = official_feedback.post.project_id
         end 
