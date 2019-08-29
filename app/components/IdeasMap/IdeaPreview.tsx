@@ -31,12 +31,13 @@ import { colors, media, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  flex: 1;
+  flex: 0 0 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: strech;
+  align-items: stretch;
   position: relative;
+  overflow: hidden;
 `;
 
 const Title = styled.h3`
@@ -77,7 +78,7 @@ const MapMarkerIcon = styled(Icon)`
 `;
 
 const Description = styled.div`
-  flex: 1 1 100%;
+  flex: 0 1 100%;
   margin-bottom: 1rem;
   overflow: hidden;
   position: relative;
@@ -232,7 +233,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
 
           <Description>
             <Body
-              id={idea.id}
+              postId={idea.id}
               body={ideaBody}
               locale={locale}
               postType="idea"

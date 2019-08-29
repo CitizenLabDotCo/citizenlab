@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subject, combineLatest } from 'rxjs';
-import { mapValues } from 'lodash-es';
+import { mapValues, isFunction, get } from 'lodash-es';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import snippet from '@segment/snippet';
@@ -27,7 +27,7 @@ const events$ = new Subject<IEvent>();
 const pageChanges$ = new Subject<IPageChange>();
 
 combineLatest(tenant$, authUser$, events$).subscribe(([tenant, user, event]) => {
-  if (window['analytics']) {
+  if (isFunction(get(window, 'analytics.track'))) {
     analytics.track(
       event.name,
       { ...event.properties, ...tenantInfo(tenant.data) },
@@ -37,7 +37,7 @@ combineLatest(tenant$, authUser$, events$).subscribe(([tenant, user, event]) => 
 });
 
 combineLatest(tenant$, authUser$, pageChanges$).subscribe(([tenant, user, pageChange]) => {
-  if (window['analytics']) {
+  if (isFunction(get(window, 'analytics.page'))) {
     analytics.page(
       '',
       {
@@ -53,7 +53,7 @@ combineLatest(tenant$, authUser$, pageChanges$).subscribe(([tenant, user, pageCh
 });
 
 combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
-  if (window['analytics']) {
+  if (isFunction(get(window, 'analytics.identify')) && isFunction(get(window, 'analytics.group'))) {
     if (user) {
       analytics.identify(
         user.data.id,

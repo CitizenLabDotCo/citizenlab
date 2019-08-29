@@ -165,7 +165,7 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
       const moderator = !isNilOrError(author) && canModerate(projectId, { data: author });
 
       return (
-        <Container className={`${className} ${commentType} ${commentType === 'parent' ? 'e2e-parentcomment' : 'e2e-childcomment'} e2e-comment`}>
+        <Container className={`${className || ''} ${commentType} ${commentType === 'parent' ? 'e2e-parentcomment' : 'e2e-childcomment'} e2e-comment`}>
           <ContainerInner className={`${commentType} ${lastComment ? 'lastComment' : ''} ${hasBottomBorder ? 'hasBottomBorder' : ''}`}>
             {comment.attributes.publication_status === 'published' &&
               <>

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
-<Container>
-  <Top>
+<PostPreview__Container>
+  <PostPreview__Top>
     <Button
       icon="edit"
       onClick={[MockFunction]}
@@ -25,10 +25,10 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         id="app.components.admin.PostManager.PostPreview.delete"
       />
     </Button>
-  </Top>
-  <Content>
+  </PostPreview__Top>
+  <PostPreview__Content>
     <IdeaContent__StyledTitle
-      id="myIdeasiD"
+      postId="myIdeasiD"
       postType="idea"
       title="Doloribus quam molestiae ut."
     />
@@ -41,7 +41,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         />
         <IdeaContent__StyledBody
           body="<p>Ea ea aut. Quasi corrupti iste. Delectus eum voluptates.</p><p>Est harum voluptates. Et fugit enim. Suscipit inventore ullam.</p><p>Eos mollitia omnis. Laudantium porro perferendis. Minus in aut.</p>"
-          id="myIdeasiD"
+          postId="myIdeasiD"
           postType="idea"
         />
         <IdeaContent__StyledOfficialFeedback
@@ -63,8 +63,8 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         />
       </IdeaContent__Right>
     </IdeaContent__Row>
-  </Content>
-</Container>
+  </PostPreview__Content>
+</PostPreview__Container>
 `;
 
 exports[`<IdeaContent /> renders correctly when ideaId is not defined 1`] = `""`;

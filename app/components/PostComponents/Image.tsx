@@ -13,15 +13,15 @@ const Image = styled.img`
 interface Props {
   src: string;
   alt: string;
-  className?: string;
+  id?: string;
 }
 
-export default memo(({ src, alt, className }: Props) => {
+export default memo(({ src, alt, id }: Props) => {
   return (
     <Image
       src={src}
       alt={alt}
-      className={className}
+      id={id}
     />
   );
 });
