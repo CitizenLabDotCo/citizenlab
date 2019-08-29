@@ -17,7 +17,7 @@ module EmailCampaigns
 
 
     def self.default_schedule
-      IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2018)) do |s|
+      IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2019)) do |s|
         s.add_recurrence_rule(
           IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
         )
@@ -136,9 +136,9 @@ module EmailCampaigns
           published_at: initiative.published_at.iso8601,
           author_name: initiative.author_name,
           upvotes_count: initiative.upvotes_count,
-          upvotes_increment: activity_counts.dig(initiative.id, :upvotes),
+          upvotes_increment: initiative.upvotes.where('created_at > ?', Time.now - days_ago).size,
           comments_count: initiative.comments_count,
-          comments_increment: activity_counts.dig(initiative.id, :comments)
+          comments_increment: initiative.comments.where('created_at > ?', Time.now - days_ago).size
         }
       end
     end
@@ -160,12 +160,18 @@ module EmailCampaigns
           published_at: initiative.published_at.iso8601,
           author_name: initiative.author_name,
           upvotes_count: initiative.upvotes_count,
-          upvotes_increment: activity_counts.dig(initiative.id, :upvotes),
+          upvotes_increment: initiative.upvotes.where('created_at > ?', Time.now - days_ago).size,
           comments_count: initiative.comments_count,
-          comments_increment: activity_counts.dig(initiative.id, :comments),
-          threshold_reached_at: initiative.initiative_status_changes.order(:created_at).pluck(:created_at).last
+          comments_increment: initiative.comments.where('created_at > ?', Time.now - days_ago).size,
+          threshold_reached_at: initiative.initiative_status_changes.order(:created_at).pluck(:created_at).last.iso8601
         }
       end
+    end
+
+    def days_ago
+      t_1, t_2 = ic_schedule.first 2
+      t_2 ||= t_1 + 7.days
+      ((t_2 - t_1) / 1.day).days
     end
 
   end
