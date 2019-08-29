@@ -40,7 +40,7 @@ const isUserAuthorized = (nextState, replace) => {
       } else if (isModerator(authUser)) {
         replace(`${urlLocale && `/${urlLocale}`}/`);
       } else {
-        replace(`${urlLocale && `/${urlLocale}`}/sign-in/`);
+        replace(`${urlLocale && `/${urlLocale}`}/sign-in`);
       }
     }
   });

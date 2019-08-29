@@ -273,7 +273,7 @@ export default class SideModal extends PureComponent<Props, State> {
             onClickOutside={this.manuallyCloseModal}
             closeOnClickOutsideEnabled={!this.state.innerModalOpened}
           >
-            <ModalContent ref={this.setContentRef}>
+            <ModalContent id="e2e-side-modal-content" ref={this.setContentRef}>
               {children}
             </ModalContent>
           </ModalContainer>
