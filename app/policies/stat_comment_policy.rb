@@ -11,9 +11,14 @@ class StatCommentPolicy < ApplicationPolicy
     def resolve
       if user&.active? && user.admin?
         scope.all
-      else user&.active? && user.project_moderator?
-        projects = ProjectPolicy::Scope.new(user, Project.all).moderatable
-        scope.joins(:idea).where(ideas: {project_id: projects})
+      elsif user&.active? && user.project_moderator?
+        projects = ProjectPolicy::Scope.new(user, Project.all).resolve
+        # we're deliberately avoiding to join ideas to the main scope itself,
+        # because it conflicts with other queries modifying the scope (e.g.
+        # filtering on projects)
+        scope.where(post_type: 'Idea', post_id: Idea.where(project: projects))
+      else
+        scope.none
       end
     end
   end

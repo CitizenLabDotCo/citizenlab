@@ -151,8 +151,8 @@ resource "User Custom Fields" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
-        expect(CustomField.fields_for(User).order(:ordering)[1].id).to eq id
-        expect(CustomField.fields_for(User).order(:ordering).map(&:ordering)).to eq (0..3).to_a
+        expect(CustomField.fields_for('User').order(:ordering)[1].id).to eq id
+        expect(CustomField.fields_for('User').order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end
     end
 

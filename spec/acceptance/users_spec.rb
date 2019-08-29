@@ -160,6 +160,18 @@ resource "Users" do
           json_response = json_parse(response_body)
           expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id,m1.id,m2.id,@user.id]
         end
+
+        example "List all admins" do
+          p = create(:project)
+          a = create(:admin)
+          m1 = create(:moderator, project: p)
+          m2 = create(:moderator)
+          u = create(:user)
+
+          do_request(can_admin: true)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id, @user.id]
+        end
       end
 
       get "web_api/v1/users/as_xlsx" do
@@ -561,15 +573,55 @@ resource "Users" do
       end
     end
 
+    get "web_api/v1/users/:id/initiatives_count" do
+      let(:id) { @user.id }
+
+      example "Get the number of initiatives published by one user" do
+        create(:initiative, author: @user)
+        create(:initiative)
+        create(:initiative, author: @user, publication_status: 'draft')
+        do_request
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:count)).to eq 1
+      end
+    end
+
     get "web_api/v1/users/:id/comments_count" do
+      parameter :post_type, "Count only comments of one post type. Either 'Idea' or 'Initiative'.", required: false
+
       let(:id) { @user.id }
 
       example "Get the number of comments posted by one user" do
-        create(:comment, author: @user)
+        create(:comment, author: @user, post: create(:initiative))
         create(:comment)
-        create(:comment, author: @user)
+        create(:comment, author: @user, post: create(:idea))
         create(:comment, author: @user, publication_status: 'deleted')
         do_request
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:count)).to eq 2
+      end
+
+      example "Get the number of comments on ideas posted by one user" do
+        create(:comment, author: @user, post: create(:initiative))
+        create(:comment, post: create(:initiative))
+        create(:comment, author: @user, post: create(:idea))
+        create(:comment, author: @user, post: create(:idea))
+        create(:comment, author: @user, publication_status: 'deleted', post: create(:idea))
+        do_request post_type: 'Idea'
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:count)).to eq 2
+      end
+
+      example "Get the number of comments on initiatives posted by one user" do
+        create(:comment, author: @user, post: create(:initiative))
+        create(:comment, author: @user, post: create(:initiative))
+        create(:comment, post: create(:idea))
+        create(:comment, author: @user, post: create(:idea))
+        create(:comment, author: @user, publication_status: 'deleted', post: create(:initiative))
+        do_request post_type: 'Initiative'
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:count)).to eq 2

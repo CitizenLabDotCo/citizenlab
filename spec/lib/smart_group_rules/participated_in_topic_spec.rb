@@ -34,10 +34,9 @@ describe SmartGroupRules::ParticipatedInTopic do
       @user3 = create(:user)
       @user4 = create(:user)
       @idea1 = create(:idea, topics: [@topic1], author: @user1)
-      @comment = create(:comment, idea: @idea1, author: @user3)
+      @comment = create(:comment, post: @idea1, author: @user3)
       @vote = create(:vote, votable: @comment, user: @user2)
       @idea2 = create(:idea, topics: [@topic2], author: @user3)
-
     end
 
     it "correctly filters on 'in' predicate" do

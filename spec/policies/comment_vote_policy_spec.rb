@@ -6,7 +6,7 @@ describe CommentVotePolicy do
   let(:scope) { CommentVotePolicy::Scope.new(user, Vote) }
   let(:project) { create(:continuous_project, with_permissions: true) }
   let(:idea) { create(:idea, project: project)}
-  let(:comment) { create(:comment, idea: idea)}
+  let(:comment) { create(:comment, post: idea)}
 
   context "for a visitor" do 
     let!(:vote) { create(:vote, votable: comment) }
@@ -42,11 +42,11 @@ describe CommentVotePolicy do
     let!(:vote) { create(:vote, votable: comment) }
     let(:user) { vote.user }
 
-    it { should permit(:show) }
-    it { should permit(:create) }
-    it { should permit(:up) }
-    it { should permit(:down) }
-    it { should permit(:destroy) }
+    it { should     permit(:show) }
+    it { should     permit(:create) }
+    it { should     permit(:up) }
+    it { should_not permit(:down) }
+    it { should     permit(:destroy) }
 
     it "should index the vote" do
       expect(scope.resolve.size).to eq 1

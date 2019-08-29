@@ -111,6 +111,7 @@ class WebApi::V1::VotesController < ApplicationController
     @policy_class = case @votable_type
       when 'Idea' then IdeaVotePolicy
       when 'Comment' then CommentVotePolicy
+      when 'Initiative' then InitiativeVotePolicy
       else raise "#{@votable_type} has no voting policy defined"
     end
     raise RuntimeError, "must not be blank" if @votable_type.blank? or @votable_id.blank?
@@ -121,6 +122,8 @@ class WebApi::V1::VotesController < ApplicationController
       IdeaVotePolicy
     elsif votable.kind_of? Comment
       CommentVotePolicy
+    elsif votable.kind_of? Initiative
+      InitiativeVotePolicy
     else
       raise "Votable #{votable.class} has no voting policy defined"
     end
@@ -150,6 +153,8 @@ class WebApi::V1::VotesController < ApplicationController
         pcs.voting_disabled_reason_for_idea(exception.record.votable, exception.record.user) ||
         pcs.cancelling_votes_disabled_reason_for_idea(exception.record.votable, exception.record.user)
       )
+    elsif exception.record.votable.kind_of?(Initiative) && exception.record.mode == 'down'
+      'downvoting_not_supported'
     elsif exception.record.votable.kind_of? Comment
       pcs.voting_disabled_reason_for_comment exception.record.votable, exception.record.user
     else

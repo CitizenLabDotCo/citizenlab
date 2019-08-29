@@ -19,15 +19,16 @@ module Notifications
       official_feedback = activity.item
 
       official_feedback_id = official_feedback&.id
-      idea = official_feedback&.idea
-      idea_id = official_feedback&.idea_id
+      idea = official_feedback&.post
+      idea_id = official_feedback&.post_id
       initiator_id = official_feedback&.user_id
-      project_id = idea&.project_id
 
-      if official_feedback_id && idea_id && initiator_id
+      if (official_feedback&.post_type == 'Idea') && official_feedback_id && idea_id && initiator_id
+        project_id = idea&.project_id
+        
         comment_author_ids = User.active
           .joins(:comments).merge(Comment.published)
-          .where(comments: {idea: idea})
+          .where(comments: {post: idea})
           .distinct
           .ids
         voter_ids = User.active

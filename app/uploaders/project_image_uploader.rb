@@ -36,15 +36,15 @@ class ProjectImageUploader < CarrierWave::Uploader::Base
   # end
 
   version :small do
-    process resize_to_fill: [96, 96]
+    process safe_resize_to_fill_for_gif: [96, 96]
   end
 
   version :medium do
-    process resize_to_fill: [575,575]
+    process safe_resize_to_fill_for_gif: [575,575]
   end
 
   version :large do
-    process resize_to_fit: [1200,1200]
+    process safe_resize_to_fill_for_gif: [1200,1200]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

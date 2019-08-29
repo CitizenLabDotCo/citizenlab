@@ -146,7 +146,6 @@ describe TenantTemplateService do
         expect(Comment.count).to be > 0
         expect(CustomFieldOption.count).to be > 0
         expect(Event.count).to be > 0
-        expect(GroupsProject.count).to be > 0
         expect(IdeaStatus.count).to be > 0
         expect(User.admin.count).to be > 0
         expect(Vote.count).to be > 0
