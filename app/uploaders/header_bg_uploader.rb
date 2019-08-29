@@ -41,15 +41,15 @@ class HeaderBgUploader < CarrierWave::Uploader::Base
   # end
 
   version :large do
-    process resize_to_fill: [1440,480]
+    process safe_resize_to_fill_for_gif: [1440,480]
   end
 
   version :medium do
-    process resize_to_fill: [720,152]
+    process safe_resize_to_fill_for_gif: [720,152]
   end
 
   version :small do
-    process resize_to_fill: [520,250]
+    process safe_resize_to_fill_for_gif: [520,250]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.
