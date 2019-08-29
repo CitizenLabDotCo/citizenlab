@@ -4,11 +4,11 @@ en:
       "manual": Official messages
       "comment_on_your_comment": A reply on my comment
       "comment_on_your_idea": A comment on my idea
-      "admin_rights_received": I'm given admin rights
-      "comment_deleted_by_admin": An admin deletes my comment
-      "comment_marked_as_spam": A comment is marked as spam (for administrators and moderators)
-      "idea_assigned_to_you": When an idea has been assigned to me
-      "idea_marked_as_spam": An idea is marked as spam (for administrators and moderators)
+      "admin_rights_received": Admin rights received
+      "comment_deleted_by_admin": Deletion of my comment
+      "comment_marked_as_spam": Comment spam report
+      "idea_assigned_to_you": Assignment of an idea to me
+      "idea_marked_as_spam": Idea spam report
       "invite_received": When someone invites me to the platform
       "invite_reminder": When someone invited me to the platform (reminder after 3 days)
       "invite_accepted": Someone accepts my invitation
