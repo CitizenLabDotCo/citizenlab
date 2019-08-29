@@ -28,7 +28,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
   </PostPreview__Top>
   <PostPreview__Content>
     <IdeaContent__StyledTitle
-      id="myIdeasiD"
+      postId="myIdeasiD"
       postType="idea"
       title="Doloribus quam molestiae ut."
     />
@@ -41,7 +41,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         />
         <IdeaContent__StyledBody
           body="<p>Ea ea aut. Quasi corrupti iste. Delectus eum voluptates.</p><p>Est harum voluptates. Et fugit enim. Suscipit inventore ullam.</p><p>Eos mollitia omnis. Laudantium porro perferendis. Minus in aut.</p>"
-          id="myIdeasiD"
+          postId="myIdeasiD"
           postType="idea"
         />
         <IdeaContent__StyledOfficialFeedback
