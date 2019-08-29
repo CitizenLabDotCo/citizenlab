@@ -34,7 +34,8 @@
     "test:coverage": "jest --coverage",
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit --w=2 --coverage --coverageReporters=text-summary",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run --spec 'cypress/integration/*.ts'"
+    "cypress:run": "cypress run --spec 'cypress/integration/*.ts'",
+    "majestic": "majestic --port 4231"
   },
   "majestic": {
     "jestScriptPath": "node_modules/jest/bin/jest.js"
