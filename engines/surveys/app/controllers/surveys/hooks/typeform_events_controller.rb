@@ -1,6 +1,15 @@
 module Surveys
   class Hooks::TypeformEventsController < SurveysController
 
+    CONSTANTIZER = {
+      'Project' => {
+        pc_class: Project
+      },
+      'Phase' => {
+        pc_class: Phase
+      }
+    }
+
     skip_after_action :verify_policy_scoped
     skip_after_action :verify_authorized
 
@@ -8,7 +17,7 @@ module Surveys
     around_action :switch_tenant
 
     def create
-      @participation_context = params[:pc_type].constantize.find(params[:pc_id])
+      @participation_context = secure_constantize(:pc_class).find params[:pc_id]
       @response = TypeformWebhookParser.new.body_to_response(params)
       @response.participation_context = @participation_context
       if @response.save
@@ -49,6 +58,10 @@ module Surveys
       head :not_acceptable
     rescue ActiveRecord::RecordNotFound => e
       head :not_acceptable
+    end
+
+    def secure_constantize key
+      CONSTANTIZER.fetch(params[:pc_type])[key]
     end
 
   end

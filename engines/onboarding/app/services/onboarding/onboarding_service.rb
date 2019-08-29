@@ -20,7 +20,7 @@ module Onboarding
     def profile_incomplete? user
       MultilocService.new.is_empty?(user.bio_multiloc) ||
         user.avatar.blank? ||
-        CustomField.fields_for(User).enabled.any? do |cf|
+        CustomField.fields_for('User').enabled.any? do |cf|
           user.custom_field_values[cf.key].nil?
         end
     end

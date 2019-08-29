@@ -190,7 +190,6 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i.id
     end
 
-
     example "Search for ideas" do
       u = create(:user)
       i1 = create(:idea, title_multiloc: {en: "This idea is uniqque"})
@@ -487,7 +486,7 @@ resource "Ideas" do
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
       parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Set automatically if not provided. Only allowed for admins/moderators."
       parameter :idea_status_id, "The status of the idea, only allowed for admins", extra: "Defaults to status with code 'proposed'"
-      parameter :publication_status, "Password", required: true, extra: "One of #{Idea::PUBLICATION_STATUSES.join(",")}"
+      parameter :publication_status, "Publication status", required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
       parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
       parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
       parameter :topic_ids, "Array of ids of the associated topics"
@@ -646,7 +645,7 @@ resource "Ideas" do
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
       parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators."
       parameter :idea_status_id, "The status of the idea, only allowed for admins"
-      parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES.join(', ')}"
+      parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
       parameter :title_multiloc, "Multi-locale field with the idea title", extra: "Maximum 100 characters"
       parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
       parameter :topic_ids, "Array of ids of the associated topics"
@@ -843,7 +842,7 @@ resource "Ideas" do
       @project = create(:continuous_project, with_permissions: true)
       @idea =  create(:idea, author: @user, publication_status: 'draft', project: @project)
     end
-    parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :idea
+    parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :idea
     
     let(:id) { @idea.id }
     let(:publication_status) { 'published' }

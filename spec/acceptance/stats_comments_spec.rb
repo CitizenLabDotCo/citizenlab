@@ -38,6 +38,7 @@ resource "Stats - Comments" do
     header "Content-Type", "application/json"
     @timezone = Tenant.settings('core','timezone')
     Tenant.current.update!(created_at: now - 3.month)
+    create_list(:comment, 2)
     create(:comment, publication_status: 'deleted')
   end
 
@@ -49,6 +50,31 @@ resource "Stats - Comments" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:count]).to eq Comment.published.count
+    end
+
+    context "as a moderator" do
+      before do
+        token = Knock::AuthToken.new(payload: { sub: create(:moderator).id }).token
+        header 'Authorization', "Bearer #{token}"
+        initiative = create(:initiative)
+        create(:comment, post: initiative)
+        create(:comment, post: create(:idea, project: create(:private_admins_project)))
+      end
+      example_request "Count all comments (as a moderator)", document: false do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:count]).to eq Comment.published.count - 2
+      end
+    end
+
+    context "as a user" do
+      before do
+        token = Knock::AuthToken.new(payload: { sub: create(:user).id }).token
+        header 'Authorization', "Bearer #{token}"
+      end
+      example_request "[error] Count all comments (as a user)", document: false do
+        expect(response_status).to eq 401
+      end
     end
   end
 
@@ -134,6 +160,26 @@ resource "Stats - Comments" do
           expect(json_response).to eq({series: { comments: {} }})
         end
       end
+
+      context "as a moderator" do
+        before do
+          token = Knock::AuthToken.new(payload: { sub: create(:moderator).id }).token
+          header 'Authorization', "Bearer #{token}"
+          initiative = create(:initiative)
+          @project = create(:project)
+          create(:comment, post: initiative)
+          create(:comment, post: create(:idea, project: @project))
+        end
+
+        let(:project) { @project.id }
+
+        example_request "Count all comments filtered by project", document: false do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:series][:comments].values.last).to eq 1
+        end
+      end
+
     end
   end
 
@@ -164,10 +210,10 @@ resource "Stats - Comments" do
           idea2 = create(:idea, topics: [@topic2])
           idea3 = create(:idea, topics: [@topic1, @topic2])
           idea4 = create(:idea)
-          comment1 = create(:comment, idea: idea1)
-          comment2 = create(:comment, idea: idea1)
-          comment3 = create(:comment, idea: idea2)
-          comment4 = create(:comment, idea: idea3)
+          comment1 = create(:comment, post: idea1)
+          comment2 = create(:comment, post: idea1)
+          comment3 = create(:comment, post: idea2)
+          comment4 = create(:comment, post: idea3)
         end
         comment5 = create(:comment)
       end
@@ -189,8 +235,8 @@ resource "Stats - Comments" do
         travel_to start_at + 5.day do
           @project = create(:project)
           idea = create(:idea_with_topics, topics_count: 2, project: @project)
-          create(:comment, idea: idea)
-          create(:comment, idea: create(:idea_with_topics))
+          create(:comment, post: idea)
+          create(:comment, post: create(:idea_with_topics))
         end
       end
 
@@ -213,8 +259,8 @@ resource "Stats - Comments" do
         travel_to start_at + 3.day do
           @group = create(:group)
           idea = create(:idea_with_topics, topics_count: 2)
-          create(:comment, idea: idea, author: create(:user, manual_groups: [@group]))
-          create(:comment, idea: create(:idea_with_topics))
+          create(:comment, post: idea, author: create(:user, manual_groups: [@group]))
+          create(:comment, post: create(:idea_with_topics))
         end
       end
 
@@ -246,10 +292,10 @@ resource "Stats - Comments" do
           idea2 = create(:idea, project: @project1)
           idea3 = create(:idea, project: @project2)
           idea4 = create(:idea)
-          comment1 = create(:comment, idea: idea1)
-          comment2 = create(:comment, idea: idea1)
-          comment3 = create(:comment, idea: idea2)
-          comment4 = create(:comment, idea: idea3)
+          comment1 = create(:comment, post: idea1)
+          comment2 = create(:comment, post: idea1)
+          comment3 = create(:comment, post: idea2)
+          comment4 = create(:comment, post: idea3)
         end
       end
 
@@ -274,8 +320,8 @@ resource "Stats - Comments" do
           @topic = create(:topic)
           idea1 = create(:idea, topics: [@topic])
           idea2 = create(:idea_with_topics)
-          create(:comment, idea: idea1)
-          create(:comment, idea: idea2)
+          create(:comment, post: idea1)
+          create(:comment, post: idea2)
         end
       end
 
@@ -297,8 +343,8 @@ resource "Stats - Comments" do
           @group = create(:group)
           project = create(:project)
           idea = create(:idea, project: project)
-          create(:comment, idea: idea, author: create(:user, manual_groups: [@group]))
-          create(:comment, idea: idea)
+          create(:comment, post: idea, author: create(:user, manual_groups: [@group]))
+          create(:comment, post: idea)
         end
       end
 

@@ -1,7 +1,8 @@
 class Comment < ApplicationRecord
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
+
   belongs_to :author, class_name: 'User', optional: true
-  belongs_to :idea
+  belongs_to :post, polymorphic: true
   has_many :votes, as: :votable, dependent: :destroy
   has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
   has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
@@ -9,19 +10,39 @@ class Comment < ApplicationRecord
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
   has_many :notifications, foreign_key: :comment_id, dependent: :nullify
   
-  counter_culture :idea,
+  counter_culture :post,
     column_name: proc {|model| model.published? ? 'comments_count' : nil },
     column_names: {
       ["comments.publication_status = ?", "published"] => "comments_count"
     },
     touch: true
-
   counter_culture [:idea, :project],
     column_name: proc {|model| model.published? ? 'comments_count' : nil },
     column_names: {
       ["comments.publication_status = ?", "published"] => "comments_count"
     },
     touch: true
+
+  # This code allows us to do something like comments.include(:idea)
+  # After https://stackoverflow.com/a/16124295/3585671
+  belongs_to :idea, -> { joins(:comments).where(comments: {post_type: 'Idea'}) }, foreign_key: 'post_id', optional: true, class_name: 'Idea'
+  def idea
+    return unless post_type == 'Idea'
+    super
+  end
+  belongs_to :initiative, -> { joins(:comments).where(comments: {post_type: 'Initiative'}) }, foreign_key: 'post_id', optional: true, class_name: 'Initiative'
+  def initiative
+    return unless post_type == 'Initiative'
+    super
+  end
+
+  has_many :votes, as: :votable, dependent: :destroy
+  has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
+  has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
+  has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
+
+  has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
+  has_many :notifications, foreign_key: :comment_id, dependent: :nullify
 
   PUBLICATION_STATUSES = %w(published deleted)
 
@@ -35,10 +56,6 @@ class Comment < ApplicationRecord
   
   def set_author_name
     self.author_name = self.author.display_name if self.author
-  end
-
-  def project
-    self.idea&.project
   end
 
   def published?
@@ -59,6 +76,6 @@ class Comment < ApplicationRecord
     )
     self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
-
   end
+
 end

@@ -1,8 +1,6 @@
 class WebApi::V1::ProjectsController < ::ApplicationController
-
   before_action :set_project, only: [:show, :update, :reorder, :destroy]
   skip_after_action :verify_policy_scoped, only: [:index]
-
 
   def index
     @projects = if params[:filter_can_moderate]
@@ -10,7 +8,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     else 
       policy_scope(Project)
     end
-      
+
     if params[:publication_statuses].present?
       @projects = @projects.where(publication_status: params[:publication_statuses])
     else

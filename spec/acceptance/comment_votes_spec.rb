@@ -13,7 +13,7 @@ resource "Comment Votes" do
     header "Content-Type", "application/json"
     @project = create(:continuous_project, with_permissions: true)
     @idea = create(:idea, project: @project)
-    @comment = create(:comment, idea: @idea)
+    @comment = create(:comment, post: @idea)
     @votes = create_list(:vote, 2, votable: @comment)
   end
 
@@ -70,6 +70,16 @@ resource "Comment Votes" do
       expect(json_response.dig(:data,:attributes,:mode)).to eq "up"
       expect(@comment.reload.upvotes_count).to eq 3
     end
+
+    describe do
+      before do
+        @comment.update! post: create(:initiative)
+      end
+
+      example_request "Create a vote on a comment of an initiative", document: false do
+        expect(response_status).to eq 201
+      end
+    end
   end
 
   post "web_api/v1/comments/:comment_id/votes/up" do
@@ -103,29 +113,37 @@ resource "Comment Votes" do
   post "web_api/v1/comments/:comment_id/votes/down" do
     let(:comment_id) { @comment.id }
 
-    example_request "Downvote a comment that doesn't have your vote yet" do
-      expect(status).to eq 201
-      expect(@comment.reload.upvotes_count).to eq 2
-      expect(@comment.reload.downvotes_count).to eq 1
-    end
-
-    example "Downvote a comment that you upvoted before" do
+    example "[error] Downvote a comment that you upvoted before" do
       @comment.votes.create(user: @user, mode: 'up')
       do_request
-      expect(status).to eq 201
-      expect(@comment.reload.upvotes_count).to eq 2
-      expect(@comment.reload.downvotes_count).to eq 1
+      expect(status).to eq 401
+      expect(@comment.reload.upvotes_count).to eq 3
+      expect(@comment.reload.downvotes_count).to eq 0
     end
 
-    example "[error] Downvote a comment that you downvoted before" do
-      @comment.votes.create(user: @user, mode: 'down')
-      do_request
-      expect(status).to eq 422
-      json_response = json_parse(response_body)
-      expect(json_response[:errors][:base][0][:error]).to eq "already_downvoted"
-      expect(@comment.reload.upvotes_count).to eq 2
-      expect(@comment.reload.downvotes_count).to eq 1
-    end
+    # example_request "Downvote a comment that doesn't have your vote yet" do
+    #   expect(status).to eq 201
+    #   expect(@comment.reload.upvotes_count).to eq 2
+    #   expect(@comment.reload.downvotes_count).to eq 1
+    # end
+
+    # example "Downvote a comment that you upvoted before" do
+    #   @comment.votes.create(user: @user, mode: 'up')
+    #   do_request
+    #   expect(status).to eq 201
+    #   expect(@comment.reload.upvotes_count).to eq 2
+    #   expect(@comment.reload.downvotes_count).to eq 1
+    # end
+
+    # example "[error] Downvote a comment that you downvoted before" do
+    #   @comment.votes.create(user: @user, mode: 'down')
+    #   do_request
+    #   expect(status).to eq 422
+    #   json_response = json_parse(response_body)
+    #   expect(json_response[:errors][:base][0][:error]).to eq "already_downvoted"
+    #   expect(@comment.reload.upvotes_count).to eq 2
+    #   expect(@comment.reload.downvotes_count).to eq 1
+    # end
   end
 
   delete "web_api/v1/votes/:id" do

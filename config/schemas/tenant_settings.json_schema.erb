@@ -517,6 +517,16 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+      "initiativeflow_social_sharing": {
+        "type": "object",
+        "description":  "A social sharing option is presented after posting an initiative",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
       "granular_permissions": {
         "type": "object",
         "description":  "Choose which users are permitted to take which actions (e.g. posting, voting) in which projects/phases",
@@ -591,7 +601,7 @@
         "type": "object",
         "description":  "Initiatives are citizen-originating proposals that need to reach a number of votes in a limited time for the organization to take action",
         "additionalProperties": false,
-        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
+        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria","success_stories"],
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -599,11 +609,11 @@
           "voting_threshold": {
             "description": "The number of votes an initiative needs to reach to be accepted",
             "type": "integer",
-            "minimum": 0,
+            "minimum": 2,
             "default": 300
           },
           "days_limit": {
-            "description": "Number of days a published initiative has to reach its voting_threshold",
+            "description": "Number of days a proposed initiative has to reach its voting_threshold",
             "type": "integer",
             "minimum": 1,
             "default": 90
@@ -626,6 +636,23 @@
           },
           "success_stories": {
             "type": "array",
+            "default": [
+              {
+                "page_slug": "initiatives-success-1",
+                "location": "Liège (BE)",
+                "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg"
+              },
+              {
+                "page_slug": "initiatives-success-2",
+                "location": "Schaerbeek (BE)",
+                "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg"
+              },
+              {
+                "page_slug": "initiatives-success-3",
+                "location": "Wortegem-Petegem (BE)",
+                "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg"
+              }
+            ],
             "items": {
               "type": "object",
               "additionalProperties": false,

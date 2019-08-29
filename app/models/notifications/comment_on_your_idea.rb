@@ -19,13 +19,13 @@ module Notifications
       comment = activity.item
 
       comment_id = comment&.id
-      idea = comment&.idea
-      idea_id = comment&.idea_id
+      idea = comment&.post
+      idea_id = idea&.id
       recipient_id = idea&.author_id
       initiator_id = comment&.author_id
-      project_id = idea&.project_id
 
-      if comment_id && idea_id && recipient_id && initiator_id && (recipient_id != initiator_id)
+      if comment_id && (comment.post_type == 'Idea') && idea_id && recipient_id && initiator_id && (recipient_id != initiator_id)
+        project_id = idea&.project_id
         [self.new(
            recipient_id: recipient_id,
            initiating_user: User.find(initiator_id),

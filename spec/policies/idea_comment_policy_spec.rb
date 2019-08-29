@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-describe CommentPolicy do
-  subject { CommentPolicy.new(user, comment) }
-  let(:scope) { CommentPolicy::Scope.new(user, idea.comments) }
+describe IdeaCommentPolicy do
+  subject { IdeaCommentPolicy.new(user, comment) }
+  let(:scope) { IdeaCommentPolicy::Scope.new(user, idea.comments) }
 
   context "on comment on idea in a public project" do 
     let(:project) { create(:continuous_project, with_permissions: true) }
     let(:idea) { create(:idea, project: project) }
-    let!(:comment) { create(:comment, idea: idea) }
+    let!(:comment) { create(:comment, post: idea) }
 
     context "for a visitor" do
       let(:user) { nil }
@@ -79,7 +79,7 @@ describe CommentPolicy do
     let!(:user) { nil }
     let!(:project) { create(:private_groups_project, with_permissions: true)}
     let!(:idea) { create(:idea, project: project) }
-    let!(:comment) { create(:comment, idea: idea) }
+    let!(:comment) { create(:comment, post: idea) }
 
     it { should_not permit(:show)    }
     it { should_not permit(:create)  }
@@ -95,7 +95,7 @@ describe CommentPolicy do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_continuous_project, with_permissions: true)}
     let!(:idea) { create(:idea, project: project) }
-    let!(:comment) { create(:comment, idea: idea) }
+    let!(:comment) { create(:comment, post: idea) }
 
     it { should_not permit(:show)    }
     it { should_not permit(:create)  }
@@ -110,7 +110,7 @@ describe CommentPolicy do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_continuous_project, user: user, with_permissions: true)}
     let!(:idea) { create(:idea, project: project) }
-    let!(:comment) { create(:comment, idea: idea, author: user) }
+    let!(:comment) { create(:comment, post: idea, author: user) }
 
     it { should     permit(:show)    }
     it { should     permit(:create)  }
@@ -129,7 +129,7 @@ describe CommentPolicy do
       p
     }
     let!(:idea) { create(:idea, project: project) }
-    let!(:comment) { create(:comment, idea: idea, author: user) }
+    let!(:comment) { create(:comment, post: idea, author: user) }
 
     it { should     permit(:show) }
     it { should_not permit(:create) }

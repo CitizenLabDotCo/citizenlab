@@ -10,7 +10,7 @@ RSpec.describe Notifications::OfficialFeedbackOnVotedIdea, type: :model do
       vote2 = create(:vote, votable: idea)
       create(:vote)
 
-      official_feedback = create(:official_feedback, idea: idea)
+      official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)
 
       notifications = subject.class.make_notifications_on(activity)
@@ -22,7 +22,7 @@ RSpec.describe Notifications::OfficialFeedbackOnVotedIdea, type: :model do
       vote = create(:vote, votable: idea)
       vote.user.destroy!
 
-      official_feedback = create(:official_feedback, idea: idea)
+      official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)
 
       notifications = subject.class.make_notifications_on(activity)
@@ -33,7 +33,7 @@ RSpec.describe Notifications::OfficialFeedbackOnVotedIdea, type: :model do
       idea = create(:idea)
       vote = create(:vote, votable: idea, user: idea.author)
 
-      official_feedback = create(:official_feedback, idea: idea)
+      official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)
 
       notifications = subject.class.make_notifications_on(activity)
@@ -42,10 +42,10 @@ RSpec.describe Notifications::OfficialFeedbackOnVotedIdea, type: :model do
 
     it "doesn't generate notifications for commenters" do
       idea = create(:idea)
-      comment = create(:comment, idea: idea)
+      comment = create(:comment, post: idea)
       create(:vote, votable: idea, user: comment.author)
 
-      official_feedback = create(:official_feedback, idea: idea)
+      official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)
 
       notifications = subject.class.make_notifications_on(activity)

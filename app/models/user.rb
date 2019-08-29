@@ -12,7 +12,9 @@ class User < ApplicationRecord
     :using => { :tsearch => {:prefix => true} }
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
+  has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_ideas, class_name: 'Idea', foreign_key: :assignee_id, dependent: :nullify
+  has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
   has_many :default_assigned_projects, class_name: 'Project', foreign_key: :default_assignee_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
@@ -49,7 +51,7 @@ class User < ApplicationRecord
   validates :invite_status, inclusion: {in: INVITE_STATUSES}, allow_nil: true
 
   validates :custom_field_values, json: {
-    schema: lambda { CustomFieldService.new.fields_to_json_schema(CustomField.fields_for(User)) },
+    schema: lambda { CustomFieldService.new.fields_to_json_schema(CustomField.fields_for('User')) },
     message: ->(errors) { errors }
   }, if: [:custom_field_values_changed?, :active?]
 
