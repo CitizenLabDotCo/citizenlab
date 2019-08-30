@@ -20,18 +20,18 @@ describe('Sign in page', () => {
 
   it('shows an error when no email is provided', () => {
     cy.get('.e2e-submit-signin').click();
-    cy.get('.e2e-error-message').should('contain', 'Please enter your email address');
+    cy.get('.e2e-error-message').should('contain', 'This cannot be empty');
   });
 
   it('shows an error when no valid email is provided', () => {
     cy.get('#email').type('test');
     cy.get('.e2e-submit-signin').click();
-    cy.get('.e2e-error-message').should('contain', 'Please enter a valid email address');
+    cy.get('.e2e-error-message').should('contain', 'This cannot be empty');
   });
 
   it('shows an error when no password is provided', () => {
     cy.get('.e2e-submit-signin').click();
-    cy.get('.e2e-error-message').should('contain', 'Please enter a password');
+    cy.get('.e2e-error-message').should('contain', 'This cannot be empty');
   });
 
   it('has a working link to the password recovery page', () => {
@@ -61,6 +61,6 @@ describe('Sign in page', () => {
     cy.get('#email').type(email);
     cy.get('#password').type(password);
     cy.get('.e2e-submit-signin').click();
-    cy.get('.e2e-error-message').should('contain', 'This combination of e-mail and password is not correct');
+    cy.get('.e2e-error-message').should('contain', 'The provided information is not correct');
   });
 });
