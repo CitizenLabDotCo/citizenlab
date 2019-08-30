@@ -29,7 +29,7 @@ import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
 
-const UpvoteIconWrapper = styled.button`
+const UpvoteButton = styled.button`
   width: 18px;
   height: 28px;
   display: flex;
@@ -38,7 +38,6 @@ const UpvoteIconWrapper = styled.button`
   background: transparent;
   margin: 0;
   padding: 0;
-  margin-top: -3px;
   cursor: pointer;
   transition: background 100ms ease;
   border: none;
@@ -73,6 +72,7 @@ const UpvoteIcon = styled(Icon)`
   height: 16px;
   flex: 0 0 16px;
   fill: ${colors.label};
+  margin-top: -2px;
 
   &.disabled {
     fill: ${lighten(0.25, colors.label)};
@@ -104,12 +104,16 @@ const UpvoteLabel = styled.button`
   `}
 `;
 
+const UpvoteButtonWrapper = styled.div`
+  margin-top: -2px;
+`;
+
 const Container = styled.div`
   display: flex;
   align-items: center;
 
   &:hover {
-    ${UpvoteIconWrapper} {
+    ${UpvoteButton} {
 
       &.enabled {
         &.notVoted {
@@ -257,14 +261,16 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
     if (!isNilOrError(comment) && (votingEnabled || (!votingEnabled && upvoteCount > 0))) {
       return (
         <Container className={className}>
-          <UpvoteIconWrapper
-            aria-label={intl.formatMessage(messages.upvoteComment)}
-            onMouseDown={this.removeFocus}
-            onClick={this.onVote}
-            className={`${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'} ${votingEnabled ? 'enabled' : 'disabled'}`}
-          >
-            <UpvoteIcon name="upvote" className={`${voted ? 'voted' : ''} ${votingEnabled ? 'enabled' : 'disabled'}`} />
-          </UpvoteIconWrapper>
+          <UpvoteButtonWrapper>
+            <UpvoteButton
+              aria-label={intl.formatMessage(messages.upvoteComment)}
+              onMouseDown={this.removeFocus}
+              onClick={this.onVote}
+              className={`${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'} ${votingEnabled ? 'enabled' : 'disabled'}`}
+            >
+              <UpvoteIcon name="upvote" className={`${voted ? 'voted' : ''} ${votingEnabled ? 'enabled' : 'disabled'}`} />
+            </UpvoteButton>
+          </UpvoteButtonWrapper>
 
           {upvoteCount > 0 &&
             <UpvoteCount className={`${upvoteCount > 0 ? 'visible' : 'hidden'} ${votingEnabled ? 'enabled' : 'disabled'}`}>{upvoteCount}</UpvoteCount>
