@@ -18,6 +18,7 @@ import Body from 'components/PostComponents/Body';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
@@ -27,15 +28,16 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, media, fontSizes } from 'utils/styleUtils';
+import { colors, media, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  flex: 0 0 100%;
+  flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding: 30px;
   position: relative;
   overflow: hidden;
 `;
@@ -65,6 +67,7 @@ const Address = styled.div`
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.small}px;
+    margin-top: 18px;
   `}
 `;
 
@@ -94,15 +97,19 @@ const Description = styled.div`
     right: 0;
     position: absolute;
   }
+
+  ${media.smallerThanMinTablet`
+    margin-top: 18px;
+  `}
 `;
 
-const VoteComments = styled.div`
+const Footer = styled.div`
   align-items: center;
   display: flex;
   flex: 1 0 auto;
   justify-content: space-between;
   margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 `;
 
 const ViewIdeaButton = styled(Button)`
@@ -155,6 +162,7 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  windowSize: GetWindowSizeChildProps;
   idea: GetIdeaChildProps;
 }
 
@@ -212,11 +220,12 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
 
   render() {
     const { showFooter } = this.state;
-    const { idea, locale, className, localize } = this.props;
+    const { idea, locale, windowSize, className, localize } = this.props;
 
     if (!isNilOrError(idea)) {
       const ideaAddress = get(idea, 'attributes.location_description');
       const ideaBody = localize(idea.attributes.body_multiloc);
+      const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
       return (
         <Container className={className}>
@@ -240,12 +249,12 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
             />
           </Description>
 
-          <VoteComments>
+          <Footer>
             {!showFooter &&
               <>
                 <VoteControl
                   ideaId={idea.id}
-                  size="2"
+                  size={smallerThanSmallTablet ? '1' : '2'}
                   unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
                   disabledVoteClick={this.handleDisabledVoteClick}
                 />
@@ -273,7 +282,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
                 projectId={idea.relationships.project.data.id}
               />
             }
-          </VoteComments>
+          </Footer>
 
           <ViewIdeaButton
             fullWidth={true}
@@ -293,6 +302,7 @@ const IdeaPreviewWithHOCs = injectLocalize<Props>(IdeaPreview);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  windowSize: <GetWindowSize />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
 });
 

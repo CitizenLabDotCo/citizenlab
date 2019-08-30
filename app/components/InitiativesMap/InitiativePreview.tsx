@@ -28,11 +28,12 @@ import styled from 'styled-components';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
-  flex: 0 0 100%;
+  flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding: 30px;
   position: relative;
   overflow: hidden;
 `;
@@ -62,6 +63,7 @@ const Address = styled.div`
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.small}px;
+    margin-top: 18px;
   `}
 `;
 
@@ -91,15 +93,19 @@ const Description = styled.div`
     right: 0;
     position: absolute;
   }
+
+  ${media.smallerThanMinTablet`
+    margin-top: 18px;
+  `}
 `;
 
-const VoteComments = styled.div`
+const Footer = styled.div`
   align-items: center;
   display: flex;
   flex: 1 0 auto;
   justify-content: space-between;
   margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 `;
 
 const ViewInitiativeButton = styled(Button)`
@@ -196,12 +202,12 @@ class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> 
             />
           </Description>
 
-          <VoteComments>
+          <Footer>
             <CommentsCount>
               <CommentIcon name="comments" />
               {initiative.attributes.comments_count}
             </CommentsCount>
-          </VoteComments>
+          </Footer>
 
           <ViewInitiativeButton
             fullWidth={true}
