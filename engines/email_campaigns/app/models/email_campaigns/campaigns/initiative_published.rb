@@ -1,0 +1,43 @@
+module EmailCampaigns
+  class Campaigns::InitiativePublished < Campaign
+    include Consentable
+    include ActivityTriggerable
+    include RecipientConfigurable
+    include Disableable
+    include Trackable
+    include LifecycleStageRestrictable
+    allow_lifecycle_stages only: ['active']
+
+    recipient_filter :filter_recipient
+
+    def activity_triggers
+      {'Initiative' => {'published' => true}}
+    end
+
+    def filter_recipient users_scope, activity:, time: nil
+      users_scope.where(id: activity.item.author_id)
+    end
+
+    def generate_commands recipient:, activity: 
+      initiative = activity.item
+      [{
+        event_payload: {
+          post_id: initiative.id,
+          post_title_multiloc: initiative.title_multiloc,
+          post_body_multiloc: initiative.body_multiloc,
+          post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale),
+          post_images: initiative.initiative_images.map{ |image|
+            {
+              ordering: image.ordering,
+              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            }
+          },
+          post_header_bg: { 
+            ordering: initiative.header_bg.ordering,
+            versions: initiative.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+          }
+        }
+      }]
+    end
+  end
+end
