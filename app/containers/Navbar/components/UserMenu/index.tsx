@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -9,8 +10,10 @@ import Dropdown from 'components/UI/Dropdown';
 import HasPermission from 'components/HasPermission';
 
 // services
-import { authUserStream, signOut } from 'services/auth';
-import { IUser } from 'services/users';
+import { signOut } from 'services/auth';
+
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // style
 import styled, { withTheme } from 'styled-components';
@@ -22,18 +25,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 const Container = styled.div`
+  height: 100%;
   display: flex;
   position: relative;
-  height: 100%;
-
-  * {
-    user-select: none;
-  }
 `;
 
 const StyledUserName = styled(UserName)`
   color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
-  margin-right: 3px;
+  margin-right: 2px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
   font-weight: 500;
@@ -72,6 +71,7 @@ const DropdownListItem = styled(Button)`
   &.Button.button {
     font-size: ${fontSizes.medium}px;
   }
+
   a:not(.processing):focus,
   button:not(.processing):focus,
   a:not(.processing):hover,
@@ -80,37 +80,28 @@ const DropdownListItem = styled(Button)`
   }
 `;
 
-type Props = {
-  theme: any;
-};
+interface InputProps {
+  theme?: any;
+  className?: string;
+}
 
-type State = {
-  authUser: IUser | null;
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+}
+
+interface Props extends InputProps, DataProps { }
+
+interface State {
   opened: boolean;
-};
+}
 
 class UserMenu extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
-      authUser: null,
       opened: false
     };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const authUser$ = authUserStream().observable;
-
-    this.subscriptions = [
-      authUser$.subscribe(authUser => this.setState({ authUser }))
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   toggleDropdown = (event: React.FormEvent) => {
@@ -131,12 +122,13 @@ class UserMenu extends PureComponent<Props, State> {
   }
 
   render() {
-    const { theme } = this.props;
-    const { authUser, opened } = this.state;
-    const userId = (authUser ? authUser.data.id : null);
-    const userSlug = (authUser ? authUser.data.attributes.slug : null);
+    const { theme, authUser } = this.props;
 
-    if (authUser && userId) {
+    if (!isNilOrError(authUser)) {
+      const { opened } = this.state;
+      const userId = authUser.id;
+      const userSlug = authUser.attributes.slug;
+
       return (
         <Container id="e2e-user-menu-container">
           <DropdownButton
@@ -151,7 +143,7 @@ class UserMenu extends PureComponent<Props, State> {
               userId={userId}
               size="30px"
               hasHoverEffect={false}
-              fillColor={theme.navbarTextColor || colors.label}
+              fillColor={theme && theme.navbarTextColor ? theme.navbarTextColor : colors.label}
             />
           </DropdownButton>
 
@@ -233,4 +225,14 @@ class UserMenu extends PureComponent<Props, State> {
   }
 }
 
-export default withTheme(UserMenu);
+const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser/>
+});
+
+const UserMenuWithHOCs =  withTheme(UserMenu);
+
+export default (inputProps: InputProps) => (
+  <Data>
+    {dataProps => <UserMenuWithHOCs {...inputProps} {...dataProps} />}
+  </Data>
+);
