@@ -231,20 +231,20 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
                   <FormattedMessage {...messages.commentReplyButton} />
                 </ReplyButton>
                 {/* // Make sure there's a next item before adding a separator */}
-                {showTranslateButton && <Separator>•</Separator>}
+                {showTranslateButton && <FeatureFlag name="machine_translations"><Separator>•</Separator></FeatureFlag>}
               </>
             }
 
-            <FeatureFlag name="machine_translations">
-              {showTranslateButton &&
+            {showTranslateButton &&
+              <FeatureFlag name="machine_translations">
                 <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
                   {!translateButtonClicked
                     ? <FormattedMessage {...messages.seeTranslation} />
                     : <FormattedMessage {...messages.seeOriginal} />
                   }
                 </TranslateButton>
-              }
-            </FeatureFlag>
+              </FeatureFlag>
+            }
           </Left>
 
           <Right>
