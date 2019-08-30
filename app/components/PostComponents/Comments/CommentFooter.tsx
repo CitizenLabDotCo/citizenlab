@@ -206,7 +206,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
 
   render() {
-    const { commentType, postId, postType, projectId, commentId, className, comment, tenantLocales, locale, authUser, post, canReply } = this.props;
+    const { commentType, postId, postType, projectId, commentId, className, comment, tenantLocales, locale, post, canReply } = this.props;
     const { translateButtonClicked } = this.state;
 
     if (!isNilOrError(post) && !isNilOrError(comment) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
