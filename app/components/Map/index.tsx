@@ -34,7 +34,6 @@ const BoxContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 30px;
   position: relative;
   background: #fff;
 
@@ -64,11 +63,12 @@ const CloseButton = styled.div`
   justify-content: center;
   position: absolute;
   cursor: pointer;
-  top: 12px;
-  right: 12px;
+  top: 9px;
+  right: 13px;
   border-radius: 50%;
   border: solid 1px ${lighten(0.4, colors.label)};
   transition: border-color 100ms ease-out;
+  z-index: 2;
 
   &:hover {
     border-color: #000;
@@ -77,6 +77,13 @@ const CloseButton = styled.div`
       fill: #000;
     }
   }
+
+  ${media.smallerThanMinTablet`
+    height: 32px;
+    width: 32px;
+    top: 8px;
+    right: 8px;
+  `}
 `;
 
 const MapContainer = styled.div`
