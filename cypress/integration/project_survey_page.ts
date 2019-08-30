@@ -35,14 +35,13 @@ describe('Continuous project with survey', () => {
     cy.get('.e2e-typeform-survey iframe');
     cy.get('.e2e-typeform-survey iframe').then(($iframe) => {
       const $body = $iframe.contents().find('body');
-      cy.wrap($body).find('#root');
-      cy.wrap($body).find('._Text-sc-1t2ribu-0-div').contains('Start');
+      cy.wrap($body).find('#root').contains('Start');
     });
   });
 
-   after(() => {
+  after(() => {
     cy.apiRemoveProject(projectId);
-   });
+  });
 });
 
 describe('Timeline project with survey phase', () => {
@@ -90,8 +89,7 @@ describe('Timeline project with survey phase', () => {
     cy.get('.e2e-typeform-survey iframe');
     cy.get('.e2e-typeform-survey iframe').then(($iframe) => {
       const $body = $iframe.contents().find('body');
-      cy.wrap($body).find('#root');
-      cy.wrap($body).find('._Text-sc-1t2ribu-0-div').contains('Start');
+      cy.wrap($body).find('#root').contains('Start');
     });
   });
 
