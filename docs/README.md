@@ -1,5 +1,17 @@
 # Changelog
 
+## 2019-08-30
+
+### Fixed
+
+- The map preview box no longer overflows on mobile devices
+- You're now correctly directed back to the idea/initiatives page after signing in/up through commenting
+
+### Changed
+
+- The height of the rich text editor is now limited to your screen height, to limit the scrolling when applying styles
+
+
 ## 2019-08-29
 
 ### Fixed

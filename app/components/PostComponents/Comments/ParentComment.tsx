@@ -32,7 +32,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
 
 const Container = styled.div`
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   position: relative;
   background: #fff;
   box-sizing: border-box;
@@ -187,7 +187,7 @@ class ParentComment extends PureComponent<Props, State> {
 
       return (
         <Container id="e2e-parent-and-childcomments" className={className || ''}>
-          <ParentCommentContainer className={`${(commentDeleted && 'deleted') || ''}`}>
+          <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
             <Comment
               postId={postId}
               postType={postType}

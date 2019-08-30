@@ -56,9 +56,9 @@ const FullName = styled.div`
   width: 100%;
   padding-top: 0px;
   font-size: ${fontSizes.xl}px;
-  font-weight: 500;
+  font-weight: 600;
   text-align: center;
-  color: #333;
+  color:  ${({ theme }) => theme.colorText};
 `;
 
 const JoinedAt = styled.div`
@@ -66,7 +66,7 @@ const JoinedAt = styled.div`
   margin-top: 10px;
   font-weight: 300;
   text-align: center;
-  color: ${colors.clGreyOnGreyBackground};
+  color:  ${({ theme }) => theme.colorText};
 `;
 
 const Bio = styled.div`
@@ -150,9 +150,9 @@ export const UserHeader = memo<Props>(props => {
 );
 
 const Data = adopt<DataProps, InputProps>({
-    windowSize: <GetWindowSize />,
-    authUser: <GetAuthUser />,
-    user: ({ userSlug, render }) => <GetUser slug={userSlug}>{render}</GetUser>
+  windowSize: <GetWindowSize />,
+  authUser: <GetAuthUser />,
+  user: ({ userSlug, render }) => <GetUser slug={userSlug}>{render}</GetUser>
 });
 
 const WrappedUserHeader = (inputProps: InputProps) => (
