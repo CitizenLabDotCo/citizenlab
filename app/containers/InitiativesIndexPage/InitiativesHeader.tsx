@@ -67,13 +67,13 @@ const HeaderContent = styled.div`
   z-index: 1;
 `;
 
-const HeaderTitle: any = styled.h1`
+const HeaderTitle = styled.h1<{ hasHeader?: boolean }>`
   width: 100%;
   max-width: 600px;
-  color: ${({ theme }) => theme.colorMain};
-  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || (fontSizes.xxxl + 1)}px;
-  line-height: normal;
+  color: ${({ hasHeader, theme }) => hasHeader ? '#fff' : theme.colorMain};
+  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
+  line-height: normal;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -82,6 +82,7 @@ const HeaderTitle: any = styled.h1`
     font-size: ${fontSizes.xxxl}px;
   `}
 `;
+
 const ColoredText = styled.span`
   color: ${({ theme }) => lighten(.3, theme.colorMain)};
 `;

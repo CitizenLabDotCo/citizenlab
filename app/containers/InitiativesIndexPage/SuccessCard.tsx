@@ -129,37 +129,37 @@ const SuccessCard = memo(({ page, imageUrl, pageSlug, location, intl: { formatMe
   if (isNilOrError(page)) return null;
 
   return (
-      <Container to={`/pages/${pageSlug}`} target="_blank">
-        <SuccessImageContainer>
-          <SuccessImagePlaceholder>
-            <SuccessImagePlaceholderIcon name="successStory" />
-          </SuccessImagePlaceholder>
+    <Container to={`/pages/${pageSlug}`} target="_blank">
+      <SuccessImageContainer>
+        <SuccessImagePlaceholder>
+          <SuccessImagePlaceholderIcon name="successStory" />
+        </SuccessImagePlaceholder>
 
-          <LocationIndication>
-            <LocationIcon name="position" />
-            {location}
-          </LocationIndication>
+        <LocationIndication>
+          <LocationIcon name="position" />
+          {location}
+        </LocationIndication>
 
-          {imageUrl &&
-            <T value={page.attributes.title_multiloc}>
-              {storyTitle => (
-                <SuccessImage
-                  src={imageUrl}
-                  alt={formatMessage(messages.successImageAltText, { storyTitle })}
-                  cover={true}
-                />
-              )}
-            </T>
-          }
-        </SuccessImageContainer>
-        <SuccessIndication>
-          <FormattedMessage {...messages.success}/>
-        </SuccessIndication>
-        <SuccessTitle>
-          <T value={page.attributes.title_multiloc} />
-        </SuccessTitle>
-      </Container>
-    );
+        {imageUrl &&
+          <T value={page.attributes.title_multiloc}>
+            {storyTitle => (
+              <SuccessImage
+                src={imageUrl}
+                alt={formatMessage(messages.successImageAltText, { storyTitle })}
+                cover={true}
+              />
+            )}
+          </T>
+        }
+      </SuccessImageContainer>
+      <SuccessIndication>
+        <FormattedMessage {...messages.success}/>
+      </SuccessIndication>
+      <SuccessTitle>
+        <T value={page.attributes.title_multiloc} />
+      </SuccessTitle>
+    </Container>
+  );
 });
 
 const Data = adopt<DataProps, InputProps>({
