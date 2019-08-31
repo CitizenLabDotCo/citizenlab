@@ -62,17 +62,16 @@ const HeaderImage = styled.div`
   right: 0;
 `;
 
-const HeaderImageBackground: any = styled.div`
+const HeaderImageBackground = styled.div<{ src: string | null }>`
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  background-image: url(${(props: any) => props.src});
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  background-image: url(${(props: any) => props.src});
+  background-image: url(${({ src }) => src});
 `;
 
 const HeaderImageOverlay = styled.div`
@@ -100,13 +99,13 @@ const HeaderContent = styled.div`
   z-index: 1;
 `;
 
-const HeaderTitle: any = styled.h1`
+const HeaderTitle = styled.h1<{ hasHeader: boolean }>`
   width: 100%;
   max-width: 600px;
-  color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || (fontSizes.xxxl + 1)}px;
-  line-height: normal;
+  color: ${({ hasHeader, theme }) => hasHeader ? '#fff' : theme.colorMain};
+  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
+  line-height: normal;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -116,10 +115,10 @@ const HeaderTitle: any = styled.h1`
   `}
 `;
 
-const HeaderSubtitle: any = styled.h2`
+const HeaderSubtitle = styled.h2<{ hasHeader: boolean }>`
   width: 100%;
   max-width: 375px;
-  color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
+  color: ${({ hasHeader, theme }) => hasHeader ? '#fff' : theme.colorMain};
   font-size: ${fontSizes.xl}px;
   line-height: 28px;
   font-weight: 400;

@@ -165,8 +165,8 @@ class CLMap extends React.PureComponent<Props, State> {
     }
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.points && !isEqual(prevProps.points, this.props.points)) {
+  componentDidUpdate() {
+    if (this.props.points) {
       this.convertPoints(this.props.points);
     }
   }
