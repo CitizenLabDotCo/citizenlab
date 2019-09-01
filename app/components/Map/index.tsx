@@ -1,6 +1,6 @@
 import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { compact, isEqual, get, isNil } from 'lodash-es';
+import { compact, get, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -11,7 +11,7 @@ import Icon from 'components/UI/Icon';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // Map
-import Leaflet, { Marker } from 'leaflet';
+import Leaflet from 'leaflet';
 import 'leaflet.markercluster';
 
 // Styling
@@ -20,7 +20,7 @@ import styled from 'styled-components';
 import { darken, lighten } from 'polished';
 import { colors, media } from 'utils/styleUtils';
 
-const icon = require('./marker.svg');
+const markerIcon = require('./marker.svg');
 
 const Container = styled.div`
   width: 100%;
@@ -110,7 +110,7 @@ const MapContainer = styled.div`
 `;
 
 const customIcon = Leaflet.icon({
-  iconUrl: icon,
+  iconUrl: markerIcon,
   iconSize: [29, 41],
   iconAnchor: [14, 41],
 });
@@ -140,7 +140,9 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  initiated: boolean;
+}
 
 class CLMap extends React.PureComponent<Props, State> {
   private map: Leaflet.Map;
@@ -159,14 +161,21 @@ class CLMap extends React.PureComponent<Props, State> {
     },
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      initiated: false
+    };
+  }
+
   componentDidMount() {
-    if (this.props.points) {
+    if (this.props.points && this.props.points.length > 0) {
       this.convertPoints(this.props.points);
     }
   }
 
-  componentDidUpdate() {
-    if (this.props.points) {
+  componentDidUpdate(_prevProps) {
+    if (this.props.points && this.props.points.length > 0) {
       this.convertPoints(this.props.points);
     }
   }
@@ -222,11 +231,12 @@ class CLMap extends React.PureComponent<Props, State> {
 
       bounds.push(latlng);
 
-      return new Marker(latlng, markerOptions);
+      return Leaflet.marker(latlng, markerOptions);
     });
 
-    if (bounds && bounds.length > 0 && this.props.fitBounds) {
+    if (bounds && bounds.length > 0 && this.props.fitBounds && !this.state.initiated) {
       this.map.fitBounds(bounds, { maxZoom: 12 });
+      this.setState({ initiated: true });
     }
 
     this.addClusters();
