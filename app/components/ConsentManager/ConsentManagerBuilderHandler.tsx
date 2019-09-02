@@ -49,6 +49,10 @@ const ConsentManagerBuilderHandler = ({
         filteredNewDestinations.push(destination);
       }
     });
+    const newBlacklistEntries = blacklistedDestinations.filter(destinationId => !(preferences.tenantBlacklisted || []).includes(destinationId));
+    if (newBlacklistEntries.length > 0 && filteredNewDestinations.length === 0) {
+      saveConsent();
+    }
   }
   const isConsentRequired = filteredNewDestinations.length > 0;
 
