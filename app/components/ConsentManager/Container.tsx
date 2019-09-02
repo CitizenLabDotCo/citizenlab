@@ -149,6 +149,12 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
       categorizedDestinations
     } = this.props;
     const { isDialogOpen, isCancelling } = this.state;
+    const noDestinations = Object.values(categorizedDestinations).every(array => array.length === 0);
+    const mode = noDestinations
+      ? 'noDestinations'
+      : !isCancelling
+      ? 'preferenceForm'
+      : 'cancelling';
 
     return (
       <>
@@ -159,14 +165,19 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
           header={<FormattedMessage {...messages.title} />}
           footer={<Footer
             validate={this.validate}
-            isCancelling={this.state.isCancelling}
+            mode={mode}
             handleCancelBack={this.handleCancelBack}
             handleCancelConfirm={this.handleCancelConfirm}
             handleCancel={this.handleCancel}
             handleSave={this.handleSave}
           />}
         >
-          {!isCancelling &&
+          {noDestinations &&
+            <ContentContainer role="dialog" aria-modal>
+              <FormattedMessage {...messages.noDestinations} tagName="h1" />
+            </ContentContainer>
+          }
+          {!noDestinations && !isCancelling &&
             <PreferencesDialog
               onChange={this.handleCategoryChange}
               categoryDestinations={categorizedDestinations}
@@ -175,7 +186,7 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
               functional={preferences.functional}
             />
           }
-          {isCancelling &&
+          {!noDestinations && isCancelling &&
             <ContentContainer role="dialog" aria-modal>
               <FormattedMessage {...messages.confirmation} tagName="h1" />
             </ContentContainer>

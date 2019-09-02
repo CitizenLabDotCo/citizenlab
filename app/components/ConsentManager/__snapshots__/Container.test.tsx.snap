@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Container /> renders correclty when no destinations are allowed by the tenant 1`] = `
+<Fragment>
+  <LoadableModal
+    close={[Function]}
+    footer={
+      <Footer
+        handleCancel={[Function]}
+        handleCancelBack={[Function]}
+        handleCancelConfirm={[Function]}
+        handleSave={[Function]}
+        mode="noDestinations"
+        validate={[Function]}
+      />
+    }
+    header={
+      <FormattedMessage
+        defaultMessage="Your cookie preferences"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.title"
+      />
+    }
+    label="Your cookie preferences"
+    opened={true}
+  >
+    <Component
+      aria-modal={true}
+      role="dialog"
+    >
+      <FormattedMessage
+        defaultMessage="No trackers are enabled on your platform"
+        id="app.components.ConsentManager.Banner.noDestinations"
+        tagName="h1"
+      />
+    </Component>
+  </LoadableModal>
+</Fragment>
+`;
