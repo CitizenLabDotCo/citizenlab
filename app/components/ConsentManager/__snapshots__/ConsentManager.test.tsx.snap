@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<ConsentManager /> boundaries:  passes segment API key from constants file 1`] = `""`;

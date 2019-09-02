@@ -209,6 +209,38 @@ describe('<ConsentManagerBuilderHandler />', () => {
         const { isConsentRequired } = wrapper.find('Container').props();
         expect(isConsentRequired).toEqual(false);
       });
+      it('expects consent for a returing user if some destinations were taken off the blacklist', () => {
+        const wrapper = shallow(
+          <ConsentManagerBuilderHandler {...returningUserNewDestinations(['NewTool'])} />
+        );
+        const { isConsentRequired } = wrapper.find('Container').props();
+        expect(isConsentRequired).toEqual(false);
+      });
+    });
+
+    describe('handles blacklist changes', () => {
+      it('expects consent when a destination was taken off the blacklist', () => {
+        const wrapper = shallow(
+          <ConsentManagerBuilderHandler
+            {...{
+              setPreferences,
+              resetPreferences,
+              saveConsent,
+              destinations,
+              blacklistedDestinations: [],
+              newDestinations: [],
+              preferences: {
+                advertising: false,
+                analytics: true,
+                functional: true,
+                tenantBlacklisted: ['Google Tag Manager']
+              }
+            }}
+          />
+        );
+        const { isConsentRequired } = wrapper.find('Container').props();
+        expect(isConsentRequired).toEqual(true);
+      });
     });
   });
 });

@@ -40,6 +40,16 @@ const ConsentManagerBuilderHandler = ({
   const filteredNewDestinations = newDestinations.filter(destination => !blacklistedDestinations.includes(destination.id));
   const filteredDestinations = destinations.filter(destination => !blacklistedDestinations.includes(destination.id));
   const categorizedDestinations = getCategorizedDestinations(filteredDestinations);
+
+  if (blacklistedDestinations !== preferences.tenantBlacklisted) {
+    const noLongerBlacklisted = (preferences.tenantBlacklisted || []).filter(destinationId => !blacklistedDestinations.includes(destinationId));
+    noLongerBlacklisted.forEach(id => {
+      const destination = destinations.find(destination => destination.id === id);
+      if (destination) {
+        filteredNewDestinations.push(destination);
+      }
+    });
+  }
   const isConsentRequired = filteredNewDestinations.length > 0;
 
   return (

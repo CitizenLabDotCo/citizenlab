@@ -19,11 +19,13 @@ export interface IDestination {
   category: string;
 }
 
-// the format in which the user will make its choices
+// the format in which the user will make its choices,
+// plus a way to remember tenantSettings last time the use gave consent.
 export interface CustomPreferences {
   analytics: boolean | null;
   advertising: boolean | null;
   functional: boolean | null;
+  tenantBlacklisted?: string[] | undefined | null;
 }
 
 // the format in which we'll present the desinations to the user
@@ -49,7 +51,7 @@ export interface ConsentManagerProps {
   newDestinations: IDestination[];
   preferences: CustomPreferences;
   // isConsentRequired: boolean; // passed down by SCM but we'll overwrite it
-  // implyConsentOnInteraction: boolean; // not in use here but passed through by SCM
+  // implyConsentOnInteraction: boolean; // not in use here but passed through by SCM, defaults to false
 }
 
 interface InputProps { }
@@ -96,6 +98,8 @@ const mapCustomPreferences = (
   }
 
   const blacklistedDestinations = blacklistedDestinationsList ? blacklistedDestinationsList.reduce(reducerArrayToObject, {}) : {};
+  customPreferences.tenantBlacklisted = blacklistedDestinationsList || undefined;
+
   return {
     customPreferences,
     destinationPreferences: { ...destinationPreferences, ...blacklistedDestinations },

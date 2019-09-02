@@ -123,10 +123,12 @@ describe('<ConsentManager />', () => {
   });
 
   describe('respects the blacklist set on tenant', () => {
-    const wrapper = shallow(<ConsentManager authUser={null} tenant={getTenant(['Google Tag Manager'])} />);
-    const handleMapCustomPreferences = wrapper.find('ConsentManagerBuilder').props().mapCustomPreferences;
 
-    it('sets preferences according to the users choice, except blacklisted set to false', () => {
+    it('sets preferences according to the users choice, except blacklisted set to false, saves blacklisted', () => {
+      const blacklist = ['Google Tag Manager'];
+      const wrapper = shallow(<ConsentManager authUser={null} tenant={getTenant(blacklist)} />);
+      const handleMapCustomPreferences = wrapper.find('ConsentManagerBuilder').props().mapCustomPreferences;
+
       const preferences = {
         advertising: true,
         analytics: true,
@@ -136,7 +138,8 @@ describe('<ConsentManager />', () => {
       expect(customPreferences).toEqual({
         advertising: true,
         analytics: true,
-        functional: false
+        functional: false,
+        tenantBlacklisted: blacklist
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
@@ -146,8 +149,9 @@ describe('<ConsentManager />', () => {
       });
     });
 
-    it('sets all to true but blacklisted destinations when called with no preferences set', () => {
-      const wrapper = shallow(<ConsentManager authUser={null} tenant={getTenant(['Google Tag Manager'])} />);
+    it('sets all to true but blacklisted destinations when called with no preferences set, saves blacklisted', () => {
+      const blacklist = ['Google Tag Manager'];
+      const wrapper = shallow(<ConsentManager authUser={null} tenant={getTenant(blacklist)} />);
       const handleMapCustomPreferences = wrapper.find('ConsentManagerBuilder').props().mapCustomPreferences;
 
       const preferences = initialPreferences;
@@ -155,7 +159,8 @@ describe('<ConsentManager />', () => {
       expect(customPreferences).toEqual({
         advertising: true,
         analytics: true,
-        functional: true
+        functional: true,
+        tenantBlacklisted: blacklist
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
