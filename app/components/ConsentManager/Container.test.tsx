@@ -86,6 +86,28 @@ describe('<Container />', () => {
     expect(saveConsent).toHaveBeenCalled();
     expect(resetPreferences).not.toHaveBeenCalled();
   });
+  it('renders correclty when no destinations are allowed by the tenant', () => {
+    const wrapper = shallow(
+      <Container
+        intl={intl}
+        setPreferences={setPreferences}
+        resetPreferences={resetPreferences}
+        saveConsent={saveConsent}
+        isConsentRequired={false}
+        preferences={initialPreferences}
+        categorizedDestinations={{
+          analytics: [],
+          functional: [],
+          advertising: []
+        }}
+      />
+    );
+
+    // wih no destinations allowed, isConsentRequired will be false so no banner
+    // but the modal is still accessible trough the cookie policy
+    eventEmitter.emit('footer', 'openConsentManager', null);
+    expect(wrapper).toMatchSnapshot();
+  });
 
   it('handle changes as expected', () => {
     const wrapper = shallow(
