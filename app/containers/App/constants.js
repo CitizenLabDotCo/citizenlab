@@ -2,12 +2,15 @@
 exports.__esModule = true;
 exports.AUTH_PATH = '/auth';
 exports.API_PATH = '/web_api/v1';
+exports.GRAPHQL_PATH = '/admin_templates_api/graphql';
 exports.GOOGLE_MAPS_API_KEY = 'AIzaSyDRtFe1KRBnGfDy_ijw6yCYsYnEkQRl9Cw';
 exports.CL_GA_TRACKING_ID = 'UA-65562281-44';
 exports.CL_GA_TRACKER_NAME = 'CitizenLab2';
 exports.CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
 exports.API_HOST = process.env.API_HOST || (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
 exports.API_PORT = process.env.API_PORT || 4000;
+exports.GRAPHQL_HOST = process.env.GRAPHQL_HOST || (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
+exports.GRAPHQL_PORT = process.env.GRAPHQL_PORT || 5001;
 exports.DEFAULT_LOCALE = 'en';
 // the locales we "support" :
 // platformBaseUrl/{oneOfTheseStrings}/{anything we have a route for}

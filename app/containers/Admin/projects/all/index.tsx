@@ -29,6 +29,7 @@ import HasPermission from 'components/HasPermission';
 import Toggle from 'components/UI/Toggle';
 import FeatureFlag from 'components/FeatureFlag';
 import InfoTooltip from 'components/admin/InfoTooltip';
+import ProjectTemplates from './ProjectTemplates';
 
 // style
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -224,6 +225,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   </FeatureFlag>
                 </HasPermission>
               </ListHeader>
+
+              <ProjectTemplates />
+
               <HasPermission item="project" action="reorder">
                 {(tenant.attributes.settings.manual_project_sorting as any).enabled ?
                   <SortableList
