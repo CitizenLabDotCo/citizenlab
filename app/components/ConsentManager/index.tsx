@@ -1,13 +1,16 @@
 import React, { PureComponent } from 'react';
 import { ConsentManagerBuilder } from '@segment/consent-manager';
 import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
-import { integrations } from 'utils/analytics';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
-import Container from './Container';
+import ConsentManagerBuilderHandler from './ConsentManagerBuilderHandler';
 
 import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+
+// the format in which sentry sends out destinations
 export interface IDestination {
   id: string;
   name: string;
@@ -15,24 +18,58 @@ export interface IDestination {
   website: string;
   category: string;
 }
+
+// the format in which the user will make its choices
 export interface CustomPreferences {
   analytics: boolean | null;
   advertising: boolean | null;
   functional: boolean | null;
 }
-const initialPreferences = {
+
+// the format in which we'll present the desinations to the user
+export interface CategorizedDestinations {
+  analytics: IDestination[];
+  advertising: IDestination[];
+  functional: IDestination[];
+}
+
+// initially, preferences are set to null
+export const initialPreferences = {
   analytics: null,
   advertising: null,
   functional: null
 };
 
-interface InputProps {}
-interface DataProps {
-  authUser: GetAuthUserChildProps;
+// the interface of the object segment's consent manager will pass down to its child
+export interface ConsentManagerProps {
+  setPreferences: Function;
+  resetPreferences: () => void;
+  saveConsent: () => void;
+  destinations: IDestination[];
+  newDestinations: IDestination[];
+  preferences: CustomPreferences;
+  // isConsentRequired: boolean; // passed down by SCM but we'll overwrite it
+  // implyConsentOnInteraction: boolean; // not in use here but passed through by SCM
 }
-interface Props extends InputProps, DataProps {}
 
-export const mapCustomPreferences = ({ destinations, preferences }) => {
+interface InputProps { }
+interface DataProps {
+  tenant: GetTenantChildProps;
+}
+interface Props extends InputProps, DataProps { }
+
+// helper function for mapCustomPreferences
+// reducer function, when passed in to _array.reduce, transforms the array
+// into an object with the entries of the arrays as keys, and false as values
+const reducerArrayToObject = (acc, curr) => (acc[curr] = false, acc);
+
+// takes in the full list of destinations and the preferences set by the user and
+// gives out both the custom preferences to save and the preferences in the format
+// { [preferenceId]: booleanConsent }
+const mapCustomPreferences = (
+  { destinations, preferences }: { destinations: IDestination[], preferences: CustomPreferences },
+  blacklistedDestinationsList: string[] | null
+) => {
   const destinationPreferences = {};
   const customPreferences = {} as CustomPreferences;
 
@@ -58,43 +95,49 @@ export const mapCustomPreferences = ({ destinations, preferences }) => {
     }
   }
 
+  const blacklistedDestinations = blacklistedDestinationsList ? blacklistedDestinationsList.reduce(reducerArrayToObject, {}) : {};
   return {
-    destinationPreferences,
     customPreferences,
-  };
+    destinationPreferences: { ...destinationPreferences, ...blacklistedDestinations },
+  } as { customPreferences: CustomPreferences, destinationPreferences: { [destinationId: string]: boolean }};
 };
 
 export class ConsentManager extends PureComponent<Props> {
-
   handleMapCustomPreferences = ({ destinations, preferences }) => {
-    const { destinationPreferences, customPreferences } = mapCustomPreferences({ destinations, preferences });
-
-    // We don't want to send everything to all destinations, depending on the user role
-    const { authUser } = this.props;
-    const guardedDestinationPreferences = integrations((authUser && { data: authUser }) || null);
-
-    return {
-      customPreferences,
-      destinationPreferences: { ...destinationPreferences, ...guardedDestinationPreferences } };
+    const { tenant } = this.props;
+    if (isNilOrError(tenant)) return ({ customPreferences: {}, destinationPreferences: {} });
+    return mapCustomPreferences(
+      { destinations, preferences },
+      tenant.attributes.settings.core.segment_destinations_blacklist
+    );
   }
 
   render() {
+    const { tenant } = this.props;
+    if (isNilOrError(tenant)) return null;
     return (
       <ConsentManagerBuilder
         writeKey={CL_SEGMENT_API_KEY}
         mapCustomPreferences={this.handleMapCustomPreferences}
         initialPreferences={initialPreferences}
       >
-        {(ConsentManagerProps) => (
-          <Container {...ConsentManagerProps} />
+        {(consentManagerProps) => (
+          <ConsentManagerBuilderHandler
+            {...consentManagerProps}
+            blacklistedDestinations={tenant.attributes.settings.core.segment_destinations_blacklist || []}
+          />
         )}
       </ConsentManagerBuilder>
     );
   }
 }
 
-export default () => (
-  <GetAuthUser>
-    {(authUser) => <ConsentManager authUser={authUser} />}
-  </GetAuthUser>
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ConsentManager {...inputProps} {...dataProps} />}
+  </Data>
 );

@@ -7,16 +7,14 @@ import eventEmitter from 'utils/eventEmitter';
 // Components
 import Banner from './Banner';
 import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
-import LoadableModal from 'components/Loadable/Modal';
 import Footer from './Footer';
+import LoadableModal from 'components/Loadable/Modal';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
-
-import { IDestination, CustomPreferences } from './';
+import { CustomPreferences, CategorizedDestinations } from './';
 
 import styled from 'styled-components';
 
@@ -31,21 +29,14 @@ interface Props {
   setPreferences: Function;
   resetPreferences: () => void;
   saveConsent: () => void;
-  destinations: IDestination[];
-  newDestinations: IDestination[];
-  preferences: CustomPreferences;
   isConsentRequired: boolean;
-  implyConsentOnInteraction: boolean;
+  preferences: CustomPreferences;
+  categorizedDestinations: CategorizedDestinations;
 }
 
 interface State {
   isDialogOpen: boolean;
   isCancelling: boolean;
-  categoryDestinations: {
-    analytics: IDestination[],
-    advertising: IDestination[],
-    functional: IDestination[],
-  };
 }
 
 export class Container extends PureComponent<Props & InjectedIntlProps, State> {
@@ -55,12 +46,7 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       isDialogOpen: false,
-      isCancelling: false,
-      categoryDestinations: {
-        analytics: [] as IDestination[],
-        advertising: [] as IDestination[],
-        functional: [] as IDestination[],
-      }
+      isCancelling: false
     };
   }
 
@@ -68,31 +54,10 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions = [
       eventEmitter.observeEvent('openConsentManager').subscribe(this.openDialog)
     ];
-    this.assignDestinations();
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.destinations !== prevProps.destinations) {
-      this.assignDestinations();
-    }
-  }
-
-  assignDestinations = () => {
-    const { categoryDestinations } = this.state;
-    for (const destination of this.props.destinations) {
-      if (ADVERTISING_CATEGORIES.find(c => c === destination.category)) {
-        categoryDestinations.advertising.push(destination);
-      } else if (FUNCTIONAL_CATEGORIES.find(c => c === destination.category)) {
-        categoryDestinations.functional.push(destination);
-      } else {
-        // Fallback to analytics
-        categoryDestinations.analytics.push(destination);
-      }
-    }
   }
 
   openDialog = () => {
@@ -123,10 +88,9 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
 
   validate = () => {
     let res = true;
-    const { categoryDestinations } = this.state;
-    const { preferences } = this.props;
-    for (const category of Object.keys(categoryDestinations)) {
-      if (categoryDestinations[category].length > 0) {
+    const { preferences, categorizedDestinations } = this.props;
+    for (const category of Object.keys(categorizedDestinations)) {
+      if (categorizedDestinations[category].length > 0) {
         res = res && !(preferences[category] === null);
       }
     }
@@ -149,13 +113,13 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleCancel = () => {
-    const { resetPreferences, newDestinations, preferences } = this.props;
+    const { resetPreferences, isConsentRequired, preferences } = this.props;
 
     const isEmpty = Object.keys(preferences).every(e => preferences[e] === null);
 
     // Only show the cancel confirmation if there's unconsented destinations...
-    // or if the user made a choice
-    if (newDestinations.length > 0 && !isEmpty) {
+    // or if the user made a choice and we want to confirm aborting it
+    if (isConsentRequired && !isEmpty) {
       this.setState({ isCancelling: true });
     } else {
       this.setState({ isDialogOpen: false });
@@ -179,12 +143,12 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const {
-      newDestinations,
       preferences,
       isConsentRequired,
       intl,
+      categorizedDestinations
     } = this.props;
-    const { isDialogOpen, isCancelling, categoryDestinations } = this.state;
+    const { isDialogOpen, isCancelling } = this.state;
 
     return (
       <>
@@ -205,7 +169,7 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
           {!isCancelling &&
             <PreferencesDialog
               onChange={this.handleCategoryChange}
-              categoryDestinations={categoryDestinations}
+              categoryDestinations={categorizedDestinations}
               analytics={preferences.analytics}
               advertising={preferences.advertising}
               functional={preferences.functional}
@@ -217,7 +181,7 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
             </ContentContainer>
           }
         </LoadableModal>
-        {isConsentRequired && newDestinations.length > 0 && (
+        {isConsentRequired && (
           <Banner
             onAccept={this.handleBannerAccept}
             onChangePreferences={this.openDialog}
