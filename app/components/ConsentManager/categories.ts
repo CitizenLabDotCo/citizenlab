@@ -9,9 +9,9 @@ export const MARKETING_AND_ANALYTICS_CATEGORIES = [
   'Referrals',
   'Surveys',
   'Video'
-]
+];
 
-export const ADVERTISING_CATEGORIES = ['Advertising', 'Tag Managers']
+export const ADVERTISING_CATEGORIES = ['Advertising', 'Tag Managers'];
 
 export const FUNCTIONAL_CATEGORIES = [
   'CRM',
@@ -25,4 +25,4 @@ export const FUNCTIONAL_CATEGORIES = [
   'Security & Fraud',
   'Email',
   'Email Marketing'
-]
+];

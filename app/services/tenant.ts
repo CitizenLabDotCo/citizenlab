@@ -31,6 +31,7 @@ export interface ITenantSettings {
     currency: string;
     custom_onboarding_fallback_message?: Multiloc | null;
     currently_working_on_text?: Multiloc | null;
+    segment_destinations_blacklist: string[] | null;
   };
   demographic_fields?: {
     allowed: boolean;
