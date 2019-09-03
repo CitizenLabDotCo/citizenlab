@@ -47,7 +47,11 @@ const ProjectTemplates = memo<Props>((_props) => {
     `,
   });
 
-  console.log(data);
+  if (!fetching) {
+    data.publishedProjectTemplates.edges.forEach((edge) => {
+      console.log(JSON.stringify(edge.node, null, 2));
+    });
+  }
 
   return fetching ? <Loading /> : <List />;
 });
@@ -58,6 +62,6 @@ const client = createClient({
 
 export default () => (
   <Provider value={client}>
-    <ProjectTemplates />}
+    <ProjectTemplates />
   </Provider>
 );
