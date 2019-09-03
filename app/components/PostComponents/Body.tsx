@@ -19,7 +19,7 @@ import { viewportWidths } from 'utils/styleUtils';
 const Container = styled.div``;
 
 interface InputProps {
-  id: string;
+  postId: string;
   body: string;
   locale?: Locale;
   translateButtonClicked?: boolean;
@@ -35,7 +35,7 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-const Body = memo<Props>(({ id, body, locale, translateButtonClicked, theme, windowSize, className, postType }) => {
+const Body = memo<Props>(({ postId, body, locale, translateButtonClicked, theme, windowSize, className, postType }) => {
   const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
   return (
@@ -46,7 +46,7 @@ const Body = memo<Props>(({ id, body, locale, translateButtonClicked, theme, win
         fontWeight={300}
       >
         {(translateButtonClicked && locale) ?
-          <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} id={id} context={postType}>
+          <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} id={postId} context={postType}>
             {translation => {
               if (!isNilOrError(translation)) {
                 return <span dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />;

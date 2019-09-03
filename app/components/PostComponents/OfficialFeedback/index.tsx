@@ -36,7 +36,6 @@ export default class OfficialFeedback extends PureComponent<Props, State> {
           <OfficialFeedbackFeed
             postId={postId}
             postType={postType}
-            permission={permissionToPost}
             editingAllowed={permissionToPost}
           />
         </Container>

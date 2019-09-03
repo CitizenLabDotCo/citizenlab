@@ -2,14 +2,6 @@ import { randomString, randomEmail } from '../support/commands';
 
 describe('Sign up step 2 page', () => {
 
-  const navigateToLandingPage = () => {
-    cy.wait(1000);
-    cy.visit('/');
-    cy.wait(1000);
-    cy.get('#e2e-landing-page');
-    cy.wait(1000);
-  };
-
   describe('No custom fields', () => {
     const firstName = randomString();
     const lastName = randomString();
@@ -41,7 +33,7 @@ describe('Sign up step 2 page', () => {
         customFieldId = response.body.data.id;
         cy.apiSignup(firstName, lastName, email, password);
         cy.login(email, password);
-        navigateToLandingPage();
+        cy.goToLandingPage();
       });
     });
 
@@ -71,14 +63,18 @@ describe('Sign up step 2 page', () => {
         customFieldId = response.body.data.id;
         cy.apiSignup(firstName, lastName, email, password);
         cy.login(email, password);
-        navigateToLandingPage();
+        cy.goToLandingPage();
       });
     });
 
     it('shows an error message when submitting an empty form', () => {
-      cy.visit('/complete-signup').wait(1000);
-      cy.get('#e2e-signup-step2');
-      cy.get('.e2e-signup-step2-button').click();
+      cy.visit('/complete-signup');
+      // custom fields form is loadable,
+      // so it takes some time for it to load
+      cy.wait(2000);
+      // and so it's also better to look for the form, rather than for the container (what we did before)
+      cy.get('#e2e-custom-signup-form');
+      cy.get('#e2e-signup-step2-button').click();
       cy.get('.e2e-error-message').should('contain', 'This field is required');
     });
 
@@ -100,7 +96,7 @@ describe('Sign up step 2 page', () => {
         customFieldId = response.body.data.id;
         cy.apiSignup(firstName, lastName, email, password);
         cy.login(email, password);
-        navigateToLandingPage();
+        cy.goToLandingPage();
       });
     });
 
@@ -108,7 +104,7 @@ describe('Sign up step 2 page', () => {
       cy.visit('/complete-signup').wait(1000);
       cy.get('#e2e-signup-step2');
       cy.get(`#root_${randomFieldName}`).type('test');
-      cy.get('.e2e-signup-step2-button').click();
+      cy.get('#e2e-signup-step2-button').click();
       cy.location('pathname').should('eq', '/en-GB/');
       cy.get('#e2e-landing-page');
     });

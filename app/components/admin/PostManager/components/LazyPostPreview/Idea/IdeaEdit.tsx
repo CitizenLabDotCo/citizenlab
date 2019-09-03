@@ -13,7 +13,7 @@ import clHistory from 'utils/cl-router/history';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
-import { Content, Top, Container } from '../';
+import { Content, Top, Container } from '../PostPreview';
 
 // services
 import { localeStream } from 'services/locale';
@@ -51,7 +51,7 @@ const SaveButton = styled(Button)`
   margin-right: 10px;
 `;
 
-interface InputProps {
+export interface InputProps {
   ideaId: string;
   goBack: () => void;
 }

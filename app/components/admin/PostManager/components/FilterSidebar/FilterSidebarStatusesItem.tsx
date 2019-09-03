@@ -54,6 +54,7 @@ class FilterSidebarStatusesItem extends React.PureComponent<Props> {
               <T value={status.attributes.title_multiloc} />
               {get(status, 'attributes.transition_type') === 'automatic' &&
                 <StyledText>
+                  &nbsp;
                   <FormattedMessage {...messages.automatic} />
                 </StyledText>
               }

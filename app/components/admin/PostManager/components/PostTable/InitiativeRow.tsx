@@ -158,7 +158,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
     return (
       <>
         <WrappedRow
-          className={className}
+          className={`e2e-initiative-row ${className}`}
           as={StyledRow}
           active={active}
           onClick={onClickRow}

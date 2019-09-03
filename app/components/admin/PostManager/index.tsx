@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
@@ -28,10 +28,8 @@ import InitiativesCount from './components/InitiativesCount';
 import { Input, Message } from 'semantic-ui-react';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
-
-// lazy-loaded components
-const PostPreview = lazy(() => import('./components/PostPreview'));
-const StatusChangeModal = lazy(() => import('./components/StatusChangeModal'));
+import LazyPostPreview from './components/LazyPostPreview';
+const StatusChangeModal = lazy(() => import('./components/StatusChangeModal')); // TODO
 
 // i18n
 import messages from './messages';
@@ -284,17 +282,20 @@ export class PostManager extends React.PureComponent<Props, State> {
             handleAssigneeFilterChange={onChangeAssignee}
             type={type}
           />
-          <FeedbackToggle
-            type={type}
-            value={feedbackNeeded}
-            onChange={onChangeFeedbackFilter}
-            project={selectedProject}
-            phase={selectedPhase}
-            topics={selectedTopics}
-            status={selectedStatus}
-            assignee={selectedAssignee}
-            searchTerm={searchTerm}
-          />
+          {(type === 'AllIdeas' || type === 'ProjectIdeas') ?
+            <FeedbackToggle
+              type={type}
+              value={feedbackNeeded}
+              onChange={onChangeFeedbackFilter}
+              project={selectedProject}
+              phase={selectedPhase}
+              topics={selectedTopics}
+              status={selectedStatus}
+              assignee={selectedAssignee}
+              searchTerm={searchTerm}
+            />
+            : null
+          }
           <StyledExportMenu
             type={type}
             selection={selection}
@@ -389,7 +390,7 @@ export class PostManager extends React.PureComponent<Props, State> {
           />
         </ThreeColumns>
         <Suspense fallback={null}>
-          <PostPreview
+          <LazyPostPreview
             type={type}
             postId={previewPostId}
             mode={previewMode}

@@ -11,7 +11,7 @@ import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColu
 const Container = styled.div`
   flex: 1;
   width: 100%;
-  margin-top: 80px;
+  margin-top: 60px;
   background: #f8f8f9;
   border-top: solid 1px #e2e2e2;
 
@@ -25,7 +25,7 @@ const Content = styled.div`
   max-width: ${postPageContentMaxWidth};
   margin-left: auto;
   margin-right: auto;
-  margin-top: 70px;
+  margin-top: 50px;
   padding-left: 60px;
   padding-right: 60px;
   padding-bottom: 60px;

@@ -193,7 +193,6 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
 
       onPublished();
     } catch (errorResponse) {
-      console.log(errorResponse);
       const apiErrors = get(errorResponse, 'json.errors');
       this.setState((state) => ({ apiErrors: { ...state.apiErrors, ...apiErrors }, publishError: true }));
       setTimeout(() => {
@@ -235,7 +234,6 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
   }
 
   onRemoveFile = (fileToRemove: UploadFile) => {
-    console.log(fileToRemove);
     this.setState(({ files }) => ({ files: [...files].filter(file => file.base64 !== fileToRemove.base64) }));
     if (fileToRemove.id) {
       this.setState(({ filesToRemove }) => ({ filesToRemove: [...filesToRemove, fileToRemove] }));

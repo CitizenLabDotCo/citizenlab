@@ -40,7 +40,7 @@ const StyledWarning = styled(Warning)`
 `;
 
 const StyledMap = styled(Map)`
-  height: 600px;
+  height: 550px;
 
   ${media.smallerThanMaxTablet`
     height: 500px;

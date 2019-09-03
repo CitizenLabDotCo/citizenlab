@@ -19,7 +19,7 @@ jest.mock('./components/IdeasCount', () => 'IdeasCount');
 jest.mock('./components/InitiativesCount', () => 'InitiativesCount');
 jest.mock('./components/TopLevelFilters/AssigneeFilter', () => 'AssigneeFilter');
 jest.mock('./components/TopLevelFilters/FeedbackToggle', () => 'FeedbackToggle');
-jest.mock('./components/PostPreview', () => 'PostPreview');
+jest.mock('./components/LazyPostPreview', () => 'LazyPostPreview');
 
 import { PostManager } from './';
 
@@ -53,7 +53,7 @@ describe('<PostManager />', () => {
       />
     ));
 
-    const getPreviewProps = () => Wrapper.find('PostPreview').props();
+    const getPreviewProps = () => Wrapper.find('LazyPostPreview').props();
     expect(getPreviewProps().postId).toBeNull;
 
     // pass in to the PostTable a handler that opens the preview with the id called upon,
@@ -62,13 +62,13 @@ describe('<PostManager />', () => {
     expect(getPreviewProps().postId).toEqual('postId');
     expect(getPreviewProps().mode).toEqual('view');
 
-    // pass in to the PostPreview a handler that switched the mode of the preview
-    Wrapper.find('PostPreview').prop('onSwitchPreviewMode')();
+    // pass in to the LazyPostPreview a handler that switched the mode of the preview
+    Wrapper.find('LazyPostPreview').prop('onSwitchPreviewMode')();
     expect(getPreviewProps().postId).toEqual('postId');
     expect(getPreviewProps().mode).toEqual('edit');
 
-    // pass in to the PostPreview a handler that closes the preview
-    Wrapper.find('PostPreview').prop('onClose')();
+    // pass in to the LazyPostPreview a handler that closes the preview
+    Wrapper.find('LazyPostPreview').prop('onClose')();
     expect(getPreviewProps().postId).toBeNull;
 
     // pass in to the actionbar a method to open the edit view of current selection of one item.

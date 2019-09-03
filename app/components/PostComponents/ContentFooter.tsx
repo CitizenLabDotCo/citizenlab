@@ -69,7 +69,7 @@ const CommentsCount = styled.div`
 `;
 
 interface InputProps {
-  id: string;
+  postId: string;
   postType: 'idea' | 'initiative';
   publishedAt: string;
   commentsCount: number;
@@ -84,13 +84,13 @@ interface Props extends InputProps, DataProps {}
 
 const avatarLimit = 3;
 
-const IdeaContentFooter = memo<Props>(({ publishedAt, commentsCount, randomAvatars, className, postType, id }) => {
+const ContentFooter = memo<Props>(({ postType, publishedAt, commentsCount, randomAvatars, className, postId }) => {
 
   const avatarIds = (!isNilOrError(randomAvatars) && randomAvatars.data.length > 0 ? randomAvatars.data.map(avatar => avatar.id) : []);
   const userCount = !isNilOrError(randomAvatars) ? randomAvatars.meta.total : undefined;
 
   return (
-    <Container id="e2e-idea-content-footer" className={className}>
+    <Container id={`e2e-${postType}-content-footer`} className={className || ''}>
       <Left>
         {!isEmpty(avatarIds) &&
           <StyledAvatarBubbles
@@ -103,7 +103,7 @@ const IdeaContentFooter = memo<Props>(({ publishedAt, commentsCount, randomAvata
 
         <TimeAgo>
           <FormattedMessage {...messages.createdTimeAgo} values={{ timeAgo: <FormattedRelative value={publishedAt} /> }} />
-          <ContentChangeLog postId={id} postType={postType} />
+          <ContentChangeLog postId={postId} postType={postType} />
         </TimeAgo>
       </Left>
 
@@ -116,11 +116,11 @@ const IdeaContentFooter = memo<Props>(({ publishedAt, commentsCount, randomAvata
 });
 
 const Data = adopt<DataProps, InputProps>({
-  randomAvatars: ({ id, postType, render }) => <GetRandomAvatars limit={avatarLimit} context={{ id, type: postType }}>{render}</GetRandomAvatars>,
+  randomAvatars: ({ postId, postType, render }) => <GetRandomAvatars limit={avatarLimit} context={{ id: postId, type: postType }}>{render}</GetRandomAvatars>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaContentFooter {...inputProps} {...dataProps} />}
+    {dataProps => <ContentFooter {...inputProps} {...dataProps} />}
   </Data>
 );

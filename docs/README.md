@@ -1,5 +1,33 @@
 # Changelog
 
+## 2019-08-30
+
+### Fixed
+
+- The map preview box no longer overflows on mobile devices
+- You're now correctly directed back to the idea/initiatives page after signing in/up through commenting
+
+### Changed
+
+- The height of the rich text editor is now limited to your screen height, to limit the scrolling when applying styles
+
+
+## 2019-08-29
+
+### Fixed
+
+- Uploaded animated gifs are no longer displayed with weird artifacts
+- Features that depend on NLP are less likely to be missing some parts of the data
+
+### Added
+
+- Citizen initiatives
+  - Citizens can post view and post initiatives
+  - Admins can manage initiatives, similar to how they manage ideas
+  - Current limitation to be aware of, coming very soon:
+    - No emails and notifications related to initiatives yet
+    - No automated status changes when an initiative reaches enough votes or expires yet
+
 ## 2019-08-09
 
 ### Fixed
