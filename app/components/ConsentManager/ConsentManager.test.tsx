@@ -1,6 +1,6 @@
 // libraries
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 // component to test
 import { ConsentManager, CustomPreferences, IDestination, initialPreferences } from './';
@@ -72,7 +72,7 @@ describe('<ConsentManager />', () => {
   });
 
   describe('instanciation details: ', () => {
-    it('passes segment API key from constants file', () => {
+    it('passes segment API key from constants file to SCMB', () => {
       const wrapper = shallow(<ConsentManager authUser={null} tenant={getTenant(null)} />);
       expect(wrapper.find('ConsentManagerBuilder').props().writeKey).toBe('IHaveTheKeyInMyHand_AllINeedToFindIsTheLock');
     });
