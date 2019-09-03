@@ -35,7 +35,8 @@
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit --w=2 --coverage --coverageReporters=text-summary",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --spec 'cypress/integration/*.ts'",
-    "majestic": "majestic --port 4231"
+    "majestic": "majestic --port 4231",
+    "find-unused-messages": "node internals/scripts/find-unused-messages.js"
   },
   "majestic": {
     "jestScriptPath": "node_modules/jest/bin/jest.js"
@@ -55,6 +56,7 @@
     "cross-env": "5.2.0",
     "d3-hierarchy": "1.1.8",
     "file-saver": "2.0.2",
+    "find-in-files": "^0.5.0",
     "focus-trap-react": "4.0.1",
     "formik": "1.5.4",
     "graphql": "14.5.4",
