@@ -29,7 +29,7 @@ import { Input, Message } from 'semantic-ui-react';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 import LazyPostPreview from './components/LazyPostPreview';
-const StatusChangeModal = lazy(() => import('./components/StatusChangeModal')); // TODO
+import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 
 // i18n
 import messages from './messages';
@@ -400,7 +400,7 @@ export class PostManager extends React.PureComponent<Props, State> {
         </Suspense>
         {type === 'Initiatives' &&
           <Suspense fallback={null}>
-            <StatusChangeModal />
+            <LazyStatusChangeModal />
           </Suspense>
         }
       </>
