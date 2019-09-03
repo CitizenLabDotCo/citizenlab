@@ -20,12 +20,12 @@ export interface IDestination {
 }
 
 // the format in which the user will make its choices,
-// plus a way to remember tenantSettings last time the use gave consent.
+// plus a way to remember tenantSettings last time the user gave consent.
 export interface CustomPreferences {
   analytics: boolean | null;
   advertising: boolean | null;
   functional: boolean | null;
-  tenantBlacklisted?: string[] | undefined | null;
+  tenantBlacklisted?: string[] | undefined;
 }
 
 // the format in which we'll present the desinations to the user
@@ -62,12 +62,12 @@ interface Props extends InputProps, DataProps { }
 
 // helper function for mapCustomPreferences
 // reducer function, when passed in to _array.reduce, transforms the array
-// into an object with the entries of the arrays as keys, and false as values
+// into an object with the elements of the array as keys, and false as values
 const reducerArrayToObject = (acc, curr) => (acc[curr] = false, acc);
 
 // takes in the full list of destinations and the preferences set by the user and
-// gives out both the custom preferences to save and the preferences in the format
-// { [preferenceId]: booleanConsent }
+// gives out both the custom preferences picked by the user to save and the preferences
+// of the user in the format { [preferenceId]: booleanConsent }
 const mapCustomPreferences = (
   { destinations, preferences }: { destinations: IDestination[], preferences: CustomPreferences },
   blacklistedDestinationsList: string[] | null
