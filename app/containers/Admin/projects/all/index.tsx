@@ -21,6 +21,8 @@ import messages from './messages';
 
 // components
 import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
+import { HeaderTitle } from './styles';
+import CreateProject from './CreateProject';
 import PageWrapper from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
@@ -29,11 +31,18 @@ import HasPermission from 'components/HasPermission';
 import Toggle from 'components/UI/Toggle';
 import FeatureFlag from 'components/FeatureFlag';
 import InfoTooltip from 'components/admin/InfoTooltip';
-import ProjectTemplates from './ProjectTemplates';
 
 // style
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+
+const Container = styled.div``;
+
+const StyledCreateProject = styled(CreateProject)`
+  margin-bottom: 18px;
+`;
+
+const ListsContainer = styled.div``;
 
 const ListHeader = styled.div`
   display: flex;
@@ -44,17 +53,6 @@ const ListHeader = styled.div`
   & ~ & {
     margin-top: 70px;
   }
-`;
-
-const ListHeaderTitle = styled.h3`
-  display: flex;
-  align-items: center;
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.xl}px;
-  font-weight: 400;
-  padding: 0;
-  margin: 0;
-  margin-right: 7px;
 `;
 
 const Spacer = styled.div`
@@ -100,7 +98,9 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 const StyledButton = styled(Button)``;
 
-export interface InputProps { }
+export interface InputProps {
+  className?: string;
+}
 
 interface DataProps {
   tenant: GetTenantChildProps;
@@ -108,8 +108,6 @@ interface DataProps {
 }
 
 interface Props extends InputProps, DataProps { }
-
-interface State {}
 
 class AdminProjectsList extends PureComponent<Props, State> {
   handleReorder = (projectId, newOrder) => {
@@ -136,7 +134,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
   }
 
   render () {
-    const { tenant, projects } = this.props;
+    const { tenant, projects, className } = this.props;
     let lists: JSX.Element | null = null;
 
     if (projects && !isNilOrError(projects.projectsList) && !isNilOrError(tenant)) {
@@ -199,13 +197,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
       };
 
       lists = (
-        <>
+        <ListsContainer>
           {publishedProjects && publishedProjects.length > 0 &&
             <>
               <ListHeader>
-                <ListHeaderTitle>
+                <HeaderTitle>
                   <FormattedMessage {...messages.published} />
-                </ListHeaderTitle>
+                </HeaderTitle>
                 <InfoTooltip {...messages.publishedTooltip} />
 
                 <Spacer />
@@ -226,7 +224,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 </HasPermission>
               </ListHeader>
 
-              <ProjectTemplates />
+              {/* <ProjectTemplates /> */}
 
               <HasPermission item="project" action="reorder">
                 {(tenant.attributes.settings.manual_project_sorting as any).enabled ?
@@ -276,9 +274,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
           {draftProjects && draftProjects.length > 0 &&
             <>
               <ListHeader>
-                <ListHeaderTitle>
+                <HeaderTitle>
                   <FormattedMessage {...messages.draft} />
-                </ListHeaderTitle>
+                </HeaderTitle>
                 <InfoTooltip {...messages.draftTooltip} />
               </ListHeader>
               <HasPermission item="project" action="reorder">
@@ -320,9 +318,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
           {archivedProjects && archivedProjects.length > 0 &&
             <>
               <ListHeader>
-                <ListHeaderTitle>
+                <HeaderTitle>
                   <FormattedMessage {...messages.archived} />
-                </ListHeaderTitle>
+                </HeaderTitle>
                 <InfoTooltip {...messages.archivedTooltip} />
               </ListHeader>
               <HasPermission item="project" action="reorder">
@@ -365,15 +363,16 @@ class AdminProjectsList extends PureComponent<Props, State> {
               </HasPermission>
             </>
           }
-        </>
+        </ListsContainer>
       );
     }
 
     return (
-      <>
+      <Container className={className || ''}>
         <PageTitle>
           <FormattedMessage {...messages.overviewPageTitle} />
         </PageTitle>
+
         <SectionSubtitle>
           <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
             <FormattedMessage {...messages.overviewPageSubtitle} />
@@ -383,17 +382,22 @@ class AdminProjectsList extends PureComponent<Props, State> {
           </HasPermission>
         </SectionSubtitle>
 
+        {/*
+        <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
+          <ListHeader>
+            <Button className="e2e-admin-add-project" linkTo="/admin/projects/new" style="cl-blue" icon="plus-circle">
+              <FormattedMessage {...messages.addNewProject} />
+            </Button>
+          </ListHeader>
+        </HasPermission>
+        */}
+
+        <StyledCreateProject />
+
         <PageWrapper>
-          <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
-            <ListHeader>
-              <Button className="e2e-admin-add-project" linkTo="/admin/projects/new" style="cl-blue" icon="plus-circle">
-                <FormattedMessage {...messages.addNewProject} />
-              </Button>
-            </ListHeader>
-          </HasPermission>
           {lists}
         </PageWrapper>
-      </>
+      </Container>
     );
   }
 }

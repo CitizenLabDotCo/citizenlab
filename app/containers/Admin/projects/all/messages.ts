@@ -15,9 +15,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator',
     defaultMessage: 'Here are the projects on the platform you are moderating.',
   },
-  addNewProject: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
-    defaultMessage: 'Add a project',
+  createAProject: {
+    id: 'app.containers.AdminPage.ProjectEdit.createAProject',
+    defaultMessage: 'Create a project',
+  },
+  expand: {
+    id: 'app.containers.AdminPage.ProjectEdit.expand',
+    defaultMessage: 'Expand',
   },
   xGroupsHaveAccess: {
     id: 'app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess',
