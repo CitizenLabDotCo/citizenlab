@@ -37,11 +37,6 @@ const Container = styled.div`
   font-size: ${fontSizes.base}px;
   padding: 30px;
   padding-top: 35px;
-  margin-bottom: 10px;
-
-  &.last {
-    margin-bottom: 0;
-  }
 `;
 
 const PostContainer = styled(Container)`
@@ -97,8 +92,8 @@ interface DataProps {
 interface InputProps {
   editingAllowed: boolean | undefined;
   officialFeedbackPost: IOfficialFeedbackData;
-  last: boolean;
   postType: 'idea' | 'initiative';
+  className?: string;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -159,7 +154,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
   }
 
   render() {
-    const { editingAllowed, officialFeedbackPost, locale, tenantLocales, last } = this.props;
+    const { editingAllowed, officialFeedbackPost, locale, tenantLocales, className } = this.props;
     const { showEditForm } = this.state;
     const { body_multiloc, author_multiloc, created_at, updated_at } = officialFeedbackPost.attributes;
 
@@ -185,17 +180,17 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
       );
 
       return (
-        <PostContainer key={officialFeedbackPost.id} className={`e2e-official-feedback-post ${last ? 'last' : ''}`}>
+        <PostContainer key={officialFeedbackPost.id} className={`e2e-official-feedback-post ${className || ''}`}>
           {editingAllowed &&
             <StyledMoreActionsMenu ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)} actions={this.getActions(officialFeedbackPost.id)} />
           }
 
           <QuillEditedContent>
-            <Body>
+            <Body className="e2e-official-feedback-post-body">
               <div dangerouslySetInnerHTML={{ __html: this.getPostBodyText(body_multiloc, locale, tenantLocales) }} />
             </Body>
             <Footer>
-              <Author>
+              <Author className="e2e-official-feedback-post-author">
                 <T value={author_multiloc} />
               </Author>
 

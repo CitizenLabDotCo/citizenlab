@@ -42,5 +42,4 @@ export const TooltipWrapper = styled.div`
 export const HelpIcon = styled(Icon)`
   width: 12px;
   height: 12px;
-  margin-left: 4px;
 `;

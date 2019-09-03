@@ -168,7 +168,7 @@ export class PostCommentGroup extends PureComponent<Props> {
       return (
         <Container>
           <PostLink
-            to={`/ideas/${slug}`}
+            to={`/${postType}s/${slug}`}
             onClick={this.onIdeaLinkClick}
           >
             <PostLinkLeft>

@@ -32,8 +32,10 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: strech;
+  align-items: stretch;
+  padding: 30px;
   position: relative;
+  overflow: hidden;
 `;
 
 const Title = styled.h3`
@@ -61,6 +63,7 @@ const Address = styled.div`
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.small}px;
+    margin-top: 18px;
   `}
 `;
 
@@ -74,7 +77,7 @@ const MapMarkerIcon = styled(Icon)`
 `;
 
 const Description = styled.div`
-  flex: 1 1 100%;
+  flex: 0 1 100%;
   margin-bottom: 1rem;
   overflow: hidden;
   position: relative;
@@ -90,15 +93,19 @@ const Description = styled.div`
     right: 0;
     position: absolute;
   }
+
+  ${media.smallerThanMinTablet`
+    margin-top: 18px;
+  `}
 `;
 
-const VoteComments = styled.div`
+const Footer = styled.div`
   align-items: center;
   display: flex;
   flex: 1 0 auto;
   justify-content: space-between;
   margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 `;
 
 const ViewInitiativeButton = styled(Button)`
@@ -188,19 +195,19 @@ class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> 
 
           <Description>
             <Body
-              id={initiative.id}
+              postId={initiative.id}
               postType="initiative"
               locale={locale}
               body={initiativeBody}
             />
           </Description>
 
-          <VoteComments>
+          <Footer>
             <CommentsCount>
               <CommentIcon name="comments" />
               {initiative.attributes.comments_count}
             </CommentsCount>
-          </VoteComments>
+          </Footer>
 
           <ViewInitiativeButton
             fullWidth={true}

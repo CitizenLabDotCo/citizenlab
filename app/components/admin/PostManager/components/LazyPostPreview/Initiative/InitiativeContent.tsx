@@ -14,7 +14,7 @@ import Comments from 'components/PostComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import Button from 'components/UI/Button';
-import { Top, Content, Container } from '..';
+import { Top, Content, Container } from '../PostPreview';
 import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
 
 // services
@@ -98,7 +98,7 @@ const DaysLeft = styled.div`
 
 interface State {}
 
-interface InputProps {
+export interface InputProps {
   initiativeId: string | null;
   closePreview: () => void;
   handleClickEdit: () => void;
@@ -165,7 +165,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
           </Top>
           <Content>
             <StyledTitle
-              id={initiativeId}
+              postId={initiativeId}
               title={initiativeTitle}
               postType="initiative"
             />
@@ -181,7 +181,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
                 />
 
                 <StyledBody
-                  id={initiativeId}
+                  postId={initiativeId}
                   postType="initiative"
                   body={localize(initiative.attributes.body_multiloc)}
                 />

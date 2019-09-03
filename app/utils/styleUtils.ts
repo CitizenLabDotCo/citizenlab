@@ -216,15 +216,12 @@ export function quillEditedContent(
   fontSize: 'base' | 'medium' | 'large' = 'base',
   fontWeight: 300 | 400 = 400
 ) {
-  let lineHeight = 27;
+  let lineHeight = 25;
 
-  switch (fontSize) {
-    case 'medium':
-      lineHeight = 28;
-    case 'large':
-      lineHeight = 29;
-    default:
-      lineHeight = 27;
+  if (fontSize === 'medium') {
+    lineHeight = 27;
+  } else if (fontSize === 'large') {
+    lineHeight = 29;
   }
 
   const defaultFontStyle = `

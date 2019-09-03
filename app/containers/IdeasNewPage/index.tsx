@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isString, isEmpty } from 'lodash-es';
+import { isString, isEmpty, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
@@ -89,6 +89,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       position: '',
       position_coordinates: null,
       submitError: false,
+      fileOrImageError: false,
       processing: false,
       ideaId: null,
       ideaSlug: null,
@@ -161,15 +162,34 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         };
 
         const idea = await addIdea(ideaObject);
-        const imageToAddPromise = (imageFile && imageFile[0] ? addIdeaImage(idea.data.id, imageFile[0].base64, 0) : Promise.resolve(null));
-        const filesToAddPromises = ideaFiles.map(file => addIdeaFile(idea.data.id, file.base64, file.name));
 
-        await Promise.all([imageToAddPromise, ...filesToAddPromises] as Promise<any>[]);
+        try {
+          const imageToAddPromise = (imageFile && imageFile[0] ? addIdeaImage(idea.data.id, imageFile[0].base64, 0) : Promise.resolve(null));
+          const filesToAddPromises = ideaFiles.map(file => addIdeaFile(idea.data.id, file.base64, file.name));
 
-        clHistory.push({
-          pathname: `/ideas/${idea.data.attributes.slug}`,
-          search: `?new_idea_id=${idea.data.id}`
-        });
+          await Promise.all([imageToAddPromise, ...filesToAddPromises] as Promise<any>[]);
+        } catch (error) {
+          const apiErrors = get(error, 'json.errors');
+          console.log(apiErrors);
+          if (apiErrors && !apiErrors.idea) {
+            this.globalState.set({ submitError: false, fileOrImageError: true });
+          }
+        }
+
+        const { fileOrImageError } = await this.globalState.get();
+        if (fileOrImageError) {
+          setTimeout(() => {
+            clHistory.push({
+              pathname: `/ideas/${idea.data.attributes.slug}`,
+              search: `?new_idea_id=${idea.data.id}`
+            });
+          }, 4000);
+        } else {
+          clHistory.push({
+            pathname: `/ideas/${idea.data.attributes.slug}`,
+            search: `?new_idea_id=${idea.data.id}`
+          });
+        }
       } catch (error) {
         this.globalState.set({ processing: false, submitError: true });
       }

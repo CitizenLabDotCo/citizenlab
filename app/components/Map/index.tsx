@@ -1,6 +1,6 @@
 import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { compact, isEqual, get, isNil } from 'lodash-es';
+import { compact, get, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -11,7 +11,7 @@ import Icon from 'components/UI/Icon';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // Map
-import Leaflet, { Marker } from 'leaflet';
+import Leaflet from 'leaflet';
 import 'leaflet.markercluster';
 
 // Styling
@@ -20,7 +20,7 @@ import styled from 'styled-components';
 import { darken, lighten } from 'polished';
 import { colors, media } from 'utils/styleUtils';
 
-const icon = require('./marker.svg');
+const markerIcon = require('./marker.svg');
 
 const Container = styled.div`
   width: 100%;
@@ -33,8 +33,7 @@ const BoxContainer = styled.div`
   flex: 0 0 400px;
   display: flex;
   flex-direction: column;
-  align-items: strech;
-  padding: 30px;
+  align-items: stretch;
   position: relative;
   background: #fff;
 
@@ -64,11 +63,12 @@ const CloseButton = styled.div`
   justify-content: center;
   position: absolute;
   cursor: pointer;
-  top: 12px;
-  right: 12px;
+  top: 9px;
+  right: 13px;
   border-radius: 50%;
   border: solid 1px ${lighten(0.4, colors.label)};
   transition: border-color 100ms ease-out;
+  z-index: 2;
 
   &:hover {
     border-color: #000;
@@ -77,6 +77,13 @@ const CloseButton = styled.div`
       fill: #000;
     }
   }
+
+  ${media.smallerThanMinTablet`
+    height: 32px;
+    width: 32px;
+    top: 8px;
+    right: 8px;
+  `}
 `;
 
 const MapContainer = styled.div`
@@ -103,7 +110,7 @@ const MapContainer = styled.div`
 `;
 
 const customIcon = Leaflet.icon({
-  iconUrl: icon,
+  iconUrl: markerIcon,
   iconSize: [29, 41],
   iconAnchor: [14, 41],
 });
@@ -133,7 +140,9 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  initiated: boolean;
+}
 
 class CLMap extends React.PureComponent<Props, State> {
   private map: Leaflet.Map;
@@ -152,14 +161,21 @@ class CLMap extends React.PureComponent<Props, State> {
     },
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      initiated: false
+    };
+  }
+
   componentDidMount() {
-    if (this.props.points) {
+    if (this.props.points && this.props.points.length > 0) {
       this.convertPoints(this.props.points);
     }
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.points && !isEqual(prevProps.points, this.props.points)) {
+  componentDidUpdate(_prevProps) {
+    if (this.props.points && this.props.points.length > 0) {
       this.convertPoints(this.props.points);
     }
   }
@@ -215,11 +231,12 @@ class CLMap extends React.PureComponent<Props, State> {
 
       bounds.push(latlng);
 
-      return new Marker(latlng, markerOptions);
+      return Leaflet.marker(latlng, markerOptions);
     });
 
-    if (bounds && bounds.length > 0 && this.props.fitBounds) {
+    if (bounds && bounds.length > 0 && this.props.fitBounds && !this.state.initiated) {
       this.map.fitBounds(bounds, { maxZoom: 12 });
+      this.setState({ initiated: true });
     }
 
     this.addClusters();

@@ -2,6 +2,7 @@ import React, { PureComponent, MouseEvent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -170,33 +171,42 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   onReply = () => {
-    const { author, comment, commentType } = this.props;
-    const commentId: string | null = get(comment, 'id', null);
-    const parentCommentId: string | null = get(comment, 'relationships.parent.data.id', null);
-    const authorFirstName: string | null = get(author, 'attributes.first_name', null);
-    const authorLastName: string | null = get(author, 'attributes.last_name', null);
-    const authorSlug: string | null = get(author, 'attributes.slug', null);
-    const eventValue: ICommentReplyClicked = {
-      commentId,
-      parentCommentId,
-      authorFirstName,
-      authorLastName,
-      authorSlug
-    };
+    const { authUser, author, comment, commentType } = this.props;
 
     if (commentType === 'child') {
-      trackEventByName(tracks.clickChildCommentReplyButton);
+      trackEventByName(tracks.clickChildCommentReplyButton, {
+        loggedIn: !!authUser
+      });
     } else if (commentType === 'parent') {
-      trackEventByName(tracks.clickParentCommentReplyButton);
+      trackEventByName(tracks.clickParentCommentReplyButton, {
+        loggedIn: !!authUser
+      });
     }
 
-    eventEmitter.emit<ICommentReplyClicked>('CommentFooter', 'commentReplyButtonClicked', eventValue);
+    if (!isNilOrError(authUser)) {
+      const commentId: string | null = get(comment, 'id', null);
+      const parentCommentId: string | null = get(comment, 'relationships.parent.data.id', null);
+      const authorFirstName: string | null = get(author, 'attributes.first_name', null);
+      const authorLastName: string | null = get(author, 'attributes.last_name', null);
+      const authorSlug: string | null = get(author, 'attributes.slug', null);
+      const eventValue: ICommentReplyClicked = {
+        commentId,
+        parentCommentId,
+        authorFirstName,
+        authorLastName,
+        authorSlug
+      };
+
+      eventEmitter.emit<ICommentReplyClicked>('CommentFooter', 'commentReplyButtonClicked', eventValue);
+    } else {
+      clHistory.push('/sign-in');
+    }
   }
 
   moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
 
   render() {
-    const { commentType, postId, postType, projectId, commentId, className, comment, tenantLocales, locale, authUser, post, canReply } = this.props;
+    const { commentType, postId, postType, projectId, commentId, className, comment, tenantLocales, locale, post, canReply } = this.props;
     const { translateButtonClicked } = this.state;
 
     if (!isNilOrError(post) && !isNilOrError(comment) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
@@ -205,7 +215,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
       const commentVotingEnabled = get(post, 'attributes.action_descriptor.comment_voting.enabled', true);
       const upvoteCount = comment.attributes.upvotes_count;
       const showVoteComponent = (commentVotingEnabled || (!commentVotingEnabled && upvoteCount > 0));
-      const showReplyButton = !!(authUser && commentingEnabled && canReply);
+      const showReplyButton = !!(commentingEnabled && canReply);
       const showTranslateButton = !!(commentBodyMultiloc && !commentBodyMultiloc[locale] && tenantLocales.length > 1);
 
       return (
@@ -221,7 +231,10 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
                   votingEnabled={commentVotingEnabled}
                 />
                 {/* // Make sure there's a next item before adding a separator */}
-                {(showReplyButton || showTranslateButton) && <Separator className="vote">•</Separator>}
+                {showReplyButton
+                  ? <Separator className="vote">•</Separator>
+                  : showTranslateButton ? <FeatureFlag name="machine_translations"><Separator>•</Separator></FeatureFlag> : null
+                }
               </>
             }
 
@@ -231,20 +244,20 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
                   <FormattedMessage {...messages.commentReplyButton} />
                 </ReplyButton>
                 {/* // Make sure there's a next item before adding a separator */}
-                {showTranslateButton && <Separator>•</Separator>}
+                {showTranslateButton && <FeatureFlag name="machine_translations"><Separator>•</Separator></FeatureFlag>}
               </>
             }
 
-            <FeatureFlag name="machine_translations">
-              {showTranslateButton &&
+            {showTranslateButton &&
+              <FeatureFlag name="machine_translations">
                 <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
                   {!translateButtonClicked
                     ? <FormattedMessage {...messages.seeTranslation} />
                     : <FormattedMessage {...messages.seeOriginal} />
                   }
                 </TranslateButton>
-              }
-            </FeatureFlag>
+              </FeatureFlag>
+            }
           </Left>
 
           <Right>
