@@ -37,11 +37,16 @@ const ConsentManagerBuilderHandler = ({
   blacklistedDestinations
 }: Props) => {
 
+  // removes the blacklistedDestinations from the destination and newDestinations
+  // arrays, they will be programmatically set to false when saving preferences.
   const filteredNewDestinations = newDestinations.filter(destination => !blacklistedDestinations.includes(destination.id));
   const filteredDestinations = destinations.filter(destination => !blacklistedDestinations.includes(destination.id));
+  // agregate the remaining destinations into categories.
   const categorizedDestinations = getCategorizedDestinations(filteredDestinations);
 
+  // if there was a previous consent and the blaclist on the tenant has changes since then
   if (blacklistedDestinations !== preferences.tenantBlacklisted) {
+    // anything that was removed from the blacklist is a new destination to our user
     const noLongerBlacklisted = (preferences.tenantBlacklisted || []).filter(destinationId => !blacklistedDestinations.includes(destinationId));
     noLongerBlacklisted.forEach(id => {
       const destination = destinations.find(destination => destination.id === id);
@@ -49,11 +54,15 @@ const ConsentManagerBuilderHandler = ({
         filteredNewDestinations.push(destination);
       }
     });
+    // anything that was added to the blacklist will be programmatically set to false later...
     const newBlacklistEntries = blacklistedDestinations.filter(destinationId => !(preferences.tenantBlacklisted || []).includes(destinationId));
+    // if there is no new destinations, the banner won't show so we save programmatically to apply
+    // the blacklist on the preious user choice and overwrite blacklisted destinations to false
     if (newBlacklistEntries.length > 0 && filteredNewDestinations.length === 0) {
       saveConsent();
     }
   }
+  // if there is a new destination the user has not consented to, consent is required
   const isConsentRequired = filteredNewDestinations.length > 0;
 
   return (
