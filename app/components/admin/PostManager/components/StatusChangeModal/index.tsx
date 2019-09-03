@@ -14,7 +14,7 @@ import events, { StatusChangeModalOpen } from '../../events';
 import Modal from 'components/UI/Modal';
 import StatusChangeFormWrapper from './StatusChangeFormWrapper';
 
-interface Props {}
+export interface Props {}
 
 interface State {
   initiativeId: string | null;

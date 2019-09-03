@@ -95,7 +95,6 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
             editingAllowed={false}
             officialFeedbackPost={latestOfficialFeedback}
             postType="initiative"
-            last={false}
           />
         }
       </>
