@@ -3,10 +3,11 @@ import { ConsentManagerBuilder } from '@segment/consent-manager';
 import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { reportError } from 'utils/loggingUtils';
 
 import ConsentManagerBuilderHandler from './ConsentManagerBuilderHandler';
 
-import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
+import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES, MARKETING_AND_ANALYTICS_CATEGORIES } from './categories';
 
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
@@ -75,29 +76,51 @@ const mapCustomPreferences = (
   const destinationPreferences = {};
   const customPreferences = {} as CustomPreferences;
 
-  // Default unset preferences to true (for implicit consent)
+  // remove blacklisted destinations from the destination array
+  const remainingDestinations = destinations.filter(destination => !(blacklistedDestinationsList || []).includes(destination.id));
+
+  // get user preferences, default unset preferences to true
+  // for categories that contain destinations (for implicit consent)
+  // and leave the empty categories null
   for (const preferenceName of Object.keys(preferences)) {
     const value = preferences[preferenceName];
     if (typeof value === 'boolean') {
       customPreferences[preferenceName] = value;
-    } else {
+    } else if (preferenceName === 'advertising' && remainingDestinations.find(destination => ADVERTISING_CATEGORIES.includes(destination.category))) {
       customPreferences[preferenceName] = true;
+    } else if (preferenceName === 'functional' && remainingDestinations.find(destination => FUNCTIONAL_CATEGORIES.includes(destination.category))) {
+      customPreferences[preferenceName] = true;
+    } else if (preferenceName === 'analytics' && remainingDestinations.find(destination => MARKETING_AND_ANALYTICS_CATEGORIES.includes(destination.category))) {
+      customPreferences[preferenceName] = true;
+    } else {
+      customPreferences[preferenceName] = null;
     }
   }
 
-  for (const destination of destinations) {
+  // for each non-blacklisted destination, set the preference for this destination to be
+  // the preference the user set for the category it belongs to
+  for (const destination of remainingDestinations) {
     if (ADVERTISING_CATEGORIES.find(c => c === destination.category)) {
       destinationPreferences[destination.id] = customPreferences.advertising;
     } else if (FUNCTIONAL_CATEGORIES.find(c => c === destination.category)) {
       destinationPreferences[destination.id] = customPreferences.functional;
-    } else {
-      // Fallback to marketing
+    } else if (FUNCTIONAL_CATEGORIES.find(c => c === destination.category)) {
       destinationPreferences[destination.id] =
         customPreferences.analytics;
+    } else {
+      // Fallback to marketing preference but send an error so we update the categories
+      reportError('A segment destination doesn\'t belong to a category');
+      destinationPreferences[destination.id] =
+      customPreferences.analytics;
     }
   }
 
+  // put the blacklist in the format { destinationId: false }
   const blacklistedDestinations = blacklistedDestinationsList ? blacklistedDestinationsList.reduce(reducerArrayToObject, {}) : {};
+
+  // set the tenantBlacklisted value on the customPreferences object so we can use
+  // it to later calculate whether a tenant has removed an item from to blacklist
+  // and ask consent again when this happens
   customPreferences.tenantBlacklisted = blacklistedDestinationsList || undefined;
 
   return {

@@ -123,7 +123,6 @@ describe('<ConsentManager />', () => {
   });
 
   describe('respects the blacklist set on tenant', () => {
-
     it('sets preferences according to the users choice, except blacklisted set to false, saves blacklisted', () => {
       const blacklist = ['Google Tag Manager'];
       const wrapper = shallow(<ConsentManager authUser={null} tenant={getTenant(blacklist)} />);
