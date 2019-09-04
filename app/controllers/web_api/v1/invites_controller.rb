@@ -11,8 +11,6 @@ class WebApi::V1::InvitesController < ApplicationController
   def index
     @invites = policy_scope(Invite)
       .left_outer_joins(:invitee)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
 
     if params[:search].present?
       @invites = @invites.search_by_all(params[:search])
@@ -48,6 +46,9 @@ class WebApi::V1::InvitesController < ApplicationController
       end
     end
 
+    @invites = @invites
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
     render json: linked_json(@invites, WebApi::V1::InviteSerializer, params: fastjson_params, include: [:invitee])
   end
 
