@@ -90,6 +90,16 @@ PATH
       rails (~> 5.2.1)
 
 PATH
+  remote: engines/polls
+  specs:
+    polls (0.1.0)
+      apartment (~> 2.2.0)
+      apartment-sidekiq
+      kaminari (~> 1.1.1)
+      pundit (~> 2.0)
+      rails (~> 5.2.1)
+
+PATH
   remote: engines/public_api
   specs:
     public_api (0.1.0)
@@ -611,6 +621,7 @@ DEPENDENCIES
   onboarding!
   pg
   pg_search (~> 2.1.2)
+  polls!
   premailer-rails
   public_api!
   puma
