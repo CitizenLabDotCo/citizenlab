@@ -260,6 +260,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
             "image_url": "http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg",
           }
         ]
+      },
+      polling: {
+        enabled: true,
+        allowed: true
       }
     }
   })
