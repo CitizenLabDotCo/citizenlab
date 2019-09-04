@@ -665,7 +665,17 @@
             }
           }
         }
-      }
+      },
+      "polling": {
+        "type": "object",
+        "description": "Participation methods that allows citizens to answer multiple questions with predefined answers",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
     },
   "dependencies": {
     "projects_info": ["projects"],
