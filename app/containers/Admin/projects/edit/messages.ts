@@ -16,6 +16,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.ideasTab',
     defaultMessage: 'Ideas',
   },
+  pollTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.pollTab',
+    defaultMessage: 'Poll',
+  },
   phasesTab: {
     id: 'app.containers.AdminPage.ProjectEdit.phasesTab',
     defaultMessage: 'Timeline',
@@ -212,5 +216,13 @@ export default defineMessages({
   subtitleIdeas: {
     id: 'app.components.admin.PostManager.subtitleIdeas',
     defaultMessage: 'Get an overview of all the ideas inside your project. Add themes and change the status by dragging and dropping ideas to one of the left columns, or edit the ideas.',
+  },
+  titlePollResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollResults.titlePollResults',
+    defaultMessage: 'Polls settings and results',
+  },
+  subtitlePollResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollResults.subtitlePollResults',
+    defaultMessage: 'Here, you can setup and download the results of the polls within this project as an exel file.',
   },
 });
