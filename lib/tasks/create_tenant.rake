@@ -129,7 +129,7 @@ namespace :cl2_back do
             }
           ]
         },
-        polling: {
+        polls: {
           enabled: true,
           allowed: true
         }
