@@ -136,33 +136,23 @@ end
 
 5. Create a `lib` folder with an empty `tasks` folder. Copy the `blorgh` folder (with `engine.rb` and `version.rb`) and `blorgh.rb` from another engine and do the necessary renamings in the copied files.
 
-6. Create an empty `spec` folder. Add a stage to the `Jenkinsfile` such that CI will execute your engine's tests. Later, you will be able to execute your engine's tests by running:
-```
-docker-compose run --rm web rspec ./engines/blorgh/spec
-```
+6. Copy over `blorgh.gemspec` and rename (no need to include `MIT-LICENSE` or `Rakefile`), remove/add dependencies if you know what you're doing.
 
-7. Copy over `blorgh.gemspec` and rename (no need to include `MIT-LICENSE` or `Rakefile`), remove/add dependencies if you know what you're doing.
-
-8. Add the following line to your `Gemfile`:
+7. Add the following line to your `Gemfile`:
 ```
 gem 'blorgh', path: 'engines/blorgh'
 ```
 
-9. Add the following line to your Dockerfile:
-```
-COPY engines/blorghs ./engines/blorghs/
-```
+8. If you're going to add endpoints to your engine, don't forget to mount it in the main `routes.rb` file.
 
-10. If you're going to add endpoints to your engine, don't forget to mount it in the main `routes.rb` file.
-
-11. If you added a factory into your engine, you have to add this line to `spec_helper.rb`:
+9. If you added a factory into your engine, you have to add this line to `spec_helper.rb`:
 ```
 require './engines/blorgh/spec/factories/blorghs.rb'
 ```
 
-12. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
+10. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
 
-13. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
+11. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
 
 
 ## Adding smart group rules

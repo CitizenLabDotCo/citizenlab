@@ -261,7 +261,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
           }
         ]
       },
-      polling: {
+      polls: {
         enabled: true,
         allowed: true
       }
