@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { isFinite, isEqual, isString, omitBy, isNil } from 'lodash-es';
+import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -135,7 +135,6 @@ interface InputProps {
 interface Props extends DataProps, InputProps { }
 
 interface State extends IParticipationContextConfig {
-  saved_participation_method: ParticipationMethod | null;
   noVotingLimit: JSX.Element | null;
   noBudgetingAmount: JSX.Element | null;
   loaded: boolean;
@@ -147,7 +146,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      saved_participation_method: null,
       participation_method: 'ideation',
       posting_enabled: true,
       commenting_enabled: true,
@@ -179,7 +177,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       data$.subscribe((data) => {
         if (data) {
           const participation_method = data.data.attributes.participation_method as ParticipationMethod;
-          const saved_participation_method = participation_method;
           const {
             posting_enabled,
             commenting_enabled,
@@ -193,7 +190,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
           } = data.data.attributes;
 
           this.setState({
-            saved_participation_method,
             participation_method,
             posting_enabled,
             commenting_enabled,
@@ -356,8 +352,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
 
   render() {
     const {
-      projectId,
-      phaseId,
       tenant,
       apiErrors,
       surveys_enabled,
@@ -367,7 +361,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
     } = this.props;
     const className = this.props['className'];
     const {
-      saved_participation_method,
       participation_method,
       posting_enabled,
       commenting_enabled,
@@ -383,7 +376,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       noBudgetingAmount,
     } = this.state;
     const tenantCurrency = (!isNilOrError(tenant) ? tenant.attributes.settings.core.currency : '');
-    const hasSavedIdeaOrPBContext = ((isString(phaseId) || isString(projectId)) && (saved_participation_method === 'ideation' || saved_participation_method === 'budgeting'));
 
     if (loaded) {
       return (
@@ -436,9 +428,8 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   value="survey"
                   name="participationmethod"
                   id={'participationmethod-survey'}
-                  disabled={hasSavedIdeaOrPBContext}
                   label={(
-                    <LabelText className={hasSavedIdeaOrPBContext ? 'disabled' : ''}>
+                    <LabelText>
                       <h3>
                         <FormattedMessage {...messages.survey} />
                       </h3>
@@ -454,9 +445,8 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 value="information"
                 name="participationmethod"
                 id="participationmethod-information"
-                disabled={hasSavedIdeaOrPBContext}
                 label={(
-                  <LabelText className={hasSavedIdeaOrPBContext ? 'disabled' : ''}>
+                  <LabelText>
                     <FormattedMessage tagName="h3" {...messages.information} />
                     <FormattedMessage tagName="p" {...messages.informationDescription} />
                   </LabelText>)}
