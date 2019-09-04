@@ -9,6 +9,7 @@ import Timeline from './Timeline';
 import PhaseAbout from './PhaseAbout';
 import PBExpenses from '../pb/PBExpenses';
 import PhaseSurvey from './PhaseSurvey';
+import PhasePolling from './PhasePolling';
 import PhaseIdeas from './PhaseIdeas';
 import EventsPreview from '../EventsPreview';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
@@ -76,6 +77,10 @@ const StyledPhaseSurvey = styled(PhaseSurvey)`
   margin-bottom: 50px;
 `;
 
+const StyledPhasePolling = styled(PhasePolling)`
+  margin-bottom: 50px;
+`;
+
 const StyledPhaseIdeas = styled(PhaseIdeas)`
   margin-top: 95px;
   margin-bottom: 100px;
@@ -139,6 +144,10 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
               }
               <StyledPhaseSurvey
                 projectId={project.id}
+                phaseId={selectedPhaseId}
+              />
+              <StyledPhasePolling
+                projectId={project.id} // TODO remove ?
                 phaseId={selectedPhaseId}
               />
             </ContentContainer>
