@@ -45,20 +45,24 @@ export default defineMessages({
     id: 'app.components.ProjectCard.takeTheSurvey',
     defaultMessage: 'Take the survey',
   },
+  takeThePoll: {
+    id: 'app.components.ProjectCard.takeThePoll',
+    defaultMessage: 'Take the poll',
+  },
   postYourIdea: {
     id: 'app.components.ProjectCard.postYourIdea',
     defaultMessage: 'Post your idea',
   },
   vote: {
     id: 'app.components.ProjectCard.vote',
-    defaultMessage: `Vote`,
+    defaultMessage: 'Vote',
   },
   comment: {
     id: 'app.components.ProjectCard.comment',
-    defaultMessage: `Comment`,
+    defaultMessage: 'Comment',
   },
   viewTheIdeas: {
     id: 'app.components.ProjectCard.viewTheIdeas',
-    defaultMessage: `View the idea's`,
+    defaultMessage: "View the idea's",
   },
 });
