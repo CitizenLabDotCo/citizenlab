@@ -150,10 +150,6 @@ export default defineMessages({
     id: 'app.components.IdeasShow.send',
     defaultMessage: 'Send',
   },
-  projectAttachments: {
-    id: 'app.components.IdeasShow.projectAttachments',
-    defaultMessage: 'Attachments',
-  },
   skipSharing: {
     id: 'app.components.IdeasShow.skipSharing',
     defaultMessage: "Skip it, I'll do it later",
