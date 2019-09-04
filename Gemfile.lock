@@ -93,8 +93,8 @@ PATH
   remote: engines/polls
   specs:
     polls (0.1.0)
+      acts_as_list (~> 0.9.17)
       apartment (~> 2.2.0)
-      apartment-sidekiq
       kaminari (~> 1.1.1)
       pundit (~> 2.0)
       rails (~> 5.2.1)

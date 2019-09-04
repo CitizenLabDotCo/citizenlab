@@ -18,7 +18,7 @@ resource "Poll Questions" do
 
     before do
       @project = create(:continuous_poll_project)
-      @questions = create_list(:poll_question, 3, :with_answer, participation_context: @project)
+      @questions = create_list(:poll_question, 3, :with_options, participation_context: @project)
     end
 
     let (:participation_context_id) { @project.id }
@@ -38,10 +38,10 @@ resource "Poll Questions" do
 
     before do
       @phase = create(:poll_phase)
-      @questions = create_list(:poll_question, 3, :with_answers, participation_context: @phase)
+      @questions = create_list(:poll_question, 3, :with_options, participation_context: @phase)
     end
 
-    let (:participation_context_id) { @project.id }
+    let (:participation_context_id) { @phase.id }
     example_request "List all questions in a poll phase" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
