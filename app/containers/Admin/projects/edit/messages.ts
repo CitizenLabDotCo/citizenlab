@@ -209,6 +209,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
     defaultMessage: 'Export survey results',
   },
+  exportPollResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.exportPollResults',
+    defaultMessage: 'Export poll results',
+  },
   titleIdeas: {
     id: 'app.components.admin.PostManager.titleIdeas',
     defaultMessage: 'Manage idea',
