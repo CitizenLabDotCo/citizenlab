@@ -41,6 +41,10 @@ export default defineMessages({
     id: 'app.containers.Projects.navProcess',
     defaultMessage: 'Process',
   },
+  navPoll: {
+    id: 'app.containers.Projects.navPoll',
+    defaultMessage: 'Poll',
+  },
   navEvents: {
     id: 'app.containers.Projects.navEvents',
     defaultMessage: 'Events',
