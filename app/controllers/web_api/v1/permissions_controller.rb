@@ -3,12 +3,12 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def index
     @permissions = policy_scope(Permission)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
-    @permissions = @permissions
       .where(permittable_id: params[params[:parent_param]])
       .order(created_at: :desc)
       
+    @permissions = @permissions
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
     render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params)
   end
 

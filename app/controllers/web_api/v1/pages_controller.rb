@@ -3,10 +3,11 @@ class WebApi::V1::PagesController < ::ApplicationController
 
   def index
     @pages = policy_scope(Page).includes(:page_links)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
     @pages = @pages.where(project_id: params[:project]) if params[:project].present?
 
+    @pages = @pages
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
     render json: linked_json(@pages, WebApi::V1::PageSerializer, params: fastjson_params, include: [:page_links]) 
   end
 

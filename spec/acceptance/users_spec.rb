@@ -136,6 +136,24 @@ resource "Users" do
           expect(json_response[:data].map{|u| u[:id]}.reverse.take(2)).to match_array [admin.id,both.id]
         end
 
+        describe "List all users in group" do 
+          example "with correct pagination", document: false do
+            page_size = 5
+            project = create(:project)
+            group = create(:smart_group, rules: [
+              {ruleType: 'participated_in_project', predicate: 'in', value: project.id}
+            ])
+            (page_size + 1).times.map do |i|
+              create(:idea, project: project, author: create(:user))
+            end
+
+            do_request(group: group.id, page: {number: 1, size: page_size})
+            json_response = json_parse(response_body)
+
+            expect(json_response[:links][:next]).to be_present
+          end
+        end
+
         example "List all users who can moderate a project" do
           p = create(:project)
           a = create(:admin)
