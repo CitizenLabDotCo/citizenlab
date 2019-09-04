@@ -1404,7 +1404,6 @@
   "app.containers.ProjectCards.currentlyWorkingOn": "{orgName} is currently working on",
   "app.containers.ProjectCards.publicationStatus": "Publication status",
   "app.containers.ProjectInfo.imageAltText": "Project image {index}",
-  "app.containers.ProjectInfo.projectAttachments": "Attachments",
   "app.containers.ProjectInfo.twitterMessage": "{title} : share your ideas on",
   "app.containers.Projects.allEvents": "All events",
   "app.containers.Projects.archived": "Archived",
