@@ -66,7 +66,6 @@
   "app.components.ErrorBoundary.errorFormTitle": "It looks like there is an issue.",
   "app.components.ErrorBoundary.genericErrorWithForm": "An error occured and we cannot display this content. Please try again, or {openForm}!",
   "app.components.ErrorBoundary.openFormText": "help us figure it out",
-  "app.components.FileAttachments.attachmentsHeader": "Attachments",
   "app.components.FileUploader.fileInputDescription": "Click to select a file",
   "app.components.FileUploader.fileUploadLabel": "Attachments (max. 50MB)",
   "app.components.FileUploader.incorrect_extension": "{fileName} is not supported by our system, it will not be uploaded.",
