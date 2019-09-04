@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency "pundit", "~> 2.0"
   s.add_dependency "kaminari", "~> 1.1.1"
   s.add_dependency "apartment", "~> 2.2.0"
-  s.add_dependency "apartment-sidekiq"
+  s.add_dependency "acts_as_list", "~> 0.9.17"
 
   s.add_development_dependency "rspec_api_documentation"
   s.add_development_dependency "rspec-rails"

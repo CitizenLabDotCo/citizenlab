@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_01_091036) do
+ActiveRecord::Schema.define(version: 2019_09_04_135344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -562,6 +562,25 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
+  create_table "polls_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "question_id"
+    t.jsonb "title_multiloc", default: {}, null: false
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_polls_options_on_question_id"
+  end
+
+  create_table "polls_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "participation_context_id", null: false
+    t.string "participation_context_type", null: false
+    t.jsonb "title_multiloc", default: {}, null: false
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["participation_context_type", "participation_context_id"], name: "index_poll_questions_on_participation_context"
+  end
+
   create_table "project_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.string "file"
@@ -782,6 +801,7 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
   add_foreign_key "pages", "projects"
   add_foreign_key "phase_files", "phases"
   add_foreign_key "phases", "projects"
+  add_foreign_key "polls_options", "polls_questions", column: "question_id"
   add_foreign_key "project_files", "projects"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects", "users", column: "default_assignee_id"
