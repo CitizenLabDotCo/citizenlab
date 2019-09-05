@@ -3,9 +3,9 @@ class WebApi::V1::TopicsController < ApplicationController
 
    def index
      @topics = policy_scope(Topic)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
-     @topics = @topics.order(created_at: :desc)
+       .order(created_at: :desc)
+       .page(params.dig(:page, :number))
+       .per(params.dig(:page, :size))
 
      render json: linked_json(@topics, WebApi::V1::TopicSerializer, params: fastjson_params)
    end

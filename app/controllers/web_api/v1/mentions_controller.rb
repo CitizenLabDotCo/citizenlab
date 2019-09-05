@@ -1,8 +1,7 @@
 class WebApi::V1::MentionsController < ApplicationController
 
   skip_after_action :verify_authorized, only: [:users]
-
-  skip_after_action 
+ 
   def users
     service = MentionService.new
     slug_service = SlugService.new
@@ -28,7 +27,6 @@ class WebApi::V1::MentionsController < ApplicationController
         .where.not(id: @users)
         .all
     end
-
 
     render json: WebApi::V1::UserSerializer.new(
       @users, 

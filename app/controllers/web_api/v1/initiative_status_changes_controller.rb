@@ -5,9 +5,9 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
   def index
     @changes = policy_scope(InitiativeStatusChange)
       .where(initiative: @initiative)
+      .order(created_at: :desc)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-      .order(created_at: :desc)
 
     render json: linked_json(@changes, WebApi::V1::InitiativeStatusChangeSerializer, params: fastjson_params)
   end

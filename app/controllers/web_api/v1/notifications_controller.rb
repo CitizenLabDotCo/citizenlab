@@ -38,8 +38,6 @@ class WebApi::V1::NotificationsController < ApplicationController
 
   def index
     @notifications = policy_scope(Notification)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
       .order(created_at: :desc)
       .includes(:recipient)
 
@@ -47,6 +45,9 @@ class WebApi::V1::NotificationsController < ApplicationController
       @notifications = @notifications.where(read_at: nil)
     end
 
+    @notifications = @notifications
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
     render json: linked_json(
       @notifications, 
       WebApi::V1::Notifications::NotificationSerializer, 
