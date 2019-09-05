@@ -436,16 +436,7 @@ if Apartment::Tenant.current == 'localhost'
 
       if project.timeline?
         start_at = Faker::Date.between(Tenant.current.created_at, 1.year.from_now)
-        has_budgeting_phase = false
         rand(8).times do
-          participation_method = ['ideation', 'information', 'ideation', 'budgeting', 'ideation'].shuffle.first
-          if participation_method == 'budgeting'
-            if has_budgeting_phase
-              participation_method = 'ideation'
-            else
-              has_budgeting_phase = true
-            end
-          end
           start_at += 1.days
           phase = project.phases.create!({
             title_multiloc: {
@@ -458,7 +449,7 @@ if Apartment::Tenant.current == 'localhost'
             },
             start_at: start_at,
             end_at: (start_at += rand(150).days),
-            participation_method: (rand(5) == 0) ? 'information' : 'ideation'
+            participation_method: ['ideation','budgeting','poll','information', 'ideation', 'ideation'][rand(6)]
           })
           if rand(5) == 0
             (rand(3)+1).times do
@@ -478,6 +469,20 @@ if Apartment::Tenant.current == 'localhost'
             phase.update!({
               max_budget: (rand(1000000) + 100).round(-2)
             })
+          end
+          if phase.poll?
+            rand(5).times do
+              question = Polls::Question.create!(
+                title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
+                participation_context: phase
+              )
+              rand(5).times do
+                Polls::Option.create!(
+                  question: question,
+                  title_multiloc: create_for_some_locales{Faker::Lorem.sentence}
+                )
+              end
+            end
           end
         end
       end
