@@ -108,7 +108,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
       tabs.splice(3, 0, {
         label: formatMessage(messages.pollTab),
         url: `${baseTabsUrl}/poll`,
-        feature: 'poll',
+        feature: 'polls',
         className: 'poll',
       });
     }
