@@ -6,8 +6,6 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     @groups_projects = policy_scope(GroupsProject)
       .where(project_id: params[:project_id])
       .includes(:group)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
 
     @groups_projects = case params[:sort]
       when "new"
@@ -20,6 +18,9 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
         raise "Unsupported sort method"
     end
 
+    @groups_projects = @groups_projects
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
     render json: linked_json(
       @groups_projects, 
       WebApi::V1::GroupsProjectSerializer, 
