@@ -29,7 +29,9 @@ module EmailCampaigns
           post_body_multiloc: notification.post.body_multiloc,
           post_author_name: notification.post.author_name,
           post_published_at: notification.post.published_at.iso8601,
-          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: recipient.locale)
+          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: recipient.locale),
+          initiative_votes_needed: notification.post.votes_needed,
+          initiative_expires_at: notification.post.expires_at.iso8601
         }
       }]
     end
