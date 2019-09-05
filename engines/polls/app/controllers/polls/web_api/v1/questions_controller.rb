@@ -62,7 +62,8 @@ module Polls
 				end
 
 				def reorder
-			    if @question.insert_at(reorder_params[:ordering])
+					new_ordering = reorder_params[:ordering]
+			    if @question.ordering == new_ordering || @question.insert_at(new_ordering)
 			      SideFxQuestionService.new.after_update(@question, current_user)
 						render json: WebApi::V1::QuestionSerializer.new(
 							@question,

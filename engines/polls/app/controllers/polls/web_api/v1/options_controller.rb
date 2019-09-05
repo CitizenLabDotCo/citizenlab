@@ -60,7 +60,8 @@ module Polls
 				end
 
 				def reorder
-			    if @option.insert_at(reorder_params[:ordering])
+					new_ordering = reorder_params[:ordering]
+			    if @option.ordering == new_ordering || @option.insert_at(new_ordering)
 			      SideFxOptionService.new.after_update(@option, current_user)
 						render json: WebApi::V1::OptionSerializer.new(
 							@option,
