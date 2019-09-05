@@ -11,6 +11,7 @@ module EmailCampaigns
     recipient_filter :user_filter_admins_moderators_only
 
     N_TOP_IDEAS = ENV.fetch("N_ASSIGNEE_WEEKLY_REPORT_IDEAS", 12).to_i
+    N_TOP_INITIATIVES = ENV.fetch("N_ASSIGNEE_WEEKLY_REPORT_INITIATIVES", 12).to_i
 
 
     def self.default_schedule
@@ -26,39 +27,26 @@ module EmailCampaigns
     end
 
     def generate_commands recipient:, time: nil
-      @assigned_ideas = recipient.assigned_ideas
-        .feedback_needed
-        .where('published_at > ?', (time - 1.week))
-        .order(published_at: :desc)
-        .take(N_TOP_IDEAS)
-      assigned = assigned_initiatives(recipient: recipient, time: time)
-      succesful = succesful_assigned_initiatives(recipient: recipient, time: time)
-      initiative_ids = (assigned + succesful).map do |d|
-        d[:id]
-      end.compact
-      if @assigned_ideas.present?
+      assigned = {
+        assigned_ideas: assigned_ideas(recipient: recipient, time: time),
+        assigned_initiatives: assigned_initiatives(recipient: recipient, time: time),
+        succesful_assigned_initiatives: succesful_assigned_initiatives(recipient: recipient, time: time)
+      }
+      tracked_content = {
+        idea_ids: assigned[:assigned_ideas].map{ |i| 
+          i.id
+        }.compact,
+        initiative_ids: (assigned[:assigned_initiatives] + assigned[:succesful_assigned_initiatives]).map{ |i| 
+          i.id
+        }.compact,
+      }
+      if assigned.values.any?(&:present?)
         [{
           event_payload: {
-            assigned_ideas: @assigned_ideas.map{ |idea|
-              {
-                id: idea.id,
-                title_multiloc: idea.title_multiloc,
-                url: Frontend::UrlService.new.model_to_url(idea),
-                published_at: idea.published_at.iso8601,
-                author_name: idea.author_name,
-                upvotes_count: idea.upvotes_count,
-                downvotes_count: idea.downvotes_count,
-                comments_count: idea.comments_count,
-              }
-            },
+            **assigned,
             need_feedback_assigned_ideas_count: StatIdeaPolicy::Scope.new(recipient, Idea.published).resolve.where(assignee: recipient).feedback_needed.count,
-            assigned_initiatives: assigned,
-            succesful_assigned_initiatives: succesful
           },
-          tracked_content: {
-            idea_ids: @assigned_ideas.map{|i| i.id},
-            initiative_ids: initiative_ids
-          }
+          tracked_content: tracked_content
         }]
       else 
         []
@@ -72,46 +60,70 @@ module EmailCampaigns
       users_scope.admin.or(users_scope.project_moderator)
     end
 
+    def assigned_ideas recipient:, time:
+      recipient.assigned_ideas
+        .feedback_needed
+        .where('published_at > ?', (time - 1.week))
+        .order(published_at: :desc)
+        .take(N_TOP_IDEAS)
+        .map do |idea|
+          {
+            id: idea.id,
+            title_multiloc: idea.title_multiloc,
+            url: Frontend::UrlService.new.model_to_url(idea),
+            published_at: idea.published_at.iso8601,
+            assigned_at: idea.assigned_at.iso8601,
+            author_name: idea.author_name,
+            upvotes_count: idea.upvotes_count,
+            downvotes_count: idea.downvotes_count,
+            comments_count: idea.comments_count,
+          }
+        end
+    end
+
     def assigned_initiatives recipient:, time:
       recipient.assigned_initiatives.published
-        .where('published_at > ?', time - 1.week)
+        .where('assigned_at > ?', time - 1.week)
+        .order(assigned_at: :desc)
+        .take(N_TOP_INITIATIVES)
         .map do |initiative|
-        {
-          id: initiative.id,
-          title_multiloc: initiative.title_multiloc,
-          url: Frontend::UrlService.new.model_to_url(initiative),
-          published_at: initiative.published_at.iso8601,
-          author_name: initiative.author_name,
-          upvotes_count: initiative.upvotes_count,
-          upvotes_increment: activity_counts.dig(initiative.id, :upvotes),
-          comments_count: initiative.comments_count,
-          comments_increment: activity_counts.dig(initiative.id, :comments)
-        }
+          {
+            id: initiative.id,
+            title_multiloc: initiative.title_multiloc,
+            url: Frontend::UrlService.new.model_to_url(initiative),
+            published_at: initiative.published_at.iso8601,
+            assigned_at: initiative.assigned_at.iso8601,
+            author_name: initiative.author_name,
+            upvotes_count: initiative.upvotes_count,
+            comments_count: initiative.comments_count
+          }
       end
     end
 
     def succesful_assigned_initiatives recipient:, time:
+      threshold_reached_id = InitiativeStatus.where(code: 'threshold_reached').ids.first
       recipient.assigned_initiatives
         .left_outer_joins(:initiative_status_changes)
         .where(
           'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?', 
-          InitiativeStatus.where(code: 'threshold_reached').ids.first, 
+          threshold_reached_id, 
           (time - 1.week)
           )
         .feedback_needed
+        .order(upvotes_count: :desc)
+        .take(N_TOP_INITIATIVES)
         .map do |initiative|
-        {
-          id: initiative.id,
-          title_multiloc: initiative.title_multiloc,
-          url: Frontend::UrlService.new.model_to_url(initiative),
-          published_at: initiative.published_at.iso8601,
-          author_name: initiative.author_name,
-          upvotes_count: initiative.upvotes_count,
-          upvotes_increment: activity_counts.dig(initiative.id, :upvotes),
-          comments_count: initiative.comments_count,
-          comments_increment: activity_counts.dig(initiative.id, :comments),
-          threshold_reached_at: initiative.initiative_status_changes.order(:created_at).pluck(:created_at).last
-        }
+          {
+            id: initiative.id,
+            title_multiloc: initiative.title_multiloc,
+            url: Frontend::UrlService.new.model_to_url(initiative),
+            published_at: initiative.published_at.iso8601,
+            assigned_at: initiative.assigned_at.iso8601,
+            author_name: initiative.author_name,
+            upvotes_count: initiative.upvotes_count,
+            comments_count: initiative.comments_count,
+            threshold_reached_at: initiative.threshold_reached_at
+          }
       end
     end
 
