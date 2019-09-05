@@ -7,10 +7,10 @@ module PublicApi
     def index
       @projects = PublicApi::ProjectPolicy::Scope.new(current_publicapi_apiclient, Project).resolve
       @projects = @projects
-        .page(params.dig(:page_number))
-        .per([params.dig(:page_size)&.to_i || 12, 24].min)
         .includes(:project_images)
         .order(created_at: :desc)
+        .page(params.dig(:page_number))
+        .per([params.dig(:page_size)&.to_i || 12, 24].min)
 
       render json: @projects, 
         each_serializer: V1::ProjectSerializer, 
