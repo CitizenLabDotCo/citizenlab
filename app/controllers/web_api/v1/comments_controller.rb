@@ -11,8 +11,6 @@ class WebApi::V1::CommentsController < ApplicationController
     root_comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
       .where(post_type: @post_type, post_id: @post_id)
       .where(parent: nil)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
       .includes(*include_attrs)
 
     root_comments = case params[:sort]
@@ -29,6 +27,9 @@ class WebApi::V1::CommentsController < ApplicationController
       else
         raise "Unsupported sort method"
       end
+    root_comments = root_comments
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
 
     fully_expanded_root_comments = Comment.where(id: root_comments)
       .where("children_count <= ?", FULLY_EXPAND_THRESHOLD)
@@ -96,9 +97,9 @@ class WebApi::V1::CommentsController < ApplicationController
   def children
     @comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
       .where(parent: params[:id])
+      .order(:lft)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-      .order(:lft)
 
     serialization_options = if current_user
       votes = Vote.where(user: current_user, votable: @comments.all)
