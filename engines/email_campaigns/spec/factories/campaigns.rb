@@ -41,15 +41,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :idea_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::IdeaMarkedAsSpam do
-    enabled { true }
-  end
-
-  factory :initiative_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::InitiativeMarkedAsSpam do
-    enabled { true }
-  end
-
   factory :idea_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::IdeaAssignedToYou do
+    enabled { true }
+  end
+
+  factory :idea_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::IdeaMarkedAsSpam do
     enabled { true }
   end
 
@@ -66,6 +62,14 @@ FactoryBot.define do
   end
 
   factory :invite_reminder_campaign, class: EmailCampaigns::Campaigns::InviteReminder do
+    enabled { true }
+  end
+
+  factory :initiative_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::InitiativeMarkedAsSpam do
+    enabled { true }
+  end
+
+  factory :initiative_published_campaign, class: EmailCampaigns::Campaigns::InitiativePublished do
     enabled { true }
   end
 
