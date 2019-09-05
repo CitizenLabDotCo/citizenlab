@@ -7,6 +7,7 @@ module Polls
 
 				def index
 					@questions = policy_scope(Question)
+						.where(participation_context: @participation_context)
 						.includes(:options)
 						.page(params.dig(:page, :number))
 						.per(params.dig(:page, :size))
