@@ -3,10 +3,11 @@ class WebApi::V1::AreasController < ApplicationController
 
   def index
     @areas = policy_scope(Area)
+      .order(created_at: :desc)
+
+    @areas = @areas
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-    @areas = @areas.order(created_at: :desc)
-    
     render json: linked_json(@areas, WebApi::V1::AreaSerializer, params: fastjson_params)
   end
 

@@ -8,9 +8,6 @@ class WebApi::V1::IdeasController < ApplicationController
   def index
     @ideas = policy_scope(Idea).includes(:topics, :areas, :idea_images, project: [:phases, :permissions], phases: [:permissions], author: [:unread_notifications], assignee: [:unread_notifications])
       .left_outer_joins(:idea_trending_info)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
-
     @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
 
     if params[:sort].present? && !params[:search].present?
@@ -56,7 +53,9 @@ class WebApi::V1::IdeasController < ApplicationController
         end
     end
 
-
+    @ideas = @ideas 
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
 
     serialization_options = if current_user
       # I have no idea why but the trending query part
@@ -80,12 +79,12 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def index_idea_markers
     @ideas = policy_scope(Idea)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
-
     @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
+    @ideas = @ideas 
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
     render json: linked_json(@ideas, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
   end
 
