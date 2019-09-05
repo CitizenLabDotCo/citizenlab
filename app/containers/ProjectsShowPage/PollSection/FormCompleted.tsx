@@ -12,7 +12,6 @@ const Container = styled.div`
   background-color: white;
   display: flex;
   flex-direction: column;
-  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xl}px;
   line-height: ${fontSizes.xxl}px;
   align-items: center;

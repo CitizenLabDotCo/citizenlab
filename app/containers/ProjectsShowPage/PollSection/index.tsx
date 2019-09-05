@@ -8,43 +8,49 @@ import { adopt } from 'react-adopt';
 
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
+import PollForm from './PollForm';
 import FormCompleted from './FormCompleted';
 
 import styled from 'styled-components';
 
 const Container = styled.div`
-
+  color: ${({ theme }) => theme.colorText};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 interface InputProps {
-  // TODO pass in form
+  id: string;
+  type: 'projects' | 'phases';
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-class PollForm extends PureComponent<Props> {
+class PollSection extends PureComponent<Props> {
 
-  // TODO : if (userAnwsered) {} else ...
   render() {
     return (
       <Container>
-        <FormCompleted />
+        <PollForm />
       </Container>
     );
   }
-
 }
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
+  // poll questions
+  // phase or project action desc?
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <PollForm {...inputProps} {...dataProps} />}
+    {dataProps => <PollSection {...inputProps} {...dataProps} />}
   </Data>
 );
