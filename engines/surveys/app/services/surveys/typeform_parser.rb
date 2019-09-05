@@ -24,7 +24,7 @@ module Surveys::TypeformParser
       when 'payment' 
         answer[:payment] 
       else
-        raise "Unsupported typeform answer type #{anser[:type]}"
+        raise "Unsupported typeform answer type #{answer[:type]}"
       end
   end
 
