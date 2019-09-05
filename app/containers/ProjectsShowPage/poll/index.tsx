@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import PollForm from '../PollForm';
+import PollSection from '../PollSection';
 
 // resources
 import GetProject from 'resources/GetProject';
@@ -30,13 +30,13 @@ export default withRouter((props: WithRouterProps) => (
       if (
         !isNilOrError(project) &&
         project.attributes.participation_method === 'poll'
-        // phase.attributes.poll_questions TODO
       ) {
         return (
           <>
             <StyledContentContainer className="e2e-continuous-project-poll-container">
-                <PollForm
-                  // TODO
+                <PollSection
+                  id={project.id}
+                  type="projects"
                 />
             </StyledContentContainer>
           </>

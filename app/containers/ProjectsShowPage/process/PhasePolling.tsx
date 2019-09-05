@@ -4,7 +4,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import PollForm from '../PollForm';
+import PollSection from '../PollSection';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
@@ -37,11 +37,13 @@ class PhaseSurvey extends PureComponent<Props, State> {
     if (
       !isNilOrError(phase) &&
       phase.attributes.participation_method === 'poll'
-      // phase.attributes.poll_questions TODO
     ) {
       return (
         <Container className={className || ''}>
-          <PollForm /> // todo pass in form info
+          <PollSection
+            id={phase.id}
+            type="phases"
+          />
         </Container>
       );
     }
