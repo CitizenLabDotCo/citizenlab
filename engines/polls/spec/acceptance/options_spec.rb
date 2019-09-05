@@ -10,7 +10,7 @@ resource "Poll Options" do
     header "Content-Type", "application/json"
   end
 
-  get "web_api/v1/poll_questions/:poll_question_id/options" do
+  get "web_api/v1/poll_questions/:poll_question_id/poll_options" do
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of options per page"
@@ -21,7 +21,8 @@ resource "Poll Options" do
       other_option = create(:poll_option)
     end
 
-    let (:poll_question_id) { @question.id }
+    let(:poll_question_id) { @question.id }
+
     example_request "List all options in a question" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -51,13 +52,14 @@ resource "Poll Options" do
       header 'Authorization', "Bearer #{token}"
     end
 
-    post "web_api/v1/poll_questions/:poll_question_id/options" do
+    post "web_api/v1/poll_questions/:poll_question_id/poll_options" do
       with_options scope: :option do
         parameter :title_multiloc, "The option, as a multiloc string", required: true
       end
       ValidationErrorHelper.new.error_fields(self, Polls::Option)
 
       let(:question) { create(:poll_question) }
+      let(:poll_question_id) { question.id }
       let(:option) { build(:poll_option, question: question) }
       let(:title_multiloc) { option.title_multiloc }
 
@@ -104,8 +106,8 @@ resource "Poll Options" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
-        expect(Polls::Question.order(:ordering)[1].id).to eq id
-        expect(Polls::Question.order(:ordering).map(&:ordering)).to eq (0..2).to_a
+        expect(@question.options.order(:ordering)[1].id).to eq id
+        expect(@question.options.order(:ordering).map(&:ordering)).to eq (0..2).to_a
       end
     end
 
