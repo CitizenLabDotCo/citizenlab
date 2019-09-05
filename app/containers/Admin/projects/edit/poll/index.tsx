@@ -83,7 +83,7 @@ class AdminProjectPoll extends React.PureComponent<Props> {
 
   render() {
     return (
-      <FeatureFlag name="poll">
+      <FeatureFlag name="polls">
         <SectionTitle>
           <FormattedMessage {...messages.titlePollResults} />
         </SectionTitle>
