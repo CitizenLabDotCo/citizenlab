@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_16_143358) do
+ActiveRecord::Schema.define(version: 2019_09_05_123108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -310,6 +310,7 @@ ActiveRecord::Schema.define(version: 2019_08_16_143358) do
     t.integer "baskets_count", default: 0, null: false
     t.integer "official_feedbacks_count", default: 0, null: false
     t.uuid "assignee_id"
+    t.datetime "assigned_at"
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
@@ -404,6 +405,7 @@ ActiveRecord::Schema.define(version: 2019_08_16_143358) do
     t.string "header_bg"
     t.uuid "assignee_id"
     t.integer "official_feedbacks_count", default: 0, null: false
+    t.datetime "assigned_at"
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
     t.index ["slug"], name: "index_initiatives_on_slug"
