@@ -23,6 +23,7 @@ resource "Campaign consents" do
         create(:idea_assigned_to_you),
         create(:idea_published_campaign),
         create(:initiative_assigned_to_you),
+        create(:initiative_published_campaign),
         create(:mention_in_comment_campaign),
         create(:mention_in_official_feedback_campaign),
         create(:manual_campaign),
