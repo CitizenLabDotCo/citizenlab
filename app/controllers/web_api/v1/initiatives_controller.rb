@@ -7,9 +7,6 @@ class WebApi::V1::InitiativesController < ApplicationController
   
   def index
     @initiatives = policy_scope(Initiative).includes(:author, :assignee, :topics, :areas)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
-
     @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params
 
     if params[:sort].present? && !params[:search].present?
@@ -39,6 +36,10 @@ class WebApi::V1::InitiativesController < ApplicationController
         end
     end
 
+    @initiatives = @initiatives
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+
     serialization_options = if current_user
       @initiative_ids = @initiatives.map(&:id)
       votes = Vote.where(user: current_user, votable_id: @initiative_ids, votable_type: 'Initiative')
@@ -59,12 +60,12 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def index_initiative_markers
     @initiatives = policy_scope(Initiative)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
-
     @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params
     @initiatives = @initiatives.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
+    @initiatives = @initiatives
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
     render json: linked_json(@initiatives, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
   end
 

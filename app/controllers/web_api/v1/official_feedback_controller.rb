@@ -5,9 +5,9 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
   def index
     @feedbacks = policy_scope(OfficialFeedback, policy_scope_class: @policy_class::Scope)
       .where(post_type: @post_type, post_id: @post_id)
+      .order(created_at: :desc)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-      .order(created_at: :desc)
 
     render json: linked_json(@feedbacks, WebApi::V1::OfficialFeedbackSerializer, params: fastjson_params)
   end
