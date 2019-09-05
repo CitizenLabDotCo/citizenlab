@@ -8,7 +8,7 @@ class Tenant < ApplicationRecord
   mount_base64_uploader :favicon, FaviconUploader
 
   validates :name, :host, presence: true
-  validates :host, uniqueness: true
+  validates :host, uniqueness: true, exclusion: { in: %w(schema-migrations public) }
 
   validates :settings, presence: true, json: { 
     schema: -> { Tenant.settings_json_schema_str }, 

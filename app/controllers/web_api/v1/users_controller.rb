@@ -10,8 +10,6 @@ class WebApi::V1::UsersController < ::ApplicationController
   def index
     authorize :user, :index?
     @users = policy_scope(User)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
 
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
@@ -44,6 +42,9 @@ class WebApi::V1::UsersController < ::ApplicationController
         raise "Unsupported sort method"
     end
 
+    @users = @users
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: fastjson_params)
   end
 

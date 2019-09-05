@@ -4,9 +4,9 @@ class WebApi::V1::PhasesController < ApplicationController
   def index
     @phases = policy_scope(Phase)
       .where(project_id: params[:project_id])
+      .order(:start_at)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-      .order(:start_at)
 
     render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: fastjson_params)
   end

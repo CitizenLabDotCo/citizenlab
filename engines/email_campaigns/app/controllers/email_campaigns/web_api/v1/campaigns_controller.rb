@@ -7,8 +7,6 @@ module EmailCampaigns
     def index
       @campaigns = policy_scope(Campaign)
         .order(created_at: :desc)
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
 
       if params[:campaign_names]
         campaign_types = params[:campaign_names].map{|name| Campaign.from_campaign_name(name) }
@@ -20,6 +18,9 @@ module EmailCampaigns
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
+      @campaigns = @campaigns
+        .page(params.dig(:page, :number))
+        .per(params.dig(:page, :size))
       render json: linked_json(@campaigns, WebApi::V1::CampaignSerializer, params: fastjson_params)
     end
 
