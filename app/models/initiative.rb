@@ -76,6 +76,13 @@ class Initiative < ApplicationRecord
     end
   end
 
+  def threshold_reached_at initiative
+    initiative_status_changes
+      .where(initiative_status_id: threshold_reached_id)
+      .order(:created_at).pluck(:created_at).last
+  end
+
+
 
   private
 
