@@ -6,6 +6,10 @@ Polls::Engine.routes.draw do
     	get 'phases/:phase_id/poll_questions' => 'questions#index'
     	resources :poll_questions, only: [:create, :show, :update, :destroy], controller: :questions do
     		patch :reorder, on: :member
+    		resources :poll_options, only: [:index, :create], controller: :options
+  		end
+  		resources :poll_options, only: [:show, :update, :destroy], controller: :options do
+  			patch :reorder, on: :member
   		end
     end
   end
