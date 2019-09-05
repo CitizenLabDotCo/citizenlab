@@ -40,6 +40,7 @@ module Post
       post.before_validation :set_author_name
       post.before_validation :generate_slug
       post.after_validation :set_published_at, if: ->(post){ post.published? && post.publication_status_changed? }
+      post.after_validation :set_assigned_at, if: ->(post){ post.assignee_id && post.assignee_id_changed? }
     end
 
 
@@ -109,6 +110,10 @@ module Post
 
     def set_published_at
       self.published_at ||= Time.now
+    end
+
+    def set_assigned_at
+      self.assigned_at ||= Time.now
     end
     
   end
