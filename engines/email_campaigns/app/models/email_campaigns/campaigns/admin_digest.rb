@@ -224,7 +224,7 @@ module EmailCampaigns
           upvotes_increment: activity_counts.dig(initiative.id, :upvotes),
           comments_count: initiative.comments_count,
           comments_increment: activity_counts.dig(initiative.id, :comments),
-          threshold_reached_at: initiative.initiative_status_changes.order(:created_at).pluck(:created_at).last
+          threshold_reached_at: initiative.threshold_reached_at.iso8601
         }
       end
     end
