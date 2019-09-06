@@ -8,11 +8,13 @@ import styled from 'styled-components';
 // Services / Data loading
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetPollQuestions, { GetPollQuestionsChildProps } from 'resources/GetPollQuestions';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // Components
 import FeatureFlag from 'components/FeatureFlag';
 import ExportPollButton from './ExportPollButton';
-import PollAdminFormWrapper from './PollAdminFormWrapper';
+import PollAdminForm from './PollAdminForm';
 import T from 'components/T';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 
@@ -31,6 +33,7 @@ interface InputProps { }
 interface DataProps {
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
+  locale: GetLocaleChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -38,46 +41,65 @@ interface Props extends InputProps, DataProps { }
 class AdminProjectPoll extends React.PureComponent<Props> {
 
   renderPolls = () => {
-    const { project, phases } = this.props;
-    if (!isNilOrError(project)) {
-      if (project.attributes.process_type === 'continuous'
-        && project.attributes.participation_method === 'poll'
-      ) {
-        return (
-          <>
-            <PollAdminFormWrapper
-              type="projects"
-              id={project.id}
-            />
-            <ExportPollButton
-              type="projects"
-              id={project.id}
-            />
-          </>
-        );
-      }
+    const { project, phases, locale } = this.props;
 
-      if (project.attributes.process_type === 'timeline' && !isNilOrError(phases)) {
-        return phases.filter(phase => phase.attributes.participation_method === 'poll').map(phase => {
-            return (
-              <Fragment key={phase.id}>
-                <h3>
-                  <T value={phase.attributes.title_multiloc} />
-                </h3>
-                <PollAdminFormWrapper
+    if (isNilOrError(project) || isNilOrError(locale)) return null;
+
+    if (project.attributes.process_type === 'continuous'
+      && project.attributes.participation_method === 'poll'
+    ) {
+      return (
+        <>
+          <GetPollQuestions
+            participationContextId={project.id}
+            participationContextType="projects"
+          >
+            {(pollQuestions: GetPollQuestionsChildProps) => (
+              <PollAdminForm
+                type="projects"
+                id={project.id}
+                pollQuestions={pollQuestions}
+                locale={locale}
+              />
+            )}
+          </GetPollQuestions>
+          <ExportPollButton
+            type="projects"
+            id={project.id}
+          />
+        </>
+      );
+    }
+
+    if (project.attributes.process_type === 'timeline' && !isNilOrError(phases)) {
+      return phases.filter(phase => phase.attributes.participation_method === 'poll').map(phase => {
+        return (
+          <Fragment key={phase.id}>
+            <h3>
+              <T value={phase.attributes.title_multiloc} />
+            </h3>
+            <GetPollQuestions
+              participationContextId={phase.id}
+              participationContextType="phases"
+            >
+              {(pollQuestions: GetPollQuestionsChildProps) => (
+                <PollAdminForm
                   type="phases"
                   id={project.id}
+                  pollQuestions={pollQuestions}
+                  locale={locale}
                 />
-                <ExportPollButton
-                  id={phase.id}
-                  type="phases"
-                />
-              </Fragment>
-            );
-          });
-      }
-      return null;
+              )}
+            </GetPollQuestions>
+            <ExportPollButton
+              id={phase.id}
+              type="phases"
+            />
+          </Fragment>
+        );
+      });
     }
+
     return null;
   }
 
@@ -101,6 +123,7 @@ class AdminProjectPoll extends React.PureComponent<Props> {
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   phases: ({ params, render }) => <GetPhases projectId={params.projectId} >{render}</GetPhases>,
   project: ({ params, render }) => <GetProject id={params.projectId} >{render}</GetProject>,
+  locale: <GetLocale />
 });
 
 export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
