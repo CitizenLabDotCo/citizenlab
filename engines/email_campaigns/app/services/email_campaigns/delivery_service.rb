@@ -45,7 +45,8 @@ module EmailCampaigns
       Campaigns::StatusChangeOfVotedIdea,
       Campaigns::StatusChangeOfYourIdea,
       Campaigns::UserDigest,
-      Campaigns::Welcome
+      Campaigns::Welcome,
+      Campaigns::YourProposedInitiativesDigest
     ]
 
     def campaign_types

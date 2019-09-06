@@ -44,6 +44,7 @@ nb:
       "moderator_digest": A weekly overview of the activity on the platform (only for moderators)
       "assignee_digest": A weekly overview of new ideas assigned to me (only for admins and moderators)
       "user_digest": A weekly overview of the activity on the platform (for citizens)
+      "your_proposed_initiatives_digest": A weekly overview of your initiatives that still need to reach the threshold (for citizens)
     admin_campaign_type_description:
       "manual": Direct messages sent by administrators or moderators
       "comment_on_your_comment": When a user receives a reply on their comment
@@ -88,3 +89,4 @@ nb:
       "moderator_digest": A weekly overview of the activity on the platform (only for moderators)
       "assignee_digest": A weekly overview of new ideas assigned to me (only for admins and moderators)
       "user_digest": A weekly overview of the activity on the platform (for citizens)
+      "your_proposed_initiatives_digest": A weekly overview of your initiatives that still need to reach the threshold (for citizens)

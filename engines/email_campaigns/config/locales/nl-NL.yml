@@ -44,6 +44,7 @@ nl:
       "moderator_digest": Een weekoverzicht (voor moderatoren)
       "assignee_digest": Een weekoverzicht van nieuwe ideeën die aan mij zijn toegewezen (voor beheerders en moderatoren)
       "user_digest": Een weekoverzicht (voor burgers)
+      "your_proposed_initiatives_digest": A weekly overview of your initiatives that still need to reach the threshold (for citizens)
     admin_campaign_type_description:
       "manual": Directe berichten verzonden door beheerders of moderatoren
       "comment_on_your_comment": Wanneer een gebruiker een reactie ontvangt op een eigen reactie
@@ -88,3 +89,4 @@ nl:
       "moderator_digest": Een weekoverzicht (voor moderatoren)
       "assignee_digest": Een weekoverzicht van nieuwe ideeën die aan mij zijn toegewezen (voor beheerders en moderatoren)
       "user_digest": Een weekoverzicht (voor burgers)
+      "your_proposed_initiatives_digest": A weekly overview of your initiatives that still need to reach the threshold (for citizens)

@@ -44,6 +44,7 @@ de:
       "moderator_digest": Eine wöchentliche Übersicht über die Aktivitäten auf der Plattform (nur für Moderatoren)
       "assignee_digest": Ein wöchentlicher Überblick über neue Ideen, die mir zugeteilt wurden (nur für Administratoren und Moderatoren)
       "user_digest": Ein wöchentlicher Überblick über die Aktivitäten auf der Plattform (für Bürger)
+      "your_proposed_initiatives_digest": A weekly overview of your initiatives that still need to reach the threshold (for citizens)
     admin_campaign_type_description:
       "manual": Direkte Nachrichten, die von Administratoren oder Moderatoren gesendet wurden
       "comment_on_your_comment": Wenn ein Benutzer eine Antwort auf seinen Kommentar erhält
@@ -88,3 +89,4 @@ de:
       "moderator_digest": Eine wöchentliche Übersicht über die Aktivitäten auf der Plattform (nur für Moderatoren)
       "assignee_digest": Ein wöchentlicher Überblick über neue Ideen, die mir zugeteilt wurden (nur für Administratoren und Moderatoren)
       "user_digest": Ein wöchentlicher Überblick über die Aktivitäten auf der Plattform (für Bürger)
+      "your_proposed_initiatives_digest": A weekly overview of your initiatives that still need to reach the threshold (for citizens)

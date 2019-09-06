@@ -63,6 +63,12 @@ class Initiative < ApplicationRecord
       .where('initiatives.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
+  scope :proposed, -> {
+    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
+      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
+      .where('initiative_statuses.code = ?', 'proposed')
+  }
+
 
   def votes_needed tenant=Tenant.current
     [tenant.settings.dig('initiatives', 'voting_threshold') - upvotes_count, 0].max
