@@ -39,7 +39,8 @@ resource "Campaign consents" do
         create(:project_phase_started),
         create(:project_phase_upcoming),
         create(:status_change_of_your_idea_campaign),
-        create(:user_digest_campaign)
+        create(:user_digest_campaign),
+        create(:your_proposed_initiatives_digest_campaign)
       ]
       @consents = @campaigns.map.with_index do |campaign, i|
         create(:consent, user: @user, campaign_type: campaign.type, consented: i%2 == 0)

@@ -44,6 +44,7 @@ da:
       "moderator_digest": En ugentlig oversigt over aktiviteten på platformen (kun for moderatorer)
       "assignee_digest": En ugentlig oversigt over nye idéer tildelt mig (kun for admins og moderatorer)
       "user_digest": En ugentlig oversigt over aktiviteten på platformen (for borgere)
+      "your_proposed_initiatives_digest": A weekly overview of your initiatives that still need to reach the threshold (for citizens)
     admin_campaign_type_description:
       "manual": Direkte meddelelser sendt af administratorer eller moderatorer
       "comment_on_your_comment": Når en bruger modtager et svar på deres kommentar
@@ -88,3 +89,4 @@ da:
       "moderator_digest": En ugentlig oversigt over aktiviteten på platformen (kun for moderatorer)
       "assignee_digest": En ugentlig oversigt over nye idéer tildelt mig (kun for admins og moderatorer)
       "user_digest": En ugentlig oversigt over aktiviteten på platformen (for borgere)
+      "your_proposed_initiatives_digest": A weekly overview of your initiatives that still need to reach the threshold (for citizens)
