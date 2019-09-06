@@ -2,29 +2,24 @@ de:
   email_campaigns:
     campaign_type_description:
       "manual": Direkte Nachrichten, die von Administratoren oder Moderatoren gesendet wurden
-      "comment_on_your_comment": Wenn jemand auf meinen Kommentar antwortet
-      "comment_on_your_idea": Wenn jemand auf meine Idee antwortet
-      "comment_on_your_initiative": When someone replies to my initiative
       "admin_rights_received": Wenn mir Administratorrechte erteilt werden
       "comment_deleted_by_admin": Wenn ein Administrator meinen Kommentar löscht
       "comment_marked_as_spam": Wenn ein Kommentar als Spam markiert ist
+      "comment_on_your_comment": Wenn jemand auf meinen Kommentar antwortet
+      "comment_on_your_idea": Wenn jemand auf meine Idee antwortet
+      "comment_on_your_initiative": When someone replies to my initiative
+      "first_idea_published": Wenn meine erste Idee veröffentlicht wird
       "idea_assigned_to_you": Wenn mir eine Idee zugeteilt wurde
       "idea_marked_as_spam": Wenn eine Idee als Spam markiert ist
+      "idea_published": Wenn meine Idee veröffentlicht wird
       "initiative_assigned_to_you": When an initiative has been assigned to me
       "initiative_marked_as_spam": When an initiative is marked as spam
+      "initiative_published": When my initiative gets published
+      "invite_accepted": Wenn jemand meine Einladung annimmt
       "invite_received": Wenn mich jemand auf die Plattform einlädt
       "invite_reminder": Wenn jemand mich auf die Seite eingeladen hat (Erinnerung nach 3 Tagen)
-      "invite_accepted": Wenn jemand meine Einladung annimmt
       "mention_in_comment": Wenn mich jemand in einem Kommentar erwähnt
       "mention_in_official_feedback": Wenn mich jemand im offiziellen Feedback erwähnt
-      "project_moderation_rights_received": Wenn ich die Rechte zur Projektmoderation erhalte
-      "project_phase_started": Wenn ein Projekt in eine neue Phase eintritt
-      "project_phase_upcoming": Wenn ein Projekt in einer Woche in eine neue Phase eintreten wird (für Administratoren und Moderatoren)
-      "status_change_of_your_idea": Wenn sich der Status meiner Idee ändert
-      "welcome": Wenn ich mich auf der Plattform registriere
-      "password_reset": Wenn ich das Zurücksetzen des Passworts für mein Konto beantrage
-      "first_idea_published": Wenn meine erste Idee veröffentlicht wird
-      "idea_published": Wenn meine Idee veröffentlicht wird
       "new_comment_for_admin": Wenn ein neuer Kommentar in einem Projekt, das ich moderieren kann, geschrieben wurde
       "new_comment_on_commented_idea": Wenn ein neuer Kommentar zu einer Idee abgegeben wurde, die ich kommentiert habe
       "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
@@ -38,8 +33,17 @@ de:
       "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
       "official_feedback_on_your_idea": Wenn ein neues offizielles Feedback zu meiner Idee abgegeben wurde
       "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
+      "password_reset": Wenn ich das Zurücksetzen des Passworts für mein Konto beantrage
+      "project_moderation_rights_received": Wenn ich die Rechte zur Projektmoderation erhalte
+      "project_phase_started": Wenn ein Projekt in eine neue Phase eintritt
+      "project_phase_upcoming": Wenn ein Projekt in einer Woche in eine neue Phase eintreten wird (für Administratoren und Moderatoren)
       "status_change_of_commented_idea": Wenn der Status einer Idee, die ich kommentiert habe, geändert wurde
+      "status_change_of_commented_initiative": When the status of an initiative I commented on has been changed
       "status_change_of_voted_idea": Wenn der Status einer Idee, für die ich gestimmt habe, geändert wurde
+      "status_change_of_voted_initiative": When the status of an initiative I voted for has been changed
+      "status_change_of_your_idea": Wenn sich der Status meiner Idee ändert
+      "status_change_of_your_initiative": When the status of my initiative changes
+      "welcome": Wenn ich mich auf der Plattform registriere
       "admin_digest": Eine wöchentliche Übersicht über die Aktivität auf der Plattform (nur für Administratoren)
       "moderator_digest": Eine wöchentliche Übersicht über die Aktivitäten auf der Plattform (nur für Moderatoren)
       "assignee_digest": Ein wöchentlicher Überblick über neue Ideen, die mir zugeteilt wurden (nur für Administratoren und Moderatoren)
@@ -47,29 +51,24 @@ de:
       "your_proposed_initiatives_digest": A weekly overview of your initiatives that still need to reach the threshold (for citizens)
     admin_campaign_type_description:
       "manual": Direkte Nachrichten, die von Administratoren oder Moderatoren gesendet wurden
-      "comment_on_your_comment": Wenn ein Benutzer eine Antwort auf seinen Kommentar erhält
-      "comment_on_your_idea": Wenn ein Benutzer eine Antwort auf seine Idee erhält
-      "comment_on_your_initiative": When someone replies to my initiative
       "admin_rights_received": Wenn einem Benutzer Administratorrechte zugewiesen werden
       "comment_deleted_by_admin": Wenn ein Administrator meinen Kommentar löscht
       "comment_marked_as_spam": Wenn ein Benutzer einen Kommentar als Spam markiert (für Administratoren und Moderatoren)
+      "comment_on_your_comment": Wenn ein Benutzer eine Antwort auf seinen Kommentar erhält
+      "comment_on_your_idea": Wenn ein Benutzer eine Antwort auf seine Idee erhält
+      "comment_on_your_initiative": When someone replies to my initiative
+      "first_idea_published": Wenn die erste Idee eines Benutzers veröffentlicht wird
       "idea_assigned_to_you": Wenn mir eine Idee zugeteilt wurde
       "idea_marked_as_spam": Wenn ein Benutzer eine Idee als Spam markiert (für Administratoren und Moderatoren)
+      "idea_published": Wenn meine Idee veröffentlicht wird
       "initiative_assigned_to_you": When an initiative has been assigned to me
       "initiative_marked_as_spam": When an initiative is marked as spam
+      "initiative_published": When my initiative gets published
+      "invite_accepted": Wenn ein Benutzer meine Einladung annimmt
       "invite_received": Wenn ein Benutzer auf die Plattform eingeladen wird
       "invite_reminder": Wenn jemand mich auf die Seite eingeladen hat (Erinnerung nach 3 Tagen)
-      "invite_accepted": Wenn ein Benutzer meine Einladung annimmt
       "mention_in_comment": Wenn ein Benutzer in einem Kommentar erwähnt wird
       "mention_in_official_feedback": Wenn mich jemand im offiziellen Feedback erwähnt
-      "project_moderation_rights_received": Wenn ein Benutzer die Rechte zur Projektmoderation erhält
-      "project_phase_started": Wenn ein Projekt in eine neue Phase eintritt 
-      "project_phase_upcoming": Wenn ein Projekt in einer Woche in eine neue Phase eintreten wird (für Administratoren und Moderatoren)
-      "status_change_of_your_idea": Wenn sich der Status meiner Idee ändert
-      "welcome": Wenn sich ein Benutzer auf der Plattform registriert
-      "password_reset": Wenn ein Benutzer das Zurücksetzen des Passworts anfordert
-      "first_idea_published": Wenn die erste Idee eines Benutzers veröffentlicht wird
-      "idea_published": Wenn meine Idee veröffentlicht wird
       "new_comment_for_admin": Wenn ein neuer Kommentar in einem Projekt, das ich moderieren kann, geschrieben wurde
       "new_comment_on_commented_idea": Wenn ein neuer Kommentar zu einer Idee abgegeben wurde, die der Benutzer kommentiert hat
       "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
@@ -83,8 +82,17 @@ de:
       "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
       "official_feedback_on_your_idea": Wenn ein neues offizielles Feedback zu meiner Idee abgegeben wurde
       "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
+      "password_reset": Wenn ein Benutzer das Zurücksetzen des Passworts anfordert
+      "project_moderation_rights_received": Wenn ein Benutzer die Rechte zur Projektmoderation erhält
+      "project_phase_started": Wenn ein Projekt in eine neue Phase eintritt 
+      "project_phase_upcoming": Wenn ein Projekt in einer Woche in eine neue Phase eintreten wird (für Administratoren und Moderatoren)
       "status_change_of_commented_idea": Wenn der Status einer Idee, zu der der Benutzer einen Kommentar abgegeben hat, geändert wurde
+      "status_change_of_commented_initiative": When the status of an initiative I commented on has been changed
       "status_change_of_voted_idea": Wenn der Status einer Idee, für die der Benutzer gestimmt hat, geändert wurde
+      "status_change_of_voted_initiative": When the status of an initiative I voted for has been changed
+      "status_change_of_your_idea": Wenn sich der Status meiner Idee ändert
+      "status_change_of_your_initiative": When the status of my initiative changes
+      "welcome": Wenn sich ein Benutzer auf der Plattform registriert
       "admin_digest": Eine wöchentliche Übersicht über die Aktivität auf der Plattform (nur für Administratoren)
       "moderator_digest": Eine wöchentliche Übersicht über die Aktivitäten auf der Plattform (nur für Moderatoren)
       "assignee_digest": Ein wöchentlicher Überblick über neue Ideen, die mir zugeteilt wurden (nur für Administratoren und Moderatoren)

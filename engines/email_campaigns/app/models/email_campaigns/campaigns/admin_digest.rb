@@ -189,24 +189,33 @@ module EmailCampaigns
     end
 
     def new_initiatives time:
-      Initiative.published.where('published_at > ?', (time - 1.week)).map do |initiative|
+      Initiative.published.where('published_at > ?', (time - 1.week))
+      .order(published_at: :desc).includes(:initiative_images).map do |initiative|
         {
           id: initiative.id,
           title_multiloc: initiative.title_multiloc,
           url: Frontend::UrlService.new.model_to_url(initiative),
           published_at: initiative.published_at.iso8601,
           author_name: initiative.author_name,
-          upvotes_count: initiative.upvotes_count,
-          upvotes_increment: activity_counts.dig(initiative.id, :upvotes),
+          upvotes_count: initiative.upvotes_count
           comments_count: initiative.comments_count,
-          comments_increment: activity_counts.dig(initiative.id, :comments)
+          images: initiative.initiative_images.map{ |image|
+            {
+              ordering: image.ordering,
+              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            }
+          },
+          header_bg: { 
+            ordering: initiative.header_bg.ordering,
+            versions: initiative.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+          }
         }
       end
     end
 
     def succesful_initiatives time:
       Initiative.published
-        .left_outer_joins(:initiative_status_changes)
+        .includes(:initiative_status_changes, :initiative_images)
         .where(
           'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?', 
           InitiativeStatus.where(code: 'threshold_reached').ids.first, 
@@ -221,10 +230,18 @@ module EmailCampaigns
           published_at: initiative.published_at.iso8601,
           author_name: initiative.author_name,
           upvotes_count: initiative.upvotes_count,
-          upvotes_increment: activity_counts.dig(initiative.id, :upvotes),
           comments_count: initiative.comments_count,
-          comments_increment: activity_counts.dig(initiative.id, :comments),
-          threshold_reached_at: initiative.threshold_reached_at.iso8601
+          threshold_reached_at: initiative.threshold_reached_at.iso8601,
+          images: initiative.initiative_images.map{ |image|
+            {
+              ordering: image.ordering,
+              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            }
+          },
+          header_bg: { 
+            ordering: initiative.header_bg.ordering,
+            versions: initiative.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+          }
         }
       end
     end

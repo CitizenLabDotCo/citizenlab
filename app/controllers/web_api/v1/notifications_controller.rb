@@ -27,8 +27,12 @@ class WebApi::V1::NotificationsController < ApplicationController
     ::Notifications::ProjectPhaseStarted                   => WebApi::V1::Notifications::ProjectPhaseStartedSerializer,
     ::Notifications::ProjectPhaseUpcoming                  => WebApi::V1::Notifications::ProjectPhaseUpcomingSerializer,
     ::Notifications::StatusChangeOfYourIdea                => WebApi::V1::Notifications::StatusChangeOfYourIdeaSerializer,
+    ::Notifications::StatusChangeOfYourInitiative          => WebApi::V1::Notifications::StatusChangeOfYourInitiativeSerializer,
     ::Notifications::StatusChangeOnCommentedIdea           => WebApi::V1::Notifications::StatusChangeOnCommentedIdeaSerializer,
-    ::Notifications::StatusChangeOnVotedIdea               => WebApi::V1::Notifications::StatusChangeOnVotedIdeaSerializer
+    ::Notifications::StatusChangeOnCommentedInitiative     => WebApi::V1::Notifications::StatusChangeOnCommentedInitiativeSerializer,
+    ::Notifications::StatusChangeOnVotedIdea               => WebApi::V1::Notifications::StatusChangeOnVotedIdeaSerializer,
+    ::Notifications::StatusChangeOnVotedInitiative         => WebApi::V1::Notifications::StatusChangeOnVotedInitiativeSerializer,
+    ::Notifications::ThresholdReachedForAdmin              => WebApi::V1::Notifications::ThresholdReachedForAdminSerializer
   }
 
   before_action :set_notification, only: [:show, :mark_read]

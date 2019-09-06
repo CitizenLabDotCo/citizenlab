@@ -1,12 +1,13 @@
 module Notifications
   class StatusChangeOnCommentedIdea < Notification
     
-    belongs_to :idea_status
+    belongs_to :post_status, polymorphic: true
     belongs_to :post, polymorphic: true
     belongs_to :project
     belongs_to :initiating_user, class_name: 'User', optional: true
 
     validates :idea_status, :post, :project, presence: true
+    validates :post_type, inclusion: { in: ['Idea'] }
 
 
     ACTIVITY_TRIGGERS = {'Idea' => {'changed_status' => true}}
@@ -24,7 +25,7 @@ module Notifications
               initiating_user_id: activity.user_id,
               post: idea,
               project_id: idea.project_id,
-              idea_status_id: idea.idea_status_id
+              post_status: idea.idea_status
             )
           end
         end
