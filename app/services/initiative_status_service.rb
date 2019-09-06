@@ -82,7 +82,7 @@ class InitiativeStatusService
           }
         })
         # Log the status change activities.
-        InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative).each do |change|
+        InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative, :initiative_status).each do |change|
           log_status_change change
         end
       end
@@ -96,8 +96,6 @@ class InitiativeStatusService
       [id, codes[code]]
     end.to_h
   end
-
-  
 
   def transition_type initiative_status
     if manual_status_ids.include? initiative_status.id
@@ -113,6 +111,9 @@ class InitiativeStatusService
 
   def log_status_change change, user: nil
     LogActivityJob.perform_later(change.initiative, 'changed_status', user, change.created_at.to_i)
+    if change.initiative_status.code == 'threshold_reached'
+      LogActivityJob.perform_later(change.initiative, 'reached_threshold', user, change.created_at.to_i)
+    end
   end
 
 end

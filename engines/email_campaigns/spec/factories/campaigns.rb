@@ -153,11 +153,27 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :status_change_of_commented_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative do
+    enabled { true }
+  end
+
   factory :status_change_of_voted_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfVotedIdea do
     enabled { true }
   end
 
+  factory :status_change_of_voted_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfVotedInitiative do
+    enabled { true }
+  end
+
   factory :status_change_of_your_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfYourIdea do
+    enabled { true }
+  end
+
+  factory :status_change_of_your_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfYourInitiative do
+    enabled { true }
+  end
+
+  factory :threshold_reached_for_admin_campaign, class: EmailCampaigns::Campaigns::ThresholdReachedForAdmin do
     enabled { true }
   end
 

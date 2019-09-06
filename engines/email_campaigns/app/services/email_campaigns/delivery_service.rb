@@ -42,8 +42,12 @@ module EmailCampaigns
       Campaigns::ProjectPhaseStarted,
       Campaigns::ProjectPhaseUpcoming,
       Campaigns::StatusChangeOfCommentedIdea,
+      Campaigns::StatusChangeOfCommentedInitiative,
       Campaigns::StatusChangeOfVotedIdea,
+      Campaigns::StatusChangeOfVotedInitiative,
       Campaigns::StatusChangeOfYourIdea,
+      Campaigns::StatusChangeOfYourInitiative,
+      Campaigns::ThresholdReachedForAdmin,
       Campaigns::UserDigest,
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest

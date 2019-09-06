@@ -39,6 +39,8 @@ resource "Campaign consents" do
         create(:project_phase_started),
         create(:project_phase_upcoming),
         create(:status_change_of_your_idea_campaign),
+        create(:status_change_of_your_initiative_campaign),
+        create(:threshold_reached_for_admin_campaign),
         create(:user_digest_campaign),
         create(:your_proposed_initiatives_digest_campaign)
       ]

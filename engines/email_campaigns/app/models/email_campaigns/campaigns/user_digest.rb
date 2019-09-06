@@ -128,7 +128,7 @@ module EmailCampaigns
     end
 
     def new_initiatives time:
-      Initiative.published.where('published_at > ?', (time - 1.week)).map do |initiative|
+      Initiative.published.where('published_at > ?', (time - 1.week)).includes(:initiative_images).map do |initiative|
         {
           id: initiative.id,
           title_multiloc: initiative.title_multiloc,
@@ -136,16 +136,24 @@ module EmailCampaigns
           published_at: initiative.published_at.iso8601,
           author_name: initiative.author_name,
           upvotes_count: initiative.upvotes_count,
-          upvotes_increment: initiative.upvotes.where('created_at > ?', Time.now - days_ago).size,
           comments_count: initiative.comments_count,
-          comments_increment: initiative.comments.where('created_at > ?', Time.now - days_ago).size
+          images: initiative.initiative_images.map{ |image|
+            {
+              ordering: image.ordering,
+              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            }
+          },
+          header_bg: { 
+            ordering: initiative.header_bg.ordering,
+            versions: initiative.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+          }
         }
       end
     end
 
     def succesful_initiatives time:
       Initiative.published
-        .left_outer_joins(:initiative_status_changes)
+        .left_outer_joins(:initiative_status_changes, :initiative_images)
         .where(
           'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?', 
           InitiativeStatus.where(code: 'threshold_reached').ids.first, 
@@ -160,10 +168,18 @@ module EmailCampaigns
           published_at: initiative.published_at.iso8601,
           author_name: initiative.author_name,
           upvotes_count: initiative.upvotes_count,
-          upvotes_increment: initiative.upvotes.where('created_at > ?', Time.now - days_ago).size,
           comments_count: initiative.comments_count,
-          comments_increment: initiative.comments.where('created_at > ?', Time.now - days_ago).size,
-          threshold_reached_at: threshold_reached_at.iso8601
+          threshold_reached_at: threshold_reached_at.iso8601,
+          images: initiative.initiative_images.map{ |image|
+            {
+              ordering: image.ordering,
+              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            }
+          },
+          header_bg: { 
+            ordering: initiative.header_bg.ordering,
+            versions: initiative.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+          }
         }
       end
     end

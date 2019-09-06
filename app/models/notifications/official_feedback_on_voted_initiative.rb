@@ -17,7 +17,7 @@ module Notifications
       official_feedback = activity.item
       initiator_id = official_feedback.user_id
 
-      if official_feedback.post_type == 'Initiative' && initiator_id
+      if official_feedback.post_type == 'Initiative' && initiator_id && !InitiativeStatusChange.where(official_feedback: official_feedback).exists?
         comment_author_ids = User.active
           .joins(:comments).merge(Comment.published)
           .where(comments: {post: official_feedback.post})

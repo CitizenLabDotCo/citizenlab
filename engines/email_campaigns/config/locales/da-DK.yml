@@ -2,29 +2,24 @@ da:
   email_campaigns:
     campaign_type_description:
       "manual": Direkte meddelelser sendt af administratorer eller moderatorer
-      "comment_on_your_comment": Når nogen svarer på min kommentar
-      "comment_on_your_idea": Når nogen svarer på min idé
-      "comment_on_your_initiative": When someone replies to my initiative
       "admin_rights_received": Når jeg får administratorrettigheder
       "comment_deleted_by_admin": Når en administrator sletter min kommentar
       "comment_marked_as_spam": Når en kommentar bliver markeret som spam
+      "comment_on_your_comment": Når nogen svarer på min kommentar
+      "comment_on_your_idea": Når nogen svarer på min idé
+      "comment_on_your_initiative": When someone replies to my initiative
+      "first_idea_published": Når min første idé bliver publiceret
       "idea_assigned_to_you": Når en idé er blevet tildelt mig
       "idea_marked_as_spam": Når en idé bliver markeret som spam
+      "idea_published": Når min idé bliver publiceret
       "initiative_assigned_to_you": When an initiative has been assigned to me
       "initiative_marked_as_spam": When an initiative is marked as spam
+      "initiative_published": When my initiative gets published
+      "invite_accepted": Når nogen accepterer min invitation
       "invite_received": Når nogen inviterer til mig platformen
       "invite_reminder": Når nogen inviterede mig til platformen (påmindelse efter 3 dage)
-      "invite_accepted": Når nogen accepterer min invitation
       "mention_in_comment": Når nogen nævner mig i en kommentar
       "mention_in_official_feedback": Når nogen nævner mig i officiel feedback
-      "project_moderation_rights_received": Når jeg får moderationsrettigheder for projekter
-      "project_phase_started": Når et projekt træder ind i en ny fase
-      "project_phase_upcoming": Når et projekt kommer ind i en ny fase en uge fra nu af (for administratorer og moderatorer)
-      "status_change_of_your_idea": Når status på min idé bliver ændret
-      "welcome": Når jeg registrerer mig på platformen
-      "password_reset": Når jeg beder om nulstilling af adgangskoden til min konto
-      "first_idea_published": Når min første idé bliver publiceret
-      "idea_published": Når min idé bliver publiceret
       "new_comment_for_admin": Når en ny kommentar er blevet skrevet i et projekt jeg kan moderere
       "new_comment_on_commented_idea": Når en ny kommentar er blevet opslået på en idé jeg har kommenteret på
       "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
@@ -38,8 +33,17 @@ da:
       "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
       "official_feedback_on_your_idea": Når ny officiel feedback er blevet opslået på min idé
       "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
+      "password_reset": Når jeg beder om nulstilling af adgangskoden til min konto
+      "project_moderation_rights_received": Når jeg får moderationsrettigheder for projekter
+      "project_phase_started": Når et projekt træder ind i en ny fase
+      "project_phase_upcoming": Når et projekt kommer ind i en ny fase en uge fra nu af (for administratorer og moderatorer)
       "status_change_of_commented_idea": Når status på en idé jeg har kommenteret på er blevet ændret
+      "status_change_of_commented_initiative": When the status of an initiative I commented on has been changed
       "status_change_of_voted_idea": Når status på en idé jeg har stemt på er blevet ændret
+      "status_change_of_voted_initiative": When the status of an initiative I voted for has been changed
+      "status_change_of_your_idea": Når status på min idé bliver ændret
+      "status_change_of_your_initiative": When the status of my initiative changes
+      "welcome": Når jeg registrerer mig på platformen
       "admin_digest": En ugentlig oversigt over aktiviteten på platformen (kun for administratorer)
       "moderator_digest": En ugentlig oversigt over aktiviteten på platformen (kun for moderatorer)
       "assignee_digest": En ugentlig oversigt over nye idéer tildelt mig (kun for admins og moderatorer)
@@ -47,29 +51,24 @@ da:
       "your_proposed_initiatives_digest": A weekly overview of your initiatives that still need to reach the threshold (for citizens)
     admin_campaign_type_description:
       "manual": Direkte meddelelser sendt af administratorer eller moderatorer
-      "comment_on_your_comment": Når en bruger modtager et svar på deres kommentar
-      "comment_on_your_idea": Når en bruger modtager et svar på deres idé
-      "comment_on_your_initiative": When someone replies to my initiative
       "admin_rights_received": Når en bruger får administratorrettigheder
       "comment_deleted_by_admin": Når en administrator sletter min kommentar
       "comment_marked_as_spam": Når en bruger markerer en kommentar som spam (for administratorer og moderatorer)
+      "comment_on_your_comment": Når en bruger modtager et svar på deres kommentar
+      "comment_on_your_idea": Når en bruger modtager et svar på deres idé
+      "comment_on_your_initiative": When someone replies to my initiative
+      "first_idea_published": Når en brugers første idé bliver publiceret
       "idea_assigned_to_you": Når en idé er blevet tildelt mig
       "idea_marked_as_spam": Når en bruger markerer en idé som spam (for administratorer og moderatorer)
+      "idea_published": Når min idé bliver publiceret
       "initiative_assigned_to_you": When an initiative has been assigned to me
       "initiative_marked_as_spam": When an initiative is marked as spam
+      "initiative_published": When my initiative gets published
+      "invite_accepted": Når en bruger accepterer min invitation
       "invite_received": Når en bruger bliver inviteret til platformen
       "invite_reminder": Når nogen inviterede mig til platformen (påmindelse efter 3 dage)
-      "invite_accepted": Når en bruger accepterer min invitation
       "mention_in_comment": Når en bruger nævnes i en kommentar
       "mention_in_official_feedback": Når nogen nævner mig i officiel feedback
-      "project_moderation_rights_received": Når en bruger får moderationsrettigheder for projekter
-      "project_phase_started": Når et projekt træder ind i en ny fase
-      "project_phase_upcoming": Når et projekt kommer ind i en ny fase en uge fra nu af (for administratorer og moderatorer)
-      "status_change_of_your_idea": Når status på min idé bliver ændret
-      "welcome": Når en bruger registrerer sig på platformen
-      "password_reset": Når en bruger anmoder om nulstilling af adgangskode
-      "first_idea_published": Når en brugers første idé bliver publiceret
-      "idea_published": Når min idé bliver publiceret
       "new_comment_for_admin": Når en kommentar er blevet skrevet i et projekt jeg kan moderere
       "new_comment_on_commented_idea": Når en ny kommentar er blevet opslået på en idé som brugeren har kommenteret på
       "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
@@ -83,8 +82,17 @@ da:
       "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
       "official_feedback_on_your_idea": Når ny officiel feedback er blevet opslået på min idé
       "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
+      "password_reset": Når en bruger anmoder om nulstilling af adgangskode
+      "project_moderation_rights_received": Når en bruger får moderationsrettigheder for projekter
+      "project_phase_started": Når et projekt træder ind i en ny fase
+      "project_phase_upcoming": Når et projekt kommer ind i en ny fase en uge fra nu af (for administratorer og moderatorer)
       "status_change_of_commented_idea": Når status for en idé som brugeren har kommenteret på er blevet ændret
+      "status_change_of_commented_initiative": When the status of an initiative I commented on has been changed
       "status_change_of_voted_idea": Når status for en idé som brugeren har stemt på er blevet ændret
+      "status_change_of_voted_initiative": When the status of an initiative I voted for has been changed
+      "status_change_of_your_idea": Når status på min idé bliver ændret
+      "status_change_of_your_initiative": When the status of my initiative changes
+      "welcome": Når en bruger registrerer sig på platformen
       "admin_digest": En ugentlig oversigt over aktiviteten på platformen (kun for administratorer)
       "moderator_digest": En ugentlig oversigt over aktiviteten på platformen (kun for moderatorer)
       "assignee_digest": En ugentlig oversigt over nye idéer tildelt mig (kun for admins og moderatorer)
