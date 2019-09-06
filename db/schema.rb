@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_05_123108) do
+ActiveRecord::Schema.define(version: 2019_09_06_093107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -468,17 +468,19 @@ ActiveRecord::Schema.define(version: 2019_09_05_123108) do
     t.uuid "invite_id"
     t.string "reason_code"
     t.string "other_reason"
-    t.uuid "idea_status_id"
+    t.uuid "post_status_id"
     t.uuid "official_feedback_id"
     t.uuid "phase_id"
     t.string "post_type"
+    t.string "post_status_type"
     t.index ["created_at"], name: "index_notifications_on_created_at"
-    t.index ["idea_status_id"], name: "index_notifications_on_idea_status_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["invite_id"], name: "index_notifications_on_invite_id"
     t.index ["official_feedback_id"], name: "index_notifications_on_official_feedback_id"
     t.index ["phase_id"], name: "index_notifications_on_phase_id"
     t.index ["post_id", "post_type"], name: "index_notifications_on_post_id_and_post_type"
+    t.index ["post_status_id", "post_status_type"], name: "index_notifications_on_post_status_id_and_post_status_type"
+    t.index ["post_status_id"], name: "index_notifications_on_post_status_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
     t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
@@ -780,7 +782,6 @@ ActiveRecord::Schema.define(version: 2019_09_05_123108) do
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "comments"
-  add_foreign_key "notifications", "idea_statuses"
   add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "official_feedbacks"
   add_foreign_key "notifications", "phases"

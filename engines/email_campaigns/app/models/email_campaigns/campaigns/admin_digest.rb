@@ -197,7 +197,7 @@ module EmailCampaigns
           url: Frontend::UrlService.new.model_to_url(initiative),
           published_at: initiative.published_at.iso8601,
           author_name: initiative.author_name,
-          upvotes_count: initiative.upvotes_count
+          upvotes_count: initiative.upvotes_count,
           comments_count: initiative.comments_count,
           images: initiative.initiative_images.map{ |image|
             {
