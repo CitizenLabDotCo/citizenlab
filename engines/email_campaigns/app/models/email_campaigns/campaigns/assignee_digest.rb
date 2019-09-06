@@ -122,7 +122,7 @@ module EmailCampaigns
             author_name: initiative.author_name,
             upvotes_count: initiative.upvotes_count,
             comments_count: initiative.comments_count,
-            threshold_reached_at: initiative.threshold_reached_at
+            threshold_reached_at: initiative.threshold_reached_at.iso8601
           }
       end
     end

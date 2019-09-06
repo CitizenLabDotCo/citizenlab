@@ -163,7 +163,7 @@ module EmailCampaigns
           upvotes_increment: initiative.upvotes.where('created_at > ?', Time.now - days_ago).size,
           comments_count: initiative.comments_count,
           comments_increment: initiative.comments.where('created_at > ?', Time.now - days_ago).size,
-          threshold_reached_at: initiative.initiative_status_changes.order(:created_at).pluck(:created_at).last.iso8601
+          threshold_reached_at: threshold_reached_at.iso8601
         }
       end
     end
