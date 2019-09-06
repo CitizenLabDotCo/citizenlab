@@ -19,7 +19,7 @@ import T from 'components/T';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 
 // i18n
-import messages from '../messages';
+import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
@@ -107,10 +107,10 @@ class AdminProjectPoll extends React.PureComponent<Props> {
     return (
       <FeatureFlag name="polls">
         <SectionTitle>
-          <FormattedMessage {...messages.titlePollResults} />
+          <FormattedMessage {...messages.titlePollTab} />
         </SectionTitle>
         <SectionSubtitle>
-          <FormattedMessage {...messages.subtitlePollResults} />
+          <FormattedMessage {...messages.subtitlePollTab} />
         </SectionSubtitle>
         <Container>
           {this.renderPolls()}

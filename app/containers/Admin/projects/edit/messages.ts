@@ -217,10 +217,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
     defaultMessage: 'Export survey results',
   },
-  exportPollResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.exportPollResults',
-    defaultMessage: 'Export poll results',
-  },
   titleIdeas: {
     id: 'app.components.admin.PostManager.titleIdeas',
     defaultMessage: 'Manage idea',
@@ -228,13 +224,5 @@ export default defineMessages({
   subtitleIdeas: {
     id: 'app.components.admin.PostManager.subtitleIdeas',
     defaultMessage: 'Get an overview of all the ideas inside your project. Add themes and change the status by dragging and dropping ideas to one of the left columns, or edit the ideas.',
-  },
-  titlePollResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollResults.titlePollResults',
-    defaultMessage: 'Polls settings and results',
-  },
-  subtitlePollResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollResults.subtitlePollResults',
-    defaultMessage: 'Here, you can setup and download the results of the polls within this project as an exel file.',
   },
 });
