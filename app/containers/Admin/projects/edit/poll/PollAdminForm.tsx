@@ -1,17 +1,21 @@
-import React, { PureComponent } from 'react';
-import { GetPollQuestionsChildProps } from 'resources/GetPollQuestions';
-import { addPollQuestion, deletePollQuestion } from 'services/pollQuestions';
-import { List, TextCell, Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
-import T from 'components/T';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { isNilOrError } from 'utils/helperUtils';
-import { Multiloc, Locale } from 'typings';
-import InputMultiloc from 'components/UI/InputMultiloc';
+import React, { PureComponent, Fragment } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+
+import { GetPollQuestionsChildProps } from 'resources/GetPollQuestions';
+import { addPollQuestion, deletePollQuestion, updatePollQuestion } from 'services/pollQuestions';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { List } from 'components/admin/ResourceList';
+import Button from 'components/UI/Button';
 import QuestionRow from './QuestionRow';
-import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+import FormQuestionRow from './FormQuestionRow';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
+import { Multiloc, Locale } from 'typings';
 
 interface Props {
   id: string;
@@ -22,8 +26,9 @@ interface Props {
 
 interface State {
   newQuestionTitle: Multiloc | null;
-  editingQuestion: string | null;
-  shownLocale: Locale;
+  editingQuestionTitle: Multiloc;
+  editingQuestionId: string | null;
+  editingOptionsId: string | null;
 }
 
 class PollAdminFormWrapper extends PureComponent<Props, State> {
@@ -31,17 +36,17 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
     super(props);
     this.state = {
       newQuestionTitle: null,
-      editingQuestion: null,
-      shownLocale: props.locale
+      editingQuestionId: null,
+      editingQuestionTitle: {},
+      editingOptionsId: null
     };
+  }
+  startNewQuestion = () => {
+    this.setState({ newQuestionTitle: {} });
   }
 
   changeNewQuestion = (value) => {
     this.setState({ newQuestionTitle: value });
-  }
-
-  startNewQuestion = () => {
-    this.setState({ newQuestionTitle: {} });
   }
 
   saveNewQuestion = () => {
@@ -56,8 +61,18 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
       this.setState({ newQuestionTitle: null });
     });
   }
-  editQuestion = (questionId: string) => () => {
-    this.setState({ editingQuestion: questionId });
+  changeEditingQuestion = (value) => {
+    this.setState({ editingQuestionTitle: value });
+  }
+
+  saveEditingQuestion = () => {
+    const { editingQuestionTitle, editingQuestionId } = this.state;
+    editingQuestionId && updatePollQuestion(editingQuestionId, editingQuestionTitle).then(() => {
+      this.setState({ editingQuestionId: null, editingQuestionTitle: {} });
+    });
+  }
+  editQuestion = (questionId: string, currentTitle: Multiloc) => () => {
+    this.setState({ editingQuestionId: questionId, editingQuestionTitle: currentTitle });
   }
   deleteQuestion = (questionId: string) => () => {
     const { id, type } = this.props;
@@ -66,72 +81,55 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
   handleDragRow = () => { };
   handleDropRow = () => { };
 
-  onChangeLocale = (shownLocale: Locale) => () => {
-    this.setState({ shownLocale });
-  }
-
   render() {
-    const { pollQuestions } = this.props;
-    const { newQuestionTitle, editingQuestion, shownLocale } = this.state;
+    const { pollQuestions, locale } = this.props;
+    const { newQuestionTitle, editingQuestionId, editingQuestionTitle } = this.state;
 
     return (
       <>
         <List>
           {!isNilOrError(pollQuestions) && pollQuestions.map((question, index) => (
-            <QuestionRow
-              key={question.id}
-              question={question}
-              isLastItem={index === pollQuestions.length - 1 && !newQuestionTitle}
-              index={index}
-              onDelete={this.deleteQuestion}
-              onEdit={this.editQuestion}
-              handleDragRow={this.handleDragRow}
-              handleDropRow={this.handleDropRow}
-            />
+            <Fragment key={question.id}>
+              {editingQuestionId === question.id ? (
+                <FormQuestionRow
+                  id={question.id}
+                  titleMultiloc={editingQuestionTitle}
+                  onChange={this.changeEditingQuestion}
+                  onSave={this.saveEditingQuestion}
+                  locale={locale}
+                />
+              ) : (
+                  <QuestionRow
+                    question={question}
+                    isLastItem={index === pollQuestions.length - 1 && !newQuestionTitle}
+                    index={index}
+                    onDelete={this.deleteQuestion}
+                    onEdit={this.editQuestion}
+                    handleDragRow={this.handleDragRow}
+                    handleDropRow={this.handleDropRow}
+                  />
+                )}
+            </Fragment>
           ))}
-          {newQuestionTitle &&
-            <Row
-              key="new"
-              id="new"
-              className="e2e-new-question-row"
-            >
-              <TextCell>
-              {shownLocale &&
-                <FormLocaleSwitcher
-                  onLocaleChange={this.onChangeLocale}
-                  selectedLocale={shownLocale}
-                  values={{ newQuestionTitle }}
-                />
-              }
-              </TextCell>
-              <TextCell className="expand">
-                <InputMultiloc
-                  valueMultiloc={newQuestionTitle}
-                  type="text"
-                  onChange={this.changeNewQuestion}
-                  shownLocale={shownLocale}
-                />
-              </TextCell>
-
-              <Button
-                className="e2e-save-question"
-                style="secondary"
-                icon="edit"
-                onClick={this.saveNewQuestion}
-              >
-                save
-              </Button>
-            </Row>
-          }
+          <Fragment key="new">
+            {newQuestionTitle &&
+              <FormQuestionRow
+                titleMultiloc={newQuestionTitle}
+                onChange={this.changeNewQuestion}
+                onSave={this.saveNewQuestion}
+                locale={locale}
+              />
+            }
+          </Fragment>
         </List>
-        {!!editingQuestion || !newQuestionTitle &&
+        {!!editingQuestionId || !newQuestionTitle &&
           <Button
             className="e2e-add-question-btn"
             style="cl-blue"
             icon="plus-circle"
             onClick={this.startNewQuestion}
           >
-          add
+            <FormattedMessage {...messages.addQuestion} />
           </Button>
         }
       </>

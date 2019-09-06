@@ -42,7 +42,7 @@ export function reorderPollQuestion(questionId: string, newPosition: number) {
   });
 }
 export function updatePollQuestion(questionId: string, titleMultiloc: Multiloc) {
-  return streams.update(`${API_PATH}/poll_questions/${questionId}`, questionId, {
+  return streams.update<{data: IPollQuestion}>(`${API_PATH}/poll_questions/${questionId}`, questionId, {
     title_multiloc: titleMultiloc
   });
 }

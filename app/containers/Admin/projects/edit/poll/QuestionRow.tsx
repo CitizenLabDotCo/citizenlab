@@ -6,19 +6,23 @@ import T from 'components/T';
 
 import Button from 'components/UI/Button';
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
+import { Multiloc } from 'typings';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, handleDropRow, handleDragRow }: {
   question: IPollQuestion,
   isLastItem: boolean,
   index: number,
   onDelete: (questionId: string) => () => void
-  onEdit: (questionId: string) => () => void
+  onEdit: (questionId: string, currentTitle: Multiloc) => () => void
   handleDragRow,
   handleDropRow
-}) => {
-  console.log(question);
-  return (
+}) => (
     <SortableRow
+      key={question.id}
       id={question.id}
       className="e2e-question-row"
       index={index}
@@ -41,14 +45,13 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, handleDrop
 
       <Button
         className="e2e-edit-question"
-        onClick={onEdit(question.id)}
+        onClick={onEdit(question.id, question.attributes.title_multiloc)}
         style="secondary"
         icon="edit"
       >
-        edit
+        <FormattedMessage {...messages.editQuestion} />
       </Button>
     </SortableRow>
   );
-};
 
 export default QuestionRow;
