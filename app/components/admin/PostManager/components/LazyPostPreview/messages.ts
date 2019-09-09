@@ -45,10 +45,6 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.openMap',
     defaultMessage: 'Open Map',
   },
-  closeMap: {
-    id: 'app.components.admin.PostManager.PostPreview.closeMap',
-    defaultMessage: 'Close Map',
-  },
   picks: {
     id: 'app.components.admin.PostManager.PostPreview.picks',
     defaultMessage: 'Picks: {picksNumber}',
