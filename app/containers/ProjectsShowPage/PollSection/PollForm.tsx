@@ -1,7 +1,11 @@
 import React, { PureComponent } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 import Radio from 'components/UI/Radio';
 import T from 'components/T';
+
+import { IPollQuestion } from 'services/pollQuestions';
+import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptions';
 
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -42,7 +46,7 @@ const StyledRadio = styled(Radio)`
 `;
 
 interface Props {
-  questions: IPollQuestion;
+  questions: IPollQuestion[];
 }
 
 interface State {
@@ -66,27 +70,35 @@ class PollForm extends PureComponent<Props, State> {
   render() {
     return (
       <>
-        {this.props.questions.map((question, index) => (
+        {this.props.questions.map((question, questionIndex) => (
           <QuestionContainer key={question.id}>
             <Label>
               <QuestionNumber>
-                {index + 1}
+                {questionIndex + 1}
               </QuestionNumber>
               <QuestionText>
                 <T value={question.attributes.title_multiloc} />
               </QuestionText>
             </Label>
-            {question.relationships.options.data.map(option => (
-              <StyledRadio
-                key={option.id}
-                onChange={this.changeAnswer(question.id, option.id)}
-                currentValue={this.state.answers[question.id]}
-                value={option.id}
-                name={option.id}
-                id={option.id}
-                label={<T value={option.attributes.title_multiloc} />}
-              />
-            ))}
+            <GetPollOptions questionId={question.id}>
+              {(options: GetPollOptionsChildProps) => (
+                isNilOrError(options) ? null : (
+                  <>
+                    {options.map((option, optionIndex) => (
+                      <StyledRadio
+                        key={option.id}
+                        onChange={this.changeAnswer(question.id, option.id)}
+                        currentValue={this.state.answers[question.id]}
+                        value={option.id}
+                        name={option.id}
+                        id={option.id}
+                        label={<T value={option.attributes.title_multiloc} />}
+                        autoFocus={questionIndex === 0 && optionIndex === 0}
+                      />
+                    ))}
+                  </>
+                ))}
+            </GetPollOptions>
           </QuestionContainer>
         ))}
       </>
