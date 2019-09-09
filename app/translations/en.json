@@ -446,7 +446,6 @@
   "app.containers.Admin.Campaigns.campaignFrom": "From:",
   "app.containers.Admin.Campaigns.campaignTo": "To:",
   "app.containers.Admin.Campaigns.deliveryStatus_accepted": "Accepted",
-  "app.containers.Admin.Campaigns.deliveryStatus_bounced": "Bounced",
   "app.containers.Admin.Campaigns.deliveryStatus_clicked": "Clicked",
   "app.containers.Admin.Campaigns.deliveryStatus_clickedTooltip": "When you added one or more links to your email, the number of users who clicked a link will be shown here.",
   "app.containers.Admin.Campaigns.deliveryStatus_delivered": "Delivered",
