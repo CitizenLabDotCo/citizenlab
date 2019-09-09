@@ -42,6 +42,7 @@ interface InputProps {
   question: IPollQuestion;
   collapse: () => void;
   locale: Locale;
+  mode: 'new' | 'edit';
 }
 
 interface DataProps {
@@ -58,7 +59,7 @@ class OptionForm extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      editingId: 'new'
+      editingId: props.mode === 'new' ? 'new' : null
     };
   }
 
@@ -107,7 +108,7 @@ class OptionForm extends PureComponent<Props, State> {
           </Button>
         </Row>
         <OptionsContainer>
-          <List>
+          <List key={isNilOrError(pollOptions) ? 0 : pollOptions.length + (editingId === 'new' ? 1 : 0)}>
             {!isNilOrError(pollOptions) && pollOptions.map((pollOption: IPollOption) => (
               editingId === pollOption.id ? (
                 <FormOptionRow

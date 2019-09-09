@@ -94,6 +94,7 @@ class FormOptionRow extends PureComponent<Props, State> {
         </TextCell>
         <TextCell className="expand">
           <InputMultiloc
+            autoFocus
             valueMultiloc={titleMultiloc}
             type="text"
             onChange={this.onChangeTitle}

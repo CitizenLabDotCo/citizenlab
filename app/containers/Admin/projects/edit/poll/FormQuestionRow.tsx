@@ -59,6 +59,7 @@ class FormQuestionRow extends PureComponent<Props, State> {
             type="text"
             onChange={onChange}
             shownLocale={shownLocale}
+            autoFocus
           />
         </TextCell>
 
