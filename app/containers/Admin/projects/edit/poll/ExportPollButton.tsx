@@ -8,15 +8,16 @@ import tracks from './tracks';
 // components
 import Button from 'components/UI/Button';
 // TODO import { exportPollResults } from 'services/pollResults';
-const exportPollResults = ({ id, type }:Props) => console.log('exporting', id, type);
+const exportPollResults = ({ pcId, pcType }:Props) => console.log('exporting', pcId, pcType);
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  type: 'projects' | 'phases';
-  id: string;
+  pcType: 'projects' | 'phases';
+  pcId: string;
+  className?: string;
 }
 
 interface State {
@@ -24,7 +25,6 @@ interface State {
 }
 
 export default class ExportPollButton extends React.PureComponent<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -45,6 +45,7 @@ export default class ExportPollButton extends React.PureComponent<Props, State> 
   }
 
   render() {
+    const { className } = this.props;
     const { exporting } = this.state;
     return (
       <Button
@@ -52,6 +53,7 @@ export default class ExportPollButton extends React.PureComponent<Props, State> 
         icon="download"
         onClick={this.handleExportPollResults}
         processing={exporting}
+        className={className}
       >
         <FormattedMessage {...messages.exportPollResults} />
       </Button>

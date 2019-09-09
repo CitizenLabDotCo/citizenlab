@@ -28,6 +28,10 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
+const StyledExportPollButton = styled(ExportPollButton)`
+  margin-top: 40px;
+`;
+
 interface InputProps { }
 
 interface DataProps {
@@ -63,9 +67,10 @@ class AdminProjectPoll extends React.PureComponent<Props> {
               />
             )}
           </GetPollQuestions>
-          <ExportPollButton
-            type="projects"
-            id={project.id}
+
+          <StyledExportPollButton
+            pcType="projects"
+            pcId={project.id}
           />
         </>
       );
@@ -91,9 +96,9 @@ class AdminProjectPoll extends React.PureComponent<Props> {
                 />
               )}
             </GetPollQuestions>
-            <ExportPollButton
-              id={phase.id}
-              type="phases"
+            <StyledExportPollButton
+              pcId={phase.id}
+              pcType="phases"
             />
           </Fragment>
         );

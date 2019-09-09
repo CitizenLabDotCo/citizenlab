@@ -1,11 +1,15 @@
+// Libraries
 import React, { PureComponent, Fragment } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { isEqual, clone } from 'lodash-es';
+import styled  from 'styled-components';
 
+// Services / Data loading
 import { addPollQuestion, deletePollQuestion, updatePollQuestion, reorderPollQuestion, IPollQuestion } from 'services/pollQuestions';
 import { isNilOrError } from 'utils/helperUtils';
 
+// Components
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import QuestionRow from './QuestionRow';
@@ -16,7 +20,12 @@ import OptionForm from './OptionForm';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// Typings
 import { Multiloc, Locale } from 'typings';
+
+const StyledList = styled(List)`
+  margin: 10px 0;
+`;
 
 interface Props {
   pcId: string;
@@ -47,6 +56,7 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
     };
   }
 
+  // Drag and drop handling
   componentDidUpdate(prevProps: Props) {
     const { itemsWhileDragging } = this.state;
     const prevCustomFieldsIds = (prevProps.pollQuestions && prevProps.pollQuestions.map(customField => customField.id));
@@ -55,44 +65,6 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
     if (itemsWhileDragging && !isEqual(prevCustomFieldsIds, nextCustomFieldsIds)) {
       this.setState({ itemsWhileDragging: null });
     }
-  }
-
-  startNewQuestion = () => {
-    this.setState({ newQuestionTitle: {}, editingOptionsId: null });
-  }
-
-  changeNewQuestion = (value) => {
-    this.setState({ newQuestionTitle: value });
-  }
-
-  saveNewQuestion = () => {
-    const { pcId, pcType } = this.props;
-    const { newQuestionTitle } = this.state;
-    const participationContextType = pcType === 'projects'
-      ? 'Project'
-      : pcType === 'phases'
-        ? 'Phase'
-        : null;
-    participationContextType && newQuestionTitle && addPollQuestion(pcId, participationContextType, newQuestionTitle).then((res) => {
-      this.setState({ newQuestionTitle: null, editingOptionsId: res.data.id });
-    });
-  }
-  changeEditingQuestion = (value) => {
-    this.setState({ editingQuestionTitle: value });
-  }
-
-  saveEditingQuestion = () => {
-    const { editingQuestionTitle, editingQuestionId } = this.state;
-    editingQuestionId && updatePollQuestion(editingQuestionId, editingQuestionTitle).then(() => {
-      this.setState({ editingQuestionId: null, editingQuestionTitle: {} });
-    });
-  }
-  editQuestion = (questionId: string, currentTitle: Multiloc) => () => {
-    this.setState({ editingQuestionId: questionId, editingQuestionTitle: currentTitle, editingOptionsId: null });
-  }
-  deleteQuestion = (questionId: string) => () => {
-    const { pcId, pcType } = this.props;
-    deletePollQuestion(questionId, pcId, pcType);
   }
 
   handleDragRow = (fromIndex, toIndex) => {
@@ -129,9 +101,61 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
     return (itemsWhileDragging || pollQuestions);
   }
 
+  // New question
+  startNewQuestion = () => {
+    this.setState({ newQuestionTitle: {}, editingOptionsId: null });
+  }
+
+  changeNewQuestion = (value) => {
+    this.setState({ newQuestionTitle: value });
+  }
+
+  saveNewQuestion = () => {
+    const { pcId, pcType } = this.props;
+    const { newQuestionTitle } = this.state;
+    const participationContextType = pcType === 'projects'
+      ? 'Project'
+      : pcType === 'phases'
+        ? 'Phase'
+        : null;
+    participationContextType && newQuestionTitle && addPollQuestion(pcId, participationContextType, newQuestionTitle).then((res) => {
+      this.setState({ newQuestionTitle: null, editingOptionsId: res.data.id });
+    });
+  }
+  cancelNewQuestion = () => {
+    this.setState({ newQuestionTitle: null });
+  }
+
+  // Edit question
+  editQuestion = (questionId: string, currentTitle: Multiloc) => () => {
+    this.setState({ editingQuestionId: questionId, editingQuestionTitle: currentTitle, editingOptionsId: null });
+  }
+
+  changeEditingQuestion = (value) => {
+    this.setState({ editingQuestionTitle: value });
+  }
+
+  saveEditingQuestion = () => {
+    const { editingQuestionTitle, editingQuestionId } = this.state;
+    editingQuestionId && updatePollQuestion(editingQuestionId, editingQuestionTitle).then(() => {
+      this.setState({ editingQuestionId: null, editingQuestionTitle: {} });
+    });
+  }
+  cancelEditQuestion = () => {
+    this.setState({ editingQuestionId: null, editingQuestionTitle: {} });
+  }
+
+  // Delete question
+  deleteQuestion = (questionId: string) => () => {
+    const { pcId, pcType } = this.props;
+    deletePollQuestion(questionId, pcId, pcType);
+  }
+
+  // Option edition
   editOptions = (questionId) => () => {
     this.setState({ editingOptionsId: questionId });
   }
+
   closeEditingOptions = () => {
     this.setState({ editingOptionsId: null });
   }
@@ -144,48 +168,52 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
 
     return (
       <>
-        <List key={listItems.length}>
+        <StyledList key={listItems.length + (newQuestionTitle ? 1 : 0)}>
           {!isNilOrError(listItems) && listItems.map((question, index) => (
             <Fragment key={question.id}>
-              {editingQuestionId === question.id ? (
-                <FormQuestionRow
-                  id={question.id}
-                  titleMultiloc={editingQuestionTitle}
-                  onChange={this.changeEditingQuestion}
-                  onSave={this.saveEditingQuestion}
-                  locale={locale}
-                />
-              ) : editingOptionsId === question.id ? (
-                <OptionForm
-                  question={question}
-                  collapse={this.closeEditingOptions}
-                  locale={locale}
-                />
-              ) : (
-                  <QuestionRow
-                    question={question}
-                    isLastItem={index === listItems.length - 1 && !newQuestionTitle}
-                    index={index}
-                    onDelete={this.deleteQuestion}
-                    onEdit={this.editQuestion}
-                    onEditOptions={this.editOptions}
-                    handleDragRow={this.handleDragRow}
-                    handleDropRow={this.handleDropRow}
+              {editingQuestionId === question.id
+                ? (
+                  <FormQuestionRow
+                    titleMultiloc={editingQuestionTitle}
+                    onChange={this.changeEditingQuestion}
+                    onSave={this.saveEditingQuestion}
+                    locale={locale}
+                    onCancel={this.cancelEditQuestion}
                   />
-                )}
+                )
+                : editingOptionsId === question.id
+                  ? (
+                    <OptionForm
+                      question={question}
+                      collapse={this.closeEditingOptions}
+                      locale={locale}
+                    />
+                  )
+                  : (
+                    <QuestionRow
+                      question={question}
+                      isLastItem={index === listItems.length - 1 && !newQuestionTitle}
+                      index={index}
+                      onDelete={this.deleteQuestion}
+                      onEdit={this.editQuestion}
+                      onEditOptions={this.editOptions}
+                      handleDragRow={this.handleDragRow}
+                      handleDropRow={this.handleDropRow}
+                    />
+                  )}
             </Fragment>
           ))}
-          <Fragment key="new">
-            {newQuestionTitle &&
-              <FormQuestionRow
-                titleMultiloc={newQuestionTitle}
-                onChange={this.changeNewQuestion}
-                onSave={this.saveNewQuestion}
-                locale={locale}
-              />
-            }
-          </Fragment>
-        </List>
+          {newQuestionTitle &&
+            <FormQuestionRow
+              key="new"
+              titleMultiloc={newQuestionTitle}
+              onChange={this.changeNewQuestion}
+              onSave={this.saveNewQuestion}
+              onCancel={this.cancelNewQuestion}
+              locale={locale}
+            />
+          }
+        </StyledList>
         {!!editingQuestionId || !newQuestionTitle &&
           <Button
             className="e2e-add-question-btn"
