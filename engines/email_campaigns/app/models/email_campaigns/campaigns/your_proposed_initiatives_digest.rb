@@ -43,8 +43,7 @@ module EmailCampaigns
                   }
                 },
                 header_bg: { 
-                  ordering: initiative.header_bg.ordering,
-                  versions: initiative.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+                  versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
                 }
               }
             }

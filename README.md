@@ -191,7 +191,7 @@ require './engines/blorgh/spec/factories/blorghs.rb'
 
 1. Run the backend
 
-2. Navigate to `http://localhost:8088` -> `Admin` -> `Tracing`
+2. Navigate to `http://localhost:8088` -> `Admin` -> `Tracing`. Log in with `guest`, `guest`.
 
 3. Add a new trace in TEXT (not JSON) format
 
