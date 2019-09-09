@@ -1,9 +1,9 @@
 import React, { PureComponent, Fragment } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import { isEqual, clone } from 'lodash-es';
 
-import { GetPollQuestionsChildProps } from 'resources/GetPollQuestions';
-import { addPollQuestion, deletePollQuestion, updatePollQuestion } from 'services/pollQuestions';
+import { addPollQuestion, deletePollQuestion, updatePollQuestion, reorderPollQuestion, IPollQuestion } from 'services/pollQuestions';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { List } from 'components/admin/ResourceList';
@@ -18,9 +18,9 @@ import messages from './messages';
 import { Multiloc, Locale } from 'typings';
 
 interface Props {
-  id: string;
-  type: 'projects' | 'phases';
-  pollQuestions: GetPollQuestionsChildProps;
+  pcId: string;
+  pcType: 'projects' | 'phases';
+  pollQuestions: IPollQuestion[] | null | undefined;
   locale: Locale;
 }
 
@@ -29,6 +29,8 @@ interface State {
   editingQuestionTitle: Multiloc;
   editingQuestionId: string | null;
   editingOptionsId: string | null;
+  itemsWhileDragging: IPollQuestion[] | null;
+  isProcessing: boolean;
 }
 
 class PollAdminFormWrapper extends PureComponent<Props, State> {
@@ -38,9 +40,22 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
       newQuestionTitle: null,
       editingQuestionId: null,
       editingQuestionTitle: {},
-      editingOptionsId: null
+      editingOptionsId: null,
+      itemsWhileDragging: null,
+      isProcessing: false
     };
   }
+
+  componentDidUpdate(prevProps: Props) {
+    const { itemsWhileDragging } = this.state;
+    const prevCustomFieldsIds = (prevProps.pollQuestions && prevProps.pollQuestions.map(customField => customField.id));
+    const nextCustomFieldsIds = (this.props.pollQuestions && this.props.pollQuestions.map(customField => customField.id));
+
+    if (itemsWhileDragging && !isEqual(prevCustomFieldsIds, nextCustomFieldsIds)) {
+      this.setState({ itemsWhileDragging: null });
+    }
+  }
+
   startNewQuestion = () => {
     this.setState({ newQuestionTitle: {} });
   }
@@ -50,14 +65,14 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
   }
 
   saveNewQuestion = () => {
-    const { id, type } = this.props;
+    const { pcId, pcType } = this.props;
     const { newQuestionTitle } = this.state;
-    const participationContextType = type === 'projects'
+    const participationContextType = pcType === 'projects'
       ? 'Project'
-      : type === 'phases'
+      : pcType === 'phases'
         ? 'Phase'
         : null;
-    participationContextType && newQuestionTitle && addPollQuestion(id, participationContextType, newQuestionTitle).then((res) => {
+    participationContextType && newQuestionTitle && addPollQuestion(pcId, participationContextType, newQuestionTitle).then((res) => {
       this.setState({ newQuestionTitle: null });
     });
   }
@@ -75,20 +90,54 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
     this.setState({ editingQuestionId: questionId, editingQuestionTitle: currentTitle });
   }
   deleteQuestion = (questionId: string) => () => {
-    const { id, type } = this.props;
-    deletePollQuestion(questionId, id, type);
+    const { pcId, pcType } = this.props;
+    deletePollQuestion(questionId, pcId, pcType);
   }
-  handleDragRow = () => { };
-  handleDropRow = () => { };
+
+  handleDragRow = (fromIndex, toIndex) => {
+    if (!this.state.isProcessing) {
+      const listItems = this.listItems();
+
+      if (!listItems) return;
+
+      const itemsWhileDragging = clone(listItems);
+      itemsWhileDragging.splice(fromIndex, 1);
+      itemsWhileDragging.splice(toIndex, 0, listItems[fromIndex]);
+      this.setState({ itemsWhileDragging });
+    }
+  }
+
+  handleDropRow = (fieldId: string, toIndex: number) => {
+    const listItems = this.listItems();
+
+    if (!listItems) return;
+
+    const field = listItems.find(listItem => listItem.id === fieldId);
+
+    if (field && field.attributes.ordering !== toIndex) {
+      this.setState({ isProcessing: true });
+      reorderPollQuestion(fieldId, toIndex).then(() => this.setState({ isProcessing: false }));
+    } else {
+      this.setState({ itemsWhileDragging: null });
+    }
+  }
+
+  listItems = () => {
+    const { itemsWhileDragging } = this.state;
+    const { pollQuestions } = this.props;
+    return (itemsWhileDragging || pollQuestions);
+  }
 
   render() {
-    const { pollQuestions, locale } = this.props;
+    const listItems = this.listItems() || [];
+
+    const { locale } = this.props;
     const { newQuestionTitle, editingQuestionId, editingQuestionTitle } = this.state;
 
     return (
       <>
-        <List>
-          {!isNilOrError(pollQuestions) && pollQuestions.map((question, index) => (
+        <List key={listItems.length}>
+          {!isNilOrError(listItems) && listItems.map((question, index) => (
             <Fragment key={question.id}>
               {editingQuestionId === question.id ? (
                 <FormQuestionRow
@@ -101,7 +150,7 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
               ) : (
                   <QuestionRow
                     question={question}
-                    isLastItem={index === pollQuestions.length - 1 && !newQuestionTitle}
+                    isLastItem={index === listItems.length - 1 && !newQuestionTitle}
                     index={index}
                     onDelete={this.deleteQuestion}
                     onEdit={this.editQuestion}

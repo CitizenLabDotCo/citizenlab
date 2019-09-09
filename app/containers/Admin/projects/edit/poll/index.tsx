@@ -4,6 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
+import { isError } from 'lodash-es';
 
 // Services / Data loading
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -56,9 +57,9 @@ class AdminProjectPoll extends React.PureComponent<Props> {
           >
             {(pollQuestions: GetPollQuestionsChildProps) => (
               <PollAdminForm
-                type="projects"
-                id={project.id}
-                pollQuestions={pollQuestions}
+                pcType="projects"
+                pcId={project.id}
+                pollQuestions={isError(pollQuestions) ? null : pollQuestions}
                 locale={locale}
               />
             )}
@@ -84,9 +85,9 @@ class AdminProjectPoll extends React.PureComponent<Props> {
             >
               {(pollQuestions: GetPollQuestionsChildProps) => (
                 <PollAdminForm
-                  type="phases"
-                  id={project.id}
-                  pollQuestions={pollQuestions}
+                  pcType="phases"
+                  pcId={phase.id}
+                  pollQuestions={isError(pollQuestions) ? null : pollQuestions}
                   locale={locale}
                 />
               )}
