@@ -39,7 +39,7 @@ interface Props extends InputProps, DataProps { }
 class PollSection extends PureComponent<Props> {
 
   render() {
-    const { pollQuestions } = this.props;
+    const { pollQuestions, id, type } = this.props;
     if (isError(pollQuestions)) {
       return (
         'not found'
@@ -52,6 +52,8 @@ class PollSection extends PureComponent<Props> {
       <Container>
         <PollForm
           questions={pollQuestions}
+          id={id}
+          type={type}
         />
       </Container>
     );
