@@ -35,18 +35,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldRequired',
     defaultMessage: 'Required?',
   },
-  optionalFields: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionalFields',
-    defaultMessage: 'Optional Fields',
-  },
-  optionalFieldsTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionalFieldsTooltip',
-    defaultMessage: 'When enabled, this field is optional to fill in for users during signup.',
-  },
-  orderingTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.orderingTooltip',
-    defaultMessage: 'Drag and drop registration fields to choose the order in which users will see them during signup.',
-  },
   inputType_text: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_text',
     defaultMessage: 'Text',
@@ -110,10 +98,6 @@ export default defineMessages({
   optionCancelButton: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton',
     defaultMessage: 'Cancel',
-  },
-  optionsTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTitle',
-    defaultMessage: 'Options',
   },
   addOptionButton: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addOptionButton',
