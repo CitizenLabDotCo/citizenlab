@@ -5,8 +5,11 @@
 // but in separate components.
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { isError } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetPollQuestions, { GetPollQuestionsChildProps } from 'resources/GetPollQuestions';
 
 import PollForm from './PollForm';
 import FormCompleted from './FormCompleted';
@@ -28,6 +31,7 @@ interface InputProps {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
+  pollQuestions: GetPollQuestionsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -35,9 +39,20 @@ interface Props extends InputProps, DataProps { }
 class PollSection extends PureComponent<Props> {
 
   render() {
+    const { pollQuestions } = this.props;
+    if (isError(pollQuestions)) {
+      return (
+        'not found'
+      );
+    }
+    if (isNilOrError(pollQuestions)) {
+      return null;
+    }
     return (
       <Container>
-        <PollForm />
+        <PollForm
+          questions={pollQuestions}
+        />
       </Container>
     );
   }
@@ -45,7 +60,7 @@ class PollSection extends PureComponent<Props> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  // poll questions
+  pollQuestions: ({ id, type, render }) => <GetPollQuestions participationContextId={id} participationContextType={type}>{render}</GetPollQuestions>
   // phase or project action desc?
 });
 
