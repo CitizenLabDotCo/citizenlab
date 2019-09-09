@@ -195,10 +195,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.tabAutomated',
     defaultMessage: 'Automated',
   },
-  previewHeader: {
-    id: 'app.containers.Admin.Campaigns.previewHeader',
-    defaultMessage: 'Preview',
-  },
   campaignFrom: {
     id: 'app.containers.Admin.Campaigns.campaignFrom',
     defaultMessage: 'From:',
