@@ -31,7 +31,6 @@ export function pollQuestionStream(questionId: string) {
 
 export async function deletePollQuestion(questionId: string, participationContextId?: string, participationContextType?: 'projects' | 'phases') {
   const response = await streams.delete(`${API_PATH}/poll_questions/${questionId}`, questionId);
-  console.log(`${API_PATH}/${participationContextType}/${participationContextId}/poll_questions`);
   streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/${participationContextType}/${participationContextId}/poll_questions`] });
   return response;
 }
