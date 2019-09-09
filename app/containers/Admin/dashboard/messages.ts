@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabUsers',
     defaultMessage: 'Users',
   },
-  tabAcquisition: {
-    id: 'app.containers.AdminPage.DashboardPage.tabAcquisition',
-    defaultMessage: 'Acquisition',
-  },
   tabInsights: {
     id: 'app.containers.AdminPage.DashboardPage.tabInsights',
     defaultMessage: 'Insights',
@@ -36,10 +32,6 @@ export default defineMessages({
   helmetDescription: {
     id: 'app.containers.AdminPage.DashboardPage.helmetDescription',
     defaultMessage: 'Dashboard for activities on the platform',
-  },
-  tryOutInsights: {
-    id: 'app.containers.AdminPage.DashboardPage.tryOutInsights',
-    defaultMessage: 'Try out {insightsLink}, our new beta feature',
   },
   // All tabs
   users: {
@@ -241,10 +233,6 @@ export default defineMessages({
   mostActiveUsers: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
     defaultMessage: 'Most active users',
-  },
-  userActivityScore: {
-    id: 'app.containers.AdminPage.DashboardPage.userActivityScore',
-    defaultMessage: 'User activity score',
   },
   deletedUser: {
     id: 'app.containers.AdminPage.DashboardPage.deletedUser',
