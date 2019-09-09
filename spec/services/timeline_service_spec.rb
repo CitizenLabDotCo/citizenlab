@@ -29,12 +29,46 @@ describe TimelineService do
       phase = create(:phase, start_at: Time.now.to_date, end_at: Time.now.to_date + 1.week, project: project)
       expect(service.current_phase(project)&.id).to eq (phase.id)
     end
+
+    it "respects the tenant timezone" do
+      phase = create(:phase, start_at: Date.new(2019,9,2), end_at: Date.new(2019,9,9))
+      project = phase.project
+
+      t = Time.new(2019,9,9,23) # 11 pm utc = 1 am Brussels == 8pm Santiage
+
+      settings = Tenant.current.settings
+      settings['core']['timezone'] = "Europe/Brussels"
+      Tenant.current.update!(settings: settings)
+      expect(service.current_phase(project, t)&.id).to be nil
+
+      settings = Tenant.current.settings
+      settings['core']['timezone'] = "America/Santiago"
+      Tenant.current.update!(settings: settings)
+      expect(service.current_phase(project, t)&.id).to eq phase.id
+    end
   end
 
   describe "current_and_future_phases" do
     it "returns an array of current and future phases" do
       project = create(:project_with_current_phase)
       expect(service.current_and_future_phases(project)).to match_array project.phases.drop(2)
+    end
+
+    it "respects the tenant timezone" do
+      phase = create(:phase, start_at: Date.new(2019,9,2), end_at: Date.new(2019,9,9))
+      project = phase.project
+
+      t = Time.new(2019,9,9,23) # 11 pm utc = 1 am Brussels == 8pm Santiage
+
+      settings = Tenant.current.settings
+      settings['core']['timezone'] = "Europe/Brussels"
+      Tenant.current.update!(settings: settings)
+      expect(service.current_and_future_phases(project, t)).to eq []
+
+      settings = Tenant.current.settings
+      settings['core']['timezone'] = "America/Santiago"
+      Tenant.current.update!(settings: settings)
+      expect(service.current_and_future_phases(project, t)).to eq [phase]
     end
   end
 
@@ -71,6 +105,23 @@ describe TimelineService do
     it "returns :future for a project with only future phases" do
       project = create(:project_with_future_phases)
       expect(service.timeline_active project).to eq :future
+    end
+
+    it "respects the tenant timezone" do
+      phase = create(:phase, start_at: Date.new(2019,9,2), end_at: Date.new(2019,9,9))
+      project = phase.project
+
+      travel_to Time.new(2019,9,9,23) do# 11 pm utc = 1 am Brussels == 8pm Santiage
+        settings = Tenant.current.settings
+        settings['core']['timezone'] = "Europe/Brussels"
+        Tenant.current.update!(settings: settings)
+        expect(service.timeline_active(project)).to eq :past
+
+        settings = Tenant.current.settings
+        settings['core']['timezone'] = "America/Santiago"
+        Tenant.current.update!(settings: settings)
+        expect(service.timeline_active(project)).to eq :present
+      end
     end
   end
 
