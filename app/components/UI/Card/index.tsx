@@ -1,8 +1,12 @@
 import React, { memo, MouseEvent } from 'react';
-import styled from 'styled-components';
 import bowser from 'bowser';
+
+// components
 import Link from 'utils/cl-router/Link';
 import LazyImage from 'components/LazyImage';
+
+// styling
+import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled(Link)`
@@ -54,11 +58,6 @@ const HeaderContentWrapper = styled.div`
     right: 0;
   }
 `;
-
-/*
-  max-height: $font-size * $line-multiple * $lines;
-  line-height: $font-size * $line-multiple;
-*/
 
 const Title = styled.h3`
   color: #333;

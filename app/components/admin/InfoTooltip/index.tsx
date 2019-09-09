@@ -27,6 +27,12 @@ interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
   position?: IPosition;
 }
 
+const Container = styled.div`
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+`;
+
 const StyledIcon = styled(Icon)`
   height: 16px;
   width: 16px;
@@ -38,7 +44,7 @@ const StyledIcon = styled(Icon)`
   }
 `;
 
-const TooltipWrapper: any = styled.div`
+const TooltipWrapper = styled.div<{ pxSize: 500 | 300 | 200 | 400 }>`
   padding: 15px;
   min-width: ${(props: any) => props.pxSize}px;
   font-size: ${fontSizes.small}px;
@@ -65,23 +71,22 @@ const InfoTooltip = (props: Props) => {
   const passthroughProps = omit(props, ['size', 'position', 'className', 'children', 'offset', 'openDelay']);
 
   return (
-    <Tooltip
-      enabled
-      content={(
-        <TooltipWrapper pxSize={pxSize}>
-          <FormattedMessage {...passthroughProps} />
-        </TooltipWrapper>
-      )}
-      offset={offset || 20}
-      position={position}
-      className={className}
-      openDelay={openDelay}
-    >
-      {children
-        ? children
-        : <StyledIcon name="info3" />
-      }
-    </Tooltip >
+    <Container className={className}>
+      <Tooltip
+        enabled
+        content={(
+          <TooltipWrapper pxSize={pxSize}>
+            <FormattedMessage {...passthroughProps} />
+          </TooltipWrapper>
+        )}
+        offset={offset || 20}
+        position={position}
+        className={className}
+        openDelay={openDelay}
+      >
+        {children || <StyledIcon name="info3" />}
+      </Tooltip >
+    </Container>
   );
 };
 

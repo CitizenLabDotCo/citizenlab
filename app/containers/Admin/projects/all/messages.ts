@@ -23,6 +23,26 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.expand',
     defaultMessage: 'Expand',
   },
+  collapse: {
+    id: 'app.containers.AdminPage.ProjectEdit.collapse',
+    defaultMessage: 'Collapse',
+  },
+  fromATemplate: {
+    id: 'app.containers.AdminPage.ProjectEdit.fromATemplate',
+    defaultMessage: 'From a template',
+  },
+  fromScratch: {
+    id: 'app.containers.AdminPage.ProjectEdit.fromScratch',
+    defaultMessage: 'From scratch',
+  },
+  useTemplate: {
+    id: 'app.containers.AdminPage.ProjectEdit.useTemplate',
+    defaultMessage: 'Use template',
+  },
+  moreDetails: {
+    id: 'app.containers.AdminPage.ProjectEdit.moreDetails',
+    defaultMessage: 'More details',
+  },
   xGroupsHaveAccess: {
     id: 'app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess',
     defaultMessage: '{groupCount, plural, no {# groups can view} one {# group can view} other {# groups can view}}',

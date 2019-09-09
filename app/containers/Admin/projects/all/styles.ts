@@ -1,4 +1,4 @@
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 export const HeaderTitle = styled.h3`
