@@ -97,17 +97,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
     defaultMessage: 'Basic information',
   },
-  subTitleSignupFields: {
-    id: 'app.containers.AdminPage.SettingsPage.subTitleSignupFields',
-    defaultMessage: 'What questions will be asked to users when signing up?',
-  },
   titleBranding: {
     id: 'app.containers.AdminPage.SettingsPage.titleBranding',
     defaultMessage: 'Branding',
-  },
-  subTitleBranding: {
-    id: 'app.containers.AdminPage.SettingsPage.subTitleBranding',
-    defaultMessage: 'Establish your visual branding on the platform',
   },
   headerTitleLabel: {
     id: 'app.containers.AdminPage.SettingsPage.headerTitleLabel',

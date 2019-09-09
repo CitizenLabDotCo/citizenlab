@@ -927,8 +927,6 @@
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Something went wrong, please try again later.",
   "app.containers.AdminPage.SettingsPage.saveSuccess": "Saved!",
   "app.containers.AdminPage.SettingsPage.saveSuccessMessage": "Your changes have been saved.",
-  "app.containers.AdminPage.SettingsPage.subTitleBranding": "Establish your visual branding on the platform",
-  "app.containers.AdminPage.SettingsPage.subTitleSignupFields": "What questions will be asked to users when signing up?",
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Define your geographic areas: neighbourhoods, regions, ... Areas can be linked to projects and can be used to create Smart Groups and to define project access permissions.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Add the name of your organisation or city, a url to your website and the languages in which this platform should be made available.",
   "app.containers.AdminPage.SettingsPage.subtitleCustomize": "Define how your home page looks like, pick the colour for the action buttons and design the custom field on the home page.",
