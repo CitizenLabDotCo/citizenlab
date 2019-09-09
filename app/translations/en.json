@@ -430,7 +430,6 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "Value",
   "app.components.admin.pagination.back": "Back",
   "app.components.admin.pagination.next": "Next",
-  "app.components.author.byAuthorNameComponent": "by {authorNameComponent}",
   "app.components.avatar.avatarAltText": "Avatar of {userName}",
   "app.components.avatar.noAvatarAltText": "Default avatar icon for people without a custom one",
   "app.components.sendFeedback": "Your feedback about the platform",
