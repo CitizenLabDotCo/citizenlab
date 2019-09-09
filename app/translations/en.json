@@ -278,7 +278,6 @@
   "app.components.Upload.dropYourImagesHere": "Drop your images here",
   "app.components.Upload.errorImageMaxSizeExceeded": "The image you selected is larger than {maxFileSize}MB",
   "app.components.Upload.errorImagesMaxSizeExceeded": "One or several images you selected are larger than {maxFileSize}MB",
-  "app.components.Upload.limitReached": "Coud not add image(s). The maximum number of allowed images has been reached.",
   "app.components.Upload.onlyOneImage": "You can only upload 1 image",
   "app.components.Upload.onlyXImages": "You can only upload {maxItemsCount} images",
   "app.components.Upload.remaining": "remaining",

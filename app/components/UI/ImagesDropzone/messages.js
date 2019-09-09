@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.components.Upload.onlyXImages',
     defaultMessage: 'You can only upload {maxItemsCount} images',
   },
-  limitReached: {
-    id: 'app.components.Upload.limitReached',
-    defaultMessage: 'Coud not add image(s). The maximum number of allowed images has been reached.',
-  },
   dropYourImageHere: {
     id: 'app.components.Upload.dropYourImageHere',
     defaultMessage: 'Drop your image here',
