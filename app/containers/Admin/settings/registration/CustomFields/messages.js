@@ -51,10 +51,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionalFieldsTooltip',
     defaultMessage: 'When enabled, this field is optional to fill in for users during signup.',
   },
-  isEnabledTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.isEnabledTooltip',
-    defaultMessage: 'Switching a toggle to green will add the registration field to a user’s signup flow, allowing you to collect this information from new users. Switching it back to grey will remove it from the flow.',
-  },
   orderingTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.orderingTooltip',
     defaultMessage: 'Drag and drop registration fields to choose the order in which users will see them during signup.',

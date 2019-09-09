@@ -887,7 +887,6 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_number": "Number",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_select": "Select",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_text": "Text",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.isEnabledTooltip": "Switching a toggle to green will add the registration field to a user’s signup flow, allowing you to collect this information from new users. Switching it back to grey will remove it from the flow.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.listTitle": "Custom fields",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton": "Cancel",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton": "Delete",
