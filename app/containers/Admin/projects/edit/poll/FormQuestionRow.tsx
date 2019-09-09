@@ -1,20 +1,24 @@
 import React, { PureComponent } from 'react';
+
+// Components
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import { TextCell, Row } from 'components/admin/ResourceList';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import { Multiloc, Locale } from 'typings';
 import Button from 'components/UI/Button';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// Typings
+import { Multiloc, Locale } from 'typings';
+
 interface Props {
   titleMultiloc: Multiloc;
   onChange: (value: Multiloc) => void;
   locale: Locale;
   onSave: () => void;
-  id?: string;
+  onCancel: () => void;
 }
 
 interface State {
@@ -35,11 +39,10 @@ class FormQuestionRow extends PureComponent<Props, State> {
 
   render() {
     const { shownLocale } = this.state;
-    const { titleMultiloc, onChange, onSave, id } = this.props;
+    const { titleMultiloc, onChange, onSave, onCancel } = this.props;
     return (
       <Row
         className="e2e-form-question-row"
-        id={id}
       >
         <TextCell>
           {shownLocale &&
@@ -60,11 +63,18 @@ class FormQuestionRow extends PureComponent<Props, State> {
         </TextCell>
 
         <Button
-          className="e2e-form-question"
+          className="e2e-form-question-save"
           style="secondary"
           onClick={onSave}
         >
           <FormattedMessage {...messages.saveQuestion} />
+        </Button>
+        <Button
+          className="e2e-form-question-cancel"
+          style="secondary"
+          onClick={onCancel}
+        >
+          <FormattedMessage {...messages.cancelFormQuestion} />
         </Button>
       </Row>
     );

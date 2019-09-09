@@ -1,12 +1,14 @@
+// Libraries
 import React from 'react';
 
+// Typings
 import { IPollQuestion } from 'services/pollQuestions';
 
-import T from 'components/T';
-
+// Components
 import Button from 'components/UI/Button';
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
 import { Multiloc } from 'typings';
+import T from 'components/T';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

@@ -1,36 +1,35 @@
+// Libraries
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
+// Services / Data loading
 import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptions';
 import { IPollQuestion } from 'services/pollQuestions';
 import { IPollOption, deletePollOption } from 'services/pollOptions';
 
 import T from 'components/T';
 
+// Components
 import Button from 'components/UI/Button';
 import { Icon } from 'semantic-ui-react';
 import { Row, TextCell, List } from 'components/admin/ResourceList';
 import FormOptionRow from './FormOptionRow';
 
-import { Locale, Multiloc } from 'typings';
+import { Locale } from 'typings';
 
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.div``;
 
-`;
 const OptionsContainer = styled.div`
-  margin-left: 65px;
+  margin-left: 67px;
 `;
 
 const DisabledDragHandle = styled.div`
   color: ${colors.clGreyOnGreyBackground};
   padding: 1rem;
-`;
-
-const StyledTextCell = styled(TextCell)`
 `;
 
 // i18n
@@ -60,15 +59,19 @@ class OptionForm extends PureComponent<Props, State> {
       editingId: 'new'
     };
   }
+
   closeRow = () => {
     this.setState({ editingId: null });
   }
+
   editOption = (optionId: string) => () => {
     this.setState({ editingId: optionId });
   }
+
   addOption = () => {
     this.setState({ editingId: 'new' });
   }
+
   deleteOption = (optionId: string) => () => {
     deletePollOption(optionId);
   }
@@ -86,19 +89,19 @@ class OptionForm extends PureComponent<Props, State> {
           <DisabledDragHandle>
             <Icon name="sort" />
           </DisabledDragHandle>
-          <StyledTextCell className="expand">
+          <TextCell className="expand">
             <FormattedMessage
               {...messages.optionsFormHeader}
               values={{ questionTitle: <T value={question.attributes.title_multiloc} /> }}
             />
-          </StyledTextCell>
+          </TextCell>
           <Button
             className="e2e-delete-question"
             onClick={collapse}
             style="secondary"
             icon="close"
           >
-            done
+            <FormattedMessage  {...messages.editOptionDone}/>
           </Button>
         </Row>
         <OptionsContainer>
@@ -106,10 +109,11 @@ class OptionForm extends PureComponent<Props, State> {
             {!isNilOrError(pollOptions) && pollOptions.map((pollOption: IPollOption) => (
               editingId === pollOption.id ? (
                 <FormOptionRow
+                  key={pollOption.id}
                   locale={locale}
                   mode="edit"
                   closeRow={this.closeRow}
-                  optionId={editingId}
+                  optionId={pollOption.id}
                   titleMultiloc={pollOption.attributes.title_multiloc}
                 />
               ) : (
@@ -118,12 +122,12 @@ class OptionForm extends PureComponent<Props, State> {
                       {pollOption.attributes.title_multiloc.en}
                     </TextCell>
                     <Button
-                      className="e2e-delete-question"
+                      className="e2e-delete-option"
                       onClick={this.deleteOption(pollOption.id)}
                       style="text"
                       icon="delete"
                     >
-                      <FormattedMessage {...messages.deleteQuestion} />
+                      <FormattedMessage {...messages.deleteOption} />
                     </Button>
 
                     <Button
@@ -132,12 +136,13 @@ class OptionForm extends PureComponent<Props, State> {
                       style="secondary"
                       icon="edit"
                     >
-                      <FormattedMessage {...messages.editQuestion} />
+                      <FormattedMessage {...messages.editOption} />
                     </Button>
                   </Row>
                 )))}
             {editingId === 'new' ? (
               <FormOptionRow
+                key="new"
                 locale={locale}
                 mode="new"
                 questionId={question.id}
@@ -150,7 +155,7 @@ class OptionForm extends PureComponent<Props, State> {
                   icon="create"
                   onClick={this.addOption}
                 >
-                  addOption
+                  <FormattedMessage {...messages.addOption} />
                 </Button>
               )}
           </List>
