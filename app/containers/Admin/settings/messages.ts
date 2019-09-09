@@ -165,10 +165,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabAreas',
     defaultMessage: 'Areas',
   },
-  tabAreasSubtitle: {
-    id: 'app.containers.AdminPage.SettingsPage.tabAreasSubtitle',
-    defaultMessage: 'Define the geographical areas (neighbourhoods, suburbs, …) that you can ask users who register on the platform. Areas can be linked to projects and can be used to create Smart Groups and give different groups access to certain projects.',
-  },
   urlError: {
     id: 'app.containers.AdminPage.SettingsPage.urlError',
     defaultMessage: 'The URL needs to start with "http://" or "https://".',
