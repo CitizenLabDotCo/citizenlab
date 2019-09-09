@@ -689,7 +689,6 @@
   "app.containers.AdminPage.PagesEdition.buttonError": "Error",
   "app.containers.AdminPage.PagesEdition.buttonSave": "Save",
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Saved",
-  "app.containers.AdminPage.PagesEdition.contentLabel": "Page Content",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Cookie policy",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Attachments (max. 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "About",
