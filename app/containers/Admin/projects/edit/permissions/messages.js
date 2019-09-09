@@ -29,10 +29,6 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.permissionsSelectionLabel',
     defaultMessage: 'Selection',
   },
-  noSelectedGroupsMessage: {
-    id: 'app.containers.AdminPage.groups.permissions.noSelectedGroupsMessage',
-    defaultMessage: `Select one or more groups that can access this project`,
-  },
   add: {
     id: 'app.containers.AdminPage.groups.permissions.add',
     defaultMessage: 'Add',
