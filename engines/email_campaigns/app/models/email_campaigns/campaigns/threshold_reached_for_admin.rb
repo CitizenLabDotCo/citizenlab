@@ -45,8 +45,7 @@ module EmailCampaigns
             }
           },
           initiative_header_bg: { 
-            ordering: notification.post.header_bg.ordering,
-            versions: notification.post.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            versions: notification.post.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
           },
           **assignee_attributes
         }

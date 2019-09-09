@@ -5,7 +5,7 @@ module Notifications
     belongs_to :post, polymorphic: true
     belongs_to :initiating_user, class_name: 'User', optional: true
 
-    validates :initiative_status, :post, presence: true
+    validates :post_status, :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }
 
 
@@ -24,7 +24,6 @@ module Notifications
               recipient_id: recipient_id,
               initiating_user_id: activity.user_id,
               post: initiative,
-              project_id: initiative.project_id,
               post_status: initiative.initiative_status
             )
           end

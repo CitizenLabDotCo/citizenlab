@@ -13,15 +13,15 @@ module Notifications
 
     def self.make_notifications_on activity
       idea = activity.item
-      initiator_id = idea.author_id
+      initiator = idea.author
       
       if !(initiator&.admin? || initiator&.project_moderator?(idea.project_id))
         User.admin.or(User.project_moderator(idea.project_id)).ids.select do |recipient_id|
           recipient_id != idea&.assignee_id
-        end.map do |recipient|
+        end.map do |recipient_id|
           self.new(
            recipient_id: recipient_id,
-           initiating_user_id: initiator_id,
+           initiating_user_id: initiator.id,
            post: idea,
            project_id: idea.project_id
          )

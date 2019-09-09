@@ -24,7 +24,7 @@ class Idea < ApplicationRecord
   has_many :baskets, through: :baskets_ideas
 
   belongs_to :idea_status, optional: true
-  has_many :notifications, foreign_key: :idea_id, dependent: :nullify
+  has_many :notifications, foreign_key: :post_id, dependent: :nullify
 
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy

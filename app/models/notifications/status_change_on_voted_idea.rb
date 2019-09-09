@@ -6,7 +6,7 @@ module Notifications
     belongs_to :project
     belongs_to :initiating_user, class_name: 'User', optional: true
 
-    validates :idea_status, :post, :project, presence: true
+    validates :post_status, :post, :project, presence: true
     validates :post_type, inclusion: { in: ['Idea'] }
 
 
