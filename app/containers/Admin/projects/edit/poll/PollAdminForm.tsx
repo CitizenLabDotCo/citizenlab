@@ -10,6 +10,7 @@ import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import QuestionRow from './QuestionRow';
 import FormQuestionRow from './FormQuestionRow';
+import OptionForm from './OptionForm';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -73,7 +74,7 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
         ? 'Phase'
         : null;
     participationContextType && newQuestionTitle && addPollQuestion(pcId, participationContextType, newQuestionTitle).then((res) => {
-      this.setState({ newQuestionTitle: null });
+      this.setState({ newQuestionTitle: null, editingOptionsId: res.data.id });
     });
   }
   changeEditingQuestion = (value) => {
@@ -128,11 +129,18 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
     return (itemsWhileDragging || pollQuestions);
   }
 
+  editOptions = (questionId) => () => {
+    this.setState({ editingOptionsId: questionId });
+  }
+  closeEditingOptions = () => {
+    this.setState({ editingOptionsId: null });
+  }
+
   render() {
     const listItems = this.listItems() || [];
 
     const { locale } = this.props;
-    const { newQuestionTitle, editingQuestionId, editingQuestionTitle } = this.state;
+    const { newQuestionTitle, editingQuestionId, editingQuestionTitle, editingOptionsId } = this.state;
 
     return (
       <>
@@ -147,6 +155,12 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
                   onSave={this.saveEditingQuestion}
                   locale={locale}
                 />
+              ) : editingOptionsId === question.id ? (
+                <OptionForm
+                  question={question}
+                  collapse={this.closeEditingOptions}
+                  locale={locale}
+                />
               ) : (
                   <QuestionRow
                     question={question}
@@ -154,6 +168,7 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
                     index={index}
                     onDelete={this.deleteQuestion}
                     onEdit={this.editQuestion}
+                    onEditOptions={this.editOptions}
                     handleDragRow={this.handleDragRow}
                     handleDropRow={this.handleDropRow}
                   />

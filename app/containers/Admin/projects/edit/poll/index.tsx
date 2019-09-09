@@ -26,7 +26,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 500px;
 `;
 
 interface InputProps { }
