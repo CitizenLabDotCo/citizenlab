@@ -680,7 +680,6 @@
   "app.containers.AdminPage.DashboardPage.votes": "Votes",
   "app.containers.AdminPage.FaviconPage.favicon": "Favicon",
   "app.containers.AdminPage.FaviconPage.faviconExplaination": "Please use a simple image, as it will be shown as very little. It should be a square PNG. Optimally, it is transparant. If not, use a white background. This should be set once and changed as little as possible.",
-  "app.containers.AdminPage.FaviconPage.noFavicon": "Please upload a favicon image",
   "app.containers.AdminPage.FaviconPage.save": "Save",
   "app.containers.AdminPage.FaviconPage.saveErrorMessage": "Something went wrong, please try again later.",
   "app.containers.AdminPage.FaviconPage.saveSuccess": "Success!",
