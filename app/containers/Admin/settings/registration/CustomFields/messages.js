@@ -15,10 +15,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldEnabled',
     defaultMessage: 'Enabled',
   },
-  fieldKey: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldKey',
-    defaultMessage: 'Key',
-  },
   fieldTitle: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitle',
     defaultMessage: 'Label',

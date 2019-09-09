@@ -133,10 +133,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
     defaultMessage: 'Who can moderate this project?',
   },
-  moderatorsRoleExplanation: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation',
-    defaultMessage: 'Moderation rights grant somebody who\'s not an admin the rights to alter the project settings and moderate ideas and comments which belong to this project. Admins always have Moderation rights over all projects.',
-  },
   moderatorsSectionTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTooltip',
     defaultMessage: 'Select those users who will be given moderator rights, allowing them to work on this project, process its ideas, email its participants, etc.. They will receive a personal message to inform them. More on the role of project moderator can be found {moreInfoModeratorLink}.',
