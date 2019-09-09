@@ -933,7 +933,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "The provided subtitle exceeds the maximum allowed character limit of 90",
   "app.containers.AdminPage.SettingsPage.subtitleRegistrationFields": "Define what user data you want to receive when people create an account. Use this information to create Smart Groups and to define project access permissions.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Areas",
-  "app.containers.AdminPage.SettingsPage.tabAreasSubtitle": "Define your geographic areas: neighbourhoods, regions, ... Areas can be linked to projects and can be used to create Smart Groups and to define project access permissions.",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Customize",
   "app.containers.AdminPage.SettingsPage.tabPages": "Pages",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registration",
