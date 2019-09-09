@@ -85,10 +85,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.header',
     defaultMessage: 'Homepage header',
   },
-  headerDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.headerDescription',
-    defaultMessage: 'Customize the header image and copy being shown on the homepage',
-  },
   header_bg: {
     id: 'app.containers.AdminPage.SettingsPage.header_bg',
     defaultMessage: 'Header image',
@@ -96,10 +92,6 @@ export default defineMessages({
   header_bgTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.header_bgTooltip',
     defaultMessage: 'Shown on the home page. Recommended dimensions are 1440x480.',
-  },
-  headerSlogan: {
-    id: 'app.containers.AdminPage.SettingsPage.headerSlogan',
-    defaultMessage: 'Header slogan',
   },
   titleBasic: {
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
