@@ -41,10 +41,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tryOutInsights',
     defaultMessage: 'Try out {insightsLink}, our new beta feature',
   },
-  insightsLinkText: {
-    id: 'app.containers.AdminPage.DashboardPage.insightsLinkText',
-    defaultMessage: 'insights',
-  },
   // All tabs
   users: {
     id: 'app.containers.AdminPage.DashboardPage.users',

@@ -640,7 +640,6 @@
   "app.containers.AdminPage.DashboardPage.ideaVotesByTimeTitle": "Votes on ideas",
   "app.containers.AdminPage.DashboardPage.ideas": "Ideas",
   "app.containers.AdminPage.DashboardPage.ideasByTimeTitle": "Ideas",
-  "app.containers.AdminPage.DashboardPage.insightsLinkText": "insights",
   "app.containers.AdminPage.DashboardPage.lastLoadingMessage": "It should be almost ready, hang on!",
   "app.containers.AdminPage.DashboardPage.male": "male",
   "app.containers.AdminPage.DashboardPage.mapHelperText": "This map shows ideas at locations that are automatically detected from the idea title and description. Some locations can be inaccurate. Ideas in which no locations were found are not shown.",
