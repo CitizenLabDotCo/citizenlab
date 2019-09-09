@@ -633,8 +633,6 @@
   "app.containers.AdminPage.DashboardPage.female": "female",
   "app.containers.AdminPage.DashboardPage.helmetDescription": "Dashboard for activities on the platform",
   "app.containers.AdminPage.DashboardPage.helmetTitle": "Admin dashboard page",
-  "app.containers.AdminPage.DashboardPage.hiddelLabelPickResourceByProject": "Pick resource to show by project",
-  "app.containers.AdminPage.DashboardPage.hiddelLabelPickResourceByTopic": "Pick resource to show by topic",
   "app.containers.AdminPage.DashboardPage.hiddenLabelGroupFilter": "Pick group filter",
   "app.containers.AdminPage.DashboardPage.hiddenLabelProjectFilter": "Pick project filter",
   "app.containers.AdminPage.DashboardPage.hiddenLabelTopicFilter": "Pick topic filter",
