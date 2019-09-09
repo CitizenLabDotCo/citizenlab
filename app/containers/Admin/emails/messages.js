@@ -163,10 +163,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.deliveryStatus_sent',
     defaultMessage: 'Sent',
   },
-  deliveryStatus_bounced: {
-    id: 'app.containers.Admin.Campaigns.deliveryStatus_bounced',
-    defaultMessage: 'Bounced',
-  },
   deliveryStatus_failed: {
     id: 'app.containers.Admin.Campaigns.deliveryStatus_failed',
     defaultMessage: 'Failed',
