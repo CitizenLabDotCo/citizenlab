@@ -25,10 +25,6 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.upvoteCount',
     defaultMessage: 'Upvote count: {count}',
   },
-  downvoteCount: {
-    id: 'app.components.admin.PostManager.PostPreview.downvoteCount',
-    defaultMessage: 'Downvote count: {count}',
-  },
   voteCounts: {
     id: 'app.components.admin.PostManager.PostPreview.voteCounts',
     defaultMessage: 'Vote counts:',
