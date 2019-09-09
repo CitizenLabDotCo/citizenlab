@@ -272,7 +272,6 @@
   "app.components.TopBar.goBack": "Go back",
   "app.components.UI.Card.login": "Login",
   "app.components.UI.Card.register": "Create an account",
-  "app.components.UI.Select.noResults": "No options available",
   "app.components.UI.TranslateButton.seeOriginal": "See original",
   "app.components.UI.TranslateButton.seeTranslation": "See translation",
   "app.components.Upload.dropYourImageHere": "Drop your image here",
