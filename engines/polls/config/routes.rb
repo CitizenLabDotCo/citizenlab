@@ -11,6 +11,8 @@ Polls::Engine.routes.draw do
   		resources :poll_options, only: [:show, :update, :destroy], controller: :options do
   			patch :reorder, on: :member
   		end
+      post 'projects/:project_id/poll_responses' => 'responses#create'
+      post 'phases/:phase_id/poll_responses' => 'responses#create'
     end
   end
 end
