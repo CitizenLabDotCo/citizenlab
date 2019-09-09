@@ -177,8 +177,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.participationPerProject',
     defaultMessage: 'Participation per project',
   },
-  hiddelLabelPickResourceByProject: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddelLabelPickResourceByProject',
+  hiddenLabelPickResourceByProject: {
+    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelPickResourceByProject',
     defaultMessage: 'Pick resource to show by project',
   },
   selectedProject: {
@@ -189,8 +189,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.participationPerTopic',
     defaultMessage: 'Participation per topic',
   },
-  hiddelLabelPickResourceByTopic: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddelLabelPickResourceByTopic',
+  hiddenLabelPickResourceByTopic: {
+    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelPickResourceByTopic',
     defaultMessage: 'Pick resource to show by topic',
   },
   selectedTopic: {
