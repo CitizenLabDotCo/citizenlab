@@ -20,6 +20,8 @@ resource "Poll Responses" do
 
     ValidationErrorHelper.new.error_fields(self, Polls::Response)
     ValidationErrorHelper.new.error_fields(self, Polls::ResponseOption)
+    response_field :base, "Array containing objects with signature {error: 'not_all_questions_one_option'}", scope: :errors
+
 
     let(:q1) { create(:poll_question, :with_options) }
     let(:participation_context) { q1.participation_context }

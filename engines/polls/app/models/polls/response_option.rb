@@ -6,6 +6,7 @@ module Polls
 
 		validates :response, :option, presence: true
 		validates :option, uniqueness: {scope: [:response]}
+
 		validate :validate_same_participation_context
 
 		private
@@ -21,5 +22,6 @@ module Polls
 				end
 			end
 		end
+
 	end
 end
