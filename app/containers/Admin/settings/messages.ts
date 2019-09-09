@@ -97,10 +97,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
     defaultMessage: 'Basic information',
   },
-  subTitleBasic: {
-    id: 'app.containers.AdminPage.SettingsPage.subTitleBasic',
-    defaultMessage: 'Fill these out carefully, they define the platforms identity.',
-  },
   subTitleSignupFields: {
     id: 'app.containers.AdminPage.SettingsPage.subTitleSignupFields',
     defaultMessage: 'What questions will be asked to users when signing up?',
