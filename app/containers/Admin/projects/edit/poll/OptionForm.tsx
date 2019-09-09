@@ -8,16 +8,22 @@ import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptio
 import { IPollQuestion } from 'services/pollQuestions';
 import { IPollOption, deletePollOption } from 'services/pollOptions';
 
-import T from 'components/T';
-
 // Components
+import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Icon } from 'semantic-ui-react';
 import { Row, TextCell, List } from 'components/admin/ResourceList';
 import FormOptionRow from './FormOptionRow';
+import OptionRow from './OptionRow';
 
+// Typings
 import { Locale } from 'typings';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
+// Style
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
@@ -31,10 +37,6 @@ const DisabledDragHandle = styled.div`
   color: ${colors.clGreyOnGreyBackground};
   padding: 1rem;
 `;
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 interface InputProps {
   question: IPollQuestion;
@@ -117,28 +119,13 @@ class OptionForm extends PureComponent<Props, State> {
                   titleMultiloc={pollOption.attributes.title_multiloc}
                 />
               ) : (
-                  <Row key={pollOption.id}>
-                    <TextCell>
-                      {pollOption.attributes.title_multiloc.en}
-                    </TextCell>
-                    <Button
-                      className="e2e-delete-option"
-                      onClick={this.deleteOption(pollOption.id)}
-                      style="text"
-                      icon="delete"
-                    >
-                      <FormattedMessage {...messages.deleteOption} />
-                    </Button>
-
-                    <Button
-                      className="e2e-edit-option"
-                      onClick={this.editOption(pollOption.id)}
-                      style="secondary"
-                      icon="edit"
-                    >
-                      <FormattedMessage {...messages.editOption} />
-                    </Button>
-                  </Row>
+                  <OptionRow
+                    key={pollOption.id}
+                    pollOptionId={pollOption.id}
+                    pollOptionTitle={pollOption.attributes.title_multiloc}
+                    deleteOption={this.deleteOption}
+                    editOption={this.editOption}
+                  />
                 )))}
             {editingId === 'new' ? (
               <FormOptionRow
