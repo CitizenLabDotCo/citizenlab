@@ -584,7 +584,6 @@
   "app.containers.Admin.emails.formSuccessButton": "Show email preview",
   "app.containers.Admin.emails.formSuccessMessage": "formSuccessMessage",
   "app.containers.Admin.emails.formTitleWhat": "What",
-  "app.containers.Admin.emails.formTitleWhen": "When",
   "app.containers.Admin.emails.formTitleWho": "Who",
   "app.containers.Admin.emails.formUnexpectedErrorMessage": "Something went wrong, please try again later",
   "app.containers.Admin.emails.helmetDescription": "Send out manual emails to certain citizen group and active automated campaigns",
