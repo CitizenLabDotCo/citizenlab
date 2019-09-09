@@ -142,6 +142,7 @@ class OptionForm extends PureComponent<Props, State> {
                   style="secondary"
                   icon="create"
                   onClick={this.addOption}
+                  autoFocus
                 >
                   <FormattedMessage {...messages.addOption} />
                 </Button>
