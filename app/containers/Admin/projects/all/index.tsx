@@ -109,6 +109,8 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
+interface State { }
+
 class AdminProjectsList extends PureComponent<Props, State> {
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder);
@@ -224,14 +226,12 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 </HasPermission>
               </ListHeader>
 
-              {/* <ProjectTemplates /> */}
-
               <HasPermission item="project" action="reorder">
                 {(tenant.attributes.settings.manual_project_sorting as any).enabled ?
                   <SortableList
                     items={publishedProjects}
                     onReorder={this.handleReorder}
-                    className="e2e-admin-projects-list"
+                    className="projects-list e2e-admin-projects-list"
                     id="e2e-admin-published-projects-list"
                   >
                     {({ itemsList, handleDragRow, handleDropRow }) => (

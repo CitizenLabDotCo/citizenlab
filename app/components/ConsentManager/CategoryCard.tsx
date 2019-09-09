@@ -11,7 +11,7 @@ const Container = styled.div`
   display: flex;
   padding: 20px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background-color: ${transparentize(.95, colors.adminTextColor)};;
+  background-color: ${transparentize(.95, colors.adminTextColor)};
   border: 1px solid ${colors.separation};
   margin-bottom: 10px;
 

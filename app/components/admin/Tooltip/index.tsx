@@ -15,7 +15,7 @@ interface State {
   waiting: boolean;
 }
 
-const StyledDiv = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -27,7 +27,7 @@ export default class Tooltip extends PureComponent<Props, State> {
     borderColor: '#fff',
     textColor: '#fff',
     enabled: true,
-    openDelay: 200
+    openDelay: 100
   };
 
   constructor(props) {
@@ -79,7 +79,7 @@ export default class Tooltip extends PureComponent<Props, State> {
     }
 
     return (
-      <StyledDiv
+      <Container
         className={className}
         onMouseEnter={this.handleOnMouseEnter}
         onMouseLeave={this.handleOnMouseLeave}
@@ -92,7 +92,7 @@ export default class Tooltip extends PureComponent<Props, State> {
           dropdownOpened={opened}
           onClickOutside={this.handleOnMouseLeave}
         />
-      </StyledDiv>
+      </Container>
     );
   }
 }
