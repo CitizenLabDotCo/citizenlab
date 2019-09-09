@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.imageAltText',
     defaultMessage: 'Image for idea {postTitle}',
   },
-  upvoteCount: {
-    id: 'app.components.admin.PostManager.PostPreview.upvoteCount',
-    defaultMessage: 'Upvote count: {count}',
-  },
   voteCounts: {
     id: 'app.components.admin.PostManager.PostPreview.voteCounts',
     defaultMessage: 'Vote counts:',
@@ -36,10 +32,6 @@ export default defineMessages({
   assignee: {
     id: 'app.components.admin.PostManager.PostPreview.assignee',
     defaultMessage: 'Assignee',
-  },
-  openMap: {
-    id: 'app.components.admin.PostManager.PostPreview.openMap',
-    defaultMessage: 'Open Map',
   },
   picks: {
     id: 'app.components.admin.PostManager.PostPreview.picks',
