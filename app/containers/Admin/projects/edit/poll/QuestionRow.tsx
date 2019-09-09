@@ -12,12 +12,13 @@ import { Multiloc } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, handleDropRow, handleDragRow }: {
+const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOptions, handleDropRow, handleDragRow }: {
   question: IPollQuestion,
   isLastItem: boolean,
   index: number,
-  onDelete: (questionId: string) => () => void
-  onEdit: (questionId: string, currentTitle: Multiloc) => () => void
+  onDelete: (questionId: string) => () => void,
+  onEdit: (questionId: string, currentTitle: Multiloc) => () => void,
+  onEditOptions: (questionId: string) => () => void,
   handleDragRow,
   handleDropRow
 }) => (
@@ -40,7 +41,7 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, handleDrop
         style="text"
         icon="delete"
       >
-        Delete
+        <FormattedMessage {...messages.deleteQuestion} />
       </Button>
 
       <Button
@@ -50,6 +51,14 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, handleDrop
         icon="edit"
       >
         <FormattedMessage {...messages.editQuestion} />
+      </Button>
+      <Button
+        className="e2e-edit-options"
+        onClick={onEditOptions(question.id)}
+        style="secondary"
+        icon="create"
+      >
+        <FormattedMessage {...messages.editOptions} />
       </Button>
     </SortableRow>
   );

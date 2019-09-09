@@ -17,7 +17,7 @@ export default defineMessages({
   },
   addQuestion: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.addQuestion',
-    defaultMessage: 'Add',
+    defaultMessage: 'Add a question',
   },
   saveQuestion: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.saveQuestion',
@@ -26,5 +26,21 @@ export default defineMessages({
   editQuestion: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.editQuestion',
     defaultMessage: 'Edit',
+  },
+  deleteQuestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.deleteQuestion',
+    defaultMessage: 'Delete question',
+  },
+  editOptions: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOptions',
+    defaultMessage: 'Manage options',
+  },
+  optionsFormHeader: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.optionsFormHeader',
+    defaultMessage: 'Manage options for : {questionTitle}',
+  },
+  saveOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.saveOption',
+    defaultMessage: 'Save',
   },
 });
