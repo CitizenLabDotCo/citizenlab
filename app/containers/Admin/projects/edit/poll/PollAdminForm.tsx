@@ -58,7 +58,7 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
   }
 
   startNewQuestion = () => {
-    this.setState({ newQuestionTitle: {} });
+    this.setState({ newQuestionTitle: {}, editingOptionsId: null });
   }
 
   changeNewQuestion = (value) => {
@@ -88,7 +88,7 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
     });
   }
   editQuestion = (questionId: string, currentTitle: Multiloc) => () => {
-    this.setState({ editingQuestionId: questionId, editingQuestionTitle: currentTitle });
+    this.setState({ editingQuestionId: questionId, editingQuestionTitle: currentTitle, editingOptionsId: null });
   }
   deleteQuestion = (questionId: string) => () => {
     const { pcId, pcType } = this.props;

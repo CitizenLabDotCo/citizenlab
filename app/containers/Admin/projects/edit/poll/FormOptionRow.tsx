@@ -4,6 +4,7 @@ import { TextCell, Row } from 'components/admin/ResourceList';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import { Multiloc, Locale } from 'typings';
 import Button from 'components/UI/Button';
+import { addPollOption, updatePollOption } from 'services/pollOptions';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -14,6 +15,9 @@ interface Props {
   locale: Locale;
   id?: string;
   mode: 'new' | 'edit';
+  questionId?: string;
+  closeRow: () => void;
+  optionId?: string;
 }
 
 interface State {
@@ -39,9 +43,19 @@ class FormOptionRow extends PureComponent<Props, State> {
   }
 
   onSave = () => {
-    const { mode } = this.props;
+    const { mode, questionId, closeRow, optionId } = this.props;
     const { titleMultiloc } = this.state;
     console.log(titleMultiloc);
+    if (mode === 'new' && questionId) {
+      addPollOption(questionId, titleMultiloc).then(() => {
+        closeRow();
+      });
+    }
+    if (mode === 'edit' && optionId) {
+      updatePollOption(optionId, titleMultiloc).then(() => {
+        closeRow();
+      });
+    }
   }
 
   render() {
