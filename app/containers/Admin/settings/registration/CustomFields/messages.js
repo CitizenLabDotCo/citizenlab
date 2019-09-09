@@ -35,14 +35,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldRequired',
     defaultMessage: 'Required?',
   },
-  requiredFields: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.requiredFields',
-    defaultMessage: 'Required Fields',
-  },
-  requiredFieldsTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.requiredFieldsTooltip',
-    defaultMessage: 'When enabled, this field is mandatory to fill in for users during signup.',
-  },
   optionalFields: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionalFields',
     defaultMessage: 'Optional Fields',
