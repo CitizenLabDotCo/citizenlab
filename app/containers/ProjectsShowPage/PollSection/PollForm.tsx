@@ -5,6 +5,7 @@ import Radio from 'components/UI/Radio';
 import T from 'components/T';
 
 import { IPollQuestion } from 'services/pollQuestions';
+import { addPollResponse } from 'services/pollResponses';
 import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptions';
 
 import styled from 'styled-components';
@@ -47,6 +48,8 @@ const StyledRadio = styled(Radio)`
 
 interface Props {
   questions: IPollQuestion[];
+  id: string;
+  type: 'projects' | 'phases';
 }
 
 interface State {
@@ -65,6 +68,12 @@ class PollForm extends PureComponent<Props, State> {
 
   changeAnswer = (questionId: string, optionId: string) => () => {
     this.setState(state => ({ answers: { ...state.answers, [questionId]: optionId } }));
+  }
+
+  sendAnswer = () => {
+    const { id, type } = this.props;
+    const { answers } = this.state;
+    addPollResponse(id, type, Object.values(answers));
   }
 
   render() {
@@ -101,6 +110,7 @@ class PollForm extends PureComponent<Props, State> {
             </GetPollOptions>
           </QuestionContainer>
         ))}
+        <button onClick={this.sendAnswer}>save</button>
       </>
     );
   }
