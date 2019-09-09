@@ -41,6 +41,7 @@ interface State {
   editingOptionsId: string | null;
   itemsWhileDragging: IPollQuestion[] | null;
   isProcessing: boolean;
+  optionsFormMode: 'new' | 'edit';
 }
 
 class PollAdminFormWrapper extends PureComponent<Props, State> {
@@ -52,7 +53,8 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
       editingQuestionTitle: {},
       editingOptionsId: null,
       itemsWhileDragging: null,
-      isProcessing: false
+      isProcessing: false,
+      optionsFormMode: 'edit'
     };
   }
 
@@ -119,7 +121,7 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
         ? 'Phase'
         : null;
     participationContextType && newQuestionTitle && addPollQuestion(pcId, participationContextType, newQuestionTitle).then((res) => {
-      this.setState({ newQuestionTitle: null, editingOptionsId: res.data.id });
+      this.setState({ newQuestionTitle: null, editingOptionsId: res.data.id, optionsFormMode: 'new' });
     });
   }
   cancelNewQuestion = () => {
@@ -153,7 +155,7 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
 
   // Option edition
   editOptions = (questionId) => () => {
-    this.setState({ editingOptionsId: questionId });
+    this.setState({ editingOptionsId: questionId, optionsFormMode: 'edit' });
   }
 
   closeEditingOptions = () => {
@@ -164,7 +166,7 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
     const listItems = this.listItems() || [];
 
     const { locale } = this.props;
-    const { newQuestionTitle, editingQuestionId, editingQuestionTitle, editingOptionsId } = this.state;
+    const { newQuestionTitle, editingQuestionId, editingQuestionTitle, editingOptionsId, optionsFormMode } = this.state;
 
     return (
       <>
@@ -187,6 +189,7 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
                       question={question}
                       collapse={this.closeEditingOptions}
                       locale={locale}
+                      mode={optionsFormMode}
                     />
                   )
                   : (
