@@ -11,7 +11,6 @@ import bowser from 'bowser';
 
 // components
 import Input from 'components/UI/Input';
-import Label from 'components/UI/Label';
 import LocationInput from 'components/UI/LocationInput';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
