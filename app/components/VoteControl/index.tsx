@@ -133,20 +133,20 @@ const Vote = styled.button<IVoteComponent>`
   }
 
   &:not(.enabled) {
-      ${VoteIconContainer} {
-        width: auto;
-        border: none;
-        background: none;
-      }
+    ${VoteIconContainer} {
+      width: auto;
+      border: none;
+      background: none;
+    }
 
-      ${VoteIcon} {
-        opacity: 0.6;
-        margin-right: 4px;
-      }
+    ${VoteIcon} {
+      opacity: 0.6;
+      margin-right: 4px;
+    }
 
-      ${VoteCount} {
-        opacity: 0.6;
-      }
+    ${VoteCount} {
+      opacity: 0.6;
+    }
   }
 `;
 
