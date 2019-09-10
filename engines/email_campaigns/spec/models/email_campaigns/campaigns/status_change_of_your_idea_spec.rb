@@ -20,7 +20,7 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfYourIdea, type: :model d
 
       expect(
       	command.dig(:event_payload, :idea_status_id)
-      	).to eq(notification.idea_status.id)
+      	).to eq(notification.post_status.id)
   	end
   end
 end
