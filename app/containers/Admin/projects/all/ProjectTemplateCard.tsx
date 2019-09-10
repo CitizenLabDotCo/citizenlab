@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const duration = 350;
+const duration = 400;
 const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const ImageWrapperWrapper = styled.div`

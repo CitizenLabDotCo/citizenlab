@@ -58,6 +58,7 @@
     "focus-trap-react": "4.0.1",
     "formik": "1.5.4",
     "graphql": "14.5.4",
+    "graphql-tag": "2.10.1",
     "identity-obj-proxy": "3.0.0",
     "intl": "1.2.5",
     "js-cookie": "2.2.0",
@@ -216,7 +217,7 @@
     "webpack": "4.39.3",
     "webpack-bundle-analyzer": "3.4.1",
     "webpack-cli": "3.3.8",
-    "webpack-dashboard": "3.1.0",
+    "webpack-dashboard": "3.2.0",
     "webpack-dev-middleware": "3.7.1",
     "webpack-dev-server": "3.8.0",
     "yargs": "14.0.0"
