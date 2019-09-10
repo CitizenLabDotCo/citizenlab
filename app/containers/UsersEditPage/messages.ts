@@ -10,10 +10,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.loading',
     defaultMessage: 'Loading...',
   },
-  loadError: {
-    id: 'app.containers.UsersEditPage.loadError',
-    defaultMessage: 'Can\'t load existing profile',
-  },
   processing: {
     id: 'app.containers.UsersEditPage.processing',
     defaultMessage: 'Sending...',
@@ -30,14 +26,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.messageSuccess',
     defaultMessage: 'Your profile has been saved.',
   },
-  storeError: {
-    id: 'app.containers.UsersEditPage.storeError',
-    defaultMessage: 'Can\'t store updated profile',
-  },
-  stored: {
-    id: 'app.containers.UsersEditPage.stored',
-    defaultMessage: 'Profile stored',
-  },
   /*
    * Basic information
   */
@@ -48,10 +36,6 @@ export default defineMessages({
   h1sub: {
     id: 'app.containers.UsersEditPage.h1sub',
     defaultMessage: 'Edit your basic information related to your account',
-  },
-  avatarUploadError: {
-    id: 'app.containers.UsersEditPage.avatarUploadError',
-    defaultMessage: 'Avatar upload failed',
   },
   firstNames: {
     id: 'app.containers.UsersEditPage.firstNames',
@@ -91,10 +75,6 @@ export default defineMessages({
   deleteYourAccount: {
     id: 'app.containers.UsersEditPage.deleteYourAccount',
     defaultMessage: 'Delete your account',
-  },
-  profileDeletionConfirmation: {
-    id: 'app.containers.UsersEditPage.profileDeletionConfirmation',
-    defaultMessage: 'Are you sure you want to delete your profile?',
   },
   deleteProfileError: {
     id: 'app.containers.UsersEditPage.deleteProfileError',
@@ -147,29 +127,9 @@ export default defineMessages({
   /*
    * Details
    */
-  h2: {
-    id: 'app.containers.UsersEditPage.h2',
-    defaultMessage: 'Details',
-  },
-  h2sub: {
-    id: 'app.containers.UsersEditPage.h2sub',
-    defaultMessage: 'All information is private and help us to know you better',
-  },
   gender: {
     id: 'app.containers.UsersEditPage.gender',
     defaultMessage: 'Gender',
-  },
-  male: {
-    id: 'app.containers.UsersEditPage.male',
-    defaultMessage: 'Male',
-  },
-  female: {
-    id: 'app.containers.UsersEditPage.female',
-    defaultMessage: 'Female',
-  },
-  unspecified: {
-    id: 'app.containers.UsersEditPage.unspecified',
-    defaultMessage: 'Unspecified',
   },
   bio: {
     id: 'app.containers.UsersEditPage.bio',
@@ -183,10 +143,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.domicile',
     defaultMessage: 'Domicile',
   },
-  domicile_placeholder: {
-    id: 'app.containers.UsersEditPage.domicile_placeholder',
-    defaultMessage: 'Domicile',
-  },
   imageDropzonePlaceholder: {
     id: 'app.containers.UsersEditPage.imageDropzonePlaceholder',
     defaultMessage: 'Drop your image here',
@@ -197,18 +153,6 @@ export default defineMessages({
       city {Outside of {name}}
       generic {None of these}
     }`,
-  },
-  birthdate: {
-    id: 'app.containers.UsersEditPage.birthdate',
-    defaultMessage: 'Date of Birth',
-  },
-  education: {
-    id: 'app.containers.UsersEditPage.education',
-    defaultMessage: 'Highest diploma',
-  },
-  education_placeholder: {
-    id: 'app.containers.UsersEditPage.education_placeholder',
-    defaultMessage: 'Highest diploma',
   },
   submit: {
     id: 'app.containers.UsersEditPage.submit',
