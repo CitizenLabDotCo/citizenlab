@@ -1,5 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { Provider, createClient, useQuery } from 'urql';
+import gql from 'graphql-tag';
 import { GRAPHQL_PATH } from 'containers/App/constants';
 
 // components
@@ -50,6 +51,14 @@ const StyledProjectTemplateCard = styled(ProjectTemplateCard)`
   }
 `;
 
+const LoadMoreButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
 const LoadMoreButton = styled(Button)``;
 
 interface Props {
@@ -61,21 +70,37 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
   const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
   const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
 
-  const [{ fetching, data }] = useQuery({
-    query: `{
-      publishedProjectTemplates {
-        nodes {
-          id,
-          cardImage,
-          titleMultiloc {
-            en
-          },
-          subtitleMultiloc {
-            en
+  const templates = gql`
+    query PublishedProjectTemplatesQuery($first: Int!, $after: String) {
+      publishedProjectTemplates(first: $first, after: $after) {
+        edges {
+          node {
+            id,
+            cardImage,
+            titleMultiloc {
+              en
+            },
+            subtitleMultiloc {
+              en
+            }
           }
+          cursor
+        }
+        pageInfo{
+          endCursor
+          hasNextPage
         }
       }
-    }`,
+    }
+  `;
+
+  // data.publishedProjectTemplates.pageInfo.endCursor
+
+  const [{ fetching, data }] = useQuery({
+    query: templates,
+    variables: {
+      first: 2
+    }
   });
 
   const handleDepartmentFilterOnChange = useCallback(() => {
@@ -112,7 +137,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
         </Filters>
 
         <Cards>
-          {data.publishedProjectTemplates.nodes.map(({ id, titleMultiloc, subtitleMultiloc, cardImage }) => {
+          {data.publishedProjectTemplates.edges.map(({ node: { id, titleMultiloc, subtitleMultiloc, cardImage } }) => {
             return (
               <StyledProjectTemplateCard
                 key={id}
@@ -124,15 +149,17 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
           })}
         </Cards>
 
-        <LoadMoreButton
-          onClick={handleLoadMoreTemplatesOnClick}
-          style="secondary"
-          // fullWidth={true}
-          // bgColor={darken(0.05, colors.lightGreyishBlue)}
-          // bgHoverColor={darken(0.1, colors.lightGreyishBlue)}
-        >
-          <FormattedMessage {...messages.loadMoreTemplates} />
-        </LoadMoreButton>
+        <LoadMoreButtonWrapper>
+          <LoadMoreButton
+            onClick={handleLoadMoreTemplatesOnClick}
+            style="secondary"
+            // fullWidth={true}
+            // bgColor={darken(0.05, colors.lightGreyishBlue)}
+            // bgHoverColor={darken(0.1, colors.lightGreyishBlue)}
+          >
+            <FormattedMessage {...messages.loadMoreTemplates} />
+          </LoadMoreButton>
+        </LoadMoreButtonWrapper>
 
       </Container>
     );
