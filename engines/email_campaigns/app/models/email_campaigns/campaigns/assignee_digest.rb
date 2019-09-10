@@ -33,10 +33,10 @@ module EmailCampaigns
       }
       tracked_content = {
         idea_ids: assigned[:assigned_ideas].map{ |i| 
-          i.id
+          i[:id]
         }.compact,
         initiative_ids: (assigned[:assigned_initiatives] + assigned[:succesful_assigned_initiatives]).map{ |i| 
-          i.id
+          i[:id]
         }.compact,
       }
       if assigned.values.any?(&:present?)
@@ -101,8 +101,7 @@ module EmailCampaigns
               }
             },
             header_bg: { 
-              ordering: initiative.header_bg.ordering,
-              versions: initiative.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+              versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
             }
           }
       end
@@ -111,7 +110,7 @@ module EmailCampaigns
     def succesful_assigned_initiatives recipient:, time:
       threshold_reached_id = InitiativeStatus.where(code: 'threshold_reached').ids.first
       recipient.assigned_initiatives
-        .left_outer_joins(:initiative_status_changes)
+        .joins(:initiative_status_changes)
         .where(
           'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?', 
           threshold_reached_id, 
@@ -138,8 +137,7 @@ module EmailCampaigns
               }
             },
             header_bg: { 
-              ordering: initiative.header_bg.ordering,
-              versions: initiative.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+              versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
             }
           }
       end

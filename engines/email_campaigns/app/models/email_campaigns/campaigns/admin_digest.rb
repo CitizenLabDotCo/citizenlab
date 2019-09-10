@@ -206,8 +206,7 @@ module EmailCampaigns
             }
           },
           header_bg: { 
-            ordering: initiative.header_bg.ordering,
-            versions: initiative.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
           }
         }
       end
@@ -215,7 +214,8 @@ module EmailCampaigns
 
     def succesful_initiatives time:
       Initiative.published
-        .includes(:initiative_status_changes, :initiative_images)
+        .joins(:initiative_status_changes)
+        .includes(:initiative_images)
         .where(
           'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?', 
           InitiativeStatus.where(code: 'threshold_reached').ids.first, 
@@ -239,8 +239,7 @@ module EmailCampaigns
             }
           },
           header_bg: { 
-            ordering: initiative.header_bg.ordering,
-            versions: initiative.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
           }
         }
       end
