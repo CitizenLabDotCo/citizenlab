@@ -29,7 +29,9 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
     ariaLabel="Show more actions"
   />
   <QuillEditedContent>
-    <OfficialFeedbackPost__Body>
+    <OfficialFeedbackPost__Body
+      className="e2e-official-feedback-post-body"
+    >
       <div
         dangerouslySetInnerHTML={
           Object {
@@ -39,7 +41,9 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
       />
     </OfficialFeedbackPost__Body>
     <OfficialFeedbackPost__Footer>
-      <OfficialFeedbackPost__Author>
+      <OfficialFeedbackPost__Author
+        className="e2e-official-feedback-post-author"
+      >
         <T
           value={
             Object {
@@ -83,7 +87,9 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
   key="feedbackId1"
 >
   <QuillEditedContent>
-    <OfficialFeedbackPost__Body>
+    <OfficialFeedbackPost__Body
+      className="e2e-official-feedback-post-body"
+    >
       <div
         dangerouslySetInnerHTML={
           Object {
@@ -93,7 +99,9 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
       />
     </OfficialFeedbackPost__Body>
     <OfficialFeedbackPost__Footer>
-      <OfficialFeedbackPost__Author>
+      <OfficialFeedbackPost__Author
+        className="e2e-official-feedback-post-author"
+      >
         <T
           value={
             Object {
