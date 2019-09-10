@@ -89,8 +89,16 @@ class PollForm extends PureComponent<Props, State> {
 
   sendAnswer = () => {
     const { id, type } = this.props;
+    const { answers, answered } = this.state;
+    if (this.validate() && !answered) {
+      addPollResponse(id, type, Object.values(answers)).then(() => this.setState({ answered: true }));
+    }
+  }
+
+  validate = () => {
     const { answers } = this.state;
-    addPollResponse(id, type, Object.values(answers)).then(() => this.setState({ answered: true }));
+    const { questions } = this.props;
+    return questions.every(question => !!answers[question.id]);
   }
 
   render() {
@@ -138,6 +146,7 @@ class PollForm extends PureComponent<Props, State> {
         </PollContainer>
         <Button
           onClick={this.sendAnswer}
+          disabled={!this.validate()}
         >
           <FormattedMessage {...messages.sendAnswer} />
         </Button>
