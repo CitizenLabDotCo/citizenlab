@@ -210,42 +210,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.education_placeholder',
     defaultMessage: 'Highest diploma',
   },
-  ISCED11_0: {
-    id: 'app.containers.UsersEditPage.ISCED11_0',
-    defaultMessage: 'E1',
-  },
-  ISCED11_1: {
-    id: 'app.containers.UsersEditPage.ISCED11_1',
-    defaultMessage: 'E2',
-  },
-  ISCED11_2: {
-    id: 'app.containers.UsersEditPage.ISCED11_2',
-    defaultMessage: 'E3',
-  },
-  ISCED11_3: {
-    id: 'app.containers.UsersEditPage.ISCED11_3',
-    defaultMessage: 'E4',
-  },
-  ISCED11_4: {
-    id: 'app.containers.UsersEditPage.ISCED11_4',
-    defaultMessage: 'E5',
-  },
-  ISCED11_5: {
-    id: 'app.containers.UsersEditPage.ISCED11_5',
-    defaultMessage: 'E6',
-  },
-  ISCED11_6: {
-    id: 'app.containers.UsersEditPage.ISCED11_6',
-    defaultMessage: 'E7',
-  },
-  ISCED11_7: {
-    id: 'app.containers.UsersEditPage.ISCED11_7',
-    defaultMessage: 'E8',
-  },
-  ISCED11_8: {
-    id: 'app.containers.UsersEditPage.ISCED11_8',
-    defaultMessage: 'E9',
-  },
   submit: {
     id: 'app.containers.UsersEditPage.submit',
     defaultMessage: 'Update profile',
