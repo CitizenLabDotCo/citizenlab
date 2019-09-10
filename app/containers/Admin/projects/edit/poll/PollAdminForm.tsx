@@ -44,7 +44,7 @@ interface State {
   optionsFormMode: 'new' | 'edit';
 }
 
-class PollAdminFormWrapper extends PureComponent<Props, State> {
+export class PollAdminForm extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -167,7 +167,6 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
 
     const { locale } = this.props;
     const { newQuestionTitle, editingQuestionId, editingQuestionTitle, editingOptionsId, optionsFormMode } = this.state;
-
     return (
       <>
         <StyledList key={listItems.length + (newQuestionTitle ? 1 : 0)}>
@@ -197,9 +196,9 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
                       question={question}
                       isLastItem={index === listItems.length - 1 && !newQuestionTitle}
                       index={index}
-                      onDelete={this.deleteQuestion}
-                      onEdit={this.editQuestion}
-                      onEditOptions={this.editOptions}
+                      onDelete={this.deleteQuestion(question.id)}
+                      onEdit={this.editQuestion(question.id, question.attributes.title_multiloc)}
+                      onEditOptions={this.editOptions(question.id)}
                       handleDragRow={this.handleDragRow}
                       handleDropRow={this.handleDropRow}
                     />
@@ -232,4 +231,4 @@ class PollAdminFormWrapper extends PureComponent<Props, State> {
   }
 }
 
-export default DragDropContext(HTML5Backend)(PollAdminFormWrapper);
+export default DragDropContext(HTML5Backend)(PollAdminForm);

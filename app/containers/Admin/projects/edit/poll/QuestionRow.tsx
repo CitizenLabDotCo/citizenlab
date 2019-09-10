@@ -18,9 +18,9 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
   question: IPollQuestion,
   isLastItem: boolean,
   index: number,
-  onDelete: (questionId: string) => () => void,
-  onEdit: (questionId: string, currentTitle: Multiloc) => () => void,
-  onEditOptions: (questionId: string) => () => void,
+  onDelete: () => void,
+  onEdit: () => void,
+  onEditOptions: () => void,
   handleDragRow,
   handleDropRow
 }) => (
@@ -39,7 +39,7 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
 
       <Button
         className="e2e-delete-question"
-        onClick={onDelete(question.id)}
+        onClick={onDelete}
         style="text"
         icon="delete"
       >
@@ -48,7 +48,7 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
 
       <Button
         className="e2e-edit-question"
-        onClick={onEdit(question.id, question.attributes.title_multiloc)}
+        onClick={onEdit}
         style="secondary"
         icon="edit"
       >
@@ -56,7 +56,7 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
       </Button>
       <Button
         className="e2e-edit-options"
-        onClick={onEditOptions(question.id)}
+        onClick={onEditOptions}
         style="secondary"
         icon="create"
       >
