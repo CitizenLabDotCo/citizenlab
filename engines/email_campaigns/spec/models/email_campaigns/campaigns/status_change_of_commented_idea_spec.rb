@@ -23,8 +23,8 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea, type: :mo
   	it "generates a command with the desired payload and tracked content" do
   		command = campaign.generate_commands(recipient: comment.author, activity: activity).first
 
-      expect(command.dig(:event_payload, :idea, :id)).to eq(idea.id)
-      expect(command.dig(:event_payload, :idea_status, :code)).to eq(idea.idea_status.code)
+      expect(command.dig(:event_payload, :post_id)).to eq(idea.id)
+      expect(command.dig(:event_payload, :idea_status_code)).to eq(idea.idea_status.code)
   	end
   end
 end
