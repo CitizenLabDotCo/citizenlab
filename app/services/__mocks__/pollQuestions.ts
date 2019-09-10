@@ -1,4 +1,4 @@
-const mockQuestion = (id, titleEn, options) => ({
+export const mockQuestion = (id, titleEn, options, pcId, pcType) => ({
   id,
   attributes: {
     title_multiloc: {
@@ -8,6 +8,12 @@ const mockQuestion = (id, titleEn, options) => ({
   relationships: {
     options: {
       data: options
-    }
+    },
+    participation_context: {
+      data: {
+        id: pcId,
+        type: pcType
+      }
+    },
   }
 });
