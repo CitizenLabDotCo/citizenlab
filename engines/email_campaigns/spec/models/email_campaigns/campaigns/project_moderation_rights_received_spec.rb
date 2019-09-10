@@ -19,14 +19,8 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectModerationRightsReceived, type:
         ).first
 
       expect(
-      	command.dig(:event_payload, :recipient, :id)
-      	).to eq(notification.recipient_id)
-      expect(
-      	command.dig(:event_payload, :initiating_user, :id)
-      	).to eq(notification.initiating_user_id)
-      expect(
-        command.dig(:event_payload, :project, :id)
-        ).to eq(notification.project_id)
+      	command.dig(:event_payload, :project_ideas_count)
+      	).to eq(notification.project.ideas_count)
   	end
   end
 end
