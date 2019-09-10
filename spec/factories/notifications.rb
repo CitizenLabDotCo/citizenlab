@@ -158,59 +158,59 @@ FactoryBot.define do
   factory :status_change_on_commented_idea, parent: :notification, class: 'Notifications::StatusChangeOnCommentedIdea' do
     association :post, factory: :idea
     project
-    idea_status
+    post_status
     before(:create) do |notification|
-      notification.post.idea_status = notification.idea_status
+      notification.post.idea_status = notification.post_status
     end
   end
 
   factory :status_change_on_commented_initiative, parent: :notification, class: 'Notifications::StatusChangeOnCommentedInitiative' do
     association :post, factory: :initiative
-    initiative_status
+    post_status
     before(:create) do |notification|
-      notification.post.initiative_status = notification.initiative_status
+      notification.post.initiative_status = notification.post_status
     end
   end
 
   factory :status_change_on_voted_idea, parent: :notification, class: 'Notifications::StatusChangeOnVotedIdea' do
     association :post, factory: :idea
     project
-    idea_status
+    post_status
     before(:create) do |notification|
-      notification.post.idea_status = notification.idea_status
+      notification.post.idea_status = notification.post_status
     end
   end
 
   factory :status_change_on_voted_initiative, parent: :notification, class: 'Notifications::StatusChangeOnVotedInitiative' do
     association :post, factory: :initiative
-    initiative_status
+    post_status
     before(:create) do |notification|
-      notification.post.initiative_status = notification.initiative_status
+      notification.post.initiative_status = notification.post_status
     end
   end
 
   factory :status_change_of_your_idea, parent: :notification, class: 'Notifications::StatusChangeOfYourIdea' do
     association :post, factory: :idea
     project
-    idea_status
+    post_status
     before(:create) do |notification|
-      notification.post.idea_status = notification.idea_status
+      notification.post.idea_status = notification.post_status
     end
   end
 
   factory :status_change_of_your_initiative, parent: :notification, class: 'Notifications::StatusChangeOfYourInitiative' do
     association :post, factory: :initiative
-    initiative_status
+    post_status
     before(:create) do |notification|
-      notification.post.initiative_status = notification.initiative_status
+      notification.post.initiative_status = notification.post_status
     end
   end
 
   factory :threshold_reached_for_admin, parent: :notification, class: 'Notifications::ThresholdReachedForAdmin' do
     association :post, factory: :initiative
-    initiative_status
+    post_status
     before(:create) do |notification|
-      notification.post.initiative_status = notification.initiative_status
+      notification.post.initiative_status = notification.post_status
     end
   end
   
