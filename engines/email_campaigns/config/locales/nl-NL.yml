@@ -43,6 +43,7 @@ nl:
       "status_change_of_voted_initiative": When the status of an initiative I voted for has been changed
       "status_change_of_your_idea": De status van mijn idee verandert
       "status_change_of_your_initiative": When the status of my initiative changes
+      "threshold_reached_for_admin": When an initiative reached the voting threshold (only for administrators)
       "welcome": Ik registreer me op het platform
       "admin_digest": Een weekoverzicht (voor beheerders)
       "moderator_digest": Een weekoverzicht (voor moderatoren)
@@ -92,6 +93,7 @@ nl:
       "status_change_of_voted_initiative": When the status of an initiative I voted for has been changed
       "status_change_of_your_idea": Wanneer de status van mijn idee verandert
       "status_change_of_your_initiative": When the status of my initiative changes
+      "threshold_reached_for_admin": When an initiative reached the voting threshold (only for administrators)
       "welcome": Wanneer een gebruiker zich registreert op het platform
       "admin_digest": Een weekoverzicht (voor beheerders)
       "moderator_digest": Een weekoverzicht (voor moderatoren)

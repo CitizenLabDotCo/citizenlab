@@ -43,6 +43,7 @@ nb:
       "status_change_of_voted_initiative": When the status of an initiative I voted for has been changed
       "status_change_of_your_idea": When the status of my idea changes
       "status_change_of_your_initiative": When the status of my initiative changes
+      "threshold_reached_for_admin": When an initiative reached the voting threshold (only for administrators)
       "welcome": When I register on the platform
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
       "moderator_digest": A weekly overview of the activity on the platform (only for moderators)
@@ -92,6 +93,7 @@ nb:
       "status_change_of_voted_initiative": When the status of an initiative I voted for has been changed
       "status_change_of_your_idea": When the status of my idea changes
       "status_change_of_your_initiative": When the status of my initiative changes
+      "threshold_reached_for_admin": When an initiative reached the voting threshold (only for administrators)
       "welcome": When a user registers on the platform
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
       "moderator_digest": A weekly overview of the activity on the platform (only for moderators)

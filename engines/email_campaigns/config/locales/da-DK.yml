@@ -43,6 +43,7 @@ da:
       "status_change_of_voted_initiative": When the status of an initiative I voted for has been changed
       "status_change_of_your_idea": Når status på min idé bliver ændret
       "status_change_of_your_initiative": When the status of my initiative changes
+      "threshold_reached_for_admin": When an initiative reached the voting threshold (only for administrators)
       "welcome": Når jeg registrerer mig på platformen
       "admin_digest": En ugentlig oversigt over aktiviteten på platformen (kun for administratorer)
       "moderator_digest": En ugentlig oversigt over aktiviteten på platformen (kun for moderatorer)
@@ -92,6 +93,7 @@ da:
       "status_change_of_voted_initiative": When the status of an initiative I voted for has been changed
       "status_change_of_your_idea": Når status på min idé bliver ændret
       "status_change_of_your_initiative": When the status of my initiative changes
+      "threshold_reached_for_admin": When an initiative reached the voting threshold (only for administrators)
       "welcome": Når en bruger registrerer sig på platformen
       "admin_digest": En ugentlig oversigt over aktiviteten på platformen (kun for administratorer)
       "moderator_digest": En ugentlig oversigt over aktiviteten på platformen (kun for moderatorer)
