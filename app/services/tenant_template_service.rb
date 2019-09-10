@@ -781,11 +781,21 @@ class TenantTemplateService
         'created_at'             => i.created_at.to_s,
         'updated_at'             => i.updated_at.to_s,
         'location_point_geojson' => i.location_point_geojson,
-        'location_description'   => i.location_description,
-        'initiative_status_ref'  => lookup_ref(i.initiative_status_id, :initiative_status)
+        'location_description'   => i.location_description
       }
       store_ref yml_initiative, i.id, :initiative
       yml_initiative
+    end
+  end
+
+  def yml_initiative_status_changes
+    InitiativeStatusChange.where(initiative: Initiative.published).map do |i|
+      {
+        'created_at'            => i.created_at.to_s,
+        'updated_at'            => i.updated_at.to_s,
+        'initiative_ref'        => lookup_ref(i.initiative_id, :initiative),
+        'initiative_status_ref' => lookup_ref(i.initiative_status_id, :initiative_status)
+      }
     end
   end
 
