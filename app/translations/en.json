@@ -1398,8 +1398,6 @@
   "app.containers.SignUp.gdprApproval": "By checking this box you agree with our {tacLink} and our {ppLink}",
   "app.containers.SignUp.lastNameLabel": "Last name",
   "app.containers.SignUp.lastNamePlaceholder": " ",
-  "app.containers.SignUp.localeLabel": "Language",
-  "app.containers.SignUp.localePlaceholder": "Select your language",
   "app.containers.SignUp.logIn": "Log in",
   "app.containers.SignUp.noEmailError": "This cannot be empty",
   "app.containers.SignUp.noFirstNameError": "This cannot be empty",
