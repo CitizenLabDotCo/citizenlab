@@ -26,13 +26,12 @@ module EmailCampaigns
           event_payload: {
             initiatives: initiatives.includes(:initiative_images).map{ |initiative|
               {
-                title_multiloc: initiative.title_multiloc,
-                body_multiloc: initiative.body_multiloc,
+                title_multiloc: initiative.title_multiloc,                body_multiloc: initiative.body_multiloc,
                 url: Frontend::UrlService.new.model_to_url(initiative),
                 published_at: initiative.published_at.iso8601,
                 upvotes_count: initiative.upvotes_count,
                 votes_needed: initiative.votes_needed,
-                votes_this_week: initiative.upvotes.where('created_at > ?', time - 1.week),
+                votes_this_week: initiative.upvotes.where('created_at > ?', time - 1.week).count,
                 comments_count: initiative.comments_count,
                 expires_at: initiative.expires_at.iso8601,
                 status_code: initiative.initiative_status.code,

@@ -144,8 +144,7 @@ module EmailCampaigns
             }
           },
           header_bg: { 
-            ordering: initiative.header_bg.ordering,
-            versions: initiative.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
           }
         }
       end
@@ -169,7 +168,7 @@ module EmailCampaigns
           author_name: initiative.author_name,
           upvotes_count: initiative.upvotes_count,
           comments_count: initiative.comments_count,
-          threshold_reached_at: threshold_reached_at.iso8601,
+          threshold_reached_at: initiative.threshold_reached_at.iso8601,
           images: initiative.initiative_images.map{ |image|
             {
               ordering: image.ordering,
@@ -177,8 +176,7 @@ module EmailCampaigns
             }
           },
           header_bg: { 
-            ordering: initiative.header_bg.ordering,
-            versions: initiative.header_bg.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
           }
         }
       end
