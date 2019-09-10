@@ -1143,6 +1143,7 @@
   "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.map": "Kart",
   "app.containers.IdeaCards.newest": "Nyeste",
+  "app.containers.IdeaCards.noFilteredIdeas": "",
   "app.containers.IdeaCards.oldest": "Eldste",
   "app.containers.IdeaCards.popular": "Populært",
   "app.containers.IdeaCards.projectFilterTitle": "Projects",

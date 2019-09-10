@@ -1143,6 +1143,7 @@
   "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.map": "geografische Karte",
   "app.containers.IdeaCards.newest": "Neueste",
+  "app.containers.IdeaCards.noFilteredIdeas": "",
   "app.containers.IdeaCards.oldest": "Älteste",
   "app.containers.IdeaCards.popular": "{orgName, select, München {Meiste Bewertungen} other {Meiste Stimmen}}",
   "app.containers.IdeaCards.projectFilterTitle": "Projects",
