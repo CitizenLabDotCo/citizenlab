@@ -168,7 +168,7 @@ FactoryBot.define do
     association :post, factory: :initiative
     association :post_status, factory: :initiative_status
     before(:create) do |notification|
-      notification.post.initiative_status = notification.post_status
+      notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
     end
   end
 
@@ -185,7 +185,7 @@ FactoryBot.define do
     association :post, factory: :initiative
     association :post_status, factory: :initiative_status
     before(:create) do |notification|
-      notification.post.initiative_status = notification.post_status
+      notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
     end
   end
 
@@ -202,7 +202,7 @@ FactoryBot.define do
     association :post, factory: :initiative
     association :post_status, factory: :initiative_status
     before(:create) do |notification|
-      notification.post.initiative_status = notification.post_status
+      notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
     end
   end
 
@@ -210,7 +210,7 @@ FactoryBot.define do
     association :post, factory: :initiative
     association :post_status, factory: :initiative_status
     before(:create) do |notification|
-      notification.post.initiative_status = notification.post_status
+      notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
     end
   end
   
