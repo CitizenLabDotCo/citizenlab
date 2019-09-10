@@ -1143,6 +1143,7 @@
   "app.containers.IdeaCards.filter": "Filtrer",
   "app.containers.IdeaCards.map": "Carte",
   "app.containers.IdeaCards.newest": "Plus récentes",
+  "app.containers.IdeaCards.noFilteredIdeas": "",
   "app.containers.IdeaCards.oldest": "Plus anciennes",
   "app.containers.IdeaCards.popular": "Plus votées",
   "app.containers.IdeaCards.projectFilterTitle": "{tenantName, select, frw {Communes} other {Projets}}",
