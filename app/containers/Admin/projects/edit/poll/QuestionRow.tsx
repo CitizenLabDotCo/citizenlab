@@ -58,7 +58,6 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
         className="e2e-edit-options"
         onClick={onEditOptions}
         style="secondary"
-        icon="create"
       >
         <FormattedMessage {...messages.editOptions} />
       </Button>
