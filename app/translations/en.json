@@ -1140,6 +1140,7 @@
   "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.map": "Map",
   "app.containers.IdeaCards.newest": "Most recent",
+  "app.containers.IdeaCards.noFilteredIdeas": "No ideas found",
   "app.containers.IdeaCards.oldest": "Oldest",
   "app.containers.IdeaCards.popular": "Most voted",
   "app.containers.IdeaCards.projectFilterTitle": "Projects",
