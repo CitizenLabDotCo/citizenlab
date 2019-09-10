@@ -42,7 +42,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-class AdminProjectPoll extends React.PureComponent<Props> {
+export class AdminProjectPoll extends React.PureComponent<Props> {
 
   renderPolls = () => {
     const { project, phases, locale } = this.props;
