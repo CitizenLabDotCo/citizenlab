@@ -2,51 +2,39 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   formTitle: {
-    id: 'app.containers.IdeasNewPage2.formTitle',
+    id: 'app.containers.IdeasNewPage.formTitle',
     defaultMessage: 'Add your idea',
   },
-  signInTitle: {
-    id: 'app.containers.IdeasNewPage2.signInTitle',
-    defaultMessage: 'Log in to publish your idea',
-  },
-  signUpTitle: {
-    id: 'app.containers.IdeasNewPage2.signUpTitle',
-    defaultMessage: 'Sign up to publish your idea',
-  },
   submit: {
-    id: 'app.containers.IdeasNewPage2.submit',
+    id: 'app.containers.IdeasNewPage.submit',
     defaultMessage: 'Submit idea',
   },
   submitError: {
-    id: 'app.containers.IdeasNewPage2.submitError',
+    id: 'app.containers.IdeasNewPage.submitError',
     defaultMessage: 'Something went wrong. Please try again later.',
   },
   or: {
-    id: 'app.containers.IdeasNewPage2.or',
+    id: 'app.containers.IdeasNewPage.or',
     defaultMessage: 'Or',
   },
   goBack: {
-    id: 'app.containers.IdeasNewPage2.goBack',
+    id: 'app.containers.IdeasNewPage.goBack',
     defaultMessage: 'Go back',
   },
   shareViaMessenger: {
-    id: 'app.containers.IdeasNewPage2.shareViaMessenger',
+    id: 'app.containers.IdeasNewPage.shareViaMessenger',
     defaultMessage: 'Share via Messenger',
   },
   shareOnTwitter: {
-    id: 'app.containers.IdeasNewPage2.shareOnTwitter',
+    id: 'app.containers.IdeasNewPage.shareOnTwitter',
     defaultMessage: 'Share on Twitter',
   },
-  sendEmail: {
-    id: 'app.containers.IdeasNewPage2.sendEmail',
-    defaultMessage: 'Send an email to your friends',
-  },
   skipSocialSharing: {
-    id: 'app.containers.IdeasNewPage2.skipSocialSharing',
+    id: 'app.containers.IdeasNewPage.skipSocialSharing',
     defaultMessage: "Skip it, I'll do it later",
   },
   fileOrImageError: {
-    id: 'app.containers.IdeasNewPage2.fileOrImageError',
+    id: 'app.containers.IdeasNewPage.fileOrImageError',
     defaultMessage: 'Your idea was submitted, but a file failed to be uploaded, please edit your idea to try again.',
   },
 });
