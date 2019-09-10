@@ -42,7 +42,6 @@ interface InputProps {
   question: IPollQuestion;
   collapse: () => void;
   locale: Locale;
-  mode: 'new' | 'edit';
 }
 
 interface DataProps {
@@ -59,7 +58,7 @@ class OptionForm extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      editingId: props.mode === 'new' ? 'new' : null
+      editingId: null
     };
   }
 
