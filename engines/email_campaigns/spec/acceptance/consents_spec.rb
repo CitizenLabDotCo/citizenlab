@@ -7,7 +7,7 @@ resource "Campaign consents" do
 
   before do
     header "Content-Type", "application/json"
-    @user = create(:user)
+    @user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
   end
@@ -17,32 +17,46 @@ resource "Campaign consents" do
 
     before do
       @campaigns = [
+        create(:admin_digest_campaign),
+        create(:assignee_digest_campaign),
+        create(:user_digest_campaign),
+        create(:your_proposed_initiatives_digest_campaign),
+        create(:manual_campaign),
+        create(:comment_marked_as_spam_campaign),
         create(:comment_on_your_comment_campaign),
         create(:comment_on_your_idea_campaign),
         create(:comment_on_your_initiative_campaign),
-        create(:idea_assigned_to_you),
+        create(:idea_marked_as_spam_campaign),
+        create(:idea_assigned_to_you_campaign),
         create(:idea_published_campaign),
-        create(:initiative_assigned_to_you),
+        create(:initiative_assigned_to_you_campaign),
+        create(:initiative_marked_as_spam_campaign),
         create(:initiative_published_campaign),
+        create(:invite_accepted_campaign),
         create(:mention_in_comment_campaign),
         create(:mention_in_official_feedback_campaign),
-        create(:manual_campaign),
-        create(:new_comment_for_admin),
-        create(:new_idea_for_admin),
-        create(:new_initiative_for_admin),
-        create(:official_feedback_on_commented_idea),
-        create(:official_feedback_on_commented_initiative),
-        create(:official_feedback_on_voted_idea),
-        create(:official_feedback_on_voted_initiative),
-        create(:official_feedback_on_your_idea),
-        create(:official_feedback_on_your_initiative),
-        create(:project_phase_started),
-        create(:project_phase_upcoming),
+        create(:new_comment_for_admin_campaign),
+        create(:new_comment_on_commented_idea_campaign),
+        create(:new_comment_on_commented_initiative_campaign),
+        create(:new_comment_on_voted_idea_campaign),
+        create(:new_comment_on_voted_initiative_campaign),
+        create(:new_idea_for_admin_campaign),
+        create(:new_initiative_for_admin_campaign),
+        create(:official_feedback_on_commented_idea_campaign),
+        create(:official_feedback_on_commented_initiative_campaign),
+        create(:official_feedback_on_voted_idea_campaign),
+        create(:official_feedback_on_voted_initiative_campaign),
+        create(:official_feedback_on_your_idea_campaign),
+        create(:official_feedback_on_your_initiative_campaign),
+        create(:project_phase_started_campaign),
+        create(:project_phase_upcoming_campaign),
+        create(:status_change_of_commented_idea_campaign),
+        create(:status_change_of_commented_initiative_campaign),
+        create(:status_change_of_voted_idea_campaign),
+        create(:status_change_of_voted_initiative_campaign),
         create(:status_change_of_your_idea_campaign),
         create(:status_change_of_your_initiative_campaign),
-        create(:threshold_reached_for_admin_campaign),
-        create(:user_digest_campaign),
-        create(:your_proposed_initiatives_digest_campaign)
+        create(:threshold_reached_for_admin_campaign)
       ]
       @consents = @campaigns.map.with_index do |campaign, i|
         create(:consent, user: @user, campaign_type: campaign.type, consented: i%2 == 0)
