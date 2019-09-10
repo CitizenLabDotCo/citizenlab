@@ -19,14 +19,8 @@ RSpec.describe EmailCampaigns::Campaigns::InviteAccepted, type: :model do
         ).first
 
       expect(
-      	command.dig(:event_payload, :recipient, :id)
-      	).to eq(notification.recipient_id)
-      expect(
-      	command.dig(:event_payload, :initiating_user, :id)
-      	).to eq(notification.initiating_user_id)
-      expect(
-      	command.dig(:event_payload, :invite, :id)
-      	).to eq(notification.invite.id)
+      	command.dig(:event_payload, :initiating_user_first_name)
+      	).to eq(notification.initiating_user.first_name)
   	end
   end
 end

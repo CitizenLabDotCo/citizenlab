@@ -29,6 +29,7 @@ module EmailCampaigns
     end
 
     def generate_commands recipient:, time: nil
+      time ||= Time.now
       @statistics ||= statistics
       @top_project_ideas ||= top_project_ideas
       @new_initiatives ||= new_initiatives time: time

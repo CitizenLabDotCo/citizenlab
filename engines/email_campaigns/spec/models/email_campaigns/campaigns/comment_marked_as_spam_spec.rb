@@ -19,14 +19,11 @@ RSpec.describe EmailCampaigns::Campaigns::CommentMarkedAsSpam, type: :model do
         ).first
 
       expect(
-      	command.dig(:event_payload, :recipient, :id)
-      	).to eq(notification.recipient_id)
+      	command.dig(:event_payload, :initiating_user_last_name)
+      	).to eq(notification.initiating_user.last_name)
       expect(
-      	command.dig(:event_payload, :initiating_user, :id)
-      	).to eq(notification.initiating_user_id)
-      expect(
-      	command.dig(:event_payload, :spam_report, :id)
-      	).to eq(notification.spam_report_id)
+      	command.dig(:event_payload, :spam_report_reason_code)
+      	).to eq(notification.spam_report.reason_code)
   	end
   end
 end

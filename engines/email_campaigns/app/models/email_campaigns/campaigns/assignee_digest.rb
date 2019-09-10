@@ -26,6 +26,7 @@ module EmailCampaigns
     end
 
     def generate_commands recipient:, time: nil
+      time ||= Time.now
       assigned = {
         assigned_ideas: assigned_ideas(recipient: recipient, time: time),
         assigned_initiatives: assigned_initiatives(recipient: recipient, time: time),

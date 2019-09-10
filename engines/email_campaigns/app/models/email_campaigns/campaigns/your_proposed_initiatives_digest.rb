@@ -20,6 +20,7 @@ module EmailCampaigns
     end
 
     def generate_commands recipient:, time: nil
+      time ||= Time.now
       initiatives = recipient.initiatives.published.proposed.order(:published_at)
       if initiatives.present?
         [{

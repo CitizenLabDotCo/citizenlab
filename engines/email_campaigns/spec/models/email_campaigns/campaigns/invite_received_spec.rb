@@ -19,14 +19,14 @@ RSpec.describe EmailCampaigns::Campaigns::InviteReceived, type: :model do
         ).first
 
       expect(
-      	command.dig(:event_payload, :invite, :inviter, :id)
-      	).to eq(invite.inviter.id)
+      	command.dig(:event_payload, :inviter_first_name)
+      	).to eq(invite.inviter.first_name)
       expect(
-      	command.dig(:event_payload, :invite, :invitee, :id)
-      	).to eq(invite.invitee.id)
+      	command.dig(:event_payload, :invitee_last_name)
+      	).to eq(invite.invitee.last_name)
       expect(
-      	command.dig(:event_payload, :invite, :id)
-      	).to eq(invite.id)
+      	command.dig(:event_payload, :invite_text)
+      	).to eq(invite.invite_text)
   	end
   end
 
