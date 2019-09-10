@@ -5,4 +5,8 @@ export default defineMessages({
     id: 'app.containers.Projects.PollForm.formCompleted',
     defaultMessage: 'Thank you for answering this poll !',
   },
+  sendAnswer: {
+    id: 'app.containers.Projects.PollForm.sendAnswer',
+    defaultMessage: 'Send',
+  },
 });
