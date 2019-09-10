@@ -12,16 +12,11 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPollQuestions, { GetPollQuestionsChildProps } from 'resources/GetPollQuestions';
 
 import PollForm from './PollForm';
-import FormCompleted from './FormCompleted';
 
 import styled from 'styled-components';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colorText};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 `;
 
 interface InputProps {

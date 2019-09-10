@@ -7,9 +7,18 @@ import T from 'components/T';
 import { IPollQuestion } from 'services/pollQuestions';
 import { addPollResponse } from 'services/pollResponses';
 import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptions';
+import FormCompleted from './FormCompleted';
 
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
+
+const PollContainer = styled.div`
+  color: ${({ theme }) => theme.colorText};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 const QuestionContainer = styled.div`
   background-color: white;
@@ -56,13 +65,15 @@ interface State {
   answers: {
     [questionId: string]: string;
   };
+  answered: boolean;
 }
 
 class PollForm extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      answers: {}
+      answers: {},
+      answered: false
     };
   }
 
@@ -73,13 +84,21 @@ class PollForm extends PureComponent<Props, State> {
   sendAnswer = () => {
     const { id, type } = this.props;
     const { answers } = this.state;
-    addPollResponse(id, type, Object.values(answers));
+    addPollResponse(id, type, Object.values(answers)).then(() => this.setState({ answered: true }));
   }
 
   render() {
+    const { answered, answers } = this.state;
+    const { questions } = this.props;
+    if (answered) {
+      return (
+        <FormCompleted />
+      );
+    }
     return (
       <>
-        {this.props.questions.map((question, questionIndex) => (
+      <PollContainer>
+        {questions.map((question, questionIndex) => (
           <QuestionContainer key={question.id}>
             <Label>
               <QuestionNumber>
@@ -97,7 +116,7 @@ class PollForm extends PureComponent<Props, State> {
                       <StyledRadio
                         key={option.id}
                         onChange={this.changeAnswer(question.id, option.id)}
-                        currentValue={this.state.answers[question.id]}
+                        currentValue={answers[question.id]}
                         value={option.id}
                         name={option.id}
                         id={option.id}
@@ -110,6 +129,7 @@ class PollForm extends PureComponent<Props, State> {
             </GetPollOptions>
           </QuestionContainer>
         ))}
+        </PollContainer>
         <button onClick={this.sendAnswer}>save</button>
       </>
     );
