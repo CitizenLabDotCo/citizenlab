@@ -17,7 +17,7 @@ module Notifications
       recipient_id = invite&.inviter_id
       initiator_id = invite&.invitee_id
 
-      if invite_id && recipient_id && initiator_id
+      if invite && recipient_id && initiator_id
         [self.new(
            recipient_id: recipient_id,
            initiating_user_id: initiator_id,
