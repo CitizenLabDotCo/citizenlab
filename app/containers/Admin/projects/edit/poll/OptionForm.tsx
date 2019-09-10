@@ -101,7 +101,6 @@ class OptionForm extends PureComponent<Props, State> {
             className="e2e-delete-question"
             onClick={collapse}
             style="secondary"
-            icon="close"
           >
             <FormattedMessage  {...messages.editOptionDone}/>
           </Button>
