@@ -16,8 +16,9 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // style
-import { colors, media } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -25,48 +26,14 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 const duartion = 350;
 const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
-const Container = styled.div``;
-
-const CreateProjectButton = styled.button`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0;
-  padding-left: 4rem;
-  padding-right: 4rem;
-  padding-top: 35px;
-  padding-bottom: 35px;
-  margin: 0;
-  cursor: pointer;
+const Container = styled.div`
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: 1px solid ${(props) => props.theme.colors.separation};
-
-  &.expanded {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  &:hover,
-  &:focus {
-    border-color: ${colors.clIconAccent};
-  }
-
-  ${media.smallerThan1280px`
-    padding-left: 2rem;
-    padding-right: 2rem;
-  `}
+  border-radius: ${({ theme }) => theme.borderRadius};
+  border: 1px solid ${({ theme }) => theme.colors.separation};
 `;
 
 const CreateProjectContent = styled.div`
   width: 100%;
-  background: #fff;
-  border-radius: ${({ theme }) => theme.borderRadius};
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border: 1px solid ${({ theme }) => theme.colors.separation};
-  border-top: none;
   opacity: 0;
   display: none;
   transition: all ${duartion}ms ${easing};
@@ -100,7 +67,7 @@ const CreateProjectContent = styled.div`
     display: block;
 
     &.content-exit-active {
-      opacity: 1;
+      opacity: 0;
       max-height: 0px;
       overflow: hidden;
       display: block;
@@ -116,7 +83,7 @@ const CreateProjectContent = styled.div`
 const CreateProjectContentInner = styled.div`
   padding-left: 4rem;
   padding-right: 4rem;
-  padding-top: 2.5rem;
+  padding-top: 0.5rem;
   padding-bottom: 2.8rem;
 `;
 
@@ -136,19 +103,40 @@ const ExpandIconWrapper = styled.div`
   width: 30px;
   height: 30px;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 1px ${colors.separation};
+  border: solid 2px ${colors.separation};
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 100ms ease-out;
 `;
 
 const ExpandIcon = styled(Icon)`
   height: 10px;
   fill: ${colors.label};
-  transition: all ${duartion}ms ease-out;
+  transition: all ${duartion - 100}ms ease-out;
 
   &.expanded {
     transform: rotate(90deg);
+  }
+`;
+
+const CreateProjectButton = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  padding-top: 35px;
+  padding-bottom: 35px;
+  margin: 0;
+  cursor: pointer;
+
+  &:hover {
+    ${ExpandIconWrapper} {
+      border-color:${darken(0.25, colors.separation)};
+    }
   }
 `;
 
@@ -228,8 +216,8 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         classNames="content"
         in={expanded}
         timeout={duartion}
-        mounOnEnter={true}
-        unmountOnExit={true}
+        mounOnEnter={false}
+        unmountOnExit={false}
         enter={true}
         exit={true}
       >

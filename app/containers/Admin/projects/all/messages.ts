@@ -35,6 +35,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.fromScratch',
     defaultMessage: 'From scratch',
   },
+  searchPlaceholder: {
+    id: 'app.containers.AdminPage.ProjectEdit.searchPlaceholder',
+    defaultMessage: 'Search the templates',
+  },
   useTemplate: {
     id: 'app.containers.AdminPage.ProjectEdit.useTemplate',
     defaultMessage: 'Use template',
@@ -42,6 +46,10 @@ export default defineMessages({
   moreDetails: {
     id: 'app.containers.AdminPage.ProjectEdit.moreDetails',
     defaultMessage: 'More details',
+  },
+  loadMoreTemplates: {
+    id: 'app.containers.AdminPage.ProjectEdit.loadMoreTemplates',
+    defaultMessage: 'Load more templates',
   },
   xGroupsHaveAccess: {
     id: 'app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess',

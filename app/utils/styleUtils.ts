@@ -159,7 +159,7 @@ export const colors = {
   adminMenuBackground: '#003349',
   adminDarkestBackground: 'rgba(0, 0, 0, 0.75)',
 
-  adminTextColor: '#1F4C69',
+  adminTextColor: '#044D6C',
   adminLightText: 'rgba(255, 255, 255, 0.8)',
   adminSecondaryTextColor: '#596B7A',
 

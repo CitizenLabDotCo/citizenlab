@@ -5,27 +5,25 @@ import { GRAPHQL_PATH } from 'containers/App/constants';
 // components
 import ProjectTemplateCard from './ProjectTemplateCard';
 import SearchInput from 'components/UI/SearchInput';
+import Button from 'components/UI/Button';
+
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
 import DepartmentFilter from './DepartmentFilter';
 
-const Container = styled.div`
-  /* margin-right: -13px;
-  margin-left: -13px;
-  margin-bottom: -26px; */
-  border: solid 1px red;
-`;
+const Container = styled.div``;
 
 const Filters = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
-  border: solid 1px red;
-  /* margin-left: 13px;
-  margin-right: 13px; */
+  margin-bottom: 15px;
 `;
 
 const Left = styled.div``;
@@ -40,22 +38,28 @@ const Cards = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  border: solid 1px red;
 `;
 
 const StyledProjectTemplateCard = styled(ProjectTemplateCard)`
   flex-grow: 0;
-  width: calc(100% * (1/3));
+  width: calc(100% * (1/3) - 18px);
+  margin-right: 27px;
+
+  &:nth-child(3n) {
+    margin-right: 0px;
+  }
 `;
+
+const LoadMoreButton = styled(Button)``;
 
 interface Props {
   className?: string;
 }
 
-// const searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
-// const searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
+const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className }) => {
 
-const ProjectTemplateCards = memo<Props>(({ className }) => {
+  const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
+  const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
 
   const [{ fetching, data }] = useQuery({
     query: `{
@@ -82,19 +86,25 @@ const ProjectTemplateCards = memo<Props>(({ className }) => {
     // empty
   }, []);
 
+  const handleLoadMoreTemplatesOnClick = useCallback(() => {
+    // empty
+  }, []);
+
   if (!fetching) {
     return (
       <Container className={className}>
         <Filters>
           <Left>
             <DepartmentFilter onChange={handleDepartmentFilterOnChange} />
+            <DepartmentFilter onChange={handleDepartmentFilterOnChange} />
+            <DepartmentFilter onChange={handleDepartmentFilterOnChange} />
           </Left>
 
           <Right>
             <StyledSearchInput
               className="e2e-search-ideas-input"
-              // placeholder={this.searchPlaceholder}
-              // ariaLabel={this.searchAriaLabel}
+              placeholder={searchPlaceholder}
+              ariaLabel={searchAriaLabel}
               value={null}
               onChange={handleSearchOnChange}
             />
@@ -102,11 +112,10 @@ const ProjectTemplateCards = memo<Props>(({ className }) => {
         </Filters>
 
         <Cards>
-          {data.publishedProjectTemplates.nodes.map(({ id, titleMultiloc, subtitleMultiloc, cardImage }, index) => {
+          {data.publishedProjectTemplates.nodes.map(({ id, titleMultiloc, subtitleMultiloc, cardImage }) => {
             return (
               <StyledProjectTemplateCard
                 key={id}
-                className={(index + 1) % 3 === 0 ? 'noRightMargin' : ''}
                 imageUrl={cardImage}
                 title={titleMultiloc.en}
                 body={subtitleMultiloc.en}
@@ -114,6 +123,17 @@ const ProjectTemplateCards = memo<Props>(({ className }) => {
             );
           })}
         </Cards>
+
+        <LoadMoreButton
+          onClick={handleLoadMoreTemplatesOnClick}
+          style="secondary"
+          // fullWidth={true}
+          // bgColor={darken(0.05, colors.lightGreyishBlue)}
+          // bgHoverColor={darken(0.1, colors.lightGreyishBlue)}
+        >
+          <FormattedMessage {...messages.loadMoreTemplates} />
+        </LoadMoreButton>
+
       </Container>
     );
   }
@@ -125,8 +145,10 @@ const client = createClient({
   url: GRAPHQL_PATH
 });
 
+const ProjectTemplateCardsWithHoc = injectIntl(ProjectTemplateCards);
+
 export default () => (
   <Provider value={client}>
-    <ProjectTemplateCards />
+    <ProjectTemplateCardsWithHoc />
   </Provider>
 );
