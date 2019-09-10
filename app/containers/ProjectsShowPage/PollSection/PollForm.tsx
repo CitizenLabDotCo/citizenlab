@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 import Radio from 'components/UI/Radio';
+import Button from 'components/UI/Button';
+
 import T from 'components/T';
 
 import { IPollQuestion } from 'services/pollQuestions';
@@ -11,6 +13,10 @@ import FormCompleted from './FormCompleted';
 
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const PollContainer = styled.div`
   color: ${({ theme }) => theme.colorText};
@@ -130,7 +136,11 @@ class PollForm extends PureComponent<Props, State> {
           </QuestionContainer>
         ))}
         </PollContainer>
-        <button onClick={this.sendAnswer}>save</button>
+        <Button
+          onClick={this.sendAnswer}
+        >
+          <FormattedMessage {...messages.sendAnswer} />
+        </Button>
       </>
     );
   }
