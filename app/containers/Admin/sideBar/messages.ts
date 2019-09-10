@@ -37,8 +37,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.emails',
     defaultMessage: 'Emails',
   },
-  gettingStarted: {
-    id: 'app.containers.AdminPage.SideBar.gettingStarted',
-    defaultMessage: 'Get Started',
+  guide: {
+    id: 'app.containers.AdminPage.SideBar.guide',
+    defaultMessage: 'Guide',
   },
 });

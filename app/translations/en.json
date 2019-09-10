@@ -953,7 +953,7 @@
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "Add the URL of the website you want to link this platform with. Used in the footer on the home page.",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.emails": "Emails",
-  "app.containers.AdminPage.SideBar.gettingStarted": "Guide",
+  "app.containers.AdminPage.SideBar.guide": "Guide",
   "app.containers.AdminPage.SideBar.groups": "Groups",
   "app.containers.AdminPage.SideBar.ideas": "Ideas",
   "app.containers.AdminPage.SideBar.initiatives": "Initiatives",
