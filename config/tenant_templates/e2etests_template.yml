@@ -1496,7 +1496,6 @@ models:
     published_at_timediff: -1440 # 24*60
     created_at_timediff: -1440 # 24*60
     updated_at_timediff: -1440 # 24*60
-    initiative_status_ref: *initiative_proposed
   - &initiative2
     title_multiloc:
       en-GB: Planting flowers
@@ -1509,7 +1508,6 @@ models:
     published_at_timediff: -2400 # 24*100
     created_at_timediff: -2400 # 24*100
     updated_at_timediff: -2400 # 24*100
-    initiative_status_ref: *initiative_expired
   comment:
   - &bicycle_comment
     body_multiloc:

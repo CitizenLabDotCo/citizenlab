@@ -25,7 +25,7 @@ module Notifications
           other_reason: activity.payload['other_reason'],
         }
         if attributes[:post_type] == 'Idea'
-          attributes[:project_id] = comment.post.project_id
+          attributes[:project_id] = spam_report.spam_reportable.post.project_id
         end
 
         self.recipient_ids(initiator_id, attributes[:project_id]).map do |recipient_id|

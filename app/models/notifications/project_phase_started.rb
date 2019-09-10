@@ -26,10 +26,10 @@ module Notifications
           # PostgreSQL's default repeatable read isolation
           # level, this transaction cannot be obstructed by
           # other transactions.
-          ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.ids.map do |recipient_id|
+          ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.map do |recipient|
             if service.participation_possible_for_context? phase, recipient
               self.new(
-                 recipient_id: recipient_id,
+                 recipient: recipient,
                  phase: phase,
                  project: phase.project
                )
