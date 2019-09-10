@@ -76,6 +76,7 @@ export const FormSubtextStyled = styled.span`
 export const Spacer = styled.div`
   height: 12px;
 `;
+
 const OptionalText: any = styled.span`
   font-weight: ${(props) => (props as any).thin ? 300 : 400};
 `;

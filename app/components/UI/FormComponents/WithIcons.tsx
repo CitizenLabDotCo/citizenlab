@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import { booleanClass } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import Icon, { IconNames } from 'components/UI/Icon';
-import { FormLabelProps, FormLabelStyled, FormSubtextStyled } from '.';
-import { Spacer } from '../Modal';
+import { FormLabelProps, FormLabelStyled, FormSubtextStyled, Spacer } from '.';
 
 interface FormLabelWithIconProps extends FormLabelProps {
   iconName: IconNames;

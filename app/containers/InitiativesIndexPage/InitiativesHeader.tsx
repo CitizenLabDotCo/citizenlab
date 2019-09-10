@@ -23,7 +23,6 @@ import messages from './messages';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
-import { lighten } from 'polished';
 import T from 'components/T';
 
 const illustrationSrc: string = require('./initiativesHeaderImage.png');

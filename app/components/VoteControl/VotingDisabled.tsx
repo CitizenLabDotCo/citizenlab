@@ -9,22 +9,22 @@ import { IIdeaData } from 'services/ideas';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import messages from './messages';
 import clHistory from 'utils/cl-router/history';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
-  color: ${({ theme }) => theme.colors.label};
+  color: ${colors.label};
   font-size: ${fontSizes.small}px;
   font-weight: 300;
   line-height: 20px;
 `;
 
 const ProjectLink = styled.span`
-  color: ${({ theme }) => theme.colors.clBlueDark};
+  color: ${colors.clBlueDark};
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
-    color: ${({ theme }) => darken(0.15, theme.colors.clBlueDark)};
+    color: ${darken(0.15, colors.clBlueDark)};
     text-decoration: underline;
   }
 `;
