@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.components.IdeaCards.empty',
     defaultMessage: 'It looks like there are no ideas yet.',
   },
-  noIdeasForFilter: {
-    id: 'app.containers.IdeaCards.noFilteredIdeas',
-    defaultMessage: 'No ideas found',
-  },
   tryOtherFilter: {
     id: 'app.containers.IdeaCards.tryOtherFilter',
     defaultMessage: "Try adjusting your search or filter to find what you're looking for",
@@ -76,10 +72,6 @@ export default defineMessages({
   searchAriaLabel: {
     id: 'app.containers.IdeaCards.searchAriaLabel',
     defaultMessage: 'Search for an idea',
-  },
-  clear: {
-    id: 'app.containers.IdeaCards.clear',
-    defaultMessage: 'Clear',
   },
   xIdeas: {
     id: 'app.containers.IdeaCards.xIdeas',
