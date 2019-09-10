@@ -13,7 +13,7 @@ export default defineMessages({
   },
   deleteQuestion: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.deleteQuestion',
-    defaultMessage: 'Delete question',
+    defaultMessage: 'Delete',
   },
   editQuestion: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.editQuestion',
