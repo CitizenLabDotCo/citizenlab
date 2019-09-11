@@ -8,6 +8,6 @@ class WebApi::V1::Notifications::StatusChangeOnVotedInitiativeSerializer < WebAp
   end
 
   attribute :initiative_status_title_multiloc do |object|
-    object.initiative_status&.title_multiloc
+    object.post_status&.title_multiloc
   end
 end
