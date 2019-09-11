@@ -33,6 +33,10 @@ const OptionsContainer = styled.div`
   margin-left: 67px;
 `;
 
+const StyledButton = styled(Button)`
+  margin-bottom: 20px;
+`;
+
 const DisabledDragHandle = styled.div`
   color: ${colors.clGreyOnGreyBackground};
   padding: 1rem;
@@ -135,7 +139,7 @@ class OptionForm extends PureComponent<Props, State> {
                 closeRow={this.closeRow}
               />
             ) : (
-                <Button
+                <StyledButton
                   className="e2e-add-option"
                   style="secondary"
                   icon="create"
@@ -143,7 +147,7 @@ class OptionForm extends PureComponent<Props, State> {
                   autoFocus
                 >
                   <FormattedMessage {...messages.addOption} />
-                </Button>
+                </StyledButton>
               )}
           </List>
         </OptionsContainer>
