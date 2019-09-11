@@ -349,6 +349,7 @@
   "app.components.admin.PostManager.assignee": "Responsable",
   "app.components.admin.PostManager.author": "Auteur",
   "app.components.admin.PostManager.basketsCountTooltip": "Le nombre d’utilisateurs qui ont ajouté cette idée à leur budget participatif",
+  "app.components.admin.PostManager.cannot_contain_ideas": "",
   "app.components.admin.PostManager.columnsTooltip": "Classer les idées grâce aux différentes variables en cliquant sur le dessus des colonnes. ",
   "app.components.admin.PostManager.comments": "Commentaires",
   "app.components.admin.PostManager.delete": "Supprimer",

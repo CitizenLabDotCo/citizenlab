@@ -349,6 +349,7 @@
   "app.components.admin.PostManager.assignee": "",
   "app.components.admin.PostManager.author": "",
   "app.components.admin.PostManager.basketsCountTooltip": "",
+  "app.components.admin.PostManager.cannot_contain_ideas": "",
   "app.components.admin.PostManager.columnsTooltip": "",
   "app.components.admin.PostManager.comments": "",
   "app.components.admin.PostManager.delete": "",
