@@ -35,8 +35,9 @@ export default withRouter((props: WithRouterProps) => (
           <>
             <StyledContentContainer className="e2e-continuous-project-poll-container">
                 <PollSection
-                  id={project.id}
+                  projectId={project.id}
                   type="projects"
+                  phaseId={null}
                 />
             </StyledContentContainer>
           </>

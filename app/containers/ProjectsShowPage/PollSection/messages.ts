@@ -9,4 +9,24 @@ export default defineMessages({
     id: 'app.containers.Projects.PollForm.sendAnswer',
     defaultMessage: 'Send',
   },
+  pollDisabledProjectInactive: {
+    id: 'app.containers.Projects.PollForm.pollDisabledProjectInactive',
+    defaultMessage: 'The poll is no longer available, since this proect is no longer active.',
+  },
+  pollDisabledNotPermitted: {
+    id: 'app.containers.Projects.PollForm.pollDisabledNotPermitted',
+    defaultMessage: 'Unfortunately, you don\'t have the rights to take this poll.',
+  },
+  pollDisabledMaybeNotPermitted: {
+    id: 'app.containers.Projects.PollForm.pollDisabledMaybeNotPermitted',
+    defaultMessage: 'Only certain users can take this poll. Please sign in first.',
+  },
+  pollDisabledNotPossible: {
+    id: 'app.containers.Projects.PollForm.pollDisabledNotPossible',
+    defaultMessage: 'It is currently impossible to take this poll.',
+  },
+  pollDisabledNotActivePhase: {
+    id: 'app.containers.Projects.PollForm.pollDisabledNotActivePhase',
+    defaultMessage: 'This survey can only be taken when this phase in the timeline is active.',
+  },
 });

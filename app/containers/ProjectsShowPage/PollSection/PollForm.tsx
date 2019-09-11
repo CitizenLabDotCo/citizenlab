@@ -65,6 +65,7 @@ interface Props {
   questions: IPollQuestion[];
   id: string;
   type: 'projects' | 'phases';
+  disabled: boolean;
 }
 
 interface State {
@@ -97,8 +98,8 @@ class PollForm extends PureComponent<Props, State> {
 
   validate = () => {
     const { answers } = this.state;
-    const { questions } = this.props;
-    return questions.every(question => !!answers[question.id]);
+    const { questions, disabled } = this.props;
+    return !disabled && questions.every(question => !!answers[question.id]);
   }
 
   render() {
