@@ -32,6 +32,7 @@ module AdminApi
 
     field :id, ID, null: false
     field :title_multiloc, Types::MultilocType, null: false
+    field :body_multiloc, Types::MultilocType, null: false
     field :slug, String, null: false
     field :publication_status, IdeaPublicationStatus, null: false
     field :updated_at, String, null: false
@@ -44,6 +45,10 @@ module AdminApi
     field :images, IdeaImage.connection_type, null: true
     def images
       object.idea_images
+    end
+
+    def published_at
+      object.published_at&.iso8601
     end
 
 
