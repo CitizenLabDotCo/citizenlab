@@ -54,13 +54,29 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.statusChangedOfYourIdea',
     defaultMessage: '\'{ideaTitle}\' status has changed to {status}',
   },
+  statusChangedOfYourInitiative: {
+    id: 'app.containers.NotificationMenu.statusChangedOfYourInitiative',
+    defaultMessage: '\'{initiativeTitle}\' status has changed to {status}',
+  },
   statusChangeOnVotedIdea: {
     id: 'app.containers.NotificationMenu.statusChangeOnVotedIdea',
     defaultMessage: 'The status of an idea you voted for changed to {status}',
   },
+  statusChangeOnVotedInitiative: {
+    id: 'app.containers.NotificationMenu.statusChangeOnVotedInitiative',
+    defaultMessage: 'The status of an initiative you voted for changed to {status}',
+  },
   statusChangeOnCommentedIdea: {
     id: 'app.containers.NotificationMenu.statusChangeOnCommentedIdea',
     defaultMessage: 'The status of an idea you commented on changed to {status}',
+  },
+  statusChangeOnCommentedInitiative: {
+    id: 'app.containers.NotificationMenu.statusChangeOnCommentedInitiative',
+    defaultMessage: 'The status of an initiative you commented on changed to {status}',
+  },
+  thresholdReachedForAdmin: {
+    id: 'app.containers.NotificationMenu.thresholdReachedForAdmin',
+    defaultMessage: '{post} reached the voting threshold',
   },
   userAcceptedYourInvitation: {
     id: 'app.containers.NotificationMenu.userAcceptedYourInvitation',
