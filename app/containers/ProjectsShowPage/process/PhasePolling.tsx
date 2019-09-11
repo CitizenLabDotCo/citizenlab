@@ -41,7 +41,8 @@ class PhaseSurvey extends PureComponent<Props, State> {
       return (
         <Container className={className || ''}>
           <PollSection
-            id={phase.id}
+            phaseId={phase.id}
+            projectId={projectId}
             type="phases"
           />
         </Container>

@@ -14,6 +14,7 @@ export type PostingDisabledReasons = 'project_inactive' | 'not_ideation' | 'post
 export type CommentingDisabledReasons = 'project_inactive' | 'not_supported' | 'commenting_disabled' | 'not_permitted';
 export type VotingDisabledReasons = 'project_inactive' | 'not_ideation' | 'voting_disabled' | 'not_permitted' | 'voting_limited_max_reached';
 export type SurveyDisabledReasons = 'project_inactive' | 'not_survey' | 'not_permitted';
+export type PollDisabledReasons = 'project_inactive' | 'not_poll' | 'not_permitted';
 export interface IProjectData {
   id: string;
   type: 'project';
@@ -61,6 +62,10 @@ export interface IProjectData {
       taking_survey: {
         enabled: boolean;
         disabled_reason: SurveyDisabledReasons | null;
+      }
+      taking_poll: {
+        enabled: boolean;
+        disabled_reason: PollDisabledReasons | null;
       }
     }
   };
