@@ -10,8 +10,8 @@ fr:
     accepted_description: Cette idée a été acceptée et sera mise en place par l'administration
     implemented: mise en place
     implemented_description: Cette idée a été mise en place par l'administration
-    rejected: rejetée
-    rejected_description: Cette idée a été rejetée
+    rejected: non-retenue
+    rejected_description: Cette idée n'a pas été retenue
   initiative_statuses:
     proposed: soumise
     proposed_description: soumise
@@ -127,7 +127,7 @@ fr:
     gender: Genre
     birthyear: Année de naissance
     domicile: Domicile
-    education: Education
+    education: Niveau de scolarité
   custom_field_options:
     gender:
       male: Masculin
