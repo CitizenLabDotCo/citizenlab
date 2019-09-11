@@ -8,6 +8,6 @@ class WebApi::V1::Notifications::StatusChangeOnCommentedIdeaSerializer < WebApi:
   end
 
   attribute :idea_status_title_multiloc do |object|
-    object.idea_status&.title_multiloc
+    object.post_status&.title_multiloc
   end
 end
