@@ -4,6 +4,7 @@ import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
+import { withScope } from '@sentry/browser';
 
 import ConsentManagerBuilderHandler from './ConsentManagerBuilderHandler';
 
@@ -129,6 +130,13 @@ const mapCustomPreferences = (
   } as { customPreferences: CustomPreferences, destinationPreferences: { [destinationId: string]: boolean }};
 };
 
+function reportToSegment(err) {
+  withScope(scope => {
+    scope.setExtra('explanation', 'Segment destination fetch has failed, probably blocked by ad-blocker');
+    reportError(err);
+  });
+}
+
 export class ConsentManager extends PureComponent<Props> {
   handleMapCustomPreferences = ({ destinations, preferences }) => {
     const { tenant } = this.props;
@@ -147,6 +155,7 @@ export class ConsentManager extends PureComponent<Props> {
         writeKey={CL_SEGMENT_API_KEY}
         mapCustomPreferences={this.handleMapCustomPreferences}
         initialPreferences={initialPreferences}
+        onError={reportToSegment}
       >
         {(consentManagerProps) => (
           <ConsentManagerBuilderHandler
