@@ -27,9 +27,23 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const PhaseContainer = styled.div`
+  &:not(:last-child) {
+    margin-bottom: 50px
+  }
+`;
 
-const StyledExportPollButton = styled(ExportPollButton)`
-  margin-top: 40px;
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 30px;
+`;
+
+const Left = styled.div`
+  margin-right: 80px;
 `;
 
 interface InputProps { }
@@ -54,6 +68,20 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
     ) {
       return (
         <>
+          <HeaderContainer>
+            <Left>
+              <SectionTitle>
+                <FormattedMessage {...messages.titlePollTab} />
+              </SectionTitle>
+              <SectionSubtitle>
+                <FormattedMessage {...messages.subtitlePollTab} />
+              </SectionSubtitle>
+            </Left>
+            <ExportPollButton
+              pcType="projects"
+              pcId={project.id}
+            />
+          </HeaderContainer>
           <GetPollQuestions
             participationContextId={project.id}
             participationContextType="projects"
@@ -67,42 +95,49 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
               />
             )}
           </GetPollQuestions>
-
-          <StyledExportPollButton
-            pcType="projects"
-            pcId={project.id}
-          />
         </>
       );
     }
 
     if (project.attributes.process_type === 'timeline' && !isNilOrError(phases)) {
-      return phases.filter(phase => phase.attributes.participation_method === 'poll').map(phase => {
-        return (
-          <Fragment key={phase.id}>
-            <h3>
-              <T value={phase.attributes.title_multiloc} />
-            </h3>
-            <GetPollQuestions
-              participationContextId={phase.id}
-              participationContextType="phases"
-            >
-              {(pollQuestions: GetPollQuestionsChildProps) => (
-                <PollAdminForm
-                  pcType="phases"
+      return (
+        <>
+          <SectionTitle>
+            <FormattedMessage {...messages.titlePollTab} />
+          </SectionTitle>
+          <SectionSubtitle>
+            <FormattedMessage {...messages.subtitlePollTab} />
+          </SectionSubtitle>
+          {phases.filter(phase => phase.attributes.participation_method === 'poll').map(phase => (
+            <PhaseContainer key={phase.id}>
+              <HeaderContainer>
+              <Left>
+                <h3>
+                  <T value={phase.attributes.title_multiloc} />
+                </h3>
+                </Left>
+                <ExportPollButton
                   pcId={phase.id}
-                  pollQuestions={isError(pollQuestions) ? null : pollQuestions}
-                  locale={locale}
+                  pcType="phases"
                 />
-              )}
-            </GetPollQuestions>
-            <StyledExportPollButton
-              pcId={phase.id}
-              pcType="phases"
-            />
-          </Fragment>
-        );
-      });
+              </HeaderContainer>
+              <GetPollQuestions
+                participationContextId={phase.id}
+                participationContextType="phases"
+              >
+                {(pollQuestions: GetPollQuestionsChildProps) => (
+                  <PollAdminForm
+                    pcType="phases"
+                    pcId={phase.id}
+                    pollQuestions={isError(pollQuestions) ? null : pollQuestions}
+                    locale={locale}
+                  />
+                )}
+              </GetPollQuestions>
+            </PhaseContainer>
+          ))}
+        </>
+      );
     }
 
     return null;
@@ -111,12 +146,6 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
   render() {
     return (
       <FeatureFlag name="polls">
-        <SectionTitle>
-          <FormattedMessage {...messages.titlePollTab} />
-        </SectionTitle>
-        <SectionSubtitle>
-          <FormattedMessage {...messages.subtitlePollTab} />
-        </SectionSubtitle>
         <Container>
           {this.renderPolls()}
         </Container>
