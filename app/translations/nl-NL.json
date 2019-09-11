@@ -349,6 +349,7 @@
   "app.components.admin.PostManager.assignee": "Toegewezen aan",
   "app.components.admin.PostManager.author": "Auteur",
   "app.components.admin.PostManager.basketsCountTooltip": "Het aantal gebruikers die dit idee aan hun burgerbegroting hebben toegevoegd",
+  "app.components.admin.PostManager.cannot_contain_ideas": "",
   "app.components.admin.PostManager.columnsTooltip": "Rangschik de ideeën volgens elk van de variabelen door te klikken op de kolomkop.",
   "app.components.admin.PostManager.comments": "Reacties",
   "app.components.admin.PostManager.delete": "Verwijder",
