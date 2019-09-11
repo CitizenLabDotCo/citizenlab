@@ -17,13 +17,13 @@ interface Props {
     handleCancelConfirm: () => void;
     handleCancel: () => void;
     handleSave: (e: FormEvent<any>) => void;
-    isCancelling: boolean;
+    mode: 'preferenceForm' | 'noDestinations' | 'cancelling';
 }
 
-const Footer = ({ validate, isCancelling, handleCancelBack, handleCancelConfirm, handleCancel, handleSave }: Props) => {
+const Footer = ({ validate, mode, handleCancelBack, handleCancelConfirm, handleCancel, handleSave }: Props) => {
   const isValid = validate();
   return (
-    isCancelling ? (
+    mode === 'cancelling' ? (
       <ButtonContainer>
         <CancelButton onClick={handleCancelBack} style="primary-inverse" textColor={colors.adminTextColor}>
           <FormattedMessage {...messages.back} />
@@ -32,7 +32,7 @@ const Footer = ({ validate, isCancelling, handleCancelBack, handleCancelConfirm,
           <FormattedMessage {...messages.confirm} />
         </Button>
       </ButtonContainer>
-    ) : (
+    ) : mode === 'preferenceForm' ? (
       <ButtonContainer>
         <CancelButton onClick={handleCancel} className="integration-cancel" style="primary-inverse" textColor={colors.adminTextColor}>
           <FormattedMessage {...messages.cancel} />
@@ -48,8 +48,11 @@ const Footer = ({ validate, isCancelling, handleCancelBack, handleCancelConfirm,
           <FormattedMessage  {...messages.save} />
         </Button>
       </ButtonContainer>
-    )
-  );
+    ) : (
+    <Button onClick={handleCancel} style="primary" bgColor={colors.adminTextColor} bgHoverColor={darken(0.1, colors.adminTextColor)}>
+      <FormattedMessage {...messages.close} />
+    </Button>
+  ));
 };
 
 export default Footer;
