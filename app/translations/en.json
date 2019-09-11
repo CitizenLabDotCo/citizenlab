@@ -767,7 +767,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.addQuestion": "Add a question",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Cancel",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelOption": "Cancel",
-  "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Delete option",
+  "app.containers.AdminPage.ProjectEdit.PollTab.deleteOption": "Delete",
   "app.containers.AdminPage.ProjectEdit.PollTab.deleteQuestion": "Delete",
   "app.containers.AdminPage.ProjectEdit.PollTab.editOption": "Edit",
   "app.containers.AdminPage.ProjectEdit.PollTab.editOptionDone": "Done",

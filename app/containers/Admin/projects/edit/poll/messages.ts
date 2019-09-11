@@ -45,7 +45,7 @@ export default defineMessages({
   },
   deleteOption: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.deleteOption',
-    defaultMessage: 'Delete option',
+    defaultMessage: 'Delete',
   },
   editOption: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOption',
