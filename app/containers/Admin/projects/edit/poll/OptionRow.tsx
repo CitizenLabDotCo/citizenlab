@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // Components
 import T from 'components/T';
@@ -12,6 +13,8 @@ import messages from './messages';
 // Typings
 import { Multiloc } from 'typings';
 
+const StyledButton = styled(Button)`display: inline-block`;
+
 const OptionRow = ({ pollOptionId, pollOptionTitle, deleteOption, editOption }: {
   pollOptionId: string,
   pollOptionTitle: Multiloc,
@@ -21,6 +24,12 @@ const OptionRow = ({ pollOptionId, pollOptionTitle, deleteOption, editOption }: 
     <Row key={pollOptionId}>
       <TextCell className="expand">
         <T value={pollOptionTitle} />
+        <StyledButton
+          className="e2e-edit-option"
+          onClick={editOption(pollOptionId)}
+          style="text"
+          icon="edit"
+        />
       </TextCell>
       <Button
         className="e2e-delete-option"
@@ -29,15 +38,6 @@ const OptionRow = ({ pollOptionId, pollOptionTitle, deleteOption, editOption }: 
         icon="delete"
       >
         <FormattedMessage {...messages.deleteOption} />
-      </Button>
-
-      <Button
-        className="e2e-edit-option"
-        onClick={editOption(pollOptionId)}
-        style="secondary"
-        icon="edit"
-      >
-        <FormattedMessage {...messages.editOption} />
       </Button>
     </Row>
   );
