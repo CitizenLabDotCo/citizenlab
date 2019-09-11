@@ -329,6 +329,17 @@ export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificati
   };
 }
 
+export interface IStatusChangeOfYourInitiativeNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'status_change_of_your_initiative';
+    read_at: string | null;
+    created_at: string;
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+    initiative_status_title_multiloc: Multiloc;
+  };
+}
+
 export interface IStatusChangeOnCommentedIdeaNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'status_change_on_commented_idea';
@@ -340,6 +351,17 @@ export interface IStatusChangeOnCommentedIdeaNotificationData extends IBaseNotif
   };
 }
 
+export interface IStatusChangeOnCommentedInitiativeNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'status_change_on_commented_initiative';
+    read_at: string | null;
+    created_at: string;
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+    initiative_status_title_multiloc: Multiloc;
+  };
+}
+
 export interface IStatusChangeOnVotedIdeaNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'status_change_on_voted_idea';
@@ -348,6 +370,27 @@ export interface IStatusChangeOnVotedIdeaNotificationData extends IBaseNotificat
     post_title_multiloc: Multiloc;
     post_slug: string;
     idea_status_title_multiloc: Multiloc;
+  };
+}
+
+export interface IStatusChangeOnVotedInitiativeNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'status_change_on_voted_initiative';
+    read_at: string | null;
+    created_at: string;
+    post_title_multiloc: Multiloc;
+    post_slug: string;
+    initiative_status_title_multiloc: Multiloc;
+  };
+}
+
+export interface IThresholdReachedForAdminNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'threshold_reached_for_admin';
+    read_at: string | null;
+    created_at: string;
+    post_title_multiloc: Multiloc;
+    post_slug: string;
   };
 }
 
@@ -378,8 +421,12 @@ export type TNotificationData =
   IProjectPhaseStartedNotificationData |
   IProjectPhaseUpcomingNotificationData |
   IStatusChangeOfYourIdeaNotificationData |
+  IStatusChangeOfYourInitiativeNotificationData |
   IStatusChangeOnCommentedIdeaNotificationData |
-  IStatusChangeOnVotedIdeaNotificationData;
+  IStatusChangeOnCommentedInitiativeNotificationData |
+  IStatusChangeOnVotedIdeaNotificationData |
+  IStatusChangeOnVotedInitiativeNotificationData |
+  IThresholdReachedForAdminNotificationData;
 
 export interface INotificationLinks {
   self: string;

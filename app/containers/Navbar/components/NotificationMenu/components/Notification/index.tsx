@@ -25,8 +25,12 @@ import ProjectModerationRightsReceivedNotification from '../ProjectModerationRig
 import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification';
 import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotification';
 import StatusChangeOfYourIdeaNotification from '../StatusChangeOfYourIdeaNotification';
+import StatusChangeOfYourInitiativeNotification from '../StatusChangeOfYourInitiativeNotification';
 import StatusChangeOnCommentedIdeaNotification from '../StatusChangeOnCommentedIdeaNotification';
+import StatusChangeOnCommentedInitiativeNotification from '../StatusChangeOnCommentedInitiativeNotification';
 import StatusChangeOnVotedIdeaNotification from '../StatusChangeOnVotedIdeaNotification';
+import StatusChangeOnVotedInitiativeNotification from '../StatusChangeOnVotedInitiativeNotification';
+import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
 
 import {
   TNotificationData,
@@ -56,8 +60,12 @@ import {
   IProjectPhaseStartedNotificationData,
   IProjectPhaseUpcomingNotificationData,
   IStatusChangeOfYourIdeaNotificationData,
+  IStatusChangeOfYourInitiativeNotificationData,
   IStatusChangeOnCommentedIdeaNotificationData,
-  IStatusChangeOnVotedIdeaNotificationData
+  IStatusChangeOnCommentedInitiativeNotificationData,
+  IStatusChangeOnVotedIdeaNotificationData,
+  IStatusChangeOnVotedInitiativeNotificationData,
+  IThresholdReachedForAdminNotificationData
 } from 'services/notifications';
 import styled from 'styled-components';
 
@@ -126,10 +134,18 @@ export default class Notification extends PureComponent<Props> {
         return <ProjectPhaseUpcomingNotification notification={notification as IProjectPhaseUpcomingNotificationData} />;
       case 'status_change_of_your_idea':
         return <StatusChangeOfYourIdeaNotification notification={notification as IStatusChangeOfYourIdeaNotificationData} />;
+      case 'status_change_of_your_initiative':
+        return <StatusChangeOfYourInitiativeNotification notification={notification as IStatusChangeOfYourInitiativeNotificationData} />;
       case 'status_change_on_commented_idea':
         return <StatusChangeOnCommentedIdeaNotification notification={notification as IStatusChangeOnCommentedIdeaNotificationData} />;
+      case 'status_change_on_commented_initiative':
+        return <StatusChangeOnCommentedInitiativeNotification notification={notification as IStatusChangeOnCommentedInitiativeNotificationData} />;
       case 'status_change_on_voted_idea':
         return <StatusChangeOnVotedIdeaNotification notification={notification as IStatusChangeOnVotedIdeaNotificationData} />;
+      case 'status_change_on_voted_initiative':
+        return <StatusChangeOnVotedInitiativeNotification notification={notification as IStatusChangeOnVotedInitiativeNotificationData} />;
+      case 'threshold_reached_for_admin':
+        return <ThresholdReachedForAdminNotification notification={notification as IThresholdReachedForAdminNotificationData} />;
       default: return null;
     }
   }
