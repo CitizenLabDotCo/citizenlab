@@ -1,4 +1,3 @@
-// TODO responsible for checking the project is a poll and if so showing the form
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';

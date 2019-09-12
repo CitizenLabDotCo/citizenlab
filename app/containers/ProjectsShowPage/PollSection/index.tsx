@@ -58,6 +58,7 @@ const disabledMessages: { [key in Partial<DisabledReasons>]: ReactIntl.Formatted
   maybeNotPermitted: messages.pollDisabledMaybeNotPermitted,
   notPermitted: messages.pollDisabledNotPermitted,
   notActivePhase: messages.pollDisabledNotActivePhase,
+  alreadyResponded: messages.pollDisabledNotPossible // will not be used
 };
 
 class PollSection extends PureComponent<Props> {
