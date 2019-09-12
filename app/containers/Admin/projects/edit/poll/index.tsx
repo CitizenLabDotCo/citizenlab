@@ -1,5 +1,5 @@
 // Libraries
-import React, { Fragment } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import { adopt } from 'react-adopt';
@@ -57,12 +57,6 @@ interface DataProps {
 interface Props extends InputProps, DataProps { }
 
 export class AdminProjectPoll extends React.PureComponent<Props> {
-
-  renderPolls = () => {
-    const { project, phases, locale } = this.props;
-
-    return null;
-  }
 
   render() {
     const { project, phases, locale } = this.props;

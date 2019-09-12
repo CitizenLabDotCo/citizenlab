@@ -67,10 +67,6 @@ export interface IProjectData {
         enabled: boolean;
         disabled_reason: PollDisabledReasons | null;
       }
-      taking_poll: {
-        enabled: boolean;
-        disabled_reason: PollDisabledReasons | null;
-      }
     }
   };
   relationships: {
