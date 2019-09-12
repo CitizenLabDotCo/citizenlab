@@ -306,6 +306,8 @@
   "app.components.VoteControl.budgetingDisabled": "Désolé. Attribuer un budget à cette idée n’est plus possible.",
   "app.components.VoteControl.budgetingDisabledFutureEnabled": "Désolé. Attribuer un budget à cette idée n’est pas encore possible. Il sera activé à partir de {enabledFromDate}.",
   "app.components.VoteControl.budgetingDisabledNotPermitted": "Vous n’avez pas le droit d'attribuer un budget à cette idée",
+  "app.components.VoteControl.downvote": "",
+  "app.components.VoteControl.upvote": "",
   "app.components.VoteControl.votingDisabledForProject": "Il n'est pas possible de voter sur les idées de '{projectName}' ",
   "app.components.VoteControl.votingDisabledMaxReached": "Vous avez atteint le nombre maximum de votes dans '{projectName}'",
   "app.components.VoteControl.votingDisabledNotPermitted": "Malheureusement, vous n’avez pas le droit de vote sur cette idée",
