@@ -33,6 +33,12 @@ class FormQuestionRow extends PureComponent<Props, State> {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.locale !== this.props.locale) {
+      this.setState({ shownLocale: this.props.locale });
+    }
+  }
+
   onChangeLocale = (shownLocale: Locale) => () => {
     this.setState({ shownLocale });
   }
