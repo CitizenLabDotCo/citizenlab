@@ -289,8 +289,8 @@ class SignedInHeader extends PureComponent<Props, State> {
             <HeaderContentCompleteProfile id="e2e-singed-in-header-complete-profile">
               <Left>
                 <Icons>
-                  <NoAvatarUserIcon name="noAvatar" />
-                  <CompleteProfileIcon name="completeProfile" />
+                  <NoAvatarUserIcon name="noAvatar" ariaHidden />
+                  <CompleteProfileIcon name="completeProfile" ariaHidden />
                 </Icons>
                 <Text>
                   <FormattedMessage {...messages.completeYourProfile} tagName="p" values={{ firstName: authUser.attributes.first_name }} />
