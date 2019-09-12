@@ -382,16 +382,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
           </HasPermission>
         </SectionSubtitle>
 
-        {/*
-        <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
-          <ListHeader>
-            <Button className="e2e-admin-add-project" linkTo="/admin/projects/new" style="cl-blue" icon="plus-circle">
-              <FormattedMessage {...messages.addNewProject} />
-            </Button>
-          </ListHeader>
-        </HasPermission>
-        */}
-
         <StyledCreateProject />
 
         <PageWrapper>

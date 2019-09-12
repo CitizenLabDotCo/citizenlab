@@ -19,14 +19,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.createAProject',
     defaultMessage: 'Create a project',
   },
-  expand: {
-    id: 'app.containers.AdminPage.ProjectEdit.expand',
-    defaultMessage: 'Expand',
-  },
-  collapse: {
-    id: 'app.containers.AdminPage.ProjectEdit.collapse',
-    defaultMessage: 'Collapse',
-  },
   fromATemplate: {
     id: 'app.containers.AdminPage.ProjectEdit.fromATemplate',
     defaultMessage: 'From a template',
