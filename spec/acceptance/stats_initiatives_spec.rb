@@ -75,7 +75,7 @@ resource "Stats - Initiatives" do
       example_request "Count all initiatives that need feedback" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq Initiative.published.count - 1
+        expect(json_response[:count]).to eq Initiative.published.count
       end
 
       example "Count all initiatives that need feedback for a specific assignee" do
