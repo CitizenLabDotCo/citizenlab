@@ -12,8 +12,8 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const duration = 400;
-const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+const duration = 350;
+const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
 const ImageWrapperWrapper = styled.div`
   width: 100%;
@@ -78,7 +78,7 @@ const MoreDetailsButton = styled(Button)`
 const Container = styled.div`
   width: 100%;
   height: 263px;
-  cursor: pointer;
+  /* cursor: pointer; */
   display: flex;
   flex-direction: column;
   padding: 16px;
