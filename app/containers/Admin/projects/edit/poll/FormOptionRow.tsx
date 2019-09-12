@@ -50,6 +50,10 @@ class FormOptionRow extends PureComponent<Props, State> {
     if (prevProps.optionId !== optionId) {
       this.setState({ titleMultiloc: titleMultiloc || {} });
     }
+
+    if (prevProps.locale !== this.props.locale) {
+      this.setState({ shownLocale: this.props.locale });
+    }
   }
 
   onChangeLocale = (shownLocale: Locale) => () => {
