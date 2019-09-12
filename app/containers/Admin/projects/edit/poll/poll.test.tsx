@@ -15,57 +15,41 @@ jest.mock('components/FeatureFlag', () => 'FeatureFlag');
 describe('<AdminProjectPoll/>', () => {
   describe('boundaries', () => {
     it('is feature flagged under the name poll from the root', () => {
-      const wrapper = shallow(<AdminProjectPoll />);
-
+      const mockProject = getMockProject('projectId', 'continuous', 'poll');
+      const wrapper = shallow(<AdminProjectPoll project={mockProject} phases={null} locale={'en'} />);
       expect(wrapper.type()).toBe('FeatureFlag');
       expect(wrapper.props().name).toBe('polls');
     });
-    it('renders only the titles if phase and project are null or error', () => {
+    it('renders null if phase and project are null or error', () => {
       const wrapper = shallow(<AdminProjectPoll />);
-
-      expect(wrapper.children().length).toBe(3);
-      expect(wrapper.find('SectionTitle').length).toBe(1);
-      expect(wrapper.find('SectionSubtitle').length).toBe(1);
-      expect(wrapper.find('poll__Container').childAt(0).length).toBe(0);
+      expect(wrapper.type()).toBeNull();
     });
-    it('renders only the titles if phases is null and project is continuous', () => {
+    it('renders null if phases is null and project is continuous', () => {
       const mockProject = getMockProject('projectId', 'timeline');
 
       const wrapper = shallow(<AdminProjectPoll project={mockProject} />);
 
-      expect(wrapper.children().length).toBe(3);
-      expect(wrapper.find('SectionTitle').length).toBe(1);
-      expect(wrapper.find('SectionSubtitle').length).toBe(1);
-      expect(wrapper.find('poll__Container').childAt(0).length).toBe(0);
+      expect(wrapper.type()).toBeNull();
     });
-    it('renders only the titles if continuous project\'s PM is not poll', () => {
+    it('renders null if continuous project\'s PM is not poll', () => {
       const mockProject = getMockProject('projectId', 'continuous', 'survey', 'survey_monkey');
       const wrapper = shallow(<AdminProjectPoll project={mockProject} phases={null} locale={'en'} />);
+      expect(wrapper.type()).toBeNull();
 
-      expect(wrapper.children().length).toBe(3);
-      expect(wrapper.find('SectionTitle').length).toBe(1);
-      expect(wrapper.find('SectionSubtitle').length).toBe(1);
-      expect(wrapper.find('poll__Container').children().length).toBe(0);
     });
-    it('renders only the titles if timeline project has no polling phase', () => {
+    it('renders null if timeline project has no polling phase', () => {
       const mockProject = getMockProject('projectId', 'timeline');
       const mockPhases = [mockPhaseInformationData, mockPhaseInformationData, mockPhaseInformationData];
       const wrapper = shallow(<AdminProjectPoll project={mockProject} phases={mockPhases} locale={'en'} />);
-
-      expect(wrapper.children().length).toBe(3);
-      expect(wrapper.find('SectionTitle').length).toBe(1);
-      expect(wrapper.find('SectionSubtitle').length).toBe(1);
-      expect(wrapper.find('poll__Container').children().length).toBe(0);
+      expect(wrapper.type()).toBeNull();
     });
   });
   describe('Continuous project', () => {
     it('renders the right content for a continuous project with polling PM', () => {
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(<AdminProjectPoll project={mockProject} phases={null} locale={'en'} />);
-
-      expect(wrapper.find('poll__Container').children().length).toBe(2);
       expect(wrapper.find('GetPollQuestions').props()).toMatchObject({ participationContextId: 'projectId', participationContextType: 'projects' });
-      expect(wrapper.find('poll__StyledExportPollButton').props()).toMatchObject({ pcId: 'projectId', pcType: 'projects' });
+      expect(wrapper.find('ExportPollButton').props()).toMatchObject({ pcId: 'projectId', pcType: 'projects' });
     });
   });
   describe('Polling phases', () => {
@@ -73,21 +57,15 @@ describe('<AdminProjectPoll/>', () => {
       const mockProject = getMockProject('projectId', 'timeline');
       const mockPhases = [mockPhaseInformationData, mockPhasePollData, mockPhaseInformationData];
       const wrapper = shallow(<AdminProjectPoll project={mockProject} phases={mockPhases} locale={'en'} />);
-
-      expect(wrapper.find('poll__Container').children().length).toBe(3);
-      expect(wrapper.find('poll__Container').childAt(0).type()).toBe('h3');
       expect(wrapper.find('GetPollQuestions').props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phases' });
-      expect(wrapper.find('poll__StyledExportPollButton').props()).toMatchObject({ pcId: 'MockPhasePollId', pcType: 'phases' });
+      expect(wrapper.find('ExportPollButton').props()).toMatchObject({ pcId: 'MockPhasePollId', pcType: 'phases' });
     });
     it('renders the right content for a timeline project with two polling phases', () => {
       const mockProject = getMockProject('projectId', 'timeline');
       const mockPhases = [mockPhaseInformationData, mockPhasePollData, mockPhasePollData];
       const wrapper = shallow(<AdminProjectPoll project={mockProject} phases={mockPhases} locale={'en'} />);
-
-      expect(wrapper.find('poll__Container').children().length).toBe(6);
-      expect(wrapper.find('poll__Container').find('h3').length).toBe(2);
       wrapper.find('GetPollQuestions').every(item => expect(item.props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phases' }));
-      wrapper.find('poll__StyledExportPollButton').every(item => expect(item.props()).toMatchObject({ pcId: 'MockPhasePollId', pcType: 'phases' }));
+      wrapper.find('ExportPollButton').every(item => expect(item.props()).toMatchObject({ pcId: 'MockPhasePollId', pcType: 'phases' }));
     });
   });
 });
