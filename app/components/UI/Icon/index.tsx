@@ -300,7 +300,7 @@ const icons = {
     </svg>
   ),
   mapmarker: (className, title) => (
-    <svg className={className} height="100%" viewBox="0 0 17 24">
+    <svg role="img" className={className} height="100%" viewBox="0 0 17 24">
       {injectTitle(title)}
       <path d="M8.5 0C3.807 0 0 3.762 0 8.4 0 14.7 8.5 24 8.5 24S17 14.7 17 8.4C17 3.762 13.193 0 8.5 0zm0 11.4c-1.676 0-3.036-1.344-3.036-3s1.36-3 3.036-3c1.675 0 3.035 1.344 3.035 3s-1.359 3-3.035 3z" />
     </svg>
