@@ -61,96 +61,96 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
   renderPolls = () => {
     const { project, phases, locale } = this.props;
 
+    return null;
+  }
+
+  render() {
+    const { project, phases, locale } = this.props;
     if (isNilOrError(project) || isNilOrError(locale)) return null;
 
     if (project.attributes.process_type === 'continuous'
       && project.attributes.participation_method === 'poll'
     ) {
       return (
-        <>
-          <HeaderContainer>
-            <Left>
-              <SectionTitle>
-                <FormattedMessage {...messages.titlePollTab} />
-              </SectionTitle>
-              <SectionSubtitle>
-                <FormattedMessage {...messages.subtitlePollTab} />
-              </SectionSubtitle>
-            </Left>
-            <ExportPollButton
-              pcType="projects"
-              pcId={project.id}
-            />
-          </HeaderContainer>
-          <GetPollQuestions
-            participationContextId={project.id}
-            participationContextType="projects"
-          >
-            {(pollQuestions: GetPollQuestionsChildProps) => (
-              <PollAdminForm
+        <FeatureFlag name="polls">
+          <Container>
+            <HeaderContainer>
+              <Left>
+                <SectionTitle>
+                  <FormattedMessage {...messages.titlePollTab} />
+                </SectionTitle>
+                <SectionSubtitle>
+                  <FormattedMessage {...messages.subtitlePollTab} />
+                </SectionSubtitle>
+              </Left>
+              <ExportPollButton
                 pcType="projects"
                 pcId={project.id}
-                pollQuestions={isError(pollQuestions) ? null : pollQuestions}
-                locale={locale}
               />
-            )}
-          </GetPollQuestions>
-        </>
+            </HeaderContainer>
+            <GetPollQuestions
+              participationContextId={project.id}
+              participationContextType="projects"
+            >
+              {(pollQuestions: GetPollQuestionsChildProps) => (
+                <PollAdminForm
+                  pcType="projects"
+                  pcId={project.id}
+                  pollQuestions={isError(pollQuestions) ? null : pollQuestions}
+                  locale={locale}
+                />
+              )}
+            </GetPollQuestions>
+          </Container>
+        </FeatureFlag>
       );
     }
 
     if (project.attributes.process_type === 'timeline' && !isNilOrError(phases)) {
+      const pollPhases = phases.filter(phase => phase.attributes.participation_method === 'poll');
+      if (pollPhases.length === 0) return null;
       return (
-        <>
-          <SectionTitle>
-            <FormattedMessage {...messages.titlePollTab} />
-          </SectionTitle>
-          <SectionSubtitle>
-            <FormattedMessage {...messages.subtitlePollTab} />
-          </SectionSubtitle>
-          {phases.filter(phase => phase.attributes.participation_method === 'poll').map(phase => (
-            <PhaseContainer key={phase.id}>
-              <HeaderContainer>
-              <Left>
-                <h3>
-                  <T value={phase.attributes.title_multiloc} />
-                </h3>
-                </Left>
-                <ExportPollButton
-                  pcId={phase.id}
-                  pcType="phases"
-                />
-              </HeaderContainer>
-              <GetPollQuestions
-                participationContextId={phase.id}
-                participationContextType="phases"
-              >
-                {(pollQuestions: GetPollQuestionsChildProps) => (
-                  <PollAdminForm
-                    pcType="phases"
+        <FeatureFlag name="polls">
+          <Container>
+            <SectionTitle>
+              <FormattedMessage {...messages.titlePollTab} />
+            </SectionTitle>
+            <SectionSubtitle>
+              <FormattedMessage {...messages.subtitlePollTab} />
+            </SectionSubtitle>
+            {pollPhases.map(phase => (
+              <PhaseContainer key={phase.id}>
+                <HeaderContainer>
+                  <Left>
+                    <h3>
+                      <T value={phase.attributes.title_multiloc} />
+                    </h3>
+                  </Left>
+                  <ExportPollButton
                     pcId={phase.id}
-                    pollQuestions={isError(pollQuestions) ? null : pollQuestions}
-                    locale={locale}
+                    pcType="phases"
                   />
-                )}
-              </GetPollQuestions>
-            </PhaseContainer>
-          ))}
-        </>
+                </HeaderContainer>
+                <GetPollQuestions
+                  participationContextId={phase.id}
+                  participationContextType="phases"
+                >
+                  {(pollQuestions: GetPollQuestionsChildProps) => (
+                    <PollAdminForm
+                      pcType="phases"
+                      pcId={phase.id}
+                      pollQuestions={isError(pollQuestions) ? null : pollQuestions}
+                      locale={locale}
+                    />
+                  )}
+                </GetPollQuestions>
+              </PhaseContainer>
+            ))}
+          </Container>
+        </FeatureFlag>
       );
     }
-
     return null;
-  }
-
-  render() {
-    return (
-      <FeatureFlag name="polls">
-        <Container>
-          {this.renderPolls()}
-        </Container>
-      </FeatureFlag>
-    );
   }
 }
 
