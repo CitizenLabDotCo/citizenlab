@@ -23,14 +23,16 @@ import DepartmentFilter from './DepartmentFilter';
 import PurposeFilter from './PurposeFilter';
 import ParticipationLevelFilter from './ParticipationLevelFilter';
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-bottom: 15px;
+`;
 
 const Filters = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 `;
 
 const Left = styled.div``;
@@ -62,7 +64,7 @@ const LoadMoreButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 25px;
 `;
 
 const LoadMoreButton = styled(Button)``;
@@ -85,7 +87,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
       $search: String
     ) {
       publishedProjectTemplates(
-        first: 1,
+        first: 6,
         after: $cursor,
         departments: $departments,
         purposes: $purposes,
