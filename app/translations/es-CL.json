@@ -1094,6 +1094,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_budgeting": "Presupuesto de gasto",
   "app.containers.AdminPage.groups.permissions.permissionAction_commenting": "Comentando",
   "app.containers.AdminPage.groups.permissions.permissionAction_posting": "Publicar ideas",
+  "app.containers.AdminPage.groups.permissions.permissionAction_taking_poll": "",
   "app.containers.AdminPage.groups.permissions.permissionAction_taking_survey": "Tomar una encuesta",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting": "Votando",
   "app.containers.AdminPage.groups.permissions.save": "Guardar",
