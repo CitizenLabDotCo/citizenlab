@@ -61,15 +61,10 @@ const disabledMessages: { [key in Partial<DisabledReasons>]: ReactIntl.Formatted
   alreadyResponded: messages.pollDisabledNotPossible // will not be used
 };
 
-class PollSection extends PureComponent<Props> {
-
+export class PollSection extends PureComponent<Props> {
   render() {
     const { pollQuestions, projectId, phaseId, project, phase, type, authUser } = this.props;
-    if (isError(pollQuestions)) {
-      return (
-        'not found'
-      );
-    } else if (isNilOrError(pollQuestions) || isNilOrError(project)) {
+    if (isNilOrError(pollQuestions) || isNilOrError(project) || type === 'phases' && isNilOrError(phase)) {
       return null;
     }
     const { enabled, disabledReason } = pollTakingState({ project, phaseContext: phase, signedIn: !!authUser });
