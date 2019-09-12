@@ -233,8 +233,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
       initiatives: {
         enabled: true,
         allowed: true,
-        voting_threshold: 300,
-        days_limit: 90,
+        voting_threshold: 20,
+        days_limit: 5,
         threshold_reached_message: MultilocService.new.i18n_to_multiloc(
           'initiatives.default_threshold_reached_message',
           locales: CL2_SUPPORTED_LOCALES
@@ -664,6 +664,8 @@ if Apartment::Tenant.current == 'localhost'
       end
       permission.save!
     end
+
+    InitiativeStatusService.new.automated_transitions!
   end
 
 end
