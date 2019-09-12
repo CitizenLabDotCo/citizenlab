@@ -26,6 +26,7 @@ import { lighten } from 'polished';
 // resources
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 import GetIdeasCount, { GetIdeasCountChildProps } from 'resources/GetIdeasCount';
+import GetInitiativesCount, { GetInitiativesCountChildProps } from 'resources/GetInitiativesCount';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Menu = styled.div`
@@ -121,6 +122,7 @@ interface InputProps {}
 interface DataProps {
   authUser: GetAuthUserChildProps;
   ideasCount: GetIdeasCountChildProps;
+  initiativesCount: GetInitiativesCountChildProps;
 }
 interface Props extends InputProps, DataProps {}
 
@@ -210,12 +212,19 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { ideasCount } = nextProps;
+    const { ideasCount, initiativesCount } = nextProps;
     if (!isNilOrError(ideasCount.count) && ideasCount.count !== prevState.navItems.find(item => item.id === 'ideas').count) {
       const { navItems } = prevState;
       const nextNavItems = navItems;
       const ideasIndex = navItems.findIndex(item => item.id === 'ideas');
       nextNavItems[ideasIndex].count = ideasCount.count;
+      return({ navItems: nextNavItems });
+    }
+    if (!isNilOrError(initiativesCount.count) && initiativesCount.count !== prevState.navItems.find(item => item.id === 'initiatives').count) {
+      const { navItems } = prevState;
+      const nextNavItems = navItems;
+      const initiativesIndex = navItems.findIndex(item => item.id === 'initiatives');
+      nextNavItems[initiativesIndex].count = initiativesCount.count;
       return({ navItems: nextNavItems });
     }
     return prevState;
@@ -275,6 +284,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   ideasCount: ({ authUser, render }) => !isNilOrError(authUser) ? <GetIdeasCount feedbackNeeded={true} assignee={authUser.id}>{render}</GetIdeasCount> : null,
+  initiativesCount: ({ authUser, render }) => !isNilOrError(authUser) ? <GetInitiativesCount feedbackNeeded={true} assignee={authUser.id}>{render}</GetInitiativesCount> : null,
 });
 
 const SideBarWithHocs = withRouter<Props>(injectIntl(Sidebar));
