@@ -58,7 +58,7 @@ interface State {
   editingId: string | null;
 }
 
-class OptionForm extends PureComponent<Props, State> {
+export class OptionForm extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -102,7 +102,7 @@ class OptionForm extends PureComponent<Props, State> {
             />
           </TextCell>
           <Button
-            className="e2e-delete-question"
+            className="e2e-collapse-option-form"
             onClick={collapse}
             style="secondary"
           >
@@ -126,8 +126,8 @@ class OptionForm extends PureComponent<Props, State> {
                     key={pollOption.id}
                     pollOptionId={pollOption.id}
                     pollOptionTitle={pollOption.attributes.title_multiloc}
-                    deleteOption={this.deleteOption}
-                    editOption={this.editOption}
+                    deleteOption={this.deleteOption(pollOption.id)}
+                    editOption={this.editOption(pollOption.id)}
                   />
                 )))}
             {editingId === 'new' ? (

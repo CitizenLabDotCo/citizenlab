@@ -18,22 +18,22 @@ const StyledButton = styled(Button)`display: inline-block`;
 const OptionRow = ({ pollOptionId, pollOptionTitle, deleteOption, editOption }: {
   pollOptionId: string,
   pollOptionTitle: Multiloc,
-  deleteOption: (optionId: string) => () => void;
-  editOption: (optionId: string) => () => void;
+  deleteOption: () => void;
+  editOption: () => void;
 }) => (
     <Row key={pollOptionId}>
       <TextCell className="expand">
         <T value={pollOptionTitle} />
         <StyledButton
           className="e2e-edit-option"
-          onClick={editOption(pollOptionId)}
+          onClick={editOption}
           style="text"
           icon="edit"
         />
       </TextCell>
       <Button
         className="e2e-delete-option"
-        onClick={deleteOption(pollOptionId)}
+        onClick={deleteOption}
         style="text"
         icon="delete"
       >
