@@ -84,7 +84,7 @@ class Initiative < ApplicationRecord
 
   def threshold_reached_at
     initiative_status_changes
-      .where(initiative_status_id: InitiativeStatus.where(code: 'threshold_reached').ids)
+      .where(initiative_status: InitiativeStatus.where(code: 'threshold_reached'))
       .order(:created_at).pluck(:created_at).last
   end
 
