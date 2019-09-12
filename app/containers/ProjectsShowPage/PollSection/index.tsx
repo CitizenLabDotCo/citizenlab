@@ -9,6 +9,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import { pollTakingState, DisabledReasons } from 'services/pollTakingRules';
 
+import FormCompleted from './FormCompleted';
 import PollForm from './PollForm';
 import Warning from 'components/UI/Warning';
 
@@ -52,7 +53,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-const disabledMessages: {[key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor} = {
+const disabledMessages: { [key in Partial<DisabledReasons>]: ReactIntl.FormattedMessage.MessageDescriptor } = {
   projectInactive: messages.pollDisabledProjectInactive,
   maybeNotPermitted: messages.pollDisabledMaybeNotPermitted,
   notPermitted: messages.pollDisabledNotPermitted,
@@ -75,17 +76,23 @@ class PollSection extends PureComponent<Props> {
 
     return (
       <Container>
-        {!enabled &&
-          <StyledWarning icon="lock">
-            <FormattedMessage {...message} />
-          </StyledWarning>
+        {disabledReason === 'alreadyResponded'
+          ? <FormCompleted />
+          : <>
+            {!enabled &&
+              <StyledWarning icon="lock">
+                <FormattedMessage {...message} />
+              </StyledWarning>
+            }
+            <PollForm
+              projectId={projectId}
+              questions={pollQuestions}
+              id={type === 'projects' ? projectId : phaseId as string}
+              type={type}
+              disabled={!enabled}
+            />
+          </>
         }
-        <PollForm
-          questions={pollQuestions}
-          id={type === 'projects' ? projectId : phaseId as string}
-          type={type}
-          disabled={!enabled}
-        />
       </Container>
     );
   }

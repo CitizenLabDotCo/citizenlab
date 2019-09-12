@@ -9,7 +9,6 @@ import T from 'components/T';
 import { IPollQuestion } from 'services/pollQuestions';
 import { addPollResponse } from 'services/pollResponses';
 import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptions';
-import FormCompleted from './FormCompleted';
 
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -63,6 +62,7 @@ const StyledRadio = styled(Radio)`
 
 interface Props {
   questions: IPollQuestion[];
+  projectId: string;
   id: string;
   type: 'projects' | 'phases';
   disabled: boolean;
@@ -72,7 +72,6 @@ interface State {
   answers: {
     [questionId: string]: string;
   };
-  answered: boolean;
 }
 
 class PollForm extends PureComponent<Props, State> {
@@ -80,7 +79,6 @@ class PollForm extends PureComponent<Props, State> {
     super(props);
     this.state = {
       answers: {},
-      answered: false
     };
   }
 
@@ -89,10 +87,10 @@ class PollForm extends PureComponent<Props, State> {
   }
 
   sendAnswer = () => {
-    const { id, type } = this.props;
-    const { answers, answered } = this.state;
-    if (this.validate() && !answered) {
-      addPollResponse(id, type, Object.values(answers)).then(() => this.setState({ answered: true }));
+    const { id, type, projectId } = this.props;
+    const { answers } = this.state;
+    if (this.validate()) {
+      addPollResponse(id, type, Object.values(answers), projectId);
     }
   }
 
@@ -103,13 +101,8 @@ class PollForm extends PureComponent<Props, State> {
   }
 
   render() {
-    const { answered, answers } = this.state;
+    const { answers } = this.state;
     const { questions } = this.props;
-    if (answered) {
-      return (
-        <FormCompleted />
-      );
-    }
     return (
       <>
       <PollContainer>
