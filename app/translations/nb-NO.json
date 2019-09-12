@@ -306,6 +306,8 @@
   "app.components.VoteControl.budgetingDisabled": "Tildeling av budsjett til denne idéen er ikke lenger mulig.",
   "app.components.VoteControl.budgetingDisabledFutureEnabled": "Tildeling av budsjett til denne idéen er ikke mulig ennå. Den vil bli aktiv fra {enabledFromDate}.",
   "app.components.VoteControl.budgetingDisabledNotPermitted": "Dessverre har du ikke rettighetene for å tildele et budsjett til denne idéen",
+  "app.components.VoteControl.downvote": "",
+  "app.components.VoteControl.upvote": "",
   "app.components.VoteControl.votingDisabledForProject": "Det vil være mulig å stemme på idéer i {projectName} fra",
   "app.components.VoteControl.votingDisabledMaxReached": "Du har nådd ditt maksimale antall stemmer i {projectName}",
   "app.components.VoteControl.votingDisabledNotPermitted": "Dessverre har du ikke rettighetene til å stemme på denne ideen",
