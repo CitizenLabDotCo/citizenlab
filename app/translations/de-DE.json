@@ -306,6 +306,8 @@
   "app.components.VoteControl.budgetingDisabled": "Es ist nicht mehr möglich, dieser Idee ein Budget zuzufügen.",
   "app.components.VoteControl.budgetingDisabledFutureEnabled": "Diese Idee ein Budget zuzufügen, ist noch nicht möglich. Es wird ab {enabledFromDate} aktiviert werden.",
   "app.components.VoteControl.budgetingDisabledNotPermitted": "Leider haben Sie keine Rechte um dieser Idee ein Budget zuzufügen",
+  "app.components.VoteControl.downvote": "",
+  "app.components.VoteControl.upvote": "",
   "app.components.VoteControl.votingDisabledForProject": "{orgName, select, München {Bewertung von Mängeln in {projectName} ist nicht möglich} other {Abstimmung über Ideen zu {projectName} ist nicht möglich}}",
   "app.components.VoteControl.votingDisabledMaxReached": "{orgName, select, München {Sie haben die maximale Anzahl von Bewertungen in {projectName} erreicht} other {Sie haben die maximale Anzahl von Stimmen zu {projectName} erreicht}}",
   "app.components.VoteControl.votingDisabledNotPermitted": "Leider haben Sie keine Rechte um über diese Idee abzustimmen",

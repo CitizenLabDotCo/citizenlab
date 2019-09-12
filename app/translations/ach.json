@@ -306,6 +306,8 @@
   "app.components.VoteControl.budgetingDisabled": "",
   "app.components.VoteControl.budgetingDisabledFutureEnabled": "",
   "app.components.VoteControl.budgetingDisabledNotPermitted": "",
+  "app.components.VoteControl.downvote": "",
+  "app.components.VoteControl.upvote": "",
   "app.components.VoteControl.votingDisabledForProject": "",
   "app.components.VoteControl.votingDisabledMaxReached": "",
   "app.components.VoteControl.votingDisabledNotPermitted": "",

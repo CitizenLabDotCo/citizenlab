@@ -306,6 +306,8 @@
   "app.components.VoteControl.budgetingDisabled": "Een budget toekennen aan dit idee is niet langer mogelijk.",
   "app.components.VoteControl.budgetingDisabledFutureEnabled": "Een budget toekennen aan dit idee is nog niet mogelijk. Het wordt mogelijk vanaf {enabledFromDate}.",
   "app.components.VoteControl.budgetingDisabledNotPermitted": "Helaas, je hebt geen rechten om een budget aan dit idee toe te kennen",
+  "app.components.VoteControl.downvote": "",
+  "app.components.VoteControl.upvote": "",
   "app.components.VoteControl.votingDisabledForProject": "Stemmen op ideeën in {projectName} is niet mogelijk",
   "app.components.VoteControl.votingDisabledMaxReached": "U hebt het maximum aantal stemmen in {projectName} bereikt",
   "app.components.VoteControl.votingDisabledNotPermitted": "Helaas, je hebt geen rechten om te stemmen op dit idee",
