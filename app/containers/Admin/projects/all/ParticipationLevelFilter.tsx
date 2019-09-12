@@ -24,13 +24,13 @@ interface DataProps {
 
 interface Props extends DataProps, InputProps { }
 
-const DepartmentFilter = memo<Props>(({ locale, onChange }) => {
+const ParticipationlevelFilter = memo<Props>(({ locale, onChange }) => {
 
   const graphQLLocale = !isNilOrError(locale) ? transformLocale(locale) : null;
 
-  const DEPARTMENTS_QUERY = gql`
+  const PARTICIPATIONLEVELS_QUERY = gql`
     {
-      departments {
+      participationLevels {
         nodes {
           id
           titleMultiloc {
@@ -43,9 +43,9 @@ const DepartmentFilter = memo<Props>(({ locale, onChange }) => {
 
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-  const { data } = useQuery(DEPARTMENTS_QUERY);
+  const { data } = useQuery(PARTICIPATIONLEVELS_QUERY);
 
-  const options = data ? data.departments.nodes.map((node) => ({
+  const options = data ? data.participationLevels.nodes.map((node) => ({
     value: node.id,
     text: node.titleMultiloc[`${graphQLLocale}`]
   })) : [];
@@ -57,8 +57,8 @@ const DepartmentFilter = memo<Props>(({ locale, onChange }) => {
 
   return (
     <FilterSelector
-      title={'Departments'}
-      name="departments"
+      title={'Participation levels'}
+      name="participation levels"
       selected={selectedValues}
       values={options}
       onChange={handleOnChange}
@@ -76,6 +76,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <DepartmentFilter {...dataProps} {...inputProps} />}
+    {dataProps => <ParticipationlevelFilter {...dataProps} {...inputProps} />}
   </Data>
 );

@@ -103,7 +103,7 @@ const ExpandIconWrapper = styled.div`
   width: 30px;
   height: 30px;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 2px ${colors.separation};
+  border: solid 1px ${colors.separation};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -178,17 +178,11 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const handleExpandCollapse = useCallback(() => {
     setExpanded(!expanded);
-
-    // if (expanded) {
-    //   setTimeout(() => {
-    //     setSelectedTab(fromATemplateText);
-    //   }, expandAnimationDuration);
-    // }
   }, [expanded]);
 
   const handleTabOnClick = useCallback((item: string) => {
     setSelectedTab(item);
-  }, [expanded]);
+  }, []);
 
   return (
     <Container className={className}>
