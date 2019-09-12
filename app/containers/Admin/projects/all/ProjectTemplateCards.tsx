@@ -1,6 +1,10 @@
-import React, { memo, useCallback } from 'react';
-import { Provider, createClient, useQuery } from 'urql';
-import gql from 'graphql-tag';
+import React, { memo, useCallback, useState } from 'react';
+import { get, isEmpty } from 'lodash-es';
+
+// graphql
+import { gql, ApolloClient, InMemoryCache, HttpLink } from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import { GRAPHQL_PATH } from 'containers/App/constants';
 
 // components
@@ -16,6 +20,8 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import DepartmentFilter from './DepartmentFilter';
+import PurposeFilter from './PurposeFilter';
+import ParticipationLevelFilter from './ParticipationLevelFilter';
 
 const Container = styled.div``;
 
@@ -70,9 +76,22 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
   const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
   const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
 
-  const templates = gql`
-    query PublishedProjectTemplatesQuery($first: Int!, $after: String) {
-      publishedProjectTemplates(first: $first, after: $after) {
+  const TEMPLATES_QUERY = gql`
+    query PublishedProjectTemplatesQuery(
+      $cursor: String,
+      $departments: [ID!],
+      $purposes: [ID!],
+      $participationLevels: [ID!],
+      $search: String
+    ) {
+      publishedProjectTemplates(
+        first: 1,
+        after: $cursor,
+        departments: $departments,
+        purposes: $purposes,
+        participationLevels: $participationLevels,
+        search: $search
+      ) {
         edges {
           node {
             id,
@@ -94,50 +113,94 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
     }
   `;
 
-  // data.publishedProjectTemplates.pageInfo.endCursor
+  const [departments, setDepartments] = useState<string[] | null>(null);
+  const [purposes, setPurposes] = useState<string[] | null>(null);
+  const [participationLevels, setParticipationLevels] = useState<string[] | null>(null);
+  const [search, setSearch] = useState<string | null>(null);
+  const [loadingMore, setLoadingMore] = useState(false);
 
-  const [{ fetching, data }] = useQuery({
-    query: templates,
+  const { data, fetchMore } = useQuery(TEMPLATES_QUERY, {
     variables: {
-      first: 2
-    }
+      departments,
+      purposes,
+      participationLevels,
+      search,
+      cursor: null,
+    },
   });
 
-  const handleDepartmentFilterOnChange = useCallback(() => {
-    // empty
+  const templates = get(data, 'publishedProjectTemplates', null);
+
+  const handleDepartmentFilterOnChange = useCallback((departments: string[]) => {
+    setDepartments(departments && departments.length > 0 ? departments : null);
   }, []);
 
-  const handleSearchOnChange = useCallback(() => {
-    // empty
+  const handlePurposeFilterOnChange = useCallback((purposes: string[]) => {
+    setPurposes(purposes && purposes.length > 0 ? purposes : null);
+  }, []);
+
+  const handleParticipationLevelFilterOnChange = useCallback((participationLevels: string[]) => {
+    setParticipationLevels(participationLevels && participationLevels.length > 0 ? participationLevels : null);
+  }, []);
+
+  const handleSearchOnChange = useCallback((searchValue: string) => {
+    setSearch(!isEmpty(searchValue) ? searchValue : null);
   }, []);
 
   const handleLoadMoreTemplatesOnClick = useCallback(() => {
-    // empty
-  }, []);
+    setLoadingMore(true);
 
-  if (!fetching) {
+    fetchMore({
+      variables: {
+        departments,
+        purposes,
+        participationLevels,
+        search,
+        cursor: templates.pageInfo.endCursor
+      },
+      updateQuery: (previousResult, { fetchMoreResult }: { fetchMoreResult: any }) => {
+        const newEdges = fetchMoreResult.publishedProjectTemplates.edges;
+        const pageInfo = fetchMoreResult.publishedProjectTemplates.pageInfo;
+
+        return newEdges.length
+          ? {
+              publishedProjectTemplates: {
+                pageInfo,
+                __typename: templates.__typename,
+                edges: [...templates.edges, ...newEdges]
+              }
+            }
+          : previousResult;
+      }
+    }).then(() => {
+      setLoadingMore(false);
+    }).catch(() => {
+      setLoadingMore(false);
+    });
+  }, [templates]);
+
+  if (templates) {
     return (
       <Container className={className}>
         <Filters>
           <Left>
             <DepartmentFilter onChange={handleDepartmentFilterOnChange} />
-            <DepartmentFilter onChange={handleDepartmentFilterOnChange} />
-            <DepartmentFilter onChange={handleDepartmentFilterOnChange} />
+            <PurposeFilter onChange={handlePurposeFilterOnChange} />
+            <ParticipationLevelFilter onChange={handleParticipationLevelFilterOnChange} />
           </Left>
 
           <Right>
             <StyledSearchInput
-              className="e2e-search-ideas-input"
               placeholder={searchPlaceholder}
               ariaLabel={searchAriaLabel}
-              value={null}
+              value={search}
               onChange={handleSearchOnChange}
             />
           </Right>
         </Filters>
 
         <Cards>
-          {data.publishedProjectTemplates.edges.map(({ node: { id, titleMultiloc, subtitleMultiloc, cardImage } }) => {
+          {templates.edges.map(({ node: { id, titleMultiloc, subtitleMultiloc, cardImage } }) => {
             return (
               <StyledProjectTemplateCard
                 key={id}
@@ -149,17 +212,17 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
           })}
         </Cards>
 
-        <LoadMoreButtonWrapper>
-          <LoadMoreButton
-            onClick={handleLoadMoreTemplatesOnClick}
-            style="secondary"
-            // fullWidth={true}
-            // bgColor={darken(0.05, colors.lightGreyishBlue)}
-            // bgHoverColor={darken(0.1, colors.lightGreyishBlue)}
-          >
-            <FormattedMessage {...messages.loadMoreTemplates} />
-          </LoadMoreButton>
-        </LoadMoreButtonWrapper>
+        {get(templates, 'pageInfo.hasNextPage') &&
+          <LoadMoreButtonWrapper>
+            <LoadMoreButton
+              processing={loadingMore}
+              onClick={handleLoadMoreTemplatesOnClick}
+              style="secondary"
+            >
+              <FormattedMessage {...messages.loadMoreTemplates} />
+            </LoadMoreButton>
+          </LoadMoreButtonWrapper>
+        }
 
       </Container>
     );
@@ -168,14 +231,13 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
   return null;
 });
 
-const client = createClient({
-  url: GRAPHQL_PATH
-});
-
+const cache = new InMemoryCache();
+const link = new HttpLink({ uri: GRAPHQL_PATH });
+const client = new ApolloClient({ cache, link });
 const ProjectTemplateCardsWithHoc = injectIntl(ProjectTemplateCards);
 
-export default () => (
-  <Provider value={client}>
-    <ProjectTemplateCardsWithHoc />
-  </Provider>
+export default (props: Props) => (
+  <ApolloProvider client={client}>
+    <ProjectTemplateCardsWithHoc {...props} />
+  </ApolloProvider>
 );

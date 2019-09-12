@@ -92,3 +92,10 @@ export function stripHtmlTags(str: string | null | undefined) {
     return str.replace(/<\/?(p|div|span|ul|ol|li|br|em|img|strong|a)[^>]{0,}\/?>/g, '');
   }
 }
+
+// e.g. 'en-GB' -> 'enGb' (for use in graphQl query)
+export function transformLocale(locale: string) {
+  const newLocale = locale.replace('-', '');
+  const length = newLocale.length - 1;
+  return newLocale.substring(0, length) + newLocale.substr(length).toLowerCase();
+}

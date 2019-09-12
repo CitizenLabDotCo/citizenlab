@@ -28,9 +28,9 @@ const DepartmentFilter = memo<Props>(({ locale, onChange }) => {
 
   const graphQLLocale = !isNilOrError(locale) ? transformLocale(locale) : null;
 
-  const DEPARTMENTS_QUERY = gql`
+  const PURPOSES_QUERY = gql`
     {
-      departments {
+      purposes {
         nodes {
           id
           titleMultiloc {
@@ -43,9 +43,9 @@ const DepartmentFilter = memo<Props>(({ locale, onChange }) => {
 
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-  const { data } = useQuery(DEPARTMENTS_QUERY);
+  const { data } = useQuery(PURPOSES_QUERY);
 
-  const options = data ? data.departments.nodes.map((node) => ({
+  const options = data ? data.purposes.nodes.map((node) => ({
     value: node.id,
     text: node.titleMultiloc[`${graphQLLocale}`]
   })) : [];
@@ -57,8 +57,8 @@ const DepartmentFilter = memo<Props>(({ locale, onChange }) => {
 
   return (
     <FilterSelector
-      title={'Departments'}
-      name="departments"
+      title={'Purposes'}
+      name="purposes"
       selected={selectedValues}
       values={options}
       onChange={handleOnChange}
