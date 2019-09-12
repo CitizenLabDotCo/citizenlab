@@ -92,13 +92,6 @@ const Expand = styled.div`
   align-items: center;
 `;
 
-// const ExpandText = styled.div`
-//   color: ${colors.label};
-//   font-size: ${fontSizes.base}px;
-//   font-weight: 500;
-//   margin-right: 10px;
-// `;
-
 const ExpandIconWrapper = styled.div`
   width: 30px;
   height: 30px;
@@ -161,12 +154,15 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   }];
 
   const [expanded, setExpanded] = useState(false);
+  const [hasCollapseAnimation, setHasCollapseAnimation] = useState(true);
   const [selectedTab, setSelectedTab] = useState(fromATemplateText);
 
   useEffect(() => {
     const subscription = eventEmitter.observeEvent('NewProjectCreated').subscribe(() => {
-      setExpanded(false);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setHasCollapseAnimation(false);
+      setTimeout(() => setExpanded(false), 100);
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 200);
+      setTimeout(() => setHasCollapseAnimation(true), 500);
     });
 
     return () => subscription.unsubscribe();
@@ -196,11 +192,6 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           <FormattedMessage {...messages.createAProject} />
         </HeaderTitle>
         <Expand>
-          {/*
-          <ExpandText>
-            {expanded ? <FormattedMessage {...messages.collapse} /> : <FormattedMessage {...messages.expand} />}
-          </ExpandText>
-          */}
           <ExpandIconWrapper>
             <ExpandIcon name="chevron-right" className={expanded ? 'expanded' : 'collapsed'} />
           </ExpandIconWrapper>
@@ -210,10 +201,10 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         classNames="content"
         in={expanded}
         timeout={duartion}
-        mounOnEnter={false}
-        unmountOnExit={false}
+        mounOnEnter={true}
+        unmountOnExit={true}
         enter={true}
-        exit={true}
+        exit={hasCollapseAnimation}
       >
         <CreateProjectContent className={`${expanded ? 'expanded' : 'collapsed'}`}>
           <CreateProjectContentInner>
@@ -223,7 +214,6 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               onClick={handleTabOnClick}
             />
             {selectedTab === fromATemplateText ? <ProjectTemplateCards /> : <AdminProjectEditGeneral />}
-            {/* <ProjectTemplates /> */}
           </CreateProjectContentInner>
         </CreateProjectContent>
       </CSSTransition>
