@@ -26,8 +26,8 @@ const icons = {
       <path d="M19.355 6.035A7.5 7.5 0 0 0 12 0a7.506 7.506 0 0 0-6.65 4.035A6.003 6.003 0 0 0 0 10c0 3.315 2.685 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.055-4.78-4.645-4.965zM14 9v4h-4V9H7l5-5 5 5h-3z" />
     </svg>
   ),
-  error: (className, title) => (
-    <svg className={className} height="100%" viewBox="2 2 20 20">
+  error: (className, title, ariaHidden) => (
+    <svg aria-hidden={ariaHidden} className={className} height="100%" viewBox="2 2 20 20">
       {injectTitle(title)}
       <path fill="none" d="M0 0h24v24H0V0z" />
       <path d="M11 15h2v2h-2zM11 7h2v6h-2z" />
@@ -804,12 +804,12 @@ type ClIconNames = keyof typeof clIcons;
 
 export type IconNames = NormalIconNames | ClIconNames;
 
-const Icon = memo<Props>(({ name, className, title, colorTheme }) => {
+const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) => {
   if (icons[name] !== undefined) {
-    return icons[name](className, title);
+    return icons[name](className, title, ariaHidden);
   } else {
     const theme = colorTheme ? colorTheme : colors;
-    return clIcons[name](className, title, theme);
+    return clIcons[name](className, title, theme, ariaHidden);
   }
 });
 
@@ -825,6 +825,7 @@ export interface Props {
   className?: string;
   title?: string | JSX.Element;
   colorTheme?: clColorTheme;
+  ariaHidden?: boolean;
 }
 
 export default Icon;
