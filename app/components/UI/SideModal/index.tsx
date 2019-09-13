@@ -21,11 +21,14 @@ import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 import { hideVisually } from 'polished';
 
-const timeout = 300;
-const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+const enterTimeout = 450;
+const enterDelay = 0;
+const exitTimeout = 450;
+const exitDelay = 0;
+const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
 const ModalContainer = styled(clickOutside)`
-  width: 920px;
+  width: 940px;
   height: 100vh;
   background: white;
   display: flex;
@@ -36,6 +39,39 @@ const ModalContainer = styled(clickOutside)`
   top: 0;
   right: 0;
   will-change: opacity, transform;
+`;
+
+const CloseIcon = styled(Icon)`
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  fill: ${colors.label};
+  z-index: 2;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 35px;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+
+  &:hover,
+  &:focus {
+    ${CloseIcon} {
+      fill: #000;
+    }
+  }
+
+  ${media.smallerThanMinTablet`
+    height: 18px;
+    width: 18px;
+  `}
 `;
 
 const Overlay = styled(FocusTrap)`
@@ -56,19 +92,24 @@ const Overlay = styled(FocusTrap)`
 
     ${ModalContainer} {
       opacity: 0;
-      transform: translateX(920px);
+      transform: translateX(940px);
     }
 
     &.modal-enter-active {
       opacity: 1;
-      transition: opacity ${timeout}ms ${easing};
+      transition: all ${enterTimeout}ms ${easing} ${enterDelay}ms;
 
       ${ModalContainer} {
         opacity: 1;
         transform: translateX(0px);
-        transition: opacity ${timeout}ms ${easing},
-                    transform ${timeout}ms ${easing};
+        transition: all ${enterTimeout}ms ${easing} ${enterDelay}ms;
       }
+    }
+  }
+
+  &.modal-enter-done {
+    ${CloseButton} {
+      opacity: 1;
     }
   }
 
@@ -80,15 +121,18 @@ const Overlay = styled(FocusTrap)`
       transform: translateX(0px);
     }
 
-    &.modal-exit-active {
+    ${CloseButton} {
       opacity: 0;
-      transition: opacity ${timeout}ms ${easing};
+    }
+
+    &.modal-exit-active {
+      opacity: 1;
+      transition: opacity ${exitTimeout}ms ${easing} ${exitDelay}ms;
 
       ${ModalContainer} {
-        opacity: 0;
-        transform: translateX(920px);
-        transition: opacity ${timeout}ms ${easing},
-                    transform ${timeout}ms ${easing};
+        opacity: 1;
+        transform: translateX(940px);
+        transition: all ${exitTimeout}ms ${easing} ${exitDelay}ms;
       }
     }
   }
@@ -100,40 +144,6 @@ const ModalContent = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-`;
-
-const CloseIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
-  fill: ${colors.mediumGrey};
-  z-index: 2;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  height: 30px;
-  width: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  outline: none;
-
-  &:hover,
-  &:focus,
-  &:active {
-    ${CloseIcon} {
-      fill: #000;
-    }
-  }
-
-  ${media.smallerThanMinTablet`
-    height: 18px;
-    width: 18px;
-  `}
 `;
 
 const HiddenSpan = styled.span`${hideVisually()}`;
@@ -154,7 +164,6 @@ export default class SideModal extends PureComponent<Props, State> {
   private el: HTMLDivElement;
   private ModalPortal = document.getElementById('modal-portal');
   private ModalContentElement: HTMLDivElement | null;
-  private ModalCloseButton: HTMLButtonElement | null;
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -211,11 +220,7 @@ export default class SideModal extends PureComponent<Props, State> {
   }
 
   openModal = () => {
-    disableBodyScroll(this.ModalContentElement);
-
-    if (this.ModalCloseButton) {
-      this.ModalCloseButton.focus();
-    }
+    setTimeout(() => disableBodyScroll(this.ModalContentElement), 500);
   }
 
   manuallyCloseModal = () => {
@@ -236,18 +241,8 @@ export default class SideModal extends PureComponent<Props, State> {
     this.props.close();
   }
 
-  setCloseButtonRef = (element: HTMLButtonElement) => {
-    this.ModalCloseButton = (element || null);
-  }
-
   setContentRef = (element: HTMLDivElement) => {
     this.ModalContentElement = (element || null);
-  }
-
-  onOpen = () => {
-    if (this.ModalCloseButton) {
-      this.ModalCloseButton.focus();
-    }
   }
 
   render() {
@@ -257,10 +252,14 @@ export default class SideModal extends PureComponent<Props, State> {
       <CSSTransition
         classNames="modal"
         in={opened}
-        exit={true}
-        timeout={timeout}
+        timeout={{
+          enter: enterTimeout + enterDelay,
+          exit: exitTimeout + exitDelay
+        }}
         mountOnEnter={true}
         unmountOnExit={true}
+        enter={true}
+        exit={true}
       >
         <Overlay
           id="e2e-modal-container"
@@ -281,7 +280,6 @@ export default class SideModal extends PureComponent<Props, State> {
           <CloseButton
             className="e2e-modal-close-button"
             onClick={this.clickCloseButton}
-            ref={this.setCloseButtonRef}
           >
             <HiddenSpan>
               <FormattedMessage {...messages.closeButtonAria} />

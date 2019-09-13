@@ -10,7 +10,7 @@ import { HeaderTitle } from './styles';
 // Events
 import eventEmitter from 'utils/eventEmitter';
 
-// localisation
+// i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
@@ -18,7 +18,7 @@ import messages from './messages';
 // style
 import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
-import { darken } from 'polished';
+import { darken, transparentize } from 'polished';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -96,7 +96,7 @@ const ExpandIconWrapper = styled.div`
   width: 30px;
   height: 30px;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 1px ${colors.separation};
+  border: solid 2px ${transparentize(0.7, colors.label)};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,7 +104,7 @@ const ExpandIconWrapper = styled.div`
 `;
 
 const ExpandIcon = styled(Icon)`
-  height: 10px;
+  height: 11px;
   fill: ${colors.label};
   transition: all ${duartion - 100}ms ease-out;
 
@@ -128,7 +128,7 @@ const CreateProjectButton = styled.button`
 
   &:hover {
     ${ExpandIconWrapper} {
-      border-color:${darken(0.25, colors.separation)};
+      border-color: ${transparentize(0.2, colors.label)};
     }
   }
 `;

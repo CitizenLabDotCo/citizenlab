@@ -11,18 +11,6 @@ import LazyIdeaContent from './Idea/LazyIdeaContent';
 import LazyInitiativeEdit from './Initiative/LazyInitiativeEdit';
 import LazyInitiativeContent from './Initiative/LazyInitiativeContent';
 
-interface DataProps {}
-
-interface InputProps {
-  type: ManagerType;
-  onClose: () => void;
-  postId: string | null;
-  onSwitchPreviewMode: () => void;
-  mode: 'edit' | 'view';
-}
-
-interface Props extends InputProps, DataProps {}
-
 export const Container = styled.div`
   min-height: 100%;
   width: 100%;
@@ -37,26 +25,69 @@ export const Top = styled.div`
   border-bottom: 1px solid ${colors.separation};
   display: flex;
   align-items: center;
-  position: absolute;
+  position: sticky;
   top: 0;
   left: 0;
   height: 50px;
   width: 100%;
-  padding-left: 10px;
+  padding-left: 15px;
   padding-right: 50px;
   z-index: 1;
 `;
 
 export const Content = styled.div`
   padding: 30px;
-  margin-top: 50px;
+  padding-left: 35px;
+  padding-right: 35px;
+  margin-top: 0px;
   width: 100%;
 `;
 
-export default class PostPreview extends PureComponent<Props> {
+interface DataProps {}
+
+interface InputProps {
+  type: ManagerType;
+  onClose: () => void;
+  postId: string | null;
+  onSwitchPreviewMode: () => void;
+  mode: 'edit' | 'view';
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {
+  postId: string | null;
+  opened: boolean;
+}
+
+export default class PostPreview extends PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      postId: null,
+      opened: false
+    };
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.postId !== this.props.postId && this.props.postId) {
+      this.setState({ opened: true });
+      setTimeout(() => this.setState({ postId: this.props.postId }), 200);
+    }
+  }
+
+  onClose = () => {
+    this.setState({ opened: false });
+    setTimeout(() => {
+      this.setState({ postId: null });
+      this.props.onClose();
+    }, 450);
+  }
+
   previewComponent = () => {
-    const { type, postId, onClose, onSwitchPreviewMode, mode } = this.props;
+    const { type, onSwitchPreviewMode, mode } = this.props;
     const postType = (type === 'AllIdeas' || type === 'ProjectIdeas') ? 'idea' : 'initiative';
+    const { postId } = this.state;
 
     if (postId) {
       return ({
@@ -64,14 +95,14 @@ export default class PostPreview extends PureComponent<Props> {
           idea: (
             <LazyIdeaContent
               ideaId={postId}
-              closePreview={onClose}
+              closePreview={this.onClose}
               handleClickEdit={onSwitchPreviewMode}
             />
           ),
           initiative: (
             <LazyInitiativeContent
               initiativeId={postId}
-              closePreview={onClose}
+              closePreview={this.onClose}
               handleClickEdit={onSwitchPreviewMode}
             />
           )
@@ -97,12 +128,12 @@ export default class PostPreview extends PureComponent<Props> {
   }
 
   render() {
-    const { postId, onClose } = this.props;
+    const { opened } = this.state;
 
     return (
       <SideModal
-        opened={!!postId}
-        close={onClose}
+        opened={opened}
+        close={this.onClose}
       >
         <Suspense fallback={<FullPageSpinner />}>
           {this.previewComponent()}

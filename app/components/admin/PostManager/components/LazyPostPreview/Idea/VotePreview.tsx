@@ -38,7 +38,7 @@ const VotesContainer = styled.div`
 `;
 
 const UpvotesContainer = styled(VotesContainer)`
-  margin-right: 20px;
+  margin-right: 30px;
 `;
 
 const DownvotesContainer = styled(VotesContainer)``;

@@ -10,6 +10,7 @@ import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
@@ -33,9 +34,6 @@ const Left = styled.div`
 export interface Props {
   projects: GetProjectsChildProps;
 }
-
-// i18n
-import messages from './messages';
 
 class IdeaDashboard extends React.PureComponent<Props> {
   render() {

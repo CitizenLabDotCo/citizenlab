@@ -9,8 +9,10 @@ import { GRAPHQL_PATH } from 'containers/App/constants';
 
 // components
 import ProjectTemplateCard from './ProjectTemplateCard';
+import ProjectTemplatePreview from './ProjectTemplatePreview';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
+import SideModal from 'components/UI/SideModal';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -120,6 +122,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
   const [participationLevels, setParticipationLevels] = useState<string[] | null>(null);
   const [search, setSearch] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
 
   const { data, fetchMore } = useQuery(TEMPLATES_QUERY, {
     variables: {
@@ -181,6 +184,14 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
     });
   }, [templates]);
 
+  const handlePreviewOnOpen = useCallback((projectTemplateId: string) => {
+    setPreviewTemplateId(projectTemplateId);
+  }, []);
+
+  const handlePreviewOnClose = useCallback(() => {
+    setPreviewTemplateId(null);
+  }, []);
+
   if (templates) {
     return (
       <Container className={className}>
@@ -206,9 +217,11 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
             return (
               <StyledProjectTemplateCard
                 key={id}
+                projectTemplateId={id}
                 imageUrl={cardImage}
                 title={titleMultiloc.en}
                 body={subtitleMultiloc.en}
+                onPreviewButtonClick={handlePreviewOnOpen}
               />
             );
           })}
@@ -225,6 +238,13 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
             </LoadMoreButton>
           </LoadMoreButtonWrapper>
         }
+
+        <SideModal
+          opened={!!previewTemplateId}
+          close={handlePreviewOnClose}
+        >
+          {previewTemplateId && <ProjectTemplatePreview projectTemplateId={previewTemplateId} />}
+        </SideModal>
 
       </Container>
     );
