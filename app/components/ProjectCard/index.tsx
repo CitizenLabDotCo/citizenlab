@@ -402,6 +402,15 @@ const MetaItem = styled.div`
   ${media.smallerThanMinTablet`
     margin-left: 20px;
   `};
+
+  .screenreader-only {
+    position:absolute;
+    left:-10000px;
+    top:auto;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+  }
 `;
 
 const MetaItemIcon = styled(Icon)`
@@ -635,19 +644,21 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                   <ProjectMetaItems>
                     {showIdeasCount &&
                       <MetaItem className="first">
-                        <MetaItemIcon name="idea2" />
-                        <MetaItemText>
+                        <MetaItemIcon ariaHidden name="idea2" />
+                        <MetaItemText aria-hidden>
                           {ideasCount}
                         </MetaItemText>
+                        <span className="screenreader-only">{formatMessage(messages.xIdeas, { ideasCount })}</span>
                       </MetaItem>
                     }
 
                     {showCommentsCount &&
                       <MetaItem>
-                        <CommentIcon name="comments" />
-                        <MetaItemText>
+                        <CommentIcon ariaHidden name="comments" />
+                        <MetaItemText aria-hidden>
                           {commentsCount}
                         </MetaItemText>
+                        <span className="screenreader-only">{formatMessage(messages.xComments, { commentsCount })}</span>
                       </MetaItem>
                     }
                   </ProjectMetaItems>
