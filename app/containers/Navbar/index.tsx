@@ -407,7 +407,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const { projectsDropdownOpened } = this.state;
     const isAdminPage = (location && location.pathname.startsWith('/admin'));
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
-    const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
     let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
     // Avoids caching issue when an admin changes platform logo (I guess)
     tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : undefined) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
@@ -433,7 +432,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
             <Left>
               {tenantLogo &&
                 <LogoLink to="/" onlyActiveOnIndex={true}>
-                  <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText, { tenantName })} />
+                  <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
                 </LogoLink>
               }
 
