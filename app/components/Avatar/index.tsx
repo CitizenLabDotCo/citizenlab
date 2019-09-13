@@ -6,9 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Icon from 'components/UI/Icon';
 
-// services
-import { getUserName } from 'services/users';
-
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
@@ -140,7 +137,6 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
       hasHoverEffect = (isFunction(onClick) || hasHoverEffect);
       const imageSize = (parseInt(size, 10) > 160 ? 'large' : 'medium');
       const avatarSrc = user.attributes.avatar && user.attributes.avatar[imageSize];
-      const userName = getUserName(user);
       const containerSize =  `${parseInt(size, 10) + (parseInt(padding as string, 10) * 2) + (parseInt(borderThickness as string, 10) * 2)}px`;
       const numberSize = parseInt(size, 10);
 
@@ -158,14 +154,14 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
             <AvatarImage
               className={`avatarImage ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
               src={avatarSrc}
-              alt={this.props.intl.formatMessage(messages.avatarAltText, { userName })}
+              alt=""
               size={size}
             />
           ) : (
             <AvatarIcon
               className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
               name="user"
-              title={<FormattedMessage {...messages.noAvatarAltText} />}
+              ariaHidden
               size={size}
               fillColor={fillColor}
               fillHoverColor={fillHoverColor}
