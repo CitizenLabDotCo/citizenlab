@@ -8,7 +8,7 @@ module Polls
 				def index_xlsx
 			    I18n.with_locale(current_user&.locale) do
 			      
-			      xlsx = XlsxService.new.generate_poll_results_xlsx @participation_context
+			      xlsx = ::Polls::XlsxService.new.generate_poll_results_xlsx @participation_context
 			      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'polling_results.xlsx'
 			    end
 			  end
