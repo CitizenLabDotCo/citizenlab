@@ -95,10 +95,6 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.formTitleWhat',
     defaultMessage: 'What',
   },
-  formTitleWhen: {
-    id: 'app.containers.Admin.emails.formTitleWhen',
-    defaultMessage: 'When',
-  },
   editCampaignTitle: {
     id: 'app.containers.Admin.emails.editCampaignTitle',
     defaultMessage: 'Edit campaign',
@@ -163,10 +159,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.deliveryStatus_sent',
     defaultMessage: 'Sent',
   },
-  deliveryStatus_bounced: {
-    id: 'app.containers.Admin.Campaigns.deliveryStatus_bounced',
-    defaultMessage: 'Bounced',
-  },
   deliveryStatus_failed: {
     id: 'app.containers.Admin.Campaigns.deliveryStatus_failed',
     defaultMessage: 'Failed',
@@ -198,10 +190,6 @@ export default defineMessages({
   tabAutomated: {
     id: 'app.containers.Admin.Campaigns.tabAutomated',
     defaultMessage: 'Automated',
-  },
-  previewHeader: {
-    id: 'app.containers.Admin.Campaigns.previewHeader',
-    defaultMessage: 'Preview',
   },
   campaignFrom: {
     id: 'app.containers.Admin.Campaigns.campaignFrom',
