@@ -22,9 +22,6 @@ import { FormattedRelative } from 'react-intl';
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
-// typings
-import { Message } from 'typings';
-
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -70,7 +67,6 @@ export interface InputProps {
   createdAt?: string | undefined;
   size: string;
   notALink?: boolean;
-  message?: Message | ReactIntl.FormattedMessage.MessageDescriptor;
   projectId?: string | null;
   showAvatar?: boolean;
   avatarBadgeBgColor?: string;

@@ -129,10 +129,6 @@ export default defineMessages({
     id: 'app.containers.Comments.commentReplyButton',
     defaultMessage: 'Reply',
   },
-  commentDeleteButton: {
-    id: 'app.containers.Comments.commentDeleteButton',
-    defaultMessage: 'Delete',
-  },
   seeTranslation: {
     id: 'app.components.Comments.seeTranslation',
     defaultMessage: 'See translation',
@@ -153,10 +149,6 @@ export default defineMessages({
     id: 'app.containers.Comments.emptyCommentError',
     defaultMessage: 'The comment can\'t be empty',
   },
-  submittingComment: {
-    id: 'app.containers.Comments.submittingComment',
-    defaultMessage: 'Publishing...',
-  },
   loadMoreComments: {
     id: 'app.containers.Comments.loadMoreComments',
     defaultMessage: 'Load more comments',
@@ -164,10 +156,6 @@ export default defineMessages({
   loadingComments: {
     id: 'app.containers.Comments.loadingComments',
     defaultMessage: 'Loading comments...',
-  },
-  placeholderComment: {
-    id: 'app.containers.Comments.placeholderComment',
-    defaultMessage: 'Tell us your thoughts!',
   },
   ideaCommentBodyPlaceholder: {
     id: 'app.containers.Comments.ideaCommentBodyPlaceholder',
