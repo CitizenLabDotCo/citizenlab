@@ -12,7 +12,9 @@ Polls::Engine.routes.draw do
   			patch :reorder, on: :member
   		end
       post 'projects/:project_id/poll_responses' => 'responses#create'
+      get 'projects/:project_id/poll_responses/as_xlsx' => 'responses#index_xlsx'
       post 'phases/:phase_id/poll_responses' => 'responses#create'
+      get 'phases/:phase_id/poll_responses/as_xlsx' => 'responses#index_xlsx'
     end
   end
 end
