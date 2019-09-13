@@ -1,8 +1,5 @@
 module Notifications
   class ProjectModerationRightsReceived < Notification
-    
-    belongs_to :initiating_user, class_name: 'User', optional: true
-    belongs_to :project
 
     validates :project, presence: true
 

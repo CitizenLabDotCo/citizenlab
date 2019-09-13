@@ -1,10 +1,5 @@
 module Notifications
   class StatusChangeOnVotedIdea < Notification
-    
-    belongs_to :post_status, polymorphic: true
-    belongs_to :post, polymorphic: true
-    belongs_to :project
-    belongs_to :initiating_user, class_name: 'User', optional: true
 
     validates :post_status, :post, :project, presence: true
     validates :post_type, inclusion: { in: ['Idea'] }

@@ -1,10 +1,5 @@
 module Notifications
   class NewCommentForAdmin < Notification
-    
-    belongs_to :initiating_user, class_name: 'User'
-    belongs_to :comment
-    belongs_to :post, polymorphic: true
-    belongs_to :project, optional: true
 
     validates :initiating_user, :comment, :post, presence: true
 

@@ -1,8 +1,5 @@
 module Notifications
   class ProjectPhaseUpcoming < Notification
-    
-    belongs_to :phase
-    belongs_to :project, optional: true
 
     validates :phase, presence: true
 

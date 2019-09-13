@@ -1,11 +1,7 @@
 module Notifications
   class InviteAccepted < Notification
-    
-    belongs_to :initiating_user, class_name: 'User'
-    belongs_to :invite
 
-    validates :initiating_user, presence: true
-    validates :invite, presence: true
+    validates :initiating_user, :invite, presence: true
 
 
     ACTIVITY_TRIGGERS = {'Invite' => {'accepted' => true}}

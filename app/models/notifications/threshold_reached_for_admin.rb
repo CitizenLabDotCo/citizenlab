@@ -1,9 +1,5 @@
 module Notifications
   class ThresholdReachedForAdmin < Notification
-    
-    belongs_to :initiating_user, class_name: 'User', optional: true
-    belongs_to :post, polymorphic: true
-    belongs_to :post_status, polymorphic: true
 
     validates :post, presence: true
 
