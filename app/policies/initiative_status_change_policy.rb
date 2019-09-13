@@ -9,17 +9,20 @@ class InitiativeStatusChangePolicy < ApplicationPolicy
 
     def resolve
       # Disabled
-      scope.none
+      if user&.active? && user.admin?
+        scope.all
+      else
+        scope.none
+      end
     end
   end
 
   def create? 
-    user&.admin?
+    user&.active? && user.admin?
   end
 
   def show?
-    # Disabled
-    false
+    user&.active? && user.admin?
   end
 
 end
