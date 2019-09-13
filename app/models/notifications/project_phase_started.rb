@@ -1,8 +1,5 @@
 module Notifications
   class ProjectPhaseStarted < Notification
-    
-    belongs_to :phase
-    belongs_to :project
 
     validates :phase, :project, presence: true
 

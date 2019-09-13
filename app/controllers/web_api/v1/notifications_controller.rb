@@ -43,7 +43,7 @@ class WebApi::V1::NotificationsController < ApplicationController
   def index
     @notifications = policy_scope(Notification)
       .order(created_at: :desc)
-      .includes(:recipient)
+      .includes(:recipient, :initiating_user, :post, :post_status, :comment, :project, :phase, :official_feedback, :spam_report, :invite)
 
     if params[:only_unread]
       @notifications = @notifications.where(read_at: nil)

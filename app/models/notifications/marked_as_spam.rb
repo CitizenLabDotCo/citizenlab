@@ -1,8 +1,5 @@
 module Notifications
   class MarkedAsSpam < Notification
-    
-    belongs_to :initiating_user, class_name: 'User'
-    belongs_to :spam_report
 
     validates :initiating_user, presence: true
     validates :spam_report, presence: true

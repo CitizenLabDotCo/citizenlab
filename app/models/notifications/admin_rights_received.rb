@@ -1,7 +1,5 @@
 module Notifications
   class AdminRightsReceived < Notification
-    
-    belongs_to :initiating_user, class_name: 'User'
 
     validates :initiating_user, presence: true
 

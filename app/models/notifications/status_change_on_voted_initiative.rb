@@ -1,9 +1,5 @@
 module Notifications
   class StatusChangeOnVotedInitiative < Notification
-    
-    belongs_to :post_status, polymorphic: true
-    belongs_to :post, polymorphic: true
-    belongs_to :initiating_user, class_name: 'User', optional: true
 
     validates :post_status, :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }

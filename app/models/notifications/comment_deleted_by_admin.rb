@@ -3,11 +3,6 @@ module Notifications
 
     REASON_CODES = %w(irrelevant inappropriate other)
 
-    belongs_to :initiating_user, class_name: 'User', optional: true
-    belongs_to :comment
-    belongs_to :post, polymorphic: true
-    belongs_to :project, optional: true
-
     validates :comment, :post, presence: true
     validates :reason_code, inclusion: { in: REASON_CODES }, presence: true
 
