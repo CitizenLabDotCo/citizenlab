@@ -329,6 +329,7 @@
   "app.components.admin.PostManager.assignee": "Asignado",
   "app.components.admin.PostManager.basketsCountTooltip": "Número de usuarios que suman esta idea a su presupuesto participativo",
   "app.components.admin.PostManager.cannot_contain_ideas": "",
+  "app.components.admin.PostManager.columnsTooltip": "Ordenar las ideas por cualquiera de las variables haciendo clic en el encabezado de columna correspondiente.",
   "app.components.admin.PostManager.comments": "Comentarios",
   "app.components.admin.PostManager.delete": "Eliminar",
   "app.components.admin.PostManager.deleteAllSelectedIdeas": "Eliminar {count} ideas seleccionadas",
