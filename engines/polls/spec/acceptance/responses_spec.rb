@@ -14,6 +14,24 @@ resource "Poll Responses" do
   end
 
 
+  get "web_api/v1/projects/:participation_context_id/poll_responses/as_xlsx" do
+    before do
+      @participation_context = create(:continuous_poll_project)
+      q1 = create(:poll_question, :with_options, participation_context: @participation_context)
+      q2 = create(:poll_question, :with_options, participation_context: @participation_context)
+      r1 = create(:poll_response, participation_context: @participation_context)
+      r1.update!(response_options: [q1,q2].map{|q| create(:poll_response_option, response: r1, option: q.options.shuffle.first)})
+    end
+
+    let(:participation_context_id) { @participation_context.id }
+
+    example_request "XLSX export" do
+      expect(status).to eq 200
+      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+      expect(worksheet.count).to eq 2
+    end
+  end
+
   post "web_api/v1/projects/:participation_context_id/poll_responses" do
     parameter :response_options_attributes, "Array with response option objects", required: true, scope: :response
     parameter :option_id, "The id of the option the user selected", required: true, scope: [:response, :response_options_attributes]
