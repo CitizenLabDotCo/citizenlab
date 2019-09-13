@@ -460,12 +460,12 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
               <FirstLine id="hook-footer-logo">
                 {currentTenantLogo && tenantSite &&
                   <LogoLink href={tenantSite} target="_blank">
-                    <TenantLogo src={currentTenantLogo} alt="Organization logo" />
+                    <TenantLogo src={currentTenantLogo} alt={formatMessage(messages.logoAltText, { tenantName: currentTenantName })} />
                   </LogoLink>
                 }
 
                 {currentTenantLogo && !tenantSite &&
-                  <TenantLogo src={currentTenantLogo} alt="Organization logo" />
+                  <TenantLogo src={currentTenantLogo} alt="" />
                 }
 
                 <TenantSlogan>{slogan}</TenantSlogan>
