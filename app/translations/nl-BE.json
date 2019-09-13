@@ -254,6 +254,7 @@
   "app.components.ProjectCard.takeTheSurvey": "Naar de enquête",
   "app.components.ProjectCard.viewTheIdeas": "Bekijk de ideeën",
   "app.components.ProjectCard.vote": "Stem",
+  "app.components.ProjectCard.xComments": "",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {nog geen ideeën} one {# idee} other {# ideeën}}",
   "app.components.ProjectCards.noProjectYet": "Er is nog geen project",
   "app.components.ProjectCards.showMore": "Toon meer",

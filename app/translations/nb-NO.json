@@ -254,6 +254,7 @@
   "app.components.ProjectCard.takeTheSurvey": "Take the survey",
   "app.components.ProjectCard.viewTheIdeas": "View the ideas",
   "app.components.ProjectCard.vote": "Vote",
+  "app.components.ProjectCard.xComments": "",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {ingen ideer} one {# ideer} other {# ideer}}",
   "app.components.ProjectCards.noProjectYet": "There is no project yet",
   "app.components.ProjectCards.showMore": "Show more",
