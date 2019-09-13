@@ -227,7 +227,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
           }
           footer={
             <>
-              {!showVotingDisabled &&
+              {!showVotingDisabled && !showAssignBudgetDisabled &&
                 <FooterInner>
                   {participationMethod !== 'budgeting' &&
                     <VoteControl

@@ -24,6 +24,7 @@ export const makeTenant = (attributes = {}) : ITenant => ({
           color_secondary: '#551122',
           color_text: '#222222',
           currency: 'EUR',
+          segment_destinations_blacklist: null
         },
         participatory_budgeting: {
           allowed: true,

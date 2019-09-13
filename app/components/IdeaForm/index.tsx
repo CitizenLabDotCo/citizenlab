@@ -11,7 +11,6 @@ import bowser from 'bowser';
 
 // components
 import Input from 'components/UI/Input';
-import Label from 'components/UI/Label';
 import LocationInput from 'components/UI/LocationInput';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
@@ -440,19 +439,19 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
         <FormElement>
           <FormLabel labelMessage={messages.locationLabel} htmlFor="location" />
-            <LocationInput
-              id="location"
-              className="e2e-idea-form-location-input-field"
-              value={address}
-              placeholder={formatMessage(messages.locationPlaceholder)}
-              onChange={this.handleLocationOnChange}
-            />
+          <LocationInput
+            id="location"
+            className="e2e-idea-form-location-input-field"
+            value={address}
+            placeholder={formatMessage(messages.locationPlaceholder)}
+            onChange={this.handleLocationOnChange}
+          />
         </FormElement>
 
         <FormElement id="e2e-idea-image-upload">
           <FormLabel labelMessage={messages.imageUploadLabel} />
           <label htmlFor="idea-img-dropzone">
-           <HiddenLabel>
+            <HiddenLabel>
               <FormattedMessage {...messages.imageDropzonePlaceholder} />
             </HiddenLabel>
             <ImagesDropzone
@@ -477,7 +476,12 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               context={{ projectId }}
             >
               <FormElement>
-                <FormLabelWithIcon labelMessage={messages.budgetLabel} labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }} htmlFor="budget" iconName="admin" />
+                <FormLabelWithIcon
+                  labelMessage={messages.budgetLabel}
+                  labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }}
+                  htmlFor="budget"
+                  iconName="admin"
+                />
                 <Input
                   id="budget"
                   error={budgetError}
@@ -491,9 +495,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         )}
 
         <FormElement id="e2e-idea-file-upload">
-          <Label>
-            <FormattedMessage {...messages.fileUploadLabel} />
-          </Label>
+          <FormLabel labelMessage={messages.fileUploadLabel} />
           <FileUploader
             onFileAdd={this.handleIdeaFileOnAdd}
             onFileRemove={this.handleIdeaFileOnRemove}
