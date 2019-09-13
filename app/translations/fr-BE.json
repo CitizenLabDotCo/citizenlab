@@ -254,6 +254,7 @@
   "app.components.ProjectCard.takeTheSurvey": "Répondre à l'enquête",
   "app.components.ProjectCard.viewTheIdeas": "Voir les idées",
   "app.components.ProjectCard.vote": "Votez",
+  "app.components.ProjectCard.xComments": "",
   "app.components.ProjectCard.xIdeas": "{IdeasCount, plural, =0 {ingen ideer} one {# idé} other {# ideer}}",
   "app.components.ProjectCards.noProjectYet": "Il n'y a pas encore de projet",
   "app.components.ProjectCards.showMore": "Voir plus",

@@ -254,6 +254,7 @@
   "app.components.ProjectCard.takeTheSurvey": "An der Umfrage teilnehmen",
   "app.components.ProjectCard.viewTheIdeas": "Ideen anzeigen",
   "app.components.ProjectCard.vote": "Stimmen",
+  "app.components.ProjectCard.xComments": "",
   "app.components.ProjectCard.xIdeas": "{orgName, select, München {{ideasCount, plural, =0 {keine Mängel} one {# Mangel} other {# Mängel}}} other {{ideasCount, plural, =0 {no ideas} one {# ideas} other {# ideas}}}}",
   "app.components.ProjectCards.noProjectYet": "Es gibt noch kein Projekt",
   "app.components.ProjectCards.showMore": "Mehr anzeigen",
