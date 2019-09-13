@@ -12,31 +12,43 @@ resource "InitiativeStatusChange" do
     @changes = create_list(:initiative_status_change, 2, initiative: @initiative)
   end
 
-  # get "web_api/v1/initiatives/:initiative_id/initiative_status_changes" do
-  #   with_options scope: :page do
-  #     parameter :number, "Page number"
-  #     parameter :size, "Number of status changes per page"
-  #   end
+  get "web_api/v1/initiatives/:initiative_id/initiative_status_changes" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of status changes per page"
+    end
 
-  #   let(:initiative_id) { @initiative.id }
+    before do
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      header 'Authorization', "Bearer #{token}"
+    end
 
-  #   example_request "List all status changes of an initiative" do
-  #     expect(status).to eq(200)
-  #     json_response = json_parse(response_body)
-  #     expect(json_response[:data].size).to eq 3
-  #     expect(json_response.dig(:data,0,:attributes,:created_at)).to be_present
-  #   end
-  # end
+    let(:initiative_id) { @initiative.id }
 
-  # get "web_api/v1/initiative_status_changes/:id" do
-  #   let(:id) { @changes.first.id }
+    example_request "List all status changes of an initiative" do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 3
+      expect(json_response.dig(:data,0,:attributes,:created_at)).to be_present
+    end
+  end
 
-  #   example_request "Get one status changes on an initiative by id" do
-  #     expect(status).to eq 200
-  #     json_response = json_parse(response_body)
-  #     expect(json_response.dig(:data, :id)).to eq @changes.first.id
-  #   end
-  # end
+  get "web_api/v1/initiative_status_changes/:id" do
+    before do
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      header 'Authorization', "Bearer #{token}"
+    end
+    
+    let(:id) { @changes.first.id }
+
+    example_request "Get one status changes on an initiative by id" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data, :id)).to eq @changes.first.id
+    end
+  end
 
   context "when authenticated" do
     before do
