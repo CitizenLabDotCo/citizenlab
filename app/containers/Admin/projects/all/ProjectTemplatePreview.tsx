@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import { adopt } from 'react-adopt';
+import { isNilOrError, transformLocale } from 'utils/helperUtils';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -8,19 +9,24 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 
-// utils
-import { isNilOrError, transformLocale } from 'utils/helperUtils';
-
 // components
-import FilterSelector from 'components/FilterSelector';
+import Button from 'components/UI/Button';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-interface InputProps {
-  onChange: (value: string[]) => void;
+// style
+import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
+
+const Container = styled.div``;
+
+export interface InputProps {
+  projectTemplateId: string;
+  className?: string;
 }
 
 interface DataProps {
@@ -29,7 +35,7 @@ interface DataProps {
 
 interface Props extends DataProps, InputProps { }
 
-const DepartmentFilter = memo<Props & InjectedIntlProps>(({ locale, intl: { formatMessage }, onChange }) => {
+const ProjectTemplatePreview = memo<Props & InjectedIntlProps>(({ locale, intl: { formatMessage }, projectTemplateId, className }) => {
 
   const graphQLLocale = !isNilOrError(locale) ? transformLocale(locale) : null;
 
@@ -50,28 +56,14 @@ const DepartmentFilter = memo<Props & InjectedIntlProps>(({ locale, intl: { form
 
   const { data } = useQuery(DEPARTMENTS_QUERY);
 
-  const options = data ? data.departments.nodes.map((node) => ({
-    value: node.id,
-    text: node.titleMultiloc[`${graphQLLocale}`]
-  })) : [];
-
-  const handleOnChange = useCallback((selectedValues: string[]) => {
-    setSelectedValues(selectedValues);
-    onChange(selectedValues);
+  const handleUseTemplateOnClick = useCallback(() => {
+    // empty
   }, []);
 
   return (
-    <FilterSelector
-      title={formatMessage(messages.departments)}
-      name={formatMessage(messages.departments)}
-      selected={selectedValues}
-      values={options}
-      onChange={handleOnChange}
-      multiple={true}
-      last={false}
-      left="-5px"
-      mobileLeft="-5px"
-    />
+    <Container className={className}>
+      Preview page
+    </Container>
   );
 });
 
@@ -79,10 +71,10 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />
 });
 
-const DepartmentFilterWithHoC = injectIntl(DepartmentFilter);
+const ProjectTemplatePreviewWithHoC = injectIntl(ProjectTemplatePreview);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <DepartmentFilterWithHoC {...dataProps} {...inputProps} />}
+    {dataProps => <ProjectTemplatePreviewWithHoC {...dataProps} {...inputProps} />}
   </Data>
 );

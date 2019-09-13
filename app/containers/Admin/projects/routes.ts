@@ -18,6 +18,14 @@ export default () => ({
     }),
   },
   childRoutes: [
+    // {
+    //   path: '/:locale/admin/projects/template/:projectTemplateId',
+    //   name: 'admin project template preview page',
+    //   component: Loadable({
+    //     loader: () => import('containers/Admin/projects/templatepreview'),
+    //     loading: () => null
+    //   }),
+    // },
     {
       path: ':projectId/edit',
       name: 'admin projects single project',

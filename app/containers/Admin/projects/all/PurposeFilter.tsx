@@ -14,6 +14,11 @@ import { isNilOrError, transformLocale } from 'utils/helperUtils';
 // components
 import FilterSelector from 'components/FilterSelector';
 
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
+
 interface InputProps {
   onChange: (value: string[]) => void;
 }
@@ -24,7 +29,7 @@ interface DataProps {
 
 interface Props extends DataProps, InputProps { }
 
-const DepartmentFilter = memo<Props>(({ locale, onChange }) => {
+const PurposeFilter = memo<Props & InjectedIntlProps>(({ locale, intl: { formatMessage }, onChange }) => {
 
   const graphQLLocale = !isNilOrError(locale) ? transformLocale(locale) : null;
 
@@ -57,8 +62,8 @@ const DepartmentFilter = memo<Props>(({ locale, onChange }) => {
 
   return (
     <FilterSelector
-      title={'Purposes'}
-      name="purposes"
+      title={formatMessage(messages.purposes)}
+      name={formatMessage(messages.purposes)}
       selected={selectedValues}
       values={options}
       onChange={handleOnChange}
@@ -74,8 +79,10 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />
 });
 
+const PurposeFilterWithHoC = injectIntl(PurposeFilter);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <DepartmentFilter {...dataProps} {...inputProps} />}
+    {dataProps => <PurposeFilterWithHoC {...dataProps} {...inputProps} />}
   </Data>
 );

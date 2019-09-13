@@ -35,6 +35,12 @@ const Image = styled.img`
   width: 100%;
 `;
 
+const Content = styled.div`
+  background: red;
+  height: 200px;
+  transition: all ${duration}ms ${easing};
+`;
+
 const Title = styled.h3`
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.xl}px;
@@ -55,7 +61,7 @@ const Title = styled.h3`
   word-break: break-word;
 `;
 
-const Body = styled.div`
+const Subtitle = styled.div`
   color: #808080;
   flex-grow: 1;
 `;
@@ -67,6 +73,9 @@ const Buttons = styled.div`
   right: 16px;
   bottom: -118px;
   transition: all ${duration}ms ${easing};
+
+  opacity: 1;
+  bottom: 20px;
 `;
 
 const UseTemplateButton = styled(Button)``;
@@ -87,36 +96,47 @@ const Container = styled.div`
   border: solid 1px #eaeaea;
   position: relative;
   overflow: hidden;
-  transition: all 120ms ease-out;
 
   &:hover {
-    ${ImageWrapperWrapper} {
+    /* ${ImageWrapperWrapper} {
       height: 0px;
       opacity: 0;
+    } */
+
+    ${Content} {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      bottom: 0px;
+      z-index: 1;
     }
 
     ${Buttons} {
       opacity: 1;
       bottom: 20px;
+      z-index: 2;
     }
   }
 `;
 
 interface Props {
+  projectTemplateId: string;
   imageUrl: string | null;
   title: string;
   body: string;
+  onPreviewButtonClick: (projectTemplateId: string) => void;
   className?: string;
 }
 
-const ProjectTemplateCard = memo<Props>(({ imageUrl, title, body, className }) => {
+const ProjectTemplateCard = memo<Props>(({ projectTemplateId, imageUrl, title, body, onPreviewButtonClick, className }) => {
 
   const handleUseTemplateOnClick = useCallback(() => {
     // empty
   }, []);
 
   const handleMoreDetailsOnClick = useCallback(() => {
-    // empty
+    onPreviewButtonClick(projectTemplateId);
   }, []);
 
   return (
@@ -129,13 +149,15 @@ const ProjectTemplateCard = memo<Props>(({ imageUrl, title, body, className }) =
         </ImageWrapperWrapper>
       }
 
-      <Title className="e2e-card-title">
-        {title}
-      </Title>
+      <Content>
+        <Title className="e2e-card-title">
+          {title}
+        </Title>
 
-      <Body>
-        {body}
-      </Body>
+        <Subtitle>
+          {body}
+        </Subtitle>
+      </Content>
 
       <Buttons>
         <UseTemplateButton

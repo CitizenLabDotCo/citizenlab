@@ -126,8 +126,8 @@ const StyledLink = styled(Link)`
 `;
 
 const LinkIcon = styled(Icon)`
-  width: 11px;
-  height: 1em;
+  width: 13px;
+  height: 13px;
 `;
 
 interface InputProps {}
