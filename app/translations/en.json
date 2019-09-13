@@ -329,6 +329,7 @@
   "app.components.admin.PostManager.assignee": "Assignee",
   "app.components.admin.PostManager.basketsCountTooltip": "The number of users who added this idea to their participatory budget",
   "app.components.admin.PostManager.cannot_contain_ideas": "This phase contains {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} and the participation method you're trying to change it to doesn't support ideas. Please remove {ideasCount, plural, one {the idea} other {the ideas}} from the phase and try again.",
+  "app.components.admin.PostManager.columnsTooltip": "Order the ideas by any of the variables by clicking the respective column header.",
   "app.components.admin.PostManager.comments": "Comments",
   "app.components.admin.PostManager.delete": "Delete",
   "app.components.admin.PostManager.deleteAllSelectedIdeas": "Delete {count} selected ideas",
