@@ -55,11 +55,6 @@ const HeaderContentWrapper = styled.div`
   }
 `;
 
-/*
-  max-height: $font-size * $line-multiple * $lines;
-  line-height: $font-size * $line-multiple;
-*/
-
 const Title = styled.h3`
   color: #333;
   max-width: 400px;
