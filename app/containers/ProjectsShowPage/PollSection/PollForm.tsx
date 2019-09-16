@@ -105,9 +105,9 @@ class PollForm extends PureComponent<Props, State> {
     const { questions } = this.props;
     return (
       <>
-      <PollContainer>
+      <PollContainer className="e2e-poll-form">
         {questions.map((question, questionIndex) => (
-          <QuestionContainer key={question.id}>
+          <QuestionContainer key={question.id} className="e2e-poll-question">
             <Label>
               <QuestionNumber>
                 {questionIndex + 1}
@@ -122,6 +122,7 @@ class PollForm extends PureComponent<Props, State> {
                   <>
                     {options.map((option, optionIndex) => (
                       <StyledRadio
+                        className="e2e-poll-option"
                         key={option.id}
                         onChange={this.changeAnswer(question.id, option.id)}
                         currentValue={answers[question.id]}
@@ -141,6 +142,7 @@ class PollForm extends PureComponent<Props, State> {
         <Button
           onClick={this.sendAnswer}
           disabled={!this.validate()}
+          className="e2e-send-poll"
         >
           <FormattedMessage {...messages.sendAnswer} />
         </Button>
