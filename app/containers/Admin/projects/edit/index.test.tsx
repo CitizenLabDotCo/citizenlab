@@ -284,7 +284,7 @@ describe('<AdminProjectEdition />', () => {
         />));
         const linkPath = wrapper.find('#new-idea').props().linkTo;
 
-      expect(linkPath).toEqual('/projects/continuousIdeation/ideas/new');
+      expect(linkPath).toMatchSnapshot();
     });
 
     it('doesn\'t you add an idea when there\'s no ideation phase', () => {
