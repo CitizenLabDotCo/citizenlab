@@ -33,6 +33,7 @@ declare global {
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
       apiRemoveCustomField: typeof apiRemoveCustomField;
+      apiAddPoll: typeof apiAddPoll;
     }
   }
 }
@@ -283,7 +284,7 @@ export function apiCreateIdea(
   projectId: string,
   ideaTitle: string,
   ideaContent: string,
-  locationGeoJSON?: {'type': string, 'coordinates': number[]},
+  locationGeoJSON?: { 'type': string, 'coordinates': number[] },
   locationDescription?: string,
   jwt?: string
 ) {
@@ -349,15 +350,15 @@ export function apiCreateInitiative({
   locationDescription,
   jwt,
   topicIds
-} : {
-  initiativeTitle: string,
-  initiativeContent: string,
-  assigneeId?: string,
-  locationGeoJSON?: {'type': string, 'coordinates': number[]},
-  locationDescription?: string,
-  jwt?: string,
-  topicIds?: string[]
-}) {
+}: {
+    initiativeTitle: string,
+    initiativeContent: string,
+    assigneeId?: string,
+    locationGeoJSON?: { 'type': string, 'coordinates': number[] },
+    locationDescription?: string,
+    jwt?: string,
+    topicIds?: string[]
+  }) {
   let adminJwt: string;
   let headers: { 'Content-Type': string; Authorization: string; } | null = null;
 
@@ -561,6 +562,7 @@ export function apiCreateProject(
   descriptionPreview: string,
   description: string,
   publicationStatus: 'draft' | 'published' | 'archived' = 'published',
+  participationMethod?: 'ideation' | 'information' | 'survey' | 'budgeting' | 'poll',
   assigneeId?: string,
   surveyUrl?: string,
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms'
@@ -592,7 +594,7 @@ export function apiCreateProject(
             'nl-BE': description
           },
           default_assignee_id: assigneeId,
-          participation_method: surveyUrl ? 'survey' : undefined,
+          participation_method: participationMethod,
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
         }
@@ -616,12 +618,48 @@ export function apiRemoveProject(projectId: string) {
   });
 }
 
+export function apiAddPoll(type: 'Project' | 'Phase', id: string, questions: string[], options: string[][]) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    questions.forEach((question, index) => {
+      cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`
+        },
+        method: 'POST',
+        url: 'web_api/v1/poll_questions',
+        body: {
+          participation_context_id: id,
+          participation_context_type: type,
+          title_multiloc: { en: question }
+        }
+      }).then(question => {
+        options[index].forEach(option => {
+          cy.request({
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${adminJwt}`
+            },
+            method: 'POST',
+            url: `web_api/v1/poll_questions/${question.body.data.id}/poll_options`,
+            body: {
+              title_multiloc: { en: option }
+            }
+          });
+        });
+      });
+    });
+  });
+}
+
 export function apiCreatePhase(
   projectId: string,
   title: string,
   startAt: string,
   endAt: string,
-  participationMethod: 'ideation' | 'information' | 'survey' | 'budgeting',
+  participationMethod: 'ideation' | 'information' | 'survey' | 'budgeting' | 'poll',
   canPost: boolean,
   canVote: boolean,
   canComment: boolean,
@@ -731,3 +769,4 @@ Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
+Cypress.Commands.add('apiAddPoll', apiAddPoll);

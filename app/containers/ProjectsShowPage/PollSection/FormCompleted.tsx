@@ -35,7 +35,7 @@ const StyledIllustration = styled(Illustration)`
 `;
 
 export default () => (
-  <Container>
+  <Container className="e2e-form-completed">
     <StyledIllustration />
     <FormattedMessage {...messages.formCompleted} />
   </Container>

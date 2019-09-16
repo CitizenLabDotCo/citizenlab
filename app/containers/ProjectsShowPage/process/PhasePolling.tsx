@@ -39,7 +39,7 @@ class PhaseSurvey extends PureComponent<Props, State> {
       phase.attributes.participation_method === 'poll'
     ) {
       return (
-        <Container className={className || ''}>
+        <Container className={`e2e-timeline-project-poll-container ${className || ''}`}>
           <PollSection
             phaseId={phase.id}
             projectId={projectId}
