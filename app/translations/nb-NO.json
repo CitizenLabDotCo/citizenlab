@@ -1447,6 +1447,7 @@
   "app.containers.Projects.PollForm.pollDisabledNotPossible": "",
   "app.containers.Projects.PollForm.pollDisabledProjectInactive": "",
   "app.containers.Projects.PollForm.sendAnswer": "",
+  "app.containers.Projects.PollForm.signUpToTakePoll": "",
   "app.containers.Projects.allEvents": "Alle hendelser",
   "app.containers.Projects.archived": "Arkivert",
   "app.containers.Projects.budgetExceeded": "Dine utgifter overgår hva som kan tildeles budsjettet",
