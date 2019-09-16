@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
