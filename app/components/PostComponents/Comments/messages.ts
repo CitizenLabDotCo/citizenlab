@@ -173,4 +173,16 @@ export default defineMessages({
     id: 'app.containers.Comments.showMoreActions',
     defaultMessage: 'Show more actions',
   },
+  deleteReason_other: {
+    id: 'app.containers.Comments.deleteReason_other',
+    defaultMessage: 'Other reason (please specify)',
+  },
+  deleteReason_inappropriate: {
+    id: 'app.containers.Comments.deleteReason_inappropriate',
+    defaultMessage: 'Other reason (please specify)',
+  },
+  deleteReason_irrelevant: {
+    id: 'app.containers.Comments.deleteReason_irrelevant',
+    defaultMessage: 'Other reason (please specify)',
+  },
 });
