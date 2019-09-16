@@ -1447,6 +1447,7 @@
   "app.containers.Projects.PollForm.pollDisabledNotPossible": "",
   "app.containers.Projects.PollForm.pollDisabledProjectInactive": "",
   "app.containers.Projects.PollForm.sendAnswer": "",
+  "app.containers.Projects.PollForm.signUpToTakePoll": "",
   "app.containers.Projects.allEvents": "Tous les événements",
   "app.containers.Projects.archived": "Archivé",
   "app.containers.Projects.budgetExceeded": "Vos dépenses dépassent le budget total d’attribuable",
