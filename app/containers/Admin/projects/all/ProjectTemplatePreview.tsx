@@ -39,22 +39,20 @@ const ProjectTemplatePreview = memo<Props & InjectedIntlProps>(({ locale, intl: 
 
   const graphQLLocale = !isNilOrError(locale) ? transformLocale(locale) : null;
 
-  const DEPARTMENTS_QUERY = gql`
+  const TEMPLATE_QUERY = gql`
     {
-      departments {
-        nodes {
-          id
-          titleMultiloc {
-            ${graphQLLocale}
-          }
+      projectTemplate(id: "${projectTemplateId}"){
+        id
+        titleMultiloc {
+          ${graphQLLocale}
         }
       }
     }
   `;
 
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const { data } = useQuery(TEMPLATE_QUERY);
 
-  const { data } = useQuery(DEPARTMENTS_QUERY);
+  console.log(data);
 
   const handleUseTemplateOnClick = useCallback(() => {
     // empty

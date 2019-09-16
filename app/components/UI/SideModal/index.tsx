@@ -21,9 +21,9 @@ import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 import { hideVisually } from 'polished';
 
-const enterTimeout = 450;
+const enterTimeout = 350;
 const enterDelay = 0;
-const exitTimeout = 450;
+const exitTimeout = 350;
 const exitDelay = 0;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
