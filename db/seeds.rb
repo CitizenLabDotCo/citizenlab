@@ -436,9 +436,10 @@ if Apartment::Tenant.current == 'localhost'
 
       if project.timeline?
         start_at = Faker::Date.between(Tenant.current.created_at, 1.year.from_now)
+        has_budgeting = false
         rand(8).times do
           start_at += 1.days
-          phase = project.phases.create!({
+          phase = project.phases.new({
             title_multiloc: {
               "en": Faker::Lorem.sentence,
               "nl-BE": Faker::Lorem.sentence
@@ -451,13 +452,15 @@ if Apartment::Tenant.current == 'localhost'
             end_at: (start_at += rand(150).days),
             participation_method: ['ideation','budgeting','poll','information', 'ideation', 'ideation'][rand(6)]
           })
-          if rand(5) == 0
-            (rand(3)+1).times do
-              phase.phase_files.create!(generate_file_attributes)
+          if phase.budgeting?
+            if has_budgeting
+              phase.participation_method = 'ideation'
+            else
+              has_budgeting = true
             end
           end
           if phase.ideation?
-            phase.update!({
+            phase.assign_attributes({
               posting_enabled: rand(4) != 0,
               voting_enabled: rand(3) != 0,
               commenting_enabled: rand(4) != 0,
@@ -466,21 +469,34 @@ if Apartment::Tenant.current == 'localhost'
             })
           end
           if phase.budgeting?
-            phase.update!({
+            phase.assign_attributes({
               max_budget: (rand(1000000) + 100).round(-2)
             })
           end
+          phase.save!
+          if rand(5) == 0
+            (rand(3)+1).times do
+              phase.phase_files.create!(generate_file_attributes)
+            end
+          end
           if phase.poll?
-            rand(5).times do
+            questions = (rand(5)+1).times.map do
               question = Polls::Question.create!(
-                title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
+                title_multiloc: create_for_some_locales{Faker::Lorem.question},
                 participation_context: phase
               )
-              rand(5).times do
+              (rand(5)+1).times do
                 Polls::Option.create!(
                   question: question,
                   title_multiloc: create_for_some_locales{Faker::Lorem.sentence}
                 )
+              end
+              question
+            end
+            rand(5).times do
+              response = Polls::Response.create!(user: rand_instance(User.all), participation_context: phase)
+              questions.each do |q|
+                 response.response_options.create!(option: rand_instance(q.options))
               end
             end
           end
