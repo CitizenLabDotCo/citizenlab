@@ -175,14 +175,14 @@ export default defineMessages({
   },
   deleteReason_other: {
     id: 'app.containers.Comments.deleteReason_other',
-    defaultMessage: 'Other reason (please specify)',
+    defaultMessage: 'Other reason',
   },
   deleteReason_inappropriate: {
     id: 'app.containers.Comments.deleteReason_inappropriate',
-    defaultMessage: 'This comment is inappropriate (offensive, discriminatory, ...)',
+    defaultMessage: 'It is inappropriate or offensive',
   },
   deleteReason_irrelevant: {
     id: 'app.containers.Comments.deleteReason_irrelevant',
-    defaultMessage: 'This comment is spam or not relevant',
+    defaultMessage: 'This does not belong here',
   },
 });
