@@ -10,24 +10,9 @@ jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 import { makeUser } from 'services/__mocks__/users';
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
 import { getMockProject } from 'services/__mocks__/projects';
-import { mockPhaseInformationData, mockPhasePollData } from 'services/__mocks__/phases';
+import { mockPhasePollData } from 'services/__mocks__/phases';
 
 import { PollSection } from './';
-
-it('renders', () => {
-  const mockProject = getMockProject('projectId', 'continuous', 'poll');
-  const wrapper = shallow(
-    <PollSection
-      type="projects"
-      phaseId={null}
-      projectId="projectId"
-      authUser={null}
-      project={mockProject}
-      phase={null}
-    />
-  );
-  expect(wrapper).toMatchSnapshot();
-});
 
 describe('<PollSection/>', () => {
   describe('boundaries', () => {
@@ -174,11 +159,111 @@ describe('<PollSection/>', () => {
       expect(wrapper.type()).toBe(null);
     });
   });
+  describe('permissions', () => {
+    it('shows maybe permitted if user is not logged in', () => {
+      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
+        .map((item, index) => mockQuestion(index, item));
+      const mockProjectGeneric = getMockProject('projectId', 'continuous', 'poll');
+      const mockProject = { ...mockProjectGeneric, attributes: { action_descriptor: { taking_poll: { enabled: true } } } };
+      const wrapper = shallow(
+        <PollSection
+          type="projects"
+          phaseId={null}
+          projectId="projectId"
+          authUser={null}
+          project={mockProject}
+          phase={null}
+          pollQuestions={pollQuestions}
+        />
+      );
+      expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
+      const splitMessageId = wrapper.find('PollSection__StyledWarning').find('FormattedMessage').prop('id').split('.');
+      expect(splitMessageId[splitMessageId.length - 1]).toBe('signUpToTakePoll');
+    });
+    it('is enabled if user can anwser', () => {
+      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
+        .map((item, index) => mockQuestion(index, item));
+      const mockProjectGeneric = getMockProject('projectId', 'continuous', 'poll');
+      const mockProject = { ...mockProjectGeneric, attributes: { action_descriptor: { taking_poll: { enabled: true } } } };
+      const mockUser = makeUser();
+      const wrapper = shallow(
+        <PollSection
+          type="projects"
+          phaseId={null}
+          projectId="projectId"
+          authUser={mockUser}
+          project={mockProject}
+          phase={null}
+          pollQuestions={pollQuestions}
+        />
+      );
+      expect(wrapper.find('PollForm').prop('disabled')).toBe(false);
+      expect(wrapper.find('PollSection__StyledWarning').length).toBe(0);
+    });
+    it('shows already responded if user already responded', () => {
+      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
+        .map((item, index) => mockQuestion(index, item));
+      const mockProjectGeneric = getMockProject('projectId', 'continuous', 'poll');
+      const mockProject = { ...mockProjectGeneric, attributes: { action_descriptor: { taking_poll: { enabled: false, disabled_reason: 'already_responded' } } } };
+      const mockUser = makeUser();
+      const wrapper = shallow(
+        <PollSection
+          type="projects"
+          phaseId={null}
+          projectId="projectId"
+          authUser={mockUser}
+          project={mockProject}
+          phase={null}
+          pollQuestions={pollQuestions}
+        />
+      );
+      expect(wrapper.find('PollForm').exists()).toBe(false);
+      expect(wrapper.find('PollSection__StyledWarning').exists()).toBe(false);
+      expect(wrapper.find('FormCompleted').exists()).toBe(true);
+    });
+    it('shows a matching explicative message if the phase is not active', () => {
+      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
+        .map((item, index) => mockQuestion(index, item));
+      const mockProjectGeneric = getMockProject('projectId', 'continuous', 'poll');
+      const mockProject = { ...mockProjectGeneric, attributes: { action_descriptor: { taking_poll: { enabled: true } } } };
+      const mockUser = makeUser();
+      const mockPastPollPhase = { ...mockPhasePollData, attributes: { start_at: '2019-05-10', end_at: '2019-05-30' } };
+      const wrapper = shallow(
+        <PollSection
+          type="phases"
+          phaseId={null}
+          projectId="projectId"
+          authUser={mockUser}
+          project={mockProject}
+          phase={mockPastPollPhase}
+          pollQuestions={pollQuestions}
+        />
+      );
+      expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
+      const splitMessageId = wrapper.find('PollSection__StyledWarning').find('FormattedMessage').prop('id').split('.');
+      expect(splitMessageId[splitMessageId.length - 1]).toBe('pollDisabledNotActivePhase');
+    });
+    it('shows a matching explicative message if the project is not active', () => {
+      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
+        .map((item, index) => mockQuestion(index, item));
+      const mockProjectGeneric = getMockProject('projectId', 'continuous', 'poll');
+      const mockProject = { ...mockProjectGeneric, attributes: { action_descriptor: { taking_poll: { enabled: false, disabled_reason: 'project_inactive' } } } };
+      const mockUser = makeUser();
+      const wrapper = shallow(
+        <PollSection
+          type="projects"
+          phaseId={null}
+          projectId="projectId"
+          authUser={mockUser}
+          project={mockProject}
+          phase={null}
+          pollQuestions={pollQuestions}
+        />
+      );
+      expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
+      const splitMessageId = wrapper.find('PollSection__StyledWarning').find('FormattedMessage').prop('id').split('.');
+      expect(splitMessageId[splitMessageId.length - 1]).toBe('pollDisabledProjectInactive');
+    });
+    // this is not exhaustive
+  });
 });
-// type: 'phases' | 'projects';
-// phaseId: string | null;
-// projectId: string;
-// authUser: GetAuthUserChildProps;
-// pollQuestions: GetPollQuestionsChildProps;
-// project: GetProjectChildProps;
-// phase: GetPhaseChildProps;

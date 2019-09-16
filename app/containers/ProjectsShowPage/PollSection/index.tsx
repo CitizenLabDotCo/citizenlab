@@ -80,12 +80,17 @@ export class PollSection extends PureComponent<Props> {
                 <FormattedMessage {...message} />
               </StyledWarning>
             }
+            {enabled && isNilOrError(authUser) &&
+              <StyledWarning icon="lock">
+                <FormattedMessage {...messages.signUpToTakePoll} />
+              </StyledWarning>
+            }
             <PollForm
               projectId={projectId}
               questions={pollQuestions}
               id={type === 'projects' ? projectId : phaseId as string}
               type={type}
-              disabled={!enabled}
+              disabled={!enabled || isNilOrError(authUser)}
             />
           </>
         }
