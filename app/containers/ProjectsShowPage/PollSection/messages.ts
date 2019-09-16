@@ -11,7 +11,7 @@ export default defineMessages({
   },
   pollDisabledProjectInactive: {
     id: 'app.containers.Projects.PollForm.pollDisabledProjectInactive',
-    defaultMessage: 'The poll is no longer available, since this proect is no longer active.',
+    defaultMessage: 'The poll is no longer available, since this project is no longer active.',
   },
   pollDisabledNotPermitted: {
     id: 'app.containers.Projects.PollForm.pollDisabledNotPermitted',
@@ -28,5 +28,9 @@ export default defineMessages({
   pollDisabledNotActivePhase: {
     id: 'app.containers.Projects.PollForm.pollDisabledNotActivePhase',
     defaultMessage: 'This survey can only be taken when this phase in the timeline is active.',
+  },
+  signUpToTakePoll: {
+    id: 'app.containers.Projects.PollForm.signUpToTakePoll',
+    defaultMessage: 'Please sign up to take this poll',
   },
 });
