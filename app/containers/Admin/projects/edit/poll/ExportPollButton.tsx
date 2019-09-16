@@ -7,8 +7,7 @@ import tracks from './tracks';
 
 // components
 import Button from 'components/UI/Button';
-// TODO import { exportPollResults } from 'services/pollResults';
-const exportPollResults = ({ pcId, pcType }:Props) => console.log('exporting', pcId, pcType);
+import { exportPollResponses } from 'services/pollResponses';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -40,7 +39,7 @@ export default class ExportPollButton extends React.PureComponent<Props, State> 
     this.trackExportPoll();
 
     this.setState({ exporting: true });
-    exportPollResults(this.props);
+    exportPollResponses(this.props.pcId, this.props.pcType);
     this.setState({ exporting: false });
   }
 
