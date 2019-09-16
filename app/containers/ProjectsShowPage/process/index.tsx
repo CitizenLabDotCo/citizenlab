@@ -79,6 +79,7 @@ const StyledPhaseSurvey = styled(PhaseSurvey)`
 
 const StyledPhasePolling = styled(PhasePolling)`
   margin-bottom: 50px;
+  margin-top: 70px;
 `;
 
 const StyledPhaseIdeas = styled(PhaseIdeas)`
@@ -98,7 +99,7 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   selectedPhase: IPhaseData | null;
@@ -146,12 +147,16 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
                 projectId={project.id}
                 phaseId={selectedPhaseId}
               />
-              <StyledPhasePolling
-                projectId={project.id} // TODO remove ?
-                phaseId={selectedPhaseId}
-              />
             </ContentContainer>
           </FirstRow>
+          <SecondRow>
+            <SecondRowContentContainer>
+              <StyledPhasePolling
+                projectId={project.id}
+                phaseId={selectedPhaseId}
+              />
+            </SecondRowContentContainer>
+          </SecondRow>
 
           {(participationMethod === 'ideation' || participationMethod === 'budgeting') && selectedPhaseId &&
             <SecondRow>
