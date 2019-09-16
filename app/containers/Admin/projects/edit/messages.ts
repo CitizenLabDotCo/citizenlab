@@ -61,10 +61,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTooltip',
     defaultMessage: 'Choose how users can participate.',
   },
-  participationMethodPlaceholder: {
-    id: 'app.containers.AdminPage.ProjectEdit.participationMethodPlaceholder',
-    defaultMessage: 'Select a participation method',
-  },
   information: {
     id: 'app.containers.AdminPage.ProjectEdit.information',
     defaultMessage: 'Information',
@@ -128,10 +124,6 @@ export default defineMessages({
   votingMethodTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.votingMethodTooltip',
     defaultMessage: 'The option ‘Limited’ lets you define what maximum number of votes one user can cast. ‘Unlimited’ allows to vote on as many ideas as wanted.',
-  },
-  votingMethodPlaceholder: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingMethodPlaceholder',
-    defaultMessage: 'Select the voting method',
   },
   votingLimit: {
     id: 'app.containers.AdminPage.ProjectEdit.votingLimit',

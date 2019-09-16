@@ -174,10 +174,10 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         <TopContainer>
           <GoBackButton onClick={this.goBack} />
           <ActionsContainer>
-            {tabbedProps.tabs.findIndex(tab => tab.className === 'ideas') !== -1 &&
+            {!isNilOrError(project) && tabbedProps.tabs.findIndex(tab => tab.className === 'ideas') !== -1 &&
               <Button
                 id="new-idea"
-                linkTo={projectId ? `/projects/${projectId}/ideas/new` : '/ideas/new'}
+                linkTo={`/projects/${project.attributes.slug}/ideas/new`}
                 text={formatMessage(messages.addNewIdea)}
                 onClick={this.onNewIdea(pathname)}
               />
