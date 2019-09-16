@@ -5,7 +5,6 @@ import { booleanClass } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import Icon, { IconNames } from 'components/UI/Icon';
 import { FormLabelProps, FormLabelStyled, FormSubtextStyled } from '.';
-import { Spacer } from '../Modal';
 
 interface FormLabelWithIconProps extends FormLabelProps {
   iconName: IconNames;
@@ -20,6 +19,10 @@ const StyledIcon = styled(Icon)`
   width: 16px;
   height: 16px;
   margin-left: 10px;
+`;
+
+const Spacer = styled.div`
+  flex: 1;
 `;
 
 export const FormLabelWithIcon = memo(({

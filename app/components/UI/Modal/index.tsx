@@ -214,11 +214,11 @@ const Skip = styled.div`
   `}
 `;
 
-export const Spacer = styled.div`
+const Spacer = styled.div`
   flex: 1;
 `;
 
- export type Props = {
+export type Props = {
   opened: boolean;
   fixedHeight?: boolean;
   width?: string;
