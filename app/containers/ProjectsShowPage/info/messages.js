@@ -11,8 +11,4 @@ export default defineMessages({
     id: 'app.containers.ProjectInfo.imageAltText',
     defaultMessage: 'Project image {index}',
   },
-  projectAttachments: {
-    id: 'app.containers.ProjectInfo.projectAttachments',
-    defaultMessage: 'Attachments',
-  },
 });

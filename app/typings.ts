@@ -76,6 +76,7 @@ export interface CLError {
   value?: string;
   row?: number;
   rows?: number[];
+  ideas_count?: number;
 }
 
 export interface CLErrors {
