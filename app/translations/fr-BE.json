@@ -10,7 +10,7 @@
   "app.components.AssignBudgetControl.seeIdea": "Voir l'idée",
   "app.components.AssignBudgetControl.undo": "Annuler",
   "app.components.AuthProviderButton.termsAndConditions": "termes et conditions",
-  "app.components.AvatarBubbles.avatarAltText": "L'avatar d'un utilisateur de la plateforme",
+  "app.components.AvatarBubbles.numberOfUsers": "",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "Il n'est plus possible de commenter cette idée car elle n'est plus (ou pas encore) au stade de considération.",
   "app.components.Comments.commentingDisabledInContext": "Les commentaires sur les idées du projet '{projectName}' sont désactivés pour le moment.",
   "app.components.Comments.commentingDisabledProjectInactive": "Vous ne pouvez pas commenter sur cette idée car '{projectName}' n'est pas un projet actif.",
