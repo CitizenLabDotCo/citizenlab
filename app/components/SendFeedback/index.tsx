@@ -18,8 +18,13 @@ const SendFeedbackText = styled.span`
   font-weight: 300;
   transition: all 100ms ease-out;
 
-  &:not(.show) {
-    display: none;
+  .screenreader-only {
+    position:absolute;
+    left:-10000px;
+    top:auto;
+    width:1px;
+    height:1px;
+    overflow:hidden;
   }
 `;
 
@@ -61,10 +66,13 @@ const SendFeedbackComponent = React.memo<Props>((props: Props & InjectedIntlProp
 
   return (
     <Container className={className} target="_blank" href={formatMessage(messages.sendFeedbackLink,  { url: location.href })}>
-      <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
-      {/* Text has to be always here for pa11y, so we use a class and not conditional render to display it */}
-      <SendFeedbackText className={`send-feedback-text  ${showFeedbackText ? 'show' : ''}`}>
-        <FormattedMessage {...messages.sendFeedback} />
+      <SendFeedbackIcon name="questionMark" ariaHidden title={formatMessage(messages.sendFeedback)} className="send-feedback-icon" />
+      <SendFeedbackText>
+        {showFeedbackText ?
+          <FormattedMessage {...messages.sendFeedback} />
+          :
+          <span className="screenreader-only">{formatMessage(messages.sendFeedback)}</span>
+        }
       </SendFeedbackText>
     </Container>
   );
