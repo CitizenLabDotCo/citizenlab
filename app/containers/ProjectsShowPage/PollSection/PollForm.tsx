@@ -103,23 +103,23 @@ class PollForm extends PureComponent<Props, State> {
   render() {
     const { answers } = this.state;
     const { questions } = this.props;
+    if (isNilOrError(questions) || questions.length === 0) return null;
     return (
       <>
-      <PollContainer className="e2e-poll-form">
-        {questions.map((question, questionIndex) => (
-          <QuestionContainer key={question.id} className="e2e-poll-question">
-            <Label>
-              <QuestionNumber>
-                {questionIndex + 1}
-              </QuestionNumber>
-              <QuestionText>
-                <T value={question.attributes.title_multiloc} />
-              </QuestionText>
-            </Label>
-            <GetPollOptions questionId={question.id}>
+        <PollContainer className="e2e-poll-form">
+          {questions.map((question, questionIndex) => (
+            <GetPollOptions questionId={question.id} key={question.id}>
               {(options: GetPollOptionsChildProps) => (
-                isNilOrError(options) ? null : (
-                  <>
+                isNilOrError(options) || options.length === 0 ? null : (
+                  <QuestionContainer className="e2e-poll-question">
+                    <Label>
+                      <QuestionNumber>
+                        {questionIndex + 1}
+                      </QuestionNumber>
+                      <QuestionText>
+                        <T value={question.attributes.title_multiloc} />
+                      </QuestionText>
+                    </Label>
                     {options.map((option, optionIndex) => (
                       <StyledRadio
                         className="e2e-poll-option"
@@ -133,11 +133,10 @@ class PollForm extends PureComponent<Props, State> {
                         autoFocus={questionIndex === 0 && optionIndex === 0}
                       />
                     ))}
-                  </>
+                  </QuestionContainer>
                 ))}
             </GetPollOptions>
-          </QuestionContainer>
-        ))}
+          ))}
         </PollContainer>
         <Button
           onClick={this.sendAnswer}
