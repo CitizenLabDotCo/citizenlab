@@ -188,8 +188,7 @@ const PagesNav = styled.nav`
   overflow: hidden;
 
   ${media.smallerThanMaxTablet`
-    order: 2;
-    margin-top: 30px;
+    margin-top: 15px;
     margin-bottom: 15px;
   `}
 `;
@@ -244,8 +243,8 @@ const Right = styled.div`
   align-items: center;
 
   ${media.smallerThanMaxTablet`
-    order: 1;
     margin-top: 15px;
+    margin-bottom: 15px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -553,7 +552,7 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
 
                 <MediaQuery minWidth={viewportWidths.smallTablet}>
                   {matches => <StyledSendFeedback showFeedbackText={!matches} />}
-                 </MediaQuery>
+                </MediaQuery>
               </Right>
             </SecondLineInner>
           </SecondLine>
