@@ -10,7 +10,7 @@
   "app.components.AssignBudgetControl.seeIdea": "Ver idea",
   "app.components.AssignBudgetControl.undo": "Deshacer",
   "app.components.AuthProviderButton.termsAndConditions": "términos y condiciones",
-  "app.components.AvatarBubbles.avatarAltText": "Avatar de un usuario de la plataforma",
+  "app.components.AvatarBubbles.numberOfUsers": "",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "Es imposible comentar esta idea porque ya no está en consideración.",
   "app.components.Comments.commentingDisabledInContext": "Comentar ideas en '{projectName}' ahora no es posible.",
   "app.components.Comments.commentingDisabledProjectInactive": "Comentar esta idea no es posible ya que '{projectName}' ya no está activo.",

@@ -10,7 +10,7 @@
   "app.components.AssignBudgetControl.seeIdea": "Idee anschauen",
   "app.components.AssignBudgetControl.undo": "Rückgängig",
   "app.components.AuthProviderButton.termsAndConditions": "allgemeine Geschäftsbedingungen",
-  "app.components.AvatarBubbles.avatarAltText": "Avatar der Plattform Benutzer",
+  "app.components.AvatarBubbles.numberOfUsers": "",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "Diese Idee kann nicht kommentiert werden, da sie nicht mehr oder noch nicht in Erwägung gezogen wird.",
   "app.components.Comments.commentingDisabledInContext": "{Kommentare für Ideen zu '{projectName}' sind derzeit deaktiviert.",
   "app.components.Comments.commentingDisabledProjectInactive": "Kommentare zu dieser Idee sind nicht mehr möglich, weil '{projectName}' noch nicht oder nicht mehr aktiv ist.",

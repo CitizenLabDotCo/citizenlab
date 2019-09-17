@@ -10,7 +10,7 @@
   "app.components.AssignBudgetControl.seeIdea": "Se ide",
   "app.components.AssignBudgetControl.undo": "Fortryd",
   "app.components.AuthProviderButton.termsAndConditions": "vilkår",
-  "app.components.AvatarBubbles.avatarAltText": "Avatar af en platform bruger",
+  "app.components.AvatarBubbles.numberOfUsers": "",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "Det er ikke muligt at kommentere på denne idé, da den ikke længere eller endnu ikke er i betragtning.",
   "app.components.Comments.commentingDisabledInContext": "Kommentering på ideer i '{projectName}' er deaktiveret i øjeblikket.",
   "app.components.Comments.commentingDisabledProjectInactive": "Det er ikke muligt at kommentere på denne idé, da '{projectName}' ikke længere er aktivt eller ikke aktivt endnu.",

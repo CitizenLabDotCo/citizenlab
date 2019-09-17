@@ -10,7 +10,7 @@
   "app.components.AssignBudgetControl.seeIdea": "Bekijk idee",
   "app.components.AssignBudgetControl.undo": "Verwijderen",
   "app.components.AuthProviderButton.termsAndConditions": "gebruiksvoorwaarden",
-  "app.components.AvatarBubbles.avatarAltText": "Avatar van een gebruiker",
+  "app.components.AvatarBubbles.numberOfUsers": "",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "Reageren op dit idee is niet mogelijk omdat het nog niet of niet langer in overweging wordt genomen.",
   "app.components.Comments.commentingDisabledInContext": "Reageren op ideeën in '{projectName}' is momenteel uitgeschakeld.",
   "app.components.Comments.commentingDisabledProjectInactive": "Je kunt nu niet reageren op dit idee, omdat '{projectName}' momenteel niet actief is.",
