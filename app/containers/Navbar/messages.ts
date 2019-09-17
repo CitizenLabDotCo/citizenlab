@@ -12,7 +12,7 @@ export default defineMessages({
   },
   logoAltText: {
     id: 'app.containers.app.navbar.logoAltText',
-    defaultMessage: 'Link to home page',
+    defaultMessage: 'Home page',
   },
   startIdea: {
     id: 'app.containers.app.navbar.startIdea',
