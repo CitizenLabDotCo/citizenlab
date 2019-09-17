@@ -1,5 +1,8 @@
 import React, { memo, useCallback } from 'react';
 
+// Events
+import eventEmitter from 'utils/eventEmitter';
+
 // components
 import Button from 'components/UI/Button';
 
@@ -12,32 +15,28 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const duration = 350;
+const duration = 300;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
-const ImageWrapperWrapper = styled.div`
+const Image = styled.div<{src: string}>`
   width: 100%;
-  height: 118px;
-  overflow: hidden;
-  transition: all ${duration}ms ${easing};
-`;
-
-const ImageWrapper = styled.div`
   height: 118px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   border-radius: ${({ theme }) => theme.borderRadius};
-`;
-
-const Image = styled.img`
-  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-image: url(${({ src }) => src});
+  margin-bottom: 10px;
+  transition: all ${duration - 50}ms ease-out;
 `;
 
 const Content = styled.div`
-  background: red;
-  height: 200px;
+  height: 400px;
+  background: #f2f4f5;
   transition: all ${duration}ms ${easing};
 `;
 
@@ -45,37 +44,23 @@ const Title = styled.h3`
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-height: normal;
+  padding: 0;
   margin: 0;
   margin-top: 15px;
   margin-bottom: 5px;
-  padding: 0;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
 `;
 
 const Subtitle = styled.div`
   color: #808080;
-  flex-grow: 1;
 `;
 
 const Buttons = styled.div`
-  opacity: 0;
   position: absolute;
   left: 16px;
   right: 16px;
-  bottom: -118px;
+  bottom: -102px;
+  opacity: 0;
   transition: all ${duration}ms ${easing};
-
-  opacity: 1;
-  bottom: 20px;
 `;
 
 const UseTemplateButton = styled(Button)``;
@@ -87,35 +72,27 @@ const MoreDetailsButton = styled(Button)`
 const Container = styled.div`
   width: 100%;
   height: 263px;
-  /* cursor: pointer; */
-  display: flex;
-  flex-direction: column;
   padding: 16px;
   border-radius: ${({ theme }) => theme.borderRadius};
-  background: rgba(132, 147, 158, 0.1);
+  background: #f2f4f5;
   border: solid 1px #eaeaea;
-  position: relative;
   overflow: hidden;
+  position: relative;
 
   &:hover {
-    /* ${ImageWrapperWrapper} {
-      height: 0px;
-      opacity: 0;
-    } */
+    &.hasImage {
+      ${Image} {
+        opacity: 0;
+      }
 
-    ${Content} {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      right: 16px;
-      bottom: 0px;
-      z-index: 1;
+      ${Content} {
+        transform: translateY(-128px);
+      }
     }
 
     ${Buttons} {
       opacity: 1;
-      bottom: 20px;
-      z-index: 2;
+      transform: translateY(-118px);
     }
   }
 `;
@@ -125,28 +102,23 @@ interface Props {
   imageUrl: string | null;
   title: string;
   body: string;
-  onPreviewButtonClick: (projectTemplateId: string) => void;
   className?: string;
 }
 
-const ProjectTemplateCard = memo<Props>(({ projectTemplateId, imageUrl, title, body, onPreviewButtonClick, className }) => {
+const ProjectTemplateCard = memo<Props>(({ projectTemplateId, imageUrl, title, body, className }) => {
 
   const handleUseTemplateOnClick = useCallback(() => {
     // empty
   }, []);
 
   const handleMoreDetailsOnClick = useCallback(() => {
-    onPreviewButtonClick(projectTemplateId);
+    eventEmitter.emit<string>('ProjectTemplateCard', 'ProjectTemplateCardClicked', projectTemplateId);
   }, []);
 
   return (
-    <Container className={className}>
+    <Container className={`${className} ${imageUrl ? 'hasImage' : ''}`}>
       {imageUrl &&
-        <ImageWrapperWrapper>
-          <ImageWrapper>
-            <Image src={imageUrl} />
-          </ImageWrapper>
-        </ImageWrapperWrapper>
+        <Image src={imageUrl} />
       }
 
       <Content>

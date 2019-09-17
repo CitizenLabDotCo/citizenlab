@@ -133,10 +133,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.fieldLimit',
     defaultMessage: 'Limit',
   },
-  updatePreview: {
-    id: 'app.containers.AdminPage.widgets.updatePreview',
-    defaultMessage: 'Update preview',
-  },
   settingsTitle: {
     id: 'app.containers.AdminPage.widgets.settingsTitle',
     defaultMessage: 'Settings',

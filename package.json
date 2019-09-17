@@ -35,7 +35,8 @@
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit --w=2 --coverage --coverageReporters=text-summary",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --spec 'cypress/integration/*.ts'",
-    "majestic": "majestic --port 4231"
+    "majestic": "majestic --port 4231",
+    "find-unused-messages": "node internals/scripts/find-unused-messages.js"
   },
   "majestic": {
     "jestScriptPath": "node_modules/jest/bin/jest.js"
@@ -220,7 +221,7 @@
     "webpack-cli": "3.3.8",
     "webpack-dashboard": "3.2.0",
     "webpack-dev-middleware": "3.7.1",
-    "webpack-dev-server": "3.8.0",
+    "webpack-dev-server": "3.8.1",
     "yargs": "14.0.0"
   },
   "resolutions": {

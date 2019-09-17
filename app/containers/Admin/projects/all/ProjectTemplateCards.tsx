@@ -2,17 +2,16 @@ import React, { memo, useCallback, useState } from 'react';
 import { get, isEmpty } from 'lodash-es';
 
 // graphql
-import { gql, ApolloClient, InMemoryCache, HttpLink } from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
+import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
-import { GRAPHQL_PATH } from 'containers/App/constants';
 
 // components
 import ProjectTemplateCard from './ProjectTemplateCard';
-import ProjectTemplatePreview from './ProjectTemplatePreview';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
-import SideModal from 'components/UI/SideModal';
+// import ProjectTemplatePreview from './ProjectTemplatePreview';
+// import SideModal from 'components/UI/SideModal';
+// import Modal from 'components/UI/Modal';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -239,12 +238,23 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
           </LoadMoreButtonWrapper>
         }
 
+        {/*
         <SideModal
           opened={!!previewTemplateId}
           close={handlePreviewOnClose}
         >
           {previewTemplateId && <ProjectTemplatePreview projectTemplateId={previewTemplateId} />}
         </SideModal>
+        */}
+
+        {/*
+        <Modal
+          opened={!!previewTemplateId}
+          close={handlePreviewOnClose}
+        >
+          {previewTemplateId && <ProjectTemplatePreview projectTemplateId={previewTemplateId} />}
+        </Modal>
+        */}
 
       </Container>
     );
@@ -253,13 +263,4 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
   return null;
 });
 
-const cache = new InMemoryCache();
-const link = new HttpLink({ uri: GRAPHQL_PATH });
-const client = new ApolloClient({ cache, link });
-const ProjectTemplateCardsWithHoc = injectIntl(ProjectTemplateCards);
-
-export default (props: Props) => (
-  <ApolloProvider client={client}>
-    <ProjectTemplateCardsWithHoc {...props} />
-  </ApolloProvider>
-);
+export default injectIntl(ProjectTemplateCards);

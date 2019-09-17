@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  openProjectButton: {
-    id: 'app.components.ProjectCard.openProjectButton',
-    defaultMessage: 'Discover this project',
-  },
   idea: {
     id: 'app.components.ProjectCard.idea',
     defaultMessage: 'idea',

@@ -7,7 +7,13 @@ import moment from 'moment';
 import 'moment-timezone';
 import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
-import { appLocalesMomentPairs } from 'containers/App/constants';
+
+// constants
+import { appLocalesMomentPairs, GRAPHQL_PATH } from 'containers/App/constants';
+
+// graphql
+import { ApolloClient, InMemoryCache, HttpLink } from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -303,4 +309,14 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-export default withRouter(App);
+const AppWithHoC = withRouter(App);
+
+const cache = new InMemoryCache();
+const link = new HttpLink({ uri: GRAPHQL_PATH });
+const client = new ApolloClient({ cache, link });
+
+export default (props: Props) => (
+  <ApolloProvider client={client}>
+    <AppWithHoC {...props} />
+  </ApolloProvider>
+);
