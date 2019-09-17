@@ -254,6 +254,7 @@
   "app.components.ProjectCard.takeTheSurvey": "Besvar spørgeskemaet ",
   "app.components.ProjectCard.viewTheIdeas": "Vis ideerne",
   "app.components.ProjectCard.vote": "Stem ",
+  "app.components.ProjectCard.xComments": "",
   "app.components.ProjectCard.xIdeas": "{x, plural, =0 {ingen ideer} one {# idé} other {# ideer}}",
   "app.components.ProjectCards.noProjectYet": "Der er endnu ikke noget projekt ",
   "app.components.ProjectCards.showMore": "Vis mere ",
