@@ -65,7 +65,7 @@ const TenantLogo = styled.img`
   margin-bottom: 20px;
 `;
 
-const TenantSlogan = styled.div`
+const TenantSlogan = styled.h2`
   width: 100%;
   max-width: 340px;
   color: ${(props) => props.theme.colorText};
