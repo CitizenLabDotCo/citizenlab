@@ -739,6 +739,8 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.editOptions": "Manage options",
   "app.containers.AdminPage.ProjectEdit.PollTab.editQuestion": "Edit",
   "app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults": "Export poll results",
+  "app.containers.AdminPage.ProjectEdit.PollTab.noOptions": "No options",
+  "app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip": "The poll will not be answerable as it is, all questions must have options",
   "app.containers.AdminPage.ProjectEdit.PollTab.optionsFormHeader": "Manage options for : {questionTitle}",
   "app.containers.AdminPage.ProjectEdit.PollTab.saveOption": "Save",
   "app.containers.AdminPage.ProjectEdit.PollTab.saveQuestion": "Save",

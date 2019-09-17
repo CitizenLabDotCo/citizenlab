@@ -739,6 +739,8 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.editOptions": "",
   "app.containers.AdminPage.ProjectEdit.PollTab.editQuestion": "",
   "app.containers.AdminPage.ProjectEdit.PollTab.exportPollResults": "",
+  "app.containers.AdminPage.ProjectEdit.PollTab.noOptions": "",
+  "app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip": "",
   "app.containers.AdminPage.ProjectEdit.PollTab.optionsFormHeader": "",
   "app.containers.AdminPage.ProjectEdit.PollTab.saveOption": "",
   "app.containers.AdminPage.ProjectEdit.PollTab.saveQuestion": "",
