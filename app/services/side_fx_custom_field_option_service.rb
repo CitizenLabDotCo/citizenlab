@@ -14,7 +14,7 @@ class SideFxCustomFieldOptionService
   end
 
   def before_destroy custom_field_option, current_user
-
+    CustomFieldService.new.delete_custom_field_option_values custom_field_option
   end
 
   def after_destroy frozen_custom_field_option, current_user
