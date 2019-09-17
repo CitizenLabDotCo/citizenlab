@@ -44,6 +44,14 @@ namespace :inconsistent_data do
     end
   end
 
+  task :fix_identities_with_blank_users => :environment do
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        Identity.where('user_id IS NULL').destroy_all
+      end
+    end
+  end
+
   task :fix_pc_that_cannot_contain_ideas => :environment do
     fixes = {}
     failures = {}
