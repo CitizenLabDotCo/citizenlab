@@ -35,6 +35,17 @@ const Container = styled.div`
   }
 `;
 
+const MapTitle = styled.span`
+  &.screenreader-only {
+    position:absolute;
+    left:-10000px;
+    top:auto;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+  }
+`;
+
 const StyledWarning = styled(Warning)`
   margin-bottom: 10px;
 `;
@@ -163,6 +174,10 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
         {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 &&
           <StyledWarning text={this.noIdeasWithLocationMessage} />
         }
+
+        <MapTitle className="screenreader-only">
+          <FormattedMessage {...messages.mapTitle} />
+        </MapTitle>
 
         <StyledMap
           points={points}
