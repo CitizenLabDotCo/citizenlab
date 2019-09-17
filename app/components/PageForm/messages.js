@@ -19,10 +19,6 @@ export default defineMessages({
     id: 'app.components.PagesForm.editContent',
     defaultMessage: 'Content',
   },
-  advancedEditorLink: {
-    id: 'app.components.PagesForm.advancedEditorLink',
-    defaultMessage: 'Advanced editor',
-  },
   dontChange: {
     id: 'app.components.PagesForm.dontChange',
     defaultMessage: 'Don\'t change this! (unless you really know what you\'re doing)',

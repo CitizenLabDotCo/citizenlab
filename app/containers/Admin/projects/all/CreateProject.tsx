@@ -18,7 +18,7 @@ import messages from './messages';
 // style
 import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
-import { darken, transparentize } from 'polished';
+import { transparentize } from 'polished';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -96,7 +96,7 @@ const ExpandIconWrapper = styled.div`
   width: 30px;
   height: 30px;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 2px ${transparentize(0.7, colors.label)};
+  border: solid 1px ${transparentize(0.7, colors.label)};
   display: flex;
   align-items: center;
   justify-content: center;

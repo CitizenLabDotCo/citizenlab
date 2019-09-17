@@ -67,10 +67,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.projectTypeEditTooltip',
     defaultMessage: 'You cannot change the project type after its creation. Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.',
   },
-  projectTypePlaceholder: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectTypePlaceholder',
-    defaultMessage: 'Is this a continuous or a timeline project?',
-  },
   continuous: {
     id: 'app.containers.AdminPage.ProjectEdit.continuous',
     defaultMessage: 'Continuous',

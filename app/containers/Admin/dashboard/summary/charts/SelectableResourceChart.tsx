@@ -116,7 +116,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
               <FormattedMessage {...messages[`participationPer${byWhat}`]} />
             </GraphCardTitle>
             <SHiddenLabel>
-              <FormattedMessage {...messages[`hiddelLabelPickResourceBy${byWhat}`]} />
+              <FormattedMessage {...messages[`hiddenLabelPickResourceBy${byWhat}`]} />
               <Select
                 id={`select${byWhat}`}
                 onChange={onResourceByXChange}
