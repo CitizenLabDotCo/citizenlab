@@ -203,7 +203,7 @@ describe CustomFieldService do
       v3 = {cf1.key => [cfo2.key]}
       u3 = create(:user, custom_field_values: v3)
 
-      service.delete_custom_field_option_values(cfo1)
+      service.delete_custom_field_option_values(cfo1.key, cfo1.custom_field)
 
       expect(u1.reload.custom_field_values).to eq({cf2.key => cfo3.key})
       expect(u2.reload.custom_field_values).to eq({cf1.key => [cfo2.key]})
@@ -219,7 +219,7 @@ describe CustomFieldService do
       v2 = {cf1.key => cfo2.key}
       u2 = create(:user, custom_field_values: v2)
 
-      service.delete_custom_field_option_values(cfo1)
+      service.delete_custom_field_option_values(cfo1.key, cfo1.custom_field)
 
       expect(u1.reload.custom_field_values).to eq({})
       expect(u2.reload.custom_field_values).to eq v2
