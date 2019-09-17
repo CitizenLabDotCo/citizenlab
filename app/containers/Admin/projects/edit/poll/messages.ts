@@ -23,6 +23,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOptions',
     defaultMessage: 'Manage options',
   },
+  noOptions: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.noOptions',
+    defaultMessage: 'No options',
+  },
+  noOptionsTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip',
+    defaultMessage: 'The poll will not be answerable as it is, all questions must have options',
+  },
   addQuestion: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.addQuestion',
     defaultMessage: 'Add a question',
