@@ -185,10 +185,6 @@ class SignedOutHeader extends PureComponent<Props, State> {
     clHistory.push('/initiatives/new');
   }
 
-  handleAvatarBubblesOnClick = () => {
-    trackEventByName(tracks.clickAvatarBubbles, { extra: { location: 'initiatives header' } });
-  }
-
   render() {
     const { className, theme, tenant } = this.props;
 
@@ -205,7 +201,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
               />
             </HeaderTitle>
 
-            <StyledAvatarBubbles onClick={this.handleAvatarBubblesOnClick} />
+            <StyledAvatarBubbles />
 
           </HeaderContent>
           <StartInitiative
