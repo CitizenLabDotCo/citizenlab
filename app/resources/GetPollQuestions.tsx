@@ -54,6 +54,11 @@ export default class GetPollQuestions extends React.Component<Props, State> {
     ];
   }
 
+  componentDidUpdate() {
+    const { participationContextId, participationContextType } = this.props;
+    this.inputProps$.next({ participationContextId, participationContextType });
+  }
+
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
