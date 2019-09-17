@@ -69,7 +69,7 @@ const FooterBanner = styled.div`
   padding-top: 50px;
   padding-bottom: 60px;
 
-  p {
+  h2 {
     color: #fff;
     font-size: ${fontSizes.xxxl}px;
     line-height: normal;
@@ -219,7 +219,7 @@ class LandingPage extends PureComponent<Props, State> {
 
               {!authUser &&
                 <FooterBanner>
-                  <p>{subtitle}</p>
+                  <h2>{subtitle}</h2>
                   <StyledAvatarBubbles />
                   <Button
                     fontWeight="500"
