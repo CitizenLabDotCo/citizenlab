@@ -130,7 +130,7 @@ resource "User Custom Field Options" do
         expect(CustomFieldOption.find(id)).to be_present
       end
 
-      example "Deleting a custom field option that's still referenced in a user's setting" do
+      example "Deleting a custom field option that's still referenced in a user's setting", document: false do
         custom_field_values = {@custom_field.key => custom_field_option.key}
         user = create(:user, custom_field_values: custom_field_values)
         expect(user.reload.custom_field_values).to eq custom_field_values
