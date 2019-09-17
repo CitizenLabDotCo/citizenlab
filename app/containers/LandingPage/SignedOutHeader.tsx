@@ -171,10 +171,6 @@ class SignedOutHeader extends PureComponent<Props, State> {
     clHistory.push('/sign-up');
   }
 
-  handleAvatarBubblesOnClick = () => {
-    trackEventByName(tracks.clickAvatarBubbles, { extra: { location: 'signed-out header' } });
-  }
-
   render() {
     const { locale, tenant, className, theme } = this.props;
 
@@ -208,7 +204,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
                 {subtitle}
               </HeaderSubtitle>
 
-              <StyledAvatarBubbles onClick={this.handleAvatarBubblesOnClick} />
+              <StyledAvatarBubbles />
 
               <SignUpButton
                 fontWeight="500"

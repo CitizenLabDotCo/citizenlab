@@ -481,10 +481,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
     trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
   }
 
-  handleAvatarBubblesOnClick = (projectId: string) => () => {
-    trackEventByName(tracks.clickOnAvatarBubbles, { extra: { projectId } });
-  }
-
   render() {
     const { visible } = this.state;
     const { authUser, project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
@@ -630,7 +626,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <ContentFooterLeft>
                 {hasAvatars &&
                   <AvatarBubbles
-                    onClick={this.handleAvatarBubblesOnClick(project.id)}
                     size={30}
                     limit={3}
                     userCountBgColor={this.props.theme.colorMain}

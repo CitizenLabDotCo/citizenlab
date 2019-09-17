@@ -72,6 +72,15 @@ const UserCount: any = styled.div`
   &.too-many-users {
     font-size: ${fontSizes.xs}px;
   }
+
+  .screenreader-only {
+    position:absolute;
+    left:-10000px;
+    top:auto;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+  }
 `;
 
 const PlusIcon = styled(Icon)`
@@ -98,7 +107,6 @@ interface InputProps {
   userCountBgColor?: string;
   avatarIds?: string[];
   className?: string;
-  onClick?: (event: MouseEvent) => void;
 }
 
 interface DataProps {
@@ -116,14 +124,8 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
     limit: defaultLimit
   };
 
-  handleOnClick = (event: MouseEvent) => {
-    if (this.props.onClick) {
-      this.props.onClick(event);
-    }
-  }
-
   render() {
-    const { avatars, avatarIds, context, size, overlap, userCount, className } = this.props;
+    const { avatars, avatarIds, context, size, overlap, userCount, className, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
       const definedSize = size || 34;
@@ -143,13 +145,12 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
             size={definedSize}
             width={calcWidth}
             overlap={definedOverlap}
-            onClick={this.handleOnClick}
           >
             {avatarsWithImage.map((avatar, index) => (
               <AvatarWrapper key={index}>
                 <AvatarImage
                   src={avatar.attributes.avatar[imageSize]}
-                  alt={this.props.intl.formatMessage(messages.avatarAltText)}
+                  alt=""
                   size={definedSize}
                 />
               </AvatarWrapper>
@@ -161,8 +162,11 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
                   size={definedSize}
                   bgColor={userCountBgColor}
                 >
-                  <PlusIcon name="plus" />
-                  {remainingUsers}
+                  <PlusIcon name="plus" ariaHidden />
+                  <span aria-hidden>{remainingUsers}</span>
+                  <span className="screenreader-only">
+                    {formatMessage(messages.numberOfUsers, { numberOfUsers: userCount })}
+                  </span>
                 </UserCount>
               </AvatarWrapper>
             }

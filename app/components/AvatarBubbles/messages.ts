@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  avatarAltText: {
-    id: 'app.components.AvatarBubbles.avatarAltText',
-    defaultMessage: 'Avatar of a platform user',
+  numberOfUsers: {
+    id: 'app.components.AvatarBubbles.numberOfUsers',
+     defaultMessage: '{numberOfUsers} users on this platform',
   },
 });
