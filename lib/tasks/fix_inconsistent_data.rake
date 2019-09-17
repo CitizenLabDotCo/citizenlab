@@ -43,6 +43,16 @@ namespace :inconsistent_data do
       puts "Success!"
     end
   end
+  
+
+  task :fix_users_with_invalid_locales => :environment do
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        User.where('locale NOT IN ?', tenant.settings.dig('core', 'locales'))
+          .update_all(locale: tenant.settings.dig('core', 'locales').first)
+      end
+    end
+  end
 
   task :fix_identities_with_blank_users => :environment do
     Tenant.all.each do |tenant|
