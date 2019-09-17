@@ -19,6 +19,6 @@ export default defineMessages({
   },
   linkToHomePage: {
     id: 'app.components.PostComponents.linkToHomePage',
-    defaultMessage: 'Link to home page'
+    defaultMessage: 'Home page'
   }
 });
