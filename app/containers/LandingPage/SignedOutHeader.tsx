@@ -19,6 +19,7 @@ import tracks from './tracks';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
+import T from 'components/T';
 
 // style
 import styled, { withTheme } from 'styled-components';
@@ -99,13 +100,15 @@ const HeaderContent = styled.div`
   z-index: 1;
 `;
 
-const HeaderTitle = styled.h1<{ hasHeader: boolean }>`
+const HeaderTitle = styled.span<{ hasHeader: boolean }>`
+  & h1 {
+    font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
+    font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
+    line-height: normal;
+  }
   width: 100%;
   max-width: 600px;
   color: ${({ hasHeader, theme }) => hasHeader ? '#fff' : theme.colorMain};
-  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
-  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
-  line-height: normal;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -115,13 +118,15 @@ const HeaderTitle = styled.h1<{ hasHeader: boolean }>`
   `}
 `;
 
-const HeaderSubtitle = styled.h2<{ hasHeader: boolean }>`
+const HeaderSubtitle = styled.span<{ hasHeader: boolean }>`
+  & h2 {
+    font-size: ${fontSizes.xl}px;
+    line-height: 28px;
+    font-weight: 400;
+  }
   width: 100%;
   max-width: 375px;
   color: ${({ hasHeader, theme }) => hasHeader ? '#fff' : theme.colorMain};
-  font-size: ${fontSizes.xl}px;
-  line-height: 28px;
-  font-weight: 400;
   max-width: 980px;
   text-align: center;
   text-decoration: none;
@@ -179,16 +184,37 @@ class SignedOutHeader extends PureComponent<Props, State> {
     const { locale, tenant, className, theme } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+      // tranlate tenant name into a string
       const tenantLocales = tenant.attributes.settings.core.locales;
       const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
-      const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
-      const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
       const tenantName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
-      const tenantHeaderTitle = (headerTitleMultiLoc ? getLocalized(headerTitleMultiLoc, locale, tenantLocales) : null);
-      const tenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, tenantLocales) : null);
+
+      // tranlate header title into a h1 wih a fallback
+      const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
+      const genericTitle = <FormattedMessage tagName="h1" {...messages.titleCity} values={{ name: tenantName }} />;
+
+      const title = (headerTitleMultiLoc ? (
+        <T as="h1" value={headerTitleMultiLoc}>
+          {translatedTitle =>
+             translatedTitle ? <h1>translatedTitle</h1> : genericTitle
+          }
+        </T>
+      ) : genericTitle);
+
+      // tranlate header slogan into a h2 wih a fallback
+      const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
+      const genericSlogan = <FormattedMessage tagName="h2" {...messages.subtitleCity} />;
+
+      const subtitle = (headerSloganMultiLoc ? (
+        <T as="h2" value={headerSloganMultiLoc}>
+          {translatedSlogan =>
+             translatedSlogan ? <h1>translatedSlogan</h1> : genericSlogan
+          }
+        </T>
+      ) : genericSlogan);
+
+      // get tenant header image
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
-      const title = (tenantHeaderTitle ? tenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: tenantName }} />);
-      const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
 
       return (
