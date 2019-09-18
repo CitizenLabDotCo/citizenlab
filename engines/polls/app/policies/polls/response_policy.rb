@@ -14,6 +14,10 @@ module Polls
       end
     end
 
+    def index_xlsx?
+      user&.active? && user.admin?
+    end
+
     def create?
       # TODO: Only if you have the permission to answer
       user&.active?

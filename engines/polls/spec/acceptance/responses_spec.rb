@@ -8,7 +8,7 @@ resource "Poll Responses" do
 
   before do
     header "Content-Type", "application/json"
-    @user = create(:user, locale: 'en')
+    @user = create(:admin, locale: 'en')
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
   end
