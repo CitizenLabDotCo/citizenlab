@@ -97,7 +97,6 @@ const Right = styled.div`
 
 const StyledCommentsMoreActions = styled(CommentsMoreActions)`
   margin-right: -6px;
-  border: solid 1px red;
 `;
 
 export interface ICommentReplyClicked {

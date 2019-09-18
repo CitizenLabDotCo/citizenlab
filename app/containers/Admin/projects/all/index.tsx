@@ -17,7 +17,7 @@ import { updateTenant } from 'services/tenant';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
 import GetProjectGroups from 'resources/GetProjectGroups';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
@@ -41,7 +41,7 @@ import HasPermission from 'components/HasPermission';
 import Toggle from 'components/UI/Toggle';
 import FeatureFlag from 'components/FeatureFlag';
 import InfoTooltip from 'components/admin/InfoTooltip';
-import ProjectTemplatePreview from 'components/ProjectTemplatePreview/ProjectTemplatePreview';
+import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 
 // style
 import { fontSizes } from 'utils/styleUtils';
@@ -161,8 +161,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
     this.subscriptions = [
       eventEmitter.observeEvent<string>('ProjectTemplateCardClicked').subscribe(({ eventValue }) => {
         if (isString(eventValue)) {
+          const selectedProjectTemplateId = eventValue;
           const { locale } = this.props;
-          const url = `/admin/projects/templates/${eventValue}`;
+          const url = `/admin/projects/templates/${selectedProjectTemplateId}`;
 
           if (!isNilOrError(locale) && url) {
             this.url = `${window.location.origin}/${locale}${removeLocale(url).pathname}`;
@@ -171,10 +172,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
             window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
             window.addEventListener('keydown', this.handleKeypress, useCapture);
             this.unlisten = clHistory.listen(() => this.goBack());
-            trackPage(this.url, { modal: true });
+            trackPage(this.url);
           }
 
-          this.setState({ selectedProjectTemplateId: eventValue });
+          window.scrollTo(0, 0);
+          this.setState({ selectedProjectTemplateId });
         }
       })
     ];
@@ -197,6 +199,10 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   goBack = () => {
     this.setState({ selectedProjectTemplateId: null });
+  }
+
+  useTemplate = () => {
+    // empty
   }
 
   cleanup = () => {
@@ -505,18 +511,25 @@ class AdminProjectsList extends PureComponent<Props, State> {
         </CreateAndEditProjectsContainer>
 
         <ProjectTemplatePreviewContainer className={!selectedProjectTemplateId ? 'hidden' : ''}>
-          <GoBackButton onClick={this.goBack}>Go back</GoBackButton>
-          {selectedProjectTemplateId && <ProjectTemplatePreview projectTemplateId={selectedProjectTemplateId} />}
+          {selectedProjectTemplateId &&
+            <ProjectTemplatePreviewPageAdmin
+              projectTemplateId={selectedProjectTemplateId}
+              goBack={this.goBack}
+              useTemplate={this.useTemplate}
+            />
+          }
         </ProjectTemplatePreviewContainer>
       </Container>
     );
   }
 }
 
+const publicationStatuses: PublicationStatus[] = ['draft', 'published', 'archived'];
+
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true} />
+  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />
 });
 
 export default (inputProps: InputProps) => (

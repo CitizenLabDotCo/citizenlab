@@ -11,14 +11,11 @@ import { useQuery } from '@apollo/react-hooks';
 
 // components
 import Button from 'components/UI/Button';
-
-// utils
-import { isAdminPage } from 'utils/helperUtils';
+import Icon from 'components/UI/Icon';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../../containers/Admin/projects/all/messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
@@ -26,20 +23,116 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  width: 500px;
+  width: 100%;
+  max-width: 1050px;
   height: 800px;
-  padding: 20px;
+  padding: 65px;
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
   border: solid 1px #e0e0e0;
 `;
 
-const AdminHeader = styled.div`
+const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: solid 1px red;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
+`;
+
+const HeaderLeft = styled.div``;
+
+const HeaderRight = styled.div``;
+
+const Title = styled.h1`
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.xxl}px;
+  font-weight: 600;
+  line-height: normal;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 10px;
+`;
+
+const Subtitle = styled.h2`
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 5px;
+`;
+
+const MetaInfo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+`;
+
+const MetaInfoLeft = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const MetaInfoRight = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Department = styled.div`
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  line-height: normal;
+  padding: 6px 12px;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  border: solid 1px ${colors.separation};
+  margin-right: 5px;
+`;
+
+const Purpose = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  margin-right: 30px;
+`;
+
+const PurposeIcon = styled(Icon)`
+  fill: ${colors.label};
+  height: 24px;
+  margin-right: 7px;
+`;
+
+const ParticipationLevel = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+`;
+
+const ParticipationLevelIcon = styled(Icon)`
+  fill: ${colors.label};
+  height: 24px;
+  margin-right: 7px;
+`;
+
+const Content = styled.div``;
+
+const HeaderImage = styled.div<{ src: string }>`
+  width: 100%;
+  height: 260px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-image: url(${({ src }) => src});
+  border-radius: ${({ theme }) => theme.borderRadius};
+  overflow: hidden;
 `;
 
 export interface InputProps {
@@ -53,11 +146,9 @@ interface DataProps {
 
 interface Props extends DataProps, InputProps { }
 
-const ProjectTemplatePreview = memo<Props & InjectedIntlProps>(({ locale, intl, projectTemplateId, className }) => {
+const ProjectTemplatePreview = memo<Props>(({ locale, projectTemplateId, className }) => {
 
   const graphQLLocale = !isNilOrError(locale) ? transformLocale(locale) : null;
-
-  const adminPage = isAdminPage(location.pathname);
 
   const TEMPLATE_QUERY = gql`
     {
@@ -178,24 +269,55 @@ const ProjectTemplatePreview = memo<Props & InjectedIntlProps>(({ locale, intl, 
 
   const { loading, data } = useQuery(TEMPLATE_QUERY);
 
-  const goBack = useCallback(() => {
-    // empty
-  }, []);
-
-  const useTemplate = useCallback(() => {
+  const copyLink = useCallback(() => {
     // empty
   }, []);
 
   if (!loading && data) {
     return (
       <Container className={className}>
-        {/* {adminPage &&
-          <AdminHeader>
-            <Button onClick={goBack}>Go back to templates overview</Button>
-            <Button onClick={useTemplate}>Use template</Button>
-          </AdminHeader>
-        } */}
-        <h1>${data.projectTemplate.id}</h1>
+        <Header>
+          <HeaderLeft>
+            <Title>{data.projectTemplate.titleMultiloc[`${graphQLLocale}`]}</Title>
+            <Subtitle>{data.projectTemplate.subtitleMultiloc[`${graphQLLocale}`]}</Subtitle>
+          </HeaderLeft>
+
+          <HeaderRight>
+            <Button
+              onClick={copyLink}
+              icon="link"
+              style="secondary"
+            >
+              <FormattedMessage {...messages.copyLink} />
+            </Button>
+          </HeaderRight>
+        </Header>
+
+        <MetaInfo>
+          <MetaInfoLeft>
+            {data.projectTemplate.departments && data.projectTemplate.departments.map((department) => (
+              <Department key={department.id}>
+                {department.titleMultiloc[`${graphQLLocale}`]}
+              </Department>
+            ))}
+          </MetaInfoLeft>
+          <MetaInfoRight>
+            <Purpose>
+              <PurposeIcon name="purpose" />
+              Purpose
+            </Purpose>
+            <ParticipationLevel>
+              <ParticipationLevelIcon name="participationLevel" />
+              Participation level
+            </ParticipationLevel>
+          </MetaInfoRight>
+        </MetaInfo>
+
+        <Content>
+        {data.projectTemplate.headerImage &&
+          <HeaderImage src={data.projectTemplate.headerImage} />
+        }
+        </Content>
       </Container>
     );
   }
@@ -207,10 +329,8 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />
 });
 
-const ProjectTemplatePreviewWithHoC = injectIntl(ProjectTemplatePreview);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectTemplatePreviewWithHoC {...dataProps} {...inputProps} />}
+    {dataProps => <ProjectTemplatePreview {...dataProps} {...inputProps} />}
   </Data>
 );

@@ -9,9 +9,6 @@ import { useQuery } from '@apollo/react-hooks';
 import ProjectTemplateCard from './ProjectTemplateCard';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
-// import ProjectTemplatePreview from './ProjectTemplatePreview';
-// import SideModal from 'components/UI/SideModal';
-// import Modal from 'components/UI/Modal';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -74,54 +71,53 @@ interface Props {
   className?: string;
 }
 
+export const TEMPLATES_QUERY = gql`
+  query PublishedProjectTemplatesQuery(
+    $cursor: String,
+    $departments: [ID!],
+    $purposes: [ID!],
+    $participationLevels: [ID!],
+    $search: String
+  ) {
+    publishedProjectTemplates(
+      first: 6,
+      after: $cursor,
+      departments: $departments,
+      purposes: $purposes,
+      participationLevels: $participationLevels,
+      search: $search
+    ) {
+      edges {
+        node {
+          id,
+          cardImage,
+          titleMultiloc {
+            en
+          },
+          subtitleMultiloc {
+            en
+          }
+        }
+        cursor
+      }
+      pageInfo{
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+`;
+
 const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className }) => {
 
   const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
   const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
-
-  const TEMPLATES_QUERY = gql`
-    query PublishedProjectTemplatesQuery(
-      $cursor: String,
-      $departments: [ID!],
-      $purposes: [ID!],
-      $participationLevels: [ID!],
-      $search: String
-    ) {
-      publishedProjectTemplates(
-        first: 6,
-        after: $cursor,
-        departments: $departments,
-        purposes: $purposes,
-        participationLevels: $participationLevels,
-        search: $search
-      ) {
-        edges {
-          node {
-            id,
-            cardImage,
-            titleMultiloc {
-              en
-            },
-            subtitleMultiloc {
-              en
-            }
-          }
-          cursor
-        }
-        pageInfo{
-          endCursor
-          hasNextPage
-        }
-      }
-    }
-  `;
 
   const [departments, setDepartments] = useState<string[] | null>(null);
   const [purposes, setPurposes] = useState<string[] | null>(null);
   const [participationLevels, setParticipationLevels] = useState<string[] | null>(null);
   const [search, setSearch] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
 
   const { data, fetchMore } = useQuery(TEMPLATES_QUERY, {
     variables: {
@@ -183,14 +179,6 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
     });
   }, [templates]);
 
-  const handlePreviewOnOpen = useCallback((projectTemplateId: string) => {
-    setPreviewTemplateId(projectTemplateId);
-  }, []);
-
-  const handlePreviewOnClose = useCallback(() => {
-    setPreviewTemplateId(null);
-  }, []);
-
   if (templates) {
     return (
       <Container className={className}>
@@ -220,7 +208,6 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
                 imageUrl={cardImage}
                 title={titleMultiloc.en}
                 body={subtitleMultiloc.en}
-                onPreviewButtonClick={handlePreviewOnOpen}
               />
             );
           })}
@@ -237,25 +224,6 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
             </LoadMoreButton>
           </LoadMoreButtonWrapper>
         }
-
-        {/*
-        <SideModal
-          opened={!!previewTemplateId}
-          close={handlePreviewOnClose}
-        >
-          {previewTemplateId && <ProjectTemplatePreview projectTemplateId={previewTemplateId} />}
-        </SideModal>
-        */}
-
-        {/*
-        <Modal
-          opened={!!previewTemplateId}
-          close={handlePreviewOnClose}
-        >
-          {previewTemplateId && <ProjectTemplatePreview projectTemplateId={previewTemplateId} />}
-        </Modal>
-        */}
-
       </Container>
     );
   }
