@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.loadVotesError',
     defaultMessage: 'Voting is not currently available',
   },
-  imageAltText: {
-    id: 'app.containers.IdeasShow.imageAltText',
-    defaultMessage: 'Main image for the idea {ideaTitle}',
-  },
   Map: {
     id: 'app.containers.IdeasShow.Map',
     defaultMessage: 'Map',
