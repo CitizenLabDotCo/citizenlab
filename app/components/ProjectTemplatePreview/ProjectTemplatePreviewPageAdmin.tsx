@@ -13,7 +13,6 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;

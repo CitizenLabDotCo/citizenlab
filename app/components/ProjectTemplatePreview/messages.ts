@@ -13,7 +13,11 @@ export default defineMessages({
   },
   copyLink: {
     id: 'app.components.ProjectTemplatePreview.copyLink',
-    defaultMessage: 'Copy link to template',
+    defaultMessage: 'Copy link',
+  },
+  copied: {
+    id: 'app.components.ProjectTemplatePreview.copied',
+    defaultMessage: 'Copied',
   },
   alsoUsedIn: {
     id: 'app.components.ProjectTemplatePreview.alsoUsedIn',
