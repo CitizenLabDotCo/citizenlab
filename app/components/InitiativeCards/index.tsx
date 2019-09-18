@@ -18,6 +18,9 @@ import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
 
+//  Typings
+import { MessageDescriptor } from 'typings';
+
 // resources
 import GetInitiatives, { Sort, GetInitiativesChildProps, IQueryParameters } from 'resources/GetInitiatives';
 import GetInitiativesFilterCounts, { GetInitiativesFilterCountsChildProps } from 'resources/GetInitiativesFilterCounts';
@@ -34,7 +37,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths, Invisible } from 'utils/styleUtils';
 import { darken, rgba } from 'polished';
 
 const gapWidth = 35;
@@ -361,6 +364,7 @@ const ShowMoreButton = styled(Button)``;
 
 interface InputProps  {
   className?: string;
+  invisibleTitleMessage: MessageDescriptor;
 }
 
 interface DataProps {
@@ -527,7 +531,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { selectedView, selectedInitiativeFilters, filtersModalOpened } = this.state;
-    const { initiatives, initiativesFilterCounts, windowSize, className, theme } = this.props;
+    const { initiatives, initiativesFilterCounts, windowSize, className, theme, invisibleTitleMessage } = this.props;
     const { list, hasMore, querying, loadingMore } = initiatives;
     const hasInitiatives = (!isNilOrError(list) && list.length > 0);
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
@@ -563,6 +567,10 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container id="e2e-initiatives-container" className={className}>
+        <Invisible>
+          <FormattedMessage tagName="h2" {...invisibleTitleMessage}/>
+        </Invisible>
+
         {list === undefined &&
           <InitialLoading id="initiatives-loading">
             <Spinner />

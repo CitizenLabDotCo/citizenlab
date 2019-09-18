@@ -38,7 +38,7 @@ const FooterBanner: any = styled.div`
   padding-bottom: 60px;
 `;
 
-const FooterMessage = styled.p`
+const FooterMessage = styled.h2`
     color: #fff;
     font-size: ${fontSizes.xxxl}px;
     line-height: normal;
@@ -67,8 +67,6 @@ const Padding = styled.div`
   height: 100px;
 `;
 
-const StyledInitiativeCards = styled(InitiativeCards)``;
-
 const trackInitiative = () => {
   trackEventByName(tracks.clickStartInitiativesCTA, { extra: { location: 'initiatives footer' } });
 };
@@ -80,7 +78,9 @@ export default withTheme(memo(({ theme }: any) => (
     <StyledContentContainer maxWidth="100%">
       <SuccessStories />
       <Padding />
-      <StyledInitiativeCards />
+      <InitiativeCards
+        invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
+      />
     </StyledContentContainer>
     <FooterBanner>
       <FooterMessage>
