@@ -18,14 +18,14 @@ import { colors } from 'utils/styleUtils';
 const Container = styled.div`
   width: 100%;
   max-width: 1050px;
-  margin-bottom: 50px;
+  margin-bottom: 60px;
 `;
 
 const AdminHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   margin-left: -20px;
 `;
 

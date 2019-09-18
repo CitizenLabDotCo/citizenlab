@@ -12,6 +12,7 @@ import { useQuery } from '@apollo/react-hooks';
 // components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,12 +21,10 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 const Container = styled.div`
   width: 100%;
   max-width: 1050px;
-  height: 800px;
   padding: 65px;
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -36,7 +35,7 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 50px;
+  margin-bottom: 60px;
 `;
 
 const HeaderLeft = styled.div``;
@@ -122,7 +121,9 @@ const ParticipationLevelIcon = styled(Icon)`
   margin-right: 7px;
 `;
 
-const Content = styled.div``;
+const Content = styled.div`
+  margin-bottom: 40px;
+`;
 
 const HeaderImage = styled.div<{ src: string }>`
   width: 100%;
@@ -133,6 +134,37 @@ const HeaderImage = styled.div<{ src: string }>`
   background-image: url(${({ src }) => src});
   border-radius: ${({ theme }) => theme.borderRadius};
   overflow: hidden;
+  margin-bottom: 20px;
+`;
+
+const Footer = styled.div``;
+
+const SuccessCasesTitle = styled.div`
+  width: 100%;
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.base}px;
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: 20px;
+`;
+
+const SuccessCases = styled.div``;
+
+const SuccessCase = styled.a`
+  padding: 12px 20px;
+  margin-right: 8px;
+  background: #fff;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  border: solid 1px ${colors.separation};
+  transition: all 80ms ease-out;
+
+  &:hover {
+    border-color: #999;
+  }
+`;
+
+const SuccessCaseImage = styled.img`
+  height: 26px;
 `;
 
 export interface InputProps {
@@ -302,22 +334,41 @@ const ProjectTemplatePreview = memo<Props>(({ locale, projectTemplateId, classNa
             ))}
           </MetaInfoLeft>
           <MetaInfoRight>
-            <Purpose>
-              <PurposeIcon name="purpose" />
-              Purpose
-            </Purpose>
-            <ParticipationLevel>
-              <ParticipationLevelIcon name="participationLevel" />
-              Participation level
-            </ParticipationLevel>
+            {data.projectTemplate.purposes && data.projectTemplate.purposes.length > 0 &&
+              <Purpose>
+                <PurposeIcon name="purpose" />
+                {data.projectTemplate.purposes.map((purpose) => purpose.titleMultiloc[`${graphQLLocale}`]).join(', ')}
+              </Purpose>
+            }
+            {data.projectTemplate.participationLevels && data.projectTemplate.participationLevels.length > 0 &&
+              <ParticipationLevel>
+                <ParticipationLevelIcon name="participationLevel" />
+                {data.projectTemplate.participationLevels.map((participationLevel) => participationLevel.titleMultiloc[`${graphQLLocale}`]).join(', ')}
+              </ParticipationLevel>
+            }
           </MetaInfoRight>
         </MetaInfo>
 
         <Content>
-        {data.projectTemplate.headerImage &&
-          <HeaderImage src={data.projectTemplate.headerImage} />
-        }
+          {data.projectTemplate.headerImage &&
+            <HeaderImage src={data.projectTemplate.headerImage} />
+          }
+
+          <QuillEditedContent textColor={colors.adminTextColor}>
+            <div dangerouslySetInnerHTML={{ __html: data.projectTemplate.descriptionMultilocs[0].content }} />
+          </QuillEditedContent>
         </Content>
+
+        <Footer>
+          <SuccessCasesTitle>Also used in these cities:</SuccessCasesTitle>
+          <SuccessCases>
+            {data.projectTemplate.successCases && data.projectTemplate.successCases.map((successCase) => (
+              <SuccessCase key={successCase.id} href={successCase.href} target="_blank">
+                <SuccessCaseImage src={successCase.image} />
+              </SuccessCase>
+            ))}
+          </SuccessCases>
+        </Footer>
       </Container>
     );
   }

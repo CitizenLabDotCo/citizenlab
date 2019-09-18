@@ -15,4 +15,8 @@ export default defineMessages({
     id: 'app.components.ProjectTemplatePreview.copyLink',
     defaultMessage: 'Copy link to template',
   },
+  alsoUsedIn: {
+    id: 'app.components.ProjectTemplatePreview.alsoUsedIn',
+    defaultMessage: 'Also used in these cities',
+  },
 });
