@@ -493,8 +493,8 @@ if Apartment::Tenant.current == 'localhost'
               end
               question
             end
-            rand(5).times do
-              response = Polls::Response.create!(user: rand_instance(User.all), participation_context: phase)
+            User.order('RANDOM()').take(rand(5)+1).each do |user|
+              response = Polls::Response.create!(user: user, participation_context: phase)
               questions.each do |q|
                  response.response_options.create!(option: rand_instance(q.options))
               end

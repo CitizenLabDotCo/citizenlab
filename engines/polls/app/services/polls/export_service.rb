@@ -17,14 +17,19 @@ module Polls
             'Email',
             *questions.map{|q| multiloc_service.t(q.title_multiloc)}
           ], style: XlsxService.new.header_style(s)
-          responses.includes(:user).each do |response|
+          responses.includes(:user, response_options: [:option]).each do |response|
+            user_options = questions.map do |q|
+              ros = response.response_options.where(option_id: q.option_ids)
+              if ros.present?
+                ros.map{|ro| multiloc_service.t(ro.option.title_multiloc)}.join(', ')
+              else
+                ''
+              end
+            end
             sheet.add_row [
               response.user.id,
               response.user.email,
-              *response.response_options
-                .group_by{|ro| ro.option.question.ordering}
-                .sort_by{|ordering, _| ordering}
-                .map{|_, ros| ros.map{|ro| multiloc_service.t(ro.option.title_multiloc)}.join(', ')}
+              *user_options
             ]
           end
           sheet.column_info[2].width = 65
