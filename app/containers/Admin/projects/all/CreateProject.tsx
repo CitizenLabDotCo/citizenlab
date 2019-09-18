@@ -1,9 +1,12 @@
 import React, { memo, useState, useCallback, useEffect, MouseEvent } from 'react';
 
+// graphql
+import { useQuery } from '@apollo/react-hooks';
+
 // components
 import Icon from 'components/UI/Icon';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
-import ProjectTemplateCards from './ProjectTemplateCards';
+import ProjectTemplateCards, { TEMPLATES_QUERY } from './ProjectTemplateCards';
 import AdminProjectEditGeneral  from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './styles';
 
@@ -156,6 +159,18 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [expanded, setExpanded] = useState(false);
   const [hasCollapseAnimation, setHasCollapseAnimation] = useState(true);
   const [selectedTab, setSelectedTab] = useState(fromATemplateText);
+
+  // prefetch templates query used in ProjectTemplateCards so the data is
+  // already loaded when expanding the 'create project' section
+  useQuery(TEMPLATES_QUERY, {
+    variables: {
+      departments: null,
+      purposes: null,
+      participationLevels: null,
+      search: null,
+      cursor: null,
+    },
+  });
 
   useEffect(() => {
     const subscription = eventEmitter.observeEvent('NewProjectCreated').subscribe(() => {

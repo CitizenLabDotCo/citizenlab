@@ -203,7 +203,7 @@
     "shelljs": "0.8.3",
     "style-loader": "1.0.0",
     "styled-components": "4.3.2",
-    "terser-webpack-plugin": "2.0.1",
+    "terser-webpack-plugin": "2.1.0",
     "ts-jest": "24.1.0",
     "ts-loader": "6.1.0",
     "tslint": "5.20.0",
