@@ -12,7 +12,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors, Invisible } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
