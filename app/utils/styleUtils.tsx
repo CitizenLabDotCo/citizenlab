@@ -1,6 +1,6 @@
 import { isNil, get, isString } from 'lodash-es';
 import { ITenant } from 'services/tenant';
-import { css } from 'styled-components';
+import styled, { css } from 'styled-components';
 import { darken, transparentize } from 'polished';
 import { isNilOrError } from './helperUtils';
 
@@ -396,6 +396,10 @@ export function invisibleA11yText() {
     clip: rect(1px, 1px, 1px, 1px);
   `;
 }
+
+export const Invisible = styled.span`
+  ${invisibleA11yText()}
+`;
 
 // Calculus
 export function remCalc(desiredSize: number) {
