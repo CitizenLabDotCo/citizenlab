@@ -244,6 +244,7 @@
   "app.components.ProjectCards.noProjectYet": "Der er endnu ikke noget projekt ",
   "app.components.ProjectCards.showMore": "Vis mere ",
   "app.components.ProjectCards.stayTuned": "Følg med, et projekt dukker op meget snart.",
+  "app.components.ProjectTemplatePreview.alsoUsedIn": "",
   "app.components.ProjectTemplatePreview.copyLink": "",
   "app.components.ProjectTemplatePreview.goBack": "",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "",
