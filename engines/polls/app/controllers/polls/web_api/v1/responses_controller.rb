@@ -3,11 +3,10 @@ module Polls
 		module V1
 			class ResponsesController < PollsController
 				before_action :set_participation_context
-				skip_after_action :verify_authorized, only: [:index_xlsx]
 
 				def index_xlsx
+					authorize Response
 			    I18n.with_locale(current_user&.locale) do
-			      
 			      xlsx = ExportService.new.generate_poll_results_xlsx @participation_context
 			      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'polling_results.xlsx'
 			    end
