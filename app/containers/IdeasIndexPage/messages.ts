@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.IdeasIndexPage.pageTitle',
     defaultMessage: 'Ideas',
   },
+  invisibleIdeasListTitle: {
+    id: 'app.containers.IdeasIndexPage.invisibleIdeasListTitle',
+    defaultMessage: 'All the ideas posted in {orgName}',
+  },
   loadMore: {
     id: 'app.containers.IdeasIndexPage.loadMore',
     defaultMessage: 'Load more...',

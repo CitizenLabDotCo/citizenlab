@@ -6,10 +6,15 @@ import WithoutFiltersSidebar from './WithoutFiltersSidebar';
 
 // styling
 import styled from 'styled-components';
+import { Invisible }from 'utils/styleUtils';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
 import { InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
+import { MessageDescriptor } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -24,11 +29,15 @@ interface Props extends GetIdeasInputProps  {
   allowProjectsFilter?: boolean;
   showFiltersSidebar?: boolean;
   className?: string;
+  invisibleTitleMessage: MessageDescriptor;
 }
 
-const IdeaCards = memo<Props>((props) => {
+const IdeaCards = memo<Props>(({ className, invisibleTitleMessage, ...props }) => {
   return (
-    <Container className={props.className}>
+    <Container className={className}>
+      <Invisible>
+        <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
+      </Invisible>
       {props.showFiltersSidebar ? <WithFiltersSidebar {...props} /> : <WithoutFiltersSidebar {...props} />}
     </Container>
   );
