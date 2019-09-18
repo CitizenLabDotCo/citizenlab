@@ -244,6 +244,7 @@
   "app.components.ProjectCards.noProjectYet": "Er is nog geen project",
   "app.components.ProjectCards.showMore": "Toon meer",
   "app.components.ProjectCards.stayTuned": "Blijf in de buurt, er wordt binnenkort een project toegevoegd.",
+  "app.components.ProjectTemplatePreview.alsoUsedIn": "",
   "app.components.ProjectTemplatePreview.copyLink": "",
   "app.components.ProjectTemplatePreview.goBack": "",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "",
