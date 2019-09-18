@@ -102,6 +102,7 @@
   "app.components.IdeaForm.topicsLabel": "Emner (valgfritt, maks 2)",
   "app.components.IdeaForm.topicsPlaceholder": "Velg ett eller to emner for idéen din",
   "app.components.IdeasMap.login": "Logg inn",
+  "app.components.IdeasMap.mapTitle": "",
   "app.components.IdeasMap.noIdeasWithLocation": "Idéene i dette prosjektet har ingen informasjon om lokalitet.",
   "app.components.IdeasMap.postIdeaHere": "Legg til en idé her",
   "app.components.IdeasMap.postingHereImpossible": "Det er for øyeblikket ikke mulig å poste en idé her",

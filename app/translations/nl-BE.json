@@ -102,6 +102,7 @@
   "app.components.IdeaForm.topicsLabel": "Thema's (optioneel, max. 2)",
   "app.components.IdeaForm.topicsPlaceholder": "Selecteer eventueel 1 of 2 thema's bij je idee",
   "app.components.IdeasMap.login": "Inloggen",
+  "app.components.IdeasMap.mapTitle": "",
   "app.components.IdeasMap.noIdeasWithLocation": "De ideeën in dit project bevatten geen informatie ivm de locatie. ",
   "app.components.IdeasMap.postIdeaHere": "Plaats hier een idee",
   "app.components.IdeasMap.postingHereImpossible": "Het is momenteel niet mogelijk om hier een idee the plaatsen.",

@@ -102,6 +102,7 @@
   "app.components.IdeaForm.topicsLabel": "",
   "app.components.IdeaForm.topicsPlaceholder": "",
   "app.components.IdeasMap.login": "",
+  "app.components.IdeasMap.mapTitle": "",
   "app.components.IdeasMap.noIdeasWithLocation": "",
   "app.components.IdeasMap.postIdeaHere": "",
   "app.components.IdeasMap.postingHereImpossible": "",
