@@ -244,6 +244,7 @@
   "app.components.ProjectCards.noProjectYet": "Il n'y a pas encore de projet",
   "app.components.ProjectCards.showMore": "Voir plus",
   "app.components.ProjectCards.stayTuned": "Restez à l’affût, un projet va apparaître prochainement.",
+  "app.components.ProjectTemplatePreview.alsoUsedIn": "",
   "app.components.ProjectTemplatePreview.copyLink": "",
   "app.components.ProjectTemplatePreview.goBack": "",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "",

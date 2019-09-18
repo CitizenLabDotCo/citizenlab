@@ -245,6 +245,7 @@
   "app.components.ProjectCards.showMore": "Show more",
   "app.components.ProjectCards.stayTuned": "Stay tuned, a project will show up soon.",
   "app.components.ProjectTemplatePreview.copyLink": "Copy link",
+  "app.components.ProjectTemplatePreview.alsoUsedIn": "Also used in these cities",
   "app.components.ProjectTemplatePreview.goBack": "Go back",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "See more templates",
   "app.components.QuillEditor.alignCenter": "Center text",

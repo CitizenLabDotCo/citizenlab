@@ -61,10 +61,6 @@ const ProjectTemplatePreviewContainer = styled.div`
   }
 `;
 
-const GoBackButton = styled(Button)`
-  margin-bottom: 20px;
-`;
-
 const StyledCreateProject = styled(CreateProject)`
   margin-bottom: 18px;
 `;
