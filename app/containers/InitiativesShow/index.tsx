@@ -58,7 +58,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { media, postPageContentMaxWidth, viewportWidths, Invisible } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -426,9 +426,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         campaign: 'share_content',
         content: authUser.id
       } : {
-        source: 'share_initiative',
-        campaign: 'share_content'
-      };
+          source: 'share_initiative',
+          campaign: 'share_content'
+        };
       const showTranslateButton = (
         !isNilOrError(initiative) &&
         !isNilOrError(locale) &&
@@ -536,7 +536,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                     position={initiativeGeoPosition}
                   />
                 }
-
+                <Invisible>
+                  <FormattedMessage tagName="h2" {...messages.invisibleTitleContent} />
+                </Invisible>
                 <Body
                   postId={initiativeId}
                   postType="initiative"
@@ -565,20 +567,28 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 />
 
                 {smallerThanLargeTablet &&
-                  <SharingMobile
-                    context="initiative"
-                    url={initiativeUrl}
-                    twitterMessage={formatMessage(messages.twitterMessage, { initiativeTitle })}
-                    emailSubject={formatMessage(messages.emailSharingSubject, { initiativeTitle })}
-                    emailBody={formatMessage(messages.emailSharingBody, { initiativeUrl, initiativeTitle })}
-                    utmParams={utmParams}
-                  />
+                  <>
+                    <Invisible>
+                      <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
+                    </Invisible>
+                    <SharingMobile
+                      context="initiative"
+                      url={initiativeUrl}
+                      twitterMessage={formatMessage(messages.twitterMessage, { initiativeTitle })}
+                      emailSubject={formatMessage(messages.emailSharingSubject, { initiativeTitle })}
+                      emailBody={formatMessage(messages.emailSharingBody, { initiativeUrl, initiativeTitle })}
+                      utmParams={utmParams}
+                    />
+                  </>
                 }
               </LeftColumn>
 
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
                   <MetaContent>
+                    <Invisible>
+                      <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
+                    </Invisible>
                     <VoteControl
                       initiativeId={initiative.id}
                       onScrollToOfficialFeedback={this.onScrollToOfficialFeedback}
