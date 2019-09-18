@@ -132,7 +132,6 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
 
     user_params = permitted_attributes @user
-    user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
 
     @user.assign_attributes(user_params)
     @user.registration_completed_at = Time.now
