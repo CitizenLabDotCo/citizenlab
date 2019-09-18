@@ -102,6 +102,7 @@
   "app.components.IdeaForm.topicsLabel": "Temas (opcional, máximo 2)",
   "app.components.IdeaForm.topicsPlaceholder": "Seleccione el tema al que refiere su idea",
   "app.components.IdeasMap.login": "Iniciar sesión",
+  "app.components.IdeasMap.mapTitle": "",
   "app.components.IdeasMap.noIdeasWithLocation": "Las ideas en este proyecto no tienen ninguna información de ubicación.",
   "app.components.IdeasMap.postIdeaHere": "Comparte una idea aquí",
   "app.components.IdeasMap.postingHereImpossible": "Actualmente no es posible publicar ideas aquí.",
