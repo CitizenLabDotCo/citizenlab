@@ -245,6 +245,7 @@
   "app.components.ProjectCards.showMore": "Show more",
   "app.components.ProjectCards.stayTuned": "Stay tuned, a project will show up soon.",
   "app.components.ProjectTemplatePreview.alsoUsedIn": "",
+  "app.components.ProjectTemplatePreview.copied": "",
   "app.components.ProjectTemplatePreview.copyLink": "",
   "app.components.ProjectTemplatePreview.goBack": "",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "",
