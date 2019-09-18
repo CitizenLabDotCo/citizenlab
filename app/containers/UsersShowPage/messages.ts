@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.editProfile',
     defaultMessage: 'Edit my profile',
   },
+  invisibleTitleIdeasList: {
+    id: 'app.containers.UsersShowPage.invisibleTitleIdeasList',
+    defaultMessage: 'All the ideas posted by this user',
+  },
   ideasWithCount: {
     id: 'app.containers.UsersShowPage.ideasWithCount',
     defaultMessage: 'Ideas ({ideasCount})',

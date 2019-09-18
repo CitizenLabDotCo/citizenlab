@@ -9,6 +9,14 @@ export default defineMessages({
     id: 'app.containers.Projects.project',
     defaultMessage: 'Project',
   },
+  invisibleTitleIdeasList: {
+    id: 'app.containers.Projects.invisibleTitleIdeasList',
+    defaultMessage: 'All the ideas for this project',
+  },
+  invisibleTitleIdeasListPhase: {
+    id: 'app.containers.Projects.invisibleTitleIdeasListPhase',
+    defaultMessage: 'All the ideas for this phase',
+  },
   projectInformation: {
     id: 'app.containers.Projects.projectInformation',
     defaultMessage: 'Project information',
