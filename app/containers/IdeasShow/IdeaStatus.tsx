@@ -13,7 +13,7 @@ import {  colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
-const StatusTitle = styled.h4`
+const StatusTitle = styled.h3`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
