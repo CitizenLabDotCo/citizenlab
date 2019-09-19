@@ -110,7 +110,11 @@ const mapCustomPreferences = (
         customPreferences.analytics;
     } else {
       // Fallback to marketing preference but send an error so we update the categories
-      reportError('A segment destination doesn\'t belong to a category');
+      withScope(scope => {
+        scope.setExtra('wrongDestination', destination.id);
+        scope.setExtra('wrongDestinationCategory', destination.category);
+        reportError('A segment destination doesn\'t belong to a category');
+      });
       destinationPreferences[destination.id] =
       customPreferences.analytics;
     }
