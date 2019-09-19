@@ -135,7 +135,6 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
           body={
             <StyledAuthor
               authorId={initiativeAuthorId}
-              message={messages.byAuthorName}
               createdAt={initiative.attributes.published_at}
               size="34px"
               notALink

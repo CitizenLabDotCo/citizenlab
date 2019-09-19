@@ -13,25 +13,9 @@ export default defineMessages({
     id: 'app.containers.landing.createAccount',
     defaultMessage: 'Create an account',
   },
-  trendingIdeas: {
-    id: 'app.containers.landing.trendingIdeas',
-    defaultMessage: 'Trending ideas',
-  },
-  explore: {
-    id: 'app.containers.landing.explore',
-    defaultMessage: 'Explore',
-  },
-  exploreAllIdeas: {
-    id: 'app.containers.landing.exploreAllIdeas',
-    defaultMessage: 'Explore all ideas',
-  },
   cityProjects: {
     id: 'app.containers.landing.cityProjects',
     defaultMessage: 'City projects',
-  },
-  exploreAllProjects: {
-    id: 'app.containers.landing.exploreAllProjects',
-    defaultMessage: 'Explore all projects',
   },
   twitterMessage: {
     id: 'app.containers.landing.twitterMessage',
