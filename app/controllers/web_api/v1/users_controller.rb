@@ -105,7 +105,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   def update
     permissions_before = Permission.for_user(@user)
 
-    # mark_custom_field_values_to_clear!
+    mark_custom_field_values_to_clear!
     user_params = permitted_attributes @user
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
     user_params = user_params.to_h
@@ -199,6 +199,17 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
   rescue ActiveRecord::RecordNotFound
     send_error(nil, 404)
+  end
+
+  def mark_custom_field_values_to_clear!
+    # We need to explicitly mark which custom field values
+    # should be cleared so we can distinguish those from
+    # the custom field value updates cleared out by the 
+    # policy (which should stay like before instead of 
+    # being cleared out).
+    (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
+      params[:user][:custom_field_values][clear_key] = nil
+    end
   end
 
 end
