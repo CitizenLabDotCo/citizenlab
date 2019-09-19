@@ -17,12 +17,12 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // i18n
 import T from 'components/T';
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, Invisible } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
@@ -117,6 +117,9 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
   return (
     <Container className="e2e-project-info">
       <Fragment name={`projects/${project.id}/info`}>
+        <Invisible>
+          <FormattedMessage tagName="h2" {...messages.invisibleTitleMainContent} />
+        </Invisible>
         <Left>
           <ProjectDescription>
             <QuillEditedContent>
@@ -152,6 +155,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
                 <Sharing
                   context="project"
                   url={projectUrl}
+                  titleLevel="h2"
                   twitterMessage={formatMessage(messages.twitterMessage, { title })}
                   utmParams={utmParams}
                 />);

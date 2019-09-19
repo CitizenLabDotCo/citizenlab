@@ -131,12 +131,14 @@ const EventTime = styled.div`
 `;
 
 const EventTitle = styled.div`
-  color: ${colors.text};
-  font-size: ${fontSizes.xl}px;
-  line-height: 23px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  font-weight: 500;
+  h3 {
+    font-size: ${fontSizes.xl}px;
+    line-height: 23px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    color: ${colors.text};
+  }
 `;
 
 const EventDescription = styled.div``;
@@ -263,7 +265,7 @@ class Event extends React.PureComponent<Props, State> {
             </EventTime>
 
             <EventTitle>
-              <T value={event.attributes.title_multiloc} />
+              <T as="h3" value={event.attributes.title_multiloc} />
             </EventTitle>
 
             <EventDescription>
