@@ -5,18 +5,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.idea',
     defaultMessage: 'Idea',
   },
-  loadVotesError: {
-    id: 'app.containers.IdeasShow.loadVotesError',
-    defaultMessage: 'Voting is not currently available',
-  },
-  Map: {
-    id: 'app.containers.IdeasShow.Map',
-    defaultMessage: 'Map',
-  },
-  ideaVoteSubmitError: {
-    id: 'app.containers.IdeasShow.ideaVoteSubmitError',
-    defaultMessage: 'Voting failed',
-  },
   voteOnThisIdea: {
     id: 'app.containers.IdeasShow.voteOnThisIdea',
     defaultMessage: 'Vote on this idea',
