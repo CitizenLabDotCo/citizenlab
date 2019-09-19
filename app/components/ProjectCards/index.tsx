@@ -31,7 +31,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, viewportWidths, colors, Invisible } from 'utils/styleUtils';
+import { media, fontSizes, viewportWidths, colors, ScreenReaderOnly } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 const EmptyProjectsImageSrc: string = require('assets/img/landingpage/no_projects_image.svg');
@@ -382,7 +382,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
                 }
               </Title>
             ) : (
-                <Invisible>
+                <ScreenReaderOnly>
                   {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
                     ?
                     <T  as="h2" value={customCurrentlyWorkingOn} />
@@ -392,7 +392,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
                       {...messages.currentlyWorkingOn}
                     />
                   }
-                </Invisible>
+                </ScreenReaderOnly>
               )
             }
 

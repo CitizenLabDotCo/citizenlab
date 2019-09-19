@@ -22,7 +22,7 @@ import ProfileDeletion from './ProfileDeletion';
 
 // Styles
 import styled from 'styled-components';
-import { colors, Invisible } from 'utils/styleUtils';
+import { colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -91,9 +91,9 @@ export default class ProfileEditor extends PureComponent<Props, State> {
     if (loaded && currentTenant && authUser && areas) {
       return (
         <Container>
-          <Invisible>
+          <ScreenReaderOnly>
             <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
-          </Invisible>
+          </ScreenReaderOnly>
           <Wrapper>
             <ProfileForm
               user={authUser.data}

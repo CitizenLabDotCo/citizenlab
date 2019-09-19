@@ -17,7 +17,7 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { colors, media, Invisible } from 'utils/styleUtils';
+import { colors, media, ScreenReaderOnly } from 'utils/styleUtils';
 import T from 'components/T';
 import { isUndefined } from 'util';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -69,9 +69,9 @@ class PhaseAbout extends PureComponent<Props, State> {
       if (!contentIsEmpty || !isEmpty(phaseFiles)) {
         return (
           <Container className={className}>
-            <Invisible>
+            <ScreenReaderOnly>
               <FormattedMessage tagName="h3" {...messages.invisibleTitlePhaseAbout} />
-            </Invisible>
+            </ScreenReaderOnly>
             <InformationBody>
               <QuillEditedContent textColor="#5E6B75">
                 <T value={phase.attributes.description_multiloc} supportHtml={true} />

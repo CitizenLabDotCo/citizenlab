@@ -31,7 +31,7 @@ import T from 'components/T';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, Invisible } from 'utils/styleUtils';
+import { media, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -273,7 +273,7 @@ class SignedInHeader extends PureComponent<Props, State> {
 
       return (
         <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
-          <Invisible>
+          <ScreenReaderOnly>
             {headerTitleMultiLoc ? (
               <T as="h1" value={headerTitleMultiLoc}>
                 {translatedTitle =>
@@ -281,7 +281,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                 }
               </T>
             ) : genericTitle}
-          </Invisible>
+          </ScreenReaderOnly>
           <HeaderImageContainer>
             <HeaderImageContainerInner>
               {tenantHeaderImage && <HeaderImage src={tenantHeaderImage} className={objectFitCoverSupported ? 'objectFitCoverSupported' : ''} />}

@@ -22,7 +22,7 @@ import messages from './messages';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, colors, Invisible } from 'utils/styleUtils';
+import { media, fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 import T from 'components/T';
 
 const illustrationSrc: string = require('./initiativesHeaderImage.png');
@@ -201,9 +201,9 @@ class SignedOutHeader extends PureComponent<Props, State> {
     return (
       <Container className={`e2e-initiatives-header ${className}`}>
         <Header>
-        <Invisible>
+        <ScreenReaderOnly>
           <FormattedMessage tagName="h1" {...messages.invisibleInitiativesPageTitle}/>
-        </Invisible>
+        </ScreenReaderOnly>
           <HeaderContent>
             <HeaderTitle>
               <FormattedMessage

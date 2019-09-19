@@ -62,7 +62,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths, Invisible } from 'utils/styleUtils';
+import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -567,9 +567,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     position={ideaGeoPosition}
                   />
                 }
-                <Invisible>
+                <ScreenReaderOnly>
                   <FormattedMessage tagName="h2" {...messages.invisibleTitleContent} />
-                </Invisible>
+                </ScreenReaderOnly>
                 <Body
                   postType="idea"
                   postId={ideaId}
@@ -626,16 +626,16 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
-                  <Invisible>
+                  <ScreenReaderOnly>
                     <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
-                  </Invisible>
+                  </ScreenReaderOnly>
                   <MetaContent>
                     {(showVoteControl || showBudgetControl || statusId) &&
                       <ControlWrapper className="e2e-vote-controls-desktop">
                         {(showVoteControl || showBudgetControl) &&
-                          <Invisible>
+                          <ScreenReaderOnly>
                             <FormattedMessage tagName="h3" {...messages.invisibleTitleVoteControls} />
-                          </Invisible>
+                          </ScreenReaderOnly>
                         }
                         {showVoteControl &&
                           <>

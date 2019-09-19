@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { media, Invisible } from 'utils/styleUtils';
+import { media, ScreenReaderOnly } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -144,9 +144,9 @@ class VoteControl extends PureComponent<Props, State> {
 
     return (
       <Container id={id || ''} className={className || ''}>
-        <Invisible>
+        <ScreenReaderOnly>
           <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
-        </Invisible>
+        </ScreenReaderOnly>
         {showUnauthenticated
           ?
             <PopContainer icon="lock-outlined">
