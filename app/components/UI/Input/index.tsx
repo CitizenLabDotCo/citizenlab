@@ -85,7 +85,7 @@ export type InputProps = {
   spellCheck?: boolean;
   readOnly?: boolean;
   required?: boolean;
-  autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password';
+  autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password'; // https://www.w3.org/TR/WCAG21/#input-purposes
 };
 
 interface DataProps {
