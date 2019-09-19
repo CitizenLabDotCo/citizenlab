@@ -75,6 +75,7 @@ const Title = styled.h3<({ hasHeader: boolean })>`
   }
   ${({ hasHeader }) => hasHeader && '&:first-child { margin-top: 73px; }'}
 `;
+// why the :first-child ? -> to conteract the css reset that overrides top margin for h3:first-child.
 
 const Body = styled.div`
   flex-grow: 1;
