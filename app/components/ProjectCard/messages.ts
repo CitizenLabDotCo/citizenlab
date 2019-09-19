@@ -59,6 +59,6 @@ export default defineMessages({
   },
   viewTheIdeas: {
     id: 'app.components.ProjectCard.viewTheIdeas',
-    defaultMessage: "View the idea's",
+    defaultMessage: 'View the ideas',
   },
 });
