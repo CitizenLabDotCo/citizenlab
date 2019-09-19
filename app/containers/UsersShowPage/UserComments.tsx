@@ -18,7 +18,7 @@ import styled, { withTheme } from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { darken, rgba } from 'polished';
-import { media, colors, fontSizes, Invisible } from 'utils/styleUtils';
+import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -98,9 +98,9 @@ export const UserComments = memo<Props>(({ comments, userId, theme, authUser }) 
 
       return (
         <Container className="e2e-profile-comments">
-          <Invisible>
+          <ScreenReaderOnly>
             <FormattedMessage tagName="h2" {...messages.invisibleTitleUserComments} />
-          </Invisible>
+          </ScreenReaderOnly>
           <>
             {Object.keys(commentGroups).map((postId) => {
               const commentGroup = commentGroups[postId];

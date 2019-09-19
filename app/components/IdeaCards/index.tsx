@@ -6,7 +6,7 @@ import WithoutFiltersSidebar from './WithoutFiltersSidebar';
 
 // styling
 import styled from 'styled-components';
-import { Invisible }from 'utils/styleUtils';
+import { ScreenReaderOnly }from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -35,9 +35,9 @@ interface Props extends GetIdeasInputProps  {
 const IdeaCards = memo<Props>(({ className, invisibleTitleMessage, ...props }) => {
   return (
     <Container className={className}>
-      <Invisible>
+      <ScreenReaderOnly>
         <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
-      </Invisible>
+      </ScreenReaderOnly>
       {props.showFiltersSidebar ? <WithFiltersSidebar {...props} /> : <WithoutFiltersSidebar {...props} />}
     </Container>
   );

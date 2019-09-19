@@ -397,7 +397,10 @@ export function invisibleA11yText() {
   `;
 }
 
-export const Invisible = styled.div`
+/**
+ * Wrap in this component any element that should only be visible by screen readers
+ */
+export const ScreenReaderOnly = styled.div`
   ${invisibleA11yText()}
 `;
 

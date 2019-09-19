@@ -27,7 +27,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, Invisible } from 'utils/styleUtils';
+import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 // typings
 import { CommentsSort } from 'services/comments';
@@ -105,9 +105,9 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
 
   return (
     <Container className={className}>
-      <Invisible>
+      <ScreenReaderOnly>
         <FormattedMessage tagName="h2" {...messages.invisibleTitleComments} />
-      </Invisible>
+      </ScreenReaderOnly>
       {(!isNilOrError(post) && !isNilOrError(commentsList) && !isUndefined(project)) ? (
         <>
           {/*

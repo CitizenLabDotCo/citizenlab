@@ -15,7 +15,7 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { Invisible } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/styleUtils';
 
 const SurveyContainer = styled.div`
   padding-top: 50px;
@@ -34,9 +34,9 @@ export default withRouter((props: WithRouterProps) => (
         return (
           <>
             <ContentContainer>
-              <Invisible>
+              <ScreenReaderOnly>
                 <FormattedMessage tagName="h2" {...messages.invisibleTitleSurvey} />
-              </Invisible>
+              </ScreenReaderOnly>
               <SurveyContainer id="e2e-continuous-project-survey-container">
                 <Survey
                   projectId={project.id}

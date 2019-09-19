@@ -37,7 +37,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths, Invisible } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
 import { darken, rgba } from 'polished';
 
 const gapWidth = 35;
@@ -567,9 +567,9 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container id="e2e-initiatives-container" className={className}>
-        <Invisible>
+        <ScreenReaderOnly>
           <FormattedMessage tagName="h2" {...invisibleTitleMessage}/>
-        </Invisible>
+        </ScreenReaderOnly>
 
         {list === undefined &&
           <InitialLoading id="initiatives-loading">

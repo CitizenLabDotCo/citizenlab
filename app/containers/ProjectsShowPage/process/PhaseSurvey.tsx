@@ -14,7 +14,7 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { Invisible } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding-bottom: 100px;
@@ -46,9 +46,9 @@ class PhaseSurvey extends PureComponent<Props, State> {
     ) {
       return (
         <Container>
-          <Invisible>
+          <ScreenReaderOnly>
             <FormattedMessage tagName="h3" {...messages.invisibleTitleSurvey} />
-          </Invisible>
+          </ScreenReaderOnly>
           <Survey
             className={className}
             projectId={projectId}

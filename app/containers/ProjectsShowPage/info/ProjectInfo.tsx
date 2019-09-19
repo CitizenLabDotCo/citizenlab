@@ -22,7 +22,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { media, colors, Invisible } from 'utils/styleUtils';
+import { media, colors, ScreenReaderOnly } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
@@ -117,9 +117,9 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
   return (
     <Container className="e2e-project-info">
       <Fragment name={`projects/${project.id}/info`}>
-        <Invisible>
+        <ScreenReaderOnly>
           <FormattedMessage tagName="h2" {...messages.invisibleTitleMainContent} />
-        </Invisible>
+        </ScreenReaderOnly>
         <Left>
           <ProjectDescription>
             <QuillEditedContent>

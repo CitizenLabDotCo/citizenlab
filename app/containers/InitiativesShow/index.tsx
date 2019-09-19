@@ -58,7 +58,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, postPageContentMaxWidth, viewportWidths, Invisible } from 'utils/styleUtils';
+import { media, postPageContentMaxWidth, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -536,9 +536,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                     position={initiativeGeoPosition}
                   />
                 }
-                <Invisible>
+                <ScreenReaderOnly>
                   <FormattedMessage tagName="h2" {...messages.invisibleTitleContent} />
-                </Invisible>
+                </ScreenReaderOnly>
                 <Body
                   postId={initiativeId}
                   postType="initiative"
@@ -568,9 +568,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
                 {smallerThanLargeTablet &&
                   <>
-                    <Invisible>
+                    <ScreenReaderOnly>
                       <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
-                    </Invisible>
+                    </ScreenReaderOnly>
                     <SharingMobile
                       context="initiative"
                       url={initiativeUrl}
@@ -586,9 +586,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
                   <MetaContent>
-                    <Invisible>
+                    <ScreenReaderOnly>
                       <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
-                    </Invisible>
+                    </ScreenReaderOnly>
                     <VoteControl
                       initiativeId={initiative.id}
                       onScrollToOfficialFeedback={this.onScrollToOfficialFeedback}
