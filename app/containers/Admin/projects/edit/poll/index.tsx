@@ -78,8 +78,8 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
                 </SectionSubtitle>
               </Left>
               <ExportPollButton
-                pcType="projects"
-                pcId={project.id}
+                participationContextType="projects"
+                participationContextId={project.id}
               />
             </HeaderContainer>
             <GetPollQuestions
@@ -121,8 +121,8 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
                     </h3>
                   </Left>
                   <ExportPollButton
-                    pcId={phase.id}
-                    pcType="phases"
+                    participationContextId={phase.id}
+                    participationContextType="phases"
                   />
                 </HeaderContainer>
                 <GetPollQuestions

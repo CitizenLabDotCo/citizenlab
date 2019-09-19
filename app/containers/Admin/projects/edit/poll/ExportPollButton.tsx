@@ -14,8 +14,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  pcType: 'projects' | 'phases';
-  pcId: string;
+  participationContextType: 'projects' | 'phases';
+  participationContextId: string;
   className?: string;
 }
 
@@ -39,7 +39,7 @@ export default class ExportPollButton extends React.PureComponent<Props, State> 
     this.trackExportPoll();
 
     this.setState({ exporting: true });
-    exportPollResponses(this.props.pcId, this.props.pcType);
+    exportPollResponses(this.props.participationContextId, this.props.participationContextType);
     this.setState({ exporting: false });
   }
 
