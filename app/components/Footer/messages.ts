@@ -79,6 +79,6 @@ export default defineMessages({
   },
   logoAltText: {
     id: 'app.containers.footer.logoAltText',
-    defaultMessage: 'Link to the website of {tenantName}'
+    defaultMessage: 'Website of {tenantName}'
   }
 });
