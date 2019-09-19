@@ -45,7 +45,7 @@ export default defineMessages({
   },
   optionsFormHeader: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.optionsFormHeader',
-    defaultMessage: 'Manage options for : {questionTitle}',
+    defaultMessage: 'Manage options for: {questionTitle}',
   },
   editOptionDone: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOptionDone',
