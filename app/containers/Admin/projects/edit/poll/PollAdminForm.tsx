@@ -28,8 +28,8 @@ const StyledList = styled(List)`
 `;
 
 interface Props {
-  pcId: string;
-  pcType: 'projects' | 'phases';
+  participationContextId: string;
+  participationContextType: 'projects' | 'phases';
   pollQuestions: IPollQuestion[] | null | undefined;
   locale: Locale;
 }
@@ -111,14 +111,14 @@ export class PollAdminForm extends PureComponent<Props, State> {
   }
 
   saveNewQuestion = () => {
-    const { pcId, pcType } = this.props;
+    const { participationContextId, participationContextType } = this.props;
     const { newQuestionTitle } = this.state;
-    const participationContextType = pcType === 'projects'
+    const participationContextTypeUppercase = participationContextType === 'projects'
       ? 'Project'
-      : pcType === 'phases'
+      : participationContextType === 'phases'
         ? 'Phase'
         : null;
-    participationContextType && newQuestionTitle && addPollQuestion(pcId, participationContextType, newQuestionTitle).then((res) => {
+    participationContextTypeUppercase && newQuestionTitle && addPollQuestion(participationContextId, participationContextTypeUppercase, newQuestionTitle).then((res) => {
       this.setState({ newQuestionTitle: null, editingOptionsId: res.data.id });
     });
   }
@@ -147,8 +147,8 @@ export class PollAdminForm extends PureComponent<Props, State> {
 
   // Delete question
   deleteQuestion = (questionId: string) => () => {
-    const { pcId, pcType } = this.props;
-    deletePollQuestion(questionId, pcId, pcType);
+    const { participationContextId, participationContextType } = this.props;
+    deletePollQuestion(questionId, participationContextId, participationContextType);
   }
 
   // Option edition
