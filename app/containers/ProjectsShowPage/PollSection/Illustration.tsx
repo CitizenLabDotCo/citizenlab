@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default ({ className }: { className?: string }) => (
-  <svg width="477" height="156" viewBox="0 0 477 156" fill="none" xmlns="http://www.w3.org/2000/svg" className={className || ''}>
+  <svg width="477" height="156" viewBox="0 0 477 156" fill="none" xmlns="http://www.w3.org/2000/svg" className={className || ''} aria-hidden role="img">
     <rect x="115.014" y="48.6638" width="17" height="17" rx="2" transform="rotate(18 115.014 48.6638)" fill="#80CFD8" />
     <rect opacity="0.0338399" x="16.7604" y="62.6638" width="17" height="17" rx="2" transform="rotate(-170.368 16.7604 62.6638)" fill="#80CFD8" />
     <rect opacity="0.469507" x="269.76" y="83.6638" width="17" height="17" rx="2" transform="rotate(135.379 269.76 83.6638)" fill="#80CFD8" />
