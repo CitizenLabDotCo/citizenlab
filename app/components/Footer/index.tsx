@@ -65,7 +65,7 @@ const TenantLogo = styled.img`
   margin-bottom: 20px;
 `;
 
-const TenantSlogan = styled.span`
+const TenantSlogan = styled.div`
   h2 {
     font-size: ${fontSizes.xxl}px;
     font-weight: 500;

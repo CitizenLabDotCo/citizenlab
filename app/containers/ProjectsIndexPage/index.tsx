@@ -37,7 +37,7 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
-const PageTitle = styled.span`
+const PageTitle = styled.div`
   & h1 {
     color: ${colors.text};
     font-size: ${fontSizes.xxxxl}px;

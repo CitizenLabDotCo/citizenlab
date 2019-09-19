@@ -397,7 +397,7 @@ export function invisibleA11yText() {
   `;
 }
 
-export const Invisible = styled.span`
+export const Invisible = styled.div`
   ${invisibleA11yText()}
 `;
 

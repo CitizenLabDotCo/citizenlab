@@ -100,7 +100,7 @@ const HeaderContent = styled.div`
   z-index: 1;
 `;
 
-const HeaderTitle = styled.span<{ hasHeader: boolean }>`
+const HeaderTitle = styled.div<{ hasHeader: boolean }>`
   & h1 {
     font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
     font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
@@ -118,7 +118,7 @@ const HeaderTitle = styled.span<{ hasHeader: boolean }>`
   `}
 `;
 
-const HeaderSubtitle = styled.span<{ hasHeader: boolean }>`
+const HeaderSubtitle = styled.div<{ hasHeader: boolean }>`
   & h2 {
     font-size: ${fontSizes.xl}px;
     line-height: 28px;

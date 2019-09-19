@@ -306,7 +306,7 @@ const ContentBody = styled.div`
   }
 `;
 
-const ProjectTitle = styled.span`
+const ProjectTitle = styled.div`
   h3 {
     line-height: normal;
     font-weight: 500;

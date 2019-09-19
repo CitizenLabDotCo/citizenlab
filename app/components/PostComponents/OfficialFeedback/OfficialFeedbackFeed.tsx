@@ -31,7 +31,7 @@ const FeedbackHeader = styled.div`
   justify-content: space-between;
 `;
 
-const FeedbackTitle = styled.span`
+const FeedbackTitle = styled.div`
   h2 {
     margin-bottom: 0;
     font-weight: 500;
