@@ -8,8 +8,13 @@ import Survey from './survey';
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+
 // styling
 import styled from 'styled-components';
+import { Invisible } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding-bottom: 100px;
@@ -41,6 +46,9 @@ class PhaseSurvey extends PureComponent<Props, State> {
     ) {
       return (
         <Container>
+          <Invisible>
+            <FormattedMessage tagName="h3" {...messages.invisibleTitleSurvey} />
+          </Invisible>
           <Survey
             className={className}
             projectId={projectId}

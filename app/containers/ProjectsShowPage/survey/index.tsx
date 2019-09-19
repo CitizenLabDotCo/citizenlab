@@ -9,8 +9,13 @@ import Survey from '../process/survey';
 // resources
 import GetProject from 'resources/GetProject';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+
 // styling
 import styled from 'styled-components';
+import { Invisible } from 'utils/styleUtils';
 
 const SurveyContainer = styled.div`
   padding-top: 50px;
@@ -29,6 +34,9 @@ export default withRouter((props: WithRouterProps) => (
         return (
           <>
             <ContentContainer>
+              <Invisible>
+                <FormattedMessage tagName="h2" {...messages.invisibleTitleSurvey} />
+              </Invisible>
               <SurveyContainer id="e2e-continuous-project-survey-container">
                 <Survey
                   projectId={project.id}
