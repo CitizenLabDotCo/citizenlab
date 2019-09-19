@@ -13,7 +13,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
-const StatusTitle = styled.span<({ tagName: string })>`
+const StatusTitle = styled.div<({ tagName: string })>`
   ${({ tagName }) => tagName} {
     font-size: ${fontSizes.base}px;
     line-height: 20px;
