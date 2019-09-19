@@ -15,7 +15,10 @@ import T from 'components/T';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const StyledButton = styled(Button)`display: inline-block`;
+// Inline block so the button acts as a character and is stuck to the end of the title to make it clear it will edit the title text
+const EditTitleButton = styled(Button)`
+  display: inline-block
+`;
 
 const NoOptionsIndicator = styled(TextCell)`
   color: ${colors.clRed};
@@ -52,7 +55,7 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
 
       <TextCell className="expand">
         <T value={question.attributes.title_multiloc} />
-        <StyledButton
+        <EditTitleButton
           className="e2e-edit-question"
           onClick={onEdit}
           style="text"
