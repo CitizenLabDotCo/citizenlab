@@ -12,6 +12,7 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Checkbox from 'components/UI/Checkbox';
+import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
 import { FormLabel } from 'components/UI/FormComponents';
 
 // utils
@@ -416,6 +417,17 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                 value={this.state.tacAccepted}
                 onChange={this.handleTaCAcceptedOnChange}
                 disableLabelClick={true}
+                label={
+                  <FormattedMessage
+                    {...messages.gdprApproval}
+                    values={{
+                      tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
+                      ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
+                    }}
+                  />
+                }
+              />
+              <AccessibleCheckbox
                 label={
                   <FormattedMessage
                     {...messages.gdprApproval}
