@@ -42,8 +42,8 @@ describe('<PollAdminForm/>', () => {
         .map((item, index) => mockQuestion(index, item));
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={pollQuestions}
           locale="en"
         />
@@ -54,8 +54,8 @@ describe('<PollAdminForm/>', () => {
       const pollQuestions = [mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')];
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={pollQuestions}
           locale="en"
         />
@@ -66,8 +66,8 @@ describe('<PollAdminForm/>', () => {
       const pollQuestions = [mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')];
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={pollQuestions}
           locale="en"
         />
@@ -84,8 +84,8 @@ describe('<PollAdminForm/>', () => {
 
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={pollQuestions}
           locale="en"
         />
@@ -101,8 +101,8 @@ describe('<PollAdminForm/>', () => {
     it('opens it', () => {
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={[]}
           locale="en"
         />
@@ -115,8 +115,8 @@ describe('<PollAdminForm/>', () => {
     it('hides the add button while new form is open', () => {
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={[]}
           locale="en"
         />
@@ -127,8 +127,8 @@ describe('<PollAdminForm/>', () => {
     it('holds its value and let the child controlled form change it', () => {
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={[]}
           locale="en"
         />
@@ -142,8 +142,8 @@ describe('<PollAdminForm/>', () => {
     it('handles saving it', () => {
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={[]}
           locale="en"
         />
@@ -159,8 +159,8 @@ describe('<PollAdminForm/>', () => {
     it('handles closing it', () => {
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={[]}
           locale="en"
         />
@@ -175,8 +175,8 @@ describe('<PollAdminForm/>', () => {
     it('handles deleting an existing question', () => {
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -190,8 +190,8 @@ describe('<PollAdminForm/>', () => {
     it('opens it, replacing the display row', () => {
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -206,8 +206,8 @@ describe('<PollAdminForm/>', () => {
     it('holds its value and let the child controlled form change it', () => {
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -221,8 +221,8 @@ describe('<PollAdminForm/>', () => {
     it('handles saving it', () => {
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -238,8 +238,8 @@ describe('<PollAdminForm/>', () => {
     it('handles closing it', () => {
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -254,8 +254,8 @@ describe('<PollAdminForm/>', () => {
     it('handles opening it, replacing the display row', () => {
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -269,8 +269,8 @@ describe('<PollAdminForm/>', () => {
     it('lets the user reorder a field by dropping it', () => {
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -286,8 +286,8 @@ describe('<PollAdminForm/>', () => {
 
       const wrapper = shallow(
         <PollAdminForm
-          pcId="id"
-          pcType="projects"
+          participationContextId="id"
+          participationContextType="projects"
           pollQuestions={pollQuestions}
           locale="en"
         />

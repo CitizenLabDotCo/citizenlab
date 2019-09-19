@@ -49,7 +49,7 @@ describe('<AdminProjectPoll/>', () => {
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(<AdminProjectPoll project={mockProject} phases={null} locale={'en'} />);
       expect(wrapper.find('GetPollQuestions').props()).toMatchObject({ participationContextId: 'projectId', participationContextType: 'projects' });
-      expect(wrapper.find('ExportPollButton').props()).toMatchObject({ pcId: 'projectId', pcType: 'projects' });
+      expect(wrapper.find('ExportPollButton').props()).toMatchObject({ participationContextId: 'projectId', participationContextType: 'projects' });
     });
   });
   describe('Polling phases', () => {
@@ -58,14 +58,14 @@ describe('<AdminProjectPoll/>', () => {
       const mockPhases = [mockPhaseInformationData, mockPhasePollData, mockPhaseInformationData];
       const wrapper = shallow(<AdminProjectPoll project={mockProject} phases={mockPhases} locale={'en'} />);
       expect(wrapper.find('GetPollQuestions').props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phases' });
-      expect(wrapper.find('ExportPollButton').props()).toMatchObject({ pcId: 'MockPhasePollId', pcType: 'phases' });
+      expect(wrapper.find('ExportPollButton').props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phases' });
     });
     it('renders the right content for a timeline project with two polling phases', () => {
       const mockProject = getMockProject('projectId', 'timeline');
       const mockPhases = [mockPhaseInformationData, mockPhasePollData, mockPhasePollData];
       const wrapper = shallow(<AdminProjectPoll project={mockProject} phases={mockPhases} locale={'en'} />);
       wrapper.find('GetPollQuestions').every(item => expect(item.props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phases' }));
-      wrapper.find('ExportPollButton').every(item => expect(item.props()).toMatchObject({ pcId: 'MockPhasePollId', pcType: 'phases' }));
+      wrapper.find('ExportPollButton').every(item => expect(item.props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phases' }));
     });
   });
 });
