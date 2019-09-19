@@ -8,7 +8,7 @@ resource "Clusterings" do
 
   before do
     @admin = create(:admin)
-    token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+    token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     @clusterings = create_list(:clustering, 5)

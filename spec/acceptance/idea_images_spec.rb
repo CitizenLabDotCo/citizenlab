@@ -9,7 +9,7 @@ resource "IdeaImage" do
   before do
     header "Content-Type", "application/json"
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     @project = create(:continuous_project, with_permissions: true)
     @idea = create(:idea, author: @user, project: @project)

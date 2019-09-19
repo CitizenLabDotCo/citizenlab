@@ -18,7 +18,7 @@ resource "Baskets" do
 
     context "when authenticated" do
       before do
-        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
@@ -58,7 +58,7 @@ resource "Baskets" do
 
     context "when authenticated" do
       before do
-        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
@@ -100,7 +100,7 @@ resource "Baskets" do
 
     context "when authenticated" do
       before do
-        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
@@ -178,7 +178,7 @@ resource "Baskets" do
   delete "web_api/v1/baskets/:basket_id" do
     context "when authenticated" do
       before do
-        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
