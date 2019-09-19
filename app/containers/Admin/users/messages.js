@@ -173,10 +173,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.UsersGroup.membershipDeleteFailed',
     defaultMessage: 'An error occured while deleting users from the group, please try again.',
   },
-  exportUsers: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.exportUsers',
-    defaultMessage: 'Export all users',
-  },
   exportAllUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.exportAllUsers',
     defaultMessage: 'Export all users',
@@ -188,10 +184,6 @@ export default defineMessages({
   exportSelectedUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.exportSelectedUsers',
     defaultMessage: 'Export selected users',
-  },
-  dropdownFooterMessage: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.dropdownFooterMessage',
-    defaultMessage: 'Add',
   },
   rulesError: {
     id: 'app.containers.AdminPage.Users.UsersGroup.rulesError',
