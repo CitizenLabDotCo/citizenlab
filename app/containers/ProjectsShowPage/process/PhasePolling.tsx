@@ -1,4 +1,3 @@
-// TODO responsible for checking the phase is a poll and if so showing the form
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -17,7 +16,7 @@ const Container = styled.div`
 `;
 
 interface InputProps {
-  projectId: string; // TODO remove?
+  projectId: string;
   phaseId: string | null;
   className?: string;
 }
