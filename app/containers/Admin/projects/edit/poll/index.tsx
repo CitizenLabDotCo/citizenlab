@@ -88,8 +88,8 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
             >
               {(pollQuestions: GetPollQuestionsChildProps) => (
                 <PollAdminForm
-                  pcType="projects"
-                  pcId={project.id}
+                  participationContextType="projects"
+                  participationContextId={project.id}
                   pollQuestions={isError(pollQuestions) ? null : pollQuestions}
                   locale={locale}
                 />
@@ -131,8 +131,8 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
                 >
                   {(pollQuestions: GetPollQuestionsChildProps) => (
                     <PollAdminForm
-                      pcType="phases"
-                      pcId={phase.id}
+                      participationContextType="phases"
+                      participationContextId={phase.id}
                       pollQuestions={isError(pollQuestions) ? null : pollQuestions}
                       locale={locale}
                     />
