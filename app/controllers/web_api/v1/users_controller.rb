@@ -105,7 +105,11 @@ class WebApi::V1::UsersController < ::ApplicationController
   def update
     permissions_before = Permission.for_user(@user)
 
+    # mark_custom_field_values_to_clear!
     user_params = permitted_attributes @user
+    user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
+    user_params = user_params.to_h
+    CustomFieldService.new.cleanup_custom_field_values! user_params[:custom_field_values]
 
     @user.assign_attributes user_params
 
@@ -132,6 +136,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
 
     user_params = permitted_attributes @user
+    user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
 
     @user.assign_attributes(user_params)
     @user.registration_completed_at = Time.now
