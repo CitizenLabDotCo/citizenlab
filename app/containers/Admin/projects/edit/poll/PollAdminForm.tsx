@@ -213,7 +213,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
             />
           }
         </StyledList>
-        {!!editingQuestionId || !newQuestionTitle && !editingOptionsId &&
+        {!newQuestionTitle && !editingOptionsId &&
           <Button
             className="e2e-add-question-btn"
             style="cl-blue"
