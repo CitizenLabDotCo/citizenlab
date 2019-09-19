@@ -49,7 +49,7 @@ const HeaderContentWrapper = styled.div`
   width: 100%;
 `;
 
-const Title = styled.h3<({ hasHeader: boolean }) >`
+const Title = styled.h3<({ hasHeader: boolean })>`
   color: #333;
   max-width: 400px;
   font-size: ${fontSizes.xl}px;
