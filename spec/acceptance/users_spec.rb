@@ -475,8 +475,8 @@ resource "Users" do
         example "Clear out a user's custom field value" do
           cf = create(:custom_field)
           @user.update!(custom_field_values: {cf.key => "somevalue"})
-          
-          do_request(user: {custom_field_values: {cf.key => nil}})
+
+          do_request(user: {custom_field_values: {}})
           expect(response_status).to eq 200
           expect(@user.reload.custom_field_values).to eq ({})
         end
