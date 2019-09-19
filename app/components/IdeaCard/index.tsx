@@ -220,7 +220,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
           body={
             <StyledAuthor
               authorId={ideaAuthorId}
-              message={messages.byAuthorName}
               createdAt={idea.attributes.published_at}
               size="34px"
               notALink

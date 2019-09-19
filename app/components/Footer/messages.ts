@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.footer.poweredBy',
     defaultMessage: 'Powered by',
   },
-  termsLink: {
-    id: 'app.containers.footer.termsLink',
-    defaultMessage: 'Terms of use',
-  },
   information: {
     id: 'app.containers.footer.information',
     defaultMessage: 'Information',
@@ -23,11 +19,7 @@ export default defineMessages({
   },
   'privacy-policy': {
     id: 'app.containers.footer.privacy-policy',
-    defaultMessage: 'Privacy Policy',
-  },
-  'cookie-policy': {
-    id: 'app.containers.footer.cookies-policy',
-    defaultMessage: 'Cookie Policy',
+    defaultMessage: 'Privacy policy',
   },
   cookieSettings: {
     id: 'app.containers.footer.cookieSettings',
@@ -36,10 +28,6 @@ export default defineMessages({
   iframeTitle: {
     id: 'app.containers.footer.iframeTitle',
     defaultMessage: 'More information about {orgName}',
-  },
-  selectLanguage: {
-    id: 'app.containers.footer.selectLanguage',
-    defaultMessage: 'Select a Language',
   },
   feedbackQuestion: {
     id: 'app.containers.footer.feedbackQuestion',
@@ -64,10 +52,6 @@ export default defineMessages({
   feedbackModalTitle: {
     id: 'app.containers.footer.feedbackModalTitle',
     defaultMessage: 'What were you looking for?'
-  },
-  feedbackModalSubtitle: {
-    id: 'app.containers.footer.feedbackModalSubtitle',
-    defaultMessage: 'Your feedback helps us to improve the platform.'
   },
   email: {
     id: 'app.containers.footer.email',

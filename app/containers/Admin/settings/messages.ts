@@ -85,10 +85,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.header',
     defaultMessage: 'Homepage header',
   },
-  headerDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.headerDescription',
-    defaultMessage: 'Customize the header image and copy being shown on the homepage',
-  },
   header_bg: {
     id: 'app.containers.AdminPage.SettingsPage.header_bg',
     defaultMessage: 'Header image',
@@ -97,29 +93,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.header_bgTooltip',
     defaultMessage: 'Shown on the home page. Recommended dimensions are 1440x480.',
   },
-  headerSlogan: {
-    id: 'app.containers.AdminPage.SettingsPage.headerSlogan',
-    defaultMessage: 'Header slogan',
-  },
   titleBasic: {
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
     defaultMessage: 'Basic information',
   },
-  subTitleBasic: {
-    id: 'app.containers.AdminPage.SettingsPage.subTitleBasic',
-    defaultMessage: 'Fill these out carefully, they define the platforms identity.',
-  },
-  subTitleSignupFields: {
-    id: 'app.containers.AdminPage.SettingsPage.subTitleSignupFields',
-    defaultMessage: 'What questions will be asked to users when signing up?',
-  },
   titleBranding: {
     id: 'app.containers.AdminPage.SettingsPage.titleBranding',
     defaultMessage: 'Branding',
-  },
-  subTitleBranding: {
-    id: 'app.containers.AdminPage.SettingsPage.subTitleBranding',
-    defaultMessage: 'Establish your visual branding on the platform',
   },
   headerTitleLabel: {
     id: 'app.containers.AdminPage.SettingsPage.headerTitleLabel',
@@ -184,10 +164,6 @@ export default defineMessages({
   tabAreas: {
     id: 'app.containers.AdminPage.SettingsPage.tabAreas',
     defaultMessage: 'Areas',
-  },
-  tabAreasSubtitle: {
-    id: 'app.containers.AdminPage.SettingsPage.tabAreasSubtitle',
-    defaultMessage: 'Define the geographical areas (neighbourhoods, suburbs, …) that you can ask users who register on the platform. Areas can be linked to projects and can be used to create Smart Groups and give different groups access to certain projects.',
   },
   urlError: {
     id: 'app.containers.AdminPage.SettingsPage.urlError',
