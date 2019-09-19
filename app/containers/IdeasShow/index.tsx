@@ -542,7 +542,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 </IdeaHeader>
 
                 {statusId && smallerThanLargeTablet &&
-                  <StyledMobileIdeaStatus statusId={statusId} />
+                  <StyledMobileIdeaStatus tagName="h2" statusId={statusId} />
                 }
 
                 {biggerThanLargeTablet &&
@@ -615,6 +615,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <SharingMobile
                     context="idea"
                     url={ideaUrl}
+                    titleLevel="h2"
                     twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                     emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
                     emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
@@ -665,7 +666,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                         }
 
                         {statusId &&
-                          <IdeaStatus statusId={statusId} />
+                          <IdeaStatus tagName="h3" statusId={statusId} />
                         }
                       </ControlWrapper>
                     }
