@@ -26,6 +26,7 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
 `;
 
+// Didn't manage to strongly type this component, here are the two typings it can actually have
 // type ProjectProps = {
 //   type: 'projects',
 //   phaseId: null,
