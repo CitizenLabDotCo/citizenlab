@@ -1346,7 +1346,7 @@
   "app.containers.ProjectCards.publicationStatus": "Publication status",
   "app.containers.ProjectInfo.imageAltText": "Project image {index}",
   "app.containers.ProjectInfo.twitterMessage": "{title} : share your ideas on",
-  "app.containers.Projects.PollForm.formCompleted": "Thank you for answering this poll !",
+  "app.containers.Projects.PollForm.formCompleted": "Thank you for answering this poll!",
   "app.containers.Projects.PollForm.pollDisabledMaybeNotPermitted": "Only certain users can take this poll. Please sign in first.",
   "app.containers.Projects.PollForm.pollDisabledNotActivePhase": "This survey can only be taken when this phase in the timeline is active.",
   "app.containers.Projects.PollForm.pollDisabledNotPermitted": "Unfortunately, you don't have the rights to take this poll.",
