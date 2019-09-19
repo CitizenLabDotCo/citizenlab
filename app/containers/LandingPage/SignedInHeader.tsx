@@ -31,7 +31,7 @@ import T from 'components/T';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -136,7 +136,7 @@ const HeaderContent = styled.div`
     display: none;
   }
 
-  p {
+  h2 {
     color: #fff;
     font-size: ${fontSizes.xxl}px;
     line-height: 33px;
@@ -162,7 +162,7 @@ const HeaderContentCustomCta = styled(HeaderContent)``;
 const HeaderContentDefault = styled(HeaderContent)`
   justify-content: center;
 
-  p {
+  h2 {
     text-align: center;
   }
 
@@ -267,8 +267,21 @@ class SignedInHeader extends PureComponent<Props, State> {
       const defaultMessage = tenant.attributes.settings.core.custom_onboarding_fallback_message;
       const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
+      // tranlate header title into a h1 wih a fallback
+      const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
+      const genericTitle = <FormattedMessage tagName="h1" {...messages.titleCity} />;
+
       return (
         <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
+          <ScreenReaderOnly>
+            {headerTitleMultiLoc ? (
+              <T as="h1" value={headerTitleMultiLoc}>
+                {translatedTitle =>
+                   translatedTitle ? <h1>translatedTitle</h1> : genericTitle
+                }
+              </T>
+            ) : genericTitle}
+          </ScreenReaderOnly>
           <HeaderImageContainer>
             <HeaderImageContainerInner>
               {tenantHeaderImage && <HeaderImage src={tenantHeaderImage} className={objectFitCoverSupported ? 'objectFitCoverSupported' : ''} />}
@@ -293,7 +306,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   <CompleteProfileIcon name="completeProfile" />
                 </Icons>
                 <Text>
-                  <FormattedMessage {...messages.completeYourProfile} tagName="p" values={{ firstName: authUser.attributes.first_name }} />
+                  <FormattedMessage {...messages.completeYourProfile} tagName="h2" values={{ firstName: authUser.attributes.first_name }} />
                 </Text>
               </Left>
 
@@ -330,7 +343,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             <HeaderContentCustomCta id="e2e-singed-in-header-custom-cta">
               <Left>
                 <Text>
-                  <T as="p" value={onboardingCampaigns.cta_message_multiloc} supportHtml />
+                  <T as="h2" value={onboardingCampaigns.cta_message_multiloc} supportHtml />
                 </Text>
               </Left>
 
@@ -365,7 +378,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             <HeaderContentDefault id="e2e-singed-in-header-default-cta">
               {defaultMessage && !isEmpty(defaultMessage)
                 ? <T as="p" value={defaultMessage} supportHtml />
-                : <FormattedMessage {...messages.defaultSignedInMessage} tagName="p" values={{ firstName: authUser.attributes.first_name }}/>
+                : <FormattedMessage {...messages.defaultSignedInMessage} tagName="h2" values={{ firstName: authUser.attributes.first_name }}/>
               }
             </HeaderContentDefault>
           </CSSTransition>

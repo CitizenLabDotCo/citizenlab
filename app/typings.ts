@@ -53,6 +53,9 @@ export interface Message {
   defaultMessage: string;
 }
 
+import { Messages } from 'react-intl';
+export type MessageDescriptor = Messages['key'];
+
 export type Locale = keyof typeof appLocalePairs;
 
 export const isLocale = (test: any) => {
