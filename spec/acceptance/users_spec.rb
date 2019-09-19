@@ -471,6 +471,15 @@ resource "Users" do
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq "somevalue"
         end
+
+        example "Clear out a user's custom field value" do
+          cf = create(:custom_field)
+          @user.update!(custom_field_values: {cf.key => "somevalue"})
+          
+          do_request(user: {custom_field_values: {cf.key => nil}})
+          expect(response_status).to eq 200
+          expect(@user.reload.custom_field_values).to eq ({})
+        end
       end
 
       describe do

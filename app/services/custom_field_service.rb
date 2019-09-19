@@ -72,6 +72,15 @@ class CustomFieldService
     str.parameterize.gsub(/\-/, '_')
   end
 
+  def cleanup_custom_field_values! custom_field_values
+    custom_field_values.keys.each do |key|
+      if custom_field_values[key].nil?
+        custom_field_values.delete key
+      end
+    end
+    custom_field_values
+  end
+
   private
 
   def handle_description(field, locale)
