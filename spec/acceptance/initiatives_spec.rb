@@ -11,7 +11,7 @@ resource "Initiatives" do
     @first_admin = create(:admin)
     @initiatives = ['published','published','draft','published','spam','published','published'].map { |ps|  create(:initiative, publication_status: ps)}
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
 

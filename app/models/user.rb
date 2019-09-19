@@ -155,6 +155,15 @@ class User < ApplicationRecord
     not_invited.find_by_cimail request.params["auth"]["email"]
   end
 
+  def to_token_payload
+    {
+      sub: id,
+      cluster: CL2_CLUSTER,
+      tenant: Tenant.current.id,
+      roles: roles
+    }
+  end
+
   def avatar_blank?
     avatar.file.nil?
   end

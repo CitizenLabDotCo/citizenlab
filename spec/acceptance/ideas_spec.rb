@@ -10,7 +10,7 @@ resource "Ideas" do
     header "Content-Type", "application/json"
     @ideas = ['published','published','draft','published','spam','published','published'].map { |ps|  create(:idea, publication_status: ps)}
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
 
@@ -604,7 +604,7 @@ resource "Ideas" do
     context "when admin" do
       before do
         @user = create(:admin)
-        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
@@ -741,7 +741,7 @@ resource "Ideas" do
     context "when admin" do
       before do
         @user = create(:admin)
-        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
@@ -795,7 +795,7 @@ resource "Ideas" do
     context "when moderator" do
       before do
         @moderator = create(:moderator, project: @project)
-        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
@@ -823,7 +823,7 @@ resource "Ideas" do
     context "when unauthorized" do
       before do
         @user = create(:user)
-        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
