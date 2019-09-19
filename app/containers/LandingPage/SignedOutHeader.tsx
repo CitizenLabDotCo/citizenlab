@@ -18,7 +18,6 @@ import tracks from './tracks';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getLocalized } from 'utils/i18n';
 import T from 'components/T';
 
 // style
@@ -184,14 +183,9 @@ class SignedOutHeader extends PureComponent<Props, State> {
     const { locale, tenant, className, theme } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-      // tranlate tenant name into a string
-      const tenantLocales = tenant.attributes.settings.core.locales;
-      const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
-      const tenantName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
-
       // tranlate header title into a h1 wih a fallback
       const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
-      const genericTitle = <FormattedMessage tagName="h1" {...messages.titleCity} values={{ name: tenantName }} />;
+      const genericTitle = <FormattedMessage tagName="h1" {...messages.titleCity} />;
 
       const title = (headerTitleMultiLoc ? (
         <T as="h1" value={headerTitleMultiLoc}>
@@ -206,9 +200,9 @@ class SignedOutHeader extends PureComponent<Props, State> {
       const genericSlogan = <FormattedMessage tagName="h2" {...messages.subtitleCity} />;
 
       const subtitle = (headerSloganMultiLoc ? (
-        <T as="h2" value={headerSloganMultiLoc}>
+        <T value={headerSloganMultiLoc}>
           {translatedSlogan =>
-             translatedSlogan ? <h1>translatedSlogan</h1> : genericSlogan
+             translatedSlogan ? <h2>translatedSlogan</h2> : genericSlogan
           }
         </T>
       ) : genericSlogan);
