@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   titleCity: {
     id: 'app.containers.landing.titleCity',
-    defaultMessage: 'Change the future of {name}',
+    defaultMessage: 'Change the future of {orgNname}',
   },
   subtitleCity: {
     id: 'app.containers.landing.subtitleCity',

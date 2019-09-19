@@ -22,7 +22,7 @@ import messages from './messages';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 import T from 'components/T';
 
 const illustrationSrc: string = require('./initiativesHeaderImage.png');
@@ -66,14 +66,16 @@ const HeaderContent = styled.div`
   z-index: 1;
 `;
 
-const HeaderTitle = styled.h1`
+const HeaderTitle = styled.div`
+  & h2 {
+    color: ${({ theme }) => theme.colorText};
+    font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
+    font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
+    line-height: normal;
+    text-align: center;
+  }
   width: 100%;
   max-width: 600px;
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
-  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
-  line-height: normal;
-  text-align: center;
   margin: 0;
   padding: 0;
 
@@ -144,10 +146,12 @@ const Illustration = styled.img`
   `}
 `;
 
-const ManualTitle = styled.h2`
+const ManualTitle = styled.div`
+  & h2 {
+    font-size: ${fontSizes.base}px;
+    font-weight: 600;
+  }
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 600;
   margin-bottom: 7px;
 `;
 
@@ -197,9 +201,13 @@ class SignedOutHeader extends PureComponent<Props, State> {
     return (
       <Container className={`e2e-initiatives-header ${className}`}>
         <Header>
+        <ScreenReaderOnly>
+          <FormattedMessage tagName="h1" {...messages.invisibleInitiativesPageTitle}/>
+        </ScreenReaderOnly>
           <HeaderContent>
             <HeaderTitle>
               <FormattedMessage
+                tagName="h2"
                 {...messages.header}
                 values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
               />
@@ -225,7 +233,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
             <Illustration src={illustrationSrc} alt="" />
             <ManualText>
               <ManualTitle>
-                <FormattedMessage {...messages.explanationTitle} />
+                <FormattedMessage tagName="h2" {...messages.explanationTitle} />
               </ManualTitle>
               <FormattedMessage
                 {...messages.explanationContent}
