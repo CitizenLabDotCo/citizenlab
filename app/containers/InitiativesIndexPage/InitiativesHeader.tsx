@@ -66,7 +66,7 @@ const HeaderContent = styled.div`
   z-index: 1;
 `;
 
-const HeaderTitle = styled.span`
+const HeaderTitle = styled.div`
   & h2 {
     color: ${({ theme }) => theme.colorText};
     font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
@@ -146,7 +146,7 @@ const Illustration = styled.img`
   `}
 `;
 
-const ManualTitle = styled.span`
+const ManualTitle = styled.div`
   & h2 {
     font-size: ${fontSizes.base}px;
     font-weight: 600;

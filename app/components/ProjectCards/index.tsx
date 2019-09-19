@@ -67,7 +67,7 @@ const Header = styled.div`
   `};
 `;
 
-const Title = styled.span`
+const Title = styled.div`
   & h2 {
     font-weight: 500;
     font-size: ${fontSizes.xl}px;

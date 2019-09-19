@@ -84,7 +84,7 @@ const NewLabel = styled.div`
  font-weight: 600;
 `;
 
-const Title = styled.span`
+const Title = styled.div`
   h2 {
     font-size: ${fontSizes.xxl}px;
     line-height: 33px;
