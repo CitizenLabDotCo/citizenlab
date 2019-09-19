@@ -99,7 +99,7 @@ export const UserComments = memo<Props>(({ comments, userId, theme, authUser }) 
       return (
         <Container className="e2e-profile-comments">
           <Invisible>
-            <FormattedMessage {...messages.invisibleTitleUserComments} />
+            <FormattedMessage tagName="h2" {...messages.invisibleTitleUserComments} />
           </Invisible>
           <>
             {Object.keys(commentGroups).map((postId) => {

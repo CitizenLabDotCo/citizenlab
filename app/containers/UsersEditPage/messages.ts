@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.loading',
     defaultMessage: 'Loading...',
   },
+  invisibleTitleUserSettings: {
+    id: 'app.containers.UsersEditPage.invisibleTitleUserSettings',
+    defaultMessage: 'All settings for your account',
+  },
   loadError: {
     id: 'app.containers.UsersEditPage.loadError',
     defaultMessage: 'Can\'t load existing profile',
