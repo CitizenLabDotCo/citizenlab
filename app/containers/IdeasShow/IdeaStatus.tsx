@@ -9,29 +9,34 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import {  colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
-const StatusTitle = styled.h3`
+const StatusTitle = styled.span<({ tagName: string })>`
+  ${({ tagName }) => tagName} {
+    font-size: ${fontSizes.base}px;
+    line-height: 20px;
+    font-weight: 300;
+    margin-bottom: 6px;
+  }
   color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  line-height: 20px;
-  font-weight: 300;
   margin: 0;
-  margin-bottom: 6px;
   padding: 0;
 `;
 
 interface Props {
   statusId: string;
   className?: string;
+  tagName: 'h3' | 'h2';
 }
 
-const IdeaStatus = memo<Props>(({ statusId, className }) => {
+const IdeaStatus = memo<Props>(({ statusId, className, tagName }) => {
   return (
     <Container className={className}>
-      <StatusTitle><FormattedMessage {...messages.currentStatus} /></StatusTitle>
+      <StatusTitle tagName={tagName}>
+        <FormattedMessage tagName={tagName} {...messages.currentStatus} />
+      </StatusTitle>
       <StatusBadge id="e2e-idea-status-badge" statusId={statusId} />
     </Container>
   );
