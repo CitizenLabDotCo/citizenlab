@@ -115,12 +115,16 @@ namespace :inconsistent_data do
         end
         CustomField.where(input_type: 'select').pluck(:key).each do |key|
           used_keys = User.select("custom_field_values->'#{key}' as user_option").map(&:user_option).compact.uniq
-          deleted_keys[key] = (used_keys - (CustomField.find_by(key: key).custom_field_options.pluck(:key) + ['outside']))
+          deleted_keys[key] = used_keys - (CustomField.find_by(key: key).custom_field_options.pluck(:key) + ['outside'])
         end
         deleted_keys.each do |field_key, option_keys|
           field = CustomField.find_by key: field_key
-          option_keys.each do |option_key|
-            service.delete_custom_field_option_values option_key, field
+          if field.custom_field_options.where(key: option_keys).exists?
+            raise 'Trying to delete existing option'
+          else
+            option_keys.each do |option_key|
+              service.delete_custom_field_option_values option_key, field
+            end
           end
         end
       end
