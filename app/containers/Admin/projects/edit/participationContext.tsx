@@ -252,6 +252,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
         survey_embed_url,
         survey_service
       };
+    } else if (participation_method === 'poll') {
+      output = {
+        participation_method
+      };
     } else if (participation_method === 'budgeting') {
       output = omitBy({
         participation_method,
@@ -416,6 +420,24 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                       </h3>
                       <p>
                         <FormattedMessage {...messages.participatoryBudgetingDescription} />
+                      </p>
+                    </LabelText>)}
+                />
+              </FeatureFlag>
+              <FeatureFlag name="polls">
+                <Radio
+                  onChange={this.handleParticipationMethodOnChange}
+                  currentValue={participation_method}
+                  value="poll"
+                  name="participationmethod"
+                  id={'participationmethod-poll'}
+                  label={(
+                    <LabelText>
+                      <h3>
+                        <FormattedMessage {...messages.poll} />
+                      </h3>
+                      <p>
+                        <FormattedMessage {...messages.pollDescription} />
                       </p>
                     </LabelText>)}
                 />

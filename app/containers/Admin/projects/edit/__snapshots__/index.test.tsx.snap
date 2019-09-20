@@ -56,6 +56,7 @@ Array [
   "/admin/projects/timelineIdeation/description",
   "/admin/projects/timelineIdeation/ideas",
   "/admin/projects/timelineIdeation/timeline",
+  "/admin/projects/timelineIdeation/poll",
   "/admin/projects/timelineIdeation/events",
   "/admin/projects/timelineIdeation/permissions",
 ]
@@ -68,6 +69,7 @@ Array [
   "/admin/projects/timelineIdeation/ideas",
   "/admin/projects/timelineIdeation/survey-results",
   "/admin/projects/timelineIdeation/timeline",
+  "/admin/projects/timelineIdeation/poll",
   "/admin/projects/timelineIdeation/events",
   "/admin/projects/timelineIdeation/permissions",
 ]
@@ -79,6 +81,7 @@ Array [
   "/admin/projects/timelineIdeation/description",
   "/admin/projects/timelineIdeation/ideas",
   "/admin/projects/timelineIdeation/timeline",
+  "/admin/projects/timelineIdeation/poll",
   "/admin/projects/timelineIdeation/events",
   "/admin/projects/timelineIdeation/permissions",
 ]
@@ -90,6 +93,7 @@ Array [
   "/admin/projects/timelineInformation/description",
   "/admin/projects/timelineInformation/ideas",
   "/admin/projects/timelineInformation/timeline",
+  "/admin/projects/timelineInformation/poll",
   "/admin/projects/timelineInformation/events",
   "/admin/projects/timelineInformation/permissions",
 ]

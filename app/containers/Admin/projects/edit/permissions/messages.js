@@ -93,6 +93,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_taking_survey',
     defaultMessage: 'Taking the survey',
   },
+  permissionAction_taking_poll: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_taking_poll',
+    defaultMessage: 'Taking the poll',
+  },
   permissionAction_budgeting: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_budgeting',
     defaultMessage: 'Spending budget',

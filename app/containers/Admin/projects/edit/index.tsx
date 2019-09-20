@@ -102,6 +102,17 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
       tabs = reject(tabs, { className: 'ideas' });
     }
 
+    if (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'poll' ||
+        (project.attributes.process_type === 'timeline' && !isNilOrError(phases)
+        && phases.filter(phase => phase.attributes.participation_method === 'poll'))) {
+      tabs.splice(3, 0, {
+        label: formatMessage(messages.pollTab),
+        url: `${baseTabsUrl}/poll`,
+        feature: 'polls',
+        className: 'poll',
+      });
+    }
+
     if (project.attributes.process_type === 'timeline') {
       tabs.splice(3, 0, {
         label: formatMessage(messages.phasesTab),
