@@ -19,7 +19,6 @@ namespace :inconsistent_data do
           log = if i.save
             fixes
           else
-            byebug
             failures
           end
           log[tenant.host] ||= []
