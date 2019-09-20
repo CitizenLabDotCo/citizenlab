@@ -920,7 +920,7 @@ class TenantTemplateService
         'created_at'                => r.created_at.to_s,
         'updated_at'                => r.updated_at.to_s
       }
-      store_ref yml_response, q.id, :poll_response
+      store_ref yml_response, r.id, :poll_response
       yml_response
     end
   end
