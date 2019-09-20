@@ -39,6 +39,10 @@ FactoryBot.define do
       end
     end
 
+    factory :poll_phase do
+      participation_method { "poll" }
+    end
+
   end
 
 end
