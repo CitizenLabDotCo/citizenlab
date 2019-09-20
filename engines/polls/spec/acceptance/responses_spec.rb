@@ -51,10 +51,10 @@ resource "Poll Responses" do
     response_field :base, "Array containing objects with signature {error: 'not_all_questions_one_option'}", scope: :errors
 
 
-    let(:q1) { create(:poll_question, :with_options) }
-    let(:participation_context) { q1.participation_context }
-    let(:participation_context_id) { participation_context.id }
-    let(:q2) { create(:poll_question, :with_options, participation_context: participation_context)}
+    let(:pc) { create(:continuous_poll_project, with_permissions: true)}
+    let(:participation_context_id) { pc.id }
+    let(:q1) { create(:poll_question, :with_options, participation_context: pc) }
+    let(:q2) { create(:poll_question, :with_options, participation_context: pc) }
     let(:response_options_attributes) {[
       {option_id: q1.options.first.id},
       {option_id: q2.options.last.id},
@@ -72,10 +72,11 @@ resource "Poll Responses" do
     ValidationErrorHelper.new.error_fields(self, Polls::Response)
     ValidationErrorHelper.new.error_fields(self, Polls::ResponseOption)
 
-    let(:q1) { create(:poll_question, :with_options, participation_context: create(:poll_phase)) }
-    let(:participation_context) { q1.participation_context }
-    let(:participation_context_id) { participation_context.id }
-    let(:q2) { create(:poll_question, :with_options, participation_context: participation_context)}
+    let(:project) { create(:project_with_current_phase, with_permissions: true, current_phase_attrs: { participation_method: 'poll' }) }
+    let(:pc) { project.phases[2] }
+    let(:participation_context_id) { pc.id }
+    let(:q1) { create(:poll_question, :with_options, participation_context: pc) }
+    let(:q2) { create(:poll_question, :with_options, participation_context: pc)}
     let(:response_options_attributes) {[
       {option_id: q1.options.first.id},
       {option_id: q2.options.last.id},

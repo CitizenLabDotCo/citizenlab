@@ -9,8 +9,11 @@ module Polls
       end
 
       def resolve
-        # TODO: Only when you have access to the PC
-        scope.all
+        projects = Pundit.policy_scope(user, Project)
+        phases = Pundit.policy_scope(user, Phase)
+        scope
+          .where(participation_context: projects)
+          .or(scope.where(participation_context: phases))
       end
     end
 
@@ -19,8 +22,7 @@ module Polls
     end
 
     def show?
-      # TODO: Only when you have access to the PC
-      true
+      ProjectPolicy.new(user, record.participation_context.project).show?
     end
 
     def update?

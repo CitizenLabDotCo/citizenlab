@@ -1,12 +1,10 @@
 module Polls
 	class ExportService
 
-		def generate_poll_results_xlsx participation_context, users: nil
+		def generate_poll_results_xlsx participation_context, responses
       multiloc_service = MultilocService.new
       questions = Polls::Question.where(participation_context: participation_context)
         .order(:ordering)
-      responses = Polls::Response.where(participation_context: participation_context)
-        .includes(response_options: [:option]).order(:created_at)
 
       pa = Axlsx::Package.new
       wb = pa.workbook
