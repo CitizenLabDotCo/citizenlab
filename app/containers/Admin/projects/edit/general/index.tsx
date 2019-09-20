@@ -582,10 +582,6 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
     const { project } = this.state;
     const { formatMessage } = this.props.intl;
 
-    if (project && project.data.attributes.internal_role === 'open_idea_box') {
-      return;
-    }
-
     if (project && window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
       try {
         this.setState({ processingDelete: true });
@@ -879,7 +875,6 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                       style="delete"
                       onClick={this.deleteProject}
                       processing={processingDelete}
-                      disabled={project.data.attributes.internal_role === 'open_idea_box'}
                     >
                       <FormattedMessage {...messages.deleteProjectButton} />
                     </Button>
