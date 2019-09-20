@@ -261,7 +261,7 @@ describe('<AdminProjectEdition />', () => {
         />));
         const linkPath = wrapper.find('#to-project').props().linkTo;
 
-      expect(linkPath).toEqual('/projects/continuousInformation_slug');
+      expect(linkPath).toMatchSnapshot();
     });
 
     it('lets you add an idea when on the ideas tab', () => {
