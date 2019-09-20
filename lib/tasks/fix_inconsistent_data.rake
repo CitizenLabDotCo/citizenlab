@@ -15,10 +15,11 @@ namespace :inconsistent_data do
         end
         to_fix.each do |i| 
           locale, title = i.title_multiloc.first
-          i.body_multiloc[locale] = title if i.body_multiloc[locale].blank?  # Just making very sure
+          i.body_multiloc[locale] = title if !sanitizer.html_with_content?(i.body_multiloc[locale])  # Just making very sure
           log = if i.save
             fixes
           else
+            byebug
             failures
           end
           log[tenant.host] ||= []
@@ -48,7 +49,7 @@ namespace :inconsistent_data do
   task :fix_users_with_invalid_locales => :environment do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        User.where('locale NOT IN ?', tenant.settings.dig('core', 'locales'))
+        User.where('locale NOT IN (?)', tenant.settings.dig('core', 'locales'))
           .update_all(locale: tenant.settings.dig('core', 'locales').first)
       end
     end
