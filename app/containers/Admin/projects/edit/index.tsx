@@ -104,7 +104,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
 
     if (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'poll' ||
         (project.attributes.process_type === 'timeline' && !isNilOrError(phases)
-        && phases.filter(phase => phase.attributes.participation_method === 'poll'))) {
+        && phases.filter(phase => phase.attributes.participation_method === 'poll').length > 0)) {
       tabs.splice(3, 0, {
         label: formatMessage(messages.pollTab),
         url: `${baseTabsUrl}/poll`,
