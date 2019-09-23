@@ -1,4 +1,4 @@
-import React, { PureComponent, MouseEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { isNumber, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -19,7 +19,7 @@ import messages from './messages';
 
 // styling
 import styled, { css } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, invisibleA11yText } from 'utils/styleUtils';
 
 const EmptyContainer = styled.div``;
 
@@ -74,12 +74,7 @@ const UserCount: any = styled.div`
   }
 
   .screenreader-only {
-    position:absolute;
-    left:-10000px;
-    top:auto;
-    width:1px;
-    height:1px;
-    overflow:hidden;
+    ${invisibleA11yText}
   }
 `;
 

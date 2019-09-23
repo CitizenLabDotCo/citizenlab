@@ -5,7 +5,7 @@ import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, invisibleA11yText } from 'utils/styleUtils';
 
 // import i18n
 import messages from './messages';
@@ -19,12 +19,7 @@ const SendFeedbackText = styled.span`
   transition: all 100ms ease-out;
 
   .screenreader-only {
-    position:absolute;
-    left:-10000px;
-    top:auto;
-    width:1px;
-    height:1px;
-    overflow:hidden;
+    ${invisibleA11yText}
   }
 `;
 
