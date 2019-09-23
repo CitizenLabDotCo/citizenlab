@@ -15,6 +15,7 @@ import emailsRoutes from './emails/routes';
 
 import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { isUUID } from 'utils/helperUtils';
 
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
@@ -40,7 +41,13 @@ const isUserAuthorized = (nextState, replace) => {
       } else if (isModerator(authUser)) {
         replace(`${urlLocale && `/${urlLocale}`}/`);
       } else {
-        replace(`${urlLocale && `/${urlLocale}`}/sign-in`);
+        const urlSegments = pathname ? pathname.replace(/^\/+/g, '').split('/') : null;
+
+        if (urlSegments && urlSegments.length === 4 && urlSegments[0] === 'admin' && urlSegments[1] === 'projects' && urlSegments[2] === 'templates' && isUUID(urlSegments[3])) {
+          replace(`/${urlLocale}/templates/${urlSegments[3]}`);
+        } else {
+          replace(`${urlLocale && `/${urlLocale}`}/sign-in`);
+        }
       }
     }
   });

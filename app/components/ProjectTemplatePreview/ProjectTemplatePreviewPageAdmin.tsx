@@ -55,7 +55,7 @@ const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(({ params,
             ? <Button style="text" icon="arrow-back" onClick={onGoBack}><FormattedMessage {...messages.goBack} /></Button>
             : <Button style="text" icon="list" onClick={onGoBack}><FormattedMessage {...messages.seeMoreTemplates} /></Button>
           }
-          <Button onClick={onUseTemplate}>Use template</Button>
+          <Button onClick={onUseTemplate} style="admin-dark"><FormattedMessage {...messages.useTemplate} /></Button>
         </AdminHeader>
         <ProjectTemplatePreview projectTemplateId={templateId} />
       </Container>
