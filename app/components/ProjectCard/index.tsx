@@ -37,7 +37,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, invisibleA11yText } from 'utils/styleUtils';
 import { rgba, darken } from 'polished';
 
 const Container = styled(Link)`
@@ -406,12 +406,7 @@ const MetaItem = styled.div`
   `};
 
   .screenreader-only {
-    position:absolute;
-    left:-10000px;
-    top:auto;
-    width:1px;
-    height:1px;
-    overflow:hidden;
+    ${invisibleA11yText}
   }
 `;
 
