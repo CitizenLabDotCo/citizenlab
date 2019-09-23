@@ -436,6 +436,51 @@ describe ParticipationContextService do
     end
   end
 
+  describe "taking_poll_disabled_reason" do
+    it "returns nil when taking the poll is allowed" do
+      project = create(:continuous_poll_project, with_permissions: true)
+      permission = Permission.find_by(action: 'taking_poll', permittable: project)
+      group = create(:group, projects: [project])
+      permission.update!(permitted_by: 'groups', groups: [group])
+      user = create(:user)
+      group.add_member(user)
+      group.save!
+      expect(service.taking_poll_disabled_reason_for_project(project, user)).to be_nil
+    end
+
+    it "return `not_permitted` when taking the poll is not permitted" do
+      project = create(:continuous_poll_project, with_permissions: true)
+      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_poll')
+      permission.update!(permitted_by: 'admins_moderators')
+      expect(service.taking_poll_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
+    end
+
+    it "returns `not_poll` when the active context is not a poll" do
+      project = create(:project_with_current_phase, 
+        with_permissions: true, 
+        current_phase_attrs: {participation_method: 'information'}
+        )
+      expect(service.taking_poll_disabled_reason_for_project(project, create(:user))).to eq 'not_poll'
+    end
+
+    it "returns `already_responded` when the user already responded to the poll before" do
+      project = create(:continuous_poll_project, with_permissions: true)
+      poll_response = create(:poll_response, participation_context: project)
+      user = poll_response.user
+      expect(service.taking_poll_disabled_reason_for_project(project, user)).to eq 'already_responded'
+    end
+
+    it "returns `project_inactive` when the timeline has past" do
+      project = create(:project_with_past_phases, with_permissions: true)
+      expect(service.taking_poll_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
+    end
+
+    it "returns `project_inactive` when the continuous project is archived" do
+      project = create(:continuous_project, with_permissions: true, publication_status: 'archived')
+      expect(service.taking_poll_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
+    end
+  end
+
   describe "budgeting_disabled_reasons" do
 
     context "for timeline projects" do

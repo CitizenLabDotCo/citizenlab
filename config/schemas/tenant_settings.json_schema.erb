@@ -69,15 +69,15 @@
             "additionalProperties": false,
             "properties": {
               <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 90}" }.join(",") %>
-            } 
+            }
           },
           "meta_title": {
             "description": "The title of the homepage, shown on the browser tab and in search engine results",
-            "$ref": "#/definitions/multiloc_string" 
+            "$ref": "#/definitions/multiloc_string"
           },
           "meta_description": {
             "description": "The description of the platform shown on links on social media",
-            "$ref": "#/definitions/multiloc_string" 
+            "$ref": "#/definitions/multiloc_string"
           },
           "color_main": {
             "description": "The main brand color as a hexadecimal value including the anchor character",
@@ -124,6 +124,14 @@
           "currently_working_on_text": {
             "description": "Text shown on top of the project cards, leave empty for default",
             "$ref": "#/definitions/multiloc_string"
+          },
+          "segment_destinations_blacklist": {
+            "description": "An optional list of segment destinations to disable",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["Google Analytics", "Google Tag Manager", "Facebook Pixel", "AdWords"]
+            }
           }
         }
       },
@@ -413,7 +421,7 @@
             "description": "The user token that can be generated from your typeform profile. Survey results will only be downloadable for this typeform profile",
             "type": "string",
             "private": true,
-            "default": "<%= ENV.fetch('DEFAULT_TYPEFORM_USER_TOKEN', '') %>" 
+            "default": "<%= ENV.fetch('DEFAULT_TYPEFORM_USER_TOKEN', '') %>"
           }
         }
       },
@@ -631,7 +639,7 @@
             "$ref": "#/definitions/multiloc_string",
             "default": <%= MultilocService.new.i18n_to_multiloc(
               'initiatives.default_eligibility_criteria',
-              locales: CL2_SUPPORTED_LOCALES).to_json 
+              locales: CL2_SUPPORTED_LOCALES).to_json
             %>
           },
           "success_stories": {
@@ -664,6 +672,16 @@
               }
             }
           }
+        }
+      },
+      "polls": {
+        "type": "object",
+        "description": "Participation methods that allows citizens to answer multiple questions with predefined answers",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
         }
       }
     },

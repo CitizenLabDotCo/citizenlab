@@ -134,7 +134,7 @@ class AnonymizeUserService
   end
 
   def random_email first_name, last_name
-    Faker::Internet.email
+    Faker::Internet.unique.email
   end
 
   def random_avatar_url gender

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   mount Onboarding::Engine => "", as: 'onboarding'
   mount Surveys::Engine => "", as: 'surveys'
   mount Frontend::Engine => "", as: 'frontend'
+  mount Polls::Engine => "", as: 'polls'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
