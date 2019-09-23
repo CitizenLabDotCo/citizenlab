@@ -245,6 +245,7 @@
   "app.components.ProjectCards.showMore": "Mehr anzeigen",
   "app.components.ProjectCards.stayTuned": "Bleiben Sie dran, hier entsteht bald ein Projekt.",
   "app.components.ProjectTemplatePreview.alsoUsedIn": "",
+  "app.components.ProjectTemplatePreview.copied": "",
   "app.components.ProjectTemplatePreview.copyLink": "",
   "app.components.ProjectTemplatePreview.goBack": "",
   "app.components.ProjectTemplatePreview.seeMoreTemplates": "",
