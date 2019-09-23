@@ -29,10 +29,6 @@ export default defineMessages({
     id: 'app.containers.SpamReport.buttonSave',
     defaultMessage: 'Report',
   },
-  buttonError: {
-    id: 'app.containers.SpamReport.buttonError',
-    defaultMessage: 'Error',
-  },
   buttonSuccess: {
     id: 'app.containers.SpamReport.buttonSuccess',
     defaultMessage: 'Success',

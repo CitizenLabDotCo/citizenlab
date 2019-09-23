@@ -66,16 +66,18 @@ const TenantLogo = styled.img`
 `;
 
 const TenantSlogan = styled.div`
+  h2 {
+    font-size: ${fontSizes.xxl}px;
+    font-weight: 500;
+    line-height: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
   width: 100%;
   max-width: 340px;
   color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.xxl}px;
-  font-weight: 500;
-  line-height: normal;
   text-align: center;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
 `;
 
 const SecondLine = styled.div`
@@ -441,7 +443,7 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
       const organizationNameMulitiLoc = currentTenant.data.attributes.settings.core.organization_name;
       const currentTenantName = getLocalized(organizationNameMulitiLoc, locale, currentTenantLocales);
       const organizationType = currentTenant.data.attributes.settings.core.organization_type;
-      const slogan = currentTenantName ? <FormattedMessage {...messages.slogan} values={{ name: currentTenantName, type: organizationType }} /> : '';
+      const slogan = currentTenantName ? <FormattedMessage tagName="h2" {...messages.slogan} values={{ name: currentTenantName, type: organizationType }} /> : '';
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
       const footerLocale = `footer-city-logo-${locale}`;
 
