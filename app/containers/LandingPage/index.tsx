@@ -29,7 +29,6 @@ import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getLocalized } from 'utils/i18n';
 
 // style
 import styled, { withTheme } from 'styled-components';
@@ -69,7 +68,7 @@ const FooterBanner = styled.div`
   padding-top: 50px;
   padding-bottom: 60px;
 
-  p {
+  h2 {
     color: #fff;
     font-size: ${fontSizes.xxxl}px;
     line-height: normal;
@@ -148,7 +147,7 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-interface State {}
+interface State { }
 
 class LandingPage extends PureComponent<Props, State> {
 
@@ -168,20 +167,23 @@ class LandingPage extends PureComponent<Props, State> {
     trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'footer' } });
   }
 
-  projectsPublicationStatuses: PublicationStatus[]  = ['published', 'archived'];
+  projectsPublicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
   render() {
     const { locale, tenant, authUser, homepageInfoPage, theme } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
-      const tenantLocales = tenant.attributes.settings.core.locales;
-      const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
-      const tenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, tenantLocales) : null);
+      // header image
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
-      const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
+
+      // custom section
       const showCustomSection = !isEmptyMultiloc(homepageInfoPage.attributes.body_multiloc);
       const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
+
+      // tranlate header slogan into a h2 wih a fallback
+      const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
+      const genericSlogan = <FormattedMessage tagName="h2" {...messages.subtitleCity} />;
 
       return (
         <>
@@ -219,7 +221,13 @@ class LandingPage extends PureComponent<Props, State> {
 
               {!authUser &&
                 <FooterBanner>
-                  <p>{subtitle}</p>
+                  {headerSloganMultiLoc ? (
+                    <T value={headerSloganMultiLoc}>
+                      {translatedSlogan =>
+                        translatedSlogan ? <h2>translatedSlogan</h2> : genericSlogan
+                      }
+                    </T>
+                  ) : genericSlogan}
                   <StyledAvatarBubbles />
                   <Button
                     fontWeight="500"

@@ -306,11 +306,13 @@ const ContentBody = styled.div`
   }
 `;
 
-const ProjectTitle = styled.h3`
+const ProjectTitle = styled.div`
+  h3 {
+    line-height: normal;
+    font-weight: 500;
+    font-size: ${fontSizes.xl}px;
+  }
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xl}px;
-  line-height: normal;
-  font-weight: 500;
   margin: 0;
   padding: 0;
 
@@ -604,7 +606,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
             <ContentBody className={size}>
               <ProjectTitle className="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
-                <T value={project.attributes.title_multiloc} />
+                <T as="h3" value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
               <T value={project.attributes.description_preview_multiloc}>

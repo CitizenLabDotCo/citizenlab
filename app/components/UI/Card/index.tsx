@@ -27,11 +27,6 @@ const Container = styled(Link)`
   }
 `;
 
-const Header = styled.div`
-  width: 100%;
-  position: relative;
-`;
-
 const ImageWrapper = styled.div`
   height: 115px;
   display: flex;
@@ -47,15 +42,14 @@ const Image = styled(LazyImage)`
 `;
 
 const HeaderContentWrapper = styled.div`
-  &.absolutePositioning {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
 `;
 
-const Title = styled.h3`
+const Title = styled.h3<({ hasHeader: boolean })>`
   color: #333;
   max-width: 400px;
   font-size: ${fontSizes.xl}px;
@@ -76,7 +70,12 @@ const Title = styled.h3`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+  &:first-child {
+    margin-top: 20px;
+  }
+  ${({ hasHeader }) => hasHeader && '&:first-child { margin-top: 73px; }'}
 `;
+// why the :first-child ? -> to conteract the css reset that overrides top margin for h3:first-child.
 
 const Body = styled.div`
   flex-grow: 1;
@@ -103,40 +102,35 @@ interface Props {
   className?: string;
 }
 
-const Card = memo<Props>(({ to, onClick, imageUrl, imageAltText, header, title, body, footer, className }) => {
-  return (
-    <Container
-      onClick={onClick}
-      to={to}
-      className={`e2e-card ${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
-    >
-      <>
-        <Header>
-          {imageUrl &&
-            <ImageWrapper>
-              <Image src={imageUrl} alt={imageAltText || ''} />
-            </ImageWrapper>
-          }
+const Card = memo<Props>(({ to, onClick, imageUrl, imageAltText, header, title, body, footer, className }) => (
+  <Container
+    onClick={onClick}
+    to={to}
+    className={`e2e-card ${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
+  >
+    <>
+      {imageUrl &&
+        <ImageWrapper>
+          <Image src={imageUrl} alt={imageAltText || ''} />
+        </ImageWrapper>
+      }
 
-          <HeaderContentWrapper className={imageUrl ? 'absolutePositioning' : ''}>
-            {header}
-          </HeaderContentWrapper>
-        </Header>
+      <Title className="e2e-card-title" hasHeader={!!header}>
+        {title}
+      </Title>
+      <HeaderContentWrapper>
+        {header}
+      </HeaderContentWrapper>
 
-        <Title className="e2e-card-title">
-          {title}
-        </Title>
+      <Body>
+        {body}
+      </Body>
 
-        <Body>
-          {body}
-        </Body>
-
-        <Footer>
-          {footer}
-        </Footer>
-      </>
-    </Container>
-  );
-});
+      <Footer>
+        {footer}
+      </Footer>
+    </>
+  </Container>
+));
 
 export default Card;

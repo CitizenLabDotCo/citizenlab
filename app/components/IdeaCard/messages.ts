@@ -5,8 +5,4 @@ export default defineMessages({
     id: 'app.components.IdeaCard.imageAltText',
     defaultMessage: '{orgName} - main image for the idea {ideaTitle}',
   },
-  byAuthorName: {
-    id: 'app.containers.IdeaCard.byAuthorName',
-    defaultMessage: 'by {authorNameComponent}',
-  },
 });
