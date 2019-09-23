@@ -15,6 +15,9 @@ import { IEventData } from 'services/events';
 
 // i18n
 import T from 'components/T';
+import injectIntl from 'utils/cl-intl/injectIntl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
 
 // utils
 import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
@@ -212,9 +215,9 @@ interface Props extends InputProps {
 
 interface State {}
 
-class Event extends React.PureComponent<Props, State> {
+class Event extends React.PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { event, eventFiles, className } = this.props;
+    const { event, eventFiles, className, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(event)) {
       const startAtMoment = moment(event.attributes.start_at);
@@ -282,7 +285,7 @@ class Event extends React.PureComponent<Props, State> {
           {hasLocation &&
             <EventLocationWrapper className={eventStatus}>
               <EventLocation>
-                <MapIcon name="mapmarker" />
+                <MapIcon title={formatMessage(messages.location)} name="mapmarker" />
                 <EventLocationAddress>
                   <T value={event.attributes.location_multiloc} />
                 </EventLocationAddress>
@@ -297,8 +300,10 @@ class Event extends React.PureComponent<Props, State> {
   }
 }
 
+const EventWithIntl = injectIntl(Event);
+
 export default (inputProps: InputProps) => (
   <GetResourceFiles resourceType="event" resourceId={inputProps.event.id}>
-    {eventFiles => <Event eventFiles={eventFiles} {...inputProps} />}
+    {eventFiles => <EventWithIntl eventFiles={eventFiles} {...inputProps} />}
   </GetResourceFiles>
 );
