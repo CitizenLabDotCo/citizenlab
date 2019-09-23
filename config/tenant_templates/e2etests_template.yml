@@ -6614,6 +6614,19 @@ models:
     voting_enabled: false
     voting_method: unlimited
     voting_limited_max: 1
+  - &polling
+    title_multiloc:
+      en-GB: The big polling
+      nl-BE: De grote polling
+    description_multiloc:
+      en-GB: "<p>Lots of fun guaranteed!</p>"
+      nl-BE: "<p>Dolle pret gegarandeerd!</p>"
+    project_ref: *project1
+    start_at: 2018-06-22
+    end_at: 2018-08-21
+    participation_method: poll
+    created_at: '2018-03-28 13:35:05'
+    updated_at: '2018-03-28 13:35:05'
   - title_multiloc:
       en-GB: Voluptatem accusantium temporibus mollitia minus quasi.
       nl-BE: Omnis similique saepe fugiat.
@@ -7450,6 +7463,30 @@ models:
       nl-BE: Gemeentehuis Stadhuis
     created_at: '2018-03-28 13:58:21'
     updated_at: '2018-03-28 13:58:21'
+  polls/question:
+    - &question-kicker
+      participation_context_ref: *polling
+      title_multiloc:
+        en-GB: 'Should we get a new kicker?'
+      ordering: 1
+  polls/option:
+    - &kicker-yes
+      question_ref: *question-kicker
+      title_multiloc:
+        en-GB: 'Yes'
+      ordering: 1
+    - &kikcer-no
+      question_ref: *question-kicker
+      title_multiloc:
+        en-GB: 'No'
+      ordering: 2
+  polls/response:
+    - &jordan-response
+      participation_context_ref: *polling
+      user_ref: *77
+  polls/response_option:
+    - response_ref: *jordan-response
+      option_ref: *kicker-yes
   ideas_topic:
   - idea_ref: *topic_idea
     topic_ref: *topic_waste

@@ -36,6 +36,13 @@ class ParticipationContextService
     not_survey: 'not_survey'
   }
 
+  TAKING_POLL_DISABLED_REASONS = {
+    project_inactive: 'project_inactive',
+    not_permitted: 'not_permitted',
+    not_poll: 'not_poll',
+    already_responded: 'already_responded',
+  }
+
 
   def initialize
     @memoized_votes_in_context = Hash.new{|hash,key| hash[key] = Hash.new}
@@ -199,6 +206,25 @@ class ParticipationContextService
       TAKING_SURVEY_DISABLED_REASONS[:not_survey]
     elsif !context_permission(context, 'taking_survey')&.granted_to?(user)
       TAKING_SURVEY_DISABLED_REASONS[:not_permitted]
+    else
+      nil
+    end
+  end
+
+  def taking_poll_disabled_reason_for_project project, user
+    context = get_participation_context project
+    taking_poll_disabled_reason_for_context context, user
+  end
+
+  def taking_poll_disabled_reason_for_context context, user
+    if !context
+      TAKING_POLL_DISABLED_REASONS[:project_inactive]
+    elsif !context.poll?
+      TAKING_POLL_DISABLED_REASONS[:not_poll]
+    elsif !context_permission(context, 'taking_poll')&.granted_to?(user)
+      TAKING_POLL_DISABLED_REASONS[:not_permitted]
+    elsif user && context.poll_responses.where(user: user).exists?
+      TAKING_POLL_DISABLED_REASONS[:already_responded]
     else
       nil
     end

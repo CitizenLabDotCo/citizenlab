@@ -145,8 +145,10 @@ resource "Projects" do
             commenting: {enabled: false, disabled_reason: 'project_inactive'},
             voting: {enabled: false, disabled_reason: 'project_inactive'},
             comment_voting: {enabled: false, disabled_reason: 'project_inactive'},
-            taking_survey: {enabled: false, disabled_reason: 'project_inactive'}}
-          )
+            taking_survey: {enabled: false, disabled_reason: 'project_inactive'},
+            taking_poll: {enabled: false, disabled_reason: 'project_inactive'}
+          },
+        )
         expect(json_response.dig(:data, :relationships)).to include(
           topics: {
             data: [{id: topic.id, type: 'topic'}]
