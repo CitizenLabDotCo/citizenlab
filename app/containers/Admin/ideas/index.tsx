@@ -54,7 +54,7 @@ class IdeaDashboard extends React.PureComponent<Props> {
               <FormattedMessage {...messages.headerSubtitle} />
             </SectionSubtitle>
           </Left>
-          <IdeaButton />
+          <IdeaButton style="admin-dark" />
         </HeaderContainer>
 
         <PageWrapper>

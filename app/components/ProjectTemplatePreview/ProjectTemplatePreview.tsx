@@ -2,7 +2,6 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError, transformLocale } from 'utils/helperUtils';
 import * as clipboard from 'clipboard-polyfill';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -22,7 +21,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -31,6 +30,10 @@ const Container = styled.div`
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
   border: solid 1px #e0e0e0;
+
+  ${media.smallerThanMinTablet`
+    padding: 30px;
+  `}
 `;
 
 const Header = styled.div`
@@ -38,6 +41,11 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 60px;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: stretch;
+  `}
 `;
 
 const HeaderLeft = styled.div``;
@@ -45,6 +53,10 @@ const HeaderLeft = styled.div``;
 const HeaderRight = styled.div`
   display: flex;
   align-items: center;
+
+  ${media.biggerThanMinTablet`
+    margin-left: 30px;
+  `}
 `;
 
 const Title = styled.h1`
@@ -55,6 +67,10 @@ const Title = styled.h1`
   padding: 0;
   margin: 0;
   margin-bottom: 10px;
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 5px;
+  `}
 `;
 
 const Subtitle = styled.h2`
@@ -65,6 +81,10 @@ const Subtitle = styled.h2`
   padding: 0;
   margin-top: 0;
   margin-bottom: 5px;
+
+  ${media.smallerThanMinTablet`
+    padding-bottom: 35px;
+  `}
 `;
 
 const LinkCopied = styled.div`
@@ -77,6 +97,10 @@ const LinkCopied = styled.div`
   &.visible {
     opacity: 1;
   }
+
+  ${media.smallerThanMinTablet`
+    order: 2;
+  `}
 `;
 
 const LinkCopiedIcon = styled(Icon)`
@@ -87,6 +111,12 @@ const LinkCopiedIcon = styled(Icon)`
 
 const CopyLinkButton = styled(Button)`
   margin-left: 20px;
+
+  ${media.smallerThanMinTablet`
+    order: 1;
+    margin-left: 0px;
+    margin-right: 20px;
+  `}
 `;
 
 const MetaInfo = styled.div`
@@ -104,6 +134,7 @@ const MetaInfoLeft = styled.div`
 const MetaInfoRight = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 30px;
 `;
 
 const Department = styled.div`
@@ -256,8 +287,7 @@ const ProjectTemplatePreview = memo<Props>(({ locale, projectTemplateId, classNa
   const { loading, data } = useQuery(TEMPLATE_QUERY);
 
   const copyLink = useCallback(() => {
-    const copiedUrl = window.location.origin + removeLocale(window.location.pathname).pathname;
-    clipboard.writeText(copiedUrl);
+    clipboard.writeText(`${window.location.origin}/templates/${projectTemplateId}`);
     setLinkCopied(true);
   }, []);
 
@@ -325,16 +355,20 @@ const ProjectTemplatePreview = memo<Props>(({ locale, projectTemplateId, classNa
           </QuillEditedContent>
         </Content>
 
-        <Footer>
-          <SuccessCasesTitle>Also used in these cities:</SuccessCasesTitle>
-          <SuccessCases>
-            {data.projectTemplate.successCases && data.projectTemplate.successCases.map((successCase) => (
-              <SuccessCase key={successCase.id} href={successCase.href} target="_blank">
-                <SuccessCaseImage src={successCase.image} />
-              </SuccessCase>
-            ))}
-          </SuccessCases>
-        </Footer>
+        {data.projectTemplate.successCases && data.projectTemplate.successCases.length > 0 &&
+          <Footer>
+            <SuccessCasesTitle>
+              <FormattedMessage {...messages.alsoUsedIn} />
+            </SuccessCasesTitle>
+            <SuccessCases>
+              { data.projectTemplate.successCases.map((successCase) => (
+                <SuccessCase key={successCase.id} href={successCase.href} target="_blank">
+                  <SuccessCaseImage src={successCase.image} />
+                </SuccessCase>
+              ))}
+            </SuccessCases>
+          </Footer>
+        }
       </Container>
     );
   }

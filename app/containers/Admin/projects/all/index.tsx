@@ -224,7 +224,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
     this.goBack();
   }
 
-  handleKeypress = (event) => {
+  handleKeypress = (event: KeyboardEvent) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
       this.goBack();
