@@ -24,7 +24,7 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, invisibleA11yText } from 'utils/styleUtils';
 
 // Typing
 import { IGeotaggedIdeaData } from 'services/ideas';
@@ -37,12 +37,7 @@ const Container = styled.div`
 
 const MapTitle = styled.span`
   &.screenreader-only {
-    position:absolute;
-    left:-10000px;
-    top:auto;
-    width:1px;
-    height:1px;
-    overflow:hidden;
+    ${invisibleA11yText}
   }
 `;
 
