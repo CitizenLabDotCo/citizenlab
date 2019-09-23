@@ -332,11 +332,6 @@
   "app.components.admin.PostManager.assignedToMe": "",
   "app.components.admin.PostManager.assignee": "",
   "app.components.admin.PostManager.basketsCountTooltip": "",
-<<<<<<< HEAD
-  "app.components.admin.PostManager.columnsTooltip": "",
-=======
-  "app.components.admin.PostManager.cannot_contain_ideas": "",
->>>>>>> c6ac7ad6b086464d0cca1106420c91b4cf3fb050
   "app.components.admin.PostManager.comments": "",
   "app.components.admin.PostManager.delete": "",
   "app.components.admin.PostManager.deleteAllSelectedIdeas": "",
