@@ -4,6 +4,11 @@ import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rx
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
+// i18n
+import injectIntl from 'utils/cl-intl/injectIntl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
+
 // components
 import Icon from 'components/UI/Icon';
 
@@ -243,7 +248,7 @@ interface State {
   votingDisabledReason: string | null;
 }
 
-export default class VoteControl extends PureComponent<Props, State> {
+class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
   voting$: BehaviorSubject<'up' | 'down' | null>;
   id$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -500,7 +505,7 @@ export default class VoteControl extends PureComponent<Props, State> {
   }
 
   render() {
-    const { size, className } = this.props;
+    const { size, className, intl: { formatMessage } } = this.props;
     const { project, phases, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, votingFutureEnabled, upvotesCount, downvotesCount } = this.state;
     const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
     const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
@@ -528,7 +533,7 @@ export default class VoteControl extends PureComponent<Props, State> {
           enabled={upvotingEnabled}
         >
           <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
-            <VoteIcon name="upvote" size={size} enabled={upvotingEnabled} />
+            <VoteIcon title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
           </VoteIconContainer>
           <VoteCount className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
         </Upvote>
@@ -541,7 +546,7 @@ export default class VoteControl extends PureComponent<Props, State> {
           enabled={downvotingEnabled}
         >
           <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
-            <VoteIcon name="downvote" size={size} enabled={downvotingEnabled} />
+            <VoteIcon title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
           </VoteIconContainer>
           <VoteCount className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
         </Downvote>
@@ -549,3 +554,5 @@ export default class VoteControl extends PureComponent<Props, State> {
     );
   }
 }
+
+export default injectIntl(VoteControl);

@@ -37,7 +37,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, invisibleA11yText } from 'utils/styleUtils';
 import { rgba, darken } from 'polished';
 
 const Container = styled(Link)`
@@ -404,6 +404,10 @@ const MetaItem = styled.div`
   ${media.smallerThanMinTablet`
     margin-left: 20px;
   `};
+
+  .screenreader-only {
+    ${invisibleA11yText}
+  }
 `;
 
 const MetaItemIcon = styled(Icon)`
@@ -472,10 +476,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleProjectTitleOnClick = (projectId: string) => () => {
     trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
-  }
-
-  handleAvatarBubblesOnClick = (projectId: string) => () => {
-    trackEventByName(tracks.clickOnAvatarBubbles, { extra: { projectId } });
   }
 
   render() {
@@ -623,7 +623,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <ContentFooterLeft>
                 {hasAvatars &&
                   <AvatarBubbles
-                    onClick={this.handleAvatarBubblesOnClick(project.id)}
                     size={30}
                     limit={3}
                     userCountBgColor={this.props.theme.colorMain}
@@ -637,19 +636,21 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                   <ProjectMetaItems>
                     {showIdeasCount &&
                       <MetaItem className="first">
-                        <MetaItemIcon name="idea2" />
-                        <MetaItemText>
+                        <MetaItemIcon ariaHidden name="idea2" />
+                        <MetaItemText aria-hidden>
                           {ideasCount}
                         </MetaItemText>
+                        <span className="screenreader-only">{formatMessage(messages.xIdeas, { ideasCount })}</span>
                       </MetaItem>
                     }
 
                     {showCommentsCount &&
                       <MetaItem>
-                        <CommentIcon name="comments" />
-                        <MetaItemText>
+                        <CommentIcon ariaHidden name="comments" />
+                        <MetaItemText aria-hidden>
                           {commentsCount}
                         </MetaItemText>
+                        <span className="screenreader-only">{formatMessage(messages.xComments, { commentsCount })}</span>
                       </MetaItem>
                     }
                   </ProjectMetaItems>
