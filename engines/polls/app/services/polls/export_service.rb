@@ -30,7 +30,6 @@ module Polls
               *user_options
             ]
           end
-          sheet.column_info[2].width = 65
         end
       end
       pa.to_stream
