@@ -70,6 +70,7 @@
   "app.components.ErrorBoundary.openFormText": "Ayúdanos a entender",
   "app.components.FileUploader.fileInputDescription": "Seleccione un archivo para cargar...",
   "app.components.FileUploader.fileUploadLabel": "Archivos adjuntos (máximo 50MB)",
+  "app.components.FileUploader.incorrect_extension": "",
   "app.components.FilterBoxes.all": "Todos",
   "app.components.FilterBoxes.areas": "Localidad/Barrio/Zona",
   "app.components.FilterBoxes.selectYourArea": "Seleciona tu área",

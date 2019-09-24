@@ -70,6 +70,7 @@
   "app.components.ErrorBoundary.openFormText": "hjælp os med at løse problemet",
   "app.components.FileUploader.fileInputDescription": "Vælg en fil til overførsel...",
   "app.components.FileUploader.fileUploadLabel": "Vedhæftninger (max. 50MB)",
+  "app.components.FileUploader.incorrect_extension": "",
   "app.components.FilterBoxes.all": "Alle",
   "app.components.FilterBoxes.areas": "Områder",
   "app.components.FilterBoxes.selectYourArea": "Vælg dit område",

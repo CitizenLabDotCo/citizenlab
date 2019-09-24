@@ -70,6 +70,7 @@
   "app.components.ErrorBoundary.openFormText": "aidez-nous à comprendre ce qui s'est passé",
   "app.components.FileUploader.fileInputDescription": "Sélectionnez un fichier à télécharger...",
   "app.components.FileUploader.fileUploadLabel": "Pièces jointes (max. 50Mo)",
+  "app.components.FileUploader.incorrect_extension": "",
   "app.components.FilterBoxes.all": "Toutes",
   "app.components.FilterBoxes.areas": "Lieux",
   "app.components.FilterBoxes.selectYourArea": "Sélectionnez votre quartier",

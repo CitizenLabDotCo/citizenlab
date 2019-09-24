@@ -70,6 +70,7 @@
   "app.components.ErrorBoundary.openFormText": "helfen Sie uns, es herauszufinden",
   "app.components.FileUploader.fileInputDescription": "Wählen Sie eine Datei zum Hochladen...",
   "app.components.FileUploader.fileUploadLabel": "Anhänge (max. 50MB)",
+  "app.components.FileUploader.incorrect_extension": "",
   "app.components.FilterBoxes.all": "Alle",
   "app.components.FilterBoxes.areas": "Gebiete",
   "app.components.FilterBoxes.selectYourArea": "Wähle dein Gebiet",
