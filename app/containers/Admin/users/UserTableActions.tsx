@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 import bowser from 'bowser';
 
 // Components
-import Checkbox from 'components/UI/Checkbox';
+import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
 import Dropdown from 'components/UI/Dropdown';
 import Icon from 'components/UI/Icon';
 import T from 'components/T';
@@ -150,7 +150,7 @@ const DropdownListItem = styled.div`
   }
 `;
 
-const StyledCheckbox = styled(Checkbox)`
+const StyledCheckbox = styled(AccessibleCheckbox)`
   margin-left: 10px;
 `;
 
@@ -341,7 +341,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     return (
       <TableOptions>
         <ActionButton onClick={this.toggleAllUsers}>
-          <Checkbox
+          <AccessibleCheckbox
             label={
               <>
                 <FormattedMessage {...messages.select} />
@@ -355,7 +355,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                 </UserCount>
               </>
             }
-            value={(selectedUsers === 'all')}
+            checked={(selectedUsers === 'all')}
             onChange={this.toggleAllUsers}
           />
         </ActionButton>
@@ -386,7 +386,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                           <T value={group.attributes.title_multiloc} />
                         </DropdownListItemText>
                         <StyledCheckbox
-                          value={includes(selectedGroupIds, group.id)}
+                          checked={includes(selectedGroupIds, group.id)}
                           onChange={this.toggleGroup(group.id)}
                         />
                       </DropdownListItem>

@@ -11,7 +11,7 @@ import { find } from 'lodash-es';
 // components
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import T from 'components/T';
-import Checkbox from 'components/UI/Checkbox';
+import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -111,8 +111,8 @@ export class CampaignsConsentForm extends PureComponent<Props, State> {
           <ConsentList>
             {!isNilOrError(consents) && consents.map((consent) => (
               <CheckboxContainer key={consent.id}>
-                <Checkbox
-                  value={this.isConsented(consent.id)}
+                <AccessibleCheckbox
+                  checked={this.isConsented(consent.id)}
                   onChange={this.handleOnChange(consent)}
                   label={<FormLabelValue thin noSpace labelValue={<T value={consent.attributes.campaign_type_description_multiloc}/>} />}
                 />
