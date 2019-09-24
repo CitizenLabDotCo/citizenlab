@@ -97,6 +97,7 @@
   "app.components.IdeaForm.titlePlaceholder": " ",
   "app.components.IdeaForm.topicsLabel": "Topics (optional, max. 2)",
   "app.components.IdeasMap.login": "Login",
+  "app.components.IdeasMap.mapTitle": "Map with overview of ideas based on location",
   "app.components.IdeasMap.noIdeasWithLocation": "The ideas in this project don't have any location information.",
   "app.components.IdeasMap.postIdeaHere": "Add an idea here",
   "app.components.IdeasMap.postingHereImpossible": "Posting an idea here is currently impossible.",

@@ -41,4 +41,8 @@ export default defineMessages({
     id: 'app.components.IdeasMap.postingNotActivePhase',
     defaultMessage: 'You can\'t post ideas in a past or future phase.',
   },
+  mapTitle: {
+    id: 'app.components.IdeasMap.mapTitle',
+    defaultMessage: 'Map with overview of ideas based on location',
+  },
 });
