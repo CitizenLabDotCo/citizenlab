@@ -97,6 +97,7 @@
   "app.components.IdeaForm.titlePlaceholder": " ",
   "app.components.IdeaForm.topicsLabel": "Emner (valgfrit, maks. 2)",
   "app.components.IdeasMap.login": "Log ind",
+  "app.components.IdeasMap.mapTitle": "",
   "app.components.IdeasMap.noIdeasWithLocation": "Ideerne i dette projekt har ikke nogen lokalitetsinformation.",
   "app.components.IdeasMap.postIdeaHere": "Tilføj en idé her",
   "app.components.IdeasMap.postingHereImpossible": "Det er i øjeblikket ikke muligt at opslå en idé her.",

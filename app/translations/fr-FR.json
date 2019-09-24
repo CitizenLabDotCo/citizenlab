@@ -97,6 +97,7 @@
   "app.components.IdeaForm.titlePlaceholder": " ",
   "app.components.IdeaForm.topicsLabel": "Thèmes (facultatif, 2 maximum)",
   "app.components.IdeasMap.login": "Se connecter",
+  "app.components.IdeasMap.mapTitle": "",
   "app.components.IdeasMap.noIdeasWithLocation": "Les idées de ce projet n'ont aucun emplacement renseigné.",
   "app.components.IdeasMap.postIdeaHere": "Postez une idée ici",
   "app.components.IdeasMap.postingHereImpossible": "Il n'est actuellement pas possible de poster une idée ici.",

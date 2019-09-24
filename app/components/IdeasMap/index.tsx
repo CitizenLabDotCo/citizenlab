@@ -24,7 +24,7 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, invisibleA11yText } from 'utils/styleUtils';
 
 // Typing
 import { IGeotaggedIdeaData } from 'services/ideas';
@@ -32,6 +32,12 @@ import { IGeotaggedIdeaData } from 'services/ideas';
 const Container = styled.div`
   > .create-idea-wrapper {
     display: none;
+  }
+`;
+
+const MapTitle = styled.span`
+  &.screenreader-only {
+    ${invisibleA11yText}
   }
 `;
 
@@ -163,6 +169,10 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
         {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 &&
           <StyledWarning text={this.noIdeasWithLocationMessage} />
         }
+
+        <MapTitle className="screenreader-only">
+          <FormattedMessage {...messages.mapTitle} />
+        </MapTitle>
 
         <StyledMap
           points={points}

@@ -97,6 +97,7 @@
   "app.components.IdeaForm.titlePlaceholder": " ",
   "app.components.IdeaForm.topicsLabel": "Themen (optional, max. 2)",
   "app.components.IdeasMap.login": "Anmeldung",
+  "app.components.IdeasMap.mapTitle": "",
   "app.components.IdeasMap.noIdeasWithLocation": "{orgName, select, München {Die Mängel in diesem Bezirk haben keine Standortinformationen.} other {Die Ideen in diesem Projekt haben keine Standortinformationen.}}",
   "app.components.IdeasMap.postIdeaHere": "{orgName, select, München {Melden Sie hier einen Mangel} other {Fügen Sie eine Idee hier hinzu}}",
   "app.components.IdeasMap.postingHereImpossible": "{orgName, select, München {Das Melden von Mängeln ist zurzeit nicht möglich.} other {Die Veröffentlichung von Ideen ist zurzeit nicht möglich.}}",
