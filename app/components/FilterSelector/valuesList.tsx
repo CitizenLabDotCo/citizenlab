@@ -2,7 +2,7 @@ import React, { PureComponent, FormEvent } from 'react';
 import { includes, isNil } from 'lodash-es';
 
 // components
-import Checkbox from 'components/UI/Checkbox';
+import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
 import Dropdown from 'components/UI/Dropdown';
 
 // style
@@ -53,7 +53,7 @@ const ListItem = styled.button`
   }
 `;
 
-const StyledCheckbox = styled(Checkbox)`
+const StyledCheckbox = styled(AccessibleCheckbox)`
   margin-left: 10px;
 `;
 
@@ -152,7 +152,7 @@ export default class ValuesList extends PureComponent<Props, State> {
 
                   {multiple &&
                     <StyledCheckbox
-                      value={checked}
+                      checked={checked}
                       onChange={this.handleOnToggle(entry, index)}
                     />
                   }

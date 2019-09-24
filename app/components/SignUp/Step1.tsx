@@ -11,7 +11,6 @@ import Link from 'utils/cl-router/Link';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import Checkbox from 'components/UI/Checkbox';
 import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
 import { FormLabel } from 'components/UI/FormComponents';
 
@@ -416,22 +415,10 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
           <FormElement>
             <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
-              <Checkbox
-                className="e2e-terms-and-conditions"
-                value={this.state.tacAccepted}
-                onChange={this.handleTaCAcceptedOnChange}
-                disableLabelClick={true}
-                label={
-                  <FormattedMessage
-                    {...messages.gdprApproval}
-                    values={{
-                      tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
-                      ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
-                    }}
-                  />
-                }
-              />
               <AccessibleCheckbox
+                className="e2e-terms-and-conditions"
+                checked={this.state.tacAccepted}
+                onChange={this.handleTaCAcceptedOnChange}
                 label={
                   <FormattedMessage
                     {...messages.gdprApproval}

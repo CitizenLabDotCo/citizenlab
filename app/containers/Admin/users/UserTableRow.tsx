@@ -7,7 +7,7 @@ import Link from 'utils/cl-router/Link';
 // Components
 import Avatar from 'components/Avatar';
 import Toggle from 'components/UI/Toggle';
-import Checkbox from 'components/UI/Checkbox';
+import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
 import Icon from 'components/UI/Icon';
 import Popover from 'components/UI/Popover';
 
@@ -35,7 +35,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
-const StyledCheckbox = styled(Checkbox) `
+const StyledCheckbox = styled(AccessibleCheckbox) `
   margin-left: 5px;
 `;
 
@@ -215,7 +215,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
       <tr key={user.id} className="e2e-user-table-row">
         <td>
           <StyledCheckbox
-            value={selected}
+            checked={selected}
             onChange={this.handleUserSelectedOnChange}
           />
         </td>
