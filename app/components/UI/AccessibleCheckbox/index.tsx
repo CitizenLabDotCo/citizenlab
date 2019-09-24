@@ -81,7 +81,7 @@ interface State {
   inputFocused: boolean;
 }
 
-export default class AccessibleCheckbox extends PureComponent<Props, State> {
+export default class Checkbox extends PureComponent<Props, State> {
    checkbox = React.createRef<HTMLInputElement>();
 
   static defaultProps: DefaultProps = {
@@ -119,14 +119,14 @@ export default class AccessibleCheckbox extends PureComponent<Props, State> {
 
     return (
       <Container className={`${className ? className : ''} ${label ? 'hasLabel' : ''}`}>
-        <InputWrapper className={inputFocused ? 'focused' : ''} onClick={this.handleOnChange} checked={checked} size={size}>
+        <InputWrapper onClick={this.handleOnChange} className={inputFocused ? 'focused' : ''} checked={checked} size={size}>
           <Input
             ref={this.checkbox}
             id="checkbox"
             className="e2e-checkbox"
             aria-checked={checked}
             type="checkbox"
-            checked={checked}
+            defaultChecked={checked}
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
           />
