@@ -1,11 +1,19 @@
 import React, { PureComponent, FormEvent } from 'react';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 
 const Container = styled.div`
-  display: flex;
-  align-items: center;
+  &:not(.hasLabel) {
+    flex: 0 0 ${(props: any) => props.size};
+    width: ${(props: any) => props.size};
+    height: ${(props: any) => props.size};
+  }
+
+  &.hasLabel {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const InputWrapper: any = styled.div`
@@ -52,7 +60,10 @@ const CheckmarkIcon = styled(Icon)`
 `;
 
 const Label = styled.label`
-  margin-left: 15px;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  padding: 5px 0 5px 10px;
+  cursor: pointer;
 `;
 
 interface DefaultProps {
@@ -107,7 +118,7 @@ export default class AccessibleCheckbox extends PureComponent<Props, State> {
     const { inputFocused } = this.state;
 
     return (
-      <Container className={className ? className : ''}>
+      <Container className={`${className ? className : ''} ${label ? 'hasLabel' : ''}`}>
         <InputWrapper className={inputFocused ? 'focused' : ''} onClick={this.handleOnChange} checked={checked} size={size}>
           <Input
             ref={this.checkbox}
