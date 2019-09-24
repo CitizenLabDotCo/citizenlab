@@ -542,6 +542,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         ctaMessage = <FormattedMessage {...messages.learnMore} />;
       } else if (participationMethod === 'survey') {
         ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
+      } else if (participationMethod === 'poll') {
+        ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
       } else if (participationMethod === 'ideation' && canPost) {
         ctaMessage = <FormattedMessage {...messages.postYourIdea} />;
       } else if (participationMethod === 'ideation' && canVote) {

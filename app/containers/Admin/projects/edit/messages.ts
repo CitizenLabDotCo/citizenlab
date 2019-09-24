@@ -16,6 +16,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.ideasTab',
     defaultMessage: 'Ideas',
   },
+  pollTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.pollTab',
+    defaultMessage: 'Poll',
+  },
   phasesTab: {
     id: 'app.containers.AdminPage.ProjectEdit.phasesTab',
     defaultMessage: 'Timeline',
@@ -88,6 +92,14 @@ export default defineMessages({
   participatoryBudgetingDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgetingDescription',
     defaultMessage: 'Users can select ideas until their selection reaches a predefined budget threshold.',
+  },
+  poll: {
+    id: 'app.containers.AdminPage.ProjectEdit.poll',
+    defaultMessage: 'Poll',
+  },
+  pollDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.pollDescription',
+    defaultMessage: 'Users can answer a short multiple-choice questionnaire.',
   },
   amountPerCitizen: {
     id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
