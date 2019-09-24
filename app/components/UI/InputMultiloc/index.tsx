@@ -46,6 +46,8 @@ export type Props = {
   disabled?: boolean;
   shownLocale?: Locale;
   ariaLabel?: string;
+  setRef?: (arg: HTMLInputElement) => void | undefined;
+  autoFocus?: boolean;
 };
 
 type State = {
@@ -94,7 +96,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
 
   render() {
     const { locale, currentTenant } = this.state;
-    const { shownLocale, label, placeholder, valueMultiloc, errorMultiloc, ariaLabel } = this.props;
+    const { shownLocale, label, placeholder, valueMultiloc, errorMultiloc, ariaLabel, setRef, autoFocus } = this.props;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -112,6 +114,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
             }
 
             <Input
+              setRef={setRef}
               id={id}
               value={value}
               type={this.props.type}
@@ -122,6 +125,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
               maxCharCount={this.props.maxCharCount}
               disabled={this.props.disabled}
               ariaLabel={ariaLabel}
+              autoFocus={autoFocus}
             />
           </InputWrapper>
         );
