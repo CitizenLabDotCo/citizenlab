@@ -363,6 +363,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               error={firstNameError}
               onChange={this.handleFirstNameOnChange}
               setRef={this.handleFirstNameInputSetRef}
+              autocomplete="given-name"
             />
 
             <Error fieldName={'first_name'} apiErrors={get(apiErrors, 'json.errors.first_name')} />
@@ -377,6 +378,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               placeholder={formatMessage(messages.lastNamePlaceholder)}
               error={lastNameError}
               onChange={this.handleLastNameOnChange}
+              autocomplete="family-name"
             />
 
             <Error fieldName={'last_name'} apiErrors={get(apiErrors, 'json.errors.last_name')} />
@@ -391,6 +393,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               placeholder={formatMessage(messages.emailPlaceholder)}
               error={emailError}
               onChange={this.handleEmailOnChange}
+              autocomplete="email"
             />
 
             <Error fieldName={'email'} apiErrors={get(apiErrors, 'json.errors.email')} />
@@ -405,6 +408,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               placeholder={formatMessage(messages.passwordPlaceholder)}
               error={passwordError}
               onChange={this.handlePasswordOnChange}
+              autocomplete="new-password"
             />
 
             <Error fieldName={'password'} apiErrors={get(apiErrors, 'json.errors.password')} />

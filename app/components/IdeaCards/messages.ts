@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.tryOtherFilter',
     defaultMessage: "Try adjusting your search or filter to find what you're looking for",
   },
-  suggestIdea: {
-    id: 'app.components.IdeaCards.suggestIdea',
-    defaultMessage: 'Be the first to add one!',
-  },
   topics: {
     id: 'app.containers.IdeaCards.topics',
     defaultMessage: 'Topics',
@@ -80,10 +76,6 @@ export default defineMessages({
   searchAriaLabel: {
     id: 'app.containers.IdeaCards.searchAriaLabel',
     defaultMessage: 'Search for an idea',
-  },
-  clear: {
-    id: 'app.containers.IdeaCards.clear',
-    defaultMessage: 'Clear',
   },
   xIdeas: {
     id: 'app.containers.IdeaCards.xIdeas',

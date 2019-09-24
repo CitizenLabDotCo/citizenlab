@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabUsers',
     defaultMessage: 'Users',
   },
-  tabAcquisition: {
-    id: 'app.containers.AdminPage.DashboardPage.tabAcquisition',
-    defaultMessage: 'Acquisition',
-  },
   tabInsights: {
     id: 'app.containers.AdminPage.DashboardPage.tabInsights',
     defaultMessage: 'Insights',
@@ -36,14 +32,6 @@ export default defineMessages({
   helmetDescription: {
     id: 'app.containers.AdminPage.DashboardPage.helmetDescription',
     defaultMessage: 'Dashboard for activities on the platform',
-  },
-  tryOutInsights: {
-    id: 'app.containers.AdminPage.DashboardPage.tryOutInsights',
-    defaultMessage: 'Try out {insightsLink}, our new beta feature',
-  },
-  insightsLinkText: {
-    id: 'app.containers.AdminPage.DashboardPage.insightsLinkText',
-    defaultMessage: 'insights',
   },
   // All tabs
   users: {
@@ -177,8 +165,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.participationPerProject',
     defaultMessage: 'Participation per project',
   },
-  hiddelLabelPickResourceByProject: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddelLabelPickResourceByProject',
+  hiddenLabelPickResourceByProject: {
+    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelPickResourceByProject',
     defaultMessage: 'Pick resource to show by project',
   },
   selectedProject: {
@@ -189,8 +177,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.participationPerTopic',
     defaultMessage: 'Participation per topic',
   },
-  hiddelLabelPickResourceByTopic: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddelLabelPickResourceByTopic',
+  hiddenLabelPickResourceByTopic: {
+    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelPickResourceByTopic',
     defaultMessage: 'Pick resource to show by topic',
   },
   selectedTopic: {
@@ -245,10 +233,6 @@ export default defineMessages({
   mostActiveUsers: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
     defaultMessage: 'Most active users',
-  },
-  userActivityScore: {
-    id: 'app.containers.AdminPage.DashboardPage.userActivityScore',
-    defaultMessage: 'User activity score',
   },
   deletedUser: {
     id: 'app.containers.AdminPage.DashboardPage.deletedUser',

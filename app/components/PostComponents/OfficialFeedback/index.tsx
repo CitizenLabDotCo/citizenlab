@@ -5,11 +5,6 @@ import { isBoolean } from 'lodash-es';
 import OfficialFeedbackNew from './Form/OfficialFeedbackNew';
 import OfficialFeedbackFeed from './OfficialFeedbackFeed';
 
-// style
-import styled from 'styled-components';
-
-const Container = styled.div``;
-
 interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
@@ -25,7 +20,7 @@ export default class OfficialFeedback extends PureComponent<Props, State> {
 
     if (isBoolean(permissionToPost)) {
       return (
-        <Container className={className}>
+        <div className={className}>
           {permissionToPost &&
             <OfficialFeedbackNew
               postId={postId}
@@ -38,7 +33,7 @@ export default class OfficialFeedback extends PureComponent<Props, State> {
             postType={postType}
             editingAllowed={permissionToPost}
           />
-        </Container>
+        </div>
       );
     }
 

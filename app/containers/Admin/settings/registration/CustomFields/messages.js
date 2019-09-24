@@ -15,10 +15,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldEnabled',
     defaultMessage: 'Enabled',
   },
-  fieldKey: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldKey',
-    defaultMessage: 'Key',
-  },
   fieldTitle: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitle',
     defaultMessage: 'Label',
@@ -38,30 +34,6 @@ export default defineMessages({
   fieldRequired: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldRequired',
     defaultMessage: 'Required?',
-  },
-  requiredFields: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.requiredFields',
-    defaultMessage: 'Required Fields',
-  },
-  requiredFieldsTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.requiredFieldsTooltip',
-    defaultMessage: 'When enabled, this field is mandatory to fill in for users during signup.',
-  },
-  optionalFields: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionalFields',
-    defaultMessage: 'Optional Fields',
-  },
-  optionalFieldsTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionalFieldsTooltip',
-    defaultMessage: 'When enabled, this field is optional to fill in for users during signup.',
-  },
-  isEnabledTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.isEnabledTooltip',
-    defaultMessage: 'Switching a toggle to green will add the registration field to a user’s signup flow, allowing you to collect this information from new users. Switching it back to grey will remove it from the flow.',
-  },
-  orderingTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.orderingTooltip',
-    defaultMessage: 'Drag and drop registration fields to choose the order in which users will see them during signup.',
   },
   inputType_text: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_text',
@@ -126,10 +98,6 @@ export default defineMessages({
   optionCancelButton: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton',
     defaultMessage: 'Cancel',
-  },
-  optionsTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTitle',
-    defaultMessage: 'Options',
   },
   addOptionButton: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addOptionButton',

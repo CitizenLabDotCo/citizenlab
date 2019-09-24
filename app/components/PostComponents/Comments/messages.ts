@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  invisibleTitleComments: {
+    id: 'app.components.Comments.invisibleTitleComments',
+    defaultMessage: 'Comments',
+  },
   official: {
     id: 'app.components.Comments.official',
     defaultMessage: 'Official',
@@ -129,10 +133,6 @@ export default defineMessages({
     id: 'app.containers.Comments.commentReplyButton',
     defaultMessage: 'Reply',
   },
-  commentDeleteButton: {
-    id: 'app.containers.Comments.commentDeleteButton',
-    defaultMessage: 'Delete',
-  },
   seeTranslation: {
     id: 'app.components.Comments.seeTranslation',
     defaultMessage: 'See translation',
@@ -153,10 +153,6 @@ export default defineMessages({
     id: 'app.containers.Comments.emptyCommentError',
     defaultMessage: 'The comment can\'t be empty',
   },
-  submittingComment: {
-    id: 'app.containers.Comments.submittingComment',
-    defaultMessage: 'Publishing...',
-  },
   loadMoreComments: {
     id: 'app.containers.Comments.loadMoreComments',
     defaultMessage: 'Load more comments',
@@ -164,10 +160,6 @@ export default defineMessages({
   loadingComments: {
     id: 'app.containers.Comments.loadingComments',
     defaultMessage: 'Loading comments...',
-  },
-  placeholderComment: {
-    id: 'app.containers.Comments.placeholderComment',
-    defaultMessage: 'Tell us your thoughts!',
   },
   ideaCommentBodyPlaceholder: {
     id: 'app.containers.Comments.ideaCommentBodyPlaceholder',
@@ -184,5 +176,17 @@ export default defineMessages({
   showMoreActions: {
     id: 'app.containers.Comments.showMoreActions',
     defaultMessage: 'Show more actions',
+  },
+  deleteReason_other: {
+    id: 'app.containers.Comments.deleteReason_other',
+    defaultMessage: 'Other reason',
+  },
+  deleteReason_inappropriate: {
+    id: 'app.containers.Comments.deleteReason_inappropriate',
+    defaultMessage: 'It is inappropriate or offensive',
+  },
+  deleteReason_irrelevant: {
+    id: 'app.containers.Comments.deleteReason_irrelevant',
+    defaultMessage: 'This does not belong here',
   },
 });

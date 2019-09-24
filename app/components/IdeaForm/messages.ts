@@ -37,18 +37,6 @@ export default defineMessages({
     id: 'app.components.IdeaForm.topicsLabel',
     defaultMessage: 'Topics (optional, max. 2)',
   },
-  topicsPlaceholder: {
-    id: 'app.components.IdeaForm.topicsPlaceholder',
-    defaultMessage: 'Select one or two topics for your idea',
-  },
-  projectsLabel: {
-    id: 'app.components.IdeaForm.projectsLabel',
-    defaultMessage: 'Project (optional)',
-  },
-  projectsPlaceholder: {
-    id: 'app.components.IdeaForm.projectsPlaceholder',
-    defaultMessage: 'Select a project to which your idea belongs',
-  },
   locationLabel: {
     id: 'app.components.IdeaForm.locationLabel',
     defaultMessage: 'Location (optional)',

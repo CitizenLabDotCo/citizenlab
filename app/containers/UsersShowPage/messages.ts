@@ -10,6 +10,14 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.editProfile',
     defaultMessage: 'Edit my profile',
   },
+  invisibleTitleUserComments: {
+    id: 'app.containers.UsersShowPage.invisibleTitleUserComments',
+    defaultMessage: 'All the comments posted by this user',
+  },
+  invisibleTitleIdeasList: {
+    id: 'app.containers.UsersShowPage.invisibleTitleIdeasList',
+    defaultMessage: 'All the ideas posted by this user',
+  },
   ideasWithCount: {
     id: 'app.containers.UsersShowPage.ideasWithCount',
     defaultMessage: 'Ideas ({ideasCount})',
@@ -42,25 +50,9 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.seeInitiative',
     defaultMessage: 'See initiative',
   },
-  loadingUser: {
-    id: 'app.containers.UsersShowPage.loadingUser',
-    defaultMessage: 'Loading...',
-  },
-  loadUserError: {
-    id: 'app.containers.UsersShowPage.loadUserError',
-    defaultMessage: 'User couldn\'t be loaded',
-  },
-  loadingUserIdeas: {
-    id: 'app.containers.UsersShowPage.loadingUserIdeas',
-    defaultMessage: 'Loading user ideas...',
-  },
   loadMoreComments: {
     id: 'app.containers.UsersShowPage.loadMoreComments',
     defaultMessage: 'Load more comments',
-  },
-  loadUserIdeasError: {
-    id: 'app.containers.UsersShowPage.loadUserIdeasError',
-    defaultMessage: 'User\'s ideas couldn\'t be loaded',
   },
   memberSince: {
     id: 'app.containers.UsersShowPage.memberSince',
