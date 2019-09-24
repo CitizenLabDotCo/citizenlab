@@ -1,5 +1,4 @@
 import React from 'react';
-import { omit } from 'lodash-es';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -10,6 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
+import { darken } from 'polished';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
@@ -25,16 +25,17 @@ interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
   offset?: number;
   openDelay?: number;
   position?: IPosition;
+  iconColor?: string;
 }
 
-const StyledIcon = styled(Icon)`
+const StyledIcon = styled(Icon)<({ color?: string })>`
   height: 16px;
   width: 16px;
   cursor: pointer;
-  fill: ${colors.label};
+  fill: ${({ color }) => color ? color : colors.label};
 
   &:hover {
-    fill: #000;
+    fill: ${({ color }) => color ? darken(.2, color) : darken(.2, colors.label)};
   }
 `;
 
@@ -60,9 +61,8 @@ const getPxSize = (size: undefined | 'big' | 'small' | 'xs') => {
 };
 
 const InfoTooltip = (props: Props) => {
-  const { position, size, className, children, offset, openDelay } = props;
+  const { position, size, className, children, offset, openDelay, iconColor, ...passthroughProps } = props;
   const pxSize = getPxSize(size);
-  const passthroughProps = omit(props, ['size', 'position', 'className', 'children', 'offset', 'openDelay']);
 
   return (
     <Tooltip
@@ -79,7 +79,7 @@ const InfoTooltip = (props: Props) => {
     >
       {children
         ? children
-        : <StyledIcon name="info3" />
+        : <StyledIcon name="info3" color={iconColor}/>
       }
     </Tooltip >
   );

@@ -9,6 +9,7 @@ import Timeline from './Timeline';
 import PhaseAbout from './PhaseAbout';
 import PBExpenses from '../pb/PBExpenses';
 import PhaseSurvey from './PhaseSurvey';
+import PhasePolling from './PhasePolling';
 import PhaseIdeas from './PhaseIdeas';
 import EventsPreview from '../EventsPreview';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
@@ -76,6 +77,11 @@ const StyledPhaseSurvey = styled(PhaseSurvey)`
   margin-bottom: 50px;
 `;
 
+const StyledPhasePolling = styled(PhasePolling)`
+  margin-bottom: 50px;
+  margin-top: 70px;
+`;
+
 const StyledPhaseIdeas = styled(PhaseIdeas)`
   margin-top: 95px;
   margin-bottom: 100px;
@@ -93,7 +99,7 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   selectedPhase: IPhaseData | null;
@@ -143,6 +149,14 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
               />
             </ContentContainer>
           </FirstRow>
+          <SecondRow>
+            <SecondRowContentContainer>
+              <StyledPhasePolling
+                projectId={project.id}
+                phaseId={selectedPhaseId}
+              />
+            </SecondRowContentContainer>
+          </SecondRow>
 
           {(participationMethod === 'ideation' || participationMethod === 'budgeting') && selectedPhaseId &&
             <SecondRow>

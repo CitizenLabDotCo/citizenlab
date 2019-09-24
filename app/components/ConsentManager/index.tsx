@@ -105,9 +105,8 @@ const mapCustomPreferences = (
       destinationPreferences[destination.id] = customPreferences.advertising;
     } else if (FUNCTIONAL_CATEGORIES.find(c => c === destination.category)) {
       destinationPreferences[destination.id] = customPreferences.functional;
-    } else if (FUNCTIONAL_CATEGORIES.find(c => c === destination.category)) {
-      destinationPreferences[destination.id] =
-        customPreferences.analytics;
+    } else if (MARKETING_AND_ANALYTICS_CATEGORIES.find(c => c === destination.category)) {
+      destinationPreferences[destination.id] = customPreferences.analytics;
     } else {
       // Fallback to marketing preference but send an error so we update the categories
       withScope(scope => {
