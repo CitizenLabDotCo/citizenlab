@@ -42,8 +42,8 @@ const icons = {
       <path d="M12 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
     </svg>
   ),
-  checkmark: (className, title) => (
-    <svg className={className} height="100%" viewBox="0 0 19 15">
+  checkmark: (className, title, ariaHidden) => (
+    <svg aria-hidden={ariaHidden} role="img" className={className} height="100%" viewBox="0 0 19 15">
       {injectTitle(title)}
       <path d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z" fillRule="evenodd" />
     </svg>
