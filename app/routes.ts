@@ -242,6 +242,15 @@ export default function createRoutes() {
                 delay: 500
               })
             },
+            {
+              path: 'poll',
+              name: 'Project\'s poll page',
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/poll'),
+                loading: LoadableLoadingCitizen,
+                delay: 500
+              })
+            },
           ],
         },
         {

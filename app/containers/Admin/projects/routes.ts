@@ -139,6 +139,14 @@ export default () => ({
             loading: () => null
           }),
         },
+        {
+          path: '/:locale/admin/projects/:projectId/poll',
+          name: 'admin projects edit poll',
+          component: Loadable({
+            loader: () => import('containers/Admin/projects/edit/poll'),
+            loading: () => null
+          }),
+        },
       ],
     },
   ],
