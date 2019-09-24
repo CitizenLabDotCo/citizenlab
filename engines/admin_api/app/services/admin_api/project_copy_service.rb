@@ -391,7 +391,7 @@ module AdminApi
       (Comment.where('parent_id IS NULL').where(idea_id: @project.ideas.published.ids)+Comment.where('parent_id IS NOT NULL').where(idea_id: @project.ideas.published.ids)).map do |c|
         yml_comment = {
           'author_ref'         => lookup_ref(c.author_id, :user),
-          'idea_ref'           => lookup_ref(c.idea_id, :idea),
+          'post_ref'           => lookup_ref(c.post_id, :idea),
           'body_multiloc'      => c.body_multiloc,
           'created_at'         => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
           'updated_at'         => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601,
@@ -407,7 +407,7 @@ module AdminApi
     def yml_official_feedback shift_timestamps: 0
       OfficialFeedback.where(idea_id: @project.ideas.published.ids).map do |o|
         yml_official_feedback = {
-          'idea_ref'           => lookup_ref(o.idea_id, :idea),
+          'post_ref'           => lookup_ref(o.post_id, :idea),
           'user_ref'           => lookup_ref(o.user_id, :user),
           'body_multiloc'      => o.body_multiloc,
           'author_multiloc'    => o.author_multiloc,
