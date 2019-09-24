@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  openProjectButton: {
-    id: 'app.components.ProjectCard.openProjectButton',
-    defaultMessage: 'Discover this project',
-  },
   idea: {
     id: 'app.components.ProjectCard.idea',
     defaultMessage: 'idea',
@@ -16,6 +12,10 @@ export default defineMessages({
   xIdeas: {
     id: 'app.components.ProjectCard.xIdeas',
     defaultMessage: '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+  },
+  xComments: {
+    id: 'app.components.ProjectCard.xComments',
+    defaultMessage: '{commentsCount, plural, no {# comments} one {# comments} other {# comments}}',
   },
   imageAltText: {
     id: 'app.components.ProjectCard.imageAltText',
@@ -45,20 +45,24 @@ export default defineMessages({
     id: 'app.components.ProjectCard.takeTheSurvey',
     defaultMessage: 'Take the survey',
   },
+  takeThePoll: {
+    id: 'app.components.ProjectCard.takeThePoll',
+    defaultMessage: 'Take the poll',
+  },
   postYourIdea: {
     id: 'app.components.ProjectCard.postYourIdea',
     defaultMessage: 'Post your idea',
   },
   vote: {
     id: 'app.components.ProjectCard.vote',
-    defaultMessage: `Vote`,
+    defaultMessage: 'Vote',
   },
   comment: {
     id: 'app.components.ProjectCard.comment',
-    defaultMessage: `Comment`,
+    defaultMessage: 'Comment',
   },
   viewTheIdeas: {
     id: 'app.components.ProjectCard.viewTheIdeas',
-    defaultMessage: `View the idea's`,
+    defaultMessage: 'View the ideas',
   },
 });

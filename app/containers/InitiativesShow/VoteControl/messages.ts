@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  invisibleTitle: {
+    id: 'app.containers.InitiativesShow.VoteControl.invisibleTitle',
+    defaultMessage: 'Status and votes',
+  },
   days: {
     id: 'app.containers.InitiativesShow.VoteControl.days',
     defaultMessage: 'days',

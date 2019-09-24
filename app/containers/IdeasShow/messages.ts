@@ -5,41 +5,25 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.idea',
     defaultMessage: 'Idea',
   },
-  loadVotesError: {
-    id: 'app.containers.IdeasShow.loadVotesError',
-    defaultMessage: 'Voting is not currently available',
+  invisibleTitleContent: {
+    id: 'app.containers.IdeasShow.invisibleTitleContent',
+    defaultMessage: 'Main idea content',
+  },
+  invisibleTitleMetaContent: {
+    id: 'app.containers.IdeasShow.invisibleTitleMetaContent',
+    defaultMessage: 'More info',
+  },
+  invisibleTitleVoteControls: {
+    id: 'app.containers.IdeasShow.invisibleTitleVoteControls',
+    defaultMessage: 'Votes',
   },
   imageAltText: {
     id: 'app.containers.IdeasShow.imageAltText',
     defaultMessage: 'Main image for the idea {ideaTitle}',
   },
-  Map: {
-    id: 'app.containers.IdeasShow.Map',
-    defaultMessage: 'Map',
-  },
-  ideaVoteSubmitError: {
-    id: 'app.containers.IdeasShow.ideaVoteSubmitError',
-    defaultMessage: 'Voting failed',
-  },
   voteOnThisIdea: {
     id: 'app.containers.IdeasShow.voteOnThisIdea',
     defaultMessage: 'Vote on this idea',
-  },
-  loadingIdea: {
-    id: 'app.containers.IdeasShow.loadingIdea',
-    defaultMessage: 'Loading idea...',
-  },
-  oneSecond: {
-    id: 'app.containers.IdeasShow.oneSecond',
-    defaultMessage: 'Just one second...',
-  },
-  ideaNotFound: {
-    id: 'app.containers.IdeasShow.ideaNotFound',
-    defaultMessage: 'Ups... it seems that this idea has be removed or forgotten!',
-  },
-  deleteReason_other: {
-    id: 'app.containers.IdeasShow.deleteReason_other',
-    defaultMessage: 'Other reason (please specify)',
   },
   metaTitle: {
     id: 'app.containers.IdeasShow.metaTitle',
@@ -80,14 +64,6 @@ export default defineMessages({
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',
     defaultMessage: 'deleted user',
-  },
-  author: {
-    id: 'app.containers.IdeasShow.author',
-    defaultMessage: '{authorNameComponent}',
-  },
-  shareCTA: {
-    id: 'app.containers.IdeasShow.shareCTA',
-    defaultMessage: 'Share this idea',
   },
   currentStatus: {
     id: 'app.containers.IdeasShow.currentStatus',
@@ -149,10 +125,6 @@ export default defineMessages({
   send: {
     id: 'app.components.IdeasShow.send',
     defaultMessage: 'Send',
-  },
-  projectAttachments: {
-    id: 'app.components.IdeasShow.projectAttachments',
-    defaultMessage: 'Attachments',
   },
   skipSharing: {
     id: 'app.components.IdeasShow.skipSharing',

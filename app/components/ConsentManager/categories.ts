@@ -24,5 +24,6 @@ export const FUNCTIONAL_CATEGORIES = [
   'SMS & Push Notifications',
   'Security & Fraud',
   'Email',
-  'Email Marketing'
+  'Email Marketing',
+  'Marketing Automation'
 ];

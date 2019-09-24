@@ -78,6 +78,7 @@ export interface Props {
   disabled?: boolean;
   buttonColor?: string | undefined;
   className?: string;
+  autoFocus?: boolean;
 }
 
 export default class Radio extends PureComponent<Props> {
@@ -98,7 +99,7 @@ export default class Radio extends PureComponent<Props> {
   }
 
   render() {
-    const { name, value, currentValue, disabled, buttonColor, label, className } = this.props;
+    const { name, value, currentValue, disabled, buttonColor, label, className, autoFocus } = this.props;
     const id = this.props.id || `${this.props.name}-${this.props.value}`;
     const checked = (value === currentValue);
 
@@ -118,6 +119,7 @@ export default class Radio extends PureComponent<Props> {
           onClick={this.handleClick}
           className={`${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}`}
           disabled={disabled}
+          autoFocus={autoFocus}
         >
           {checked &&
             <Checked color={(buttonColor || '#49B47D')}/>

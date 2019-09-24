@@ -51,10 +51,14 @@ const SuccessIcon = styled(Icon)`
 `;
 
 const SuccessTitle = styled.div`
+  & h2 {
+    font-size: ${fontSizes.xl}px;
+    margin-top: 3px;
+    font-weight: 400;
+  }
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-size: ${fontSizes.xl}px;
   margin-bottom: 20px;
 `;
 
@@ -63,7 +67,7 @@ const StoriesContainer = styled.div`
   justify-content: space-between;
 `;
 
-const ShouldBeInitiatives = memo(({ tenant }: Props) => {
+const SuccessStories = memo(({ tenant }: Props) => {
   if (isNilOrError(tenant)) return null;
   const successStories = get(tenant, 'attributes.settings.initiatives.success_stories');
 
@@ -72,7 +76,7 @@ const ShouldBeInitiatives = memo(({ tenant }: Props) => {
       <StyledContentContainer mode="page">
         <SuccessTitle>
           <SuccessIcon name="successStory" />
-          <FormattedMessage {...messages.successStoryTitle} />
+          <FormattedMessage tagName="h2" {...messages.successStoryTitle} />
         </SuccessTitle>
         <StoriesContainer>
           {successStories.map(story => (
@@ -96,6 +100,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <ShouldBeInitiatives {...inputProps} {...dataprops} />}
+    {dataprops => <SuccessStories {...inputProps} {...dataprops} />}
   </Data>
 );

@@ -14,6 +14,7 @@ describe('Continuous project with survey', () => {
       projectDescriptionPreview,
       projectDescription,
       'published',
+      'survey',
       undefined,
       'https://citizenlabco.typeform.com/to/Yv6B7V',
       'typeform'

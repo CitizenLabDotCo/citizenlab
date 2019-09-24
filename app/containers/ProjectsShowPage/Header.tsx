@@ -57,7 +57,7 @@ const ArchivedLabel = styled.span`
   margin-top: 15px;
 `;
 
-const HeaderTitle = styled.h2`
+const HeaderTitle = styled.h1`
   color: #fff;
   font-size: ${fontSizes.xxxxxl}px;
   line-height: normal;
