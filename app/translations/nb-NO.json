@@ -70,6 +70,7 @@
   "app.components.ErrorBoundary.openFormText": "help us figure it out",
   "app.components.FileUploader.fileInputDescription": "Velg en fil til å laste opp...",
   "app.components.FileUploader.fileUploadLabel": "Vedlegg (max. 50MB)",
+  "app.components.FileUploader.incorrect_extension": "",
   "app.components.FilterBoxes.all": "All",
   "app.components.FilterBoxes.areas": "Areas",
   "app.components.FilterBoxes.selectYourArea": "Select your area",

@@ -70,6 +70,7 @@
   "app.components.ErrorBoundary.openFormText": "",
   "app.components.FileUploader.fileInputDescription": "",
   "app.components.FileUploader.fileUploadLabel": "",
+  "app.components.FileUploader.incorrect_extension": "",
   "app.components.FilterBoxes.all": "",
   "app.components.FilterBoxes.areas": "",
   "app.components.FilterBoxes.selectYourArea": "",

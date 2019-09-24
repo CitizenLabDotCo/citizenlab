@@ -70,6 +70,7 @@
   "app.components.ErrorBoundary.openFormText": "help us figure it out",
   "app.components.FileUploader.fileInputDescription": "Click to select a file",
   "app.components.FileUploader.fileUploadLabel": "Attachments (max. 50MB)",
+  "app.components.FileUploader.incorrect_extension": "{fileName} is not supported by our system, it will not be uploaded.",
   "app.components.FilterBoxes.all": "All",
   "app.components.FilterBoxes.areas": "Areas",
   "app.components.FilterBoxes.selectYourArea": "Select your area",

@@ -70,6 +70,7 @@
   "app.components.ErrorBoundary.openFormText": "help ons het op te lossen",
   "app.components.FileUploader.fileInputDescription": "Selecteer een bestand om toe te voegen...",
   "app.components.FileUploader.fileUploadLabel": "Bijlagen (max. 50MB)",
+  "app.components.FileUploader.incorrect_extension": "",
   "app.components.FilterBoxes.all": "Alle",
   "app.components.FilterBoxes.areas": "Gebieden",
   "app.components.FilterBoxes.selectYourArea": "Selecteer je gebied",
