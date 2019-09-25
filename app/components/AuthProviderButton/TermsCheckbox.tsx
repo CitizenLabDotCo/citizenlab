@@ -3,7 +3,7 @@ import Link from 'utils/cl-router/Link';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // components
-import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
+import Checkbox from 'components/UI/Checkbox';
 import { AuthProviderButtonInner } from './index';
 
 // i18n
@@ -37,7 +37,7 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps> {
   return (
     <CSSTransition classNames="tac" timeout={timeout} exit={true}>
       <AuthProviderButtonInner>
-        <AccessibleCheckbox
+        <Checkbox
           checked={accepted}
           onChange={onCheck}
           label={

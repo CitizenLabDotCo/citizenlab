@@ -16,7 +16,7 @@ import { Table, Icon } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
 import T from 'components/T';
 
-import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
+import Checkbox from 'components/UI/Checkbox';
 import StatusLabel from 'components/UI/StatusLabel';
 
 // utils
@@ -160,7 +160,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
           ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}
         >
           <Table.Cell collapsing={true}>
-            <AccessibleCheckbox checked={!!active} onChange={onClickCheckbox} size="17px" />
+            <Checkbox checked={!!active} onChange={onClickCheckbox} size="17px" />
           </Table.Cell>
           <Table.Cell>
             <TitleLink className="e2e-initiative-manager-initiative-title" onClick={onClickTitle}>

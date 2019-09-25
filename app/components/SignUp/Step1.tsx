@@ -11,7 +11,7 @@ import Link from 'utils/cl-router/Link';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
+import Checkbox from 'components/UI/Checkbox';
 import { FormLabel } from 'components/UI/FormComponents';
 
 // utils
@@ -415,7 +415,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
           <FormElement>
             <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
-              <AccessibleCheckbox
+              <Checkbox
                 className="e2e-terms-and-conditions"
                 checked={this.state.tacAccepted}
                 onChange={this.handleTaCAcceptedOnChange}

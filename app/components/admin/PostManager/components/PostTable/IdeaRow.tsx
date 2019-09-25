@@ -15,7 +15,7 @@ import { Table, Icon } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
 import T from 'components/T';
 
-import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
+import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
 
 // utils
@@ -129,7 +129,7 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
           ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}
         >
           <Table.Cell collapsing={true}>
-            <AccessibleCheckbox checked={!!active} onChange={onClickCheckbox} size="17px"/>
+            <Checkbox checked={!!active} onChange={onClickCheckbox} size="17px"/>
           </Table.Cell>
           <Table.Cell>
             <TitleLink className="e2e-idea-manager-idea-title" onClick={onClickTitle}>

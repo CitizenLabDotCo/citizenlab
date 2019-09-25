@@ -18,7 +18,7 @@ import Input from 'components/UI/Input';
 import DateInput from 'components/UI/DateInput';
 import Select from 'components/UI/Select';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
+import Checkbox from 'components/UI/Checkbox';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
@@ -251,7 +251,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
     return (
       <>
         {title && <FormLabelValue thin labelValue={title}/>}
-        <AccessibleCheckbox
+        <Checkbox
           checked={(isBoolean(props.value) ? props.value : false)}
           onChange={onChange}
           label={(props.schema.description || null)}

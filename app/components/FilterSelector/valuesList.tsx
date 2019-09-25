@@ -2,7 +2,7 @@ import React, { PureComponent, FormEvent } from 'react';
 import { includes, isNil } from 'lodash-es';
 
 // components
-import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
+import Checkbox from 'components/UI/Checkbox';
 import Dropdown from 'components/UI/Dropdown';
 
 // style
@@ -53,7 +53,7 @@ const ListItem = styled.button`
   }
 `;
 
-const StyledCheckbox = styled(AccessibleCheckbox)`
+const StyledCheckbox = styled(Checkbox)`
   margin-left: 10px;
 `;
 
