@@ -9,6 +9,22 @@ export default defineMessages({
     id: 'app.containers.Projects.project',
     defaultMessage: 'Project',
   },
+  invisibleTitleIdeasList: {
+    id: 'app.containers.Projects.invisibleTitleIdeasList',
+    defaultMessage: 'All the ideas for this project',
+  },
+  invisibleTitleIdeasListPhase: {
+    id: 'app.containers.Projects.invisibleTitleIdeasListPhase',
+    defaultMessage: 'All the ideas for this phase',
+  },
+  invisibleTitleSurvey: {
+    id: 'app.containers.Projects.invisibleTitleSurvey',
+    defaultMessage: 'Take the survey',
+  },
+  invisibleTitlePhaseAbout: {
+    id: 'app.containers.Projects.invisibleTitlePhaseAbout',
+    defaultMessage: 'About this phase',
+  },
   information: {
     id: 'app.containers.Projects.information',
     defaultMessage: 'Information',
@@ -32,6 +48,10 @@ export default defineMessages({
   navProcess: {
     id: 'app.containers.Projects.navProcess',
     defaultMessage: 'Process',
+  },
+  navPoll: {
+    id: 'app.containers.Projects.navPoll',
+    defaultMessage: 'Poll',
   },
   navEvents: {
     id: 'app.containers.Projects.navEvents',

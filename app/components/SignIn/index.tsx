@@ -311,6 +311,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                   error={emailError}
                   onChange={this.handleEmailOnChange}
                   setRef={this.handleEmailInputSetRef}
+                  autocomplete="email"
                 />
               </FormElement>
 
@@ -324,6 +325,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                   error={passwordError}
                   onChange={this.handlePasswordOnChange}
                   setRef={this.handlePasswordInputSetRef}
+                  autocomplete="current-password"
                 />
                 <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
                   <FormattedMessage {...messages.forgotPassword} />

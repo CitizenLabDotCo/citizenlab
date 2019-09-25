@@ -5,6 +5,14 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.metaTitle',
     defaultMessage: 'Initiative  • {initiativeTitle}',
   },
+  invisibleTitleContent: {
+    id: 'app.containers.InitiativesShow.invisibleTitleContent',
+    defaultMessage: 'What is this initiative about ?',
+  },
+  invisibleTitleMetaContent: {
+    id: 'app.containers.InitiativesShow.invisibleTitleMetaContent',
+    defaultMessage: 'More info about this initiative',
+  },
   metaOgTitle: {
     id: 'app.containers.InitiativesShow.metaOgTitle',
     defaultMessage: 'Support this initiative : {initiativeTitle}',
