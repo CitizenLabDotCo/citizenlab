@@ -7,7 +7,7 @@ import Link from 'utils/cl-router/Link';
 // Components
 import Avatar from 'components/Avatar';
 import Toggle from 'components/UI/Toggle';
-import AccessibleCheckbox from 'components/UI/AccessibleCheckbox';
+import Checkbox from 'components/UI/Checkbox';
 import Icon from 'components/UI/Icon';
 import Popover from 'components/UI/Popover';
 
@@ -35,7 +35,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
-const StyledCheckbox = styled(AccessibleCheckbox) `
+const StyledCheckbox = styled(Checkbox) `
   margin-left: 5px;
 `;
 
