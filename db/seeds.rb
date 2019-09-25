@@ -260,6 +260,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
             "image_url": "http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg",
           }
         ]
+      },
+      polls: {
+        enabled: true,
+        allowed: true
       }
     }
   })
@@ -432,18 +436,10 @@ if Apartment::Tenant.current == 'localhost'
 
       if project.timeline?
         start_at = Faker::Date.between(Tenant.current.created_at, 1.year.from_now)
-        has_budgeting_phase = false
+        has_budgeting = false
         rand(8).times do
-          participation_method = ['ideation', 'information', 'ideation', 'budgeting', 'ideation'].shuffle.first
-          if participation_method == 'budgeting'
-            if has_budgeting_phase
-              participation_method = 'ideation'
-            else
-              has_budgeting_phase = true
-            end
-          end
           start_at += 1.days
-          phase = project.phases.create!({
+          phase = project.phases.new({
             title_multiloc: {
               "en": Faker::Lorem.sentence,
               "nl-BE": Faker::Lorem.sentence
@@ -454,15 +450,17 @@ if Apartment::Tenant.current == 'localhost'
             },
             start_at: start_at,
             end_at: (start_at += rand(150).days),
-            participation_method: (rand(5) == 0) ? 'information' : 'ideation'
+            participation_method: ['ideation','budgeting','poll','information', 'ideation', 'ideation'][rand(6)]
           })
-          if rand(5) == 0
-            (rand(3)+1).times do
-              phase.phase_files.create!(generate_file_attributes)
+          if phase.budgeting?
+            if has_budgeting
+              phase.participation_method = 'ideation'
+            else
+              has_budgeting = true
             end
           end
           if phase.ideation?
-            phase.update!({
+            phase.assign_attributes({
               posting_enabled: rand(4) != 0,
               voting_enabled: rand(3) != 0,
               commenting_enabled: rand(4) != 0,
@@ -471,9 +469,36 @@ if Apartment::Tenant.current == 'localhost'
             })
           end
           if phase.budgeting?
-            phase.update!({
+            phase.assign_attributes({
               max_budget: (rand(1000000) + 100).round(-2)
             })
+          end
+          phase.save!
+          if rand(5) == 0
+            (rand(3)+1).times do
+              phase.phase_files.create!(generate_file_attributes)
+            end
+          end
+          if phase.poll?
+            questions = (rand(5)+1).times.map do
+              question = Polls::Question.create!(
+                title_multiloc: create_for_some_locales{Faker::Lorem.question},
+                participation_context: phase
+              )
+              (rand(5)+1).times do
+                Polls::Option.create!(
+                  question: question,
+                  title_multiloc: create_for_some_locales{Faker::Lorem.sentence}
+                )
+              end
+              question
+            end
+            User.order('RANDOM()').take(rand(5)+1).each do |user|
+              response = Polls::Response.create!(user: user, participation_context: phase)
+              questions.each do |q|
+                 response.response_options.create!(option: rand_instance(q.options))
+              end
+            end
           end
         end
       end

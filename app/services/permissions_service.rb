@@ -1,11 +1,10 @@
-require 'rubyXL'
-
 class PermissionsService
 
   ACTIONS = {
     'information' => %w(),
     'ideation' => %w(posting voting commenting),
     'survey' => %w(taking_survey),
+    'poll' => %w(taking_poll),
     'budgeting' => %w(commenting budgeting)
   }
 
