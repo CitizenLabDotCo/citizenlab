@@ -703,7 +703,7 @@
   "app.containers.AdminPage.PagesEdition.messageError": "An error occurred while saving your page",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Your changes have been saved successfully",
   "app.containers.AdminPage.PagesEdition.privacy-policy": "Privacy Policy",
-  "app.containers.AdminPage.PagesEdition.subtitlePages": "Personalise the ‘About’ page and update our legal pages to mach your context.",
+  "app.containers.AdminPage.PagesEdition.subtitlePages": "Personalise your 'About' page and change the default legal pages to match your context.",
   "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Terms and Conditions",
   "app.containers.AdminPage.PagesEdition.titleLabel": "Page Title",
   "app.containers.AdminPage.PagesEdition.titlePages": "About page and legal pages",
