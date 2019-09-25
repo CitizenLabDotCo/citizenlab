@@ -173,7 +173,7 @@ const Container: any = styled.div`
       opacity: ${(props: any) => props.processing ? 0 : 1};
       font-size: ${(props: any) => props.fontSize ? props.fontSize : getFontSize(props.size)};
       line-height: ${(props: any) => getLineHeight(props.size)};
-      font-weight: ${(props: any) => props.fontWeight || 'normal'}
+      font-weight: ${(props: any) => props.fontWeight || 400};
     }
     ${StyledIcon} {
       flex: 0 0 ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
@@ -319,6 +319,7 @@ class Button extends PureComponent<Props, State> {
 
   handleOnClick = (event: FormEvent<HTMLButtonElement>) => {
     const { onClick, processing, disabled } = this.props;
+
     if (onClick) {
       event.preventDefault();
       event.stopPropagation();

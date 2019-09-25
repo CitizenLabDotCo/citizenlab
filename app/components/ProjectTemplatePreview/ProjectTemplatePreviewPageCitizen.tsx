@@ -124,7 +124,7 @@ const ProjectTemplatePreviewPageCitizen = memo<Props & WithRouterProps>(({ param
             <InfoboxContainer className={className}>
               <InfoboxIcon name="key" />
               <InfoboxText>
-                <p><b><FormattedMessage {...messages.infoboxLine1} /></b></p>
+                <p><strong><FormattedMessage {...messages.infoboxLine1} /></strong></p>
                 <p><FormattedMessage {...messages.infoboxLine2} values={{ link }} /></p>
               </InfoboxText>
             </InfoboxContainer>

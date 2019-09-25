@@ -167,7 +167,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             window.history.pushState({ path: this.url }, '', this.url);
             window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
             window.addEventListener('keydown', this.handleKeypress, useCapture);
-            this.unlisten = clHistory.listen(() => this.goBack());
+            this.unlisten = clHistory.listen(() => this.closeTemplatePreview());
             trackPage(this.url);
           }
 
@@ -193,7 +193,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
     reorderProject(projectId, newOrder);
   }
 
-  goBack = () => {
+  closeTemplatePreview = () => {
     this.setState({ selectedProjectTemplateId: null });
   }
 
@@ -221,13 +221,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
   }
 
   handlePopstateEvent = () => {
-    this.goBack();
+    this.closeTemplatePreview();
   }
 
   handleKeypress = (event: KeyboardEvent) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
-      this.goBack();
+      this.closeTemplatePreview();
     }
   }
 
@@ -510,7 +510,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
           {selectedProjectTemplateId &&
             <ProjectTemplatePreviewPageAdmin
               projectTemplateId={selectedProjectTemplateId}
-              goBack={this.goBack}
+              goBack={this.closeTemplatePreview}
               useTemplate={this.useTemplate}
             />
           }

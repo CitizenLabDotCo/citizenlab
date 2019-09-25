@@ -33,35 +33,39 @@ const ModalContent = styled.div`
 `;
 
 const CloseIcon = styled(Icon)`
-  width: 100%;
-  height: 100%;
+  width: 18px;
+  height: 18px;
   fill: ${colors.mediumGrey};
+
+  ${media.smallerThanMinTablet`
+    width: 16px;
+    height: 16px;
+  `}
 `;
 
 const CloseButton = styled.button`
-  width: 18px;
-  height: 18px;
+  width: 25px;
+  height: 25px;
   position: absolute;
-  top: 27px;
+  top: 25px;
   right: 35px;
   cursor: pointer;
-  outline: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover,
-  &:focus,
-  &:active {
+  &:focus {
     ${CloseIcon} {
       fill: #000;
     }
   }
 
   ${media.smallerThanMinTablet`
-    width: 14px;
-    height: 14px;
-    top: 19px;
-    right: 24px;
+    top: 16px;
+    right: 16px;
   `}
 `;
 
@@ -166,6 +170,7 @@ const HeaderContainer = styled.div`
 `;
 
 const HeaderTitle = styled.h1`
+  width: 100%;
   color: ${colors.text};
   font-size: ${fontSizes.xxl}px;
   font-weight: 600;
@@ -298,9 +303,7 @@ export default class Modal extends PureComponent<Props, State> {
 
     this.unlisten = clHistory.listen(this.props.close);
 
-    if (this.ModalCloseButton) {
-      this.ModalCloseButton.focus();
-    }
+    this.blurCloseButton();
   }
 
   manuallyCloseModal = () => {
@@ -327,6 +330,8 @@ export default class Modal extends PureComponent<Props, State> {
   }
 
   clickOutsideModal = () => {
+    this.blurCloseButton();
+
     if (this.props.closeOnClickOutside !== false) {
       trackEventByName(tracks.clickOutsideModal);
       this.manuallyCloseModal();
@@ -338,6 +343,18 @@ export default class Modal extends PureComponent<Props, State> {
     event.stopPropagation();
     trackEventByName(tracks.clickCloseButton);
     this.manuallyCloseModal();
+  }
+
+  blurCloseButton = () => {
+    if (this.ModalCloseButton) {
+      this.ModalCloseButton.blur();
+
+      setTimeout(() => {
+        if (this.ModalCloseButton) {
+          this.ModalCloseButton.blur();
+        }
+      }, 100);
+    }
   }
 
   setCloseButtonRef = (element: HTMLButtonElement) => {

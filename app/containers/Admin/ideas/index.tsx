@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 
 // components
@@ -16,7 +16,7 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -35,7 +35,7 @@ export interface Props {
   projects: GetProjectsChildProps;
 }
 
-class IdeaDashboard extends React.PureComponent<Props> {
+class IdeaDashboard extends PureComponent<Props> {
   render() {
     const { projects } = this.props;
 
@@ -71,8 +71,10 @@ class IdeaDashboard extends React.PureComponent<Props> {
   }
 }
 
+const publicationStatuses: PublicationStatus[] = ['draft', 'published', 'archived'];
+
 const Data = adopt<Props>({
-  projects: <GetProjects pageSize={250} sort="new" publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true} />,
+  projects: <GetProjects pageSize={250} sort="new" publicationStatuses={publicationStatuses} filterCanModerate={true} />,
 });
 
 export default () => (

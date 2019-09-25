@@ -10,7 +10,7 @@ import ProjectTemplateCards, { TEMPLATES_QUERY } from './ProjectTemplateCards';
 import AdminProjectEditGeneral  from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './styles';
 
-// Events
+// utils
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
