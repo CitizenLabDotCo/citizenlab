@@ -11,10 +11,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FaviconPage.favicon',
     defaultMessage: 'Favicon',
   },
-  noFavicon: {
-    id: 'app.containers.AdminPage.FaviconPage.noFavicon',
-    defaultMessage: 'Please upload a favicon image',
-  },
   save: {
     id: 'app.containers.AdminPage.FaviconPage.save',
     defaultMessage: 'Save',

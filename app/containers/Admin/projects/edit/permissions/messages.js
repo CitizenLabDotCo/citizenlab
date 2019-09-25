@@ -29,10 +29,6 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.permissionsSelectionLabel',
     defaultMessage: 'Selection',
   },
-  noSelectedGroupsMessage: {
-    id: 'app.containers.AdminPage.groups.permissions.noSelectedGroupsMessage',
-    defaultMessage: `Select one or more groups that can access this project`,
-  },
   add: {
     id: 'app.containers.AdminPage.groups.permissions.add',
     defaultMessage: 'Add',
@@ -97,6 +93,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_taking_survey',
     defaultMessage: 'Taking the survey',
   },
+  permissionAction_taking_poll: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_taking_poll',
+    defaultMessage: 'Taking the poll',
+  },
   permissionAction_budgeting: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_budgeting',
     defaultMessage: 'Spending budget',
@@ -132,10 +132,6 @@ export default defineMessages({
   moderatorsSectionTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
     defaultMessage: 'Who can moderate this project?',
-  },
-  moderatorsRoleExplanation: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation',
-    defaultMessage: 'Moderation rights grant somebody who\'s not an admin the rights to alter the project settings and moderate ideas and comments which belong to this project. Admins always have Moderation rights over all projects.',
   },
   moderatorsSectionTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTooltip',

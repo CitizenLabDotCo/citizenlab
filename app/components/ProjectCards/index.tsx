@@ -58,7 +58,7 @@ const Header = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 35px;
+  margin-bottom: 30px;
   border-bottom: 1px solid #d1d1d1;
 
   ${media.smallerThanMinTablet`
@@ -199,8 +199,7 @@ const Footer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 30px;
-
+  margin-top: 20px;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;

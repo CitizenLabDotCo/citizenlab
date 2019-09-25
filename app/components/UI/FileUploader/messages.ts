@@ -11,6 +11,6 @@ export default defineMessages({
   },
   incorrect_extension: {
     id: 'app.components.FileUploader.incorrect_extension',
-    defaultMessage: '{fileName} is not supported by our system, it will not be uploaded.',
-  },
+    defaultMessage: '{fileName} is not supported by our system, it will not be uploaded.'
+  }
 });

@@ -1,12 +1,8 @@
 import { captureMessage, captureException, withScope } from '@sentry/browser';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, isError, isObject } from 'lodash-es';
 
 function isErrorOrErrorEvent(wat: any) {
-  return Object.prototype.toString.call(wat) === '[object Error]' || Object.prototype.toString.call(wat) === '[object ErrorEvent]';
-}
-
-function isObject(wat: any) {
-  return Object.prototype.toString.call(wat) === '[object Object]';
+  return isError(wat) || Object.prototype.toString.call(wat) === '[object ErrorEvent]';
 }
 
 function isString(wat: any) {

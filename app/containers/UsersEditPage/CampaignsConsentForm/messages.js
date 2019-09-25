@@ -21,46 +21,6 @@ export default defineMessages({
   /*
    * Notifications
    */
-  h3: {
-    id: 'app.containers.CampaignsConsentForm.h3',
-    defaultMessage: 'Notifications',
-  },
-  h3sub: {
-    id: 'app.containers.CampaignsConsentForm.h3sub',
-    defaultMessage: 'Manage your notifications',
-  },
-  notifications_all_email: {
-    id: 'app.containers.CampaignsConsentForm.notifications_all_email',
-    defaultMessage: 'ALL EMAIL NOTIFICATIONS',
-  },
-  notifications_idea_post: {
-    id: 'app.containers.CampaignsConsentForm.notifications_idea_post',
-    defaultMessage: 'Someone posted an idea',
-  },
-  notifications_new_user: {
-    id: 'app.containers.CampaignsConsentForm.notifications_new_user',
-    defaultMessage: 'New user registration',
-  },
-  notifications_new_comments: {
-    id: 'app.containers.CampaignsConsentForm.notifications_new_comments',
-    defaultMessage: 'New comments',
-  },
-  notifications_all_app: {
-    id: 'app.containers.CampaignsConsentForm.notifications_all_app',
-    defaultMessage: 'ALL APP NOTIFICATIONS',
-  },
-  notifications_comment_on_comment: {
-    id: 'app.containers.CampaignsConsentForm.notifications_comment_on_comment',
-    defaultMessage: 'Someone commented on your comment',
-  },
-  notifications_mention: {
-    id: 'app.containers.CampaignsConsentForm.notifications_mention',
-    defaultMessage: 'Someone mentioned you',
-  },
-  notifications_idea_comment: {
-    id: 'app.containers.CampaignsConsentForm.notifications_idea_comment',
-    defaultMessage: 'Someone commented on your idea',
-  },
   submit: {
     id: 'app.containers.CampaignsConsentForm.submit',
     defaultMessage: 'Save',

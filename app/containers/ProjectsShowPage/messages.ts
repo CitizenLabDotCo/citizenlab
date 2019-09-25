@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.Projects.project',
     defaultMessage: 'Project',
   },
-  projectInformation: {
-    id: 'app.containers.Projects.projectInformation',
-    defaultMessage: 'Project information',
-  },
   information: {
     id: 'app.containers.Projects.information',
     defaultMessage: 'Information',
@@ -33,13 +29,13 @@ export default defineMessages({
     id: 'app.containers.Projects.navIdeas',
     defaultMessage: 'Ideas',
   },
-  navTimeline: {
-    id: 'app.containers.Projects.navTimeline',
-    defaultMessage: 'Timeline',
-  },
   navProcess: {
     id: 'app.containers.Projects.navProcess',
     defaultMessage: 'Process',
+  },
+  navPoll: {
+    id: 'app.containers.Projects.navPoll',
+    defaultMessage: 'Poll',
   },
   navEvents: {
     id: 'app.containers.Projects.navEvents',
@@ -73,10 +69,6 @@ export default defineMessages({
     id: 'app.containers.Projects.noPhaseSelected',
     defaultMessage: 'No phase selected',
   },
-  phaseNumber: {
-    id: 'app.containers.Projects.phaseNumber',
-    defaultMessage: 'Phase {phaseNumber}',
-  },
   endsOn: {
     id: 'app.containers.Projects.endsOn',
     defaultMessage: 'Ends on {date}',
@@ -97,18 +89,6 @@ export default defineMessages({
     id: 'app.containers.Projects.goToNextPhase',
     defaultMessage: 'Go to next phase',
   },
-  displayMap: {
-    id: 'app.containers.Projects.displayMap',
-    defaultMessage: 'Map view',
-  },
-  displayCards: {
-    id: 'app.containers.Projects.displayCards',
-    defaultMessage: 'Card view',
-  },
-  ideasTitle: {
-    id: 'app.containers.Projects.ideasTitle',
-    defaultMessage: 'Ideas',
-  },
   navSurvey: {
     id: 'app.containers.Projects.navSurvey',
     defaultMessage: 'Survey',
@@ -124,18 +104,6 @@ export default defineMessages({
   archived: {
     id: 'app.containers.Projects.archived',
     defaultMessage: 'Archived',
-  },
-  phaseAttachments: {
-    id: 'app.containers.Projects.phaseAttachments',
-    defaultMessage: 'Attachments',
-  },
-  eventAttachments: {
-    id: 'app.containers.Projects.eventAttachments',
-    defaultMessage: 'Attachments',
-  },
-  selectedPhase: {
-    id: 'app.containers.Projects.selectedPhase',
-    defaultMessage: 'Selected phase',
   },
   yourExpenses: {
     id: 'app.containers.Projects.yourExpenses',
@@ -164,10 +132,6 @@ export default defineMessages({
   submitMyExpenses: {
     id: 'app.containers.Projects.submitMyExpenses',
     defaultMessage: 'Submit my expenses',
-  },
-  phaseSelectorTitle: {
-    id: 'app.containers.Projects.phaseSelectorTitle',
-    defaultMessage: 'Phase selector',
   },
   noExpenses: {
     id: 'app.containers.Projects.noExpenses',

@@ -21,7 +21,9 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-const Container = styled.div`
+const Container = styled.div``;
+
+const BoxContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -137,39 +139,40 @@ const InitiativesCTABox = withTheme(memo((props: Props) => {
 
   return (
     <Container className={className}>
-      <BackgroundIcon name="initiatives"/>
-      <NewLabel>
-        <FormattedMessage {...messages.new} />
-      </NewLabel>
-      <div>
-        <Title>
-          <FormattedMessage {...messages.initiativesBoxTitle} />
-        </Title>
-        <Text>
-          <FormattedMessage {...messages.initiativesBoxText} />
-        </Text>
-      </div>
-      <ButtonContainer>
-        <CTAButton
-          fontWeight="500"
-          padding="13px 22px"
-          bgColor="rgba(100, 100, 100, 0)"
-          textColor={theme.colorMain}
-          linkTo="/initiatives"
-          text={<FormattedMessage {...messages.browseInitiative} />}
-          className="e2e-initiatives-landing-CTA-browse"
-        />
-        <CTAButton
-          fontWeight="500"
-          padding="13px 22px"
-          bgColor={theme.colorMain}
-          linkTo="/initiatives/new"
-          textColor="#FFF"
-          text={<FormattedMessage {...messages.startInitiative} />}
-          className="e2e-initiatives-landing-CTA-new"
-        />
-      </ButtonContainer>
-
+      <BoxContainer>
+        <BackgroundIcon name="initiatives"/>
+        <NewLabel>
+          <FormattedMessage {...messages.new} />
+        </NewLabel>
+        <div>
+          <Title>
+            <FormattedMessage {...messages.initiativesBoxTitle} />
+          </Title>
+          <Text>
+            <FormattedMessage {...messages.initiativesBoxText} />
+          </Text>
+        </div>
+        <ButtonContainer>
+          <CTAButton
+            fontWeight="500"
+            padding="13px 22px"
+            bgColor="rgba(100, 100, 100, 0)"
+            textColor={theme.colorMain}
+            linkTo="/initiatives"
+            text={<FormattedMessage {...messages.browseInitiative} />}
+            className="e2e-initiatives-landing-CTA-browse"
+          />
+          <CTAButton
+            fontWeight="500"
+            padding="13px 22px"
+            bgColor={theme.colorMain}
+            linkTo="/initiatives/new"
+            textColor="#FFF"
+            text={<FormattedMessage {...messages.startInitiative} />}
+            className="e2e-initiatives-landing-CTA-new"
+          />
+        </ButtonContainer>
+      </BoxContainer>
     </Container>
   );
 }));

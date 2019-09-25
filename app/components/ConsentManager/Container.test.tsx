@@ -1,234 +1,398 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-import { mountWithTheme } from '../../utils/testUtils/withTheme';
+import eventEmitter from 'utils/eventEmitter';
 
 import 'jest-styled-components';
 
 // component to test
 import { Container } from './Container';
-import { IDestination } from './';
+import { initialPreferences } from './';
 
 // mock utilities
-jest.mock('utils/cl-intl');
+jest.mock('./Banner', () => 'Banner');
+jest.mock('./PreferencesDialog', () => 'PreferencesDialog');
+jest.mock('./Footer', () => 'Footer');
+jest.mock('components/Loadable/Modal', () => 'LoadableModal');
 
+jest.mock('utils/cl-intl');
 const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
 
-describe('<ConsentManager />', () => {
-  let setPreferences: jest.Mock;
-  let resetPreferences: jest.Mock;
-  let saveConsent: jest.Mock;
-  const isConsentRequired = true;
-  const implyConsentOnInteraction = false;
-
-  const destinations = [
-    {
-      name: 'Google Analytics',
-      description: 'Google Analytics is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
-      category: 'Analytics',
-      website: 'http://google.com/analytics',
-      id: 'Google Analytics',
-    },
-    {
-      name: 'MarketingTool',
-      description: 'MarketingTool is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
+const categorizedDestinations = {
+  advertising:
+    [{
+      name: 'Google Tag Manager',
+      description:
+        'Google Tag Manager is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
       category: 'Tag Managers',
-      website: 'http://random.com/marketing',
-      id: 'MarketingTool',
+      website: 'http://google.com/tagManager',
+      id: 'Google Tag Manager'
     },
     {
       name: 'AdvertisingTool',
       description: 'Advertising BS',
       category: 'Advertising',
       website: 'http://random.com/advertising',
-      id: 'AdvertisingTool',
-    },
-    {
+      id: 'AdvertisingTool'
+    }],
+  functional:
+    [{
       name: 'FunctionalTool',
       description: 'Actually might be handy',
       category: 'Security & Fraud',
       website: 'http://random.com/securitycookie',
-      id: 'FunctionalTool',
-    }
-  ] as IDestination[];
-  const newDestinations = destinations;
+      id: 'FunctionalTool'
+    }],
+  analytics:
+    [{
+      name: 'MarketingTool',
+      description:
+        'MarketingTool is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.',
+      category: 'Analytics',
+      website: 'http://random.com/marketing',
+      id: 'MarketingTool'
+    }]
+};
+let setPreferences: jest.Mock;
+let resetPreferences: jest.Mock;
+let saveConsent: jest.Mock;
 
+describe('<Container />', () => {
   beforeEach(() => {
     setPreferences = jest.fn();
     resetPreferences = jest.fn();
     saveConsent = jest.fn();
   });
 
-  it('renders correctly when no cookie is set (destinations = newDestinations)', () => {
-    const wrapper = shallow(
-      <Container
-        intl={intl}
-        setPreferences={setPreferences}
-        resetPreferences={resetPreferences}
-        saveConsent={saveConsent}
-        isConsentRequired={isConsentRequired}
-        implyConsentOnInteraction={implyConsentOnInteraction}
-        destinations={destinations}
-        newDestinations={newDestinations}
-        preferences={{
-          analytics: null,
-          advertising: null,
-          functional: null
-        }}
-      />
-    );
-    expect(wrapper).toMatchSnapshot();
-  });
-  it('renders correctly when there is no new destination', () => {
-    const wrapper = shallow(
-      <Container
-        intl={intl}
-        setPreferences={setPreferences}
-        resetPreferences={resetPreferences}
-        saveConsent={saveConsent}
-        isConsentRequired={isConsentRequired}
-        implyConsentOnInteraction={implyConsentOnInteraction}
-        destinations={destinations}
-        newDestinations={[]}
-        preferences={{
-          analytics: false,
-          advertising: true,
-          functional: false
-        }}
-      />
-    );
-    expect(wrapper).toMatchSnapshot();
-  });
-
-  it('renders correctly when there is no tracking destination', () => {
-    const wrapper = shallow(
-      <Container
-        intl={intl}
-        setPreferences={setPreferences}
-        resetPreferences={resetPreferences}
-        saveConsent={saveConsent}
-        isConsentRequired={isConsentRequired}
-        implyConsentOnInteraction={implyConsentOnInteraction}
-        destinations={[]}
-        newDestinations={[]}
-        preferences={{
-          analytics: null,
-          advertising: null,
-          functional: null
-        }}
-      />
-    );
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it('lets the user accept all from the banner', () => {
-    const wrapper = mountWithTheme(
-      <Container
-        intl={intl}
-        setPreferences={setPreferences}
-        resetPreferences={resetPreferences}
-        saveConsent={saveConsent}
-        isConsentRequired={isConsentRequired}
-        implyConsentOnInteraction={implyConsentOnInteraction}
-        destinations={destinations}
-        newDestinations={newDestinations}
-        preferences={{
-          analytics: null,
-          advertising: null,
-          functional: null
-        }}
-      />
-    );
-    wrapper.find('.e2e-accept-cookies-btn').find('button').simulate('click');
-    expect(saveConsent).toBeCalled();
-    expect(setPreferences).not.toBeCalled();
-    expect(resetPreferences).not.toBeCalled();
-  });
-  // it('handles close banner clicks as expected', () => {
-  //   const wrapper = mountWithTheme(
-  //     <Container
-  //       intl={intl}
-  //       setPreferences={setPreferences}
-  //       resetPreferences={resetPreferences}
-  //       saveConsent={saveConsent}
-  //       isConsentRequired={isConsentRequired}
-  //       implyConsentOnInteraction={implyConsentOnInteraction}
-  //       destinations={destinations}
-  //       newDestinations={newDestinations}
-  //       preferences={{
-  //         analytics: null,
-  //         advertising: null,
-  //         functional: null
-  //       }}
-  //     />
-  //   );
-  //   wrapper.find('Banner').find('.integration-button-close').find('button').simulate('click');
-  //   expect(saveConsent).toBeCalled();
-  //   expect(setPreferences).not.toBeCalled();
-  //   expect(resetPreferences).not.toBeCalled();
-  // });
-  // it('when a preferences is set, clicking cancel in the dialog will prompt confirmation', () => {
-  //   const wrapper = mountWithTheme(
-  //     <Container
-  //       intl={intl}
-  //       setPreferences={setPreferences}
-  //       resetPreferences={resetPreferences}
-  //       saveConsent={saveConsent}
-  //       isConsentRequired={isConsentRequired}
-  //       implyConsentOnInteraction={implyConsentOnInteraction}
-  //       destinations={destinations}
-  //       newDestinations={newDestinations}
-  //       preferences={{
-  //         analytics: true,
-  //         advertising: null,
-  //         functional: null
-  //       }}
-  //     />
-  //   );
-  //   wrapper.find('.integration-open-modal').find('button').simulate('click');
-  //   wrapper.find('Modal').find('.integration-cancel').find('button').simulate('click');
-  //   expect(wrapper.find('Modal').prop('opened')).toBeTruthy();
-  //   expect(wrapper.state('isCancelling')).toBeTruthy();
-  // });
-  it('is invalid when when some field is empty', () => {
     const wrapper = shallow(
       <Container
         intl={intl}
         setPreferences={setPreferences}
         resetPreferences={resetPreferences}
         saveConsent={saveConsent}
-        isConsentRequired={isConsentRequired}
-        implyConsentOnInteraction={implyConsentOnInteraction}
-        destinations={destinations}
-        newDestinations={newDestinations}
-        preferences={{
-          analytics: true,
-          advertising: null,
-          functional: null
-        }}
+        isConsentRequired={true}
+        preferences={initialPreferences}
+        categorizedDestinations={categorizedDestinations}
       />
     );
-    expect((wrapper.instance() as any).validate()).toBeFalsy();
+
+    wrapper.find('Banner').props().onAccept();
+
+    // accept all only calls saveConsent with preferences unchanged, so still equal to initialPreferences.
+    // it's tested on the ConsentManager that this will have the expected behaviour.
+    expect(setPreferences).not.toHaveBeenCalled();
+    expect(saveConsent).toHaveBeenCalled();
+    expect(resetPreferences).not.toHaveBeenCalled();
   });
-  it('is valid when when no field is empty', () => {
+  it('renders correclty when no destinations are allowed by the tenant', () => {
     const wrapper = shallow(
       <Container
         intl={intl}
         setPreferences={setPreferences}
         resetPreferences={resetPreferences}
         saveConsent={saveConsent}
-        isConsentRequired={isConsentRequired}
-        implyConsentOnInteraction={implyConsentOnInteraction}
-        destinations={destinations}
-        newDestinations={newDestinations}
-        preferences={{
-          analytics: true,
-          advertising: false,
-          functional: true
+        isConsentRequired={false}
+        preferences={initialPreferences}
+        categorizedDestinations={{
+          analytics: [],
+          functional: [],
+          advertising: []
         }}
       />
     );
-    expect((wrapper.instance() as any).validate()).toBeTruthy();
+
+    // wih no destinations allowed, isConsentRequired will be false so no banner
+    // but the modal is still accessible trough the cookie policy
+    eventEmitter.emit('footer', 'openConsentManager', null);
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('handle changes as expected', () => {
+    const wrapper = shallow(
+      <Container
+        intl={intl}
+        setPreferences={setPreferences}
+        resetPreferences={resetPreferences}
+        saveConsent={saveConsent}
+        isConsentRequired={true}
+        preferences={initialPreferences}
+        categorizedDestinations={categorizedDestinations}
+      />
+    );
+
+    wrapper.find('PreferencesDialog').props().onChange('advertising', false);
+
+    // accept all only calls saveConsent with preferences unchanged, so still equal to initialPreferences.
+    // it's tested on the ConsentManager that this will have the expected behaviour.
+    expect(setPreferences).toHaveBeenCalledWith({ advertising: false });
+    expect(saveConsent).not.toHaveBeenCalled();
+    expect(resetPreferences).not.toHaveBeenCalled();
+  });
+
+  describe('shows the banner is and only if consent is required', () => {
+    it('consent is required, it shows the banner', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={true}
+          preferences={initialPreferences}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      expect(wrapper.find('Banner').exists()).toBeTruthy();
+    });
+    it('consent is\'t required, it doesn\'t show the banner', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={false}
+          preferences={initialPreferences}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      expect(wrapper.find('Banner').exists()).toBeFalsy();
+    });
+  });
+
+  describe('handles opening and closing the modal', () => {
+    it('modal is initially closed when consent is required', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={true}
+          preferences={initialPreferences}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+    });
+    it('modal is initially closed when consent is\'t required', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={false}
+          preferences={initialPreferences}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+    });
+    it('passes down to Banner a handler that opens the modal', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={true}
+          preferences={initialPreferences}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+      wrapper.find('Banner').props().onChangePreferences();
+      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
+    });
+
+    it('passes down to Modal a handler that closes the modal', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={true}
+          preferences={initialPreferences}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      wrapper.instance().setState({ isDialogOpen: true });
+      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
+      wrapper.find('LoadableModal').props().close();
+      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+    });
+
+    it('reacts to openConsentManager events by opening the modal', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={true}
+          preferences={initialPreferences}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+      eventEmitter.emit('footer', 'openConsentManager', null);
+      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
+    });
+  });
+
+  describe('handles preferences form validation', () => {
+    it('is invalid when when some field is empty', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={true}
+          preferences={{
+            analytics: true,
+            functional: null,
+            advertising: null
+          }}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      expect((wrapper.instance() as any).validate()).toBeFalsy();
+    });
+    it('is valid when when no field is empty', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={true}
+          preferences={{
+            analytics: true,
+            functional: false,
+            advertising: false
+          }}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      expect((wrapper.instance() as any).validate()).toBeTruthy();
+    });
+  });
+
+  describe('handles cancelling', () => {
+    it('cancelling with no preference set closes the modal and lets the banner open', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={true}
+          preferences={initialPreferences}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      wrapper.instance().setState({ isDialogOpen: true });
+
+      expect(wrapper.find('Banner').exists()).toBeTruthy();
+      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
+      const { footer } = wrapper.find('LoadableModal').props();
+      shallow(footer).props().handleCancel();
+      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+      expect(wrapper.find('Banner').exists()).toBeTruthy();
+      expect(setPreferences).not.toHaveBeenCalled();
+      expect(saveConsent).not.toHaveBeenCalled();
+      expect(resetPreferences).toHaveBeenCalled();
+    });
+
+    it('cancelling with some preference set prompts confirmation and lets the banner open', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={true}
+          preferences={{
+            analytics: true,
+            functional: null,
+            advertising: null
+          }}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      wrapper.instance().setState({ isDialogOpen: true });
+
+      expect(wrapper.find('Banner').exists()).toBeTruthy();
+      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
+      const { footer } = wrapper.find('LoadableModal').props();
+      shallow(footer).props().handleCancel();
+      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
+      expect(wrapper.state().isCancelling).toBe(true);
+      expect(wrapper.find('Banner').exists()).toBeTruthy();
+      expect(setPreferences).not.toHaveBeenCalled();
+      expect(saveConsent).not.toHaveBeenCalled();
+      expect(resetPreferences).not.toHaveBeenCalled();
+    });
+
+    it('while cancelling, confirming cancellation closes the modal and keeps the banner', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={true}
+          preferences={{
+            analytics: true,
+            functional: null,
+            advertising: null
+          }}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      wrapper.instance().setState({ isDialogOpen: true, isCancelling: true });
+
+      expect(wrapper.find('Banner').exists()).toBeTruthy();
+      const { footer } = wrapper.find('LoadableModal').props();
+      shallow(footer).props().handleCancelConfirm();
+      expect(wrapper.find('LoadableModal').props().opened).toBe(false);
+      expect(wrapper.find('Banner').exists()).toBeTruthy();
+      expect(setPreferences).not.toHaveBeenCalled();
+      expect(saveConsent).not.toHaveBeenCalled();
+      expect(resetPreferences).toHaveBeenCalled();
+    });
+
+    it('while cancelling, cancelling cancellation is still possible', () => {
+      const wrapper = shallow(
+        <Container
+          intl={intl}
+          setPreferences={setPreferences}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          isConsentRequired={true}
+          preferences={{
+            analytics: true,
+            functional: null,
+            advertising: null
+          }}
+          categorizedDestinations={categorizedDestinations}
+        />
+      );
+      wrapper.instance().setState({ isDialogOpen: true, isCancelling: true });
+
+      expect(wrapper.find('Banner').exists()).toBeTruthy();
+      const { footer } = wrapper.find('LoadableModal').props();
+      shallow(footer).props().handleCancelBack();
+      expect(wrapper.find('LoadableModal').props().opened).toBe(true);
+      expect(wrapper.find('Banner').exists()).toBeTruthy();
+      expect(setPreferences).not.toHaveBeenCalled();
+      expect(saveConsent).not.toHaveBeenCalled();
+      expect(resetPreferences).not.toHaveBeenCalled();
+    });
   });
 });
