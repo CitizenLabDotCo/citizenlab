@@ -3,6 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -144,7 +145,7 @@ const Unauthenticated = styled.div`
   justify-content: space-between;
 `;
 
-const RegisterLink = styled.span`
+const RegisterLink = styled(Link)`
   color: ${(props) => props.theme.colorMain};
   font-size: ${fontSizes.small}px;
   font-weight: 500;
@@ -213,9 +214,8 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
     clHistory.push('/sign-in');
   }
 
-  goToRegister = (event: FormEvent) => {
-    event.preventDefault();
-    clHistory.push('/sign-up');
+  stopPropagation = (event: FormEvent) => {
+    event.stopPropagation();
   }
 
   render() {
@@ -270,7 +270,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
                 <Button onClick={this.goToLogin}>
                   <FormattedMessage {...messages.login} />
                 </Button>
-                <RegisterLink onClick={this.goToRegister}>
+                <RegisterLink to="/sign-up" onClick={this.stopPropagation}>
                   <FormattedMessage {...messages.register} />
                 </RegisterLink>
               </Unauthenticated>
