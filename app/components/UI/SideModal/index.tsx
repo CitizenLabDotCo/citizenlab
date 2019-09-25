@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import FocusTrap from 'focus-trap-react';
+import FocusLock from 'react-focus-lock';
 import eventEmitter from 'utils/eventEmitter';
 import { Subscription } from 'rxjs';
 
@@ -74,7 +74,7 @@ const CloseButton = styled.button`
   `}
 `;
 
-const Overlay = styled(FocusTrap)`
+const Overlay = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -164,7 +164,7 @@ export default class SideModal extends PureComponent<Props, State> {
   private el: HTMLDivElement;
   private ModalPortal = document.getElementById('modal-portal');
   private ModalContentElement: HTMLDivElement | null;
-  subscriptions: Subscription[];
+  private subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
@@ -268,24 +268,26 @@ export default class SideModal extends PureComponent<Props, State> {
           role="dialog"
           aria-label={label}
         >
-          <ModalContainer
-            onClickOutside={this.manuallyCloseModal}
-            closeOnClickOutsideEnabled={!this.state.innerModalOpened}
-          >
-            <ModalContent id="e2e-side-modal-content" ref={this.setContentRef}>
-              {children}
-            </ModalContent>
-          </ModalContainer>
+          <FocusLock autoFocus={false}>
+            <ModalContainer
+              onClickOutside={this.manuallyCloseModal}
+              closeOnClickOutsideEnabled={!this.state.innerModalOpened}
+            >
+              <ModalContent id="e2e-side-modal-content" ref={this.setContentRef}>
+                {children}
+              </ModalContent>
+            </ModalContainer>
 
-          <CloseButton
-            className="e2e-modal-close-button"
-            onClick={this.clickCloseButton}
-          >
-            <HiddenSpan>
-              <FormattedMessage {...messages.closeButtonAria} />
-            </HiddenSpan>
-            <CloseIcon name="close" />
-          </CloseButton >
+            <CloseButton
+              className="e2e-modal-close-button"
+              onClick={this.clickCloseButton}
+            >
+              <HiddenSpan>
+                <FormattedMessage {...messages.closeButtonAria} />
+              </HiddenSpan>
+              <CloseIcon name="close" />
+            </CloseButton >
+          </FocusLock>
         </Overlay>
       </CSSTransition>
     ), document.body);

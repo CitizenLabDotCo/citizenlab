@@ -1,4 +1,6 @@
 import React, { memo, useState, useCallback, useEffect, MouseEvent } from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // graphql
 import { useQuery } from '@apollo/react-hooks';
@@ -9,6 +11,9 @@ import Tabs, { ITabItem } from 'components/UI/Tabs';
 import ProjectTemplateCards, { TEMPLATES_QUERY } from './ProjectTemplateCards';
 import AdminProjectEditGeneral  from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './styles';
+
+// resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -140,11 +145,17 @@ const StyledTabs = styled(Tabs)`
   margin-bottom: 20px;
 `;
 
-interface Props {
+interface InputProps {
   className?: string;
 }
 
-const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
+interface DataProps {
+  tenant: GetTenantChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+const CreateProject = memo<Props & InjectedIntlProps>(({ tenant, className, intl }) => {
 
   const fromATemplateText = intl.formatMessage(messages.fromATemplate);
   const fromScratchText = intl.formatMessage(messages.fromScratch);
@@ -156,6 +167,9 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     icon: 'scratch'
   }];
 
+  const locales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : null;
+  const organizationTypes = !isNilOrError(tenant) ? tenant.attributes.settings.core.organization_type : null;
+
   const [expanded, setExpanded] = useState(false);
   const [hasCollapseAnimation, setHasCollapseAnimation] = useState(true);
   const [selectedTab, setSelectedTab] = useState(fromATemplateText);
@@ -164,6 +178,8 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   // already loaded when expanding the 'create project' section
   useQuery(TEMPLATES_QUERY, {
     variables: {
+      locales,
+      organizationTypes,
       departments: null,
       purposes: null,
       participationLevels: null,
@@ -236,4 +252,14 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   );
 });
 
-export default injectIntl(CreateProject);
+const CreateProjectWithHoC = injectIntl(CreateProject);
+
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <CreateProjectWithHoC {...inputProps} {...dataProps} />}
+  </Data>
+);

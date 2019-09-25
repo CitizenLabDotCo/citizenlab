@@ -710,23 +710,23 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         </CSSTransition>
 
         <FeatureFlag name="ideaflow_social_sharing">
-            <Modal
-              opened={!!ideaIdForSocialSharing}
-              close={this.closeIdeaSocialSharingModal}
-              hasSkipButton={true}
-              skipText={<FormattedMessage {...messages.skipSharing} />}
-              label={formatMessage(messages.modalShareLabel)}
-            >
-              {ideaIdForSocialSharing &&
-                <SharingModalContent
-                  postType="idea"
-                  postId={ideaIdForSocialSharing}
-                  title={formatMessage(messages.shareTitle)}
-                  subtitle={formatMessage(messages.shareSubtitle)}
-                />
-              }
-            </Modal>
-          </FeatureFlag>
+          <Modal
+            opened={!!ideaIdForSocialSharing}
+            close={this.closeIdeaSocialSharingModal}
+            hasSkipButton={true}
+            skipText={<FormattedMessage {...messages.skipSharing} />}
+            label={formatMessage(messages.modalShareLabel)}
+          >
+            {ideaIdForSocialSharing &&
+              <SharingModalContent
+                postType="idea"
+                postId={ideaIdForSocialSharing}
+                title={formatMessage(messages.shareTitle)}
+                subtitle={formatMessage(messages.shareSubtitle)}
+              />
+            }
+          </Modal>
+        </FeatureFlag>
       </>
     );
   }
