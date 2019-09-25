@@ -64,9 +64,9 @@ const Data = adopt<DataProps>({
   locale: <GetLocale />,
 });
 
-const WrappedSignUpPageMeta = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataprops => <SignUpPageMetaWithHoc {...inputProps} {...dataprops} />}
+const WrappedSignUpPageMeta = () => (
+  <Data>
+    {dataprops => <SignUpPageMetaWithHoc {...dataprops} />}
   </Data>
 );
 
