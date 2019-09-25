@@ -1,0 +1,381 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checkbox UI component renders correctly when unchecked 1`] = `
+.c0:not(.hasLabel) {
+  -webkit-flex: 0 0;
+  -ms-flex: 0 0;
+  flex: 0 0;
+}
+
+.c0.hasLabel {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c1 {
+  position: relative;
+  -webkit-flex: 0 0 22px;
+  -ms-flex: 0 0 22px;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  color: #fff;
+  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  border: solid 1px #aaa;
+  border-radius: 3px;
+  background: #fff;
+  border-color: #aaa;
+  box-shadow: inset 0px 1px 1px rgba(0,0,0,0.15);
+}
+
+.c1.focused {
+  outline: rgb(59,153,252) solid 2px;
+}
+
+.c1:hover {
+  border-color: #333;
+}
+
+.c2[type='checkbox'] {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  -webkit-clip: rect(1px 1px 1px 1px);
+  clip: rect(1px 1px 1px 1px);
+  -webkit-clip: rect(1px,1px,1px,1px);
+  clip: rect(1px,1px,1px,1px);
+}
+
+.c3 {
+  color: #596B7A;
+  font-size: 16px;
+  padding: 5px 0 5px 10px;
+  cursor: pointer;
+}
+
+<ThemeProvider
+  theme={
+    Object {
+      "bannerWidth": 1340,
+      "borderRadius": "3px",
+      "colorMain": "#ef0071",
+      "colorSecondary": "#f76901",
+      "colorText": "#e68f51",
+      "colors": Object {
+        "adminBackground": "#F0F3F4",
+        "adminBorder": "#EAEAEA",
+        "adminContentBackground": "#fff",
+        "adminDarkestBackground": "rgba(0, 0, 0, 0.75)",
+        "adminLightText": "rgba(255, 255, 255, 0.8)",
+        "adminMenuBackground": "#003349",
+        "adminOrangeIcons": "#FF672F",
+        "adminSecondaryTextColor": "#596B7A",
+        "adminSeparation": "#EAEAEA",
+        "adminTextColor": "#044D6C",
+        "background": "#f4f4f5",
+        "clBlue": "#008292",
+        "clBlueDark": "#147985",
+        "clBlueDarkBg": "#d3ecf0",
+        "clBlueDarker": "#0A5159",
+        "clBlueDarkest": "#02282D",
+        "clBlueLight": "#40B8C5",
+        "clBlueLighter": "#80CFD8",
+        "clBlueLightest": "#BEE7EB",
+        "clDropdownHoverBackground": "#e9e9e9",
+        "clGreen": "#04884C",
+        "clGreenSuccess": "#008040",
+        "clGreenSuccessBackground": "#e4f7ef",
+        "clGreyOnGreyBackground": "#707070",
+        "clIconAccent": "#01A1B1",
+        "clIconBackground": "rgba(1, 161, 177, 0.07)",
+        "clIconPrimary": "#00577C",
+        "clIconSecondary": "#84939E",
+        "clRed": "#E52516",
+        "clRed2": "#FC3C2D",
+        "clRedError": "#D61607",
+        "clRedErrorBackground": "#fde9e8",
+        "disabledPrimaryButtonBg": "#d0d0d0",
+        "draftYellow": "#8C680D",
+        "emailBg": "#e6ebec",
+        "emailText": "#004d6c",
+        "facebook": "#3b5998",
+        "facebookMessenger": "#0084ff",
+        "label": "#596B7A",
+        "lightGreyishBlue": "#EBEDEF",
+        "mediumGrey": "#BDBDBD",
+        "placeholder": "#aaa",
+        "placeholderBg": "#CFD6DB",
+        "popoverDarkBg": "#2D2D2D",
+        "popoverDarkFg": "#CBCBCB",
+        "secondaryText": "#84939E",
+        "separation": "#e0e0e0",
+        "text": "#333",
+        "twitter": "#1ea4f2",
+      },
+      "fontFamily": "larsseit",
+      "fontSizes": Object {
+        "base": 16,
+        "large": 18,
+        "medium": 17,
+        "small": 14,
+        "xl": 21,
+        "xs": 12,
+        "xxl": 25,
+        "xxxl": 30,
+        "xxxxl": 34,
+        "xxxxxl": 42,
+      },
+      "maxPageWidth": 952,
+      "menuHeight": 78,
+      "menuStyle": "light",
+      "mobileMenuHeight": 72,
+      "mobileTopBarHeight": 66,
+      "pageWidth": 1150,
+      "textWidth": 720,
+    }
+  }
+>
+  <Checkbox
+    checked={false}
+    label="test"
+    onChange={[MockFunction]}
+    size="22px"
+  >
+    <AccessibleCheckbox__Container
+      className=" hasLabel"
+    >
+      <StyledComponent
+        className=" hasLabel"
+        forwardedComponent={
+          Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "attrs": Array [],
+            "componentStyle": ComponentStyle {
+              "componentId": "AccessibleCheckbox__Container-sc-1ucm9ea-0",
+              "isStatic": false,
+              "lastClassName": "c0",
+              "rules": Array [
+                "&:not(.hasLabel){flex:0 0 ",
+                [Function],
+                ";width:",
+                [Function],
+                ";height:",
+                [Function],
+                ";}&.hasLabel{display:flex;align-items:center;}",
+              ],
+            },
+            "displayName": "AccessibleCheckbox__Container",
+            "foldedComponentIds": Array [],
+            "render": [Function],
+            "styledComponentId": "AccessibleCheckbox__Container-sc-1ucm9ea-0",
+            "target": "div",
+            "toString": [Function],
+            "warnTooManyClasses": [Function],
+            "withComponent": [Function],
+          }
+        }
+        forwardedRef={null}
+      >
+        <div
+          className=" hasLabel c0"
+        >
+          <AccessibleCheckbox__InputWrapper
+            checked={false}
+            className=""
+            onClick={[Function]}
+            size="22px"
+          >
+            <StyledComponent
+              checked={false}
+              className=""
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "AccessibleCheckbox__InputWrapper-sc-1ucm9ea-1",
+                    "isStatic": false,
+                    "lastClassName": "c1",
+                    "rules": Array [
+                      "position:relative;flex:0 0 ",
+                      [Function],
+                      ";width:",
+                      [Function],
+                      ";height:",
+                      [Function],
+                      ";color:#fff;text-align:center;display:flex;align-items:center;justify-content:center;cursor:pointer;border:solid 1px #aaa;border-radius:",
+                      [Function],
+                      ";background:",
+                      [Function],
+                      ";border-color:",
+                      [Function],
+                      ";box-shadow:inset 0px 1px 1px rgba(0,0,0,0.15);&.focused{outline:rgb(59,153,252) solid 2px;}&:hover{border-color:",
+                      [Function],
+                      ";}",
+                    ],
+                  },
+                  "displayName": "AccessibleCheckbox__InputWrapper",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "AccessibleCheckbox__InputWrapper-sc-1ucm9ea-1",
+                  "target": "div",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
+              onClick={[Function]}
+              size="22px"
+            >
+              <div
+                checked={false}
+                className="c1"
+                onClick={[Function]}
+                size="22px"
+              >
+                <AccessibleCheckbox__Input
+                  aria-checked={false}
+                  className="e2e-checkbox"
+                  defaultChecked={false}
+                  id="checkbox"
+                  onBlur={[Function]}
+                  onFocus={[Function]}
+                  type="checkbox"
+                >
+                  <StyledComponent
+                    aria-checked={false}
+                    className="e2e-checkbox"
+                    defaultChecked={false}
+                    forwardedComponent={
+                      Object {
+                        "$$typeof": Symbol(react.forward_ref),
+                        "attrs": Array [],
+                        "componentStyle": ComponentStyle {
+                          "componentId": "AccessibleCheckbox__Input-sc-1ucm9ea-2",
+                          "isStatic": true,
+                          "lastClassName": "c2",
+                          "rules": Array [
+                            "&[type='checkbox']{position:absolute !important;height:1px;width:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);}",
+                          ],
+                        },
+                        "displayName": "AccessibleCheckbox__Input",
+                        "foldedComponentIds": Array [],
+                        "render": [Function],
+                        "styledComponentId": "AccessibleCheckbox__Input-sc-1ucm9ea-2",
+                        "target": "input",
+                        "toString": [Function],
+                        "warnTooManyClasses": [Function],
+                        "withComponent": [Function],
+                      }
+                    }
+                    forwardedRef={
+                      Object {
+                        "current": .c0[type='checkbox'] {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  -webkit-clip: rect(1px 1px 1px 1px);
+  clip: rect(1px 1px 1px 1px);
+  -webkit-clip: rect(1px,1px,1px,1px);
+  clip: rect(1px,1px,1px,1px);
+}
+
+<input
+                          aria-checked="false"
+                          class="e2e-checkbox c0"
+                          id="checkbox"
+                          type="checkbox"
+                        />,
+                      }
+                    }
+                    id="checkbox"
+                    onBlur={[Function]}
+                    onFocus={[Function]}
+                    type="checkbox"
+                  >
+                    <input
+                      aria-checked={false}
+                      className="e2e-checkbox c2"
+                      defaultChecked={false}
+                      id="checkbox"
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      type="checkbox"
+                    />
+                  </StyledComponent>
+                </AccessibleCheckbox__Input>
+              </div>
+            </StyledComponent>
+          </AccessibleCheckbox__InputWrapper>
+          <AccessibleCheckbox__Label
+            htmlFor="checkbox"
+            id="label"
+          >
+            <StyledComponent
+              forwardedComponent={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "attrs": Array [],
+                  "componentStyle": ComponentStyle {
+                    "componentId": "AccessibleCheckbox__Label-sc-1ucm9ea-4",
+                    "isStatic": true,
+                    "lastClassName": "c3",
+                    "rules": Array [
+                      "color:",
+                      "#596B7A",
+                      ";font-size:",
+                      "16",
+                      "px;padding:5px 0 5px 10px;cursor:pointer;",
+                    ],
+                  },
+                  "displayName": "AccessibleCheckbox__Label",
+                  "foldedComponentIds": Array [],
+                  "render": [Function],
+                  "styledComponentId": "AccessibleCheckbox__Label-sc-1ucm9ea-4",
+                  "target": "label",
+                  "toString": [Function],
+                  "warnTooManyClasses": [Function],
+                  "withComponent": [Function],
+                }
+              }
+              forwardedRef={null}
+              htmlFor="checkbox"
+              id="label"
+            >
+              <label
+                className="c3"
+                htmlFor="checkbox"
+                id="label"
+              >
+                test
+              </label>
+            </StyledComponent>
+          </AccessibleCheckbox__Label>
+        </div>
+      </StyledComponent>
+    </AccessibleCheckbox__Container>
+  </Checkbox>
+</ThemeProvider>
+`;
