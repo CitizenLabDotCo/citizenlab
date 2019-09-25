@@ -239,7 +239,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     activeClassName="active"
                     className="e2e-project-process-link"
                   >
-                    <ProjectNavbarIcon name="timeline" />
+                    <ProjectNavbarIcon name="timeline" ariaHidden />
                     <FormattedMessage {...messages.navProcess} />
                   </ProjectNavbarLink>
                 }
@@ -250,7 +250,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   activeClassName="active"
                   className="e2e-project-info-link"
                 >
-                  <InfoIcon name="info" />
+                  <InfoIcon name="info" ariaHidden />
                   <FormattedMessage {...messages.navInformation} />
                 </ProjectNavbarLink>
 
@@ -261,7 +261,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     activeClassName="active"
                     className="e2e-project-ideas-link"
                   >
-                    <ProjectNavbarIcon name="idea2" className="idea" />
+                    <ProjectNavbarIcon name="idea2" className="idea" ariaHidden />
                     <FormattedMessage {...messages.navIdeas} />
                   </ProjectNavbarLink>
                 }
@@ -273,8 +273,20 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     activeClassName="active"
                     className="e2e-project-survey-link"
                   >
-                    <ProjectNavbarIcon name="survey" />
+                    <ProjectNavbarIcon name="survey" ariaHidden />
                     <FormattedMessage {...messages.navSurvey} />
+                  </ProjectNavbarLink>
+                }
+
+                {/* Poll link */}
+                {projectType === 'continuous' && projectMethod === 'poll' &&
+                  <ProjectNavbarLink
+                    to={`/projects/${projectSlug}/poll`}
+                    activeClassName="active"
+                    className="e2e-project-poll-link"
+                  >
+                    <ProjectNavbarIcon name="survey" />
+                    <FormattedMessage {...messages.navPoll} />
                   </ProjectNavbarLink>
                 }
 
@@ -285,7 +297,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     activeClassName="active"
                     className="e2e-project-event-link"
                   >
-                    <ProjectNavbarIcon name="calendar" />
+                    <ProjectNavbarIcon name="calendar" ariaHidden/>
                     <FormattedMessage {...messages.navEvents} />
                   </ProjectNavbarLink>
                 }

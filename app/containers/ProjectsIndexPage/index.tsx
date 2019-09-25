@@ -37,11 +37,13 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
-const PageTitle = styled.h1`
-  color: ${colors.text};
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: normal;
-  font-weight: 500;
+const PageTitle = styled.div`
+  & h1 {
+    color: ${colors.text};
+    font-size: ${fontSizes.xxxxl}px;
+    line-height: normal;
+    font-weight: 500;
+  }
   text-align: center;
   margin: 0;
   padding: 0;
@@ -63,7 +65,7 @@ export default React.memo(() => (
     <Container>
       <StyledContentContainer mode="page">
         <PageTitle>
-          <FormattedMessage {...messages.pageTitle} />
+          <FormattedMessage tagName="h1" {...messages.pageTitle} />
         </PageTitle>
         <ProjectCards
           pageSize={50}

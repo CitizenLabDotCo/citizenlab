@@ -117,7 +117,7 @@ interface DataProps {
   ideaAuthor: GetUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   showVotingDisabled: 'unauthenticated' | 'votingDisabled' | null;
@@ -175,7 +175,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
       !isUndefined(ideaAuthor)
     ) {
       const votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting'] | null = get(idea, 'attributes.action_descriptor.voting', null);
-      const commentingDescriptor: IIdeaData['attributes']['action_descriptor']['commenting'] | null  = get(idea, 'attributes.action_descriptor.commenting', null);
+      const commentingDescriptor: IIdeaData['attributes']['action_descriptor']['commenting'] | null = get(idea, 'attributes.action_descriptor.commenting', null);
       const budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'] | null = get(idea, 'attributes.action_descriptor.budgeting', null);
       const projectId: string | null = get(idea, 'relationships.project.data.id', null);
       const orgName = localize(tenant.attributes.settings.core.organization_name);
@@ -201,21 +201,17 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
           to={`/ideas/${idea.attributes.slug}`}
           imageUrl={ideaImageUrl}
           imageAltText={ideaImageAltText}
-          header={
-            <>
-              {participationMethod === 'budgeting' && ideaBudget &&
-                <IdeaBudget>
-                  <FormattedNumber
-                    value={ideaBudget}
-                    style="currency"
-                    currency={tenantCurrency}
-                    minimumFractionDigits={0}
-                    maximumFractionDigits={0}
-                  />
-                </IdeaBudget>
-              }
-            </>
-          }
+          header={participationMethod === 'budgeting' && ideaBudget ?
+            <IdeaBudget>
+              <FormattedNumber
+                value={ideaBudget}
+                style="currency"
+                currency={tenantCurrency}
+                minimumFractionDigits={0}
+                maximumFractionDigits={0}
+              />
+            </IdeaBudget>
+          : undefined}
           title={ideaTitle}
           body={
             <StyledAuthor

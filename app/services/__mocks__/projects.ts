@@ -5,9 +5,9 @@ export const getMockProject = (id: string, processType: ProcessType, participati
   id,
   type: 'projects',
   attributes: {
-    title_multiloc: `${id} project Title`,
-    description_multiloc: `${id} project description`,
-    description_preview_multiloc: `${id} project description preview`,
+    title_multiloc: { en: `${id} project Title` },
+    description_multiloc: { en: `${id} project description` },
+    description_preview_multiloc: { en: `${id} project description preview` },
     slug: `${id}_slug`,
     header_bg: {
       small: `header${id}ImageUrlSmall`,
@@ -22,7 +22,7 @@ export const getMockProject = (id: string, processType: ProcessType, participati
     updated_at: 'yesterday but later', // should be a real time string
     visible_to: 'public', // 'public' | 'groups' | 'admins' cf real project.ts
     process_type: processType,
-    timeline_active: 'past',
+    timeline_active: 'present',
     participation_method: participationMethod || null,
     posting_enabled: true,
     commenting_enabled: true,
