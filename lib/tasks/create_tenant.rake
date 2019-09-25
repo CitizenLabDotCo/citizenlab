@@ -128,6 +128,10 @@ namespace :cl2_back do
               "image_url": "http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg",
             }
           ]
+        },
+        polls: {
+          enabled: true,
+          allowed: true
         }
       }
     })
