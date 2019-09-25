@@ -1225,13 +1225,9 @@
   "app.containers.IdeasShow.emailSharingSubject": "",
   "app.containers.IdeasShow.idea": "",
   "app.containers.IdeasShow.ideaOgDescription": "",
-<<<<<<< HEAD
-=======
-  "app.containers.IdeasShow.imageAltText": "",
   "app.containers.IdeasShow.invisibleTitleContent": "",
   "app.containers.IdeasShow.invisibleTitleMetaContent": "",
   "app.containers.IdeasShow.invisibleTitleVoteControls": "",
->>>>>>> 202ae434a7b7d4e60da3e01897962279c28f38a7
   "app.containers.IdeasShow.metaOgTitle": "",
   "app.containers.IdeasShow.metaTitle": "",
   "app.containers.IdeasShow.postedIn": "",
