@@ -1,5 +1,38 @@
 # Changelog
 
+## 2019-09-25
+
+### Fixed
+
+- It's again possible to change a ideation/PB phase to something else when it contains no ideas
+- Older browsers no longer crash when scrolling through comments (intersection observer error)
+- Pagination controls are now correctly shown when there's multiple pages of users in the users manager
+- The user count of groups in the users manager no longer includes invitees and matches the data shown
+- Transition of timeline phases now happen at midnight, properly respecting the tenant timezone
+- When looking at the map of an idea or initiative, the map marker is visible again
+- The initiatives overview pages now uses the correct header and text colors
+- The vote control on an initiative is no longer invisible on a tablet screen size
+- The idea page in a budgeting context now shows the idea's budget
+- The assign button on an idea card in a budgeting context behaves as expected when not logged in
+- Project copy in Admin HQ that includes comments no longer fails
+- Changing granular permissions by project moderator no longer fails
+
+### Added
+
+- Polling is now supported as a new participation method in a continuous project or a phase
+  - A poll consists of multiple question with predefined answers
+  - Users can only submit a poll once
+  - Taking a poll can be restricted to certain groups, using granular permissions
+  - The poll results can be exported to excel from the project settings
+- It's now possible to disable Google Analytics, Google Tag Manager, Facebook Pixel and AdWords for specific tenants through Admin HQ
+
+### Changed
+
+- Large amount of copy improvements throughout to improve consistency and experience
+- The ideas overview page is no longer enabled by default for new tenants
+- The built-in 'Open idea project' can now be deleted in the project admin
+
+
 ## 2019-08-30
 
 ### Fixed
