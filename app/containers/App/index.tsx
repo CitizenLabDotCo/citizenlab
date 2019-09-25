@@ -12,7 +12,7 @@ import GlobalStyle from 'global-styles';
 import { appLocalesMomentPairs, GRAPHQL_PATH } from 'containers/App/constants';
 
 // graphql
-import { ApolloClient, InMemoryCache, HttpLink } from 'apollo-boost';
+import { ApolloClient, ApolloLink, InMemoryCache, HttpLink } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 
 // context
@@ -44,6 +44,7 @@ import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+import { getJwt } from 'utils/auth/jwt';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
@@ -312,8 +313,25 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 const AppWithHoC = withRouter(App);
 
 const cache = new InMemoryCache();
-const link = new HttpLink({ uri: GRAPHQL_PATH });
-const client = new ApolloClient({ cache, link });
+
+const httpLink = new HttpLink({ uri: GRAPHQL_PATH });
+
+const authLink = new ApolloLink((operation, forward) => {
+  const jwt = getJwt();
+
+  operation.setContext({
+    headers: {
+      authorization: jwt ? `Bearer ${jwt}` : ''
+    }
+  });
+
+  return forward(operation);
+});
+
+const client = new ApolloClient({
+  cache,
+  link: authLink.concat(httpLink)
+});
 
 export default (props: Props) => (
   <ApolloProvider client={client}>

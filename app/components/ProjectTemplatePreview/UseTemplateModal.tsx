@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import Button from 'components/UI/Button';
-import ProjectTemplatePreview from './ProjectTemplatePreview';
+import Modal from 'components/UI/Modal';
 
 // graphql
 import { gql } from 'apollo-boost';
@@ -24,18 +24,9 @@ import styled from 'styled-components';
 // typings
 import { Multiloc } from 'typings';
 
-const Container = styled.div`
+const Footer = styled.div`
   width: 100%;
-  max-width: 1050px;
-  margin-bottom: 60px;
-`;
-
-const AdminHeader = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 30px;
-  margin-left: -20px;
 `;
 
 export interface Props {
@@ -96,20 +87,30 @@ const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(({ params,
     });
   }, []);
 
-  if (templateId) {
-    return (
-      <Container className={className || ''}>
-        <AdminHeader>
-          {goBack
-            ? <Button style="text" icon="arrow-back" onClick={onGoBack}><FormattedMessage {...messages.goBack} /></Button>
-            : <Button style="text" icon="list" onClick={onGoBack}><FormattedMessage {...messages.seeMoreTemplates} /></Button>
-          }
-          <Button onClick={onUseTemplate} style="admin-dark"><FormattedMessage {...messages.useTemplate} /></Button>
-        </AdminHeader>
-        <ProjectTemplatePreview projectTemplateId={templateId} />
-      </Container>
-    );
-  }
+  // if (templateId) {
+  //   return (
+  //     <Modal
+  //       width="500px"
+  //       opened={opened}
+  //       close={this.closeFeedbackModalCancel}
+  //       className="e2e-feedback-modal"
+  //       header={<FormattedMessage {...messages.feedbackModalTitle} />}
+  //       footer={
+  //         <Footer>
+  //           <Button style="secondary" onClick={useTemplate}>
+  //             <FormattedMessage {...messages.createProject} />
+  //           </Button>
+  //         </Footer>
+  //       }
+  //     >
+  //       <ShortFeedbackForm
+  //         closeModal={this.closeFeedbackModalSuccess}
+  //         submitting={this.handleFeedbackOnSubmit}
+  //         successfullySubmitted={this.handleFeedbackSubmitted}
+  //       />
+  //     </Modal>
+  //   );
+  // }
 
   return null;
 });

@@ -509,7 +509,6 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
               opened={feedbackModalOpen}
               close={this.closeFeedbackModalCancel}
               className="e2e-feedback-modal"
-              closeOnClickOutside={false}
               header={<FormattedMessage {...messages.feedbackModalTitle} />}
               footer={
                 <ShortFeedbackFormModalFooter>

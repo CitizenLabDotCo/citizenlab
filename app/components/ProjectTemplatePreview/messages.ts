@@ -38,5 +38,9 @@ export default defineMessages({
   useTemplate: {
     id: 'app.components.ProjectTemplatePreview.useTemplate',
     defaultMessage: 'Use template',
-  }
+  },
+  createProject: {
+    id: 'app.components.ProjectTemplatePreview.createProject',
+    defaultMessage: 'Create project',
+  },
 });

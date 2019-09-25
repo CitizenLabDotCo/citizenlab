@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 
-// Events
+// utils
 import eventEmitter from 'utils/eventEmitter';
 
 // components

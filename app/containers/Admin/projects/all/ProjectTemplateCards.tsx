@@ -1,9 +1,14 @@
 import React, { memo, useCallback, useState } from 'react';
+import { adopt } from 'react-adopt';
 import { get, isEmpty } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // graphql
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
+
+// resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // components
 import ProjectTemplateCard from './ProjectTemplateCard';
@@ -67,9 +72,15 @@ const LoadMoreButtonWrapper = styled.div`
 
 const LoadMoreButton = styled(Button)``;
 
-interface Props {
+interface InputProps {
   className?: string;
 }
+
+interface DataProps {
+  tenant: GetTenantChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 export const TEMPLATES_QUERY = gql`
   query PublishedProjectTemplatesQuery(
@@ -77,7 +88,9 @@ export const TEMPLATES_QUERY = gql`
     $departments: [ID!],
     $purposes: [ID!],
     $participationLevels: [ID!],
-    $search: String
+    $search: String,
+    $locales: [String!],
+    $organizationTypes: [String!]
   ) {
     publishedProjectTemplates(
       first: 6,
@@ -85,7 +98,9 @@ export const TEMPLATES_QUERY = gql`
       departments: $departments,
       purposes: $purposes,
       participationLevels: $participationLevels,
-      search: $search
+      search: $search,
+      locales: $locales,
+      organizationTypes: $organizationTypes
     ) {
       edges {
         node {
@@ -108,10 +123,13 @@ export const TEMPLATES_QUERY = gql`
   }
 `;
 
-const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className }) => {
+const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className, tenant }) => {
 
   const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
   const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
+
+  const locales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : null;
+  const organizationTypes = !isNilOrError(tenant) ? tenant.attributes.settings.core.organization_type : null;
 
   const [departments, setDepartments] = useState<string[] | null>(null);
   const [purposes, setPurposes] = useState<string[] | null>(null);
@@ -125,6 +143,8 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
       purposes,
       participationLevels,
       search,
+      locales,
+      organizationTypes,
       cursor: null,
     },
   });
@@ -156,6 +176,8 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
         purposes,
         participationLevels,
         search,
+        locales,
+        organizationTypes,
         cursor: templates.pageInfo.endCursor
       },
       updateQuery: (previousResult, { fetchMoreResult }: { fetchMoreResult: any }) => {
@@ -231,4 +253,14 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
   return null;
 });
 
-export default injectIntl(ProjectTemplateCards);
+const ProjectTemplateCardsWithHoC = injectIntl(ProjectTemplateCards);
+
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ProjectTemplateCardsWithHoC {...inputProps} {...dataProps} />}
+  </Data>
+);
