@@ -264,7 +264,8 @@ export default class Error extends PureComponent<Props, State> {
                               values={{
                                 row: <strong>{row}</strong>,
                                 rows: (rows ? <strong>{rows.join(', ')}</strong> : null),
-                                value: <strong>'{value}'</strong>
+                                value: <strong>'{value}'</strong>,
+                                ideasCount: (error as CLError).ideas_count // again with union types...
                               }}
                             />
                           </ErrorListItem>
@@ -275,6 +276,9 @@ export default class Error extends PureComponent<Props, State> {
                         <ErrorListItem key={index} className={`${apiErrors.length > 1 && 'isList'}`}>
                           <FormattedMessage
                             {...errorMessage}
+                            values={{
+                              ideasCount: (error as CLError).ideas_count
+                            }}
                           />
                         </ErrorListItem>
                       );

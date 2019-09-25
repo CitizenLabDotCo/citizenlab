@@ -53,7 +53,7 @@ const Container: any = styled.div`
   `}
 `;
 
-const FooterBanner: any = styled.div`
+const FooterBanner = styled.div`
   background: ${({ theme }) => theme.colorMain};
   width: 100%;
   min-height: 300px;
@@ -94,17 +94,23 @@ const Content = styled.div`
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  padding-bottom: 10px;
-`;
-
-const ProjectsStyledContentContainer: any = styled(StyledContentContainer)`
-  padding-bottom: 40px;
   background: ${colors.background};
   border-bottom: solid 1px #eaeaea;
+`;
+
+const ProjectSection = styled.div`
+  width: 100%;
+  padding-top: 40px;
+  padding-bottom: 80px;
 
   ${media.smallerThanMinTablet`
-    padding-bottom: 25px;
+    padding-bottom: 60px;
   `}
+`;
+
+const SectionContainer = styled.section`
+  width: 100%;
+  margin-top: 10px;
 `;
 
 const CustomSectionContentContainer = styled(ContentContainer)`
@@ -122,29 +128,9 @@ const CustomSectionContentContainer = styled(ContentContainer)`
   `}
 `;
 
-const Section = styled.div`
-  width: 100%;
-  padding-top: 100px;
-  padding-bottom: 110px;
-
-  ${media.smallerThanMinTablet`
-    padding-top: 60px;
-    padding-bottom: 60px;
-  `}
-`;
-
-const ProjectSection = styled(Section)`
-  padding-top: 65px;
-  padding-bottom: 100px;
-
-  ${media.smallerThanMinTablet`
-    padding-top: 40px;
-  `}
-`;
-
-const SectionContainer = styled.section`
-  width: 100%;
-  margin-top: 10px;
+const StyledInitiativesCTABox = styled(InitiativesCTABox)`
+  padding-top: 10px;
+  padding-bottom: 40px;
 `;
 
 export interface InputProps {
@@ -203,7 +189,7 @@ class LandingPage extends PureComponent<Props, State> {
             {authUser ? <SignedInHeader /> : <SignedOutHeader />}
 
             <Content>
-              <ProjectsStyledContentContainer mode="page">
+              <StyledContentContainer mode="page">
                 <ProjectSection id="e2e-landing-page-project-section">
                   <SectionContainer>
                     <ProjectCards
@@ -217,9 +203,9 @@ class LandingPage extends PureComponent<Props, State> {
                   </SectionContainer>
                 </ProjectSection>
                 <FeatureFlag name="initiatives">
-                  <InitiativesCTABox />
+                  <StyledInitiativesCTABox />
                 </FeatureFlag>
-              </ProjectsStyledContentContainer>
+              </StyledContentContainer>
 
               {showCustomSection &&
                 <CustomSectionContentContainer>

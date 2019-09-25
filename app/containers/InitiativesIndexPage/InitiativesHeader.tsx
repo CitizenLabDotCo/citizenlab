@@ -23,7 +23,6 @@ import messages from './messages';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
-import { lighten } from 'polished';
 import T from 'components/T';
 
 const illustrationSrc: string = require('./initiativesHeaderImage.png');
@@ -67,13 +66,13 @@ const HeaderContent = styled.div`
   z-index: 1;
 `;
 
-const HeaderTitle: any = styled.h1`
+const HeaderTitle = styled.h1`
   width: 100%;
   max-width: 600px;
-  color: ${({ theme }) => theme.colorMain};
-  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || (fontSizes.xxxl + 1)}px;
-  line-height: normal;
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
+  line-height: normal;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -81,9 +80,6 @@ const HeaderTitle: any = styled.h1`
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxxl}px;
   `}
-`;
-const ColoredText = styled.span`
-  color: ${({ theme }) => lighten(.3, theme.colorMain)};
 `;
 
 const Bold = styled.span`
@@ -205,7 +201,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
             <HeaderTitle>
               <FormattedMessage
                 {...messages.header}
-                values={{ styledOrgName: <ColoredText><T value={tenant.attributes.settings.core.organization_name} /></ColoredText> }}
+                values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
               />
             </HeaderTitle>
 

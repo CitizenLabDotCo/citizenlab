@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
-import { get, isString } from 'lodash-es';
+import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styles
@@ -20,7 +20,7 @@ import Link from 'utils/cl-router/Link';
 
 const Name: any = styled.span<{color?: string}>`
   color: ${({ color, theme }) => color || theme.colorText};
-  font-weight: ${({ emphasize }: any) => emphasize ? '600' : 'normal'};
+  font-weight: ${({ emphasize }: any) => emphasize ? '500' : 'normal'};
   text-decoration: none;
   hyphens: auto;
 
@@ -63,11 +63,10 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-const UserName = React.memo<Props>(({ user, className, hideLastName, linkToProfile, emphasize, canModerate, color }) => {
+const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, emphasize, canModerate, color }) => {
   if (!isNilOrError(user)) {
-    // Make sure to have a fall-back for both null and undefined
-    const firstName = isString(get(user, 'attributes.first_name')) ? get(user, 'attributes.first_name') : '';
-    const lastName = isString(get(user, 'attributes.last_name')) ? get(user, 'attributes.last_name') : '';
+    const firstName = get(user, 'attributes.first_name', '');
+    const lastName = get(user, 'attributes.last_name', '');
     const nameComponent = (
       <Name
         emphasize={emphasize}

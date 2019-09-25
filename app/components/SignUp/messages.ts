@@ -85,53 +85,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.noValidPasswordError',
     defaultMessage: 'The password must be at least 8 characters long',
   },
-  yearOfBirthLabel: {
-    id: 'app.containers.SignUp.yearOfBirthLabel',
-    defaultMessage: 'Year of birth',
-  },
-  yearOfBirthPlaceholder: {
-    id: 'app.containers.SignUp.yearOfBirthPlaceholder',
-    defaultMessage: 'Select your year of birth',
-  },
-  genderLabel: {
-    id: 'app.containers.SignUp.genderLabel',
-    defaultMessage: 'Gender',
-  },
-  genderPlaceholder: {
-    id: 'app.containers.SignUp.genderPlaceholder',
-    defaultMessage: 'Select your gender',
-  },
-  male: {
-    id: 'app.containers.SignUp.male',
-    defaultMessage: 'Male',
-  },
-  female: {
-    id: 'app.containers.SignUp.female',
-    defaultMessage: 'Female',
-  },
-  unspecified: {
-    id: 'app.containers.SignUp.unspecified',
-    defaultMessage: 'Unspecified',
-  },
-  localeLabel: {
-    id: 'app.containers.SignUp.localeLabel',
-    defaultMessage: 'Language',
-  },
-  localePlaceholder: {
-    id: 'app.containers.SignUp.localePlaceholder',
-    defaultMessage: 'Select your language',
-  },
+
   noValidLocaleError: {
     id: 'app.containers.SignUp.noValidLocaleError',
     defaultMessage: 'Language not supported',
-  },
-  areaLabel: {
-    id: 'app.containers.SignUp.areaLabel',
-    defaultMessage: 'Area',
-  },
-  areaPlaceholder: {
-    id: 'app.containers.SignUp.areaPlaceholder',
-    defaultMessage: 'Select the area you live in',
   },
   continue: {
     id: 'app.containers.SignUp.continue',
