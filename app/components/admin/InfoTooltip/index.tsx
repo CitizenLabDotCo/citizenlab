@@ -29,16 +29,21 @@ interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
 }
 
 const Container = styled.div`
-  width: 18px;
-  height: 18px;
-  margin-top: 3px;
+  display: inline-block;
+  height: 16px;
+`;
+
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const StyledIcon = styled(Icon)<({ color?: string })>`
-  height: 16px;
   width: 16px;
+  height: 16px;
   cursor: pointer;
   fill: ${({ color }) => color ? color : colors.label};
+  transform: translateY(2px);
 
   &:hover {
     fill: ${({ color }) => color ? darken(.2, color) : darken(.2, colors.label)};
@@ -46,11 +51,11 @@ const StyledIcon = styled(Icon)<({ color?: string })>`
 `;
 
 const TooltipWrapper = styled.div<{ pxSize: 500 | 300 | 200 | 400 }>`
-  padding: 15px;
+  padding: 12px;
   min-width: ${(props: any) => props.pxSize}px;
   font-size: ${fontSizes.small}px;
   font-weight: 400;
-  line-height: 18px;
+  line-height: normal;
   text-align: left;
 `;
 
@@ -71,7 +76,7 @@ const InfoTooltip = (props: Props) => {
   const pxSize = getPxSize(size);
 
   return (
-    <Container className={className}>
+    <Container className={`${className} infoTooltip`}>
       <Tooltip
         enabled
         content={(
@@ -84,7 +89,9 @@ const InfoTooltip = (props: Props) => {
         className={className}
         openDelay={openDelay}
       >
-        {children || <StyledIcon name="info3" />}
+        <IconWrapper>
+          {children || <StyledIcon name="info3" className="infoTooltipIcon" />}
+        </IconWrapper>
       </Tooltip >
     </Container>
   );

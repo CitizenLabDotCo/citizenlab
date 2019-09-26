@@ -3,7 +3,7 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 // libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
 
@@ -60,6 +60,7 @@ interface Props {
   value: moment.Moment | null;
   onChange: (arg: moment.Moment | null) => void;
   openOnLeft?: boolean;
+  className?: string;
 }
 
 interface State {
@@ -67,7 +68,7 @@ interface State {
   selectedDate: moment.Moment | null;
 }
 
-export default class DateInput extends React.PureComponent<Props, State> {
+export default class DateInput extends PureComponent<Props, State> {
   constructor (props: Props) {
     super(props);
     this.state = {

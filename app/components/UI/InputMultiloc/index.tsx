@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { get } from 'lodash-es';
 
@@ -55,7 +55,7 @@ type State = {
   currentTenant: ITenant | null;
 };
 
-export default class InputMultiloc extends React.PureComponent<Props, State> {
+export default class InputMultiloc extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -105,6 +105,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
         const value = get(valueMultiloc, [shownLocale], null);
         const error = get(errorMultiloc, [shownLocale], null);
         const id = this.props.id && `${this.props.id}-${shownLocale}`;
+
         return (
           <InputWrapper>
             {label &&

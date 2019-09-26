@@ -1,10 +1,11 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Button from 'components/UI/Button';
+import UseTemplateModal from 'components/ProjectTemplatePreview/UseTemplateModal';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -107,13 +108,37 @@ interface Props {
 
 const ProjectTemplateCard = memo<Props>(({ projectTemplateId, imageUrl, title, body, className }) => {
 
-  const handleUseTemplateOnClick = useCallback(() => {
-    // empty
-  }, []);
+  const [modalOpened, setModalOpened] = useState<boolean>(false);
 
-  const handleMoreDetailsOnClick = useCallback(() => {
+  const onMoreDetailsBtnClick = useCallback(() => {
     eventEmitter.emit<string>('ProjectTemplateCard', 'ProjectTemplateCardClicked', projectTemplateId);
   }, []);
+
+  const onOpenModal = useCallback(() => {
+    setModalOpened(true);
+  }, []);
+
+  const onCloseModal = useCallback(() => {
+    setModalOpened(false);
+  }, []);
+
+  // const onFocus = () => {
+  //   console.log('focus');
+  // };
+
+  // const onBlur = () => {
+  //   console.log('blur');
+  // };
+
+  // useEffect(() => {
+  //   window.addEventListener('focus', onFocus);
+  //   window.addEventListener('blur', onBlur);
+
+  //   return () => {
+  //     window.removeEventListener('focus', onFocus);
+  //     window.removeEventListener('blur', onBlur);
+  //   };
+  // });
 
   return (
     <Container className={`${className} ${imageUrl ? 'hasImage' : ''}`}>
@@ -133,7 +158,7 @@ const ProjectTemplateCard = memo<Props>(({ projectTemplateId, imageUrl, title, b
 
       <Buttons>
         <UseTemplateButton
-          onClick={handleUseTemplateOnClick}
+          onClick={onOpenModal}
           style="secondary"
           fullWidth={true}
           bgColor={darken(0.05, colors.lightGreyishBlue)}
@@ -143,13 +168,19 @@ const ProjectTemplateCard = memo<Props>(({ projectTemplateId, imageUrl, title, b
         </UseTemplateButton>
 
         <MoreDetailsButton
-          onClick={handleMoreDetailsOnClick}
+          onClick={onMoreDetailsBtnClick}
           style="admin-dark"
           fullWidth={true}
         >
           <FormattedMessage {...messages.moreDetails} />
         </MoreDetailsButton>
       </Buttons>
+
+      <UseTemplateModal
+        projectTemplateId={projectTemplateId}
+        opened={modalOpened}
+        close={onCloseModal}
+      />
     </Container>
   );
 });
