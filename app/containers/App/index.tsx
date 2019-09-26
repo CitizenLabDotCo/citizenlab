@@ -283,7 +283,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                     <ConsentManager />
                   </ErrorBoundary>
 
-                  <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                  <InnerContainer className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                     <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
                       <ErrorBoundary>
                         {children}
