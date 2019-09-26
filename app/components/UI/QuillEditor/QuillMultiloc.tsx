@@ -24,20 +24,12 @@ const Container = styled.div``;
 
 const EditorWrapper = styled.div`
   &:not(.last) {
-    margin-bottom: 10px;
+    margin-bottom: 16px;
   }
-`;
-
-const StyledLabel = styled(Label)`
-  display: block;
 `;
 
 const LanguageExtension = styled.span`
   font-weight: 500;
-`;
-
-const LabelTooltip = styled.div`
-  margin-top: 7px;
   display: inline-block;
 `;
 
@@ -80,12 +72,11 @@ class EditorMultiloc extends PureComponent<Props & VanillaProps, State> {
     return (
       <EditorWrapper key={locale} className={`${index === tenantLocales.length - 1 && 'last'}`}>
         {label &&
-          <StyledLabel>{label}
-            {tenantLocales.length > 1 &&
-              <LanguageExtension>{locale.toUpperCase()}</LanguageExtension>
-            }
-            {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
-          </StyledLabel>
+          <Label>
+            {label}
+            {tenantLocales.length > 1 && <LanguageExtension>{locale.toUpperCase()}</LanguageExtension>}
+            {labelTooltip}
+          </Label>
         }
 
         {renderPerLocale && renderPerLocale(locale)}

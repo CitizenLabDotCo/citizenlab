@@ -25,7 +25,8 @@ const TextAreaWrapper = styled.div`
 `;
 
 const StyledLabel = styled(Label)`
-  display: block;
+  /* display: flex;
+  align-items: center; */
 `;
 
 const LanguageExtension = styled.span`
@@ -33,8 +34,8 @@ const LanguageExtension = styled.span`
 `;
 
 const LabelTooltip = styled.div`
-  margin-top: 7px;
-  display: inline-block;
+  /* margin-top: 7px; */
+  /* display: inline-block; */
 `;
 
 export type Props = {

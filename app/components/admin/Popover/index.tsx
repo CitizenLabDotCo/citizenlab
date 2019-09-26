@@ -103,7 +103,7 @@ export default class Popover extends PureComponent<Props> {
     const { className, onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, offset, position } = this.props;
 
     return (
-      <Container className={className}>
+      <Container className={`${className} popover`}>
         {children}
 
         <CSSTransition
