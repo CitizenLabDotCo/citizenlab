@@ -44,7 +44,7 @@ import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.header`
   width: 100%;
   height: ${({ theme }) => theme.menuHeight}px;
   display: flex;
@@ -113,7 +113,7 @@ const Logo = styled.img`
   cursor: pointer;
 `;
 
-const NavigationItems = styled.div`
+const NavigationItems = styled.nav`
   height: 100%;
   display: flex;
   align-items: stretch;
@@ -425,7 +425,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
         }
 
         <Container
-          role="navigation"
           id="navbar"
           className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
         >
