@@ -38,7 +38,7 @@ import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 // typings
 import { Locale } from 'typings';
 
-const Container = styled.div`
+const Container = styled.footer`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -448,7 +448,7 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
       const footerLocale = `footer-city-logo-${locale}`;
 
       return (
-        <Container role="contentinfo" className={this.props['className']} id="hook-footer">
+        <Container className={this.props['className']} id="hook-footer">
           {showCityLogoSection &&
             <Fragment title={formatMessage(messages.iframeTitle)} name={footerLocale}>
               <FirstLine id="hook-footer-logo">
