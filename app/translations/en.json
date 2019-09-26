@@ -11,6 +11,8 @@
   "app.components.AssignBudgetControl.undo": "Undo",
   "app.components.AuthProviderButton.termsAndConditions": "terms and conditions",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} users",
+  "app.components.CityLogoSection.iframeTitle": "More information about {orgName}",
+  "app.components.CityLogoSection.slogan": "{type, select, generic {This website is an initiative from {name}} other {This website is an initiative from the city of {name}}}",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "Commenting on this idea is not possible since it's no longer or not yet in consideration.",
   "app.components.Comments.commentingDisabledInContext": "Commenting on ideas in '{projectName}' is currently disabled.",
   "app.components.Comments.commentingDisabledProjectInactive": "Commenting on this idea is not possible because '{projectName}' is currently not active.",

@@ -11,6 +11,8 @@
   "app.components.AssignBudgetControl.undo": "",
   "app.components.AuthProviderButton.termsAndConditions": "",
   "app.components.AvatarBubbles.numberOfUsers": "",
+  "app.components.CityLogoSection.iframeTitle": "",
+  "app.components.CityLogoSection.slogan": "",
   "app.components.Comments.commentingDisabledIdeaNotInCurrentPhase": "",
   "app.components.Comments.commentingDisabledInContext": "",
   "app.components.Comments.commentingDisabledProjectInactive": "",
