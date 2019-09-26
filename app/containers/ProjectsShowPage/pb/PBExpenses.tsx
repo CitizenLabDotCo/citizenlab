@@ -194,6 +194,7 @@ const Buttons = styled.div`
 
   ${media.smallerThanMinTablet`
     margin-top: 20px;
+    flex-direction: column;
   `}
 `;
 
@@ -218,7 +219,8 @@ const SubmitExpensesButton = styled(Button)`
   margin-left: 10px;
 
   ${media.smallerThanMinTablet`
-    display: none;
+    margin-left: 0px;
+    margin-top: 12px;
   `}
 `;
 
@@ -420,8 +422,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                     <Dropdown
                       top="10px"
                       left={bowser.msie ? '-5px' : 'auto'}
-                      mobileWidth="250px"
-                      mobileLeft="-5px"
+                      mobileWidth="calc(100vw - 80px)"
                       opened={dropdownOpened}
                       onClickOutside={this.toggleExpensesDropdown}
                       content={
