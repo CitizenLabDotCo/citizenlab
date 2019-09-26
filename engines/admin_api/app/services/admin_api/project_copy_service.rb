@@ -222,13 +222,13 @@ module AdminApi
       user_ids = []
       idea_ids = @project.ideas.ids
       user_ids += Idea.where(id: idea_ids).pluck(:author_id)
-      comment_ids = Comment.where(idea_id: idea_ids).ids
+      comment_ids = Comment.where(post_id: idea_ids).ids
       user_ids += Comment.where(id: comment_ids).pluck(:author_id)
       vote_ids = Vote.where(votable_id: [idea_ids + comment_ids]).ids
       user_ids += Vote.where(id: vote_ids).pluck(:user_id)
       participation_context_ids = [@project.id] + @project.phases.ids
       user_ids += Basket.where(participation_context_id: participation_context_ids).pluck(:user_id)
-      user_ids += OfficialFeedback.where(idea_id: idea_ids).pluck(:user_id)
+      user_ids += OfficialFeedback.where(post_id: idea_ids).pluck(:user_id)
 
       User.where(id: user_ids.uniq).map do |u|
         yml_user = if anonymize_users
