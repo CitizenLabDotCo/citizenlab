@@ -38,7 +38,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import { PublicationStatus } from 'resources/GetProjects';
 import FeatureFlag from 'components/FeatureFlag';
 
-const Container: any = styled.div`
+const Container: any = styled.main`
   height: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
