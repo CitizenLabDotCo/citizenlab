@@ -70,7 +70,8 @@ export const SectionField = styled.div`
     -webkit-appearance: none;
     background: #fff;
     border-radius: ${(props: any) => props.theme.borderRadius};
-    border: solid 1px ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
+    // border: solid 1px ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
+    border: solid 1px ${(props: any) => props.error ? props.theme.colors.clRedError : '#888'};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     font-size: ${fontSizes.base}px;
     font-weight: 400;
