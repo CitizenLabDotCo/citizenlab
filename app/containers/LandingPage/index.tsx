@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectCards from 'components/ProjectCards';
-import Footer from 'components/Footer';
+import CityLogoSection from 'components/CityLogoSection';
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
 import SignedOutHeader from './SignedOutHeader';
@@ -240,7 +240,7 @@ class LandingPage extends PureComponent<Props, State> {
                   />
                 </FooterBanner>
               }
-              <Footer />
+              <CityLogoSection />
             </Content>
           </Container>
         </>
