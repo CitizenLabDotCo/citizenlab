@@ -412,6 +412,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                     bgHoverColor="transparent"
                     borderColor={colors.separation}
                     borderThickness="2px"
+                    ariaExpanded={dropdownOpened}
                   >
                     <FormattedMessage {...messages.manageBudget} />
                   </ManageBudgetButton>
