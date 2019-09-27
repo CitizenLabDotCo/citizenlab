@@ -1404,6 +1404,7 @@
   "app.containers.Projects.noUpcomingEvents": "Es sind im Moment keine Veranstaltungen geplant",
   "app.containers.Projects.pastEvents": "Ehemalige Veranstaltungen",
   "app.containers.Projects.project": "{orgName, select, München {Bezirke} other {Projekte}}",
+  "app.containers.Projects.removeItem": "",
   "app.containers.Projects.spentBudget": "Ausgegebenes Budget",
   "app.containers.Projects.startsOn": "Startet am {date}",
   "app.containers.Projects.submitMyExpenses": "Meine Ausgaben einreichen",

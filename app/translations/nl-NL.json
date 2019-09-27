@@ -1404,6 +1404,7 @@
   "app.containers.Projects.noUpcomingEvents": "Er zijn momenteel geen aankomende activiteiten",
   "app.containers.Projects.pastEvents": "Voorbije activiteiten",
   "app.containers.Projects.project": "Project",
+  "app.containers.Projects.removeItem": "",
   "app.containers.Projects.spentBudget": "Uitgegeven bedrag",
   "app.containers.Projects.startsOn": "Begint op {date}",
   "app.containers.Projects.submitMyExpenses": "Bevestig mijn uitgaven",
