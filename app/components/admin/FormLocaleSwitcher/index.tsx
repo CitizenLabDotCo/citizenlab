@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Locale, MultilocFormValues } from 'typings';
 import { adopt } from 'react-adopt';
+import { isEmpty, get } from 'lodash-es';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
@@ -45,7 +46,7 @@ const StyledButton = styled.button`
 `;
 
 interface InputProps {
-  onLocaleChange: (loc: Locale) => () => void;
+  onLocaleChange: (loc: Locale) => void;
   values: MultilocFormValues;
   selectedLocale: Locale;
   className?: string;
@@ -61,28 +62,33 @@ class FormLocaleSwitcher extends PureComponent<Props> {
 
   validatePerLocale = (locale: Locale) => {
     const { values } = this.props;
-    return Object.getOwnPropertyNames(values).every(field =>
-      !!values[field][locale] && values[field][locale] !== '');
+    return Object.getOwnPropertyNames(values).every(field => !isEmpty(get(values, `[${field}][${locale}]`)));
+  }
+
+  handleOnClick = (locale: Locale) => (event: React.MouseEvent<any>) => {
+    event.preventDefault();
+    this.props.onLocaleChange(locale);
   }
 
   render() {
-    const { tenantLocales, onLocaleChange, selectedLocale, className } = this.props;
+    const { tenantLocales, selectedLocale, className } = this.props;
+
+    console.log(this.props.values);
 
     if (!isNilOrError(tenantLocales) && tenantLocales.length > 1) {
       return (
         <Container className={className}>
-          {tenantLocales.map(locale => (
+          {tenantLocales.map((locale: Locale) => (
             <StyledButton
               key={locale}
-              onClick={onLocaleChange(locale)}
+              onClick={this.handleOnClick(locale)}
               type="button"
-              className={`${locale === selectedLocale && 'isSelected'} ${this.validatePerLocale(locale) && 'isComplete'}`}
+              className={`${locale} ${locale === selectedLocale && 'isSelected'} ${this.validatePerLocale(locale) && 'isComplete'}`}
             >
               <Icon name="dot" />
               {locale}
             </StyledButton>
-          ))
-          }
+          ))}
         </Container>
       );
     }

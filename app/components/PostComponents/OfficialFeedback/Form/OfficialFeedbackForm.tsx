@@ -69,7 +69,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
     };
   }
 
-  onLocaleChange = (locale: Locale) => () => {
+  onLocaleChange = (locale: Locale) => {
     this.setState({ selectedLocale: locale });
   }
 

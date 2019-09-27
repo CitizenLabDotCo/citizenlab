@@ -60,7 +60,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
     };
   }
 
-  onLocaleChange = (locale: Locale) => () => {
+  onLocaleChange = (locale: Locale) => {
     this.setState({ selectedLocale: locale });
   }
 

@@ -31,7 +31,7 @@ interface Props {
 }
 
 interface State {
-  shownLocale: Locale;
+  selectedLocale: Locale;
   titleMultiloc: Multiloc;
 }
 
@@ -39,7 +39,7 @@ class FormOptionRow extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      shownLocale: props.locale,
+      selectedLocale: props.locale,
       titleMultiloc: props.titleMultiloc || {}
     };
   }
@@ -52,12 +52,12 @@ class FormOptionRow extends PureComponent<Props, State> {
     }
 
     if (prevProps.locale !== this.props.locale) {
-      this.setState({ shownLocale: this.props.locale });
+      this.setState({ selectedLocale: this.props.locale });
     }
   }
 
-  onChangeLocale = (shownLocale: Locale) => () => {
-    this.setState({ shownLocale });
+  onChangeLocale = (selectedLocale: Locale) => {
+    this.setState({ selectedLocale });
   }
 
   onChangeTitle = (value) => {
@@ -80,7 +80,7 @@ class FormOptionRow extends PureComponent<Props, State> {
   }
 
   render() {
-    const { shownLocale, titleMultiloc } = this.state;
+    const { selectedLocale, titleMultiloc } = this.state;
     const { closeRow } = this.props;
 
     return (
@@ -88,10 +88,10 @@ class FormOptionRow extends PureComponent<Props, State> {
         className="e2e-form-option-row"
       >
         <TextCell>
-          {shownLocale &&
+          {selectedLocale &&
             <FormLocaleSwitcher
               onLocaleChange={this.onChangeLocale}
-              selectedLocale={shownLocale}
+              selectedLocale={selectedLocale}
               values={{ titleMultiloc }}
             />
           }
@@ -102,7 +102,7 @@ class FormOptionRow extends PureComponent<Props, State> {
             valueMultiloc={titleMultiloc}
             type="text"
             onChange={this.onChangeTitle}
-            shownLocale={shownLocale}
+            shownLocale={selectedLocale}
           />
         </TextCell>
 

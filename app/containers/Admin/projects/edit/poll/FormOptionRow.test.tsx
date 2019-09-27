@@ -74,7 +74,7 @@ describe('<FormOptionRow />', () => {
         />
       );
 
-      expect(wrapper.find('InputMultiloc').prop('shownLocale')).toBe('en');
+      expect(wrapper.find('InputMultiloc').prop('selectedLocale')).toBe('en');
       expect(wrapper.find('FormLocaleSwitcher').prop('selectedLocale')).toBe('en');
     });
     it('reacts to locale change', () => {
@@ -87,7 +87,7 @@ describe('<FormOptionRow />', () => {
         />
       );
       wrapper.setProps({ locale: 'fr-BE' });
-      expect(wrapper.find('InputMultiloc').prop('shownLocale')).toBe('fr-BE');
+      expect(wrapper.find('InputMultiloc').prop('selectedLocale')).toBe('fr-BE');
     });
     it('handles changing field locale', () => {
       const wrapper = shallow(
@@ -99,8 +99,8 @@ describe('<FormOptionRow />', () => {
           questionId="questionId"
         />
       );
-      wrapper.find('FormLocaleSwitcher').prop('onLocaleChange')('fr-BE')();
-      expect(wrapper.find('InputMultiloc').prop('shownLocale')).toBe('fr-BE');
+      wrapper.find('.fr-BE').simulate('click');
+      expect(wrapper.find('InputMultiloc').prop('selectedLocale')).toBe('fr-BE');
     });
   });
   describe('handles input of title multiloc', () => {
