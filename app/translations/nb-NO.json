@@ -1404,6 +1404,7 @@
   "app.containers.Projects.noUpcomingEvents": "Det er ingen kommende hendelser for øyeblikket",
   "app.containers.Projects.pastEvents": "Tidligere hendelser",
   "app.containers.Projects.project": "Prosjekt",
+  "app.containers.Projects.removeItem": "",
   "app.containers.Projects.spentBudget": "Brukt budsjett",
   "app.containers.Projects.startsOn": "Starter den {date}",
   "app.containers.Projects.submitMyExpenses": "Send inn mine utgifter",

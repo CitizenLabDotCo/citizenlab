@@ -1404,6 +1404,7 @@
   "app.containers.Projects.noUpcomingEvents": "Il n'y a pas d'événements à venir",
   "app.containers.Projects.pastEvents": "Evénements passés",
   "app.containers.Projects.project": "Projet",
+  "app.containers.Projects.removeItem": "",
   "app.containers.Projects.spentBudget": "Budget dépensé",
   "app.containers.Projects.startsOn": "Commence le {date}",
   "app.containers.Projects.submitMyExpenses": "Soumettre mes dépenses",

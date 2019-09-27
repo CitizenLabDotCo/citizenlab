@@ -1404,6 +1404,7 @@
   "app.containers.Projects.noUpcomingEvents": "Der er ingen kommende begivenheder i øjeblikket",
   "app.containers.Projects.pastEvents": "Tidligere begivenheder",
   "app.containers.Projects.project": "Projekt",
+  "app.containers.Projects.removeItem": "",
   "app.containers.Projects.spentBudget": "Brugt budget",
   "app.containers.Projects.startsOn": "Starter den {date}",
   "app.containers.Projects.submitMyExpenses": "Indsend mine udgifter",

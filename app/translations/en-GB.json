@@ -1404,6 +1404,7 @@
   "app.containers.Projects.noUpcomingEvents": "",
   "app.containers.Projects.pastEvents": "",
   "app.containers.Projects.project": "",
+  "app.containers.Projects.removeItem": "",
   "app.containers.Projects.spentBudget": "",
   "app.containers.Projects.startsOn": "",
   "app.containers.Projects.submitMyExpenses": "",
