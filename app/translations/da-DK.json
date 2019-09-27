@@ -1419,6 +1419,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Desværre har du ikke rettigheder til at tage denne undersøgelse.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "Det er i øjeblikket ikke muligt at tage denne undersøgelse.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Undersøgelsen er ikke længere tilgængelig, da dette projekt ikke længere er aktivt.",
+  "app.containers.SearchInput.removeSearchTerm": "",
   "app.containers.SearchInput.searchAriaLabel": "Søg",
   "app.containers.SearchInput.searchPlaceholder": "Søg",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "Jeg har allerede accepteret {tacLink}",

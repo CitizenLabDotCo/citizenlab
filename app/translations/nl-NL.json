@@ -1419,6 +1419,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Helaas, je hebt geen rechten om deel te nemen aan deze enquête.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "Het is momenteel onmogelijk om deel te nemen aan deze enquête.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "De enquête is niet langer beschikbaar, omdat het project niet langer actief is.",
+  "app.containers.SearchInput.removeSearchTerm": "",
   "app.containers.SearchInput.searchAriaLabel": "Zoeken",
   "app.containers.SearchInput.searchPlaceholder": "Zoeken",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "Ik heb de {tacLink} al geaccepteerd",
