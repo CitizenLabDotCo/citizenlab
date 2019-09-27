@@ -43,4 +43,28 @@ export default defineMessages({
     id: 'app.components.ProjectTemplatePreview.createProject',
     defaultMessage: 'Create project',
   },
+  useTemplateModalTitle: {
+    id: 'app.components.ProjectTemplatePreview.useTemplateModalTitle',
+    defaultMessage: 'Configure your project',
+  },
+  typeProjectName: {
+    id: 'app.components.ProjectTemplatePreview.typeProjectName',
+    defaultMessage: 'Type the name of your project',
+  },
+  projectTitle: {
+    id: 'app.components.ProjectTemplatePreview.projectTitle',
+    defaultMessage: 'Project title',
+  },
+  projectStartDate: {
+    id: 'app.components.ProjectTemplatePreview.projectStartDate',
+    defaultMessage: 'Project start date',
+  },
+  projectTitleError: {
+    id: 'app.components.ProjectTemplatePreview.projectTitleError',
+    defaultMessage: 'Please type a project title',
+  },
+  projectStartDateError: {
+    id: 'app.components.ProjectTemplatePreview.projectStartDateError',
+    defaultMessage: 'Please select a start date for your project',
+  },
 });
