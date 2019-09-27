@@ -1419,6 +1419,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "",
+  "app.containers.SearchInput.removeSearchTerm": "",
   "app.containers.SearchInput.searchAriaLabel": "",
   "app.containers.SearchInput.searchPlaceholder": "",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "",
