@@ -15,7 +15,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetIdeaList, { GetIdeaListChildProps } from 'resources/GetIdeaList';
 
 // styles
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, invisibleA11yText } from 'utils/styleUtils';
 import styled from 'styled-components';
 import { darken } from 'polished';
 
@@ -105,9 +105,8 @@ const IdeaBudget = styled.div`
   text-align: left;
 `;
 
-const RemoveIconWrapper = styled.div`
-  width: 20px;
-  height: 20px;
+const RemoveIconButton = styled.button`
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,6 +121,10 @@ const RemoveIcon = styled(Icon)`
   &:hover {
     fill: ${darken(0.2, colors.clIconSecondary)};
   }
+`;
+
+const ScreenreaderText = styled.span`
+  ${invisibleA11yText}
 `;
 
 interface InputProps {
@@ -204,16 +207,19 @@ class PBBasket extends PureComponent<Props & Tracks, State> {
                 }
               </DropdownListItemContent>
               {!budgetingDisabled &&
-                <RemoveIconWrapper onClick={this.ideaRemovedFromBasket(idea.id)}>
-                  <RemoveIcon name="remove" />
-                </RemoveIconWrapper>
+                <RemoveIconButton onClick={this.ideaRemovedFromBasket(idea.id)}>
+                  <RemoveIcon ariaHidden name="remove" />
+                  <ScreenreaderText>
+                    <FormattedMessage {...messages.removeItem} />
+                  </ScreenreaderText>
+                </RemoveIconButton>
               }
             </DropdownListItem>
           ))}
 
           {isEmpty(ideas) &&
             <Empty>
-              <EmptyIcon height="100%" viewBox="0 0 168 158" fill="none">
+              <EmptyIcon aria-hidden role="img" height="100%" viewBox="0 0 168 158" fill="none">
                 <path d="M168 102.871C168 149.954 114.378 158 67.2 158C20.0218 158 0 105.054 0 57.9712C0 10.888 35.9675 0 83.1458 0C130.324 0 168 55.7872 168 102.871Z" fill="#84939E" fillOpacity="0.07"/>
                 <path d="M93.2643 64.9551H74.738C74.0432 64.9551 73.5801 65.4222 73.5801 66.123C73.5801 66.8237 74.0432 67.2909 74.738 67.2909H93.2643C93.959 67.2909 94.4222 66.8237 94.4222 66.123C94.4222 65.4222 93.959 64.9551 93.2643 64.9551Z" fill="#5C6E7D" fillOpacity="0.5"/>
                 <path d="M73.8111 61.9199C73.8111 62.387 74.2743 62.6206 74.7374 62.6206H93.2637C93.7269 62.6206 94.19 62.387 94.19 61.9199L98.8216 52.5767C99.0532 52.1095 99.0532 51.6423 98.59 51.1752C98.3585 50.9416 97.8953 50.9416 97.4321 51.1752L88.8637 55.3796L84.9269 51.4088C84.4637 50.9416 83.769 50.9416 83.3058 51.4088L79.1374 55.3796L70.569 51.1752C70.1058 50.9416 69.6427 50.9416 69.1795 51.1752C68.7164 51.4088 68.9479 52.1095 69.1795 52.5767L73.8111 61.9199V61.9199Z" fill="#5C6E7D" fillOpacity="0.5"/>
