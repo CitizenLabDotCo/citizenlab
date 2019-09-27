@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import MediaQuery from 'react-responsive';
 import { reportError } from 'utils/loggingUtils';
+import { adopt } from 'react-adopt';
 
 // utils
 import Link from 'utils/cl-router/Link';
@@ -24,6 +25,9 @@ import tracks from './tracks';
 // services
 import { removeUrlLocale } from 'services/locale';
 import { LEGAL_PAGES } from 'services/pages';
+
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // style
 import styled from 'styled-components';
@@ -270,7 +274,11 @@ const ShortFeedbackFormModalFooter = styled.div`
   display: flex;
 `;
 
-interface Props {}
+interface DataProps {
+  locale: GetLocaleChildProps;
+}
+
+interface Props extends DataProps {}
 
 interface State {
   shortFeedbackButtonClicked: boolean;
@@ -301,7 +309,7 @@ class Footer extends PureComponent<Props, State> {
       postProductFeedback({
         question: 'found_what_youre_looking_for?',
         page: removeUrlLocale(location.pathname),
-        locale: this.state.locale || undefined,
+        locale: this.props.locale || undefined,
         answer: 'yes'
       }).catch(err => {
         reportError(err);
@@ -338,7 +346,7 @@ class Footer extends PureComponent<Props, State> {
     postProductFeedback({
       question: 'found_what_youre_looking_for?',
       page: removeUrlLocale(location.pathname),
-      locale: this.state.locale || undefined,
+      locale: this.props.locale || undefined,
       answer: 'no'
     }).catch(err => reportError(err));
   }
@@ -452,4 +460,12 @@ class Footer extends PureComponent<Props, State> {
   }
 }
 
-export default Footer;
+const Data = adopt<Props>({
+  locale: <GetLocale />,
+});
+
+export default () => (
+  <Data>
+    {dataProps => <Footer {...dataProps} />}
+  </Data>
+);
