@@ -31,6 +31,7 @@ const Container = styled.div`
   padding-top: 110px;
   padding-bottom: 130px;
   background: #fff;
+  width: 100%;
 `;
 
 const LogoLink = styled.a`
