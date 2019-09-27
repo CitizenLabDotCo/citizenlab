@@ -22,39 +22,39 @@ interface Props {
 }
 
 interface State {
-  shownLocale: Locale;
+  selectedLocale: Locale;
 }
 
 class FormQuestionRow extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      shownLocale: props.locale
+      selectedLocale: props.locale
     };
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.locale !== this.props.locale) {
-      this.setState({ shownLocale: this.props.locale });
+      this.setState({ selectedLocale: this.props.locale });
     }
   }
 
-  onChangeLocale = (shownLocale: Locale) => () => {
-    this.setState({ shownLocale });
+  onChangeLocale = (selectedLocale: Locale) => {
+    this.setState({ selectedLocale });
   }
 
   render() {
-    const { shownLocale } = this.state;
+    const { selectedLocale } = this.state;
     const { titleMultiloc, onChange, onSave, onCancel } = this.props;
     return (
       <Row
         className="e2e-form-question-row"
       >
         <TextCell>
-          {shownLocale &&
+          {selectedLocale &&
             <FormLocaleSwitcher
               onLocaleChange={this.onChangeLocale}
-              selectedLocale={shownLocale}
+              selectedLocale={selectedLocale}
               values={{ titleMultiloc }}
             />
           }
@@ -64,7 +64,7 @@ class FormQuestionRow extends PureComponent<Props, State> {
             valueMultiloc={titleMultiloc}
             type="text"
             onChange={onChange}
-            shownLocale={shownLocale}
+            shownLocale={selectedLocale}
             autoFocus
           />
         </TextCell>

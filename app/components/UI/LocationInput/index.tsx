@@ -24,12 +24,8 @@ const LocationInputWrapper: any = styled.div`
       opacity: 1;
     }
 
-    &:not(:focus):hover {
-      border-color: #999;
-    }
-
     &:focus {
-      border-color: #000;
+      border-color: #999;
     }
   }
 `;

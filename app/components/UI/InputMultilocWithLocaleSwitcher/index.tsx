@@ -1,126 +1,121 @@
-// import React, { memo, useState, useCallback } from 'react';
-// import { get } from 'lodash-es';
-// import { isNilOrError } from 'utils/helperUtils';
+import React, { memo, useState, useCallback, useEffect } from 'react';
+import { get } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
-// // components
-// import Input from 'components/UI/Input';
-// import Label from 'components/UI/Label';
-// import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+// components
+import Input from 'components/UI/Input';
+import Label from 'components/UI/Label';
+import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 
-// // hooks
-// import useLocale from 'hooks/useLocale';
-// import useTenant from 'hooks/useTenant';
+// hooks
+import useTenant from 'hooks/useTenant';
 
-// // style
-// import styled from 'styled-components';
+// style
+import styled from 'styled-components';
 
-// // typings
-// import { Locale, Multiloc } from 'typings';
+// typings
+import { Locale, Multiloc } from 'typings';
 
-// const Container = styled.div``;
+const Container = styled.div``;
 
-// const LabelWrapper = styled.div`
-//   display: flex;
-// `;
+const LabelWrapper = styled.div`
+  display: flex;
+`;
 
-// const LanguageExtension = styled(Label)`
-//   font-weight: 500;
-// `;
+interface Props {
+  id?: string | undefined;
+  valueMultiloc: Multiloc | null | undefined;
+  label?: string | JSX.Element | null | undefined;
+  onChange?: (arg: Multiloc, locale: Locale) => void;
+  onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
+  type: 'text' | 'email' | 'password' | 'number';
+  placeholder?: string | null | undefined;
+  errorMultiloc?: Multiloc | null;
+  maxCharCount?: number | undefined;
+  disabled?: boolean;
+  ariaLabel?: string;
+  setRef?: (arg: HTMLInputElement) => void | undefined;
+  autoFocus?: boolean;
+  className?: string;
+}
 
-// interface Props {
-//   id?: string | undefined;
-//   valueMultiloc: Multiloc | null | undefined;
-//   label?: string | JSX.Element | null | undefined;
-//   labelTooltip?: JSX.Element;
-//   onChange?: (arg: Multiloc, locale: Locale) => void;
-//   onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
-//   type: 'text' | 'email' | 'password' | 'number';
-//   placeholder?: string | null | undefined;
-//   errorMultiloc?: Multiloc | null;
-//   maxCharCount?: number | undefined;
-//   disabled?: boolean;
-//   shownLocale?: Locale;
-//   ariaLabel?: string;
-//   setRef?: (arg: HTMLInputElement) => void | undefined;
-//   autoFocus?: boolean;
-//   className?: string;
-// }
+const InputMultilocWithLocaleSwitcher = memo<Props>(({
+  id,
+  valueMultiloc,
+  label,
+  onChange,
+  onBlur,
+  type,
+  placeholder,
+  errorMultiloc,
+  maxCharCount,
+  disabled,
+  ariaLabel,
+  setRef,
+  autoFocus,
+  className
+}) => {
 
-// const InputMultilocWithLocaleSwitcher = memo<Props>(({
-//   id,
-//   valueMultiloc,
-//   label,
-//   labelTooltip,
-//   onChange,
-//   onBlur,
-//   type,
-//   placeholder,
-//   errorMultiloc,
-//   maxCharCount,
-//   disabled,
-//   shownLocale,
-//   ariaLabel,
-//   setRef,
-//   autoFocus,
-//   className
-// }) => {
+  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
-//   const locale = useLocale();
-//   const tenant = useTenant();
+  const tenant = useTenant();
+  const tenantLocales = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.locales : null;
 
-//   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(!isNilOrError(locale) ? locale : null);
+  useEffect(() => {
+    setSelectedLocale(tenantLocales && tenantLocales.length > 0 ? tenantLocales[0] : null);
+  }, [tenantLocales]);
 
-//   const handleOnChange = useCallback(() => {
-//     if (onChange && !isNilOrError(locale)) {
-//       onChange({
-//         ...valueMultiloc,
-//         [locale]: value
-//       }, locale);
-//     }
-//   }, []);
+  const handleOnChange = useCallback((value: string) => {
+    if (onChange && !isNilOrError(selectedLocale)) {
+      onChange({
+        ...valueMultiloc,
+        [selectedLocale]: value
+      }, selectedLocale);
+    }
+  }, [valueMultiloc, selectedLocale]);
 
-//   const handleOnBlur = useCallback(() => {
-//     // empty
-//   }, []);
+  const handleOnSelectedLocaleChange = useCallback((newSelectedLocale: Locale) => {
+    setSelectedLocale(newSelectedLocale);
+  }, []);
 
-//   const handleOnSelectedLocaleChange = useCallback((locale: Locale) => {
-//     setSelectedLocale(locale);
-//   }, []);
+  const handleOnBlur = useCallback((event: React.FormEvent<HTMLInputElement>) => {
+    onBlur && onBlur(event);
+  }, []);
 
-//   if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-//     return (
-//       <Container>
-//         <FormLocaleSwitcher
-//           onLocaleChange={handleOnSelectedLocaleChange}
-//           selectedLocale={selectedLocale}
-//           values={{}}
-//         />
+  return (
+    <Container className={className}>
+      {selectedLocale &&
+        <FormLocaleSwitcher
+          onLocaleChange={handleOnSelectedLocaleChange}
+          selectedLocale={selectedLocale}
+          values={{
+            input_field: valueMultiloc as Multiloc
+          }}
+        />
+      }
 
-//         {label &&
-//           <LabelWrapper>
-//             <Label htmlFor={id}>{label}</Label>
-//           </LabelWrapper>
-//         }
+      {label &&
+        <LabelWrapper>
+          <Label htmlFor={id}>{label}</Label>
+        </LabelWrapper>
+      }
 
-//         <Input
-//           setRef={setRef}
-//           id={id}
-//           value={valueMultiloc || null}
-//           type={type}
-//           placeholder={placeholder}
-//           error={errorMultiloc || null}
-//           onChange={handleOnChange}
-//           onBlur={handleOnBlur}
-//           maxCharCount={maxCharCount}
-//           disabled={disabled}
-//           ariaLabel={ariaLabel}
-//           autoFocus={autoFocus}
-//         />
-//       </Container>
-//     );
-//   }
+      <Input
+        setRef={setRef}
+        id={id}
+        value={get(valueMultiloc, `${selectedLocale}`, null)}
+        type={type}
+        placeholder={placeholder}
+        error={get(errorMultiloc, `${selectedLocale}`, null)}
+        onChange={handleOnChange}
+        onBlur={handleOnBlur}
+        maxCharCount={maxCharCount}
+        disabled={disabled}
+        ariaLabel={ariaLabel}
+        autoFocus={autoFocus}
+      />
+    </Container>
+  );
+});
 
-//   return null;
-// });
-
-// export default InputMultilocWithLocaleSwitcher;
+export default InputMultilocWithLocaleSwitcher;
