@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
+import React, { memo, useState, useCallback, useEffect, FormEvent } from 'react';
 import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -18,16 +18,33 @@ import { Locale, Multiloc } from 'typings';
 
 const Container = styled.div``;
 
-const LabelWrapper = styled.div`
+const Wrapper = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+`;
+
+const StyledLabel = styled(Label)`
+  flex: 1;
+  padding-bottom: 0px;
+`;
+
+const Spacer = styled.div`
+  flex: 1;
+`;
+
+const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
+  width: auto;
 `;
 
 interface Props {
   id?: string | undefined;
   valueMultiloc: Multiloc | null | undefined;
   label?: string | JSX.Element | null | undefined;
-  onChange?: (arg: Multiloc, locale: Locale) => void;
-  onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
+  onValueChange?: (value: Multiloc) => void;
+  onSelectedLocaleChange?: (locale: Locale) => void;
+  onBlur?: (event: FormEvent<HTMLInputElement>) => void;
   type: 'text' | 'email' | 'password' | 'number';
   placeholder?: string | null | undefined;
   errorMultiloc?: Multiloc | null;
@@ -43,7 +60,8 @@ const InputMultilocWithLocaleSwitcher = memo<Props>(({
   id,
   valueMultiloc,
   label,
-  onChange,
+  onValueChange,
+  onSelectedLocaleChange,
   onBlur,
   type,
   placeholder,
@@ -62,43 +80,44 @@ const InputMultilocWithLocaleSwitcher = memo<Props>(({
   const tenantLocales = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.locales : null;
 
   useEffect(() => {
-    setSelectedLocale(tenantLocales && tenantLocales.length > 0 ? tenantLocales[0] : null);
+    const newSelectedLocale = tenantLocales && tenantLocales.length > 0 ? tenantLocales[0] : null;
+    setSelectedLocale(newSelectedLocale);
+    onSelectedLocaleChange && newSelectedLocale && onSelectedLocaleChange(newSelectedLocale);
   }, [tenantLocales]);
 
-  const handleOnChange = useCallback((value: string) => {
-    if (onChange && !isNilOrError(selectedLocale)) {
-      onChange({
+  const handleValueOnChange = useCallback((value: string) => {
+    if (onValueChange && !isNilOrError(selectedLocale)) {
+      onValueChange({
         ...valueMultiloc,
         [selectedLocale]: value
-      }, selectedLocale);
+      });
     }
   }, [valueMultiloc, selectedLocale]);
 
   const handleOnSelectedLocaleChange = useCallback((newSelectedLocale: Locale) => {
     setSelectedLocale(newSelectedLocale);
+    onSelectedLocaleChange && onSelectedLocaleChange(newSelectedLocale);
   }, []);
 
-  const handleOnBlur = useCallback((event: React.FormEvent<HTMLInputElement>) => {
+  const handleOnBlur = useCallback((event: FormEvent<HTMLInputElement>) => {
     onBlur && onBlur(event);
   }, []);
 
   return (
     <Container className={className}>
-      {selectedLocale &&
-        <FormLocaleSwitcher
-          onLocaleChange={handleOnSelectedLocaleChange}
-          selectedLocale={selectedLocale}
-          values={{
-            input_field: valueMultiloc as Multiloc
-          }}
-        />
-      }
+      <Wrapper>
+        {label ? <StyledLabel htmlFor={id}>{label}</StyledLabel> : <Spacer />}
 
-      {label &&
-        <LabelWrapper>
-          <Label htmlFor={id}>{label}</Label>
-        </LabelWrapper>
-      }
+        {selectedLocale &&
+          <StyledFormLocaleSwitcher
+            onLocaleChange={handleOnSelectedLocaleChange}
+            selectedLocale={selectedLocale}
+            values={{
+              input_field: valueMultiloc as Multiloc
+            }}
+          />
+        }
+      </Wrapper>
 
       <Input
         setRef={setRef}
@@ -107,7 +126,7 @@ const InputMultilocWithLocaleSwitcher = memo<Props>(({
         type={type}
         placeholder={placeholder}
         error={get(errorMultiloc, `${selectedLocale}`, null)}
-        onChange={handleOnChange}
+        onChange={handleValueOnChange}
         onBlur={handleOnBlur}
         maxCharCount={maxCharCount}
         disabled={disabled}

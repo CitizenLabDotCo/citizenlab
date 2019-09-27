@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { fontSizes, colors, invisibleA11yText, booleanClass } from 'utils/styleUtils';
 
-const StyledLabel = styled.label`
+const Container = styled.label`
   color: ${colors.label};
   display: inline-block;
   font-size: ${fontSizes.base}px;
@@ -40,13 +40,13 @@ export default class Label extends React.PureComponent<Props, State> {
     const { value, htmlFor, children, id, className } = this.props;
 
     return (
-      <StyledLabel
+      <Container
         id={id}
-        className={`${booleanClass(className, className)} ${booleanClass(this.props.hidden, 'invisible')}`}
+        className={`${className} ${booleanClass(className, className)} ${booleanClass(this.props.hidden, 'invisible')}`}
         htmlFor={htmlFor}
       >
         {children || value}
-      </StyledLabel>
+      </Container>
     );
   }
 }

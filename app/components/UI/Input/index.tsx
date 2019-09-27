@@ -4,6 +4,7 @@ import { FormikConsumer, FormikContext } from 'formik';
 
 // components
 import Error from 'components/UI/Error';
+import Label from 'components/UI/Label';
 
 // style
 import styled from 'styled-components';
@@ -53,6 +54,10 @@ const Container: any = styled.div`
   }
 `;
 
+const LabelWrapper = styled.div`
+  display: flex;
+`;
+
 const CharCount = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
@@ -70,8 +75,9 @@ const CharCount = styled.div`
 export type InputProps = {
   ariaLabel?: string;
   id?: string | undefined;
+  label?: string | JSX.Element | null | undefined;
   value?: string | null | undefined;
-  type: 'text' | 'email' | 'password' | 'number';
+  type: 'text' | 'email' | 'password' | 'number' | 'date';
   placeholder?: string | null | undefined;
   error?: string | JSX.Element | null | undefined;
   onChange?: (arg: string) => void;
@@ -131,7 +137,7 @@ class Input extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { ariaLabel } = this.props;
+    const { label, ariaLabel } = this.props;
     let { value, placeholder, error } = this.props;
     const className = this.props['className'];
     const { formikContext } = this.props;
@@ -152,6 +158,12 @@ class Input extends React.PureComponent<Props, State> {
 
     return (
       <Container error={hasError} className={className}>
+
+        {label &&
+          <LabelWrapper>
+            <Label htmlFor={id}>{label}</Label>
+          </LabelWrapper>
+        }
 
         {maxCharCount &&
           <CharCount className={`${tooManyChars && 'error'}`}>

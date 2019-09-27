@@ -7,12 +7,13 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
-import { darken } from 'polished';
+import { lighten, darken } from 'polished';
 
 const Container = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
+
   & > :not(:last-child) {
     margin-right: 5px;
   }
@@ -25,23 +26,28 @@ const StyledButton = styled.button`
   padding: 7px 9px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
+  transition: all 80ms ease-out;
+
   svg {
     fill: ${colors.clRed};
   }
+
   & >:first-child {
     margin-right: 7px;
   }
+
   &.isComplete {
     svg {
       fill: ${colors.clGreen};
     }
   }
+
   &.isSelected {
-    background: ${colors.emailBg};
+    background: ${colors.lightGreyishBlue};
   }
-  &:hover, &:focus, &.isSelected:hover, &.isSelected:focus {
-    background: ${(darken(0.1, colors.emailBg))};
-    outline: none;
+
+  &:hover {
+    background: ${darken(0.1, colors.lightGreyishBlue)};
   }
 `;
 
@@ -65,6 +71,10 @@ class FormLocaleSwitcher extends PureComponent<Props> {
     return Object.getOwnPropertyNames(values).every(field => !isEmpty(get(values, `[${field}][${locale}]`)));
   }
 
+  removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  }
+
   handleOnClick = (locale: Locale) => (event: React.MouseEvent<any>) => {
     event.preventDefault();
     this.props.onLocaleChange(locale);
@@ -73,14 +83,13 @@ class FormLocaleSwitcher extends PureComponent<Props> {
   render() {
     const { tenantLocales, selectedLocale, className } = this.props;
 
-    console.log(this.props.values);
-
     if (!isNilOrError(tenantLocales) && tenantLocales.length > 1) {
       return (
         <Container className={className}>
           {tenantLocales.map((locale: Locale) => (
             <StyledButton
               key={locale}
+              onMouseDown={this.removeFocus}
               onClick={this.handleOnClick(locale)}
               type="button"
               className={`${locale} ${locale === selectedLocale && 'isSelected'} ${this.validatePerLocale(locale) && 'isComplete'}`}
@@ -92,6 +101,7 @@ class FormLocaleSwitcher extends PureComponent<Props> {
         </Container>
       );
     }
+
     return null;
   }
 }
