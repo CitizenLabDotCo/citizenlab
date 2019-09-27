@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 // components
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
-import Footer from 'components/Footer';
+import CityLogoSection from 'components/CityLogoSection';
 import IdeasIndexMeta from './IdeaIndexMeta';
 
 // i18n
@@ -76,7 +76,7 @@ export default memo(() => (
           invisibleTitleMessage={messages.invisibleIdeasListTitle}
         />
       </StyledContentContainer>
-      <Footer />
+      <CityLogoSection />
     </Container>
   </>
 ));
