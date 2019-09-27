@@ -9,7 +9,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import Helmet from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import Icon from 'components/UI/Icon';
-import Footer from 'components/Footer';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -223,8 +222,6 @@ class PagesShowPage extends PureComponent<Props & WithRouterProps & InjectedIntl
               </PagesNav>
             </PagesNavWrapper>
           }
-
-          <Footer showCityLogoSection={false} />
         </Container>
       );
     }

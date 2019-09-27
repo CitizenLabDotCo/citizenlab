@@ -11,7 +11,6 @@ import clHistory from 'utils/cl-router/history';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
-import Footer from 'components/Footer';
 
 // services
 import { localeStream } from 'services/locale';
@@ -302,8 +301,6 @@ class IdeaEditPage extends PureComponent<Props, State> {
               <Error text={submitErrorMessage} marginTop="0px" />
             </ButtonWrapper>
           </FormContainer>
-
-          <Footer showCityLogoSection={false} />
         </Container>
       );
     }

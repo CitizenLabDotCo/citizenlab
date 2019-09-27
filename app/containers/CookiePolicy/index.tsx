@@ -17,7 +17,6 @@ import { LEGAL_PAGES } from 'services/pages';
 import Link from 'utils/cl-router/Link';
 import ContentContainer from 'components/ContentContainer';
 import Icon from 'components/UI/Icon';
-import Footer from 'components/Footer';
 import Fragment from 'components/Fragment';
 
 // styles
@@ -256,8 +255,6 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
           </StyledContentContainer>
         </PagesNav>
       </PagesNavWrapper>
-
-      <Footer showCityLogoSection={false} />
     </Container>
   );
 });

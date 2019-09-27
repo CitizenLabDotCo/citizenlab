@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectCards from 'components/ProjectCards';
-import Footer from 'components/Footer';
+import CityLogoSection from 'components/CityLogoSection';
 import ProjectsIndexMeta from './ProjectsIndexMeta';
 
 // i18n
@@ -76,7 +76,7 @@ export default React.memo(() => (
           layout="threecolumns"
         />
       </StyledContentContainer>
-      <Footer />
+      <CityLogoSection />
     </Container>
   </>
 ));
