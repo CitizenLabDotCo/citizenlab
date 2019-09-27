@@ -61,6 +61,8 @@ const SearchIcon = styled(Icon)`
   width: 20px;
   height: 20px;
   fill: ${colors.label};
+  margin-left: 10px;
+  margin-right: 20px;
 `;
 
 const CloseIcon = styled(Icon)`
@@ -69,7 +71,7 @@ const CloseIcon = styled(Icon)`
   fill: ${colors.label};
 `;
 
-const IconWrapper = styled.button`
+const SearchFieldButton = styled.button`
   flex:  0 0 20px;
   width: 20px;
   height: 20px;
@@ -84,13 +86,9 @@ const IconWrapper = styled.button`
   -moz-appearance: none;
   cursor: pointer;
 
-  &.clickable {
-    cursor: pointer;
-
-    &:hover {
-      ${CloseIcon} {
-        fill: #000;
-      }
+  &:hover {
+    ${CloseIcon} {
+      fill: #000;
     }
   }
 `;
@@ -179,13 +177,16 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
         onKeyDown={handleOnKeyDown}
         className="e2e-search-input"
       />
-      <IconWrapper
-        onMouseDown={removeFocus}
-        onClick={handleOnReset}
-        className={!isEmpty(searchTerm) ? 'clickable' : ''}
-      >
-        {isEmpty(searchTerm) ? <SearchIcon name="search2" /> : <CloseIcon name="close" />}
-      </IconWrapper>
+      {isEmpty(searchTerm) ?
+        <SearchIcon ariaHidden name="search2" />
+      :
+        <SearchFieldButton
+          onMouseDown={removeFocus}
+          onClick={handleOnReset}
+        >
+          <CloseIcon title={intl.formatMessage(messages.removeSearchTerm)} name="close" />
+        </SearchFieldButton>
+      }
     </Container>
   );
 });
