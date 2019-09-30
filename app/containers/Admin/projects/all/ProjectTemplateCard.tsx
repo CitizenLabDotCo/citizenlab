@@ -122,24 +122,6 @@ const ProjectTemplateCard = memo<Props>(({ projectTemplateId, imageUrl, title, b
     setModalOpened(false);
   }, []);
 
-  // const onFocus = () => {
-  //   console.log('focus');
-  // };
-
-  // const onBlur = () => {
-  //   console.log('blur');
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener('focus', onFocus);
-  //   window.addEventListener('blur', onBlur);
-
-  //   return () => {
-  //     window.removeEventListener('focus', onFocus);
-  //     window.removeEventListener('blur', onBlur);
-  //   };
-  // });
-
   return (
     <Container className={`${className} ${imageUrl ? 'hasImage' : ''}`}>
       {imageUrl &&

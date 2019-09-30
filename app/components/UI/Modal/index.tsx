@@ -246,12 +246,12 @@ export type Props = {
 type State = {};
 
 export default class Modal extends PureComponent<Props, State> {
-  private unlisten: Function | null;
-  private goBackUrl: string | null;
-  private el: HTMLDivElement;
-  private ModalPortal = document.getElementById('modal-portal');
-  private ModalContentElement: HTMLDivElement | null;
-  private ModalCloseButtonElement: HTMLButtonElement | null;
+  unlisten: Function | null;
+  goBackUrl: string | null;
+  el: HTMLDivElement;
+  ModalPortal = document.getElementById('modal-portal');
+  ModalContentElement: HTMLDivElement | null;
+  ModalCloseButtonElement: HTMLButtonElement | null;
 
   static defaultProps = {
     fixedHeight: false,

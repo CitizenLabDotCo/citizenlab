@@ -94,5 +94,9 @@ export default defineMessages({
   manualSortingProjects: {
     id: 'app.containers.AdminPage.ProjectEdit.manualSortingProjects',
     defaultMessage: 'Manually sort projects',
+  },
+  noTemplatesFound: {
+    id: 'app.containers.AdminPage.ProjectEdit.noTemplatesFound',
+    defaultMessage: 'No templates found',
   }
 });
