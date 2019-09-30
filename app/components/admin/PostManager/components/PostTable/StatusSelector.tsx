@@ -30,6 +30,7 @@ type Props = {
   statuses: IIdeaStatusData[],
   onUpdateStatus: (statusId: string) => void;
   allowedTransitions: IInitiativeAllowedTransitions | null;
+  postType: 'idea' | 'initiative';
 };
 
 class StatusSelector extends React.PureComponent<Props> {
@@ -48,7 +49,7 @@ class StatusSelector extends React.PureComponent<Props> {
   }
 
   render() {
-    const { statuses } = this.props;
+    const { statuses, postType } = this.props;
     return (
       <Container>
         {statuses.map((status) => (
@@ -57,7 +58,7 @@ class StatusSelector extends React.PureComponent<Props> {
             basic
             trigger={
               <ColorIndicator
-                disabled={!this.isAllowed(status.id)}
+                disabled={postType === 'initiative' && !this.isAllowed(status.id)}
                 color={status.attributes.color}
                 active={this.isActive(status.id)}
                 onClick={this.handleStatusClick(status.id)}
