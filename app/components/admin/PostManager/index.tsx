@@ -352,7 +352,7 @@ export class PostManager extends React.PureComponent<Props, State> {
                 onChangeStatusFilter={onChangeStatus}
                 onChangeProjectFilter={this.onChangeProjects}
               />
-              {multipleIdeasSelected &&
+              {multipleIdeasSelected && (this.props.type === 'AllIdeas' || this.props.type === 'ProjectIdeas') &&
                 <Message
                   info={true}
                   attached="bottom"
