@@ -76,6 +76,7 @@ describe('Timeline project with poll phase', () => {
     }).then((phase) => {
       phaseId = phase.body.data.id;
       phaseSlug = phase.body.data.attributes.slug;
+      return cy.apiAddPoll('Phase', phaseId, ['What is your favourite ice cream flavour ?', 'Are you in favour of car-free sundays ?'], [['Vanilla', 'Chocolate', 'Pistachio'], ['Yes', 'No', 'I decline to answer']]);
     });
   });
 
