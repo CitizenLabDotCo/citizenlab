@@ -20,6 +20,7 @@ const Container = styled.div`
 `;
 
 const StyledButton = styled.button`
+  color: ${colors.label};
   display: flex;
   align-items: center;
   text-transform: uppercase;
@@ -43,11 +44,13 @@ const StyledButton = styled.button`
   }
 
   &.isSelected {
+    color: #000;
     background: ${colors.lightGreyishBlue};
   }
 
   &:hover {
-    background: ${darken(0.1, colors.lightGreyishBlue)};
+    color: #000;
+    background: ${darken(0.05, colors.lightGreyishBlue)};
   }
 `;
 

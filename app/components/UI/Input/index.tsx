@@ -92,6 +92,7 @@ export type InputProps = {
   spellCheck?: boolean;
   readOnly?: boolean;
   required?: boolean;
+  className?: string;
 };
 
 interface DataProps {
@@ -131,15 +132,12 @@ class Input extends React.PureComponent<Props, State> {
   }
 
   handleRef = (element: HTMLInputElement) => {
-    if (isFunction(this.props.setRef)) {
-      this.props.setRef(element);
-    }
+    this.props.setRef && this.props.setRef(element);
   }
 
   render() {
-    const { label, ariaLabel } = this.props;
+    const { label, ariaLabel, className } = this.props;
     let { value, placeholder, error } = this.props;
-    const className = this.props['className'];
     const { formikContext } = this.props;
     const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
@@ -157,7 +155,7 @@ class Input extends React.PureComponent<Props, State> {
     const tooManyChars = (maxCharCount && currentCharCount && currentCharCount > maxCharCount);
 
     return (
-      <Container error={hasError} className={className}>
+      <Container error={hasError} className={className || ''}>
 
         {label &&
           <LabelWrapper>

@@ -67,4 +67,8 @@ export default defineMessages({
     id: 'app.components.ProjectTemplatePreview.projectStartDateError',
     defaultMessage: 'Please select a start date for your project',
   },
+  responseError: {
+    id: 'app.components.ProjectTemplatePreview.responseError',
+    defaultMessage: 'Oops, something went wrong.',
+  },
 });

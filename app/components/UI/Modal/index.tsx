@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { isFunction } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import FocusLock, { AutoFocusInside } from 'react-focus-lock';
+import FocusLock from 'react-focus-lock';
 import eventEmitter from 'utils/eventEmitter';
 
 // components
@@ -33,23 +33,18 @@ const ModalContent = styled.div`
 `;
 
 const CloseIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
+  width: 15px;
+  height: 15px;
   fill: ${colors.label};
-  transition: all 80ms ease-out;
-
-  ${media.smallerThanMinTablet`
-    width: 15px;
-    height: 15px;
-  `}
+  transition: all 100ms ease-out;
 `;
 
 const CloseButton = styled.button`
-  width: 25px;
-  height: 25px;
+  width: 31px;
+  height: 31px;
   position: absolute;
-  top: 25px;
-  right: 35px;
+  top: 21px;
+  right: 27px;
   cursor: pointer;
   margin: 0;
   padding: 0;
@@ -57,16 +52,15 @@ const CloseButton = styled.button`
   justify-content: center;
   align-items: center;
 
-  &:hover,
-  &:focus {
+  &:hover {
     ${CloseIcon} {
       fill: #000;
     }
   }
 
   ${media.smallerThanMinTablet`
-    top: 17px;
-    right: 16px;
+    top: 12px;
+    right: 11px;
   `}
 `;
 
@@ -257,6 +251,7 @@ export default class Modal extends PureComponent<Props, State> {
   private el: HTMLDivElement;
   private ModalPortal = document.getElementById('modal-portal');
   private ModalContentElement: HTMLDivElement | null;
+  private ModalCloseButtonElement: HTMLButtonElement | null;
 
   static defaultProps = {
     fixedHeight: false,
@@ -269,6 +264,7 @@ export default class Modal extends PureComponent<Props, State> {
     this.goBackUrl = null;
     this.el = document.createElement('div');
     this.ModalContentElement = null;
+    this.ModalCloseButtonElement = null;
   }
 
   componentDidMount() {
@@ -341,7 +337,7 @@ export default class Modal extends PureComponent<Props, State> {
     }
   }
 
-  clickCloseButton = (event) => {
+  clickCloseButton = (event: React.MouseEvent<any>) => {
     event.preventDefault();
     event.stopPropagation();
     trackEventByName(tracks.clickCloseButton);
@@ -350,6 +346,11 @@ export default class Modal extends PureComponent<Props, State> {
 
   setContentRef = (element: HTMLDivElement) => {
     this.ModalContentElement = (element || null);
+  }
+
+  setCloseButtonRef = (element: HTMLButtonElement) => {
+    this.ModalCloseButtonElement = (element || null);
+    setTimeout(() => element && element.blur(), 100);
   }
 
   removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -385,6 +386,7 @@ export default class Modal extends PureComponent<Props, State> {
                 className="e2e-modal-close-button"
                 onMouseDown={this.removeFocus}
                 onClick={this.clickCloseButton}
+                ref={this.setCloseButtonRef}
               >
                 <CloseIcon name="close" />
               </CloseButton >
@@ -396,9 +398,7 @@ export default class Modal extends PureComponent<Props, State> {
               }
 
               <ModalContent ref={this.setContentRef}>
-                <AutoFocusInside>
-                  {children}
-                </AutoFocusInside>
+                {children}
               </ModalContent>
 
               <Spacer />
@@ -415,10 +415,7 @@ export default class Modal extends PureComponent<Props, State> {
     ) : undefined);
 
     return ReactDOM.createPortal((
-      <TransitionGroup
-        tabIndex="-1"
-        component="aside"
-      >
+      <TransitionGroup>
         {element}
       </TransitionGroup>
     ),

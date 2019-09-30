@@ -1,16 +1,23 @@
 import React, { memo, useCallback, useState } from 'react';
-import { get, isEmpty } from 'lodash-es';
+import { get, isEmpty, transform } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
+import { transformLocale } from 'utils/helperUtils';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 // components
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Input from 'components/UI/Input';
 import Modal from 'components/UI/Modal';
+import Error from 'components/UI/Error';
 
 // graphql
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -26,17 +33,22 @@ import { Locale, Multiloc } from 'typings';
 const Content = styled.div`
   padding-left: 30px;
   padding-right: 30px;
-  padding-top: 30px;
+  padding-top: 35px;
   padding-bottom: 50px;
 `;
 
 const StyledInputMultilocWithLocaleSwitcher = styled(InputMultilocWithLocaleSwitcher)`
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 `;
 
 const Footer = styled.div`
   width: 100%;
   display: flex;
+  align-items: center;
+`;
+
+const CreateProjectButton = styled(Button)`
+  margin-right: 10px;
 `;
 
 export interface Props {
@@ -60,6 +72,8 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
   const [titleError, setTitleError] = useState<Multiloc | null>(null);
   const [startDateError, setStartDateError] = useState<string | null>(null);
+  const [processing, setProcessing] = useState(false);
+  const [responseError, setResponseError] = useState<any>(null);
 
   const APPLY_PROJECT_TEMPLATE = gql`
     mutation ApplyProjectTemplate(
@@ -79,7 +93,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
 
   const [applyProjectTemplate] = useMutation<any, IVariables>(APPLY_PROJECT_TEMPLATE);
 
-  const onCreateProject = useCallback(() => {
+  const onCreateProject = useCallback(async () => {
     const invalidTitle = isEmpty(titleMultiloc) || (titleMultiloc && Object.getOwnPropertyNames(titleMultiloc).every(key => isEmpty(titleMultiloc[`${key}`])));
     const invalidDate = isEmpty(startDate);
 
@@ -92,22 +106,33 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
     }
 
     if (!invalidTitle && !invalidDate && titleMultiloc && startDate) {
+      setResponseError(null);
       setTitleError(null);
       setStartDateError(null);
+      setProcessing(true);
 
-      applyProjectTemplate({
-        variables: {
-          titleMultiloc,
-          projectTemplateId: templateId,
-          timelineStartAt: startDate
-        }
-      }).then((result) => {
-        console.log('sucess!');
-        console.log(result);
-      }).catch((error) => {
-        console.log('error');
-        console.log(error);
+      const transformedTitleMultiloc = transform(titleMultiloc, (result: Multiloc, val, key) => {
+        result[transformLocale(key)] = val;
       });
+
+      try {
+        await applyProjectTemplate({
+          variables: {
+            titleMultiloc: transformedTitleMultiloc,
+            projectTemplateId: templateId,
+            timelineStartAt: startDate
+          }
+        });
+        await streams.fetchAllWith({
+          apiEndpoint: [`${API_PATH}/projects`]
+        });
+        setProcessing(false);
+        eventEmitter.emit('UseTemplateModal', 'NewProjectCreated', null);
+        close();
+      } catch (error) {
+        setProcessing(false);
+        setResponseError(error);
+      }
     }
   }, [titleMultiloc, startDate, selectedLocale]);
 
@@ -116,6 +141,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
   }, []);
 
   const onTitleChange = useCallback((titleMultiloc: Multiloc | null) => {
+    setResponseError(null);
     setTitleError(null);
     setTitleMultiloc(titleMultiloc);
   }, []);
@@ -125,6 +151,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
   }, []);
 
   const onStartDateChange = useCallback((startDate: string) => {
+    setResponseError(null);
     setStartDateError(null);
     setStartDate(startDate);
   }, []);
@@ -134,13 +161,24 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
       width="500px"
       opened={opened}
       close={onClose}
-      className="e2e-feedback-modal"
       header={<FormattedMessage {...messages.useTemplateModalTitle} />}
       footer={
         <Footer>
-          <Button style="secondary" onClick={onCreateProject}>
+          <CreateProjectButton
+            style="secondary"
+            onClick={onCreateProject}
+            processing={processing}
+          >
             <FormattedMessage {...messages.createProject} />
-          </Button>
+          </CreateProjectButton>
+          {responseError !== null &&
+            <Error
+              text={<FormattedMessage {...messages.responseError} />}
+              marginTop="0px"
+              showBackground={false}
+              showIcon={true}
+            />
+          }
         </Footer>
       }
     >
@@ -154,6 +192,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
           onValueChange={onTitleChange}
           onSelectedLocaleChange={onSelectedLocaleChange}
           errorMultiloc={titleError}
+          autoFocus={true}
         />
 
         <Input
