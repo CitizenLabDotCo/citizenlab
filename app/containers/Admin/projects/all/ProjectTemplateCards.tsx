@@ -14,6 +14,9 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import ProjectTemplateCard from './ProjectTemplateCard';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
+import DepartmentFilter from './DepartmentFilter';
+import PurposeFilter from './PurposeFilter';
+import ParticipationLevelFilter from './ParticipationLevelFilter';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -22,9 +25,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import DepartmentFilter from './DepartmentFilter';
-import PurposeFilter from './PurposeFilter';
-import ParticipationLevelFilter from './ParticipationLevelFilter';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   margin-bottom: 15px;
@@ -71,6 +72,20 @@ const LoadMoreButtonWrapper = styled.div`
 `;
 
 const LoadMoreButton = styled(Button)``;
+
+const NoTemplates = styled.div`
+  width: 100%;
+  height: 260px;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  border: solid 1px #eaeaea;
+`;
 
 interface InputProps {
   className?: string;
@@ -223,7 +238,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className,
         </Filters>
 
         <Cards>
-          {templates.edges.map(({ node: { id, titleMultiloc, subtitleMultiloc, cardImage } }) => {
+          {templates.edges.length > 0 && templates.edges.map(({ node: { id, titleMultiloc, subtitleMultiloc, cardImage } }) => {
             return (
               <StyledProjectTemplateCard
                 key={id}
@@ -246,6 +261,12 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className,
               <FormattedMessage {...messages.loadMoreTemplates} />
             </LoadMoreButton>
           </LoadMoreButtonWrapper>
+        }
+
+        {templates.edges.length === 0 &&
+          <NoTemplates>
+            <FormattedMessage {...messages.noTemplatesFound} />
+          </NoTemplates>
         }
       </Container>
     );
