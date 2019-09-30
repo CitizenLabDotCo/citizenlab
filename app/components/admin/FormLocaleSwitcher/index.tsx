@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
-import { lighten, darken } from 'polished';
+import { darken } from 'polished';
 
 const Container = styled.div`
   display: flex;
