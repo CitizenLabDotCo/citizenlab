@@ -49,7 +49,6 @@ export default  ({
   allowedTransitions,
   postType
 }: Props) => {
-  console.log(allowedTransitions);
   return (
     <Table.Row active={active} onClick={onClickRow} className={className}>
        <Table.Cell as={FilterCell} collapsing={true} />
