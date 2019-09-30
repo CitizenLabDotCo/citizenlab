@@ -5,19 +5,21 @@ import { transformLocale } from 'utils/helperUtils';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 
+// utils
+import eventEmitter from 'utils/eventEmitter';
+
 // components
+import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Input from 'components/UI/Input';
 import Modal from 'components/UI/Modal';
 import Error from 'components/UI/Error';
+import Link from 'utils/cl-router/Link';
 
 // graphql
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -26,6 +28,8 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // typings
 import { Locale, Multiloc } from 'typings';
@@ -41,6 +45,44 @@ const StyledInputMultilocWithLocaleSwitcher = styled(InputMultilocWithLocaleSwit
   margin-bottom: 35px;
 `;
 
+const Success = styled.div`
+  height: 208px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SuccessIcon = styled(Icon)`
+  height: 40px;
+  fill: ${colors.clGreenSuccess};
+  margin-bottom: 20px;
+`;
+
+const SuccessText = styled.div`
+  color: ${colors.clGreenSuccess};
+  font-size: ${fontSizes.medium}px;
+  font-weight: 400;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > span {
+    margin-bottom: 8px;
+  }
+
+  a {
+    color: ${colors.clGreenSuccess};
+    text-decoration: underline;
+
+    &:hover {
+      color: ${darken(0.15, colors.clGreenSuccess)};
+      text-decoration: underline;
+    }
+  }
+`;
+
 const Footer = styled.div`
   width: 100%;
   display: flex;
@@ -51,9 +93,13 @@ const CreateProjectButton = styled(Button)`
   margin-right: 10px;
 `;
 
+const CloseButton = styled(Button)``;
+
 export interface Props {
   projectTemplateId: string;
   opened: boolean;
+  emitSuccessEvent?: boolean;
+  showGoBackLink?: boolean;
   close: () => void;
 }
 
@@ -63,7 +109,7 @@ interface IVariables {
   timelineStartAt: string;
 }
 
-const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, intl, projectTemplateId, opened, close }) => {
+const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, intl, projectTemplateId, opened, emitSuccessEvent, showGoBackLink, close }) => {
 
   const templateId: string | undefined = (projectTemplateId || get(params, 'projectTemplateId'));
 
@@ -73,6 +119,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
   const [titleError, setTitleError] = useState<Multiloc | null>(null);
   const [startDateError, setStartDateError] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [responseError, setResponseError] = useState<any>(null);
 
   const APPLY_PROJECT_TEMPLATE = gql`
@@ -126,9 +173,13 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
         await streams.fetchAllWith({
           apiEndpoint: [`${API_PATH}/projects`]
         });
+
+        if (emitSuccessEvent) {
+          eventEmitter.emit('UseTemplateModal', 'NewProjectCreated', null);
+        }
+
         setProcessing(false);
-        eventEmitter.emit('UseTemplateModal', 'NewProjectCreated', null);
-        close();
+        setSuccess(true);
       } catch (error) {
         setProcessing(false);
         setResponseError(error);
@@ -163,6 +214,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
     setTitleError(null);
     setStartDateError(null);
     setProcessing(false);
+    setSuccess(false);
     setResponseError(null);
   }, [opened]);
 
@@ -174,45 +226,70 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
       header={<FormattedMessage {...messages.useTemplateModalTitle} />}
       footer={
         <Footer>
-          <CreateProjectButton
-            style="secondary"
-            onClick={onCreateProject}
-            processing={processing}
-          >
-            <FormattedMessage {...messages.createProject} />
-          </CreateProjectButton>
-          {responseError !== null &&
-            <Error
-              text={<FormattedMessage {...messages.responseError} />}
-              marginTop="0px"
-              showBackground={false}
-              showIcon={true}
-            />
-          }
+          {!success ? (
+            <>
+              <CreateProjectButton
+                style="secondary"
+                onClick={onCreateProject}
+                processing={processing}
+              >
+                <FormattedMessage {...messages.createProject} />
+              </CreateProjectButton>
+              {responseError !== null &&
+                <Error
+                  text={<FormattedMessage {...messages.responseError} />}
+                  marginTop="0px"
+                  showBackground={false}
+                  showIcon={true}
+                />
+              }
+            </>
+          ) : (
+            <CloseButton
+              style="secondary"
+              onClick={onClose}
+            >
+              <FormattedMessage {...messages.close} />
+            </CloseButton>
+          )}
         </Footer>
       }
     >
       <Content>
-        <StyledInputMultilocWithLocaleSwitcher
-          id="project-title"
-          label={intl.formatMessage(messages.projectTitle)}
-          placeholder={intl.formatMessage(messages.typeProjectName)}
-          type="text"
-          valueMultiloc={titleMultiloc}
-          onValueChange={onTitleChange}
-          onSelectedLocaleChange={onSelectedLocaleChange}
-          errorMultiloc={titleError}
-          autoFocus={true}
-        />
+        {!success ? (
+          <>
+            <StyledInputMultilocWithLocaleSwitcher
+              id="project-title"
+              label={intl.formatMessage(messages.projectTitle)}
+              placeholder={intl.formatMessage(messages.typeProjectName)}
+              type="text"
+              valueMultiloc={titleMultiloc}
+              onValueChange={onTitleChange}
+              onSelectedLocaleChange={onSelectedLocaleChange}
+              errorMultiloc={titleError}
+              autoFocus={true}
+            />
 
-        <Input
-          id="project-start-date"
-          label={intl.formatMessage(messages.projectStartDate)}
-          type="date"
-          onChange={onStartDateChange}
-          value={startDate}
-          error={startDateError}
-        />
+            <Input
+              id="project-start-date"
+              label={intl.formatMessage(messages.projectStartDate)}
+              type="date"
+              onChange={onStartDateChange}
+              value={startDate}
+              error={startDateError}
+            />
+          </>
+        ) : (
+          <Success>
+            <SuccessIcon name="round-checkmark" />
+            <SuccessText>
+              <FormattedMessage {...messages.successMessage} />
+              {showGoBackLink &&
+                <FormattedMessage {...messages.goBackTo} values={{ goBackLink: <Link to="/admin/projects/"><FormattedMessage {...messages.projectsOverviewPage} /></Link> }} />
+              }
+            </SuccessText>
+          </Success>
+        )}
       </Content>
     </Modal>
   );

@@ -49,7 +49,7 @@ export default defineMessages({
   },
   typeProjectName: {
     id: 'app.components.ProjectTemplatePreview.typeProjectName',
-    defaultMessage: 'Type the name of your project',
+    defaultMessage: 'Type the name of the project',
   },
   projectTitle: {
     id: 'app.components.ProjectTemplatePreview.projectTitle',
@@ -65,10 +65,26 @@ export default defineMessages({
   },
   projectStartDateError: {
     id: 'app.components.ProjectTemplatePreview.projectStartDateError',
-    defaultMessage: 'Please select a start date for your project',
+    defaultMessage: 'Please select a start date for the project',
   },
   responseError: {
     id: 'app.components.ProjectTemplatePreview.responseError',
     defaultMessage: 'Oops, something went wrong.',
   },
+  close: {
+    id: 'app.components.ProjectTemplatePreview.close',
+    defaultMessage: 'Close',
+  },
+  successMessage: {
+    id: 'app.components.ProjectTemplatePreview.successMessage',
+    defaultMessage: 'The project was successfully created!',
+  },
+  goBackTo: {
+    id: 'app.components.ProjectTemplatePreview.goBackTo',
+    defaultMessage: `Go back to the {goBackLink}.`,
+  },
+  projectsOverviewPage: {
+    id: 'app.components.ProjectTemplatePreview.projectsOverviewPage',
+    defaultMessage: 'projects overview page',
+  }
 });
