@@ -51,7 +51,7 @@ interface Props {
   maxCharCount?: number | undefined;
   disabled?: boolean;
   ariaLabel?: string;
-  setRef?: (arg: HTMLInputElement) => void | undefined;
+  ref?: (arg: HTMLInputElement) => void | undefined;
   autoFocus?: boolean;
   className?: string;
 }
@@ -69,7 +69,7 @@ const InputMultilocWithLocaleSwitcher = memo<Props>(({
   maxCharCount,
   disabled,
   ariaLabel,
-  setRef,
+  ref,
   autoFocus,
   className
 }) => {
@@ -120,7 +120,7 @@ const InputMultilocWithLocaleSwitcher = memo<Props>(({
       </Wrapper>
 
       <Input
-        setRef={setRef}
+        setRef={ref}
         id={id}
         value={get(valueMultiloc, `${selectedLocale}`, null)}
         type={type}
