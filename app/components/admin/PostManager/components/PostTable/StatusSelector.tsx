@@ -59,6 +59,8 @@ class StatusSelector extends React.PureComponent<Props> {
             basic
             trigger={
               <ColorIndicator
+                // Status changes are only possible disabled for initiatives
+                // For ideas, all status changes are always allowed
                 disabled={postType === 'initiative' && !this.isAllowed(status.id)}
                 color={status.attributes.color}
                 active={this.isActive(status.id)}
