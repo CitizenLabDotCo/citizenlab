@@ -75,7 +75,7 @@
     "qs": "6.8.0",
     "quill-blot-formatter": "1.0.5",
     "quill-image-drop-module": "1.0.3",
-    "react": "16.9.0",
+    "react": "16.10.1",
     "react-adopt": "0.6.0",
     "react-apollo": "3.1.0",
     "react-autosize-textarea": "5.0.1",
@@ -83,7 +83,7 @@
     "react-dates": "18.4.1",
     "react-dnd": "5.0.0",
     "react-dnd-html5-backend": "5.0.1",
-    "react-dom": "16.9.0",
+    "react-dom": "16.10.1",
     "react-dropzone": "5.0.1",
     "react-focus-lock": "2.1.0",
     "react-frame-component": "4.0.2",
@@ -218,15 +218,15 @@
     "typescript": "3.6.3",
     "typescript-styled-plugin": "0.14.0",
     "url-loader": "2.1.0",
-    "webpack": "4.40.2",
-    "webpack-bundle-analyzer": "3.5.1",
+    "webpack": "4.41.0",
+    "webpack-bundle-analyzer": "3.5.2",
     "webpack-cli": "3.3.9",
     "webpack-dashboard": "3.2.0",
-    "webpack-dev-middleware": "3.7.1",
+    "webpack-dev-middleware": "3.7.2",
     "webpack-dev-server": "3.8.1",
     "yargs": "14.0.0"
   },
   "resolutions": {
-    "react-test-renderer": "16.9.0"
+    "react-test-renderer": "16.10.1"
   }
 }
