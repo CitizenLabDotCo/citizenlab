@@ -45,6 +45,7 @@ class StatusSelector extends React.PureComponent<Props> {
 
   handleStatusClick = (statusId) => (event) => {
     event.stopPropagation();
+    if (!this.isAllowed(statusId)) return;
     this.props.onUpdateStatus(statusId);
   }
 
