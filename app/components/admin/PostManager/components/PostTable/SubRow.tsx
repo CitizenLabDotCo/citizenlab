@@ -32,7 +32,7 @@ interface Props {
   postType: 'idea' | 'initiative';
 }
 
-export default  ({
+export default ({
   active,
   onClickRow,
   className,
