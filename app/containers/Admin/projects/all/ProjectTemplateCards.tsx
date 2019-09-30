@@ -167,38 +167,39 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className,
     setSearch(!isEmpty(searchValue) ? searchValue : null);
   }, []);
 
-  const handleLoadMoreTemplatesOnClick = useCallback(() => {
+  const handleLoadMoreTemplatesOnClick = useCallback(async () => {
     setLoadingMore(true);
 
-    fetchMore({
-      variables: {
-        departments,
-        purposes,
-        participationLevels,
-        search,
-        locales,
-        organizationTypes,
-        cursor: templates.pageInfo.endCursor
-      },
-      updateQuery: (previousResult, { fetchMoreResult }: { fetchMoreResult: any }) => {
-        const newEdges = fetchMoreResult.publishedProjectTemplates.edges;
-        const pageInfo = fetchMoreResult.publishedProjectTemplates.pageInfo;
+    try {
+      await fetchMore({
+        variables: {
+          departments,
+          purposes,
+          participationLevels,
+          search,
+          locales,
+          organizationTypes,
+          cursor: templates.pageInfo.endCursor
+        },
+        updateQuery: (previousResult, { fetchMoreResult }: { fetchMoreResult: any }) => {
+          const newEdges = fetchMoreResult.publishedProjectTemplates.edges;
+          const pageInfo = fetchMoreResult.publishedProjectTemplates.pageInfo;
 
-        return newEdges.length
-          ? {
-              publishedProjectTemplates: {
-                pageInfo,
-                __typename: templates.__typename,
-                edges: [...templates.edges, ...newEdges]
+          return newEdges.length
+            ? {
+                publishedProjectTemplates: {
+                  pageInfo,
+                  __typename: templates.__typename,
+                  edges: [...templates.edges, ...newEdges]
+                }
               }
-            }
-          : previousResult;
-      }
-    }).then(() => {
+            : previousResult;
+        }
+      });
       setLoadingMore(false);
-    }).catch(() => {
+    } catch {
       setLoadingMore(false);
-    });
+    }
   }, [templates]);
 
   if (templates) {

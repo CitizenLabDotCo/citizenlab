@@ -367,6 +367,7 @@ export default class Modal extends PureComponent<Props, State> {
         timeout={timeout}
         mountOnEnter={true}
         unmountOnExit={true}
+        enter={true}
         exit={false}
       >
         <Overlay
@@ -418,8 +419,6 @@ export default class Modal extends PureComponent<Props, State> {
       <TransitionGroup>
         {element}
       </TransitionGroup>
-    ),
-      document.body
-    );
+    ), document.body);
   }
 }

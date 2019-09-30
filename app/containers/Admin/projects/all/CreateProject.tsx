@@ -1,5 +1,5 @@
 import React, { memo, useState, useCallback, useEffect, MouseEvent } from 'react';
-import { adopt } from 'react-adopt';
+import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // graphql
@@ -12,8 +12,8 @@ import ProjectTemplateCards, { TEMPLATES_QUERY } from './ProjectTemplateCards';
 import AdminProjectEditGeneral  from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './styles';
 
-// resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+// hooks
+import useTenant from 'hooks/useTenant';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -129,8 +129,8 @@ const CreateProjectButton = styled.button`
   padding: 0;
   padding-left: 4rem;
   padding-right: 4rem;
-  padding-top: 35px;
-  padding-bottom: 35px;
+  padding-top: 30px;
+  padding-bottom: 30px;
   margin: 0;
   cursor: pointer;
 
@@ -142,20 +142,14 @@ const CreateProjectButton = styled.button`
 `;
 
 const StyledTabs = styled(Tabs)`
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
 }
 
-interface DataProps {
-  tenant: GetTenantChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const CreateProject = memo<Props & InjectedIntlProps>(({ tenant, className, intl }) => {
+const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const fromATemplateText = intl.formatMessage(messages.fromATemplate);
   const fromScratchText = intl.formatMessage(messages.fromScratch);
@@ -167,8 +161,10 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ tenant, className, intl
     icon: 'scratch'
   }];
 
-  const locales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : null;
-  const organizationTypes = !isNilOrError(tenant) ? tenant.attributes.settings.core.organization_type : null;
+  const tenant = useTenant();
+  const locales = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.locales : null;
+  const organizationTypes = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.organization_type : null;
+  const projectTemplatesEnabled: boolean = get(tenant, 'data.attributes.settings.admin_project_templates.enabled', false);
 
   const [expanded, setExpanded] = useState(false);
   const [hasCollapseAnimation, setHasCollapseAnimation] = useState(true);
@@ -239,12 +235,18 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ tenant, className, intl
       >
         <CreateProjectContent className={`${expanded ? 'expanded' : 'collapsed'}`}>
           <CreateProjectContentInner>
-            <StyledTabs
-              items={items}
-              selectedItemName={selectedTab}
-              onClick={handleTabOnClick}
-            />
-            {selectedTab === fromATemplateText ? <ProjectTemplateCards /> : <AdminProjectEditGeneral />}
+            {projectTemplatesEnabled ? (
+              <>
+                <StyledTabs
+                  items={items}
+                  selectedItemName={selectedTab}
+                  onClick={handleTabOnClick}
+                />
+                {selectedTab === fromATemplateText ? <ProjectTemplateCards /> : <AdminProjectEditGeneral />}
+              </>
+            ) : (
+              <AdminProjectEditGeneral />
+            )}
           </CreateProjectContentInner>
         </CreateProjectContent>
       </CSSTransition>
@@ -252,14 +254,4 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ tenant, className, intl
   );
 });
 
-const CreateProjectWithHoC = injectIntl(CreateProject);
-
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <CreateProjectWithHoC {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default injectIntl(CreateProject);

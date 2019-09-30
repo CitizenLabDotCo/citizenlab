@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import { get, isEmpty, transform } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { transformLocale } from 'utils/helperUtils';
@@ -156,6 +156,16 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
     setStartDate(startDate);
   }, []);
 
+  useEffect(() => {
+    setTitleMultiloc(null);
+    setStartDate(null);
+    setSelectedLocale(null);
+    setTitleError(null);
+    setStartDateError(null);
+    setProcessing(false);
+    setResponseError(null);
+  }, [opened]);
+
   return (
     <Modal
       width="500px"
@@ -208,4 +218,4 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
   );
 });
 
-export default withRouter(injectIntl(UseTemplateModal));
+export default withRouter<Props>(injectIntl(UseTemplateModal));
