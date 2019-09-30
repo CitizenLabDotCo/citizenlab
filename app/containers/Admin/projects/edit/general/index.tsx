@@ -626,14 +626,15 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
             {get(this.props, 'params.projectId') &&
-              <SectionTitle>
-                <FormattedMessage {...messages.titleGeneral} />
-              </SectionTitle>
+              <>
+                <SectionTitle>
+                  <FormattedMessage {...messages.titleGeneral} />
+                </SectionTitle>
+                <SectionSubtitle>
+                  <FormattedMessage {...messages.subtitleGeneral} />
+                </SectionSubtitle>
+              </>
             }
-
-            <SectionSubtitle>
-              <FormattedMessage {...messages.subtitleGeneral} />
-            </SectionSubtitle>
 
             <SectionField>
               <Label>
