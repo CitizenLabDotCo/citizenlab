@@ -12,6 +12,7 @@ import { useQuery } from '@apollo/react-hooks';
 // components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+import Spinner from 'components/UI/Spinner';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // i18n
@@ -33,6 +34,14 @@ const Container = styled.div`
   ${media.smallerThanMinTablet`
     padding: 30px;
   `}
+`;
+
+const SpinnerWrapper = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Header = styled.div`
@@ -182,6 +191,94 @@ const Content = styled.div`
   margin-bottom: 40px;
 `;
 
+const Phases = styled.div`
+  width: 100%;
+  /* padding-left: 30px; */
+  /* padding-right: 30px; */
+  padding-top: 60px;
+  padding-bottom: 60px;
+  margin: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
+`;
+
+const PhaseBar: any = styled.button`
+  width: 100%;
+  height: 24px;
+  color: #fff;
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e0e0e0;
+  transition: background 60ms ease-out;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+`;
+
+const PhaseArrow = styled(Icon)`
+  width: 20px;
+  height: 25px;
+  fill: #fff;
+  position: absolute;
+  top: 0px;
+  right: -9px;
+  z-index: 2;
+
+  ${media.smallerThanMaxTablet`
+    fill: ${colors.background};
+  `}
+`;
+
+const PhaseText: any = styled.div`
+  color: #e0e0e0;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-height: 20px;
+  max-height: 60px;
+  margin-top: 12px;
+  padding-left: 6px;
+  padding-right: 6px;
+  transition: color 60ms ease-out;
+`;
+
+const PhaseContainer: any = styled.div`
+  min-width: 80px;
+  flex-shrink: 1;
+  flex-grow: ${(props: any) => props.numberOfDays};
+  flex-basis: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer;
+  margin-right:  ${(props: any) => !props.last ? '1px' : '0px' };
+
+  &.first ${PhaseBar} {
+    border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px ${(props: any) => props.theme.borderRadius};
+  }
+
+  &.last ${PhaseBar} {
+    border-radius: 0px ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0px;
+  }
+`;
+
 const HeaderImage = styled.div<{ src: string }>`
   width: 100%;
   height: 260px;
@@ -292,9 +389,16 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
     }
   }, [linkCopied]);
 
-  if (!loading && data) {
-    return (
-      <Container className={className}>
+  return (
+    <Container className={className}>
+      {loading &&
+        <SpinnerWrapper>
+          <Spinner />
+        </SpinnerWrapper>
+      }
+
+      {!loading && data &&
+        <>
         <Header>
           <HeaderLeft>
             <Title>{data.projectTemplate.titleMultiloc[`${graphQLLocale}`]}</Title>
@@ -350,6 +454,44 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
           </QuillEditedContent>
         </Content>
 
+        <Phases>
+          <PhaseContainer
+            className="first"
+            numberOfDays="10"
+          >
+            <PhaseBar>
+              1
+              <PhaseArrow name="phase_arrow" />
+            </PhaseBar>
+            <PhaseText>
+              Phase 1
+            </PhaseText>
+          </PhaseContainer>
+          <PhaseContainer
+            numberOfDays="10"
+          >
+            <PhaseBar>
+              2
+              <PhaseArrow name="phase_arrow" />
+            </PhaseBar>
+            <PhaseText>
+              Phase 2
+            </PhaseText>
+          </PhaseContainer>
+          <PhaseContainer
+            className="last"
+            numberOfDays="10"
+          >
+            <PhaseBar>
+              3
+              <PhaseArrow name="phase_arrow" />
+            </PhaseBar>
+            <PhaseText>
+              Phase 3
+            </PhaseText>
+          </PhaseContainer>
+        </Phases>
+
         {data.projectTemplate.successCases && data.projectTemplate.successCases.length > 0 &&
           <Footer>
             <SuccessCasesTitle>
@@ -364,11 +506,11 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
             </SuccessCases>
           </Footer>
         }
-      </Container>
-    );
-  }
+        </>
+      }
+    </Container>
+  );
 
-  return null;
 });
 
 export default ProjectTemplatePreview;

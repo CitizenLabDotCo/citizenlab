@@ -13,6 +13,7 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 // components
 import ProjectTemplateCard from './ProjectTemplateCard';
 import SearchInput from 'components/UI/SearchInput';
+import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import DepartmentFilter from './DepartmentFilter';
 import PurposeFilter from './PurposeFilter';
@@ -45,6 +46,14 @@ const Right = styled.div``;
 
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
+`;
+
+const SpinnerWrapper = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Cards = styled.div`
@@ -84,7 +93,6 @@ const NoTemplates = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 1px #eaeaea;
 `;
 
 interface InputProps {
@@ -152,7 +160,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className,
   const [search, setSearch] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
 
-  const { data, fetchMore } = useQuery(TEMPLATES_QUERY, {
+  const { loading, data, fetchMore } = useQuery(TEMPLATES_QUERY, {
     variables: {
       departments,
       purposes,
@@ -217,62 +225,68 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className,
     }
   }, [templates]);
 
-  if (templates) {
-    return (
-      <Container className={className}>
-        <Filters>
-          <Left>
-            <DepartmentFilter onChange={handleDepartmentFilterOnChange} />
-            <PurposeFilter onChange={handlePurposeFilterOnChange} />
-            <ParticipationLevelFilter onChange={handleParticipationLevelFilterOnChange} />
-          </Left>
+  return (
+    <Container className={className}>
+      <Filters>
+        <Left>
+          <DepartmentFilter onChange={handleDepartmentFilterOnChange} />
+          <PurposeFilter onChange={handlePurposeFilterOnChange} />
+          <ParticipationLevelFilter onChange={handleParticipationLevelFilterOnChange} />
+        </Left>
 
-          <Right>
-            <StyledSearchInput
-              placeholder={searchPlaceholder}
-              ariaLabel={searchAriaLabel}
-              value={search}
-              onChange={handleSearchOnChange}
-            />
-          </Right>
-        </Filters>
+        <Right>
+          <StyledSearchInput
+            placeholder={searchPlaceholder}
+            ariaLabel={searchAriaLabel}
+            value={search}
+            onChange={handleSearchOnChange}
+          />
+        </Right>
+      </Filters>
 
-        <Cards>
-          {templates.edges.length > 0 && templates.edges.map(({ node: { id, titleMultiloc, subtitleMultiloc, cardImage } }) => {
-            return (
-              <StyledProjectTemplateCard
-                key={id}
-                projectTemplateId={id}
-                imageUrl={cardImage}
-                title={titleMultiloc.en}
-                body={subtitleMultiloc.en}
-              />
-            );
-          })}
-        </Cards>
+      {loading && !templates &&
+        <SpinnerWrapper>
+          <Spinner />
+        </SpinnerWrapper>
+      }
 
-        {get(templates, 'pageInfo.hasNextPage') &&
-          <LoadMoreButtonWrapper>
-            <LoadMoreButton
-              processing={loadingMore}
-              onClick={handleLoadMoreTemplatesOnClick}
-              style="secondary"
-            >
-              <FormattedMessage {...messages.loadMoreTemplates} />
-            </LoadMoreButton>
-          </LoadMoreButtonWrapper>
-        }
+      {templates && templates.edges && templates.edges.length > 0 &&
+        <>
+          <Cards>
+            {templates.edges.map(({ node: { id, titleMultiloc, subtitleMultiloc, cardImage } }) => {
+              return (
+                <StyledProjectTemplateCard
+                  key={id}
+                  projectTemplateId={id}
+                  imageUrl={cardImage}
+                  title={titleMultiloc.en}
+                  body={subtitleMultiloc.en}
+                />
+              );
+            })}
+          </Cards>
 
-        {templates.edges.length === 0 &&
-          <NoTemplates>
-            <FormattedMessage {...messages.noTemplatesFound} />
-          </NoTemplates>
-        }
-      </Container>
-    );
-  }
+          {get(templates, 'pageInfo.hasNextPage') &&
+            <LoadMoreButtonWrapper>
+              <LoadMoreButton
+                processing={loadingMore}
+                onClick={handleLoadMoreTemplatesOnClick}
+                style="secondary"
+              >
+                <FormattedMessage {...messages.loadMoreTemplates} />
+              </LoadMoreButton>
+            </LoadMoreButtonWrapper>
+          }
+        </>
+      }
 
-  return null;
+      {templates && templates.edges && templates.edges.length === 0 &&
+        <NoTemplates>
+          <FormattedMessage {...messages.noTemplatesFound} />
+        </NoTemplates>
+      }
+    </Container>
+  );
 });
 
 const ProjectTemplateCardsWithHoC = injectIntl(ProjectTemplateCards);
