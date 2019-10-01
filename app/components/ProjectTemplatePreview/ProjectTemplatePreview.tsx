@@ -1,10 +1,9 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError, transformLocale } from 'utils/helperUtils';
 import * as clipboard from 'clipboard-polyfill';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+// hooks
+import useLocale from 'hooks/useLocale';
 
 // graphql
 import { gql } from 'apollo-boost';
@@ -225,18 +224,14 @@ const SuccessCaseImage = styled.img`
   height: 26px;
 `;
 
-export interface InputProps {
+export interface Props {
   projectTemplateId: string;
   className?: string;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-}
+const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) => {
 
-interface Props extends DataProps, InputProps { }
-
-const ProjectTemplatePreview = memo<Props>(({ locale, projectTemplateId, className }) => {
+  const locale = useLocale();
 
   const [linkCopied, setLinkCopied] = useState(false);
 
@@ -376,12 +371,4 @@ const ProjectTemplatePreview = memo<Props>(({ locale, projectTemplateId, classNa
   return null;
 });
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <ProjectTemplatePreview {...dataProps} {...inputProps} />}
-  </Data>
-);
+export default ProjectTemplatePreview;

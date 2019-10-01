@@ -159,6 +159,7 @@
     "@types/react-router": "3.x",
     "@types/react-scroll": "1.5.4",
     "@types/react-select": "2.0.19",
+    "@types/react-transition-group": "4.2.2",
     "@types/segment-analytics": "0.0.32",
     "@types/shelljs": "0.8.5",
     "@types/styled-components": "4.1.19",
