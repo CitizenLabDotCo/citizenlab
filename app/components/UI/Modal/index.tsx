@@ -359,7 +359,7 @@ export default class Modal extends PureComponent<Props, State> {
   render() {
     const { fixedHeight, width, children, opened, header, footer, hasSkipButton, skipText, label } = this.props;
 
-    const element = (opened ? (
+    return ReactDOM.createPortal((
       <CSSTransition
         classNames="modal"
         in={opened}
@@ -410,15 +410,6 @@ export default class Modal extends PureComponent<Props, State> {
           </ModalContainer>
         </Overlay>
       </CSSTransition>
-    ) : undefined);
-
-    return ReactDOM.createPortal((
-      <TransitionGroup
-        tabIndex="0"
-        component="aside"
-      >
-        {element}
-      </TransitionGroup>
     ),
       document.body
     );
