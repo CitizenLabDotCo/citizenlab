@@ -234,7 +234,7 @@ export type Props = {
   width?: string;
   close: () => void;
   className?: string;
-  header?: JSX.Element;
+  header?: JSX.Element | string;
   footer?: JSX.Element;
   hasSkipButton?: boolean;
   skipText?: JSX.Element;

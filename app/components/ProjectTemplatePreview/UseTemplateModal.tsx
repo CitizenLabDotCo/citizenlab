@@ -1,12 +1,19 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { get, isEmpty, transform } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
-import { transformLocale } from 'utils/helperUtils';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
+import { isNilOrError, transformLocale } from 'utils/helperUtils';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+
+// graphql
+import { gql } from 'apollo-boost';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+
+// hooks
+import useLocale from 'hooks/useLocale';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -16,10 +23,6 @@ import Input from 'components/UI/Input';
 import Modal from 'components/UI/Modal';
 import Error from 'components/UI/Error';
 import Link from 'utils/cl-router/Link';
-
-// graphql
-import { gql } from 'apollo-boost';
-import { useMutation } from '@apollo/react-hooks';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -113,6 +116,10 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
 
   const templateId: string | undefined = (projectTemplateId || get(params, 'projectTemplateId'));
 
+  const locale = useLocale();
+
+  const graphQLLocale = !isNilOrError(locale) ? transformLocale(locale) : null;
+
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [startDate, setStartDate] = useState<string | null>(null);
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
@@ -121,6 +128,16 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
   const [processing, setProcessing] = useState(false);
   const [success, setSuccess] = useState(false);
   const [responseError, setResponseError] = useState<any>(null);
+
+  const TEMPLATE_TITLE_QUERY = gql`
+    {
+      projectTemplate(id: "${projectTemplateId}"){
+        titleMultiloc {
+          ${graphQLLocale}
+        }
+      }
+    }
+  `;
 
   const APPLY_PROJECT_TEMPLATE = gql`
     mutation ApplyProjectTemplate(
@@ -137,6 +154,8 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
       }
     }
   `;
+
+  const { data } = useQuery(TEMPLATE_TITLE_QUERY);
 
   const [applyProjectTemplate] = useMutation<any, IVariables>(APPLY_PROJECT_TEMPLATE);
 
@@ -223,7 +242,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
       width="500px"
       opened={opened}
       close={onClose}
-      header={<FormattedMessage {...messages.useTemplateModalTitle} />}
+      header={get(data, `projectTemplate.titleMultiloc.${locale}`)}
       footer={
         <Footer>
           {!success ? (

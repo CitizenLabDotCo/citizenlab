@@ -43,10 +43,6 @@ export default defineMessages({
     id: 'app.components.ProjectTemplatePreview.createProject',
     defaultMessage: 'Create project',
   },
-  useTemplateModalTitle: {
-    id: 'app.components.ProjectTemplatePreview.useTemplateModalTitle',
-    defaultMessage: 'Configure your project',
-  },
   typeProjectName: {
     id: 'app.components.ProjectTemplatePreview.typeProjectName',
     defaultMessage: 'Type the name of the project',
@@ -81,7 +77,7 @@ export default defineMessages({
   },
   goBackTo: {
     id: 'app.components.ProjectTemplatePreview.goBackTo',
-    defaultMessage: `Go back to the {goBackLink}.`,
+    defaultMessage: 'Go back to the {goBackLink}.',
   },
   projectsOverviewPage: {
     id: 'app.components.ProjectTemplatePreview.projectsOverviewPage',
