@@ -1419,6 +1419,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Leider haben Sie keine Rechte um an dieser Umfrage teilzunehmen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "Im Moment ist es nicht möglich an dieser Umfrage teilzunehmen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Diese Umfrage ist nicht länger zugänglich, da dieses Projekt nicht mehr aktiv ist.",
+  "app.containers.SearchInput.removeSearchTerm": "",
   "app.containers.SearchInput.searchAriaLabel": "Suche",
   "app.containers.SearchInput.searchPlaceholder": "Suche",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "Ich habe die {tacLink} bereits akzeptiert",

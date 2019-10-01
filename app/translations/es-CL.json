@@ -1419,6 +1419,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Lamentablemente, no tienes los permisos para participar en esta encuesta.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "Actualmente no es posible participar en esta encuesta.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "La encuesta ya no está disponible, ya que este proyecto ya no está activo.",
+  "app.containers.SearchInput.removeSearchTerm": "",
   "app.containers.SearchInput.searchAriaLabel": "Búsqueda",
   "app.containers.SearchInput.searchPlaceholder": "Búsqueda",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "Ya he aceptado el {tacLink}",
