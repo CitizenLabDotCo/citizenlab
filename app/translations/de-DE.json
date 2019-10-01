@@ -1258,7 +1258,7 @@
   "app.containers.InitiativesNewPage.requirmentDaysLimit": "Innerhalb von {daysLimit} Tagen",
   "app.containers.InitiativesNewPage.requirmentVoteTreshold": "Sammeln Sie {voteThreshold} Stimmen",
   "app.containers.InitiativesNewPage.requirmentsListTitle": "Was Du dafür tun musst?",
-  "app.containers.InitiativesNewPage.tipsExplanation": "Als Bürger können Sie jederzeit eine Initiative starten. Diese Plattform ermöglicht es Ihnen, Unterstützung von anderen zu erhalten und vom {orgName} gehört zu werden.",
+  "app.containers.InitiativesNewPage.tipsExplanation": "{tenantName, select, Stadt Linz {Eine Initiative ist eine innovative Projektidee, die Du, jederzeit auf unserer Plattform starten kannst. Unser Ziel ist es gemeinsam Linz zur innovativsten Stadt zu machen!} other {Als Bürger können Sie jederzeit eine Initiative starten. Diese Plattform ermöglicht es Ihnen, Unterstützung von anderen zu erhalten und vom {orgName} gehört zu werden.}}",
   "app.containers.InitiativesNewPage.tipsTitle": "Tipps und Tricks für eine erfolgreiche Initiative",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Abstimmung bleibt geöffnet",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} hat die Initiative erhalten und eine offizielle Antwort gegeben.",
