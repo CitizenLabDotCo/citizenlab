@@ -14,6 +14,7 @@ import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
 import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';
 import FeatureFlag from 'components/FeatureFlag';
+import Fragment from 'components/Fragment';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -519,52 +520,53 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 </NavigationItem>
               </NavigationItems>
             </Left>
+            <Fragment name="navbar-right">
+              <Right>
+                {!authUser &&
 
-            <Right>
-              {!authUser &&
+                  <RightItem className="login noLeftMargin">
+                    <LogInLink
+                      id="e2e-login-link"
+                      to="/sign-in"
+                    >
+                      <NavigationItemText>
+                        <FormattedMessage {...messages.logIn} />
+                      </NavigationItemText>
+                    </LogInLink>
+                  </RightItem>
+                }
 
-                <RightItem className="login noLeftMargin">
-                  <LogInLink
-                    id="e2e-login-link"
-                    to="/sign-in"
-                  >
-                    <NavigationItemText>
-                      <FormattedMessage {...messages.logIn} />
-                    </NavigationItemText>
-                  </LogInLink>
-                </RightItem>
-              }
+                {!authUser &&
+                  <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
+                    <SignUpLink
+                      to="/sign-up"
+                    >
+                      <NavigationItemText className="sign-up-span">
+                        <FormattedMessage {...messages.signUp} />
+                      </NavigationItemText>
+                    </SignUpLink>
+                  </RightItem>
+                }
 
-              {!authUser &&
-                <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
-                  <SignUpLink
-                    to="/sign-up"
-                  >
-                    <NavigationItemText className="sign-up-span">
-                      <FormattedMessage {...messages.signUp} />
-                    </NavigationItemText>
-                  </SignUpLink>
-                </RightItem>
-              }
+                {authUser &&
+                  <RightItem className="notification">
+                    <NotificationMenu />
+                  </RightItem>
+                }
 
-              {authUser &&
-                <RightItem className="notification">
-                  <NotificationMenu />
-                </RightItem>
-              }
+                {authUser &&
+                  <RightItem className="usermenu">
+                    <UserMenu />
+                  </RightItem>
+                }
 
-              {authUser &&
-                <RightItem className="usermenu">
-                  <UserMenu />
-                </RightItem>
-              }
-
-              {tenantLocales.length > 1 && locale &&
-                <RightItem onMouseOver={this.preloadLanguageSelector} className="noLeftMargin">
-                  <StyledLoadableLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
-                </RightItem>
-              }
-            </Right>
+                {tenantLocales.length > 1 && locale &&
+                  <RightItem onMouseOver={this.preloadLanguageSelector} className="noLeftMargin">
+                    <StyledLoadableLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
+                  </RightItem>
+                }
+              </Right>
+            </Fragment>
           </ContainerInner>
         </Container>
       </>

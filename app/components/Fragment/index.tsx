@@ -16,7 +16,7 @@ type Props = {
 };
 
 type State = {
-  fragmentExists: boolean;
+  fragmentExists?: boolean;
   iframeHeight?: number;
 };
 
@@ -31,7 +31,7 @@ class Fragment extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      fragmentExists: false
+      fragmentExists: undefined
     };
   }
 
