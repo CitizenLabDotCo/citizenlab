@@ -45,7 +45,7 @@ const InputWrapper: any = styled.div`
 const Input = styled.input`
   &[type='checkbox'] {
     /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
-    position: absolute !important;
+    position: absolute;
     height: 1px; width: 1px;
     overflow: hidden;
     clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
