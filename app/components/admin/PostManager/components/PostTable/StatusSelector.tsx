@@ -4,7 +4,6 @@ import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeAllowedTransitions } from 'services/initiatives';
 import T from 'components/T';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -18,10 +17,7 @@ const ColorIndicator = styled.div<{ active: boolean, disabled: boolean }>`
   margin-right: 0.5rem;
   cursor: pointer;
   margin: 0 0.25rem;
-  ${props => props.disabled ? `
-    background-color: ${colors.mediumGrey};
-    cursor: not-allowed;
-  ` : '' /* line order matters here so active element is displayed correctly */}
+  ${props => props.disabled ? 'cursor: not-allowed;' : ''}
   ${props => props.active ? `background-color: ${props.color};` : ''}
 `;
 
@@ -45,8 +41,9 @@ class StatusSelector extends React.PureComponent<Props> {
 
   handleStatusClick = (statusId) => (event) => {
     event.stopPropagation();
-    if (!this.isAllowed(statusId)) return;
-    this.props.onUpdateStatus(statusId);
+    if (this.isAllowed(statusId)) {
+      this.props.onUpdateStatus(statusId);
+    }
   }
 
   render() {
