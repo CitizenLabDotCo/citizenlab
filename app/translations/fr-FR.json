@@ -1419,6 +1419,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Malheureusement, vous n’avez pas le droit de participer à cette enquête.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "Il est actuellement impossible de participer à cette enquête.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "L’enquête n’est pas disponible étant donné ce projet n'est pas actif.",
+  "app.containers.SearchInput.removeSearchTerm": "",
   "app.containers.SearchInput.searchAriaLabel": "Chercher",
   "app.containers.SearchInput.searchPlaceholder": "Chercher",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "J’ai déjà accepté les {tacLink}",

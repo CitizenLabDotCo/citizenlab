@@ -155,8 +155,8 @@ const icons = {
       <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zM18 16v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
     </svg>
   ),
-  search2: (className, title) => (
-    <svg className={className} height="100%" viewBox="0 0 20 20">
+  search2: (className, title, ariaHidden) => (
+    <svg role="img" aria-hidden={ariaHidden} className={className} height="100%" viewBox="0 0 20 20">
       {injectTitle(title)}
       <path d="M19.756 18.578l-5.688-5.688a7.88 7.88 0 0 0 1.766-4.974C15.834 3.552 12.281 0 7.917 0S0 3.552 0 7.917s3.552 7.917 7.917 7.917a7.88 7.88 0 0 0 4.974-1.766l5.688 5.688a.833.833 0 0 0 1.177-1.178zM7.917 14.166c-3.446 0-6.25-2.803-6.25-6.25s2.804-6.25 6.25-6.25c3.447 0 6.25 2.803 6.25 6.25s-2.804 6.25-6.25 6.25z"/>
     </svg>
