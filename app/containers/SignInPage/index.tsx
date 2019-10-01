@@ -9,7 +9,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import SignIn from 'components/SignIn';
 import SignInUpBanner from 'components/SignInUpBanner';
-
+import SignInPageMeta from './SignInPageMeta';
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
@@ -86,18 +86,22 @@ export default class SignInPage extends PureComponent {
 
   render() {
     return (
-      <Container className="e2e-sign-in-page">
-        <Left>
-          <SignInUpBanner />
-        </Left>
-        <Right>
-          <RightInner>
-            <PreviousPathnameContext.Consumer>
-              {previousPathName => <SignIn onSignedIn={this.onSuccess(previousPathName)} />}
-            </PreviousPathnameContext.Consumer>
-          </RightInner>
-        </Right>
-      </Container>
+      <>
+        <SignInPageMeta />
+        <Container className="e2e-sign-in-page">
+          <Left>
+            <SignInUpBanner />
+          </Left>
+          <Right>
+            <RightInner>
+              <PreviousPathnameContext.Consumer>
+                {previousPathName => <SignIn onSignedIn={this.onSuccess(previousPathName)} />}
+              </PreviousPathnameContext.Consumer>
+            </RightInner>
+          </Right>
+        </Container>
+      </>
+
     );
   }
 }
