@@ -235,7 +235,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   return (
     <Container className={className}>
       <CreateProjectButton
-        className={expanded ? 'expanded' : 'collapsed'}
+        className={`e2e-create-project-expand-collapse-button ${expanded ? 'expanded' : 'collapsed'}`}
         aria-label="create a project from a template"
         onMouseDown={removeFocus}
         onClick={handleExpandCollapse}
@@ -263,6 +263,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             {projectTemplatesEnabled ? (
               <>
                 <StyledTabs
+                  className="e2e-create-project-tabs"
                   items={items}
                   selectedItemName={selectedTab}
                   onClick={handleTabOnClick}

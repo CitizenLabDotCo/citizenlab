@@ -81,10 +81,10 @@ const Tabs = memo<Props>(({ items, selectedItemName, onClick, className }) => {
 
   return (
     <Container className={className}>
-      {items.map((item: ITabItem) =>
+      {items.map((item: ITabItem, index) =>
         <Tab
           key={item.name}
-          className={`${selectedItemName === item.name && 'active'}`}
+          className={`item${index + 1} ${selectedItemName === item.name ? 'active' : ''}`}
           onMouseDown={removeFocus}
           onClick={handleTabOnClick}
           data-itemname={item.name}
