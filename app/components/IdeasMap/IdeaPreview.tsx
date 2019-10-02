@@ -214,10 +214,6 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
     clHistory.push('/sign-in');
   }
 
-  stopPropagation = (event: FormEvent) => {
-    event.stopPropagation();
-  }
-
   render() {
     const { showFooter } = this.state;
     const { idea, locale, windowSize, className, localize } = this.props;
@@ -270,7 +266,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
                 <Button onClick={this.goToLogin}>
                   <FormattedMessage {...messages.login} />
                 </Button>
-                <RegisterLink to="/sign-up" onClick={this.stopPropagation}>
+                <RegisterLink to="/sign-up">
                   <FormattedMessage {...messages.register} />
                 </RegisterLink>
               </Unauthenticated>
