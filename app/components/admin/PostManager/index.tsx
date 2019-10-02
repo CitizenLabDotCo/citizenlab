@@ -272,6 +272,11 @@ export class PostManager extends React.PureComponent<Props, State> {
     const { onChangePhase, selectedPhase, selectedStatus } = this.getNonSharedParams();
 
     const multipleIdeasSelected = this.isSelectionMultiple();
+    const showDragAndDropInfoMessage = (
+      this.props.type === 'AllIdeas' ||
+      this.props.type === 'ProjectIdeas' ||
+      (this.props.type === 'Initiatives' && activeFilterMenu === 'topics')
+    );
 
     return (
       <>
@@ -352,16 +357,16 @@ export class PostManager extends React.PureComponent<Props, State> {
                 onChangeStatusFilter={onChangeStatus}
                 onChangeProjectFilter={this.onChangeProjects}
               />
-              {multipleIdeasSelected && (
-                this.props.type === 'AllIdeas' ||
-                this.props.type === 'ProjectIdeas' ||
-                (this.props.type === 'Initiatives' && activeFilterMenu === 'topics')
-              ) &&
+              {multipleIdeasSelected && showDragAndDropInfoMessage &&
                 <Message
                   info={true}
                   attached="bottom"
                   icon="info"
-                  content={<FormattedMessage {...messages.multiDragAndDropHelp} />}
+                  content={<FormattedMessage
+                    {...messages.multiDragAndDropHelp}
+                    values={{ postTypePlural: type === 'AllIdeas' || type === 'ProjectIdeas' ?
+                    <FormattedMessage {...messages.ideas} /> : <FormattedMessage {...messages.initiatives} /> }}
+                  />}
                 />
               }
             </Sticky>
