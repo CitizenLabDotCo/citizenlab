@@ -276,11 +276,11 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <Navbar />
+                    <ConsentManager />
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <ConsentManager />
+                    <Navbar />
                   </ErrorBoundary>
 
                   <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>

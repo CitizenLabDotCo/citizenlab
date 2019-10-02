@@ -42,8 +42,8 @@ const PageTitle = styled.div`
     font-size: ${fontSizes.xxxxl}px;
     line-height: normal;
     font-weight: 500;
+    margin-bottom: 35px;
   }
-  margin-bottom: 35px;
   color: ${colors.text};
   text-align: center;
   margin: 0;
