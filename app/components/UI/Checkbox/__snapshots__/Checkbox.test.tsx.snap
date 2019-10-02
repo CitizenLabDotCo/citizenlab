@@ -56,7 +56,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
 }
 
 .c2[type='checkbox'] {
-  position: absolute !important;
+  position: absolute;
   height: 1px;
   width: 1px;
   overflow: hidden;
@@ -282,7 +282,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                           "isStatic": true,
                           "lastClassName": "c2",
                           "rules": Array [
-                            "&[type='checkbox']{position:absolute !important;height:1px;width:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);}",
+                            "&[type='checkbox']{position:absolute;height:1px;width:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);}",
                           ],
                         },
                         "displayName": "Checkbox__Input",
@@ -298,7 +298,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                     forwardedRef={
                       Object {
                         "current": .c0[type='checkbox'] {
-  position: absolute !important;
+  position: absolute;
   height: 1px;
   width: 1px;
   overflow: hidden;
@@ -394,7 +394,6 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
           </Checkbox__InputWrapper>
           <Checkbox__Label
             htmlFor="checkbox"
-            id="label"
           >
             <StyledComponent
               forwardedComponent={
@@ -425,12 +424,10 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
               }
               forwardedRef={null}
               htmlFor="checkbox"
-              id="label"
             >
               <label
                 className="c4"
                 htmlFor="checkbox"
-                id="label"
               >
                 test
               </label>
@@ -499,7 +496,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
 }
 
 .c2[type='checkbox'] {
-  position: absolute !important;
+  position: absolute;
   height: 1px;
   width: 1px;
   overflow: hidden;
@@ -719,7 +716,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                           "isStatic": true,
                           "lastClassName": "c2",
                           "rules": Array [
-                            "&[type='checkbox']{position:absolute !important;height:1px;width:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);}",
+                            "&[type='checkbox']{position:absolute;height:1px;width:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);}",
                           ],
                         },
                         "displayName": "Checkbox__Input",
@@ -735,7 +732,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                     forwardedRef={
                       Object {
                         "current": .c0[type='checkbox'] {
-  position: absolute !important;
+  position: absolute;
   height: 1px;
   width: 1px;
   overflow: hidden;
@@ -774,7 +771,6 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
           </Checkbox__InputWrapper>
           <Checkbox__Label
             htmlFor="checkbox"
-            id="label"
           >
             <StyledComponent
               forwardedComponent={
@@ -805,12 +801,10 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
               }
               forwardedRef={null}
               htmlFor="checkbox"
-              id="label"
             >
               <label
                 className="c3"
                 htmlFor="checkbox"
-                id="label"
               >
                 test
               </label>
