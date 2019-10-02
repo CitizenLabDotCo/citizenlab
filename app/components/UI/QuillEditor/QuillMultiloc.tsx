@@ -40,7 +40,7 @@ export type InputProps = {
   labelTooltip?: JSX.Element;
   onChangeMultiloc?: (value: Multiloc) => void;
   renderPerLocale?: (locale: string) => JSX.Element;
-  shownLocale?: Locale;
+  selectedLocale?: Locale;
 };
 
 type DataProps = {
@@ -92,13 +92,13 @@ class EditorMultiloc extends PureComponent<Props & VanillaProps, State> {
   }
 
   render() {
-    const { tenantLocales, id, shownLocale } = this.props;
+    const { tenantLocales, id, selectedLocale } = this.props;
 
     if (!isNilOrError(tenantLocales)) {
       return (
         <Container id={id} className={`${this.props['className']} e2e-multiloc-editor`} >
-          {!shownLocale ? tenantLocales.map((currentTenantLocale, index) => this.renderOnce(currentTenantLocale, index))
-        : this.renderOnce(shownLocale, 0)}
+          {!selectedLocale ? tenantLocales.map((currentTenantLocale, index) => this.renderOnce(currentTenantLocale, index))
+        : this.renderOnce(selectedLocale, 0)}
         </Container>
       );
     }

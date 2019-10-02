@@ -64,7 +64,7 @@ export default class PostPreview extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      postId: null,
+      postId: props.postId,
       opened: false
     };
   }

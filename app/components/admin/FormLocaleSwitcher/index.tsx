@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, MouseEvent } from 'react';
 import { Locale, MultilocFormValues } from 'typings';
 import { adopt } from 'react-adopt';
 import { isEmpty, get } from 'lodash-es';
@@ -71,14 +71,14 @@ class FormLocaleSwitcher extends PureComponent<Props> {
 
   validatePerLocale = (locale: Locale) => {
     const { values } = this.props;
-    return Object.getOwnPropertyNames(values).every(field => !isEmpty(get(values, `[${field}][${locale}]`)));
+    return Object.getOwnPropertyNames(values).every(key => !isEmpty(get(values, `[${key}][${locale}]`)));
   }
 
-  removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
+  removeFocus = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   }
 
-  handleOnClick = (locale: Locale) => (event: React.MouseEvent<any>) => {
+  handleOnClick = (locale: Locale) => (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     this.props.onLocaleChange(locale);
   }
@@ -89,7 +89,7 @@ class FormLocaleSwitcher extends PureComponent<Props> {
     if (!isNilOrError(tenantLocales) && tenantLocales.length > 1) {
       return (
         <Container className={className}>
-          {tenantLocales.map((locale: Locale) => (
+          {tenantLocales.map((locale) => (
             <StyledButton
               key={locale}
               onMouseDown={this.removeFocus}
@@ -110,7 +110,7 @@ class FormLocaleSwitcher extends PureComponent<Props> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetTenantLocales />
 });
 
 export default (inputProps: InputProps) => (
