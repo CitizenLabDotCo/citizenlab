@@ -41,11 +41,11 @@ const PageTitle = styled.h1`
   color: ${colors.text};
   font-size: ${fontSizes.xxxxl}px;
   line-height: normal;
-  font-weight: 500;
+  font-weight: 600;
   text-align: center;
   margin: 0;
   padding: 0;
-  margin-bottom: 35px;
+  margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
     text-align: left;
