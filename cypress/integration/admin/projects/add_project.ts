@@ -26,11 +26,10 @@ describe('Admin: add project', () => {
   beforeEach(() => {
     cy.login('admin@citizenlab.co', 'testtest');
     cy.visit('/admin/projects/');
-    // find the add project button on admin/settings/projects and click it
-    cy.get('.e2e-admin-add-project').click();
-    // go to the project creation form
-    cy.location('pathname').should('eq', '/en-GB/admin/projects/new');
-    // check that the page container is loaded
+    cy.get('.e2e-create-project-expand-collapse-button').click();
+    cy.wait(1000);
+    cy.get('.e2e-create-project-tabs .item2').click();
+    cy.wait(1000);
     cy.get('.e2e-project-general-form');
   });
 
