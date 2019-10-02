@@ -29,6 +29,10 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -163,6 +167,8 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
     const invalidTitle = isEmpty(titleMultiloc) || (titleMultiloc && Object.getOwnPropertyNames(titleMultiloc).every(key => isEmpty(titleMultiloc[`${key}`])));
     const invalidDate = isEmpty(startDate);
 
+    trackEventByName(tracks.useTemplateModalCreateProjectButtonClicked, { projectTemplateId });
+
     if (invalidTitle) {
       setTitleError({ [`${selectedLocale}`]: intl.formatMessage(messages.projectTitleError) });
     }
@@ -237,12 +243,14 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
     setResponseError(null);
   }, [opened]);
 
+  const templateTitle = get(data, `projectTemplate.titleMultiloc.${locale}`);
+
   return (
     <Modal
       width="500px"
       opened={opened}
       close={onClose}
-      header={get(data, `projectTemplate.titleMultiloc.${locale}`)}
+      header={<FormattedMessage {...messages.createProjectBasedOn} values={{ templateTitle }} />}
       footer={
         <Footer>
           {!success ? (

@@ -3,6 +3,10 @@ import React, { memo, useCallback, useState } from 'react';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // components
 import Button from 'components/UI/Button';
 import UseTemplateModal from 'components/ProjectTemplatePreview/UseTemplateModal';
@@ -111,14 +115,17 @@ const ProjectTemplateCard = memo<Props>(({ projectTemplateId, imageUrl, title, b
   const [modalOpened, setModalOpened] = useState<boolean>(false);
 
   const onMoreDetailsBtnClick = useCallback(() => {
+    trackEventByName(tracks.moreDetailsButtonClicked, { projectTemplateId, title });
     eventEmitter.emit<string>('ProjectTemplateCard', 'ProjectTemplateCardClicked', projectTemplateId);
   }, []);
 
   const onOpenModal = useCallback(() => {
+    trackEventByName(tracks.useTemplateButtonClicked, { projectTemplateId, title });
     setModalOpened(true);
   }, []);
 
   const onCloseModal = useCallback(() => {
+    trackEventByName(tracks.useTemplateModalClosed, { projectTemplateId, title });
     setModalOpened(false);
   }, []);
 

@@ -12,6 +12,10 @@ import UseTemplateModal from 'components/ProjectTemplatePreview/UseTemplateModal
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'containers/Admin/projects/all/tracks';
+
 // styling
 import styled from 'styled-components';
 
@@ -43,10 +47,12 @@ const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(({ params,
   const [modalOpened, setModalOpened] = useState<boolean>(false);
 
   const onOpenModal = useCallback(() => {
+    trackEventByName(tracks.useTemplateButtonClicked, { projectTemplateId });
     setModalOpened(true);
   }, []);
 
   const onCloseModal = useCallback(() => {
+    trackEventByName(tracks.useTemplateModalClosed, { projectTemplateId });
     setModalOpened(false);
   }, []);
 

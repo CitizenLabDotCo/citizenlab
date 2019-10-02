@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback, useEffect, MouseEvent } from 'react';
+import React, { memo, useState, useCallback, useEffect, useRef, MouseEvent } from 'react';
 import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -17,6 +17,10 @@ import useTenant from 'hooks/useTenant';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -170,6 +174,8 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [hasCollapseAnimation, setHasCollapseAnimation] = useState(true);
   const [selectedTab, setSelectedTab] = useState(fromATemplateText);
 
+  const isFirstRun = useRef(true);
+
   // prefetch templates query used in ProjectTemplateCards so the data is
   // already loaded when expanding the 'create project' section
   useQuery(TEMPLATES_QUERY, {
@@ -200,12 +206,31 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   }, []);
 
   const handleExpandCollapse = useCallback(() => {
+    if (expanded) {
+      trackEventByName(tracks.createProjectSectionCollapsed);
+    } else {
+      trackEventByName(tracks.createProjectSectionExpanded);
+    }
+
     setExpanded(!expanded);
   }, [expanded]);
 
   const handleTabOnClick = useCallback((item: string) => {
     setSelectedTab(item);
-  }, []);
+  }, [selectedTab]);
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+
+    if (selectedTab === fromATemplateText) {
+      trackEventByName(tracks.createProjectFromTemplateTabSelected);
+    } else if (selectedTab === fromScratchText) {
+      trackEventByName(tracks.createProjectFromScratchTabSelected);
+    }
+  }, [selectedTab]);
 
   return (
     <Container className={className}>

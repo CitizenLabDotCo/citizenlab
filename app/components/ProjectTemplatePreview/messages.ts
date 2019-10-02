@@ -49,11 +49,11 @@ export default defineMessages({
   },
   projectTitle: {
     id: 'app.components.ProjectTemplatePreview.projectTitle',
-    defaultMessage: 'Project title',
+    defaultMessage: 'The title of your project',
   },
   projectStartDate: {
     id: 'app.components.ProjectTemplatePreview.projectStartDate',
-    defaultMessage: 'Project start date',
+    defaultMessage: 'The start date of your project',
   },
   projectTitleError: {
     id: 'app.components.ProjectTemplatePreview.projectTitleError',
@@ -82,5 +82,9 @@ export default defineMessages({
   projectsOverviewPage: {
     id: 'app.components.ProjectTemplatePreview.projectsOverviewPage',
     defaultMessage: 'projects overview page',
+  },
+  createProjectBasedOn: {
+    id: 'app.components.ProjectTemplatePreview.createProjectBasedOn',
+    defaultMessage: "Create a project based on the template '{templateTitle}'",
   }
 });
