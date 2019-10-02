@@ -214,7 +214,7 @@ export default class Error extends PureComponent<Props, State> {
         enter={animate}
         exit={animate}
       >
-        <StyledErrorMessage tabIndex={0} className={`e2e-error-message ${className}`} size={size} marginTop={marginTop} marginBottom={marginBottom}>
+        <StyledErrorMessage tabIndex={-1} className={`e2e-error-message ${className}`} size={size} marginTop={marginTop} marginBottom={marginBottom}>
           <StyledErrorMessageInner showBackground={showBackground} className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}>
             {showIcon && <IconWrapper><Icon title={<FormattedMessage {...messages.error} />} name="error" /></IconWrapper>}
 

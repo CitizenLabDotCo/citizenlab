@@ -215,7 +215,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
       <tr key={user.id} className="e2e-user-table-row">
         <td>
           <StyledCheckbox
-            value={selected}
+            checked={selected}
             onChange={this.handleUserSelectedOnChange}
           />
         </td>

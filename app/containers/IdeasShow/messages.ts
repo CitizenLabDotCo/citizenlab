@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.invisibleTitleVoteControls',
     defaultMessage: 'Votes',
   },
-  imageAltText: {
-    id: 'app.containers.IdeasShow.imageAltText',
-    defaultMessage: 'Main image for the idea {ideaTitle}',
-  },
   voteOnThisIdea: {
     id: 'app.containers.IdeasShow.voteOnThisIdea',
     defaultMessage: 'Vote on this idea',
