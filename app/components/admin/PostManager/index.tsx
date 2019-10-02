@@ -352,7 +352,11 @@ export class PostManager extends React.PureComponent<Props, State> {
                 onChangeStatusFilter={onChangeStatus}
                 onChangeProjectFilter={this.onChangeProjects}
               />
-              {multipleIdeasSelected && (this.props.type === 'AllIdeas' || this.props.type === 'ProjectIdeas') &&
+              {multipleIdeasSelected && (
+                this.props.type === 'AllIdeas' ||
+                this.props.type === 'ProjectIdeas' ||
+                (this.props.type === 'Initiatives' && activeFilterMenu === 'topics')
+              ) &&
                 <Message
                   info={true}
                   attached="bottom"
