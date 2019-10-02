@@ -66,7 +66,7 @@ const StyledTopicsPicker = styled(TopicsPicker)`
 `;
 
 const HiddenLabel = styled.span`
-  ${hideVisually() as any}
+  ${hideVisually()}
 `;
 
 export interface IIdeaFormOutput {

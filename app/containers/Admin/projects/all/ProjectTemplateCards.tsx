@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useState } from 'react';
-import { adopt } from 'react-adopt';
 import { get, isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -7,8 +6,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 
-// resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+// hooks
+import useTenant from 'hooks/useTenant';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // components
 import ProjectTemplateCard from './ProjectTemplateCard';
@@ -95,15 +98,9 @@ const NoTemplates = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
 }
-
-interface DataProps {
-  tenant: GetTenantChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 export const TEMPLATES_QUERY = gql`
   query PublishedProjectTemplatesQuery(
@@ -146,13 +143,14 @@ export const TEMPLATES_QUERY = gql`
   }
 `;
 
-const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className, tenant }) => {
+const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className }) => {
 
   const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
   const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
 
-  const locales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : null;
-  const organizationTypes = !isNilOrError(tenant) ? tenant.attributes.settings.core.organization_type : null;
+  const tenant = useTenant();
+  const locales = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.locales : null;
+  const organizationTypes = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.organization_type : null;
 
   const [departments, setDepartments] = useState<string[] | null>(null);
   const [purposes, setPurposes] = useState<string[] | null>(null);
@@ -175,22 +173,27 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className,
   const templates = get(data, 'publishedProjectTemplates', null);
 
   const handleDepartmentFilterOnChange = useCallback((departments: string[]) => {
+    trackEventByName(tracks.departmentFilterChanged, { departments });
     setDepartments(departments && departments.length > 0 ? departments : null);
   }, []);
 
   const handlePurposeFilterOnChange = useCallback((purposes: string[]) => {
+    trackEventByName(tracks.purposeFilterChanged, { purposes });
     setPurposes(purposes && purposes.length > 0 ? purposes : null);
   }, []);
 
   const handleParticipationLevelFilterOnChange = useCallback((participationLevels: string[]) => {
+    trackEventByName(tracks.participationLevelFilterChanged, { participationLevels });
     setParticipationLevels(participationLevels && participationLevels.length > 0 ? participationLevels : null);
   }, []);
 
   const handleSearchOnChange = useCallback((searchValue: string) => {
+    trackEventByName(tracks.searchValueChanged, { searchValue });
     setSearch(!isEmpty(searchValue) ? searchValue : null);
   }, []);
 
   const handleLoadMoreTemplatesOnClick = useCallback(async () => {
+    trackEventByName(tracks.templatesLoadMoreButtonClicked);
     setLoadingMore(true);
 
     try {
@@ -289,14 +292,4 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className,
   );
 });
 
-const ProjectTemplateCardsWithHoC = injectIntl(ProjectTemplateCards);
-
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <ProjectTemplateCardsWithHoC {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default injectIntl(ProjectTemplateCards);

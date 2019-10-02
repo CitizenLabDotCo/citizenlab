@@ -19,9 +19,14 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
+import { lighten } from 'polished';
 
 const Container = styled.div`
   width: 100%;
@@ -193,9 +198,7 @@ const Content = styled.div`
 
 const Phases = styled.div`
   width: 100%;
-  /* padding-left: 30px; */
-  /* padding-right: 30px; */
-  padding-top: 60px;
+  padding-top: 20px;
   padding-bottom: 60px;
   margin: 0;
   margin-left: auto;
@@ -203,13 +206,9 @@ const Phases = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
 `;
 
-const PhaseBar: any = styled.button`
+const PhaseBar = styled.button`
   width: 100%;
   height: 24px;
   color: #fff;
@@ -218,10 +217,9 @@ const PhaseBar: any = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e0e0e0;
+  background: ${lighten(0.15, colors.label)};
   transition: background 60ms ease-out;
   position: relative;
-  cursor: pointer;
   border: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -241,8 +239,8 @@ const PhaseArrow = styled(Icon)`
   `}
 `;
 
-const PhaseText: any = styled.div`
-  color: #e0e0e0;
+const PhaseText = styled.div`
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-align: center;
@@ -259,16 +257,14 @@ const PhaseText: any = styled.div`
   transition: color 60ms ease-out;
 `;
 
-const PhaseContainer: any = styled.div`
+const PhaseContainer = styled.div`
   min-width: 80px;
   flex-shrink: 1;
-  flex-grow: ${(props: any) => props.numberOfDays};
+  flex-grow: 10;
   flex-basis: auto;
   display: flex;
   flex-direction: column;
   position: relative;
-  cursor: pointer;
-  margin-right:  ${(props: any) => !props.last ? '1px' : '0px' };
 
   &.first ${PhaseBar} {
     border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px ${(props: any) => props.theme.borderRadius};
@@ -351,6 +347,9 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
             ${graphQLLocale}
           }
         }
+        phases {
+          ${graphQLLocale}
+        }
         purposes {
           id
           titleMultiloc {
@@ -381,6 +380,7 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
   const copyLink = useCallback(() => {
     clipboard.writeText(`${window.location.origin}/templates/${projectTemplateId}`);
     setLinkCopied(true);
+    trackEventByName(tracks.linkCopied, { projectTemplateId });
   }, []);
 
   useEffect(() => {
@@ -399,118 +399,95 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
 
       {!loading && data &&
         <>
-        <Header>
-          <HeaderLeft>
-            <Title>{data.projectTemplate.titleMultiloc[`${graphQLLocale}`]}</Title>
-            <Subtitle>{data.projectTemplate.subtitleMultiloc[`${graphQLLocale}`]}</Subtitle>
-          </HeaderLeft>
+          <Header>
+            <HeaderLeft>
+              <Title>{data.projectTemplate.titleMultiloc[`${graphQLLocale}`]}</Title>
+              <Subtitle>{data.projectTemplate.subtitleMultiloc[`${graphQLLocale}`]}</Subtitle>
+            </HeaderLeft>
 
-          <HeaderRight>
-            <LinkCopied className={linkCopied ? 'visible' : 'hidden'}>
-              <LinkCopiedIcon name="checkmark" />
-              <FormattedMessage {...messages.copied} />
-            </LinkCopied>
-            <CopyLinkButton
-              onClick={copyLink}
-              icon="link"
-              style="secondary"
-            >
-              <FormattedMessage {...messages.copyLink} />
-            </CopyLinkButton>
-          </HeaderRight>
-        </Header>
+            <HeaderRight>
+              <LinkCopied className={linkCopied ? 'visible' : 'hidden'}>
+                <LinkCopiedIcon name="checkmark" />
+                <FormattedMessage {...messages.copied} />
+              </LinkCopied>
+              <CopyLinkButton
+                onClick={copyLink}
+                icon="link"
+                style="secondary"
+              >
+                <FormattedMessage {...messages.copyLink} />
+              </CopyLinkButton>
+            </HeaderRight>
+          </Header>
 
-        <MetaInfo>
-          <MetaInfoLeft>
-            {data.projectTemplate.departments && data.projectTemplate.departments.map((department) => (
-              <Department key={department.id}>
-                {department.titleMultiloc[`${graphQLLocale}`]}
-              </Department>
-            ))}
-          </MetaInfoLeft>
-          <MetaInfoRight>
-            {data.projectTemplate.purposes && data.projectTemplate.purposes.length > 0 &&
-              <Purpose>
-                <PurposeIcon name="purpose" />
-                {data.projectTemplate.purposes.map((purpose) => purpose.titleMultiloc[`${graphQLLocale}`]).join(', ')}
-              </Purpose>
+          <MetaInfo>
+            <MetaInfoLeft>
+              {data.projectTemplate.departments && data.projectTemplate.departments.map((department) => (
+                <Department key={department.id}>
+                  {department.titleMultiloc[`${graphQLLocale}`]}
+                </Department>
+              ))}
+            </MetaInfoLeft>
+            <MetaInfoRight>
+              {data.projectTemplate.purposes && data.projectTemplate.purposes.length > 0 &&
+                <Purpose>
+                  <PurposeIcon name="purpose" />
+                  {data.projectTemplate.purposes.map((purpose) => purpose.titleMultiloc[`${graphQLLocale}`]).join(', ')}
+                </Purpose>
+              }
+              {data.projectTemplate.participationLevels && data.projectTemplate.participationLevels.length > 0 &&
+                <ParticipationLevel>
+                  <ParticipationLevelIcon name="participationLevel" />
+                  {data.projectTemplate.participationLevels.map((participationLevel) => participationLevel.titleMultiloc[`${graphQLLocale}`]).join(', ')}
+                </ParticipationLevel>
+              }
+            </MetaInfoRight>
+          </MetaInfo>
+
+          <Content>
+            {data.projectTemplate.headerImage &&
+              <HeaderImage src={data.projectTemplate.headerImage} />
             }
-            {data.projectTemplate.participationLevels && data.projectTemplate.participationLevels.length > 0 &&
-              <ParticipationLevel>
-                <ParticipationLevelIcon name="participationLevel" />
-                {data.projectTemplate.participationLevels.map((participationLevel) => participationLevel.titleMultiloc[`${graphQLLocale}`]).join(', ')}
-              </ParticipationLevel>
-            }
-          </MetaInfoRight>
-        </MetaInfo>
 
-        <Content>
-          {data.projectTemplate.headerImage &&
-            <HeaderImage src={data.projectTemplate.headerImage} />
+            <QuillEditedContent textColor={colors.adminTextColor}>
+              <div dangerouslySetInnerHTML={{ __html: data.projectTemplate.descriptionMultilocs[0].content }} />
+            </QuillEditedContent>
+          </Content>
+
+          {data.projectTemplate.phases && data.projectTemplate.phases.length > 0 &&
+            <Phases>
+              {data.projectTemplate.phases.map((phase, index) => (
+                <PhaseContainer key={index} className={`${index === 0 ? 'first' : ''} ${index === data.projectTemplate.phases.length - 1 ? 'last' : ''}`}>
+                  <PhaseBar>
+                    {index + 1}
+                    <PhaseArrow name="phase_arrow" />
+                  </PhaseBar>
+                  <PhaseText>
+                    {phase[`${graphQLLocale}`]}
+                  </PhaseText>
+                </PhaseContainer>
+              ))}
+            </Phases>
           }
 
-          <QuillEditedContent textColor={colors.adminTextColor}>
-            <div dangerouslySetInnerHTML={{ __html: data.projectTemplate.descriptionMultilocs[0].content }} />
-          </QuillEditedContent>
-        </Content>
-
-        <Phases>
-          <PhaseContainer
-            className="first"
-            numberOfDays="10"
-          >
-            <PhaseBar>
-              1
-              <PhaseArrow name="phase_arrow" />
-            </PhaseBar>
-            <PhaseText>
-              Phase 1
-            </PhaseText>
-          </PhaseContainer>
-          <PhaseContainer
-            numberOfDays="10"
-          >
-            <PhaseBar>
-              2
-              <PhaseArrow name="phase_arrow" />
-            </PhaseBar>
-            <PhaseText>
-              Phase 2
-            </PhaseText>
-          </PhaseContainer>
-          <PhaseContainer
-            className="last"
-            numberOfDays="10"
-          >
-            <PhaseBar>
-              3
-              <PhaseArrow name="phase_arrow" />
-            </PhaseBar>
-            <PhaseText>
-              Phase 3
-            </PhaseText>
-          </PhaseContainer>
-        </Phases>
-
-        {data.projectTemplate.successCases && data.projectTemplate.successCases.length > 0 &&
-          <Footer>
-            <SuccessCasesTitle>
-              <FormattedMessage {...messages.alsoUsedIn} />
-            </SuccessCasesTitle>
-            <SuccessCases>
-              { data.projectTemplate.successCases.map((successCase) => (
-                <SuccessCase key={successCase.id} href={successCase.href} target="_blank">
-                  <SuccessCaseImage src={successCase.image} />
-                </SuccessCase>
-              ))}
-            </SuccessCases>
-          </Footer>
-        }
+          {data.projectTemplate.successCases && data.projectTemplate.successCases.length > 0 &&
+            <Footer>
+              <SuccessCasesTitle>
+                <FormattedMessage {...messages.alsoUsedIn} />
+              </SuccessCasesTitle>
+              <SuccessCases>
+                { data.projectTemplate.successCases.map((successCase) => (
+                  <SuccessCase key={successCase.id} href={successCase.href} target="_blank">
+                    <SuccessCaseImage src={successCase.image} />
+                  </SuccessCase>
+                ))}
+              </SuccessCases>
+            </Footer>
+          }
         </>
       }
     </Container>
   );
-
 });
 
 export default ProjectTemplatePreview;

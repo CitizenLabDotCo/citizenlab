@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
 `;
 
 const StyledLabel = styled(Label)`
