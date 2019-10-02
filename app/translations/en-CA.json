@@ -1584,22 +1584,13 @@
   "app.containers.footer.feedbackModalTitle": "",
   "app.containers.footer.feedbackQuestion": "",
   "app.containers.footer.feedbackSuccessfullySubmitted": "",
-<<<<<<< HEAD
-  "app.containers.footer.iframeTitle": "",
   "app.containers.footer.information": "",
   "app.containers.footer.logoAltText": "",
-=======
-  "app.containers.footer.information": "",
->>>>>>> 570bc331bc108df088a17ea9791a1f68c56a9129
   "app.containers.footer.moreInfo": "",
   "app.containers.footer.no": "",
   "app.containers.footer.poweredBy": "",
   "app.containers.footer.privacy-policy": "",
   "app.containers.footer.sendFeedback": "",
-<<<<<<< HEAD
-  "app.containers.footer.slogan": "",
-=======
->>>>>>> 570bc331bc108df088a17ea9791a1f68c56a9129
   "app.containers.footer.submit": "",
   "app.containers.footer.terms-and-conditions": "",
   "app.containers.footer.thanksForFeedback": "",

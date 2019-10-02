@@ -1585,6 +1585,7 @@
   "app.containers.footer.feedbackQuestion": "Did you find what you're looking for?",
   "app.containers.footer.feedbackSuccessfullySubmitted": "Your feedback was successfully submitted.",
   "app.containers.footer.information": "Information",
+  "app.containers.footer.logoAltText": "Website of {tenantName}",
   "app.containers.footer.moreInfo": "... let us know more",
   "app.containers.footer.no": "No",
   "app.containers.footer.poweredBy": "Powered by",
