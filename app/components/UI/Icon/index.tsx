@@ -142,8 +142,8 @@ const icons = {
       <path d="M4 19c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H4v1zM7 0C3.14 0 0 3.14 0 7c0 2.38 1.19 4.47 3 5.74V15c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V14H5v-2.3l-.85-.6A4.997 4.997 0 0 1 2 7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
     </svg>
   ),
-  user: (className, title) => (
-    <svg className={className} height="100%" viewBox="2 2 20 20">
+  user: (className, title, ariaHidden) => (
+    <svg role="img" aria-hidden={ariaHidden} className={className} height="100%" viewBox="2 2 20 20">
       {injectTitle(title)}
       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
       <path fill="none" d="M0 0h24v24H0V0z" />

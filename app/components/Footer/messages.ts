@@ -76,5 +76,9 @@ export default defineMessages({
   close: {
     id: 'app.containers.footer.close',
     defaultMessage: 'Close'
+  },
+  logoAltText: {
+    id: 'app.containers.footer.logoAltText',
+    defaultMessage: 'Website of {tenantName}'
   }
 });
