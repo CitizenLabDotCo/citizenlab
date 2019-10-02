@@ -12,22 +12,21 @@ const StyledIframe = styled.iframe`
 `;
 
 interface DataProps {
-  tenant: GetTenantChildProps,
-  fragmentsFeatureFlag: GetFeatureFlagChildProps,
+  tenant: GetTenantChildProps;
+  fragmentsFeatureFlag: GetFeatureFlagChildProps;
 }
 
 interface InputProps {
-  name: string,
-  title?: string,
+  name: string;
+  title?: string;
   children: any;
 }
 
 interface Props extends DataProps, InputProps {}
 
-
 interface State {
   iframeHeight?: number;
-};
+}
 
 /**
  * Wrap content in a named fragment to allow the content to be overridden
