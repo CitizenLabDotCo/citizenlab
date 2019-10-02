@@ -556,7 +556,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 {ideaImageLarge &&
                   <Image
                     src={ideaImageLarge}
-                    alt={formatMessage(messages.imageAltText, { ideaTitle })}
+                    alt=""
                     id="e2e-idea-image"
                   />
                 }
