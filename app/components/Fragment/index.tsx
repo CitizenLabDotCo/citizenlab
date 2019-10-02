@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import GetTenant from 'resources/GetTenant';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { isNilOrError } from 'utils/helperUtils';
+import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
+import { adopt } from 'react-adopt';
 
 const StyledIframe = styled.iframe`
   border: 0;
@@ -9,14 +11,21 @@ const StyledIframe = styled.iframe`
   width: 100%;
 `;
 
-type Props = {
-  title: string;
-  name: string;
-  tenantId: string;
-};
+interface DataProps {
+  tenant: GetTenantChildProps,
+  fragmentsFeatureFlag: GetFeatureFlagChildProps,
+}
 
-type State = {
-  fragmentExists?: boolean;
+interface InputProps {
+  name: string,
+  title?: string,
+  children: any;
+}
+
+interface Props extends DataProps, InputProps {}
+
+
+interface State {
   iframeHeight?: number;
 };
 
@@ -31,25 +40,27 @@ class Fragment extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      fragmentExists: undefined
+      iframeHeight: undefined
     };
   }
 
-  componentDidMount() {
-    fetch(this.fragmentUrl())
-    .then((response) => {
-      if (response.ok) {
-        this.setState({ fragmentExists: true });
-      } else {
-        throw('not found');
-      }
-    })
-    .catch(() => {
-      this.setState({ fragmentExists: false });
-    });
+  fragmentUrl = () : string => {
+    const { tenant } = this.props;
+    if (!isNilOrError(tenant)) {
+      return `/fragments/${tenant.id}/${this.props.name}.html`;
+    } else {
+      return '';
+    }
   }
 
-  fragmentUrl = () => `/fragments/${this.props.tenantId}/${this.props.name}.html`;
+  fragmentActive = () : boolean => {
+    const { tenant, fragmentsFeatureFlag } = this.props;
+    if (isNilOrError(tenant) || !fragmentsFeatureFlag || !tenant.attributes.settings.fragments) {
+      return false;
+    } {
+      return tenant.attributes.settings.fragments.enabled_fragments.includes(this.props.name);
+    }
+  }
 
   setIframeRef = (ref) => {
     this.iframeNode = ref;
@@ -65,9 +76,9 @@ class Fragment extends PureComponent<Props, State> {
 
   render() {
     const { children, title } = this.props;
-    const { fragmentExists, iframeHeight } = this.state;
+    const { iframeHeight } = this.state;
 
-    if (fragmentExists) {
+    if (this.fragmentActive()) {
       return (
         <StyledIframe
           title={title}
@@ -77,16 +88,20 @@ class Fragment extends PureComponent<Props, State> {
           onLoad={this.setIframeHeight}
         />
       );
-    } else if (fragmentExists === false) {
+    } else {
       return children;
     }
 
-    return null;
   }
 }
 
-export default (inputProps) => (
-  <GetTenant>
-    {(tenant) => !isNilOrError(tenant) ? <Fragment {...inputProps} tenantId={tenant.id} /> : null}
-  </GetTenant>
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
+  fragmentsFeatureFlag: <GetFeatureFlag name="fragments" />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <Fragment {...inputProps} {...dataProps} />}
+  </Data>
 );
