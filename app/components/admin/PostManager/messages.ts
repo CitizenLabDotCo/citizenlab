@@ -111,7 +111,7 @@ export default defineMessages({
   },
   multiDragAndDropHelp: {
     id: 'app.components.admin.PostManager.multiDragAndDropHelp',
-    defaultMessage: 'Drag and drop the ideas on an item above to assign them all at once.',
+    defaultMessage: 'Drag and drop the {postTypePlural} on an item above to assign them all at once.',
   },
   timelineTab: {
     id: 'app.components.admin.PostManager.timelineTab',
@@ -304,5 +304,13 @@ export default defineMessages({
   automatic: {
     id: 'app.components.admin.PostManager.automatic',
     defaultMessage: '(automatic)',
+  },
+  ideas: {
+    id: 'app.components.admin.PostManager.ideas',
+    defaultMessage: 'ideas',
+  },
+  initiatives: {
+    id: 'app.components.admin.PostManager.initiatives',
+    defaultMessage: 'initiatives',
   },
 });
