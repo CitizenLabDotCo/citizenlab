@@ -28,7 +28,7 @@ export default defineMessages({
     defaultMessage: 'Want to use this template for your participation project?',
   },
   infoboxLine2: {
-    id: 'app.components.ProjectTemplatePreview.infoboxLine1',
+    id: 'app.components.ProjectTemplatePreview.infoboxLine2',
     defaultMessage: 'Reach out to the responsible person in your city administration, or contact a {link}.',
   },
   citizenlabExpert: {
