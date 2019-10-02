@@ -47,10 +47,6 @@ export default class Unauthenticated extends React.PureComponent {
     clHistory.push('/sign-in');
   }
 
-  stopPropagation = (event) => {
-    event.stopPropagation();
-  }
-
   render() {
     return (
       <VerticalContainer>
@@ -58,7 +54,7 @@ export default class Unauthenticated extends React.PureComponent {
           <FormattedMessage {...messages.login} />
         </LoginButton>
         <Separator>or</Separator>
-        <RegisterLink to="/sign-up" className="e2e-register-button" onClick={this.stopPropagation}>
+        <RegisterLink to="/sign-up" className="e2e-register-button">
           <FormattedMessage {...messages.register} />
         </RegisterLink>
       </VerticalContainer>
