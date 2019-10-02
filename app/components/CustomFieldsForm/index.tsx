@@ -252,7 +252,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
       <>
         {title && <FormLabelValue thin labelValue={title}/>}
         <Checkbox
-          value={(isBoolean(props.value) ? props.value : false)}
+          checked={(isBoolean(props.value) ? props.value : false)}
           onChange={onChange}
           label={(props.schema.description || null)}
         />

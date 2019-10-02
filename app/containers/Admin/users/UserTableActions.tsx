@@ -355,7 +355,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                 </UserCount>
               </>
             }
-            value={(selectedUsers === 'all')}
+            checked={(selectedUsers === 'all')}
             onChange={this.toggleAllUsers}
           />
         </ActionButton>
@@ -386,7 +386,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                           <T value={group.attributes.title_multiloc} />
                         </DropdownListItemText>
                         <StyledCheckbox
-                          value={includes(selectedGroupIds, group.id)}
+                          checked={includes(selectedGroupIds, group.id)}
                           onChange={this.toggleGroup(group.id)}
                         />
                       </DropdownListItem>
