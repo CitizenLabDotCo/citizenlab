@@ -124,7 +124,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
             />
             <Field
               component={FormikQuillMultiloc}
-              shownLocale={this.state.selectedLocale}
+              selectedLocale={this.state.selectedLocale}
               label={(
                 <FormattedMessage {...messages.fieldThresholdReachedMessage} />
               )}
@@ -139,7 +139,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
           </StyledSectionField>
           <SectionField>
             <Field
-              shownLocale={this.state.selectedLocale}
+              selectedLocale={this.state.selectedLocale}
               label={(
                 <FormattedMessage {...messages.fieldEligibilityCriteria} />
               )}

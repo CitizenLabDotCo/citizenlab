@@ -14,11 +14,18 @@ const addPollOptionSpy = jest.spyOn(pollOptionsService, 'addPollOption');
 const updatePollOptionSpy = jest.spyOn(pollOptionsService, 'updatePollOption');
 const deletePollOptionSpy = jest.spyOn(pollOptionsService, 'deletePollOption');
 
+// jest.mock('resources/GetTenantLocales');
+// import { mockGetTenantLocales } from 'resources/__mocks__/GetTenantLocales';
+
+jest.mock('resources/GetTenantLocales', ({ children }) => children(['en', 'fr-BE']));
+
 jest.mock('components/admin/FormLocaleSwitcher', () => 'FormLocaleSwitcher');
 jest.mock('components/admin/ResourceList', () => ({ TextCell: 'TextCell', Row: 'Row' }));
 jest.mock('components/UI/InputMultiloc', () => 'InputMultiloc');
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
+
+jest.mock('resources/GetTenant', () => 'GetTenant');
 
 import FormOptionRow from './FormOptionRow';
 
@@ -99,7 +106,7 @@ describe('<FormOptionRow />', () => {
           questionId="questionId"
         />
       );
-      wrapper.find('.fr-BE').simulate('click');
+      wrapper.find('FormLocaleSwitcher').prop('onLocaleChange')('fr-BE');
       expect(wrapper.find('InputMultiloc').prop('selectedLocale')).toBe('fr-BE');
     });
   });

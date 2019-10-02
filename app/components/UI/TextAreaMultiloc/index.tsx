@@ -51,7 +51,7 @@ export type Props = {
   maxCharCount?: number | undefined;
   renderPerLocale?: (locale: string) => JSX.Element;
   disabled?: boolean;
-  shownLocale?: Locale;
+  selectedLocale?: Locale;
 };
 
 type State = {
@@ -135,7 +135,7 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
 
   render() {
     const { locale, currentTenant } = this.state;
-    const { shownLocale } = this.props;
+    const { selectedLocale } = this.props;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -143,8 +143,8 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
 
       return (
         <Container id={this.props.id} className={this.props['className']} >
-          {shownLocale
-            ? this.renderOnce(shownLocale, 1, totalLocales)
+          {selectedLocale
+            ? this.renderOnce(selectedLocale, 1, totalLocales)
             : currentTenantLocales.map((currentTenantLocale, index) => {
               return this.renderOnce(currentTenantLocale, index, totalLocales);
           })}

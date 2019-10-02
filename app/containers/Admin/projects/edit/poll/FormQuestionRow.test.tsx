@@ -58,7 +58,7 @@ describe('<FormQuestionRow />', () => {
           onCancel={onCancel}
         />
       );
-      wrapper.find('.fr-BE').simulate('click');
+      wrapper.find('FormLocaleSwitcher').prop('onLocaleChange')('fr-BE');
       expect(wrapper.find('InputMultiloc').prop('selectedLocale')).toBe('fr-BE');
 
     });

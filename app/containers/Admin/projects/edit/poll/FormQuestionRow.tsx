@@ -64,7 +64,7 @@ class FormQuestionRow extends PureComponent<Props, State> {
             valueMultiloc={titleMultiloc}
             type="text"
             onChange={onChange}
-            shownLocale={selectedLocale}
+            selectedLocale={selectedLocale}
             autoFocus
           />
         </TextCell>
