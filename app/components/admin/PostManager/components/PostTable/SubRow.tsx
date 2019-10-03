@@ -29,6 +29,7 @@ interface Props {
   onUpdateStatus: (id: string) => void;
   allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
   /* set allowedTransitions to null to allow all */
+  postType: 'idea' | 'initiative';
 }
 
 export default ({
@@ -45,35 +46,39 @@ export default ({
   onUpdatePhases,
   onUpdateTopics,
   onUpdateStatus,
-  allowedTransitions
-}: Props) => (
-  <Table.Row active={active} onClick={onClickRow} className={className}>
-     <Table.Cell as={FilterCell} collapsing={true} />
-     <Table.Cell colSpan={6} as={FilterCell}>
-       {activeFilterMenu === 'phases' && phases &&
-         <PhasesSelector
-           selectedPhases={selectedPhases || []}
-           phases={phases}
-           onUpdatePhases={onUpdatePhases}
-         />
-       }
-       {activeFilterMenu === 'topics' &&
-         <TopicsSelector
-           selectedTopics={selectedTopics || []}
-           onUpdateTopics={onUpdateTopics}
-         />
-       }
-       {activeFilterMenu === 'projects' && projectId &&
-         <ProjectSelector projectId={projectId} />
-       }
-       {activeFilterMenu === 'statuses' && statuses && allowedTransitions !== undefined &&
-         <StatusSelector
-           statuses={statuses}
-           selectedStatus={selectedStatus}
-           onUpdateStatus={onUpdateStatus}
-           allowedTransitions={allowedTransitions}
-         />
-       }
-     </Table.Cell>
-   </Table.Row>
-);
+  allowedTransitions,
+  postType
+}: Props) => {
+  return (
+    <Table.Row active={active} onClick={onClickRow} className={className}>
+       <Table.Cell as={FilterCell} collapsing={true} />
+       <Table.Cell colSpan={6} as={FilterCell}>
+         {activeFilterMenu === 'phases' && phases &&
+           <PhasesSelector
+             selectedPhases={selectedPhases || []}
+             phases={phases}
+             onUpdatePhases={onUpdatePhases}
+           />
+         }
+         {activeFilterMenu === 'topics' &&
+           <TopicsSelector
+             selectedTopics={selectedTopics || []}
+             onUpdateTopics={onUpdateTopics}
+           />
+         }
+         {activeFilterMenu === 'projects' && projectId &&
+           <ProjectSelector projectId={projectId} />
+         }
+         {activeFilterMenu === 'statuses' && statuses && allowedTransitions !== undefined &&
+           <StatusSelector
+             statuses={statuses}
+             selectedStatus={selectedStatus}
+             onUpdateStatus={onUpdateStatus}
+             allowedTransitions={allowedTransitions}
+             postType={postType}
+           />
+         }
+       </Table.Cell>
+     </Table.Row>
+  );
+};
