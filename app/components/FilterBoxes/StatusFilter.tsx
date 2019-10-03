@@ -114,7 +114,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
 
   if (!isNilOrError(statuses) && statuses.length > 0) {
     return (
-      <Container className={`e2e-statuses-filters ${className}`} aria-live="polite">
+      <Container className={`e2e-statuses-filters ${className}`}>
         <Header>
           <Title>
             <FormattedMessage {...messages.statusTitle} />
