@@ -109,9 +109,13 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.participatoryBudgettingPicks',
     defaultMessage: 'Picks',
   },
-  multiDragAndDropHelp: {
-    id: 'app.components.admin.PostManager.multiDragAndDropHelp',
+  multiDragAndDropHelpIdeas: {
+    id: 'app.components.admin.PostManager.multiDragAndDropHelpIdeas',
     defaultMessage: 'Drag and drop the ideas on an item above to assign them all at once.',
+  },
+  multiDragAndDropHelpInitiatives: {
+    id: 'app.components.admin.PostManager.multiDragAndDropHelpInitiatives',
+    defaultMessage: 'Drag and drop the initiatives on an item above to assign them all at once.',
   },
   timelineTab: {
     id: 'app.components.admin.PostManager.timelineTab',
@@ -304,5 +308,13 @@ export default defineMessages({
   automatic: {
     id: 'app.components.admin.PostManager.automatic',
     defaultMessage: '(automatic)',
+  },
+  ideas: {
+    id: 'app.components.admin.PostManager.ideas',
+    defaultMessage: 'ideas',
+  },
+  initiatives: {
+    id: 'app.components.admin.PostManager.initiatives',
+    defaultMessage: 'initiatives',
   },
 });

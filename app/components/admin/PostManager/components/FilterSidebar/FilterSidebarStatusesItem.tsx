@@ -40,7 +40,6 @@ interface Props {
 class FilterSidebarStatusesItem extends React.PureComponent<Props> {
   render() {
     const { status, active, onClick, connectDropTarget, isOver, canDrop } = this.props;
-    console.log(status);
 
     return connectDropTarget(
       <div>
