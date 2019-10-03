@@ -204,6 +204,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
           onUpdatePhases={this.onUpdateInitiativePhases}
           onUpdateTopics={this.onUpdateInitiativeTopics}
           onUpdateStatus={this.onUpdateInitiativeStatus}
+          postType="initiative"
         />
       </>
     );

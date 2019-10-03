@@ -4,7 +4,6 @@ import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeAllowedTransitions } from 'services/initiatives';
 import T from 'components/T';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -18,10 +17,7 @@ const ColorIndicator = styled.div<{ active: boolean, disabled: boolean }>`
   margin-right: 0.5rem;
   cursor: pointer;
   margin: 0 0.25rem;
-  ${props => props.disabled ? `
-    background-color: ${colors.mediumGrey};
-    cursor: not-allowed;
-  ` : '' /* line order matters here so active element is displayed correctly */}
+  ${props => props.disabled ? 'cursor: not-allowed;' : ''}
   ${props => props.active ? `background-color: ${props.color};` : ''}
 `;
 
@@ -30,6 +26,7 @@ type Props = {
   statuses: IIdeaStatusData[],
   onUpdateStatus: (statusId: string) => void;
   allowedTransitions: IInitiativeAllowedTransitions | null;
+  postType: 'idea' | 'initiative';
 };
 
 class StatusSelector extends React.PureComponent<Props> {
@@ -44,11 +41,13 @@ class StatusSelector extends React.PureComponent<Props> {
 
   handleStatusClick = (statusId) => (event) => {
     event.stopPropagation();
-    this.props.onUpdateStatus(statusId);
+    if (this.isAllowed(statusId)) {
+      this.props.onUpdateStatus(statusId);
+    }
   }
 
   render() {
-    const { statuses } = this.props;
+    const { statuses, postType } = this.props;
     return (
       <Container>
         {statuses.map((status) => (
@@ -57,7 +56,9 @@ class StatusSelector extends React.PureComponent<Props> {
             basic
             trigger={
               <ColorIndicator
-                disabled={!this.isAllowed(status.id)}
+                // Status changes are only possible disabled for initiatives
+                // For ideas, all status changes are always allowed
+                disabled={postType === 'initiative' && !this.isAllowed(status.id)}
                 color={status.attributes.color}
                 active={this.isActive(status.id)}
                 onClick={this.handleStatusClick(status.id)}
