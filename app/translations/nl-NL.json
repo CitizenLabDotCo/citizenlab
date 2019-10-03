@@ -380,6 +380,8 @@
   "app.components.admin.PostManager.feedbackAuthorPlaceholder": "",
   "app.components.admin.PostManager.feedbackBodyPlaceholder": "",
   "app.components.admin.PostManager.header": "Ideeën",
+  "app.components.admin.PostManager.ideas": "",
+  "app.components.admin.PostManager.initiatives": "",
   "app.components.admin.PostManager.latestFeedbackMode": "",
   "app.components.admin.PostManager.losePhaseInfoConfirmation": "Door '{ideaTitle}' te verplaatsen, verliest het de informatie die specifiek gelinkt was aan de tijdslijn uit het vorige project. Wil je doorgaan?",
   "app.components.admin.PostManager.multiDragAndDropHelp": "Versleep de ideeën naar een bovenstaand item om ze gezamenlijk toe te wijzen.",

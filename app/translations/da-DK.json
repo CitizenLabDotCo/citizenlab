@@ -380,6 +380,8 @@
   "app.components.admin.PostManager.feedbackAuthorPlaceholder": "",
   "app.components.admin.PostManager.feedbackBodyPlaceholder": "",
   "app.components.admin.PostManager.header": "Ideas",
+  "app.components.admin.PostManager.ideas": "",
+  "app.components.admin.PostManager.initiatives": "",
   "app.components.admin.PostManager.latestFeedbackMode": "",
   "app.components.admin.PostManager.losePhaseInfoConfirmation": "Moving '{ideaTitle}' away from its current project will lose the information about its assigned phases. Do you want to proceed?",
   "app.components.admin.PostManager.multiDragAndDropHelp": "Drag and drop the ideas on an item above to assign them all at once.",
