@@ -11,7 +11,6 @@ import Icon from 'components/UI/Icon';
 import clickOutside from 'utils/containers/clickOutside';
 
 // animations
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // analytics
