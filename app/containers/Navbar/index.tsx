@@ -522,7 +522,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
             </Left>
             <Fragment name="navbar-right">
               <Right>
-                {!authUser &&
+                {isNilOrError(authUser) &&
 
                   <RightItem className="login noLeftMargin">
                     <LogInLink
@@ -536,7 +536,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   </RightItem>
                 }
 
-                {!authUser &&
+                {isNilOrError(authUser) &&
                   <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
                     <SignUpLink
                       to="/sign-up"
@@ -548,13 +548,13 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   </RightItem>
                 }
 
-                {authUser &&
+                {!isNilOrError(authUser) &&
                   <RightItem className="notification">
                     <NotificationMenu />
                   </RightItem>
                 }
 
-                {authUser &&
+                {!isNilOrError(authUser) &&
                   <RightItem className="usermenu">
                     <UserMenu />
                   </RightItem>
