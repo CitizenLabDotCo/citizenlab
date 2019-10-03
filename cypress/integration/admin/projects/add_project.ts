@@ -1,27 +1,6 @@
-import { get } from 'lodash-es';
 import { randomString } from '../../../support/commands';
 
 describe('Admin: add project', () => {
-
-  const getProject = (projectId: string) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'GET',
-      url: `web_api/v1/projects/${projectId}`,
-    });
-  };
-
-  const getArea = (areaId: string) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'GET',
-      url: `web_api/v1/areas/${areaId}`,
-    });
-  };
 
   beforeEach(() => {
     cy.login('admin@citizenlab.co', 'testtest');
@@ -49,8 +28,7 @@ describe('Admin: add project', () => {
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
 
-        // Navigates to admin/settings/projects
-        cy.location('pathname').should('eq', '/en-GB/admin/projects');
+        cy.wait(2000);
 
         // Project should appear on top of the Published projects
         cy.get('#e2e-admin-draft-projects-list').contains(projectTitleEN);
@@ -70,8 +48,7 @@ describe('Admin: add project', () => {
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
 
-        // Navigates to admin/settings/projects
-        cy.location('pathname').should('eq', '/en-GB/admin/projects');
+        cy.wait(2000);
 
         // Project should appear on top of the Published projects
         cy.get('#e2e-admin-published-projects-list').contains(projectTitleEN);
@@ -91,8 +68,7 @@ describe('Admin: add project', () => {
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
 
-        // Navigates to admin/settings/projects
-        cy.location('pathname').should('eq', '/en-GB/admin/projects');
+        cy.wait(2000);
 
         // Project should appear on top of the Published projects
         cy.get('#e2e-admin-archived-projects-list').contains(projectTitleEN);
@@ -120,8 +96,7 @@ describe('Admin: add project', () => {
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
 
-        // Navigates to admin/settings/projects
-        cy.location('pathname').should('eq', '/en-GB/admin/projects');
+        cy.wait(2000);
 
         // Get projectId, then areaId and look up area to compare
         cy.get(`.e2e-admin-edit-project.${projectTitleEN}`).find('a').then((manageProjectButtonLinks) => {
@@ -131,12 +106,12 @@ describe('Admin: add project', () => {
           const projectId = hrefSegments[hrefSegments.length - 2];
           return projectId;
         }).then((projectId) => {
-          return getProject(projectId);
+          return cy.getProjectById(projectId);
         }).then((projectData) => {
-          const areaId = get(projectData.body.data.relationships.areas.data[0], 'id');
-          return getArea(areaId);
+          const areaId = projectData.body.data.relationships.areas.data[0].id;
+          return cy.getArea(areaId);
         }).then((areaData) => {
-          const area = get(areaData.body.data.attributes.title_multiloc, 'en-GB');
+          const area = areaData.body.data.attributes.title_multiloc['en-GB'];
           expect(area).to.eq('Carrotgem');
         });
       });
