@@ -21,7 +21,7 @@ app.use('/auth', (req, res) => {
 app.use(express.static('build'));
 
 app.use('/fragments/*', function(req, res) {
-  res.send(404);
+  res.sendStatus(404);
 });
 
 app.use('*', function(req, res) {
