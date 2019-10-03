@@ -1,9 +1,13 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { isNilOrError } from 'utils/helperUtils';
-import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 import { adopt } from 'react-adopt';
+
+// styling
+import styled from 'styled-components';
+
+// resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 
 const StyledIframe = styled.iframe`
   border: 0;
