@@ -41,39 +41,33 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
     const { ideaId, projectId, participationContextId, participationContextType, budgetingDescriptor } = this.props;
     const { error } = this.state;
 
-    if (!error) {
-      return (
-        <AssignBudgetControl
-          view="ideaPage"
-          ideaId={ideaId}
-          participationContextId={participationContextId}
-          participationContextType={participationContextType}
-          unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
-          disabledAssignBudgetClick={this.disabledBudgetingClick}
-        />
-      );
-    }
-
-    if (error === 'budgetingDisabled') {
-      return (
-        <PopContainer icon="lock-outlined">
-          <AssignBudgetDisabled
-            budgetingDescriptor={budgetingDescriptor}
-            projectId={projectId}
+    return (
+      <div aria-live="polite">
+        {!error &&
+          <AssignBudgetControl
+            view="ideaPage"
+            ideaId={ideaId}
+            participationContextId={participationContextId}
+            participationContextType={participationContextType}
+            unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
+            disabledAssignBudgetClick={this.disabledBudgetingClick}
           />
-        </PopContainer>
-      );
-    }
-
-    if (error === 'unauthenticated') {
-      return (
-        <PopContainer icon="lock-outlined">
-          <Unauthenticated />
-        </PopContainer>
-      );
-    }
-
-    return null;
+        }
+        {error === 'budgetingDisabled' &&
+          <PopContainer icon="lock-outlined">
+            <AssignBudgetDisabled
+              budgetingDescriptor={budgetingDescriptor}
+              projectId={projectId}
+            />
+          </PopContainer>
+        }
+        {error === 'unauthenticated' &&
+          <PopContainer icon="lock-outlined">
+            <Unauthenticated />
+          </PopContainer>
+        }
+      </div>
+    );
   }
 }
 

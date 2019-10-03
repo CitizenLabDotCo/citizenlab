@@ -143,16 +143,17 @@ class VoteControl extends PureComponent<Props, State> {
     const initiativeSettings = tenant.attributes.settings.initiatives;
 
     return (
-      <Container id={id || ''} className={className || ''}>
-        <ScreenReaderOnly>
-          <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
-        </ScreenReaderOnly>
+      <Container id={id || ''} className={className || ''} aria-live="polite">
+
         {showUnauthenticated
-          ?
-            <PopContainer icon="lock-outlined">
+          ? <PopContainer icon="lock-outlined">
               <Unauthenticated />
             </PopContainer>
           :
+          <>
+            <ScreenReaderOnly>
+              <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
+            </ScreenReaderOnly>
             <StatusComponent
               initiative={initiative}
               initiativeStatus={initiativeStatus}
@@ -162,6 +163,8 @@ class VoteControl extends PureComponent<Props, State> {
               onCancelVote={this.handleOnCancelVote}
               onScrollToOfficialFeedback={onScrollToOfficialFeedback}
             />
+          </>
+
         }
       </Container>
     );
