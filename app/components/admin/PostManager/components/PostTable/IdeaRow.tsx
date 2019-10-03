@@ -177,6 +177,7 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
           onUpdatePhases={this.onUpdateIdeaPhases}
           onUpdateTopics={this.onUpdateIdeaTopics}
           onUpdateStatus={this.onUpdateIdeaStatus}
+          postType="idea"
         />
       </>
     );
