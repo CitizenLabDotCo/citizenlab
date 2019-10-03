@@ -224,7 +224,7 @@
     "webpack-cli": "3.3.9",
     "webpack-dashboard": "3.2.0",
     "webpack-dev-middleware": "3.7.2",
-    "webpack-dev-server": "3.8.1",
+    "webpack-dev-server": "3.8.2",
     "yargs": "14.0.0"
   },
   "resolutions": {
