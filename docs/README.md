@@ -1,5 +1,16 @@
 # Changelog
 
+## 2019-10-03
+
+### Fixed
+
+- PB phase now has a basket button in the project navbar
+- The datepicker in the timeline admin now works in IE11
+
+### Changed
+
+- For fragments (small pieces of UI that can be overridden per tenant) to work, they need to be enabled individually in admin HQ.
+
 ## 2019-09-25
 
 ### Fixed
