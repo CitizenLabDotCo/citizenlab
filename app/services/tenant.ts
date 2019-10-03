@@ -92,6 +92,11 @@ export interface ITenantSettings {
     threshold_reached_message: Multiloc;
     voting_threshold: number;
   };
+  fragments?: {
+    allowed: boolean,
+    enabled: boolean,
+    enabled_fragments: String[]
+  };
 }
 
 interface TenantMapSettings extends TenantFeature {
