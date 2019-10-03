@@ -362,11 +362,10 @@ export class PostManager extends React.PureComponent<Props, State> {
                   info={true}
                   attached="bottom"
                   icon="info"
-                  content={<FormattedMessage
-                    {...messages.multiDragAndDropHelp}
-                    values={{ postTypePlural: type === 'AllIdeas' || type === 'ProjectIdeas' ?
-                    <FormattedMessage {...messages.ideas} /> : <FormattedMessage {...messages.initiatives} /> }}
-                  />}
+                  content={type === 'AllIdeas' || type === 'ProjectIdeas' ?
+                    <FormattedMessage {...messages.multiDragAndDropHelpIdeas} /> :
+                    <FormattedMessage {...messages.multiDragAndDropHelpInitiatives} />
+                  }
                 />
               }
             </Sticky>
