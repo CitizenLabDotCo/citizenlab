@@ -207,6 +207,12 @@ export default class Error extends PureComponent<Props, State> {
     const { text, errors, apiErrors, fieldName, size, marginTop, marginBottom, showIcon, showBackground, className, animate, message } = this.props;
     const timeout = { enter: 400, exit: 350 };
 
+    console.log(`text: ${text}`);
+    console.log(`errors: ${errors}`);
+    console.log(`apiErrors: ${apiErrors}`);
+    console.log(`message: ${message}`);
+    console.log(`fieldName: ${fieldName}`);
+
     const errorElement = (text || errors || apiErrors || message) && (
       <CSSTransition
         classNames="error"
