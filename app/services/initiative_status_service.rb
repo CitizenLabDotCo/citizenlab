@@ -73,17 +73,19 @@ class InitiativeStatusService
           .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
           .where('initiative_statuses.code = ?', status_code_from)
         initiatives = transition_instructions[:scope_contition].call initiatives
-        # Create the status changes.
-        status_id_to = InitiativeStatus.find_by(code: status_code_to).id
-        changes = InitiativeStatusChange.create!(initiatives.ids.map{ |id|
-          {
-            initiative_id: id,
-            initiative_status_id: status_id_to
-          }
-        })
-        # Log the status change activities.
-        InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative).each do |change|
-          log_status_change change
+        status_id_to = InitiativeStatus.find_by(code: status_code_to)&.id
+        if status_id_to
+          # Create the status changes.
+          changes = InitiativeStatusChange.create!(initiatives.ids.map{ |id|
+            {
+              initiative_id: id,
+              initiative_status_id: status_id_to
+            }
+          })
+          # Log the status change activities.
+          InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative).each do |change|
+            log_status_change change
+          end
         end
       end
     end
