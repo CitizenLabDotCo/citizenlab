@@ -83,7 +83,7 @@ class ColorPickerInput extends PureComponent<Props, State> {
 
   change = (ColorDescription: ColorResult) => {
     const hexColor = ColorDescription.hex;
-    if (this.props.onChange) this.props.onChange(hexColor);
+    this.props.onChange && this.props.onChange(hexColor);
   }
 
   render() {

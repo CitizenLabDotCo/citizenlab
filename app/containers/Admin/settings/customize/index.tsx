@@ -7,6 +7,7 @@ import { forOwn, get, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 import Label from 'components/UI/Label';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
+import RangeInput from 'components/UI/RangeInput';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import { Section, SectionTitle, SectionField, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -18,7 +19,7 @@ import ErrorMessage from 'components/UI/Error';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 // utils
 import { convertUrlToUploadFileObservable } from 'utils/fileTools';
@@ -57,6 +58,7 @@ interface DataProps {
 
 interface Props extends DataProps {
   lang: string;
+  theme: any;
 }
 
 interface IAttributesDiff {
@@ -269,6 +271,34 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     });
   }
 
+  handleHeaderOverlayColorOnChange = (hexColor: string) => {
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          style: {
+            ...get(state.attributesDiff, 'style', {}),
+            signedOutHeaderOverlayColor: hexColor
+          }
+        }
+      };
+    });
+  }
+
+  handleHeaderOverlayOpacityOnChange = (opacity: number) => {
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          style: {
+            ...get(state.attributesDiff, 'style', {}),
+            signedOutHeaderOverlayOpacity: opacity
+          }
+        }
+      };
+    });
+  }
+
   validate = (tenant: ITenant, attributesDiff: IAttributesDiff) => {
     const { formatMessage } = this.props.intl;
     const hasRemoteLogo = has(tenant, 'data.attributes.logo.large');
@@ -395,8 +425,32 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               </ColorPickerSectionField>
             ))}
 
+            <ColorPickerSectionField>
+              <Label>
+                <FormattedMessage {...messages.headerOverlayColor} />
+              </Label>
+              <ColorPickerInput
+                type="text"
+                value={get(attributesDiff, 'style.signedOutHeaderOverlayColor') || this.props.theme.colorMain}
+                onChange={this.handleHeaderOverlayColorOnChange}
+              />
+            </ColorPickerSectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.headerOverlayOpacity} />
+              </Label>
+              <RangeInput
+                step={1}
+                min={0}
+                max={100}
+                value={get(attributesDiff, 'style.signedOutHeaderOverlayOpacity') || 90}
+                onChange={this.handleHeaderOverlayOpacityOnChange}
+              />
+            </SectionField>
+
             <SectionField key={'logo'}>
-              <Label><FormattedMessage {...messages['logo']} /></Label>
+              <Label><FormattedMessage {...messages.logo} /></Label>
               <ImagesDropzone
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 maxNumberOfImages={1}
@@ -498,7 +552,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   }
 }
 
-const SettingsCustomizeTabWithHOCs = injectIntl<Props>(SettingsCustomizeTab);
+const SettingsCustomizeTabWithHOCs = withTheme(injectIntl<Props>(SettingsCustomizeTab));
 
 export default (inputProps: Props) => (
   <GetPage slug="homepage-info">

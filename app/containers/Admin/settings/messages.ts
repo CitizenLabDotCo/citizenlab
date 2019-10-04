@@ -77,6 +77,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.color_text',
     defaultMessage: 'Text color',
   },
+  headerOverlayColor: {
+    id: 'app.containers.AdminPage.SettingsPage.headerOverlayColor',
+    defaultMessage: 'Header overlay color',
+  },
+  headerOverlayOpacity: {
+    id: 'app.containers.AdminPage.SettingsPage.headerOverlayOpacity',
+    defaultMessage: 'Header overlay opacity',
+  },
   logo: {
     id: 'app.containers.AdminPage.SettingsPage.logo',
     defaultMessage: 'Logo',
