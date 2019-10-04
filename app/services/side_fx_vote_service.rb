@@ -6,7 +6,7 @@ class SideFxVoteService
   end
 
   def after_create vote, current_user
-    if vote.votable_type == 'Initiatve'
+    if vote.votable_type == 'Initiative'
       AutomatedTransitionJob.perform_now
     end
     type = votable_type(vote)
