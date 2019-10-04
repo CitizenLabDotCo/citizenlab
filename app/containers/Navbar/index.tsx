@@ -301,6 +301,10 @@ const RightItem: any = styled.div`
   `}
 `;
 
+const StyledRightFragment = styled(Fragment)`
+  max-width: 200px;
+`;
+
 const LogInLink = styled(NavigationItem)`
   &:focus,
   &:hover {
@@ -520,7 +524,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 </NavigationItem>
               </NavigationItems>
             </Left>
-            <Fragment name="navbar-right">
+            <StyledRightFragment name="navbar-right">
               <Right>
                 {isNilOrError(authUser) &&
 
@@ -566,7 +570,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   </RightItem>
                 }
               </Right>
-            </Fragment>
+            </StyledRightFragment>
           </ContainerInner>
         </Container>
       </>
