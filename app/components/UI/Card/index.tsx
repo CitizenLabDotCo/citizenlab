@@ -93,7 +93,6 @@ const Footer = styled.div`
 interface Props {
   to: string;
   imageUrl?: string | null;
-  imageAltText?: string | null;
   header?: JSX.Element;
   title: string;
   body?: JSX.Element;
@@ -102,7 +101,7 @@ interface Props {
   className?: string;
 }
 
-const Card = memo<Props>(({ to, onClick, imageUrl, imageAltText, header, title, body, footer, className }) => (
+const Card = memo<Props>(({ to, onClick, imageUrl, header, title, body, footer, className }) => (
   <Container
     onClick={onClick}
     to={to}
@@ -111,7 +110,7 @@ const Card = memo<Props>(({ to, onClick, imageUrl, imageAltText, header, title, 
     <>
       {imageUrl &&
         <ImageWrapper>
-          <Image src={imageUrl} alt={imageAltText || ''} />
+          <Image src={imageUrl} alt="" />
         </ImageWrapper>
       }
 
