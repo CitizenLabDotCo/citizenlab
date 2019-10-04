@@ -11,26 +11,13 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 // intl
 import messages from './messages';
 import T from 'components/T';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // data
 import { adopt } from 'react-adopt';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
-
-interface InputProps {
-  location: string;
-  pageSlug: string;
-  imageUrl: string;
-}
-
-interface DataProps {
-  page: GetPageChildProps;
-}
-
-interface Props extends InputProps, DataProps { }
 
 const Container: any = styled(Link)`
   background: white;
@@ -127,7 +114,19 @@ const SuccessImage = styled(LazyImage)`
   background: #fff;
 `;
 
-const SuccessCard = memo(({ page, imageUrl, pageSlug, location, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+interface InputProps {
+  location: string;
+  pageSlug: string;
+  imageUrl: string;
+}
+
+interface DataProps {
+  page: GetPageChildProps;
+}
+
+interface Props extends InputProps, DataProps { }
+
+const SuccessCard = memo(({ page, imageUrl, pageSlug, location }: Props) => {
   if (isNilOrError(page)) return null;
 
   return (
@@ -143,15 +142,11 @@ const SuccessCard = memo(({ page, imageUrl, pageSlug, location, intl: { formatMe
         </LocationIndication>
 
         {imageUrl &&
-          <T value={page.attributes.title_multiloc}>
-            {storyTitle => (
-              <SuccessImage
-                src={imageUrl}
-                alt={formatMessage(messages.successImageAltText, { storyTitle })}
-                cover={true}
-              />
-            )}
-          </T>
+          <SuccessImage
+            src={imageUrl}
+            alt=""
+            cover={true}
+          />
         }
       </SuccessImageContainer>
       <SuccessIndication>
@@ -168,10 +163,8 @@ const Data = adopt<DataProps, InputProps>({
   page: ({ pageSlug, render }) => <GetPage slug={pageSlug}>{render}</GetPage>,
 });
 
-const SuccessCardWithIntl = injectIntl(SuccessCard);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <SuccessCardWithIntl {...inputProps} {...dataprops} />}
+    {dataprops => <SuccessCard {...inputProps} {...dataprops} />}
   </Data>
 );
