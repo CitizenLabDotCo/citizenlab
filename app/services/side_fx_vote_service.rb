@@ -6,7 +6,9 @@ class SideFxVoteService
   end
 
   def after_create vote, current_user
-    AutomatedTransitionJob.perform_now
+    if vote.votable_type == 'Initiatve'
+      AutomatedTransitionJob.perform_now
+    end
     type = votable_type(vote)
     LogActivityJob.perform_later(vote, "#{type}_#{vote.mode}voted", current_user, vote.created_at.to_i)
   end
