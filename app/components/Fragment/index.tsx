@@ -24,6 +24,7 @@ interface InputProps {
   name: string;
   title?: string;
   children: any;
+  className?: string;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -78,12 +79,13 @@ class Fragment extends PureComponent<Props, State> {
   }
 
   render() {
-    const { children, title } = this.props;
+    const { children, title, className } = this.props;
     const { iframeHeight } = this.state;
 
     if (this.fragmentActive()) {
       return (
         <StyledIframe
+          className={className}
           title={title}
           ref={this.setIframeRef}
           src={this.fragmentUrl()}
