@@ -937,6 +937,8 @@
   "app.containers.AdminPage.SettingsPage.fieldTitle": "Nombre del área",
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "El nombre que elija para cada área será visible para los ciudadanos durante el registro y cuando filtren los proyectos.",
   "app.containers.AdminPage.SettingsPage.header": "Banner de la página de inicio",
+  "app.containers.AdminPage.SettingsPage.headerOverlayColor": "",
+  "app.containers.AdminPage.SettingsPage.headerOverlayOpacity": "",
   "app.containers.AdminPage.SettingsPage.headerSubtitleLabel": "Subtítulo de banner",
   "app.containers.AdminPage.SettingsPage.headerSubtitleTooltip": "Se muestra a continuación el título del encabezado en la página de inicio. Dile a tus usuarios por qué debe registrarse en la plataforma.",
   "app.containers.AdminPage.SettingsPage.headerTitleLabel": "Título del banner",

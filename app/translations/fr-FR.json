@@ -937,6 +937,8 @@
   "app.containers.AdminPage.SettingsPage.fieldTitle": "Nom",
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "Le nom que vous choisissez pour caractériser un lieu ou un quartier sera visible pour les utilisateurs au cours de l’inscription et lors du filtrage des projets.",
   "app.containers.AdminPage.SettingsPage.header": "Bannière de la page d'accueil",
+  "app.containers.AdminPage.SettingsPage.headerOverlayColor": "",
+  "app.containers.AdminPage.SettingsPage.headerOverlayOpacity": "",
   "app.containers.AdminPage.SettingsPage.headerSubtitleLabel": "Sous-titre de la bannière",
   "app.containers.AdminPage.SettingsPage.headerSubtitleTooltip": "Visible en-dessous du titre principale de la page d'accueil. Dites aux citoyens pourquoi ils devraient s'inscrire sur votre plateforme.",
   "app.containers.AdminPage.SettingsPage.headerTitleLabel": "Titre de la bannière",
