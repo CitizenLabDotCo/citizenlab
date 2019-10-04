@@ -937,6 +937,8 @@
   "app.containers.AdminPage.SettingsPage.fieldTitle": "Area name",
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "The name you choose for each area will be visible for citizens during signup and when filtering projects.",
   "app.containers.AdminPage.SettingsPage.header": "Homepage banner",
+  "app.containers.AdminPage.SettingsPage.headerOverlayColor": "",
+  "app.containers.AdminPage.SettingsPage.headerOverlayOpacity": "",
   "app.containers.AdminPage.SettingsPage.headerSubtitleLabel": "Banner subtitle",
   "app.containers.AdminPage.SettingsPage.headerSubtitleTooltip": "Shown below the header title on the home page. Tell your users why they should register on your platform.",
   "app.containers.AdminPage.SettingsPage.headerTitleLabel": "Banner title",

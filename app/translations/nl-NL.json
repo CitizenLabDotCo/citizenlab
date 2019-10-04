@@ -937,6 +937,8 @@
   "app.containers.AdminPage.SettingsPage.fieldTitle": "Naam",
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "De naam die je voor elk gebied kiest is zichtbaar voor gebruikers tijdens hun registratie en bij het filteren van de projecten.",
   "app.containers.AdminPage.SettingsPage.header": "Banner startpagina",
+  "app.containers.AdminPage.SettingsPage.headerOverlayColor": "",
+  "app.containers.AdminPage.SettingsPage.headerOverlayOpacity": "",
   "app.containers.AdminPage.SettingsPage.headerSubtitleLabel": "Banner ondertitel",
   "app.containers.AdminPage.SettingsPage.headerSubtitleTooltip": "Weergegeven onder de titel op de homepagina. Overtuig je gebruikers om aan te melden op je platform.",
   "app.containers.AdminPage.SettingsPage.headerTitleLabel": "Bannertitel",
