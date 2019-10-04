@@ -6,6 +6,7 @@ class SideFxInitiativeService
   end
 
   def before_create initiative, user
+    initiative.body_multiloc = TextImageService.new.swap_data_images(initiative, :body_multiloc)
     before_publish initiative, user if initiative.published?
   end
 
@@ -16,6 +17,7 @@ class SideFxInitiativeService
   end
 
   def before_update initiative, user
+    initiative.body_multiloc = TextImageService.new.swap_data_images(initiative, :body_multiloc)
     if initiative.publication_status_change == ['draft', 'published']
       before_publish initiative, user
     end
