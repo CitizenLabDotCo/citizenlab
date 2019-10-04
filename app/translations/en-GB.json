@@ -937,6 +937,8 @@
   "app.containers.AdminPage.SettingsPage.fieldTitle": "",
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "",
   "app.containers.AdminPage.SettingsPage.header": "",
+  "app.containers.AdminPage.SettingsPage.headerOverlayColor": "",
+  "app.containers.AdminPage.SettingsPage.headerOverlayOpacity": "",
   "app.containers.AdminPage.SettingsPage.headerSubtitleLabel": "",
   "app.containers.AdminPage.SettingsPage.headerSubtitleTooltip": "",
   "app.containers.AdminPage.SettingsPage.headerTitleLabel": "",
