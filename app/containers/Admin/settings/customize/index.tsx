@@ -431,7 +431,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               </Label>
               <ColorPickerInput
                 type="text"
-                value={get(attributesDiff, 'style.signedOutHeaderOverlayColor') || this.props.theme.colorMain}
+                value={get(attributesDiff, 'style.signedOutHeaderOverlayColor') || get(tenant, 'data.attributes.style.signedOutHeaderOverlayColor') || this.props.theme.colorMain}
                 onChange={this.handleHeaderOverlayColorOnChange}
               />
             </ColorPickerSectionField>
@@ -444,7 +444,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 step={1}
                 min={0}
                 max={100}
-                value={get(attributesDiff, 'style.signedOutHeaderOverlayOpacity') || 90}
+                value={get(attributesDiff, 'style.signedOutHeaderOverlayOpacity') || get(tenant, 'data.attributes.style.signedOutHeaderOverlayOpacity') || 90}
                 onChange={this.handleHeaderOverlayOpacityOnChange}
               />
             </SectionField>

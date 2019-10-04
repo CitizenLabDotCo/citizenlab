@@ -61,14 +61,26 @@ export interface Props {
 
 interface State {
   opened: boolean;
+  value: string;
 }
 
 class ColorPickerInput extends PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       opened: false,
+      value: props.value
     };
+  }
+
+  componentDidMount() {
+    this.setState({ value: this.props.value });
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (!this.state.opened && prevProps.value !== this.props.value) {
+      this.setState({ value: this.props.value });
+    }
   }
 
   open = (event: React.FormEvent<any>) => {
@@ -79,15 +91,16 @@ class ColorPickerInput extends PureComponent<Props, State> {
   close = (event: React.FormEvent<any>) => {
     event.preventDefault();
     this.setState({ opened: false });
+    this.props.onChange(this.state.value);
   }
 
   change = (ColorDescription: ColorResult) => {
     const hexColor = ColorDescription.hex;
-    this.props.onChange && this.props.onChange(hexColor);
+    this.setState({ value: hexColor });
   }
 
   render() {
-    const { opened } = this.state;
+    const { opened, value } = this.state;
 
     return (
       <Container>
@@ -96,7 +109,7 @@ class ColorPickerInput extends PureComponent<Props, State> {
             <Cover onClick={this.close} />
             <ChromePicker
               disableAlpha={true}
-              color={this.props.value || undefined}
+              color={value}
               onChange={this.change}
               onChangeComplete={this.change}
             />
@@ -105,12 +118,12 @@ class ColorPickerInput extends PureComponent<Props, State> {
         <InputWrapper>
           <Color
             onClick={this.open}
-            color={this.props.value}
+            color={value}
           />
           <StyledInput
             readOnly
             type="text"
-            value={this.props.value}
+            value={value}
             onFocus={this.open}
             spellCheck={false}
           />
