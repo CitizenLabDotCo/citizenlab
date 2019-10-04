@@ -683,6 +683,24 @@
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
         }
+      },
+      "fragments": {
+        "type": "object",
+        "description":  "Internal system to allow specific pieces of UI to be overriden with custom HTML for this tenant only",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled", "enabled_fragments"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "enabled_fragments": {
+            "type": "array",
+            "default": [],
+            "description": "List of fragment names that should be enabled. (e.g. `signed-out-header`)",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       }
     },
   "dependencies": {
