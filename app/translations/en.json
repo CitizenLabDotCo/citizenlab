@@ -223,7 +223,6 @@
   "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Support my initiative: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Vote for {postTitle} on",
   "app.components.PostComponents.createdTimeAgo": "Created {timeAgo}",
-  "app.components.PostComponents.imageAltText": "Main image for the {postContext} {title}",
   "app.components.PostComponents.linkToHomePage": "Link to home page",
   "app.components.PostComponents.seeOriginal": "See original",
   "app.components.PostComponents.seeTranslation": "See translation",
