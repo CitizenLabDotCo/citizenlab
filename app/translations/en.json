@@ -313,7 +313,6 @@
   "app.components.admin.PostManager.PostPreview.deleteInitiativeConfirmation": "Are you sure you want to delete this initiative?",
   "app.components.admin.PostManager.PostPreview.edit": "Edit",
   "app.components.admin.PostManager.PostPreview.formTitle": "Editing idea",
-  "app.components.admin.PostManager.PostPreview.imageAltText": "Image for idea {ideaTitle}",
   "app.components.admin.PostManager.PostPreview.noOne": "Unassigned",
   "app.components.admin.PostManager.PostPreview.picks": "Picks: {picksNumber}",
   "app.components.admin.PostManager.PostPreview.save": "Save",
