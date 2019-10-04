@@ -171,6 +171,7 @@ const config = {
         useShortDoctype: true,
         removeEmptyAttributes: true,
         removeStyleLinkTypeAttributes: true,
+        removeScriptTypeAttributes: true,
         keepClosingSlash: true,
         minifyJS: true,
         minifyCSS: true,
