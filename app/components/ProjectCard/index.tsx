@@ -586,15 +586,11 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             </ProjectImagePlaceholder>
 
             {imageUrl &&
-              <T value={project.attributes.title_multiloc}>
-                {projectTitle => (
-                  <ProjectImage
-                    src={imageUrl}
-                    alt={formatMessage(messages.imageAltText, { projectTitle })}
-                    cover={true}
-                  />
-                )}
-              </T>
+              <ProjectImage
+                src={imageUrl}
+                alt=""
+                cover={true}
+              />
             }
           </ProjectImageContainer>
 

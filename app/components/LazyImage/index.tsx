@@ -34,7 +34,6 @@ interface State {
 export default class LazyImage extends PureComponent<Props, State> {
   static defaultProps = {
     alt: '',
-    role: 'presentation'
   };
 
   constructor(props) {
