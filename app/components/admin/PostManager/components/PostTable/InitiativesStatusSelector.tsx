@@ -1,7 +1,7 @@
 import React from 'react';
 import { Popup } from 'semantic-ui-react';
-import { IIdeaStatusData } from 'services/ideaStatuses';
 import { IInitiativeAllowedTransitions } from 'services/initiatives';
+import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import T from 'components/T';
 import styled from 'styled-components';
 
@@ -23,13 +23,12 @@ const ColorIndicator = styled.div<{ active: boolean, disabled: boolean }>`
 
 type Props = {
   selectedStatus?: string,
-  statuses: IIdeaStatusData[],
+  statuses: IInitiativeStatusData[],
   onUpdateStatus: (statusId: string) => void;
   allowedTransitions: IInitiativeAllowedTransitions | null;
-  postType: 'idea' | 'initiative';
 };
 
-class StatusSelector extends React.PureComponent<Props> {
+class InitiativesStatusSelector extends React.PureComponent<Props> {
 
   isActive = (statusId) => {
     return this.props.selectedStatus === statusId;
@@ -47,7 +46,7 @@ class StatusSelector extends React.PureComponent<Props> {
   }
 
   render() {
-    const { statuses, postType } = this.props;
+    const { statuses } = this.props;
     return (
       <Container>
         {statuses.map((status) => (
@@ -56,9 +55,7 @@ class StatusSelector extends React.PureComponent<Props> {
             basic
             trigger={
               <ColorIndicator
-                // Status changes are only possible disabled for initiatives
-                // For ideas, all status changes are always allowed
-                disabled={postType === 'initiative' && !this.isAllowed(status.id)}
+                disabled={!this.isAllowed(status.id)}
                 color={status.attributes.color}
                 active={this.isActive(status.id)}
                 onClick={this.handleStatusClick(status.id)}
@@ -73,4 +70,4 @@ class StatusSelector extends React.PureComponent<Props> {
   }
 }
 
-export default StatusSelector;
+export default InitiativesStatusSelector;
