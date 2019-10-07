@@ -15,7 +15,7 @@ module AdminApi
       @template = {'models' => {}}
 
       # TODO deal with linking idea_statuses, topics, custom field values and maybe areas and groups
-      @template['models']['project']               = yml_projects new_slug, shift_timestamps: shift_timestamps
+      @template['models']['project']               = yml_projects new_slug: new_slug, shift_timestamps: shift_timestamps
       @template['models']['project_file']          = yml_project_files shift_timestamps: shift_timestamps
       @template['models']['project_image']         = yml_project_images shift_timestamps: shift_timestamps
       @template['models']['phase']                 = yml_phases shift_timestamps: shift_timestamps
@@ -64,7 +64,7 @@ module AdminApi
       @refs[model_name][id] = yml_obj
     end
 
-    def yml_projects shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil
+    def yml_projects shift_timestamps: 0, new_slug: new_slug: nil, new_title_multiloc: nil
       yml_project = yml_participation_context @project, shift_timestamps: shift_timestamps
       yml_project.merge!({
         'title_multiloc'               => new_title_multiloc || @project.title_multiloc,
