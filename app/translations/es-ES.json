@@ -1249,7 +1249,7 @@
   "app.containers.InitiativesIndexPage.startInitiative": "Empieza una iniciativa",
   "app.containers.InitiativesIndexPage.success": "¡Éxito!",
   "app.containers.InitiativesIndexPage.successImageAltText": "{orgName} - imagen principal de la historia {storyTitle}",
-  "app.containers.InitiativesIndexPage.successStoryTitle": "Aprende de historias exitosas",
+  "app.containers.InitiativesIndexPage.successStoryTitle": "Aprende de estos casos de éxito",
   "app.containers.InitiativesNewPage.eligibility": "Para ser elegible, {orgName} requiere su iniciativa para respetar lo siguiente:",
   "app.containers.InitiativesNewPage.header": "Comienza tu iniciativa y haz que tu voz sea escuchada por {styledOrgName}",
   "app.containers.InitiativesNewPage.metaDescription": "Comienza tu iniciativa y haz que tu voz sea escuchada por",
