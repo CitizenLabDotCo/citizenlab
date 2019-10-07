@@ -1604,7 +1604,7 @@
   "app.errors.file_extension_whitelist_error": "Formatet på den fil du prøvede at overføre er ikke understøttet.",
   "app.errors.first_name_blank": "Dette kan ikke være tomt",
   "app.errors.generics.blank": "Dette kan ikke være tomt",
-  "app.errors.generics.invalid": "Det ser ikke ud til, at dette er en gyldig e-mail.",
+  "app.errors.generics.invalid": "Dette ligner ikke en gyldig værdi",
   "app.errors.generics.taken": "Denne e-mail eksisterer allerede. En anden konto er allerede tilknyttet den.",
   "app.errors.generics.unsupported_locales": "Dette felt understøtter ikke den nuværende lokalitet.",
   "app.errors.group_ids_unauthorized_choice_moderator": "As a project moderator, you can only email to people that can access your project(s)",
