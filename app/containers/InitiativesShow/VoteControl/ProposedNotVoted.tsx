@@ -124,7 +124,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
         <CountDownWrapper>
           <CountDown targetTime={initiative.attributes.expires_at} />
         </CountDownWrapper>
-        <StatusIcon name="bullseye" />
+        <StatusIcon ariaHidden name="bullseye" />
         <StatusExplanation>
           <OnDesktop>
             <FormattedMessage
