@@ -161,7 +161,7 @@
   "app.components.InitiativeForm.locationLabel": "Standort auswählen",
   "app.components.InitiativeForm.locationLabelSubtext": "Wo befindet sich Ihre Initiative",
   "app.components.InitiativeForm.locationPlaceholder": "Adresse eingeben",
-  "app.components.InitiativeForm.publishButton": "Ihre Initiative veröffentlichen",
+  "app.components.InitiativeForm.publishButton": "Deine Initiative veröffentlichen",
   "app.components.InitiativeForm.publishUnknownError": "Bei der Veröffentlichung Ihrer Initiative gab es ein Problem. Bitte versuchen Sie es später erneut.",
   "app.components.InitiativeForm.titleEmptyError": "Bitte geben Sie eine Überschrift ein",
   "app.components.InitiativeForm.titleLabel": "Titel",
