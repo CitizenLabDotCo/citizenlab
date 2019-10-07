@@ -8,7 +8,8 @@ class WebApi::V1::TenantsController < ApplicationController
 
   def update
     updated_settings = Tenant.current.settings.deep_merge(tenant_params[:settings].to_h)
-    params = {settings: updated_settings}
+    updated_style = Tenant.current.style.deep_merge(tenant_params[:style].to_h)
+    params = {settings: updated_settings, style: updated_style}
     params[:logo] = tenant_params[:logo] if tenant_params[:logo]
     params[:header_bg] = tenant_params[:header_bg] if tenant_params[:header_bg]
     params[:favicon] = tenant_params[:favicon] if tenant_params[:favicon]
@@ -53,7 +54,10 @@ class WebApi::V1::TenantsController < ApplicationController
     # schema validation, however, should be covering all settings that are not
     # allowed
     all_settings = params.require(:tenant).fetch(:settings, nil).try(:permit!)
-    params.require(:tenant).permit(:logo, :header_bg, :favicon).merge(:settings => all_settings)
+    all_styles = params.require(:tenant).fetch(:style, nil).try(:permit!)
+    params.require(:tenant).permit(:logo, :header_bg, :favicon)
+      .merge(:settings => all_settings)
+      .merge(:style => all_styles)
   end
 
 end
