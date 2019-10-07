@@ -1249,7 +1249,7 @@
   "app.containers.InitiativesIndexPage.startInitiative": "Start een initiatief",
   "app.containers.InitiativesIndexPage.success": "succes",
   "app.containers.InitiativesIndexPage.successImageAltText": "{orgName} - hoofdafbeelding voor het idee {storyTitle}",
-  "app.containers.InitiativesIndexPage.successStoryTitle": "Leer van succesverhalen",
+  "app.containers.InitiativesIndexPage.successStoryTitle": "Leer van deze succesverhalen",
   "app.containers.InitiativesNewPage.eligibility": "Om in aanmerking te komen, verwacht {orgName} dat je initiatief het volgende respecteert:",
   "app.containers.InitiativesNewPage.header": "Start je eigen initiatief en laat je stem horen bij {styledOrgName}",
   "app.containers.InitiativesNewPage.metaDescription": "Start je eigen initiatief en laat je stem horen bij",
