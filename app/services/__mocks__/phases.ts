@@ -34,6 +34,42 @@ export const mockPhaseInformationData = {
     }
   }
 };
+export const mockPhasePollData = {
+  id: 'MockPhasePollId',
+  type: 'phase',
+  attributes: {
+    title_multiloc: 'A Mock Poll phase',
+    description_multiloc: 'For testing purposes',
+    start_at: 'today',
+    end_at: 'one week from now',
+    created_at: 'yesterday',
+    updated_at: 'yesterday but later',
+    participation_method: 'poll', // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
+    // posting_enabled: false,
+    // commenting_enabled: false,
+    // voting_enabled: false,
+    // voting_method: 'limited', // 'limited' | 'unlimited'
+    // voting_limited_max: 0,
+    // presentation_mode: 'card' // 'card' | 'map'
+    // max_budget?: number,
+    // survey_service?: SurveyServices,
+    // survey_embed_url?: string,
+  },
+  relationships: {
+    permissions: {
+  //    data: []// IRelationship[],
+    },
+    project: {
+      data: {
+        id: 'projectId',
+        type: 'project'
+      }// IRelationship,
+    },
+    // user_basket: {
+    //   data: null // IRelationship | null,
+    // }
+  }
+};
 
 export const mockPhaseIdeationData = {
   id: 'MockPhaseIdeationId',

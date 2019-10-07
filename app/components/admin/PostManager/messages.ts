@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.anyAssignment',
     defaultMessage: 'Any administrator',
   },
-  unassignedIdeas: {
-    id: 'app.components.admin.PostManager.unassignedIdeas',
-    defaultMessage: 'Unassigned',
-  },
   assignedToMe: {
     id: 'app.components.admin.PostManager.assignedToMe',
     defaultMessage: 'Assigned to me',
@@ -72,10 +68,6 @@ export default defineMessages({
   title: {
     id: 'app.components.admin.PostManager.title',
     defaultMessage: 'Title',
-  },
-  author: {
-    id: 'app.components.admin.PostManager.author',
-    defaultMessage: 'Author',
   },
   assignee: {
     id: 'app.components.admin.PostManager.assignee',
@@ -141,10 +133,6 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.projectsTabTooltip',
     defaultMessage: 'Filter ideas by project by clicking on the respective project. Multiple projects can be selected simultaneously.',
   },
-  columnsTooltip: {
-    id: 'app.components.admin.PostManager.columnsTooltip',
-    defaultMessage: 'Order the ideas by any of the variables by clicking the respective column header.',
-  },
   statusesTab: {
     id: 'app.components.admin.PostManager.statusesTab',
     defaultMessage: 'Status',
@@ -152,10 +140,6 @@ export default defineMessages({
   statusesTabTooltip: {
     id: 'app.components.admin.PostManager.statusesTabTooltip',
     defaultMessage: 'Drag and drop selected ideas to the idea status you want to give them. By doing so, these ideas will no longer have their current status.',
-  },
-  allIdeas: {
-    id: 'app.components.admin.PostManager.allIdeas',
-    defaultMessage: 'All ideas',
   },
   basketsCountTooltip: {
     id: 'app.components.admin.PostManager.basketsCountTooltip',

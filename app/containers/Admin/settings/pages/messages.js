@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesEdition.titleLabel',
     defaultMessage: 'Page Title',
   },
-  contentLabel: {
-    id: 'app.containers.AdminPage.PagesEdition.contentLabel',
-    defaultMessage: 'Page Content',
-  },
   buttonSave: {
     id: 'app.containers.AdminPage.PagesEdition.buttonSave',
     defaultMessage: 'Save',
@@ -41,6 +37,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesEdition.information',
     defaultMessage: 'Information',
   },
+  'fileUploadLabel': {
+    id: 'app.containers.AdminPage.PagesEdition.fileUploadLabel',
+    defaultMessage: 'Add files to the About page',
+  },
   'terms-and-conditions': {
     id: 'app.containers.AdminPage.PagesEdition.terms-and-conditions',
     defaultMessage: 'Terms and Conditions',
@@ -52,9 +52,5 @@ export default defineMessages({
   'cookie-policy': {
     id: 'app.containers.AdminPage.PagesEdition.cookie-policy',
     defaultMessage: 'Cookie Policy',
-  },
-  'fileUploadLabel': {
-    id: 'app.containers.AdminPage.PagesEdition.fileUploadLabel',
-    defaultMessage: 'Add files to the About page',
   },
 });

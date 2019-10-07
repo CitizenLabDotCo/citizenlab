@@ -1,5 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<AdminProjectEdition /> lets you add an idea when on the ideas tab 1`] = `"/projects/continuousIdeation_slug/ideas/new"`;
+
+exports[`<AdminProjectEdition /> lets you see the project 1`] = `"/projects/continuousInformation_slug"`;
+
 exports[`<AdminProjectEdition /> renders the correct set of tabs for a continuous non-survey non-ideation project 1`] = `
 Array [
   "/admin/projects/continuousInformation/edit",

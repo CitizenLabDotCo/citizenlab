@@ -273,7 +273,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
           <HasPermission item={{ type: 'route', path: '/admin/guide' }} action="access">
             <GetStartedLink to="/admin/guide" >
               <IconWrapper><Icon name="circleInfo" /></IconWrapper>
-              <Text>{formatMessage({ ...messages.gettingStarted })}</Text>
+              <Text>{formatMessage({ ...messages.guide })}</Text>
             </GetStartedLink>
           </HasPermission>
         </MenuInner>

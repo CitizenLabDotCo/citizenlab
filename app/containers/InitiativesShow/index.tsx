@@ -212,13 +212,13 @@ const InitiativeHeaderOverlay = styled.div`
 `;
 
 const NotOnDesktop = styled.div`
-  ${media.biggerThanMinTablet`
+  ${media.biggerThanMaxTablet`
     display: none;
   `}
 `;
 
 const OnlyOnDesktop = styled.div`
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     display: none;
   `}
 `;
