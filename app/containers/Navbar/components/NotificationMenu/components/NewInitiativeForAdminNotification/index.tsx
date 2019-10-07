@@ -39,12 +39,12 @@ const NewInitiativeForAdminNotification = memo<Props>(props => {
           :
             <Link
               to={`/profile/${notification.attributes.initiating_user_slug}`}
+              onClick={stopPropagation}
             >
               {notification.attributes.initiating_user_first_name}
             </Link>,
           post: <Link
             to={`/initiatives/${notification.attributes.post_slug}`}
-            onClick={stopPropagation}
           >
             <T value={notification.attributes.post_title_multiloc} />
           </Link>
