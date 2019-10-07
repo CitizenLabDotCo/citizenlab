@@ -78,7 +78,7 @@ class Expired extends PureComponent<Props, State> {
         <StatusWrapper>
           <T value={initiativeStatus.attributes.title_multiloc} />
         </StatusWrapper>
-        <StatusIcon name="clock" />
+        <StatusIcon ariaHidden name="clock" />
         <StatusExplanation>
           <FormattedMessage
             {...messages.expiredStatusExplanation}
