@@ -310,6 +310,7 @@ export type Props = {
   fullHeight?: boolean;
   ariaLabel?: string;
   fontSize?: string;
+  autoFocus?: boolean
 };
 
 type State = {};
@@ -383,7 +384,8 @@ class Button extends PureComponent<Props, State> {
       fontWeight,
       fullHeight,
       ariaLabel,
-      fontSize
+      fontSize,
+      autoFocus
     } = this.props;
     let { id, size, style, processing, disabled, fullWidth, iconPos, className } = this.props;
 
@@ -478,6 +480,7 @@ class Button extends PureComponent<Props, State> {
             className={buttonClassnames}
             form={form}
             type={type ? type : 'submit'}
+            autoFocus={autoFocus}
           >
             {childContent}
           </StyledButton>

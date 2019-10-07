@@ -67,6 +67,7 @@ const Content = styled.div`
   flex: 1;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+  transform: translate3d(0, 0, 0);
 `;
 
 interface InputProps {

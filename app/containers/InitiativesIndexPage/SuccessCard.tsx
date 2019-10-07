@@ -25,6 +25,7 @@ interface InputProps {
   pageSlug: string;
   imageUrl: string;
 }
+
 interface DataProps {
   page: GetPageChildProps;
 }
@@ -78,6 +79,7 @@ const SuccessIndication = styled.span`
 `;
 
 const SuccessTitle = styled.div`
+  color: ${({ theme }) => theme.colorText};
   display: flex;
   flex-direction: row;
   align-items: center;

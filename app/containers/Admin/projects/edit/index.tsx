@@ -102,6 +102,17 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
       tabs = reject(tabs, { className: 'ideas' });
     }
 
+    if (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'poll' ||
+        (project.attributes.process_type === 'timeline' && !isNilOrError(phases)
+        && phases.filter(phase => phase.attributes.participation_method === 'poll').length > 0)) {
+      tabs.splice(3, 0, {
+        label: formatMessage(messages.pollTab),
+        url: `${baseTabsUrl}/poll`,
+        feature: 'polls',
+        className: 'poll',
+      });
+    }
+
     if (project.attributes.process_type === 'timeline') {
       tabs.splice(3, 0, {
         label: formatMessage(messages.phasesTab),
@@ -163,10 +174,10 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         <TopContainer>
           <GoBackButton onClick={this.goBack} />
           <ActionsContainer>
-            {tabbedProps.tabs.findIndex(tab => tab.className === 'ideas') !== -1 &&
+            {!isNilOrError(project) && tabbedProps.tabs.findIndex(tab => tab.className === 'ideas') !== -1 &&
               <Button
                 id="new-idea"
-                linkTo={projectId ? `/projects/${projectId}/ideas/new` : '/ideas/new'}
+                linkTo={`/projects/${project.attributes.slug}/ideas/new`}
                 text={formatMessage(messages.addNewIdea)}
                 onClick={this.onNewIdea(pathname)}
               />

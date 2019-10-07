@@ -35,7 +35,8 @@
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit --w=2 --coverage --coverageReporters=text-summary",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --spec 'cypress/integration/*.ts'",
-    "majestic": "majestic --port 4231"
+    "majestic": "majestic --port 4231",
+    "find-unused-messages": "node internals/scripts/find-unused-messages.js"
   },
   "majestic": {
     "jestScriptPath": "node_modules/jest/bin/jest.js"
@@ -76,7 +77,7 @@
     "react-adopt": "0.6.0",
     "react-autosize-textarea": "5.0.1",
     "react-color": "2.17.3",
-    "react-dates": "18.4.1",
+    "react-dates": "21.1.0",
     "react-dnd": "5.0.0",
     "react-dnd-html5-backend": "5.0.1",
     "react-dom": "16.9.0",

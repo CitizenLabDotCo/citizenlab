@@ -170,7 +170,7 @@ const StyledIdeaButton = styled(IdeaButton)`
 
 interface InputProps {
   projectSlug: string;
-  phaseId?: string | null;
+  phaseId: string | null;
 }
 
 interface DataProps {
@@ -275,6 +275,18 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   >
                     <ProjectNavbarIcon name="survey" />
                     <FormattedMessage {...messages.navSurvey} />
+                  </ProjectNavbarLink>
+                }
+
+                {/* Poll link */}
+                {projectType === 'continuous' && projectMethod === 'poll' &&
+                  <ProjectNavbarLink
+                    to={`/projects/${projectSlug}/poll`}
+                    activeClassName="active"
+                    className="e2e-project-poll-link"
+                  >
+                    <ProjectNavbarIcon name="survey" />
+                    <FormattedMessage {...messages.navPoll} />
                   </ProjectNavbarLink>
                 }
 

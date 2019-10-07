@@ -88,14 +88,6 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.topicsLabelSubtext',
     defaultMessage: 'You can select up to two topics',
   },
-  projectsLabel: {
-    id: 'app.components.InitiativeForm.projectsLabel',
-    defaultMessage: 'Project (optional)',
-  },
-  projectsPlaceholder: {
-    id: 'app.components.InitiativeForm.projectsPlaceholder',
-    defaultMessage: 'Select a project to which your initiative belongs',
-  },
   locationLabel: {
     id: 'app.components.InitiativeForm.locationLabel',
     defaultMessage: 'Select a Location',

@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.components.admin.FormikSubmitWrapper.buttonSave',
     defaultMessage: 'Save',
   },
-  buttonError: {
-    id: 'app.components.admin.FormikSubmitWrapper.buttonError',
-    defaultMessage: 'Error',
-  },
   buttonSuccess: {
     id: 'app.components.admin.FormikSubmitWrapper.buttonSuccess',
     defaultMessage: 'Success',

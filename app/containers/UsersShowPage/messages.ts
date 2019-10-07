@@ -42,25 +42,9 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.seeInitiative',
     defaultMessage: 'See initiative',
   },
-  loadingUser: {
-    id: 'app.containers.UsersShowPage.loadingUser',
-    defaultMessage: 'Loading...',
-  },
-  loadUserError: {
-    id: 'app.containers.UsersShowPage.loadUserError',
-    defaultMessage: 'User couldn\'t be loaded',
-  },
-  loadingUserIdeas: {
-    id: 'app.containers.UsersShowPage.loadingUserIdeas',
-    defaultMessage: 'Loading user ideas...',
-  },
   loadMoreComments: {
     id: 'app.containers.UsersShowPage.loadMoreComments',
     defaultMessage: 'Load more comments',
-  },
-  loadUserIdeasError: {
-    id: 'app.containers.UsersShowPage.loadUserIdeasError',
-    defaultMessage: 'User\'s ideas couldn\'t be loaded',
   },
   memberSince: {
     id: 'app.containers.UsersShowPage.memberSince',

@@ -16,6 +16,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.ideasTab',
     defaultMessage: 'Ideas',
   },
+  pollTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.pollTab',
+    defaultMessage: 'Poll',
+  },
   phasesTab: {
     id: 'app.containers.AdminPage.ProjectEdit.phasesTab',
     defaultMessage: 'Timeline',
@@ -57,10 +61,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTooltip',
     defaultMessage: 'Choose how users can participate.',
   },
-  participationMethodPlaceholder: {
-    id: 'app.containers.AdminPage.ProjectEdit.participationMethodPlaceholder',
-    defaultMessage: 'Select a participation method',
-  },
   information: {
     id: 'app.containers.AdminPage.ProjectEdit.information',
     defaultMessage: 'Information',
@@ -93,6 +93,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgetingDescription',
     defaultMessage: 'Users can select ideas until their selection reaches a predefined budget threshold.',
   },
+  poll: {
+    id: 'app.containers.AdminPage.ProjectEdit.poll',
+    defaultMessage: 'Poll',
+  },
+  pollDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.pollDescription',
+    defaultMessage: 'Users can answer a short multiple-choice questionnaire.',
+  },
   amountPerCitizen: {
     id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
     defaultMessage: 'Amount per citizen, in {currency}',
@@ -116,10 +124,6 @@ export default defineMessages({
   votingMethodTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.votingMethodTooltip',
     defaultMessage: 'The option ‘Limited’ lets you define what maximum number of votes one user can cast. ‘Unlimited’ allows to vote on as many ideas as wanted.',
-  },
-  votingMethodPlaceholder: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingMethodPlaceholder',
-    defaultMessage: 'Select the voting method',
   },
   votingLimit: {
     id: 'app.containers.AdminPage.ProjectEdit.votingLimit',
