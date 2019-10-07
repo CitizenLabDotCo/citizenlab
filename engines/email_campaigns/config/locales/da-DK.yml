@@ -37,12 +37,12 @@ da:
       "user_digest": En ugentlig oversigt over aktiviteten på platformen (for borgere)
     admin_campaign_type_description:
       "manual": Direct messages sent by administrators or moderators
-      "comment_on_your_comment": Når en bruger modtager et svar på deres kommentar
-      "comment_on_your_idea": Når en bruger modtager et svar på deres idé
-      "admin_rights_received": Når en bruger får administratorrettigheder
-      "comment_deleted_by_admin": Når en administrator sletter min kommentar
-      "comment_marked_as_spam": Når en bruger markerer en kommentar som spam (for administratorer og moderatorer)
-      "idea_assigned_to_you": Når en idé er blevet tildelt mig
+      "comment_on_your_comment": When a user receives a reply on their comment
+      "comment_on_your_idea": When a user receives a reply on their idea
+      "admin_rights_received": When a user is given admin rights
+      "comment_deleted_by_admin": When an admin deletes my comment
+      "comment_marked_as_spam": When a user marks a comment as spam (for administrators and moderators)
+      "idea_assigned_to_you": When an idea has been assigned to me
       "idea_marked_as_spam": When a user marks an idea as spam (for administrators and moderators)
       "invite_received": When a user gets invited to the platform
       "invite_reminder": When someone invited me to the platform (reminder after 3 days)
@@ -67,6 +67,6 @@ da:
       "status_change_of_commented_idea": When the status of an idea the user commented on has been changed
       "status_change_of_voted_idea": When the status of an idea the user voted for has been changed
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
-      "moderator_digest": En ugentlig oversigt over aktiviteten på platformen (kun for moderatorer)
-      "assignee_digest": En ugentlig oversigt over nye idéer tildelt mig (kun for admins og moderatorer)
-      "user_digest": En ugentlig oversigt over aktiviteten på platformen (for borgere)
+      "moderator_digest": A weekly overview of the activity on the platform (only for moderators)
+      "assignee_digest": A weekly overview of new ideas assigned to me (only for admins and moderators)
+      "user_digest": A weekly overview of the activity on the platform (for citizens)
