@@ -12,6 +12,10 @@ resource "Votes" do
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     @initiative = create(:initiative)
+    TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+    @initiative.initiative_status_changes.create!(
+      initiative_status: InitiativeStatus.find_by(code: 'proposed')
+      )
     @votes = create_list(:vote, 2, votable: @initiative, mode: 'up')
   end
 
@@ -52,6 +56,17 @@ resource "Votes" do
       expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
       expect(json_response.dig(:data,:attributes,:mode)).to eq "up"
       expect(@initiative.reload.upvotes_count).to eq 3
+    end
+
+    example "Reaching the voting threshold immediately trigers status change", document: false do
+      tn = Tenant.current
+      settings = tn.settings
+      settings['initiatives']['voting_threshold'] = 3
+      tn.update! settings: settings
+
+      do_request
+      expect(response_status).to eq 201
+      expect(@initiative.reload.initiative_status.code).to eq 'threshold_reached'
     end
   end
 
