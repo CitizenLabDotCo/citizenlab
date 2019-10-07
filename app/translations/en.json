@@ -1249,7 +1249,7 @@
   "app.containers.InitiativesIndexPage.startInitiative": "Start an initiative",
   "app.containers.InitiativesIndexPage.success": "success",
   "app.containers.InitiativesIndexPage.successImageAltText": "{orgName} - main image for the story {storyTitle}",
-  "app.containers.InitiativesIndexPage.successStoryTitle": "Learn from success stories",
+  "app.containers.InitiativesIndexPage.successStoryTitle": "Learn from these success stories",
   "app.containers.InitiativesNewPage.eligibility": "To be eligible, {orgName} requires your initiative to respect the following:",
   "app.containers.InitiativesNewPage.header": "Start your own initiative and make your voice be heard by {styledOrgName}",
   "app.containers.InitiativesNewPage.metaDescription": "Start your own initiative and make your voice be heard by",
