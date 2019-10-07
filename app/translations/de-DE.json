@@ -1249,7 +1249,7 @@
   "app.containers.InitiativesIndexPage.startInitiative": "Eine Initiative starten",
   "app.containers.InitiativesIndexPage.success": "fertig",
   "app.containers.InitiativesIndexPage.successImageAltText": "{orgName} - Hauptbild für die Story {storyTitle}",
-  "app.containers.InitiativesIndexPage.successStoryTitle": "Lerne aus Erfolgsgeschichten",
+  "app.containers.InitiativesIndexPage.successStoryTitle": "Lerne aus diesen Erfolgsgeschichten",
   "app.containers.InitiativesNewPage.eligibility": "Um zulässig zu sein, muss Ihre Initiative folgende Kriterien erfüllen:",
   "app.containers.InitiativesNewPage.header": "Starte deine eigene Initiative und gib deiner Meinung eine Stimme",
   "app.containers.InitiativesNewPage.metaDescription": "Starte deine eigene Initiative und gib deiner Meinung eine Stimme",
