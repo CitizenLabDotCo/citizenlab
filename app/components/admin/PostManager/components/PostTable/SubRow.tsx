@@ -80,7 +80,7 @@ export default ({
          }
          {activeFilterMenu === 'statuses' && postType === 'idea' && statuses &&
            <IdeasStatusSelector
-             statuses={statuses}
+             statuses={statuses as IIdeaStatusData[]}
              selectedStatus={selectedStatus}
              onUpdateStatus={onUpdateStatus}
            />
