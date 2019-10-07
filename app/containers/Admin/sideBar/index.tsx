@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { get } from 'lodash-es';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
@@ -283,8 +284,8 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  ideasCount: ({ authUser, render }) => !isNilOrError(authUser) ? <GetIdeasCount feedbackNeeded={true} assignee={authUser.id}>{render}</GetIdeasCount> : null,
-  initiativesCount: ({ authUser, render }) => !isNilOrError(authUser) ? <GetInitiativesCount feedbackNeeded={true} assignee={authUser.id}>{render}</GetInitiativesCount> : null,
+  ideasCount: ({ authUser, render }) => <GetIdeasCount feedbackNeeded={true} assignee={get(authUser, 'id')}>{render}</GetIdeasCount>,
+  initiativesCount: ({ authUser, render }) => <GetInitiativesCount feedbackNeeded={true} assignee={get(authUser, 'id')}>{render}</GetInitiativesCount>,
 });
 
 const SideBarWithHocs = withRouter<Props>(injectIntl(Sidebar));
