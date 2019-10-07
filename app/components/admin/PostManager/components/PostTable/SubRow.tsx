@@ -3,7 +3,8 @@ import React from 'react';
 import PhasesSelector from './PhasesSelector';
 import TopicsSelector from './TopicsSelector';
 import ProjectSelector from './ProjectSelector';
-import StatusSelector from './StatusSelector';
+import IdeasStatusSelector from './IdeasStatusSelector';
+import InitiativesStatusSelector from './InitiativesStatusSelector';
 
 import { Table } from 'semantic-ui-react';
 import { FilterCell } from './Row';
@@ -69,13 +70,19 @@ export default ({
          {activeFilterMenu === 'projects' && projectId &&
            <ProjectSelector projectId={projectId} />
          }
-         {activeFilterMenu === 'statuses' && statuses && allowedTransitions !== undefined &&
-           <StatusSelector
-             statuses={statuses}
+         {activeFilterMenu === 'statuses' && postType === 'initiative' && statuses && allowedTransitions !== undefined &&
+           <InitiativesStatusSelector
+             statuses={statuses as IInitiativeStatusData[]}
              selectedStatus={selectedStatus}
              onUpdateStatus={onUpdateStatus}
              allowedTransitions={allowedTransitions}
-             postType={postType}
+           />
+         }
+         {activeFilterMenu === 'statuses' && postType === 'idea' && statuses &&
+           <IdeasStatusSelector
+             statuses={statuses as IIdeaStatusData[]}
+             selectedStatus={selectedStatus}
+             onUpdateStatus={onUpdateStatus}
            />
          }
        </Table.Cell>
