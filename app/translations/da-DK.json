@@ -1249,7 +1249,7 @@
   "app.containers.InitiativesIndexPage.startInitiative": "Start et initiativ",
   "app.containers.InitiativesIndexPage.success": "succes",
   "app.containers.InitiativesIndexPage.successImageAltText": "{orgName} - hovedsageligt billede til historien {storyTitle}",
-  "app.containers.InitiativesIndexPage.successStoryTitle": "Lær af succeshistorier",
+  "app.containers.InitiativesIndexPage.successStoryTitle": "Lær af disse succeshistorier",
   "app.containers.InitiativesNewPage.eligibility": "For at være berettiget, kræver {orgName} at dit initiativer respekterer følgende:",
   "app.containers.InitiativesNewPage.header": "Start dit eget initiativ og få din stemme hørt af {styledOrgName}",
   "app.containers.InitiativesNewPage.metaDescription": "Start dit eget initiativ og få din stemme hørt af",
