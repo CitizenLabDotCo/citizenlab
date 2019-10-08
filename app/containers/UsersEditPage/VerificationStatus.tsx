@@ -9,7 +9,6 @@ import FeatureFlag from 'components/FeatureFlag';
 import { FormSection } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import Author from 'components/Author';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -50,6 +49,7 @@ const TextStyles = styled.div`
 
 const StyledAvatar = styled(Avatar)`
   margin-right: 25px;
+  margin-left: -3px;
 `;
 
 const VerificationStatus = () => {
