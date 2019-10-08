@@ -166,4 +166,20 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.notificationsSubTitle',
     defaultMessage: 'When do you want us to send you an email to notify you?',
   },
+  /*
+  * VerificationStatus
+  */
+  verifyTitle: {
+    id: 'app.containers.UsersEditPage.verifyTitle',
+    defaultMessage: 'Verify your identity',
+  },
+  verifyText: {
+    id: 'app.containers.UsersEditPage.verifyText',
+    defaultMessage: 'and become a verified citizen',
+  },
+  verifyNow: {
+    id: 'app.containers.UsersEditPage.verifyNow',
+    defaultMessage: 'Verify now',
+  },
+
 });

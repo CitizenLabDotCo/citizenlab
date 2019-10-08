@@ -12,7 +12,7 @@ import ContentContainer from 'components/ContentContainer';
 export const FormSection = styled.div`
   background: white;
   border-radius: ${({ theme }) => theme.borderRadius};
-  padding: 50px 40px 30px;
+  padding: 40px 40px 30px;
   color: ${({ theme }) => theme.colorText};
   margin-bottom: 10px;
   max-width: 620px;
