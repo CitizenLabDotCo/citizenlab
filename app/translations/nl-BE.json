@@ -788,6 +788,7 @@
   "app.containers.AdminPage.ProjectEdit.commentingEnabled": "Reageren",
   "app.containers.AdminPage.ProjectEdit.continuous": "Zonder een tijdslijn",
   "app.containers.AdminPage.ProjectEdit.createAProject": "",
+  "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "",
   "app.containers.AdminPage.ProjectEdit.defaultDisplay": "Weergave van de ideeën",
   "app.containers.AdminPage.ProjectEdit.defaultDisplayTooltip": "Bepaal of ideeën op de projectpagina worden weergegeven als ideekaarten of als punten op een kaart. Gebruikers kunnen zelf ook altijd de andere optie selecteren.",
   "app.containers.AdminPage.ProjectEdit.deleteProjectButton": "Verwijderen",
