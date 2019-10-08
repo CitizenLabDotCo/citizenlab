@@ -37,7 +37,9 @@ module AdminApi
         :anonymize_users,
         :translate_content,
         :shift_timestamps,
-        :new_slug
+        :new_slug,
+        :timeline_start_at,
+        new_title_multiloc: CL2_SUPPORTED_LOCALES
       )
     end
 

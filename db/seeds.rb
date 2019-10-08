@@ -182,6 +182,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      admin_project_templates: {
+        enabled: true,
+        allowed: true
+      },
       ideaflow_social_sharing: {
         enabled: true,
         allowed: true
