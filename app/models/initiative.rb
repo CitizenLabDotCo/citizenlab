@@ -30,8 +30,8 @@ class Initiative < ApplicationRecord
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
     joins(:initiatives_topics)
-    .where(initiatives_topics: {topic_id: uniq_topic_ids})
-    .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
+      .where(initiatives_topics: {topic_id: uniq_topic_ids})
+      .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
   end)
 
   scope :with_some_topics, (Proc.new do |topic_ids|
@@ -42,8 +42,8 @@ class Initiative < ApplicationRecord
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
     joins(:areas_initiatives)
-    .where(areas_initiatives: {area_id: uniq_area_ids})
-    .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
+      .where(areas_initiatives: {area_id: uniq_area_ids})
+      .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
   end)
 
   scope :with_some_areas, (Proc.new do |area_ids|
@@ -51,10 +51,16 @@ class Initiative < ApplicationRecord
       .where(areas_initiatives: {area_id: area_ids})
   end)
 
+  scope :with_status_code, (Proc.new do |code|
+    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
+      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
+      .where('initiative_statuses.code = ?', code)
+  end)
+
   scope :order_status, -> (direction=:asc) {
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
       .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-    .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
+      .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
   }
 
   scope :feedback_needed, -> {

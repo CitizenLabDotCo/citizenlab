@@ -68,10 +68,7 @@ class InitiativeStatusService
     AUTO_TRANSITIONS.each do |status_code_from, transitions|
       transitions.each do |status_code_to, transition_instructions|
         # Get the initiatives that need to make the transtion.
-        initiatives = Initiative.published
-          .joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
-          .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-          .where('initiative_statuses.code = ?', status_code_from)
+        initiatives = Initiative.published.with_status_code(status_code_from)
         initiatives = transition_instructions[:scope_contition].call initiatives
         status_id_to = InitiativeStatus.find_by(code: status_code_to)&.id
         if status_id_to
