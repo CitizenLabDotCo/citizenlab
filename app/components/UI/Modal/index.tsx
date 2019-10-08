@@ -90,9 +90,9 @@ const ModalContainer: any = styled(clickOutside)`
   `}
 `;
 
-const StyledFocusLock: any = styled(FocusLock)`
+const StyledFocusLock = styled(FocusLock)<{ width: number }>`
   width: 100%;
-  max-width: ${(props: any) => props.width};
+  max-width: ${({ width }) => width}px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -231,7 +231,7 @@ const Spacer = styled.div`
 export type Props = {
   opened: boolean;
   fixedHeight?: boolean;
-  width?: string;
+  width?: number;
   close: () => void;
   className?: string;
   header?: JSX.Element | string;
@@ -255,7 +255,7 @@ export default class Modal extends PureComponent<Props, State> {
 
   static defaultProps = {
     fixedHeight: false,
-    width: '650px'
+    width: 650
   };
 
   constructor(props: Props) {
@@ -377,7 +377,7 @@ export default class Modal extends PureComponent<Props, State> {
           role="dialog"
           aria-label={label}
         >
-          <StyledFocusLock width={width}>
+          <StyledFocusLock width={width as number}>
             <ModalContainer
               className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
               onClickOutside={this.clickOutsideModal}
