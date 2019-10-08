@@ -79,10 +79,28 @@ const Tabs = memo<Props>(({ items, selectedItemName, onClick, className }) => {
     onClick(itemName);
   }, []);
 
+  /*
+  <div role="tablist" aria-label="Sample Tabs">
+    <button role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1" tabindex="0">
+          First Tab
+        </button>
+    <button role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2" tabindex="-1">
+          Second Tab
+        </button>
+    <button role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3" tabindex="-1">
+          Third Tab
+        </button>
+  </div>
+  */
+
   return (
-    <Container className={className}>
+    <Container className={className} role="tablist">
       {items.map((item: ITabItem, index) =>
         <Tab
+          id={item.name}
+          role="tab"
+          aria-selected={selectedItemName === item.name}
+          aria-controls={item.name}
           key={item.name}
           className={`item${index + 1} ${selectedItemName === item.name ? 'active' : ''}`}
           onMouseDown={removeFocus}
