@@ -251,7 +251,8 @@ module AdminApi
             'bio_multiloc'              => u.bio_multiloc,
             'cl1_migrated'              => u.cl1_migrated,
             'custom_field_values'       => u.custom_field_values.delete_if{|k,v| v.nil?},
-            'registration_completed_at' => shift_timestamp(u.registration_completed_at, shift_timestamps)&.iso8601
+            'registration_completed_at' => shift_timestamp(u.registration_completed_at, shift_timestamps)&.iso8601,
+            'verified'                  => u.verified,
           }
           if !yml_user['password_digest']
             yml_user['password'] = SecureRandom.urlsafe_base64 32

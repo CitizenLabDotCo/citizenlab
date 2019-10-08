@@ -16,6 +16,7 @@ class XlsxService
       "last_name" => -> (u) { u.last_name },
       "slug" => -> (u) { u.slug },
       "gender" => -> (u) { u.gender },
+      "verified" => -> (u) { u.verified },
       "birthyear" => -> (u) { u.birthyear },
       "domicile" => -> (u) { @@multiloc_service.t(areas[u.domicile]&.title_multiloc) },
       "education" => -> (u) { u.education },
