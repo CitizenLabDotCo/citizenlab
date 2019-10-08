@@ -962,7 +962,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Der zur Verfügung gestellte Untertitel überschreitet die zulässige maximale Zeichenlänge von 90 Zeichen",
   "app.containers.AdminPage.SettingsPage.subtitleRegistrationFields": "Define what questions you want to ask your users when they sign up.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Geographic areas",
-  "app.containers.AdminPage.SettingsPage.tabCustomize": "Customization",
+  "app.containers.AdminPage.SettingsPage.tabCustomize": "Homepage and style",
   "app.containers.AdminPage.SettingsPage.tabPages": "Pages",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "User data",
   "app.containers.AdminPage.SettingsPage.tabSettings": "General",
