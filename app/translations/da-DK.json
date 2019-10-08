@@ -788,6 +788,7 @@
   "app.containers.AdminPage.ProjectEdit.commentingEnabled": "Comment",
   "app.containers.AdminPage.ProjectEdit.continuous": "Without a timeline",
   "app.containers.AdminPage.ProjectEdit.createAProject": "",
+  "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "",
   "app.containers.AdminPage.ProjectEdit.defaultDisplay": "Idea overview",
   "app.containers.AdminPage.ProjectEdit.defaultDisplayTooltip": "You can choose whether the ideas should be displayed as cards in a list or as pins on a map.",
   "app.containers.AdminPage.ProjectEdit.deleteProjectButton": "Delete",

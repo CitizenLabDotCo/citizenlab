@@ -788,6 +788,7 @@
   "app.containers.AdminPage.ProjectEdit.commentingEnabled": "",
   "app.containers.AdminPage.ProjectEdit.continuous": "",
   "app.containers.AdminPage.ProjectEdit.createAProject": "",
+  "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "",
   "app.containers.AdminPage.ProjectEdit.defaultDisplay": "",
   "app.containers.AdminPage.ProjectEdit.defaultDisplayTooltip": "",
   "app.containers.AdminPage.ProjectEdit.deleteProjectButton": "",

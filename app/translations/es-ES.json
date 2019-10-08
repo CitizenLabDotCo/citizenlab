@@ -788,6 +788,7 @@
   "app.containers.AdminPage.ProjectEdit.commentingEnabled": "Comentario",
   "app.containers.AdminPage.ProjectEdit.continuous": "Sin una línea de tiempo",
   "app.containers.AdminPage.ProjectEdit.createAProject": "",
+  "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "",
   "app.containers.AdminPage.ProjectEdit.defaultDisplay": "Presentación de las ideas",
   "app.containers.AdminPage.ProjectEdit.defaultDisplayTooltip": "Elegir si ideas en la página del proyecto se muestran por defecto como tarjetas de ideas o como puntos en el mapa. Los usuarios siempre pueden cambiar a la vista de su preferencia.",
   "app.containers.AdminPage.ProjectEdit.deleteProjectButton": "Eliminar",
