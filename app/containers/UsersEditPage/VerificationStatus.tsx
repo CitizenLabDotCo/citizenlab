@@ -24,7 +24,8 @@ const StyledFormSection = styled(FormSection)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 40px;
+  padding: 40px 40px 20px;
+  flex-wrap: wrap;
 `;
 
 const LeftContainer = styled.div`
@@ -32,10 +33,12 @@ const LeftContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+  flex-wrap: wrap;
 `;
 
 const StyledTitle = styled.h2`
   margin: 0;
+  margin-bottom: 20px !important;
 `;
 const TitleStyles = styled.div`
   font-size: ${fontSizes.large}px;
@@ -49,15 +52,22 @@ const TextStyles = styled.div`
 `;
 
 const StyledAvatar = styled(Avatar)`
-  margin-right: 25px;
   margin-left: -3px;
+  margin-bottom: 20px;
+  margin-right: 25px;
 `;
 
 const StyledVerificationIllustration = styled(VerificationIllustration)`
+  margin-left: -3px;
+  margin-bottom: 20px;
   margin-right: 25px;
 `;
 
-const VerificationStatus = ({ className }: {className?: string}) => {
+const StyledButton = styled(Button)`
+  margin: 0 0 20px;
+`;
+
+const VerificationStatus = ({ className }: { className?: string }) => {
   const authUser = useAuthUser();
   if (isNilOrError(authUser)) return null;
 
@@ -93,11 +103,11 @@ const VerificationStatus = ({ className }: {className?: string}) => {
                 </TextStyles>
               </StyledTitle>
             </LeftContainer>
-            <Button
+            <StyledButton
               onClick={() => console.log('TODO Open verification Modal')}
             >
               <FormattedMessage {...messages.verifyNow} />
-            </Button>
+            </StyledButton>
           </>
         }
       </StyledFormSection>
