@@ -9,6 +9,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import { FormSection } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
+import Author from 'components/Author';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,6 +31,7 @@ const LeftContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-start;
 `;
 
 const StyledTitle = styled.h2`
@@ -50,20 +52,35 @@ const StyledAvatar = styled(Avatar)`
   margin-right: 25px;
 `;
 
-const VerificationStatus = ({ }) => {
+const VerificationStatus = () => {
   const authUser = useAuthUser();
   if (isNilOrError(authUser)) return null;
+
   return (
     <FeatureFlag name="verification">
       <StyledFormSection>
         {authUser.data.attributes.is_verified ?
-          'verified'
+          <LeftContainer>
+            <StyledAvatar
+              userId={authUser.data.id}
+              size="55px"
+              verified
+            />
+            <StyledTitle>
+              <TitleStyles>
+                <FormattedMessage {...messages.verifiedTitle} />
+              </TitleStyles>
+              <TextStyles>
+                <FormattedMessage {...messages.verifiedText} />
+              </TextStyles>
+            </StyledTitle>
+          </LeftContainer>
           :
           <>
             <LeftContainer>
               <StyledAvatar
                 userId={authUser.data.id}
-                size="36px"
+                size="55px"
               />
               <StyledTitle>
                 <TitleStyles>
@@ -74,7 +91,9 @@ const VerificationStatus = ({ }) => {
                 </TextStyles>
               </StyledTitle>
             </LeftContainer>
-            <Button>
+            <Button
+              onClick={() => console.log('TODO Open verification Modal')}
+            >
               <FormattedMessage {...messages.verifyNow} />
             </Button>
           </>
