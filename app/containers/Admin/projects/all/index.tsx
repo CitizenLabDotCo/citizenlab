@@ -162,7 +162,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
           const url = `/admin/projects/templates/${selectedProjectTemplateId}`;
 
           if (!isNilOrError(locale) && url) {
-            this.url = `${window.location.origin}/${locale}${removeLocale(url).pathname}`;
+            this.url = `${window.location.origin}/${locale}${url}`;
+            this.goBackUrl = 'window.location.href';
             this.goBackUrl = `${window.location.origin}/${locale}${removeLocale(window.location.pathname).pathname}`;
             window.history.pushState({ path: this.url }, '', this.url);
             window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
