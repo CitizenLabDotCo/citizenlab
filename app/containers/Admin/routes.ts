@@ -44,6 +44,9 @@ const isUserAuthorized = (nextState, replace) => {
         // get array with url segments (e.g. 'admin/projects/all' becomes ['admin', 'projects', 'all'])
         const urlSegments = pathname ? pathname.replace(/^\/+/g, '').split('/') : null;
 
+        // check if a unauthorized user is trying to access a template preview page (url pattern: /admin/projects/templates/[id])
+        // if so, redirect them to the citizen-facing version of the template preview page (url pattern: /templates/[id])
+        // if not, redirect them to the sign-in page
         if (urlSegments && urlSegments.length === 4 && urlSegments[0] === 'admin' && urlSegments[1] === 'projects' && urlSegments[2] === 'templates' && isUUID(urlSegments[3])) {
           replace(`/${urlLocale}/templates/${urlSegments[3]}`);
         } else {
