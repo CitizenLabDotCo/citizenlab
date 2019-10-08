@@ -788,6 +788,7 @@
   "app.containers.AdminPage.ProjectEdit.commentingEnabled": "Commentaires",
   "app.containers.AdminPage.ProjectEdit.continuous": "Sans une ligne de temps",
   "app.containers.AdminPage.ProjectEdit.createAProject": "",
+  "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "",
   "app.containers.AdminPage.ProjectEdit.defaultDisplay": "Affichage des idées",
   "app.containers.AdminPage.ProjectEdit.defaultDisplayTooltip": "Choisissez si les projets de la page d'accueil seront affichés sous la forme de vignettes ou si ils seront épinglés sur une carte. Dans les deux cas, les utilisateurs peuvent basculer d'une vue à l'autre.",
   "app.containers.AdminPage.ProjectEdit.deleteProjectButton": "Supprimer",
