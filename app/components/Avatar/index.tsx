@@ -99,6 +99,8 @@ const VerifiedBadgeContainer: any = styled.div`
   position: absolute;
   right: -${(props: any) => props.size / 40}px;
   bottom: -${(props: any) => props.size / 40}px;
+  background: ${(props: any) => props.badgeBgColor};
+  border-radius: 50%;
 `;
 
 const VerifiedBadgeIcon: any = styled(Icon)`
@@ -197,7 +199,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
             </ModeratorBadgeContainer>
           )}
           {verified && (
-            <VerifiedBadgeContainer size={numberSize} >
+            <VerifiedBadgeContainer size={numberSize}  badgeBgColor={badgeBgColor}>
               <VerifiedBadgeIcon name="checkmark-full" size={numberSize} badgeBgColor={badgeBgColor} />
             </VerifiedBadgeContainer>
           )}

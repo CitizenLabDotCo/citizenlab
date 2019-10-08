@@ -798,12 +798,13 @@ const clIcons = {
     </svg>
   ),
   'checkmark-full': (className, title) => (
-    <svg className={className} viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="25" height="25" className={className} viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
       <circle cx="12.8461" cy="13.3846" r="11.1154" stroke-width="3"/>
       <path d="M10.5245 19.2308L7 15.7436L8.17483 14.5812L10.5245 16.906L18.7483 8.76923L19.9231 9.93162L10.5245 19.2308Z" fill="white" strokeWidth="0"/>
     </svg>
   ),
+
 };
 
 type NormalIconNames = keyof typeof icons;
