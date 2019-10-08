@@ -98,11 +98,6 @@ class Tenant < ApplicationRecord
     ss.remove_private_settings(self.settings, self.class.settings_json_schema)
   end
 
-  # def update_settings keys, value
-  #   settings.dig(*keys[0..-2])&.[]= keys[-1], value
-  #   self
-  # end
-
   def base_frontend_uri
     if Rails.env.development? || Rails.env.test?
       "http://localhost:3000"
