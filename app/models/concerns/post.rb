@@ -36,7 +36,6 @@ module Post
       post.validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
 
       post.before_validation :strip_title
-      post.before_validation :sanitize_body_multiloc, if: :body_multiloc
       post.before_validation :set_author_name
       post.before_validation :generate_slug
       post.after_validation :set_published_at, if: ->(post){ post.published? && post.publication_status_changed? }
@@ -79,16 +78,6 @@ module Post
 
     
     private
-
-    def sanitize_body_multiloc
-      service = SanitizationService.new
-      self.body_multiloc = service.sanitize_multiloc(
-        self.body_multiloc,
-        %i{title alignment list decoration link video}
-      )
-      self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
-      self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
-    end
 
     def strip_title
       self.title_multiloc.each do |key, value|

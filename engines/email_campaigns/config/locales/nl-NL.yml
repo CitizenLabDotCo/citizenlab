@@ -12,8 +12,8 @@ nl:
       "invite_received": Iemand mij uitnodigt op het platform
       "invite_reminder": Wanneer iemand me uitnodigde naar het platform (herinnering na 3 dagen)
       "invite_accepted": Iemand aanvaardt mijn uitnodiging
-      "mention_in_comment": Iemand vernoemt me in een reactie
-      "mention_in_official_feedback": Iemand vernoemt me in een officiële update
+      "mention_in_comment": Iemand vernoemt mij in een reactie
+      "mention_in_official_feedback": Iemand vernoemt mij in een officiële update
       "project_moderation_rights_received": Projectmoderatorrechten ontvangen
       "project_phase_started": Een nieuwe projectfase vangt aan
       "project_phase_upcoming": Een nieuwe projectfase zal aanvangen binnen een week (voor beheerders en moderators)
