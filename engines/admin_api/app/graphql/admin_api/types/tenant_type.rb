@@ -65,14 +65,24 @@ module AdminApi
         object.dig('core','color_main')
       end
 
+      field :initiatives_allowed, Boolean, null: false
+      def initiatives_allowed
+        object.dig('initiatives','allowed')
+      end
+
       field :initiatives_enabled, Boolean, null: false
       def initiatives_enabled
-        object.dig('initiatives','allowed') && object.dig('initiatives','enabled')
+        object.dig('initiatives','enabled')
+      end
+
+      field :ideas_overview_allowed, Boolean, null: false
+      def ideas_overview_allowed
+        object.dig('ideas_overview','allowed')
       end
 
       field :ideas_overview_enabled, Boolean, null: false
       def ideas_overview_enabled
-        object.dig('ideas_overview','allowed') && object.dig('ideas_overview','enabled')
+        oobject.dig('ideas_overview','enabled')
       end
     end
 
