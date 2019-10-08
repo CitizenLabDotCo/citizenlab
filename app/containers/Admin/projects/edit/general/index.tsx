@@ -551,8 +551,6 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
           ] as Promise<any>[]);
         }
 
-        await new Promise(resolve => setTimeout(resolve, 500));
-
         this.setState({
           saved: true,
           submitState: 'success',
