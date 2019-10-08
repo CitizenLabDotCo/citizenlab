@@ -224,7 +224,7 @@ export interface QuillProps {
 
 interface State {
   editorHtml: string;
-  isFocussed: boolean;
+  isFocused: boolean;
 }
 
 interface ModulesConfig {
@@ -269,7 +269,7 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       editorHtml: '',
-      isFocussed: false
+      isFocused: false
     };
     this.toolbarId = `ql-editor-toolbar-${props.id}`;
     this.modules = this.getModuleConfig(props);
@@ -498,12 +498,12 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleOnFocus = () => {
-    this.setState({ isFocussed: true });
+    this.setState({ isFocused: true });
     this.props.onFocus && this.props.onFocus();
   }
 
   handleOnBlur = () => {
-    this.setState({ isFocussed: false });
+    this.setState({ isFocused: false });
     this.props.onBlur && this.props.onBlur();
   }
 
@@ -520,12 +520,12 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
       intl: { formatMessage },
       ...quillProps
     } = this.props;
-    const { isFocussed } = this.state;
+    const { isFocused } = this.state;
 
     return (
       <Container
         id="boundaries"
-        className={`${isFocussed ? 'focussed' : 'blurred'} ${hasError ? 'error' : ''}`}
+        className={`${isFocused ? 'focussed' : 'blurred'} ${hasError ? 'error' : ''}`}
         inAdmin={inAdmin}
         videoPrompt={formatMessage(messages.videoPrompt)}
         linkPrompt={formatMessage(messages.linkPrompt)}
