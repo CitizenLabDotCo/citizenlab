@@ -716,10 +716,31 @@
         "type": "object",
         "description": "Let's users prove that they are real citizens, in order to unlock some actions",
         "additionalProperties": false,
-        "required": ["allowed", "enabled"],
+        "required": ["allowed", "enabled","methods"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
+          "enabled": { "type": "boolean", "default": false},
+          "methods": {
+            "type": "array",
+            "default": [],
+            "items": {
+              "anyOf":
+                <%= Verification::VerificationService.new.all_methods.map do |method|
+                    {
+                      type: "object",
+                      title: method.name,
+                      required: ["name", *method.config_parameters],
+                      properties: {
+                        name: {type: "string", enum: [method.name], default: method.name, readOnly: true},
+                        **method.config_parameters.map do |cp|
+                          [cp, {type: "string", private: "true"}]
+                        end.to_h
+                      }
+                    }
+                  end.to_json
+                %>
+            }
+          }
         }
       }
     },
