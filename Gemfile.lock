@@ -122,6 +122,14 @@ PATH
       pundit (~> 2.0)
       rails (~> 5.2.1)
 
+PATH
+  remote: engines/verification
+  specs:
+    verification (0.1.0)
+      apartment (~> 2.2.0)
+      pundit (~> 2.0)
+      rails (~> 5.2.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -650,6 +658,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   surveys!
+  verification!
   webmock (~> 3.4)
 
 BUNDLED WITH
