@@ -268,7 +268,11 @@ if ['public','example_org'].include? Apartment::Tenant.current
       polls: {
         enabled: true,
         allowed: true
-      }
+      },
+      verification: {
+        enabled: true,
+        allowed: true
+      },
     }
   })
 

@@ -711,6 +711,16 @@
             }
           }
         }
+      },
+      "verification": {
+        "type": "object",
+        "description": "Let's users prove that they are real citizens, in order to unlock some actions",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
       }
     },
   "dependencies": {
