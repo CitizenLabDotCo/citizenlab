@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_09_124938) do
+ActiveRecord::Schema.define(version: 2019_10_08_115234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -742,6 +742,7 @@ ActiveRecord::Schema.define(version: 2019_09_09_124938) do
     t.string "invite_status"
     t.jsonb "custom_field_values", default: {}
     t.datetime "registration_completed_at"
+    t.boolean "verified", default: false, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
