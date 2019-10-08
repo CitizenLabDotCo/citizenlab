@@ -139,7 +139,8 @@ namespace :cl2_back do
         },
         verification: {
           enabled: true,
-          allowed: true
+          allowed: true,
+          methods: [],
         },
       }
     })

@@ -271,7 +271,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
       },
       verification: {
         enabled: true,
-        allowed: true
+        allowed: true,
+        methods: [],
       },
     }
   })
