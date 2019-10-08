@@ -9,6 +9,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import { FormSection } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
+import VerificationIllustration from 'components/VerificationIllustration';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -52,13 +53,17 @@ const StyledAvatar = styled(Avatar)`
   margin-left: -3px;
 `;
 
-const VerificationStatus = () => {
+const StyledVerificationIllustration = styled(VerificationIllustration)`
+  margin-right: 25px;
+`;
+
+const VerificationStatus = ({ className }: {className?: string}) => {
   const authUser = useAuthUser();
   if (isNilOrError(authUser)) return null;
 
   return (
     <FeatureFlag name="verification">
-      <StyledFormSection>
+      <StyledFormSection className={className}>
         {authUser.data.attributes.is_verified ?
           <LeftContainer>
             <StyledAvatar
@@ -78,10 +83,7 @@ const VerificationStatus = () => {
           :
           <>
             <LeftContainer>
-              <StyledAvatar
-                userId={authUser.data.id}
-                size="55px"
-              />
+              <StyledVerificationIllustration />
               <StyledTitle>
                 <TitleStyles>
                   <FormattedMessage {...messages.verifyTitle} />
