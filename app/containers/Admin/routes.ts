@@ -41,6 +41,7 @@ const isUserAuthorized = (nextState, replace) => {
       } else if (isModerator(authUser)) {
         replace(`${urlLocale && `/${urlLocale}`}/`);
       } else {
+        // get array with url segments (e.g. 'admin/projects/all' becomes ['admin', 'projects', 'all'])
         const urlSegments = pathname ? pathname.replace(/^\/+/g, '').split('/') : null;
 
         if (urlSegments && urlSegments.length === 4 && urlSegments[0] === 'admin' && urlSegments[1] === 'projects' && urlSegments[2] === 'templates' && isUUID(urlSegments[3])) {

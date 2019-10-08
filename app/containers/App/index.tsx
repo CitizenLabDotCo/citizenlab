@@ -9,7 +9,7 @@ import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
 
 // constants
-import { appLocalesMomentPairs, GRAPHQL_PATH } from 'containers/App/constants';
+import { appLocalesMomentPairs, ADMIN_TEMPLATES_GRAPHQL_PATH } from 'containers/App/constants';
 
 // graphql
 import { ApolloClient, ApolloLink, InMemoryCache, HttpLink } from 'apollo-boost';
@@ -314,7 +314,7 @@ const AppWithHoC = withRouter(App);
 
 const cache = new InMemoryCache();
 
-const httpLink = new HttpLink({ uri: GRAPHQL_PATH });
+const httpLink = new HttpLink({ uri: ADMIN_TEMPLATES_GRAPHQL_PATH });
 
 const authLink = new ApolloLink((operation, forward) => {
   const jwt = getJwt();
