@@ -52,10 +52,11 @@ const AvatarIcon: any = styled(Icon)`
   transition: all 100ms ease-out;
   background: transparent;
   position: relative;
+  background: ${(props: any) => props.bgColor};
+  border: solid ${(props: any) => props.borderThickness} ${(props: any) => props.borderColor};
 
   &.hasHoverEffect {
     cursor: pointer;
-    border: solid ${(props: any) => props.borderThickness} ${(props: any) => props.borderColor};
 
     &:hover {
       border-color: ${(props: any) => props.borderHoverColor};
@@ -80,7 +81,7 @@ const ModeratorBadgeContainer: any = styled.div`
   border-radius: 50%;
   padding-top: 1px;
   padding-left: 1px;
-  background: ${(props: any) => props.badgeBgColor};
+  background: ${(props: any) => props.bgColor};
 `;
 
 const ModeratorBadgeIcon: any = styled(Icon)`
@@ -99,7 +100,7 @@ const VerifiedBadgeContainer: any = styled.div`
   position: absolute;
   right: -${(props: any) => props.size / 40}px;
   bottom: -${(props: any) => props.size / 40}px;
-  background: ${(props: any) => props.badgeBgColor};
+  background: ${(props: any) => props.bgColor};
   border-radius: 50%;
 `;
 
@@ -122,7 +123,7 @@ interface InputProps {
   borderThickness?: string;
   borderColor?: string;
   borderHoverColor?: string;
-  badgeBgColor?: string;
+  bgColor?: string;
   className?: string;
   moderator?: boolean | null;
   verified?: boolean | null;
@@ -145,7 +146,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
     borderThickness: '1px',
     borderColor: 'transparent',
     borderHoverColor: colors.label,
-    badgeBgColor: '#fff'
+    bgColor: '#fff'
   };
 
   handleOnClick = (event: FormEvent) => {
@@ -156,7 +157,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     let { hasHoverEffect } = this.props;
-    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, badgeBgColor, moderator, className, verified } = this.props;
+    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, bgColor, moderator, className, verified } = this.props;
 
     if (!isNilOrError(user) && hideIfNoAvatar !== true) {
       hasHoverEffect = (isFunction(onClick) || hasHoverEffect);
@@ -175,6 +176,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
           borderColor={borderColor}
           borderHoverColor={moderator ? colors.clRedError : borderHoverColor}
           fillHoverColor={fillHoverColor}
+          bgColor={bgColor}
         >
           {avatarSrc ? (
             <AvatarImage
@@ -194,13 +196,13 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
             />
           )}
           {moderator && (
-            <ModeratorBadgeContainer size={numberSize} badgeBgColor={badgeBgColor}>
+            <ModeratorBadgeContainer size={numberSize} bgColor={bgColor}>
               <ModeratorBadgeIcon name="clLogo" size={numberSize} />
             </ModeratorBadgeContainer>
           )}
           {verified && (
-            <VerifiedBadgeContainer size={numberSize}  badgeBgColor={badgeBgColor}>
-              <VerifiedBadgeIcon name="checkmark-full" size={numberSize} badgeBgColor={badgeBgColor} />
+            <VerifiedBadgeContainer size={numberSize}  bgColor={bgColor}>
+              <VerifiedBadgeIcon name="checkmark-full" size={numberSize} bgColor={bgColor} />
             </VerifiedBadgeContainer>
           )}
         </Container>
