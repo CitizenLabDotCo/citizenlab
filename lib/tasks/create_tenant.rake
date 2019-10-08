@@ -137,6 +137,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        verification: {
+          enabled: true,
+          allowed: true
+        },
       }
     })
 
