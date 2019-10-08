@@ -21,7 +21,6 @@ const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   width: 100%;
   position: relative;
-  padding-bottom: 73px;
 `;
 
 const TopLine = styled.div`
@@ -70,7 +69,7 @@ const ColoredText = styled.span`
 const TwoColumns = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 30px 0;
+  margin: 30px 0 0;
   ${media.smallerThanMaxTablet`
     display: flex;
     flex-direction: column;

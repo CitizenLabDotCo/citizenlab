@@ -183,7 +183,7 @@ interface FormSubmitFooterProps extends IMessageInfo {
 }
 
 const SubmitFooterContainer = styled.div`
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
@@ -194,7 +194,6 @@ const SubmitFooterContainer = styled.div`
   border-top: 1px solid #e8e8e8;
   z-index: 1;
   ${media.smallerThanMaxTablet`
-    bottom: ${({ theme }) => theme.mobileMenuHeight}px;
     align-items: center;
   `}
 `;
@@ -230,24 +229,24 @@ export const FormSubmitFooter = withTheme(memo(({
   ...otherProps
 }: FormSubmitFooterProps) => (
   <SubmitFooterContainer className={className}>
-  <StyledContentContainer mode="page">
-    <SubmitFooterInner>
-        <Button
-          fontWeight="500"
-          padding="13px 22px"
-          bgColor={theme.colorMain}
-          textColor="#FFF"
-          type="submit"
-          onClick={onSubmit}
-          className="e2e-submit-form"
-          {...otherProps}
-        >
-          <FormattedMessage {...message} values={values} />
-        </Button>
-        {error && <ErrorContainer className="e2e-error-form">
-          <FormattedMessage {...errorMessage} />
-        </ErrorContainer>}
-    </SubmitFooterInner>
+    <StyledContentContainer mode="page">
+      <SubmitFooterInner>
+          <Button
+            fontWeight="500"
+            padding="13px 22px"
+            bgColor={theme.colorMain}
+            textColor="#FFF"
+            type="submit"
+            onClick={onSubmit}
+            className="e2e-submit-form"
+            {...otherProps}
+          >
+            <FormattedMessage {...message} values={values} />
+          </Button>
+          {error && <ErrorContainer className="e2e-error-form">
+            <FormattedMessage {...errorMessage} />
+          </ErrorContainer>}
+      </SubmitFooterInner>
     </StyledContentContainer>
   </SubmitFooterContainer>
 )));
