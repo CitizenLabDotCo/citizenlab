@@ -67,7 +67,7 @@ const AvatarIcon: any = styled(Icon)`
   }
 `;
 
-const BadgeContainer: any = styled.div`
+const ModeratorBadgeContainer: any = styled.div`
   flex: 0 0 ${(props: any) => props.size / 2 + 5}px;
   width: ${(props: any) => props.size / 2 + 5}px;
   height: ${(props: any) => props.size / 2 + 5}px;
@@ -83,10 +83,29 @@ const BadgeContainer: any = styled.div`
   background: ${(props: any) => props.badgeBgColor};
 `;
 
-const BadgeIcon: any = styled(Icon)`
+const ModeratorBadgeIcon: any = styled(Icon)`
   color: ${colors.clRedError};
   fill: ${colors.clRedError};
   height: ${(props: any) => (props.size / 2) - 5}px;
+`;
+
+const VerifiedBadgeContainer: any = styled.div`
+  flex: 0 0 ${(props: any) => props.size / 3 + 5}px;
+  width: ${(props: any) => props.size / 3 + 5}px;
+  height: ${(props: any) => props.size / 3 + 5}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: -${(props: any) => props.size / 40}px;
+  bottom: -${(props: any) => props.size / 40}px;
+`;
+
+const VerifiedBadgeIcon: any = styled(Icon)`
+  color: ${colors.clGreen};
+  fill: ${colors.clGreen};
+  stroke: ${(props: any) => props.b};
+  height: ${(props: any) => (props.size / 3) + 5}px;
 `;
 
 interface InputProps {
@@ -104,6 +123,7 @@ interface InputProps {
   badgeBgColor?: string;
   className?: string;
   moderator?: boolean | null;
+  verified?: boolean | null;
 }
 
 interface DataProps {
@@ -134,7 +154,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     let { hasHoverEffect } = this.props;
-    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, badgeBgColor, moderator, className } = this.props;
+    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, badgeBgColor, moderator, className, verified } = this.props;
 
     if (!isNilOrError(user) && hideIfNoAvatar !== true) {
       hasHoverEffect = (isFunction(onClick) || hasHoverEffect);
@@ -172,9 +192,14 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
             />
           )}
           {moderator && (
-            <BadgeContainer size={numberSize} badgeBgColor={badgeBgColor}>
-              <BadgeIcon name="clLogo" size={numberSize} />
-            </BadgeContainer>
+            <ModeratorBadgeContainer size={numberSize} badgeBgColor={badgeBgColor}>
+              <ModeratorBadgeIcon name="clLogo" size={numberSize} />
+            </ModeratorBadgeContainer>
+          )}
+          {verified && (
+            <VerifiedBadgeContainer size={numberSize} >
+              <VerifiedBadgeIcon name="checkmark-full" size={numberSize} badgeBgColor={badgeBgColor} />
+            </VerifiedBadgeContainer>
           )}
         </Container>
       );
