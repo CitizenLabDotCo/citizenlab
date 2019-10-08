@@ -13,7 +13,7 @@ resource "Projects" do
   context 'when admin' do
     before do
       @user = create(:admin)
-      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
 
       @projects = ['published','published','draft','published','archived','archived','published']
@@ -439,7 +439,7 @@ resource "Projects" do
       before do
         @project = create(:project)
         @moderator = create(:moderator, project: @project)
-        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
 
         @projects = create_list(:project, 10, publication_status: 'published')
@@ -463,7 +463,7 @@ resource "Projects" do
     context 'when admin' do
       before do
         @user = create(:admin)
-        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
 
         @projects = ['published','published','draft','published','archived','published','archived']
@@ -481,7 +481,7 @@ resource "Projects" do
     context 'when non-moderator/non-admin user' do
       before do
         @user = create(:user, roles: [])
-        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 

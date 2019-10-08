@@ -8,7 +8,7 @@ resource "Comment Votes" do
 
   before do
     @user = create(:admin)
-    token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     @project = create(:continuous_project, with_permissions: true)
@@ -43,7 +43,7 @@ resource "Comment Votes" do
 
     example "[error] Get one vote on a comment by id" do
       @user = create(:user)
-      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
 
       @votes.first.votable.idea.update!(project: create(:project_with_current_phase))

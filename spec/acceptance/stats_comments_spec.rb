@@ -33,7 +33,7 @@ resource "Stats - Comments" do
 
   before do
     @current_user = create(:admin)
-    token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
+    token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     @timezone = Tenant.settings('core','timezone')
@@ -54,7 +54,7 @@ resource "Stats - Comments" do
 
     context "as a moderator" do
       before do
-        token = Knock::AuthToken.new(payload: { sub: create(:moderator).id }).token
+        token = Knock::AuthToken.new(payload: create(:moderator).to_token_payload).token
         header 'Authorization', "Bearer #{token}"
         initiative = create(:initiative)
         create(:comment, post: initiative)
@@ -69,7 +69,7 @@ resource "Stats - Comments" do
 
     context "as a user" do
       before do
-        token = Knock::AuthToken.new(payload: { sub: create(:user).id }).token
+        token = Knock::AuthToken.new(payload: create(:user).to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
       example_request "[error] Count all comments (as a user)", document: false do
@@ -163,7 +163,7 @@ resource "Stats - Comments" do
 
       context "as a moderator" do
         before do
-          token = Knock::AuthToken.new(payload: { sub: create(:moderator).id }).token
+          token = Knock::AuthToken.new(payload: create(:moderator).to_token_payload).token
           header 'Authorization', "Bearer #{token}"
           initiative = create(:initiative)
           @project = create(:project)
