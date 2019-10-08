@@ -64,7 +64,7 @@ module AdminApi
       @refs[model_name][id] = yml_obj
     end
 
-    def yml_projects shift_timestamps: 0, new_slug: new_slug: nil, new_title_multiloc: nil
+    def yml_projects shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil
       yml_project = yml_participation_context @project, shift_timestamps: shift_timestamps
       yml_project.merge!({
         'title_multiloc'               => new_title_multiloc || @project.title_multiloc,
