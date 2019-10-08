@@ -98,5 +98,9 @@ export default defineMessages({
   noTemplatesFound: {
     id: 'app.containers.AdminPage.ProjectEdit.noTemplatesFound',
     defaultMessage: 'No templates found',
+  },
+  createAProjectFromATemplate: {
+    id: 'app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate',
+    defaultMessage: 'Create a project from a template',
   }
 });

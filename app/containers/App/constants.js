@@ -2,7 +2,7 @@
 exports.__esModule = true;
 exports.AUTH_PATH = '/auth';
 exports.API_PATH = '/web_api/v1';
-exports.GRAPHQL_PATH = '/admin_templates_api/graphql';
+exports.ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
 exports.GOOGLE_MAPS_API_KEY = 'AIzaSyDRtFe1KRBnGfDy_ijw6yCYsYnEkQRl9Cw';
 exports.CL_GA_TRACKING_ID = 'UA-65562281-44';
 exports.CL_GA_TRACKER_NAME = 'CitizenLab2';

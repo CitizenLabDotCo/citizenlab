@@ -236,7 +236,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     <Container className={className}>
       <CreateProjectButton
         className={`e2e-create-project-expand-collapse-button ${expanded ? 'expanded' : 'collapsed'}`}
-        aria-label="create a project from a template"
+        aria-label={intl.formatMessage(messages.createAProjectFromATemplate)}
         onMouseDown={removeFocus}
         onClick={handleExpandCollapse}
       >
