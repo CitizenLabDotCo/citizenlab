@@ -22,6 +22,7 @@ const Container = styled.div`
 const Content: any = styled(clickOutside)`
   position: absolute;
   z-index: 3;
+
   &.bottom {
     top: ${(props: any) => props.offset || '0'}px;
     left: 50%;
@@ -58,12 +59,12 @@ const Content: any = styled(clickOutside)`
 
   &.dropdown-enter {
     opacity: 0;
-    transform: scale(0.92);
+    transform: translateX(-5px) scale(1);
 
     &.dropdown-enter-active {
       opacity: 1;
-      transform: scale(1);
-      transition: all 250ms cubic-bezier(0.19, 1, 0.22, 1);
+      transform: translateX(0px) scale(1);
+      transition: all 200ms ease-out;
     }
   }
 `;
@@ -99,10 +100,10 @@ export interface Props {
 
 export default class Popover extends PureComponent<Props> {
   render() {
-    const { onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, offset, position } = this.props;
+    const { className, onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, offset, position } = this.props;
 
     return (
-      <Container className={this.props['className']}>
+      <Container className={`${className} popover`}>
         {children}
 
         <CSSTransition

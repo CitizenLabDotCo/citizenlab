@@ -188,7 +188,13 @@ class LandingPage extends PureComponent<Props, State> {
       return (
         <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
-            {authUser ? <SignedInHeader /> : <SignedOutHeader />}
+            {!isNilOrError(authUser)
+              ? <SignedInHeader />
+              :
+                <Fragment name="signed-out-header">
+                  <SignedOutHeader />
+                </Fragment>
+            }
 
             <Content>
               <StyledContentContainer mode="page">

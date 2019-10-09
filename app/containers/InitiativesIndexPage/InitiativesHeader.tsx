@@ -90,6 +90,7 @@ const Bold = styled.span`
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-top: 18px;
+  min-height: 40px;
 `;
 
 const StartInitiative = styled(Button)`

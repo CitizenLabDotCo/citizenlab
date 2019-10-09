@@ -15,9 +15,45 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator',
     defaultMessage: 'Here are the projects on the platform you are moderating.',
   },
-  addNewProject: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
-    defaultMessage: 'Add a project',
+  createAProject: {
+    id: 'app.containers.AdminPage.ProjectEdit.createAProject',
+    defaultMessage: 'Create a project',
+  },
+  fromATemplate: {
+    id: 'app.containers.AdminPage.ProjectEdit.fromATemplate',
+    defaultMessage: 'From a template',
+  },
+  fromScratch: {
+    id: 'app.containers.AdminPage.ProjectEdit.fromScratch',
+    defaultMessage: 'From scratch',
+  },
+  departments: {
+    id: 'app.containers.AdminPage.ProjectEdit.departments',
+    defaultMessage: 'Departments',
+  },
+  purposes: {
+    id: 'app.containers.AdminPage.ProjectEdit.purposes',
+    defaultMessage: 'Purposes',
+  },
+  participationLevels: {
+    id: 'app.containers.AdminPage.ProjectEdit.participationLevels',
+    defaultMessage: 'Participation levels',
+  },
+  searchPlaceholder: {
+    id: 'app.containers.AdminPage.ProjectEdit.searchPlaceholder',
+    defaultMessage: 'Search the templates',
+  },
+  useTemplate: {
+    id: 'app.containers.AdminPage.ProjectEdit.useTemplate',
+    defaultMessage: 'Use template',
+  },
+  moreDetails: {
+    id: 'app.containers.AdminPage.ProjectEdit.moreDetails',
+    defaultMessage: 'More details',
+  },
+  loadMoreTemplates: {
+    id: 'app.containers.AdminPage.ProjectEdit.loadMoreTemplates',
+    defaultMessage: 'Load more templates',
   },
   xGroupsHaveAccess: {
     id: 'app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess',
@@ -58,5 +94,13 @@ export default defineMessages({
   manualSortingProjects: {
     id: 'app.containers.AdminPage.ProjectEdit.manualSortingProjects',
     defaultMessage: 'Manually sort projects',
+  },
+  noTemplatesFound: {
+    id: 'app.containers.AdminPage.ProjectEdit.noTemplatesFound',
+    defaultMessage: 'No templates found',
+  },
+  createAProjectFromATemplate: {
+    id: 'app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate',
+    defaultMessage: 'Create a project from a template',
   }
 });
