@@ -16,11 +16,14 @@ resource "Project" do
       parameter :translate_content, "Translate the content to other languages", required: false
       parameter :shift_timestamps, "Change the timestamps by the specified number of days", required: false
       parameter :new_slug, "The new slug for the copied project", required: false
+      parameter :new_title_multiloc, "The new title for the copied project", required: false
+      parameter :new_publication_status, "The new publication status for the new project. One of #{Project::PUBLICATION_STATUSES.join(", ")}", required: false
     end
 
     let(:tenant_id) { Tenant.current.id }
     let(:project) { create(:project_xl, phases_count: 8) }
     let(:new_slug) { 'awesome-project' }
+    let(:new_publication_status) { 'draft' }
     let(:id) { project.id } 
 
     example_request "Export a project template" do
@@ -32,6 +35,8 @@ resource "Project" do
       expect(template['models']['phase'].size).to eq project.phases.count
       expect(template['models']['phase'].map{|h| h['start_at']}).to match project.phases.map(&:start_at).map(&:iso8601)
       expect(template['models']['project_image'].map{|h| h['remote_image_url']}).to match project.project_images.map(&:image_url)
+      expect(template['models']['project'].first.dig('publication_status')).to eq 'draft'
+
     end
   end
 
