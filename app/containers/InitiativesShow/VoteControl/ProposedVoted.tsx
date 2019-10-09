@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import styled, { keyframes, withTheme } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 import { getDaysRemainingUntil } from 'utils/dateUtils';
@@ -155,7 +155,7 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
           <FormattedMessage {...messages.unvoteLink} />
         </UnvoteLink>
         <VoteCounter>
-          <VoteText>
+          <VoteText aria-hidden={true}>
             <VoteTextLeft id="e2e-initiative-voted-vote-count">
               <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
             </VoteTextLeft>
@@ -163,6 +163,15 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
               {voteLimit}
             </VoteTextRight>
           </VoteText>
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.xVotesOfY}
+              values={{
+                xVotes: <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />,
+                votingThreshold: voteLimit
+              }}
+            />
+          </ScreenReaderOnly>
           <StyledProgressBar
             progress={voteCount / voteLimit}
             color={theme.colorText}
