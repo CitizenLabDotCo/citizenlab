@@ -39,6 +39,7 @@ module AdminApi
         :shift_timestamps,
         :new_slug,
         :timeline_start_at,
+        :new_publication_status,
         new_title_multiloc: CL2_SUPPORTED_LOCALES
       )
     end
