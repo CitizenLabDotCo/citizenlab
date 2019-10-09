@@ -244,7 +244,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
 
       if (view === 'ideaCard') {
         return (
-          <IdeaCardContainer className={className}>
+          <IdeaCardContainer className={className} aria-live="polite">
             <IdeaCardButton
               onClick={this.assignBudget}
               processing={processing}
@@ -262,7 +262,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
         );
       } else if (view === 'ideaPage') {
         return (
-          <IdeaPageContainer className={className}>
+          <IdeaPageContainer className={className} aria-live="polite">
             <BudgetBox>
               <Budget>
                 <FormattedNumber
