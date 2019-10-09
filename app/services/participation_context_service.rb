@@ -13,7 +13,8 @@ class ParticipationContextService
     not_supported: 'not_supported',
     idea_not_in_current_phase: 'idea_not_in_current_phase',
     commenting_disabled: 'commenting_disabled',
-    not_permitted: 'not_permitted'
+    not_permitted: 'not_permitted',
+    not_verified: 'not_verified'
   }
 
   VOTING_DISABLED_REASONS = {
@@ -21,6 +22,7 @@ class ParticipationContextService
     not_ideation: 'not_ideation',
     voting_disabled: 'voting_disabled',
     not_permitted: 'not_permitted',
+    not_verified: 'not_verified',
     voting_limited_max_reached: 'voting_limited_max_reached',
     idea_not_in_current_phase: 'idea_not_in_current_phase'
   }
@@ -28,18 +30,21 @@ class ParticipationContextService
   BUDGETING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_permitted: 'not_permitted',
+    not_verified: 'not_verified',
     idea_not_in_current_phase: 'idea_not_in_current_phase'
   }
 
   TAKING_SURVEY_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_permitted: 'not_permitted',
+    not_verified: 'not_verified',
     not_survey: 'not_survey'
   }
 
   TAKING_POLL_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_permitted: 'not_permitted',
+    not_verified: 'not_verified',
     not_poll: 'not_poll',
     already_responded: 'already_responded',
   }
@@ -48,6 +53,7 @@ class ParticipationContextService
   def initialize
     @memoized_votes_in_context = Hash.new{|hash,key| hash[key] = Hash.new}
     @timeline_service = TimelineService.new
+    @verification_service = Verification::VerificationService.new
   end
 
   def get_participation_context project
@@ -91,8 +97,7 @@ class ParticipationContextService
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
     elsif !context_permission(context, 'posting')&.granted_to?(user)
-      verifier = Verification::VerificationService.new
-      if !user.verified && verifier.find_verification_group(context_permission(context, 'posting').groups)
+      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'posting').groups)
         POSTING_DISABLED_REASONS[:not_verified]
       else
         POSTING_DISABLED_REASONS[:not_permitted]
@@ -126,7 +131,11 @@ class ParticipationContextService
     elsif !context.commenting_enabled
       COMMENTING_DISABLED_REASONS[:commenting_disabled]
     elsif !context_permission(context, 'commenting')&.granted_to?(user)
-      COMMENTING_DISABLED_REASONS[:not_permitted]
+      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'commenting').groups)
+        COMMENTING_DISABLED_REASONS[:not_verified]
+      else
+        COMMENTING_DISABLED_REASONS[:not_permitted]
+      end
     else
       nil
     end
@@ -171,7 +180,11 @@ class ParticipationContextService
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
-      VOTING_DISABLED_REASONS[:not_permitted]
+      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'voting').groups)
+        VOTING_DISABLED_REASONS[:not_verified]
+      else
+        VOTING_DISABLED_REASONS[:not_permitted]
+      end
     elsif (
       user && 
       context.voting_limited? && 
@@ -194,7 +207,11 @@ class ParticipationContextService
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
-      VOTING_DISABLED_REASONS[:not_permitted]
+      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'voting').groups)
+        VOTING_DISABLED_REASONS[:not_verified]
+      else
+        VOTING_DISABLED_REASONS[:not_permitted]
+      end
     else
       nil
     end
@@ -211,7 +228,11 @@ class ParticipationContextService
     elsif !context.survey?
       TAKING_SURVEY_DISABLED_REASONS[:not_survey]
     elsif !context_permission(context, 'taking_survey')&.granted_to?(user)
-      TAKING_SURVEY_DISABLED_REASONS[:not_permitted]
+      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'taking_survey').groups)
+        TAKING_SURVEY_DISABLED_REASONS[:not_verified]
+      else
+        TAKING_SURVEY_DISABLED_REASONS[:not_permitted]
+      end
     else
       nil
     end
@@ -228,7 +249,11 @@ class ParticipationContextService
     elsif !context.poll?
       TAKING_POLL_DISABLED_REASONS[:not_poll]
     elsif !context_permission(context, 'taking_poll')&.granted_to?(user)
-      TAKING_POLL_DISABLED_REASONS[:not_permitted]
+      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'taking_poll').groups)
+        TAKING_POLL_DISABLED_REASONS[:not_verified]
+      else
+        TAKING_POLL_DISABLED_REASONS[:not_permitted]
+      end
     elsif user && context.poll_responses.where(user: user).exists?
       TAKING_POLL_DISABLED_REASONS[:already_responded]
     else
@@ -249,7 +274,11 @@ class ParticipationContextService
     if !context
       BUDGETING_DISABLED_REASONS[:project_inactive]
     elsif !context_permission(context, 'budgeting')&.granted_to?(user)
-      BUDGETING_DISABLED_REASONS[:not_permitted]
+      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'budgeting').groups)
+        BUDGETING_DISABLED_REASONS[:not_verified]
+      else
+        BUDGETING_DISABLED_REASONS[:not_permitted]
+      end
     else
       nil
     end
