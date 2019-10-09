@@ -33,7 +33,7 @@ resource "Stats - Initiatives" do
 
   before do
     @current_user = create(:admin)
-    token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
+    token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     Tenant.current.update!(created_at: now - 3.year)
