@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { get } from 'lodash-es';
 
@@ -44,7 +44,7 @@ export type Props = {
   errorMultiloc?: Multiloc | null;
   maxCharCount?: number | undefined;
   disabled?: boolean;
-  shownLocale?: Locale;
+  selectedLocale?: Locale;
   ariaLabel?: string;
   setRef?: (arg: HTMLInputElement) => void | undefined;
   autoFocus?: boolean;
@@ -55,7 +55,7 @@ type State = {
   currentTenant: ITenant | null;
 };
 
-export default class InputMultiloc extends React.PureComponent<Props, State> {
+export default class InputMultiloc extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -96,15 +96,16 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
 
   render() {
     const { locale, currentTenant } = this.state;
-    const { shownLocale, label, placeholder, valueMultiloc, errorMultiloc, ariaLabel, setRef, autoFocus } = this.props;
+    const { selectedLocale, label, placeholder, valueMultiloc, errorMultiloc, ariaLabel, setRef, autoFocus } = this.props;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
-      if (shownLocale) {
-        const value = get(valueMultiloc, [shownLocale], null);
-        const error = get(errorMultiloc, [shownLocale], null);
-        const id = this.props.id && `${this.props.id}-${shownLocale}`;
+      if (selectedLocale) {
+        const value = get(valueMultiloc, [selectedLocale], null);
+        const error = get(errorMultiloc, [selectedLocale], null);
+        const id = this.props.id && `${this.props.id}-${selectedLocale}`;
+
         return (
           <InputWrapper>
             {label &&
@@ -120,7 +121,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
               type={this.props.type}
               placeholder={placeholder}
               error={error}
-              onChange={this.handleOnChange(shownLocale)}
+              onChange={this.handleOnChange(selectedLocale)}
               onBlur={this.props.onBlur}
               maxCharCount={this.props.maxCharCount}
               disabled={this.props.disabled}

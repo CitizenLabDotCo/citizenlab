@@ -1,7 +1,4 @@
-// Libraries
-import React from 'react';
-
-// Style
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
@@ -18,14 +15,6 @@ const Wrapper = styled.div`
   `}
 `;
 
-export default class PageWrapper extends React.PureComponent<{className?: string}>{
-  render() {
-    return (
-      <Wrapper className={this.props.className}>{this.props.children}</Wrapper>
-    );
-  }
-}
-
 export const ButtonWrapper = styled.div`
   display: flex;
   margin: 2em 0;
@@ -39,3 +28,11 @@ export const ButtonWrapper = styled.div`
     margin-bottom: 0;
   }
 `;
+
+export default class PageWrapper extends PureComponent<{className?: string}>{
+  render() {
+    return (
+      <Wrapper className={this.props.className}>{this.props.children}</Wrapper>
+    );
+  }
+}

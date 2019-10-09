@@ -318,6 +318,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   borderColor="#fff"
                   textColor="#fff"
                   className="e2e-singed-in-header-skip-btn"
+                  fontWeight="500"
                 />
                 <AcceptButton
                   text={<FormattedMessage {...messages.completeProfile} />}
@@ -325,6 +326,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   bgColor="#fff"
                   textColor={theme.colorMain}
                   className="e2e-singed-in-header-accept-btn"
+                  fontWeight="500"
                 />
               </Right>
             </HeaderContentCompleteProfile>
@@ -354,12 +356,14 @@ class SignedInHeader extends PureComponent<Props, State> {
                   onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
                   borderColor="#fff"
                   textColor="#fff"
+                  fontWeight="500"
                 />
                 <AcceptButton
                   text={<T value={onboardingCampaigns.cta_button_multiloc} />}
                   linkTo={onboardingCampaigns.cta_button_link}
                   bgColor="#fff"
                   textColor={theme.colorMain}
+                  fontWeight="500"
                 />
               </Right>
             </HeaderContentCustomCta>

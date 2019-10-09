@@ -70,10 +70,10 @@ const PageContent = styled.div`
 `;
 
 const PageTitle = styled.h1`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.xxxxl}px;
-  line-height: 40px;
-  font-weight: 500;
+  line-height: normal;
+  font-weight: 600;
   text-align: left;
   margin: 0;
   padding: 0;
@@ -82,7 +82,6 @@ const PageTitle = styled.h1`
 
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxxl};
-    line-height: 34px;
   `}
 `;
 
@@ -125,8 +124,8 @@ const StyledLink = styled(Link)`
 `;
 
 const LinkIcon = styled(Icon)`
-  width: 11px;
-  height: 1em;
+  width: 13px;
+  height: 13px;
 `;
 
 interface InputProps {}
