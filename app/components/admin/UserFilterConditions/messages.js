@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.field_idea_status',
     defaultMessage: 'Contributed to idea(s) with status',
   },
+  field_verified: {
+    id: 'app.components.admin.UserFilterConditions.field_verified',
+    defaultMessage: 'Verification',
+  },
   predicate_is: {
     id: 'app.components.admin.UserFilterConditions.predicate_is',
     defaultMessage: 'is',
@@ -197,6 +201,14 @@ export default defineMessages({
   predicate_not_budgeted_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_not_budgeted_in',
     defaultMessage: 'didn\'t spend budget',
+  },
+  predicate_is_verified: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_verified',
+    defaultMessage: 'is verified',
+  },
+  predicate_not_is_verified: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_verified',
+    defaultMessage: 'is not verified',
   },
 
 
