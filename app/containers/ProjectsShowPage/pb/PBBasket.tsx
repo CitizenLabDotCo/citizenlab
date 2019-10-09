@@ -15,7 +15,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetIdeaList, { GetIdeaListChildProps } from 'resources/GetIdeaList';
 
 // styles
-import { colors, fontSizes, invisibleA11yText } from 'utils/styleUtils';
+import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 import styled from 'styled-components';
 import { darken } from 'polished';
 
@@ -123,10 +123,6 @@ const RemoveIcon = styled(Icon)`
   }
 `;
 
-const ScreenreaderText = styled.span`
-  ${invisibleA11yText}
-`;
-
 interface InputProps {
   participationContextId: string | null;
   participationContextType: 'Project' | 'Phase';
@@ -209,9 +205,9 @@ class PBBasket extends PureComponent<Props & Tracks, State> {
               {!budgetingDisabled &&
                 <RemoveIconButton onClick={this.ideaRemovedFromBasket(idea.id)}>
                   <RemoveIcon ariaHidden name="remove" />
-                  <ScreenreaderText>
+                  <ScreenReaderOnly>
                     <FormattedMessage {...messages.removeItem} />
-                  </ScreenreaderText>
+                  </ScreenReaderOnly>
                 </RemoveIconButton>
               }
             </DropdownListItem>
