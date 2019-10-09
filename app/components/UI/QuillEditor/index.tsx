@@ -146,7 +146,7 @@ const Container: any = styled.div`
     border-color: ${colors.clRedError};
   }
 
-  &.focussed {
+  &.focused {
     &.error .ql-container.ql-snow {
       border-color: ${colors.clRedError};
     }
@@ -525,7 +525,7 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
     return (
       <Container
         id="boundaries"
-        className={`${isFocused ? 'focussed' : 'blurred'} ${hasError ? 'error' : ''}`}
+        className={`${isFocused ? 'focused' : 'blurred'} ${hasError ? 'error' : ''}`}
         inAdmin={inAdmin}
         videoPrompt={formatMessage(messages.videoPrompt)}
         linkPrompt={formatMessage(messages.linkPrompt)}

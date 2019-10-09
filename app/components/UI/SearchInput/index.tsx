@@ -27,7 +27,7 @@ const Container = styled.div`
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
   transition: box-shadow 100ms ease-out;
 
-  &.focussed {
+  &.focused {
     border-color: ${({ theme }) => theme.colorSecondary};
     box-shadow: 0px 0px 0px 3px ${({ theme }) => transparentize(0.8, theme.colorSecondary)};
 
@@ -115,7 +115,7 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
 
   const adminPage = isAdminPage(location.pathname);
 
-  const [focussed, setFocussed] = useState(false);
+  const [focused, setFocused] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string | null>(value || null);
 
   const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -126,19 +126,19 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
 
   const handleOnFocus = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    setFocussed(true);
+    setFocused(true);
   }, []);
 
   const handleOnBlur = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    setFocussed(false);
+    setFocused(false);
   }, []);
 
   const handleOnKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Escape') {
       event.preventDefault();
       setSearchTerm(null);
-      setFocussed(false);
+      setFocused(false);
     }
   }, []);
 
@@ -177,7 +177,7 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
   }, []);
 
   return (
-    <Container className={`${className} ${focussed ? 'focussed' : 'blurred'} ${adminPage ? 'adminpage' : ''}`}>
+    <Container className={`${className} ${focused ? 'focused' : 'blurred'} ${adminPage ? 'adminpage' : ''}`}>
       <Input
         type="text"
         aria-label={searchAriaLabel}
