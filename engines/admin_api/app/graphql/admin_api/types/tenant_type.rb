@@ -82,7 +82,7 @@ module AdminApi
 
       field :ideas_overview_enabled, Boolean, null: false
       def ideas_overview_enabled
-        oobject.dig('ideas_overview','enabled')
+        object.dig('ideas_overview','enabled')
       end
     end
 
