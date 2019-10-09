@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
   }
 
-  html, body, h1, h2, h3, h4, h5, button, input, optgroup, select, textarea {
+  html, body, h1, h2, h3, h4, h5, button, input, optgroup, select, textarea, .ql-container, .ql-toolbar.ql-snow {
     font-family: ${(props: any) => props.theme.fontFamily}, 'larsseit', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   }
 

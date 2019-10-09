@@ -1,9 +1,10 @@
 import React from 'react';
-import { isFunction, isNil, isEmpty, size } from 'lodash-es';
+import { isNil, isEmpty, size } from 'lodash-es';
 import { FormikConsumer, FormikContext } from 'formik';
 
 // components
 import Error from 'components/UI/Error';
+import Label from 'components/UI/Label';
 
 // style
 import styled from 'styled-components';
@@ -17,6 +18,7 @@ const Container: any = styled.div`
   input {
     width: 100%;
     height: 100%;
+    color: ${colors.text};
     font-size: ${fontSizes.base}px;
     line-height: 24px;
     font-weight: 400;
@@ -52,6 +54,10 @@ const Container: any = styled.div`
   }
 `;
 
+const LabelWrapper = styled.div`
+  display: flex;
+`;
+
 const CharCount = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
@@ -69,8 +75,9 @@ const CharCount = styled.div`
 export type InputProps = {
   ariaLabel?: string;
   id?: string | undefined;
+  label?: string | JSX.Element | null | undefined;
   value?: string | null | undefined;
-  type: 'text' | 'email' | 'password' | 'number';
+  type: 'text' | 'email' | 'password' | 'number' | 'date';
   placeholder?: string | null | undefined;
   error?: string | JSX.Element | null | undefined;
   onChange?: (arg: string) => void;
@@ -86,6 +93,7 @@ export type InputProps = {
   readOnly?: boolean;
   required?: boolean;
   autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password'; // https://www.w3.org/TR/WCAG21/#input-purposes
+  className?: string;
 };
 
 interface DataProps {
@@ -125,15 +133,12 @@ class Input extends React.PureComponent<Props, State> {
   }
 
   handleRef = (element: HTMLInputElement) => {
-    if (isFunction(this.props.setRef)) {
-      this.props.setRef(element);
-    }
+    this.props.setRef && this.props.setRef(element);
   }
 
   render() {
-    const { ariaLabel } = this.props;
+    const { label, ariaLabel, className } = this.props;
     let { value, placeholder, error } = this.props;
-    const className = this.props['className'];
     const { formikContext } = this.props;
     const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required, autocomplete } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
@@ -151,7 +156,13 @@ class Input extends React.PureComponent<Props, State> {
     const tooManyChars = (maxCharCount && currentCharCount && currentCharCount > maxCharCount);
 
     return (
-      <Container error={hasError} className={className}>
+      <Container error={hasError} className={className || ''}>
+
+        {label &&
+          <LabelWrapper>
+            <Label htmlFor={id}>{label}</Label>
+          </LabelWrapper>
+        }
 
         {maxCharCount &&
           <CharCount className={`${tooManyChars && 'error'}`}>
