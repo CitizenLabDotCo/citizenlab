@@ -4,7 +4,8 @@ class ParticipationContextService
     project_inactive: 'project_inactive',
     not_ideation: 'not_ideation',
     posting_disabled: 'posting_disabled',
-    not_permitted: 'not_permitted'
+    not_permitted: 'not_permitted',
+    not_verified: 'not_verified'
   }
 
   COMMENTING_DISABLED_REASONS = {
@@ -90,7 +91,12 @@ class ParticipationContextService
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
     elsif !context_permission(context, 'posting')&.granted_to?(user)
-      POSTING_DISABLED_REASONS[:not_permitted]
+      verifier = Verification::VerificationService.new
+      if !user.verified && verifier.find_verification_group(context_permission(context, 'posting').groups)
+        POSTING_DISABLED_REASONS[:not_verified]
+      else
+        POSTING_DISABLED_REASONS[:not_permitted]
+      end
     else
       nil
     end
