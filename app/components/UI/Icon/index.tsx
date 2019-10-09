@@ -362,6 +362,21 @@ const icons = {
       <path d="M20.644 3.021L10.644 0.021C10.55 -0.007 10.451 -0.007 10.357 0.021L0.357 3.021C0.145 3.085 0 3.279 0 3.5V14.5C0 18.922 6.742 22.854 10.352 23.978C10.4 23.993 10.45 24 10.5 24C10.55 24 10.6 23.993 10.648 23.978C14.258 22.855 21 18.922 21 14.5V3.5C21 3.279 20.855 3.085 20.644 3.021ZM16.854 8.854L9.854 15.854C9.756 15.951 9.628 16 9.5 16C9.372 16 9.244 15.951 9.146 15.854L5.146 11.854C4.951 11.659 4.951 11.342 5.146 11.147C5.341 10.952 5.658 10.952 5.853 11.147L9.5 14.793L16.146 8.147C16.341 7.952 16.658 7.952 16.853 8.147C17.048 8.342 17.049 8.658 16.854 8.854Z" fill="#8C680D" />
     </svg>
   ),
+  shield_verification: (className, title) => (
+    <svg className={`cl-icon ${className ? className : ''}`} xmlns="http://www.w3.org/2000/svg" fill="none" width="48" height="53" viewBox="0 0 48 53">
+      {injectTitle(title)}
+      <path fill="url(#paint0_linear)" fill-opacity=".5" d="M46.758 7.104L23.652.038a.885.885 0 00-.515.001L.617 7.106A.884.884 0 000 7.95v22.967c0 9.612 15.25 19.46 23.426 22.042a.899.899 0 00.527 0c8.175-2.583 23.426-12.43 23.426-22.042V7.95a.885.885 0 00-.621-.846z"/>
+      <circle cx="18" cy="26" r="2" fill="#fff"/>
+      <circle cx="24" cy="26" r="2" fill="#fff"/>
+      <circle cx="30" cy="26" r="2" fill="#fff"/>
+      <defs>
+        <linearGradient id="paint0_linear" x1="47.379" x2="-.506" y1="-5.196" y2="52.58" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#84939E"/>
+          <stop offset="1" stop-color="#84939E" stop-opacity=".21"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  ),
   blankPage: (className, title) => (
     <svg className={`cl-icon ${className ? className : ''}`} width="53" height="70" viewBox="0 0 53 70" fill="none">
       {injectTitle(title)}

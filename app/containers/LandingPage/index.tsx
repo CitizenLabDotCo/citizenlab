@@ -14,6 +14,7 @@ import InitiativesCTABox from './InitiativesCTABox';
 import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import VerificationWithoutContext from 'components/VerificationModal/VerificationWithoutContext';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -186,6 +187,9 @@ class LandingPage extends PureComponent<Props, State> {
       return (
         <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
+
+            <VerificationWithoutContext />
+
             {!isNilOrError(authUser)
               ? <SignedInHeader />
               :
