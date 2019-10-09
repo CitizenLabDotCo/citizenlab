@@ -115,7 +115,7 @@ class Author extends PureComponent<Props, State> {
               size={size}
               onClick={notALink ? undefined : this.goToUserProfile}
               moderator={authorCanModerate}
-              badgeBgColor={avatarBadgeBgColor}
+              bgColor={avatarBadgeBgColor}
             />
           }
 

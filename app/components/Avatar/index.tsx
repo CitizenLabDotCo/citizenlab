@@ -52,10 +52,11 @@ const AvatarIcon: any = styled(Icon)`
   transition: all 100ms ease-out;
   background: transparent;
   position: relative;
+  background: ${(props: any) => props.bgColor};
+  border: solid ${(props: any) => props.borderThickness} ${(props: any) => props.borderColor};
 
   &.hasHoverEffect {
     cursor: pointer;
-    border: solid ${(props: any) => props.borderThickness} ${(props: any) => props.borderColor};
 
     &:hover {
       border-color: ${(props: any) => props.borderHoverColor};
@@ -67,7 +68,7 @@ const AvatarIcon: any = styled(Icon)`
   }
 `;
 
-const BadgeContainer: any = styled.div`
+const ModeratorBadgeContainer: any = styled.div`
   flex: 0 0 ${(props: any) => props.size / 2 + 5}px;
   width: ${(props: any) => props.size / 2 + 5}px;
   height: ${(props: any) => props.size / 2 + 5}px;
@@ -80,13 +81,34 @@ const BadgeContainer: any = styled.div`
   border-radius: 50%;
   padding-top: 1px;
   padding-left: 1px;
-  background: ${(props: any) => props.badgeBgColor};
+  background: ${(props: any) => props.bgColor};
 `;
 
-const BadgeIcon: any = styled(Icon)`
+const ModeratorBadgeIcon: any = styled(Icon)`
   color: ${colors.clRedError};
   fill: ${colors.clRedError};
   height: ${(props: any) => (props.size / 2) - 5}px;
+`;
+
+const VerifiedBadgeContainer: any = styled.div`
+  flex: 0 0 ${(props: any) => props.size / 3 + 5}px;
+  width: ${(props: any) => props.size / 3 + 5}px;
+  height: ${(props: any) => props.size / 3 + 5}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: -${(props: any) => props.size / 40}px;
+  bottom: -${(props: any) => props.size / 40}px;
+  background: ${(props: any) => props.bgColor};
+  border-radius: 50%;
+`;
+
+const VerifiedBadgeIcon: any = styled(Icon)`
+  color: ${colors.clGreen};
+  fill: ${colors.clGreen};
+  stroke: ${(props: any) => props.b};
+  height: ${(props: any) => (props.size / 3) + 5}px;
 `;
 
 interface InputProps {
@@ -101,9 +123,10 @@ interface InputProps {
   borderThickness?: string;
   borderColor?: string;
   borderHoverColor?: string;
-  badgeBgColor?: string;
+  bgColor?: string;
   className?: string;
   moderator?: boolean | null;
+  verified?: boolean | null;
 }
 
 interface DataProps {
@@ -123,7 +146,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
     borderThickness: '1px',
     borderColor: 'transparent',
     borderHoverColor: colors.label,
-    badgeBgColor: '#fff'
+    bgColor: '#fff'
   };
 
   handleOnClick = (event: FormEvent) => {
@@ -134,7 +157,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     let { hasHoverEffect } = this.props;
-    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, badgeBgColor, moderator, className } = this.props;
+    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, bgColor, moderator, className, verified } = this.props;
 
     if (!isNilOrError(user) && hideIfNoAvatar !== true) {
       hasHoverEffect = (isFunction(onClick) || hasHoverEffect);
@@ -153,6 +176,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
           borderColor={borderColor}
           borderHoverColor={moderator ? colors.clRedError : borderHoverColor}
           fillHoverColor={fillHoverColor}
+          bgColor={bgColor}
         >
           {avatarSrc ? (
             <AvatarImage
@@ -172,9 +196,14 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
             />
           )}
           {moderator && (
-            <BadgeContainer size={numberSize} badgeBgColor={badgeBgColor}>
-              <BadgeIcon name="clLogo" size={numberSize} />
-            </BadgeContainer>
+            <ModeratorBadgeContainer size={numberSize} bgColor={bgColor}>
+              <ModeratorBadgeIcon name="clLogo" size={numberSize} />
+            </ModeratorBadgeContainer>
+          )}
+          {verified && (
+            <VerifiedBadgeContainer size={numberSize}  bgColor={bgColor}>
+              <VerifiedBadgeIcon name="checkmark-full" size={numberSize} bgColor={bgColor} />
+            </VerifiedBadgeContainer>
           )}
         </Container>
       );
