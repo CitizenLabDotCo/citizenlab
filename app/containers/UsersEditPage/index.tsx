@@ -15,6 +15,7 @@ import { IUser } from 'services/users';
 import ProfileForm from './ProfileForm';
 import CampaignsConsentForm from './CampaignsConsentForm';
 import ProfileDeletion from './ProfileDeletion';
+import VerificationStatus from './VerificationStatus';
 
 // Styles
 import styled from 'styled-components';
@@ -88,6 +89,7 @@ export default class ProfileEditor extends PureComponent<Props, State> {
       return (
         <Container>
           <Wrapper>
+            <VerificationStatus />
             <ProfileForm
               user={authUser.data}
               areas={areas.data}
