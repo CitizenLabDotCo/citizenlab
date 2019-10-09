@@ -69,13 +69,13 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
     };
   }
 
-  onLocaleChange = (locale: Locale) => () => {
+  onLocaleChange = (locale: Locale) => {
     this.setState({ selectedLocale: locale });
   }
 
   renderFormikInputMultiloc = (props) => (
     <FormikInputMultiloc
-      shownLocale={this.state.selectedLocale}
+      selectedLocale={this.state.selectedLocale}
       placeholder={this.props.intl.formatMessage(messages.officialNamePlaceholder)}
       ariaLabel={this.props.intl.formatMessage(messages.officialUpdateAuthor)}
       {...props}
@@ -84,7 +84,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
 
   renderFormikMentionsTextAreaMultiloc = (props) => (
     <FormikMentionsTextAreaMultiloc
-      shownLocale={this.state.selectedLocale}
+      selectedLocale={this.state.selectedLocale}
       placeholder={this.props.intl.formatMessage(messages.textAreaPlaceholder)}
       rows={8}
       padding="12px"

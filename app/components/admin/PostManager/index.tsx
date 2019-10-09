@@ -412,20 +412,20 @@ const Data = adopt<DataProps, InputProps>({
       {render}
     </GetInitiatives>
   ) : (
-      <GetIdeas
-        type="paginated"
-        pageSize={10}
-        sort="new"
-        projectIds={type === 'ProjectIdeas' && projectId
-          ? [projectId]
-          : type === 'AllIdeas' && projects
-            ? projects.map(project => project.id)
-            : undefined
-        }
-      >
-        {render}
-      </GetIdeas>
-    ),
+    <GetIdeas
+      type="paginated"
+      pageSize={10}
+      sort="new"
+      projectIds={type === 'ProjectIdeas' && projectId
+        ? [projectId]
+        : type === 'AllIdeas' && projects
+          ? projects.map(project => project.id)
+          : undefined
+      }
+    >
+      {render}
+    </GetIdeas>
+  ),
   postStatuses: ({ type, render }) => type === 'Initiatives'
     ? <GetInitiativeStatuses>{render}</GetInitiativeStatuses>
     : <GetIdeaStatuses>{render}</GetIdeaStatuses>

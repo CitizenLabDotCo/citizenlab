@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetUserStats, { GetUserStatsChildProps } from 'resources/GetUserStats';
 
 // styles
-import { fontSizes, media, colors } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
 import styled from 'styled-components';
 import { rgba } from 'polished';
 
@@ -94,7 +94,7 @@ const UserNavbarButton = styled.button`
 `;
 
 const TabIcon = styled(Icon)`
-  color: ${colors.label};
+  color: ${({ theme }) => theme.colorText};
   height: 22px;
   margin-right: 10px;
 `;

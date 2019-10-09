@@ -68,7 +68,6 @@ const HeaderContent = styled.div`
 
 const HeaderTitle = styled.h1`
   width: 100%;
-  max-width: 600px;
   color: ${({ theme }) => theme.colorText};
   font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
@@ -88,6 +87,7 @@ const Bold = styled.span`
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-top: 18px;
+  min-height: 40px;
 `;
 
 const StartInitiative = styled(Button)`

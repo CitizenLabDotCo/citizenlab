@@ -33,7 +33,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Title: any = styled.h3`
+const Title = styled.h3<{ location: 'modal' | undefined }>`
   font-size: ${fontSizes.large}px;
   font-weight: 500;
   color: ${({ theme }) => theme.colorText};
@@ -42,7 +42,7 @@ const Title: any = styled.h3`
   padding: 0;
   margin: 0;
   margin-bottom: 18px;
-  justify-content: ${(props: any) => props.location === 'modal' ? 'center' : 'start'};
+  justify-content: ${({ location }) => location === 'modal' ? 'center' : 'start'};
 `;
 
 const ShareIcon = styled(Icon)`
@@ -79,6 +79,10 @@ const Buttons = styled.div`
 
       &:nth-child(odd) {
         margin-right: 5px;
+
+        &.last {
+          margin-right: 0px;
+        }
       }
 
       &:nth-child(-n+2) {
@@ -258,7 +262,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
         <TwitterButton
           message={twitterMessage}
           url={this.buildUrl('twitter')}
-          className="sharingButton twitter"
+          className={`sharingButton twitter ${!emailSubject || !emailBody ? 'last' : ''}`}
           sharer={true}
           onClick={trackTwitterShare}
           aria-label={twitterButtonText}

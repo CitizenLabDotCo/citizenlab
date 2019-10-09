@@ -97,6 +97,8 @@ import styled from 'styled-components';
 import { fontSizes, colors, quillEditedContent, media } from 'utils/styleUtils';
 
 const Container: any = styled.div`
+  background: #fff;
+
   .ql-snow.ql-toolbar button:hover .ql-stroke, .ql-snow .ql-toolbar button:hover .ql-stroke, .ql-snow.ql-toolbar button:focus .ql-stroke, .ql-snow .ql-toolbar button:focus .ql-stroke, .ql-snow.ql-toolbar button.ql-active .ql-stroke, .ql-snow .ql-toolbar button.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow.ql-toolbar button:hover .ql-stroke-miter, .ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, .ql-snow .ql-toolbar button:focus .ql-stroke-miter, .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-picker-label:focus .ql-stroke, .ql-picker-item:focus .ql-stroke {
     stroke: ${(props: any) => props.inAdmin ? colors.clBlue : props.theme.colorMain};
   }
@@ -109,19 +111,11 @@ const Container: any = styled.div`
     color:  ${(props: any) => props.inAdmin ? colors.clBlue : props.theme.colorMain};
   }
 
-  .ql-toolbar.ql-snow {
-    font-family: 'larsseit','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
-  }
-
-  background: #fff;
   .ql-toolbar {
     background: white;
     box-shadow: inset 0 0 2px rgba(0,0,0,0.1);
     border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
     border-bottom: 0 !important;
-    & *:focus {
-      outline: none;
-    }
   }
 
   .ql-snow .ql-tooltip[data-mode="link"]::before {
@@ -148,27 +142,36 @@ const Container: any = styled.div`
     content: ${(props: any) => `"${props.remove}"`};
   }
 
+  &.error .ql-container.ql-snow {
+    border-color: ${colors.clRedError};
+  }
+
+  &.focused {
+    &.error .ql-container.ql-snow {
+      border-color: ${colors.clRedError};
+    }
+
+    .ql-container.ql-snow {
+      border-color: #999;
+    }
+  }
+
   .ql-container {
-    font-family: 'larsseit','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
-    border-radius: 0 0 ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius};
     width: 100%;
     height: 100%;
+    max-height: ${({ theme: { menuHeight } }) => `calc(80vh - ${menuHeight}px)`};
     font-size: ${fontSizes.base}px;
     line-height: 24px;
     font-weight: 400;
-    border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
+    border-radius: 0 0 ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius};
+    border-color: #ccc;
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     -webkit-appearance: none;
-    max-height: ${({ theme: { menuHeight } }) => `calc(80vh - ${menuHeight}px)`};
-    ${media.smallerThanMaxTablet`
-      max-height: ${({ theme: { mobileMenuHeight } }) => `calc(80vh - ${mobileMenuHeight}px)`};
-    `}
     overflow-y: auto;
 
     .ql-editor {
       min-height: 300px;
     }
-
 
     .ql-editor.ql-blank::before {
       color: #aaa;
@@ -176,15 +179,15 @@ const Container: any = styled.div`
       opacity: 1;
     }
 
-    &:focus {
-      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'};
-    }
-
     .ql-align .ql-picker-label svg {
       top: -3px;
     }
 
-    ${(props: any) => props.inAdmin ? quillEditedContent() : quillEditedContent(undefined, props.theme.colorText)}
+    ${media.smallerThanMaxTablet`
+      max-height: ${({ theme: { mobileMenuHeight } }) => `calc(80vh - ${mobileMenuHeight}px)`};
+    `}
+
+    ${quillEditedContent()};
   }
 `;
 
@@ -197,6 +200,7 @@ export interface InputProps {
   noToolbar?: boolean;
   id: string;
   inAdmin?: boolean;
+  hasError?: boolean;
 }
 export interface QuillProps {
   onChange?: (string) => void;
@@ -220,6 +224,7 @@ export interface QuillProps {
 
 interface State {
   editorHtml: string;
+  isFocused: boolean;
 }
 
 interface ModulesConfig {
@@ -262,7 +267,10 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
 
   constructor(props) {
     super(props);
-    this.state = { editorHtml: '' };
+    this.state = {
+      editorHtml: '',
+      isFocused: false
+    };
     this.toolbarId = `ql-editor-toolbar-${props.id}`;
     this.modules = this.getModuleConfig(props);
     this.formats = this.getFormats(props);
@@ -489,6 +497,16 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
     return trackEventByName(tracks.videoEditing.name);
   }
 
+  handleOnFocus = () => {
+    this.setState({ isFocused: true });
+    this.props.onFocus && this.props.onFocus();
+  }
+
+  handleOnBlur = () => {
+    this.setState({ isFocused: false });
+    this.props.onBlur && this.props.onBlur();
+  }
+
   render() {
     const {
       id,
@@ -498,14 +516,16 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
       noVideos,
       limitedTextFormatting,
       inAdmin,
+      hasError,
       intl: { formatMessage },
-      onBlur,
       ...quillProps
     } = this.props;
+    const { isFocused } = this.state;
 
     return (
       <Container
         id="boundaries"
+        className={`${isFocused ? 'focused' : 'blurred'} ${hasError ? 'error' : ''}`}
         inAdmin={inAdmin}
         videoPrompt={formatMessage(messages.videoPrompt)}
         linkPrompt={formatMessage(messages.linkPrompt)}
@@ -513,7 +533,8 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
         save={formatMessage(messages.save)}
         edit={formatMessage(messages.edit)}
         remove={formatMessage(messages.remove)}
-        onBlur={onBlur}
+        onFocus={this.handleOnFocus}
+        onBlur={this.handleOnBlur}
       >
         {this.toolbar}
         <ReactQuill
