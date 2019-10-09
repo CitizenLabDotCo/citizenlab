@@ -39,6 +39,7 @@ const LeftContainer = styled.div`
 const StyledTitle = styled.h2`
   margin: 0;
   margin-bottom: 20px !important;
+  max-width: 455px;
 `;
 const TitleStyles = styled.div`
   font-size: ${fontSizes.large}px;
