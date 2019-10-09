@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -95,7 +95,7 @@ class Expired extends PureComponent<Props, State> {
           />
         </StatusExplanation>
         <VoteCounter>
-          <VoteTexts>
+          <VoteTexts aria-hidden={true}>
             <VoteText>
               <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
             </VoteText>
@@ -103,6 +103,15 @@ class Expired extends PureComponent<Props, State> {
               {voteLimit}
             </VoteText>
           </VoteTexts>
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.xVotesOfY}
+              values={{
+                xVotes: <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />,
+                votingThreshold: voteLimit
+              }}
+            />
+          </ScreenReaderOnly>
           <StyledProgressBar
             progress={voteCount / voteLimit}
             color="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -88,7 +88,7 @@ class Custom extends PureComponent<Props & { theme: any }> {
           <T value={initiativeStatus.attributes.description_multiloc} />
         </StatusExplanation>
         <VoteCounter>
-          <VoteText>
+          <VoteText aria-hidden={true}>
             <VoteTextLeft>
               <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
             </VoteTextLeft>
@@ -96,6 +96,15 @@ class Custom extends PureComponent<Props & { theme: any }> {
               {voteLimit}
             </VoteTextRight>
           </VoteText>
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.xVotesOfY}
+              values={{
+                xVotes: <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />,
+                votingThreshold: voteLimit
+              }}
+            />
+          </ScreenReaderOnly>
           <StyledProgressBar
             progress={voteCount / voteLimit}
             color={theme.colorMain}
