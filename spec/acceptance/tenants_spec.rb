@@ -8,7 +8,7 @@ resource "Tenants" do
 
   before do
     @current_user = create(:user, roles: [{type: 'admin'}])
-    token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
+    token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
   end
@@ -44,14 +44,21 @@ resource "Tenants" do
       parameter :settings, "The changes to the\
       settings object. This will me merged with the existing settings. Arrays\
       will not be merged, but override their values.", extra: ""
+      parameter :style, "The changes to the\
+      style object. This will me merged with the existing style. Arrays\
+      will not be merged, but override their values.", extra: ""
+
       Tenant.settings_json_schema["properties"].each do |feature, feature_descriptor|
         parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:tenant, :settings, feature]
-        parameter :enabled, "Is #{feature} enabled", scope: ['settings', feature]
+        parameter :enabled, "Is #{feature} enabled", scope: [:tenant, :settings, feature]
         feature_descriptor["properties"].each do |setting, setting_descriptor|
           unless ["enabled", "allowed"].include?(setting)
             parameter setting, "#{setting_descriptor["description"]}. Type: #{setting_descriptor["type"]}", scope: [:tenant, :settings, feature]
           end
         end
+      end
+      Tenant.style_json_schema["properties"].each do |style, style_descriptor|
+        parameter style, "#{style_descriptor["description"]}. Type: #{style_descriptor["type"]}", scope: [:tenant, :style]
       end
     end
     ValidationErrorHelper.new.error_fields(self, Tenant)
@@ -71,12 +78,20 @@ resource "Tenants" do
         }
       }
     }
+    let(:style) {
+      {
+        "signedOutHeaderOverlayColor" => "#3467eb",
+        "signedInHeaderOverlayColor" => "#db2577",
+      }
+    }
 
     example_request "Update the tenant settings" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:settings,:core,:organization_name,:en)).to eq "TestTown"
       expect(json_response.dig(:data,:attributes,:favicon)).to be_present
+      expect(json_response.dig(:data,:attributes,:style,:signedOutHeaderOverlayColor)).to eq "#3467eb"
+      expect(json_response.dig(:data,:attributes,:style,:signedInHeaderOverlayColor)).to eq "#db2577"
     end
 
     describe do

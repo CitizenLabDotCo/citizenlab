@@ -20,7 +20,7 @@ resource "Moderators" do
       before do
         @project = create(:project)
         @moderator = create(:moderator, project: @project)
-        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
@@ -45,7 +45,7 @@ resource "Moderators" do
       before do
         @project = create(:project)
         @admin = create(:admin)
-        token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+        token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
@@ -67,7 +67,7 @@ resource "Moderators" do
       before do
         @project = create(:project)
         @moderator = create(:moderator, project: @project)
-        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
@@ -93,7 +93,7 @@ resource "Moderators" do
       before do
         @project = create(:project)
         @moderator = create(:moderator, project: @project)
-        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
@@ -115,7 +115,7 @@ resource "Moderators" do
       before do
         @project = create(:project)
         @moderator = create(:moderator, project: @project)
-        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
@@ -137,7 +137,7 @@ resource "Moderators" do
       before do
         @project = create(:project)
         @moderator = create(:moderator, project: @project)
-        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 

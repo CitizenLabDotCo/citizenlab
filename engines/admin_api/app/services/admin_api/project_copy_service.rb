@@ -9,13 +9,13 @@ module AdminApi
       end
     end
 
-    def export project, include_ideas: false, anonymize_users: true, shift_timestamps: 0, new_slug: nil
+    def export project, include_ideas: false, anonymize_users: true, shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, timeline_start_at: nil, new_publication_status: nil
       @project = project
       init_refs
       @template = {'models' => {}}
 
       # TODO deal with linking idea_statuses, topics, custom field values and maybe areas and groups
-      @template['models']['project']               = yml_projects new_slug, shift_timestamps: shift_timestamps
+      @template['models']['project']               = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, shift_timestamps: shift_timestamps
       @template['models']['project_file']          = yml_project_files shift_timestamps: shift_timestamps
       @template['models']['project_image']         = yml_project_images shift_timestamps: shift_timestamps
       @template['models']['phase']                 = yml_phases shift_timestamps: shift_timestamps
@@ -26,8 +26,7 @@ module AdminApi
       @template['models']['polls/question']        = yml_poll_questions shift_timestamps: shift_timestamps
       @template['models']['polls/option']          = yml_poll_options shift_timestamps: shift_timestamps
       @template['models']['polls/response']        = yml_poll_responses shift_timestamps: shift_timestamps
-      @template['models']['polls/response_option'] = yml_poll_response_options shift_timestamps: shift_timestamps
-      yml_poll_questions
+      @template['models']['polls/response_option'] = yml_poll_response_options shift_timestamps: shift_timestamps      
       if include_ideas
         @template['models']['user']                = yml_users anonymize_users, shift_timestamps: shift_timestamps
         @template['models']['basket']              = yml_baskets shift_timestamps: shift_timestamps
@@ -65,10 +64,10 @@ module AdminApi
       @refs[model_name][id] = yml_obj
     end
 
-    def yml_projects new_slug, shift_timestamps: 0
+    def yml_projects shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil
       yml_project = yml_participation_context @project, shift_timestamps: shift_timestamps
       yml_project.merge!({
-        'title_multiloc'               => @project.title_multiloc,
+        'title_multiloc'               => new_title_multiloc || @project.title_multiloc,
         'description_multiloc'         => @project.description_multiloc,
         'created_at'                   => shift_timestamp(@project.created_at, shift_timestamps)&.iso8601,
         'updated_at'                   => shift_timestamp(@project.updated_at, shift_timestamps)&.iso8601,
@@ -76,7 +75,7 @@ module AdminApi
         'visible_to'                   => @project.visible_to,
         'description_preview_multiloc' => @project.description_preview_multiloc, 
         'process_type'                 => @project.process_type,
-        'publication_status'           => @project.publication_status,
+        'publication_status'           => new_publication_status || @project.publication_status,
         'ordering'                     => @project.ordering
       })
       yml_project['slug'] = new_slug if new_slug.present?
@@ -109,7 +108,11 @@ module AdminApi
       end
     end
 
-    def yml_phases shift_timestamps: 0
+    def yml_phases shift_timestamps: 0, timeline_start_at: nil
+      if timeline_start_at && @project.phases.first
+        kickoff_at = @project.phases.first.start_at
+        shift_timestamps = (Date.parse(timeline_start_at) - kickoff_at).to_i
+      end
       @project.phases.map do |p|
         yml_phase = yml_participation_context p, shift_timestamps: shift_timestamps
         yml_phase.merge!({

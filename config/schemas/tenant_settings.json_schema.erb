@@ -515,6 +515,16 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+      "admin_project_templates": {
+        "type": "object",
+        "description":  "Create a project based on a template",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
       "ideaflow_social_sharing": {
         "type": "object",
         "description":  "A social sharing option is presented after posting an idea",
