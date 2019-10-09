@@ -1,8 +1,12 @@
 import React, { memo, MouseEvent } from 'react';
-import styled from 'styled-components';
 import bowser from 'bowser';
+
+// components
 import Link from 'utils/cl-router/Link';
 import LazyImage from 'components/LazyImage';
+
+// styling
+import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled(Link)`

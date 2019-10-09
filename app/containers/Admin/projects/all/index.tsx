@@ -1,16 +1,23 @@
 import React, { PureComponent } from 'react';
+import { Subscription } from 'rxjs';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { isBoolean } from 'lodash-es';
+import { isBoolean, isString, isFunction } from 'lodash-es';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
+import clHistory from 'utils/cl-router/history';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+
+// tracking
+import { trackPage } from 'utils/analytics';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
 import { updateTenant } from 'services/tenant';
 
 // resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
 import GetProjectGroups from 'resources/GetProjectGroups';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
@@ -19,8 +26,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from './messages';
 
+// utils
+import eventEmitter from 'utils/eventEmitter';
+
 // components
 import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
+import { HeaderTitle } from './styles';
+import CreateProject from './CreateProject';
 import PageWrapper from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
@@ -29,10 +41,31 @@ import HasPermission from 'components/HasPermission';
 import Toggle from 'components/UI/Toggle';
 import FeatureFlag from 'components/FeatureFlag';
 import InfoTooltip from 'components/admin/InfoTooltip';
+import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 
 // style
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+
+const Container = styled.div``;
+
+const CreateAndEditProjectsContainer = styled.div`
+  &.hidden {
+    display: none;
+  }
+`;
+
+const ProjectTemplatePreviewContainer = styled.div`
+  &.hidden {
+    display: none;
+  }
+`;
+
+const StyledCreateProject = styled(CreateProject)`
+  margin-bottom: 18px;
+`;
+
+const ListsContainer = styled.div``;
 
 const ListHeader = styled.div`
   display: flex;
@@ -43,17 +76,6 @@ const ListHeader = styled.div`
   & ~ & {
     margin-top: 70px;
   }
-`;
-
-const ListHeaderTitle = styled.h3`
-  display: flex;
-  align-items: center;
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.xl}px;
-  font-weight: 400;
-  padding: 0;
-  margin: 0;
-  margin-right: 7px;
 `;
 
 const Spacer = styled.div`
@@ -99,20 +121,115 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 const StyledButton = styled(Button)``;
 
-export interface InputProps { }
+export interface InputProps {
+  className?: string;
+}
 
 interface DataProps {
+  locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
   projects: GetProjectsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State {
+  selectedProjectTemplateId: string | null;
+}
+
+const useCapture = false;
 
 class AdminProjectsList extends PureComponent<Props, State> {
+  subscriptions: Subscription[];
+  unlisten: Function | null = null;
+  url: string | null | undefined = null;
+  goBackUrl: string | null | undefined = null;
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedProjectTemplateId: null
+    };
+    this.subscriptions = [];
+  }
+
+  componentDidMount() {
+    this.subscriptions = [
+      eventEmitter.observeEvent<string>('ProjectTemplateCardClicked').subscribe(({ eventValue }) => {
+        if (isString(eventValue)) {
+          const selectedProjectTemplateId = eventValue;
+          const { locale } = this.props;
+          const url = `/admin/projects/templates/${selectedProjectTemplateId}`;
+
+          if (!isNilOrError(locale) && url) {
+            this.url = `${window.location.origin}/${locale}${url}`;
+            this.goBackUrl = 'window.location.href';
+            this.goBackUrl = `${window.location.origin}/${locale}${removeLocale(window.location.pathname).pathname}`;
+            window.history.pushState({ path: this.url }, '', this.url);
+            window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
+            window.addEventListener('keydown', this.handleKeypress, useCapture);
+            this.unlisten = clHistory.listen(() => this.closeTemplatePreview());
+            trackPage(this.url);
+          }
+
+          window.scrollTo(0, 0);
+          this.setState({ selectedProjectTemplateId });
+        }
+      })
+    ];
+  }
+
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    if (prevState.selectedProjectTemplateId && !this.state.selectedProjectTemplateId) {
+      this.cleanup();
+    }
+  }
+
+  componentWillUnmount() {
+    this.cleanup();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder);
+  }
+
+  closeTemplatePreview = () => {
+    this.setState({ selectedProjectTemplateId: null });
+  }
+
+  useTemplate = () => {
+    // empty
+  }
+
+  cleanup = () => {
+    if (this.goBackUrl) {
+      window.removeEventListener('popstate', this.handlePopstateEvent, useCapture);
+      window.removeEventListener('keydown', this.handleKeypress, useCapture);
+
+      if (window.location.href === this.url) {
+        window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
+      }
+    }
+
+    this.url = null;
+    this.goBackUrl = null;
+
+    if (isFunction(this.unlisten)) {
+      this.unlisten();
+      this.unlisten = null;
+    }
+  }
+
+  handlePopstateEvent = () => {
+    this.closeTemplatePreview();
+  }
+
+  handleKeypress = (event: KeyboardEvent) => {
+    if (event.type === 'keydown' && event.key === 'Escape') {
+      event.preventDefault();
+      this.closeTemplatePreview();
+    }
   }
 
   handleToggleManualProjectSorting = async () => {
@@ -135,7 +252,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
   }
 
   render () {
-    const { tenant, projects } = this.props;
+    const { selectedProjectTemplateId } = this.state;
+    const { tenant, projects, className } = this.props;
     let lists: JSX.Element | null = null;
 
     if (projects && !isNilOrError(projects.projectsList) && !isNilOrError(tenant)) {
@@ -198,13 +316,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
       };
 
       lists = (
-        <>
+        <ListsContainer>
           {publishedProjects && publishedProjects.length > 0 &&
             <>
               <ListHeader>
-                <ListHeaderTitle>
+                <HeaderTitle>
                   <FormattedMessage {...messages.published} />
-                </ListHeaderTitle>
+                </HeaderTitle>
                 <InfoTooltip {...messages.publishedTooltip} />
 
                 <Spacer />
@@ -224,12 +342,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   </FeatureFlag>
                 </HasPermission>
               </ListHeader>
+
               <HasPermission item="project" action="reorder">
                 {(tenant.attributes.settings.manual_project_sorting as any).enabled ?
                   <SortableList
                     items={publishedProjects}
                     onReorder={this.handleReorder}
-                    className="e2e-admin-projects-list"
+                    className="projects-list e2e-admin-projects-list"
                     id="e2e-admin-published-projects-list"
                   >
                     {({ itemsList, handleDragRow, handleDropRow }) => (
@@ -272,9 +391,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
           {draftProjects && draftProjects.length > 0 &&
             <>
               <ListHeader>
-                <ListHeaderTitle>
+                <HeaderTitle>
                   <FormattedMessage {...messages.draft} />
-                </ListHeaderTitle>
+                </HeaderTitle>
                 <InfoTooltip {...messages.draftTooltip} />
               </ListHeader>
               <HasPermission item="project" action="reorder">
@@ -316,9 +435,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
           {archivedProjects && archivedProjects.length > 0 &&
             <>
               <ListHeader>
-                <ListHeaderTitle>
+                <HeaderTitle>
                   <FormattedMessage {...messages.archived} />
-                </ListHeaderTitle>
+                </HeaderTitle>
                 <InfoTooltip {...messages.archivedTooltip} />
               </ListHeader>
               <HasPermission item="project" action="reorder">
@@ -361,42 +480,53 @@ class AdminProjectsList extends PureComponent<Props, State> {
               </HasPermission>
             </>
           }
-        </>
+        </ListsContainer>
       );
     }
 
     return (
-      <>
-        <PageTitle>
-          <FormattedMessage {...messages.overviewPageTitle} />
-        </PageTitle>
-        <SectionSubtitle>
-          <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
-            <FormattedMessage {...messages.overviewPageSubtitle} />
-            <HasPermission.No>
-            <FormattedMessage {...messages.overviewPageSubtitleModerator} />
-            </HasPermission.No>
-          </HasPermission>
-        </SectionSubtitle>
+      <Container className={className}>
+        <CreateAndEditProjectsContainer className={selectedProjectTemplateId ? 'hidden' : ''}>
+          <PageTitle>
+            <FormattedMessage {...messages.overviewPageTitle} />
+          </PageTitle>
 
-        <PageWrapper>
-          <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
-            <ListHeader>
-              <Button className="e2e-admin-add-project" linkTo="/admin/projects/new" style="cl-blue" icon="plus-circle">
-                <FormattedMessage {...messages.addNewProject} />
-              </Button>
-            </ListHeader>
-          </HasPermission>
-          {lists}
-        </PageWrapper>
-      </>
+          <SectionSubtitle>
+            <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
+              <FormattedMessage {...messages.overviewPageSubtitle} />
+              <HasPermission.No>
+              <FormattedMessage {...messages.overviewPageSubtitleModerator} />
+              </HasPermission.No>
+            </HasPermission>
+          </SectionSubtitle>
+
+          <StyledCreateProject />
+
+          <PageWrapper>
+            {lists}
+          </PageWrapper>
+        </CreateAndEditProjectsContainer>
+
+        <ProjectTemplatePreviewContainer className={!selectedProjectTemplateId ? 'hidden' : ''}>
+          {selectedProjectTemplateId &&
+            <ProjectTemplatePreviewPageAdmin
+              projectTemplateId={selectedProjectTemplateId}
+              goBack={this.closeTemplatePreview}
+              useTemplate={this.useTemplate}
+            />
+          }
+        </ProjectTemplatePreviewContainer>
+      </Container>
     );
   }
 }
 
+const publicationStatuses: PublicationStatus[] = ['draft', 'published', 'archived'];
+
 const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
   tenant: <GetTenant />,
-  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true} />
+  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />
 });
 
 export default (inputProps: InputProps) => (

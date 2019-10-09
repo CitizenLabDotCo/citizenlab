@@ -7,7 +7,13 @@ import moment from 'moment';
 import 'moment-timezone';
 import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
-import { appLocalesMomentPairs } from 'containers/App/constants';
+
+// constants
+import { appLocalesMomentPairs, ADMIN_TEMPLATES_GRAPHQL_PATH } from 'containers/App/constants';
+
+// graphql
+import { ApolloClient, ApolloLink, InMemoryCache, HttpLink } from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -38,6 +44,7 @@ import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+import { getJwt } from 'utils/auth/jwt';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
@@ -303,4 +310,31 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-export default withRouter(App);
+const AppWithHoC = withRouter(App);
+
+const cache = new InMemoryCache();
+
+const httpLink = new HttpLink({ uri: ADMIN_TEMPLATES_GRAPHQL_PATH });
+
+const authLink = new ApolloLink((operation, forward) => {
+  const jwt = getJwt();
+
+  operation.setContext({
+    headers: {
+      authorization: jwt ? `Bearer ${jwt}` : ''
+    }
+  });
+
+  return forward(operation);
+});
+
+const client = new ApolloClient({
+  cache,
+  link: authLink.concat(httpLink)
+});
+
+export default (props: Props) => (
+  <ApolloProvider client={client}>
+    <AppWithHoC {...props} />
+  </ApolloProvider>
+);

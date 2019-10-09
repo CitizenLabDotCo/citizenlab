@@ -59,7 +59,7 @@ const MenuItemLink = styled(Link) `
   }
 
   &.selected {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.36);
 
     ${Text} {
       opacity: 1;

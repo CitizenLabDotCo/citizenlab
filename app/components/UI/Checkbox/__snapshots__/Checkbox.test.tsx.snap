@@ -183,6 +183,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
             "styledComponentId": "Checkbox__Container-cbcutw-0",
             "target": "div",
             "toString": [Function],
+            "usesTheme": false,
             "warnTooManyClasses": [Function],
             "withComponent": [Function],
           }
@@ -191,7 +192,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
         size="22px"
       >
         <div
-          className="undefined hasLabel c0"
+          className="c0 undefined hasLabel"
           size="22px"
         >
           <Checkbox__CheckboxContainer
@@ -241,6 +242,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   "styledComponentId": "Checkbox__CheckboxContainer-cbcutw-1",
                   "target": "div",
                   "toString": [Function],
+                  "usesTheme": true,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
@@ -256,7 +258,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
               <div
                 aria-labelledby="checkbox-label"
                 checked={true}
-                className="e2e-checkbox checked c1"
+                className="c1 e2e-checkbox checked"
                 onClick={[Function]}
                 onKeyPress={[Function]}
                 onMouseDown={[Function]}
@@ -275,7 +277,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                         "compare": null,
                         "componentStyle": ComponentStyle {
                           "componentId": "Checkbox__CheckmarkIcon-cbcutw-2",
-                          "isStatic": true,
+                          "isStatic": false,
                           "lastClassName": "c2",
                           "rules": Array [
                             "fill:#fff;height:55%;",
@@ -291,6 +293,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                           "type": [Function],
                         },
                         "toString": [Function],
+                        "usesTheme": false,
                         "warnTooManyClasses": [Function],
                         "withComponent": [Function],
                       }
@@ -329,7 +332,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
                     "componentId": "Checkbox__Label-cbcutw-3",
-                    "isStatic": true,
+                    "isStatic": false,
                     "lastClassName": "c3",
                     "rules": Array [
                       "color:",
@@ -345,6 +348,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   "styledComponentId": "Checkbox__Label-cbcutw-3",
                   "target": "label",
                   "toString": [Function],
+                  "usesTheme": false,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
@@ -547,6 +551,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
             "styledComponentId": "Checkbox__Container-cbcutw-0",
             "target": "div",
             "toString": [Function],
+            "usesTheme": false,
             "warnTooManyClasses": [Function],
             "withComponent": [Function],
           }
@@ -555,7 +560,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
         size="22px"
       >
         <div
-          className="undefined hasLabel c0"
+          className="c0 undefined hasLabel"
           size="22px"
         >
           <Checkbox__CheckboxContainer
@@ -605,6 +610,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                   "styledComponentId": "Checkbox__CheckboxContainer-cbcutw-1",
                   "target": "div",
                   "toString": [Function],
+                  "usesTheme": true,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
@@ -620,7 +626,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
               <div
                 aria-labelledby="checkbox-label"
                 checked={false}
-                className="e2e-checkbox unchecked c1"
+                className="c1 e2e-checkbox unchecked"
                 onClick={[Function]}
                 onKeyPress={[Function]}
                 onMouseDown={[Function]}
@@ -641,7 +647,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
                     "componentId": "Checkbox__Label-cbcutw-3",
-                    "isStatic": true,
+                    "isStatic": false,
                     "lastClassName": "c2",
                     "rules": Array [
                       "color:",
@@ -657,6 +663,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                   "styledComponentId": "Checkbox__Label-cbcutw-3",
                   "target": "label",
                   "toString": [Function],
+                  "usesTheme": false,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }

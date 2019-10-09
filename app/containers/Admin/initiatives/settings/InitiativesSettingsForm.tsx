@@ -44,6 +44,14 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
 `;
 
+const StyledSectionField = styled(SectionField)`
+  margin-top: 45px;
+`;
+
+const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
+  margin-bottom: 10px;
+`;
+
 class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props, FormValues>, State> {
   constructor(props) {
     super(props);
@@ -52,7 +60,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
     };
   }
 
-  onLocaleChange = (locale: Locale) => () => {
+  onLocaleChange = (locale: Locale) => {
     this.setState({ selectedLocale: locale });
   }
 
@@ -108,17 +116,15 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
             />}
           </SectionField>
 
-          <SectionField>
-            <FormLocaleSwitcher
+          <StyledSectionField>
+            <StyledFormLocaleSwitcher
               onLocaleChange={this.onLocaleChange}
               selectedLocale={selectedLocale}
               values={multilocValues}
             />
-          </SectionField>
-          <SectionField>
             <Field
               component={FormikQuillMultiloc}
-              shownLocale={this.state.selectedLocale}
+              selectedLocale={this.state.selectedLocale}
               label={(
                 <FormattedMessage {...messages.fieldThresholdReachedMessage} />
               )}
@@ -130,10 +136,10 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
               inAdmin
               limitedTextFormatting
             />
-          </SectionField>
+          </StyledSectionField>
           <SectionField>
             <Field
-              shownLocale={this.state.selectedLocale}
+              selectedLocale={this.state.selectedLocale}
               label={(
                 <FormattedMessage {...messages.fieldEligibilityCriteria} />
               )}
