@@ -166,4 +166,28 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.notificationsSubTitle',
     defaultMessage: 'When do you want us to send you an email to notify you?',
   },
+  /*
+  * VerificationStatus
+  */
+  verifyTitle: {
+    id: 'app.containers.UsersEditPage.verifyTitle',
+    defaultMessage: 'Verify your identity',
+  },
+  verifyText: {
+    id: 'app.containers.UsersEditPage.verifyText',
+    defaultMessage: 'and become a verified citizen',
+  },
+  verifyNow: {
+    id: 'app.containers.UsersEditPage.verifyNow',
+    defaultMessage: 'Verify now',
+  },
+  verifiedTitle: {
+    id: 'app.containers.UsersEditPage.verifiedTitle',
+    defaultMessage: 'Your account has been verified',
+  },
+  verifiedText: {
+    id: 'app.containers.UsersEditPage.verifiedText',
+    defaultMessage: 'Your identity has been verified. Your city will be able to base decision on you as part of the community',
+  },
+
 });

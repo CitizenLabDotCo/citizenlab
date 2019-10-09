@@ -97,6 +97,7 @@ export interface ITenantSettings {
     enabled: boolean,
     enabled_fragments: String[]
   };
+  verification?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
