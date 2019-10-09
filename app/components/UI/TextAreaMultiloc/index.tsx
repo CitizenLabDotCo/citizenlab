@@ -24,16 +24,13 @@ const TextAreaWrapper = styled.div`
   }
 `;
 
-const StyledLabel = styled(Label)`
-  display: block;
-`;
+const StyledLabel = styled(Label)``;
 
 const LanguageExtension = styled.span`
   font-weight: 500;
 `;
 
 const LabelTooltip = styled.div`
-  margin-top: 7px;
   display: inline-block;
 `;
 
@@ -50,7 +47,7 @@ export type Props = {
   maxCharCount?: number | undefined;
   renderPerLocale?: (locale: string) => JSX.Element;
   disabled?: boolean;
-  shownLocale?: Locale;
+  selectedLocale?: Locale;
 };
 
 type State = {
@@ -107,13 +104,13 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
       <TextAreaWrapper key={currentTenantLocale} className={`${index === totalLocales - 1 && 'last'}`}>
         {label &&
           <StyledLabel htmlFor={id}>
-              {label}
-              {totalLocales > 1 &&
-                <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
-              }
-              {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
+            {label}
+            {totalLocales > 1 &&
+              <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
+            }
+            {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
           </StyledLabel>
-      }
+        }
 
         {renderPerLocale && renderPerLocale(currentTenantLocale)}
 
@@ -134,7 +131,7 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
 
   render() {
     const { locale, currentTenant } = this.state;
-    const { shownLocale } = this.props;
+    const { selectedLocale } = this.props;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -142,8 +139,8 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
 
       return (
         <Container id={this.props.id} className={this.props['className']} >
-          {shownLocale
-            ? this.renderOnce(shownLocale, 1, totalLocales)
+          {selectedLocale
+            ? this.renderOnce(selectedLocale, 1, totalLocales)
             : currentTenantLocales.map((currentTenantLocale, index) => {
               return this.renderOnce(currentTenantLocale, index, totalLocales);
           })}

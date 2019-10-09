@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -14,6 +15,9 @@ import PhaseIdeas from './PhaseIdeas';
 import EventsPreview from '../EventsPreview';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ContentContainer from 'components/ContentContainer';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
 
 // services
 import { IPhaseData } from 'services/phases';
@@ -111,10 +115,20 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
     this.state = {
       selectedPhase: null
     };
+    this.broadcastSelectedPhaseId(null);
+  }
+
+  componentWillUnmount() {
+    this.broadcastSelectedPhaseId(null);
   }
 
   handleOnPhaseSelected = (selectedPhase: IPhaseData | null) => {
     this.setState({ selectedPhase });
+    this.broadcastSelectedPhaseId(get(selectedPhase, 'id', null));
+  }
+
+  broadcastSelectedPhaseId = (selectedPhaseId: string | null) => {
+    eventEmitter.emit<string | null>('ProjectTimelinePage', 'SelectedProjectPhaseChanged', selectedPhaseId);
   }
 
   render() {

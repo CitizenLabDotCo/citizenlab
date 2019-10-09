@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { globalState, IAdminFullWidth, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
 
@@ -68,7 +68,7 @@ type State = {
   adminNoPadding: boolean;
 };
 
-export default class AdminPage extends React.PureComponent<Props, State> {
+class AdminPage extends PureComponent<Props, State> {
   FullWidth: IGlobalStateService<IAdminFullWidth>;
   NoPadding: IGlobalStateService<IAdminNoPadding>;
   subscriptions: Subscription[];
@@ -113,3 +113,5 @@ export default class AdminPage extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default AdminPage;
