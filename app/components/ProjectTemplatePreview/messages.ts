@@ -59,9 +59,13 @@ export default defineMessages({
     id: 'app.components.ProjectTemplatePreview.projectTitleError',
     defaultMessage: 'Please type a project title',
   },
-  projectStartDateError: {
-    id: 'app.components.ProjectTemplatePreview.projectStartDateError',
+  projectNoStartDateError: {
+    id: 'app.components.ProjectTemplatePreview.projectNoStartDateError',
     defaultMessage: 'Please select a start date for the project',
+  },
+  projectInvalidStartDateError: {
+    id: 'app.components.ProjectTemplatePreview.projectNoStartDateError',
+    defaultMessage: 'The selected date is invalid. Please provide a date in the following format: YYYY-MM-DD',
   },
   responseError: {
     id: 'app.components.ProjectTemplatePreview.responseError',
