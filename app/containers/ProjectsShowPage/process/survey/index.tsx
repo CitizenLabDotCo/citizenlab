@@ -7,6 +7,7 @@ import TypeformSurvey from './TypeformSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
 import GoogleFormsSurvey from './GoogleFormsSurvey';
 import Warning from 'components/UI/Warning';
+import Button from 'components/UI/Button';
 
 // services
 import { surveyTakingState, DisabledReasons } from 'services/surveyTakingRules';
@@ -24,6 +25,17 @@ import messages from './messages';
 
 const Container = styled.div``;
 
+const StyledButton = styled(Button)`
+  color: #1391A1;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+  display: inline-block
+`;
+
 interface InputProps {
   projectId: string | null;
   phaseId?: string | null;
@@ -38,17 +50,21 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class Survey extends PureComponent<Props, State> {
+  onVerify = () => {
+    console.log('TODO open modal');
+  }
 
-  disabledMessage: {[key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor} = {
+  disabledMessage: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
     projectInactive: messages.surveyDisabledProjectInactive,
     maybeNotPermitted: messages.surveyDisabledMaybeNotPermitted,
     notPermitted: messages.surveyDisabledNotPermitted,
     notActivePhase: messages.surveyDisabledNotActivePhase,
+    notVerified: messages.surveyDisabledNotVerified,
   };
 
   render() {
@@ -93,7 +109,12 @@ class Survey extends PureComponent<Props, State> {
       return (
         <Container className={`warning ${className}`}>
           <Warning icon="lock">
-            <FormattedMessage {...message} />
+            <FormattedMessage
+              {...message}
+              values={{
+                verificationLink: <StyledButton style="text" padding="0" onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
+              }}
+            />
           </Warning>
         </Container>
       );
