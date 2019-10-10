@@ -14,7 +14,7 @@ export type PostingDisabledReasons = 'project_inactive' | 'not_ideation' | 'post
 export type CommentingDisabledReasons = 'project_inactive' | 'not_supported' | 'commenting_disabled' | 'not_permitted';
 export type VotingDisabledReasons = 'project_inactive' | 'not_ideation' | 'voting_disabled' | 'not_permitted' | 'voting_limited_max_reached';
 export type SurveyDisabledReasons = 'project_inactive' | 'not_survey' | 'not_permitted';
-export type PollDisabledReasons = 'project_inactive' | 'not_poll' | 'not_permitted' | 'already_responded';
+export type PollDisabledReasons = 'project_inactive' | 'not_poll' | 'not_permitted' | 'already_responded' | 'not_verified';
 export interface IProjectData {
   id: string;
   type: 'project';

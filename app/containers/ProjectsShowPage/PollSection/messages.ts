@@ -33,4 +33,12 @@ export default defineMessages({
     id: 'app.containers.Projects.PollForm.signUpToTakePoll',
     defaultMessage: 'Please sign up to take this poll',
   },
+  verificationLinkText: {
+    id: 'app.containers.Comments.verificationLinkText',
+    defaultMessage: 'Verify your account now.',
+  },
+  pollDisabledNotVerified: {
+    id: 'app.containers.Projects.PollForm.pollDisabledNotVerified',
+    defaultMessage: 'Taking this poll requires verification of your account. {verificationLink}',
+  },
 });
