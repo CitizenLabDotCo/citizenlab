@@ -252,6 +252,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
       width={500}
       opened={opened}
       close={onClose}
+      closeOnClickOutside={false}
       header={<FormattedMessage {...messages.createProjectBasedOn} values={{ templateTitle }} />}
       footer={
         <Footer>
