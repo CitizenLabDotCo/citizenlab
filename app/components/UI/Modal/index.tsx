@@ -33,10 +33,15 @@ const ModalContent = styled.div`
 `;
 
 const CloseIcon = styled(Icon)`
-  width: 15px;
-  height: 15px;
+  width: 17px;
+  height: 17px;
   fill: ${colors.label};
   transition: all 100ms ease-out;
+
+  ${media.smallerThanMinTablet`
+    width: 15px;
+    height: 15px;
+  `}
 `;
 
 const CloseButton = styled.button`
@@ -302,6 +307,7 @@ export default class Modal extends PureComponent<Props, State> {
   openModal = () => {
     this.goBackUrl = window.location.href;
     window.addEventListener('popstate', this.handlePopstateEvent);
+    window.addEventListener('keydown', this.handleKeypress);
     disableBodyScroll(this.ModalContentElement);
     eventEmitter.emit('modal', 'modalOpened', null);
     this.unlisten = clHistory.listen(this.props.close);
@@ -320,9 +326,17 @@ export default class Modal extends PureComponent<Props, State> {
     this.props.close();
   }
 
+  handleKeypress = (event) => {
+    if (event.type === 'keydown' && event.key === 'Escape') {
+      event.preventDefault();
+      this.props.close();
+    }
+  }
+
   cleanup = () => {
     this.goBackUrl = null;
     window.removeEventListener('popstate', this.handlePopstateEvent);
+    window.removeEventListener('keydown', this.handleKeypress);
     enableBodyScroll(this.ModalContentElement);
 
     if (isFunction(this.unlisten)) {

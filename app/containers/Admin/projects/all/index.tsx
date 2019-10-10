@@ -20,6 +20,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
 import GetProjectGroups from 'resources/GetProjectGroups';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,6 +29,7 @@ import messages from './messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+import { isAdmin } from 'services/permissions/roles';
 
 // components
 import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
@@ -128,6 +130,7 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
+  authUser: GetAuthUserChildProps;
   projects: GetProjectsChildProps;
 }
 
@@ -253,7 +256,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   render () {
     const { selectedProjectTemplateId } = this.state;
-    const { tenant, projects, className } = this.props;
+    const { tenant, authUser, projects, className } = this.props;
+    const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data : authUser }) : false;
     let lists: JSX.Element | null = null;
 
     if (projects && !isNilOrError(projects.projectsList) && !isNilOrError(tenant)) {
@@ -500,7 +504,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </HasPermission>
           </SectionSubtitle>
 
-          <StyledCreateProject />
+          {userIsAdmin && <StyledCreateProject />}
 
           <PageWrapper>
             {lists}
@@ -526,6 +530,7 @@ const publicationStatuses: PublicationStatus[] = ['draft', 'published', 'archive
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
+  authUser: <GetAuthUser />,
   projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />
 });
 

@@ -143,6 +143,20 @@ const MetaInfo = styled.div`
 const MetaInfoLeft = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+`;
+
+const Department = styled.div`
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  line-height: normal;
+  white-space: nowrap;
+  padding: 6px 12px;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  border: solid 1px ${colors.separation};
+  margin-right: 5px;
+  margin-bottom: 5px;
 `;
 
 const MetaInfoRight = styled.div`
@@ -151,18 +165,7 @@ const MetaInfoRight = styled.div`
   margin-left: 30px;
 `;
 
-const Department = styled.div`
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.small}px;
-  font-weight: 400;
-  line-height: normal;
-  padding: 6px 12px;
-  border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 1px ${colors.separation};
-  margin-right: 5px;
-`;
-
-const Purpose = styled.div`
+const MetaInfoRightBox = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
@@ -170,28 +173,21 @@ const Purpose = styled.div`
   display: flex;
   align-items: center;
   margin-right: 30px;
+
+  &.last {
+    margin-right: 0px;
+  }
 `;
 
-const PurposeIcon = styled(Icon)`
+const MetaInfoRightBoxIcon = styled(Icon)`
+  flex: 0 0 24px;
   fill: ${colors.label};
+  width: 24px;
   height: 24px;
   margin-right: 7px;
 `;
 
-const ParticipationLevel = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.small}px;
-  font-weight: 400;
-  line-height: normal;
-  display: flex;
-  align-items: center;
-`;
-
-const ParticipationLevelIcon = styled(Icon)`
-  fill: ${colors.label};
-  height: 24px;
-  margin-right: 7px;
-`;
+const MetaInfoRightBoxText = styled.span``;
 
 const Content = styled.div`
   margin-bottom: 40px;
@@ -434,16 +430,20 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
             </MetaInfoLeft>
             <MetaInfoRight>
               {data.projectTemplate.purposes && data.projectTemplate.purposes.length > 0 &&
-                <Purpose>
-                  <PurposeIcon name="purpose" />
-                  {data.projectTemplate.purposes.map((purpose) => graphqlLocalize(purpose.titleMultiloc)).join(', ')}
-                </Purpose>
+                <MetaInfoRightBox>
+                  <MetaInfoRightBoxIcon name="purpose" />
+                  <MetaInfoRightBoxText>
+                    {data.projectTemplate.purposes.map((purpose) => graphqlLocalize(purpose.titleMultiloc)).join(', ')}
+                  </MetaInfoRightBoxText>
+                </MetaInfoRightBox>
               }
               {data.projectTemplate.participationLevels && data.projectTemplate.participationLevels.length > 0 &&
-                <ParticipationLevel>
-                  <ParticipationLevelIcon name="participationLevel" />
-                  {data.projectTemplate.participationLevels.map((participationLevel) => graphqlLocalize(participationLevel.titleMultiloc)).join(', ')}
-                </ParticipationLevel>
+                <MetaInfoRightBox className="last">
+                  <MetaInfoRightBoxIcon name="participationLevel" />
+                  <MetaInfoRightBoxText>
+                    {data.projectTemplate.participationLevels.map((participationLevel) => graphqlLocalize(participationLevel.titleMultiloc)).join(', ')}
+                  </MetaInfoRightBoxText>
+                </MetaInfoRightBox>
               }
             </MetaInfoRight>
           </MetaInfo>
