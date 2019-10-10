@@ -3,7 +3,7 @@ import { get, isEmpty, transform } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
-import { isNilOrError, transformLocale } from 'utils/helperUtils';
+import { convertToGraphqlLocale } from 'utils/helperUtils';
 import bowser from 'bowser';
 import moment from 'moment';
 
@@ -15,7 +15,7 @@ import { gql } from 'apollo-boost';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 // hooks
-import useLocale from 'hooks/useLocale';
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -25,6 +25,7 @@ import Input from 'components/UI/Input';
 import Modal from 'components/UI/Modal';
 import Error from 'components/UI/Error';
 import Link from 'utils/cl-router/Link';
+import T from 'components/T';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -122,9 +123,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
 
   const templateId: string | undefined = (projectTemplateId || get(params, 'projectTemplateId'));
 
-  const locale = useLocale();
-
-  const graphQLLocale = !isNilOrError(locale) ? transformLocale(locale) : null;
+  const graphqlTenantLocales = useGraphqlTenantLocales();
 
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [startDate, setStartDate] = useState<string | null>(null);
@@ -139,7 +138,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
     {
       projectTemplate(id: "${projectTemplateId}"){
         titleMultiloc {
-          ${graphQLLocale}
+          ${graphqlTenantLocales}
         }
       }
     }
@@ -188,14 +187,12 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
       setStartDateError(null);
       setProcessing(true);
 
-      const transformedTitleMultiloc = transform(titleMultiloc, (result: Multiloc, val, key) => {
-        result[transformLocale(key)] = val;
-      });
-
       try {
         await applyProjectTemplate({
           variables: {
-            titleMultiloc: transformedTitleMultiloc,
+            titleMultiloc: transform(titleMultiloc, (result: Multiloc, val, key: Locale) => {
+              result[convertToGraphqlLocale(key)] = val;
+            }),
             projectTemplateId: templateId,
             timelineStartAt: startDate
           }
@@ -248,7 +245,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
     setResponseError(null);
   }, [opened]);
 
-  const templateTitle = get(data, `projectTemplate.titleMultiloc.${locale}`);
+  const templateTitle = <T graphql={true} value={get(data, 'projectTemplate.titleMultiloc')} />;
 
   return (
     <Modal

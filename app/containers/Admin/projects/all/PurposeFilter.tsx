@@ -1,37 +1,29 @@
 import React, { memo, useCallback, useState } from 'react';
-import { adopt } from 'react-adopt';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+// hooks
+import useGraphqlLocalize from 'hooks/useGraphqlLocalize';
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // graphql
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 
-// utils
-import { isNilOrError, transformLocale } from 'utils/helperUtils';
-
 // components
-import FilterSelector from 'components/FilterSelector';
+import FilterSelector, { IFilterSelectorValue } from 'components/FilterSelector';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-interface InputProps {
+interface Props {
   onChange: (value: string[]) => void;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-}
+const PurposeFilter = memo<Props & InjectedIntlProps>(({ intl: { formatMessage }, onChange }) => {
 
-interface Props extends DataProps, InputProps { }
-
-const PurposeFilter = memo<Props & InjectedIntlProps>(({ locale, intl: { formatMessage }, onChange }) => {
-
-  const graphQLLocale = !isNilOrError(locale) ? transformLocale(locale) : null;
+  const graphqlLocalize = useGraphqlLocalize();
+  const graphqlTenantLocales = useGraphqlTenantLocales();
 
   const PURPOSES_QUERY = gql`
     {
@@ -39,7 +31,7 @@ const PurposeFilter = memo<Props & InjectedIntlProps>(({ locale, intl: { formatM
         nodes {
           id
           titleMultiloc {
-            ${graphQLLocale}
+            ${graphqlTenantLocales}
           }
         }
       }
@@ -50,10 +42,14 @@ const PurposeFilter = memo<Props & InjectedIntlProps>(({ locale, intl: { formatM
 
   const { data } = useQuery(PURPOSES_QUERY);
 
-  const options = data ? data.purposes.nodes.map((node) => ({
-    value: node.id,
-    text: node.titleMultiloc[`${graphQLLocale}`]
-  })) : [];
+  let options: IFilterSelectorValue[] = [];
+
+  if (data) {
+    options = data.purposes.nodes.map((node) => ({
+      value: node.id,
+      text: graphqlLocalize(node.titleMultiloc)
+    }));
+  }
 
   const handleOnChange = useCallback((selectedValues: string[]) => {
     setSelectedValues(selectedValues);
@@ -75,14 +71,4 @@ const PurposeFilter = memo<Props & InjectedIntlProps>(({ locale, intl: { formatM
   );
 });
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />
-});
-
-const PurposeFilterWithHoC = injectIntl(PurposeFilter);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <PurposeFilterWithHoC {...dataProps} {...inputProps} />}
-  </Data>
-);
+export default injectIntl(PurposeFilter);
