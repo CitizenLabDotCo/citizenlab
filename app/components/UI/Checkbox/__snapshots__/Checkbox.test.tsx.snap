@@ -196,6 +196,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
             "styledComponentId": "Checkbox__Container-cbcutw-0",
             "target": "div",
             "toString": [Function],
+            "usesTheme": false,
             "warnTooManyClasses": [Function],
             "withComponent": [Function],
           }
@@ -203,7 +204,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
         forwardedRef={null}
       >
         <div
-          className=" hasLabel c0"
+          className="c0  hasLabel"
         >
           <Checkbox__InputWrapper
             checked={true}
@@ -246,6 +247,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   "styledComponentId": "Checkbox__InputWrapper-cbcutw-1",
                   "target": "div",
                   "toString": [Function],
+                  "usesTheme": true,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
@@ -279,7 +281,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                         "attrs": Array [],
                         "componentStyle": ComponentStyle {
                           "componentId": "Checkbox__Input-cbcutw-2",
-                          "isStatic": true,
+                          "isStatic": false,
                           "lastClassName": "c2",
                           "rules": Array [
                             "&[type='checkbox']{position:absolute;height:1px;width:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);}",
@@ -291,6 +293,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                         "styledComponentId": "Checkbox__Input-cbcutw-2",
                         "target": "input",
                         "toString": [Function],
+                        "usesTheme": false,
                         "warnTooManyClasses": [Function],
                         "withComponent": [Function],
                       }
@@ -311,7 +314,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
 <input
                           aria-checked="true"
                           checked=""
-                          class="e2e-checkbox c0"
+                          class="c0 e2e-checkbox"
                           id="checkbox"
                           type="checkbox"
                         />,
@@ -324,7 +327,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   >
                     <input
                       aria-checked={true}
-                      className="e2e-checkbox c2"
+                      className="c2 e2e-checkbox"
                       defaultChecked={true}
                       id="checkbox"
                       onBlur={[Function]}
@@ -346,7 +349,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                         "compare": null,
                         "componentStyle": ComponentStyle {
                           "componentId": "Checkbox__CheckmarkIcon-cbcutw-3",
-                          "isStatic": true,
+                          "isStatic": false,
                           "lastClassName": "c3",
                           "rules": Array [
                             "position:absolute;fill:#fff;height:55%;",
@@ -362,6 +365,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                           "type": [Function],
                         },
                         "toString": [Function],
+                        "usesTheme": false,
                         "warnTooManyClasses": [Function],
                         "withComponent": [Function],
                       }
@@ -402,7 +406,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
                     "componentId": "Checkbox__Label-cbcutw-4",
-                    "isStatic": true,
+                    "isStatic": false,
                     "lastClassName": "c4",
                     "rules": Array [
                       "color:",
@@ -418,6 +422,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   "styledComponentId": "Checkbox__Label-cbcutw-4",
                   "target": "label",
                   "toString": [Function],
+                  "usesTheme": false,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
@@ -630,6 +635,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
             "styledComponentId": "Checkbox__Container-cbcutw-0",
             "target": "div",
             "toString": [Function],
+            "usesTheme": false,
             "warnTooManyClasses": [Function],
             "withComponent": [Function],
           }
@@ -637,7 +643,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
         forwardedRef={null}
       >
         <div
-          className=" hasLabel c0"
+          className="c0  hasLabel"
         >
           <Checkbox__InputWrapper
             checked={false}
@@ -680,6 +686,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                   "styledComponentId": "Checkbox__InputWrapper-cbcutw-1",
                   "target": "div",
                   "toString": [Function],
+                  "usesTheme": true,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
@@ -713,7 +720,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                         "attrs": Array [],
                         "componentStyle": ComponentStyle {
                           "componentId": "Checkbox__Input-cbcutw-2",
-                          "isStatic": true,
+                          "isStatic": false,
                           "lastClassName": "c2",
                           "rules": Array [
                             "&[type='checkbox']{position:absolute;height:1px;width:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);}",
@@ -725,6 +732,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                         "styledComponentId": "Checkbox__Input-cbcutw-2",
                         "target": "input",
                         "toString": [Function],
+                        "usesTheme": false,
                         "warnTooManyClasses": [Function],
                         "withComponent": [Function],
                       }
@@ -744,7 +752,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
 
 <input
                           aria-checked="false"
-                          class="e2e-checkbox c0"
+                          class="c0 e2e-checkbox"
                           id="checkbox"
                           type="checkbox"
                         />,
@@ -757,7 +765,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                   >
                     <input
                       aria-checked={false}
-                      className="e2e-checkbox c2"
+                      className="c2 e2e-checkbox"
                       defaultChecked={false}
                       id="checkbox"
                       onBlur={[Function]}
@@ -779,7 +787,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                   "attrs": Array [],
                   "componentStyle": ComponentStyle {
                     "componentId": "Checkbox__Label-cbcutw-4",
-                    "isStatic": true,
+                    "isStatic": false,
                     "lastClassName": "c3",
                     "rules": Array [
                       "color:",
@@ -795,6 +803,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                   "styledComponentId": "Checkbox__Label-cbcutw-4",
                   "target": "label",
                   "toString": [Function],
+                  "usesTheme": false,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }

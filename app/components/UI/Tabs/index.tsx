@@ -15,12 +15,16 @@ const Container = styled.div`
 
 const Tab = styled.button`
   font-size: ${fontSizes.base}px;
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  margin: 0;
+  margin-left: -1px;
   padding: 1rem 1.7rem;
   background: ${colors.adminContentBackground};
   border: solid 1px ${colors.separation};
   cursor: pointer;
   transition: all 100ms ease-out;
-  margin-left: -1px;
 
   &.active {
     background: ${rgba(colors.adminTextColor, 0.15)};
@@ -50,7 +54,13 @@ const Tab = styled.button`
   }
 `;
 
-const StyledIcon = styled(Icon)`
+const TabText = styled.span`
+  white-space: nowrap;
+`;
+
+const TabIcon = styled(Icon)`
+  flex: 0 0 20px;
+  width: 20px;
   height: 20px;
   fill: ${darken(0.1, colors.clIconSecondary)};
   margin-left: 10px;
@@ -79,20 +89,6 @@ const Tabs = memo<Props>(({ items, selectedItemName, onClick, className }) => {
     onClick(itemName);
   }, []);
 
-  /*
-  <div role="tablist" aria-label="Sample Tabs">
-    <button role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1" tabindex="0">
-          First Tab
-        </button>
-    <button role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2" tabindex="-1">
-          Second Tab
-        </button>
-    <button role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3" tabindex="-1">
-          Third Tab
-        </button>
-  </div>
-  */
-
   return (
     <Container className={className} role="tablist">
       {items.map((item: ITabItem, index) =>
@@ -107,8 +103,8 @@ const Tabs = memo<Props>(({ items, selectedItemName, onClick, className }) => {
           onClick={handleTabOnClick}
           data-itemname={item.name}
         >
-          {item.name}
-          {item.icon && <StyledIcon name={item.icon} />}
+          <TabText>{item.name}</TabText>
+          {item.icon && <TabIcon name={item.icon} />}
         </Tab>
       )}
     </Container>

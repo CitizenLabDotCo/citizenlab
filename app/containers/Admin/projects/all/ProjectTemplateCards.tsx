@@ -69,6 +69,7 @@ const StyledProjectTemplateCard = styled(ProjectTemplateCard)`
   flex-grow: 0;
   width: calc(100% * (1/3) - 18px);
   margin-right: 27px;
+  margin-bottom: 27px;
 
   &:nth-child(3n) {
     margin-right: 0px;
