@@ -64,7 +64,7 @@ export default defineMessages({
     defaultMessage: 'Please select a start date for the project',
   },
   projectInvalidStartDateError: {
-    id: 'app.components.ProjectTemplatePreview.projectNoStartDateError',
+    id: 'app.components.ProjectTemplatePreview.projectInvalidStartDateError',
     defaultMessage: 'The selected date is invalid. Please provide a date in the following format: YYYY-MM-DD',
   },
   responseError: {
