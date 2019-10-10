@@ -267,7 +267,7 @@ class SignedInHeader extends PureComponent<Props, State> {
       const defaultMessage = tenant.attributes.settings.core.custom_onboarding_fallback_message;
       const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
-      // tranlate header title into a h1 wih a fallback
+      // translate header title into a h1 with a fallback
       const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
       const genericTitle = <FormattedMessage tagName="h1" {...messages.titleCity} />;
 
