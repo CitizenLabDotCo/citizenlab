@@ -92,6 +92,7 @@ export type InputProps = {
   spellCheck?: boolean;
   readOnly?: boolean;
   required?: boolean;
+  autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password'; // https://www.w3.org/TR/WCAG21/#input-purposes
   className?: string;
 };
 
@@ -139,7 +140,7 @@ class Input extends React.PureComponent<Props, State> {
     const { label, ariaLabel, className } = this.props;
     let { value, placeholder, error } = this.props;
     const { formikContext } = this.props;
-    const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required } = this.props;
+    const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required, autocomplete } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
     const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
 
@@ -186,6 +187,7 @@ class Input extends React.PureComponent<Props, State> {
           disabled={disabled}
           readOnly={readOnly}
           required={required}
+          autoComplete={autocomplete}
           {...optionalProps}
         />
 

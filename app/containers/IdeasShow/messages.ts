@@ -5,9 +5,17 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.idea',
     defaultMessage: 'Idea',
   },
-  imageAltText: {
-    id: 'app.containers.IdeasShow.imageAltText',
-    defaultMessage: 'Main image for the idea {ideaTitle}',
+  invisibleTitleContent: {
+    id: 'app.containers.IdeasShow.invisibleTitleContent',
+    defaultMessage: 'Main idea content',
+  },
+  invisibleTitleMetaContent: {
+    id: 'app.containers.IdeasShow.invisibleTitleMetaContent',
+    defaultMessage: 'More info',
+  },
+  invisibleTitleVoteControls: {
+    id: 'app.containers.IdeasShow.invisibleTitleVoteControls',
+    defaultMessage: 'Votes',
   },
   voteOnThisIdea: {
     id: 'app.containers.IdeasShow.voteOnThisIdea',

@@ -112,7 +112,7 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
 
         <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex>
           <NavigationIconWrapper>
-            <NavigationIcon name="homeFilled" />
+            <NavigationIcon ariaHidden name="homeFilled" />
           </NavigationIconWrapper>
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageHome} />
@@ -121,7 +121,7 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
 
         <NavigationItem to="/projects" className={secondUrlSegment === 'projects' ? 'active' : ''}>
           <NavigationIconWrapper>
-            <NavigationIcon name="folder" />
+            <NavigationIcon ariaHidden name="folder" />
           </NavigationIconWrapper>
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageProjects} />
@@ -131,7 +131,7 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
         <FeatureFlag name="ideas_overview">
           <NavigationItem to="/ideas" className={secondUrlSegment === 'ideas' ? 'active' : ''}>
             <NavigationIconWrapper>
-              <NavigationIcon name="ideas" />
+              <NavigationIcon ariaHidden name="ideas" />
             </NavigationIconWrapper>
             <NavigationLabel>
               <FormattedMessage {...messages.mobilePageIdeas} />
@@ -142,7 +142,7 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
         <FeatureFlag name="initiatives">
           <NavigationItem to="/initiatives" className={secondUrlSegment === 'initiatives' ? 'active' : ''}>
             <NavigationIconWrapper>
-              <NavigationIcon name="initiatives" />
+              <NavigationIcon ariaHidden name="initiatives" />
             </NavigationIconWrapper>
             <NavigationLabel>
               <FormattedMessage {...messages.mobilePageInitiatives} />

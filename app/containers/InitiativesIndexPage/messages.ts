@@ -5,6 +5,14 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.metaTitle',
     defaultMessage: 'All Initiatives • {orgName}',
   },
+  invisibleTitleInitiativeCards: {
+    id: 'app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards',
+    defaultMessage: 'All the initiatives taking place in {orgName}',
+  },
+  invisibleInitiativesPageTitle: {
+    id: 'app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle',
+    defaultMessage: 'Discover Initiatives',
+  },
   metaDescription: {
     id: 'app.containers.InitiativesIndexPage.metaDescription',
     defaultMessage: 'Explore and support initiatives conducted in {orgName}'

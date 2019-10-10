@@ -55,7 +55,7 @@ const Header = styled.div`
   justify-content: space-between;
 `;
 
-const Title = styled.h1`
+const Title = styled.h2`
   min-height: 20px;
   color: ${colors.text};
   font-size: ${fontSizes.large}px;

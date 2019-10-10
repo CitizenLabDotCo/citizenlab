@@ -11,6 +11,9 @@ import UsersShowPageMeta from './UsersShowPageMeta';
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
+// i18n
+import messages from './messages';
+
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
@@ -105,6 +108,7 @@ export class UsersShowPage extends PureComponent<Props, State> {
                   <IdeaCards
                     type="load-more"
                     authorId={user.id}
+                    invisibleTitleMessage={messages.invisibleTitleIdeasList}
                   />
                 </UserIdeas>
               }
