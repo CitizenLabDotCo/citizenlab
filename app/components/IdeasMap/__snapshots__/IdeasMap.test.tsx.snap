@@ -2,6 +2,12 @@
 
 exports[`IdeasMap renders correctly 1`] = `
 <IdeasMap__Container>
+  <styleUtils__ScreenReaderOnly>
+    <FormattedMessage
+      defaultMessage="Map with overview of ideas based on location"
+      id="app.components.IdeasMap.mapTitle"
+    />
+  </styleUtils__ScreenReaderOnly>
   <IdeasMap__StyledMap
     boxContent={null}
     fitBounds={true}

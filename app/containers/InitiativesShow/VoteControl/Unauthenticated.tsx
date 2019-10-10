@@ -6,6 +6,7 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { fontSizes } from 'utils/styleUtils';
+import Link from 'utils/cl-router/Link';
 
 const VerticalContainer = styled.div`
   display: flex;
@@ -24,7 +25,7 @@ const Separator = styled.div`
   font-weight: 300;
 `;
 
-const RegisterLink = styled.span`
+const RegisterLink = styled(Link)`
   color: ${(props) => props.theme.colorMain};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
@@ -46,18 +47,16 @@ export default class Unauthenticated extends React.PureComponent {
     clHistory.push('/sign-in');
   }
 
-  goToRegister = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    clHistory.push('/sign-up');
-  }
-
   render() {
     return (
       <VerticalContainer>
-        <LoginButton className="e2e-login-button" onClick={this.goToLogin}><FormattedMessage {...messages.login} /></LoginButton>
+        <LoginButton className="e2e-login-button" onClick={this.goToLogin}>
+          <FormattedMessage {...messages.login} />
+        </LoginButton>
         <Separator>or</Separator>
-        <RegisterLink className="e2e-register-button" onClick={this.goToRegister}><FormattedMessage {...messages.register} /></RegisterLink>
+        <RegisterLink to="/sign-up" className="e2e-register-button">
+          <FormattedMessage {...messages.register} />
+        </RegisterLink>
       </VerticalContainer>
     );
   }

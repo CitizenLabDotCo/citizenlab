@@ -1,9 +1,9 @@
 import React, { PureComponent, FormEvent } from 'react';
-import Icon from 'components/UI/Icon';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import Icon from 'components/UI/Icon';
 
-const Container: any = styled.div`
+const Container = styled.div`
   &:not(.hasLabel) {
     flex: 0 0 ${(props: any) => props.size};
     width: ${(props: any) => props.size};
@@ -16,7 +16,8 @@ const Container: any = styled.div`
   }
 `;
 
-const CheckboxContainer: any = styled.div`
+const InputWrapper: any = styled.div`
+  position: relative;
   flex: 0 0 ${(props: any) => props.size};
   width: ${(props: any) => props.size};
   height: ${(props: any) => props.size};
@@ -28,17 +29,32 @@ const CheckboxContainer: any = styled.div`
   cursor: pointer;
   border: solid 1px #aaa;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: #fff;
   background: ${(props: any) => props.checked ? colors.clGreen : '#fff'};
   border-color: ${(props: any) => props.checked ? colors.clGreen : '#aaa'};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
+
+  &.focused {
+    outline: rgb(59, 153, 252) solid 2px;
+  }
 
   &:hover {
     border-color: ${(props: any) => props.checked ? colors.clGreen : '#333'};
   }
 `;
 
+const Input = styled.input`
+  &[type='checkbox'] {
+    /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+    position: absolute;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
+  }
+`;
+
 const CheckmarkIcon = styled(Icon)`
+  position: absolute;
   fill: #fff;
   height: 55%;
 `;
@@ -55,70 +71,70 @@ interface DefaultProps {
 }
 
 interface Props extends DefaultProps {
-  value: boolean;
-  onChange: (event: FormEvent | KeyboardEvent) => void;
   label?: string | JSX.Element | null | undefined;
-  disableLabelClick?: boolean;
+  checked: boolean;
+  onChange: (event: FormEvent | KeyboardEvent) => void;
   className?: string;
 }
 
-type State = {};
+interface State {
+  inputFocused: boolean;
+}
 
 export default class Checkbox extends PureComponent<Props, State> {
-  checkboxContainer: HTMLDivElement | null = null;
+  checkbox = React.createRef<HTMLInputElement>();
 
   static defaultProps: DefaultProps = {
     size: '22px'
   };
 
-  toggleCheckbox = (event: FormEvent | KeyboardEvent) => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputFocused: false
+    };
+  }
+
+  handleOnChange = (event: FormEvent | KeyboardEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.props.onChange(event);
   }
 
-  setRef = (element: HTMLDivElement) => {
-    this.checkboxContainer = element;
+  handleOnFocus = () => {
+    this.setState({
+      inputFocused: true
+    });
   }
 
-  removeFocus = (event: MouseEvent) => {
-    event.preventDefault();
-  }
-
-  handleLabelOnClick = (event: FormEvent) => {
-    if (this.props.disableLabelClick !== true) {
-      this.toggleCheckbox(event);
-    }
-  }
-
-  handleKeyPress = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      this.toggleCheckbox(event);
-    }
+  handleOnBlur = () => {
+    this.setState({
+      inputFocused: false
+    });
   }
 
   render() {
-    const className = this.props['className'];
-    const { size, value, label } = this.props;
+    const { label, size, checked, className } = this.props;
+    const { inputFocused } = this.state;
 
     return (
-      <Container className={`${className} ${label ? 'hasLabel' : ''}`} size={size}>
-        <CheckboxContainer
-          className={`e2e-checkbox ${value ? 'checked' : 'unchecked'}`}
-          ref={this.setRef}
-          tabIndex={0}
-          checked={value}
-          size={size}
-          onMouseDown={this.removeFocus}
-          onClick={this.toggleCheckbox}
-          onKeyPress={this.handleKeyPress}
-          role="button"
-          aria-labelledby="checkbox-label"
-        >
-          {value && <CheckmarkIcon name="checkmark" />}
-        </CheckboxContainer>
+      <Container className={`${className ? className : ''} ${label ? 'hasLabel' : ''}`}>
+        <InputWrapper onClick={this.handleOnChange} className={inputFocused ? 'focused' : ''} checked={checked} size={size}>
+          <Input
+            ref={this.checkbox}
+            id="checkbox"
+            className="e2e-checkbox"
+            aria-checked={checked}
+            type="checkbox"
+            defaultChecked={checked}
+            onFocus={this.handleOnFocus}
+            onBlur={this.handleOnBlur}
+          />
+          {checked && <CheckmarkIcon ariaHidden name="checkmark" />}
+        </InputWrapper>
+
         {label &&
-          <Label id="checkbox-label" onClick={this.handleLabelOnClick}>
+          <Label htmlFor="checkbox">
             {label}
           </Label>
         }

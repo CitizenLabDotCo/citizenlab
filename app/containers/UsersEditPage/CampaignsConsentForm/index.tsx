@@ -112,7 +112,7 @@ export class CampaignsConsentForm extends PureComponent<Props, State> {
             {!isNilOrError(consents) && consents.map((consent) => (
               <CheckboxContainer key={consent.id}>
                 <Checkbox
-                  value={this.isConsented(consent.id)}
+                  checked={this.isConsented(consent.id)}
                   onChange={this.handleOnChange(consent)}
                   label={<FormLabelValue thin noSpace labelValue={<T value={consent.attributes.campaign_type_description_multiloc}/>} />}
                 />

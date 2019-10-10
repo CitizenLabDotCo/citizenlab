@@ -14,6 +14,9 @@ import PBExpenses from '../pb/PBExpenses';
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
+// i18n
+import messages from '../messages';
+
 // style
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
@@ -81,6 +84,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
                 participationContextType="Project"
                 showViewToggle={true}
                 defaultView={(project.attributes.presentation_mode || null)}
+                invisibleTitleMessage={messages.invisibleTitleIdeasList}
               />
             </StyledContentContainer>
             <EventsPreview projectId={projectId} />

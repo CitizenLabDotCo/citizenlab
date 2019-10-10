@@ -39,7 +39,7 @@ export default defineMessages({
   },
   noFirstNameError: {
     id: 'app.containers.SignUp.noFirstNameError',
-    defaultMessage: 'Please enter your first name',
+    defaultMessage: 'Your first name cannot be empty',
   },
   lastNameLabel: {
     id: 'app.containers.SignUp.lastNameLabel',
@@ -51,7 +51,7 @@ export default defineMessages({
   },
   noLastNameError: {
     id: 'app.containers.SignUp.noLastNameError',
-    defaultMessage: 'Please enter your last name',
+    defaultMessage: 'Your last name cannot be empty',
   },
   emailLabel: {
     id: 'app.containers.SignUp.emailLabel',
@@ -63,7 +63,7 @@ export default defineMessages({
   },
   noEmailError: {
     id: 'app.containers.SignUp.noEmailError',
-    defaultMessage: 'Please enter your email address',
+    defaultMessage: 'Your email address cannot be empty',
   },
   noValidEmailError: {
     id: 'app.containers.SignUp.noValidEmailError',
@@ -79,7 +79,7 @@ export default defineMessages({
   },
   noPasswordError: {
     id: 'app.containers.SignUp.noPasswordError',
-    defaultMessage: 'Please enter a password',
+    defaultMessage: 'Your password cannot be empty',
   },
   noValidPasswordError: {
     id: 'app.containers.SignUp.noValidPasswordError',
