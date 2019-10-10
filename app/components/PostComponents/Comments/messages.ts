@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  invisibleTitleComments: {
+    id: 'app.components.Comments.invisibleTitleComments',
+    defaultMessage: 'Comments',
+  },
   official: {
     id: 'app.components.Comments.official',
     defaultMessage: 'Official',

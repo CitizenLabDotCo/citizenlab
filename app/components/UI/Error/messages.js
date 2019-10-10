@@ -130,7 +130,11 @@ export default defineMessages({
     defaultMessage: 'The format of the file you tried to upload is not supported.',
   },
   cannot_contain_ideas: {
-    id: 'app.components.admin.PostManager.cannot_contain_ideas',
+    id: 'app.errors.cannot_contain_ideas',
     defaultMessage: 'This phase contains {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} and the participation method you\'re trying to change it to doesn\'t support ideas. Please remove {ideasCount, plural, one {the idea} other {the ideas}} from the phase and try again.',
+  },
+  error: {
+    id: 'app.errors.error',
+    defaultMessage: 'Error: ',
   },
 });
