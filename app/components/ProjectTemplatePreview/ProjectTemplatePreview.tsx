@@ -1,9 +1,9 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import { isNilOrError, transformLocale } from 'utils/helperUtils';
 import * as clipboard from 'clipboard-polyfill';
 
 // hooks
-import useLocale from 'hooks/useLocale';
+import useGraphqlLocalize from 'hooks/useGraphqlLocalize';
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // graphql
 import { gql } from 'apollo-boost';
@@ -14,6 +14,7 @@ import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import T from 'components/T';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -324,11 +325,10 @@ export interface Props {
 
 const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) => {
 
-  const locale = useLocale();
+  const graphqlLocalize = useGraphqlLocalize();
+  const graphqlTenantLocales = useGraphqlTenantLocales();
 
   const [linkCopied, setLinkCopied] = useState(false);
-
-  const graphQLLocale = !isNilOrError(locale) ? transformLocale(locale) : null;
 
   const TEMPLATE_QUERY = gql`
     {
@@ -338,29 +338,29 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
         departments {
           id
           titleMultiloc {
-            ${graphQLLocale}
+            ${graphqlTenantLocales}
           }
         }
         participationLevels {
           id
           titleMultiloc {
-            ${graphQLLocale}
+            ${graphqlTenantLocales}
           }
         }
         phases {
-          ${graphQLLocale}
+          ${graphqlTenantLocales}
         }
         purposes {
           id
           titleMultiloc {
-            ${graphQLLocale}
+            ${graphqlTenantLocales}
           }
         }
         titleMultiloc {
-          ${graphQLLocale}
+          ${graphqlTenantLocales}
         }
         subtitleMultiloc {
-          ${graphQLLocale}
+          ${graphqlTenantLocales}
         }
         descriptionMultilocs {
           content
@@ -401,8 +401,12 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
         <>
           <Header>
             <HeaderLeft>
-              <Title>{data.projectTemplate.titleMultiloc[`${graphQLLocale}`]}</Title>
-              <Subtitle>{data.projectTemplate.subtitleMultiloc[`${graphQLLocale}`]}</Subtitle>
+              <Title>
+                <T graphql={true} value={data.projectTemplate.titleMultiloc} />
+              </Title>
+              <Subtitle>
+                <T graphql={true} value={data.projectTemplate.subtitleMultiloc} />
+              </Subtitle>
             </HeaderLeft>
 
             <HeaderRight>
@@ -424,7 +428,7 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
             <MetaInfoLeft>
               {data.projectTemplate.departments && data.projectTemplate.departments.map((department) => (
                 <Department key={department.id}>
-                  {department.titleMultiloc[`${graphQLLocale}`]}
+                  <T graphql={true} value={department.titleMultiloc} />
                 </Department>
               ))}
             </MetaInfoLeft>
@@ -432,13 +436,13 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
               {data.projectTemplate.purposes && data.projectTemplate.purposes.length > 0 &&
                 <Purpose>
                   <PurposeIcon name="purpose" />
-                  {data.projectTemplate.purposes.map((purpose) => purpose.titleMultiloc[`${graphQLLocale}`]).join(', ')}
+                  {data.projectTemplate.purposes.map((purpose) => graphqlLocalize(purpose.titleMultiloc)).join(', ')}
                 </Purpose>
               }
               {data.projectTemplate.participationLevels && data.projectTemplate.participationLevels.length > 0 &&
                 <ParticipationLevel>
                   <ParticipationLevelIcon name="participationLevel" />
-                  {data.projectTemplate.participationLevels.map((participationLevel) => participationLevel.titleMultiloc[`${graphQLLocale}`]).join(', ')}
+                  {data.projectTemplate.participationLevels.map((participationLevel) => graphqlLocalize(participationLevel.titleMultiloc)).join(', ')}
                 </ParticipationLevel>
               }
             </MetaInfoRight>
@@ -463,7 +467,7 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
                     <PhaseArrow name="phase_arrow" />
                   </PhaseBar>
                   <PhaseText>
-                    {phase[`${graphQLLocale}`]}
+                    <T graphql={true} value={phase} />
                   </PhaseText>
                 </PhaseContainer>
               ))}

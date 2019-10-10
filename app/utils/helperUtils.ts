@@ -1,4 +1,4 @@
-import { Locale, Multiloc } from 'typings';
+import { Locale, Multiloc, GraphqlLocale } from 'typings';
 import { isString } from 'util';
 import { trim } from 'lodash-es';
 import { removeUrlLocale } from 'services/locale';
@@ -94,10 +94,10 @@ export function stripHtmlTags(str: string | null | undefined) {
 }
 
 // e.g. 'en-GB' -> 'enGb' (for use in graphQl query)
-export function transformLocale(locale: string) {
+export function convertToGraphqlLocale(locale: Locale) {
   const newLocale = locale.replace('-', '');
   const length = newLocale.length - 1;
-  return newLocale.substring(0, length) + newLocale.substr(length).toLowerCase();
+  return newLocale.substring(0, length) + newLocale.substr(length).toLowerCase() as GraphqlLocale;
 }
 
 export function isUUID(value: string) {

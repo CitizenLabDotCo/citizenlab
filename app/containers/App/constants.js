@@ -38,6 +38,27 @@ exports.locales = [
     'es-ES',
     'es-CL'
 ];
+exports.graphqlLocales = [
+    'en',
+    'fr',
+    'de',
+    'nl',
+    'nb',
+    'da',
+    'es',
+    'ach',
+    'enGb',
+    'enCa',
+    'frBe',
+    'frFr',
+    'nlBe',
+    'nlNl',
+    'deDe',
+    'daDk',
+    'nbNo',
+    'esEs',
+    'esCl'
+];
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
     en: 'English',
@@ -53,6 +74,27 @@ exports.appLocalePairs = {
     'es-ES': 'Español (España)',
     'es-CL': 'Español (Chile)',
     ach: 'Acholi'
+};
+exports.appGraphqlLocalePairs = {
+    en: 'en',
+    fr: 'fr',
+    de: 'de',
+    nl: 'nl',
+    nb: 'nb',
+    da: 'da',
+    es: 'es',
+    ach: 'ach',
+    enGb: 'en-GB',
+    enCa: 'en-CA',
+    frBe: 'fr-BE',
+    frFr: 'fr-FR',
+    nlBe: 'nl-BE',
+    nlNl: 'nl-NL',
+    deDe: 'de-DE',
+    daDk: 'da-DK',
+    nbNo: 'nb-NO',
+    esEs: 'es-ES',
+    esCl: 'es-CL'
 };
 exports.shortenedAppLocalePairs = {
     en: 'English',
