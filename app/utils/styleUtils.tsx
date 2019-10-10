@@ -1,6 +1,6 @@
 import { isNil, get, isString } from 'lodash-es';
 import { ITenant } from 'services/tenant';
-import { css } from 'styled-components';
+import styled, { css } from 'styled-components';
 import { darken, transparentize } from 'polished';
 import { isNilOrError } from './helperUtils';
 
@@ -389,13 +389,20 @@ export function booleanClass(value: any, className: string | undefined) {
 export function invisibleA11yText() {
   /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
   return `
-    position: absolute !important;
+    position: absolute;
     height: 1px; width: 1px;
     overflow: hidden;
     clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
     clip: rect(1px, 1px, 1px, 1px);
   `;
 }
+
+/**
+ * Wrap in this component any element that should only be visible by screen readers
+ */
+export const ScreenReaderOnly = styled.div`
+  ${invisibleA11yText()}
+`;
 
 // Calculus
 export function remCalc(desiredSize: number) {

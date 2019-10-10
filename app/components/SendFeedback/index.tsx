@@ -5,7 +5,7 @@ import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 // import i18n
 import messages from './messages';
@@ -17,10 +17,6 @@ const SendFeedbackText = styled.span`
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   transition: all 100ms ease-out;
-
-  &:not(.show) {
-    display: none;
-  }
 `;
 
 const SendFeedbackIcon = styled(Icon)`
@@ -61,10 +57,13 @@ const SendFeedbackComponent = React.memo<Props>((props: Props & InjectedIntlProp
 
   return (
     <Container className={className} target="_blank" href={formatMessage(messages.sendFeedbackLink,  { url: location.href })}>
-      <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
-      {/* Text has to be always here for pa11y, so we use a class and not conditional render to display it */}
-      <SendFeedbackText className={`send-feedback-text  ${showFeedbackText ? 'show' : ''}`}>
-        <FormattedMessage {...messages.sendFeedback} />
+      <SendFeedbackIcon name="questionMark" ariaHidden title={formatMessage(messages.sendFeedback)} className="send-feedback-icon" />
+      <SendFeedbackText>
+        {showFeedbackText ?
+          <FormattedMessage {...messages.sendFeedback} />
+          :
+          <ScreenReaderOnly>{formatMessage(messages.sendFeedback)}</ScreenReaderOnly>
+        }
       </SendFeedbackText>
     </Container>
   );

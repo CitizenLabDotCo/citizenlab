@@ -31,6 +31,13 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
 <UserComments__Container
   className="e2e-profile-comments"
 >
+  <styleUtils__ScreenReaderOnly>
+    <FormattedMessage
+      defaultMessage="All the comments posted by this user"
+      id="app.containers.UsersShowPage.invisibleTitleUserComments"
+      tagName="h2"
+    />
+  </styleUtils__ScreenReaderOnly>
   <WrappedPostComments
     comments={
       Array [
