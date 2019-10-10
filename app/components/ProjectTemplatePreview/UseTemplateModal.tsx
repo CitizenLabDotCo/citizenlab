@@ -4,6 +4,8 @@ import { withRouter, WithRouterProps } from 'react-router';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import { isNilOrError, transformLocale } from 'utils/helperUtils';
+import bowser from 'bowser';
+import moment from 'moment';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -165,7 +167,8 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
 
   const onCreateProject = useCallback(async () => {
     const invalidTitle = isEmpty(titleMultiloc) || (titleMultiloc && Object.getOwnPropertyNames(titleMultiloc).every(key => isEmpty(titleMultiloc[`${key}`])));
-    const invalidDate = isEmpty(startDate);
+    const noDate = isEmpty(startDate);
+    const invalidDate = !moment(startDate || '', 'YYYY-MM-DD', true).isValid();
 
     trackEventByName(tracks.useTemplateModalCreateProjectButtonClicked, { projectTemplateId });
 
@@ -173,8 +176,10 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
       setTitleError({ [`${selectedLocale}`]: intl.formatMessage(messages.projectTitleError) });
     }
 
-    if (invalidDate) {
-      setStartDateError(intl.formatMessage(messages.projectStartDateError));
+    if (noDate) {
+      setStartDateError(intl.formatMessage(messages.projectNoStartDateError));
+    } else if (invalidDate) {
+      setStartDateError(intl.formatMessage(messages.projectInvalidStartDateError));
     }
 
     if (!invalidTitle && !invalidDate && titleMultiloc && startDate) {
@@ -304,6 +309,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
               onChange={onStartDateChange}
               value={startDate}
               error={startDateError}
+              placeholder={bowser.msie ? 'YYYY-MM-DD' : undefined}
             />
           </>
         ) : (
