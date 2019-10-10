@@ -34,7 +34,7 @@ export default defineMessages({
     defaultMessage: 'Please sign up to take this poll',
   },
   verificationLinkText: {
-    id: 'app.containers.Comments.verificationLinkText',
+    id: 'app.containers.Projects.PollForm.verificationLinkText',
     defaultMessage: 'Verify your account now.',
   },
   pollDisabledNotVerified: {

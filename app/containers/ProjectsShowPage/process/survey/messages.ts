@@ -22,11 +22,11 @@ export default defineMessages({
     defaultMessage: 'This survey can only be taken when this phase in the timeline is active.',
   },
   verificationLinkText: {
-    id: 'app.containers.Comments.verificationLinkText',
+    id: 'app.containers.ProjectsShowPage.process.survey.verificationLinkText',
     defaultMessage: 'Verify your account now.',
   },
   surveyDisabledNotVerified: {
-    id: 'app.containers.Projects.PollForm.surveyDisabledNotVerified',
+    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified',
     defaultMessage: 'Taking this survey requires verification of your account. {verificationLink}',
   },
 });
