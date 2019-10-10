@@ -289,7 +289,6 @@
   "app.components.UserSearch.addModerators": "Toevoegen",
   "app.components.UserSearch.noOptions": "Geen opties",
   "app.components.UserSearch.searchUsers": "Zoek gebruikers",
-  "app.components.VerificationSuccessModal.close": "",
   "app.components.VerificationSuccessModal.userVerifiedSubtitle": "",
   "app.components.VerificationSuccessModal.userVerifiedTitle": "",
   "app.components.VoteControl.budgetingDisabled": "Een budget toekennen aan dit idee is niet langer mogelijk.",

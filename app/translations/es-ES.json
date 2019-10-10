@@ -289,7 +289,6 @@
   "app.components.UserSearch.addModerators": "Añadir",
   "app.components.UserSearch.noOptions": "Sin opciones",
   "app.components.UserSearch.searchUsers": "Búsqueda de usuarios",
-  "app.components.VerificationSuccessModal.close": "",
   "app.components.VerificationSuccessModal.userVerifiedSubtitle": "",
   "app.components.VerificationSuccessModal.userVerifiedTitle": "",
   "app.components.VoteControl.budgetingDisabled": "Ya no es posible asignar presupuesto a esta idea.",
