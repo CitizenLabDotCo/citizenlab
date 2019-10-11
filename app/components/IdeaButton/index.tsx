@@ -46,7 +46,7 @@ const StyledButton = styled.button`
   &:hover {
     text-decoration: underline;
   }
-  display: inline-block
+  display: inline-block;
   padding: 0;
 `;
 
@@ -127,9 +127,6 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
       textColor = (textColor || undefined);
       fontWeight = (fontWeight || undefined);
       padding = (padding || undefined);
-
-      const enabled = false;
-    const disabledReason = 'notVerified';
 
       return (
         <Container className={`${className} ${fullHeight ? 'bannerStyle' : ''}`}>
