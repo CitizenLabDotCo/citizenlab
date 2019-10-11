@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -67,7 +67,7 @@ const StyledButton = styled(Button)`
   margin: 0 0 20px;
 `;
 
-const VerificationStatus = ({ className }: { className?: string }) => {
+const VerificationStatus = memo(({ className }: { className?: string }) => {
   const authUser = useAuthUser();
   if (isNilOrError(authUser)) return null;
 
@@ -113,6 +113,6 @@ const VerificationStatus = ({ className }: { className?: string }) => {
       </StyledFormSection>
     </FeatureFlag>
   );
-};
+});
 
 export default VerificationStatus;

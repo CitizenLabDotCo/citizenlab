@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -29,7 +29,7 @@ const StyledIcon = styled(Icon)`
   top: 3px;
 `;
 
-const VerificationIllustration = ({ className }: {className?: string}) => {
+const VerificationIllustration = memo(({ className }: {className?: string}) => {
   const authUser = useAuthUser();
 
   if (isNilOrError(authUser)) return null;
@@ -44,6 +44,6 @@ const VerificationIllustration = ({ className }: {className?: string}) => {
       <StyledIcon name="verify" />
     </Container>
   );
-};
+});
 
 export default VerificationIllustration;
