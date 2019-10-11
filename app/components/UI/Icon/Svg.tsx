@@ -3,7 +3,7 @@ import { IconNames } from '.';
 
 interface Props {
   className?: string;
-  children: JSX.Element[];
+  children: JSX.Element | JSX.Element[];
   name: IconNames;
   // if ariaHidden is not specified, a title is 'required' (for a11y)
   title?: string | JSX.Element;
