@@ -51,6 +51,7 @@ const DropdownButton = styled.button`
   align-items: center;
   cursor: pointer;
   padding: 0px;
+  padding-top: 2px;
   margin: 0px;
 
   &:hover,

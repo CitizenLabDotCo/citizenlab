@@ -92,8 +92,7 @@ const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, em
       <Name
         emphasize={emphasize}
         className={
-          `${className || ''}
-          ${linkToProfile ? 'linkToProfile' : ''}
+          `${linkToProfile ? 'linkToProfile' : ''}
           ${canModerate ? 'canModerate' : ''}
           e2e-username`
         }
@@ -115,14 +114,17 @@ const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, em
 
     if (linkToProfile) {
       return (
-        <Link to={`/profile/${user.attributes.slug}`} className="e2e-author-link">
-          {nameComponent}
+        <Link to={`/profile/${user.attributes.slug}`} className={`e2e-author-link ${className || ''}`}>
+          <Container>
+            {nameComponent}
+            {verificationBadge && verificationBadgeComponent(user.attributes.is_verified)}
+          </Container>
         </Link>
       );
     }
 
     return (
-      <Container>
+      <Container className={className || ''}>
         {nameComponent}
         {verificationBadge && verificationBadgeComponent(user.attributes.is_verified)}
       </Container>
