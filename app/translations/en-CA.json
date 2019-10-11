@@ -192,6 +192,7 @@
   "app.components.InitiativesShowPage.goBack": "",
   "app.components.InitiativesShowPage.goBackToList": "",
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "",
+  "app.components.Modal.closeModal": "",
   "app.components.PagesForm.dontChange": "",
   "app.components.PagesForm.editContent": "",
   "app.components.PagesForm.fileUploadLabel": "",
