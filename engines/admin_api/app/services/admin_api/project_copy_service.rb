@@ -9,24 +9,23 @@ module AdminApi
       end
     end
 
-    def export project, include_ideas: false, anonymize_users: true, shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, timeline_start_at: nil
+    def export project, include_ideas: false, anonymize_users: true, shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, timeline_start_at: nil, new_publication_status: nil
       @project = project
       init_refs
       @template = {'models' => {}}
 
       # TODO deal with linking idea_statuses, topics, custom field values and maybe areas and groups
-      @template['models']['project']               = yml_projects new_slug: new_slug, shift_timestamps: shift_timestamps
+      @template['models']['project']               = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
       @template['models']['project_file']          = yml_project_files shift_timestamps: shift_timestamps
       @template['models']['project_image']         = yml_project_images shift_timestamps: shift_timestamps
-      @template['models']['phase']                 = yml_phases shift_timestamps: shift_timestamps
+      @template['models']['phase']                 = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
       @template['models']['phase_file']            = yml_phase_files shift_timestamps: shift_timestamps
       @template['models']['event']                 = yml_events shift_timestamps: shift_timestamps
       @template['models']['event_file']            = yml_event_files shift_timestamps: shift_timestamps
       @template['models']['permission']            = yml_permissions shift_timestamps: shift_timestamps
       @template['models']['polls/question']        = yml_poll_questions shift_timestamps: shift_timestamps
       @template['models']['polls/option']          = yml_poll_options shift_timestamps: shift_timestamps
-      @template['models']['polls/response']        = yml_poll_responses shift_timestamps: shift_timestamps
-      @template['models']['polls/response_option'] = yml_poll_response_options shift_timestamps: shift_timestamps      
+
       if include_ideas
         @template['models']['user']                = yml_users anonymize_users, shift_timestamps: shift_timestamps
         @template['models']['basket']              = yml_baskets shift_timestamps: shift_timestamps
@@ -64,7 +63,7 @@ module AdminApi
       @refs[model_name][id] = yml_obj
     end
 
-    def yml_projects shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil
+    def yml_projects shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil
       yml_project = yml_participation_context @project, shift_timestamps: shift_timestamps
       yml_project.merge!({
         'title_multiloc'               => new_title_multiloc || @project.title_multiloc,
@@ -75,7 +74,7 @@ module AdminApi
         'visible_to'                   => @project.visible_to,
         'description_preview_multiloc' => @project.description_preview_multiloc, 
         'process_type'                 => @project.process_type,
-        'publication_status'           => @project.publication_status,
+        'publication_status'           => new_publication_status || @project.publication_status,
         'ordering'                     => @project.ordering
       })
       yml_project['slug'] = new_slug if new_slug.present?
@@ -189,34 +188,6 @@ module AdminApi
         }
         store_ref yml_option, o.id, :poll_option
         yml_option
-      end
-    end
-
-    def yml_poll_responses shift_timestamps: 0
-      participation_context_ids = [@project.id] + @project.phases.ids
-      Polls::Response.where(participation_context_id: participation_context_ids).map do |r|
-        yml_response = {
-          'participation_context_ref' => lookup_ref(r.participation_context_id, [:project, :phase]),
-          'user_ref'                  => lookup_ref(r.user_id, :user),
-          'created_at'                => shift_timestamp(r.created_at, shift_timestamps)&.iso8601,
-          'updated_at'                => shift_timestamp(r.updated_at, shift_timestamps)&.iso8601
-        }
-        store_ref yml_response, r.id, :poll_response
-        yml_response
-      end
-    end
-
-    def yml_poll_response_options shift_timestamps: 0
-      participation_context_ids = [@project.id] + @project.phases.ids
-      Polls::ResponseOption.left_outer_joins(:response).where(polls_responses: {participation_context_id: participation_context_ids}).map do |r|
-        yml_response_option = {
-          'response_ref' => lookup_ref(r.response_id, :poll_option),
-          'option_ref'   => lookup_ref(r.option_id, :poll_option),
-          'created_at'   => shift_timestamp(r.created_at, shift_timestamps)&.iso8601,
-          'updated_at'   => shift_timestamp(r.updated_at, shift_timestamps)&.iso8601
-        }
-        store_ref yml_response_option, r.id, :poll_response_option
-        yml_response_option
       end
     end
 
