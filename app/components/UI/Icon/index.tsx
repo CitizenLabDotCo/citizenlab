@@ -213,11 +213,16 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
       </svg>
     ),
     'lock-outlined': (
-      <svg aria-hidden={ariaHidden} className={className} height="100%" viewBox="4 1 16 21">
-        {injectTitle(title)}
+      <Svg
+        className={className}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="4 1 16 21"
+      >
         <path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z" />
         <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2H8.9V6zM18 20H6V10h12v10z" />
-      </svg>
+      </Svg>
     ),
     facebook: (
       <svg className={className} height="100%" viewBox="4.588 4.588 257.717 257.719">
@@ -252,13 +257,18 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
       </svg>
     ),
     info: (
-      <svg aria-hidden={ariaHidden} className={className} height="100%" viewBox="2 125.305 595.279 595.28">
-        {injectTitle(title)}
+      <Svg
+        className={className}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="2 125.305 595.279 595.28"
+      >
         <path fill="none" d="M-57.528 65.777h714.336v714.336H-57.528V65.777z"/>
         <path d="M269.876 393.181h59.527v178.584h-59.527z"/>
         <path d="M299.64 125.305C135.343 125.305 2 258.647 2 422.945c0 164.297 133.343 297.64 297.64 297.64 164.298 0 297.64-133.343 297.64-297.64 0-164.298-133.342-297.64-297.64-297.64zm0 535.753c-131.259 0-238.112-106.854-238.112-238.112 0-131.26 106.854-238.112 238.112-238.112 131.26 0 238.112 106.853 238.112 238.112 0 131.258-106.852 238.112-238.112 238.112z"/>
         <path d="M269.876 274.125h59.527v59.528h-59.527z"/>
-      </svg>
+      </Svg>
     ),
     calendar: (
       <svg aria-hidden={ariaHidden} className={className} height="100%" viewBox="6.5 -4 11.701 13">
