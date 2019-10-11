@@ -140,7 +140,7 @@ namespace :cl2_back do
         verification: {
           enabled: true,
           allowed: true,
-          methods: [],
+          verification_methods: [],
         },
       }
     })
