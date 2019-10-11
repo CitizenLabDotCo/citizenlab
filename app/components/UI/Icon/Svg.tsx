@@ -7,7 +7,7 @@ interface Props {
   name: IconNames;
   // if ariaHidden is not specified, a title is 'required' (for a11y)
   title?: string | JSX.Element;
-  viewBox: string;
+  viewBox?: string;
   fill?: string;
   ariaHidden?: boolean;
   height?: string;
