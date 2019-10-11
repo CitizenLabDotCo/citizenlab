@@ -2,12 +2,15 @@
 exports.__esModule = true;
 exports.AUTH_PATH = '/auth';
 exports.API_PATH = '/web_api/v1';
+exports.ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
 exports.GOOGLE_MAPS_API_KEY = '***REMOVED***';
 exports.CL_GA_TRACKING_ID = 'UA-65562281-44';
 exports.CL_GA_TRACKER_NAME = 'CitizenLab2';
 exports.CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
 exports.API_HOST = process.env.API_HOST || (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
 exports.API_PORT = process.env.API_PORT || 4000;
+exports.GRAPHQL_HOST = process.env.GRAPHQL_HOST || (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
+exports.GRAPHQL_PORT = process.env.GRAPHQL_PORT || 5001;
 exports.DEFAULT_LOCALE = 'en';
 // the locales we "support" :
 // platformBaseUrl/{oneOfTheseStrings}/{anything we have a route for}
@@ -35,6 +38,27 @@ exports.locales = [
     'es-ES',
     'es-CL'
 ];
+exports.graphqlLocales = [
+    'en',
+    'fr',
+    'de',
+    'nl',
+    'nb',
+    'da',
+    'es',
+    'ach',
+    'enGb',
+    'enCa',
+    'frBe',
+    'frFr',
+    'nlBe',
+    'nlNl',
+    'deDe',
+    'daDk',
+    'nbNo',
+    'esEs',
+    'esCl'
+];
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
     en: 'English',
@@ -50,6 +74,27 @@ exports.appLocalePairs = {
     'es-ES': 'Español (España)',
     'es-CL': 'Español (Chile)',
     ach: 'Acholi'
+};
+exports.appGraphqlLocalePairs = {
+    en: 'en',
+    fr: 'fr',
+    de: 'de',
+    nl: 'nl',
+    nb: 'nb',
+    da: 'da',
+    es: 'es',
+    ach: 'ach',
+    enGb: 'en-GB',
+    enCa: 'en-CA',
+    frBe: 'fr-BE',
+    frFr: 'fr-FR',
+    nlBe: 'nl-BE',
+    nlNl: 'nl-NL',
+    deDe: 'de-DE',
+    daDk: 'da-DK',
+    nbNo: 'nb-NO',
+    esEs: 'es-ES',
+    esCl: 'es-CL'
 };
 exports.shortenedAppLocalePairs = {
     en: 'English',

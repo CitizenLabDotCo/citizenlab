@@ -5,7 +5,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import IdeaCards from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
-import Footer from 'components/Footer';
 import UsersShowPageMeta from './UsersShowPageMeta';
 
 // resources
@@ -119,8 +118,6 @@ export class UsersShowPage extends PureComponent<Props, State> {
                 />
               }
             </StyledContentContainer>
-
-            <Footer showCityLogoSection={false} />
           </Container>
         </>
       );

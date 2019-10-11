@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  slogan: {
-    id: 'app.containers.footer.slogan',
-    defaultMessage: '{type, select, generic {This website is an initiative from {name}} other {This website is an initiative from the city of {name}}}',
-  },
   poweredBy: {
     id: 'app.containers.footer.poweredBy',
     defaultMessage: 'Powered by',
@@ -24,10 +20,6 @@ export default defineMessages({
   cookieSettings: {
     id: 'app.containers.footer.cookieSettings',
     defaultMessage: 'Cookie settings',
-  },
-  iframeTitle: {
-    id: 'app.containers.footer.iframeTitle',
-    defaultMessage: 'More information about {orgName}',
   },
   feedbackQuestion: {
     id: 'app.containers.footer.feedbackQuestion',
@@ -76,5 +68,9 @@ export default defineMessages({
   close: {
     id: 'app.containers.footer.close',
     defaultMessage: 'Close'
+  },
+  logoAltText: {
+    id: 'app.containers.footer.logoAltText',
+    defaultMessage: 'Website of {tenantName}'
   }
 });

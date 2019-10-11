@@ -46,7 +46,7 @@ const LocationIcon = styled(Icon)`
   `}
 `;
 
-const LocationButton = styled.div`
+const LocationButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -157,7 +157,7 @@ class DropdownMap extends PureComponent<Props, State> {
 
     return (
       <Container className={className}>
-        <LocationButton id="e2e-map-toggle" onClick={this.handleMapToggle}>
+        <LocationButton aria-expanded={showMap} id="e2e-map-toggle" onClick={this.handleMapToggle}>
           <Location>
             <LocationIcon name="position" />
             <LocationLabel>

@@ -3,15 +3,20 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 // libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
+
+// components
+import Label from 'components/UI/Label';
 
 // styling
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
-const Container: any = styled.div`
+const Container = styled.div``;
+
+const DateInputWrapper: any = styled.div`
   display: inline-flex;
   position: relative;
   border-radius: ${(props: any) => props.theme.borderRadius};
@@ -29,7 +34,7 @@ const Container: any = styled.div`
       background: transparent;
 
       .DateInput_fang {
-        z-index: 1000 !important;
+        z-index: 1000000 !important;
       }
 
       input {
@@ -51,15 +56,21 @@ const Container: any = styled.div`
   }
 
   .SingleDatePicker_picker {
-    top: 69px !important;
     left: ${(props: any) => props.openOnLeft ? '-150px' : '-1px'} !important;
   }
 `;
 
+const LabelWrapper = styled.div`
+  display: flex;
+`;
+
 interface Props {
+  id?: string | undefined;
   value: moment.Moment | null;
+  label?: string | JSX.Element | null | undefined;
   onChange: (arg: moment.Moment | null) => void;
   openOnLeft?: boolean;
+  className?: string;
 }
 
 interface State {
@@ -67,7 +78,7 @@ interface State {
   selectedDate: moment.Moment | null;
 }
 
-export default class DateInput extends React.PureComponent<Props, State> {
+export default class DateInput extends PureComponent<Props, State> {
   constructor (props: Props) {
     super(props);
     this.state = {
@@ -101,22 +112,30 @@ export default class DateInput extends React.PureComponent<Props, State> {
   isOutsideRange = () => false;
 
   render () {
-    const className = this.props['className'];
+    const { id, label, openOnLeft, className } = this.props;
     const { selectedDate, focused } = this.state;
 
     return (
-      <Container className={className} openOnLeft={this.props.openOnLeft}>
-        <SingleDatePicker
-          id="singledatepicker"
-          date={selectedDate}
-          onDateChange={this.handleDateChange}
-          focused={focused}
-          onFocusChange={this.handleFocusChange}
-          numberOfMonths={1}
-          firstDayOfWeek={1}
-          isOutsideRange={this.isOutsideRange}
-          displayFormat="DD/MM/YYYY"
-        />
+      <Container className={className}>
+        {label &&
+          <LabelWrapper>
+            <Label htmlFor={id}>{label}</Label>
+          </LabelWrapper>
+        }
+
+        <DateInputWrapper openOnLeft={openOnLeft}>
+          <SingleDatePicker
+            id="singledatepicker"
+            date={selectedDate}
+            onDateChange={this.handleDateChange}
+            focused={focused}
+            onFocusChange={this.handleFocusChange}
+            numberOfMonths={1}
+            firstDayOfWeek={1}
+            isOutsideRange={this.isOutsideRange}
+            displayFormat="DD/MM/YYYY"
+          />
+        </DateInputWrapper>
       </Container>
     );
   }

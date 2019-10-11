@@ -2,12 +2,18 @@ import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { isString, isObject, uniq } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isAdminPage } from 'utils/helperUtils';
 import moment from 'moment';
 import 'moment-timezone';
 import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
-import { appLocalesMomentPairs } from 'containers/App/constants';
+
+// constants
+import { appLocalesMomentPairs, ADMIN_TEMPLATES_GRAPHQL_PATH } from 'containers/App/constants';
+
+// graphql
+import { ApolloClient, ApolloLink, InMemoryCache, HttpLink } from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -23,6 +29,7 @@ import { trackPage } from 'utils/analytics';
 // components
 import Meta from './Meta';
 import Navbar from 'containers/Navbar';
+import Footer from 'containers/Footer';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
@@ -38,6 +45,7 @@ import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+import { getJwt } from 'utils/auth/jwt';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
@@ -59,15 +67,8 @@ const InnerContainer = styled.div`
   flex-direction: column;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px - 1px);
-  `}
-
-  &.citizen {
-    ${media.smallerThanMaxTablet`
-      padding-top: 0px;
-      padding-bottom: ${props => props.theme.mobileMenuHeight}px;
-    `}
-  }
+    padding-top: 0px;
+`}
 `;
 
 export interface IOpenPostPageModalEvent {
@@ -237,7 +238,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       userDeletedModalOpened,
       userActuallyDeleted
     } = this.state;
-    const isAdminPage = (location.pathname.startsWith('/admin'));
+    const adminPage = isAdminPage(location.pathname);
     const theme = getTheme(tenant);
 
     return (
@@ -248,7 +249,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
               <>
                 <GlobalStyle />
 
-                <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                <Container>
                   <Meta />
 
                   <ErrorBoundary>
@@ -276,14 +277,14 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <Navbar />
-                  </ErrorBoundary>
-
-                  <ErrorBoundary>
                     <ConsentManager />
                   </ErrorBoundary>
 
-                  <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                  <ErrorBoundary>
+                    <Navbar />
+                  </ErrorBoundary>
+
+                  <InnerContainer >
                     <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
                       <ErrorBoundary>
                         {children}
@@ -293,6 +294,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                       </HasPermission.No>
                     </HasPermission>
                   </InnerContainer>
+                  {!adminPage && <Footer />}
                 </Container>
               </>
             </ThemeProvider>
@@ -303,4 +305,31 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-export default withRouter(App);
+const AppWithHoC = withRouter(App);
+
+const cache = new InMemoryCache();
+
+const httpLink = new HttpLink({ uri: ADMIN_TEMPLATES_GRAPHQL_PATH });
+
+const authLink = new ApolloLink((operation, forward) => {
+  const jwt = getJwt();
+
+  operation.setContext({
+    headers: {
+      authorization: jwt ? `Bearer ${jwt}` : ''
+    }
+  });
+
+  return forward(operation);
+});
+
+const client = new ApolloClient({
+  cache,
+  link: authLink.concat(httpLink)
+});
+
+export default (props: Props) => (
+  <ApolloProvider client={client}>
+    <AppWithHoC {...props} />
+  </ApolloProvider>
+);
