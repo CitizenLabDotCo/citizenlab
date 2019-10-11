@@ -367,10 +367,15 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
       </svg>
     ),
     timeline: (
-      <svg aria-hidden={ariaHidden} className={className} height="100%" viewBox="2 5.125 22 12">
-        {injectTitle(title)}
+      <Svg
+        className={className}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="2 5.125 22 12"
+      >
         <path d="M22 5.125c-1.1 0-2 .9-2 2 0 .18.02.35.07.51l-3.551 3.561c-.16-.051-.34-.07-.52-.07s-.359.02-.52.07L12.93 8.645c.05-.161.07-.34.07-.52 0-1.1-.9-2-2-2s-2 .9-2 2c0 .18.02.359.07.52l-4.56 4.551c-.16-.051-.33-.07-.51-.07-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2c0-.18-.02-.35-.07-.51l4.55-4.561c.16.051.34.07.52.07s.36-.02.52-.07l2.55 2.551c-.051.16-.07.34-.07.52 0 1.1.9 2 2 2s2-.9 2-2c0-.18-.02-.359-.07-.52l3.561-3.551c.16.051.33.07.51.07 1.1 0 2-.9 2-2s-.901-2-2.001-2z" />
-      </svg>
+      </Svg>
     ),
     survey: (
       <svg aria-hidden={ariaHidden} className={className} width="15" height="18">
