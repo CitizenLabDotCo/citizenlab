@@ -30,7 +30,7 @@ const SSectionField = styled(SectionField)`
 // Typings
 import { Multiloc } from 'typings';
 import { TRule } from 'components/admin/UserFilterConditions/rules';
-export interface Props {}
+export interface Props { }
 export interface RulesFormValues {
   rules: TRule[];
   title_multiloc: Multiloc;
@@ -77,7 +77,10 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
               component={FormikUserFilterConditions}
             />
             {touched.rules && errors.rules && <Error
-              text={<FormattedMessage {...messages.rulesError} />}
+              text={(errors.rules as any) === 'verificationDisabled'
+                ? <FormattedMessage {...messages.verificationDisabled} />
+                : <FormattedMessage {...messages.rulesError} />
+              }
             />}
           </SSectionField>
         </StyledFill>
