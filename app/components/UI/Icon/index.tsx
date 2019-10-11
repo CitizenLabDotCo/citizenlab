@@ -197,10 +197,15 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
       </svg>
     ),
     search2: (
-      <svg role="img" aria-hidden={ariaHidden} className={className} height="100%" viewBox="0 0 20 20">
-        {injectTitle(title)}
+      <Svg
+        className={className}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="0 0 20 20"
+      >
         <path d="M19.756 18.578l-5.688-5.688a7.88 7.88 0 0 0 1.766-4.974C15.834 3.552 12.281 0 7.917 0S0 3.552 0 7.917s3.552 7.917 7.917 7.917a7.88 7.88 0 0 0 4.974-1.766l5.688 5.688a.833.833 0 0 0 1.177-1.178zM7.917 14.166c-3.446 0-6.25-2.803-6.25-6.25s2.804-6.25 6.25-6.25c3.447 0 6.25 2.803 6.25 6.25s-2.804 6.25-6.25 6.25z"/>
-      </svg>
+      </Svg>
     ),
     lock: (className) => (
       <svg className={className} height="100%" viewBox="0 0 11 14">
