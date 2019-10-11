@@ -699,10 +699,15 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
       </Svg>
     ),
     initiatives: (
-      <svg aria-hidden={ariaHidden} className={`cl-icon ${className ? className : ''}`} height="100%" viewBox="0 0 26 19">
-        {injectTitle(title)}
+      <Svg
+        className={`cl-icon ${className ? className : ''}`}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="0 0 26 19"
+      >
         <path d="M1.183 4.073c.193 1.168.374 2.27 1.019 2.916a3.382 3.382 0 0 0 4.216.455c1.545 2.163 3.555 8.324 4.248 10.697a.664.664 0 0 0 .639.477h.015c.301-.006.56-.216.63-.509.008-.025.335-1.333 1.323-3.285 1.053.74 2.269 1.13 3.492 1.128a6.057 6.057 0 0 0 4.297-1.78c1.138-1.14 1.484-3.242 1.85-5.467.395-2.399.803-4.88 2.16-6.24a.665.665 0 1 0-.47-1.136c-4.99 0-9.542 1.574-12.175 4.207-1.52 1.52-2.12 3.77-1.563 5.876a.664.664 0 0 0 1.213.173 29.822 29.822 0 0 1 4.466-5.682.665.665 0 0 1 .94.94c-.51.511-.975 1.018-1.415 1.52-.042.05-.082.099-.125.148-2.492 2.883-3.886 5.567-4.602 7.301-.865-2.702-2.485-7.342-3.964-9.302a3.384 3.384 0 0 0-.39-4.309C5.59.801 3.286 0 .667 0a.665.665 0 0 0-.471 1.136c.605.603.799 1.791.988 2.937z"/>
-      </svg>
+      </Svg>
     ),
     initiativesAdminMenuIcon: (
       <svg className={`cl-icon ${className ? className : ''}`}  width="26" height="19" viewBox="0 0 26 19" fill="none">
@@ -717,13 +722,20 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
       </svg>
     ),
     folder: (
-      <svg aria-hidden={ariaHidden} className={`cl-icon ${className ? className : ''}`} width="26" height="20" viewBox="0 0 26 20" fill="none">
-        {injectTitle(title)}
+      <Svg
+        className={`cl-icon ${className ? className : ''}`}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="0 0 26 20"
+        width="26px"
+        height="20px"
+      >
         <g className="Folder-icon">
           <path className="cl-icon-primary Cover-icon" d="M23.2917 3.15789H10.7694C10.0696 3.15789 9.44992 2.72421 9.22783 2.07895L9.1325 1.79895C8.76308 0.723158 7.73067 0 6.56392 0H2.70833C1.2155 0 0 1.18105 0 2.63158V15.2632C0 16.7137 1.2155 17.8947 2.70833 17.8947H23.2917C24.7845 17.8947 26 16.7137 26 15.2632V5.78947C26 4.33895 24.7845 3.15789 23.2917 3.15789Z" transform="translate(0 2.10526)" fill={theme.clIconPrimary} />
           <path className="cl-icon-accent Back-Cover-icon" d="M16.1861 0H0.541667C0.242667 0 1.65304e-08 0.235789 1.65304e-08 0.526316C1.65304e-08 0.816842 0.242667 1.05263 0.541667 1.05263C2.17533 1.05263 3.62158 2.06526 4.13833 3.57053L4.23367 3.85158C4.30733 4.06737 4.51425 4.21263 4.74825 4.21263L17.2694 4.21053C17.5576 4.21053 17.8577 4.25263 18.2163 4.34316C18.2618 4.35474 18.3073 4.36 18.3528 4.36C18.4708 4.36 18.5878 4.32211 18.6842 4.25053C18.8164 4.15053 18.8944 3.99684 18.8944 3.83368V2.63158C18.8944 1.18105 17.6789 0 16.1861 0Z" transform="translate(6.02246)" fill={theme.clIconAccent} />
         </g >
-      </svg >
+      </Svg>
     ),
     users: (
       <svg className={`cl-icon ${className ? className : ''}`} width="28" height="28" viewBox="0 0 28 28" fill="none">
@@ -796,10 +808,15 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
       </svg>
     ),
     homeFilled: (
-      <svg role="img" aria-hidden={ariaHidden} className={className} viewBox="0 0 26 25" fill="none">
-        {injectTitle(title)}
+      <Svg
+        className={`cl-icon ${className ? className : ''}`}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="0 0 26 25"
+      >
         <path d="M24.7864 11.5246L13.7657 0.503844C13.0954 -0.167427 11.9228 -0.168469 11.2505 0.503844L0.152646 11.6017C0.00359107 11.7507 -0.0412298 11.9749 0.0400731 12.1698C0.120334 12.3647 0.311083 12.4919 0.521637 12.4919H2.08515V24.4788C2.08515 24.7665 2.31864 25 2.60633 25H8.8604C9.14809 25 9.38157 24.7665 9.38157 24.4788V15.6189H15.6356V24.4788C15.6356 24.7665 15.8691 25 16.1568 25H22.4109C22.6986 25 22.9321 24.7665 22.9321 24.4788V12.4908H24.506C24.8135 12.4877 25.0386 12.2615 25.0376 11.9696C25.0366 11.781 24.9365 11.6163 24.7864 11.5246Z" />
-      </svg>
+      </Svg>
     ),
     info3: (
       <svg className={className} height="100%" viewBox="0 0 14 14">
