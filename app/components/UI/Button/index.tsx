@@ -161,7 +161,6 @@ const Container: any = styled.div`
     transition: all 100ms ease-out;
     min-width: ${(props: any) => props.minWidth || 'auto'};
     width: ${(props: any) => props.width || '100%'};
-    outline: none;
     &:not(.disabled) {
       cursor: pointer;
     }
