@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectCards from 'components/ProjectCards';
-import Footer from 'components/Footer';
+import CityLogoSection from 'components/CityLogoSection';
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
 import SignedOutHeader from './SignedOutHeader';
@@ -38,7 +38,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import { PublicationStatus } from 'resources/GetProjects';
 import FeatureFlag from 'components/FeatureFlag';
 
-const Container: any = styled.div`
+const Container: any = styled.main`
   height: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
@@ -246,7 +246,7 @@ class LandingPage extends PureComponent<Props, State> {
                   />
                 </FooterBanner>
               }
-              <Footer />
+              <CityLogoSection />
             </Content>
           </Container>
         </>

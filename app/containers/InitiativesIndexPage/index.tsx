@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 
 // components
-import Footer from 'components/Footer';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
 import SuccessStories from './SuccessStories';
 import InitiativeCards from 'components/InitiativeCards';
 import ContentContainer from 'components/ContentContainer';
+import CityLogoSection from 'components/CityLogoSection';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -99,6 +99,6 @@ export default withTheme(memo(({ theme }: any) => (
         text={<FormattedMessage {...messages.startInitiative} />}
       />
     </FooterBanner>
-    <Footer />
+    <CityLogoSection />
   </>
 )));

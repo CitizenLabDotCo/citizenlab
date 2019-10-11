@@ -2,7 +2,7 @@ import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { isString, isObject, uniq } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isAdminPage } from 'utils/helperUtils';
 import moment from 'moment';
 import 'moment-timezone';
 import { configureScope } from '@sentry/browser';
@@ -29,6 +29,7 @@ import { trackPage } from 'utils/analytics';
 // components
 import Meta from './Meta';
 import Navbar from 'containers/Navbar';
+import Footer from 'containers/Footer';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
@@ -66,15 +67,8 @@ const InnerContainer = styled.div`
   flex-direction: column;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px - 1px);
-  `}
-
-  &.citizen {
-    ${media.smallerThanMaxTablet`
-      padding-top: 0px;
-      padding-bottom: ${props => props.theme.mobileMenuHeight}px;
-    `}
-  }
+    padding-top: 0px;
+`}
 `;
 
 export interface IOpenPostPageModalEvent {
@@ -244,7 +238,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       userDeletedModalOpened,
       userActuallyDeleted
     } = this.state;
-    const isAdminPage = (location.pathname.startsWith('/admin'));
+    const adminPage = isAdminPage(location.pathname);
     const theme = getTheme(tenant);
 
     return (
@@ -255,7 +249,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
               <>
                 <GlobalStyle />
 
-                <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                <Container>
                   <Meta />
 
                   <ErrorBoundary>
@@ -290,7 +284,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                     <Navbar />
                   </ErrorBoundary>
 
-                  <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                  <InnerContainer >
                     <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
                       <ErrorBoundary>
                         {children}
@@ -300,6 +294,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                       </HasPermission.No>
                     </HasPermission>
                   </InnerContainer>
+                  {!adminPage && <Footer />}
                 </Container>
               </>
             </ThemeProvider>
