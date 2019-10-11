@@ -192,6 +192,7 @@
   "app.components.InitiativesShowPage.goBack": "Ga terug",
   "app.components.InitiativesShowPage.goBackToList": "Ga terug naar de lijst",
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Geen initiatieven gevonden.",
+  "app.components.Modal.closeModal": "",
   "app.components.PagesForm.dontChange": "Dit niet veranderen! (tenzij je goed weet waar je mee bezig bent)",
   "app.components.PagesForm.editContent": "Inhoud",
   "app.components.PagesForm.fileUploadLabel": "Bijlagen (max. 50MB)",
