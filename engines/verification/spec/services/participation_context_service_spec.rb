@@ -23,6 +23,16 @@ describe ParticipationContextService do
         )
       expect(service.posting_disabled_reason_for_project(project, create(:user))).to eq 'not_verified'
     end
+
+    it "returns `not_permitted` when only permitted to admins but a group requires verification" do
+      project = create(:continuous_project, with_permissions: true)
+      permission = project.permissions.find_by(action: 'posting')
+      verified_members = create(:smart_group, rules: [{ruleType: 'verified', predicate: 'is_verified'}])
+      permission.update!(permitted_by: 'admins_moderators', 
+        group_ids: [create(:group).id, verified_members.id]
+        )
+      expect(service.posting_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
+    end
   end
 
   describe "commenting_disabled_reason" do
