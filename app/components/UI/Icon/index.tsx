@@ -69,10 +69,15 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
       </svg>
     ),
     checkmark: (
-      <svg aria-hidden={ariaHidden} role="img" className={className} height="100%" viewBox="0 0 19 15">
-        {injectTitle(title)}
+      <Svg
+        className={className}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="0 0 19 15"
+      >
         <path d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z" fillRule="evenodd" />
-      </svg>
+      </Svg>
     ),
     'round-checkmark': (
       <svg className={className} height="100%" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
