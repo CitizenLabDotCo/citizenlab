@@ -2,6 +2,9 @@ import React, { PureComponent } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { Formik } from 'formik';
 
+// Resources
+import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
+
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import Modal from 'components/UI/Modal';
@@ -50,7 +53,9 @@ import { IGroupData, addGroup } from 'services/groups';
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-export interface Props {}
+export interface Props {
+  verificationActive: GetFeatureFlagChildProps;
+}
 
 export interface State {
   groupCreationModal: false | 'step1' | IGroupData['attributes']['membership_type'];
@@ -107,7 +112,16 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
     });
   }
 
-  render () {
+  validateRulesWithFeatureFlag = (values: RulesFormValues) => {
+    const errors = RulesGroupForm.validate(values);
+    if (!this.props.verificationActive
+      && values.rules.find(rule => rule.ruleType === 'verified')) {
+      errors.rules = 'verificationDisabled' as any;
+    }
+    return errors;
+  }
+
+  render() {
     if (!this.props.location) return null;
 
     const { groupCreationModal } = this.state;
@@ -159,7 +173,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
             {groupCreationModal === 'rules' &&
               <Formik
                 initialValues={{ title_multiloc: {}, rules: [{}], membership_type: 'rules' }}
-                validate={RulesGroupForm.validate}
+                validate={this.validateRulesWithFeatureFlag}
                 render={this.renderForm('rules')}
                 onSubmit={this.handleSubmitForm}
               />
@@ -171,4 +185,12 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-export default withRouter<Props>(UsersPage);
+const UsersPageWithHocs = withRouter<Props>(UsersPage);
+
+export default (props) => (
+  <GetFeatureFlag name="verification">
+    {verificationActive =>
+      <UsersPageWithHocs {...props} verificationActive={verificationActive} />
+    }
+  </GetFeatureFlag>
+);
