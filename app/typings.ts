@@ -1,4 +1,4 @@
-import { appLocalePairs } from 'containers/App/constants';
+import { appLocalePairs, appGraphqlLocalePairs } from 'containers/App/constants';
 
 declare global {
   interface Function {
@@ -57,6 +57,8 @@ import { Messages } from 'react-intl';
 export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;
+
+export type GraphqlLocale = keyof typeof appGraphqlLocalePairs;
 
 export const isLocale = (test: any) => {
   return Object.keys(appLocalePairs).includes(test);

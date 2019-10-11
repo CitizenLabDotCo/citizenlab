@@ -81,10 +81,6 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.reportAsSpamModalTitle',
     defaultMessage: 'Why do you want to report this as spam?',
   },
-  imageAltText: {
-    id: 'app.containers.InitiativesShow.imageAltText',
-    defaultMessage: 'Main image for the initiative {initiativeTitle}'
-  },
   skipSharing: {
     id: 'app.components.InitiativesShow.skipSharing',
     defaultMessage: "Skip it, I'll do it later",

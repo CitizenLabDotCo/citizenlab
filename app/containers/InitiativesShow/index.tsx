@@ -525,7 +525,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 {initiativeImageLarge &&
                   <Image
                     src={initiativeImageLarge}
-                    alt={formatMessage(messages.imageAltText, { initiativeTitle })}
+                    alt=""
                     id="e2e-initiative-image"
                   />
                 }

@@ -62,9 +62,11 @@ export const NoDataContainer = styled.div`
   align-items: center;
   min-height: 150px;
   font-size: ${fontSizes.base}px;
-  // Needed to vertically center the text
-  // Reason being: we have a margin-bottom on the header,
-  // Which we want to keep when there's an actual graph
+  /*
+   * Needed to vertically center the text
+   * Reason being: we have a margin-bottom on the header,
+   * Which we want to keep when there's an actual graph
+   */
   padding: 20px;
 `;
 
