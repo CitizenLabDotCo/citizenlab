@@ -11,7 +11,6 @@ import Icon from 'components/UI/Icon';
 import clickOutside from 'utils/containers/clickOutside';
 
 // animations
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // analytics
@@ -374,7 +373,7 @@ export default class Modal extends PureComponent<Props, State> {
   render() {
     const { fixedHeight, width, children, opened, header, footer, hasSkipButton, skipText, label } = this.props;
 
-    const element = (opened ? (
+    return ReactDOM.createPortal((
       <CSSTransition
         classNames="modal"
         in={opened}
@@ -427,12 +426,8 @@ export default class Modal extends PureComponent<Props, State> {
           </StyledFocusLock>
         </Overlay>
       </CSSTransition>
-    ) : undefined);
-
-    return ReactDOM.createPortal((
-      <TransitionGroup>
-        {element}
-      </TransitionGroup>
-    ), document.body);
+    ),
+      document.body
+    );
   }
 }
