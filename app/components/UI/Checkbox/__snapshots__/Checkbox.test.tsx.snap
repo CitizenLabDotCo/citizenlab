@@ -374,18 +374,29 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                       className="c3"
                       name="checkmark"
                     >
-                      <svg
-                        aria-hidden={true}
+                      <Memo()
+                        ariaHidden={true}
                         className="c3"
-                        height="100%"
-                        role="img"
+                        name="checkmark"
                         viewBox="0 0 19 15"
                       >
-                        <path
-                          d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z"
-                          fillRule="evenodd"
-                        />
-                      </svg>
+                        <svg
+                          aria-hidden={true}
+                          aria-labelledby="checkmark"
+                          className="c3"
+                          fill="none"
+                          height="100%"
+                          role="img"
+                          viewBox="0 0 19 15"
+                          width="100%"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z"
+                            fillRule="evenodd"
+                          />
+                        </svg>
+                      </Memo()>
                     </Memo()>
                   </StyledComponent>
                 </Checkbox__CheckmarkIcon>
