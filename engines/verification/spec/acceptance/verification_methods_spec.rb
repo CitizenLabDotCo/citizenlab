@@ -19,8 +19,12 @@ resource "Verification methods" do
   end
 
   get "web_api/v1/verification_methods" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of verification methods per page"
+    end
 
-    example_request "Lists all active verification methods for this tenant" do
+    example_request "Lists all active verification methods" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data]).to eq([
