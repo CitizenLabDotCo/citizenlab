@@ -483,20 +483,35 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
       </svg>
     ),
     questionMark: (
-      <svg role="img" aria-hidden={ariaHidden} className={`cl-icon ${className ? className : ''}`} height="100%" viewBox="0 0 17.391 20">
-        {injectTitle(title)}
+      <Svg
+        className={`cl-icon ${className ? className : ''}`}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="0 0 17.391 20"
+      >
         <path d="M15.459 0H1.932C.865 0 0 .853 0 1.905v13.333c0 1.053.865 1.904 1.932 1.904h3.865L8.696 20l2.898-2.857h3.865c1.067 0 1.932-.852 1.932-1.904V1.905C17.391.853 16.526 0 15.459 0zM9.662 15.238H7.729v-1.904h1.933v1.904zm1.995-7.376l-.864.876c-.696.686-1.131 1.262-1.131 2.691H7.729v-.477c0-1.052.435-2.004 1.13-2.695l1.203-1.2c.348-.343.565-.819.565-1.343 0-1.052-.864-1.905-1.932-1.905s-1.932.853-1.932 1.905H4.831c0-2.105 1.729-3.81 3.865-3.81s3.865 1.705 3.865 3.81c0 .838-.344 1.596-.904 2.148z"/>
-      </svg>
+      </Svg>
     ),
     noAvatar: (
-      <svg aria-hidden={ariaHidden} height="100%" viewBox="0 0 56 56" className={`cl-icon ${className ? className : ''}`}>
-        {injectTitle(title)}
+      <Svg
+        className={`cl-icon ${className ? className : ''}`}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="0 0 56 56"
+      >
         <path d="M28 0C12.56 0 0 12.561 0 28s12.56 28 28 28c.282 0 .558-.035.84-.042l.098.019a1.115 1.115 0 0 0 .548-.022l.131-.037C44.303 55.071 56 42.894 56 28 56 12.561 43.439 0 28 0zm16.641 47.504c-.109-.356-.356-.658-.716-.776l-6.142-2.044c-2.145-.895-3.143-4.326-3.376-5.703 1.589-1.477 3.057-3.678 3.057-5.665 0-.677.191-.936.154-.942a1.17 1.17 0 0 0 .8-.698c.115-.286 1.12-2.851 1.12-4.58 0-.096-.011-.191-.034-.282-.147-.586-.49-1.176-1.004-1.545v-5.432c0-3.358-1.021-4.765-2.104-5.579-.244-1.672-2.033-4.922-8.396-4.922-6.505 0-10.5 6.115-10.5 10.5v5.432c-.513.369-.856.959-1.003 1.545a1.183 1.183 0 0 0-.035.282c0 1.729 1.005 4.294 1.12 4.58.14.348.324.569.688.661.075.044.266.305.266.979 0 1.987 1.468 4.188 3.057 5.665-.231 1.375-1.221 4.805-3.297 5.672l-6.223 2.075c-.357.118-.614.413-.726.77C5.838 42.786 2.329 35.801 2.329 28c0-14.152 11.515-25.667 25.667-25.667S53.662 13.848 53.662 28c.004 7.803-3.508 14.793-9.021 19.504z" />
-      </svg>
+      </Svg>
     ),
     completeProfile: (
-      <svg aria-hidden={ariaHidden} className={`cl-icon ${className ? className : ''}`} height="100%" viewBox="0 0 56 56" fill="none">
-        {injectTitle(title)}
+      <Svg
+        className={`cl-icon ${className ? className : ''}`}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="0 0 56 56"
+      >
         <circle cx="28" cy="28" r="28" fill="url(#paint0_linear)" fillOpacity=".5" />
         <path d="M19 33.252v3.75h3.75l11.06-11.06-3.75-3.75L19 33.252zm17.71-10.21a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#fff" />
         <defs>
@@ -504,7 +519,7 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
             <stop stopColor="#fff" /><stop offset="1" stopColor="#fff" stopOpacity=".34" />
           </linearGradient>
         </defs>
-      </svg>
+      </Svg>
     ),
     setup: (
       <svg className={`cl-icon ${className ? className : ''}`} width="42" height="42" viewBox="0 0 42 42" fill="none">
@@ -666,15 +681,22 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
       </svg>
     ),
     ideas: (
-      <svg aria-hidden={ariaHidden} className={`cl-icon ${className ? className : ''}`} width="18" height="25" viewBox="0 0 18 25" fill="none">
-        {injectTitle(title)}
+      <Svg
+        className={`cl-icon ${className ? className : ''}`}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="0 0 18 25"
+        width="18px"
+        height="25px"
+      >
         <g className="Ideas-icon">
           <path className="cl-icon-primary LightBulb-icon" d="M8.69628 0L8.55598 0.00113636C6.27294 0.0363636 4.03628 1.01705 2.41879 2.68864C0.798979 4.36364 -0.0810757 6.60909 0.00588619 8.84886C0.0963265 11.2034 1.20132 13.4398 3.0368 14.983C3.14463 15.0739 3.20956 15.1784 3.23275 15.2966C3.52378 16.8409 4.20788 20.4545 6.37729 20.4545H11.0153C13.1858 20.4545 13.8931 16.7057 14.1598 15.2943C14.1818 15.1784 14.2468 15.0739 14.3534 14.9841C16.284 13.3602 17.3913 11.0057 17.3913 8.52273C17.3925 3.82386 13.4919 0 8.69628 0Z" fill={theme.clIconPrimary} />
           <path className="cl-icon-accent Ring-1-icon" d="M7.3048 0H0.811644C0.363617 0 0 0.339394 0 0.757576C0 1.17576 0.361993 1.51515 0.811644 1.51515H7.3048C7.75283 1.51515 8.11644 1.17576 8.11644 0.757576C8.11644 0.339394 7.75283 0 7.3048 0Z" transform="translate(4.63794 20.4545)" fill={theme.clIconAccent} />
           <path className="cl-icon-secondary Ring-2-icon" d="M5.21771 0H0.579746C0.259726 0 0 0.339394 0 0.757576C0 1.17576 0.258567 1.51515 0.579746 1.51515H5.21771C5.53773 1.51515 5.79746 1.17576 5.79746 0.757576C5.79746 0.339394 5.53773 0 5.21771 0Z" transform="translate(5.79761 21.9697)" fill={theme.clIconSecondary} />
           <path className="cl-icon-accent Ring-3-icon" d="M2.89873 0H0.579746C0.259726 0 0 0.339394 0 0.757576C0 1.17576 0.258567 1.51515 0.579746 1.51515H2.89873C3.21875 1.51515 3.47848 1.17576 3.47848 0.757576C3.47848 0.339394 3.21875 0 2.89873 0Z" transform="translate(6.95703 23.4848)" fill={theme.clIconAccent} />
         </g>
-      </svg>
+      </Svg>
     ),
     initiatives: (
       <svg aria-hidden={ariaHidden} className={`cl-icon ${className ? className : ''}`} height="100%" viewBox="0 0 26 19">
