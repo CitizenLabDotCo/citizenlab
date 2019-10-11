@@ -1019,6 +1019,7 @@
   "app.containers.AdminPage.Users.UsersGroup.membershipDeleteFailed": "Er is een fout opgetreden tijdens het verwijderen van gebruikers van de groep, gelieve opnieuw te proberen.",
   "app.containers.AdminPage.Users.UsersGroup.moveUsers": "Voeg de geselecteerde gebruikers toe aan een groep",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Sommige voorwaarden zijn onvolledig",
+  "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "",
   "app.containers.AdminPage.clusterViewer._blank": "Onbekend",
   "app.containers.AdminPage.clusterViewer.details": "Details",
   "app.containers.AdminPage.clusterViewer.female": "Vrouw",

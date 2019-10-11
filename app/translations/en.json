@@ -1019,6 +1019,7 @@
   "app.containers.AdminPage.Users.UsersGroup.membershipDeleteFailed": "An error occurred while deleting users from the group, please try again.",
   "app.containers.AdminPage.Users.UsersGroup.moveUsers": "Add the selected users to a group",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Some conditions are incomplete",
+  "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verification is disabled for your platform, remove the verification rule or contact support.",
   "app.containers.AdminPage.clusterViewer._blank": "Unknown",
   "app.containers.AdminPage.clusterViewer.details": "Details",
   "app.containers.AdminPage.clusterViewer.female": "Female",

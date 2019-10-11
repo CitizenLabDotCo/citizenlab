@@ -1019,6 +1019,7 @@
   "app.containers.AdminPage.Users.UsersGroup.membershipDeleteFailed": "Une erreur s'est produite lors de la suppression des utilisateurs de ce groupe, veuillez réessayer.",
   "app.containers.AdminPage.Users.UsersGroup.moveUsers": "Ajouter les utilisateurs sélectionnés à un groupe",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Certaines conditions sont incomplètes",
+  "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "",
   "app.containers.AdminPage.clusterViewer._blank": "Inconnu",
   "app.containers.AdminPage.clusterViewer.details": "Détails du profil",
   "app.containers.AdminPage.clusterViewer.female": "Femme",
