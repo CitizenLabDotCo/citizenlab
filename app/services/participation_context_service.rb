@@ -97,7 +97,7 @@ class ParticipationContextService
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
     elsif !context_permission(context, 'posting')&.granted_to?(user)
-      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'posting').groups)
+      if !user.verified && @verification_service.find_verification_group(groups_by_permission_id(context_permission(context, 'posting').id))
         POSTING_DISABLED_REASONS[:not_verified]
       else
         POSTING_DISABLED_REASONS[:not_permitted]
@@ -131,7 +131,7 @@ class ParticipationContextService
     elsif !context.commenting_enabled
       COMMENTING_DISABLED_REASONS[:commenting_disabled]
     elsif !context_permission(context, 'commenting')&.granted_to?(user)
-      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'commenting').groups)
+      if !user.verified && @verification_service.find_verification_group(groups_by_permission_id(context_permission(context, 'commenting').id))
         COMMENTING_DISABLED_REASONS[:not_verified]
       else
         COMMENTING_DISABLED_REASONS[:not_permitted]
@@ -180,7 +180,7 @@ class ParticipationContextService
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
-      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'voting').groups)
+      if !user.verified && @verification_service.find_verification_group(groups_by_permission_id(context_permission(context, 'voting').id))
         VOTING_DISABLED_REASONS[:not_verified]
       else
         VOTING_DISABLED_REASONS[:not_permitted]
@@ -207,7 +207,7 @@ class ParticipationContextService
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
-      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'voting').groups)
+      if !user.verified && @verification_service.find_verification_group(groups_by_permission_id(context_permission(context, 'voting').id))
         VOTING_DISABLED_REASONS[:not_verified]
       else
         VOTING_DISABLED_REASONS[:not_permitted]
@@ -228,7 +228,7 @@ class ParticipationContextService
     elsif !context.survey?
       TAKING_SURVEY_DISABLED_REASONS[:not_survey]
     elsif !context_permission(context, 'taking_survey')&.granted_to?(user)
-      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'taking_survey').groups)
+      if !user.verified && @verification_service.find_verification_group(groups_by_permission_id(context_permission(context, 'taking_survey').id))
         TAKING_SURVEY_DISABLED_REASONS[:not_verified]
       else
         TAKING_SURVEY_DISABLED_REASONS[:not_permitted]
@@ -249,7 +249,7 @@ class ParticipationContextService
     elsif !context.poll?
       TAKING_POLL_DISABLED_REASONS[:not_poll]
     elsif !context_permission(context, 'taking_poll')&.granted_to?(user)
-      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'taking_poll').groups)
+      if !user.verified && @verification_service.find_verification_group(groups_by_permission_id(context_permission(context, 'taking_poll').id))
         TAKING_POLL_DISABLED_REASONS[:not_verified]
       else
         TAKING_POLL_DISABLED_REASONS[:not_permitted]
@@ -274,7 +274,7 @@ class ParticipationContextService
     if !context
       BUDGETING_DISABLED_REASONS[:project_inactive]
     elsif !context_permission(context, 'budgeting')&.granted_to?(user)
-      if !user.verified && @verification_service.find_verification_group(context_permission(context, 'budgeting').groups)
+      if !user.verified && @verification_service.find_verification_group(groups_by_permission_id(context_permission(context, 'budgeting').id))
         BUDGETING_DISABLED_REASONS[:not_verified]
       else
         BUDGETING_DISABLED_REASONS[:not_permitted]
@@ -345,7 +345,12 @@ class ParticipationContextService
     # We use ruby #find instead of SQL to have a higher chance of hitting
     # ActiveRecord's query cache, since this can be repeated a lot for the
     # same context.
-    context.permissions.find{|permission| permission.action == action}
+    context.permissions.includes(:groups).find{|permission| permission.action == action}
+  end
+
+  def groups_by_permission_id id
+    # Also reduces the amount of SQL queries.
+    Permission.includes(:groups).find{|permission| permission.id == id}.groups
   end
 
 end
