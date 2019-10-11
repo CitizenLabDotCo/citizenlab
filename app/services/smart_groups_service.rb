@@ -1,3 +1,5 @@
+require './engines/verification/lib/smart_group_rules/verified'
+
 class SmartGroupsService
 
   RULE_TYPE_TO_CLASS = [

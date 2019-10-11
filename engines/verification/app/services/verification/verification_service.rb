@@ -7,6 +7,14 @@ module Verification
       ]
     end
 
+    def find_verification_group groups
+      groups.select{|group| group.membership_type == 'rules'}.find do |group|
+        group.rules.find do |rule|
+          rule['ruleType'] == 'verified' && rule['predicate'] == 'is_verified'
+        end
+      end
+    end
+
     def active_methods_for_tenant tenant
       if tenant.has_feature? 'verification'
         active_method_names = tenant.settings['verification']['verification_methods'].map do |vm|
