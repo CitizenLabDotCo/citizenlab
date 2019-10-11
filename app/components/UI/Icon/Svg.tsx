@@ -7,7 +7,7 @@ interface Props {
   name: IconNames;
   // if ariaHidden is not specified, a title is 'required' (for a11y)
   title?: string | JSX.Element;
-  viewBox?: string;
+  viewBox: string;
   fill?: string;
   ariaHidden?: boolean;
   height?: string;
@@ -25,7 +25,7 @@ const Svg = React.memo(({ className, children, name, title, viewBox, fill, ariaH
       fill={fill || 'none'}
       xmlns="http://www.w3.org/2000/svg"
       height={height || '100%'}
-      width={width || '100%'}
+      width={width}
     >
       {title && <title id={name}>{title}</title>}
       {children}
