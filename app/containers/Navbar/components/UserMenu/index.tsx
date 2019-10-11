@@ -137,13 +137,14 @@ class UserMenu extends PureComponent<Props, State> {
           >
             <StyledUserName
               userId={userId}
-              hideLastName
+              verificationBadge
             />
             <StyledAvatar
               userId={userId}
-              size="30px"
+              size="43px"
               hasHoverEffect={false}
               fillColor={theme && theme.navbarTextColor ? theme.navbarTextColor : colors.label}
+              verified
             />
           </DropdownButton>
 
