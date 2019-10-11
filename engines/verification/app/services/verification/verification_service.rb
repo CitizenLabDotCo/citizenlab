@@ -7,8 +7,8 @@ module Verification
       ]
     end
 
-    def find_verification_group groups_scope
-      groups_scope.where(membership_type: 'rules').find do |group|
+    def find_verification_group groups
+      groups.select{|group| group.membership_type == 'rules'}.find do |group|
         group.rules.find do |rule|
           rule['ruleType'] == 'verified' && rule['predicate'] == 'is_verified'
         end
