@@ -327,7 +327,7 @@ class ParticipationContextService
 
   def not_permitted_reason context, user, action, reasons
     permission = context_permission context, action
-    if !permission
+    if !permission || !user
       reasons[:not_permitted]
     elsif !user.verified && permission.permitted_by == 'groups' && @verification_service.find_verification_group(groups_by_permission_id(permission.id))
       reasons[:not_verified]
