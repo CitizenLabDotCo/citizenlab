@@ -138,16 +138,26 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
       </svg>
     ),
     upvote: (
-      <svg role="img" className={className} height="100%" viewBox="0 0.8 22.281 19.397">
-        {injectTitle(title)}
+      <Svg
+        className={className}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="0 0.8 22.281 19.397"
+      >
         <path d="M22.28 10.152c0-.97-.765-1.732-1.74-1.732h-5.223c-.278 0-1.254-.416-.487-1.593.487-.9.487-4.295.487-4.295 0-.97-.767-1.732-1.74-1.732s-1.742.762-1.742 1.732c0 5.057-4.875 6.58-4.875 6.58v9.006c2.23.763 2.786 2.08 5.57 2.08h5.225c.975 0 1.74-.764 1.74-1.733 0-.416-.14-.762-.348-1.04.976 0 1.74-.76 1.74-1.73 0-.416-.14-.832-.417-1.18.696-.275 1.114-.9 1.114-1.592 0-.415-.14-.83-.418-1.178.628-.208 1.115-.83 1.115-1.593zM3.482 7.73H0v11.776h3.482c1.184 0 2.09-.97 2.09-2.078v-7.62c0-1.178-.905-2.078-2.09-2.078z" />
-      </svg>
+      </Svg>
     ),
     downvote: (
-      <svg role="img" className={className} height="100%" viewBox="0 0.604 22.291 19.396">
-        {injectTitle(title)}
+      <Svg
+        className={className}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="0 0.604 22.291 19.396"
+      >
         <path d="M4.526.604c-.975 0-1.74.762-1.74 1.73 0 .417.138.764.347 1.04-.975 0-1.74.763-1.74 1.732 0 .416.14.83.417 1.177-.696.278-1.114.902-1.114 1.594 0 .416.14.832.418 1.18C.487 9.262 0 9.884 0 10.646c0 .97.766 1.73 1.74 1.73h5.224c.28 0 1.254.416.488 1.595-.488.9-.488 4.295-.488 4.295 0 .97.766 1.733 1.74 1.733s1.742-.762 1.742-1.73c0-5.06 4.875-6.58 4.875-6.58V2.68C13.093 1.92 12.537.604 9.75.604H4.526zM18.81 1.293c-1.185 0-2.09.97-2.09 2.078v7.622c0 1.178.905 2.078 2.09 2.078h3.481V1.293h-3.48z" />
-      </svg>
+      </Svg>
     ),
     'chevron-right': (
       <svg className={className} height="100%" viewBox="0 0 11 18">
@@ -361,10 +371,15 @@ const Icon = memo<Props>(({ name, className, title, colorTheme, ariaHidden }) =>
       </svg>
     ),
     mapmarker: (
-      <svg role="img" className={className} height="100%" viewBox="0 0 17 24">
-        {injectTitle(title)}
+      <Svg
+        className={className}
+        ariaHidden={ariaHidden}
+        title={title}
+        name={name}
+        viewBox="0 0 17 24"
+      >
         <path d="M8.5 0C3.807 0 0 3.762 0 8.4 0 14.7 8.5 24 8.5 24S17 14.7 17 8.4C17 3.762 13.193 0 8.5 0zm0 11.4c-1.676 0-3.036-1.344-3.036-3s1.36-3 3.036-3c1.675 0 3.035 1.344 3.035 3s-1.359 3-3.035 3z" />
-      </svg>
+      </Svg>
     ),
     timeline: (
       <Svg
