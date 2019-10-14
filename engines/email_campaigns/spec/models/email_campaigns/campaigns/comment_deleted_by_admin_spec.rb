@@ -19,14 +19,11 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin, type: :model do
         ).first
 
       expect(
-      	command.dig(:event_payload, :recipient, :id)
-      	).to eq(notification.recipient_id)
+      	command.dig(:event_payload, :initiating_user_id)
+      	).to be_blank
       expect(
-      	command.dig(:event_payload, :initiating_user, :id)
-      	).to eq(notification.initiating_user_id)
-      expect(
-      	command.dig(:event_payload, :comment, :id)
-      	).to eq(notification.comment_id)
+      	command.dig(:event_payload, :comment_created_at)
+      	).to eq(notification.comment.created_at.iso8601)
   	end
   end
 end

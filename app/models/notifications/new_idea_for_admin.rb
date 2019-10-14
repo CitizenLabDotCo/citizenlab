@@ -1,9 +1,7 @@
 module Notifications
   class NewIdeaForAdmin < Notification
-    
-    belongs_to :initiating_user, class_name: 'User'
 
-    validates :initiating_user, presence: true
+    validates :initiating_user, :post, presence: true
 
     ACTIVITY_TRIGGERS = {'Idea' => {'published' => true}}
     EVENT_NAME = 'New idea for admin'
@@ -13,14 +11,14 @@ module Notifications
       idea = activity.item
       initiator = idea.author
       
-      if initiator && !(initiator&.admin? || initiator.project_moderator?(idea.project_id))
-        User.admin.or(User.project_moderator(idea.project_id)).select do |recipient|
-          recipient&.id != idea&.assignee_id
-        end.map do |recipient|
+      if !(initiator&.admin? || initiator&.project_moderator?(idea.project_id))
+        User.admin.or(User.project_moderator(idea.project_id)).ids.select do |recipient_id|
+          recipient_id != idea&.assignee_id
+        end.map do |recipient_id|
           self.new(
-           recipient_id: recipient.id,
-           initiating_user: initiator,
-           idea_id: idea.id,
+           recipient_id: recipient_id,
+           initiating_user_id: initiator.id,
+           post: idea,
            project_id: idea.project_id
          )
         end

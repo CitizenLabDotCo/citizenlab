@@ -1,5 +1,5 @@
 module EmailCampaigns
-  class Campaigns::InviteAccepted < Campaigns::NotificationCampaign
+  class Campaigns::InviteAccepted < Campaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
@@ -17,6 +17,20 @@ module EmailCampaigns
 
     def activity_triggers
       {'Notifications::InviteAccepted' => {'created' => true}}
+    end
+
+    def filter_notification_recipient users_scope, activity:, time: nil
+      users_scope.where(id: activity.item.recipient.id)
+    end
+
+    def generate_commands recipient:, activity:, time: nil
+      notification = activity.item
+      [{
+        event_payload: {
+          initiating_user_first_name: notification.initiating_user&.first_name,
+          initiating_user_last_name: notification.initiating_user&.last_name
+        }
+      }]
     end
 
 

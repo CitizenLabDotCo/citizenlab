@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentOnCommentedIdea, type: :mode
   	it "generates a command with the desired payload and tracked content" do
   		command = campaign.generate_commands(recipient: recipient_comment.author, activity: activity).first
 
-      expect(command.dig(:event_payload, :comment, :id)).to eq(initiator_comment.id)
+      expect(command.dig(:event_payload, :comment_body_multiloc)).to eq(initiator_comment.body_multiloc)
   	end
   end
 end

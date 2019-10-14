@@ -489,6 +489,35 @@ resource "Initiatives" do
     end
   end
 
+  get "web_api/v1/initiatives/:id/allowed_transitions" do
+    before do
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      header 'Authorization', "Bearer #{token}"
+
+      @initiative = create(:initiative)
+      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+      create(
+        :initiative_status_change, 
+        initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'threshold_reached')
+        )
+    end
+    let(:id) { @initiative.id }
+
+    example_request "Allowed transitions" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response).to eq ({
+        **InitiativeStatus.where(code: 'answered').ids.map{ |id|
+          [id.to_sym, { feedback_required: true }]
+        }.to_h,
+        **InitiativeStatus.where(code: 'ineligible').ids.map{ |id|
+          [id.to_sym, { feedback_required: true }]
+        }.to_h
+      })
+    end
+  end
+
 end
 
 def encode_image_as_base64 filename

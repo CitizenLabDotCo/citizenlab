@@ -42,6 +42,10 @@ class InitiativePolicy < ApplicationPolicy
     update?
   end
 
+  def allowed_transitions?
+    user&.admin?
+  end
+
   def permitted_attributes
     shared = [
       :publication_status,
@@ -55,7 +59,7 @@ class InitiativePolicy < ApplicationPolicy
       area_ids: []
     ]
     if user&.admin?
-      [:initiative_status_id, :assignee_id, *shared]
+      [:assignee_id, *shared]
     else
       shared
     end

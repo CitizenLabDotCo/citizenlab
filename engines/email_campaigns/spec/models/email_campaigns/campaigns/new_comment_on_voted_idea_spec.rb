@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentOnVotedIdea, type: :model do
   	it "generates a command with the desired payload and tracked content" do
   		command = campaign.generate_commands(recipient: vote.user, activity: activity).first
 
-      expect(command.dig(:event_payload, :comment, :id)).to eq(comment.id)
+      expect(command.dig(:event_payload, :comment_body_multiloc)).to eq(comment.body_multiloc)
   	end
   end
 end
