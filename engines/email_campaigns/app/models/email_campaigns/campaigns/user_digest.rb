@@ -17,7 +17,7 @@ module EmailCampaigns
 
 
     def self.default_schedule
-      IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2018)) do |s|
+      IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2019)) do |s|
         s.add_recurrence_rule(
           IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
         )
@@ -25,8 +25,14 @@ module EmailCampaigns
     end
 
     def generate_commands recipient:, time: nil
+      time ||= Time.now
       top_ideas = top_ideas recipient
       discover_projects = discover_projects recipient
+      @new_initiatives ||= new_initiatives time: time
+      @succesful_initiatives ||= succesful_initiatives time: time
+      @initiative_ids ||= (@new_initiatives + @succesful_initiatives).map do |d|
+        d[:id]
+      end.compact
       [{
         event_payload: {
           top_ideas: top_ideas.map{ |idea|
@@ -34,11 +40,14 @@ module EmailCampaigns
           },
           discover_projects: discover_projects.map{ |project|
             discover_projects_payload project, recipient
-          }
+          },
+          new_initiatives: @new_initiatives,
+          succesful_initiatives: @succesful_initiatives
         },
         tracked_content: {
-          idea_ids: top_ideas.map(&:id),
-          project_ids: discover_projects.map(&:id)
+          idea_ids: top_ideas.ids,
+          initiative_ids: @initiative_ids,
+          project_ids: discover_projects.ids
         }
       }]
     end
@@ -117,6 +126,67 @@ module EmailCampaigns
         url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
         created_at: project.created_at.iso8601
       }
+    end
+
+    def new_initiatives time:
+      Initiative.published.where('published_at > ?', (time - 1.week)).includes(:initiative_images).map do |initiative|
+        {
+          id: initiative.id,
+          title_multiloc: initiative.title_multiloc,
+          url: Frontend::UrlService.new.model_to_url(initiative),
+          published_at: initiative.published_at.iso8601,
+          author_name: initiative.author_name,
+          upvotes_count: initiative.upvotes_count,
+          comments_count: initiative.comments_count,
+          images: initiative.initiative_images.map{ |image|
+            {
+              ordering: image.ordering,
+              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            }
+          },
+          header_bg: { 
+            versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+          }
+        }
+      end
+    end
+
+    def succesful_initiatives time:
+      Initiative.published
+        .left_outer_joins(:initiative_status_changes, :initiative_images)
+        .where(
+          'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?', 
+          InitiativeStatus.where(code: 'threshold_reached').ids.first, 
+          (time - 1.week)
+          )
+        .feedback_needed
+        .map do |initiative|
+        {
+          id: initiative.id,
+          title_multiloc: initiative.title_multiloc,
+          url: Frontend::UrlService.new.model_to_url(initiative),
+          published_at: initiative.published_at.iso8601,
+          author_name: initiative.author_name,
+          upvotes_count: initiative.upvotes_count,
+          comments_count: initiative.comments_count,
+          threshold_reached_at: initiative.threshold_reached_at.iso8601,
+          images: initiative.initiative_images.map{ |image|
+            {
+              ordering: image.ordering,
+              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            }
+          },
+          header_bg: { 
+            versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+          }
+        }
+      end
+    end
+
+    def days_ago
+      t_1, t_2 = ic_schedule.first 2
+      t_2 ||= t_1 + 7.days
+      ((t_2 - t_1) / 1.day).days
     end
 
   end

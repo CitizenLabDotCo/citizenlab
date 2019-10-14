@@ -70,9 +70,9 @@ class InitiativeStatusService
         # Get the initiatives that need to make the transtion.
         initiatives = Initiative.published.with_status_code(status_code_from)
         initiatives = transition_instructions[:scope_contition].call initiatives
+        # Create the status changes.
         status_id_to = InitiativeStatus.find_by(code: status_code_to)&.id
         if status_id_to
-          # Create the status changes.
           changes = InitiativeStatusChange.create!(initiatives.ids.map{ |id|
             {
               initiative_id: id,
@@ -80,7 +80,7 @@ class InitiativeStatusService
             }
           })
           # Log the status change activities.
-          InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative).each do |change|
+          InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative, :initiative_status).each do |change|
             log_status_change change
           end
         end
@@ -96,8 +96,6 @@ class InitiativeStatusService
     end.to_h
   end
 
-  
-
   def transition_type initiative_status
     if manual_status_ids.include? initiative_status.id
       'manual'
@@ -112,6 +110,9 @@ class InitiativeStatusService
 
   def log_status_change change, user: nil
     LogActivityJob.perform_later(change.initiative, 'changed_status', user, change.created_at.to_i)
+    if change.initiative_status.code == 'threshold_reached'
+      LogActivityJob.perform_later(change.initiative, 'reached_threshold', user, change.created_at.to_i)
+    end
   end
 
 end
