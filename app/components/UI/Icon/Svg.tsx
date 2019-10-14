@@ -4,7 +4,7 @@ interface Props {
   className?: string;
   children: JSX.Element | JSX.Element[];
   name: string;
-  // if ariaHidden is not specified, a title is 'required' (for a11y)
+  // if ariaHidden is not specified (or false), a title is 'required' (for a11y)
   title?: string | JSX.Element;
   viewBox?: string;
   fill?: string;
