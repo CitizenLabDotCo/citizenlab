@@ -19,7 +19,7 @@ import messages from './messages';
 
 // styling
 import styled, { css } from 'styled-components';
-import { colors, fontSizes, invisibleA11yText } from 'utils/styleUtils';
+import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 const EmptyContainer = styled.div``;
 
@@ -71,10 +71,6 @@ const UserCount: any = styled.div`
 
   &.too-many-users {
     font-size: ${fontSizes.xs}px;
-  }
-
-  .screenreader-only {
-    ${invisibleA11yText}
   }
 `;
 
@@ -159,9 +155,9 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
                 >
                   <PlusIcon name="plus" ariaHidden />
                   <span aria-hidden>{remainingUsers}</span>
-                  <span className="screenreader-only">
+                  <ScreenReaderOnly>
                     {formatMessage(messages.numberOfUsers, { numberOfUsers: userCount })}
-                  </span>
+                  </ScreenReaderOnly>
                 </UserCount>
               </AvatarWrapper>
             }

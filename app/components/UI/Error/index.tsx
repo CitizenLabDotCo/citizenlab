@@ -295,7 +295,7 @@ export default class Error extends PureComponent<Props, State> {
     );
 
     return (
-      <div>
+      <div aria-live="polite">
         <TransitionGroup>
           {errorElement}
         </TransitionGroup>
