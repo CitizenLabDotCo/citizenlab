@@ -88,6 +88,7 @@ const VoteText = styled.div`
 const VoteIcon = styled(Icon)`
   fill: ${colors.label};
   width: 16px;
+  height: 16px;
   margin-top: -4px;
   margin-right: 10px;
 `;

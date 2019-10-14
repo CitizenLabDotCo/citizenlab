@@ -42,10 +42,12 @@ const TextWrapper = styled.div`
 
 interface Props {
   activity: IdeaActivity;
+  postType: 'idea' | 'initiative';
 }
 
-const ChangeLogEntry = memo<Props>(({ activity }) => {
+const ChangeLogEntry = memo<Props>(({ activity, postType }) => {
   const userId = activity.relationships.user.data.id;
+  const changeLogEntryMessage = (postType === 'idea' ? messages.changeLogEntryIdea : messages.changeLogEntryInitiative);
 
   return (
     <Entry className="e2e-idea-changelog-entry">
@@ -53,7 +55,7 @@ const ChangeLogEntry = memo<Props>(({ activity }) => {
       <TextWrapper>
         <p>
           <FormattedMessage
-            {...messages.changeLogEntry}
+            {...changeLogEntryMessage}
             values={{
               userName: <UserName userId={userId} />,
               changeType: activity.attributes.action,
