@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectCards from 'components/ProjectCards';
-import Footer from 'components/Footer';
+import CityLogoSection from 'components/CityLogoSection';
 import ProjectsIndexMeta from './ProjectsIndexMeta';
 
 // i18n
@@ -47,7 +47,7 @@ const PageTitle = styled.div`
   text-align: center;
   margin: 0;
   padding: 0;
-  margin-bottom: 35px;
+  margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
     text-align: left;
@@ -76,7 +76,7 @@ export default React.memo(() => (
           layout="threecolumns"
         />
       </StyledContentContainer>
-      <Footer />
+      <CityLogoSection />
     </Container>
   </>
 ));
