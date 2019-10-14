@@ -919,7 +919,7 @@ export interface Props {
 
 const Icon = memo((props: Props) => {
   const { colorTheme, ...otherProps } = props;
-  const theme = props.colorTheme ? props.colorTheme : colors;
+  const theme = colorTheme ? colorTheme : colors;
   const propsWithTheme = { ...otherProps, theme };
 
   return (icons[name] as Function)(propsWithTheme);
