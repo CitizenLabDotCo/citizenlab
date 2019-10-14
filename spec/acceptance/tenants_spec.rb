@@ -8,7 +8,7 @@ resource "Tenants" do
 
   before do
     @current_user = create(:user, roles: [{type: 'admin'}])
-    token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
+    token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
   end

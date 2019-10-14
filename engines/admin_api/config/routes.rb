@@ -8,6 +8,7 @@ AdminApi::Engine.routes.draw do
   resources :projects, only: [:index] do
     get :template_export, on: :member
     post :template_import, on: :collection
+    resources :phases, only: [:index]
   end
 
   resources :areas, only: [:index]
