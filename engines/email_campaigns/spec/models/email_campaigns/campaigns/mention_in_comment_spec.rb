@@ -19,14 +19,11 @@ RSpec.describe EmailCampaigns::Campaigns::MentionInComment, type: :model do
         ).first
 
       expect(
-      	command.dig(:event_payload, :recipient, :id)
-      	).to eq(notification.recipient_id)
+      	command.dig(:event_payload, :initiating_user_last_name)
+      	).to eq(notification.initiating_user.last_name)
       expect(
-      	command.dig(:event_payload, :initiating_user, :id)
-      	).to eq(notification.initiating_user_id)
-      expect(
-      	command.dig(:event_payload, :comment, :id)
-      	).to eq(notification.comment.id)
+      	command.dig(:event_payload, :comment_body_multiloc)
+      	).to eq(notification.comment.body_multiloc)
   	end
   end
 end

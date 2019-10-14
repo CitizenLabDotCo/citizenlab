@@ -1,6 +1,6 @@
 class WebApi::V1::InitiativesController < ApplicationController
 
-  before_action :set_initiative, only: [:show, :update, :destroy]
+  before_action :set_initiative, only: [:show, :update, :destroy, :allowed_transitions]
   skip_after_action :verify_authorized, only: [:index_xlsx, :index_initiative_markers, :filter_counts]
   
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -91,9 +91,10 @@ class WebApi::V1::InitiativesController < ApplicationController
     @initiatives
       .joins('FULL OUTER JOIN initiatives_topics ON initiatives_topics.initiative_id = initiatives.id')
       .joins('FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id')
-      .select('initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) as count')
+      .joins('FULL OUTER JOIN initiative_initiative_statuses ON initiative_initiative_statuses.initiative_id = initiatives.id')
+      .select('initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) as count')
       .reorder(nil)  # Avoids SQL error on GROUP BY when a search string was used
-      .group('GROUPING SETS (initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id)')
+      .group('GROUPING SETS (initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id)')
       .each do |record|
         %w(initiative_status_id area_id topic_id).each do |attribute|
           id = record.send attribute
@@ -180,6 +181,11 @@ class WebApi::V1::InitiativesController < ApplicationController
     else
       head 500
     end
+  end
+
+  def allowed_transitions
+    authorize @initiative
+    render json: InitiativeStatusService.new.allowed_transitions(@initiative)
   end
 
 
