@@ -548,7 +548,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
 
     const filtersSidebar = (
-      <FiltersSidebarContainer className={className}>
+      <FiltersSidebarContainer className={className} aria-live="polite">
         {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
           <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnResetAndApply}>
             <ClearFiltersText>

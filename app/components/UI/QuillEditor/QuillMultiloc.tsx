@@ -24,20 +24,12 @@ const Container = styled.div``;
 
 const EditorWrapper = styled.div`
   &:not(.last) {
-    margin-bottom: 10px;
+    margin-bottom: 16px;
   }
-`;
-
-const StyledLabel = styled(Label)`
-  display: block;
 `;
 
 const LanguageExtension = styled.span`
   font-weight: 500;
-`;
-
-const LabelTooltip = styled.div`
-  margin-top: 7px;
   display: inline-block;
 `;
 
@@ -48,7 +40,7 @@ export type InputProps = {
   labelTooltip?: JSX.Element;
   onChangeMultiloc?: (value: Multiloc) => void;
   renderPerLocale?: (locale: string) => JSX.Element;
-  shownLocale?: Locale;
+  selectedLocale?: Locale;
 };
 
 type DataProps = {
@@ -80,12 +72,11 @@ class EditorMultiloc extends PureComponent<Props & VanillaProps, State> {
     return (
       <EditorWrapper key={locale} className={`${index === tenantLocales.length - 1 && 'last'}`}>
         {label &&
-          <StyledLabel>{label}
-            {tenantLocales.length > 1 &&
-              <LanguageExtension>{locale.toUpperCase()}</LanguageExtension>
-            }
-            {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
-          </StyledLabel>
+          <Label>
+            {label}
+            {tenantLocales.length > 1 && <LanguageExtension>{locale.toUpperCase()}</LanguageExtension>}
+            {labelTooltip}
+          </Label>
         }
 
         {renderPerLocale && renderPerLocale(locale)}
@@ -101,13 +92,13 @@ class EditorMultiloc extends PureComponent<Props & VanillaProps, State> {
   }
 
   render() {
-    const { tenantLocales, id, shownLocale } = this.props;
+    const { tenantLocales, id, selectedLocale } = this.props;
 
     if (!isNilOrError(tenantLocales)) {
       return (
         <Container id={id} className={`${this.props['className']} e2e-multiloc-editor`} >
-          {!shownLocale ? tenantLocales.map((currentTenantLocale, index) => this.renderOnce(currentTenantLocale, index))
-        : this.renderOnce(shownLocale, 0)}
+          {!selectedLocale ? tenantLocales.map((currentTenantLocale, index) => this.renderOnce(currentTenantLocale, index))
+        : this.renderOnce(selectedLocale, 0)}
         </Container>
       );
     }

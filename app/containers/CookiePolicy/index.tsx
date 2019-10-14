@@ -17,7 +17,6 @@ import { LEGAL_PAGES } from 'services/pages';
 import Link from 'utils/cl-router/Link';
 import ContentContainer from 'components/ContentContainer';
 import Icon from 'components/UI/Icon';
-import Footer from 'components/Footer';
 import Fragment from 'components/Fragment';
 
 // styles
@@ -56,10 +55,10 @@ const PageContent = styled.div`
 `;
 
 const PageTitle = styled.h1`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.xxxxl}px;
-  line-height: 40px;
-  font-weight: 500;
+  line-height: normal;
+  font-weight: 600;
   text-align: left;
   margin: 0;
   padding: 0;
@@ -68,7 +67,6 @@ const PageTitle = styled.h1`
 
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxxl};
-    line-height: 34px;
   `}
 `;
 
@@ -256,8 +254,6 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
           </StyledContentContainer>
         </PagesNav>
       </PagesNavWrapper>
-
-      <Footer showCityLogoSection={false} />
     </Container>
   );
 });

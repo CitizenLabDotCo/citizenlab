@@ -33,7 +33,7 @@ describe('<FormQuestionRow />', () => {
         />
       );
 
-      expect(wrapper.find('InputMultiloc').prop('shownLocale')).toBe('en');
+      expect(wrapper.find('InputMultiloc').prop('selectedLocale')).toBe('en');
       expect(wrapper.find('FormLocaleSwitcher').prop('selectedLocale')).toBe('en');
     });
     it('reacts to locale change', () => {
@@ -46,7 +46,7 @@ describe('<FormQuestionRow />', () => {
           onCancel={onCancel}
         />);
         wrapper.setProps({ locale: 'fr-BE' });
-        expect(wrapper.find('InputMultiloc').prop('shownLocale')).toBe('fr-BE');
+        expect(wrapper.find('InputMultiloc').prop('selectedLocale')).toBe('fr-BE');
     });
     it('handles changing field locale', () => {
       const wrapper = shallow(
@@ -58,8 +58,8 @@ describe('<FormQuestionRow />', () => {
           onCancel={onCancel}
         />
       );
-      wrapper.find('FormLocaleSwitcher').prop('onLocaleChange')('fr-BE')();
-      expect(wrapper.find('InputMultiloc').prop('shownLocale')).toBe('fr-BE');
+      wrapper.find('FormLocaleSwitcher').prop('onLocaleChange')('fr-BE');
+      expect(wrapper.find('InputMultiloc').prop('selectedLocale')).toBe('fr-BE');
 
     });
   });

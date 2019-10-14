@@ -1,6 +1,6 @@
 import React, { PureComponent, FormEvent, ButtonHTMLAttributes } from 'react';
 import Link from 'utils/cl-router/Link';
-import { isBoolean, isNil } from 'lodash-es';
+import { isBoolean, isNil, isString } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
 import { darken, readableColor } from 'polished';
 import { colors, invisibleA11yText, fontSizes } from 'utils/styleUtils';
@@ -173,7 +173,7 @@ const Container: any = styled.div`
       opacity: ${(props: any) => props.processing ? 0 : 1};
       font-size: ${(props: any) => props.fontSize ? props.fontSize : getFontSize(props.size)};
       line-height: ${(props: any) => getLineHeight(props.size)};
-      font-weight: ${(props: any) => props.fontWeight || 'normal'}
+      font-weight: ${(props: any) => props.fontWeight || 400};
     }
     ${StyledIcon} {
       flex: 0 0 ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
@@ -319,6 +319,7 @@ class Button extends PureComponent<Props, State> {
 
   handleOnClick = (event: FormEvent<HTMLButtonElement>) => {
     const { onClick, processing, disabled } = this.props;
+
     if (onClick) {
       event.preventDefault();
       event.stopPropagation();
@@ -399,7 +400,7 @@ class Button extends PureComponent<Props, State> {
     className = `${className ? className : ''}`;
 
     const spinnerSize = this.getSpinnerSize(size);
-    const spinnerColor = this.props.spinnerColor || this.getSpinnerColor(style);
+    const spinnerColor = this.props.spinnerColor || textColor || this.getSpinnerColor(style);
     const buttonClassnames = `Button button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
     const hasText = (!isNil(text) || !isNil(children));
     const childContent = (
@@ -454,7 +455,7 @@ class Button extends PureComponent<Props, State> {
         fontSize={fontSize}
       >
         {linkTo ? (
-          (typeof (linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
+          (isString(linkTo) && linkTo.startsWith('http')) ? (
             <StyledA
               ref={this.props.setSubmitButtonRef}
               href={(linkTo as string)}
