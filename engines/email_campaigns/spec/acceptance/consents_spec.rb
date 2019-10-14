@@ -9,7 +9,6 @@ resource "Campaign consents" do
     header "Content-Type", "application/json"
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    @user = create(:user)
     
     header 'Authorization', "Bearer #{token}"
   end
