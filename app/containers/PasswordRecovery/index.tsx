@@ -45,7 +45,7 @@ const Title = styled.h1`
   margin-bottom: 15px;
 `;
 
-const Subtitle = styled.h4`
+const Subtitle = styled.p`
   color: #444;
   font-size: 18px;
   line-height: 22px;

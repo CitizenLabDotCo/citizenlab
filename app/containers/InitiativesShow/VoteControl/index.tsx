@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { media } from 'utils/styleUtils';
+import { media, ScreenReaderOnly } from 'utils/styleUtils';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 import { InitiativeStatusCode, IInitiativeStatusData } from 'services/initiativeStatuses';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
@@ -142,21 +144,26 @@ class VoteControl extends PureComponent<Props, State> {
 
     return (
       <Container id={id || ''} className={className || ''}>
+        <ScreenReaderOnly>
+          <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
+        </ScreenReaderOnly>
         {showUnauthenticated
           ?
             <PopContainer icon="lock-outlined">
               <Unauthenticated />
             </PopContainer>
           :
-            <StatusComponent
-              initiative={initiative}
-              initiativeStatus={initiativeStatus}
-              initiativeSettings={initiativeSettings}
-              userVoted={userVoted}
-              onVote={this.handleOnvote}
-              onCancelVote={this.handleOnCancelVote}
-              onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-            />
+            <div aria-live="polite">
+              <StatusComponent
+                initiative={initiative}
+                initiativeStatus={initiativeStatus}
+                initiativeSettings={initiativeSettings}
+                userVoted={userVoted}
+                onVote={this.handleOnvote}
+                onCancelVote={this.handleOnCancelVote}
+                onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+              />
+            </div>
         }
       </Container>
     );

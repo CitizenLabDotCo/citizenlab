@@ -43,7 +43,7 @@ export type Props = {
   onChange?: (arg: Multiloc, locale: Locale) => void;
   placeholder?: string | undefined;
   errorMultiloc?: Multiloc | null;
-  shownLocale?: Locale;
+  selectedLocale?: Locale;
   postId?: string;
   postType?: 'idea' | 'initiative';
   padding?: string | undefined;
@@ -107,7 +107,7 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
       postId,
       postType,
       rows,
-      shownLocale,
+      selectedLocale,
       label,
       placeholder,
       valueMultiloc,
@@ -121,10 +121,10 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
-      if (shownLocale) {
-        const value = get(valueMultiloc, [shownLocale], null);
-        const error = get(errorMultiloc, [shownLocale], null);
-        const id = this.props.id && `${this.props.id}-${shownLocale}`;
+      if (selectedLocale) {
+        const value = get(valueMultiloc, [selectedLocale], null);
+        const error = get(errorMultiloc, [selectedLocale], null);
+        const id = this.props.id && `${this.props.id}-${selectedLocale}`;
         return (
           <MentionsTextAreaWrapper>
             {label &&
@@ -143,7 +143,7 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
               postType={postType}
               padding={padding}
               error={error}
-              onChange={this.handleOnChange(shownLocale)}
+              onChange={this.handleOnChange(selectedLocale)}
               onBlur={onBlur}
               onFocus={onFocus}
               fontSize={`${fontSize || fontSizes.base}px`}

@@ -11,9 +11,13 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+
 // style
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media, ScreenReaderOnly } from 'utils/styleUtils';
 import T from 'components/T';
 import { isUndefined } from 'util';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -65,6 +69,9 @@ class PhaseAbout extends PureComponent<Props, State> {
       if (!contentIsEmpty || !isEmpty(phaseFiles)) {
         return (
           <Container className={className}>
+            <ScreenReaderOnly>
+              <FormattedMessage tagName="h3" {...messages.invisibleTitlePhaseAbout} />
+            </ScreenReaderOnly>
             <InformationBody>
               <QuillEditedContent textColor="#5E6B75">
                 <T value={phase.attributes.description_multiloc} supportHtml={true} />

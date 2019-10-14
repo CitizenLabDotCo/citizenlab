@@ -438,7 +438,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
             <FormattedMessage {...messages.invitationOptions} />
             {selectedView === 'import' &&
               <InfoTooltip
-                position="top"
+                position="right"
                 {...messages.importOptionsInfo}
                 values={{
                   // tslint:disable-next-line
@@ -453,7 +453,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
           <SectionField>
             <Label>
               <FormattedMessage {...messages.adminLabel} />
-              <InfoTooltip position="top" {...messages.adminLabelTooltip} />
+              <InfoTooltip position="right" {...messages.adminLabelTooltip} />
             </Label>
             <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
           </SectionField>
@@ -462,7 +462,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
             <Label>
               <FormattedMessage {...messages.moderatorLabel} />
               <InfoTooltip
-                position="top"
+                position="right"
                 {...messages.moderatorLabelTooltip}
                 values={{
                   moderatorLabelTooltipLink: (
@@ -563,7 +563,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                   <Label>
                     <FormattedHTMLMessage {...messages.importLabel} />
                     <InfoTooltip
-                      position="top"
+                      position="right"
                       {...messages.importInfo}
                       values={{
                         emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line

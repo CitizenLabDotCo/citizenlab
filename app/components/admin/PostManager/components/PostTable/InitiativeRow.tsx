@@ -166,7 +166,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
           ref={(instance) => { instance && activeFilterMenu !== 'statuses' && connectDragSource(findDOMNode(instance)); }}
         >
           <Table.Cell collapsing={true}>
-            <Checkbox value={!!active} onChange={onClickCheckbox} size="17px" />
+            <Checkbox checked={!!active} onChange={onClickCheckbox} size="17px" />
           </Table.Cell>
           <Table.Cell>
             <TitleLink className="e2e-initiative-manager-initiative-title" onClick={onClickTitle}>

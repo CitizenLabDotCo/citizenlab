@@ -29,4 +29,12 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingDisabledNotPermitted',
     defaultMessage: 'Voting on this idea is currently not allowed',
   },
+  upvote: {
+    id: 'app.components.VoteControl.upvote',
+    defaultMessage: 'Upvote',
+  },
+  downvote: {
+    id: 'app.components.VoteControl.downvote',
+    defaultMessage: 'Downvote',
+  },
 });

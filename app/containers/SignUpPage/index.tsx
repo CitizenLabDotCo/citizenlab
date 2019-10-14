@@ -12,6 +12,7 @@ import { PreviousPathnameContext } from 'context';
 // components
 import SignUp from 'components/SignUp';
 import SignInUpBanner from 'components/SignInUpBanner';
+import SignUpPageMeta from './SignUpPageMeta';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -140,21 +141,24 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
 
     return (
-      <Container className="e2e-sign-up-page">
-        <Left>
-          <SignInUpBanner />
-        </Left>
-        <Right>
-          <RightInner>
-            <SignUp
-              step1Title={title}
-              isInvitation={isInvitation}
-              token={token}
-              onSignUpCompleted={this.onSignUpCompleted}
-            />
-          </RightInner>
-        </Right>
-      </Container>
+      <>
+        <SignUpPageMeta />
+        <Container className="e2e-sign-up-page">
+          <Left>
+            <SignInUpBanner />
+          </Left>
+          <Right>
+            <RightInner>
+              <SignUp
+                step1Title={title}
+                isInvitation={isInvitation}
+                token={token}
+                onSignUpCompleted={this.onSignUpCompleted}
+              />
+            </RightInner>
+          </Right>
+        </Container>
+      </>
     );
   }
 }

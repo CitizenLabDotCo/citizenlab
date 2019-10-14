@@ -25,7 +25,7 @@ const Container: any = styled.div`
     }
 
     &:focus {
-      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#666'} !important;
+      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'} !important;
     }
 
     &::placeholder {
