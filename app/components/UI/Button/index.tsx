@@ -310,7 +310,8 @@ export type Props = {
   fullHeight?: boolean;
   ariaLabel?: string;
   fontSize?: string;
-  autoFocus?: boolean
+  autoFocus?: boolean;
+  iconAriaHidden?: boolean;
 };
 
 type State = {};
@@ -386,7 +387,8 @@ class Button extends PureComponent<Props, State> {
       fullHeight,
       ariaLabel,
       fontSize,
-      autoFocus
+      autoFocus,
+      iconAriaHidden
     } = this.props;
     let { id, size, style, processing, disabled, fullWidth, iconPos, className } = this.props;
 
@@ -411,6 +413,7 @@ class Button extends PureComponent<Props, State> {
             className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
             title={iconTitle}
             colorTheme={iconTheme}
+            ariaHidden={iconAriaHidden}
           />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
@@ -420,6 +423,7 @@ class Button extends PureComponent<Props, State> {
           className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
           title={iconTitle}
           colorTheme={iconTheme}
+          ariaHidden={iconAriaHidden}
         />}
         {processing &&
           <SpinnerWrapper>
