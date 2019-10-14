@@ -90,7 +90,7 @@ resource "Avatars" do
     context "as an admin" do
       before do
         @user = create(:admin)
-        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
 
