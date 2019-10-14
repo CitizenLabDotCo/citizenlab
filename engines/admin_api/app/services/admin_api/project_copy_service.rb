@@ -222,13 +222,13 @@ module AdminApi
       user_ids = []
       idea_ids = @project.ideas.ids
       user_ids += Idea.where(id: idea_ids).pluck(:author_id)
-      comment_ids = Comment.where(idea_id: idea_ids).ids
+      comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea').ids
       user_ids += Comment.where(id: comment_ids).pluck(:author_id)
       vote_ids = Vote.where(votable_id: [idea_ids + comment_ids]).ids
       user_ids += Vote.where(id: vote_ids).pluck(:user_id)
       participation_context_ids = [@project.id] + @project.phases.ids
       user_ids += Basket.where(participation_context_id: participation_context_ids).pluck(:user_id)
-      user_ids += OfficialFeedback.where(idea_id: idea_ids).pluck(:user_id)
+      user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
 
       User.where(id: user_ids.uniq).map do |u|
         yml_user = if anonymize_users
@@ -388,10 +388,10 @@ module AdminApi
     end
 
     def yml_comments shift_timestamps: 0
-      (Comment.where('parent_id IS NULL').where(idea_id: @project.ideas.published.ids)+Comment.where('parent_id IS NOT NULL').where(idea_id: @project.ideas.published.ids)).map do |c|
+      (Comment.where('parent_id IS NULL').where(post_id: @project.ideas.published.ids, post_type: 'Idea')+Comment.where('parent_id IS NOT NULL').where(post_id: @project.ideas.published.ids, post_type: 'Idea')).map do |c|
         yml_comment = {
           'author_ref'         => lookup_ref(c.author_id, :user),
-          'idea_ref'           => lookup_ref(c.idea_id, :idea),
+          'post_ref'           => lookup_ref(c.post_id, :idea),
           'body_multiloc'      => c.body_multiloc,
           'created_at'         => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
           'updated_at'         => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601,
@@ -405,9 +405,9 @@ module AdminApi
     end
 
     def yml_official_feedback shift_timestamps: 0
-      OfficialFeedback.where(idea_id: @project.ideas.published.ids).map do |o|
+      OfficialFeedback.where(post_id: @project.ideas.published.ids, post_type: 'Idea').map do |o|
         yml_official_feedback = {
-          'idea_ref'           => lookup_ref(o.idea_id, :idea),
+          'post_ref'           => lookup_ref(o.post_id, :idea),
           'user_ref'           => lookup_ref(o.user_id, :user),
           'body_multiloc'      => o.body_multiloc,
           'author_multiloc'    => o.author_multiloc,
@@ -421,7 +421,7 @@ module AdminApi
 
     def yml_votes shift_timestamps: 0
       idea_ids = @project.ideas.published.ids
-      comment_ids = Comment.where(idea_id: idea_ids)
+      comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea')
       Vote.where('user_id IS NOT NULL').where(votable_id: idea_ids + comment_ids).map do |v|
         yml_vote = {
           'votable_ref' => lookup_ref(v.votable_id, [:idea, :comment]),

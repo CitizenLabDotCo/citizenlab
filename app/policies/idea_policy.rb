@@ -57,10 +57,6 @@ class IdeaPolicy < ApplicationPolicy
     update?
   end
 
-  def get_activities?
-    true
-  end
-
   def permitted_attributes
     shared = [
       :publication_status,

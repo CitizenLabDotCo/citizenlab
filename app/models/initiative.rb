@@ -24,14 +24,15 @@ class Initiative < ApplicationRecord
     initiative.validate :assignee_can_moderate_initiatives
 
     initiative.before_validation :initialize_initiative_status_changes
+    initiative.before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
 
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
     joins(:initiatives_topics)
-    .where(initiatives_topics: {topic_id: uniq_topic_ids})
-    .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
+      .where(initiatives_topics: {topic_id: uniq_topic_ids})
+      .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
   end)
 
   scope :with_some_topics, (Proc.new do |topic_ids|
@@ -42,8 +43,8 @@ class Initiative < ApplicationRecord
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
     joins(:areas_initiatives)
-    .where(areas_initiatives: {area_id: uniq_area_ids})
-    .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
+      .where(areas_initiatives: {area_id: uniq_area_ids})
+      .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
   end)
 
   scope :with_some_areas, (Proc.new do |area_ids|
@@ -51,10 +52,16 @@ class Initiative < ApplicationRecord
       .where(areas_initiatives: {area_id: area_ids})
   end)
 
+  scope :with_status_code, (Proc.new do |code|
+    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
+      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
+      .where('initiative_statuses.code = ?', code)
+  end)
+
   scope :order_status, -> (direction=:asc) {
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
       .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-    .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
+      .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
   }
 
   scope :feedback_needed, -> {
@@ -90,6 +97,16 @@ class Initiative < ApplicationRecord
 
 
   private
+
+  def sanitize_body_multiloc
+    service = SanitizationService.new
+    self.body_multiloc = service.sanitize_multiloc(
+      self.body_multiloc,
+      %i{title alignment list decoration link image video}
+    )
+    self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
+    self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
+  end
 
   def assignee_can_moderate_initiatives
     if self.assignee && !InitiativePolicy.new(self.assignee, self).moderate?

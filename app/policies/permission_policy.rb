@@ -13,11 +13,11 @@ class PermissionPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.active? && (user.admin? || user.project_moderator?(record.participation_context.project.id))
+    user&.active? && (user.admin? || user.project_moderator?(record.permittable.project.id))
   end
 
   def update?
-    user&.active? && (user.admin? || user.project_moderator?(record.participation_context.project.id))
+    user&.active? && (user.admin? || user.project_moderator?(record.permittable.project.id))
   end
 
   def groups_inclusion?
