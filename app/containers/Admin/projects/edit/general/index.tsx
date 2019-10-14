@@ -138,16 +138,14 @@ const ButtonWrapper = styled.div`
 `;
 
 type Props = {
-  lang: string,
-  params: {
+  params?: {
     projectId: string
   }
 };
 
 interface State {
-  loading: boolean;
   processing: boolean;
-  project: IProject | null;
+  project: IProject | null | undefined;
   publicationStatus: 'draft' | 'published' | 'archived';
   projectType: 'continuous' | 'timeline';
   projectAttributesDiff: IUpdatedProjectProperties;
@@ -178,9 +176,8 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
       processing: false,
-      project: null,
+      project: undefined,
       publicationStatus: 'published',
       projectType: 'timeline',
       projectAttributesDiff: {},
@@ -216,7 +213,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       switchMap(projectId => projectId ? projectByIdStream(projectId).observable : of(null))
     );
 
-    this.projectId$.next(this.props.params.projectId);
+    this.projectId$.next(get(this.props, 'params.projectId', null) as string | null);
 
     this.subscriptions = [
       combineLatest(
@@ -246,7 +243,6 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               presentationMode: (project && project.data.attributes.presentation_mode || state.presentationMode),
               areas: areas.data,
               projectAttributesDiff: {},
-              loading: false,
             };
           });
         }
@@ -328,8 +324,8 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.params.projectId !== prevProps.params.projectId) {
-      this.projectId$.next(this.props.params.projectId);
+    if (get(this.props, 'params.projectId') !== get(prevProps, 'params.projectId')) {
+      this.projectId$.next(get(this.props, 'params.projectId', null));
     }
   }
 
@@ -528,7 +524,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         this.setState({ saved: false });
         this.processing$.next(true);
 
-        let redirect = false;
+        let isNewProject = false;
         let projectId = (project ? project.data.id : null);
 
         if (!isEmpty(projectAttributesDiff)) {
@@ -537,7 +533,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
           } else {
             const project = await addProject(projectAttributesDiff);
             projectId = project.data.id;
-            redirect = true;
+            isNewProject = true;
           }
         }
 
@@ -555,16 +551,17 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
           ] as Promise<any>[]);
         }
 
-        if (redirect) {
-          clHistory.push('/admin/projects');
-        } else {
-          this.setState({
-            saved: true,
-            submitState: 'success',
-            projectImagesToRemove: [],
-            projectFilesToRemove: []
-          });
-          this.processing$.next(false);
+        this.setState({
+          saved: true,
+          submitState: 'success',
+          projectImagesToRemove: [],
+          projectFilesToRemove: []
+        });
+
+        this.processing$.next(false);
+
+        if (isNewProject) {
+          eventEmitter.emit('AdminProjectEditGeneral', 'NewProjectCreated', null);
         }
       } catch (errors) {
         // const cannotContainIdeasError = get(errors, 'json.errors.base', []).some((item) => get(item, 'error') === 'cannot_contain_ideas');
@@ -598,8 +595,6 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
 
   render() {
     const {
-      currentTenant,
-      locale,
       publicationStatus,
       projectType,
       noTitleError,
@@ -607,7 +602,6 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       projectHeaderImage,
       projectImages,
       projectFiles,
-      loading,
       processing,
       projectAttributesDiff,
       areasOptions,
@@ -617,7 +611,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       processingDelete
     } = this.state;
 
-    if (!loading && currentTenant && locale) {
+    if (!get(this.props, 'params.projectId') || (get(this.props, 'params.projectId') && project !== undefined)) {
       const projectAttrs = { ...(project ? project.data.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
       const areaIds = projectAttrs.area_ids || (project && project.data.relationships.areas.data.map((area) => (area.id))) || [];
       const areasValues = areaIds.filter((id) => {
@@ -629,12 +623,17 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       return (
         <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
-            <SectionTitle>
-              <FormattedMessage {...messages.titleGeneral} />
-            </SectionTitle>
-            <SectionSubtitle>
-              <FormattedMessage {...messages.subtitleGeneral} />
-            </SectionSubtitle>
+            {get(this.props, 'params.projectId') &&
+              <>
+                <SectionTitle>
+                  <FormattedMessage {...messages.titleGeneral} />
+                </SectionTitle>
+                <SectionSubtitle>
+                  <FormattedMessage {...messages.subtitleGeneral} />
+                </SectionSubtitle>
+              </>
+            }
+
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.statusLabel} />
