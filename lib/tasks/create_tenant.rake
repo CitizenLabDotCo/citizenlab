@@ -132,7 +132,11 @@ namespace :cl2_back do
         polls: {
           enabled: true,
           allowed: true
-        }
+        },
+        admin_project_templates: {
+          enabled: true,
+          allowed: true
+        },
       }
     })
 
