@@ -1,10 +1,9 @@
 import React from 'react';
-import { IconNames } from '.';
 
 interface Props {
   className?: string;
   children: JSX.Element | JSX.Element[];
-  name: IconNames;
+  name: string;
   // if ariaHidden is not specified, a title is 'required' (for a11y)
   title?: string | JSX.Element;
   viewBox?: string;
@@ -17,7 +16,7 @@ interface Props {
 const Svg = React.memo(({ className, children, name, title, viewBox, fill, ariaHidden, height, width }: Props) => {
   return (
     <svg
-      className={className}
+      className={className || ''}
       role="img"
       aria-labelledby={name}
       viewBox={viewBox}
