@@ -267,7 +267,7 @@ class SignedInHeader extends PureComponent<Props, State> {
       const defaultMessage = tenant.attributes.settings.core.custom_onboarding_fallback_message;
       const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
-      // tranlate header title into a h1 wih a fallback
+      // translate header title into a h1 with a fallback
       const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
       const genericTitle = <FormattedMessage tagName="h1" {...messages.titleCity} />;
 
@@ -318,6 +318,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   borderColor="#fff"
                   textColor="#fff"
                   className="e2e-singed-in-header-skip-btn"
+                  fontWeight="500"
                 />
                 <AcceptButton
                   text={<FormattedMessage {...messages.completeProfile} />}
@@ -325,6 +326,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   bgColor="#fff"
                   textColor={theme.colorMain}
                   className="e2e-singed-in-header-accept-btn"
+                  fontWeight="500"
                 />
               </Right>
             </HeaderContentCompleteProfile>
@@ -354,12 +356,14 @@ class SignedInHeader extends PureComponent<Props, State> {
                   onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
                   borderColor="#fff"
                   textColor="#fff"
+                  fontWeight="500"
                 />
                 <AcceptButton
                   text={<T value={onboardingCampaigns.cta_button_multiloc} />}
                   linkTo={onboardingCampaigns.cta_button_link}
                   bgColor="#fff"
                   textColor={theme.colorMain}
+                  fontWeight="500"
                 />
               </Right>
             </HeaderContentCustomCta>

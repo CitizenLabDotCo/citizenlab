@@ -170,7 +170,7 @@ const StyledIdeaButton = styled(IdeaButton)`
 
 interface InputProps {
   projectSlug: string;
-  phaseId?: string | null;
+  phaseId: string | null;
 }
 
 interface DataProps {

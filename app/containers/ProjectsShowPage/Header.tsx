@@ -1,11 +1,15 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { Subscription } from 'rxjs';
 
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectNavbar from './ProjectNavbar';
 import IdeaButton from 'components/IdeaButton';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -112,7 +116,6 @@ const StyledIdeaButton = styled(IdeaButton)`
 
 interface InputProps {
   projectSlug: string;
-  phaseId?: string | null;
 }
 
 interface DataProps {
@@ -124,11 +127,36 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-interface State {}
+interface State {
+  selectedProjectPhaseId: string | null;
+}
 
 class ProjectsShowPage extends PureComponent<Props, State> {
+  subscriptions: Subscription[] = [];
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedProjectPhaseId: null
+    };
+  }
+
+  componentDidMount() {
+    this.subscriptions = [
+      eventEmitter.observeEvent<string | null>('SelectedProjectPhaseChanged').subscribe(({ eventValue }) => {
+        const selectedProjectPhaseId = eventValue;
+        this.setState({ selectedProjectPhaseId });
+      })
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   render() {
-    const { projectSlug, phaseId, project, theme } = this.props;
+    const { projectSlug, project, theme } = this.props;
+    const { selectedProjectPhaseId } = this.state;
 
     if (!isNilOrError(project)) {
       const projectHeaderImageLarge = (project.attributes.header_bg.large || null);
@@ -138,7 +166,7 @@ class ProjectsShowPage extends PureComponent<Props, State> {
 
       return (
         <>
-          <ProjectNavbar projectSlug={projectSlug} phaseId={phaseId} />
+          <ProjectNavbar projectSlug={projectSlug} phaseId={selectedProjectPhaseId} />
           <Container className={`${projectType} e2e-project-header-content`}>
             <HeaderImage src={projectHeaderImageLarge} />
             <HeaderOverlay />
