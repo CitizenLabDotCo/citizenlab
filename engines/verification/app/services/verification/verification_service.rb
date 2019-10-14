@@ -36,15 +36,14 @@ module Verification
 
     class VerificationNotFoundError < StandardError; end
     class VerificationTakenError < StandardError; end
-    class VerificationNotAuthorizedError < StandardError; end
 
-
-    def verify_now user:, method:, parameters:
+    def verify_now user:, method_name:, parameters:
+      method = method_by_name(method_name)
       uid = method.verify_now parameters
 
       if ::Verification::Verification.where(
           active: true,
-          hashed_uid: hashed_uid(uid, method.name)
+          hashed_uid: hashed_uid(uid, method_name)
         )
         .where.not(user: user)
         .exists?
@@ -52,17 +51,18 @@ module Verification
       end
 
       verification = ::Verification::Verification.new(
-        method_name: method.name,
-        hashed_uid: hashed_uid(uid, method.name),
+        method_name: method_name,
+        hashed_uid: hashed_uid(uid, method_name),
         user: user,
         active: true
       )
 
+      SideFxVerificationService.new.before_create(verification, user)
       ActiveRecord::Base.transaction do
         verification.save!
-        user.update!(verified: true)
-        verification
+        SideFxVerificationService.new.after_create(verification, user)
       end
+      verification
     end
 
     def hashed_uid(uid, method_name)

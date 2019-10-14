@@ -5,7 +5,7 @@ module Verification
       verification_service = VerificationService.new
       verification = verification_service.verify_now(
         user: current_user,
-        method: "cow",
+        method_name: "cow",
         parameters: {
           run: verification_params[:run],
           id_serial: verification_params[:id_serial]
