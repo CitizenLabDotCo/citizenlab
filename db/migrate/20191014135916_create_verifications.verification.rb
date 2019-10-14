@@ -6,6 +6,8 @@ class CreateVerifications < ActiveRecord::Migration[5.2]
       t.string :method_name, null: false
       t.string :hashed_uid, index: true, null: false
       t.boolean :active, null: false, default: true
+
+      t.timestamps
     end
   end
 end

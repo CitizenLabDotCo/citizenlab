@@ -753,6 +753,8 @@ ActiveRecord::Schema.define(version: 2019_10_14_135916) do
     t.string "method_name", null: false
     t.string "hashed_uid", null: false
     t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["hashed_uid"], name: "index_verification_verifications_on_hashed_uid"
     t.index ["user_id"], name: "index_verification_verifications_on_user_id"
   end

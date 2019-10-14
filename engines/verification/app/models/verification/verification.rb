@@ -5,6 +5,8 @@ module Verification
     validates :method_name, :hashed_uid, presence: true
     validates :active, inclusion: {in: [true, false]}
 
-    scope :with_verification_method, -> (method) {where(method_name: method.name)}
+    def event_bus_item_name
+      "Verification by #{method_name}"
+    end
 	end
 end
