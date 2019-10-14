@@ -409,7 +409,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                   <ManageBudgetButton
                     onClick={this.toggleExpensesDropdown}
                     icon="moneybag"
-                    ariaHideIcon={true}
+                    iconAriaHidden={true}
                     textColor={colors.adminTextColor}
                     bgColor="transparent"
                     bgHoverColor="transparent"
