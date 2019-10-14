@@ -16,7 +16,7 @@ RSpec.describe EmailCampaigns::Campaigns::FirstIdeaPublished, type: :model do
   	it "generates a command with the desired payload and tracked content" do
   		command = campaign.generate_commands(recipient: user, activity: activity).first
 
-      expect(command.dig(:event_payload, :idea, :id)).to eq(idea.id)
+      expect(command.dig(:event_payload, :post_title_multiloc)).to eq(idea.title_multiloc)
   	end
   end
 end

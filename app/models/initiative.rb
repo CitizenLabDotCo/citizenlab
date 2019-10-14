@@ -13,6 +13,7 @@ class Initiative < ApplicationRecord
   has_many :initiative_status_changes, dependent: :destroy
   has_one :initiative_initiative_status
   has_one :initiative_status, through: :initiative_initiative_status
+  has_many :notifications, foreign_key: :post_id, dependent: :nullify
 
   belongs_to :assignee, class_name: 'User', optional: true
 
@@ -69,6 +70,12 @@ class Initiative < ApplicationRecord
       .where('initiative_statuses.code = ?', 'threshold_reached')
   }
 
+  scope :proposed, -> {
+    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
+      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
+      .where('initiative_statuses.code = ?', 'proposed')
+  }
+
 
   def votes_needed tenant=Tenant.current
     [tenant.settings.dig('initiatives', 'voting_threshold') - upvotes_count, 0].max
@@ -80,6 +87,12 @@ class Initiative < ApplicationRecord
     else
       nil
     end
+  end
+
+  def threshold_reached_at
+    initiative_status_changes
+      .where(initiative_status: InitiativeStatus.where(code: 'threshold_reached'))
+      .order(:created_at).pluck(:created_at).last
   end
 
 

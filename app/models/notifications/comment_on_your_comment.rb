@@ -1,38 +1,30 @@
 module Notifications
   class CommentOnYourComment < Notification
-    
-    belongs_to :initiating_user, class_name: 'User'
-    belongs_to :comment
-    belongs_to :idea
-    belongs_to :project, optional: true
 
-    validates :comment_id, presence: true
-    validates :initiating_user, presence: true
+    validates :initiating_user, :comment, presence: true
 
     ACTIVITY_TRIGGERS = {'Comment' => {'created' => true}}
     EVENT_NAME = 'Comment on your comment'
 
 
     def self.make_notifications_on activity
-      child_comment = activity.item
-      parent_comment = child_comment&.parent
-      return [] unless parent_comment
+      comment = activity.item
+      recipient_id = comment.parent&.author_id
+      initiator_id = comment&.author_id
 
-      child_comment_id = child_comment&.id
-      idea = parent_comment&.post
-      idea_id = idea&.id
-      recipient_id = parent_comment&.author_id
-      initiator_id = child_comment&.author_id
+      if comment.parent_id && recipient_id && initiator_id && (recipient_id != initiator_id)
+        attributes = {
+          recipient_id: recipient_id,
+          initiating_user_id: initiator_id,
+          comment: comment,
+          post_id: comment.post_id,
+          post_type: comment.post_type
+        }
+        if attributes[:post_type] == 'Idea'
+          attributes[:project_id] = comment.post.project_id
+        end
 
-      if child_comment_id && (parent_comment.post_type == 'Idea') && recipient_id && initiator_id && (recipient_id != initiator_id)
-        project_id = idea&.project_id
-        [self.new(
-           recipient_id: recipient_id,
-           initiating_user: User.find(initiator_id),
-           idea_id: idea_id,
-           comment_id: child_comment_id,
-           project_id: project_id
-         )]
+        [self.new(attributes)]
       else
         []
       end

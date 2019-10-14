@@ -18,6 +18,12 @@ resource "InitiativeStatusChange" do
       parameter :size, "Number of status changes per page"
     end
 
+    before do
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      header 'Authorization', "Bearer #{token}"
+    end
+
     let(:initiative_id) { @initiative.id }
 
     example_request "List all status changes of an initiative" do
@@ -29,6 +35,12 @@ resource "InitiativeStatusChange" do
   end
 
   get "web_api/v1/initiative_status_changes/:id" do
+    before do
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      header 'Authorization', "Bearer #{token}"
+    end
+    
     let(:id) { @changes.first.id }
 
     example_request "Get one status changes on an initiative by id" do
