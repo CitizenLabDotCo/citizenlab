@@ -42,7 +42,8 @@ export default class Tooltip extends PureComponent<Props, State> {
       this.setState({ opened: false });
     }
 
-    handleOnClick = () => {
+    handleOnClick = (event: React.MouseEvent) => {
+      event.preventDefault();
       this.setState({ opened: !this.state.opened });
     }
 
@@ -74,7 +75,6 @@ export default class Tooltip extends PureComponent<Props, State> {
           onMouseEnter={this.handleOnMouseEnter}
           onMouseLeave={this.handleOnMouseLeave}
           onClick={this.handleOnClick}
-          role="tooltip"
         >
           <Popover
             {...this.props}
