@@ -37,7 +37,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 import { rgba, darken } from 'polished';
 
 const Container = styled(Link)`
@@ -306,11 +306,13 @@ const ContentBody = styled.div`
   }
 `;
 
-const ProjectTitle = styled.h3`
+const ProjectTitle = styled.div`
+  h3 {
+    line-height: normal;
+    font-weight: 500;
+    font-size: ${fontSizes.xl}px;
+  }
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xl}px;
-  line-height: normal;
-  font-weight: 500;
   margin: 0;
   padding: 0;
 
@@ -472,10 +474,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
     trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
   }
 
-  handleAvatarBubblesOnClick = (projectId: string) => () => {
-    trackEventByName(tracks.clickOnAvatarBubbles, { extra: { projectId } });
-  }
-
   render() {
     const { visible } = this.state;
     const { authUser, project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
@@ -601,7 +599,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
             <ContentBody className={size}>
               <ProjectTitle className="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
-                <T value={project.attributes.title_multiloc} />
+                <T as="h3" value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
               <T value={project.attributes.description_preview_multiloc}>
@@ -623,7 +621,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <ContentFooterLeft>
                 {hasAvatars &&
                   <AvatarBubbles
-                    onClick={this.handleAvatarBubblesOnClick(project.id)}
                     size={30}
                     limit={3}
                     userCountBgColor={this.props.theme.colorMain}
@@ -637,19 +634,25 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                   <ProjectMetaItems>
                     {showIdeasCount &&
                       <MetaItem className="first">
-                        <MetaItemIcon name="idea2" />
-                        <MetaItemText>
+                        <MetaItemIcon ariaHidden name="idea2" />
+                        <MetaItemText aria-hidden>
                           {ideasCount}
                         </MetaItemText>
+                        <ScreenReaderOnly>
+                          {formatMessage(messages.xIdeas, { ideasCount })}
+                        </ScreenReaderOnly>
                       </MetaItem>
                     }
 
                     {showCommentsCount &&
                       <MetaItem>
-                        <CommentIcon name="comments" />
-                        <MetaItemText>
+                        <CommentIcon ariaHidden name="comments" />
+                        <MetaItemText aria-hidden>
                           {commentsCount}
                         </MetaItemText>
+                        <ScreenReaderOnly>
+                          {formatMessage(messages.xComments, { commentsCount })}
+                        </ScreenReaderOnly>
                       </MetaItem>
                     }
                   </ProjectMetaItems>

@@ -7,7 +7,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import Meta from './Meta';
 import Header from './Header';
-import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
 import Spinner from 'components/UI/Spinner';
 
@@ -123,7 +122,6 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
                 <>
                   <Header projectSlug={this.props.params.slug} />
                   <Content>{children}</Content>
-                  <Footer showCityLogoSection={false} />
                 </>
               )
             )}

@@ -221,7 +221,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 valueMultiloc={title_multiloc || {}}
                 onChange={onChangeTitle}
                 onBlur={this.onBlur('title_multiloc')}
-                shownLocale={locale}
+                selectedLocale={locale}
               />
               {touched.title_multiloc
                 && errors.title_multiloc ? <Error message={errors.title_multiloc.message} />
@@ -237,7 +237,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             >
               <QuillMultiloc
                 id="body"
-                shownLocale={locale}
+                selectedLocale={locale}
                 valueMultiloc={body_multiloc || {}}
                 onChangeMultiloc={onChangeBody}
                 noVideos

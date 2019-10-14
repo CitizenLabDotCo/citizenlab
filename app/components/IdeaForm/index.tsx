@@ -66,7 +66,7 @@ const StyledTopicsPicker = styled(TopicsPicker)`
 `;
 
 const HiddenLabel = styled.span`
-  ${hideVisually() as any}
+  ${hideVisually()}
 `;
 
 export interface IIdeaFormOutput {
@@ -422,6 +422,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             placeholder={formatMessage(messages.descriptionPlaceholder)}
             onChange={this.handleDescriptionOnChange}
             setRef={this.handleDescriptionSetRef}
+            hasError={descriptionError !== null}
           />
           {descriptionError && <Error text={descriptionError} />}
         </FormElement>

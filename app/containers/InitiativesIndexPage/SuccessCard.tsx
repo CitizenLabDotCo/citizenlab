@@ -30,7 +30,7 @@ interface DataProps {
   page: GetPageChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 const Container: any = styled(Link)`
   background: white;
@@ -79,7 +79,7 @@ const SuccessIndication = styled.span`
   width: auto;
 `;
 
-const SuccessTitle = styled.div`
+const SuccessTitle = styled.h3`
   color: ${({ theme }) => theme.colorText};
   display: flex;
   flex-direction: row;
@@ -114,7 +114,7 @@ const SuccessImagePlaceholder = styled.div`
   background: ${colors.placeholderBg};
 `;
 
-const SuccessImagePlaceholderIcon = styled(Icon) `
+const SuccessImagePlaceholderIcon = styled(Icon)`
   height: 45px;
   fill: #fff;
 `;
@@ -156,7 +156,7 @@ const SuccessCard = memo(({ page, imageUrl, pageSlug, location, intl: { formatMe
         }
       </SuccessImageContainer>
       <SuccessIndication>
-        <FormattedMessage {...messages.success}/>
+        <FormattedMessage {...messages.success} />
       </SuccessIndication>
       <SuccessTitle>
         <T value={page.attributes.title_multiloc} />

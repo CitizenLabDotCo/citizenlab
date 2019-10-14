@@ -15,10 +15,12 @@ declare global {
       acceptCookies: typeof acceptCookies;
       getIdeaById: typeof getIdeaById;
       getProjectBySlug: typeof getProjectBySlug;
+      getProjectById: typeof getProjectById;
       getTopics: typeof getTopics;
       getInitiativeStatuses: typeof getInitiativeStatuses;
       getUserBySlug: typeof getUserBySlug;
       getAuthUser: typeof getAuthUser;
+      getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
       apiCreateInitiative: typeof apiCreateInitiative;
       apiRemoveIdea: typeof apiRemoveIdea;
@@ -230,6 +232,21 @@ export function getProjectBySlug(projectSlug: string) {
   });
 }
 
+export function getProjectById(projectId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'GET',
+      url: `web_api/v1/projects/${projectId}`
+    });
+  });
+}
+
 export function getTopics() {
   return cy.request({
     headers: {
@@ -262,6 +279,16 @@ export function getAuthUser() {
       method: 'GET',
       url: 'web_api/v1/users/me'
     });
+  });
+}
+
+export function getArea(areaId: string) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'GET',
+    url: `web_api/v1/areas/${areaId}`,
   });
 }
 
@@ -751,10 +778,12 @@ Cypress.Commands.add('signup', signup);
 Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getIdeaById', getIdeaById);
 Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
+Cypress.Commands.add('getProjectById', getProjectById);
 Cypress.Commands.add('getTopics', getTopics);
 Cypress.Commands.add('getInitiativeStatuses', getInitiativeStatuses);
 Cypress.Commands.add('getUserBySlug', getUserBySlug);
 Cypress.Commands.add('getAuthUser', getAuthUser);
+Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
