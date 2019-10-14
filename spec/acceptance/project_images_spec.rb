@@ -9,7 +9,7 @@ resource "ProjectImage" do
   before do
     header "Content-Type", "application/json"
     @user = create(:admin)
-    token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     @project = create(:project)
     create_list(:project_image, 2, project: @project)

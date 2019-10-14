@@ -29,7 +29,7 @@ resource "Stats - Users" do
   before do
     @current_user = create(:admin)
     # @current_user = create(:moderator, project: create(:project, visible_to: 'admins'))
-    token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
+    token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     Tenant.current.update!(created_at: now - 2.year)

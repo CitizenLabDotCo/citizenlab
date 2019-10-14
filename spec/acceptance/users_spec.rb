@@ -57,7 +57,7 @@ resource "Users" do
     before do
       @user = create(:user, last_name: 'Hoorens')
       @users = ["Bednar", "Cole", "Hagenes", "MacGyver", "Oberbrunner"].map{|l| create(:user, last_name: l)}
-      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
 
@@ -449,7 +449,7 @@ resource "Users" do
       describe do
         before do
           @user = create(:admin)
-          token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
           header 'Authorization', "Bearer #{token}"
         end
         let(:mortal_user) { create(:user) }

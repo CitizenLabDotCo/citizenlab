@@ -19,7 +19,7 @@ resource "Permissions" do
   context "when admin" do
     before do
       @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
 
@@ -111,7 +111,7 @@ resource "Permissions" do
   context "when authenticated" do
     before do
       @user = create(:user)
-      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
 
