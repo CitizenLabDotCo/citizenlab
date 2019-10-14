@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.invisibleTitle',
     defaultMessage: 'Status and votes',
   },
+  moreInfo: {
+    id: 'app.containers.InitiativesShow.VoteControl.moreInfo',
+    defaultMessage: 'More info',
+  },
   days: {
     id: 'app.containers.InitiativesShow.VoteControl.days',
     defaultMessage: 'days',
