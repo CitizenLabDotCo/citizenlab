@@ -14,6 +14,11 @@ module Verification
         []
       end
 
+      def verify_now run:, id_serial:
+        #TODO real implementation
+        "#{run}#{id_serial}"
+      end
+
     end
   end
 end
