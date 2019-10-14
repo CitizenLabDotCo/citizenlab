@@ -1314,6 +1314,7 @@
   "app.containers.InitiativesShow.VoteControl.invisibleTitle": "",
   "app.containers.InitiativesShow.VoteControl.login": "Iniciar sesión",
   "app.containers.InitiativesShow.VoteControl.minutes": "mínimos",
+  "app.containers.InitiativesShow.VoteControl.moreInfo": "",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanation": "{votingThreshold} votos necesarios para conseguir esta iniciativa {proposedStatusExplanationBold}",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationBold": "considerado por {orgName}",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} votos necesarios en {daysLeft, plural, =0 {menos de un día} one {un día} other {# días}} para que esta iniciativa sea {proposedStatusExplanationMobileBold}",
