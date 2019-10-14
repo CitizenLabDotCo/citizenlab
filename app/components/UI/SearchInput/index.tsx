@@ -4,6 +4,9 @@ import { isEmpty } from 'lodash-es';
 // components
 import Icon from 'components/UI/Icon';
 
+// utils
+import { isAdminPage } from 'utils/helperUtils';
+
 // i18n
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
@@ -27,6 +30,11 @@ const Container = styled.div`
   &.focused {
     border-color: ${({ theme }) => theme.colorSecondary};
     box-shadow: 0px 0px 0px 3px ${({ theme }) => transparentize(0.8, theme.colorSecondary)};
+
+    &.adminpage {
+      border-color: ${colors.adminTextColor};
+      box-shadow: 0px 0px 0px 3px ${transparentize(0.8, colors.adminTextColor)};
+    }
   }
 `;
 
@@ -103,6 +111,8 @@ interface Props {
 
 const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placeholder, ariaLabel, className, intl }) => {
 
+  const adminPage = isAdminPage(location.pathname);
+
   const [focused, setFocused] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string | null>(value || null);
 
@@ -165,7 +175,7 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
   }, []);
 
   return (
-    <Container className={`${className} ${focused ? 'focused' : 'blurred'}`}>
+    <Container className={`${className} ${focused ? 'focused' : 'blurred'} ${adminPage ? 'adminpage' : ''}`}>
       <Input
         type="text"
         aria-label={searchAriaLabel}

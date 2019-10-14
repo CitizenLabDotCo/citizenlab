@@ -136,7 +136,7 @@ export function projectByIdStream(projectId: string, streamParams: IStreamParams
 export async function addProject(projectData: IUpdatedProjectProperties) {
   const response = await streams.add<IProject>(apiEndpoint, { project: projectData });
   const projectId = response.data.id;
-  streams.fetchAllWith({
+  await streams.fetchAllWith({
     dataId: [projectId],
     apiEndpoint: [`${API_PATH}/projects`]
   });

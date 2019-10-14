@@ -41,4 +41,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesEdition.fileUploadLabel',
     defaultMessage: 'Add files to the About page',
   },
+  'terms-and-conditions': {
+    id: 'app.containers.AdminPage.PagesEdition.terms-and-conditions',
+    defaultMessage: 'Terms and Conditions',
+  },
+  'privacy-policy': {
+    id: 'app.containers.AdminPage.PagesEdition.privacy-policy',
+    defaultMessage: 'Privacy Policy',
+  },
+  'cookie-policy': {
+    id: 'app.containers.AdminPage.PagesEdition.cookie-policy',
+    defaultMessage: 'Cookie Policy',
+  },
 });

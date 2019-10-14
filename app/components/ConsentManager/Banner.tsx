@@ -149,7 +149,7 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
     );
 
     return (
-      <Container role="banner" id="e2e-cookie-banner">
+      <Container role="dialog" id="e2e-cookie-banner">
         <ContentContainer mode="page">
         <ContentContainerInner>
           <Left>
