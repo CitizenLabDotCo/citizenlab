@@ -29,6 +29,7 @@ import { Input, Message } from 'semantic-ui-react';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 import LazyPostPreview from './components/LazyPostPreview';
+import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 
 // i18n
 import messages from './messages';
@@ -251,7 +252,7 @@ export class PostManager extends React.PureComponent<Props, State> {
       });
     }
     return ({
-      onChangePhase: () => {},
+      onChangePhase: () => { },
       selectedPhase: null,
       selectedStatus: null
     });
@@ -271,6 +272,11 @@ export class PostManager extends React.PureComponent<Props, State> {
     const { onChangePhase, selectedPhase, selectedStatus } = this.getNonSharedParams();
 
     const multipleIdeasSelected = this.isSelectionMultiple();
+    const showDragAndDropInfoMessage = (
+      this.props.type === 'AllIdeas' ||
+      this.props.type === 'ProjectIdeas' ||
+      (this.props.type === 'Initiatives' && activeFilterMenu === 'topics')
+    );
 
     return (
       <>
@@ -281,20 +287,17 @@ export class PostManager extends React.PureComponent<Props, State> {
             handleAssigneeFilterChange={onChangeAssignee}
             type={type}
           />
-          {(type === 'AllIdeas' || type === 'ProjectIdeas') ?
-            <FeedbackToggle
-              type={type}
-              value={feedbackNeeded}
-              onChange={onChangeFeedbackFilter}
-              project={selectedProject}
-              phase={selectedPhase}
-              topics={selectedTopics}
-              status={selectedStatus}
-              assignee={selectedAssignee}
-              searchTerm={searchTerm}
-            />
-            : null
-          }
+          <FeedbackToggle
+            type={type}
+            value={feedbackNeeded}
+            onChange={onChangeFeedbackFilter}
+            project={selectedProject}
+            phase={selectedPhase}
+            topics={selectedTopics}
+            status={selectedStatus}
+            assignee={selectedAssignee}
+            searchTerm={searchTerm}
+          />
           <StyledExportMenu
             type={type}
             selection={selection}
@@ -354,12 +357,15 @@ export class PostManager extends React.PureComponent<Props, State> {
                 onChangeStatusFilter={onChangeStatus}
                 onChangeProjectFilter={this.onChangeProjects}
               />
-              {multipleIdeasSelected &&
+              {multipleIdeasSelected && showDragAndDropInfoMessage &&
                 <Message
                   info={true}
                   attached="bottom"
                   icon="info"
-                  content={<FormattedMessage {...messages.multiDragAndDropHelp} />}
+                  content={type === 'AllIdeas' || type === 'ProjectIdeas' ?
+                    <FormattedMessage {...messages.multiDragAndDropHelpIdeas} /> :
+                    <FormattedMessage {...messages.multiDragAndDropHelpInitiatives} />
+                  }
                 />
               }
             </Sticky>
@@ -397,6 +403,11 @@ export class PostManager extends React.PureComponent<Props, State> {
             onSwitchPreviewMode={this.switchPreviewMode}
           />
         </Suspense>
+        {type === 'Initiatives' &&
+          <Suspense fallback={null}>
+            <LazyStatusChangeModal />
+          </Suspense>
+        }
       </>
     );
   }
