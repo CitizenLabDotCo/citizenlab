@@ -1314,6 +1314,7 @@
   "app.containers.InitiativesShow.VoteControl.invisibleTitle": "",
   "app.containers.InitiativesShow.VoteControl.login": "",
   "app.containers.InitiativesShow.VoteControl.minutes": "",
+  "app.containers.InitiativesShow.VoteControl.moreInfo": "",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanation": "",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationBold": "",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationMobile": "",
