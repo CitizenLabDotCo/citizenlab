@@ -50,6 +50,19 @@ class Tenant < ApplicationRecord
     @@settings_json_schema ||= JSON.parse(settings_json_schema_str)
   end
 
+  def self.style *path
+   self.current.style.dig(*path)
+  end
+
+  def self.style_json_schema_str
+    @@style_json_schema_str ||= ERB.new(File.read(Rails.root.join('engines', 'frontend', 'config', 'schemas', 'tenant_style.json_schema.erb')))
+      .result(binding)
+  end
+
+  def self.style_json_schema
+    @@style_json_schema ||= JSON.parse(style_json_schema_str)
+  end
+
   def schema_name
     # The reason for using `host_was` and not `host` is
     # because the schema name would be wrong when updating
@@ -84,11 +97,6 @@ class Tenant < ApplicationRecord
     ss = SettingsService.new
     ss.remove_private_settings(self.settings, self.class.settings_json_schema)
   end
-
-  # def update_settings keys, value
-  #   settings.dig(*keys[0..-2])&.[]= keys[-1], value
-  #   self
-  # end
 
   def base_frontend_uri
     if Rails.env.development? || Rails.env.test?
