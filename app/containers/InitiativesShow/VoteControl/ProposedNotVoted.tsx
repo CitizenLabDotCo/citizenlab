@@ -162,9 +162,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
               }
               top="25px"
             >
-              <button>
-                <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />} />
-              </button>
+              <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />} />
             </StyledTooltip>
           }
         </StatusExplanation>

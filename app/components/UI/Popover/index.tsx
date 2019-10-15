@@ -96,7 +96,7 @@ export default class Popover extends PureComponent<Props> {
 
     return (
       <Container className={className}>
-        {children}
+        <span className="tooltip-trigger">{children}</span>
 
         <CSSTransition
           in={dropdownOpened}
