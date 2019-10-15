@@ -164,6 +164,7 @@ class UserMenu extends PureComponent<Props, State> {
                     linkTo={'/admin/dashboard'}
                     onClick={this.closeDropdown}
                     style="text"
+                    bgHoverColor={colors.clDropdownHoverBackground}
                     icon="admin"
                     iconPos="right"
                     iconSize="20px"
@@ -179,6 +180,7 @@ class UserMenu extends PureComponent<Props, State> {
                   linkTo={`/profile/${userSlug}`}
                   onClick={this.closeDropdown}
                   style="text"
+                  bgHoverColor={colors.clDropdownHoverBackground}
                   icon="profile1"
                   iconPos="right"
                   iconSize="20px"
@@ -193,6 +195,7 @@ class UserMenu extends PureComponent<Props, State> {
                   linkTo={'/profile/edit'}
                   onClick={this.closeDropdown}
                   style="text"
+                  bgHoverColor={colors.clDropdownHoverBackground}
                   icon="settings"
                   iconPos="right"
                   iconSize="20px"
@@ -206,6 +209,7 @@ class UserMenu extends PureComponent<Props, State> {
                   id="e2e-sign-out-link"
                   onClick={this.signOut}
                   style="text"
+                  bgHoverColor={colors.clDropdownHoverBackground}
                   icon="power"
                   iconPos="right"
                   iconSize="20px"

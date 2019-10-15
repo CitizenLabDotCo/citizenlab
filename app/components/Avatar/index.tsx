@@ -13,8 +13,7 @@ import { getUserName } from 'services/users';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // i18n
-import injectIntl from 'utils/cl-intl/injectIntl';
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
