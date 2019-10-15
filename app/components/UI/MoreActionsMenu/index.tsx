@@ -187,6 +187,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
           <MoreOptions
             onMouseDown={this.removeFocus}
             onClick={this.toggleMenu}
+            aria-expanded={visible}
           >
             <MoreOptionsIcon title={this.props.label ? undefined : ariaLabel} name="more-options" color={color} ariaHidden={!!this.props.label} />
             {this.props.label && <MoreOptionsLabel fontSize={fontSize}>{this.props.label}</MoreOptionsLabel>}
