@@ -144,12 +144,6 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
   const finalBorderColor = props.borderColor || get(defaultStyleValues, `${props.buttonStyle}.borderColor`) || 'transparent';
   const finalBorderHoverColor = props.borderHoverColor || get(defaultStyleValues, `${props.buttonStyle}.borderHoverColor`) || darken(0.2, finalBorderColor);
 
-  /*
-  ${finalBgColor !== ('transparent' || '#fff' || 'white') && `background: ${finalBgHoverColor || darken(0.12, finalBgColor)};`}
-  ${finalBgColor === ('transparent' || '#fff' || 'white') && finalTextColor && (finalTextHoverColor || setFillColor(darken(0.2, finalTextColor)))}
-  ${finalBgColor === ('transparent' || '#fff' || 'white') && finalBorderColor !== 'transparent'  && `border-color: ${finalBorderHoverColor || darken(0.2, finalBorderColor)};`}
-  */
-
   return `
     &:not(.disabled) {
       background: ${finalBgColor};
@@ -196,6 +190,8 @@ const StyledButton = styled.button``;
 const StyledLink = styled(Link)``;
 const StyledA = styled.a``;
 const StyledIcon = styled(Icon)`
+  transition: all 100ms ease-out;
+
   &.hasText.left {
     margin-right: 10px;
   }
@@ -210,6 +206,7 @@ const ButtonText = styled.div`
   margin-top: -1px;
   padding: 0;
   white-space: nowrap;
+  transition: all 100ms ease-out;
 `;
 
 const Container = styled.div<ButtonContainerProps>`
@@ -240,10 +237,12 @@ const Container = styled.div<ButtonContainerProps>`
     margin: 0;
     padding: ${(props) => props.padding || getPadding(props.size)};
     position: relative;
-    transition: all 100ms ease-out;
     min-width: ${(props) => props.minWidth || 'auto'};
     width: ${(props) => props.width || '100%'};
     outline: none;
+    transition: background 100ms ease-out,
+                border-color 100ms ease-out,
+                box-shadow 100ms ease-out;
 
     &:not(.disabled) {
       cursor: pointer;

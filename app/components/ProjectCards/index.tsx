@@ -449,7 +449,6 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
                 icon="showMore"
                 iconPos="left"
                 textColor={theme.colorText}
-                textHoverColor="red"
                 bgColor={rgba(theme.colorText, 0.08)}
                 bgHoverColor={rgba(theme.colorText, 0.12)}
                 fontWeight="500"
