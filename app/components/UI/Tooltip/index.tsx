@@ -13,10 +13,15 @@ interface State {
   opened: boolean;
 }
 
-const Container = styled.div`
+const Container = styled.button`
   display: flex;
   align-items: center;
   height: 100%;
+  outline: none;
+
+  &:focus .tooltip-trigger {
+    outline: rgb(59, 153, 252) solid 2px;
+  }
 `;
 
 export default class Tooltip extends PureComponent<Props, State> {
