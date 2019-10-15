@@ -43,7 +43,7 @@ const Title = styled.div<{ location: 'modal' | undefined }>`
   margin-bottom: 18px;
   justify-content: ${({ location }) => location === 'modal' ? 'center' : 'start'};
 
-  h3 {
+  h2, h3 {
     margin: 0;
   }
   `;
