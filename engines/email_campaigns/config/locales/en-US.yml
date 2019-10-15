@@ -7,14 +7,14 @@ en:
       "comment_marked_as_spam": Comment spam report
       "comment_on_your_comment": A reply on my comment
       "comment_on_your_idea": A comment on my idea
-      "comment_on_your_initiative": When someone replies to my initiative
+      "comment_on_your_initiative": A comment on my initiative
       "first_idea_published": Publication of my first idea
       "idea_assigned_to_you": Assignment of an idea to me
       "idea_marked_as_spam": Idea spam report
       "idea_published": Publication of my idea
-      "initiative_assigned_to_you": When an initiative has been assigned to me
-      "initiative_marked_as_spam": When an initiative is marked as spam
-      "initiative_published": When my initiative gets published
+      "initiative_assigned_to_you": Assignment of an initiative to me
+      "initiative_marked_as_spam": Initiative spam report
+      "initiative_published": Publication of my initiative
       "invite_accepted": Accepted invitation
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
@@ -22,23 +22,23 @@ en:
       "mention_in_official_feedback": Mention in an update
       "new_comment_for_admin": New comment in a project I moderate
       "new_comment_on_commented_idea": New comment on an idea I commented on
-      "new_comment_on_commented_initiative": When a new comment has been placed on an initiative I commented on
+      "new_comment_on_commented_initiative": New comment on an initiative I commented on
       "new_comment_on_voted_idea": New comment on an idea I voted for
-      "new_comment_on_voted_initiative": When a new comment has been placed on an initiative I voted for
+      "new_comment_on_voted_initiative": New comment on an initiative I voted for
       "new_idea_for_admin": New idea in a project I moderate
-      "new_initiative_for_admin": When an initiative is published
+      "new_initiative_for_admin": New initiative
       "official_feedback_on_commented_idea": Update on an idea I commented on
-      "official_feedback_on_commented_initiative": When a new official feedback has been placed on an initiative I commented on
+      "official_feedback_on_commented_initiative": Update on an initiative I commented on
       "official_feedback_on_voted_idea": Update on an idea I voted on
-      "official_feedback_on_voted_initiative": When a new official feedback has been placed on an initiative I voted for
+      "official_feedback_on_voted_initiative": Update on an initiative I voted on
       "official_feedback_on_your_idea": Update on my idea
-      "official_feedback_on_your_initiative": When a new official feedback has been placed on my initiative
+      "official_feedback_on_your_initiative": Update on my initiative
       "password_reset": Password reset
       "project_moderation_rights_received": Project moderation rights received
       "project_phase_started": New project phase
       "project_phase_upcoming": Upcoming new project phase
       "status_change_of_commented_idea": Status change of an idea I commented on
-      "status_change_of_commented_initiative": When the status of an initiative I commented on has been changed
+      "status_change_of_commented_initiative": Status change of an initiative I commented on
       "status_change_of_voted_idea": Status change of an idea I voted for
       "status_change_of_voted_initiative": When the status of an initiative I voted for has been changed
       "status_change_of_your_idea": Status change of my idea
