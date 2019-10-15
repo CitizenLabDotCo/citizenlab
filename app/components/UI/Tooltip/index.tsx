@@ -75,6 +75,7 @@ export default class Tooltip extends PureComponent<Props, State> {
           onMouseEnter={this.handleOnMouseEnter}
           onMouseLeave={this.handleOnMouseLeave}
           onClick={this.handleOnClick}
+          aria-expanded={opened}
         >
           <Popover
             {...this.props}
