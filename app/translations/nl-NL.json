@@ -1331,6 +1331,7 @@
   "app.containers.InitiativesShow.VoteControl.invisibleTitle": "",
   "app.containers.InitiativesShow.VoteControl.login": "Inloggen",
   "app.containers.InitiativesShow.VoteControl.minutes": "min",
+  "app.containers.InitiativesShow.VoteControl.moreInfo": "",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanation": "{votingThreshold} stemmen nodig om dit initiatief {proposedStatusExplanationBold}",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationBold": "in overweging te laten nemen door {orgName}",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} stemmen nodig in {daysLeft, plural, =0 {minder dan een dag} one {een dag} other {# dagen}} om dit initiatief {proposedStatusExplanationMobileBold}",

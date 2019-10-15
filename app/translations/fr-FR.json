@@ -1331,6 +1331,7 @@
   "app.containers.InitiativesShow.VoteControl.invisibleTitle": "",
   "app.containers.InitiativesShow.VoteControl.login": "Se connecter",
   "app.containers.InitiativesShow.VoteControl.minutes": "min",
+  "app.containers.InitiativesShow.VoteControl.moreInfo": "",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanation": "{votingThreshold} votes requis pour que cette initiative soit {proposedStatusExplanationBold}",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationBold": "consideré par {orgName}",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} votes requis dans un délai de {daysLeft, plural, =0 {less than a day} one {one day} other {# days}} pour que cette initiative soit {proposedStatusExplanationMobileBold}",

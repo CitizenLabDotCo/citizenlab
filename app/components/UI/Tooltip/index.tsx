@@ -13,10 +13,15 @@ interface State {
   opened: boolean;
 }
 
-const Container = styled.div`
+const Container = styled.button`
   display: flex;
   align-items: center;
   height: 100%;
+  outline: none;
+
+  &:focus .tooltip-trigger {
+    outline: rgb(59, 153, 252) solid 2px;
+  }
 `;
 
 export default class Tooltip extends PureComponent<Props, State> {
@@ -42,7 +47,8 @@ export default class Tooltip extends PureComponent<Props, State> {
       this.setState({ opened: false });
     }
 
-    handleOnClick = () => {
+    handleOnClick = (event: React.MouseEvent) => {
+      event.preventDefault();
       this.setState({ opened: !this.state.opened });
     }
 
@@ -74,7 +80,7 @@ export default class Tooltip extends PureComponent<Props, State> {
           onMouseEnter={this.handleOnMouseEnter}
           onMouseLeave={this.handleOnMouseLeave}
           onClick={this.handleOnClick}
-          role="tooltip"
+          aria-expanded={opened}
         >
           <Popover
             {...this.props}
