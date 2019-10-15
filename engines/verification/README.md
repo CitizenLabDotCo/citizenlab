@@ -14,7 +14,7 @@ Let's add a new method by example: We're going to verify a user by their DNA.
 ```ruby
 module Verification
   module Methods
-    class DNAVerification
+    class DNA
       include VerificationMethod
 
       def veritication_method_type
@@ -78,6 +78,16 @@ module Verification
   end
 end
 ```
+
+To enable your new method, make sure to add an instance to the `ALL_METHODS` constant in `VerificationService`
+
+```ruby
+  ALL_METHODS = [
+    # ...
+    Methods::DNA.new
+  ]
+```
+
 By implementing the verification method, a new route will be exposed at `POST verification_methods/dna/verification` that expects the verification parameters in the format `{verification: {dna_string: 'ACAAGGACAT'}}`
 
 It's best to implement an acceptance test for the endpoint, and a unit test for the `verify_sync` implementation. See `Cow` as an example.
