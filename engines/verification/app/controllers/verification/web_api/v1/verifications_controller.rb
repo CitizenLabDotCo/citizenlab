@@ -4,6 +4,7 @@ module Verification
     # Not all code paths (exceptions) perform an `authorize` call, so we're
     # forced to skip this
     skip_after_action :verify_authorized, only: [:create]
+
     before_action :set_verification_method
 
     def create

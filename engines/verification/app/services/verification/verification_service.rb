@@ -5,6 +5,10 @@ module Verification
       Methods::Cow.new
     ]
 
+    def initialize sfxv_service=SideFxVerificationService.new
+      @sfxv_service = sfxv_service
+    end
+
     def all_methods
       ALL_METHODS
     end
@@ -42,12 +46,7 @@ module Verification
       method = method_by_name(method_name)
       uid = method.verify_sync verification_parameters
 
-      if ::Verification::Verification.where(
-          active: true,
-          hashed_uid: hashed_uid(uid, method_name)
-        )
-        .where.not(user: user)
-        .exists?
+      if taken?(user, uid, method_name)
         raise VerificationTakenError.new
       end
 
@@ -58,13 +57,24 @@ module Verification
         active: true
       )
 
-      SideFxVerificationService.new.before_create(verification, user)
+      @sfxv_service.before_create(verification, user)
       ActiveRecord::Base.transaction do
         verification.save!
-        SideFxVerificationService.new.after_create(verification, user)
+        @sfxv_service.after_create(verification, user)
       end
 
       verification
+    end
+
+    private
+
+    def taken?(user, uid, method_name)
+      ::Verification::Verification.where(
+        active: true,
+        hashed_uid: hashed_uid(uid, method_name)
+      )
+      .where.not(user: user)
+      .exists?
     end
 
     def hashed_uid(uid, method_name)
