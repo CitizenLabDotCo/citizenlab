@@ -36,11 +36,11 @@ module Verification
 
     class NoMatchError < StandardError; end
     class VerificationTakenError < StandardError; end
-    class InputInvalidError < StandardError; end
+    class ParameterInvalidError < StandardError; end
 
-    def verify_sync user:, method_name:, parameters:
+    def verify_sync user:, method_name:, verification_parameters:
       method = method_by_name(method_name)
-      uid = method.verify_sync parameters
+      uid = method.verify_sync verification_parameters
 
       if ::Verification::Verification.where(
           active: true,
@@ -63,6 +63,7 @@ module Verification
         verification.save!
         SideFxVerificationService.new.after_create(verification, user)
       end
+
       verification
     end
 
