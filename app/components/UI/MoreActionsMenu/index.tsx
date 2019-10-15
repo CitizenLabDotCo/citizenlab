@@ -145,7 +145,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
   }
 
   render() {
-    const { actions, ariaLabel, fontSize, id, color, tooltipPosition } = this.props;
+    const { actions, ariaLabel, fontSize, id, color, tooltipPosition, label } = this.props;
     const { visible } = this.state;
     const className = this.props.className;
 
@@ -189,8 +189,8 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
             onClick={this.toggleMenu}
             aria-expanded={visible}
           >
-            <MoreOptionsIcon title={this.props.label ? undefined : ariaLabel} name="more-options" color={color} ariaHidden={!!this.props.label} />
-            {this.props.label && <MoreOptionsLabel fontSize={fontSize}>{this.props.label}</MoreOptionsLabel>}
+            <MoreOptionsIcon title={label || ariaLabel} name="more-options" color={color} ariaHidden={!!label} />
+            {label && <MoreOptionsLabel fontSize={fontSize}>{label}</MoreOptionsLabel>}
           </MoreOptions>
         </Popover>
       </Container>
