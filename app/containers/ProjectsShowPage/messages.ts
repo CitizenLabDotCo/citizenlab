@@ -156,5 +156,9 @@ export default defineMessages({
   byAuthor: {
     id: 'app.containers.Projects.byAuthor',
     defaultMessage: 'by {authorName}',
+  },
+  removeItem: {
+    id: 'app.containers.Projects.removeItem',
+    defaultMessage: 'Remove item',
   }
 });
