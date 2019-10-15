@@ -79,7 +79,7 @@ resource "Verifications" do
         Verification::VerificationService.new.verify_sync(
           user: other_user,
           method_name: "cow",
-          parameters: {run: @run, id_serial: @id_serial}
+          verification_parameters: {run: @run, id_serial: @id_serial}
         )
       end
       let(:run) { @run }

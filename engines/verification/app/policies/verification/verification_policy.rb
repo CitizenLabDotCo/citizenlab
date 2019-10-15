@@ -9,7 +9,7 @@ module Verification
       end
 
       def resolve
-        scope
+        scope.where(user: user)
       end
     end
 
