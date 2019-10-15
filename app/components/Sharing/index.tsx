@@ -33,7 +33,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.h3<{ location: 'modal' | undefined }>`
+const Title = styled.div<{ location: 'modal' | undefined }>`
   font-size: ${fontSizes.large}px;
   font-weight: 500;
   color: ${({ theme }) => theme.colorText};
@@ -42,7 +42,11 @@ const Title = styled.h3<{ location: 'modal' | undefined }>`
   padding: 0;
   margin-bottom: 18px;
   justify-content: ${({ location }) => location === 'modal' ? 'center' : 'start'};
-`;
+
+  h3 {
+    margin: 0;
+  }
+  `;
 
 const ShareIcon = styled(Icon)`
   margin-right: 14px;
