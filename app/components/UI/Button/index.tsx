@@ -1,11 +1,34 @@
 import React, { PureComponent, FormEvent, ButtonHTMLAttributes } from 'react';
 import Link from 'utils/cl-router/Link';
-import { isBoolean, isNil } from 'lodash-es';
+import { isBoolean, isNil, isString, get } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
-import { darken, readableColor } from 'polished';
+import { darken } from 'polished';
 import { colors, invisibleA11yText, fontSizes } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps, clColorTheme } from 'components/UI/Icon';
+
+export type ButtonStyles =
+  'primary'
+  | 'primary-inverse'
+  | 'primary-outlined'
+  | 'secondary'
+  | 'secondary-outlined'
+  | 'success'
+  | 'text'
+  | 'cl-blue'
+  | 'admin-dark'
+  | 'delete';
+
+type DefaultStyleValues = {
+  [key in ButtonStyles]: {
+    bgColor: string;
+    bgHoverColor?: string;
+    textColor: string;
+    textHoverColor?: string;
+    borderColor?: string;
+    borderHoverColor?: string;
+  };
+};
 
 function getFontSize(size) {
   switch (size) {
@@ -57,58 +80,114 @@ function getLineHeight(size) {
   }
 }
 
-function setFillColor(color) {
-  return `
-    ${ButtonText} {
-      color: ${color};
-    }
-
-    ${StyledIcon} {
-      fill: ${color};
-    }
-  `;
-}
-
 // Sets the button colors depending on Background color, optionally set the text/icon fill color and border color.
-function buttonTheme(
-  props: Props,
-  bgColor: string,
-  textColor: string,
-  borderColor = 'transparent',
-  bgHoverColor?: string | null,
-  textHoverColor?: string | null,
-  borderHoverColor?: string | null
-) {
-  const finalBgColor = props.bgColor || bgColor;
-  const finalBgHoverColor = props.bgHoverColor || bgHoverColor;
-  const finalTextColor = props.textColor || textColor;
-  const finalTextHoverColor = props.textHoverColor || textHoverColor;
-  const finalBorderColor = props.borderColor || borderColor;
-  const finalBorderHoverColor = props.borderHoverColor || borderHoverColor;
+function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
+
+  const defaultStyleValues: DefaultStyleValues = {
+    primary: {
+      bgColor: get(props.theme, 'colorMain'),
+      textColor: '#fff',
+      textHoverColor: '#fff'
+    },
+    'primary-outlined': {
+      bgColor: 'transparent',
+      bgHoverColor: 'transparent',
+      textColor: get(props.theme, 'colorMain'),
+      borderColor: get(props.theme, 'colorMain'),
+    },
+    'primary-inverse': {
+      bgColor: '#fff',
+      textColor: get(props.theme, 'colorText'),
+      textHoverColor: get(props.theme, 'colorText')
+    },
+    secondary: {
+      bgColor: colors.lightGreyishBlue,
+      textColor: darken(0.1, colors.label),
+      borderColor: 'transparent',
+      bgHoverColor: darken(0.05, colors.lightGreyishBlue)
+    },
+    'secondary-outlined': {
+      bgColor: 'transparent',
+      bgHoverColor: 'transparent',
+      textColor: colors.label,
+      borderColor: colors.label
+    },
+    text: {
+      bgColor: 'transparent',
+      textColor: colors.label
+    },
+    success: {
+      bgColor: colors.clGreenSuccessBackground,
+      textColor: colors.clGreenSuccess
+    },
+    'cl-blue': {
+      bgColor: colors.clBlueDark,
+      textColor: '#fff',
+      textHoverColor: '#fff'
+    },
+    'admin-dark': {
+      bgColor: colors.adminTextColor,
+      textColor: '#fff',
+      textHoverColor: '#fff'
+    },
+    delete: {
+      bgColor: colors.clRedError,
+      textColor: '#fff',
+      textHoverColor: '#fff'
+    }
+  };
+
+  const finalBgColor = props.bgColor || get(defaultStyleValues, `${props.buttonStyle}.bgColor`);
+  const finalBgHoverColor = props.bgHoverColor || get(defaultStyleValues, `${props.buttonStyle}.bgHoverColor`) || darken(0.12, finalBgColor);
+  const finalTextColor = props.textColor || get(defaultStyleValues, `${props.buttonStyle}.textColor`);
+  const finalTextHoverColor = props.textHoverColor || get(defaultStyleValues, `${props.buttonStyle}.textHoverColor`) || darken(0.2, finalTextColor);
+  const finalBorderColor = props.borderColor || get(defaultStyleValues, `${props.buttonStyle}.borderColor`) || 'transparent';
+  const finalBorderHoverColor = props.borderHoverColor || get(defaultStyleValues, `${props.buttonStyle}.borderHoverColor`) || darken(0.2, finalBorderColor);
+
+  /*
+  ${finalBgColor !== ('transparent' || '#fff' || 'white') && `background: ${finalBgHoverColor || darken(0.12, finalBgColor)};`}
+  ${finalBgColor === ('transparent' || '#fff' || 'white') && finalTextColor && (finalTextHoverColor || setFillColor(darken(0.2, finalTextColor)))}
+  ${finalBgColor === ('transparent' || '#fff' || 'white') && finalBorderColor !== 'transparent'  && `border-color: ${finalBorderHoverColor || darken(0.2, finalBorderColor)};`}
+  */
 
   return `
     &:not(.disabled) {
-      ${setFillColor(finalTextColor || readableColor(finalBgColor))}
       background: ${finalBgColor};
       border-color: ${finalBorderColor};
 
+      ${ButtonText} {
+        color: ${finalTextColor};
+      }
+
+      ${StyledIcon} {
+        fill: ${finalTextColor};
+      }
+
       &:not(.processing):hover,
       &:not(.processing):focus {
-        ${finalBgColor !== ('transparent' || '#fff' || 'white')
-          && `background: ${finalBgHoverColor || darken(0.12, finalBgColor)};`}
+        background: ${finalBgHoverColor};
+        border-color: ${finalBorderHoverColor};
 
-        ${finalBgColor === ('transparent' || '#fff' || 'white')
-          && finalTextColor && (finalTextHoverColor || setFillColor(darken(0.2, finalTextColor)))}
+        ${ButtonText} {
+          color: ${finalTextHoverColor};
+        }
 
-        ${finalBgColor === ('transparent' || '#fff' || 'white')
-          && finalBorderColor !== 'transparent'
-          && `border-color: ${finalBorderHoverColor || darken(0.2, finalBorderColor)};`}
+        ${StyledIcon} {
+          fill: ${finalTextHoverColor};
+        }
       }
     }
 
     &.disabled {
       background: ${colors.disabledPrimaryButtonBg};
-      ${setFillColor('#fff')}
+
+      ${ButtonText} {
+        color: #fff;
+      }
+
+      ${StyledIcon} {
+        fill: #fff;
+      }
     }
   `;
 }
@@ -133,98 +212,73 @@ const ButtonText = styled.div`
   white-space: nowrap;
 `;
 
-const Container: any = styled.div`
+const Container = styled.div<ButtonContainerProps>`
   align-items: center;
   display: flex;
   font-weight: 400;
-  justify-content: ${(props: any) => props.justifyWrapper || 'center'};
+  justify-content: ${(props) => props.justifyWrapper || 'center'};
   margin: 0;
   padding: 0;
   user-select: none;
+
   * {
     user-select: none;
   }
+
   &.fullWidth {
     width: 100%;
   }
+
   button,
   a {
     align-items: center;
-    border: ${(props: any) => props.borderThickness || '1px'} solid transparent;
-    border-radius: ${(props: any) => props.theme.borderRadius};
-    display: ${(props: any) => !props.width ? 'inline-flex' : 'flex'};
-    height: ${(props: any) => props.height || 'auto'};
-    justify-content: ${(props: any) => props.justify || 'center'};
+    border: ${(props) => props.borderThickness || '1px'} solid transparent;
+    border-radius: ${(props) => props.theme.borderRadius};
+    display: ${(props) => !props.width ? 'inline-flex' : 'flex'};
+    height: ${(props) => props.height || 'auto'};
+    justify-content: ${(props) => props.justify || 'center'};
     margin: 0;
-    padding: ${(props: any) => props.padding || getPadding(props.size)};
+    padding: ${(props) => props.padding || getPadding(props.size)};
     position: relative;
     transition: all 100ms ease-out;
-    min-width: ${(props: any) => props.minWidth || 'auto'};
-    width: ${(props: any) => props.width || '100%'};
+    min-width: ${(props) => props.minWidth || 'auto'};
+    width: ${(props) => props.width || '100%'};
     outline: none;
+
     &:not(.disabled) {
       cursor: pointer;
     }
+
     &.fullWidth {
       width: 100%;
       flex: 1;
     }
+
     ${ButtonText} {
-      opacity: ${(props: any) => props.processing ? 0 : 1};
-      font-size: ${(props: any) => props.fontSize ? props.fontSize : getFontSize(props.size)};
-      line-height: ${(props: any) => getLineHeight(props.size)};
-      font-weight: ${(props: any) => props.fontWeight || 'normal'}
+      opacity: ${(props) => props.processing ? 0 : 1};
+      font-size: ${(props) => props.fontSize ? props.fontSize : getFontSize(props.size)};
+      line-height: ${(props) => getLineHeight(props.size)};
+      font-weight: ${(props) => props.fontWeight || 'normal'}
     }
+
     ${StyledIcon} {
-      flex: 0 0 ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
-      height: ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
-      width: ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
-      opacity: ${(props: any) => props.processing ? 0 : 1};
+      flex: 0 0 ${(props) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
+      height: ${(props) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
+      width: ${(props) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
+      opacity: ${(props) => props.processing ? 0 : 1};
     }
-    &.primary {
-      ${(props: any) => buttonTheme(props, props.theme.colorMain || 'e0e0e0', '#fff')}
-    }
-    &.primary-inverse {
-      ${(props: any) => buttonTheme(props, '#fff', props.theme.colorMain || 'e0e0e0')}
-    }
-    &.secondary {
-      ${(props: any) => buttonTheme(
-        props,
-        colors.lightGreyishBlue,
-        darken(0.1, colors.label),
-        'transparent',
-        darken(0.05, colors.lightGreyishBlue)
-      )}
-    }
-    &.primary-outlined {
-      ${(props: any) => buttonTheme(props, 'transparent', props.theme.colorMain
-        || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
-    }
-    &.secondary-outlined {
-      ${(props: any) => buttonTheme(props, 'transparent', colors.label, colors.label)}
-    }
-    &.text {
-      ${(props: any) => buttonTheme(props, 'transparent', colors.label)}
-    }
-    &.success {
-      ${(props: any) => buttonTheme(props, colors.clGreenSuccessBackground, colors.clGreenSuccess)}
-    }
-    &.cl-blue {
-      ${(props: any) => buttonTheme(props, colors.clBlueDark, 'white')}
-    }
-    &.admin-dark {
-      ${(props: any) => buttonTheme(props, colors.adminTextColor, 'white')}
-    }
-    &.delete {
-      ${(props: any) => buttonTheme(props, colors.clRedError, 'white')}
-    }
+
+    ${(props) => getButtonStyle(props)}
   }
+
   button.disabled {
     cursor: not-allowed;
   }
+
   a.disabled {
     pointer-events: none;
   }
+
   &.bannerStyle {
     height: 100%;
 
@@ -257,43 +311,19 @@ const HiddenText = styled.span`
   ${invisibleA11yText()}
 `;
 
-export type ButtonStyles =
-  'primary'
-  | 'primary-inverse'
-  | 'primary-outlined'
-  | 'secondary'
-  | 'secondary-outlined'
-  | 'success'
-  | 'text'
-  | 'cl-blue'
-  | 'admin-dark'
-  | 'delete';
-
-export type Props = {
-  children?: any;
-  className?: string;
-  disabled?: boolean;
-  form?: string;
-  fullWidth?: boolean;
-  height?: string;
-  hiddenText?: string | JSX.Element;
-  icon?: IconProps['name'];
-  iconPos?: 'left' | 'right';
-  iconSize?: string;
-  iconTitle?: IconProps['title'];
-  iconTheme?: clColorTheme;
+interface ButtonContainerProps {
+  buttonStyle?: ButtonStyles;
+  style?: ButtonStyles;
   id?: string;
+  size?: '1' | '2' | '3' | '4';
+  width?: string;
+  height?: string;
+  padding?: string;
   justify?: 'left' | 'center' | 'right' | 'space-between';
   justifyWrapper?: 'left' | 'center' | 'right' | 'space-between';
-  linkTo?: string;
-  openInNewTab?: boolean;
-  onClick?: (arg: FormEvent<HTMLButtonElement>) => void;
-  padding?: string;
+  iconSize?: string;
   processing?: boolean;
-  setSubmitButtonRef?: (value: any) => void;
-  size?: '1' | '2' | '3' | '4';
-  style?: ButtonStyles;
-  text?: string | JSX.Element;
+  disabled?: boolean;
   textColor?: string;
   textHoverColor?: string;
   bgColor?: string;
@@ -301,23 +331,40 @@ export type Props = {
   borderColor?: string;
   borderHoverColor?: string;
   borderThickness?: string;
+  boxShadow?: string;
   fontWeight?: string;
-  theme?: object | undefined;
   minWidth?: string;
-  width?: string;
+  fontSize?: string;
+  onClick?: (arg: FormEvent<HTMLButtonElement>) => void;
+}
+
+export interface Props extends ButtonContainerProps {
+  children?: any;
+  className?: string;
+  form?: string;
+  fullWidth?: boolean;
+  hiddenText?: string | JSX.Element;
+  icon?: IconProps['name'];
+  iconPos?: 'left' | 'right';
+  iconTitle?: IconProps['title'];
+  iconTheme?: clColorTheme;
+  linkTo?: string;
+  openInNewTab?: boolean;
+  setSubmitButtonRef?: (value: any) => void;
+  text?: string | JSX.Element;
+  theme?: object | undefined;
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
   spinnerColor?: string;
   fullHeight?: boolean;
   ariaLabel?: string;
-  fontSize?: string;
-  autoFocus?: boolean
-};
+  autoFocus?: boolean;
+}
 
 type State = {};
 
 class Button extends PureComponent<Props, State> {
 
-  handleOnClick = (event: FormEvent<HTMLButtonElement>) => {
+  handleOnClick = (event) => {
     const { onClick, processing, disabled } = this.props;
     if (onClick) {
       event.preventDefault();
@@ -367,6 +414,7 @@ class Button extends PureComponent<Props, State> {
       borderColor,
       borderHoverColor,
       borderThickness,
+      boxShadow,
       minWidth,
       width,
       height,
@@ -414,12 +462,13 @@ class Button extends PureComponent<Props, State> {
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
         {icon && iconPos === 'right' &&
-        <StyledIcon
-          name={icon}
-          className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
-          title={iconTitle}
-          colorTheme={iconTheme}
-        />}
+          <StyledIcon
+            name={icon}
+            className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
+            title={iconTitle}
+            colorTheme={iconTheme}
+          />
+        }
         {processing &&
           <SpinnerWrapper>
             <Spinner size={spinnerSize} color={spinnerColor} />
@@ -430,6 +479,9 @@ class Button extends PureComponent<Props, State> {
 
     return (
       <Container
+        className={`${className} ${buttonClassnames} ${fullHeight ? 'bannerStyle' : ''}`}
+        onClick={this.handleOnClick}
+        buttonStyle={style}
         id={id}
         size={size}
         width={width}
@@ -439,9 +491,7 @@ class Button extends PureComponent<Props, State> {
         justifyWrapper={justifyWrapper}
         iconSize={iconSize}
         processing={processing}
-        onClick={this.handleOnClick}
         disabled={disabled}
-        className={`${className} ${buttonClassnames} ${fullHeight ? 'bannerStyle' : ''}`}
         textColor={textColor}
         textHoverColor={textHoverColor}
         bgColor={bgColor}
@@ -449,15 +499,16 @@ class Button extends PureComponent<Props, State> {
         borderColor={borderColor}
         borderHoverColor={borderHoverColor}
         borderThickness={borderThickness}
+        boxShadow={boxShadow}
         fontWeight={fontWeight}
         minWidth={minWidth}
         fontSize={fontSize}
       >
         {linkTo ? (
-          (typeof (linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
+          (isString(linkTo) && linkTo.startsWith('http')) ? (
             <StyledA
               ref={this.props.setSubmitButtonRef}
-              href={(linkTo as string)}
+              href={linkTo}
               target={openInNewTab ? '_blank' : '_self'}
               className={buttonClassnames}
             >

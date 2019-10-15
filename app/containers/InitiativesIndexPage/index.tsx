@@ -73,7 +73,7 @@ const trackInitiative = () => {
   trackEventByName(tracks.clickStartInitiativesCTA, { extra: { location: 'initiatives footer' } });
 };
 
-export default withTheme(memo(({ theme }: any) => (
+export default withTheme(memo((_props) => (
   <>
     <InitiativesIndexMeta />
     <InitiativesHeader />
@@ -90,8 +90,7 @@ export default withTheme(memo(({ theme }: any) => (
       <Button
         fontWeight="500"
         padding="13px 22px"
-        bgColor="#fff"
-        textColor={theme.colorText}
+        style="primary-inverse"
         linkTo="/initiatives/new"
         onClick={trackInitiative}
         icon="arrowLeft"
