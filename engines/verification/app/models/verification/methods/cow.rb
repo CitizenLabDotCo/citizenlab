@@ -14,11 +14,26 @@ module Verification
         []
       end
 
-      def verify_now run:, id_serial:
+      def verify_sync run:, id_serial:
+        raise VerificationService::InputInvalidError.new("run") unless run_valid?(run)
+        raise VerificationService::InputInvalidError.new("id_serial") unless id_serial_valid?(id_serial)
+
         #TODO real implementation
+        if run == '11.111.111-1'
+          raise VerificationService::NoMatchError.new
+        end
         "#{run}#{id_serial}"
       end
 
+      private
+
+      def run_valid? run
+        run.present? && /^\d{1,2}\.\d{3}\.\d{3}[-][0-9kK]{1}$/.match?(run)
+      end
+
+      def id_serial_valid? id_serial
+        id_serial.present?
+      end
     end
   end
 end

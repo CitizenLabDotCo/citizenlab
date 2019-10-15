@@ -34,12 +34,13 @@ module Verification
       end
     end
 
-    class VerificationNotFoundError < StandardError; end
+    class NoMatchError < StandardError; end
     class VerificationTakenError < StandardError; end
+    class InputInvalidError < StandardError; end
 
-    def verify_now user:, method_name:, parameters:
+    def verify_sync user:, method_name:, parameters:
       method = method_by_name(method_name)
-      uid = method.verify_now parameters
+      uid = method.verify_sync parameters
 
       if ::Verification::Verification.where(
           active: true,
