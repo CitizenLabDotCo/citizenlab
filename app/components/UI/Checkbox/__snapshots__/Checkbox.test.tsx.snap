@@ -378,18 +378,82 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                       className="c3"
                       name="checkmark"
                     >
-                      <svg
-                        aria-hidden={true}
+                      <Memo()
+                        ariaHidden={true}
                         className="c3"
-                        height="100%"
-                        role="img"
+                        name="checkmark"
+                        theme={
+                          Object {
+                            "adminBackground": "#F0F3F4",
+                            "adminBorder": "#EAEAEA",
+                            "adminContentBackground": "#fff",
+                            "adminDarkestBackground": "rgba(0, 0, 0, 0.75)",
+                            "adminLightText": "rgba(255, 255, 255, 0.8)",
+                            "adminMenuBackground": "#003349",
+                            "adminOrangeIcons": "#FF672F",
+                            "adminSecondaryTextColor": "#596B7A",
+                            "adminSeparation": "#EAEAEA",
+                            "adminTextColor": "#044D6C",
+                            "background": "#f4f4f5",
+                            "clBlue": "#008292",
+                            "clBlueDark": "#147985",
+                            "clBlueDarkBg": "#d3ecf0",
+                            "clBlueDarker": "#0A5159",
+                            "clBlueDarkest": "#02282D",
+                            "clBlueLight": "#40B8C5",
+                            "clBlueLighter": "#80CFD8",
+                            "clBlueLightest": "#BEE7EB",
+                            "clDropdownHoverBackground": "#e9e9e9",
+                            "clGreen": "#04884C",
+                            "clGreenSuccess": "#008040",
+                            "clGreenSuccessBackground": "#e4f7ef",
+                            "clGreyOnGreyBackground": "#707070",
+                            "clIconAccent": "#01A1B1",
+                            "clIconBackground": "rgba(1, 161, 177, 0.07)",
+                            "clIconPrimary": "#00577C",
+                            "clIconSecondary": "#84939E",
+                            "clRed": "#E52516",
+                            "clRed2": "#FC3C2D",
+                            "clRedError": "#D61607",
+                            "clRedErrorBackground": "#fde9e8",
+                            "disabledPrimaryButtonBg": "#d0d0d0",
+                            "draftYellow": "#8C680D",
+                            "emailBg": "#e6ebec",
+                            "emailText": "#004d6c",
+                            "facebook": "#3b5998",
+                            "facebookMessenger": "#0084ff",
+                            "label": "#596B7A",
+                            "lightGreyishBlue": "#EBEDEF",
+                            "mediumGrey": "#BDBDBD",
+                            "placeholder": "#aaa",
+                            "placeholderBg": "#CFD6DB",
+                            "popoverDarkBg": "#2D2D2D",
+                            "popoverDarkFg": "#CBCBCB",
+                            "secondaryText": "#84939E",
+                            "separation": "#e0e0e0",
+                            "text": "#333",
+                            "twitter": "#1ea4f2",
+                          }
+                        }
                         viewBox="0 0 19 15"
                       >
-                        <path
-                          d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z"
-                          fillRule="evenodd"
-                        />
-                      </svg>
+                        <svg
+                          aria-hidden={true}
+                          aria-labelledby="checkmark"
+                          className="c3"
+                          fill="none"
+                          height="100%"
+                          role="img"
+                          viewBox="0 0 19 15"
+                          width="100%"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z"
+                            fillRule="evenodd"
+                          />
+                        </svg>
+                      </Memo()>
                     </Memo()>
                   </StyledComponent>
                 </Checkbox__CheckmarkIcon>

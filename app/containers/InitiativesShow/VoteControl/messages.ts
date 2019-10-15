@@ -103,7 +103,7 @@ export default defineMessages({
   },
   xVotesOfY: {
     id: 'app.containers.InitiativesShow.VoteControl.xVotesOfY',
-    defaultMessage: '{xVotes} of {votingThreshold}',
+    defaultMessage: '{xVotes} out of {votingThreshold}',
   },
   xPeopleVoted: {
     id: 'app.containers.InitiativesShow.VoteControl.xPeopleVoted',
