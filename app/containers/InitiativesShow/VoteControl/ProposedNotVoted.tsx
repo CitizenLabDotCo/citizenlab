@@ -105,7 +105,7 @@ interface InputProps {
   onVote: () => void;
 }
 
-interface Props extends InputProps {}
+interface Props extends InputProps { }
 
 class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
 
@@ -162,7 +162,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
               }
               top="25px"
             >
-              <HelpIcon name="info" />
+              <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />} />
             </StyledTooltip>
           }
         </StatusExplanation>
