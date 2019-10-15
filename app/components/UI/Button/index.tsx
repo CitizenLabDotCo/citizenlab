@@ -311,6 +311,8 @@ export type Props = {
   ariaLabel?: string;
   fontSize?: string;
   autoFocus?: boolean
+  ariaExpanded?: boolean;
+  iconAriaHidden?: boolean;
 };
 
 type State = {};
@@ -386,7 +388,9 @@ class Button extends PureComponent<Props, State> {
       fullHeight,
       ariaLabel,
       fontSize,
-      autoFocus
+      autoFocus,
+      ariaExpanded,
+      iconAriaHidden
     } = this.props;
     let { id, size, style, processing, disabled, fullWidth, iconPos, className } = this.props;
 
@@ -411,6 +415,7 @@ class Button extends PureComponent<Props, State> {
             className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
             title={iconTitle}
             colorTheme={iconTheme}
+            ariaHidden={iconAriaHidden}
           />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
@@ -420,6 +425,7 @@ class Button extends PureComponent<Props, State> {
           className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
           title={iconTitle}
           colorTheme={iconTheme}
+          ariaHidden={iconAriaHidden}
         />}
         {processing &&
           <SpinnerWrapper>
@@ -476,6 +482,7 @@ class Button extends PureComponent<Props, State> {
         ) : (
           <StyledButton
             aria-label={ariaLabel}
+            aria-expanded={ariaExpanded}
             disabled={disabled}
             ref={this.props.setSubmitButtonRef}
             className={buttonClassnames}

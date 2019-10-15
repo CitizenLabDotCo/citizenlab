@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import Avatar from 'components/Avatar';
-import ContentChangeLog from './ContentChangeLog';
+import ContentChangeLog from 'components/PostComponents/ContentChangeLog';
 import IdeaPostedBy from './IdeaPostedBy';
 
 // resources
@@ -49,7 +49,7 @@ interface DataProps {
   author: GetUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 const IdeaAuthor = memo<Props>(({ ideaId, ideaPublishedAt, authorId, author, className }) => {
   const goToUserProfile = () => {
@@ -58,7 +58,7 @@ const IdeaAuthor = memo<Props>(({ ideaId, ideaPublishedAt, authorId, author, cla
     }
   };
 
-  const noop = () => {};
+  const noop = () => { };
 
   return (
     <Container className={`e2e-idea-author ${className}`}>
@@ -73,7 +73,7 @@ const IdeaAuthor = memo<Props>(({ ideaId, ideaPublishedAt, authorId, author, cla
         {ideaPublishedAt &&
           <TimeAgo>
             <FormattedRelative value={ideaPublishedAt} />
-            <ContentChangeLog ideaId={ideaId} />
+            <ContentChangeLog postId={ideaId} postType="idea" />
           </TimeAgo>
         }
       </AuthorMeta>
