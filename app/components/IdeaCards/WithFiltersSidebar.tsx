@@ -35,7 +35,7 @@ import tracks from './tracks';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
-import { darken, rgba } from 'polished';
+import { rgba } from 'polished';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
@@ -694,7 +694,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                       icon="showMore"
                       iconPos="left"
                       textColor={theme.colorText}
-                      textHoverColor={darken(0.1, theme.colorText)}
                       bgColor={rgba(theme.colorText, 0.08)}
                       bgHoverColor={rgba(theme.colorText, 0.12)}
                       fontWeight="500"
