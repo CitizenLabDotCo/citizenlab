@@ -96,7 +96,7 @@ da:
       "threshold_reached_for_admin": When an initiative reached the voting threshold (only for administrators)
       "welcome": When a user registers on the platform
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
-      "assignee_digest": A weekly overview of new ideas assigned to me (only for admins and moderators)
       "moderator_digest": A weekly overview of the activity on the platform (only for moderators)
+      "assignee_digest": A weekly overview of new ideas assigned to me (only for admins and moderators)
       "user_digest": A weekly overview of the activity on the platform (for citizens)
       "your_proposed_initiatives_digest": A weekly overview of your initiatives that still need to reach the threshold (for citizens)
