@@ -165,6 +165,7 @@ class UserMenu extends PureComponent<Props, State> {
                     onClick={this.closeDropdown}
                     style="text"
                     icon="admin"
+                    iconAriaHidden
                     iconPos="right"
                     iconSize="20px"
                     padding="11px 11px"
@@ -180,6 +181,7 @@ class UserMenu extends PureComponent<Props, State> {
                   onClick={this.closeDropdown}
                   style="text"
                   icon="profile1"
+                  iconAriaHidden
                   iconPos="right"
                   iconSize="20px"
                   padding="11px 11px"
@@ -194,6 +196,7 @@ class UserMenu extends PureComponent<Props, State> {
                   onClick={this.closeDropdown}
                   style="text"
                   icon="settings"
+                  iconAriaHidden
                   iconPos="right"
                   iconSize="20px"
                   padding="11px 11px"
@@ -207,6 +210,7 @@ class UserMenu extends PureComponent<Props, State> {
                   onClick={this.signOut}
                   style="text"
                   icon="power"
+                  iconAriaHidden
                   iconPos="right"
                   iconSize="20px"
                   padding="11px 11px"
