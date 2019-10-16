@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
+import { stopPropagation } from 'utils/helperUtils';
 
 // resources
 import { IProjectModerationRightsReceivedNotificationData } from 'services/notifications';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // i18n
 import messages from '../../messages';
@@ -14,24 +13,16 @@ import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 
-interface InputProps {
+interface Props {
   notification: IProjectModerationRightsReceivedNotificationData;
 }
 
-interface DataProps {
-  project: GetProjectChildProps;
-}
-
-interface Props extends InputProps, DataProps { }
-
 const ProjectModerationRightsReceivedNotification = memo<Props>(props => {
-  const { notification, project } = props;
-
-  if (isNilOrError(project)) return null;
+  const { notification } = props;
 
   return (
     <NotificationWrapper
-      linkTo={`/admin/projects/${project.id}/edit`}
+      linkTo={`/admin/projects/${notification.attributes.project_id}/edit`}
       timing={notification.attributes.created_at}
       icon="admin"
       isRead={!!notification.attributes.read_at}
@@ -41,10 +32,10 @@ const ProjectModerationRightsReceivedNotification = memo<Props>(props => {
         values={{
           projectLink:
             <Link
-              to={`admin/projects/${project.id}/ideas`}
+              to={`admin/projects/${notification.attributes.project_id}/ideas`}
               onClick={stopPropagation}
             >
-              <T value={project.attributes.title_multiloc} />
+              <T value={notification.attributes.project_title_multiloc} />
             </Link>,
         }}
       />
@@ -52,14 +43,4 @@ const ProjectModerationRightsReceivedNotification = memo<Props>(props => {
   );
 });
 
-export default (inputProps: InputProps) => {
-  const { notification } = inputProps;
-
-  if (!notification.relationships.project.data) return null;
-
-  return (
-    <GetProject id={notification.relationships.project.data.id}>
-      {project => <ProjectModerationRightsReceivedNotification notification={notification} project={project} />}
-    </GetProject>
-  );
-};
+export default ProjectModerationRightsReceivedNotification;

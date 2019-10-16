@@ -4,29 +4,21 @@ exports[`<CommentDeletedByAdminNotification /> renders correctly with a non empt
 <NotificationWrapper
   icon="notification_comment"
   isRead={false}
-  linkTo="/ideas/doloribus-quam-molestiae-ut"
   timing="2019-04-16T14:32:17.095Z"
 >
   <FormattedMessage
-    defaultMessage="Your comment on '{ideaTitle}' has been deleted by an admin because
+    defaultMessage="Your comment on '{postTitle}' has been deleted by an admin because
       {reasonCode, select,
         irrelevant {it is irrelevant}
         inappropriate {its content is inappropriate}
         other {{otherReason}}
       }
     "
-    id="app.containers.NotificationMenu.commentDeletedByAdmin"
+    id="app.containers.NotificationMenu.commentDeletedByAdminFor"
     values={
       Object {
-        "ideaTitle": <T
-          value={
-            Object {
-              "en": "ideaTitle",
-              "nl-BE": "Doloribus quam molestiae ut.",
-            }
-          }
-        />,
         "otherReason": undefined,
+        "postTitle": <T />,
         "reasonCode": "irrelevant",
       }
     }
@@ -34,4 +26,28 @@ exports[`<CommentDeletedByAdminNotification /> renders correctly with a non empt
 </NotificationWrapper>
 `;
 
-exports[`<CommentDeletedByAdminNotification /> renders correctly with an empty idea 1`] = `""`;
+exports[`<CommentDeletedByAdminNotification /> renders correctly with an empty idea 1`] = `
+<NotificationWrapper
+  icon="notification_comment"
+  isRead={false}
+  timing="2019-04-16T14:32:17.095Z"
+>
+  <FormattedMessage
+    defaultMessage="Your comment on '{postTitle}' has been deleted by an admin because
+      {reasonCode, select,
+        irrelevant {it is irrelevant}
+        inappropriate {its content is inappropriate}
+        other {{otherReason}}
+      }
+    "
+    id="app.containers.NotificationMenu.commentDeletedByAdminFor"
+    values={
+      Object {
+        "otherReason": undefined,
+        "postTitle": <T />,
+        "reasonCode": "irrelevant",
+      }
+    }
+  />
+</NotificationWrapper>
+`;

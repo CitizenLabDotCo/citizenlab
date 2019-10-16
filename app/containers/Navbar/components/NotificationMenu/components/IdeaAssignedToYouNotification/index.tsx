@@ -26,13 +26,13 @@ export default class IdeaAssignedToYouNotification extends React.PureComponent<P
   getNotificationMessage = () : JSX.Element => {
     const { notification } = this.props;
     const sharedValues = {
-      ideaTitle: <T value={notification.attributes.idea_title_multiloc} />
+      postTitle: <T value={notification.attributes.post_title_multiloc} />
     };
 
     if (isNilOrError(notification.attributes.initiating_user_slug)) {
       return(
         <FormattedMessage
-          {...messages.ideaAssignedToYou}
+          {...messages.postAssignedToYou}
           values={{
             ...sharedValues
           }}
@@ -41,7 +41,7 @@ export default class IdeaAssignedToYouNotification extends React.PureComponent<P
     } else {
       return(
         <FormattedMessage
-          {...messages.xAssignedIdeaToYou}
+          {...messages.xAssignedPostToYou}
           values={{
             ...sharedValues,
             name: (
@@ -63,7 +63,7 @@ export default class IdeaAssignedToYouNotification extends React.PureComponent<P
 
     return (
       <NotificationWrapper
-        linkTo={`/ideas/${notification.attributes.idea_slug}`}
+        linkTo={`/ideas/${notification.attributes.post_slug}`}
         timing={notification.attributes.created_at}
         icon="idea2"
         isRead={!!notification.attributes.read_at}
