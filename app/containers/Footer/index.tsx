@@ -278,7 +278,9 @@ interface DataProps {
   locale: GetLocaleChildProps;
 }
 
-interface Props extends DataProps {}
+interface Props extends DataProps {
+  showShortFeedback?: boolean;
+}
 
 interface State {
   shortFeedbackButtonClicked: boolean;
@@ -288,6 +290,10 @@ interface State {
 }
 
 class Footer extends PureComponent<Props, State> {
+  static defaultProps = {
+    showShortFeedback: true
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -361,66 +367,71 @@ class Footer extends PureComponent<Props, State> {
 
   render() {
     const { shortFeedbackButtonClicked, feedbackModalOpen, feedbackSubmitting, feedbackSubmitted } = this.state;
+    const { showShortFeedback } = this.props;
 
     return (
       <Container className={this.props['className']} id="hook-footer">
-        <ShortFeedback>
-          <ShortFeedbackInner>
-            {shortFeedbackButtonClicked ?
-              (feedbackModalOpen ?
-                <ThankYouNote>
-                  <FormattedMessage {...messages.moreInfo} />
-                </ThankYouNote>
-                :
-                <ThankYouNote>
-                  <FormattedMessage {...messages.thanksForFeedback} />
-                </ThankYouNote>
-              )
-              :
-              <>
-                <FeedbackQuestion>
-                  <FormattedMessage {...messages.feedbackQuestion} />
-                </FeedbackQuestion>
-                <Buttons>
-                  <FeedbackButton onClick={this.handleFeedbackButtonClick('yes')}>
-                    <FormattedMessage {...messages.yes} />
-                  </FeedbackButton>
-                  <FeedbackButton onClick={this.handleFeedbackButtonClick('no')}>
-                    <FormattedMessage {...messages.no} />
-                  </FeedbackButton>
-                </Buttons>
-              </>
-            }
-          </ShortFeedbackInner>
-        </ShortFeedback>
+        {showShortFeedback &&
+          <>
+            <ShortFeedback>
+              <ShortFeedbackInner>
+                {shortFeedbackButtonClicked ?
+                  (feedbackModalOpen ?
+                    <ThankYouNote>
+                      <FormattedMessage {...messages.moreInfo} />
+                    </ThankYouNote>
+                    :
+                    <ThankYouNote>
+                      <FormattedMessage {...messages.thanksForFeedback} />
+                    </ThankYouNote>
+                  )
+                  :
+                  <>
+                    <FeedbackQuestion>
+                      <FormattedMessage {...messages.feedbackQuestion} />
+                    </FeedbackQuestion>
+                    <Buttons>
+                      <FeedbackButton onClick={this.handleFeedbackButtonClick('yes')}>
+                        <FormattedMessage {...messages.yes} />
+                      </FeedbackButton>
+                      <FeedbackButton onClick={this.handleFeedbackButtonClick('no')}>
+                        <FormattedMessage {...messages.no} />
+                      </FeedbackButton>
+                    </Buttons>
+                  </>
+                }
+              </ShortFeedbackInner>
+            </ShortFeedback>
 
-        <Modal
-          width={500}
-          opened={feedbackModalOpen}
-          close={this.closeFeedbackModalCancel}
-          className="e2e-feedback-modal"
-          closeOnClickOutside={false}
-          header={<FormattedMessage {...messages.feedbackModalTitle} />}
-          footer={
-            <ShortFeedbackFormModalFooter>
-              {!feedbackSubmitted ? (
-                <Button onClick={this.shortFeedbackFormOnSubmit} processing={feedbackSubmitting}>
-                  <FormattedMessage {...messages.submit} />
-                </Button>
-              ) : (
-                <Button style="secondary" onClick={this.closeFeedbackModal}>
-                  <FormattedMessage {...messages.close} />
-                </Button>
-              )}
-            </ShortFeedbackFormModalFooter>
-          }
-        >
-          <ShortFeedbackForm
-            closeModal={this.closeFeedbackModalSuccess}
-            submitting={this.handleFeedbackOnSubmit}
-            successfullySubmitted={this.handleFeedbackSubmitted}
-          />
-        </Modal>
+            <Modal
+              width={500}
+              opened={feedbackModalOpen}
+              close={this.closeFeedbackModalCancel}
+              className="e2e-feedback-modal"
+              closeOnClickOutside={false}
+              header={<FormattedMessage {...messages.feedbackModalTitle} />}
+              footer={
+                <ShortFeedbackFormModalFooter>
+                  {!feedbackSubmitted ? (
+                    <Button onClick={this.shortFeedbackFormOnSubmit} processing={feedbackSubmitting}>
+                      <FormattedMessage {...messages.submit} />
+                    </Button>
+                  ) : (
+                    <Button style="secondary" onClick={this.closeFeedbackModal}>
+                      <FormattedMessage {...messages.close} />
+                    </Button>
+                  )}
+                </ShortFeedbackFormModalFooter>
+              }
+            >
+              <ShortFeedbackForm
+                closeModal={this.closeFeedbackModalSuccess}
+                submitting={this.handleFeedbackOnSubmit}
+                successfullySubmitted={this.handleFeedbackSubmitted}
+              />
+            </Modal>
+          </>
+        }
 
         <Inner>
           <PagesNav>
