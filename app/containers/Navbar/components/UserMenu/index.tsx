@@ -134,6 +134,7 @@ class UserMenu extends PureComponent<Props, State> {
           <DropdownButton
             onMouseDown={this.removeFocus}
             onClick={this.toggleDropdown}
+            aria-expanded={opened}
           >
             <StyledUserName
               userId={userId}
