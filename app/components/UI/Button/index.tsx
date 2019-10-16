@@ -142,7 +142,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
   const finalTextHoverColor = props.textHoverColor || get(defaultStyleValues, `${props.buttonStyle}.textHoverColor`) || darken(0.2, finalTextColor);
   const finalBorderColor = props.borderColor || get(defaultStyleValues, `${props.buttonStyle}.borderColor`) || 'transparent';
   const finalBorderHoverColor = props.borderHoverColor || get(defaultStyleValues, `${props.buttonStyle}.borderHoverColor`) || darken(0.2, finalBorderColor);
-  const finalBoxShadow= props.boxShadow || get(defaultStyleValues, `${props.buttonStyle}.boxShadow`) || 'none';
+  const finalBoxShadow = props.boxShadow || get(defaultStyleValues, `${props.buttonStyle}.boxShadow`) || 'none';
   const finalBoxShadowHover = props.boxShadowHover || get(defaultStyleValues, `${props.buttonStyle}.boxShadowHover`) || 'none';
 
   return `
