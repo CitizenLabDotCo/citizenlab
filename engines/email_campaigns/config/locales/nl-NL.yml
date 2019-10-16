@@ -1,17 +1,17 @@
 nl:
   email_campaigns:
     campaign_type_description:
-      "manual": Official messages
-      "admin_rights_received": Admin rights received
-      "comment_deleted_by_admin": Deletion of my comment
-      "comment_marked_as_spam": Comment spam report
-      "comment_on_your_comment": A reply on my comment
-      "comment_on_your_idea": A comment on my idea
-      "comment_on_your_initiative": A comment on my initiative
-      "first_idea_published": Publication of my first idea
-      "idea_assigned_to_you": Assignment of an idea to me
-      "idea_marked_as_spam": Idea spam report
-      "idea_published": Publication of my idea
+      "manual": Officiële berichten
+      "admin_rights_received": Administratierechten ontvangen
+      "comment_deleted_by_admin": Verwijderen van mijn reactie
+      "comment_marked_as_spam": Reactie spammelding
+      "comment_on_your_comment": Een antwoord op mijn reactie
+      "comment_on_your_idea": Een reactie op mijn idee
+      "comment_on_your_initiative": Een reactie op mijn initiatief
+      "first_idea_published": Posten van mijn eerste idee
+      "idea_assigned_to_you": Toewijzing van een idee aan mij
+      "idea_marked_as_spam": Idee spammelding
+      "idea_published": Posten van mijn idee
       "initiative_assigned_to_you": Assignment of an initiative to me
       "initiative_marked_as_spam": Initiative spam report
       "initiative_published": Publication of my initiative
