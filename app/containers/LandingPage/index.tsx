@@ -186,7 +186,7 @@ class LandingPage extends PureComponent<Props, State> {
         <>
           <Container id="e2e-landing-page">
 
-            {/* <VerificationWithoutContext /> */}
+            <VerificationWithoutContext />
 
             {!isNilOrError(authUser)
               ? <SignedInHeader />

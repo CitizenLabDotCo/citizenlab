@@ -80,7 +80,6 @@ function getLineHeight(size) {
   }
 }
 
-// Sets the button colors depending on Background color, optionally set the text/icon fill color and border color.
 function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
 
   const defaultStyleValues: DefaultStyleValues = {
@@ -143,11 +142,14 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
   const finalTextHoverColor = props.textHoverColor || get(defaultStyleValues, `${props.buttonStyle}.textHoverColor`) || darken(0.2, finalTextColor);
   const finalBorderColor = props.borderColor || get(defaultStyleValues, `${props.buttonStyle}.borderColor`) || 'transparent';
   const finalBorderHoverColor = props.borderHoverColor || get(defaultStyleValues, `${props.buttonStyle}.borderHoverColor`) || darken(0.2, finalBorderColor);
+  const finalBoxShadow= props.boxShadow || get(defaultStyleValues, `${props.buttonStyle}.boxShadow`) || 'none';
+  const finalBoxShadowHover = props.boxShadowHover || get(defaultStyleValues, `${props.buttonStyle}.boxShadowHover`) || 'none';
 
   return `
     &:not(.disabled) {
       background: ${finalBgColor};
       border-color: ${finalBorderColor};
+      box-shadow: ${finalBoxShadow};
 
       ${ButtonText} {
         color: ${finalTextColor};
@@ -161,6 +163,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
       &:not(.processing):focus {
         background: ${finalBgHoverColor};
         border-color: ${finalBorderHoverColor};
+        box-shadow: ${finalBoxShadowHover};
 
         ${ButtonText} {
           color: ${finalTextHoverColor};
@@ -331,6 +334,7 @@ interface ButtonContainerProps {
   borderHoverColor?: string;
   borderThickness?: string;
   boxShadow?: string;
+  boxShadowHover?: string;
   fontWeight?: string;
   minWidth?: string;
   fontSize?: string;
@@ -368,6 +372,7 @@ class Button extends PureComponent<Props, State> {
     if (onClick) {
       event.preventDefault();
       event.stopPropagation();
+
       if (!disabled && !processing) {
         onClick(event);
       }
@@ -414,6 +419,7 @@ class Button extends PureComponent<Props, State> {
       borderHoverColor,
       borderThickness,
       boxShadow,
+      boxShadowHover,
       minWidth,
       width,
       height,
@@ -499,6 +505,7 @@ class Button extends PureComponent<Props, State> {
         borderHoverColor={borderHoverColor}
         borderThickness={borderThickness}
         boxShadow={boxShadow}
+        boxShadowHover={boxShadowHover}
         fontWeight={fontWeight}
         minWidth={minWidth}
         fontSize={fontSize}

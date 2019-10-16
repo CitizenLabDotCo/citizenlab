@@ -92,7 +92,7 @@ interface Props {
   className?: string;
 }
 
-const VerificationWithoutContext = memo<Props>(({ className }) => {
+const VerificationWithContext = memo<Props>(({ className }) => {
 
   const authUser = useAuthUser();
 
@@ -143,4 +143,4 @@ const VerificationWithoutContext = memo<Props>(({ className }) => {
   );
 });
 
-export default VerificationWithoutContext;
+export default VerificationWithContext;
