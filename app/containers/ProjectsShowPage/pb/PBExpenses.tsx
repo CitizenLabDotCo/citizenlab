@@ -326,7 +326,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
       }
 
       return (
-        <Container className={className} aria-live="polite">
+        <Container className={className}>
           <InnerContainer>
             <Header>
               <Title className={validationStatus}>
@@ -387,12 +387,12 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                       maximumFractionDigits={0}
                     />
                   </BudgetAmount>
-                  {/* <ScreenReaderOnly>
+                  <ScreenReaderOnly aria-live="polite">
                     <FormattedMessage {...messages.totalBudget} />:
                     {`${totalBudget} ${currency}`}
                     <FormattedMessage {...messages.spentBudget} />:
                     {`${spentBudget} ${currency}`}
-                  </ScreenReaderOnly> */}
+                  </ScreenReaderOnly>
                 </Budget>
                 <TotalBudgetMobile>
                   <BudgetLabel>
