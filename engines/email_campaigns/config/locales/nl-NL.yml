@@ -67,36 +67,36 @@ nl:
       "initiative_published": Posten van je initiatief - alle gebruikers
       "invite_accepted": Uitnodiging aanvaard - admins
       "invite_received": Uitnodiging - alle gebruikers
-      "invite_reminder": Invitation reminder - all users
-      "mention_in_comment": Mention in a comment - all users
-      "mention_in_official_feedback": Mention in an update - all users
-      "new_comment_for_admin": New comment - admins and project moderators
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on an initiative you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on an initiative you voted for - all users
-      "new_idea_for_admin": New idea - admins and project moderators
-      "new_initiative_for_admin": New initiative - admins
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on an initiative you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on an initiative you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your initiative - all users
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project moderators
-      "project_phase_started": New project phase - all users
-      "project_phase_upcoming": Upcoming new project phase - admins and project moderators
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of an initiative you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of an initiative you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your initiative - all users
-      "threshold_reached_for_admin": Initiative reached the voting threshold - admins
-      "welcome": New user - admins
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project moderators
-      "assignee_digest": Weekly overview of assigned ideas - admins and project moderators
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own initiatives - all users
+      "invite_reminder": Herinnering uitnodiging - alle gebruikers
+      "mention_in_comment": Vermelding in een reactie - alle gebruikers
+      "mention_in_official_feedback": Vermelding in een update - alle gebruikers
+      "new_comment_for_admin": Nieuwe reactie - admins en projectmoderatoren
+      "new_comment_on_commented_idea": Nieuwe reactie op een idee waar je op reageerde - alle gebruikers
+      "new_comment_on_commented_initiative": Nieuwe reactie op een initiatief waar je op reageerde - alle gebruikers
+      "new_comment_on_voted_idea": Nieuwe reactie op een idee waar je op stemde - alle gebruikers
+      "new_comment_on_voted_initiative": Nieuwe reactie op een initiatief waar je op stemde - alle gebruikers
+      "new_idea_for_admin": Nieuw idee - admins en projectmoderatoren
+      "new_initiative_for_admin": Nieuw initiatief - admins
+      "official_feedback_on_commented_idea": Update op een idee waar je op reageerde - alle gebruikers
+      "official_feedback_on_commented_initiative": Update op een initiatief waar je op reageerde - alle gebruikers
+      "official_feedback_on_voted_idea": Update op een idee waar je op stemde - alle gebruikers
+      "official_feedback_on_voted_initiative": Update op een initiatief waar je op stemde - alle gebruikers
+      "official_feedback_on_your_idea": Update op jouw idee - alle gebruikers
+      "official_feedback_on_your_initiative": Update op jouw initiatief - alle gebruikers
+      "password_reset": Wachtwoord resetten - alle gebruikers
+      "project_moderation_rights_received": Projectmoderatorrechten ontvangen - projectmoderatoren
+      "project_phase_started": Nieuwe projectfase - alle gebruikers
+      "project_phase_upcoming": Opkomende nieuwe projectfase - admins en projectmoderatoren
+      "status_change_of_commented_idea": Statuswijziging van een idee waar je op reageerde - alle gebruikers
+      "status_change_of_commented_initiative": Statuswijziging van een initiatief waar je op reageerde - alle gebruikers
+      "status_change_of_voted_idea": Statuswijziging van een idee waar je op stemde - alle gebruikers
+      "status_change_of_voted_initiative": Statuswijziging van een initiatief waar je op stemde - alle gebruikers
+      "status_change_of_your_idea": Statuswijziging van je idee - alle gebruikers
+      "status_change_of_your_initiative": Statuswijziging van je initiatief - alle gebruikers
+      "threshold_reached_for_admin": Een initiatief bereikte het benodigd aantal stemmen - admins
+      "welcome": Nieuwe gebruiker - admins
+      "admin_digest": Weekoverzicht - admins
+      "moderator_digest": Weekoverzicht - projectmoderatoren
+      "assignee_digest": Wekelijks overzicht van toegewezen ideeën - admins en projectmoderatoren
+      "user_digest": Weekoverzicht - alle gebruikers
+      "your_proposed_initiatives_digest": Weekoverzicht van je eigen initiatieven - alle gebruikers
