@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.invisibleTitle',
     defaultMessage: 'Status and votes',
   },
+  moreInfo: {
+    id: 'app.containers.InitiativesShow.VoteControl.moreInfo',
+    defaultMessage: 'More info',
+  },
   days: {
     id: 'app.containers.InitiativesShow.VoteControl.days',
     defaultMessage: 'days',
@@ -99,7 +103,7 @@ export default defineMessages({
   },
   xVotesOfY: {
     id: 'app.containers.InitiativesShow.VoteControl.xVotesOfY',
-    defaultMessage: '{xVotes} of {votingThreshold}',
+    defaultMessage: '{xVotes} out of {votingThreshold}',
   },
   xPeopleVoted: {
     id: 'app.containers.InitiativesShow.VoteControl.xPeopleVoted',

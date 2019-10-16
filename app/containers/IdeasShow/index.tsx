@@ -606,7 +606,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <ContentFooter
                   postType="idea"
-                  id={ideaId}
+                  postId={ideaId}
                   publishedAt={ideaPublishedAt}
                   commentsCount={idea.attributes.comments_count}
                 />

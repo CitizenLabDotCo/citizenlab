@@ -153,15 +153,17 @@ class VoteControl extends PureComponent<Props, State> {
               <Unauthenticated />
             </PopContainer>
           :
-            <StatusComponent
-              initiative={initiative}
-              initiativeStatus={initiativeStatus}
-              initiativeSettings={initiativeSettings}
-              userVoted={userVoted}
-              onVote={this.handleOnvote}
-              onCancelVote={this.handleOnCancelVote}
-              onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-            />
+            <div aria-live="polite">
+              <StatusComponent
+                initiative={initiative}
+                initiativeStatus={initiativeStatus}
+                initiativeSettings={initiativeSettings}
+                userVoted={userVoted}
+                onVote={this.handleOnvote}
+                onCancelVote={this.handleOnCancelVote}
+                onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+              />
+            </div>
         }
       </Container>
     );
