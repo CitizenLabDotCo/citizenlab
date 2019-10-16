@@ -446,6 +446,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                 <SubmitExpensesButton
                   onClick={this.handleSubmitExpensesOnClick}
                   icon="submit"
+                  iconAriaHidden
                   iconPos="right"
                   bgColor={colors.adminTextColor}
                   disabled={validationStatus === 'validationSuccess' || budgetExceedsLimit || spentBudget === 0}
