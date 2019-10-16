@@ -32,7 +32,7 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -326,7 +326,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
       }
 
       return (
-        <Container className={className}>
+        <Container className={className} aria-live="polite">
           <InnerContainer>
             <Header>
               <Title className={validationStatus}>
@@ -363,7 +363,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
               </TotalBudgetDesktop>
             </Header>
 
-            <ProgressBar>
+            <ProgressBar aria-hidden>
               <ProgressBarOverlay
                 className={progressBarColor}
                 progress={budgetExceedsLimit ? 100 : progress}
@@ -387,6 +387,12 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                       maximumFractionDigits={0}
                     />
                   </BudgetAmount>
+                  {/* <ScreenReaderOnly>
+                    <FormattedMessage {...messages.totalBudget} />:
+                    {`${totalBudget} ${currency}`}
+                    <FormattedMessage {...messages.spentBudget} />:
+                    {`${spentBudget} ${currency}`}
+                  </ScreenReaderOnly> */}
                 </Budget>
                 <TotalBudgetMobile>
                   <BudgetLabel>
