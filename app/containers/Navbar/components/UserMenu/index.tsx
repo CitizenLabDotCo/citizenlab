@@ -51,6 +51,7 @@ const DropdownButton = styled.button`
   align-items: center;
   cursor: pointer;
   padding: 0px;
+  padding-top: 2px;
   margin: 0px;
 
   &:hover,
@@ -137,13 +138,14 @@ class UserMenu extends PureComponent<Props, State> {
           >
             <StyledUserName
               userId={userId}
-              hideLastName
+              verificationBadge
             />
             <StyledAvatar
               userId={userId}
-              size="30px"
+              size="43px"
               hasHoverEffect={false}
               fillColor={theme && theme.navbarTextColor ? theme.navbarTextColor : colors.label}
+              verified
             />
           </DropdownButton>
 

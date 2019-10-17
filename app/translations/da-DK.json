@@ -286,6 +286,8 @@
   "app.components.Upload.onlyXImages": "Du kan kun overføre {maxItemsCount} billeder",
   "app.components.Upload.remaining": "resterende",
   "app.components.UserName.deletedUser": "ukendt forfatter",
+  "app.components.UserName.notVerified": "",
+  "app.components.UserName.verified": "",
   "app.components.UserSearch.addModerators": "Tilføj",
   "app.components.UserSearch.noOptions": "No options",
   "app.components.UserSearch.searchUsers": "Search users",
