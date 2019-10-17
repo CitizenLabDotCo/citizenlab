@@ -26,7 +26,7 @@ import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
-import LodableVerficationSuccess from 'components/VerificationSuccessModal/LoadableVerificationSuccess';
+import LodableVerficationSuccess from 'components/VerificationSuccessModal/LazyVerificationSuccess';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -291,7 +291,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                       opened={verifiedSuccessModalOpen === true}
                       close={this.closeVerifiedSuccessModal}
                     >
-                      <LodableVerficationSuccess />
+                      <Suspense fallback={null}>
+                        <LodableVerficationSuccess />
+                      </Suspense>
                     </LoadableModal>
                   </ErrorBoundary>
 
