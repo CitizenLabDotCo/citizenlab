@@ -29,42 +29,54 @@ resource "Verifications" do
     end
 
     before do
-      savon.mock!
       stub_request(:get, "https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService?wsdl")
          .to_return(status: 200, body: File.read("engines/verification/spec/fixtures/cow_wsdl.xml"), headers: {})
+      savon.mock!
     end
     after do
       savon.unmock!
     end
     
-    let(:run) { "12.025.365-6" }
-    let(:id_serial) { "A001529382" }
 
-    example "Verify with cow" do
-      savon.expects(:get_data_document)
-        .with(message: {
-          "typens:RUTEmpresa" => 'fake_rut_empresa',
-          "typens:DVEmpresa" => 'k',
-          "typens:CodTipoDocumento" => 'C',
-          "typens:NumRUN" => '12025365',
-          "typens:NumSerie" => '001529382',
+    describe do
+      let(:run) { "12.025.365-6" }
+      let(:id_serial) { "A001529382" }
+      example "Verify with cow" do
+        savon.expects(:get_data_document)
+          .with(message: {
+            "typens:RUTEmpresa" => 'fake_rut_empresa',
+            "typens:DVEmpresa" => 'k',
+            "typens:CodTipoDocumento" => 'C',
+            "typens:NumRUN" => '12025365',
+            "typens:NumSerie" => '001529382',
+          })
+          .returns(File.read("engines/verification/spec/fixtures/get_data_document_match.xml"))
+        do_request
+        expect(status).to eq(201)
+        expect(@user.reload.verified).to be true
+        expect(@user.verifications.first).to have_attributes({
+          method_name: "cow",
+          user_id: @user.id,
+          active: true,
+          hashed_uid: 'edf6e3b986a782f63f6c28f47d33f2cd327e12bc70c2e07779d60999cd811b50'
         })
-        .returns(File.read("engines/verification/spec/fixtures/get_data_document_match.xml"))
-      do_request
-      expect(status).to eq(201)
-      expect(@user.reload.verified).to be true
-      expect(@user.verifications.first).to have_attributes({
-        method_name: "cow",
-        user_id: @user.id,
-        active: true,
-        hashed_uid: '7c18cce107584e83c4e3a5d5ed336134dd3844bf0b5fcfd7c82a9877709a2654'
-      })
+      end
     end
 
     describe do
       let(:run) { "11.111.111-1" }
       let(:id_serial) { "A001529382" }
-      example_request "[error] Verify with cow without a match" do
+      example"[error] Verify with cow without a match" do
+        savon.expects(:get_data_document)
+          .with(message: {
+            "typens:RUTEmpresa" => 'fake_rut_empresa',
+            "typens:DVEmpresa" => 'k',
+            "typens:CodTipoDocumento" => 'C',
+            "typens:NumRUN" => '11111111',
+            "typens:NumSerie" => '001529382',
+          })
+          .returns(File.read("engines/verification/spec/fixtures/get_data_document_no_match.xml"))
+        do_request
         expect(status).to eq (422)
         json_response = json_parse(response_body)
         expect(json_response).to eq ({:errors => {:base=>[{:error=>"no_match"}]}})
@@ -96,6 +108,10 @@ resource "Verifications" do
         other_user = create(:user)
         @run = "12.025.365-6"
         @id_serial = "A001529382"
+        savon.expects(:get_data_document)
+          .with(message: :any)
+          .returns(File.read("engines/verification/spec/fixtures/get_data_document_match.xml"))
+
         Verification::VerificationService.new.verify_sync(
           user: other_user,
           method_name: "cow",
@@ -104,7 +120,11 @@ resource "Verifications" do
       end
       let(:run) { @run }
       let(:id_serial) { @id_serial }
-      example_request "[error] Verify with cow using credentials that are already taken" do
+      example"[error] Verify with cow using credentials that are already taken" do
+        savon.expects(:get_data_document)
+          .with(message: :any)
+          .returns(File.read("engines/verification/spec/fixtures/get_data_document_match.xml"))
+        do_request
         expect(status).to eq (422)
         json_response = json_parse(response_body)
         expect(json_response).to eq ({:errors => {:base=>[{:error=>"taken"}]}})
