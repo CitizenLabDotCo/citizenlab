@@ -38,6 +38,18 @@ const StyledIcon = styled(Icon)`
   margin-right: 1rem;
 `;
 
+const StyledButton = styled.button`
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+  color: inherit;
+
+  &:hover {
+    text-decoration: underline;
+  }
+  display: inline-block;
+  padding: 0;
+`;
+
 const TooltipWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -72,7 +84,7 @@ interface InputProps {
   padding?: string;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
   locationRef = window.location.href;
@@ -84,7 +96,12 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
     projectInactive: messages.postingProjectInactive,
     notActivePhase: messages.postingNotActivePhase,
     futureEnabled: messages.postingHereImpossible,
+    notVerified: messages.postingNotVerified
   };
+
+  onVerify = () => {
+    console.log('TODO open modal');
+  }
 
   onNewIdea = (_event) => {
     this.props.clickNewIdea({ extra: { urlFrom: this.locationRef } });
@@ -121,6 +138,12 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
                   <StyledIcon name="lock-outlined" />
                   <FormattedMessage
                     {...this.disabledMessages[disabledReason]}
+                    values={{
+                      verificationLink:
+                        <StyledButton onClick={this.onVerify}>
+                          <FormattedMessage {...messages.verificationLinkText} />
+                        </StyledButton>,
+                    }}
                   />
                 </TooltipWrapper>
               ) : null
