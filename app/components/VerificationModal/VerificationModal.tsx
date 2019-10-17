@@ -6,9 +6,6 @@ import VerificationMethods from './VerificationMethods';
 import VerificationFormCOW from './VerificationFormCOW';
 import VerificationSuccess from './VerificationSuccess';
 
-// hooks
-import useVerificationMethods from 'hooks/useVerificationMethods';
-
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
@@ -36,9 +33,6 @@ export interface Props {
 const VerificationModal = memo<Props>((props) => {
 
   const [activeStep, setActiveStep] = useState<VerificationModalSteps>(props.initialActiveStep || 'method-selection');
-
-  const verificationMethods = useVerificationMethods();
-  console.log(verificationMethods);
 
   const onMethodSelected = useCallback((selectedMethod: VerificationMethodNames) => {
     setActiveStep(selectedMethod);

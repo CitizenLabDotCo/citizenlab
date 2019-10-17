@@ -1,10 +1,10 @@
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 export const Title = styled.h3`
   width: 100%;
-  color: ${({ theme }) => theme.colorMain};
-  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.xxl}px;
   font-weight: 300;
   line-height: normal;
   text-align: center;
@@ -21,8 +21,10 @@ export const Title = styled.h3`
       font-weight: 600;
     }
   }
+`;
 
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl}px;
-  `}
+export const Subtitle = styled.h4`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.large}px;
+  line-height: normal;
 `;
