@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isAdmin } from 'services/permissions/roles';
 
-export type DisabledReasons = 'notPermitted' | 'maybeNotPermitted' | 'postingDisabled' | 'projectInactive' | 'notActivePhase' | 'futureEnabled';
+export type DisabledReasons = 'notPermitted' | 'maybeNotPermitted' | 'postingDisabled' | 'projectInactive' | 'notActivePhase' | 'futureEnabled' | 'notVerified';
 
 interface PostingButtonStateArg {
   project: GetProjectChildProps;
@@ -20,6 +20,8 @@ const disabledReason = (backendReason: PostingDisabledReasons | null, signedIn: 
       return 'projectInactive';
     case 'posting_disabled':
       return 'postingDisabled';
+    case 'not_verified':
+      return 'notVerified';
     case 'not_permitted':
       return signedIn ? 'notPermitted' : 'maybeNotPermitted';
     default:
