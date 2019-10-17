@@ -804,15 +804,6 @@ const clIcons = {
       <path d="M10.5245 19.2308L7 15.7436L8.17483 14.5812L10.5245 16.906L18.7483 8.76923L19.9231 9.93162L10.5245 19.2308Z" fill="white" strokeWidth="0" />
     </svg>
   ),
-  // shield_verification: (className, title) => (
-  //   <svg className={`cl-icon ${className ? className : ''}`} width="48" height="53" viewBox="0 0 48 53" fill="none" xmlns="http://www.w3.org/2000/svg">
-  //     {injectTitle(title)}
-  //     <path d="M46.7576 7.10415L23.6525 0.0375414C23.4841 -0.0119249 23.3033 -0.0136916 23.1366 0.039308L0.617679 7.10592C0.249177 7.22251 0 7.56348 0 7.95038V30.9169C0 40.5292 15.2507 50.3765 23.4262 52.9594C23.5122 52.9859 23.6017 53 23.6894 53C23.7771 53 23.8666 52.9859 23.9526 52.9594C32.1281 50.3765 47.3788 40.5292 47.3788 30.9169V7.95038C47.3788 7.56171 47.1261 7.21721 46.7576 7.10415Z" fillOpacity="0.5"/>
-  //     <circle cx="18" cy="26" r="2" fill="white"/>
-  //     <circle cx="24" cy="26" r="2" fill="white"/>
-  //     <circle cx="30" cy="26" r="2" fill="white"/>
-  //   </svg>
-  // ),
   verify: (className, title) => (
     <svg width="49" height="55" className={className} viewBox="0 0 48 53" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
@@ -822,8 +813,8 @@ const clIcons = {
       <circle cx="30" cy="26" r="2" fill="white" />
       <defs>
         <linearGradient id="paint0_linear" x1="47.3788" y1="-5.19608" x2="-0.506305" y2="52.5804" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#84939E" />
-          <stop offset="1" stop-color="#84939E" stop-opacity="0.21" />
+          <stop stopColor="#84939E" />
+          <stop offset="1" stopColor="#84939E" stopOpacity="0.21" />
         </linearGradient>
       </defs>
     </svg>

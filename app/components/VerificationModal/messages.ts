@@ -73,4 +73,16 @@ export default defineMessages({
     id: 'app.components.VerificationModal.userVerifiedSubtitle',
     defaultMessage: 'Your identity has been verified. You’re now a full member of the community on this platform.'
   },
+  participationConditions: {
+    id: 'app.components.VerificationModal.participationConditions',
+    defaultMessage: 'Participation conditions'
+  },
+  peopleMatchingConditions: {
+    id: 'app.components.VerificationModal.peopleMatchingConditions',
+    defaultMessage: 'People matching the following conditions:'
+  },
+  verifyNow: {
+    id: 'app.components.VerificationModal.verifyNow',
+    defaultMessage: 'Verify now'
+  },
 });

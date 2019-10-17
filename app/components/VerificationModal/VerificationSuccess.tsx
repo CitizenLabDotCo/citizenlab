@@ -27,6 +27,7 @@ const Container = styled.div`
 
 const ImageAvatarContainer = styled.div`
   position: relative;
+  margin-bottom: 30px;
 `;
 
 const StyledAvatar = styled(Avatar)`
@@ -77,7 +78,7 @@ export default memo<Props>(({ className }) => {
         <StyledAvatar userId={authUser.data.id} size="96px" verified/>
       </ImageAvatarContainer>
       <Title className="e2e-user-verified-success-modal-content">
-        <FormattedMessage {...messages.userVerifiedTitle} />
+        <strong><FormattedMessage {...messages.userVerifiedTitle} /></strong>
       </Title>
       <Subtitle>
         <FormattedMessage {...messages.userVerifiedSubtitle} />
