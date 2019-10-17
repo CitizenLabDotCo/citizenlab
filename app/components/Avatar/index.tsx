@@ -91,9 +91,9 @@ const ModeratorBadgeIcon: any = styled(Icon)`
 `;
 
 const VerifiedBadgeContainer: any = styled.div`
-  flex: 0 0 ${(props: any) => props.size / 3 + 5}px;
-  width: ${(props: any) => props.size / 3 + 5}px;
-  height: ${(props: any) => props.size / 3 + 5}px;
+  flex: 0 0 ${(props: any) => props.size / 2.5}px;
+  width: ${(props: any) => props.size / 2.5}px;
+  height: ${(props: any) => props.size / 2.5}px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,8 +107,8 @@ const VerifiedBadgeContainer: any = styled.div`
 const VerifiedBadgeIcon: any = styled(Icon)`
   color: ${colors.clGreen};
   fill: ${colors.clGreen};
-  stroke: ${(props: any) => props.b};
-  height: ${(props: any) => (props.size / 3) + 5}px;
+  stroke: ${(props: any) => props.bgColor};
+  height: ${(props: any) => props.size / 2.5}px;
 `;
 
 interface InputProps {

@@ -10,6 +10,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import messages from './messages';
 import clHistory from 'utils/cl-router/history';
 import { fontSizes, colors } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
 
 const Container = styled.div`
   color: ${colors.label};
@@ -29,6 +30,17 @@ const ProjectLink = styled.span`
   }
 `;
 
+const StyledButton = styled(Button)`
+  color: #1391A1;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+  display: inline-block
+`;
+
 interface InputProps {
   projectId: string;
   budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'];
@@ -38,17 +50,22 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class AssignBudgetDisabled extends PureComponent<Props, State> {
+  onVerify = () => {
+    console.log('TODO open modal');
+  }
 
   reasonToMessage = () => {
     const { disabled_reason, future_enabled } = this.props.budgetingDescriptor;
 
     if (disabled_reason && future_enabled) {
       return messages.budgetingDisabledFutureEnabled;
+    } else if (disabled_reason === 'not_verified') {
+      return messages.budgetingDisabledNotVerified;
     } else if (disabled_reason === 'not_permitted') {
       return messages.budgetingDisabledNotPermitted;
     }
@@ -82,7 +99,11 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
             projectName:
               <ProjectLink onClick={this.handleProjectLinkClick} role="navigation">
                 <T value={projectTitle} />
-              </ProjectLink>
+              </ProjectLink>,
+            verificationLink:
+              <StyledButton style="text" padding="0" onClick={this.onVerify}>
+                <FormattedMessage {...messages.verificationLinkText} />
+              </StyledButton>,
           }}
         />
       </Container>
