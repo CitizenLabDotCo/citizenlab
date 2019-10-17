@@ -26,6 +26,7 @@ import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
+import LodableVerficationSuccess from 'components/VerificationSuccessModal/LoadableVerificationSuccess';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -88,6 +89,7 @@ type State = {
   visible: boolean;
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
+  verifiedSuccessModalOpen: boolean | 'closed';
 };
 
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
@@ -107,7 +109,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       modalType: null,
       visible: true,
       userDeletedModalOpened: false,
-      userActuallyDeleted: false
+      userActuallyDeleted: false,
+      verifiedSuccessModalOpen: false
     };
     this.subscriptions = [];
   }
@@ -225,6 +228,17 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ userDeletedModalOpened: false });
   }
 
+  closeVerifiedSuccessModal = () => {
+    this.setState({ verifiedSuccessModalOpen: 'closed' });
+  }
+
+  componentDidUpdate() {
+    if (this.state.verifiedSuccessModalOpen !== 'closed'
+      && Object.keys(this.props.location.query).includes('verification_success')) {
+      this.setState({ verifiedSuccessModalOpen: true });
+    }
+  }
+
   render() {
     const { location, children } = this.props;
     const {
@@ -235,7 +249,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       modalType,
       visible,
       userDeletedModalOpened,
-      userActuallyDeleted
+      userActuallyDeleted,
+      verifiedSuccessModalOpen
     } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
@@ -268,6 +283,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                       close={this.closeUserDeletedModal}
                     >
                       <LoadableUserDeleted userActuallyDeleted={userActuallyDeleted} />
+                    </LoadableModal>
+                  </ErrorBoundary>
+
+                  <ErrorBoundary>
+                    <LoadableModal
+                      opened={verifiedSuccessModalOpen === true}
+                      close={this.closeVerifiedSuccessModal}
+                    >
+                      <LodableVerficationSuccess />
                     </LoadableModal>
                   </ErrorBoundary>
 

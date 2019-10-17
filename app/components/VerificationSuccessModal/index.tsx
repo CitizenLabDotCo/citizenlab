@@ -37,7 +37,7 @@ const StyledAvatar = styled(Avatar)`
 const Title = styled.h1`
   flex-shrink: 0;
   width: 100%;
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxl}px;
   line-height: 40px;
   font-weight: 500;
