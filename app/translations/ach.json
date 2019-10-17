@@ -286,6 +286,8 @@
   "app.components.Upload.onlyXImages": "",
   "app.components.Upload.remaining": "",
   "app.components.UserName.deletedUser": "",
+  "app.components.UserName.notVerified": "",
+  "app.components.UserName.verified": "",
   "app.components.UserSearch.addModerators": "",
   "app.components.UserSearch.noOptions": "",
   "app.components.UserSearch.searchUsers": "",
