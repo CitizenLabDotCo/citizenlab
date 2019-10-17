@@ -40,16 +40,14 @@ module Verification
         raise VerificationService::ParameterInvalidError.new("run") unless run_valid?(run)
         raise VerificationService::ParameterInvalidError.new("id_serial") unless id_serial_valid?(id_serial)
 
-        if cow_valid_citizen?(run, id_serial)
-          clean_id_serial(id_serial)
-        else
-          raise VerificationService::NoMatchError.new
-        end
+        cow_valid_citizen!(run, id_serial)
+
+        clean_id_serial(id_serial)
       end
 
       private
 
-      def cow_valid_citizen? run, id_serial
+      def cow_valid_citizen! run, id_serial
         client = Savon.client(SHARED_SAVON_CONFIG.merge({
           wsse_auth: [config[:api_username], config[:api_password]]
         }))
@@ -65,7 +63,7 @@ module Verification
           }
         )
 
-        valid_citizen?(response.body[:get_data_document_response].slice(:ind_vigencia, :ind_bloqueo))
+        valid_response!(response.body[:get_data_document_response].slice(:ind_vigencia, :ind_bloqueo, :estado_respuesta))
       end
 
       # A transaction is successful if it meets one of the following rules:
@@ -91,9 +89,12 @@ module Verification
       # **Both IndVigencia and IndBloqueo conditions must be met.
 
       # For all other combinations that do not fit in these 4 alternatives, they must be blocked from voting.
-      def valid_citizen? ind_vigencia:, ind_bloqueo:
-        ind_vigencia == "S" ||
-          (ind_vigencia == "N" && ["NO BLOQUEADO", "RENOVACION", "TEMPORAL"].include?(ind_bloqueo))
+      def valid_response! ind_vigencia: nil, ind_bloqueo: nil, estado_respuesta:
+        if estado_respuesta != '000'
+          raise VerificationService::NoMatchError.new
+        elsif not(ind_vigencia == "S" || (ind_vigencia == "N" && ["NO BLOQUEADO", "RENOVACION", "TEMPORAL"].include?(ind_bloqueo)))
+          raise VerificationService::NotEntitledError.new
+        end
       end
 
       def run_valid? run

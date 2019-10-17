@@ -75,9 +75,9 @@ services:
 
 secrets:
   cow_ssl_cert_file:
-    file: ./secrets/cow_ssl_cert_file
+    file: ${VERIFICATION_COW_SSL_CERT_FILE}
   cow_ssl_cert_key_file:
-    file: ./secrets/cow_ssl_cert_key_file
+    file: ${VERIFICATION_COW_SSL_CERT_KEY_FILE}
 
 volumes:
   redis:

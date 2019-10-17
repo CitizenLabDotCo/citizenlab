@@ -36,6 +36,40 @@ resource "Verifications" do
     after do
       savon.unmock!
     end
+
+
+    # Uncomment this and fill out the credentials to do a real, non-mocked test
+    # 
+    # describe do
+    #   before do
+    #     @tenant = Tenant.current
+    #     settings = @tenant.settings
+    #     settings['verification'] = {
+    #       allowed: true,
+    #       enabled: true,
+    #       verification_methods: [{
+    #         name: 'cow',
+    #         api_username:'usr_im_penalolen_01',
+    #         api_password: 'realpasswordhere', 
+    #         rut_empresa: 'realempresahere'
+    #       }],
+    #     }
+    #     @tenant.save!
+    #     savon.unmock!
+    #   end
+    #   let(:run) { "14.533.402-0" }
+    #   let(:id_serial) { "518.137.850" }
+    #   example_request "Verify with cow for real" do
+    #     expect(status).to eq(201)
+    #     expect(@user.reload.verified).to be true
+    #     expect(@user.verifications.first).to have_attributes({
+    #       method_name: "cow",
+    #       user_id: @user.id,
+    #       active: true,
+    #       hashed_uid: '6260dc3f1756c9f3aa431798d855a98c4383ba64c73fd3e87e47f839fc7f112e'
+    #     })
+    #   end
+    # end
     
 
     describe do
@@ -80,6 +114,26 @@ resource "Verifications" do
         expect(status).to eq (422)
         json_response = json_parse(response_body)
         expect(json_response).to eq ({:errors => {:base=>[{:error=>"no_match"}]}})
+      end
+    end
+
+    describe do
+      let(:run) { "11.111.111-1" }
+      let(:id_serial) { "A001529382" }
+      example"[error] Verify with cow with a match that's not entitled to verification" do
+        savon.expects(:get_data_document)
+          .with(message: {
+            "typens:RUTEmpresa" => 'fake_rut_empresa',
+            "typens:DVEmpresa" => 'k',
+            "typens:CodTipoDocumento" => 'C',
+            "typens:NumRUN" => '11111111',
+            "typens:NumSerie" => '001529382',
+          })
+          .returns(File.read("engines/verification/spec/fixtures/get_data_document_match_no_citizen.xml"))
+        do_request
+        expect(status).to eq (422)
+        json_response = json_parse(response_body)
+        expect(json_response).to eq ({:errors => {:base=>[{:error=>"not_entitled"}]}})
       end
     end
 
