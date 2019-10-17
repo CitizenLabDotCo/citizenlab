@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash-es';
 import { stripHtmlTags } from 'utils/helperUtils';
+import styled from 'styled-components';
 
 // Components
 import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter } from 'components/UI/FormComponents';
@@ -18,6 +19,10 @@ import Error from 'components/UI/Error';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { IMessageInfo, injectIntl } from 'utils/cl-intl';
+
+const Form = styled.form`
+  padding-bottom: 103px;
+`;
 
 export interface SimpleFormValues {
   title_multiloc: Multiloc | undefined | null;
@@ -72,7 +77,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
   }
   static titleMinLength = 10;
   static bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 500;
-  static requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids', 'image'];
+  static requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
 
   componentDidMount() {
     const errors = {};
@@ -201,7 +206,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     const status = Object.values(errors).every(val => val === undefined) ? 'enabled' : 'disabled';
 
     return (
-      <form id="initiative-form">
+      <Form id="initiative-form">
         <FormSection>
           <FormSectionTitle message={messages.formGeneralSectionTitle} />
 
@@ -313,6 +318,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.imageUploadLabel}
               subtextMessage={messages.imageUploadLabelSubtext}
+              optional
             />
             <ImageDropzone
               id="iniatiative-img-dropzone"
@@ -349,7 +355,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
           processing={publishing}
           onSubmit={this.props.onPublish}
         />
-      </form>
+      </Form>
     );
   }
 }

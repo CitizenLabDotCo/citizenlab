@@ -39,11 +39,6 @@ const Container: any = styled(Link)`
   `}
 `;
 
-const LocationIcon = styled(Icon)`
-  height: 20px;
-  margin-right: 7px;
-`;
-
 const LocationIndication = styled.div`
   position: absolute;
   top: 10px;
@@ -53,6 +48,12 @@ const LocationIndication = styled.div`
   background: rgba(0, 0, 0, 0.75);
   border-radius: ${({ theme }) => theme.borderRadius};
   padding: 7px 10px;
+`;
+
+const LocationIcon = styled(Icon)`
+  height: 20px;
+  width: 20px;
+  margin-right: 7px;
 `;
 
 const SuccessIndication = styled.span`
