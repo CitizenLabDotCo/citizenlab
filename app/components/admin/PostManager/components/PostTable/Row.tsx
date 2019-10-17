@@ -15,9 +15,9 @@ import styled from 'styled-components';
 const IdeaRow = lazy(() => import('./IdeaRow'));
 const InitiativeRow = lazy(() => import('./InitiativeRow'));
 
-export const StyledRow = styled.tr`
+export const StyledRow = styled.tr<{ undraggable: boolean }>`
   height: 5.7rem !important;
-  cursor: move;
+  cursor: ${({ undraggable }) => undraggable ? 'pointer' : 'move'};
 `;
 
 export const FilterCell = styled.td`

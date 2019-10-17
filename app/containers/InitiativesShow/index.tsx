@@ -561,7 +561,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
                 <ContentFooter
                   postType="initiative"
-                  id={initiativeId}
+                  postId={initiativeId}
                   publishedAt={initiativePublishedAt}
                   commentsCount={initiative.attributes.comments_count}
                 />
