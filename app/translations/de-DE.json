@@ -286,6 +286,8 @@
   "app.components.Upload.onlyXImages": "Sie können nur {maxItemsCount} Bilder hochladen",
   "app.components.Upload.remaining": "restliche",
   "app.components.UserName.deletedUser": "unbekannter Autor",
+  "app.components.UserName.notVerified": "",
+  "app.components.UserName.verified": "",
   "app.components.UserSearch.addModerators": "Hinzufügen",
   "app.components.UserSearch.noOptions": "No options",
   "app.components.UserSearch.searchUsers": "Search users",

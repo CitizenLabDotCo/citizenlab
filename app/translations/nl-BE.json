@@ -286,6 +286,8 @@
   "app.components.Upload.onlyXImages": "Je kunt slechts {maxItemsCount} afbeeldingen uploaden",
   "app.components.Upload.remaining": "overblijvend",
   "app.components.UserName.deletedUser": "onbekende auteur",
+  "app.components.UserName.notVerified": "",
+  "app.components.UserName.verified": "",
   "app.components.UserSearch.addModerators": "Toevoegen",
   "app.components.UserSearch.noOptions": "Geen opties",
   "app.components.UserSearch.searchUsers": "Zoek gebruikers",
