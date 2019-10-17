@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
 import { isEmpty, get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Input from 'components/UI/Input';
@@ -20,9 +19,6 @@ import { FormattedHTMLMessage } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
-import { darken } from 'polished';
-
 const Container = styled.div`
   width: 100%;
   display: flex;
@@ -61,10 +57,11 @@ const CancelButton = styled(Button)``;
 
 interface Props {
   onCancel: () => void;
+  onVerified: () => void;
   className?: string;
 }
 
-const VerificationFormCOW = memo<Props>(({ onCancel, className }) => {
+const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) => {
 
   const [run, setRun] = useState<string>('');
   const [idSerial, setIdSerial] = useState<string>('');
@@ -104,12 +101,15 @@ const VerificationFormCOW = memo<Props>(({ onCancel, className }) => {
     if (!hasEmptyFields) {
       try {
         await verifyCOW(run, idSerial);
+        onVerified();
       } catch (error) {
 
         if (get(error, 'errors.base[0].error') === 'taken') {
           setFormError(<FormattedMessage {...messages.takenFormError} />);
         } else if (get(error, 'errors.base[0].error') === 'no_match') {
           setFormError(<FormattedMessage {...messages.noMatchFormError} />);
+        } else if (get(error, 'errors.base[0].error') === 'not_entitled') {
+          setFormError(<FormattedMessage {...messages.notEntitledFormError} />);
         } else if (get(error, 'errors.run[0].error') === 'invalid') {
           setRunError(<FormattedMessage {...messages.invalidRunError} />);
         } else if (get(error, 'errors.id_serial[0].error') === 'invalid') {

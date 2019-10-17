@@ -5,11 +5,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import Icon from 'components/UI/Icon';
 import Avatar from 'components/Avatar';
 import Button from 'components/UI/Button';
+import { Title } from './styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useVerificationMethods from 'hooks/useVerificationMethods';
-import { Title } from './styles';
 
 // i18n
 import messages from './messages';
@@ -51,6 +50,12 @@ const ShieldIcon = styled(Icon)`
   margin-left: -5px;
 `;
 
+const Content = styled.div`
+  display: flex;
+`;
+
+const Context = styled.div``;
+
 const ButtonsContainer = styled.div`
   width: 100%;
   max-width: 420px;
@@ -67,15 +72,14 @@ const ButtonsContainer = styled.div`
 `;
 
 interface Props {
+  withContext: boolean;
   onMethodSelected: (selectedMethod: VerificationMethodNames) => void;
   className?: string;
 }
 
-const VerificationMethods = memo<Props>(({ onMethodSelected, className }) => {
+const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, className }) => {
 
   const authUser = useAuthUser();
-  // const verificationMethods = useVerificationMethods();
-  // console.log(verificationMethods);
 
   const onVerifyCowButtonClick = useCallback(() => {
     onMethodSelected('cow');
@@ -85,31 +89,38 @@ const VerificationMethods = memo<Props>(({ onMethodSelected, className }) => {
     <Container className={className}>
       <AboveTitle>
         <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
-        <ShieldIcon name="shield_verification" />
+        <ShieldIcon name="verify" />
       </AboveTitle>
       <Title>
         <FormattedHTMLMessage {...messages.verifyYourIdentityWithoutContext} />
       </Title>
-      <ButtonsContainer>
-        <Button
-          icon="verify_manually"
-          onClick={onVerifyCowButtonClick}
-          fullWidth={true}
-          size="2"
-          justify="left"
-          padding="20px 20px"
-          bgColor="#fff"
-          bgHoverColor="#fff"
-          textColor={colors.text}
-          textHoverColor={darken(0.2, colors.text)}
-          borderColor="#e3e3e3"
-          borderHoverColor={darken(0.2, '#e3e3e3')}
-          boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
-          boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
-        >
-          <FormattedMessage {...messages.verifyCow}/>
-        </Button>
-      </ButtonsContainer>
+      <Content>
+        {withContext &&
+          <Context>
+            Context comes here
+          </Context>
+        }
+        <ButtonsContainer>
+          <Button
+            icon="verify_manually"
+            onClick={onVerifyCowButtonClick}
+            fullWidth={true}
+            size="2"
+            justify="left"
+            padding="20px 20px"
+            bgColor="#fff"
+            bgHoverColor="#fff"
+            textColor={colors.text}
+            textHoverColor={darken(0.2, colors.text)}
+            borderColor="#e3e3e3"
+            borderHoverColor={darken(0.2, '#e3e3e3')}
+            boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
+            boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+          >
+            <FormattedMessage {...messages.verifyCow}/>
+          </Button>
+        </ButtonsContainer>
+      </Content>
     </Container>
   );
 });

@@ -6,7 +6,7 @@ import { get } from 'lodash-es';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
-export type IdeaCommentingDisabledReason = 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | null;
+export type IdeaCommentingDisabledReason = 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | 'not_verified' | null;
 
 export interface IIdeaData {
   id: string;
@@ -45,7 +45,7 @@ export interface IIdeaData {
       budgeting: {
         enabled: boolean,
         future_enabled: string | null,
-        disabled_reason: 'project_inactive' | 'idea_not_in_current_phase' | 'not_permitted' | null,
+        disabled_reason: 'project_inactive' | 'idea_not_in_current_phase' | 'not_permitted' | 'not_verified' | null,
       }
     }
   };

@@ -26,6 +26,8 @@ import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
+import VerificationModal from 'components/VerificationModal';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -44,7 +46,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import ErrorBoundary from 'components/ErrorBoundary';
+import { VerificationModalSteps } from 'components/VerificationModal/VerificationModal';
 
 const Container = styled.div`
   background: #fff;
@@ -88,6 +90,8 @@ type State = {
   visible: boolean;
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
+  verificationModalOpened: boolean;
+  verificationModalInitialStep: VerificationModalSteps;
 };
 
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
@@ -107,7 +111,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       modalType: null,
       visible: true,
       userDeletedModalOpened: false,
-      userActuallyDeleted: false
+      userActuallyDeleted: false,
+      verificationModalOpened: false,
+      verificationModalInitialStep: null
     };
     this.subscriptions = [];
   }
@@ -184,6 +190,14 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         this.openPostPageModal(id, slug, type);
       }),
 
+      eventEmitter.observeEvent<VerificationModalSteps>('openVerificationModal').subscribe(({ eventValue }) => {
+        this.openVerificationModal(eventValue);
+      }),
+
+      eventEmitter.observeEvent<VerificationModalSteps>('closeVerificationModal').subscribe(() => {
+        this.closeVerificationModal();
+      }),
+
       eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
         this.closePostPageModal();
       }),
@@ -225,6 +239,26 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ userDeletedModalOpened: false });
   }
 
+  openVerificationModal = (initialActiveStep: VerificationModalSteps) => {
+    this.setState({
+      verificationModalOpened: true,
+      verificationModalInitialStep: initialActiveStep
+    });
+  }
+
+  closeVerificationModal = () => {
+    this.setState({
+      verificationModalOpened: false,
+      verificationModalInitialStep: null
+    });
+  }
+
+  componentDidUpdate() {
+    if (!this.state.verificationModalOpened && Object.keys(this.props.location.query).includes('verification_success')) {
+      this.openVerificationModal('success');
+    }
+  }
+
   render() {
     const { location, children } = this.props;
     const {
@@ -235,7 +269,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       modalType,
       visible,
       userDeletedModalOpened,
-      userActuallyDeleted
+      userActuallyDeleted,
+      verificationModalOpened,
+      verificationModalInitialStep
     } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
@@ -269,6 +305,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                     >
                       <LoadableUserDeleted userActuallyDeleted={userActuallyDeleted} />
                     </LoadableModal>
+                  </ErrorBoundary>
+
+                  <ErrorBoundary>
+                    <Suspense fallback={null}>
+                      <VerificationModal opened={verificationModalOpened} initialActiveStep={verificationModalInitialStep} />
+                    </Suspense>
                   </ErrorBoundary>
 
                   <ErrorBoundary>
