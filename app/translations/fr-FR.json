@@ -189,6 +189,7 @@
   "app.components.InitiativesShowPage.goBack": "Retour",
   "app.components.InitiativesShowPage.goBackToList": "Retour à la liste",
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Aucune initiative n'est disponible ici.",
+  "app.components.Modal.closeModal": "",
   "app.components.PagesForm.dontChange": "Ne changez pas cela (sauf si vous savez vraiment ce que vous faîtes !)",
   "app.components.PagesForm.editContent": "Contenu",
   "app.components.PagesForm.fileUploadLabel": "Pièces jointes (max. 50Mo)",
