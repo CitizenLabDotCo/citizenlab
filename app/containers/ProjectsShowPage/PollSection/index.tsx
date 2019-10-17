@@ -11,6 +11,7 @@ import { pollTakingState, DisabledReasons } from 'services/pollTakingRules';
 import FormCompleted from './FormCompleted';
 import PollForm from './PollForm';
 import Warning from 'components/UI/Warning';
+import Button from 'components/UI/Button';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -24,6 +25,17 @@ const Container = styled.div`
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
+`;
+
+const StyledButton = styled(Button) `
+  color: #1391A1;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+  display: inline-block
 `;
 
 // Didn't manage to strongly type this component, here are the two typings it can actually have
@@ -58,10 +70,15 @@ const disabledMessages: { [key in Partial<DisabledReasons>]: ReactIntl.Formatted
   maybeNotPermitted: messages.pollDisabledMaybeNotPermitted,
   notPermitted: messages.pollDisabledNotPermitted,
   notActivePhase: messages.pollDisabledNotActivePhase,
+  notVerified: messages.pollDisabledNotVerified,
   alreadyResponded: messages.pollDisabledNotPossible // will not be used
 };
 
 export class PollSection extends PureComponent<Props> {
+  onVerify = () => {
+    console.log('TODO open modal');
+  }
+
   render() {
     const { pollQuestions, projectId, phaseId, project, phase, type, authUser } = this.props;
     if (isNilOrError(pollQuestions) || isNilOrError(project) || type === 'phases' && isNilOrError(phase)) {
@@ -77,7 +94,12 @@ export class PollSection extends PureComponent<Props> {
           : <>
             {!enabled &&
               <StyledWarning icon="lock">
-                <FormattedMessage {...message} />
+                <FormattedMessage
+                  {...message}
+                  values={{
+                    verificationLink: <StyledButton style="text" padding="0" onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
+                  }}
+                />
               </StyledWarning>
             }
             {enabled && isNilOrError(authUser) &&
