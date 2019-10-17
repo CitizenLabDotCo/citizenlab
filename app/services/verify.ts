@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
-export interface IVerification {
+export interface IVerifiedResponse {
   verification: {
     run: string,
     id_serial: string
@@ -9,7 +9,7 @@ export interface IVerification {
 }
 
 export function verifyCOW(run: string, id_serial: string) {
-  return streams.add<IVerification>(`${API_PATH}/verification_methods/cow/verification`, {
+  return streams.add<IVerifiedResponse>(`${API_PATH}/verification_methods/cow/verification`, {
     verification: {
       run,
       id_serial
