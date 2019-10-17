@@ -105,6 +105,11 @@ class VotingDisabled extends PureComponent<Props, State> {
         <T value={projectTitle} />
       </ProjectLink>
     );
+    const verificationLink = (
+      <StyledButton onClick={this.onVerify}>
+        <FormattedMessage {...messages.verificationLinkText} />
+      </StyledButton>
+    );
 
     return (
       <Container>
@@ -113,10 +118,7 @@ class VotingDisabled extends PureComponent<Props, State> {
           values={{
             enabledFromDate,
             projectName,
-            verificationLink:
-              <StyledButton onClick={this.onVerify}>
-                <FormattedMessage {...messages.verificationLinkText} />
-              </StyledButton>,
+            verificationLink
           }}
         />
       </Container>

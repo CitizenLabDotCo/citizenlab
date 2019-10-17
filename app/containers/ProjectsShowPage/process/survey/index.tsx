@@ -7,7 +7,6 @@ import TypeformSurvey from './TypeformSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
 import GoogleFormsSurvey from './GoogleFormsSurvey';
 import Warning from 'components/UI/Warning';
-import Button from 'components/UI/Button';
 
 // services
 import { surveyTakingState, DisabledReasons } from 'services/surveyTakingRules';
