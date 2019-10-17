@@ -1,10 +1,11 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
-
+require 'savon/mock/spec_helper'
 
 resource "Verifications" do
  
   explanation "A Verifications is an attempt from a user to get verified"
+  include Savon::SpecHelper
 
   before do
     @user = create(:user)
@@ -16,7 +17,7 @@ resource "Verifications" do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{name: 'cow'}],
+      verification_methods: [{name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa'}],
     }
     @tenant.save!
   end
@@ -27,10 +28,29 @@ resource "Verifications" do
       parameter :id_serial, "The ID card serial number of the citizen", required: true
     end
 
+    before do
+      savon.mock!
+      stub_request(:get, "https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService?wsdl")
+         .to_return(status: 200, body: File.read("engines/verification/spec/fixtures/cow_wsdl.xml"), headers: {})
+    end
+    after do
+      savon.unmock!
+    end
+    
     let(:run) { "12.025.365-6" }
     let(:id_serial) { "A001529382" }
 
-    example_request "Verify with cow" do
+    example "Verify with cow" do
+      savon.expects(:get_data_document)
+        .with(message: {
+          "typens:RUTEmpresa" => 'fake_rut_empresa',
+          "typens:DVEmpresa" => 'k',
+          "typens:CodTipoDocumento" => 'C',
+          "typens:NumRUN" => '12025365',
+          "typens:NumSerie" => '001529382',
+        })
+        .returns(File.read("engines/verification/spec/fixtures/get_data_document_match.xml"))
+      do_request
       expect(status).to eq(201)
       expect(@user.reload.verified).to be true
       expect(@user.verifications.first).to have_attributes({

@@ -29,3 +29,6 @@ public/uploads
 doc/
 
 .custom_env
+
+secrets/*
+!secrets/*.sample
