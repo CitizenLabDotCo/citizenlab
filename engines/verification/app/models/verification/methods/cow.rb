@@ -65,7 +65,7 @@ module Verification
           }
         )
 
-        valid_citizen?(response.body[:get_data_document_response])
+        valid_citizen?(response.body[:get_data_document_response].slice(:ind_vigencia, :ind_bloqueo))
       end
 
       # A transaction is successful if it meets one of the following rules:
