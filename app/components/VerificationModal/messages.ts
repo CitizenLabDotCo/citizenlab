@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'app.components.VerificationModal.noMatchFormError',
     defaultMessage: 'No match was found.',
   },
+  notEntitledFormError: {
+    id: 'app.components.VerificationModal.notEntitledFormError',
+    defaultMessage: 'Not entitled.',
+  },
   submit: {
     id: 'app.components.VerificationModal.submit',
     defaultMessage: 'Submit',
@@ -60,5 +64,13 @@ export default defineMessages({
   cancel: {
     id: 'app.components.VerificationModal.cancel',
     defaultMessage: 'Cancel',
+  },
+  userVerifiedTitle: {
+    id: 'app.components.VerificationModal.userVerifiedTitle',
+    defaultMessage: 'You’re now verified !'
+  },
+  userVerifiedSubtitle: {
+    id: 'app.components.VerificationModal.userVerifiedSubtitle',
+    defaultMessage: 'Your identity has been verified. You’re now a full member of the community on this platform.'
   },
 });

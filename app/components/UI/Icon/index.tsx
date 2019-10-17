@@ -362,15 +362,6 @@ const icons = {
       <path d="M20.644 3.021L10.644 0.021C10.55 -0.007 10.451 -0.007 10.357 0.021L0.357 3.021C0.145 3.085 0 3.279 0 3.5V14.5C0 18.922 6.742 22.854 10.352 23.978C10.4 23.993 10.45 24 10.5 24C10.55 24 10.6 23.993 10.648 23.978C14.258 22.855 21 18.922 21 14.5V3.5C21 3.279 20.855 3.085 20.644 3.021ZM16.854 8.854L9.854 15.854C9.756 15.951 9.628 16 9.5 16C9.372 16 9.244 15.951 9.146 15.854L5.146 11.854C4.951 11.659 4.951 11.342 5.146 11.147C5.341 10.952 5.658 10.952 5.853 11.147L9.5 14.793L16.146 8.147C16.341 7.952 16.658 7.952 16.853 8.147C17.048 8.342 17.049 8.658 16.854 8.854Z" fill="#8C680D" />
     </svg>
   ),
-  shield_verification: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="48" height="53" viewBox="0 0 48 53" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {injectTitle(title)}
-      <path d="M46.7576 7.10415L23.6525 0.0375414C23.4841 -0.0119249 23.3033 -0.0136916 23.1366 0.039308L0.617679 7.10592C0.249177 7.22251 0 7.56348 0 7.95038V30.9169C0 40.5292 15.2507 50.3765 23.4262 52.9594C23.5122 52.9859 23.6017 53 23.6894 53C23.7771 53 23.8666 52.9859 23.9526 52.9594C32.1281 50.3765 47.3788 40.5292 47.3788 30.9169V7.95038C47.3788 7.56171 47.1261 7.21721 46.7576 7.10415Z" fillOpacity="0.5"/>
-      <circle cx="18" cy="26" r="2" fill="white"/>
-      <circle cx="24" cy="26" r="2" fill="white"/>
-      <circle cx="30" cy="26" r="2" fill="white"/>
-    </svg>
-  ),
   blankPage: (className, title) => (
     <svg className={`cl-icon ${className ? className : ''}`} width="53" height="70" viewBox="0 0 53 70" fill="none">
       {injectTitle(title)}
@@ -807,12 +798,21 @@ const clIcons = {
     </svg>
   ),
   'checkmark-full': (className, title) => (
-    <svg width="25" height="25" className={className} viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={className} viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
-      <circle cx="12.8461" cy="13.3846" r="11.1154" stroke-width="3" />
+      <circle cx="12.8461" cy="13.3846" r="11.1154" strokeWidth="3" />
       <path d="M10.5245 19.2308L7 15.7436L8.17483 14.5812L10.5245 16.906L18.7483 8.76923L19.9231 9.93162L10.5245 19.2308Z" fill="white" strokeWidth="0" />
     </svg>
   ),
+  // shield_verification: (className, title) => (
+  //   <svg className={`cl-icon ${className ? className : ''}`} width="48" height="53" viewBox="0 0 48 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+  //     {injectTitle(title)}
+  //     <path d="M46.7576 7.10415L23.6525 0.0375414C23.4841 -0.0119249 23.3033 -0.0136916 23.1366 0.039308L0.617679 7.10592C0.249177 7.22251 0 7.56348 0 7.95038V30.9169C0 40.5292 15.2507 50.3765 23.4262 52.9594C23.5122 52.9859 23.6017 53 23.6894 53C23.7771 53 23.8666 52.9859 23.9526 52.9594C32.1281 50.3765 47.3788 40.5292 47.3788 30.9169V7.95038C47.3788 7.56171 47.1261 7.21721 46.7576 7.10415Z" fillOpacity="0.5"/>
+  //     <circle cx="18" cy="26" r="2" fill="white"/>
+  //     <circle cx="24" cy="26" r="2" fill="white"/>
+  //     <circle cx="30" cy="26" r="2" fill="white"/>
+  //   </svg>
+  // ),
   verify: (className, title) => (
     <svg width="49" height="55" className={className} viewBox="0 0 48 53" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
