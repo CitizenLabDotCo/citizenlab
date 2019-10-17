@@ -28,9 +28,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { InjectedIntlProps, FormattedNumber } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
-import messages from './messages';
+import { FormattedNumber } from 'react-intl';
 
 // styles
 import styled from 'styled-components';
@@ -124,7 +122,7 @@ interface State {
   showAssignBudgetDisabled: 'unauthenticated' | 'assignBudgetDisabled' | null;
 }
 
-class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
+class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -165,7 +163,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
 
   render() {
     const { idea, ideaImage, ideaAuthor, tenant, participationMethod, participationContextId, participationContextType, localize } = this.props;
-    const { formatMessage } = this.props.intl;
     const { showVotingDisabled, showAssignBudgetDisabled } = this.state;
 
     if (
@@ -178,12 +175,10 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
       const commentingDescriptor: IIdeaData['attributes']['action_descriptor']['commenting'] | null = get(idea, 'attributes.action_descriptor.commenting', null);
       const budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'] | null = get(idea, 'attributes.action_descriptor.budgeting', null);
       const projectId: string | null = get(idea, 'relationships.project.data.id', null);
-      const orgName = localize(tenant.attributes.settings.core.organization_name);
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const ideaAuthorId = !isNilOrError(ideaAuthor) ? ideaAuthor.id : null;
       const ideaBudget = idea.attributes.budget;
       const ideaImageUrl: string | null = get(ideaImage, 'attributes.versions.medium', null);
-      const ideaImageAltText = orgName && ideaTitle ? formatMessage(messages.imageAltText, { orgName, ideaTitle }) : null;
       const tenantCurrency = tenant.attributes.settings.core.currency;
       const className = [
         this.props.className,
@@ -200,7 +195,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
           onClick={this.onCardClick}
           to={`/ideas/${idea.attributes.slug}`}
           imageUrl={ideaImageUrl}
-          imageAltText={ideaImageAltText}
           header={participationMethod === 'budgeting' && ideaBudget ?
             <IdeaBudget>
               <FormattedNumber
@@ -301,7 +295,7 @@ const Data = adopt<DataProps, InputProps>({
   ideaAuthor: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
-const IdeaCardWithHoC = injectIntl(injectLocalize(IdeaCard));
+const IdeaCardWithHoC = injectLocalize(IdeaCard);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
