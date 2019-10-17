@@ -60,13 +60,15 @@ jobs:
     environment:
       RAILS_ENV: test
     steps:
+      - checkout:
+          path: /tmp/cl2-back
+      - run: |
+          mkdir -p /run/secrets
+          cp /tmp/cl2-back/secrets/* /run/secrets/.
       - wait-for-postgres
       - run: |
           rake db:create
           rake db:schema:load
-      - run: |
-          mkdir -p /run/secrets
-          cp secrets/* /run/secrets/.
       - run: |
           TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
           echo $TESTFILES
