@@ -5,6 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
+import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { getUserName } from 'services/users';
@@ -39,7 +40,7 @@ const AvatarIcon: any = styled(Icon)`
   transition: all 100ms ease-out;
 `;
 
- export const Container: any = styled.div`
+export const Container: any = styled.div`
   flex: 0 0 ${(props: any) => props.size};
   width: ${(props: any) => props.size};
   height: ${(props: any) => props.size};
@@ -133,9 +134,9 @@ interface DataProps {
   user: GetUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
@@ -164,7 +165,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
       const imageSize = (parseInt(size, 10) > 160 ? 'large' : 'medium');
       const avatarSrc = user.attributes.avatar && user.attributes.avatar[imageSize];
       const userName = getUserName(user);
-      const containerSize =  `${parseInt(size, 10) + (parseInt(padding as string, 10) * 2) + (parseInt(borderThickness as string, 10) * 2)}px`;
+      const containerSize = `${parseInt(size, 10) + (parseInt(padding as string, 10) * 2) + (parseInt(borderThickness as string, 10) * 2)}px`;
       const numberSize = parseInt(size, 10);
 
       return (
@@ -186,24 +187,26 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
               size={size}
             />
           ) : (
-            <AvatarIcon
-              className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
-              name="user"
-              title={<FormattedMessage {...messages.noAvatarAltText} />}
-              size={size}
-              fillColor={fillColor}
-              fillHoverColor={fillHoverColor}
-            />
-          )}
+              <AvatarIcon
+                className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
+                name="user"
+                title={<FormattedMessage {...messages.noAvatarAltText} />}
+                size={size}
+                fillColor={fillColor}
+                fillHoverColor={fillHoverColor}
+              />
+            )}
           {moderator && (
             <ModeratorBadgeContainer size={numberSize} bgColor={bgColor}>
               <ModeratorBadgeIcon name="clLogo" size={numberSize} />
             </ModeratorBadgeContainer>
           )}
-          {verified && (
-            <VerifiedBadgeContainer size={numberSize}  bgColor={bgColor}>
-              <VerifiedBadgeIcon name="checkmark-full" size={numberSize} bgColor={bgColor} />
-            </VerifiedBadgeContainer>
+          {user.attributes.is_verified && verified && (
+            <FeatureFlag name="verification">
+              <VerifiedBadgeContainer size={numberSize} bgColor={bgColor}>
+                <VerifiedBadgeIcon name="checkmark-full" size={numberSize} bgColor={bgColor} />
+              </VerifiedBadgeContainer>
+            </FeatureFlag>
           )}
         </Container>
       );
