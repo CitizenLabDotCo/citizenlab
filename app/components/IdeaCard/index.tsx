@@ -222,7 +222,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
             />
           }
           footer={
-            <>
+            <div aria-live="polite">
               {!showVotingDisabled && !showAssignBudgetDisabled &&
                 <FooterInner>
                   {participationMethod !== 'budgeting' &&
@@ -284,7 +284,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
                   </DisabledWrapper>
                 </BottomBounceUp>
               }
-            </>
+            </div>
           }
         />
       );
