@@ -11,7 +11,10 @@ import ProgressBar from 'components/UI/ProgressBar';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 import T from 'components/T';
 import { get } from 'lodash-es';
@@ -138,8 +141,8 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
         {statusCode === 'proposed' &&
           <div>
             <VoteCounter>
-              <VoteIcon name="upvote" />
-              <VoteText>
+              <VoteIcon name="upvote" ariaHidden />
+              <VoteText aria-hidden>
                 <b  className="e2e-initiative-card-vote-count">{voteCount}</b>
                 <span className="division-bar">/</span>
                 {voteLimit}
@@ -151,13 +154,22 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
               bgColor={colors.lightGreyishBlue}
               bgShaded={false}
             />
+            <ScreenReaderOnly>
+              <FormattedMessage
+                {...messages.xVotesOfY}
+                values={{
+                  xVotes: <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />,
+                  votingThreshold: voteLimit
+                }}
+              />
+            </ScreenReaderOnly>
           </div>
         }
 
         {statusCode === 'expired' &&
           <div>
             <ExpiredText>
-              <ExpiredIcon name="clock" />
+              <ExpiredIcon name="clock" ariaHidden />
               <T value={initiativeStatus.attributes.title_multiloc} />
             </ExpiredText>
             <StyledProgressBar
@@ -172,12 +184,21 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
         {statusCode === 'threshold_reached' &&
           <div>
             <VoteCounter>
-              <VoteIcon name="upvote" />
-              <VoteText>
+              <VoteIcon name="upvote" ariaHidden />
+              <VoteText aria-hidden>
                 <b>{voteCount}</b>
                 <span className="division-bar">/</span>
                 {voteLimit}
               </VoteText>
+              <ScreenReaderOnly>
+                <FormattedMessage
+                  {...messages.xVotesOfY}
+                  values={{
+                    xVotes: <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />,
+                    votingThreshold: voteLimit
+                  }}
+                />
+              </ScreenReaderOnly>
             </VoteCounter>
             <StyledProgressBar
               progress={voteCount / voteLimit}
@@ -192,7 +213,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
           <AnsweredStatusBadge
             color={initiativeStatus.attributes.color}
           >
-            <AnsweredBadgeIcon name="round-checkmark" />
+            <AnsweredBadgeIcon name="round-checkmark" ariaHidden />
             <BadgeLabel>
               <T value={initiativeStatus.attributes.title_multiloc} />
             </BadgeLabel>
@@ -203,7 +224,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
           <IneligibleStatusBadge
             color={initiativeStatus.attributes.color}
           >
-            <IneligibleBadgeIcon name="halt" />
+            <IneligibleBadgeIcon name="halt" ariaHidden />
             <BadgeLabel>
               <T value={initiativeStatus.attributes.title_multiloc} />
             </BadgeLabel>
