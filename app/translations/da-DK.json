@@ -189,6 +189,7 @@
   "app.components.InitiativesShowPage.goBack": "Gå tilbage",
   "app.components.InitiativesShowPage.goBackToList": "Gå tilbage til listen",
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Intet initiativ fundet her.",
+  "app.components.Modal.closeModal": "",
   "app.components.PagesForm.dontChange": "Lav ikke om på dette! (medmindre du virkelig ved hvad du laver)",
   "app.components.PagesForm.editContent": "Indhold",
   "app.components.PagesForm.fileUploadLabel": "Attachments (max. 50MB)",

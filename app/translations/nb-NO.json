@@ -189,6 +189,7 @@
   "app.components.InitiativesShowPage.goBack": "Go back",
   "app.components.InitiativesShowPage.goBackToList": "Go back to the list",
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "No initiative was found here.",
+  "app.components.Modal.closeModal": "",
   "app.components.PagesForm.dontChange": "Don't change this! (unless you really know what you're doing)",
   "app.components.PagesForm.editContent": "Content",
   "app.components.PagesForm.fileUploadLabel": "Attachments (max. 50MB)",
