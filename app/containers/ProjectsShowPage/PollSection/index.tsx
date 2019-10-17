@@ -11,7 +11,6 @@ import { pollTakingState, DisabledReasons } from 'services/pollTakingRules';
 import FormCompleted from './FormCompleted';
 import PollForm from './PollForm';
 import Warning from 'components/UI/Warning';
-import Button from 'components/UI/Button';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -27,7 +26,7 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
 `;
 
-const StyledButton = styled(Button) `
+const StyledButton = styled.button`
   color: #1391A1;
   text-decoration: underline;
   transition: all 100ms ease-out;
@@ -35,7 +34,8 @@ const StyledButton = styled(Button) `
   &:hover {
     text-decoration: underline;
   }
-  display: inline-block
+  display: inline-block;
+  padding: 0;
 `;
 
 // Didn't manage to strongly type this component, here are the two typings it can actually have
@@ -97,7 +97,7 @@ export class PollSection extends PureComponent<Props> {
                 <FormattedMessage
                   {...message}
                   values={{
-                    verificationLink: <StyledButton style="text" padding="0" onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
+                    verificationLink: <StyledButton onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
                   }}
                 />
               </StyledWarning>
