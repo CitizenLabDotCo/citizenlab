@@ -39,6 +39,7 @@ module Verification
     end
 
     class NoMatchError < StandardError; end
+    class NotEntitledError < StandardError; end
     class VerificationTakenError < StandardError; end
     class ParameterInvalidError < StandardError; end
 

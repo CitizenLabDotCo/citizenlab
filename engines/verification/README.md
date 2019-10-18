@@ -56,11 +56,14 @@ module Verification
       # from the point of view of the verification method. The system will
       # compare against this identifier to make sure multiple users aren't using
       # the same identity.
-      # 
+      
       # It's the responsibility of `verify_sync` to raise any of the following
       # exceptions if verification doesn't work out:
       # * VerificationService::NoMatchError When there's no match using the method
-      # * VerificationService::ParameterInvalidError When a given input parameter is invalid
+      # * VerificationService::NotEntitledError When the citizen is found, but 
+      #   doesn't have sufficient civil rights to be considered verified
+      # * VerificationService::ParameterInvalidError When a given input parameter 
+      #   is invalid
       def verify_sync dna_string:
         raise ParameterInvalidError.new("dna_string") if invalid_dna?(dna_string)
         response = check_dna_db(
@@ -91,3 +94,26 @@ To enable your new method, make sure to add an instance to the `ALL_METHODS` con
 By implementing the verification method, a new route will be exposed at `POST verification_methods/dna/verification` that expects the verification parameters in the format `{verification: {dna_string: 'ACAAGGACAT'}}`
 
 It's best to implement an acceptance test for the endpoint, and a unit test for the `verify_sync` implementation. See `Cow` as an example.
+
+
+## Methods
+
+### Cow
+
+COW is an API to validate a social security number, called RUN, and serial number, against a central database in Chile.
+
+By default, the method is configured to fake the API calls to ease development and setup. Here's how to configure it to make real requests against the API, as is happening in production.
+
+1) Add the client-side SSL certificate to a file called `secrets/cow_ssl_cert_file` in cl2-back. The certificate originally got delivered as a `.p7b` file. To use it here, we need to convert it to a `.pem` with the following command:
+```sh
+openssl pkcs7 -print_certs -in im_penalolen_ssl.p7b -out im_penalolen_ssl.pem
+```
+2) Add the client-side SSL pricate key to a file called `secrets/cow_ssl_cert_key_file`. The private key is the one we generated together with the CSR file, that we sent to Chile to get our certificate.
+
+3) Edit the following 2 variables in `.env` and point them to your new files:
+```
+VERIFICATION_COW_SSL_CERT_FILE=./secrets/cow_ssl_cert_file
+VERIFICATION_COW_SSL_CERT_KEY_FILE=./secrets/cow_ssl_cert_key_file
+```
+
+4) Activate cow as a verification method for the tenant, e.g. through admin HQ, and add the right values for `api_username`, `api_password` and `rut_empresa`

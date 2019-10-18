@@ -37,6 +37,9 @@ services:
       - '.env'
     tty: true
     stdin_open: true
+    secrets:
+      - cow_ssl_cert_file
+      - cow_ssl_cert_key_file
 
   sidekiq:
     depends_on:
@@ -69,6 +72,12 @@ services:
   # memcached:
   #   image: memcached:alpine
   #   command: memcached -m 64
+
+secrets:
+  cow_ssl_cert_file:
+    file: ./secrets/cow_ssl_cert_file.sample
+  cow_ssl_cert_key_file:
+    file: ./secrets/cow_ssl_cert_key_file.sample
 
 volumes:
   redis:
