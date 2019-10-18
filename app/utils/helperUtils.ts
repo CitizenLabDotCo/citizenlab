@@ -81,6 +81,15 @@ export function isAdminPage(pathName: string, specificAdminPage?: string) {
   return pathnameWithoutLocale.startsWith('/admin');
 }
 
+export function isPage(pageKey: 'initiative_form', pathName: string) {
+  const pathnameWithoutLocale = removeUrlLocale(pathName);
+
+  switch (pageKey) {
+    case 'initiative_form':
+      return pathnameWithoutLocale.includes('/initiatives/new');
+  }
+}
+
 export function stopPropagation(event) {
   event.stopPropagation();
 }
