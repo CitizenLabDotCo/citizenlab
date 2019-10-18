@@ -18,6 +18,9 @@ import { IIdeaData } from 'services/ideas';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// events
+import { openVerificationModalWithContext } from 'containers/App/events';
+
 const Container = styled.div`
   margin-bottom: 40px;
 `;
@@ -79,7 +82,7 @@ class CommentingDisabled extends PureComponent<Props> {
   }
 
   onVerify = () => {
-    console.log('TODO open modal');
+    openVerificationModalWithContext('ActionComment');
   }
 
   render() {

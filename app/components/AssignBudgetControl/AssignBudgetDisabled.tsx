@@ -12,6 +12,9 @@ import clHistory from 'utils/cl-router/history';
 import { fontSizes, colors } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 
+// events
+import { openVerificationModalWithContext } from 'containers/App/events';
+
 const Container = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
@@ -56,7 +59,7 @@ interface State { }
 
 class AssignBudgetDisabled extends PureComponent<Props, State> {
   onVerify = () => {
-    console.log('TODO open modal');
+    openVerificationModalWithContext('ActionBudget');
   }
 
   reasonToMessage = () => {

@@ -28,7 +28,6 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 
 const AboveTitle = styled.div`
@@ -54,6 +53,7 @@ const ShieldIcon = styled(Icon)`
 const Content = styled.div`
   width: 100%;
   display: flex;
+  justify-content: center;
 `;
 
 const Context = styled.div`
@@ -114,6 +114,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
       }
     });
   }
+  const titleHTMLMessage = withContext ? messages.verifyYourIdentityWithContext : messages.verifyYourIdentityWithoutContext;
 
   return (
     <Container className={className}>
@@ -122,10 +123,10 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
         <ShieldIcon name="verify" />
       </AboveTitle>
       <Title>
-        <FormattedHTMLMessage {...messages.verifyYourIdentityWithoutContext} />
+        <FormattedHTMLMessage {...titleHTMLMessage} />
       </Title>
       <Content>
-        {withContext &&
+        {withContext && false && // TODO: pass in context and display additionnal rules if any
           <Context>
             <Subtitle>
               <FormattedMessage {...messages.participationConditions} />

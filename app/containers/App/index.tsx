@@ -38,8 +38,9 @@ import { IUser } from 'services/users';
 import { authUserStream, signOut, signOutAndDeleteAccountPart2 } from 'services/auth';
 import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
-// utils
+// events
 import eventEmitter from 'utils/eventEmitter';
+import { VerificationModalEvents, OpenVerificationModalData } from 'containers/App/events';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
@@ -92,6 +93,7 @@ type State = {
   userActuallyDeleted: boolean;
   verificationModalOpened: boolean;
   verificationModalInitialStep: VerificationModalSteps;
+  verificationContext?: boolean;
 };
 
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
@@ -190,11 +192,11 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         this.openPostPageModal(id, slug, type);
       }),
 
-      eventEmitter.observeEvent<VerificationModalSteps>('openVerificationModal').subscribe(({ eventValue }) => {
-        this.openVerificationModal(eventValue);
+      eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.open).subscribe(({ eventValue }) => {
+        this.openVerificationModal(eventValue.step, eventValue.withContext);
       }),
 
-      eventEmitter.observeEvent<VerificationModalSteps>('closeVerificationModal').subscribe(() => {
+      eventEmitter.observeEvent(VerificationModalEvents.close).subscribe(() => {
         this.closeVerificationModal();
       }),
 
@@ -239,10 +241,11 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ userDeletedModalOpened: false });
   }
 
-  openVerificationModal = (initialActiveStep: VerificationModalSteps) => {
+  openVerificationModal = (step: VerificationModalSteps, context?: boolean) => {
     this.setState({
       verificationModalOpened: true,
-      verificationModalInitialStep: initialActiveStep
+      verificationModalInitialStep: step,
+      verificationContext: context
     });
   }
 
@@ -271,7 +274,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       userDeletedModalOpened,
       userActuallyDeleted,
       verificationModalOpened,
-      verificationModalInitialStep
+      verificationModalInitialStep,
+      verificationContext
     } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
@@ -309,7 +313,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <VerificationModal opened={verificationModalOpened} initialActiveStep={verificationModalInitialStep} />
+                      <VerificationModal opened={verificationModalOpened} initialActiveStep={verificationModalInitialStep} context={verificationContext} />
                     </Suspense>
                   </ErrorBoundary>
 

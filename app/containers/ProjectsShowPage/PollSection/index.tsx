@@ -16,6 +16,9 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// events
+import { openVerificationModalWithContext } from 'containers/App/events';
+
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -76,7 +79,7 @@ const disabledMessages: { [key in Partial<DisabledReasons>]: ReactIntl.Formatted
 
 export class PollSection extends PureComponent<Props> {
   onVerify = () => {
-    console.log('TODO open modal');
+    openVerificationModalWithContext('ActionPoll');
   }
 
   render() {

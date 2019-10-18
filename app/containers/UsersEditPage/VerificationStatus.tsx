@@ -11,9 +11,6 @@ import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
 import VerificationIllustration from 'components/VerificationIllustration';
 
-// utils
-import eventEmitter from 'utils/eventEmitter';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -22,8 +19,8 @@ import messages from './messages';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
-// typings
-import { VerificationModalSteps } from 'components/VerificationModal/VerificationModal';
+// events
+import { openVerificationModalWithoutContext } from 'containers/App/events';
 
 const StyledFormSection = styled(FormSection)`
   display: flex;
@@ -78,7 +75,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
   const authUser = useAuthUser();
 
   const openVerificationModal = useCallback(() => {
-    eventEmitter.emit<VerificationModalSteps>('VerificationStatus', 'openVerificationModal', null);
+    openVerificationModalWithoutContext('VerificationStatus');
   }, []);
 
   if (isNilOrError(authUser)) return null;
