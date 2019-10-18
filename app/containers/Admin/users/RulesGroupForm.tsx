@@ -1,7 +1,6 @@
 // Libraries
 import React from 'react';
-import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import { isEmpty, values as getValues, every } from 'lodash-es';
+import { Form, Field, InjectedFormikProps } from 'formik';
 
 // Components
 import { FormikUserFilterConditions } from 'components/admin/UserFilterConditions';
@@ -38,19 +37,6 @@ export interface RulesFormValues {
 }
 
 export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Props, RulesFormValues>> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  public static validate = (values: RulesFormValues): FormikErrors<RulesFormValues> => {
-    const errors: FormikErrors<RulesFormValues> = {};
-
-    if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
-    }
-    return errors;
-  }
 
   render() {
     const { isSubmitting, errors, isValid, touched, status } = this.props;

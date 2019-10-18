@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
-import { Formik } from 'formik';
+import { Formik, FormikErrors } from 'formik';
+import { isEmpty, values as getValues, every } from 'lodash-es';
 
 // Resources
 import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
@@ -113,11 +114,17 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   validateRulesWithFeatureFlag = (values: RulesFormValues) => {
-    const errors = RulesGroupForm.validate(values);
+    const errors: FormikErrors<RulesFormValues> = {};
+
+    if (every(getValues(values.title_multiloc), isEmpty)) {
+      errors.title_multiloc = [{ error: 'blank' }] as any;
+    }
+
     if (!this.props.verificationActive
       && values.rules.find(rule => rule.ruleType === 'verified')) {
       errors.rules = 'verificationDisabled' as any;
     }
+
     return errors;
   }
 
