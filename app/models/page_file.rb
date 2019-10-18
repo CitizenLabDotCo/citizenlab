@@ -46,6 +46,6 @@ class PageFile < ApplicationRecord
   private 
 
   def mime_type_whitelist
-    MIME_TYPE_WHITELIST.any? { |item| self.file.file.content_type =~ /#{item}/ }
+    MIME_TYPE_WHITELIST.any? { |item| self.file.content_type =~ /#{item}/ }
   end
 end
