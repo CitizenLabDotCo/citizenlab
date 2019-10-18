@@ -5,8 +5,8 @@ module Verification
 
       SHARED_SAVON_CONFIG = {
         wsdl: 'https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService?wsdl',
-        ssl_cert_file: '/run/secrets/cow_ssl_cert_file',
-        ssl_cert_key_file: '/run/secrets/cow_ssl_cert_key_file',
+        ssl_cert_file: ENV.fetch('VERIFICATION_COW_SSL_CERT_FILE'),
+        ssl_cert_key_file: ENV.fetch('VERIFICATION_COW_SSL_CERT_KEY_FILE'),
         ssl_verify_mode: :none,
         # log: true,
         # log_level: :debug,
