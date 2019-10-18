@@ -74,7 +74,7 @@ export default memo<Props>(({ className }) => {
   return (
     <Container className={className}>
       <ImageAvatarContainer>
-        <img src={illustration} aria-hidden />
+        <img src={illustration} aria-hidden alt="" role="presentation"/>
         <StyledAvatar userId={authUser.data.id} size="96px" verified/>
       </ImageAvatarContainer>
       <Title className="e2e-user-verified-success-modal-content">

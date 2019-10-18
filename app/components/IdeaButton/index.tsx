@@ -19,6 +19,9 @@ import messages from './messages';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
+// events
+import { openVerificationModalWithContext } from 'containers/App/events';
+
 // tracks
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
@@ -100,7 +103,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
   };
 
   onVerify = () => {
-    console.log('TODO open modal');
+    openVerificationModalWithContext('ActionIdea');
   }
 
   onNewIdea = (_event) => {

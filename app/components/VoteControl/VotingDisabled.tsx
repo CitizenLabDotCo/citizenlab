@@ -10,6 +10,8 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import messages from './messages';
 import clHistory from 'utils/cl-router/history';
 import { fontSizes, colors } from 'utils/styleUtils';
+// events
+import { openVerificationModalWithContext } from 'containers/App/events';
 
 const Container = styled.div`
   color: ${colors.label};
@@ -56,7 +58,7 @@ interface State { }
 
 class VotingDisabled extends PureComponent<Props, State> {
   onVerify = () => {
-    console.log('TODO open modal');
+    openVerificationModalWithContext('ActionVote');
   }
 
   reasonToMessage = () => {

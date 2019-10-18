@@ -28,6 +28,7 @@ export interface Props {
   opened: boolean;
   initialActiveStep?: VerificationModalSteps;
   className?: string;
+  context?: boolean; // TODO change to pass in additionnal rules info
 }
 
 const VerificationModal = memo<Props>((props) => {
@@ -58,7 +59,7 @@ const VerificationModal = memo<Props>((props) => {
     >
       <Container className={props.className || ''}>
         {activeStep === 'method-selection' &&
-          <VerificationMethods withContext={true} onMethodSelected={onMethodSelected} />
+          <VerificationMethods withContext={!!props.context} onMethodSelected={onMethodSelected} />
         }
 
         {activeStep === 'cow' &&

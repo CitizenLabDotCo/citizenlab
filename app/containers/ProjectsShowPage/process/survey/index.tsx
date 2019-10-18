@@ -16,6 +16,9 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
+// events
+import { openVerificationModalWithContext } from 'containers/App/events';
+
 // styling
 import styled from 'styled-components';
 
@@ -56,7 +59,7 @@ interface State { }
 
 class Survey extends PureComponent<Props, State> {
   onVerify = () => {
-    console.log('TODO open modal');
+    openVerificationModalWithContext('ActionSurvey');
   }
 
   disabledMessage: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
