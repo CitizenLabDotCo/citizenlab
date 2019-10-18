@@ -206,148 +206,146 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     const status = Object.values(errors).every(val => val === undefined) ? 'enabled' : 'disabled';
 
     return (
-      <>
-        <Form id="initiative-form">
-          <FormSection>
-            <FormSectionTitle message={messages.formGeneralSectionTitle} />
+      <Form id="initiative-form">
+        <FormSection>
+          <FormSectionTitle message={messages.formGeneralSectionTitle} />
 
-            <SectionField>
-              <FormLabel
-                labelMessage={messages.titleLabel}
-                subtextMessage={messages.titleLabelSubtext}
-              >
-                <InputMultiloc
-                  type="text"
-                  id="e2e-initiative-title-input"
-                  valueMultiloc={title_multiloc || {}}
-                  onChange={onChangeTitle}
-                  onBlur={this.onBlur('title_multiloc')}
-                  selectedLocale={locale}
-                />
-                {touched.title_multiloc
-                  && errors.title_multiloc ? <Error message={errors.title_multiloc.message} />
-                  : apiErrors && apiErrors.title_multiloc && <Error apiErrors={apiErrors.title_multiloc} />
-                }
-              </FormLabel>
-            </SectionField>
-
-            <SectionField>
-              <FormLabel
-                labelMessage={messages.descriptionLabel}
-                subtextMessage={messages.descriptionLabelSubtext}
-              >
-                <QuillMultiloc
-                  id="body"
-                  selectedLocale={locale}
-                  valueMultiloc={body_multiloc || {}}
-                  onChangeMultiloc={onChangeBody}
-                  noVideos
-                  noAlign
-                  onBlur={this.onBlur('body_multiloc')}
-                />
-                {touched.body_multiloc
-                  && errors.body_multiloc ? <Error message={errors.body_multiloc.message} />
-                  : apiErrors && apiErrors.body_multiloc && <Error apiErrors={apiErrors.body_multiloc} />
-                }
-              </FormLabel>
-            </SectionField>
-          </FormSection>
-
-          <FormSection>
-            <FormSectionTitle message={messages.formDetailsSectionTitle} />
-
-            <SectionField>
-              <FormLabel
-                labelMessage={messages.topicsLabel}
-                subtextMessage={messages.topicsLabelSubtext}
-                htmlFor="field-topic-multiple-picker"
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.titleLabel}
+              subtextMessage={messages.titleLabelSubtext}
+            >
+              <InputMultiloc
+                type="text"
+                id="e2e-initiative-title-input"
+                valueMultiloc={title_multiloc || {}}
+                onChange={onChangeTitle}
+                onBlur={this.onBlur('title_multiloc')}
+                selectedLocale={locale}
               />
-              <TopicsPicker
-                id="field-topic-multiple-picker"
-                max={2}
-                value={topic_ids}
-                onChange={this.changeAndSaveTopics}
-              />
-              {touched.topic_ids
-                && errors.topic_ids ? <Error message={errors.topic_ids.message} />
-                : apiErrors && apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
+              {touched.title_multiloc
+                && errors.title_multiloc ? <Error message={errors.title_multiloc.message} />
+                : apiErrors && apiErrors.title_multiloc && <Error apiErrors={apiErrors.title_multiloc} />
               }
-            </SectionField>
-            <SectionField>
-              <FormLabel
-                labelMessage={messages.locationLabel}
-                subtextMessage={messages.locationLabelSubtext}
-                optional
-              >
-                <LocationInput
-                  className="e2e-initiative-location-input"
-                  inCitizen
-                  value={position || ''}
-                  onChange={onChangePosition}
-                  onBlur={this.onBlur('position')}
-                  placeholder={formatMessage(messages.locationPlaceholder)}
-                />
-              </FormLabel>
-            </SectionField>
-          </FormSection>
-          <FormSection>
-            <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
+            </FormLabel>
+          </SectionField>
 
-            <SectionField>
-              {/* Contrary to other form fields, the image uploads are not wrapped
-              in the label tag because they trigger a double file dialog issue in our
-              current version of react-dropzone
-              https://stackoverflow.com/questions/49671325/react-dropzone-opens-files-chooser-twice
-              */}
-              <FormLabel
-                labelMessage={messages.bannerUploadLabel}
-                subtextMessage={messages.bannerUploadLabelSubtext}
-                optional
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.descriptionLabel}
+              subtextMessage={messages.descriptionLabelSubtext}
+            >
+              <QuillMultiloc
+                id="body"
+                selectedLocale={locale}
+                valueMultiloc={body_multiloc || {}}
+                onChangeMultiloc={onChangeBody}
+                noVideos
+                noAlign
+                onBlur={this.onBlur('body_multiloc')}
               />
-              <ImageDropzone
-                id="iniatiative-banner-dropzone"
-                image={banner || null}
-                imagePreviewRatio={360 / 1440}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                onChange={this.changeAndSaveBanner}
-              />
-              {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />
+              {touched.body_multiloc
+                && errors.body_multiloc ? <Error message={errors.body_multiloc.message} />
+                : apiErrors && apiErrors.body_multiloc && <Error apiErrors={apiErrors.body_multiloc} />
               }
-            </SectionField>
+            </FormLabel>
+          </SectionField>
+        </FormSection>
 
-            <SectionField>
-              <FormLabel
-                labelMessage={messages.imageUploadLabel}
-                subtextMessage={messages.imageUploadLabelSubtext}
-                optional
+        <FormSection>
+          <FormSectionTitle message={messages.formDetailsSectionTitle} />
+
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.topicsLabel}
+              subtextMessage={messages.topicsLabelSubtext}
+              htmlFor="field-topic-multiple-picker"
+            />
+            <TopicsPicker
+              id="field-topic-multiple-picker"
+              max={2}
+              value={topic_ids}
+              onChange={this.changeAndSaveTopics}
+            />
+            {touched.topic_ids
+              && errors.topic_ids ? <Error message={errors.topic_ids.message} />
+              : apiErrors && apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
+            }
+          </SectionField>
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.locationLabel}
+              subtextMessage={messages.locationLabelSubtext}
+              optional
+            >
+              <LocationInput
+                className="e2e-initiative-location-input"
+                inCitizen
+                value={position || ''}
+                onChange={onChangePosition}
+                onBlur={this.onBlur('position')}
+                placeholder={formatMessage(messages.locationPlaceholder)}
               />
-              <ImageDropzone
-                id="iniatiative-img-dropzone"
-                image={image || null}
-                imagePreviewRatio={135 / 298}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                onChange={this.changeAndSaveImage}
-              />
-              {touched.image
-                && errors.image
-                && <Error message={errors.image.message} />}
-            </SectionField>
-            <SectionField>
-              <FormLabel
-                labelMessage={messages.fileUploadLabel}
-                subtextMessage={messages.fileUploadLabelSubtext}
-                optional
-              />
-              <FileUploader
-                id="e2e-initiative-file-upload"
-                onFileAdd={onAddFile}
-                onFileRemove={onRemoveFile}
-                files={files}
-                errors={apiErrors}
-              />
-            </SectionField>
-          </FormSection>
-        </Form>
+            </FormLabel>
+          </SectionField>
+        </FormSection>
+        <FormSection>
+          <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
+
+          <SectionField>
+            {/* Contrary to other form fields, the image uploads are not wrapped
+            in the label tag because they trigger a double file dialog issue in our
+            current version of react-dropzone
+            https://stackoverflow.com/questions/49671325/react-dropzone-opens-files-chooser-twice
+            */}
+            <FormLabel
+              labelMessage={messages.bannerUploadLabel}
+              subtextMessage={messages.bannerUploadLabelSubtext}
+              optional
+            />
+            <ImageDropzone
+              id="iniatiative-banner-dropzone"
+              image={banner || null}
+              imagePreviewRatio={360 / 1440}
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              onChange={this.changeAndSaveBanner}
+            />
+            {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />
+            }
+          </SectionField>
+
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.imageUploadLabel}
+              subtextMessage={messages.imageUploadLabelSubtext}
+              optional
+            />
+            <ImageDropzone
+              id="iniatiative-img-dropzone"
+              image={image || null}
+              imagePreviewRatio={135 / 298}
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              onChange={this.changeAndSaveImage}
+            />
+            {touched.image
+              && errors.image
+              && <Error message={errors.image.message} />}
+          </SectionField>
+          <SectionField>
+            <FormLabel
+              labelMessage={messages.fileUploadLabel}
+              subtextMessage={messages.fileUploadLabelSubtext}
+              optional
+            />
+            <FileUploader
+              id="e2e-initiative-file-upload"
+              onFileAdd={onAddFile}
+              onFileRemove={onRemoveFile}
+              files={files}
+              errors={apiErrors}
+            />
+          </SectionField>
+        </FormSection>
         <FormSubmitFooter
           className="e2e-initiative-publish-button"
           message={messages.publishButton}
@@ -357,7 +355,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
           processing={publishing}
           onSubmit={this.props.onPublish}
         />
-      </>
+      </Form>
     );
   }
 }
