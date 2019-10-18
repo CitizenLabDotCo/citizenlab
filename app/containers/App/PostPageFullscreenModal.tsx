@@ -16,7 +16,7 @@ interface Props {
   close: () => void;
 }
 
-const initiatiaveFormPage = isPage('initiative_form', location.pathname);
+const initiativeFormPage = isPage('initiative_form', location.pathname);
 
 const PostPageFullscreenModal = memo<Props>(({ id, slug, type, close }) => {
 
@@ -47,7 +47,7 @@ const PostPageFullscreenModal = memo<Props>(({ id, slug, type, close }) => {
           ? (
           <>
             <InitiativesShow initiativeId={id}/>
-            <Footer showShortFeedback={initiatiaveFormPage} />
+            <Footer showShortFeedback={initiativeFormPage} />
           </>
           )
           : null
