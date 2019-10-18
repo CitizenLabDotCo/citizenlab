@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import Icon from 'components/UI/Icon';
 
 // utils
-import { isAdminPage } from 'utils/helperUtils';
+import { isPage } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
@@ -92,7 +92,7 @@ export default class Title extends PureComponent<Props, State> {
 
   render() {
     const { title, opened, baseID, className } = this.props;
-    const adminPage = isAdminPage(location.pathname);
+    const adminPage = isPage('admin', location.pathname);
 
     return (
       <Container
