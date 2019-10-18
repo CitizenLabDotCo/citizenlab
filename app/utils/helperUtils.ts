@@ -88,8 +88,8 @@ export function isPage(pageKey: 'admin' | 'initiative_form', pathName: string) {
     case 'admin':
       return pathnameWithoutLocale.startsWith('/admin');
     case 'initiative_form':
-      // needs to end with this,
-      // because otherwise an initiative with for example the name 'new playground for our children' would also pass
+      // Needs to use endsWith
+      // Otherwise an initiative with the name 'new playground for our children' would also pass
       return pathnameWithoutLocale.endsWith('/initiatives/new');
   }
 }
