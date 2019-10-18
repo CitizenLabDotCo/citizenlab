@@ -39,7 +39,6 @@ class InitiativeFile < ApplicationRecord
   belongs_to :initiative
 
   validates :initiative, :file, :name, presence: true
-
   validate :mime_type_whitelist
 
 
