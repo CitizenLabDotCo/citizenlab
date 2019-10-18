@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash-es';
 import Icon from 'components/UI/Icon';
 
 // utils
-import { isAdminPage } from 'utils/helperUtils';
+import { isPage } from 'utils/helperUtils';
 
 // i18n
 import messages from './messages';
@@ -111,7 +111,7 @@ interface Props {
 
 const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placeholder, ariaLabel, className, intl }) => {
 
-  const adminPage = isAdminPage(location.pathname);
+  const adminPage = isPage('admin', location.pathname);
 
   const [focused, setFocused] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string | null>(value || null);

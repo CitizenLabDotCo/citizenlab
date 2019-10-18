@@ -192,6 +192,7 @@ const SubmitFooterContainer = styled.div`
   align-items: flex-start;
   background-color: white;
   border-top: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
   z-index: 1;
   ${media.smallerThanMaxTablet`
     align-items: center;

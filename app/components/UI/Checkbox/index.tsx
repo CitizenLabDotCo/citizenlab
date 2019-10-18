@@ -119,11 +119,15 @@ export default class Checkbox extends PureComponent<Props, State> {
 
     return (
       <Container className={`${className ? className : ''} ${label ? 'hasLabel' : ''}`}>
-        <InputWrapper onClick={this.handleOnChange} className={inputFocused ? 'focused' : ''} checked={checked} size={size}>
+        <InputWrapper
+          onClick={this.handleOnChange}
+          className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
+          checked={checked}
+          size={size}
+        >
           <Input
             ref={this.checkbox}
             id="checkbox"
-            className="e2e-checkbox"
             aria-checked={checked}
             type="checkbox"
             defaultChecked={checked}

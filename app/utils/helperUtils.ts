@@ -72,13 +72,26 @@ export function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
 }
 
-export function isAdminPage(pathName: string, specificAdminPage?: string) {
+export function isPage(pageKey: 'admin' | 'initiative_form', pathName: string) {
+   /**
+   * Checks whether current page is the desired page
+   *
+   * @param pageKey - key to indicate the desired page
+   * @param pathName - pathname to check (usually current path aka location.pathname)
+   *
+   * @returns Boolean. True if current page matches the pageKey's url, false otherwise.
+   */
+
   const pathnameWithoutLocale = removeUrlLocale(pathName);
 
-  if (specificAdminPage) {
-    return pathnameWithoutLocale.startsWith(`/admin/${specificAdminPage}`);
+  switch (pageKey) {
+    case 'admin':
+      return pathnameWithoutLocale.startsWith('/admin');
+    case 'initiative_form':
+      // Needs to use endsWith
+      // Otherwise an initiative with the name 'new playground for our children' would also pass
+      return pathnameWithoutLocale.endsWith('/initiatives/new');
   }
-  return pathnameWithoutLocale.startsWith('/admin');
 }
 
 export function stopPropagation(event) {

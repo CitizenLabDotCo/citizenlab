@@ -31,7 +31,7 @@ import { isAdmin } from 'services/permissions/roles';
 
 // utils
 import { getProjectUrl } from 'services/projects';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -410,7 +410,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     } = this.props;
     const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
-    const isAdminPage = (location && location.pathname.startsWith('/admin'));
+    const isAdminPage = isPage('admin', location.pathname);
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
     let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
     // Avoids caching issue when an admin changes platform logo (I guess)
