@@ -72,21 +72,16 @@ export function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
 }
 
-export function isAdminPage(pathName: string, specificAdminPage?: string) {
-  const pathnameWithoutLocale = removeUrlLocale(pathName);
-
-  if (specificAdminPage) {
-    return pathnameWithoutLocale.startsWith(`/admin/${specificAdminPage}`);
-  }
-  return pathnameWithoutLocale.startsWith('/admin');
-}
-
-export function isPage(pageKey: 'initiative_form', pathName: string) {
+export function isPage(pageKey: 'admin' | 'initiative_form', pathName: string) {
   const pathnameWithoutLocale = removeUrlLocale(pathName);
 
   switch (pageKey) {
+    case 'admin':
+      return pathnameWithoutLocale.startsWith('/admin');
     case 'initiative_form':
-      return pathnameWithoutLocale.includes('/initiatives/new');
+      // needs to end with this,
+      // because otherwise an initiative with for example the name 'new playground for our children' would also pass
+      return pathnameWithoutLocale.endsWith('/initiatives/new');
   }
 }
 
