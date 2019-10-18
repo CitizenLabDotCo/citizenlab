@@ -62,9 +62,6 @@ jobs:
     steps:
       - checkout:
           path: /tmp/cl2-back
-      - run: |
-          mkdir -p /run/secrets
-          cp /tmp/cl2-back/secrets/* /run/secrets/.
       - wait-for-postgres
       - run: |
           rake db:create
