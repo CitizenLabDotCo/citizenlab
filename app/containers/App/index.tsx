@@ -26,7 +26,8 @@ import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
-import LodableVerficationSuccess from 'components/VerificationSuccessModal/LazyVerificationSuccess';
+import VerificationModal from 'components/VerificationModal';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -45,7 +46,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import ErrorBoundary from 'components/ErrorBoundary';
+import { VerificationModalSteps } from 'components/VerificationModal/VerificationModal';
 
 const Container = styled.div`
   background: #fff;
@@ -89,7 +90,8 @@ type State = {
   visible: boolean;
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
-  verifiedSuccessModalOpen: boolean | 'closed';
+  verificationModalOpened: boolean;
+  verificationModalInitialStep: VerificationModalSteps;
 };
 
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
@@ -110,7 +112,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       visible: true,
       userDeletedModalOpened: false,
       userActuallyDeleted: false,
-      verifiedSuccessModalOpen: false
+      verificationModalOpened: false,
+      verificationModalInitialStep: null
     };
     this.subscriptions = [];
   }
@@ -187,6 +190,14 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         this.openPostPageModal(id, slug, type);
       }),
 
+      eventEmitter.observeEvent<VerificationModalSteps>('openVerificationModal').subscribe(({ eventValue }) => {
+        this.openVerificationModal(eventValue);
+      }),
+
+      eventEmitter.observeEvent<VerificationModalSteps>('closeVerificationModal').subscribe(() => {
+        this.closeVerificationModal();
+      }),
+
       eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
         this.closePostPageModal();
       }),
@@ -228,14 +239,23 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ userDeletedModalOpened: false });
   }
 
-  closeVerifiedSuccessModal = () => {
-    this.setState({ verifiedSuccessModalOpen: 'closed' });
+  openVerificationModal = (initialActiveStep: VerificationModalSteps) => {
+    this.setState({
+      verificationModalOpened: true,
+      verificationModalInitialStep: initialActiveStep
+    });
+  }
+
+  closeVerificationModal = () => {
+    this.setState({
+      verificationModalOpened: false,
+      verificationModalInitialStep: null
+    });
   }
 
   componentDidUpdate() {
-    if (this.state.verifiedSuccessModalOpen !== 'closed'
-      && Object.keys(this.props.location.query).includes('verification_success')) {
-      this.setState({ verifiedSuccessModalOpen: true });
+    if (!this.state.verificationModalOpened && Object.keys(this.props.location.query).includes('verification_success')) {
+      this.openVerificationModal('success');
     }
   }
 
@@ -250,7 +270,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       visible,
       userDeletedModalOpened,
       userActuallyDeleted,
-      verifiedSuccessModalOpen
+      verificationModalOpened,
+      verificationModalInitialStep
     } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
@@ -287,14 +308,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <LoadableModal
-                      opened={verifiedSuccessModalOpen === true}
-                      close={this.closeVerifiedSuccessModal}
-                    >
-                      <Suspense fallback={null}>
-                        <LodableVerficationSuccess />
-                      </Suspense>
-                    </LoadableModal>
+                    <Suspense fallback={null}>
+                      <VerificationModal opened={verificationModalOpened} initialActiveStep={verificationModalInitialStep} />
+                    </Suspense>
                   </ErrorBoundary>
 
                   <ErrorBoundary>

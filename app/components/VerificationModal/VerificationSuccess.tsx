@@ -7,6 +7,7 @@ import messages from './messages';
 
 // components
 import Avatar from 'components/Avatar';
+import { Title } from './styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -26,31 +27,13 @@ const Container = styled.div`
 
 const ImageAvatarContainer = styled.div`
   position: relative;
+  margin-bottom: 30px;
 `;
 
 const StyledAvatar = styled(Avatar)`
   position: absolute;
   bottom: 0;
   left: calc(50% - 48px);
-`;
-
-const Title = styled.h1`
-  flex-shrink: 0;
-  width: 100%;
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xxl}px;
-  line-height: 40px;
-  font-weight: 500;
-  text-align: center;
-  margin: 0;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding: 0;
-
-  ${media.smallerThanMaxTablet`
-    max-width: auto;
-    line-height: 36px;
-  `}
 `;
 
 const Subtitle = styled.h3`
@@ -72,25 +55,30 @@ const Subtitle = styled.h3`
     line-height: 21px;
     margin-bottom: 20px;
   `}
+
   a {
     text-decoration: underline;
     color: ${colors.text};
   }
 `;
 
-export default memo(() => {
+interface Props {
+  className?: string;
+}
+
+export default memo<Props>(({ className }) => {
   const authUser = useAuthUser();
 
   if (isNilOrError(authUser)) return null;
 
   return (
-    <Container>
+    <Container className={className}>
       <ImageAvatarContainer>
         <img src={illustration} aria-hidden />
         <StyledAvatar userId={authUser.data.id} size="96px" verified/>
       </ImageAvatarContainer>
       <Title className="e2e-user-verified-success-modal-content">
-        <FormattedMessage {...messages.userVerifiedTitle} />
+        <strong><FormattedMessage {...messages.userVerifiedTitle} /></strong>
       </Title>
       <Subtitle>
         <FormattedMessage {...messages.userVerifiedSubtitle} />
