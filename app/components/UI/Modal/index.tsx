@@ -6,6 +6,10 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import FocusLock from 'react-focus-lock';
 import eventEmitter from 'utils/eventEmitter';
 
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
 // components
 import Icon from 'components/UI/Icon';
 import clickOutside from 'utils/containers/clickOutside';
@@ -19,7 +23,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 const timeout = 400;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -403,6 +407,9 @@ export default class Modal extends PureComponent<Props, State> {
                 ref={this.setCloseButtonRef}
               >
                 <CloseIcon name="close" />
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.closeModal} />
+                </ScreenReaderOnly>
               </CloseButton >
 
               {header &&

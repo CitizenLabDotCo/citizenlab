@@ -91,7 +91,7 @@ const StyledTipsBox = styled(TipsBox)`
   ${media.smallerThanMaxTablet`
     display: none;
   `}
-  margin-bottom: 10px;
+  margin-bottom: 110px;
 `;
 
 interface Props {
