@@ -228,7 +228,13 @@ export type TRule = (
        * The id of an idea status
        */
       value?: string;
-    });
+    }
+  | {
+    ruleType?: 'verified';
+    predicate?:
+      | 'is_verified'
+      | 'not_is_verified'
+  });
 
 export const ruleTypeConstraints = {
   custom_field_text: {
@@ -339,4 +345,8 @@ export const ruleTypeConstraints = {
     voted_comment_in: IdeaStatusValueSelector,
     not_voted_comment_in: IdeaStatusValueSelector,
   },
+  verified: {
+    is_verified: null,
+    not_is_verified: null
+  }
 };
