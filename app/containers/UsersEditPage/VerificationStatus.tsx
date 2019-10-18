@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -11,6 +11,9 @@ import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
 import VerificationIllustration from 'components/VerificationIllustration';
 
+// utils
+import eventEmitter from 'utils/eventEmitter';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -18,6 +21,9 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+
+// typings
+import { VerificationModalSteps } from 'components/VerificationModal/VerificationModal';
 
 const StyledFormSection = styled(FormSection)`
   display: flex;
@@ -70,6 +76,11 @@ const StyledButton = styled(Button)`
 
 const VerificationStatus = memo(({ className }: { className?: string }) => {
   const authUser = useAuthUser();
+
+  const openVerificationModal = useCallback(() => {
+    eventEmitter.emit<VerificationModalSteps>('VerificationStatus', 'openVerificationModal', null);
+  }, []);
+
   if (isNilOrError(authUser)) return null;
 
   return (
@@ -104,9 +115,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 </TextStyles>
               </StyledTitle>
             </LeftContainer>
-            <StyledButton
-              onClick={() => console.log('TODO Open verification Modal')}
-            >
+            <StyledButton onClick={openVerificationModal}>
               <FormattedMessage {...messages.verifyNow} />
             </StyledButton>
           </>

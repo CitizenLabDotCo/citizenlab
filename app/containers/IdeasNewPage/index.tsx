@@ -107,8 +107,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       this.redirectToSignUpPage();
     }
 
-    if (location.query.position) {
-      const coordinates = JSON.parse(location.query.position);
+    if (location && location.query && location.query.position && isString(location.query.position)) {
+      const coordinates = JSON.parse(location.query.position) as number[];
       const lat = coordinates[0];
       const lng = coordinates[1];
 
@@ -120,7 +120,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           position,
           position_coordinates: {
             type: 'Point',
-            coordinates: [lng, lat] as number[]
+            coordinates: [lng, lat]
           }
         });
       });
