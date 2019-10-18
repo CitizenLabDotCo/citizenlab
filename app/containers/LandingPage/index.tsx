@@ -39,7 +39,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import { PublicationStatus } from 'resources/GetProjects';
 import FeatureFlag from 'components/FeatureFlag';
 
-const Container: any = styled.div`
+const Container = styled.div`
   height: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
@@ -171,21 +171,20 @@ class LandingPage extends PureComponent<Props, State> {
   projectsPublicationStatuses: PublicationStatus[]  = ['published', 'archived'];
 
   render() {
-    const { locale, tenant, authUser, homepageInfoPage, theme } = this.props;
+    const { locale, tenant, authUser, homepageInfoPage } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
       const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
       const tenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, tenantLocales) : null);
-      const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
       const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
-      const hasHeaderImage = (tenantHeaderImage !== null);
       const showCustomSection = !isEmptyMultiloc(homepageInfoPage.attributes.body_multiloc);
       const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
 
       return (
         <>
-          <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
+          <Container id="e2e-landing-page">
+
             {!isNilOrError(authUser)
               ? <SignedInHeader />
               :
@@ -230,8 +229,7 @@ class LandingPage extends PureComponent<Props, State> {
                   <Button
                     fontWeight="500"
                     padding="13px 22px"
-                    bgColor="#fff"
-                    textColor={theme.colorText}
+                    style="primary-inverse"
                     linkTo="/sign-up"
                     text={<FormattedMessage {...messages.createAccount} />}
                     onClick={this.clickCreateAccountCTAFooter}

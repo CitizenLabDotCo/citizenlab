@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { sortBy, last, get, isUndefined } from 'lodash-es';
+import { sortBy, last, get, isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -355,7 +355,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
     this.setLoaded();
 
-    if (newIdeaId) {
+    if (isString(newIdeaId)) {
       setTimeout(() => {
         this.setState({ ideaIdForSocialSharing: newIdeaId });
       }, 1500);

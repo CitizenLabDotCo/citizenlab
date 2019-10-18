@@ -35,7 +35,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
-import { darken, rgba } from 'polished';
+import { rgba } from 'polished';
 
 const gapWidth = 35;
 
@@ -681,7 +681,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                       icon="showMore"
                       iconPos="left"
                       textColor={theme.colorText}
-                      textHoverColor={darken(0.1, theme.colorText)}
                       bgColor={rgba(theme.colorText, 0.08)}
                       bgHoverColor={rgba(theme.colorText, 0.12)}
                       fontWeight="500"
