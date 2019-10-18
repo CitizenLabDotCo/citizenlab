@@ -1,10 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
-import MediaQuery from 'react-responsive';
 
 // components
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 
 // services
@@ -21,7 +18,7 @@ import messages from './messages';
 import { UploadFile } from 'typings';
 
 // style
-import { media, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -56,19 +53,6 @@ const Title = styled.h1`
     font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
   `}
-`;
-
-const MobileButton = styled.div`
-  width: 100%;
-  display: flex;
-
-  .Button {
-    margin-right: 10px;
-  }
-
-  .Error {
-    flex: 1;
-  }
 `;
 
 interface Props {
@@ -158,13 +142,8 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
   }
 
   render() {
-    const { title, description, selectedTopics, budget, position, imageFile, submitError, processing, fileOrImageError } = this.state;
+    const { title, description, selectedTopics, budget, position, imageFile } = this.state;
     const { projectId } = this.props;
-    const submitErrorMessage = submitError
-      ? <FormattedMessage {...messages.submitError} />
-      : fileOrImageError
-        ? <FormattedMessage {...messages.fileOrImageError} />
-        : null;
 
     return (
       <Container id="e2e-new-idea-form">
@@ -182,29 +161,6 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           imageFile={imageFile}
           onSubmit={this.handleIdeaFormOutput}
         />
-
-        <MediaQuery maxWidth={viewportWidths.largeTablet}>
-          {(matches) => {
-            if (matches) {
-              return (
-                <MobileButton>
-                  <Button
-                    form="idea-form"
-                    className="e2e-submit-idea-form"
-                    processing={processing}
-                    text={<FormattedMessage {...messages.submit} />}
-                    onClick={this.handleOnSubmitButtonClick}
-                  />
-                  {submitErrorMessage &&
-                    <Error text={submitErrorMessage} marginTop="0px" />
-                  }
-                </MobileButton>
-              );
-            }
-
-            return null;
-          }}
-        </MediaQuery>
       </Container>
     );
   }

@@ -58,10 +58,6 @@ const ButtonBarContainer = styled.div`
   right: 0;
   background: #fff;
   border-top: solid 1px #ddd;
-
-  ${media.phone`
-    display: none;
-  `}
 `;
 
 interface InputProps {}
