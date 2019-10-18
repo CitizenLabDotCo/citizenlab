@@ -31,7 +31,7 @@ export interface IIdeaData {
       voting:{
         enabled: boolean,
         future_enabled: string | null,
-        disabled_reason: 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'idea_not_in_current_phase' | 'not_permitted' | null
+        disabled_reason: 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'idea_not_in_current_phase' | 'not_permitted' | 'not_verified' | null
         cancelling_enabled: boolean,
       },
       commenting: {
