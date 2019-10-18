@@ -3,7 +3,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { groupBy, isEmpty, isUndefined } from 'lodash-es';
-import MediaQuery from 'react-responsive';
 
 // services
 import { IProjectData } from 'services/projects';
@@ -24,7 +23,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
@@ -179,13 +178,6 @@ const ButtonBarInner = styled.div`
   `}
 `;
 
-const WithoutButtonBar = styled.div`
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: 100%;
-  display: flex;
-`;
-
 const EmptyStateContainer = styled.div`
   color: #474747;
   font-size: ${fontSizes.large}px;
@@ -319,25 +311,6 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
                     </RightColumn>
                   }
                 </ColumnsContainer>
-
-                <MediaQuery maxWidth={viewportWidths.largeTablet}>
-                  {(matches) => {
-                    if (matches) {
-                      return (
-                        <WithoutButtonBar>
-                          <Button
-                            className="e2e-submit-project-select-form"
-                            text={<FormattedMessage {...messages.continueButton} />}
-                            onClick={this.handleOnSubmitClick}
-                            disabled={!selectedProjectId}
-                          />
-                        </WithoutButtonBar>
-                      );
-                    }
-
-                    return null;
-                  }}
-                </MediaQuery>
 
                 <ButtonBar>
                   <ButtonBarInner>
