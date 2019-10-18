@@ -345,17 +345,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               errors={apiErrors}
             />
           </SectionField>
-          <FormSubmitFooter
-            className="e2e-initiative-publish-button"
-            message={messages.publishButton}
-            disabled={status === 'disabled'}
-            error={publishError}
-            errorMessage={messages.publishUnknownError}
-            processing={publishing}
-            onSubmit={this.props.onPublish}
-          />
         </FormSection>
-        {/* <FormSubmitFooter
+        <FormSubmitFooter
           className="e2e-initiative-publish-button"
           message={messages.publishButton}
           disabled={status === 'disabled'}
@@ -363,7 +354,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
           errorMessage={messages.publishUnknownError}
           processing={publishing}
           onSubmit={this.props.onPublish}
-        /> */}
+        />
       </Form>
     );
   }
