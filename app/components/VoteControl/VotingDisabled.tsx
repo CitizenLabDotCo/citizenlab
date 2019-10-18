@@ -29,6 +29,18 @@ const ProjectLink = styled.span`
   }
 `;
 
+const StyledButton = styled.button`
+  color: #1391A1;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+  display: inline-block;
+  padding: 0;
+`;
+
 interface InputProps {
   projectId: string;
   votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting'];
@@ -38,11 +50,14 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class VotingDisabled extends PureComponent<Props, State> {
+  onVerify = () => {
+    console.log('TODO open modal');
+  }
 
   reasonToMessage = () => {
     const { disabled_reason, future_enabled } = this.props.votingDescriptor;
@@ -57,6 +72,8 @@ class VotingDisabled extends PureComponent<Props, State> {
       return future_enabled ? messages.votingDisabledPhaseNotYetStarted : messages.votingDisabledPhaseCompleted;
     } else if (disabled_reason === 'not_permitted') {
       return messages.votingDisabledNotPermitted;
+    } else if (disabled_reason === 'not_verified') {
+      return messages.votingDisabledNotVerified;
     } else {
       return messages.votingDisabledForProject;
     }
@@ -91,7 +108,17 @@ class VotingDisabled extends PureComponent<Props, State> {
 
     return (
       <Container>
-        <FormattedMessage {...message} values={{ enabledFromDate, projectName }} />
+        <FormattedMessage
+          {...message}
+          values={{
+            enabledFromDate,
+            projectName,
+            verificationLink:
+              <StyledButton onClick={this.onVerify}>
+                <FormattedMessage {...messages.verificationLinkText} />
+              </StyledButton>,
+          }}
+        />
       </Container>
     );
   }

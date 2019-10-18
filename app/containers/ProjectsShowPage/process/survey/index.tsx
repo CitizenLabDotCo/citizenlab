@@ -25,7 +25,7 @@ import messages from './messages';
 
 const Container = styled.div``;
 
-const StyledButton = styled(Button)`
+const StyledButton = styled.button`
   color: #1391A1;
   text-decoration: underline;
   transition: all 100ms ease-out;
@@ -33,7 +33,8 @@ const StyledButton = styled(Button)`
   &:hover {
     text-decoration: underline;
   }
-  display: inline-block
+  display: inline-block;
+  padding: 0;
 `;
 
 interface InputProps {
@@ -72,7 +73,7 @@ class Survey extends PureComponent<Props, State> {
 
     if (isNilOrError(project)) return null;
 
-    const { show, disabledReason } = surveyTakingState({
+     const { show, disabledReason } = surveyTakingState({
       project,
       phaseContext: phase,
       signedIn: !isNilOrError(authUser),
@@ -112,7 +113,7 @@ class Survey extends PureComponent<Props, State> {
             <FormattedMessage
               {...message}
               values={{
-                verificationLink: <StyledButton style="text" padding="0" onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
+                verificationLink: <StyledButton onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
               }}
             />
           </Warning>

@@ -23,26 +23,33 @@ import { lighten } from 'polished';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-export const AvatarImage: any = styled.img`
-  width: ${(props: any) => props.size};
-  height: ${(props: any) => props.size};
+export const AvatarImage = styled.img<{ size: string }>`
+  width: ${({ size }) => size};
+  height: ${({ size }) => size};
   border-radius: 50%;
   background: #fff;
   transition: all 100ms ease-out;
 `;
 
-const AvatarIcon: any = styled(Icon)`
-  flex: 0 0 ${(props: any) => props.size};
-  width: ${(props: any) => props.size};
-  height: ${(props: any) => props.size};
-  fill: ${(props: any) => props.fillColor};
+const AvatarIcon = styled(Icon)<{ size: string, fillColor: string | undefined }>`
+  flex: 0 0 ${({ size }) => size};
+  width: ${({ size }) => size};
+  height: ${({ size }) => size};
+  ${({ fillColor }) => fillColor ? `fill: ${fillColor};` : ''};
   transition: all 100ms ease-out;
 `;
 
-export const Container: any = styled.div`
-  flex: 0 0 ${(props: any) => props.size};
-  width: ${(props: any) => props.size};
-  height: ${(props: any) => props.size};
+ export const Container = styled.div<{
+   size: string,
+   bgColor: string | undefined,
+   borderColor: string | undefined,
+   borderThickness: string | undefined,
+   borderHoverColor: string | undefined,
+   fillHoverColor: string | undefined
+  }>`
+  flex: 0 0 ${({ size }) => size};
+  width: ${({ size }) => size};
+  height: ${({ size }) => size};
   cursor: inherit;
   color: #000;
   display: flex;
@@ -52,63 +59,62 @@ export const Container: any = styled.div`
   transition: all 100ms ease-out;
   background: transparent;
   position: relative;
-  background: ${(props: any) => props.bgColor};
-  border: solid ${(props: any) => props.borderThickness} ${(props: any) => props.borderColor};
+  ${({ bgColor }) => bgColor ? `background: ${bgColor};` : ''}
+  ${({ borderThickness, borderColor }) => borderColor ? `border: solid ${borderThickness || '1px'} borderColor;` : ''}
 
   &.hasHoverEffect {
     cursor: pointer;
 
     &:hover {
-      border-color: ${(props: any) => props.borderHoverColor};
+      ${({ borderHoverColor }) => borderHoverColor ? `border-color: ${borderHoverColor};` : ''};
 
       ${AvatarIcon} {
-        fill: ${(props: any) => props.fillHoverColor};
+        ${({ fillHoverColor }) => fillHoverColor ? `fill: ${fillHoverColor};` : ''};
       }
     }
   }
 `;
 
-const ModeratorBadgeContainer: any = styled.div`
-  flex: 0 0 ${(props: any) => props.size / 2 + 5}px;
-  width: ${(props: any) => props.size / 2 + 5}px;
-  height: ${(props: any) => props.size / 2 + 5}px;
+const ModeratorBadgeContainer = styled.div<{ size: number, bgColor: string | undefined }>`
+  flex: 0 0 ${({ size }) => size / 2}px;
+  width: ${({ size }) => size / 2}px;
+  height: ${({ size }) => size / 2}px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  right: -${(props: any) => props.size / 19}px;
-  bottom: -${(props: any) => props.size / 19}px;
+  right: ${({ size }) => size / 20}px;
+  bottom: ${({ size }) => size / 20}px;
   border-radius: 50%;
-  padding-top: 1px;
-  padding-left: 1px;
-  background: ${(props: any) => props.bgColor};
+  ${({ bgColor }) => bgColor ? `background: ${bgColor};` : ''};
+  padding-top: 2px;
 `;
 
-const ModeratorBadgeIcon: any = styled(Icon)`
+const ModeratorBadgeIcon = styled(Icon)<{ size: number}>`
   color: ${colors.clRedError};
   fill: ${colors.clRedError};
-  height: ${(props: any) => (props.size / 2) - 5}px;
+  height: ${({ size }) => (size / 2) - 5}px;
 `;
 
-const VerifiedBadgeContainer: any = styled.div`
-  flex: 0 0 ${(props: any) => props.size / 2.5}px;
-  width: ${(props: any) => props.size / 2.5}px;
-  height: ${(props: any) => props.size / 2.5}px;
+const VerifiedBadgeContainer = styled.div<{ size: number, bgColor: string | undefined }>`
+  flex: 0 0 ${({ size }) => size / 2.3}px;
+  width: ${({ size }) => size / 2.3}px;
+  height: ${({ size }) => size / 2.3}px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  right: -${(props: any) => props.size / 40}px;
-  bottom: -${(props: any) => props.size / 40}px;
-  background: ${(props: any) => props.bgColor};
+  right: 0;
+  bottom: 0;
   border-radius: 50%;
+  ${({ bgColor }) => bgColor ? `background: ${bgColor};` : ''};
 `;
 
-const VerifiedBadgeIcon: any = styled(Icon)`
+const VerifiedBadgeIcon = styled(Icon)<{ bgColor: string | undefined, size: number }>`
   color: ${colors.clGreen};
   fill: ${colors.clGreen};
-  stroke: ${(props: any) => props.bgColor};
-  height: ${(props: any) => props.size / 2.5}px;
+  ${({ bgColor }) => bgColor ? `stroke: ${bgColor};` : ''};
+  height: 100%;
 `;
 
 interface InputProps {
@@ -186,15 +192,14 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
               size={size}
             />
           ) : (
-              <AvatarIcon
-                className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
-                name="user"
-                title={<FormattedMessage {...messages.noAvatarAltText} />}
-                size={size}
-                fillColor={fillColor}
-                fillHoverColor={fillHoverColor}
-              />
-            )}
+            <AvatarIcon
+              className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
+              name="user"
+              title={<FormattedMessage {...messages.noAvatarAltText} />}
+              size={size}
+              fillColor={fillColor}
+            />
+          )}
           {moderator && (
             <ModeratorBadgeContainer size={numberSize} bgColor={bgColor}>
               <ModeratorBadgeIcon name="clLogo" size={numberSize} />
