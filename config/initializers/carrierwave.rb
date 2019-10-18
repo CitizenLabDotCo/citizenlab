@@ -17,3 +17,8 @@ if Rails.env.test? or Rails.env.cucumber?
     config.enable_processing = false
   end
 end
+
+# Adds the mount_base64_uploader class method to ActiveRecord.
+ActiveSupport.on_load :active_record do
+  ActiveRecord::Base.extend Carrierwave::Base65::Adapter
+end
