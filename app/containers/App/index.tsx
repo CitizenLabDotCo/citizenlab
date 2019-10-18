@@ -2,7 +2,7 @@ import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { isString, isObject, uniq } from 'lodash-es';
-import { isNilOrError, isAdminPage } from 'utils/helperUtils';
+import { isNilOrError, isAdminPage, isPage } from 'utils/helperUtils';
 import moment from 'moment';
 import 'moment-timezone';
 import { configureScope } from '@sentry/browser';
@@ -239,6 +239,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       userActuallyDeleted
     } = this.state;
     const adminPage = isAdminPage(location.pathname);
+    const initiatiaveFormPage = isPage('initiative_form', location.pathname);
     const theme = getTheme(tenant);
 
     return (
@@ -294,7 +295,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                       </HasPermission.No>
                     </HasPermission>
                   </InnerContainer>
-                  {!adminPage && <Footer />}
+                  {!adminPage && <Footer showShortFeedback={!initiatiaveFormPage} />}
                 </Container>
               </>
             </ThemeProvider>

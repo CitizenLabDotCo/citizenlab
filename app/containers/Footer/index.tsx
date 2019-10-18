@@ -274,13 +274,15 @@ const ShortFeedbackFormModalFooter = styled.div`
   display: flex;
 `;
 
+interface InputProps {
+  showShortFeedback?: boolean;
+}
+
 interface DataProps {
   locale: GetLocaleChildProps;
 }
 
-interface Props extends DataProps {
-  showShortFeedback?: boolean;
-}
+interface Props extends DataProps, InputProps {}
 
 interface State {
   shortFeedbackButtonClicked: boolean;
@@ -475,8 +477,8 @@ const Data = adopt<Props>({
   locale: <GetLocale />,
 });
 
-export default () => (
+export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <Footer {...dataProps} />}
+    {dataProps => <Footer {...inputProps} {...dataProps} />}
   </Data>
 );
