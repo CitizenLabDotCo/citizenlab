@@ -73,6 +73,15 @@ export function getDisplayName(Component) {
 }
 
 export function isPage(pageKey: 'admin' | 'initiative_form', pathName: string) {
+   /**
+   * Checks whether current page is the desired page
+   *
+   * @param pageKey - key to indicate the desired page
+   * @param pathName - pathname to check (usually current path aka location.pathname)
+   *
+   * @returns Boolean. True if current page matches the pageKey's url, false otherwise.
+   */
+
   const pathnameWithoutLocale = removeUrlLocale(pathName);
 
   switch (pageKey) {
