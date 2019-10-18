@@ -156,8 +156,11 @@ const InitiativesCTABox = withTheme(memo((props: Props) => {
           <CTAButton
             fontWeight="500"
             padding="13px 22px"
-            bgColor="rgba(100, 100, 100, 0)"
+            style="primary-inverse"
             textColor={theme.colorMain}
+            textHoverColor={theme.colorMain}
+            bgColor="transparent"
+            bgHoverColor="rgba(0, 0, 0, 0.08)"
             linkTo="/initiatives"
             text={<FormattedMessage {...messages.browseInitiative} />}
             className="e2e-initiatives-landing-CTA-browse"

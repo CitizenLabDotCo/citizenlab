@@ -78,11 +78,11 @@ type State = {
 class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State> {
   passwordInputElement: HTMLInputElement | null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
 
     const query = clHistory.getCurrentLocation().query;
-    const token = (query.token ? query.token : null);
+    const token = (query && query.token && isString(query.token)) ? query.token : null;
 
     this.state = {
       token,
@@ -140,7 +140,6 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
         this.setState({ processing: true, success: false });
         await resetPassword(password, token);
         this.setState({ password: null, processing: false, success: true });
-        /* setTimeout(() => this.setState({ success: false }), 8000); */
       } catch (error) {
         this.setState({ processing: false, success: false, submitError: true });
       }
