@@ -45,7 +45,12 @@ class EventFile < ApplicationRecord
   private 
 
   def mime_type_whitelist
-    byebug
-    MIME_TYPE_WHITELIST.any? { |item| self.file.content_type =~ /#{item}/ }
+    if !MIME_TYPE_WHITELIST.any? { |item| self.file.content_type =~ /#{item}/ }
+      self.errors.add(
+        :file,
+        :extension_whitelist_error,
+        message: 'File MIME type is not supported'
+      )
+    end
   end
 end
