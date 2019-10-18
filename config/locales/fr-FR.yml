@@ -15,14 +15,14 @@ fr:
   initiative_statuses:
     proposed: soumise
     proposed_description: soumise
-    expired: expiré
-    expired_description: expiré
+    expired: expirée
+    expired_description: expirée
     threshold_reached: seuil atteint
     threshold_reached_description: seuil atteint
-    answered: répondu
-    answered_description: répondu
-    ineligible: inadmissible
-    ineligible_description: inadmissible
+    answered: répondue
+    answered_description: répondue
+    ineligible: inéligible
+    ineligible_description: inéligible
   topics:
     infrastructure: Espace public
     infrastructure_description: Espace public
