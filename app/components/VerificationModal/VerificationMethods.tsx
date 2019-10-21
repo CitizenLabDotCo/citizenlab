@@ -84,10 +84,7 @@ const ButtonsContainer = styled.div`
   align-items: stretch;
   background: ${colors.background};
   border-radius: ${(props: any) => props.theme.borderRadius};
-
-  &.withoutContext {
-    max-width: 420px;
-  }
+  max-width: 420px;
 `;
 
 interface Props {
