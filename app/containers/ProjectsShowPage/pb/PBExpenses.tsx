@@ -347,7 +347,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                 }
               </Title>
               <Spacer />
-              <TotalBudgetDesktop>
+              <TotalBudgetDesktop aria-hidden>
                 <BudgetLabel>
                   <FormattedMessage {...messages.totalBudget} />:
                 </BudgetLabel>
@@ -374,7 +374,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
 
             <Footer>
               <Budgets>
-                <Budget>
+                <Budget aria-hidden>
                   <BudgetLabel>
                     <FormattedMessage {...messages.spentBudget} />:
                   </BudgetLabel>
@@ -387,14 +387,8 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                       maximumFractionDigits={0}
                     />
                   </BudgetAmount>
-                  <ScreenReaderOnly aria-live="polite">
-                    <FormattedMessage {...messages.totalBudget} />:
-                    {`${totalBudget} ${currency}`}
-                    <FormattedMessage {...messages.spentBudget} />:
-                    {`${spentBudget} ${currency}`}
-                  </ScreenReaderOnly>
                 </Budget>
-                <TotalBudgetMobile>
+                <TotalBudgetMobile aria-hidden>
                   <BudgetLabel>
                     <FormattedMessage {...messages.totalBudget} />:
                   </BudgetLabel>
@@ -408,6 +402,12 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                     />
                   </BudgetAmount>
                 </TotalBudgetMobile>
+                <ScreenReaderOnly aria-live="polite">
+                  <FormattedMessage {...messages.totalBudget} />:
+                  {`${totalBudget} ${currency}`}
+                  <FormattedMessage {...messages.spentBudget} />:
+                  {`${spentBudget} ${currency}`}
+                </ScreenReaderOnly>
               </Budgets>
               <Spacer />
               <Buttons>
