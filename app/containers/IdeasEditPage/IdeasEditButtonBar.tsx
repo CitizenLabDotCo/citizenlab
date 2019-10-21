@@ -37,8 +37,8 @@ const ButtonBarInner = styled.div`
 `;
 
 interface Props {
-  onSubmit: () => void;
   form?: string;
+  id?: string;
 }
 
 interface GlobalState {
@@ -49,7 +49,7 @@ interface GlobalState {
 
 interface State extends GlobalState {}
 
-export default class IdeasNewButtonBar extends PureComponent<Props, State> {
+export default class IdeasEditButtonBar extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
   subscriptions: Subscription[];
 
@@ -60,7 +60,7 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
       processing: false,
       fileOrImageError: false
     };
-    this.globalState = globalState.init<IIdeasPageGlobalState>('IdeasNewPage');
+    this.globalState = globalState.init<IIdeasPageGlobalState>('IdeasEditPage');
     this.subscriptions = [];
   }
 
@@ -79,11 +79,12 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
   }
 
   handleOnSubmitButtonClick = () => {
-    eventEmitter.emit('IdeasNewPage', 'IdeaFormSubmitEvent', null);
+    eventEmitter.emit('IdeasEditPage', 'IdeaFormSubmitEvent', null);
   }
 
   render() {
     const { processing, fileOrImageError, submitError } = this.state;
+    const { id } = this.props;
     let { form } = this.props;
     const submitErrorMessage = submitError
       ? <FormattedMessage {...messages.submitError} />
@@ -97,6 +98,7 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
       <ButtonBar>
         <ButtonBarInner>
           <Button
+            id={id}
             form={form}
             className="e2e-submit-idea-form"
             size="1"

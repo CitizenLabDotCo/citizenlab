@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { isPage } from 'utils/helperUtils';
 
 // components
 import FullscreenModal from 'components/UI/FullscreenModal';
@@ -15,8 +14,6 @@ interface Props {
   slug: string | null;
   close: () => void;
 }
-
-const initiativeFormPage = isPage('initiative_form', location.pathname);
 
 const PostPageFullscreenModal = memo<Props>(({ id, slug, type, close }) => {
 
@@ -40,14 +37,14 @@ const PostPageFullscreenModal = memo<Props>(({ id, slug, type, close }) => {
         ? (
         <>
           <IdeasShow ideaId={id}/>
-          <Footer/>
+          <Footer />
         </>
         )
         : type === 'initiative'
           ? (
           <>
             <InitiativesShow initiativeId={id}/>
-            <Footer showShortFeedback={initiativeFormPage} />
+            <Footer />
           </>
           )
           : null

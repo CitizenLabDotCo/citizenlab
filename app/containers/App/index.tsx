@@ -239,7 +239,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       userActuallyDeleted
     } = this.state;
     const adminPage = isPage('admin', location.pathname);
-    const initiatiaveFormPage = isPage('initiative_form', location.pathname);
+    const initiativeFormPage = isPage('initiative_form', location.pathname);
+    const ideaFormPage = isPage('idea_form', location.pathname);
+    const ideaEditPage = isPage('idea_edit', location.pathname);
+    const initiativeEditPage = isPage('initiative_edit', location.pathname);
+    const showFooter = !adminPage &&
+                       !ideaFormPage &&
+                       !initiativeFormPage &&
+                       !ideaEditPage &&
+                       !initiativeEditPage;
     const theme = getTheme(tenant);
 
     return (
@@ -295,7 +303,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                       </HasPermission.No>
                     </HasPermission>
                   </InnerContainer>
-                  {!adminPage && <Footer showShortFeedback={!initiatiaveFormPage} />}
+                  {showFooter && <Footer />}
                 </Container>
               </>
             </ThemeProvider>
