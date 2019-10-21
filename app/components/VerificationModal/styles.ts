@@ -1,7 +1,7 @@
 import { fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
-export const Title = styled.h3`
+export const Title = styled.h1`
   width: 100%;
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxl}px;
@@ -23,7 +23,7 @@ export const Title = styled.h3`
   }
 `;
 
-export const Subtitle = styled.h4`
+export const Subtitle = styled.h2`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.large}px;
   line-height: normal;

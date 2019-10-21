@@ -115,7 +115,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
 
   return (
     <Container className={className}>
-      <AboveTitle>
+      <AboveTitle aria-hidden>
         <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
         <ShieldIcon name="verify" />
       </AboveTitle>
