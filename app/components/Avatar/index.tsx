@@ -1,3 +1,8 @@
+/*
+* This component is invisible to screen readers, if you ever need to show it to
+* screen readers, please adapt inner content to be intelligible before removing aria-hidden prop
+*/
+
 import React, { PureComponent, FormEvent } from 'react';
 import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
@@ -178,6 +183,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
           borderHoverColor={moderator ? colors.clRedError : borderHoverColor}
           fillHoverColor={fillHoverColor}
           bgColor={bgColor}
+          aria-hidden
         >
           {avatarSrc ? (
             <AvatarImage
@@ -197,12 +203,12 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
           )}
           {moderator && (
             <ModeratorBadgeContainer size={numberSize} bgColor={bgColor}>
-              <ModeratorBadgeIcon name="clLogo" size={numberSize} />
+              <ModeratorBadgeIcon name="clLogo" size={numberSize} aria-hidden/>
             </ModeratorBadgeContainer>
           )}
           {user.attributes.is_verified && verified && (
             <FeatureFlag name="verification">
-              <VerifiedBadgeContainer size={numberSize} bgColor={bgColor}>
+              <VerifiedBadgeContainer size={numberSize} bgColor={bgColor} aria-hidden>
                 <VerifiedBadgeIcon name="checkmark-full" size={numberSize} bgColor={bgColor} />
               </VerifiedBadgeContainer>
             </FeatureFlag>
