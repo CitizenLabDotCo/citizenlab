@@ -131,10 +131,6 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnSubmitButtonClick = () => {
-    eventEmitter.emit('IdeasNewPage', 'IdeaFormSubmitEvent', null);
-  }
-
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { title, description, selectedTopics, budget, address: position, imageFile, ideaFiles } = ideaFormOutput;
     this.globalState.set({ title, description, selectedTopics, budget, position, imageFile, ideaFiles });
