@@ -55,7 +55,7 @@ const Header = styled.div`
   justify-content: space-between;
 `;
 
-const Title = styled.h1`
+const Title = styled.h2`
   min-height: 20px;
   color: ${colors.text};
   font-size: ${fontSizes.large}px;
@@ -409,11 +409,13 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                   <ManageBudgetButton
                     onClick={this.toggleExpensesDropdown}
                     icon="moneybag"
+                    iconAriaHidden={true}
                     textColor={colors.adminTextColor}
                     bgColor="transparent"
                     bgHoverColor="transparent"
                     borderColor={colors.separation}
                     borderThickness="2px"
+                    ariaExpanded={dropdownOpened}
                   >
                     <FormattedMessage {...messages.manageBudget} />
                   </ManageBudgetButton>

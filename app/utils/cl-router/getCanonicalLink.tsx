@@ -1,6 +1,6 @@
 import React from 'react';
 import { removeUrlLocale } from 'services/locale';
-import { isAdminPage } from 'utils/helperUtils';
+import { isPage } from 'utils/helperUtils';
 
 /**
  * Make url without locale the canonical of a certain page.
@@ -11,5 +11,5 @@ import { isAdminPage } from 'utils/helperUtils';
  */
 export default function getCanonicalLink() {
   const pathName = location.pathname;
-  return !isAdminPage(pathName) ? <link rel="canonical" href={`${location.origin}${removeUrlLocale(pathName)}`} /> : null;
+  return !isPage('admin', pathName) ? <link rel="canonical" href={`${location.origin}${removeUrlLocale(pathName)}`} /> : null;
 }

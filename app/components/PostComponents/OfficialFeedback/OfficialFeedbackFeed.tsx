@@ -11,7 +11,7 @@ import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/
 
 // styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
@@ -31,9 +31,12 @@ const FeedbackHeader = styled.div`
   justify-content: space-between;
 `;
 
-const FeedbackTitle = styled.h4`
-  margin-bottom: 0;
-  font-weight: 500;
+const FeedbackTitle = styled.div`
+  h2 {
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: ${fontSizes.base}px;
+  }
 `;
 
 const StyledOfficialFeedbackPost = styled(OfficialFeedbackPost)`
@@ -89,7 +92,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
           <Container className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}>
             <FeedbackHeader>
               <FeedbackTitle>
-                <FormattedMessage {...messages.officialUpdates} />
+                <FormattedMessage tagName="h2" {...messages.officialUpdates} />
               </FeedbackTitle>
                 <FormattedMessage
                   {...messages.lastUpdate}

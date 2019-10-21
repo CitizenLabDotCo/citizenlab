@@ -68,6 +68,10 @@ export interface ITenantSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  admin_project_templates?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   pages?: TenantFeature;
   groups?: TenantFeature;
   projects?: TenantFeature;
@@ -91,6 +95,11 @@ export interface ITenantSettings {
     }[];
     threshold_reached_message: Multiloc;
     voting_threshold: number;
+  };
+  fragments?: {
+    allowed: boolean,
+    enabled: boolean,
+    enabled_fragments: String[]
   };
 }
 

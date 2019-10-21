@@ -59,7 +59,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
     }
   }
 
-  onLocaleChange = (locale: Locale) => () => {
+  onLocaleChange = (locale: Locale) => {
     this.setState({ selectedLocale: locale });
   }
 
