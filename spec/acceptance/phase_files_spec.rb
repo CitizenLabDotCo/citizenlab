@@ -60,6 +60,7 @@ resource "PhaseFile" do
 
     describe do
       let(:file) { encode_exe_file_as_base64("keylogger.exe") }
+      let(:name) { 'keylogger.exe' }
 
       example_request "[error] Add an unsupported file extension as attachment to a phase" do
         expect(response_status).to eq 422
