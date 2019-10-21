@@ -49,6 +49,20 @@ const FooterInner = styled.div`
   display: flex;
 `;
 
+const StyledLabel = styled(Label)`
+  display: flex;
+  flex-direction: column;
+`;
+
+const LabelTextContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const StyledInfoTooltip = styled(InfoTooltip)`
+  margin-left: 5px;
+`;
+
 const SubmitButton = styled(Button)`
   margin-right: 10px;
 `;
@@ -132,31 +146,34 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
 
       <Form>
         <FormField>
-          <Label>
-            <FormattedMessage {...messages.cowRunNumber} />
-            <InfoTooltip {...messages.cowRunNumberTooltip} />
-          </Label>
-          <Input
-            type="text"
-            placeholder="RUN"
-            onChange={onRunChange}
-            value={run}
-            error={runError}
-          />
+          <StyledLabel>
+            <LabelTextContainer>
+              <FormattedMessage {...messages.cowRunNumber} />
+              <StyledInfoTooltip {...messages.cowRunNumberTooltip} />
+            </LabelTextContainer>
+            <Input
+              type="text"
+              onChange={onRunChange}
+              value={run}
+              error={runError}
+            />
+          </StyledLabel>
         </FormField>
 
         <FormField>
-          <Label>
-            <FormattedMessage {...messages.cowIdSerialNumber} />
-            <InfoTooltip {...messages.cowIdSerialNumberTooltip} />
-          </Label>
-          <Input
-            type="text"
-            placeholder="ID Number"
-            onChange={onIdSerialChange}
-            value={idSerial}
-            error={idError}
-          />
+          <StyledLabel>
+            <LabelTextContainer>
+              <FormattedMessage {...messages.cowIdSerialNumber} />
+              <StyledInfoTooltip {...messages.cowIdSerialNumberTooltip} />
+            </LabelTextContainer>
+            <Input
+              type="text"
+              placeholder="ID Number"
+              onChange={onIdSerialChange}
+              value={idSerial}
+              error={idError}
+            />
+          </StyledLabel>
         </FormField>
 
         {formError &&
