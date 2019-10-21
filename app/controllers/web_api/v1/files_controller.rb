@@ -60,7 +60,13 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def create
-    @file = @container.send(secure_constantize(:file_relationship)).create(file_params)
+    params = file_params.to_h
+    data = params.delete :file
+    # byebug
+    @file = @container.send(secure_constantize(:file_relationship)).new(params)
+    file_name = params[:name].split('.')[0..-2].join('.')
+    extension = params[:name].split('.').first
+    @file.load_file data, file_name, extension
     authorize @file
     if @file.save
       render json: WebApi::V1::FileSerializer.new(
