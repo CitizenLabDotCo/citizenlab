@@ -1,6 +1,6 @@
 module Carrierwave
-  module Base65
-    class Base65StringIO < StringIO
+  module Base64
+    class Base64StringIO < StringIO
 
       attr_reader :file_name
       attr_reader :file_extension

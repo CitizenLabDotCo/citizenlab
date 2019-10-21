@@ -1,8 +1,8 @@
 module Carrierwave
-  module Base65
+  module Base64
     module Adapter
 
-      def mount_base65_uploader attribute, uploader_class, options={}
+      def mount_base64_uploader attribute, uploader_class, options={}
         mount_uploader attribute, uploader_class, options
 
         self.send(:define_method, "load_#{attribute}") do |data, file_name, file_extension|
@@ -14,7 +14,7 @@ module Carrierwave
           send("#{attribute}_will_change!") if respond_to? "#{attribute}_will_change!"
 
           if !(data.is_a?(String) && data.strip.start_with?('data'))
-            return super(data)
+            return self.file = data
           end
 
           # raise ArgumentError if self.name.count('.') == 0
@@ -22,7 +22,7 @@ module Carrierwave
           # file_name = self.name.split('.')[0..-2].join('.')
           # extension = self.name.split('.').first
           # byebug
-          super Carrierwave::Base65::Base65StringIO.new data.strip , file_name, extension
+          self.file = Carrierwave::Base65::Base64StringIO.new(data.strip, file_name, file_extension)
         end
       end
 
