@@ -377,6 +377,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const upvotesCount = idea.attributes.upvotes_count;
       const downvotesCount = idea.attributes.downvotes_count;
       const votingEnabled = idea.attributes.action_descriptor.voting.enabled;
+      const votingDisabledReason = idea.attributes.action_descriptor.voting.disabled_reason;
       const cancellingEnabled = idea.attributes.action_descriptor.voting.cancelling_enabled;
       const votingFutureEnabled = idea.attributes.action_descriptor.voting.future_enabled;
       const pbProject = (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'budgeting' ? project : null);
@@ -386,7 +387,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const lastPhaseHasPassed = (lastPhase ? pastPresentOrFuture([lastPhase.attributes.start_at, lastPhase.attributes.end_at]) === 'past' : false);
       const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.id === pbPhase.id);
       const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
-      const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0));
+      const shouldVerify = !votingEnabled && votingDisabledReason === 'not_verified';
+      const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify));
       const budgetingDescriptor = get(idea, 'attributes.action_descriptor.budgeting', null);
       let participationContextType: 'Project' | 'Phase' | null = null;
       let participationContextId: string | null = null;
