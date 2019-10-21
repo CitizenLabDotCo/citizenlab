@@ -53,7 +53,7 @@ const VerificationModal = memo<Props>((props) => {
 
   return (
     <Modal
-      width="820px"
+      width={820}
       opened={props.opened}
       close={onClose}
     >
