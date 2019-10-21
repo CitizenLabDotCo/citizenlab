@@ -36,7 +36,7 @@ const StyledAvatar = styled(Avatar)`
   left: calc(50% - 48px);
 `;
 
-const Subtitle = styled.h3`
+const Subtitle = styled.h2`
   flex-shrink: 0;
   width: 100%;
   max-width: 500px;
@@ -55,11 +55,6 @@ const Subtitle = styled.h3`
     line-height: 21px;
     margin-bottom: 20px;
   `}
-
-  a {
-    text-decoration: underline;
-    color: ${colors.text};
-  }
 `;
 
 interface Props {
@@ -73,8 +68,8 @@ export default memo<Props>(({ className }) => {
 
   return (
     <Container className={className}>
-      <ImageAvatarContainer>
-        <img src={illustration} aria-hidden alt="" role="presentation"/>
+      <ImageAvatarContainer aria-hidden>
+        <img src={illustration} alt="" role="presentation"/>
         <StyledAvatar userId={authUser.data.id} size="96px" verified/>
       </ImageAvatarContainer>
       <Title className="e2e-user-verified-success-modal-content">
