@@ -2,7 +2,7 @@ class PageFile < ApplicationRecord
   EXTENSION_WHITELIST = %w(pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv)
 
 	attr_accessor :filename
-  mount_base64_uploader :file, PageFileUploader
+  mount_base64_file_uploader :file, PageFileUploader
   belongs_to :page
 
   validates :page, :file, :name, presence: true
