@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 
 // components
-import Footer from 'components/Footer';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
 import SuccessStories from './SuccessStories';
 import InitiativeCards from 'components/InitiativeCards';
 import ContentContainer from 'components/ContentContainer';
+import CityLogoSection from 'components/CityLogoSection';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -38,7 +38,7 @@ const FooterBanner: any = styled.div`
   padding-bottom: 60px;
 `;
 
-const FooterMessage = styled.p`
+const FooterMessage = styled.h2`
     color: #fff;
     font-size: ${fontSizes.xxxl}px;
     line-height: normal;
@@ -67,8 +67,6 @@ const Padding = styled.div`
   height: 100px;
 `;
 
-const StyledInitiativeCards = styled(InitiativeCards)``;
-
 const trackInitiative = () => {
   trackEventByName(tracks.clickStartInitiativesCTA, { extra: { location: 'initiatives footer' } });
 };
@@ -80,7 +78,9 @@ export default withTheme(memo((_props) => (
     <StyledContentContainer maxWidth="100%">
       <SuccessStories />
       <Padding />
-      <StyledInitiativeCards />
+      <InitiativeCards
+        invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
+      />
     </StyledContentContainer>
     <FooterBanner>
       <FooterMessage>
@@ -98,6 +98,6 @@ export default withTheme(memo((_props) => (
         text={<FormattedMessage {...messages.startInitiative} />}
       />
     </FooterBanner>
-    <Footer />
+    <CityLogoSection />
   </>
 )));

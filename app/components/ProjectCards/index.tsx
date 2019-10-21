@@ -15,7 +15,7 @@ import SelectAreas from './SelectAreas';
 import SelectPublicationStatus from './SelectPublicationStatus';
 
 // resources
-import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus  } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus } from 'resources/GetProjects';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
@@ -31,7 +31,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
+import { media, fontSizes, viewportWidths, colors, ScreenReaderOnly } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 const EmptyProjectsImageSrc: string = require('assets/img/landingpage/no_projects_image.svg');
@@ -67,18 +67,22 @@ const Header = styled.div`
   `};
 `;
 
-const Title = styled.h2`
+const Title = styled.div`
+  & h2 {
+    font-weight: 500;
+    font-size: ${fontSizes.xl}px;
+  }
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.colorText};
   margin: 0;
   margin-right: 45px;
-  font-weight: 500;
-  font-size: ${fontSizes.xl}px;
 
   ${media.smallerThanMinTablet`
     margin: 0;
-    font-size: ${fontSizes.large}px;
+    & h2 {
+      font-size: ${fontSizes.large}px;
+    }
     text-align: center;
   `};
 `;
@@ -365,17 +369,31 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
       return (
         <Container id="e2e-projects-container">
           <Header>
-            {showTitle &&
+            {showTitle ? (
               <Title>
                 {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
                   ?
-                    <T value={customCurrentlyWorkingOn} />
+                  <T as="h2" value={customCurrentlyWorkingOn} />
                   :
-                    <FormattedMessage
-                      {...messages.currentlyWorkingOn}
-                    />
+                  <FormattedMessage
+                    tagName="h2"
+                    {...messages.currentlyWorkingOn}
+                  />
                 }
               </Title>
+            ) : (
+                <ScreenReaderOnly>
+                  {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
+                    ?
+                    <T  as="h2" value={customCurrentlyWorkingOn} />
+                    :
+                    <FormattedMessage
+                      tagName="h2"
+                      {...messages.currentlyWorkingOn}
+                    />
+                  }
+                </ScreenReaderOnly>
+              )
             }
 
             <FiltersArea className={showTitle ? 'alignRight' : 'fullWidth'}>
@@ -424,7 +442,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
               // the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
               // Ideally would have been solved with CSS grid, but... IE11
               */}
-              {!hasMore && (layout === 'threecolumns' || projectsList.length > 6)  && (projectsList.length + 1) % 3 === 0 &&
+              {!hasMore && (layout === 'threecolumns' || projectsList.length > 6) && (projectsList.length + 1) % 3 === 0 &&
                 <MockProjectCard className={layout} />
               }
 

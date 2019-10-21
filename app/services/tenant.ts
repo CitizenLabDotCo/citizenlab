@@ -68,6 +68,10 @@ export interface ITenantSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  admin_project_templates?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   pages?: TenantFeature;
   groups?: TenantFeature;
   projects?: TenantFeature;

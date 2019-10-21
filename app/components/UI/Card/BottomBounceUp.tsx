@@ -68,7 +68,11 @@ export default class BottomBounceUp extends PureComponent<Props> {
       <Container>
         {this.props.icon &&
           <IconWrapper>
-            <StyledIcon name={this.props.icon} />
+            {/*
+              If you use this component and want to add aria-hidden,
+              you should check whether you still need to add the ariaHidden prop in Icon/index
+            */}
+            <StyledIcon name={this.props.icon} ariaHidden />
           </IconWrapper>
         }
         <ContentWrapper>

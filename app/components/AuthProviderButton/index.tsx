@@ -11,7 +11,7 @@ import AuthProviderImage from './AuthProviderImage';
 
 const timeout = 250;
 
-const AuthProviderButtonWrapper = styled.div`
+const AuthProviderButtonWrapper = styled.button`
   width: 100%;
   height: 58px;
   margin-top: 15px;
@@ -135,7 +135,8 @@ class AuthProviderButton extends PureComponent<Props, State> {
     );
   }
 
-  handleOnClick = () => {
+  handleOnClick = (event) => {
+    event.preventDefault();
     const { status } = this.state;
     if (status === 'image') {
       this.setState({ status: 'unchecked' });

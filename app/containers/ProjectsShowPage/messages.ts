@@ -9,6 +9,22 @@ export default defineMessages({
     id: 'app.containers.Projects.project',
     defaultMessage: 'Project',
   },
+  invisibleTitleIdeasList: {
+    id: 'app.containers.Projects.invisibleTitleIdeasList',
+    defaultMessage: 'All the ideas for this project',
+  },
+  invisibleTitleIdeasListPhase: {
+    id: 'app.containers.Projects.invisibleTitleIdeasListPhase',
+    defaultMessage: 'All the ideas for this phase',
+  },
+  invisibleTitleSurvey: {
+    id: 'app.containers.Projects.invisibleTitleSurvey',
+    defaultMessage: 'Take the survey',
+  },
+  invisibleTitlePhaseAbout: {
+    id: 'app.containers.Projects.invisibleTitlePhaseAbout',
+    defaultMessage: 'About this phase',
+  },
   information: {
     id: 'app.containers.Projects.information',
     defaultMessage: 'Information',
@@ -140,5 +156,9 @@ export default defineMessages({
   byAuthor: {
     id: 'app.containers.Projects.byAuthor',
     defaultMessage: 'by {authorName}',
+  },
+  removeItem: {
+    id: 'app.containers.Projects.removeItem',
+    defaultMessage: 'Remove item',
   }
 });
