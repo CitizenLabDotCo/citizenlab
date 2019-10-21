@@ -78,7 +78,7 @@ class WebApi::V1::FilesController < ApplicationController
   def update
     params = file_params.to_h
     data = params.delete :file
-    @file.assign_attributes file_params
+    @file.assign_attributes params
     @file.load_file data if data
     authorize @file
     if @file.save
