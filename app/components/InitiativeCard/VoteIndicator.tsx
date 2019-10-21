@@ -193,11 +193,9 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
               <ScreenReaderOnly>
                 <FormattedMessage
                   {...messages.xVotesOfY}
-                  values={{
-                    xVotes: <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />,
-                    votingThreshold: voteLimit
-                  }}
-                />
+                  values={{ count: voteCount, votingThreshold: voteLimit }}
+                />,
+              />
               </ScreenReaderOnly>
             </VoteCounter>
             <StyledProgressBar
