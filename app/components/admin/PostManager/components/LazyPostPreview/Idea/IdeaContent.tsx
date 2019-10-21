@@ -115,7 +115,7 @@ const Right = styled.div`
 `;
 
 const BudgetBox = styled.div`
-  margin-top: 20px;
+  margin-top: 25px;
   width: 100%;
   height: 95px;
   display: flex;
@@ -132,7 +132,7 @@ const BudgetBox = styled.div`
 `;
 
 const Picks = styled.div`
-  margin-top: 7px;
+  margin-top: 15px;
   display: flex;
   font-size: ${fontSizes.base}px;
   align-items: center;
@@ -179,7 +179,6 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
       ideaFiles,
       tenant,
       handleClickEdit,
-      intl: { formatMessage }
     } = this.props;
 
     if (!isNilOrError(idea)) {
@@ -195,7 +194,6 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             <Button
               icon="edit"
               style="text"
-              textColor={colors.adminTextColor}
               onClick={handleClickEdit}
             >
               <FormattedMessage {...messages.edit}/>
@@ -203,7 +201,6 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             <Button
               icon="delete"
               style="text"
-              textColor={colors.adminTextColor}
               onClick={this.handleClickDelete}
             >
               <FormattedMessage {...messages.delete}/>
@@ -232,7 +229,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             <Row>
               <Left>
                 {ideaImageLarge &&
-                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { postTitle: ideaTitle })} className="e2e-ideaImage"/>
+                  <IdeaImage src={ideaImageLarge} alt="" className="e2e-ideaImage"/>
                 }
                 <IdeaAuthor
                   authorId={get(idea, 'relationships.author.data.id', null)}

@@ -35,6 +35,14 @@ export default defineMessages({
   },
   verificationLinkText: {
     id: 'app.components.VoteControl.verificationLinkText',
-    defaultMessage: 'Verify your account now.',
+    defaultMessage: 'Verify your account now.'
+  },
+  upvote: {
+    id: 'app.components.VoteControl.upvote',
+    defaultMessage: 'Upvote',
+  },
+  downvote: {
+    id: 'app.components.VoteControl.downvote',
+    defaultMessage: 'Downvote',
   },
 });

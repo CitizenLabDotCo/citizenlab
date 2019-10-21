@@ -2,7 +2,7 @@ const express = require('express');
 const request = require('request');
 const path = require('path');
 const compression = require('compression');
-const { API_HOST, API_PORT } = require('./getApiData');
+const { API_HOST, API_PORT, GRAPHQL_HOST, GRAPHQL_PORT } = require('./getApiData');
 
 const app = express();
 
@@ -12,6 +12,9 @@ app.use(compression());
 // Redirects API requests
 app.use('/web_api', (req, res) => {
   req.pipe(request(`http://${API_HOST}:${API_PORT}/web_api/${req.url}`)).pipe(res);
+});
+app.use('/admin_templates_api', (req, res) => {
+  req.pipe(request(`http://${GRAPHQL_HOST}:${GRAPHQL_PORT}/admin_templates_api/${req.url}`)).pipe(res);
 });
 app.use('/auth', (req, res) => {
   req.pipe(request(`http://${API_HOST}:${API_PORT}/auth/${req.url}`)).pipe(res);

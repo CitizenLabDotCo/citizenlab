@@ -11,6 +11,10 @@ import { areasStream, IAreas } from 'services/areas';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IUser } from 'services/users';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
 // Components
 import ProfileForm from './ProfileForm';
 import CampaignsConsentForm from './CampaignsConsentForm';
@@ -19,7 +23,7 @@ import VerificationStatus from './VerificationStatus';
 
 // Styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -88,6 +92,9 @@ export default class ProfileEditor extends PureComponent<Props, State> {
     if (loaded && currentTenant && authUser && areas) {
       return (
         <Container>
+          <ScreenReaderOnly>
+            <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
+          </ScreenReaderOnly>
           <Wrapper>
             <VerificationStatus />
             <ProfileForm

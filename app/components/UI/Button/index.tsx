@@ -361,6 +361,9 @@ export interface Props extends ButtonContainerProps {
   fullHeight?: boolean;
   ariaLabel?: string;
   autoFocus?: boolean;
+  fontSize?: string;
+  ariaExpanded?: boolean;
+  iconAriaHidden?: boolean;
 }
 
 type State = {};
@@ -369,6 +372,7 @@ class Button extends PureComponent<Props, State> {
 
   handleOnClick = (event) => {
     const { onClick, processing, disabled } = this.props;
+
     if (onClick) {
       event.preventDefault();
       event.stopPropagation();
@@ -438,7 +442,9 @@ class Button extends PureComponent<Props, State> {
       fullHeight,
       ariaLabel,
       fontSize,
-      autoFocus
+      autoFocus,
+      ariaExpanded,
+      iconAriaHidden
     } = this.props;
     let { id, size, style, processing, disabled, fullWidth, iconPos, className } = this.props;
 
@@ -452,7 +458,7 @@ class Button extends PureComponent<Props, State> {
     className = `${className ? className : ''}`;
 
     const spinnerSize = this.getSpinnerSize(size);
-    const spinnerColor = this.props.spinnerColor || this.getSpinnerColor(style);
+    const spinnerColor = this.props.spinnerColor || textColor || this.getSpinnerColor(style);
     const buttonClassnames = `Button button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
     const hasText = (!isNil(text) || !isNil(children));
     const childContent = (
@@ -463,6 +469,7 @@ class Button extends PureComponent<Props, State> {
             className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
             title={iconTitle}
             colorTheme={iconTheme}
+            ariaHidden={iconAriaHidden}
           />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
@@ -472,6 +479,7 @@ class Button extends PureComponent<Props, State> {
             className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
             title={iconTitle}
             colorTheme={iconTheme}
+            ariaHidden={iconAriaHidden}
           />
         }
         {processing &&
@@ -532,6 +540,7 @@ class Button extends PureComponent<Props, State> {
         ) : (
           <StyledButton
             aria-label={ariaLabel}
+            aria-expanded={ariaExpanded}
             disabled={disabled}
             ref={this.props.setSubmitButtonRef}
             className={buttonClassnames}
