@@ -7,7 +7,7 @@ import Error from 'components/UI/Error';
 import ButtonBar from 'components/ButtonBar';
 
 // services
-import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
+import { globalState, IGlobalStateService, IIdeasPageGlobalState } from 'services/globalState';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -50,7 +50,7 @@ interface GlobalState {
 interface State extends GlobalState {}
 
 export default class IdeasNewButtonBar extends PureComponent<Props, State> {
-  globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
+  globalState: IGlobalStateService<IIdeasPageGlobalState>;
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -60,7 +60,7 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
       processing: false,
       fileOrImageError: false
     };
-    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage');
+    this.globalState = globalState.init<IIdeasPageGlobalState>('IdeasNewPage');
     this.subscriptions = [];
   }
 
