@@ -1,6 +1,6 @@
 module Carrierwave
   module Base64
-    module Adapter
+    module FileAdapter
 
       def mount_base64_file_uploader attribute, uploader_class, options={}
         mount_uploader attribute, uploader_class, options
@@ -16,7 +16,7 @@ module Carrierwave
 
           file_name = self.name.split('.')[0..-2].join('.')
           extension = self.name.split('.').last
-          self.file = Carrierwave::Base64::Base64StringIO.new(data.strip, file_name, extension)
+          self.file = Carrierwave::Base64::Base64FileStringIO.new(data.strip, file_name, extension)
         end
       end
 
