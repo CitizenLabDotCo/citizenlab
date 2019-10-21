@@ -20,7 +20,9 @@ RSpec.describe InitiativeFile, type: :model do
         ['david.xls',         'application/vnd.ms-excel']
       ].each do |filename, mime_type|
         base64 = "data:#{mime_type};base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
-        expect(initiative.initiative_files.new(name: filename, file: base64).save).to eq true
+        file = initiative.initiative_files.new name: filename
+        file.load_file base64, filename
+        expect(file.save).to eq true
       end
     end
   end

@@ -63,9 +63,7 @@ class WebApi::V1::FilesController < ApplicationController
     params = file_params.to_h
     data = params.delete :file
     @file = @container.send(secure_constantize(:file_relationship)).new(params)
-    file_name = @file.name.split('.')[0..-2].join('.')
-    extension = @file.name.split('.').first
-    @file.load_file data, file_name, extension
+    @file.load_file data, @file.name
     authorize @file
     if @file.save
       render json: WebApi::V1::FileSerializer.new(
@@ -82,9 +80,7 @@ class WebApi::V1::FilesController < ApplicationController
     data = params.delete :file
     @file.assign_attributes file_params
     if data
-      file_name = @file.name.split('.')[0..-2].join('.')
-      extension = @file.name.split('.').first
-      @file.load_file data, file_name, extension
+      @file.load_file data, @file.name
     end
     authorize @file
     if @file.save
