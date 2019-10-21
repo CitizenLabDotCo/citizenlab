@@ -85,11 +85,13 @@ const NewLabel = styled.div`
 `;
 
 const Title = styled.div`
+  h2 {
+    font-size: ${fontSizes.xxl}px;
+    line-height: 33px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xxl}px;
-  line-height: 33px;
-  font-weight: 600;
-  margin-bottom: 10px;
   max-width: 400px;
   ${media.smallerThanMinTablet`
     max-width: none;
@@ -146,7 +148,7 @@ const InitiativesCTABox = withTheme(memo((props: Props) => {
         </NewLabel>
         <div>
           <Title>
-            <FormattedMessage {...messages.initiativesBoxTitle} />
+            <FormattedMessage tagName="h2" {...messages.initiativesBoxTitle} />
           </Title>
           <Text>
             <FormattedMessage {...messages.initiativesBoxText} />

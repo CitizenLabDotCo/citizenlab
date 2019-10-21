@@ -8,10 +8,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
-import Footer from 'components/Footer';
+import IdeasEditButtonBar from './IdeasEditButtonBar';
 
 // services
 import { localeStream } from 'services/locale';
@@ -72,13 +70,16 @@ const Title = styled.h1`
   margin-bottom: 40px;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-`;
-
-const SaveButton = styled(Button)`
-  margin-right: 10px;
+const ButtonBarContainer = styled.div`
+  width: 100%;
+  height: 68px;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: solid 1px #ddd;
 `;
 
 interface Props {
@@ -99,9 +100,7 @@ interface State {
   address: string | null;
   imageFile: UploadFile[];
   imageId: string | null;
-  submitError: boolean;
   loaded: boolean;
-  processing: boolean;
 }
 
 class IdeaEditPage extends PureComponent<Props, State> {
@@ -120,9 +119,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
       address: null,
       imageFile: [],
       imageId: null,
-      submitError: false,
       loaded: false,
-      processing: false
     };
     this.subscriptions = [];
   }
@@ -234,8 +231,6 @@ class IdeaEditPage extends PureComponent<Props, State> {
       ...addressDiff
     });
 
-    this.setState({ processing: true, submitError: false });
-
     try {
       if (oldImageId && oldImageBase64 !== newImageBase64) {
         await deleteIdeaImage(ideaId, oldImageId);
@@ -250,7 +245,6 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
       clHistory.push(`/ideas/${ideaSlug}`);
     } catch {
-      this.setState({ processing: false, submitError: true });
     }
   }
 
@@ -265,13 +259,10 @@ class IdeaEditPage extends PureComponent<Props, State> {
         selectedTopics,
         address,
         imageFile,
-        submitError,
-        processing,
         budget
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description = (locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null);
-      const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
       return (
         <Container id="e2e-idea-edit-page">
@@ -291,19 +282,10 @@ class IdeaEditPage extends PureComponent<Props, State> {
               onSubmit={this.handleIdeaFormOutput}
               remoteIdeaFiles={!isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null}
             />
-
-            <ButtonWrapper>
-              <SaveButton
-                id="e2e-idea-edit-save-button"
-                processing={processing}
-                text={<FormattedMessage {...messages.save} />}
-                onClick={this.handleOnSaveButtonClick}
-              />
-              <Error text={submitErrorMessage} marginTop="0px" />
-            </ButtonWrapper>
+            <ButtonBarContainer>
+              <IdeasEditButtonBar id="e2e-idea-edit-save-button" form="idea-form" />
+            </ButtonBarContainer>
           </FormContainer>
-
-          <Footer showCityLogoSection={false} />
         </Container>
       );
     }

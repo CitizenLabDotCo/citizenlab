@@ -86,10 +86,10 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
     cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
     cy.get('#e2e-idea-show').find('.e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
-    cy.get('#e2e-idea-show').find('.e2e-idea-last-modified-button').contains('Edited');
+    cy.get('#e2e-idea-show').find('.e2e-post-last-modified-button').contains('modified');
 
     // verify modal with edit changelog
-    cy.get('#e2e-idea-show').find('.e2e-idea-last-modified-button').click();
+    cy.get('#e2e-idea-show').find('.e2e-post-last-modified-button').first().click();
     cy.wait(1000);
     cy.get('.e2e-activities-changelog').find('.e2e-idea-changelog-entry').should('have.length', 2);
   });

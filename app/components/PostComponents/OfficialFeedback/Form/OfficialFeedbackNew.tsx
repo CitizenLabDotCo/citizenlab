@@ -9,7 +9,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // utils
-import { isAdminPage } from 'utils/helperUtils';
+import { isPage } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface Props {
@@ -54,9 +54,9 @@ export default class OfficialFeedbackNew extends PureComponent<Props, State> {
 
     // analytics
     if (postType === 'idea') {
-      trackEventByName(tracks.officialFeedbackGiven, { location: isAdminPage(location.pathname) ? 'Admin/idea manager' : 'Citizen/idea page' });
+      trackEventByName(tracks.officialFeedbackGiven, { location: isPage('admin', location.pathname) ? 'Admin/idea manager' : 'Citizen/idea page' });
     } else if (postType === 'initiative') {
-      trackEventByName(tracks.officialFeedbackGiven, { location: isAdminPage(location.pathname) ? 'Admin/initiative manager' : 'Citizen/initiative page' });
+      trackEventByName(tracks.officialFeedbackGiven, { location: isPage('admin', location.pathname) ? 'Admin/initiative manager' : 'Citizen/initiative page' });
     }
   }
 

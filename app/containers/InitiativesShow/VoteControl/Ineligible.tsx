@@ -89,7 +89,7 @@ class Ineligible extends PureComponent<Props, State> {
         <StatusWrapper>
           <T value={initiativeStatus.attributes.title_multiloc} />
         </StatusWrapper>
-        <StatusIcon name="halt" />
+        <StatusIcon ariaHidden name="halt" />
         <StatusExplanation>
           <FormattedMessage
             {...messages.ineligibleStatusExplanation}
@@ -110,7 +110,7 @@ class Ineligible extends PureComponent<Props, State> {
               }
               top="20"
             >
-              <HelpIcon name="info" />
+              <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />}/>
             </StyledTooltip>
           }
         </StatusExplanation>

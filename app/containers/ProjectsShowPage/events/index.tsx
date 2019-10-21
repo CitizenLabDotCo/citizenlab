@@ -41,12 +41,14 @@ const Events = styled.div`
   margin-bottom: 80px;
 `;
 
-const Title = styled.h1`
+const Title = styled.div`
+  h2 {
+    font-size: ${fontSizes.xxl}px;
+    line-height: normal;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
   color: ${colors.text};
-  font-size: ${fontSizes.xxl}px;
-  line-height: normal;
-  font-weight: 600;
-  margin-bottom: 20px;
 `;
 
 const EventList = styled.div``;
@@ -98,7 +100,7 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
             <EventsContainer>
               <Events>
                 <Title>
-                  <FormattedMessage {...messages.upcomingEvents} />
+                  <FormattedMessage tagName="h2" {...messages.upcomingEvents} />
                 </Title>
 
                 {(upcomingEvents && upcomingEvents.length > 0) ? (
@@ -114,7 +116,7 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
 
               <Events>
                 <Title>
-                  <FormattedMessage {...messages.pastEvents} />
+                  <FormattedMessage tagName="h2" {...messages.pastEvents} />
                 </Title>
 
                 {(pastEvents && pastEvents.length > 0) ? (

@@ -152,7 +152,7 @@ export default class ValuesList extends PureComponent<Props, State> {
 
                   {multiple &&
                     <StyledCheckbox
-                      value={checked}
+                      checked={checked}
                       onChange={this.handleOnToggle(entry, index)}
                     />
                   }

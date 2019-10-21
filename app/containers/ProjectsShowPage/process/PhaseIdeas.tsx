@@ -8,6 +8,9 @@ import IdeaCards from 'components/IdeaCards';
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
+// i18n
+import messages from '../messages';
+
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -59,6 +62,7 @@ class PhaseIdeas extends PureComponent<Props, State> {
               participationMethod={participationMethod}
               participationContextId={phase.id}
               participationContextType="Phase"
+              invisibleTitleMessage={messages.invisibleTitleIdeasListPhase}
             />
           </Container>
         );
