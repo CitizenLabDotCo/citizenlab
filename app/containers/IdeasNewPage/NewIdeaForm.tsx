@@ -5,10 +5,7 @@ import { Subscription } from 'rxjs';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 
 // services
-import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
+import { globalState, IGlobalStateService, IIdeasPageGlobalState } from 'services/globalState';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -75,7 +72,7 @@ interface GlobalState {
 interface State extends GlobalState {}
 
 export default class NewIdeaForm extends PureComponent<Props, State> {
-  globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
+  globalState: IGlobalStateService<IIdeasPageGlobalState>;
   subscriptions: Subscription[];
 
   constructor(props) {

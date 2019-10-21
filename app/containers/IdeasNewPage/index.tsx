@@ -15,7 +15,7 @@ import NewIdeaForm from './NewIdeaForm';
 import { addIdea, IIdeaAdd } from 'services/ideas';
 import { addIdeaFile } from 'services/ideaFiles';
 import { addIdeaImage } from 'services/ideaImages';
-import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
+import { globalState, IGlobalStateService, IIdeasPageGlobalState } from 'services/globalState';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -73,11 +73,11 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
-  globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
+  globalState: IGlobalStateService<IIdeasPageGlobalState>;
 
   constructor(props) {
     super(props);
-    const initialGlobalState: IIdeasNewPageGlobalState = {
+    const initialGlobalState: IIdeasPageGlobalState = {
       title: null,
       description: null,
       selectedTopics: [],
