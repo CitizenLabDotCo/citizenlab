@@ -62,10 +62,9 @@ class WebApi::V1::FilesController < ApplicationController
   def create
     params = file_params.to_h
     data = params.delete :file
-    # byebug
     @file = @container.send(secure_constantize(:file_relationship)).new(params)
-    file_name = params[:name].split('.')[0..-2].join('.')
-    extension = params[:name].split('.').first
+    file_name = @file.name.split('.')[0..-2].join('.')
+    extension = @file.name.split('.').first
     @file.load_file data, file_name, extension
     authorize @file
     if @file.save
@@ -79,7 +78,16 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def update
-    if @file.update(file_params)
+    params = file_params.to_h
+    data = params.delete :file
+    @file.assign_attributes file_params
+    if data
+      file_name = @file.name.split('.')[0..-2].join('.')
+      extension = @file.name.split('.').first
+      @file.load_file data, file_name, extension
+    end
+    authorize @file
+    if @file.save
       render json: WebApi::V1::FileSerializer.new(
         @file, 
         params: fastjson_params
