@@ -423,7 +423,13 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const adminPage = isPage('admin', location.pathname);
     const initiativeFormPage = isPage('initiative_form', location.pathname);
     const ideaFormPage = isPage('idea_form', location.pathname);
-    const showMobileNav = !adminPage && !ideaFormPage && !initiativeFormPage;
+    const ideaEditPage = isPage('idea_edit', location.pathname);
+    const initiativeEditPage = isPage('initiative_edit', location.pathname);
+    const showMobileNav = !adminPage &&
+                       !ideaFormPage &&
+                       !initiativeFormPage &&
+                       !ideaEditPage &&
+                       !initiativeEditPage;
 
     return (
       <>
