@@ -16,7 +16,7 @@ module Carrierwave
 
           file_name = self.name.split('.')[0..-2].join('.')
           extension = self.name.split('.').first
-          self.file = Carrierwave::Base64::Base64StringIO.new(data.strip, file_name, file_extension)
+          self.file = Carrierwave::Base64::Base64StringIO.new(data.strip, file_name, extension)
         end
       end
 
