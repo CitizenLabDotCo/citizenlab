@@ -60,10 +60,7 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def create
-    params = file_params.to_h
-    data = params.delete :file
-    @file = @container.send(secure_constantize(:file_relationship)).new(params)
-    @file.load_file data
+    @file = @container.send(secure_constantize(:file_relationship)).new(file_params)
     authorize @file
     if @file.save
       render json: WebApi::V1::FileSerializer.new(
@@ -76,10 +73,7 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def update
-    params = file_params.to_h
-    data = params.delete :file
-    @file.assign_attributes params
-    @file.load_file data if data
+    @file.assign_attributes file_params
     authorize @file
     if @file.save
       render json: WebApi::V1::FileSerializer.new(

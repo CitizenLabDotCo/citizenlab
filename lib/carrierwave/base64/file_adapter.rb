@@ -5,7 +5,7 @@ module Carrierwave
       def mount_base64_file_uploader attribute, uploader_class, options={}
         mount_uploader attribute, uploader_class, options
 
-        self.send(:define_method, "load_#{attribute}") do |data|
+        self.send(:define_method, "#{attribute}=") do |data|
           return if data.to_s.empty? || data == send(attribute).to_s
 
           send("#{attribute}_will_change!") if respond_to? "#{attribute}_will_change!"
