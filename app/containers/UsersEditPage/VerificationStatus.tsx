@@ -89,6 +89,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
               userId={authUser.data.id}
               size="55px"
               verified
+              aria-hidden
             />
             <StyledTitle>
               <TitleStyles>
@@ -102,7 +103,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
           :
           <>
             <LeftContainer>
-              <StyledVerificationIllustration />
+              <StyledVerificationIllustration aria-hidden/>
               <StyledTitle>
                 <TitleStyles>
                   <FormattedMessage {...messages.verifyTitle} />
