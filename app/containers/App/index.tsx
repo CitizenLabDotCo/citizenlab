@@ -322,7 +322,11 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <VerificationModal opened={verificationModalOpened} initialActiveStep={verificationModalInitialStep} context={verificationContext} />
+                      <VerificationModal
+                        opened={verificationModalOpened}
+                        initialActiveStep={verificationModalInitialStep}
+                        context={verificationContext}
+                      />
                     </Suspense>
                   </ErrorBoundary>
 
