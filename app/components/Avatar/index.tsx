@@ -140,6 +140,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container
+          aria-hidden
           className={`${className} ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
           onClick={this.handleOnClick}
           size={containerSize}
@@ -159,7 +160,6 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
             <AvatarIcon
               className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
               name="user"
-              ariaHidden
               size={size}
               fillColor={fillColor}
               fillHoverColor={fillHoverColor}
