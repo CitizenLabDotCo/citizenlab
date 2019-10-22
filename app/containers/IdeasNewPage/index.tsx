@@ -103,7 +103,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       this.redirectToSignUpPage();
     }
 
-    if (location.query.position) {
+    if (isString(location.query.position)) {
       const coordinates = JSON.parse(location.query.position);
       const lat = coordinates[0];
       const lng = coordinates[1];

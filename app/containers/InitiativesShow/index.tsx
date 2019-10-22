@@ -1,5 +1,5 @@
 import React, { PureComponent, createRef } from 'react';
-import { get, isUndefined } from 'lodash-es';
+import { get, isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -334,7 +334,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
     this.setLoaded();
 
-    if (newInitiativeId) {
+    if (isString(newInitiativeId)) {
       setTimeout(() => {
         this.setState({ initiativeIdForSocialSharing: newInitiativeId });
       }, 1500);
