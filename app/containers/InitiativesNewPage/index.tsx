@@ -5,6 +5,7 @@ import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 import { reverseGeocode } from 'utils/locationTools';
+import { isString } from 'lodash-es';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -54,7 +55,7 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
       this.redirectToSignUpPage();
     }
 
-    if (location && location.query && location.query.position) {
+    if (location && location.query && location.query.position && isString(location.query.position)) {
       const coordinates = JSON.parse(location.query.position);
       const lat = coordinates[0];
       const lng = coordinates[1];
