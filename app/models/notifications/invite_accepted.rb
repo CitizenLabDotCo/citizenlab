@@ -1,11 +1,7 @@
 module Notifications
   class InviteAccepted < Notification
-    
-    belongs_to :initiating_user, class_name: 'User'
-    belongs_to :invite
 
-    validates :initiating_user, presence: true
-    validates :invite_id, presence: true
+    validates :initiating_user, :invite, presence: true
 
 
     ACTIVITY_TRIGGERS = {'Invite' => {'accepted' => true}}
@@ -14,16 +10,14 @@ module Notifications
 
     def self.make_notifications_on activity
       invite = activity.item
-
-      invite_id = invite&.id
       recipient_id = invite&.inviter_id
       initiator_id = invite&.invitee_id
 
-      if invite_id && recipient_id && initiator_id
+      if invite && recipient_id && initiator_id
         [self.new(
            recipient_id: recipient_id,
-           initiating_user: User.find(initiator_id),
-           invite_id: invite_id
+           initiating_user_id: initiator_id,
+           invite: invite
          )]
       else
         []

@@ -18,7 +18,7 @@ class SideFxAreaService
   end
 
   def before_destroy area, user
-
+    CustomFieldService.new.delete_custom_field_option_values area.id, CustomField.find_by(key: 'domicile')
   end
 
   def after_destroy frozen_area, user

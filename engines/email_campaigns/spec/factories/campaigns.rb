@@ -33,15 +33,19 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :comment_on_your_initiative_campaign, class: EmailCampaigns::Campaigns::CommentOnYourInitiative do
+    enabled { true }
+  end
+
   factory :first_idea_published_campaign, class: EmailCampaigns::Campaigns::FirstIdeaPublished do
     enabled { true }
   end
 
-  factory :idea_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::IdeaMarkedAsSpam do
+  factory :idea_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::IdeaAssignedToYou do
     enabled { true }
   end
 
-  factory :idea_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::IdeaAssignedToYou do
+  factory :idea_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::IdeaMarkedAsSpam do
     enabled { true }
   end
 
@@ -61,6 +65,18 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :initiative_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InitiativeAssignedToYou do
+    enabled { true }
+  end
+
+  factory :initiative_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::InitiativeMarkedAsSpam do
+    enabled { true }
+  end
+
+  factory :initiative_published_campaign, class: EmailCampaigns::Campaigns::InitiativePublished do
+    enabled { true }
+  end
+
   factory :mention_in_comment_campaign, class: EmailCampaigns::Campaigns::MentionInComment do
     enabled { true }
   end
@@ -77,7 +93,15 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :new_comment_on_commented_initiative_campaign, class: EmailCampaigns::Campaigns::NewCommentOnCommentedInitiative do
+    enabled { true }
+  end
+
   factory :new_comment_on_voted_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnVotedIdea do
+    enabled { true }
+  end
+
+  factory :new_comment_on_voted_initiative_campaign, class: EmailCampaigns::Campaigns::NewCommentOnVotedInitiative do
     enabled { true }
   end
 
@@ -85,7 +109,15 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :new_initiative_for_admin_campaign, class: EmailCampaigns::Campaigns::NewInitiativeForAdmin do
+    enabled { true }
+  end
+
   factory :official_feedback_on_commented_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedIdea do
+    enabled { true }
+  end
+
+  factory :official_feedback_on_commented_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedInitiative do
     enabled { true }
   end
 
@@ -93,7 +125,15 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :official_feedback_on_voted_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnVotedInitiative do
+    enabled { true }
+  end
+
   factory :official_feedback_on_your_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnYourIdea do
+    enabled { true }
+  end
+
+  factory :official_feedback_on_your_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnYourInitiative do
     enabled { true }
   end
 
@@ -117,11 +157,27 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :status_change_of_commented_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative do
+    enabled { true }
+  end
+
   factory :status_change_of_voted_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfVotedIdea do
     enabled { true }
   end
 
+  factory :status_change_of_voted_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfVotedInitiative do
+    enabled { true }
+  end
+
   factory :status_change_of_your_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfYourIdea do
+    enabled { true }
+  end
+
+  factory :status_change_of_your_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfYourInitiative do
+    enabled { true }
+  end
+
+  factory :threshold_reached_for_admin_campaign, class: EmailCampaigns::Campaigns::ThresholdReachedForAdmin do
     enabled { true }
   end
 
@@ -146,6 +202,11 @@ FactoryBot.define do
   end
 
   factory :user_digest_campaign, class: EmailCampaigns::Campaigns::UserDigest do
+    enabled { true }
+    schedule { weekly_schedule }
+  end
+
+  factory :your_proposed_initiatives_digest_campaign, class: EmailCampaigns::Campaigns::YourProposedInitiativesDigest do
     enabled { true }
     schedule { weekly_schedule }
   end
