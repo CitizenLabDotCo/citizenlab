@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 import styled, { withTheme } from 'styled-components';
-import { fontSizes, colors, booleanClass, invisibleA11yText, media } from 'utils/styleUtils';
+import { fontSizes, colors, booleanClass, invisibleA11yText, media, ScreenReaderOnly } from 'utils/styleUtils';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { Messages, FormattedMessage as OriginalFormattedMessage } from 'react-intl';
@@ -227,6 +227,7 @@ export const FormSubmitFooter = withTheme(memo(({
   className,
   error,
   errorMessage,
+  disabled,
   ...otherProps
 }: FormSubmitFooterProps) => (
   <SubmitFooterContainer className={className}>
@@ -240,10 +241,14 @@ export const FormSubmitFooter = withTheme(memo(({
             type="submit"
             onClick={onSubmit}
             className="e2e-submit-form"
+            disabled={disabled}
             {...otherProps}
           >
             <FormattedMessage {...message} values={values} />
           </Button>
+          <ScreenReaderOnly aria-live="polite">
+            {disabled ? <FormattedMessage {...messages.buttonDisabled}/> : <FormattedMessage {...messages.buttonEnabled} />}
+          </ScreenReaderOnly>
           {error && <ErrorContainer className="e2e-error-form">
             <FormattedMessage {...errorMessage} />
           </ErrorContainer>}
