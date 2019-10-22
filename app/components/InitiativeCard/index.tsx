@@ -19,10 +19,12 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
@@ -108,11 +110,12 @@ class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
       const initiativeTitle = localize(initiative.attributes.title_multiloc);
       const initiativeAuthorId = !isNilOrError(initiativeAuthor) ? initiativeAuthor.id : null;
       const initiativeImageUrl: string | null = get(initiativeImage, 'attributes.versions.medium', null);
+      const commentsCount = initiative.attributes.comments_count;
       const cardClassNames = [
         className,
         'e2e-initiative-card',
         get(initiative, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
-        initiative.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
+        commentsCount > 0 ? 'e2e-has-comments' : null,
       ].filter(item => isString(item) && item !== '').join(' ');
 
       return (
@@ -135,10 +138,13 @@ class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
               <VoteIndicator initiativeId={initiative.id} />
               <Spacer />
               <CommentInfo>
-                <CommentIcon name="comments" />
-                <CommentCount className="e2e-initiativecard-comment-count">
-                  <span>{initiative.attributes.comments_count}</span>
+                <CommentIcon name="comments" ariaHidden />
+                <CommentCount aria-hidden className="e2e-initiativecard-comment-count">
+                  {commentsCount}
                 </CommentCount>
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.xComments} values={{ commentsCount }} />
+                </ScreenReaderOnly>
               </CommentInfo>
             </FooterInner>
           }

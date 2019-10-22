@@ -32,11 +32,15 @@ import { FormattedNumber } from 'react-intl';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
 import { ParticipationMethod } from 'services/participationContexts';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const IdeaBudget = styled.div`
   color: ${colors.clRed2};
@@ -188,6 +192,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
         idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
         votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'
       ].filter(item => isString(item) && item !== '').join(' ');
+      const commentsCount = idea.attributes.comments_count;
 
       return (
         <Card
@@ -243,10 +248,13 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                   <Spacer />
 
                   <CommentInfo className={`${commentingDescriptor && commentingDescriptor.enabled ? 'enabled' : ''}`}>
-                    <CommentIcon name="comments" />
-                    <CommentCount className="e2e-ideacard-comment-count">
-                      <span>{idea.attributes.comments_count}</span>
+                    <CommentIcon name="comments" ariaHidden />
+                    <CommentCount aria-hidden className="e2e-ideacard-comment-count">
+                      {commentsCount}
                     </CommentCount>
+                    <ScreenReaderOnly>
+                      <FormattedMessage {...messages.xComments} values={{ commentsCount }} />
+                    </ScreenReaderOnly>
                   </CommentInfo>
                 </FooterInner>
               }
