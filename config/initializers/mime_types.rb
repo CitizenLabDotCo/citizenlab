@@ -8,11 +8,3 @@ MIME::Types.add(
     type.add_extensions 'exe'
   end
 )
-MIME::Types.add(
-  # When uploading .ppt files such as ./spec/fixtures/david.ppt,
-  # carrierwave-base64 sometimes guesses application/x-ole-storage
-  # as MIME type but crashes because it doesn't "know" the MIME type.
-  MIME::Type.new('application/x-ole-storage').tap do |type|
-    type.add_extensions 'ppt'
-  end
-)
