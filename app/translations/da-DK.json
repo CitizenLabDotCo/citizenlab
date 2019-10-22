@@ -132,7 +132,6 @@
   "app.components.ImageDropzone.errorImageMaxSizeExceeded": "Billedet, du har valgt, er større end {maxFileSize}MB",
   "app.components.ImageDropzone.unkownError": "Der opstod et problem med upload af dit billede, prøv igen senere.",
   "app.components.InitiativeCard.xComments": "",
-  "app.components.InitiativeCard.xVotes": "",
   "app.components.InitiativeCard.xVotesOfY": "",
   "app.components.InitiativeCards.cards": "Liste",
   "app.components.InitiativeCards.filter": "Filtrer",
