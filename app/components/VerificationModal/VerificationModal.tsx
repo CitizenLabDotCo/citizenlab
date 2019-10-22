@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -34,6 +34,11 @@ export interface Props {
 const VerificationModal = memo<Props>((props) => {
 
   const [activeStep, setActiveStep] = useState<VerificationModalSteps>(props.initialActiveStep || 'method-selection');
+
+  useEffect(() => {
+    // reset active step when modal opens or closes
+    setActiveStep(props.initialActiveStep || 'method-selection');
+  }, [props.opened, props.initialActiveStep]);
 
   const onMethodSelected = useCallback((selectedMethod: VerificationMethodNames) => {
     setActiveStep(selectedMethod);
