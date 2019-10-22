@@ -36,6 +36,9 @@ const StyledUserName = styled(UserName)`
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
   font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   transition: all 100ms ease-out;
 
   ${media.smallerThanMinTablet`
