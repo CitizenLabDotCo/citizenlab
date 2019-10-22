@@ -1,4 +1,6 @@
 {
+  "UI.FormComponents.buttenEnabled": "",
+  "UI.FormComponents.buttonDisabled": "",
   "UI.FormComponents.optional": "valgfri",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Ingen initiativer fundet",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
@@ -72,6 +74,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Det ser ud til at vi har problemer.",
   "app.components.ErrorBoundary.genericErrorWithForm": "En fejl opstod og vi kan ikke vise dette indhold. Prøv venligst igen eller {openForm}!",
   "app.components.ErrorBoundary.openFormText": "hjælp os med at løse problemet",
+  "app.components.FileUploader.a11y_removeFile": "",
   "app.components.FileUploader.fileInputDescription": "Klik for at vælge en fil",
   "app.components.FileUploader.fileUploadLabel": "Vedhæftninger (max. 50MB)",
   "app.components.FileUploader.incorrect_extension": "{fileName} understøttes ikke af vores system, det vil ikke blive uploadet.",
