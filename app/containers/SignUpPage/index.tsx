@@ -137,7 +137,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   render() {
     const { location } = this.props;
     const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
-    const token = (location && location.query && location.query.token && isString(location.query.token)) ? location.query.token : null;
+    const token = isString(location.query.token) ? location.query.token : null;
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
 
     return (

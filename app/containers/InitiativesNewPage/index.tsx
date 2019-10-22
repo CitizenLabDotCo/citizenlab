@@ -56,7 +56,7 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
     }
 
     if (location && location.query && location.query.position && isString(location.query.position)) {
-      const coordinates = JSON.parse(location.query.position) as number[];
+      const coordinates = JSON.parse(location.query.position);
       const lat = coordinates[0];
       const lng = coordinates[1];
 

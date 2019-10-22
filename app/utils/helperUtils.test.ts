@@ -54,7 +54,7 @@ describe('isNonEmptyString', () => {
 describe('isPage', () => {
   describe('admin', () => {
     it('returns true for an admin path name', () => {
-      expect(isPage('admin', '/en/admin')).toBe(true);
+      expect(isPage('admin', '/en/admin/ideas')).toBe(true);
       expect(isPage('admin', '/en/admin/dashboard')).toBe(true);
     });
 
@@ -71,6 +71,19 @@ describe('isPage', () => {
     it('returns false when we are not at the new initiative form', () => {
       expect(isPage('initiative_form', '/en/')).toBe(false);
       expect(isPage('initiative_form', '/en/initiatives/new-playground')).toBe(false);
+    });
+  });
+
+  describe('idea_edit', () => {
+    it('returns true we are at the idea edit form', () => {
+      expect(isPage('idea_edit', '/en/ideas/edit/9b49db98-7de5-4010-892c-5a15a89b0c56')).toBe(true);
+    });
+
+    it('returns false when we are not at the idea edit form', () => {
+      expect(isPage('idea_edit', '/en/')).toBe(false);
+      expect(isPage('idea_edit', '/en/initiatives/new-playground')).toBe(false);
+      expect(isPage('idea_edit', '/en/admin/dashboard')).toBe(false);
+      expect(isPage('idea_edit', '/en/ideas/edit-this-is-an-example-idea')).toBe(false);
     });
   });
 });
