@@ -1,10 +1,11 @@
 class WebApi::V1::ActivitiesController < ApplicationController
-  before_action :set_idea
+  before_action :set_post_type_and_id
   skip_after_action :verify_policy_scoped
 
   def index
     @activities = policy_scope(Activity).where(
-      item: @idea,
+      item_id: @post_id,
+      item_type: @post_type,
       action: ['published', 'changed_status', 'changed_title', 'changed_body']
     )
       .includes(:user)
@@ -23,9 +24,9 @@ class WebApi::V1::ActivitiesController < ApplicationController
 
   private
 
-  def set_idea
-    @idea = Idea.find(params[:idea_id])
-    authorize @idea, :get_activities?
+  def set_post_type_and_id
+    @post_type = params[:post]
+    @post_id = params[:"#{@post_type.underscore}_id"]
   end
 
   def secure_controller?

@@ -78,7 +78,21 @@ resource "Areas" do
     end
 
     delete "web_api/v1/areas/:id" do
-      let!(:id) { create(:area).id }
+      before do
+        CustomField.create!(
+          resource_type: 'User',
+          key: 'domicile',
+          title_multiloc: {'en' => 'Domicile'},
+          input_type: 'select',
+          required: false,
+          ordering: 2,
+          enabled: true,
+          code: 'domicile'
+        ) 
+      end
+
+      let(:area) { create(:area) }
+      let!(:id) { area.id }
 
       example "Delete an area" do
         old_count = Area.count
@@ -86,6 +100,16 @@ resource "Areas" do
         expect(response_status).to eq 200
         expect{Area.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(Area.count).to eq (old_count - 1)
+      end
+
+      example "Deleting an area that's still referenced in a user's setting", document: false do
+        custom_field_values = {'domicile' => area.id}
+        user = create(:user, custom_field_values: custom_field_values)
+        expect(user.reload.custom_field_values).to eq custom_field_values
+        do_request
+        expect(response_status).to eq 200
+        expect{Area.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(user.reload.custom_field_values).to eq({})
       end
     end
   end
