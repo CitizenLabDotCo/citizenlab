@@ -35,12 +35,12 @@ const StyledButton = styled.button`
   color: #1391A1;
   text-decoration: underline;
   transition: all 100ms ease-out;
+  display: inline-block;
+  padding: 0;
 
   &:hover {
     text-decoration: underline;
   }
-  display: inline-block;
-  padding: 0;
 `;
 
 interface InputProps {

@@ -1,7 +1,7 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
-import { isString, isObject, uniq } from 'lodash-es';
+import { isString, isObject, uniq, has } from 'lodash-es';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import moment from 'moment';
 import 'moment-timezone';
@@ -125,6 +125,11 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
+
+    if (has(this.props.location.query, 'verification_success')) {
+      window.history.replaceState(null, '', window.location.pathname);
+      this.openVerificationModal('success');
+    }
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const { authUser } = this.state;
@@ -255,12 +260,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       verificationModalOpened: false,
       verificationModalInitialStep: null
     });
-  }
-
-  componentDidUpdate() {
-    if (!this.state.verificationModalOpened && Object.keys(this.props.location.query).includes('verification_success')) {
-      this.openVerificationModal('success');
-    }
   }
 
   render() {
