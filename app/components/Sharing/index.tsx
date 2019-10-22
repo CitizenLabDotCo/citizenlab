@@ -33,17 +33,20 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Title: any = styled.h3`
+const Title = styled.div<{ location: 'modal' | undefined }>`
   font-size: ${fontSizes.large}px;
   font-weight: 500;
   color: ${({ theme }) => theme.colorText};
   display: flex;
   align-items: center;
   padding: 0;
-  margin: 0;
   margin-bottom: 18px;
-  justify-content: ${(props: any) => props.location === 'modal' ? 'center' : 'start'};
-`;
+  justify-content: ${({ location }) => location === 'modal' ? 'center' : 'start'};
+
+  h2, h3 {
+    margin: 0;
+  }
+  `;
 
 const ShareIcon = styled(Icon)`
   margin-right: 14px;
@@ -79,6 +82,10 @@ const Buttons = styled.div`
 
       &:nth-child(odd) {
         margin-right: 5px;
+
+        &.last {
+          margin-right: 0px;
+        }
       }
 
       &:nth-child(-n+2) {
@@ -163,6 +170,7 @@ interface InputProps {
   emailBody?: string;
   utmParams?: UtmParams;
   id?: string;
+  titleLevel?: 'h2' | 'h3'; // defaults to h3
 }
 
 interface DataProps {
@@ -202,7 +210,8 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
       className,
       intl: { formatMessage },
       location,
-      id
+      id,
+      titleLevel
     } = this.props;
 
     if (!isNilOrError(tenant)) {
@@ -258,7 +267,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
         <TwitterButton
           message={twitterMessage}
           url={this.buildUrl('twitter')}
-          className="sharingButton twitter"
+          className={`sharingButton twitter ${!emailSubject || !emailBody ? 'last' : ''}`}
           sharer={true}
           onClick={trackTwitterShare}
           aria-label={twitterButtonText}
@@ -283,9 +292,9 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
         <Container id={id || ''} className={className || ''}>
           <Title location={location}>
             <ShareIcon name="share" />
-            {context === 'idea' && <FormattedMessage {...messages.shareThisIdea} />}
-            {context === 'project' && <FormattedMessage {...messages.shareThisProject} />}
-            {context === 'initiative' && <FormattedMessage {...messages.shareThisInitiative} />}
+            {context === 'idea' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisIdea} />}
+            {context === 'project' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisProject} />}
+            {context === 'initiative' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisInitiative} />}
           </Title>
           <Buttons>
             {facebook}

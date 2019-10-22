@@ -4,6 +4,11 @@ import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rx
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
+
 // components
 import Icon from 'components/UI/Icon';
 
@@ -21,7 +26,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 // style
 import styled, { css, keyframes } from 'styled-components';
 import { lighten } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 interface IVoteComponent {
   active: boolean;
@@ -243,7 +248,7 @@ interface State {
   votingDisabledReason: string | null;
 }
 
-export default class VoteControl extends PureComponent<Props, State> {
+class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
   voting$: BehaviorSubject<'up' | 'down' | null>;
   id$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -500,7 +505,7 @@ export default class VoteControl extends PureComponent<Props, State> {
   }
 
   render() {
-    const { size, className } = this.props;
+    const { size, className, intl: { formatMessage } } = this.props;
     const { project, phases, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, votingFutureEnabled, upvotesCount, downvotesCount } = this.state;
     const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
     const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
@@ -528,9 +533,12 @@ export default class VoteControl extends PureComponent<Props, State> {
           enabled={upvotingEnabled}
         >
           <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
-            <VoteIcon name="upvote" size={size} enabled={upvotingEnabled} />
+            <VoteIcon ariaHidden title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
           </VoteIconContainer>
-          <VoteCount className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
+          <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.xUpvotes} values={{ count: upvotesCount }} />
+          </ScreenReaderOnly>
         </Upvote>
         <Downvote
           active={myVoteMode === 'down'}
@@ -541,11 +549,16 @@ export default class VoteControl extends PureComponent<Props, State> {
           enabled={downvotingEnabled}
         >
           <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
-            <VoteIcon name="downvote" size={size} enabled={downvotingEnabled} />
+            <VoteIcon ariaHidden title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
           </VoteIconContainer>
-          <VoteCount className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
+          <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.xDownvotes} values={{ count: downvotesCount }} />
+          </ScreenReaderOnly>
         </Downvote>
       </Container>
     );
   }
 }
+
+export default injectIntl(VoteControl);

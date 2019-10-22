@@ -1,5 +1,5 @@
 import React, { PureComponent, createRef } from 'react';
-import { get, isUndefined } from 'lodash-es';
+import { get, isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -58,7 +58,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { media, postPageContentMaxWidth, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -334,7 +334,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
     this.setLoaded();
 
-    if (newInitiativeId) {
+    if (isString(newInitiativeId)) {
       setTimeout(() => {
         this.setState({ initiativeIdForSocialSharing: newInitiativeId });
       }, 1500);
@@ -426,9 +426,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         campaign: 'share_content',
         content: authUser.id
       } : {
-        source: 'share_initiative',
-        campaign: 'share_content'
-      };
+          source: 'share_initiative',
+          campaign: 'share_content'
+        };
       const showTranslateButton = (
         !isNilOrError(initiative) &&
         !isNilOrError(locale) &&
@@ -525,7 +525,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 {initiativeImageLarge &&
                   <Image
                     src={initiativeImageLarge}
-                    alt={formatMessage(messages.imageAltText, { initiativeTitle })}
+                    alt=""
                     id="e2e-initiative-image"
                   />
                 }
@@ -536,7 +536,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                     position={initiativeGeoPosition}
                   />
                 }
-
+                <ScreenReaderOnly>
+                  <FormattedMessage tagName="h2" {...messages.invisibleTitleContent} />
+                </ScreenReaderOnly>
                 <Body
                   postId={initiativeId}
                   postType="initiative"
@@ -559,26 +561,34 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
                 <ContentFooter
                   postType="initiative"
-                  id={initiativeId}
+                  postId={initiativeId}
                   publishedAt={initiativePublishedAt}
                   commentsCount={initiative.attributes.comments_count}
                 />
 
                 {smallerThanLargeTablet &&
-                  <SharingMobile
-                    context="initiative"
-                    url={initiativeUrl}
-                    twitterMessage={formatMessage(messages.twitterMessage, { initiativeTitle })}
-                    emailSubject={formatMessage(messages.emailSharingSubject, { initiativeTitle })}
-                    emailBody={formatMessage(messages.emailSharingBody, { initiativeUrl, initiativeTitle })}
-                    utmParams={utmParams}
-                  />
+                  <>
+                    <ScreenReaderOnly>
+                      <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
+                    </ScreenReaderOnly>
+                    <SharingMobile
+                      context="initiative"
+                      url={initiativeUrl}
+                      twitterMessage={formatMessage(messages.twitterMessage, { initiativeTitle })}
+                      emailSubject={formatMessage(messages.emailSharingSubject, { initiativeTitle })}
+                      emailBody={formatMessage(messages.emailSharingBody, { initiativeUrl, initiativeTitle })}
+                      utmParams={utmParams}
+                    />
+                  </>
                 }
               </LeftColumn>
 
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
                   <MetaContent>
+                    <ScreenReaderOnly>
+                      <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
+                    </ScreenReaderOnly>
                     <VoteControl
                       initiativeId={initiative.id}
                       onScrollToOfficialFeedback={this.onScrollToOfficialFeedback}

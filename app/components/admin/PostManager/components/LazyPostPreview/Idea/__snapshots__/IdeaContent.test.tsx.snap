@@ -7,7 +7,6 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
       icon="edit"
       onClick={[MockFunction]}
       style="text"
-      textColor="#044D6C"
     >
       <FormattedMessage
         defaultMessage="Edit"
@@ -18,7 +17,6 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
       icon="delete"
       onClick={[Function]}
       style="text"
-      textColor="#044D6C"
     >
       <FormattedMessage
         defaultMessage="Delete"

@@ -28,23 +28,34 @@ interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
   iconColor?: string;
 }
 
-const StyledIcon = styled(Icon)<({ color?: string })>`
+const Container = styled.div`
+  display: inline-block;
   height: 16px;
+`;
+
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledIcon = styled(Icon)<({ color?: string })>`
   width: 16px;
+  height: 16px;
   cursor: pointer;
   fill: ${({ color }) => color ? color : colors.label};
+  transform: translateY(2px);
 
   &:hover {
     fill: ${({ color }) => color ? darken(.2, color) : darken(.2, colors.label)};
   }
 `;
 
-const TooltipWrapper: any = styled.div`
-  padding: 15px;
+const TooltipWrapper = styled.div<{ pxSize: 500 | 300 | 200 | 400 }>`
+  padding: 12px;
   min-width: ${(props: any) => props.pxSize}px;
   font-size: ${fontSizes.small}px;
   font-weight: 400;
-  line-height: 18px;
+  line-height: normal;
   text-align: left;
 `;
 
@@ -65,23 +76,24 @@ const InfoTooltip = (props: Props) => {
   const pxSize = getPxSize(size);
 
   return (
-    <Tooltip
-      enabled
-      content={(
-        <TooltipWrapper pxSize={pxSize}>
-          <FormattedMessage {...passthroughProps} />
-        </TooltipWrapper>
-      )}
-      offset={offset || 20}
-      position={position}
-      className={className}
-      openDelay={openDelay}
-    >
-      {children
-        ? children
-        : <StyledIcon name="info3" color={iconColor}/>
-      }
-    </Tooltip >
+    <Container className={`${className} infoTooltip`}>
+      <Tooltip
+        enabled
+        content={(
+          <TooltipWrapper pxSize={pxSize}>
+            <FormattedMessage {...passthroughProps} />
+          </TooltipWrapper>
+        )}
+        offset={offset || 20}
+        position={position}
+        className={className}
+        openDelay={openDelay}
+      >
+        <IconWrapper>
+          {children || <StyledIcon name="info3" className="infoTooltipIcon" />}
+        </IconWrapper>
+      </Tooltip >
+    </Container>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import { get } from 'lodash-es';
+import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -12,6 +12,7 @@ import { PreviousPathnameContext } from 'context';
 // components
 import SignUp from 'components/SignUp';
 import SignInUpBanner from 'components/SignInUpBanner';
+import SignUpPageMeta from './SignUpPageMeta';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -136,25 +137,28 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   render() {
     const { location } = this.props;
     const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
-    const token: string | null = get(location.query, 'token', null);
+    const token = isString(location.query.token) ? location.query.token : null;
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
 
     return (
-      <Container className="e2e-sign-up-page">
-        <Left>
-          <SignInUpBanner />
-        </Left>
-        <Right>
-          <RightInner>
-            <SignUp
-              step1Title={title}
-              isInvitation={isInvitation}
-              token={token}
-              onSignUpCompleted={this.onSignUpCompleted}
-            />
-          </RightInner>
-        </Right>
-      </Container>
+      <>
+        <SignUpPageMeta />
+        <Container className="e2e-sign-up-page">
+          <Left>
+            <SignInUpBanner />
+          </Left>
+          <Right>
+            <RightInner>
+              <SignUp
+                step1Title={title}
+                isInvitation={isInvitation}
+                token={token}
+                onSignUpCompleted={this.onSignUpCompleted}
+              />
+            </RightInner>
+          </Right>
+        </Container>
+      </>
     );
   }
 }

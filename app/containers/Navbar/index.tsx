@@ -31,7 +31,7 @@ import { isAdmin } from 'services/permissions/roles';
 
 // utils
 import { getProjectUrl } from 'services/projects';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -45,7 +45,7 @@ import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.header`
   width: 100%;
   height: ${({ theme }) => theme.menuHeight}px;
   display: flex;
@@ -114,7 +114,7 @@ const Logo = styled.img`
   cursor: pointer;
 `;
 
-const NavigationItems = styled.div`
+const NavigationItems = styled.nav`
   height: 100%;
   display: flex;
   align-items: stretch;
@@ -410,9 +410,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     } = this.props;
     const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
-    const isAdminPage = (location && location.pathname.startsWith('/admin'));
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
-    const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
     let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
     // Avoids caching issue when an admin changes platform logo (I guess)
     tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : undefined) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
@@ -422,23 +420,32 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const lastUrlSegment = urlSegments[urlSegments.length - 1];
     const onIdeaPage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'ideas' && lastUrlSegment !== 'new');
     const onInitiativePage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'initiatives' && lastUrlSegment !== 'new');
+    const adminPage = isPage('admin', location.pathname);
+    const initiativeFormPage = isPage('initiative_form', location.pathname);
+    const ideaFormPage = isPage('idea_form', location.pathname);
+    const ideaEditPage = isPage('idea_edit', location.pathname);
+    const initiativeEditPage = isPage('initiative_edit', location.pathname);
+    const showMobileNav = !adminPage &&
+                       !ideaFormPage &&
+                       !initiativeFormPage &&
+                       !ideaEditPage &&
+                       !initiativeEditPage;
 
     return (
       <>
-        {!isAdminPage &&
+        {showMobileNav &&
           <MobileNavigation />
         }
 
         <Container
-          role="navigation"
           id="navbar"
-          className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
+          className={`${adminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
         >
           <ContainerInner>
             <Left>
               {tenantLogo &&
                 <LogoLink to="/" onlyActiveOnIndex={true}>
-                  <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText, { tenantName })} />
+                  <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
                 </LogoLink>
               }
 

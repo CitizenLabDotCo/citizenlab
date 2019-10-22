@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { sortBy, last, get, isUndefined } from 'lodash-es';
+import { sortBy, last, get, isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -62,7 +62,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -315,7 +315,7 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends DataProps, InputProps {}
+interface Props extends DataProps, InputProps { }
 
 interface IActionInfos {
   participationContextType: 'Project' | 'Phase' | null;
@@ -355,7 +355,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
     this.setLoaded();
 
-    if (newIdeaId) {
+    if (isString(newIdeaId)) {
       setTimeout(() => {
         this.setState({ ideaIdForSocialSharing: newIdeaId });
       }, 1500);
@@ -491,9 +491,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         campaign: 'share_content',
         content: authUser.id
       } : {
-        source: 'share_idea',
-        campaign: 'share_content'
-      };
+          source: 'share_idea',
+          campaign: 'share_content'
+        };
       const showTranslateButton = (
         !isNilOrError(idea) &&
         !isNilOrError(locale) &&
@@ -542,7 +542,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 </IdeaHeader>
 
                 {statusId && smallerThanLargeTablet &&
-                  <StyledMobileIdeaStatus statusId={statusId} />
+                  <StyledMobileIdeaStatus tagName="h2" statusId={statusId} />
                 }
 
                 {biggerThanLargeTablet &&
@@ -556,7 +556,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 {ideaImageLarge &&
                   <Image
                     src={ideaImageLarge}
-                    alt={formatMessage(messages.imageAltText, { ideaTitle })}
+                    alt=""
                     id="e2e-idea-image"
                   />
                 }
@@ -567,7 +567,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     position={ideaGeoPosition}
                   />
                 }
-
+                <ScreenReaderOnly>
+                  <FormattedMessage tagName="h2" {...messages.invisibleTitleContent} />
+                </ScreenReaderOnly>
                 <Body
                   postType="idea"
                   postId={ideaId}
@@ -581,10 +583,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 {showBudgetControl &&
-                 participationContextId &&
-                 participationContextType &&
-                 budgetingDescriptor &&
-                 smallerThanLargeTablet &&
+                  participationContextId &&
+                  participationContextType &&
+                  budgetingDescriptor &&
+                  smallerThanLargeTablet &&
                   <AssignBudgetControlMobile>
                     <AssignBudgetWrapper
                       ideaId={ideaId}
@@ -604,7 +606,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <ContentFooter
                   postType="idea"
-                  id={ideaId}
+                  postId={ideaId}
                   publishedAt={ideaPublishedAt}
                   commentsCount={idea.attributes.comments_count}
                 />
@@ -613,6 +615,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <SharingMobile
                     context="idea"
                     url={ideaUrl}
+                    titleLevel="h2"
                     twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                     emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
                     emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
@@ -623,9 +626,17 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
+                  <ScreenReaderOnly>
+                    <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
+                  </ScreenReaderOnly>
                   <MetaContent>
                     {(showVoteControl || showBudgetControl || statusId) &&
                       <ControlWrapper className="e2e-vote-controls-desktop">
+                        {(showVoteControl || showBudgetControl) &&
+                          <ScreenReaderOnly>
+                            <FormattedMessage tagName="h3" {...messages.invisibleTitleVoteControls} />
+                          </ScreenReaderOnly>
+                        }
                         {showVoteControl &&
                           <>
                             <VoteLabel>
@@ -655,7 +666,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                         }
 
                         {statusId &&
-                          <IdeaStatus statusId={statusId} />
+                          <IdeaStatus tagName="h3" statusId={statusId} />
                         }
                       </ControlWrapper>
                     }
@@ -710,23 +721,23 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         </CSSTransition>
 
         <FeatureFlag name="ideaflow_social_sharing">
-            <Modal
-              opened={!!ideaIdForSocialSharing}
-              close={this.closeIdeaSocialSharingModal}
-              hasSkipButton={true}
-              skipText={<FormattedMessage {...messages.skipSharing} />}
-              label={formatMessage(messages.modalShareLabel)}
-            >
-              {ideaIdForSocialSharing &&
-                <SharingModalContent
-                  postType="idea"
-                  postId={ideaIdForSocialSharing}
-                  title={formatMessage(messages.shareTitle)}
-                  subtitle={formatMessage(messages.shareSubtitle)}
-                />
-              }
-            </Modal>
-          </FeatureFlag>
+          <Modal
+            opened={!!ideaIdForSocialSharing}
+            close={this.closeIdeaSocialSharingModal}
+            hasSkipButton={true}
+            skipText={<FormattedMessage {...messages.skipSharing} />}
+            label={formatMessage(messages.modalShareLabel)}
+          >
+            {ideaIdForSocialSharing &&
+              <SharingModalContent
+                postType="idea"
+                postId={ideaIdForSocialSharing}
+                title={formatMessage(messages.shareTitle)}
+                subtitle={formatMessage(messages.shareSubtitle)}
+              />
+            }
+          </Modal>
+        </FeatureFlag>
       </>
     );
   }
@@ -736,7 +747,7 @@ const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl(withRouter(IdeasShow)
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  authUser: <GetAuthUser/>,
+  authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,

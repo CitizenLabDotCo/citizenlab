@@ -5,9 +5,17 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.idea',
     defaultMessage: 'Idea',
   },
-  imageAltText: {
-    id: 'app.containers.IdeasShow.imageAltText',
-    defaultMessage: 'Main image for the idea {ideaTitle}',
+  invisibleTitleContent: {
+    id: 'app.containers.IdeasShow.invisibleTitleContent',
+    defaultMessage: 'Main idea content',
+  },
+  invisibleTitleMetaContent: {
+    id: 'app.containers.IdeasShow.invisibleTitleMetaContent',
+    defaultMessage: 'More info',
+  },
+  invisibleTitleVoteControls: {
+    id: 'app.containers.IdeasShow.invisibleTitleVoteControls',
+    defaultMessage: 'Votes',
   },
   voteOnThisIdea: {
     id: 'app.containers.IdeasShow.voteOnThisIdea',
@@ -88,23 +96,6 @@ export default defineMessages({
   deleteIdeaConfirmation: {
     id: 'app.components.IdeasShow.deleteIdeaConfirmation',
     defaultMessage: 'Are you sure you want to delete this idea?',
-  },
-  lastUpdated: {
-    id: 'app.components.IdeasShow.lastUpdated',
-    defaultMessage: 'Last modified {modificationTime}',
-  },
-  lastChangesTitle: {
-    id: 'app.components.IdeasShow.lastChangesTitle',
-    defaultMessage: 'Last changes to this idea',
-  },
-  changeLogEntry: {
-    id: 'app.components.IdeasShow.changeLogEntry',
-    defaultMessage: `{changeType, select,
-      changed_status {{userName} has updated the status of this idea}
-      published {{userName} created this idea}
-      changed_title {{userName} updated the title of this idea}
-      changed_body {{userName} updated the description of this idea}
-    }`,
   },
   goBack: {
     id: 'app.components.IdeasShow.goBack',

@@ -52,7 +52,7 @@ const UserInfo = styled.div`
   font-size: ${fontSizes.base}px;
 `;
 
-const FullName = styled.div`
+const FullName = styled.h1`
   width: 100%;
   padding-top: 0px;
   font-size: ${fontSizes.xl}px;

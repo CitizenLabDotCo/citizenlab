@@ -31,47 +31,49 @@ interface Props {
 }
 
 interface State {
-  shownLocale: Locale;
+  selectedLocale: Locale;
   titleMultiloc: Multiloc;
 }
 
 class FormOptionRow extends PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      shownLocale: props.locale,
+      selectedLocale: props.locale,
       titleMultiloc: props.titleMultiloc || {}
     };
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { optionId, titleMultiloc } = this.props;
+    const { optionId, titleMultiloc, locale } = this.props;
 
     if (prevProps.optionId !== optionId) {
       this.setState({ titleMultiloc: titleMultiloc || {} });
     }
 
-    if (prevProps.locale !== this.props.locale) {
-      this.setState({ shownLocale: this.props.locale });
+    if (prevProps.locale !== locale) {
+      this.setState({ selectedLocale: locale });
     }
   }
 
-  onChangeLocale = (shownLocale: Locale) => () => {
-    this.setState({ shownLocale });
+  onSelectedLocaleChange = (selectedLocale: Locale) => {
+    this.setState({ selectedLocale });
   }
 
-  onChangeTitle = (value) => {
-    this.setState({ titleMultiloc: value });
+  onChangeTitle = (titleMultiloc: Multiloc) => {
+    this.setState({ titleMultiloc });
   }
 
   onSave = () => {
     const { mode, questionId, closeRow, optionId } = this.props;
     const { titleMultiloc } = this.state;
+
     if (mode === 'new' && questionId) {
       addPollOption(questionId, titleMultiloc).then(() => {
         closeRow();
       });
     }
+
     if (mode === 'edit' && optionId) {
       updatePollOption(optionId, titleMultiloc).then(() => {
         closeRow();
@@ -80,29 +82,28 @@ class FormOptionRow extends PureComponent<Props, State> {
   }
 
   render() {
-    const { shownLocale, titleMultiloc } = this.state;
+    const { selectedLocale, titleMultiloc } = this.state;
     const { closeRow } = this.props;
 
     return (
-      <Row
-        className="e2e-form-option-row"
-      >
+      <Row className="e2e-form-option-row">
         <TextCell>
-          {shownLocale &&
+          {selectedLocale &&
             <FormLocaleSwitcher
-              onLocaleChange={this.onChangeLocale}
-              selectedLocale={shownLocale}
+              onLocaleChange={this.onSelectedLocaleChange}
+              selectedLocale={selectedLocale}
               values={{ titleMultiloc }}
             />
           }
         </TextCell>
+
         <TextCell className="expand">
           <InputMultiloc
             autoFocus
             valueMultiloc={titleMultiloc}
             type="text"
             onChange={this.onChangeTitle}
-            shownLocale={shownLocale}
+            selectedLocale={selectedLocale}
           />
         </TextCell>
 
@@ -113,6 +114,7 @@ class FormOptionRow extends PureComponent<Props, State> {
         >
           <FormattedMessage {...messages.saveOption} />
         </Button>
+
         <Button
           className="e2e-form-option-cancel"
           style="secondary"
