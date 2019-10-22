@@ -2,7 +2,8 @@ module Verification
   class VerificationService
 
     ALL_METHODS = [
-      Methods::Cow.new
+      Methods::Cow.new,
+      Methods::Bogus.new,
     ]
 
     def initialize sfxv_service=SideFxVerificationService.new
