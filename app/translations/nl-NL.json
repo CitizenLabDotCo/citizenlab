@@ -131,6 +131,8 @@
   "app.components.ImageDropzone.dropYourImageHere": "Sleep je afbeelding naar hier of klik om een te uploaden.",
   "app.components.ImageDropzone.errorImageMaxSizeExceeded": "De afbeelding die je koos is groter dan {maxFileSize}MB",
   "app.components.ImageDropzone.unkownError": "Er ging iets fout bij het toevoegen van je afbeelding, probeer het later nog eens opnieuw.",
+  "app.components.InitiativeCard.xComments": "",
+  "app.components.InitiativeCard.xVotesOfY": "",
   "app.components.InitiativeCards.cards": "Lijst",
   "app.components.InitiativeCards.filter": "Filter",
   "app.components.InitiativeCards.map": "Kaart",

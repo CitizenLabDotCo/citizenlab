@@ -131,6 +131,8 @@
   "app.components.ImageDropzone.dropYourImageHere": "Faites glisser votre image ici ou cliquez pour télécharger.",
   "app.components.ImageDropzone.errorImageMaxSizeExceeded": "L'image que vous avez sélectionnée est plus grande que {maxFileSize}MB",
   "app.components.ImageDropzone.unkownError": "Une erreur est survenue lors du chargement de votre image, veuillez réessayer plus tard.",
+  "app.components.InitiativeCard.xComments": "",
+  "app.components.InitiativeCard.xVotesOfY": "",
   "app.components.InitiativeCards.cards": "Liste",
   "app.components.InitiativeCards.filter": "Filtrer",
   "app.components.InitiativeCards.map": "Carte",
