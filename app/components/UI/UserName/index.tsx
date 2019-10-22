@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import { darken } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
