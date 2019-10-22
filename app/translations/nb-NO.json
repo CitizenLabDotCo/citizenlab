@@ -132,7 +132,6 @@
   "app.components.ImageDropzone.errorImageMaxSizeExceeded": "The image you selected is larger than {maxFileSize}MB",
   "app.components.ImageDropzone.unkownError": "There was an issue uploading your image, please try again later.",
   "app.components.InitiativeCard.xComments": "",
-  "app.components.InitiativeCard.xVotes": "",
   "app.components.InitiativeCard.xVotesOfY": "",
   "app.components.InitiativeCards.cards": "Cards",
   "app.components.InitiativeCards.filter": "Filter",
