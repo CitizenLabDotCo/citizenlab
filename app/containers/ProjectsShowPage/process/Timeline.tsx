@@ -26,7 +26,7 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -545,7 +545,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
           <ContainerInner>
             <Header>
               <HeaderRows>
-                <HeaderFirstRow>
+                <HeaderFirstRow aria-live="polite">
                   <HeaderLeftSection>
                     {isSelected &&
                       <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus}`}>
@@ -660,11 +660,15 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                   >
                     <PhaseBar>
                       {index + 1}
+                      <ScreenReaderOnly>
+                        {phaseTitle}
+                      </ScreenReaderOnly>
                       {!isLast && <PhaseArrow name="phase_arrow" />}
                     </PhaseBar>
                     <PhaseText
                       current={isCurrentPhase}
                       selected={isSelectedPhase}
+                      aria-hidden
                     >
                       {phaseTitle}
                     </PhaseText>
