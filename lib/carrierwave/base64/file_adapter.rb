@@ -14,16 +14,17 @@ module Carrierwave
           send("#{attribute}_will_change!") if respond_to? "#{attribute}_will_change!"
 
           if !(data.is_a?(String) && data.strip.start_with?('data'))
-            return super(data)
+            self.file = data
+            return
           end
 
           file_name = self.name.split('.')[0..-2].join('.')
           extension = self.name.split('.').last
-          super Carrierwave::Base64::Base64FileStringIO.new(data.strip, file_name, extension)
+          self.file = Carrierwave::Base64::Base64FileStringIO.new(data.strip, file_name, extension)
         end
 
         self.send(:define_method, "#{attribute}_by_url=") do |file_attributes|
-          self.assign_attributes name_attribute => file_attributes[:name], "remote_#{attribute}_url" => file_attributes[:url]
+          self.assign_attributes attribute => file_attributes[:name], "remote_#{attribute}_url" => file_attributes[:url]
         end
       end
 
