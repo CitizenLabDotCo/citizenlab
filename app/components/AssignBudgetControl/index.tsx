@@ -291,6 +291,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
               bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
               fullWidth={true}
               icon={!isInBasket ? 'add' : 'remove'}
+              iconAriaHidden
             >
               {!isInBasket ? (
                 <FormattedMessage {...messages.assign} />
