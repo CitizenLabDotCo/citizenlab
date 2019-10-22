@@ -102,7 +102,7 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
         <FileSize>({returnFileSize(file.size)})</FileSize>
         {onDeleteClick &&
           <DeleteButton onClick={onDeleteClick}>
-            <StyledIcon name="delete" />
+            <StyledIcon name="delete" title={<FormattedMessage {...messages.a11y_removeFile} />} />
           </DeleteButton>
         }
       </Container>

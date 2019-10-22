@@ -12,5 +12,9 @@ export default defineMessages({
   incorrect_extension: {
     id: 'app.components.FileUploader.incorrect_extension',
     defaultMessage: '{fileName} is not supported by our system, it will not be uploaded.'
+  },
+  a11y_removeFile: {
+    id: 'app.components.FileUploader.a11y_removeFile',
+    defaultMessage: 'Remove this file'
   }
 });
