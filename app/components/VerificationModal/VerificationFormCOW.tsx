@@ -14,8 +14,7 @@ import { verifyCOW } from 'services/verify';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -55,12 +54,12 @@ const StyledLabel = styled(Label)`
 `;
 
 const LabelTextContainer = styled.div`
-  display: flex;
-  flex-direction: row;
+  display: inline-block;
+  margin-bottom: 10px;
 `;
 
 const StyledInfoTooltip = styled(InfoTooltip)`
-  margin-left: 5px;
+  margin-left: 2px;
 `;
 
 const SubmitButton = styled(Button)`
