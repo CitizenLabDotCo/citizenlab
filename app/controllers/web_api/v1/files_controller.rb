@@ -102,11 +102,22 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def file_params
-    params.require(:file).permit(
+    # TODO find third variable name for file params
+    hagahaga = params.require(:file).permit(
       :file,
       :ordering,
       :name
     )
+    # TODO parameterize file attribute
+    # TODO find fourth variable name for file params
+    oogaha = {
+      file_by_content: {
+        content: hagahaga[:file],
+        name: hagahaga[:name]
+      }    
+    }
+    oogaha[:ordering] ||= hagahaga[:ordering]
+    oogaha
   end
 
   def set_file
