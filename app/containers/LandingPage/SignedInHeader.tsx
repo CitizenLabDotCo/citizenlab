@@ -381,7 +381,7 @@ class SignedInHeader extends PureComponent<Props, State> {
           >
             <HeaderContentDefault id="e2e-singed-in-header-default-cta">
               {defaultMessage && !isEmpty(defaultMessage)
-                ? <T as="p" value={defaultMessage} supportHtml />
+                ? <T as="h2" value={defaultMessage} supportHtml />
                 : <FormattedMessage {...messages.defaultSignedInMessage} tagName="h2" values={{ firstName: authUser.attributes.first_name }}/>
               }
             </HeaderContentDefault>
