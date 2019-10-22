@@ -47,7 +47,7 @@ export interface INewVoteProperties {
 
 export async function addVote(initiativeId: string, object: INewVoteProperties) {
   const response = await streams.add<IInitiativeVote>(`${API_PATH}/initiatives/${initiativeId}/votes`, { vote: object });
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/initiatives/${initiativeId}`] });
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/initiatives/${initiativeId}`, `${API_PATH}/initiative_statuses/${initiativeId}`] });
   return response;
 }
 

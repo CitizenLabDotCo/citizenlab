@@ -13,9 +13,9 @@ export default defineMessages({
     id: 'app.components.ProjectCard.xIdeas',
     defaultMessage: '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
-  imageAltText: {
-    id: 'app.components.ProjectCard.imageAltText',
-    defaultMessage: '{orgName} - main image for the project {projectTitle}',
+  xComments: {
+    id: 'app.components.ProjectCard.xComments',
+    defaultMessage: '{commentsCount, plural, no {# comments} one {# comments} other {# comments}}',
   },
   archived: {
     id: 'app.components.ProjectCard.archived',

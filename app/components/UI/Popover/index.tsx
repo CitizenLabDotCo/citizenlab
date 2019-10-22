@@ -34,7 +34,7 @@ const Content: any = styled(clickOutside)`
   }
 `;
 
-const ContentInner: any = styled.div<{ position?: 'bottom-left'}>`
+const ContentInner: any = styled.div<{ position?: 'bottom-left' }>`
   position: relative;
   left: ${({ position }) => position === 'bottom-left' ? '-85%' : '-50%'};
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
@@ -86,13 +86,17 @@ export interface Props {
   position?: 'bottom-left';
 }
 
+/*
+* children must be a button or link
+*/
+
 export default class Popover extends PureComponent<Props> {
   render() {
     const { onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, top, className, id, position } = this.props;
 
     return (
       <Container className={className}>
-        {children}
+        <span className="tooltip-trigger">{children}</span>
 
         <CSSTransition
           in={dropdownOpened}
@@ -102,7 +106,7 @@ export default class Popover extends PureComponent<Props> {
           classNames="dropdown"
           exit={false}
         >
-          <Content onClickOutside={onClickOutside} top={top} className="tooltip-container">
+          <Content onClickOutside={onClickOutside} top={top} className="tooltip-container" role="tooltip">
             <ContentInner id={id} backgroundColor={backgroundColor} textColor={textColor} borderColor={borderColor} className="tooltip-content" position={position}>
               {content}
             </ContentInner>

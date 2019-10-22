@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.loading',
     defaultMessage: 'Loading...',
   },
+  invisibleTitleUserSettings: {
+    id: 'app.containers.UsersEditPage.invisibleTitleUserSettings',
+    defaultMessage: 'All settings for your account',
+  },
   processing: {
     id: 'app.containers.UsersEditPage.processing',
     defaultMessage: 'Sending...',
@@ -164,6 +168,10 @@ export default defineMessages({
   },
   notificationsSubTitle: {
     id: 'app.containers.UsersEditPage.notificationsSubTitle',
+    defaultMessage: 'When do you want us to send you an email to notify you?',
+  },
+  user: {
+    id: 'app.containers.UsersEditPage.user',
     defaultMessage: 'When do you want us to send you an email to notify you?',
   },
 });
