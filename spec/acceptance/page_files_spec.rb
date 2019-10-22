@@ -81,26 +81,6 @@ resource "PageFile" do
     end
   end
 
-  patch "web_api/v1/pages/:page_id/files/:file_id" do
-    with_options scope: :file do
-      parameter :file, "The base64 encoded file"
-      parameter :ordering, "An integer that is used to order the file attachments within a page"
-      parameter :name, "The name of the file, including the file extension"
-    end
-    ValidationErrorHelper.new.error_fields(self, PageFile)
-    let(:page_id) { @page.id }
-    let(:file_id) { PageFile.first.id }
-    let(:name) { 'ophaalkalender.pdf' }
-    let(:ordering) { 2 }
-
-    example_request "Edit a file attachment for a page" do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:name)).to eq(name)
-      expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
-    end
-  end
-
   delete "web_api/v1/pages/:page_id/files/:file_id" do
     let(:page_id) { @page.id }
     let(:file_id) { PageFile.first.id }
