@@ -277,7 +277,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             {headerTitleMultiLoc ? (
               <T as="h1" value={headerTitleMultiLoc}>
                 {translatedTitle =>
-                   translatedTitle ? <h1>translatedTitle</h1> : genericTitle
+                   translatedTitle ? <h1>{translatedTitle}</h1> : genericTitle
                 }
               </T>
             ) : genericTitle}
