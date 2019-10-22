@@ -11,7 +11,6 @@
   "app.components.AssignBudgetControl.undo": "Annuler",
   "app.components.AuthProviderButton.termsAndConditions": "termes et conditions",
   "app.components.Author.user": "",
-
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} utilisateurs",
   "app.components.CityLogoSection.iframeTitle": "Plus d'informations sur {orgName}.",
   "app.components.CityLogoSection.slogan": "{type, select, generic {Cette initiative vous est proposée par {name}} other {Cette initiative vous est proposée par {name}}}",
