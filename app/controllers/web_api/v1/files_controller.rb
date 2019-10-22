@@ -46,7 +46,7 @@ class WebApi::V1::FilesController < ApplicationController
   }
 
   before_action :set_container, only: [:index, :create]
-  before_action :set_file, only: [:show, :update, :destroy]
+  before_action :set_file, only: [:show, :destroy]
   skip_after_action :verify_policy_scoped
 
   def index
@@ -67,19 +67,6 @@ class WebApi::V1::FilesController < ApplicationController
         @file, 
         params: fastjson_params
         ).serialized_json, status: :created
-    else
-      render json: {errors: transform_errors_details!(@file.errors.details)}, status: :unprocessable_entity
-    end
-  end
-
-  def update
-    @file.assign_attributes file_params
-    authorize @file
-    if @file.save
-      render json: WebApi::V1::FileSerializer.new(
-        @file, 
-        params: fastjson_params
-        ).serialized_json, status: :ok
     else
       render json: {errors: transform_errors_details!(@file.errors.details)}, status: :unprocessable_entity
     end
@@ -110,12 +97,13 @@ class WebApi::V1::FilesController < ApplicationController
     )
     # TODO parameterize file attribute
     # TODO find fourth variable name for file params
-    oogaha = {
-      file_by_content: {
+    oogaha = {}
+    if hagahaga[:file] || hagahaga[:name]
+      oogaha[:file_by_content] = {
         content: hagahaga[:file],
         name: hagahaga[:name]
-      }    
-    }
+      }
+    end
     oogaha[:ordering] ||= hagahaga[:ordering]
     oogaha
   end

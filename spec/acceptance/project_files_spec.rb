@@ -39,8 +39,8 @@ resource "ProjectFile" do
   post "web_api/v1/projects/:project_id/files" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file", required: true
-      parameter :ordering, "An integer that is used to order the file attachments within a project", required: false
       parameter :name, "The name of the file, including the file extension", required: true
+      parameter :ordering, "An integer that is used to order the file attachments within a project", required: false
     end
     ValidationErrorHelper.new.error_fields(self, ProjectFile)
     let(:project_id) { @project.id }
@@ -78,26 +78,6 @@ resource "ProjectFile" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors,:file)).to include({:error=>"max_size_error"})
       end
-    end
-  end
-
-  patch "web_api/v1/projects/:project_id/files/:file_id" do
-    with_options scope: :file do
-      parameter :file, "The base64 encoded file"
-      parameter :ordering, "An integer that is used to order the file attachments within a project"
-      parameter :name, "The name of the file, including the file extension"
-    end
-    ValidationErrorHelper.new.error_fields(self, ProjectFile)
-    let(:project_id) { @project.id }
-    let(:file_id) { ProjectFile.first.id }
-    let(:name) { 'ophaalkalender.pdf' }
-    let(:ordering) { 2 }
-
-    example_request "Edit a file attachment for a project" do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:name)).to eq(name)
-      expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
     end
   end
 
