@@ -5,7 +5,7 @@ namespace :cl2back do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         AutomatedTransitionJob.perform_later
-        CreatePeriodicActivitiesJob.perform_later now
+        CreatePeriodicActivitiesJob.perform_later now.to_i
       end
     end
   end
