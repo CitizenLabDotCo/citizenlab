@@ -7,8 +7,11 @@
 - The sharing title on the idea page is now vertically aligned
 - Improvements to the 'bad gateway' message sometimes affecting social sharing
 - The map and markers are again visible in the admin dashboard
-- First round of accessibility fixes and improvements:
-  - 
+- First round of accessibility fixes and improvements
+  - Dynamics of certain interactions are picked up by screen readers (PB, voting, ...)
+  - Overall clarity for screen readers has improved
+  - Improvements to information structure: HTML structure, W3C errors, head element with correct titles
+  - Keyboard accessibility has generally improved: sign-up problems, login links, PB assignment, ...
 
 ### Added
 
