@@ -1,5 +1,36 @@
 # Changelog
 
+## 2019-10-22
+
+### Fixed
+
+- The sharing title on the idea page is now vertically aligned
+- Improvements to the 'bad gateway' message sometimes affecting social sharing
+- The map and markers are again visible in the admin dashboard
+- First round of accessibility fixes and improvements
+  - Dynamics of certain interactions are picked up by screen readers (PB, voting, ...)
+  - Overall clarity for screen readers has improved
+  - Improvements to information structure: HTML structure, W3C errors, head element with correct titles
+  - Keyboard accessibility has generally improved: sign-up problems, login links, PB assignment, ...
+
+### Added
+
+- Initiatives iteration 3
+  - Automatic status changes on threshold reached or time expired
+  - When updating the status, official feedback needs to be provided simultaneously
+  - Users receive emails and notifications related to (their) initiative
+  - Initiatives support images in their body text
+- Project templates
+  - Admins can now create projects starting from a template
+  - Templates contain images, a description and a timeline and let admin filter them by tags
+  - Admins can share template descriptions with a publically accessible link
+- It's now possible to configure the banner overlay color from the customize settings
+- A custom email campaign now contains a CTA button by default
+
+### Changed
+
+- Complete copy overhaul of all emails
+
 ## 2019-10-03
 
 ### Fixed
