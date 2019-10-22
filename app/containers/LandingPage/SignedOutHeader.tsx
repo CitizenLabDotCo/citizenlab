@@ -186,7 +186,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
       const title = (headerTitleMultiLoc ? (
         <T as="h1" value={headerTitleMultiLoc}>
           {translatedTitle =>
-             translatedTitle ? <h1>translatedTitle</h1> : genericTitle
+             translatedTitle ? <h1>{translatedTitle}</h1> : genericTitle
           }
         </T>
       ) : genericTitle);
@@ -198,7 +198,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
       const subtitle = (headerSloganMultiLoc ? (
         <T value={headerSloganMultiLoc}>
           {translatedSlogan =>
-             translatedSlogan ? <h2>translatedSlogan</h2> : genericSlogan
+             translatedSlogan ? <h2>${translatedSlogan}</h2> : genericSlogan
           }
         </T>
       ) : genericSlogan);
