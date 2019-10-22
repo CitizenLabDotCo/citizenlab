@@ -22,8 +22,6 @@ import styled from 'styled-components';
 import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
 import { adopt } from 'react-adopt';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
-import { darken } from 'polished';
 
 const Container = styled.div`
   background-color: white;
