@@ -1,17 +1,11 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
-import MediaQuery from 'react-responsive';
 
 // components
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 
 // services
-import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
+import { globalState, IGlobalStateService, IIdeasPageGlobalState } from 'services/globalState';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,7 +15,7 @@ import messages from './messages';
 import { UploadFile } from 'typings';
 
 // style
-import { media, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -58,19 +52,6 @@ const Title = styled.h1`
   `}
 `;
 
-const MobileButton = styled.div`
-  width: 100%;
-  display: flex;
-
-  .Button {
-    margin-right: 10px;
-  }
-
-  .Error {
-    flex: 1;
-  }
-`;
-
 interface Props {
   onSubmit: () => void;
   projectId: string;
@@ -91,7 +72,7 @@ interface GlobalState {
 interface State extends GlobalState {}
 
 export default class NewIdeaForm extends PureComponent<Props, State> {
-  globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
+  globalState: IGlobalStateService<IIdeasPageGlobalState>;
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -147,10 +128,6 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnSubmitButtonClick = () => {
-    eventEmitter.emit('IdeasNewPage', 'IdeaFormSubmitEvent', null);
-  }
-
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { title, description, selectedTopics, budget, address: position, imageFile, ideaFiles } = ideaFormOutput;
     this.globalState.set({ title, description, selectedTopics, budget, position, imageFile, ideaFiles });
@@ -158,13 +135,8 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
   }
 
   render() {
-    const { title, description, selectedTopics, budget, position, imageFile, submitError, processing, fileOrImageError } = this.state;
+    const { title, description, selectedTopics, budget, position, imageFile } = this.state;
     const { projectId } = this.props;
-    const submitErrorMessage = submitError
-      ? <FormattedMessage {...messages.submitError} />
-      : fileOrImageError
-        ? <FormattedMessage {...messages.fileOrImageError} />
-        : null;
 
     return (
       <Container id="e2e-new-idea-form">
@@ -182,29 +154,6 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           imageFile={imageFile}
           onSubmit={this.handleIdeaFormOutput}
         />
-
-        <MediaQuery maxWidth={viewportWidths.largeTablet}>
-          {(matches) => {
-            if (matches) {
-              return (
-                <MobileButton>
-                  <Button
-                    form="idea-form"
-                    className="e2e-submit-idea-form"
-                    processing={processing}
-                    text={<FormattedMessage {...messages.submit} />}
-                    onClick={this.handleOnSubmitButtonClick}
-                  />
-                  {submitErrorMessage &&
-                    <Error text={submitErrorMessage} marginTop="0px" />
-                  }
-                </MobileButton>
-              );
-            }
-
-            return null;
-          }}
-        </MediaQuery>
       </Container>
     );
   }

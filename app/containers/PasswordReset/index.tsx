@@ -78,12 +78,10 @@ type State = {
 class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State> {
   passwordInputElement: HTMLInputElement | null;
 
-  constructor(props: Props) {
-    super(props as any);
-
+  constructor(props) {
+    super(props);
     const query = clHistory.getCurrentLocation().query;
-    const token = (query.token ? query.token : null);
-
+    const token = isString(query.token) ? query.token : null;
     this.state = {
       token,
       password: null,
