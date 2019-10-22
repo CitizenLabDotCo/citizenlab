@@ -89,23 +89,20 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def file_params
-    # TODO find third variable name for file params
-    hagahaga = params.require(:file).permit(
+    params_of_file = params.require(:file).permit(
       :file,
       :ordering,
       :name
     )
-    # TODO parameterize file attribute
-    # TODO find fourth variable name for file params
-    oogaha = {}
-    if hagahaga[:file] || hagahaga[:name]
-      oogaha[:file_by_content] = {
-        content: hagahaga[:file],
-        name: hagahaga[:name]
+    returned_file_params = {}
+    if params_of_file[:file] || params_of_file[:name]
+      returned_file_params[:file_by_content] = {
+        content: params_of_file[:file],
+        name: params_of_file[:name]
       }
     end
-    oogaha[:ordering] ||= hagahaga[:ordering]
-    oogaha
+    returned_file_params[:ordering] ||= params_of_file[:ordering]
+    returned_file_params
   end
 
   def set_file
