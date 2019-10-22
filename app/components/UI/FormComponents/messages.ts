@@ -9,8 +9,8 @@ export default defineMessages({
     id: 'UI.FormComponents.buttonDisabled',
     defaultMessage: 'Submit button disabled'
   },
-  buttenEnabled: {
-    id: 'UI.FormComponents.buttenEnabled',
+  buttonEnabled: {
+    id: 'UI.FormComponents.buttonEnabled',
     defaultMessage: 'Submit button enabled'
   }
 });
