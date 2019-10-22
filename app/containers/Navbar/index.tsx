@@ -179,7 +179,7 @@ const NavigationDropdown = styled.div`
   position: relative;
 `;
 
-const NavigationDropdownItem = styled.button`
+const NavigationDropdownItem = styled.a`
   color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   fill: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   font-size: ${fontSizes.base}px;
@@ -450,6 +450,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 {tenantLocales && projectsList && projectsList.length > 0 &&
                   <NavigationDropdown>
                     <NavigationDropdownItem
+                      tabIndex={0}
                       className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' ? 'active' : ''}`}
                       aria-expanded={projectsDropdownOpened}
                       onMouseDown={this.removeFocus}
