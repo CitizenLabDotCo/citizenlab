@@ -31,7 +31,7 @@ import { isAdmin } from 'services/permissions/roles';
 
 // utils
 import { getProjectUrl } from 'services/projects';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -410,7 +410,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     } = this.props;
     const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
-    const isAdminPage = (location && location.pathname.startsWith('/admin'));
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
     let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
     // Avoids caching issue when an admin changes platform logo (I guess)
@@ -421,16 +420,26 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const lastUrlSegment = urlSegments[urlSegments.length - 1];
     const onIdeaPage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'ideas' && lastUrlSegment !== 'new');
     const onInitiativePage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'initiatives' && lastUrlSegment !== 'new');
+    const adminPage = isPage('admin', location.pathname);
+    const initiativeFormPage = isPage('initiative_form', location.pathname);
+    const ideaFormPage = isPage('idea_form', location.pathname);
+    const ideaEditPage = isPage('idea_edit', location.pathname);
+    const initiativeEditPage = isPage('initiative_edit', location.pathname);
+    const showMobileNav = !adminPage &&
+                       !ideaFormPage &&
+                       !initiativeFormPage &&
+                       !ideaEditPage &&
+                       !initiativeEditPage;
 
     return (
       <>
-        {!isAdminPage &&
+        {showMobileNav &&
           <MobileNavigation />
         }
 
         <Container
           id="navbar"
-          className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
+          className={`${adminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
         >
           <ContainerInner>
             <Left>
