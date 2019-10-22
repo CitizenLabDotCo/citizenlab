@@ -21,7 +21,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { IMessageInfo, injectIntl } from 'utils/cl-intl';
 
 const Form = styled.form`
-  padding-bottom: 103px;
+  margin-bottom: 100px;
 `;
 
 export interface SimpleFormValues {

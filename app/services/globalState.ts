@@ -8,7 +8,7 @@ import shallowCompare from 'utils/shallowCompare';
 // typings
 import { UploadFile } from 'typings';
 
-export interface IIdeasNewPageGlobalState {
+export interface IIdeasPageGlobalState {
   title: string | null;
   description: string | null;
   selectedTopics: string[];
@@ -36,7 +36,8 @@ export interface IAdminNoPadding {
 type valueof<T> = T[keyof T];
 
 type State = {
-  IdeasNewPage?: IIdeasNewPageGlobalState;
+  IdeasNewPage?: IIdeasPageGlobalState;
+  IdeasEditPage?: IIdeasPageGlobalState;
   AdminFullWidth?: IAdminFullWidth;
   AdminNoPadding?: IAdminNoPadding;
 };

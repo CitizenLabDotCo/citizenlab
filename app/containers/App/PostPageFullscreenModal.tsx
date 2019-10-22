@@ -37,14 +37,14 @@ const PostPageFullscreenModal = memo<Props>(({ id, slug, type, close }) => {
         ? (
         <>
           <IdeasShow ideaId={id}/>
-          <Footer/>
+          <Footer />
         </>
         )
         : type === 'initiative'
           ? (
           <>
             <InitiativesShow initiativeId={id}/>
-            <Footer/>
+            <Footer />
           </>
           )
           : null
