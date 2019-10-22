@@ -1616,7 +1616,7 @@
   "app.containers.UsersShowPage.seeIdea": "Ver la idea",
   "app.containers.UsersShowPage.seeInitiative": "Ver iniciativa",
   "app.containers.UsersShowPage.tryAgain": "Un error ha ocurrido, por favor inténtalo más tarde.",
-  "app.containers.VoteControl.xDownvotes": "{count, plural, =0 {no downvotes} one {1 downvote} other {# downvotes}}",
+  "app.containers.VoteControl.xDownvotes": "{cuenta, plural, =0 {sin votos negativos} uno {1 voto negativo} otros {# votos negativos}}",
   "app.containers.VoteControl.xUpvotes": "{count, plural,=0 {ningún voto} one {un voto} other {# votos}}",
   "app.containers.admin.ideas.all.header": "Ideas",
   "app.containers.admin.ideas.all.headerSubtitle": "Agrega temas a las ideas, actualiza su estado o cambia el proyecto en el que se muestran. Contáctanos si desea usar temas o estatus personalizados.",
