@@ -4,6 +4,7 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 import Modal from 'components/UI/Modal';
 import VerificationMethods from './VerificationMethods';
 import VerificationFormCOW from './VerificationFormCOW';
+import VerificationFormBogus from './VerificationFormBogus';
 import VerificationSuccess from './VerificationSuccess';
 
 // utils
@@ -22,7 +23,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export type VerificationModalSteps = 'method-selection' | 'cow' | 'success' | null;
+export type VerificationModalSteps = 'method-selection' | 'cow' | 'bogus' | 'success' | null;
 
 export interface Props {
   opened: boolean;
@@ -56,6 +57,14 @@ const VerificationModal = memo<Props>((props) => {
     setActiveStep('success');
   }, []);
 
+  const onBogusCancel = useCallback(() => {
+    setActiveStep('method-selection');
+  }, []);
+
+  const onBogusVerified = useCallback(() => {
+    setActiveStep('success');
+  }, []);
+
   return (
     <Modal
       width={820}
@@ -69,6 +78,10 @@ const VerificationModal = memo<Props>((props) => {
 
         {activeStep === 'cow' &&
           <VerificationFormCOW onCancel={onCowCancel} onVerified={onCowVerified} />
+        }
+
+        {activeStep === 'bogus' &&
+          <VerificationFormBogus onCancel={onBogusCancel} onVerified={onBogusVerified} />
         }
 
         {activeStep === 'success' &&
