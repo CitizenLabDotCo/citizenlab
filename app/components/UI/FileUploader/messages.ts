@@ -7,7 +7,7 @@ export default defineMessages({
   },
   fileInputDescription: {
     id: 'app.components.FileUploader.fileInputDescription',
-    defaultMessage: 'Select a file to upload...',
+    defaultMessage: 'Select a file',
   },
   incorrect_extension: {
     id: 'app.components.FileUploader.incorrect_extension',
