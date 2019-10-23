@@ -160,7 +160,9 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
                   <T value={threshold_reached_message} supportHtml />
                 </TooltipWrapper>
               }
-              top="25px"
+              offset={25}
+              position="bottom"
+              withPin
             >
               <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />} />
             </StyledTooltip>

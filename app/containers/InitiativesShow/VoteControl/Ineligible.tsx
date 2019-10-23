@@ -108,7 +108,8 @@ class Ineligible extends PureComponent<Props, State> {
                   <T value={eligibility_criteria} supportHtml />
                 </TooltipWrapper>
               }
-              top="20"
+              position="bottom"
+              offset={20}
             >
               <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />}/>
             </StyledTooltip>

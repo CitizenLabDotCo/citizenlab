@@ -525,6 +525,9 @@ class Button extends PureComponent<Props, State> {
               href={linkTo}
               target={openInNewTab ? '_blank' : '_self'}
               className={buttonClassnames}
+              aria-label={ariaLabel}
+              aria-expanded={ariaExpanded}
+              tabIndex={disabled ? -1 : undefined}
             >
               {childContent}
             </StyledA>
@@ -533,6 +536,9 @@ class Button extends PureComponent<Props, State> {
               ref={this.props.setSubmitButtonRef}
               to={linkTo}
               className={buttonClassnames}
+              aria-label={ariaLabel}
+              aria-expanded={ariaExpanded}
+              tabIndex={disabled ? -1 : undefined}
             >
               {childContent}
             </StyledLink>

@@ -19,7 +19,7 @@ import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 import HasPermission from 'components/HasPermission';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 import Link from 'utils/cl-router/Link';
 
 // animation

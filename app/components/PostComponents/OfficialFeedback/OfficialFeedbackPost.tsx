@@ -182,7 +182,11 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
       return (
         <PostContainer key={officialFeedbackPost.id} className={`e2e-official-feedback-post ${className || ''}`}>
           {editingAllowed &&
-            <StyledMoreActionsMenu ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)} actions={this.getActions(officialFeedbackPost.id)} />
+            <StyledMoreActionsMenu
+              ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+              actions={this.getActions(officialFeedbackPost.id)}
+              tooltipPositionSmallViewPort="bottom-left"
+            />
           }
 
           <QuillEditedContent>

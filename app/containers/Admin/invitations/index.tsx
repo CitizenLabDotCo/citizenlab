@@ -16,7 +16,7 @@ import { Section, PageTitle, SectionField, SectionSubtitle } from 'components/ad
 import InvitesTable from './all';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 
 // services
 import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from 'services/invites';

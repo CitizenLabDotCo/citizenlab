@@ -8,7 +8,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
-import Button, { ButtonStyles } from 'components/UI/Button';
+import { ButtonStyles } from 'components/UI/Button';
 import Tooltip from 'components/UI/Tooltip';
 import Icon from 'components/UI/Icon';
 
@@ -41,15 +41,12 @@ const StyledIcon = styled(Icon)`
   margin-right: 1rem;
 `;
 
-const StyledButton = styled.button`
-  text-decoration: underline;
+const StyledA = styled.a`
   transition: all 100ms ease-out;
-  color: inherit;
 
-  &:hover {
+  &:hover, &:focus {
     text-decoration: underline;
   }
-  display: inline-block;
   padding: 0;
 `;
 
@@ -143,9 +140,9 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
                     {...this.disabledMessages[disabledReason]}
                     values={{
                       verificationLink:
-                        <StyledButton onClick={this.onVerify}>
+                        <StyledA href="" onClick={this.onVerify} className="tooltipLink">
                           <FormattedMessage {...messages.verificationLinkText} />
-                        </StyledButton>,
+                        </StyledA>,
                     }}
                   />
                 </TooltipWrapper>
@@ -153,23 +150,24 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             }
             backgroundColor={colors.popoverDarkBg}
             borderColor={colors.popoverDarkBg}
-            top="57px"
-          >
-            <Button
-              linkTo={(!isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new')}
-              style={style}
-              size={size}
-              text={startAnIdeaText}
-              disabled={!enabled}
-              fullWidth={fullWidth}
-              fullHeight={fullHeight}
-              bgColor={bgColor}
-              textColor={textColor}
-              fontWeight={fontWeight}
-              padding={padding}
-              onClick={this.onNewIdea}
-            />
-          </Tooltip>
+            offset={59}
+            position="bottom"
+            openDelay={100}
+            buttonProps={{
+              style,
+              size,
+              fullWidth,
+              fullHeight,
+              bgColor,
+              textColor,
+              fontWeight,
+              padding,
+              linkTo: (!isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new'),
+              text: startAnIdeaText,
+              disabled: !enabled,
+              onClick: this.onNewIdea
+            }}
+          />
         </Container>
       );
     }

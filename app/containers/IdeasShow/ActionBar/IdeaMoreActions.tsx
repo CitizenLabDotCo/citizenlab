@@ -102,6 +102,7 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
               label={<FormattedMessage {...messages.moreOptions} />}
               fontSize={fontSizes.small}
               id="e2e-idea-more-actions-menu"
+              tooltipPositionSmallViewPort="bottom-left"
             />
             <HasPermission.No>
               <MoreActionsMenu
