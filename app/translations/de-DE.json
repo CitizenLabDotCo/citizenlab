@@ -8,7 +8,7 @@
   "app.components.AssignBudgetControl.assign": "Zuweisen",
   "app.components.AssignBudgetControl.assigned": "Zugewiesen",
   "app.components.AssignBudgetControl.seeIdea": "Idee anschauen",
-  "app.components.AssignBudgetControl.undo": "Rückgängig",
+  "app.components.AssignBudgetControl.undo": "Zuweisung rückgängig machen",
   "app.components.AuthProviderButton.termsAndConditions": "allgemeine Geschäftsbedingungen",
   "app.components.Author.user": "Benutzer",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} Benutzer",
