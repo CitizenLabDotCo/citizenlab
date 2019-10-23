@@ -13,8 +13,7 @@ import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';

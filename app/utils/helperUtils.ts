@@ -72,7 +72,9 @@ export function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
 }
 
-export function isPage(pageKey: 'admin' | 'initiative_form', pathName: string) {
+type pageKeys = 'admin' | 'idea_form' | 'initiative_form' | 'idea_edit' | 'initiative_edit';
+
+export function isPage(pageKey: pageKeys, pathName: string) {
    /**
    * Checks whether current page is the desired page
    *
@@ -86,11 +88,17 @@ export function isPage(pageKey: 'admin' | 'initiative_form', pathName: string) {
 
   switch (pageKey) {
     case 'admin':
-      return pathnameWithoutLocale.startsWith('/admin');
+      return pathnameWithoutLocale.startsWith('/admin/');
     case 'initiative_form':
       // Needs to use endsWith
       // Otherwise an initiative with the name 'new playground for our children' would also pass
       return pathnameWithoutLocale.endsWith('/initiatives/new');
+    case 'idea_form':
+      return pathnameWithoutLocale.endsWith('/ideas/new');
+    case 'idea_edit':
+      return pathnameWithoutLocale.startsWith('/ideas/edit/');
+    case 'initiative_edit':
+      return pathnameWithoutLocale.startsWith('/initiatives/edit/');
   }
 }
 

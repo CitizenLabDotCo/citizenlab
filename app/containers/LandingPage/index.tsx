@@ -227,7 +227,7 @@ class LandingPage extends PureComponent<Props, State> {
                   {headerSloganMultiLoc ? (
                     <T value={headerSloganMultiLoc}>
                       {translatedSlogan =>
-                        translatedSlogan ? <h2>translatedSlogan</h2> : genericSlogan
+                        translatedSlogan ? <h2>{translatedSlogan}</h2> : genericSlogan
                       }
                     </T>
                   ) : genericSlogan}

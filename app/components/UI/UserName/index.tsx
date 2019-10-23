@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import { darken } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
@@ -20,9 +20,6 @@ import FeatureFlag from 'components/FeatureFlag';
 import Link from 'utils/cl-router/Link';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
   display: inline-block;
 `;
 
@@ -55,15 +52,19 @@ const Name: any = styled.div<{ color?: string }>`
   }
 `;
 
+//  padding: 1px 4px;
+
 const Badge = styled.div`
   color: #fff;
-  font-size: ${fontSizes.xs}px;
-  line-height: 16px;
+  font-size: 12px;
+  line-height: normal;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  padding: 1px 4px;
+  padding: 2px 6px;
+  display: inline-block;
   text-transform: uppercase;
   text-align: center;
-  font-weight: 700;
+  font-weight: 600;
+  margin-top: 2px;
   background-color: ${(props: any) => props.color};
 `;
 
