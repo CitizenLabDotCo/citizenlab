@@ -20,7 +20,7 @@ interface State {
 }
 
 const Container = styled.div`
-  display: flex;
+  display: inline-flexbox;
   align-items: center;
   outline: none;
 
@@ -77,7 +77,8 @@ export default class Tooltip extends PureComponent<Props, State> {
   }
 
   handleOnBlur = (event) => {
-    if (event.relatedTarget.className.split(' ').includes('tooltipLink')) {
+    if (event && event.relatedTarget && event.relatedTarget.className &&
+      event.relatedTarget.className.split(' ').includes('tooltipLink')) {
       return;
     }
     this.setState({ opened: false });
@@ -94,10 +95,10 @@ export default class Tooltip extends PureComponent<Props, State> {
     const WrappedChildren = buttonProps ? (
       <Button {...buttonProps} ariaExpanded={opened} />
     ) : (
-      <button aria-expanded={opened}>
-        {children}
-      </button>
-    );
+        <button aria-expanded={opened}>
+          {children}
+        </button>
+      );
 
     return (
       <Container

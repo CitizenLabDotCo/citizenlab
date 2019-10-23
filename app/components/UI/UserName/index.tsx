@@ -23,9 +23,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  display: inline-block;
 `;
 
-const Name: any = styled.span<{ color?: string }>`
+const Name: any = styled.div<{ color?: string }>`
   color: ${({ color, theme }) => color || theme.colorText};
   font-weight: ${({ emphasize }: any) => emphasize ? '500' : 'normal'};
   text-decoration: none;
@@ -60,7 +61,6 @@ const Badge = styled.div`
   line-height: 16px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   padding: 1px 4px;
-  display: inline-block;
   text-transform: uppercase;
   text-align: center;
   font-weight: 700;

@@ -27,10 +27,6 @@ const StatusIcon = styled(Icon)`
   margin-bottom: 20px;
 `;
 
-const StyledTooltip = styled(Tooltip)`
-  display: inline;
-`;
-
 const VoteCounter = styled.div`
   margin-top: 15px;
   ${media.smallerThanMaxTablet`
@@ -102,7 +98,7 @@ class Ineligible extends PureComponent<Props, State> {
             }}
           />
           {eligibility_criteria &&
-            <StyledTooltip
+            <Tooltip
               content={
                 <TooltipWrapper>
                   <T value={eligibility_criteria} supportHtml />
@@ -112,7 +108,7 @@ class Ineligible extends PureComponent<Props, State> {
               offset={20}
             >
               <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />}/>
-            </StyledTooltip>
+            </Tooltip>
           }
         </StatusExplanation>
         <VoteCounter>
