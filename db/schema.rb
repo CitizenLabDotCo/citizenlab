@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_09_124938) do
+ActiveRecord::Schema.define(version: 2019_10_23_121111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(version: 2019_09_09_124938) do
   end
 
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
+    t.jsonb "title_multiloc", default: {}
     t.string "slug"
     t.integer "memberships_count", default: 0, null: false
     t.datetime "created_at", null: false
@@ -280,7 +280,7 @@ ActiveRecord::Schema.define(version: 2019_09_09_124938) do
   end
 
   create_table "idea_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
+    t.jsonb "title_multiloc", default: {}
     t.integer "ordering"
     t.string "code"
     t.string "color"
@@ -378,8 +378,8 @@ ActiveRecord::Schema.define(version: 2019_09_09_124938) do
   end
 
   create_table "initiative_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
-    t.jsonb "description_multiloc"
+    t.jsonb "title_multiloc", default: {}
+    t.jsonb "description_multiloc", default: {}
     t.integer "ordering"
     t.string "code"
     t.string "color"
@@ -388,8 +388,8 @@ ActiveRecord::Schema.define(version: 2019_09_09_124938) do
   end
 
   create_table "initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
-    t.jsonb "body_multiloc"
+    t.jsonb "title_multiloc", default: {}
+    t.jsonb "body_multiloc", default: {}
     t.string "publication_status"
     t.datetime "published_at"
     t.uuid "author_id"
@@ -759,9 +759,21 @@ ActiveRecord::Schema.define(version: 2019_09_09_124938) do
     t.string "invite_status"
     t.jsonb "custom_field_values", default: {}
     t.datetime "registration_completed_at"
+    t.boolean "verified", default: false, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
+  end
+
+  create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.string "method_name", null: false
+    t.string "hashed_uid", null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hashed_uid"], name: "index_verification_verifications_on_hashed_uid"
+    t.index ["user_id"], name: "index_verification_verifications_on_user_id"
   end
 
   create_table "votes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
