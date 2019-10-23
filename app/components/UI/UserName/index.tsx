@@ -117,7 +117,7 @@ const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, em
         <Link to={`/profile/${user.attributes.slug}`} className={`e2e-author-link ${className || ''}`}>
           <Container>
             {nameComponent}
-            {verificationBadge && verificationBadgeComponent(user.attributes.is_verified)}
+            {verificationBadge && verificationBadgeComponent(user.attributes.verified)}
           </Container>
         </Link>
       );
@@ -126,7 +126,7 @@ const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, em
     return (
       <Container className={className || ''}>
         {nameComponent}
-        {verificationBadge && verificationBadgeComponent(user.attributes.is_verified)}
+        {verificationBadge && verificationBadgeComponent(user.attributes.verified)}
       </Container>
     );
   }
