@@ -112,7 +112,7 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, cla
   }, []);
   const numberOfSelectedTopics = value.length;
   const selectedTopics = value.map(topicId => topics.find(topic => !isNilOrError(topic) && topic.id === topicId));
-  const selectedTopicNames = selectedTopics && selectedTopics.map(topic => !isNilOrError(topic) && localize(topic.attributes.title_multiloc));
+  const selectedTopicNames = selectedTopics && selectedTopics.map(topic => !isNilOrError(topic) && localize(topic.attributes.title_multiloc)).join(', ');
 
   return (
     <>
@@ -134,8 +134,7 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, cla
         })}
       </TopicsContainer>
       <ScreenReaderOnly aria-live="polite">
-        <FormattedMessage {...messages.numberOfSelectedTopics} values={{ numberOfSelectedTopics }} />
-        {selectedTopicNames}
+        <FormattedMessage {...messages.selectedTopics} values={{ numberOfSelectedTopics, selectedTopicNames }} />}
       </ScreenReaderOnly>
     </>
   );
