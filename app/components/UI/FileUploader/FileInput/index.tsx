@@ -30,6 +30,15 @@ const Input = styled.input`
   pointer-events: none;
   width: 1px;
   height: 1px;
+
+  &:focus + label {
+    color: #000;
+    border-color: #000;
+
+    ${StyledIcon} {
+      fill: #000;
+    }
+  }
 `;
 
 const Label = styled.label`
@@ -43,7 +52,6 @@ const Label = styled.label`
   color: ${colors.label};
   background: transparent;
 
-  &:focus,
   &:hover {
     color: #000;
     border-color: #000;
@@ -158,6 +166,7 @@ export default class FileInput extends PureComponent<Props> {
           onClick={this.onClick}
           type="file"
           accept={fileAccept.join(',')}
+          tabIndex={0}
         />
         <Label htmlFor="file-attachment-uploader">
           <StyledIcon name="upload-file" />
