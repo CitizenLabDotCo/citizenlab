@@ -14,7 +14,7 @@ export default defineMessages({
     defaultMessage: '<strong>Verify your identity</strong> <span>manually</span>',
   },
   verifyCow: {
-    id: 'app.components.VerificationModal.verifyManually',
+    id: 'app.components.VerificationModal.verifyCow',
     defaultMessage: 'Verify using COW',
   },
   cowRunNumber: {
@@ -56,6 +56,10 @@ export default defineMessages({
   notEntitledFormError: {
     id: 'app.components.VerificationModal.notEntitledFormError',
     defaultMessage: 'Not entitled.',
+  },
+  somethingWentWrongError: {
+    id: 'app.components.VerificationModal.somethingWentWrongError',
+    defaultMessage: 'We can\'t verify you because something went wrong',
   },
   submit: {
     id: 'app.components.VerificationModal.submit',
