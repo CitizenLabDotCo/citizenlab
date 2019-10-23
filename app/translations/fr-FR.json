@@ -1422,7 +1422,7 @@
   "app.containers.ProjectCards.allProjects": "{tenantName, select, frw {Toutes les communes} other {Tous les projets}}",
   "app.containers.ProjectCards.archivedProjects": "Projets archivés",
   "app.containers.ProjectCards.areasTitle": "Lieux",
-  "app.containers.ProjectCards.currentlyWorkingOn": "{orgName} travaille actuellement sur",
+  "app.containers.ProjectCards.currentlyWorkingOn": "Projets de {orgName}",
   "app.containers.ProjectCards.publicationStatus": "Statut de publication",
   "app.containers.ProjectInfo.invisibleTitleMainContent": "Informations sur ce projet",
   "app.containers.ProjectInfo.twitterMessage": "{title} : partagez vos idées sur",
