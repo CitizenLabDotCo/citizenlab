@@ -32,7 +32,7 @@ const ProjectNavbarWrapper = styled.div`
   position: sticky;
   top: ${({ theme }) => theme.menuHeight}px;
   z-index: 10;
-  background: ${({ theme }) => theme.projectNavbarBackgroundColor || '#002332'};
+  background: ${({ theme }) => theme.projectNavbarBackgroundColor || '#171717'};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 
   ${media.smallerThanMinTablet`
