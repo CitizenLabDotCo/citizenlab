@@ -6,7 +6,7 @@ import Input from 'components/UI/Input';
 import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 import { Title } from './styles';
 
 // services

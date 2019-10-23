@@ -28,7 +28,7 @@ import {
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface Props {}

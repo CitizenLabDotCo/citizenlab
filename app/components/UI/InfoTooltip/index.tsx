@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import Icon from 'components/UI/Icon';
-import Tooltip from 'components/admin/Tooltip';
+import Tooltip from 'components/UI/Tooltip';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,7 +16,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 import { Omit } from 'typings';
-import { IPosition } from 'components/admin/Popover';
+import { IPosition } from 'components/UI/Popover';
 
 interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
   size?: 'small' | 'big';
@@ -38,7 +38,7 @@ const IconWrapper = styled.div`
   align-items: center;
 `;
 
-const StyledIcon = styled(Icon)<({ color?: string })>`
+const StyledIcon = styled(Icon) <({ color?: string }) >`
   width: 16px;
   height: 16px;
   cursor: pointer;
@@ -57,6 +57,20 @@ const TooltipWrapper = styled.div<{ pxSize: 500 | 300 | 200 | 400 }>`
   font-weight: 400;
   line-height: normal;
   text-align: left;
+  a {
+    color: ${colors.clBlueLight};
+    text-decoration: underline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
+
+    &:hover {
+      color: ${colors.clBlueLighter};
+      text-decoration: underline;
+    }
+  }
 `;
 
 const getPxSize = (size: undefined | 'big' | 'small' | 'xs') => {
@@ -88,9 +102,12 @@ const InfoTooltip = (props: Props) => {
         position={position}
         className={className}
         openDelay={openDelay}
+        backgroundColor="rgba(34, 34, 34, 0.95)"
       >
         <IconWrapper>
-          {children || <StyledIcon name="info3" className="infoTooltipIcon" />}
+          <div className="tooltip-trigger">
+            {children || <StyledIcon name="info3" className="infoTooltipIcon" />}
+          </div>
         </IconWrapper>
       </Tooltip >
     </Container>

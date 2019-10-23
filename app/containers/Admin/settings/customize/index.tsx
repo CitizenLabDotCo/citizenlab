@@ -38,7 +38,7 @@ import { updatePage } from 'services/pages';
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const ColorPickerSectionField = styled(SectionField)``;

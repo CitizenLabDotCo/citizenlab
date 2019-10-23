@@ -252,7 +252,8 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                 </DropdownListButton>
               </DropdownList>
             }
-            top="35px"
+            offset={35}
+            position="bottom"
             backgroundColor={colors.adminMenuBackground}
             borderColor={colors.adminMenuBackground}
             onClickOutside={this.handePopoverOnClickOutside}

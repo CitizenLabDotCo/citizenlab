@@ -16,7 +16,7 @@ import { Section, SubSectionTitle, SectionTitle, SectionSubtitle, SectionField }
 import Moderators from './Moderators';
 import FeatureFlag from 'components/FeatureFlag';
 import Granular from './Granular';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
 
