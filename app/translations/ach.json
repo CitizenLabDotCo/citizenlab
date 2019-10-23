@@ -1,6 +1,6 @@
 {
-  "UI.FormComponents.buttenEnabled": "",
   "UI.FormComponents.buttonDisabled": "",
+  "UI.FormComponents.buttonEnabled": "",
   "UI.FormComponents.optional": "",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "",

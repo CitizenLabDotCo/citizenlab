@@ -1,6 +1,6 @@
 {
-  "UI.FormComponents.buttenEnabled": "",
   "UI.FormComponents.buttonDisabled": "",
+  "UI.FormComponents.buttonEnabled": "",
   "UI.FormComponents.optional": "optional",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "No initiatives found",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
