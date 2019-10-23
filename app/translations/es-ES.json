@@ -1422,7 +1422,7 @@
   "app.containers.ProjectCards.allProjects": "Todos los proyectos",
   "app.containers.ProjectCards.archivedProjects": "Proyectos archivados",
   "app.containers.ProjectCards.areasTitle": "Localidad/Barrio/Zona",
-  "app.containers.ProjectCards.currentlyWorkingOn": "{orgName} está trabajando actualmente en",
+  "app.containers.ProjectCards.currentlyWorkingOn": "Proyectos de {orgName}",
   "app.containers.ProjectCards.publicationStatus": "Estado de la publicación",
   "app.containers.ProjectInfo.invisibleTitleMainContent": "Información sobre este proyecto",
   "app.containers.ProjectInfo.twitterMessage": "{title} : comparte tus ideas en",
