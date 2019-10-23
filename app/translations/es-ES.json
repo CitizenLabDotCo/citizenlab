@@ -1186,6 +1186,7 @@
   "app.containers.Comments.signInLinkText": "inicia sesión",
   "app.containers.Comments.signInToComment": "Por favor {signInLink} para comentar.",
   "app.containers.CompleteSignUpPage.notSignedIn": "Algo salió mal! No podemos registrarte ahora. Por favor intente nuevamente en unos minutos.",
+  "app.containers.CompleteSignUpPage.numberOfSelectedTopics": "",
   "app.containers.CompleteSignUpPage.somethingWentWrong": "Upssss...¡algo salió mal!",
   "app.containers.CompleteSignUpPage.title": "Casi terminado",
   "app.containers.CookiePolicy.advertisingContent": "En CitizenLab, no utilizamos herramientas de publicidad en las plataformas de participación, pero algunos gobiernos (locales) y organizaciones si lo hacen. {advertisingLink} es la herramienta más utilizada para ello. Esto les permite conocer qué tipo de usuarios tuvo cuales acciones, para generar campañas de publicidad en Facebook basadas en ese conocimiento.",

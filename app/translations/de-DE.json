@@ -1186,6 +1186,7 @@
   "app.containers.Comments.signInLinkText": "anmelden",
   "app.containers.Comments.signInToComment": "Bitte {signInLink}, um zu kommentieren.",
   "app.containers.CompleteSignUpPage.notSignedIn": "Etwas ging schief. Wir können Sie im Moment nicht einloggen. Bitte versuchen Sie es nochmal in ein paar Minuten.",
+  "app.containers.CompleteSignUpPage.numberOfSelectedTopics": "",
   "app.containers.CompleteSignUpPage.somethingWentWrong": "Uups... etwas ging schief!",
   "app.containers.CompleteSignUpPage.title": "Fast geschafft",
   "app.containers.CookiePolicy.advertisingContent": "Wir, als CitizenLab, nutzen keine Werbemittel auf den Beteiligungsplattformen, aber einige (örtliche) Regierungen und Organisationen schon. {advertisingLink} ist hierfür das am häufigsten verwendete Tool. Auf diese Weise können sie lernen, welche Art von Nutzern bestimmte Aktionen durchgeführt hat, und auf der Grundlage dieses Wissens Facebook-Werbekampagnen erstellen.",
