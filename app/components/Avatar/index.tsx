@@ -200,7 +200,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
               <ModeratorBadgeIcon name="clLogo" size={numberSize} />
             </ModeratorBadgeContainer>
           )}
-          {user.attributes.is_verified && verified && (
+          {user.attributes.verified && verified && (
             <FeatureFlag name="verification">
               <VerifiedBadgeContainer size={numberSize} bgColor={bgColor}>
                 <VerifiedBadgeIcon name="checkmark-full" size={numberSize} bgColor={bgColor} />
