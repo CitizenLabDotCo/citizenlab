@@ -1,6 +1,6 @@
 {
-  "UI.FormComponents.buttenEnabled": "",
   "UI.FormComponents.buttonDisabled": "",
+  "UI.FormComponents.buttonEnabled": "",
   "UI.FormComponents.optional": "optioneel",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Geen initiatieven gevonden",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Opgelet: Deze kleur heeft een te laag contrast. Hierdoor wordt sommige tekst moeilijk leesbaar. Kies een donkerdere kleur om de leesbaarheid te verbeteren.",
