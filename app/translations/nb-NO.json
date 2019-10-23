@@ -1186,6 +1186,7 @@
   "app.containers.Comments.signInLinkText": "log in",
   "app.containers.Comments.signInToComment": "Please {signInLink} to comment.",
   "app.containers.CompleteSignUpPage.notSignedIn": "Noe gikk galt, og vi kan ikke logge deg inn akkurat nå. Vennligst prøv igjen om en liten stund.",
+  "app.containers.CompleteSignUpPage.numberOfSelectedTopics": "",
   "app.containers.CompleteSignUpPage.somethingWentWrong": "Oops, something went wrong!",
   "app.containers.CompleteSignUpPage.title": "Almost there",
   "app.containers.CookiePolicy.advertisingContent": "CitizenLab bruker ikke annonseverktøy på plattformene, men enkelte (lokale) myndigheter og organisasjoner gjør det. {advertisingLink} er det mest brukte verktøyet for dette. Dette gjør at de får vite hvilke brukere som gjør enkelte handlinger, og bygger Facebook annonsekampanjer basert på den kunnskapen.",

@@ -1186,6 +1186,7 @@
   "app.containers.Comments.signInLinkText": "log in",
   "app.containers.Comments.signInToComment": "Please {signInLink} to comment.",
   "app.containers.CompleteSignUpPage.notSignedIn": "Something went wrong and we can't sign you in right now. Please try again in a few minutes.",
+  "app.containers.CompleteSignUpPage.numberOfSelectedTopics": "Selected {numberOfSelectedTopics, plural, =0 {zero topics} one {one topic} other {# topics}}:",
   "app.containers.CompleteSignUpPage.somethingWentWrong": "Oops... something went wrong!",
   "app.containers.CompleteSignUpPage.title": "Almost there",
   "app.containers.CookiePolicy.advertisingContent": "As CitizenLab, we don’t use advertising tools on the participation platforms, but some (local) governments and organisations do. {advertisingLink} is the most used tool for this. This allows them to learn what type of users took certain actions, and to build Facebook advertising campaigns based on that knowledge.",
