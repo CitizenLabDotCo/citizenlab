@@ -131,6 +131,7 @@ export const UserHeader = memo<Props>(props => {
                 linkTo="/profile/edit"
                 style="text"
                 icon="pencil"
+                className="e2e-edit-profile"
                 bgHoverColor={colors.background}
               >
                 <FormattedMessage {...messages.editProfile} />
