@@ -184,7 +184,6 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
           borderHoverColor={moderator ? colors.clRedError : borderHoverColor}
           fillHoverColor={fillHoverColor}
           bgColor={bgColor}
-          aria-hidden
         >
           {avatarSrc ? (
             <AvatarImage
