@@ -19,7 +19,7 @@ import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/fileT
 
 // style
 import styled, { css } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 
 // typings
 import { UploadFile } from 'typings';
@@ -109,6 +109,10 @@ const StyledDropzone = styled(Dropzone)`
     }
   ` : css`
     cursor: pointer !important;
+
+    &:focus-within {
+      outline: ${customOutline};
+    }
 
     &:hover, &:focus-within {
       border-color: #000;
