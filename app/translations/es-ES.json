@@ -1467,7 +1467,7 @@
   "app.containers.Projects.noUpcomingEvents": "No hay próximos eventos en este momento",
   "app.containers.Projects.pastEvents": "Eventos anteriores",
   "app.containers.Projects.project": "Proyecto",
-  "app.containers.Projects.removeItem": "Eliminar el elemento",
+  "app.containers.Projects.removeItem": "Eliminar elemento",
   "app.containers.Projects.spentBudget": "Presupuesto gastado",
   "app.containers.Projects.startsOn": "Comienza el {date}",
   "app.containers.Projects.submitMyExpenses": "Presentar mis gastos",
