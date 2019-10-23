@@ -1186,6 +1186,7 @@
   "app.containers.Comments.signInLinkText": "connecter",
   "app.containers.Comments.signInToComment": " {signInLink} pour commenter.",
   "app.containers.CompleteSignUpPage.notSignedIn": "Une erreur est survenue : il n'est pas possible de vous connecter actuellement. Veuillez réessayer.",
+  "app.containers.CompleteSignUpPage.numberOfSelectedTopics": "",
   "app.containers.CompleteSignUpPage.somethingWentWrong": "Oups... Une erreur est survenue!",
   "app.containers.CompleteSignUpPage.title": "On y est presque",
   "app.containers.CookiePolicy.advertisingContent": "Chez CitizenLab, nous n’utilisons pas d’outils publicitaires sur les plateformes de participation, mais certains gouvernements (locaux) et organisations le font. {advertisingLink} est l’outil le plus utilisé pour cela. Il leur permet de déterminer quelle sorte d’utilisateur font certaines actions sur la plateforme, et de construire des campagnes publicitaires Facebook basées sur ces informations.",

@@ -1186,6 +1186,7 @@
   "app.containers.Comments.signInLinkText": "log ind",
   "app.containers.Comments.signInToComment": "{signInLink} for at kommentere.",
   "app.containers.CompleteSignUpPage.notSignedIn": "Noget gik galt, og vi kan ikke logge dig ind lige nu. Prøv venligst igen om nogle få minutter.",
+  "app.containers.CompleteSignUpPage.numberOfSelectedTopics": "",
   "app.containers.CompleteSignUpPage.somethingWentWrong": "Oops, something went wrong!",
   "app.containers.CompleteSignUpPage.title": "Du er der næsten",
   "app.containers.CookiePolicy.advertisingContent": "Som CitizenLab bruger vi ikke annonceringsværktøjer på deltagelsesplatforme, men nogle (lokale) regeringer og organisationer gør. {advertisingLink} er det mest anvendte værktøj til dette. Dette giver dem mulighed for at lære, hvilken type brugere der har taget visse handlinger, og at opbygge Facebook-reklamekampagner baseret på den viden.",
