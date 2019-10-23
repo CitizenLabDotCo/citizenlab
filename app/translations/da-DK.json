@@ -8,7 +8,7 @@
   "app.components.AssignBudgetControl.assign": "Tildel",
   "app.components.AssignBudgetControl.assigned": "Tildelt",
   "app.components.AssignBudgetControl.seeIdea": "Se ide",
-  "app.components.AssignBudgetControl.undo": "Fortryd",
+  "app.components.AssignBudgetControl.undo": "Fortryd tilføjelsen",
   "app.components.AuthProviderButton.termsAndConditions": "vilkår",
   "app.components.Author.user": "Bruger",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} brugere\n",
