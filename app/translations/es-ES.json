@@ -8,7 +8,7 @@
   "app.components.AssignBudgetControl.assign": "Asignar",
   "app.components.AssignBudgetControl.assigned": "Asignado",
   "app.components.AssignBudgetControl.seeIdea": "Ver idea",
-  "app.components.AssignBudgetControl.undo": "Deshacer",
+  "app.components.AssignBudgetControl.undo": "Deshacer la asignación",
   "app.components.AuthProviderButton.termsAndConditions": "términos y condiciones",
   "app.components.Author.user": "Usuario",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} usuarios",
