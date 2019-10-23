@@ -1,18 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
-
-const Wrapper = styled.label`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 12px;
-  cursor: pointer;
-
-  &.disabled {
-    cursor: not-allowed;
-  }
-`;
+import { hideVisually } from 'polished';
 
 export const CustomRadio = styled.div`
   flex: 0 0 20px;
@@ -33,17 +22,29 @@ export const CustomRadio = styled.div`
 
   &:not(.disabled) {
     cursor: pointer;
-
-    &:not(.checked):hover,
-    &:not(.checked):focus,
-    &:not(.checked):active {
-      border-color: #000;
-    }
   }
 
   &.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+`;
+
+const Wrapper = styled.label`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 12px;
+  cursor: pointer;
+
+  &.disabled {
+    cursor: not-allowed;
+  }
+
+  &:hover, &:focus-within {
+    .circle {
+      border: 1px solid #000;
+    }
   }
 `;
 
@@ -66,7 +67,7 @@ const Text = styled.div`
 `;
 
 const HiddenInput = styled.input`
-  display: none;
+  ${hideVisually()}
 `;
 
 export interface Props {
@@ -100,15 +101,13 @@ export default class Radio extends PureComponent<Props> {
 
   render() {
     const { name, value, currentValue, disabled, buttonColor, label, className } = this.props;
-    const id = this.props.id || `${this.props.name}-${this.props.value}`;
     const checked = (value === currentValue);
 
     return (
-      <Wrapper className={`${className} ${disabled ? 'disabled' : ''}`} htmlFor={id}>
+      <Wrapper className={`${className} ${disabled ? 'disabled' : ''}`}>
         <HiddenInput
           type="radio"
           name={name}
-          id={id}
           value={value}
           aria-checked={checked}
           checked={checked}
@@ -117,7 +116,7 @@ export default class Radio extends PureComponent<Props> {
         <CustomRadio
           onMouseDown={this.removeFocus}
           onClick={this.handleClick}
-          className={`${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}`}
+          className={`${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} circle`}
         >
           {checked &&
             <Checked color={(buttonColor || '#49B47D')}/>
