@@ -38,12 +38,6 @@ const StatusIcon = styled(Icon)`
   margin-bottom: 10px;
 `;
 
-const StyledTooltip = styled(Tooltip)`
-  display: inline;
-  margin-left: 4px;
-  cursor: pointer;
-`;
-
 const VoteCounter = styled.div`
   margin-top: 15px;
   ${media.smallerThanMaxTablet`
@@ -81,7 +75,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const OnDesktop = styled.div`
+const OnDesktop = styled.span`
   display: inline;
 
   ${media.smallerThanMaxTablet`
@@ -89,7 +83,7 @@ const OnDesktop = styled.div`
   `}
 `;
 
-const OnMobile = styled.div`
+const OnMobile = styled.span`
   display: inline;
 
   ${media.biggerThanMaxTablet`
@@ -154,7 +148,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
             />
           </OnMobile>
           {threshold_reached_message &&
-            <StyledTooltip
+            <Tooltip
               content={
                 <TooltipWrapper>
                   <T value={threshold_reached_message} supportHtml />
@@ -165,7 +159,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
               withPin
             >
               <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />} />
-            </StyledTooltip>
+            </Tooltip>
           }
         </StatusExplanation>
         <VoteCounter>
