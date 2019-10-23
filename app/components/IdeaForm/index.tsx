@@ -462,7 +462,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
               maxImageFileSize={5000000}
               maxNumberOfImages={1}
-              placeholder={<FormattedMessage {...messages.imageUploadPlaceholder} />}
               onAdd={this.handleUploadOnAdd}
               onRemove={this.handleUploadOnRemove}
             />

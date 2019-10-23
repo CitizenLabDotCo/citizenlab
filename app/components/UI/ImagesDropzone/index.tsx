@@ -408,7 +408,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
 
     images = (compact(images) || null);
     acceptedFileTypes = (acceptedFileTypes || '*');
-    placeholder = (placeholder || (maxNumberOfImages && maxNumberOfImages === 1 ? formatMessage(messages.dropYourImageHere) : formatMessage(messages.dropYourImagesHere)));
+    placeholder = (placeholder || (maxNumberOfImages && maxNumberOfImages === 1 ? formatMessage(messages.uploadImage) : formatMessage(messages.uploadMultipleImages)));
     objectFit = (objectFit || 'cover');
 
     const imageList = ((images && images.length > 0 && (maxNumberOfImages !== 1 || (maxNumberOfImages === 1 && !processing))) ? (

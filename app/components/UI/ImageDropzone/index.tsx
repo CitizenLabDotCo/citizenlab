@@ -359,7 +359,7 @@ class ImageDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                   {!processing ? (
                     <DropzoneContent>
                       <DropzonePlaceholderIcon name="upload" />
-                      <DropzonePlaceholderText>{formatMessage(messages.dropYourImageHere)}</DropzonePlaceholderText>
+                      <DropzonePlaceholderText>{formatMessage(messages.uploadImage)}</DropzonePlaceholderText>
                     </DropzoneContent>
                   ) : (
                       <DropzoneContent>
