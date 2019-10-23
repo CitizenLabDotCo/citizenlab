@@ -1,4 +1,6 @@
 {
+  "UI.FormComponents.buttenEnabled": "",
+  "UI.FormComponents.buttonDisabled": "",
   "UI.FormComponents.optional": "optionnel",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Pas d'initiatives trouvées",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Attention : la couleur que vous avez sélectionné n’est pas assez contrastée. Cela peut entraîner des problèmes de lecture. Choisissez une couleur plus foncée pour optimiser la lisibilité.",
@@ -72,6 +74,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "On dirait que quelque chose ne va pas.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Une erreur s'est produite et le contenu n'a pas pu être affiché. Veuillez essayer à nouveau, ou {openForm} !",
   "app.components.ErrorBoundary.openFormText": "aidez-nous à comprendre ce qui s'est passé",
+  "app.components.FileUploader.a11y_removeFile": "",
   "app.components.FileUploader.fileInputDescription": "Cliquez pour sélectionner un fichier",
   "app.components.FileUploader.fileUploadLabel": "Pièces jointes (max. 50Mo)",
   "app.components.FileUploader.incorrect_extension": "{fileName} n'est pas supporté par notre système, il ne sera pas chargé.",

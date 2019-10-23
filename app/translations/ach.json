@@ -1,4 +1,6 @@
 {
+  "UI.FormComponents.buttenEnabled": "",
+  "UI.FormComponents.buttonDisabled": "",
   "UI.FormComponents.optional": "",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "",
@@ -72,6 +74,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "",
   "app.components.ErrorBoundary.genericErrorWithForm": "",
   "app.components.ErrorBoundary.openFormText": "",
+  "app.components.FileUploader.a11y_removeFile": "",
   "app.components.FileUploader.fileInputDescription": "",
   "app.components.FileUploader.fileUploadLabel": "",
   "app.components.FileUploader.incorrect_extension": "",
