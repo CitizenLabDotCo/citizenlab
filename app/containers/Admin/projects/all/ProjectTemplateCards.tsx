@@ -173,8 +173,6 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
     },
   });
 
-  console.log(data);
-
   const templates = get(data, 'publishedProjectTemplates', null);
 
   const handleDepartmentFilterOnChange = useCallback((departments: string[]) => {
