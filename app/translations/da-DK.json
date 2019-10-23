@@ -1422,7 +1422,7 @@
   "app.containers.ProjectCards.allProjects": "Alle projekter",
   "app.containers.ProjectCards.archivedProjects": "Arkiverede projekter",
   "app.containers.ProjectCards.areasTitle": "Områder",
-  "app.containers.ProjectCards.currentlyWorkingOn": "{orgName} arbejder i øjeblikket på",
+  "app.containers.ProjectCards.currentlyWorkingOn": "Projekter af {orgName}",
   "app.containers.ProjectCards.publicationStatus": "Publiceringsstatus",
   "app.containers.ProjectInfo.invisibleTitleMainContent": "Oplysninger om dette projekt\n",
   "app.containers.ProjectInfo.twitterMessage": "{title} : del dine ideer på",
