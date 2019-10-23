@@ -18,6 +18,7 @@ export function openVerificationModalWithContext(location: string) {
     { step: 'method-selection', withContext: true }
   );
 }
+
 export function openVerificationModalWithoutContext(location: string) {
   eventEmitter.emit<OpenVerificationModalData>(
     location,

@@ -33,9 +33,9 @@ export const CustomRadio = styled.button`
   &:not(.disabled) {
     cursor: pointer;
 
-    &:not(.checked):hover,
-    &:not(.checked):focus,
-    &:not(.checked):active {
+    &:hover,
+    &:focus,
+    &:active {
       border-color: #000;
     }
   }

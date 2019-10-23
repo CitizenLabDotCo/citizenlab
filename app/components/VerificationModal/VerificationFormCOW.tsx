@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import { isEmpty, get } from 'lodash-es';
+import { reportError } from 'utils/loggingUtils';
 
 // components
 import Input from 'components/UI/Input';
@@ -14,11 +15,11 @@ import { verifyCOW } from 'services/verify';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
+
 const Container = styled.div`
   width: 100%;
   display: flex;
@@ -55,12 +56,12 @@ const StyledLabel = styled(Label)`
 `;
 
 const LabelTextContainer = styled.div`
-  display: flex;
-  flex-direction: row;
+  display: inline-block;
+  margin-bottom: 10px;
 `;
 
 const StyledInfoTooltip = styled(InfoTooltip)`
-  margin-left: 5px;
+  margin-left: 2px;
 `;
 
 const SubmitButton = styled(Button)`
@@ -118,16 +119,19 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
         onVerified();
       } catch (error) {
 
-        if (get(error, 'errors.base[0].error') === 'taken') {
+        if (get(error, 'json.errors.base[0].error') === 'taken') {
           setFormError(<FormattedMessage {...messages.takenFormError} />);
-        } else if (get(error, 'errors.base[0].error') === 'no_match') {
+        } else if (get(error, 'json.errors.base[0].error') === 'no_match') {
           setFormError(<FormattedMessage {...messages.noMatchFormError} />);
-        } else if (get(error, 'errors.base[0].error') === 'not_entitled') {
+        } else if (get(error, 'json.errors.base[0].error') === 'not_entitled') {
           setFormError(<FormattedMessage {...messages.notEntitledFormError} />);
-        } else if (get(error, 'errors.run[0].error') === 'invalid') {
+        } else if (get(error, 'json.errors.run[0].error') === 'invalid') {
           setRunError(<FormattedMessage {...messages.invalidRunError} />);
-        } else if (get(error, 'errors.id_serial[0].error') === 'invalid') {
+        } else if (get(error, 'json.errors.id_serial[0].error') === 'invalid') {
           setIdError(<FormattedMessage {...messages.invalidIdSerialError} />);
+        } else {
+          reportError(error);
+          setFormError(<FormattedMessage {...messages.somethingWentWrongError} />);
         }
       }
     }
@@ -153,6 +157,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
             </LabelTextContainer>
             <Input
               type="text"
+              placeholder="xx.xxx.xxx-x"
               onChange={onRunChange}
               value={run}
               error={runError}
@@ -168,7 +173,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
             </LabelTextContainer>
             <Input
               type="text"
-              placeholder="ID Number"
+              placeholder="xxx.xxx.xxx"
               onChange={onIdSerialChange}
               value={idSerial}
               error={idError}

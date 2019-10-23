@@ -170,6 +170,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.notificationsSubTitle',
     defaultMessage: 'When do you want us to send you an email to notify you?',
   },
+  user: {
+    id: 'app.containers.UsersEditPage.user',
+    defaultMessage: 'When do you want us to send you an email to notify you?',
+  },
   /*
   * VerificationStatus
   */
@@ -192,6 +196,5 @@ export default defineMessages({
   verifiedText: {
     id: 'app.containers.UsersEditPage.verifiedText',
     defaultMessage: 'Your identity has been verified. Your city will be able to base decision on you as part of the community',
-  },
-
+  }
 });
