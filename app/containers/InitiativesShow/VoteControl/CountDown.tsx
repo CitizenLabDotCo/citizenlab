@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import moment, { Duration } from 'moment';
-import { padStart } from 'lodash-es';
+import moment from 'moment';
+import 'moment-duration-format';
 
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -47,22 +47,22 @@ interface DataProps {}
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  duration: Duration;
+  refresh: number;
 }
 
 class CountDown extends PureComponent<Props, State> {
-
   interval: number;
 
   constructor(props) {
     super(props);
     this.state = {
-      duration: this.calculateDuration(),
+      refresh: Date.now()
     };
   }
-   componentDidMount() {
+
+  componentDidMount() {
     this.interval = setInterval(() => {
-      this.setState({ duration: this.calculateDuration() });
+      this.setState({ refresh: Date.now() });
     }, 60 * 1000);
   }
 
@@ -70,40 +70,26 @@ class CountDown extends PureComponent<Props, State> {
     clearInterval(this.interval);
   }
 
-  calculateDuration = () => {
-    const duration = moment.duration(moment(this.props.targetTime).diff(moment()));
-    if (duration.asMilliseconds() < 0) {
-      return moment.duration(0);
-    } else {
-      return duration;
-    }
-  }
-
-  daysLeft = (): string => {
-    return padStart(this.state.duration.days().toString(), 2, '0');
-  }
-
-  hoursLeft = (): string  => {
-    return padStart(this.state.duration.hours().toString(), 2, '0');
-  }
-
-  minutesLeft = (): string  => {
-    return padStart(this.state.duration.minutes().toString(), 2, '0');
-  }
-
   render() {
+    const start = moment();
+    const end = moment(this.props.targetTime, 'YYYY-MM-DDThh:mm:ss.SSSZ');
+    const duration = moment.duration(end.diff(start)).format('dd:hh:mm').split(':');
+    const daysLeft = duration[0];
+    const hoursLeft = duration[1];
+    const minutesLeft = duration[2];
+
     return (
       <Container className={this.props.className}>
         <TimeComponent>
-          <Count>{this.daysLeft()}</Count>
+          <Count>{daysLeft}</Count>
           <Unit><FormattedMessage {...messages.days} /></Unit>
         </TimeComponent>
         <TimeComponent>
-          <Count>{this.hoursLeft()}</Count>
+          <Count>{hoursLeft}</Count>
           <Unit><FormattedMessage {...messages.hours} /></Unit>
         </TimeComponent>
         <TimeComponent>
-          <Count>{this.minutesLeft()}</Count>
+          <Count>{minutesLeft}</Count>
           <Unit><FormattedMessage {...messages.minutes} /></Unit>
         </TimeComponent>
       </Container>
