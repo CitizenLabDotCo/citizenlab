@@ -23,7 +23,7 @@ const Container = styled.div`
   display: inline-block;
 `;
 
-const Name: any = styled.span<{ color?: string }>`
+const Name: any = styled.div<{ color?: string }>`
   color: ${({ color, theme }) => color || theme.colorText};
   font-weight: ${({ emphasize }: any) => emphasize ? '500' : 'normal'};
   text-decoration: none;
@@ -51,6 +51,8 @@ const Name: any = styled.span<{ color?: string }>`
     font-style: italic;
   }
 `;
+
+//  padding: 1px 4px;
 
 const Badge = styled.div`
   color: #fff;
@@ -116,7 +118,7 @@ const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, em
         <Link to={`/profile/${user.attributes.slug}`} className={`e2e-author-link ${className || ''}`}>
           <Container>
             {nameComponent}
-            {verificationBadge && verificationBadgeComponent(user.attributes.is_verified)}
+            {verificationBadge && verificationBadgeComponent(user.attributes.verified)}
           </Container>
         </Link>
       );
@@ -125,7 +127,7 @@ const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, em
     return (
       <Container className={className || ''}>
         {nameComponent}
-        {verificationBadge && verificationBadgeComponent(user.attributes.is_verified)}
+        {verificationBadge && verificationBadgeComponent(user.attributes.verified)}
       </Container>
     );
   }

@@ -27,6 +27,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
       ]
     }
     ariaLabel="Show more actions"
+    tooltipPositionSmallViewPort="bottom-left"
   />
   <QuillEditedContent>
     <OfficialFeedbackPost__Body
