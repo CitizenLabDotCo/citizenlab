@@ -6,20 +6,17 @@ export const Title = styled.h1`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxl}px;
   font-weight: 300;
-  line-height: normal;
+  line-height: 35px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   margin: 0;
   margin-bottom: 40px;
   padding: 0;
 
-  > span {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-
-    > strong {
-      font-weight: 600;
-    }
+  strong {
+    font-weight: 600;
   }
 `;
 
