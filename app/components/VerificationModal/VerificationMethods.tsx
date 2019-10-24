@@ -13,7 +13,7 @@ import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, FormattedHTMLMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -122,7 +122,6 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
       }
     });
   }
-  const titleHTMLMessage = withContext ? messages.verifyYourIdentityWithContext : messages.verifyYourIdentityWithoutContext;
 
   return (
     <Container className={className}>
@@ -131,7 +130,8 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
         <ShieldIcon name="verify" />
       </AboveTitle>
       <Title>
-        <FormattedHTMLMessage {...titleHTMLMessage} />
+        <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
+        {withContext ? <FormattedMessage {...messages.toParticipateInThisProject} /> : <FormattedMessage {...messages.andUnlockYourCitizenPotential} />}
       </Title>
       <Content>
         {withContext && false && // TODO: pass in context and display additionnal rules if any

@@ -15,7 +15,7 @@ import { verifyCOW } from 'services/verify';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, FormattedHTMLMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -145,7 +145,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
   return (
     <Container className={className}>
       <Title>
-        <FormattedHTMLMessage {...messages.verifyYourIdentityManually} />
+        <FormattedMessage {...messages.verifyYourIdentity} />
       </Title>
 
       <Form>

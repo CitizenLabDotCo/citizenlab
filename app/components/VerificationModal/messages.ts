@@ -1,17 +1,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  verifyYourIdentityWithoutContext: {
-    id: 'app.components.VerificationModal.verifyYourIdentityWithoutContext',
-    defaultMessage: '<strong>Verify your identity</strong> <span>and unlock your citizen potential</span>',
+  verifyYourIdentity: {
+    id: 'app.components.VerificationModal.verifyYourIdentity',
+    defaultMessage: 'Verify your identity',
   },
-  verifyYourIdentityWithContext: {
-    id: 'app.components.VerificationModal.verifyYourIdentityWithContext',
-    defaultMessage: '<strong>Verify your identity</strong> <span>to participate in this project</span>',
+  andUnlockYourCitizenPotential: {
+    id: 'app.components.VerificationModal.andUnlockYourCitizenPotential',
+    defaultMessage: 'and unlock your citizen potential',
   },
-  verifyYourIdentityManually: {
-    id: 'app.components.VerificationModal.verifyYourIdentityManually',
-    defaultMessage: '<strong>Verify your identity</strong> <span>manually</span>',
+  toParticipateInThisProject: {
+    id: 'app.components.VerificationModal.toParticipateInThisProject',
+    defaultMessage: 'to participate in this project',
   },
   verifyCow: {
     id: 'app.components.VerificationModal.verifyCow',
