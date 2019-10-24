@@ -127,11 +127,11 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
 
         const endpointsToRefetch = [`${API_PATH}/users/me`, `${API_PATH}/projects`];
         const partialEndpointsToRefetch = [`${API_PATH}/projects/`];
-  
+
         if (!isNilOrError(authUser)) {
           endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
         }
-  
+
         await streams.fetchAllWith({
           apiEndpoint: endpointsToRefetch,
           partialApiEndpoint: partialEndpointsToRefetch
