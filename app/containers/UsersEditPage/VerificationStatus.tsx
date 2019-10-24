@@ -44,14 +44,17 @@ const StyledTitle = styled.h2`
   margin-bottom: 20px !important;
   max-width: 455px;
 `;
+
 const TitleStyles = styled.div`
   font-size: ${fontSizes.large}px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: normal;
+  margin-bottom: 5px;
 `;
+
 const TextStyles = styled.div`
   font-size: ${fontSizes.large}px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: normal;
 `;
 
