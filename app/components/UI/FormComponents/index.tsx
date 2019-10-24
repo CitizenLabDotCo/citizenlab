@@ -10,17 +10,18 @@ import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
 
 export const FormSection = styled.div`
+  max-width: 620px;
+  min-width: 560px;
   background: white;
   border-radius: ${({ theme }) => theme.borderRadius};
   padding: 40px 40px 30px;
   color: ${({ theme }) => theme.colorText};
   margin-bottom: 10px;
-  max-width: 620px;
-  min-width: 560px;
-  ${media.smallerThanMaxTablet`
-    min-width: unset;
-  `}
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05);
+
+  ${media.smallerThanMaxTablet`
+    min-width: auto;
+  `}
 `;
 
 const TitleContainer = styled.div`
@@ -32,11 +33,12 @@ const FormSectionTitleStyled = styled.h2`
   font-weight: 600;
   line-height: 28px;
 `;
+
 const FormSectionSubtitleStyled = styled.p`
-  font-size: ${fontSizes.large}px;
-  font-weight: 400;
   color: ${colors.label};
-  line-height: 21px;
+  font-size: ${fontSizes.medium}px;
+  font-weight: 300;
+  line-height: normal;
 `;
 
 interface FormSectionTitleProps extends IMessageInfo {

@@ -1,5 +1,8 @@
 import React, { memo, useCallback, useState } from 'react';
 import { get } from 'lodash-es';
+import { API_PATH } from 'containers/App/constants';
+import streams from 'utils/streams';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Input from 'components/UI/Input';
@@ -7,6 +10,9 @@ import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { Title } from './styles';
+
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
 
 // services
 import { verifyBogus } from 'services/verify';
@@ -72,6 +78,8 @@ interface Props {
 
 const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, className }) => {
 
+  const authUser = useAuthUser();
+
   const [desiredError, setDesiredError] = useState<string>('');
   const [desiredErrorError, setDesiredErrorError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string| null>(null);
@@ -90,6 +98,19 @@ const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, className }) 
 
     try {
       await verifyBogus(desiredError);
+
+      const endpointsToRefetch = [`${API_PATH}/users/me`, `${API_PATH}/projects`];
+      const partialEndpointsToRefetch = [`${API_PATH}/projects/`];
+
+      if (!isNilOrError(authUser)) {
+        endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
+      }
+
+      await streams.fetchAllWith({
+        apiEndpoint: endpointsToRefetch,
+        partialApiEndpoint: partialEndpointsToRefetch
+      });
+
       onVerified();
     } catch (error) {
       if (get(error, 'json.errors.base[0].error') === 'taken') {
@@ -103,7 +124,7 @@ const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, className }) 
       }
     }
 
-  }, [desiredError]);
+  }, [desiredError, authUser]);
 
   const onCancelButtonClicked = useCallback(() => {
     onCancel();

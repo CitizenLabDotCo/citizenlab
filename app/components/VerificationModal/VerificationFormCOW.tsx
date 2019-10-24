@@ -1,6 +1,9 @@
 import React, { memo, useCallback, useState } from 'react';
 import { isEmpty, get } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
+import { API_PATH } from 'containers/App/constants';
+import streams from 'utils/streams';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Input from 'components/UI/Input';
@@ -9,6 +12,9 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import InfoTooltip from 'components/UI/InfoTooltip';
 import { Title } from './styles';
+
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
 
 // services
 import { verifyCOW } from 'services/verify';
@@ -78,6 +84,8 @@ interface Props {
 
 const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) => {
 
+  const authUser = useAuthUser();
+
   const [run, setRun] = useState<string>('');
   const [idSerial, setIdSerial] = useState<string>('');
   const [runError, setRunError] = useState<JSX.Element | null>(null);
@@ -116,6 +124,19 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
     if (!hasEmptyFields) {
       try {
         await verifyCOW(run, idSerial);
+
+        const endpointsToRefetch = [`${API_PATH}/users/me`, `${API_PATH}/projects`];
+        const partialEndpointsToRefetch = [`${API_PATH}/projects/`];
+  
+        if (!isNilOrError(authUser)) {
+          endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
+        }
+  
+        await streams.fetchAllWith({
+          apiEndpoint: endpointsToRefetch,
+          partialApiEndpoint: partialEndpointsToRefetch
+        });
+
         onVerified();
       } catch (error) {
 
