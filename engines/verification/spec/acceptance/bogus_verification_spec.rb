@@ -70,7 +70,7 @@ resource "Verifications" do
         )
       end
       let(:desired_error) { "taken" }
-      example_request "[error] Fake verify with cow using credentials that are already taken (2nd call)" do
+      example_request "[error] Fake verify with bogus using credentials that are already taken (2nd call)" do
         expect(status).to eq (422)
         json_response = json_parse(response_body)
         expect(json_response).to eq ({:errors => {:base=>[{:error=>"taken"}]}})
