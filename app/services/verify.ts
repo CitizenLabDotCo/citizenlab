@@ -16,3 +16,11 @@ export function verifyCOW(run: string, id_serial: string) {
     }
   });
 }
+
+export function verifyBogus(desired_error: string) {
+  return streams.add<IVerifiedResponse>(`${API_PATH}/verification_methods/bogus/verification`, {
+    verification: {
+      desired_error
+    }
+  });
+}

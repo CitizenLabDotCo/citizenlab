@@ -86,6 +86,10 @@ const ButtonsContainer = styled.div`
   max-width: 420px;
 `;
 
+const MethodButton = styled(Button)`
+  margin-bottom: 8px;
+`;
+
 interface Props {
   withContext: boolean;
   onMethodSelected: (selectedMethod: VerificationMethodNames) => void;
@@ -101,12 +105,20 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
     onMethodSelected('cow');
   }, []);
 
+  const onVerifyBogusButtonClick = useCallback(() => {
+    onMethodSelected('bogus');
+  }, []);
+
   let showCOWButton = false;
+  let showBogusButton = false;
 
   if (!isNilOrError(verificationMethods) && verificationMethods.data && verificationMethods.data.length > 0) {
     verificationMethods.data.forEach((item) => {
       if (item.attributes.name === 'cow') {
         showCOWButton = true;
+      }
+      if (item.attributes.name === 'bogus') {
+        showBogusButton = true;
       }
     });
   }
@@ -139,7 +151,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
           </Subtitle>
 
           {showCOWButton &&
-            <Button
+            <MethodButton
               icon="verify_manually"
               onClick={onVerifyCowButtonClick}
               fullWidth={true}
@@ -156,7 +168,28 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
               boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
             >
               <FormattedMessage {...messages.verifyCow}/>
-            </Button>
+            </MethodButton>
+          }
+
+          {showBogusButton &&
+            <MethodButton
+              icon="verify_manually"
+              onClick={onVerifyBogusButtonClick}
+              fullWidth={true}
+              size="2"
+              justify="left"
+              padding="20px 20px"
+              bgColor="#fff"
+              bgHoverColor="#fff"
+              textColor={colors.text}
+              textHoverColor={darken(0.2, colors.text)}
+              borderColor="#e3e3e3"
+              borderHoverColor={darken(0.2, '#e3e3e3')}
+              boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
+              boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+            >
+              Bogus verification (testing)
+            </MethodButton>
           }
         </ButtonsContainer>
       </Content>
