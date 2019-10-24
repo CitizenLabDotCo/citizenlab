@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
-export type VerificationMethodNames = 'cow';
+export type VerificationMethodNames = 'cow' | 'bogus';
 
 export interface IVerificationMethod {
   id: string;
