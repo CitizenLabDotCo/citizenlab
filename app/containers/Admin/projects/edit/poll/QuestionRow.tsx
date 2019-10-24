@@ -9,7 +9,7 @@ import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptio
 // Components
 import Button from 'components/UI/Button';
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 import T from 'components/T';
 
 import styled from 'styled-components';

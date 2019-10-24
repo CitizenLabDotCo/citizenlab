@@ -518,13 +518,14 @@ class Button extends PureComponent<Props, State> {
         minWidth={minWidth}
         fontSize={fontSize}
       >
-        {linkTo ? (
+        {linkTo && !disabled ? (
           (isString(linkTo) && linkTo.startsWith('http')) ? (
             <StyledA
               ref={this.props.setSubmitButtonRef}
               href={linkTo}
               target={openInNewTab ? '_blank' : '_self'}
               className={buttonClassnames}
+              aria-label={ariaLabel}
             >
               {childContent}
             </StyledA>
@@ -533,6 +534,7 @@ class Button extends PureComponent<Props, State> {
               ref={this.props.setSubmitButtonRef}
               to={linkTo}
               className={buttonClassnames}
+              aria-label={ariaLabel}
             >
               {childContent}
             </StyledLink>

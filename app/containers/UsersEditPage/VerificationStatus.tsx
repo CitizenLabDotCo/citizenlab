@@ -83,7 +83,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
   return (
     <FeatureFlag name="verification">
       <StyledFormSection className={className}>
-        {authUser.data.attributes.is_verified ?
+        {authUser.data.attributes.verified ?
           <LeftContainer>
             <StyledAvatar
               userId={authUser.data.id}

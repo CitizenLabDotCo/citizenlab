@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 
 // Components
-import Popover from 'components/UI/Popover';
+import Popover, { IPosition } from 'components/UI/Popover';
 import Icon, { IconNames } from 'components/UI/Icon';
 
 // Styling
@@ -109,7 +109,8 @@ export interface Props {
   fontSize?: number;
   id?: string;
   color?: string;
-  tooltipPosition?: 'bottom-left';
+  tooltipPosition?: IPosition;
+  tooltipPositionSmallViewPort?: IPosition;
 }
 
 interface State {
@@ -145,7 +146,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
   }
 
   render() {
-    const { actions, ariaLabel, fontSize, id, color, tooltipPosition, label } = this.props;
+    const { actions, ariaLabel, fontSize, id, color, tooltipPosition, tooltipPositionSmallViewPort, label } = this.props;
     const { visible } = this.state;
     const className = this.props.className;
 
@@ -154,10 +155,11 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     }
 
     return (
-      <Container className={className} >
+      <Container className={className}>
         <Popover
           id={id}
-          position={tooltipPosition}
+          position={tooltipPosition || 'bottom'}
+          smallViewportPosition={tooltipPositionSmallViewPort || 'bottom'}
           content={
             <List>
               {actions.map((action, index) => {
@@ -178,11 +180,12 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
               })}
             </List>
           }
-          top="32px"
+          offset={35}
           backgroundColor={colors.adminMenuBackground}
           borderColor={colors.adminMenuBackground}
           onClickOutside={this.hideMenu}
           dropdownOpened={visible}
+          withPin
         >
           <MoreOptions
             onMouseDown={this.removeFocus}
