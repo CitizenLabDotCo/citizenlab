@@ -92,7 +92,7 @@ export default class ProfileEditor extends PureComponent<Props, State> {
 
     if (loaded && currentTenant && authUser && areas) {
       return (
-        <Container>
+        <Container id="e2e-user-edit-profile-page">
           <ScreenReaderOnly>
             <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
           </ScreenReaderOnly>
