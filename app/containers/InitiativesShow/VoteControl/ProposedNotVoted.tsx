@@ -154,7 +154,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
                   <T value={threshold_reached_message} supportHtml />
                 </TooltipWrapper>
               }
-              offset={25}
+              offset={24}
               position="bottom"
               withPin
             >
