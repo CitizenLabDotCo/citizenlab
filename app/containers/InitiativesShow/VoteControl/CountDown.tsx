@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
-import 'moment-duration-format';
-
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { convertSecondsToDDHHMM } from 'utils/dateUtils';
 
 const Container = styled.div`
   display: flex;
@@ -38,13 +36,10 @@ const Unit = styled.div`
   font-size: ${fontSizes.small}px;
 `;
 
-interface InputProps {
+interface Props {
   targetTime: string;
   className?: string;
 }
-interface DataProps {}
-
-interface Props extends InputProps, DataProps {}
 
 interface State {
   refresh: number;
@@ -73,10 +68,11 @@ class CountDown extends PureComponent<Props, State> {
   render() {
     const start = moment();
     const end = moment(this.props.targetTime, 'YYYY-MM-DDThh:mm:ss.SSSZ');
-    const duration = moment.duration(end.diff(start)).format('dd:hh:mm').split(':');
-    const daysLeft = duration[0];
-    const hoursLeft = duration[1];
-    const minutesLeft = duration[2];
+    const durationAsSeconds = moment.duration(end.diff(start)).asSeconds();
+    const formattedDuration = convertSecondsToDDHHMM(durationAsSeconds).split(':');
+    const daysLeft = formattedDuration[0];
+    const hoursLeft = formattedDuration[1];
+    const minutesLeft = formattedDuration[2];
 
     return (
       <Container className={this.props.className}>
