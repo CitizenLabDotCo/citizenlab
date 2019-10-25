@@ -140,12 +140,17 @@ namespace :cl2_back do
         verification: {
           enabled: true,
           allowed: true,
-          verification_methods: [{
-            name: 'cow',
-            api_username: 'fake_username',
-            api_password: 'fake_password',
-            rut_empresa: 'fake_rut_empresa'
-          }]
+          verification_methods: [
+            {
+              name: 'cow',
+              api_username: 'fake_username',
+              api_password: 'fake_password',
+              rut_empresa: 'fake_rut_empresa'
+            },
+            {
+              name: 'bogus'
+            },
+          ]
         },
       }
     })
