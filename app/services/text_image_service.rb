@@ -55,6 +55,11 @@ class TextImageService
           remote_image_url: image_data
         )
       end
-    text_image.image.path
+    path = text_image.image.path
+    # When files are stored locally, we need to remove the "cl2_back/public/" prefix
+    if text_image.image._storage == CarrierWave::Storage::File
+      path = path.delete_prefix text_image.image.root
+    end
+    path
   end
 end

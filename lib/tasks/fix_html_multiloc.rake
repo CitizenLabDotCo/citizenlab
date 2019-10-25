@@ -59,30 +59,33 @@ namespace :fix_existing_tenants do
   end
 
   desc "Substitutes HTML URLs by relative paths (gently)"
-  task :substitute_html_relative_paths_gently => [:environment] do |t, args|
+  task :substitute_html_relative_paths_gentle => [:environment] do |t, args|
     Tenant.all.map do |tenant|
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
-        imageable_html_multilocs.map do |claz, attribute|
+        imageable_html_multilocs.map do |claz, attributes|
           claz.all.map do |instance|
-            multiloc = instance.send attribute
-            multiloc.keys.each do |k|
-              text = multiloc[k]
-              doc = Nokogiri::HTML.fragment(text)
-              doc.css("img")
-                .select do |img| 
-                  ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
-                    !img.attr('src').start_with?("#{Frontend::UrlService.new.home_url}/uploads/")
-                    )
-                end
-                .each do |img|
-                  url = img.attr('src')
-                  prefix = "#{Frontend::UrlService.new.home_url}/uploads/"
-                  path = "/uploads/#{url.partition(prefix).last}"
-                  img.set_attribute('src', path)
-                end
-              multiloc[k] = doc.to_s
+            attributes.each do |attribute|
+              multiloc = instance.send attribute
+              multiloc.keys.each do |k|
+                text = multiloc[k]
+                doc = Nokogiri::HTML.fragment(text)
+                doc.css("img")
+                  .select do |img| 
+                    ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
+                      img.attr('src').start_with?("#{Frontend::UrlService.new.home_url}/uploads/")
+                      )
+                  end
+                  .each do |img|
+                    url = img.attr('src')
+                    prefix = "#{Frontend::UrlService.new.home_url}/uploads/"
+                    path = "/uploads/#{url.partition(prefix).last}"
+                    img.set_attribute('src', path)
+                  end
+                multiloc[k] = doc.to_s
+              end
+              instance.send "#{attribute}=", multiloc
+              instance.save!
             end
-            instance.update_columns(attribute => multiloc)
           end
         end
       end
@@ -93,24 +96,26 @@ namespace :fix_existing_tenants do
   task :substitute_html_relative_paths_aggressive => [:environment] do |t, args|
     Tenant.all.map do |tenant|
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
-        imageable_html_multilocs.map do |claz, attribute|
+        imageable_html_multilocs.map do |claz, attributes|
           claz.all.map do |instance|
-            multiloc = instance.send attribute
-            multiloc.keys.each do |k|
-              text = multiloc[k]
-              doc = Nokogiri::HTML.fragment(text)
-              doc.css("img")
-                .select do |img| 
-                  img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/
-                end
-                .each do |img|
-                  url = img.attr('src')
-                  path = "/uploads/#{url.partition('/uploads/').last}"
-                  img.set_attribute('src', path)
-                end
-              multiloc[k] = doc.to_s
+            attributes.each do |attribute|
+              multiloc = instance.send attribute
+              multiloc.keys.each do |k|
+                text = multiloc[k]
+                doc = Nokogiri::HTML.fragment(text)
+                doc.css("img")
+                  .select do |img| 
+                    img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/
+                  end
+                  .each do |img|
+                    url = img.attr('src')
+                    path = "/uploads/#{url.partition('/uploads/').last}"
+                    img.set_attribute('src', path)
+                  end
+                multiloc[k] = doc.to_s
+              end
+              instance.update_columns(attribute => multiloc)
             end
-            instance.update_columns(attribute => multiloc)
           end
         end
       end
