@@ -4,7 +4,7 @@ class TextImageService
     multiloc = imageable.send(field)
     multiloc.each_with_object({}) do |(locale, text), output|
       output[locale] = swap_data_images_text(text) do |image_data, image_type|
-        generate_image_url image_data, image_type, imageable, field
+        generate_image_path image_data, image_type, imageable, field
       end
     end
   end
@@ -20,20 +20,18 @@ class TextImageService
       .select{|img| img.attr('src') =~ /^data:image\/([a-zA-Z]*);base64,.*$/}
       .each do |img|
         base64 = img.attr('src')
-        url = yield(base64, :base64)
-        img.set_attribute('src', url)
+        path = yield(base64, :base64)
+        img.set_attribute('src', path)
       end
 
     doc.css("img")
       .select do |img| 
-        ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
-          !img.attr('src').start_with?(Frontend::UrlService.new.home_url)
-          )
+        img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/
       end
       .each do |img|
-        old_url = img.attr('src')
-        new_url = yield(old_url, :url)
-        img.set_attribute('src', new_url)
+        url = img.attr('src')
+        path = yield(url, :url)
+        img.set_attribute('src', path)
       end
 
     doc.to_s
@@ -42,7 +40,7 @@ class TextImageService
 
   private
 
-  def generate_image_url image_data, image_type, imageable, field
+  def generate_image_path image_data, image_type, imageable, field
     text_image = case image_type
       when :base64
         TextImage.create!(
@@ -57,6 +55,6 @@ class TextImageService
           remote_image_url: image_data
         )
       end
-    text_image.image.url
+    text_image.image.path
   end
 end
