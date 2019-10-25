@@ -57,6 +57,65 @@ namespace :fix_existing_tenants do
       end
     end
   end
+
+  desc "Substitutes HTML URLs by relative paths (gently)"
+  task :substitute_html_relative_paths_gently => [:environment] do |t, args|
+    Tenant.all.map do |tenant|
+      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
+        imageable_html_multilocs.map do |claz, attribute|
+          claz.all.map do |instance|
+            multiloc = instance.send attribute
+            multiloc.keys.each do |k|
+              text = multiloc[k]
+              doc = Nokogiri::HTML.fragment(text)
+              doc.css("img")
+                .select do |img| 
+                  ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
+                    !img.attr('src').start_with?("#{Frontend::UrlService.new.home_url}/uploads/")
+                    )
+                end
+                .each do |img|
+                  url = img.attr('src')
+                  prefix = "#{Frontend::UrlService.new.home_url}/uploads/"
+                  path = "/uploads/#{url.partition(prefix).last}"
+                  img.set_attribute('src', path)
+                end
+              multiloc[k] = doc.to_s
+            end
+            instance.update_columns(attribute => multiloc)
+          end
+        end
+      end
+    end
+  end
+
+  desc "Substitutes HTML URLs by relative paths (aggressively)"
+  task :substitute_html_relative_paths_aggressive => [:environment] do |t, args|
+    Tenant.all.map do |tenant|
+      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
+        imageable_html_multilocs.map do |claz, attribute|
+          claz.all.map do |instance|
+            multiloc = instance.send attribute
+            multiloc.keys.each do |k|
+              text = multiloc[k]
+              doc = Nokogiri::HTML.fragment(text)
+              doc.css("img")
+                .select do |img| 
+                  img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/
+                end
+                .each do |img|
+                  url = img.attr('src')
+                  path = "/uploads/#{url.partition('/uploads/').last}"
+                  img.set_attribute('src', path)
+                end
+              multiloc[k] = doc.to_s
+            end
+            instance.update_columns(attribute => multiloc)
+          end
+        end
+      end
+    end
+  end
 end
 
 def convert_multiloc multiloc
@@ -74,4 +133,16 @@ def convert_html html
     node.name = 'h2'
   end
   doc.to_s
+end
+
+def imageable_html_multilocs
+  {
+    Area       => [:description_multiloc],
+    Event      => [:description_multiloc],
+    Idea       => [:body_multiloc],
+    Initiative => [:body_multiloc],
+    Page       => [:body_multiloc],
+    Phase      => [:description_multiloc],
+    Project    => [:description_multiloc]
+  }
 end
