@@ -759,21 +759,9 @@ ActiveRecord::Schema.define(version: 2019_10_23_121111) do
     t.string "invite_status"
     t.jsonb "custom_field_values", default: {}
     t.datetime "registration_completed_at"
-    t.boolean "verified", default: false, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
-  end
-
-  create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id"
-    t.string "method_name", null: false
-    t.string "hashed_uid", null: false
-    t.boolean "active", default: true, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["hashed_uid"], name: "index_verification_verifications_on_hashed_uid"
-    t.index ["user_id"], name: "index_verification_verifications_on_user_id"
   end
 
   create_table "votes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
