@@ -88,10 +88,6 @@ export default class Tooltip extends PureComponent<Props, State> {
     const { opened } = this.state;
     const { enabled, children, content, className, buttonProps, ...otherProps } = this.props;
 
-    if (!enabled || !content) {
-      return children;
-    }
-
     const WrappedChildren = buttonProps ? (
       <Button {...buttonProps} ariaExpanded={opened} />
     ) : (
@@ -99,6 +95,10 @@ export default class Tooltip extends PureComponent<Props, State> {
           {children}
         </button>
       );
+
+    if (!enabled || !content) {
+      return WrappedChildren;
+    }
 
     return (
       <Container
