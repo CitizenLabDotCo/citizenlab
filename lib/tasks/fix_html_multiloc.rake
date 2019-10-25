@@ -72,11 +72,13 @@ namespace :fix_existing_tenants do
                 doc.css("img")
                   .select do |img| 
                     ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
-                      img.attr('src').start_with?("#{Frontend::UrlService.new.home_url}/uploads/")
+                      img.attr('src').include?("#{Frontend::UrlService.new.home_url}/uploads/")
+                      # img.attr('src').include?("/uploads/#{tenant.id}")
                       )
                   end
                   .each do |img|
                     url = img.attr('src')
+                    # prefix = "/uploads/"
                     prefix = "#{Frontend::UrlService.new.home_url}/uploads/"
                     path = "/uploads/#{url.partition(prefix).last}"
                     img.set_attribute('src', path)
@@ -114,7 +116,8 @@ namespace :fix_existing_tenants do
                   end
                 multiloc[k] = doc.to_s
               end
-              instance.update_columns(attribute => multiloc)
+              instance.send "#{attribute}=", multiloc
+              instance.save!
             end
           end
         end
