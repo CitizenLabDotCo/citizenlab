@@ -14,7 +14,7 @@ export function getLocalized(
   }
 
   const candidateLocales = [locale, ...tenantLocales, ...(keys(multiloc) || [])];
-  const winnerLocale = candidateLocales.find(locale => !!multiloc[locale]);
+  const winnerLocale = candidateLocales.find(locale => !locale.startsWith('__') && !!multiloc[locale]);
   const winner = (winnerLocale ? multiloc[winnerLocale] : '');
 
   return truncate(winner, maxLength);
