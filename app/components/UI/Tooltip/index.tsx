@@ -23,10 +23,7 @@ const Container = styled.div`
   display: inline-flexbox;
   align-items: center;
   outline: none;
-
-  &:focus .tooltip-trigger {
-    outline: rgb(59, 153, 252) solid 2px;
-  }
+  height: 100%;
 `;
 
 export default class Tooltip extends PureComponent<Props, State> {
@@ -108,7 +105,7 @@ export default class Tooltip extends PureComponent<Props, State> {
         onFocus={this.handleOnFocus}
         onBlur={this.handleOnBlur}
         onClick={this.handleOnClick}
-        tabIndex={0}
+        tabIndex={buttonProps && buttonProps.disabled ? 0 : undefined}
       >
         <Popover
           {...otherProps}

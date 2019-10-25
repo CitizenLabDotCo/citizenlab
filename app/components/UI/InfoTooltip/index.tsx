@@ -43,7 +43,6 @@ const StyledIcon = styled(Icon) <({ color?: string }) >`
   height: 16px;
   cursor: pointer;
   fill: ${({ color }) => color ? color : colors.label};
-  transform: translateY(2px);
 
   &:hover {
     fill: ${({ color }) => color ? darken(.2, color) : darken(.2, colors.label)};

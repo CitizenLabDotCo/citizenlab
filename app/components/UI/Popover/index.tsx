@@ -8,8 +8,7 @@ import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 const Container = styled.div`
-  /* width: 100%;
-  height: 100%; */
+  height: 100%;
   position: relative;
   display: flex;
   align-items: center;
@@ -19,6 +18,11 @@ const Container = styled.div`
     outline: none;
     user-select: none;
   }
+`;
+
+const Trigger = styled.div`
+  display: flex;
+  height: 100%;
 `;
 
 const Content = styled(clickOutside) <{ offset: number }>`
@@ -246,7 +250,7 @@ export default class Popover extends PureComponent<Props> {
 
     return (
       <Container className={`${className || ''} popover`}>
-        <div className="tooltip-trigger">{children}</div>
+        <Trigger className="tooltip-trigger">{children}</Trigger>
 
         <CSSTransition
           in={dropdownOpened}
