@@ -50,6 +50,12 @@ const Content = styled(clickOutside) <{ offset: number }>`
       transform-origin: top right;
     }
 
+    &.bottom-right {
+      top: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
+      left: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
+      transform-origin: top left;
+    }
+
     &.left {
       right: ${({ offset }) => offset || '0'}px;
       transform-origin: bottom right;
@@ -84,6 +90,12 @@ const Content = styled(clickOutside) <{ offset: number }>`
       top: ${({ offset }) => offset || '0'}px;
       right: 0px;
       transform-origin: top right;
+    }
+
+    &.small-bottom-right {
+      top: ${({ offset }) => offset || '0'}px;
+      left: 0px;
+      transform-origin: top left;
     }
 
     &.small-left {
@@ -146,7 +158,7 @@ const ContentInner = styled.div<{
       ::after {
         top: -20px;
         left:  ${({ position }) => position === 'bottom-left' ? 'calc(100%-15px)' : '0'};
-        right: 0;
+        right:  ${({ position }) => position === 'bottom-right' ? 'calc(100%-15px)' : '0'};
         margin: 0 auto;
         border-color: transparent transparent ${(props: any) => props.backgroundColor} transparent;
         border-width: 10px;
@@ -155,7 +167,7 @@ const ContentInner = styled.div<{
       ::before {
         top: -22px;
         left: ${({ position }) => position === 'bottom-left' ? 'calc(100%-15px)' : '0'};
-        right: 0;
+        right:  ${({ position }) => position === 'bottom-right' ? 'calc(100%-15px)' : '0'};
         margin: 0 auto;
         border-color: transparent transparent ${(props: any) => props.borderColor || colors.separation} transparent;
         border-width: 11px;
@@ -181,8 +193,8 @@ const ContentInner = styled.div<{
 
       ::after {
         top: -20px;
-        left:  ${({ smallViewportPosition }) => smallViewportPosition === 'bottom-left' ? '75%' : '0'};
-        right: 0;
+        left:  ${({ smallViewportPosition }) => smallViewportPosition === 'bottom-left' ? 'calc(100%-15px)' : '0'};
+        right:  ${({ smallViewportPosition }) => smallViewportPosition === 'bottom-right' ? 'calc(100%-15px)' : '0'};
         margin: 0 auto;
         border-color: transparent transparent ${(props: any) => props.backgroundColor} transparent;
         border-width: 10px;
@@ -190,8 +202,8 @@ const ContentInner = styled.div<{
 
       ::before {
         top: -22px;
-        left: ${({ smallViewportPosition }) => smallViewportPosition === 'bottom-left' ? '75%' : '0'};
-        right: 0;
+        left: ${({ smallViewportPosition }) => smallViewportPosition === 'bottom-left' ? 'calc(100%-15px)' : '0'};
+        right:  ${({ smallViewportPosition }) => smallViewportPosition === 'bottom-right' ? 'calc(100%-15px)' : '0'};
         margin: 0 auto;
         border-color: transparent transparent ${(props: any) => props.borderColor || colors.separation} transparent;
         border-width: 11px;
@@ -202,7 +214,7 @@ const ContentInner = styled.div<{
 
 `;
 
-export type IPosition = 'top' | 'left' | 'right' | 'bottom' | 'top-left' | 'bottom-left';
+export type IPosition = 'top' | 'left' | 'right' | 'bottom' | 'top-left' | 'bottom-left' | 'bottom-right';
 
 export interface Props {
   content: JSX.Element;
