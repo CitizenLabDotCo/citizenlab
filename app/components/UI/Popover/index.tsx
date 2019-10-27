@@ -1,5 +1,4 @@
-// libraries
-import React, { PureComponent } from 'react';
+import React, { memo, useCallback } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 
@@ -7,9 +6,9 @@ import clickOutside from 'utils/containers/clickOutside';
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
-const Container = styled.div`
-  /* width: 100%;
-  height: 100%; */
+const animationDuration = 250;
+
+const Container = styled(clickOutside)`
   position: relative;
   display: flex;
   align-items: center;
@@ -21,9 +20,11 @@ const Container = styled.div`
   }
 `;
 
-const Content = styled(clickOutside) <{ offset: number }>`
+const Content = styled.div<{ offset: number }>`
   position: absolute;
   z-index: 4;
+  transform-origin: center left;
+  will-change: transform, opacity;
 
   ${media.biggerThanMaxTablet`
     &.bottom {
@@ -99,12 +100,12 @@ const Content = styled(clickOutside) <{ offset: number }>`
 
   &.dropdown-enter {
     opacity: 0;
-    transform: scale(0.92);
+    transform: scale(0.96);
 
     &.dropdown-enter-active {
       opacity: 1;
       transform: scale(1);
-      transition: all 250ms cubic-bezier(0.19, 1, 0.22, 1);
+      transition: all ${animationDuration}ms cubic-bezier(0.19, 1, 0.22, 1);
     }
   }
 `;
@@ -198,17 +199,18 @@ const ContentInner = styled.div<{
       }
     }
   `}
-
-
 `;
 
 export type IPosition = 'top' | 'left' | 'right' | 'bottom' | 'top-left' | 'bottom-left';
 
 export interface Props {
-  content: JSX.Element;
+  children: JSX.Element;
+  content: JSX.Element | null;
   offset: number;
   backgroundColor: string;
   onClickOutside: (event) => void;
+  onMouseEnter: (event) => void;
+  onMouseLeave: (event) => void;
   dropdownOpened: boolean;
   borderColor?: string;
   textColor?: string;
@@ -224,46 +226,61 @@ export interface Props {
 * children must be a button or link
 */
 
-export default class Popover extends PureComponent<Props> {
-  render() {
-    const { onClickOutside, dropdownOpened, children, content, offset, withPin, textColor, backgroundColor, borderColor, className, id } = this.props;
+const Popover = memo<Props>(({ onClickOutside, onMouseEnter, onMouseLeave, dropdownOpened, children, content, offset, withPin, position, smallViewportPosition, textColor, backgroundColor, borderColor, className, id }) => {
 
-    let { position, smallViewportPosition } = this.props;
-    position = (position || 'right');
-    smallViewportPosition = (smallViewportPosition || position);
+  const finalPosition = (position || 'right');
+  const finalSmallViewportPosition = (smallViewportPosition || position);
 
-    return (
-      <Container className={`${className || ''} popover`}>
-        <div className="tooltip-trigger">{children}</div>
+  const handleOnMouseEnter = useCallback((event) => {
+    onMouseEnter(event);
+  }, []);
 
-        <CSSTransition
-          in={dropdownOpened}
-          timeout={200}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          classNames="dropdown"
-          exit={false}
+  const handleOnMouseLeave = useCallback((event) => {
+    onMouseLeave(event);
+  }, []);
+
+  const handleOnClickOutside = useCallback((event) => {
+    onClickOutside(event);
+  }, []);
+
+  return (
+    <Container
+      className={`${className || ''} popover`}
+      onMouseEnter={handleOnMouseEnter}
+      onMouseLeave={handleOnMouseLeave}
+      onClickOutside={handleOnClickOutside}
+    >
+      <div className="tooltip-trigger">{children}</div>
+
+      <CSSTransition
+        classNames="dropdown"
+        in={dropdownOpened}
+        timeout={animationDuration}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        enter={true}
+        exit={false}
+      >
+        <Content
+          offset={offset}
+          className={`${finalPosition} small-${finalSmallViewportPosition} tooltip-container`}
+          role="tooltip"
         >
-          <Content
-            onClickOutside={onClickOutside}
-            offset={offset}
-            className={`${position} small-${smallViewportPosition} tooltip-container`}
-            role="tooltip"
+          <ContentInner
+            id={id}
+            backgroundColor={backgroundColor}
+            textColor={textColor}
+            borderColor={borderColor}
+            className={`${finalPosition} small-${finalSmallViewportPosition} tooltip-content ${withPin ? 'withPin' : ''}`}
+            position={finalPosition}
+            smallViewportPosition={finalSmallViewportPosition}
           >
-            <ContentInner
-              id={id}
-              backgroundColor={backgroundColor}
-              textColor={textColor}
-              borderColor={borderColor}
-              className={`${position} small-${smallViewportPosition} tooltip-content ${withPin ? 'withPin' : ''}`}
-              position={position}
-              smallViewportPosition={smallViewportPosition}
-            >
-              {content}
-            </ContentInner>
-          </Content>
-        </CSSTransition>
-      </Container>
-    );
-  }
-}
+            {content}
+          </ContentInner>
+        </Content>
+      </CSSTransition>
+    </Container>
+  );
+});
+
+export default Popover;

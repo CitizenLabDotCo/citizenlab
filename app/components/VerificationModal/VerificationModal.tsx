@@ -7,8 +7,8 @@ import VerificationFormCOW from './VerificationFormCOW';
 import VerificationFormBogus from './VerificationFormBogus';
 import VerificationSuccess from './VerificationSuccess';
 
-// utils
-import eventEmitter from 'utils/eventEmitter';
+// events
+import { closeVerificationModal } from 'containers/App/events';
 
 // style
 import styled from 'styled-components';
@@ -46,7 +46,7 @@ const VerificationModal = memo<Props>((props) => {
   }, []);
 
   const onClose = useCallback(() => {
-    eventEmitter.emit('VerificationModal', 'closeVerificationModal', null);
+    closeVerificationModal('VerificationModal');
   }, []);
 
   const onCowCancel = useCallback(() => {
