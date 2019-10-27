@@ -12,7 +12,7 @@ const Container = styled.label`
   padding-bottom: 10px;
 
   & > :not(last-child) {
-    margin-right: 7px;
+    margin-right: 4px;
   }
 
   &.invisible {

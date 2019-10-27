@@ -317,9 +317,10 @@ class ProjectNavbar extends PureComponent<Props, State> {
                 {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
                   <StyledIdeaButton
                     projectId={project.id}
-                    fullHeight={true}
+                    height="58px"
                     bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
                     textColor={theme.projectNavbarIdeaButtonTextColor}
+                    borderRadius="none"
                   />
                 }
               </ProjectNavbarItems>
