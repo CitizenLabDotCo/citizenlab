@@ -18,10 +18,7 @@ const Container = styled.div`
   display: inline-flexbox;
   align-items: center;
   outline: none;
-
-  &:focus .tooltip-trigger {
-    outline: rgb(59, 153, 252) solid 2px;
-  }
+  height: 100%;
 `;
 
 const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProps, ...otherProps  }) => {
