@@ -10,6 +10,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // components
 import { ButtonContainerProps } from 'components/UI/Button';
 import Tooltip from 'components/UI/Tooltip';
+import { IPosition } from 'components/UI/Popover';
 import Icon from 'components/UI/Icon';
 
 // i18n
@@ -71,6 +72,7 @@ interface InputProps extends ButtonContainerProps {
   projectId?: string | undefined;
   phaseId?: string | undefined;
   className?: string;
+  smallViewportTooltipPosition?: IPosition;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -97,7 +99,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
   }
 
   render() {
-    const { project, phase, authUser, className } = this.props;
+    const { project, phase, authUser, className, smallViewportTooltipPosition } = this.props;
     const { show, enabled, disabledReason } = getPostingPermission({
       project,
       phase,
@@ -150,6 +152,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
               disabled: !enabled,
               onClick: this.onNewIdea
             }}
+            smallViewportPosition={smallViewportTooltipPosition}
           />
         </Container>
       );

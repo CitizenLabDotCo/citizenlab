@@ -6,7 +6,7 @@ export interface IPermissionData {
   id: string;
   type: string;
   attributes: {
-    action: 'vote', 'comment', 'post', 'take_survey';
+    action: 'vote' | 'comment' | 'post' | 'take_survey';
     permitted_by: 'everyone' | 'groups' | 'admins_moderators',
     created_at: string,
     updated_at: string,
