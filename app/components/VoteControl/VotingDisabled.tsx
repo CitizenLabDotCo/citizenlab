@@ -10,7 +10,6 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import messages from './messages';
 import clHistory from 'utils/cl-router/history';
 import { fontSizes, colors } from 'utils/styleUtils';
-// events
 import { openVerificationModalWithContext } from 'containers/App/events';
 
 const Container = styled.div`
@@ -20,25 +19,17 @@ const Container = styled.div`
   line-height: 20px;
 `;
 
-const ProjectLink = styled.span`
+const StyledButton = styled.button`
   color: ${colors.clBlueDark};
-  text-decoration: none;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
   cursor: pointer;
 
   &:hover {
     color: ${darken(0.15, colors.clBlueDark)};
-    text-decoration: underline;
-  }
-`;
-
-const StyledButton = styled.button`
-  color: #1391A1;
-  text-decoration: underline;
-  transition: all 100ms ease-out;
-  display: inline-block;
-  padding: 0;
-
-  &:hover {
     text-decoration: underline;
   }
 `;
@@ -59,6 +50,10 @@ interface State { }
 class VotingDisabled extends PureComponent<Props, State> {
   onVerify = () => {
     openVerificationModalWithContext('ActionVote');
+  }
+
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
   }
 
   reasonToMessage = () => {
@@ -103,12 +98,12 @@ class VotingDisabled extends PureComponent<Props, State> {
       />
     ) : null);
     const projectName = (
-      <ProjectLink onClick={this.handleProjectLinkClick} role="navigation">
+      <StyledButton onClick={this.handleProjectLinkClick} onMouseDown={this.removeFocus} role="navigation">
         <T value={projectTitle} />
-      </ProjectLink>
+      </StyledButton>
     );
     const verificationLink = (
-      <StyledButton onClick={this.onVerify}>
+      <StyledButton onClick={this.onVerify} onMouseDown={this.removeFocus}>
         <FormattedMessage {...messages.verificationLinkText} />
       </StyledButton>
     );
