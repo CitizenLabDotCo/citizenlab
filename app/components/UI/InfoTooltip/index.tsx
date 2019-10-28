@@ -56,21 +56,6 @@ const TooltipWrapper = styled.div<{ pxSize: 500 | 300 | 200 | 400 }>`
   font-weight: 400;
   line-height: normal;
   text-align: left;
-
-  a {
-    color: ${colors.clBlueLight};
-    text-decoration: underline;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
-
-    &:hover {
-      color: ${colors.clBlueLighter};
-      text-decoration: underline;
-    }
-  }
 `;
 
 const getPxSize = (size: undefined | 'big' | 'small' | 'xs') => {
