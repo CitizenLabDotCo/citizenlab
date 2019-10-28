@@ -33,8 +33,9 @@ import { fontSizes, colors } from 'utils/styleUtils';
 const Container = styled.div``;
 
 const StyledIcon = styled(Icon)`
-  width: 2rem;
-  height: 2rem;
+  flex: 0 0 25px;
+  width: 20px;
+  height: 25px;
   margin-right: 1rem;
 `;
 
@@ -90,7 +91,8 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
     notVerified: messages.postingNotVerified
   };
 
-  onVerify = () => {
+  onVerify = (event: React.MouseEvent) => {
+    event.preventDefault();
     openVerificationModalWithContext('ActionIdea');
   }
 

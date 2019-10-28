@@ -130,6 +130,21 @@ const ContentInner = styled.div<{
   background-color: ${({ backgroundColor }) => backgroundColor};
   border: solid 1px ${({ borderColor }) => borderColor || colors.separation};
 
+  a {
+    color: ${colors.clBlueLight};
+    text-decoration: underline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
+
+    &:hover {
+      color: ${colors.clBlueLighter};
+      text-decoration: underline;
+    }
+  }
+
   ${({ textColor }) => textColor ? `
     color: ${textColor};
     fill: ${textColor};
