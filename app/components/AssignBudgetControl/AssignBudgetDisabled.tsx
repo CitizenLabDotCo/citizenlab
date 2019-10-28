@@ -1,18 +1,11 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
 import { darken } from 'polished';
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 import { IIdeaData } from 'services/ideas';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import messages from './messages';
-import clHistory from 'utils/cl-router/history';
 import { fontSizes, colors } from 'utils/styleUtils';
-import Button from 'components/UI/Button';
-
-// events
 import { openVerificationModalWithContext } from 'containers/App/events';
 
 const Container = styled.div`
@@ -22,9 +15,13 @@ const Container = styled.div`
   line-height: 20px;
 `;
 
-const ProjectLink = styled.span`
+const StyledButton = styled.button`
   color: ${colors.clBlueDark};
-  text-decoration: none;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
   cursor: pointer;
 
   &:hover {
@@ -33,33 +30,19 @@ const ProjectLink = styled.span`
   }
 `;
 
-const StyledButton = styled(Button)`
-  color: #1391A1;
-  text-decoration: underline;
-  transition: all 100ms ease-out;
-  display: inline-block;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-interface InputProps {
-  projectId: string;
+interface Props {
   budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'];
 }
-
-interface DataProps {
-  project: GetProjectChildProps;
-}
-
-interface Props extends InputProps, DataProps { }
 
 interface State { }
 
 class AssignBudgetDisabled extends PureComponent<Props, State> {
   onVerify = () => {
     openVerificationModalWithContext('ActionBudget');
+  }
+
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
   }
 
   reasonToMessage = () => {
@@ -76,46 +59,22 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
     return messages.budgetingDisabled;
   }
 
-  handleProjectLinkClick = (event: FormEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const { project } = this.props;
-
-    if (!isNilOrError(project)) {
-      clHistory.push(`/projects/${project.attributes.slug}`);
-    }
-  }
-
   render() {
-    const { budgetingDescriptor, project } = this.props;
-    const projectTitle = (!isNilOrError(project) ? project.attributes.title_multiloc : {});
+    const { budgetingDescriptor } = this.props;
     const message = this.reasonToMessage();
     const enabledFromDate = (budgetingDescriptor.future_enabled ? moment(budgetingDescriptor.future_enabled).format('LL') : null);
+    const verificationLink = (
+      <StyledButton onClick={this.onVerify} onMouseDown={this.removeFocus}>
+        <FormattedMessage {...messages.verificationLinkText} />
+      </StyledButton>
+    );
 
     return (
       <Container>
-        <FormattedMessage
-          {...message}
-          values={{
-            enabledFromDate,
-            projectName:
-              <ProjectLink onClick={this.handleProjectLinkClick} role="navigation">
-                <T value={projectTitle} />
-              </ProjectLink>,
-            verificationLink:
-              <StyledButton style="text" padding="0" onClick={this.onVerify}>
-                <FormattedMessage {...messages.verificationLinkText} />
-              </StyledButton>,
-          }}
-        />
+        <FormattedMessage {...message} values={{ enabledFromDate, verificationLink }} />
       </Container>
     );
   }
 }
 
-export default (inputProps: InputProps) => (
-  <GetProject id={inputProps.projectId}>
-    {project => <AssignBudgetDisabled {...inputProps} project={project} />}
-  </GetProject>
-);
+export default AssignBudgetDisabled;

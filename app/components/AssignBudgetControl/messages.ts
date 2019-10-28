@@ -31,7 +31,7 @@ export default defineMessages({
   },
   budgetingDisabledNotVerified: {
     id: 'app.components.VoteControl.budgetingDisabledNotVerified',
-    defaultMessage: 'You have to verify your account to assign budget to this idea.',
+    defaultMessage: 'You have to verify your account to assign budget to this idea. {verificationLink}',
   },
   verificationLinkText: {
     id: 'app.components.AssignBudgetControl.verificationLinkText',
