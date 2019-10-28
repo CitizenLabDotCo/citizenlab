@@ -69,7 +69,8 @@ const defaultProps: Partial<Props> = {
   borderColor: '#fff',
   textColor: '#fff',
   enabled: true,
-  position: 'right'
+  position: 'right',
+  withPin: false
 };
 
 (Tooltip as any).defaultProps = defaultProps;

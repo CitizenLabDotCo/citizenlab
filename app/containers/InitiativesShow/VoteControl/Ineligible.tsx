@@ -76,7 +76,6 @@ class Ineligible extends PureComponent<Props, State> {
 
   render() {
     const { initiative, initiativeSettings: { eligibility_criteria, voting_threshold }, initiativeStatus } = this.props;
-
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
 
@@ -106,6 +105,7 @@ class Ineligible extends PureComponent<Props, State> {
               }
               position="bottom"
               offset={24}
+              withPin={true}
             >
               <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />}/>
             </Tooltip>

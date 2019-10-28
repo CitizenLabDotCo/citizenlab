@@ -152,6 +152,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
               onClick: this.onNewIdea
             }}
             smallViewportPosition={smallViewportTooltipPosition}
+            withPin={true}
           />
         </Container>
       );
