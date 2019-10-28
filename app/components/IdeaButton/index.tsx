@@ -116,7 +116,6 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
         <Container className={className}>
           <Tooltip
             enabled={!enabled && !!disabledReason}
-            withPin={true}
             content={
               disabledReason ? (
                 <TooltipWrapper>

@@ -1,4 +1,5 @@
 import React, { memo, useCallback } from 'react';
+import { isBoolean } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 
@@ -242,7 +243,7 @@ const Popover = memo<Props>(({ onClickOutside, onMouseEnter, onMouseLeave, dropd
 
   const finalOffset = (offset || 0);
   const finalBackgroundColor = (backgroundColor || '#fff');
-  const finalWithPin = (withPin || true);
+  const finalWithPin = (isBoolean(withPin) ? withPin : true);
   const finalPosition = (position || 'right');
   const finalSmallViewportPosition = (smallViewportPosition || position);
 
