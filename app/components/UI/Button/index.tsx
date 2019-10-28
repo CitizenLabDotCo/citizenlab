@@ -250,7 +250,6 @@ const Container = styled.div<ButtonContainerProps>`
     position: relative;
     min-width: ${(props) => props.minWidth || 'auto'};
     width: ${(props) => props.width || '100%'};
-    outline: none;
     transition: background 100ms ease-out,
                 border-color 100ms ease-out,
                 box-shadow 100ms ease-out;
@@ -370,6 +369,10 @@ class Button extends PureComponent<Props, State> {
     }
   }
 
+  removeFocus = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+  }
+
   getSpinnerSize = (size) => {
     switch (size) {
       case '2':
@@ -481,6 +484,7 @@ class Button extends PureComponent<Props, State> {
       <Container
         className={`${className} ${buttonClassnames}`}
         onClick={this.handleOnClick}
+        onMouseDown={this.removeFocus}
         buttonStyle={style}
         id={id}
         size={size}

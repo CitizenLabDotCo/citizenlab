@@ -17,7 +17,6 @@ interface Props extends Omit<PopoverProps, 'onClickOutside' | 'onMouseEnter' | '
 const Container = styled.div`
   display: inline-flex;
   align-items: center;
-  outline: none;
   height: 100%;
 `;
 
@@ -27,7 +26,7 @@ const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProp
 
   const onPopoverMouseEnter = useCallback(() => {
     enabled && setOpened(true);
-  }, []);
+  }, [enabled]);
 
   const onPopoverMouseLeave = useCallback(() => {
     setOpened(false);
@@ -37,10 +36,26 @@ const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProp
     setOpened(false);
   }, []);
 
+  const onKeyDown = useCallback((event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      setOpened(!opened);
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setOpened(false);
+    }
+  }, [opened]);
+
+  const removeFocus = useCallback((event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+  }, []);
+
   const WrappedChildren = buttonProps ? (
     <Button {...buttonProps} ariaExpanded={opened} />
   ) : (
-    <button aria-expanded={opened}>
+    <button aria-expanded={opened} onMouseDown={removeFocus}>
       {children}
     </button>
   );
@@ -49,6 +64,7 @@ const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProp
     <Container
       className={`${className || ''} tooltip`}
       tabIndex={0}
+      onKeyDown={onKeyDown}
     >
       <Popover
         {...otherProps}
