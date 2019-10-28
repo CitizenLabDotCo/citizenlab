@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -13,6 +14,13 @@ import { Section, SectionSubtitle, SectionTitle } from 'components/admin/Section
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
+import AreaTermConfig from './AreaTermConfig';
+import Collapse from 'components/admin/Collapse';
+import InfoTooltip from 'components/admin/InfoTooltip';
+
+const TerminologyCollapse = styled(Collapse)`
+  padding-bottom: 30px;
+`;
 
 interface InputProps { }
 
@@ -22,7 +30,25 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
+interface State {
+  terminologyOpened: boolean;
+}
+
+class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      terminologyOpened: false,
+    };
+  }
+
+  handleToggleTerminology = () => {
+    this.setState({
+      terminologyOpened: !this.state.terminologyOpened,
+    });
+  }
+
   handleDeleteClick = (areaId: string) => (event: React.FormEvent<any>) => {
     const deleteMessage = this.props.intl.formatMessage(messages.areaDeletionConfirmation);
     event.preventDefault();
@@ -33,6 +59,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
   }
 
   render() {
+    const { terminologyOpened } = this.state;
     const { areas } = this.props;
 
     if (isNilOrError(areas)) return null;
@@ -45,6 +72,18 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
         <SectionSubtitle>
           <FormattedMessage {...messages.subtitleAreas} />
         </SectionSubtitle>
+
+        <TerminologyCollapse
+          opened={terminologyOpened}
+          onToggle={this.handleToggleTerminology}
+          label={<>
+            <FormattedMessage {...messages.subtitleTerminology} />
+            <InfoTooltip {...messages.terminologyTooltip} />
+          </>}
+        >
+          <AreaTermConfig />
+        </TerminologyCollapse>
+
         <ButtonWrapper>
           <Button
             style="cl-blue"
