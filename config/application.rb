@@ -47,6 +47,13 @@ module Cl2Back
     
     config.skylight.environments = ["staging"]
     
+    ### After https://stackoverflow.com/a/41560187/3585671
+    # Without lines below we get an uninitialized constant 
+    # error from files in the lib directory to other files
+    # that need to be loaded.
+    config.enable_dependency_loading = true
+    config.autoload_paths << Rails.root.join('lib')
+    ###
   end
 end
 
