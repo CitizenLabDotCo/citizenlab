@@ -20,5 +20,5 @@ end
 
 # Adds the mount_base64_file_uploader class method to ActiveRecord.
 ActiveSupport.on_load :active_record do
-  ActiveRecord::Base.extend Carrierwave::Base64::FileAdapter
+  ActiveRecord::Base.extend Carrierwave::FileBase64::Adapter
 end
