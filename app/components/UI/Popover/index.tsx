@@ -13,12 +13,6 @@ const Container = styled(clickOutside)`
   position: relative;
   display: flex;
   align-items: center;
-  outline: none;
-
-  * {
-    outline: none;
-    user-select: none;
-  }
 `;
 
 const Content = styled.div<{ offset: number }>`
@@ -224,6 +218,7 @@ export interface Props {
   onClickOutside?: (event) => void;
   onMouseEnter?: (event) => void;
   onMouseLeave?: (event) => void;
+  onMouseDown?: (event) => void;
   dropdownOpened: boolean;
   borderColor?: string;
   textColor?: string;
@@ -239,8 +234,24 @@ export interface Props {
 * children must be a button or link
 */
 
-const Popover = memo<Props>(({ onClickOutside, onMouseEnter, onMouseLeave, dropdownOpened, children, content, offset, withPin, position, smallViewportPosition, textColor, backgroundColor, borderColor, className, id }) => {
-
+const Popover = memo<Props>(({
+  onClickOutside,
+  onMouseEnter,
+  onMouseLeave,
+  onMouseDown,
+  dropdownOpened,
+  children,
+  content,
+  offset,
+  withPin,
+  position,
+  smallViewportPosition,
+  textColor,
+  backgroundColor,
+  borderColor,
+  className,
+  id
+}) => {
   const finalOffset = (offset || 0);
   const finalBackgroundColor = (backgroundColor || '#fff');
   const finalWithPin = (isBoolean(withPin) ? withPin : true);
@@ -249,21 +260,26 @@ const Popover = memo<Props>(({ onClickOutside, onMouseEnter, onMouseLeave, dropd
 
   const handleOnMouseEnter = useCallback((event) => {
     onMouseEnter && onMouseEnter(event);
-  }, []);
+  }, [onMouseEnter]);
 
   const handleOnMouseLeave = useCallback((event) => {
     onMouseLeave && onMouseLeave(event);
-  }, []);
+  }, [onMouseLeave]);
 
   const handleOnClickOutside = useCallback((event) => {
     onClickOutside && onClickOutside(event);
-  }, []);
+  }, [onClickOutside]);
+
+  const handleOnMouseDown = useCallback((event) => {
+    onMouseDown && onMouseDown(event);
+  }, [onMouseDown]);
 
   return (
     <Container
       className={`${className || ''} popover`}
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
+      onMouseDown={handleOnMouseDown}
       onClickOutside={handleOnClickOutside}
     >
       <div className="tooltip-trigger">{children}</div>

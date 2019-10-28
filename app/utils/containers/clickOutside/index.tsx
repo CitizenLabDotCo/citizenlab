@@ -5,6 +5,7 @@ type Props = {
   onClickOutside: (event) => void;
   onMouseEnter?: (event) => void;
   onMouseLeave?: (event) => void;
+  onMouseDown?: (event) => void;
   onClick?: () => void;
   className?: string;
   id?: string;
@@ -83,6 +84,10 @@ export default class ClickOutside extends PureComponent<Props, State> {
     this.props.onMouseLeave && this.props.onMouseLeave(event);
   }
 
+  handleOnMouseDown = (event) => {
+    this.props.onMouseDown && this.props.onMouseDown(event);
+  }
+
   render() {
     const { id, role, children, className, onClick } = this.props;
 
@@ -94,6 +99,7 @@ export default class ClickOutside extends PureComponent<Props, State> {
         onClick={onClick}
         onMouseEnter={this.handleOnMouseEnter}
         onMouseLeave={this.handleOnMouseLeave}
+        onMouseDown={this.handleOnMouseDown}
         role={role}
       >
         {children}
