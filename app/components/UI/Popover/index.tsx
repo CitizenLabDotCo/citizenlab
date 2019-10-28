@@ -218,11 +218,11 @@ export type IPosition = 'top' | 'left' | 'right' | 'bottom' | 'top-left' | 'bott
 export interface Props {
   children: JSX.Element;
   content: JSX.Element | null;
-  offset: number;
-  backgroundColor: string;
-  onClickOutside: (event) => void;
-  onMouseEnter: (event) => void;
-  onMouseLeave: (event) => void;
+  offset?: number;
+  backgroundColor?: string;
+  onClickOutside?: (event) => void;
+  onMouseEnter?: (event) => void;
+  onMouseLeave?: (event) => void;
   dropdownOpened: boolean;
   borderColor?: string;
   textColor?: string;
@@ -240,19 +240,22 @@ export interface Props {
 
 const Popover = memo<Props>(({ onClickOutside, onMouseEnter, onMouseLeave, dropdownOpened, children, content, offset, withPin, position, smallViewportPosition, textColor, backgroundColor, borderColor, className, id }) => {
 
+  const finalOffset = (offset || 0);
+  const finalBackgroundColor = (backgroundColor || '#fff');
+  const finalWithPin = (withPin || true);
   const finalPosition = (position || 'right');
   const finalSmallViewportPosition = (smallViewportPosition || position);
 
   const handleOnMouseEnter = useCallback((event) => {
-    onMouseEnter(event);
+    onMouseEnter && onMouseEnter(event);
   }, []);
 
   const handleOnMouseLeave = useCallback((event) => {
-    onMouseLeave(event);
+    onMouseLeave && onMouseLeave(event);
   }, []);
 
   const handleOnClickOutside = useCallback((event) => {
-    onClickOutside(event);
+    onClickOutside && onClickOutside(event);
   }, []);
 
   return (
@@ -274,16 +277,16 @@ const Popover = memo<Props>(({ onClickOutside, onMouseEnter, onMouseLeave, dropd
         exit={false}
       >
         <Content
-          offset={offset}
+          offset={finalOffset}
           className={`${finalPosition} small-${finalSmallViewportPosition} tooltip-container`}
           role="tooltip"
         >
           <ContentInner
             id={id}
-            backgroundColor={backgroundColor}
+            backgroundColor={finalBackgroundColor}
             textColor={textColor}
             borderColor={borderColor}
-            className={`${finalPosition} small-${finalSmallViewportPosition} tooltip-content ${withPin ? 'withPin' : ''}`}
+            className={`${finalPosition} small-${finalSmallViewportPosition} tooltip-content ${finalWithPin ? 'withPin' : ''}`}
             position={finalPosition}
             smallViewportPosition={finalSmallViewportPosition}
           >
