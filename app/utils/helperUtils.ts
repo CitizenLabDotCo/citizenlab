@@ -114,7 +114,7 @@ export function stripHtmlTags(str: string | null | undefined) {
   }
 }
 
-// e.g. 'en-GB' -> 'enGb' (for use in graphQl query)
+// e.g. 'en-GB' -> 'enGb'
 export function convertToGraphqlLocale(locale: Locale) {
   const newLocale = locale.replace('-', '');
   const length = newLocale.length - 1;
