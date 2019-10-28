@@ -36,6 +36,11 @@
             "default": "EUR",
             "enum": [<%= CL2_SUPPORTED_CURRENCIES.map{|l| "\"#{l}\""}.join(",") %>]
           },
+          "total_population": {
+            "description": "The population number of city/municipality's inhabitants",
+            "type": "integer",
+            "minimum": 0
+          },
           "locales": {
             "type": "array",
             "items": {

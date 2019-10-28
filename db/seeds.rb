@@ -85,8 +85,10 @@ end
 
 def generate_file_attributes
   {
-    name: Faker::File.file_name('', nil, ProjectFileUploader.new.extension_whitelist.shuffle.first, ''),
-    file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open
+    file_by_content: {
+      name: Faker::File.file_name('', nil, 'pdf', ''),
+      content: Rails.root.join("spec/fixtures/afvalkalender.pdf").open
+    }
   }
 end
 
