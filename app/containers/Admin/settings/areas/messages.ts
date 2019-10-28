@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.titleAreas',
     defaultMessage: 'Areas configuration',
   },
+  subtitleTerminology: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleTerminology',
+    defaultMessage: 'Terminology',
+  },
   deleteButtonLabel: {
     id: 'app.containers.AdminPage.SettingsPage.deleteButtonLabel',
     defaultMessage: 'Delete',
@@ -44,5 +48,33 @@ export default defineMessages({
   editFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.editFormTitle',
     defaultMessage: 'Edit area',
+  },
+  titleAreaTerms: {
+    id: 'app.containers.AdminPage.SettingsPage.titleAreaTerms',
+    defaultMessage: 'Area terminology',
+  },
+  terminologyTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.terminologyTooltip',
+    defaultMessage: 'How should areas be called towards users? e.g. neighbourhoods, quarters, counties, ...',
+  },
+  areaTerm: {
+    id: 'app.containers.AdminPage.SettingsPage.areaTerm',
+    defaultMessage: 'Term for one area (singular)',
+  },
+  areaTermPlaceholder: {
+    id: 'app.containers.AdminPage.SettingsPage.areaTermPlaceholder',
+    defaultMessage: 'area',
+  },
+  areasTerm: {
+    id: 'app.containers.AdminPage.SettingsPage.areasTerm',
+    defaultMessage: 'Term for multiple areas (plural)',
+  },
+  areasTermPlaceholder: {
+    id: 'app.containers.AdminPage.SettingsPage.areasTermPlaceholder',
+    defaultMessage: 'areas',
+  },
+  save: {
+    id: 'app.containers.AdminPage.SettingsPage.save',
+    defaultMessage: 'Save',
   },
 });
