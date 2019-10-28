@@ -6,7 +6,7 @@ import Button, { Props as ButtonProps } from 'components/UI/Button';
 /* should not have button elements in content nor children */
 interface Props extends Omit<PopoverProps, 'onClickOutside' | 'onMouseEnter' | 'onMouseLeave' | 'dropdownOpened' | 'children' | 'content'> {
   /** whether the tooltip should be active at all. NOT it's opened state */
-  enabled: boolean;
+  enabled?: boolean;
   content: PopoverProps['content'] | null;
   className?: string;
   /** If you want a button component as trigger, pass in button props as an object here*/
@@ -15,7 +15,7 @@ interface Props extends Omit<PopoverProps, 'onClickOutside' | 'onMouseEnter' | '
 }
 
 const Container = styled.div`
-  display: inline-flexbox;
+  display: inline-flex;
   align-items: center;
   outline: none;
   height: 100%;
@@ -65,7 +65,7 @@ const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProp
 
 const defaultProps: Partial<Props> = {
   offset: 0,
-  backgroundColor: 'white',
+  backgroundColor: '#fff',
   borderColor: '#fff',
   textColor: '#fff',
   enabled: true,
