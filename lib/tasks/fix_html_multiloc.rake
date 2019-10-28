@@ -95,13 +95,15 @@ namespace :fix_existing_tenants do
   end
 
   desc "Substitutes HTML URLs by relative paths (aggressively)"
-  task :substitute_html_relative_paths_aggressive => [:environment] do |t, args|
-    Tenant.all.map do |tenant|
-      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
-        imageable_html_multilocs.map do |claz, attributes|
-          claz.all.map do |instance|
-            attributes.each do |attribute|
-              multiloc = instance.send attribute
+  task :substitute_html_relative_paths_aggressive, [:url] => [:environment] do |t, args|
+    tofix = JSON.parse open(args[:url]).read
+    tofix.each do |host, clazzes|
+      Apartment::Tenant.switch(host.gsub('.', '_')) do
+        clazzes.each do |claz, instances|
+          instances.each do |id, attributes|
+            object = claz.constantize.find id
+            attributes.each do |attribute, _|
+              multiloc = object.send attribute
               multiloc.keys.each do |k|
                 text = multiloc[k]
                 doc = Nokogiri::HTML.fragment(text)
@@ -116,13 +118,47 @@ namespace :fix_existing_tenants do
                   end
                 multiloc[k] = doc.to_s
               end
-              instance.send "#{attribute}=", multiloc
-              instance.save!
+              object.send "#{attribute}=", multiloc
+              object.save!
             end
           end
         end
       end
     end
+  end
+
+  desc "List HTML URLs not starting with home URL to be fixed"
+  task :list_html_links_to_fix_not_home => [:environment] do |t, args|
+    results = {}
+    Tenant.all.map do |tenant|
+      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
+        imageable_html_multilocs.map do |claz, attributes|
+          claz.all.map do |instance|
+            attributes.each do |attribute|
+              multiloc = instance.send attribute
+              multiloc&.keys&.each do |k|
+                text = multiloc[k]
+                doc = Nokogiri::HTML.fragment(text)
+                doc.css("img")
+                  .select do |img| 
+                    ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
+                      !img.attr('src').include?("#{Frontend::UrlService.new.home_url}/uploads/")
+                      )
+                  end
+                  .each do |img|
+                    results[tenant.host] ||= {}
+                    results[tenant.host][claz.name] ||= {}
+                    results[tenant.host][claz.name][instance.id] ||= {}
+                    results[tenant.host][claz.name][instance.id][attribute] ||= []
+                    results[tenant.host][claz.name][instance.id][attribute] += [img.attr('src')]
+                  end
+              end
+            end
+          end
+        end
+      end
+    end
+    pp results
   end
 end
 
