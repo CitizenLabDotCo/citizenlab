@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 
 // hooks
-import useGraphqlLocalize from 'hooks/useGraphqlLocalize';
+import useLocalize from 'hooks/useLocalize';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // graphql
@@ -22,7 +22,7 @@ interface Props {
 
 const PurposeFilter = memo<Props & InjectedIntlProps>(({ intl: { formatMessage }, onChange }) => {
 
-  const graphqlLocalize = useGraphqlLocalize();
+  const localize = useLocalize();
   const graphqlTenantLocales = useGraphqlTenantLocales();
 
   const PURPOSES_QUERY = gql`
@@ -47,7 +47,7 @@ const PurposeFilter = memo<Props & InjectedIntlProps>(({ intl: { formatMessage }
   if (data) {
     options = data.purposes.nodes.map((node) => ({
       value: node.id,
-      text: graphqlLocalize(node.titleMultiloc)
+      text: localize(node.titleMultiloc)
     }));
   }
 

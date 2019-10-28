@@ -7,6 +7,7 @@ import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 
 // hooks
+import useLocalize from 'hooks/useLocalize';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useTenant from 'hooks/useTenant';
 
@@ -109,6 +110,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
   const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
   const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
 
+  const localize = useLocalize();
   const graphqlTenantLocales = useGraphqlTenantLocales();
   const tenant = useTenant();
   const locales = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.locales : null;
@@ -265,8 +267,8 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
                   key={id}
                   projectTemplateId={id}
                   imageUrl={cardImage}
-                  title={titleMultiloc.en}
-                  body={subtitleMultiloc.en}
+                  title={localize(titleMultiloc)}
+                  body={localize(subtitleMultiloc)}
                 />
               );
             })}
