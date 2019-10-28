@@ -185,7 +185,6 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
           borderColor={colors.adminMenuBackground}
           onClickOutside={this.hideMenu}
           dropdownOpened={visible}
-          withPin
         >
           <MoreOptions
             onMouseDown={this.removeFocus}

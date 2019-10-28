@@ -106,7 +106,6 @@ class Ineligible extends PureComponent<Props, State> {
               }
               position="bottom"
               offset={24}
-              withPin
             >
               <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />}/>
             </Tooltip>
