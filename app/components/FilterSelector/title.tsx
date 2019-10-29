@@ -17,6 +17,9 @@ const Text = styled.span`
   font-weight: 400;
   line-height: 26px;
   transition: all 100ms ease-out;
+  &::first-letter {
+    text-transform: uppercase;
+  }
 `;
 
 const DropdownIcon = styled(Icon)`
