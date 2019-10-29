@@ -42,8 +42,8 @@ const IdeasNewMeta = React.memo<Props>(({ intl, authUser, locales, project, loca
       <title>
         {`
           ${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
-          ${ideasIndexTitle}`
-        }
+          ${ideasIndexTitle}
+        `}
       </title>
       {getAlternateLinks(locales)}
       {getCanonicalLink()}

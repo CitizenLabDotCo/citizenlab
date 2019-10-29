@@ -35,7 +35,7 @@ export default defineMessages({
   },
   metaTitle: {
     id: 'app.containers.IdeasNewPage.metaTitle',
-    defaultMessage: 'Add a new idea for {projectName} | CitizenLab',
+    defaultMessage: 'Add a new idea for {projectName} | {orgName}',
   },
   metaDescription: {
     id: 'app.containers.IdeasNewPage.metaDescription',
