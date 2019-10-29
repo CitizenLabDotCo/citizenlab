@@ -58,20 +58,24 @@ import { media, getTheme } from 'utils/styleUtils';
 import { VerificationModalSteps } from 'components/VerificationModal/VerificationModal';
 
 const Container = styled.div`
-  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   position: relative;
+  background: #fff;
 `;
 
 const InnerContainer = styled.div`
   padding-top: ${props => props.theme.menuHeight}px;
   min-width: 100vw;
-  min-height: 100vh;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px);
   display: flex;
   flex-direction: column;
+  align-items: stretch;
 
   ${media.smallerThanMaxTablet`
     padding-top: 0px;
-`}
+  `}
 `;
 
 export interface IOpenPostPageModalEvent {
@@ -282,12 +286,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const ideaFormPage = isPage('idea_form', location.pathname);
     const ideaEditPage = isPage('idea_edit', location.pathname);
     const initiativeEditPage = isPage('initiative_edit', location.pathname);
+    const theme = getTheme(tenant);
     const showFooter = !adminPage &&
                        !ideaFormPage &&
                        !initiativeFormPage &&
                        !ideaEditPage &&
                        !initiativeEditPage;
-    const theme = getTheme(tenant);
 
     return (
       <>
@@ -352,6 +356,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                       </HasPermission.No>
                     </HasPermission>
                   </InnerContainer>
+
                   {showFooter && <Footer />}
                 </Container>
               </>

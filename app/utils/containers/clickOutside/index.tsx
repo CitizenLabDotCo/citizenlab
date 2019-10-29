@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 
 type Props = {
   children?: any;
+  onClick: (event) => void;
   onClickOutside: (event) => void;
   onMouseEnter?: (event) => void;
   onMouseLeave?: (event) => void;
   onMouseDown?: (event) => void;
-  onClick?: () => void;
   className?: string;
   id?: string;
   setRef?: (arg: HTMLElement) => void;

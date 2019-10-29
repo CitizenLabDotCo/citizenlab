@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -70,9 +70,13 @@ const getPxSize = (size: undefined | 'big' | 'small' | 'xs') => {
   }
 };
 
-const InfoTooltip = (props: Props) => {
+const InfoTooltip = memo<Props>((props) => {
   const { position, size, className, children, offset, iconColor, ...passthroughProps } = props;
   const pxSize = getPxSize(size);
+
+  const onTooltipClick = useCallback((event: React.MouseEvent) => {
+    event.preventDefault();
+  }, []);
 
   return (
     <Container className={`${className} infoTooltip`}>
@@ -89,7 +93,7 @@ const InfoTooltip = (props: Props) => {
         backgroundColor={colors.popoverDarkBg}
         borderColor={colors.popoverDarkBg}
       >
-        <IconWrapper>
+        <IconWrapper onClick={onTooltipClick}>
           <div className="tooltip-trigger">
             {children || <StyledIcon name="info3" className="infoTooltipIcon" />}
           </div>
@@ -97,6 +101,6 @@ const InfoTooltip = (props: Props) => {
       </Tooltip >
     </Container>
   );
-};
+});
 
 export default InfoTooltip;

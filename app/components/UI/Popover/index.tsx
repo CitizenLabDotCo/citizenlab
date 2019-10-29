@@ -237,6 +237,7 @@ export interface Props {
   delay?: number;
   scaleIn?: boolean;
   backgroundColor?: string;
+  onClick?: (event) => void;
   onClickOutside?: (event) => void;
   onMouseEnter?: (event) => void;
   onMouseLeave?: (event) => void;
@@ -257,6 +258,7 @@ export interface Props {
 */
 
 const Popover = memo<Props>(({
+  onClick,
   onClickOutside,
   onMouseEnter,
   onMouseLeave,
@@ -292,6 +294,10 @@ const Popover = memo<Props>(({
     onMouseLeave && onMouseLeave(event);
   }, [onMouseLeave]);
 
+  const handleOnClick = useCallback((event) => {
+    onClick && onClick(event);
+  }, [onClick]);
+
   const handleOnClickOutside = useCallback((event) => {
     onClickOutside && onClickOutside(event);
   }, [onClickOutside]);
@@ -306,6 +312,7 @@ const Popover = memo<Props>(({
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
       onMouseDown={handleOnMouseDown}
+      onClick={handleOnClick}
       onClickOutside={handleOnClickOutside}
     >
       <div className="tooltip-trigger">{children}</div>
