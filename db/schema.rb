@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_09_124938) do
+ActiveRecord::Schema.define(version: 2019_10_23_121111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(version: 2019_09_09_124938) do
   end
 
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
+    t.jsonb "title_multiloc", default: {}
     t.string "slug"
     t.integer "memberships_count", default: 0, null: false
     t.datetime "created_at", null: false
@@ -280,7 +280,7 @@ ActiveRecord::Schema.define(version: 2019_09_09_124938) do
   end
 
   create_table "idea_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
+    t.jsonb "title_multiloc", default: {}
     t.integer "ordering"
     t.string "code"
     t.string "color"
@@ -378,8 +378,8 @@ ActiveRecord::Schema.define(version: 2019_09_09_124938) do
   end
 
   create_table "initiative_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
-    t.jsonb "description_multiloc"
+    t.jsonb "title_multiloc", default: {}
+    t.jsonb "description_multiloc", default: {}
     t.integer "ordering"
     t.string "code"
     t.string "color"
@@ -388,8 +388,8 @@ ActiveRecord::Schema.define(version: 2019_09_09_124938) do
   end
 
   create_table "initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
-    t.jsonb "body_multiloc"
+    t.jsonb "title_multiloc", default: {}
+    t.jsonb "body_multiloc", default: {}
     t.string "publication_status"
     t.datetime "published_at"
     t.uuid "author_id"
