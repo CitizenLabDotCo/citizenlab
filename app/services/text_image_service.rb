@@ -26,7 +26,9 @@ class TextImageService
 
     doc.css("img")
       .select do |img| 
-        img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/
+        ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
+          !img.attr('src').include?('s3.amazonaws.com')
+          )
       end
       .each do |img|
         url = img.attr('src')
@@ -55,11 +57,6 @@ class TextImageService
           remote_image_url: image_data
         )
       end
-    path = text_image.image.path
-    # When files are stored locally, we need to remove the "cl2_back/public/" prefix
-    if text_image.image._storage == CarrierWave::Storage::File
-      path = path.delete_prefix text_image.image.root
-    end
-    path
+    text_image.image.url
   end
 end

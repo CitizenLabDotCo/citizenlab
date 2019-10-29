@@ -58,33 +58,15 @@ namespace :fix_existing_tenants do
     end
   end
 
-  desc "Substitutes HTML URLs by relative paths (gently)"
-  task :substitute_html_relative_paths_gentle => [:environment] do |t, args|
+  desc "Runs the TextImageService on all HTML multilocs that can have images"
+  task :swap_all_html_images => [:environment] do |t, args|
     Tenant.all.map do |tenant|
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
         imageable_html_multilocs.map do |claz, attributes|
           claz.all.map do |instance|
             attributes.each do |attribute|
               multiloc = instance.send attribute
-              multiloc.keys.each do |k|
-                text = multiloc[k]
-                doc = Nokogiri::HTML.fragment(text)
-                doc.css("img")
-                  .select do |img| 
-                    ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
-                      img.attr('src').include?("#{Frontend::UrlService.new.home_url}/uploads/")
-                      # img.attr('src').include?("/uploads/#{tenant.id}")
-                      )
-                  end
-                  .each do |img|
-                    url = img.attr('src')
-                    # prefix = "/uploads/"
-                    prefix = "#{Frontend::UrlService.new.home_url}/uploads/"
-                    path = "/uploads/#{url.partition(prefix).last}"
-                    img.set_attribute('src', path)
-                  end
-                multiloc[k] = doc.to_s
-              end
+              multiloc = TextImageService.new.swap_data_images instance, attribute
               instance.send "#{attribute}=", multiloc
               instance.save!
             end
@@ -94,7 +76,7 @@ namespace :fix_existing_tenants do
     end
   end
 
-  desc "Substitutes HTML URLs by relative paths (aggressively)"
+  desc "Substitutes HTML URLs by the S3 url, according to a list of requested sustitutions (tenants that changed host)"
   task :substitute_html_relative_paths_aggressive, [:url] => [:environment] do |t, args|
     tofix = JSON.parse open(args[:url]).read
     tofix.each do |host, clazzes|
@@ -113,11 +95,12 @@ namespace :fix_existing_tenants do
                   end
                   .each do |img|
                     url = img.attr('src')
-                    path = "/uploads/#{url.partition('/uploads/').last}"
+                    path = "#{Frontend::UrlService.new.home_url}/uploads/#{url.partition('/uploads/').last}"
                     img.set_attribute('src', path)
                   end
                 multiloc[k] = doc.to_s
               end
+              multiloc = TextImageService.new.swap_data_images object, attribute
               object.send "#{attribute}=", multiloc
               object.save!
             end
