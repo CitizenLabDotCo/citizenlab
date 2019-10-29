@@ -131,12 +131,12 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
       padding = (padding || undefined);
 
       return (
-        <Container className={`${className} ${fullHeight ? 'bannerStyle' : ''}`}>
+        <Container className={`${className} ${fullHeight ? 'bannerStyle' : ''} e2e-idea-button`}>
           <Tooltip
             enabled={!enabled && !!disabledReason}
             content={
               disabledReason ? (
-                <TooltipWrapper>
+                <TooltipWrapper className="e2e-disabled-tooltip">
                   <StyledIcon name="lock-outlined" />
                   <FormattedMessage
                     {...this.disabledMessages[disabledReason]}
