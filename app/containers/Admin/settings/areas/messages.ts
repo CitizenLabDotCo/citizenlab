@@ -73,8 +73,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.areasTermPlaceholder',
     defaultMessage: 'areas',
   },
-  save: {
-    id: 'app.containers.AdminPage.SettingsPage.save',
+  areasTermsSave: {
+    id: 'app.containers.AdminPage.SettingsPage.areasTermsSave',
     defaultMessage: 'Save',
-  },
+  }
 });

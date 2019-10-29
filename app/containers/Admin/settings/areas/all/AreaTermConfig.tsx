@@ -118,7 +118,7 @@ class AreaTermConfig extends PureComponent<Props, State> {
             style="cl-blue"
             type="submit"
           >
-            <FormattedMessage {...messages.save} />
+            <FormattedMessage {...messages.areasTermsSave} />
           </Button>
         </ButtonWrapper>
       </form>
