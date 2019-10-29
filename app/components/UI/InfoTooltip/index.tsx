@@ -29,7 +29,7 @@ interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
 
 const Container = styled.div`
   display: inline-block;
-  height: 16px;
+  height: 17px;
 `;
 
 const IconWrapper = styled.div`
@@ -38,11 +38,11 @@ const IconWrapper = styled.div`
 `;
 
 const StyledIcon = styled(Icon)<{ color?: string }>`
-  width: 16px;
-  height: 16px;
+  width: 17px;
+  height: 17px;
   cursor: pointer;
   fill: ${({ color }) => color ? color : colors.label};
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 
   &:hover {
     fill: ${({ color }) => color ? darken(.2, color) : darken(.2, colors.label)};
@@ -83,10 +83,11 @@ const InfoTooltip = (props: Props) => {
             <FormattedMessage {...passthroughProps} />
           </TooltipWrapper>
         )}
-        offset={offset || 25}
+        offset={offset || 28}
         position={position}
         className={className}
-        backgroundColor="rgba(34, 34, 34, 0.95)"
+        backgroundColor={colors.popoverDarkBg}
+        borderColor={colors.popoverDarkBg}
       >
         <IconWrapper>
           <div className="tooltip-trigger">

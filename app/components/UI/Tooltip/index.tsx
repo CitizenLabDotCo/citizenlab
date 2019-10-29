@@ -14,11 +14,7 @@ interface Props extends Omit<PopoverProps, 'onClickOutside' | 'onMouseEnter' | '
   children?: JSX.Element | null;
 }
 
-const Container = styled.div`
-  display: inline-flex;
-  align-items: center;
-  height: 100%;
-`;
+const Container = styled.div``;
 
 const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProps, ...otherProps  }) => {
 
@@ -70,6 +66,8 @@ const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProp
         {...otherProps}
         children={WrappedChildren}
         content={content}
+        delay={250}
+        scaleIn={false}
         dropdownOpened={opened}
         onClickOutside={onPopoverClickOutside}
         onMouseEnter={onPopoverMouseEnter}

@@ -15,104 +15,109 @@ const Container = styled(clickOutside)`
   align-items: center;
 `;
 
-const Content = styled.div<{ offset: number }>`
+const Content = styled.div<{ offset: number, delay: number }>`
   position: absolute;
   z-index: 4;
   transform-origin: center left;
-  will-change: transform, opacity;
+  transition: all ${animationDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1) ${({ delay }) => delay}ms;
 
   ${media.biggerThanMaxTablet`
     &.bottom {
-      top: ${({ offset }) => offset || '0'}px;
+      top: ${({ offset }) => offset}px;
       left: 50%;
       transform-origin: top left;
     }
 
     &.top {
-      bottom: ${({ offset }) => offset || '0'}px;
+      bottom: ${({ offset }) => offset}px;
       left: 50%;
       transform-origin: bottom left;
     }
 
     &.top-left {
-      bottom: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
-      right: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
+      bottom: ${({ offset }) => Math.round(offset / 1.5)}px;
+      right: ${({ offset }) => Math.round(offset / 1.5)}px;
       transform-origin: bottom right;
     }
 
     &.bottom-left {
-      top: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
-      right: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
+      top: ${({ offset }) => Math.round(offset / 1.5)}px;
+      right: ${({ offset }) => Math.round(offset / 1.5)}px;
       transform-origin: top right;
     }
 
     &.bottom-right {
-      top: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
-      left: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
+      top: ${({ offset }) => Math.round(offset / 1.5)}px;
+      left: ${({ offset }) => Math.round(offset / 1.5)}px;
       transform-origin: top left;
     }
 
     &.left {
-      right: ${({ offset }) => offset || '0'}px;
+      right: ${({ offset }) => offset}px;
       transform-origin: bottom right;
     }
 
     &.right {
-      left: ${({ offset }) => offset || '0'}px;
+      left: ${({ offset }) => offset}px;
       transform-origin: bottom left;
     }
   `}
 
   ${media.smallerThanMaxTablet`
     &.small-bottom {
-      top: ${({ offset }) => offset || '0'}px;
+      top: ${({ offset }) => offset}px;
       left: 50%;
       transform-origin: top left;
     }
 
     &.small-top {
-      bottom: ${({ offset }) => offset || '0'}px;
+      bottom: ${({ offset }) => offset}px;
       left: 50%;
       transform-origin: bottom left;
     }
 
     &.small-top-left {
-      bottom: ${({ offset }) => Math.round(offset / 1.1) || '0'}px;
-      right: ${({ offset }) => Math.round(offset / 1.9) || '0'}px;
+      bottom: ${({ offset }) => Math.round(offset / 1.1)}px;
+      right: ${({ offset }) => Math.round(offset / 1.9)}px;
       transform-origin: bottom right;
     }
 
     &.small-bottom-left {
-      top: ${({ offset }) => offset || '0'}px;
+      top: ${({ offset }) => offset}px;
       right: 0px;
       transform-origin: top right;
     }
 
     &.small-bottom-right {
-      top: ${({ offset }) => offset || '0'}px;
+      top: ${({ offset }) => offset}px;
       left: 0px;
       transform-origin: top left;
     }
 
     &.small-left {
-      right: ${({ offset }) => offset || '0'}px;
+      right: ${({ offset }) => offset}px;
       transform-origin: bottom right;
     }
 
     &.small-right {
-      left: ${({ offset }) => offset || '0'}px;
+      left: ${({ offset }) => offset}px;
       transform-origin: bottom left;
     }
   `}
 
   &.dropdown-enter {
     opacity: 0;
-    transform: scale(0.96);
+
+    &.scaleIn {
+      transform: scale(0.96);
+    }
 
     &.dropdown-enter-active {
       opacity: 1;
-      transform: scale(1);
-      transition: all ${animationDuration}ms cubic-bezier(0.19, 1, 0.22, 1);
+
+      &.scaleIn {
+        transform: scale(1);
+      }
     }
   }
 `;
@@ -229,6 +234,8 @@ export interface Props {
   children: JSX.Element;
   content: JSX.Element | null;
   offset?: number;
+  delay?: number;
+  scaleIn?: boolean;
   backgroundColor?: string;
   onClickOutside?: (event) => void;
   onMouseEnter?: (event) => void;
@@ -258,6 +265,8 @@ const Popover = memo<Props>(({
   children,
   content,
   offset,
+  delay,
+  scaleIn,
   withPin,
   position,
   smallViewportPosition,
@@ -268,6 +277,8 @@ const Popover = memo<Props>(({
   id
 }) => {
   const finalOffset = (offset || 0);
+  const finalDelay = (delay || 0);
+  const finalScaleIn = (isBoolean(scaleIn) ? scaleIn : true);
   const finalBackgroundColor = (backgroundColor || '#fff');
   const finalWithPin = (isBoolean(withPin) ? withPin : true);
   const finalPosition = (position || 'right');
@@ -310,7 +321,8 @@ const Popover = memo<Props>(({
       >
         <Content
           offset={finalOffset}
-          className={`${finalPosition} small-${finalSmallViewportPosition} tooltip-container`}
+          delay={finalDelay}
+          className={`${finalPosition} small-${finalSmallViewportPosition} ${finalScaleIn ? 'scaleIn' : ''} tooltip-container`}
           role="tooltip"
         >
           <ContentInner
