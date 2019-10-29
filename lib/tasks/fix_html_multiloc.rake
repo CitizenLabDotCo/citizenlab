@@ -77,7 +77,7 @@ namespace :fix_existing_tenants do
   end
 
   desc "Substitutes HTML URLs by the S3 url, according to a list of requested sustitutions (tenants that changed host)"
-  task :substitute_html_relative_paths_aggressive, [:url] => [:environment] do |t, args|
+  task :substitute_html_relative_paths, [:url] => [:environment] do |t, args|
     tofix = JSON.parse open(args[:url]).read
     tofix.each do |host, clazzes|
       Apartment::Tenant.switch(host.gsub('.', '_')) do
@@ -125,7 +125,9 @@ namespace :fix_existing_tenants do
                 doc.css("img")
                   .select do |img| 
                     ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
-                      !img.attr('src').include?("#{Frontend::UrlService.new.home_url}/uploads/")
+                      !img.attr('src').include?("#{tenant.host}/uploads/") &&
+                      !img.attr('src').include?("s3.amazonaws.com") &&
+                      !img.attr('src').include?("res.cloudinary.com")
                       )
                   end
                   .each do |img|
@@ -141,7 +143,7 @@ namespace :fix_existing_tenants do
         end
       end
     end
-    pp results
+    puts JSON.pretty_generate(results)
   end
 end
 
