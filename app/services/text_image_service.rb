@@ -4,7 +4,7 @@ class TextImageService
     multiloc = imageable.send(field)
     multiloc.each_with_object({}) do |(locale, text), output|
       output[locale] = swap_data_images_text(text) do |image_data, image_type|
-        generate_image_path image_data, image_type, imageable, field
+        generate_image_url image_data, image_type, imageable, field
       end
     end
   end
@@ -42,7 +42,7 @@ class TextImageService
 
   private
 
-  def generate_image_path image_data, image_type, imageable, field
+  def generate_image_url image_data, image_type, imageable, field
     text_image = case image_type
       when :base64
         TextImage.create!(
