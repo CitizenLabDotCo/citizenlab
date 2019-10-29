@@ -3,16 +3,18 @@ import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // graphql
+import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 
 // components
 import Icon from 'components/UI/Icon';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
-import ProjectTemplateCards, { TEMPLATES_QUERY } from './ProjectTemplateCards';
+import ProjectTemplateCards from './ProjectTemplateCards';
 import AdminProjectEditGeneral  from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './styles';
 
 // hooks
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useTenant from 'hooks/useTenant';
 
 // utils
@@ -165,6 +167,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     icon: 'scratch'
   }];
 
+  const graphqlTenantLocales = useGraphqlTenantLocales();
   const tenant = useTenant();
   const locales = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.locales : null;
   const organizationTypes = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.organization_type : null;
@@ -175,6 +178,47 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [selectedTab, setSelectedTab] = useState(fromATemplateText);
 
   const isFirstRun = useRef(true);
+
+  const TEMPLATES_QUERY = gql`
+    query PublishedProjectTemplatesQuery(
+      $cursor: String,
+      $departments: [ID!],
+      $purposes: [ID!],
+      $participationLevels: [ID!],
+      $search: String,
+      $locales: [String!],
+      $organizationTypes: [String!]
+    ) {
+      publishedProjectTemplates(
+        first: 6,
+        after: $cursor,
+        departments: $departments,
+        purposes: $purposes,
+        participationLevels: $participationLevels,
+        search: $search,
+        locales: $locales,
+        organizationTypes: $organizationTypes
+      ) {
+        edges {
+          node {
+            id,
+            cardImage,
+            titleMultiloc {
+              ${graphqlTenantLocales}
+            },
+            subtitleMultiloc {
+              ${graphqlTenantLocales}
+            }
+          }
+          cursor
+        }
+        pageInfo{
+          endCursor
+          hasNextPage
+        }
+      }
+    }
+  `;
 
   // prefetch templates query used in ProjectTemplateCards so the data is
   // already loaded when expanding the 'create project' section
