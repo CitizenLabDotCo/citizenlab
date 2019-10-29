@@ -20,8 +20,8 @@ class TextImageService
       .select{|img| img.attr('src') =~ /^data:image\/([a-zA-Z]*);base64,.*$/}
       .each do |img|
         base64 = img.attr('src')
-        path = yield(base64, :base64)
-        img.set_attribute('src', path)
+        url = yield(base64, :base64)
+        img.set_attribute('src', url)
       end
 
     doc.css("img")
@@ -31,9 +31,9 @@ class TextImageService
           )
       end
       .each do |img|
-        url = img.attr('src')
-        path = yield(url, :url)
-        img.set_attribute('src', path)
+        old_url = img.attr('src')
+        new_url = yield(old_url, :url)
+        img.set_attribute('src', new_url)
       end
 
     doc.to_s
