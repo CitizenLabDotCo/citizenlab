@@ -21,7 +21,7 @@ import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/fileT
 import styled, { css } from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 
 // typings
 import { UploadFile } from 'typings';
@@ -111,7 +111,11 @@ const StyledDropzone = styled(Dropzone)`
   ` : css`
     cursor: pointer !important;
 
-    &:hover {
+    &:focus-within {
+      outline: ${customOutline};
+    }
+
+    &:hover, &:focus-within {
       border-color: #000;
 
       ${DropzonePlaceholderText},
