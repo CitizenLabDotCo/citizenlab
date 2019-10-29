@@ -16,5 +16,17 @@ export default defineMessages({
   a11y_removeFile: {
     id: 'app.components.FileUploader.a11y_removeFile',
     defaultMessage: 'Remove this file'
+  },
+  a11y_noFiles: {
+    id: 'app.components.FileUploader.a11y_noFiles',
+    defaultMessage: 'No files added.'
+  },
+  a11y_filesToBeUploaded: {
+    id: 'app.components.FileUploader.a11y_filesToBeUploaded',
+    defaultMessage: 'Files to be uploaded: {fileNames}'
+  },
+  a11y_file: {
+    id: 'app.components.FileUploader.a11y_filesToBeUploaded',
+    defaultMessage: 'File: '
   }
 });
