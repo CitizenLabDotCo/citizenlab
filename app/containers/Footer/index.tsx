@@ -48,7 +48,7 @@ const Container = styled.footer`
 
 const Inner = styled.div`
   width: 100%;
-  min-height: 60px;
+  min-height: ${props => props.theme.footerHeight}px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -276,6 +276,7 @@ const ShortFeedbackFormModalFooter = styled.div`
 
 interface InputProps {
   showShortFeedback?: boolean;
+  className?: string;
 }
 
 interface DataProps {
@@ -369,10 +370,10 @@ class Footer extends PureComponent<Props, State> {
 
   render() {
     const { shortFeedbackButtonClicked, feedbackModalOpen, feedbackSubmitting, feedbackSubmitted } = this.state;
-    const { showShortFeedback } = this.props;
+    const { showShortFeedback, className } = this.props;
 
     return (
-      <Container className={this.props['className']} id="hook-footer">
+      <Container id="hook-footer" className={className}>
         {showShortFeedback &&
           <>
             <ShortFeedback>
@@ -474,7 +475,7 @@ class Footer extends PureComponent<Props, State> {
 }
 
 const Data = adopt<Props>({
-  locale: <GetLocale />,
+  locale: <GetLocale />
 });
 
 export default (inputProps: InputProps) => (

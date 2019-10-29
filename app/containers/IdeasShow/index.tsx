@@ -83,7 +83,7 @@ const Loading = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px);
+  min-height: calc(100vh - ${props => props.theme.menuHeight + props.theme.footerHeight}px);
   background: #fff;
   opacity: 0;
 
@@ -140,7 +140,7 @@ const Content = styled.div`
 `;
 
 const LeftColumn = styled.div`
-  flex: 2;
+  flex: 1 1 auto;
   margin: 0;
   padding: 0;
   padding-right: ${columnsGapDesktop}px;

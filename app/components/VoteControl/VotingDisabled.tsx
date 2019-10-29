@@ -13,10 +13,18 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import { openVerificationModalWithContext } from 'containers/App/events';
 
 const Container = styled.div`
+  width: 100%;
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
   font-weight: 300;
   line-height: 20px;
+
+  > span {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
 `;
 
 const StyledButton = styled.button`

@@ -50,6 +50,7 @@ const StyledA = styled.a`
 `;
 
 const TooltipWrapper = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   min-width: 300px;
@@ -57,6 +58,14 @@ const TooltipWrapper = styled.div`
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   padding: 15px;
+  border: solid 1px red;
+
+  > span {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
 `;
 
 interface DataProps {
