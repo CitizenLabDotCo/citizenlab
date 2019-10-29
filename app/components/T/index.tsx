@@ -5,7 +5,6 @@ import { Multiloc, Locale } from 'typings';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
-import { convertToGraphqlLocale } from 'utils/helperUtils';
 
 type children = (localizedText: string) => JSX.Element | null;
 
@@ -61,15 +60,7 @@ export default class T extends React.PureComponent<Props, State> {
 
     if (locale && currentTenantLocales) {
       const { value, as, children, maxLength, className, supportHtml } = this.props;
-      let localizedText = '';
-
-      if (this.props.graphql) {
-        const graphqlLocale = convertToGraphqlLocale(locale);
-        const graphqlTenantLocales = currentTenantLocales.map(locale => convertToGraphqlLocale(locale));
-        localizedText = getLocalized(value, graphqlLocale, graphqlTenantLocales, maxLength);
-      } else {
-        localizedText = getLocalized(value, locale, currentTenantLocales, maxLength);
-      }
+      const localizedText = getLocalized(value, locale, currentTenantLocales, maxLength);
 
       if (children) {
         return ((children as children)(localizedText));

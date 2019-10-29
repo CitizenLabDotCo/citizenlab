@@ -2,7 +2,7 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 import * as clipboard from 'clipboard-polyfill';
 
 // hooks
-import useGraphqlLocalize from 'hooks/useGraphqlLocalize';
+import useLocalize from 'hooks/useLocalize';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // graphql
@@ -321,7 +321,7 @@ export interface Props {
 
 const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) => {
 
-  const graphqlLocalize = useGraphqlLocalize();
+  const localize = useLocalize();
   const graphqlTenantLocales = useGraphqlTenantLocales();
 
   const [linkCopied, setLinkCopied] = useState(false);
@@ -377,7 +377,7 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
     clipboard.writeText(`${window.location.origin}/templates/${projectTemplateId}`);
     setLinkCopied(true);
     trackEventByName(tracks.linkCopied, { projectTemplateId });
-  }, []);
+  }, [projectTemplateId]);
 
   useEffect(() => {
     if (linkCopied) {
@@ -398,10 +398,10 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
           <Header>
             <HeaderLeft>
               <Title>
-                <T graphql={true} value={data.projectTemplate.titleMultiloc} />
+                <T value={data.projectTemplate.titleMultiloc} />
               </Title>
               <Subtitle>
-                <T graphql={true} value={data.projectTemplate.subtitleMultiloc} />
+                <T value={data.projectTemplate.subtitleMultiloc} />
               </Subtitle>
             </HeaderLeft>
 
@@ -424,7 +424,7 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
             <MetaInfoLeft>
               {data.projectTemplate.departments && data.projectTemplate.departments.map((department) => (
                 <Department key={department.id}>
-                  <T graphql={true} value={department.titleMultiloc} />
+                  <T value={department.titleMultiloc} />
                 </Department>
               ))}
             </MetaInfoLeft>
@@ -433,7 +433,7 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
                 <MetaInfoRightBox>
                   <MetaInfoRightBoxIcon name="purpose" />
                   <MetaInfoRightBoxText>
-                    {data.projectTemplate.purposes.map((purpose) => graphqlLocalize(purpose.titleMultiloc)).join(', ')}
+                    {data.projectTemplate.purposes.map((purpose) => localize(purpose.titleMultiloc)).join(', ')}
                   </MetaInfoRightBoxText>
                 </MetaInfoRightBox>
               }
@@ -441,7 +441,7 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
                 <MetaInfoRightBox className="last">
                   <MetaInfoRightBoxIcon name="participationLevel" />
                   <MetaInfoRightBoxText>
-                    {data.projectTemplate.participationLevels.map((participationLevel) => graphqlLocalize(participationLevel.titleMultiloc)).join(', ')}
+                    {data.projectTemplate.participationLevels.map((participationLevel) => localize(participationLevel.titleMultiloc)).join(', ')}
                   </MetaInfoRightBoxText>
                 </MetaInfoRightBox>
               }
@@ -454,7 +454,7 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
             }
 
             <QuillEditedContent textColor={colors.adminTextColor}>
-              <div dangerouslySetInnerHTML={{ __html: data.projectTemplate.descriptionMultilocs[0].content }} />
+              <div dangerouslySetInnerHTML={{ __html: localize(data.projectTemplate.descriptionMultilocs) }} />
             </QuillEditedContent>
           </Content>
 
@@ -467,7 +467,7 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
                     <PhaseArrow name="phase_arrow" />
                   </PhaseBar>
                   <PhaseText>
-                    <T graphql={true} value={phase} />
+                    <T value={phase} />
                   </PhaseText>
                 </PhaseContainer>
               ))}

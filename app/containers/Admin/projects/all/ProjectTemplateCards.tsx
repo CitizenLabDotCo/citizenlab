@@ -7,6 +7,8 @@ import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 
 // hooks
+import useLocalize from 'hooks/useLocalize';
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useTenant from 'hooks/useTenant';
 
 // analytics
@@ -103,52 +105,13 @@ interface Props {
   className?: string;
 }
 
-export const TEMPLATES_QUERY = gql`
-  query PublishedProjectTemplatesQuery(
-    $cursor: String,
-    $departments: [ID!],
-    $purposes: [ID!],
-    $participationLevels: [ID!],
-    $search: String,
-    $locales: [String!],
-    $organizationTypes: [String!]
-  ) {
-    publishedProjectTemplates(
-      first: 6,
-      after: $cursor,
-      departments: $departments,
-      purposes: $purposes,
-      participationLevels: $participationLevels,
-      search: $search,
-      locales: $locales,
-      organizationTypes: $organizationTypes
-    ) {
-      edges {
-        node {
-          id,
-          cardImage,
-          titleMultiloc {
-            en
-          },
-          subtitleMultiloc {
-            en
-          }
-        }
-        cursor
-      }
-      pageInfo{
-        endCursor
-        hasNextPage
-      }
-    }
-  }
-`;
-
 const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className }) => {
 
   const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
   const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
 
+  const localize = useLocalize();
+  const graphqlTenantLocales = useGraphqlTenantLocales();
   const tenant = useTenant();
   const locales = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.locales : null;
   const organizationTypes = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.organization_type : null;
@@ -158,6 +121,47 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
   const [participationLevels, setParticipationLevels] = useState<string[] | null>(null);
   const [search, setSearch] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
+
+  const TEMPLATES_QUERY = gql`
+    query PublishedProjectTemplatesQuery(
+      $cursor: String,
+      $departments: [ID!],
+      $purposes: [ID!],
+      $participationLevels: [ID!],
+      $search: String,
+      $locales: [String!],
+      $organizationTypes: [String!]
+    ) {
+      publishedProjectTemplates(
+        first: 6,
+        after: $cursor,
+        departments: $departments,
+        purposes: $purposes,
+        participationLevels: $participationLevels,
+        search: $search,
+        locales: $locales,
+        organizationTypes: $organizationTypes
+      ) {
+        edges {
+          node {
+            id,
+            cardImage,
+            titleMultiloc {
+              ${graphqlTenantLocales}
+            },
+            subtitleMultiloc {
+              ${graphqlTenantLocales}
+            }
+          }
+          cursor
+        }
+        pageInfo{
+          endCursor
+          hasNextPage
+        }
+      }
+    }
+  `;
 
   const { loading, data, fetchMore } = useQuery(TEMPLATES_QUERY, {
     variables: {
@@ -263,8 +267,8 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
                   key={id}
                   projectTemplateId={id}
                   imageUrl={cardImage}
-                  title={titleMultiloc.en}
-                  body={subtitleMultiloc.en}
+                  title={localize(titleMultiloc)}
+                  body={localize(subtitleMultiloc)}
                 />
               );
             })}
