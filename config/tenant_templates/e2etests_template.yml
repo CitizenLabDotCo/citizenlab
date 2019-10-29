@@ -1,31 +1,31 @@
 ---
 models:
   idea_status:
-    - 
+    -
       title_multiloc: idea_statuses.proposed
       ordering: 100
       code: proposed
       color: '#687782'
       description_multiloc: idea_statuses.proposed_description
-    - 
+    -
       title_multiloc: idea_statuses.viewed
       ordering: 150
       code: viewed
       color: '#01A1B1'
       description_multiloc: idea_statuses.viewed_description
-    - 
+    -
       title_multiloc: idea_statuses.under_consideration
       ordering: 200
       code: under_consideration
       color: '#0080A5'
       description_multiloc: idea_statuses.under_consideration_description
-    - 
+    -
       title_multiloc: idea_statuses.accepted
       ordering: 300
       code: accepted
       color: '#04884C'
       description_multiloc: idea_statuses.accepted_description
-    - 
+    -
       title_multiloc: idea_statuses.rejected
       ordering: 400
       code: rejected
@@ -601,8 +601,33 @@ models:
   project:
   - &project1
     title_multiloc:
-      en-GB: Test project 1
-      nl-BE: Test project 1
+      en-GB: Test project 1 timeline with file
+      nl-BE: Test project 1 timeline with file
+    description_multiloc:
+      en-GB: "<p>Let's renew the parc at the city border and make it an enjoyable place
+        for young and old.</p>"
+      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
+        plek van maken, voor jong en oud.</p>"
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    description_preview_multiloc:
+      en-GB: Let's renew the parc at the city border.
+      nl-BE: Laten we het park op de grend van de stad vernieuwen.
+    presentation_mode: card
+    participation_method: ideation
+    process_type: timeline
+    internal_role:
+    publication_status: published
+    created_at: '2018-03-28 13:35:04'
+    updated_at: '2018-03-28 13:35:04'
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+  - &project2
+    title_multiloc:
+      en-GB: Test project 2 timeline
+      nl-BE: Test project 2 timeline
     description_multiloc:
       en-GB: "<p>Let's renew the parc at the city border and make it an enjoyable place
         for young and old.</p>"
@@ -640,8 +665,8 @@ models:
   - &121
     id: '3dd0206b-1956-4685-bddf-b3c34d2c79f3'
     title_multiloc:
-      en-GB: Sit voluptas sint aliquid quia aut nihil eos.
-      nl-BE: Officia ratione eum quo.
+      en-GB: Continuous ideation map
+      nl-BE: Continuous ideation map
     description_multiloc:
       en-GB: "<p>Let's renew the parc at the city border and make it an enjoyable place
         for young and old.</p>"
@@ -662,10 +687,58 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 7
+  - &verifiedIdeation
+    title_multiloc:
+      en-GB: Verified Ideation
+      nl-BE: Verified Ideation
+    description_multiloc:
+      en-GB: "<p>Let's renew the parc at the city border and make it an enjoyable place
+        for young and old.</p>"
+      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
+        plek van maken, voor jong en oud.</p>"
+    description_preview_multiloc:
+      en-GB: Let's renew the parc at the city border.
+      nl-BE: Laten we het park op de grend van de stad vernieuwen.
+    presentation_mode: card
+    participation_method: ideation
+    process_type: continuous
+    publication_status: published
+    created_at: '2018-03-28 13:35:06'
+    updated_at: '2018-03-28 13:35:06'
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+  - id: '3dd0206b-1956-4685-bddf-d768c79f3'
+    title_multiloc:
+      en-GB: Continuous survey
+      nl-BE: Continuous survey
+    description_multiloc:
+      en-GB: "<p>Let's renew the parc at the city border and make it an enjoyable place
+        for young and old.</p>"
+      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
+        plek van maken, voor jong en oud.</p>"
+    description_preview_multiloc:
+      en-GB: Let's renew the parc at the city border.
+      nl-BE: Laten we het park op de grend van de stad vernieuwen.
+    presentation_mode: map
+    participation_method: survey
+    process_type: continuous
+    internal_role:
+    publication_status: published
+    created_at: '2018-03-28 13:35:06'
+    updated_at: '2018-03-28 13:35:06'
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 7
+    survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
+    survey_service: typeform
   - &90
     title_multiloc:
-      en-GB: Ea quas cupiditate tenetur delectus aliquam.
-      nl-BE: Mollitia est alias et dignissimos quibusdam dolorum autem.
+      en-GB: Timeline ideation map
+      nl-BE: Timeline ideation map
     description_multiloc:
       en-GB: "<p>Let's renew the parc at the city border and make it an enjoyable place
         for young and old.</p>"
@@ -688,8 +761,8 @@ models:
     voting_limited_max: 10
   - &85
     title_multiloc:
-      en-GB: Voluptas enim iusto sed nostrum.
-      nl-BE: Quia unde est itaque accusantium.
+      en-GB: Timeline ideation card
+      nl-BE: Timeline ideation card
     description_multiloc:
       en-GB: "<p>Let's renew the parc at the city border and make it an enjoyable place
         for young and old.</p>"
@@ -712,8 +785,8 @@ models:
     voting_limited_max: 10
   - &66
     title_multiloc:
-      en-GB: Sunt ut iure ad.
-      nl-BE: Harum natus sint velit nobis.
+      en-GB: Archived project
+      nl-BE: Archived project
     description_multiloc:
       en-GB: "<p>Let's renew the parc at the city border and make it an enjoyable place
         for young and old.</p>"
@@ -729,83 +802,6 @@ models:
     publication_status: archived
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
-  - &1453
-    title_multiloc:
-      nl-BE: 'Omgevingsanalyse / Meerjarenplan: een gefaseerde aanpak'
-    description_multiloc:
-      nl-BE: |-
-        <p><em>Bent u al begonnen met de opmaak van een Omgevingsanalyse of het Meerjarenplan 2020-2025? Dat kan vandaag al, laagdrempelig, overzichtelijk en zonder veel extra inspanningen. Hou het in een eerste fase intern en open na de verkiezingen naar een grote publiek. </em></p>
-        <p></p>
-        <p><strong>Hoe ga je van start met een intern inspraaktraject (korte of lange termijn): </strong></p>
-        <ul>
-          <li>een e-maillijst van het personeel dat je wilt betrekken bij het proces. Die voegen wij toe aan het platform. </li>
-          <li>het opzetten van één of verschillende 'projecten' die enkel toegankelijk zijn door de mensen uit deze lijst (via 'Machtigingen')</li>
-          <li>ondertussen kunnen ook andere mensen zich blijven inloggen op het platform en andere projecten volgen, maar krijgen ze dus geen toegang tot de 'interne' projecten </li>
-          <li>hoe die 'interne' projecten vormgegeven worden hangt af van de invulling van de soort interne bevraging die jullie verkiezen: een project in verschillende fases, met 'vaste ideeën' waarop mensen kunnen en/of stemmen en/of reageren. Of je kiest voor een project met een eerste fase waarin mensen vrije ideeën kunnen plaatsen, en dan een tweede 'gesloten' fase, waarin mensen enkel kunnen reageren. Ik gaf hier al even een voorbeeld. </li>
-          <li>de 'vaste ideeën' kunnen de SDG's zijn of thema's op basis van de DESTEP (<a href="https://www.citizenlab.co/blog/burgerparticipatie-nl/online-platform-vergemakkelijkt-inspraak-bij-omgevingsanalyse/?lang=nl">zie artikel</a> ).</li>
-          <li>van zodra de 'interne fase' voorbij is, creëren we een nieuw 'open' project en maken we een selectie van ideeën (vast of los) die we verslepen naar dat nieuwe project. Dat open project kan dan (bijvoorbeeld vanaf november, na #vk2018)?   </li>
-        </ul>
-    description_preview_multiloc:
-      nl-BE: 'Bent u al begonnen met de opmaak van een Omgevingsanalyse of het Meerjarenplan
-        2020-2025? Dat kan vandaag al, laagdrempelig, overzichtelijk en zonder veel
-        extra inspanningen. Hou het in een eerste fase intern en open na de verkiezingen
-        naar een grote publiek. '
-    presentation_mode: card
-    participation_method: ideation
-    process_type: timeline
-    internal_role:
-    publication_status: published
-    created_at: '2018-03-28 13:58:17'
-    updated_at: '2018-03-28 13:58:17'
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
-  - &71
-    title_multiloc:
-      nl-BE: 'RUP: inspraak vanaf startnota tot openbaar onderzoek'
-    description_multiloc:
-      nl-BE: |-
-        <p><strong>Modaliteiten bepaald bij besluit van de Vlaamse Regering</strong></p>
-        <p></p>
-        <p>Op vrijdag 17 februari 2017 keurde de Vlaamse Regering een uitvoeringsbesluit goed dat bij dit decreet hoort.</p>
-        <p>Het uitvoeringsbesluit regelt onder meer:</p>
-        <ul>
-          <li>De terbeschikkingstelling van de documenten aan alle betrokken actoren via een digitaal platform.</li>
-          <li>De inspraak tijdens de verschillende fasen van het geïntegreerde planningsproces.</li>
-          <li>Welke adviesinstanties betrokken moeten worden in het geïntegreerde planningsproces voor het RUP en in eventuele effectbeoordelingen.</li>
-        </ul>
-        <p>Het uitvoeringsbesluit legt ook <strong>de inwerkingtreding van het decreet vast; namelijk 1 mei 2017</strong>. Planningsprocessen moeten vanaf die datum de nieuwe procedure volgen.</p>
-        <h4><strong>Reacties op het RUP</strong></h4>
-        <p>Tijdens de periode van de raadpleging, en eigenlijk al vanaf de opmaak van de startnota, kan iedereen reacties indienen. Dit kan op de volgende drie manieren:</p>
-        <ol>
-          <li>Via dit platform, door op 'Lanceer je idee' te klikken, of door te reageren op de reeds toegevoegde ideeën.</li>
-          <li>Door een aangetekende brief te sturen naar het College van xx.</li>
-          <li><a href="https://www.lommel.be/eloketdetail/162/reacties-rup-hertog-jansite"><u><strong>Via dit formulier</strong></u></a></li>
-          <li>Door opmerkingen af te geven tegen ontvangstbewijs bij de dienst Ruimtelijke Planning en XX. </li>
-        </ol>
-        <p>Achtergrondinfo:</p>
-        <p><strong>WIJZIGINGSDECREET EN UITVOERINGSBESLUIT</strong></p>
-        <p>Op 1 juli 2016 bekrachtigde de Vlaamse Regering een decreet waardoor de planmilieueffectrapportage en andere effectbeoordelingen in het planningsproces van een ruimtelijk uitvoeringsplan geïntegreerd worden.</p>
-        <p>De gewijzigde regelgeving sluit hierdoor inhoudelijke en procedurele inconsistenties uit die optreden bij de overgang van de milieueffectrapportage naar het planproces. Bovendien beoogt de nieuwe procedure een versterking van het draagvlak voor de ruimtelijke uitvoeringsplannen door een consultatie bij het begin van het planningsproces en een openbaar onderzoek op het einde.</p>
-        <p></p>
-    description_preview_multiloc:
-      nl-BE: 'Het stadsbestuur wil graag de mening van de bevolking kennen over het ruimtelijk
-        uitvoeringsplan (RUP) “XYZ” in onze gemeente/stad dat in opmaak is. Op verschillende
-        momenten is hier inspraak mogelijk. Hier kun je alles volgen en reageren. '
-    presentation_mode: card
-    participation_method: ideation
-    process_type: timeline
-    internal_role:
-    publication_status: published
-    created_at: '2018-03-28 13:57:56'
-    updated_at: '2018-03-28 13:57:56'
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
@@ -850,24 +846,6 @@ models:
     published_at: '2018-03-03 00:00:00'
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-  - &221
-    title_multiloc:
-      en-GB: Veritatis expedita quos tempora repellendus assumenda eligendi cupiditate
-        sed.
-      nl-BE: Repellat sed ut sunt expedita sit quas.
-    body_multiloc:
-      nl-BE: "<p>Perspiciatis accusamus voluptatem quo repellat. Dolores accusantium
-        non et alias quia expedita mollitia. Et molestiae ipsum.</p><p>Ipsam tempore
-        excepturi assumenda. Ipsum facilis iure molestiae. Saepe est est.</p><p>Assumenda
-        dignissimos sunt magnam. Eaque nihil aperiam dolore hic error. Ullam voluptas
-        incidunt cum voluptatem.</p>"
-    publication_status: published
-    project_ref: *71
-    author_ref: *admin
-    location_description: 39312 Abdullah Shoals
-    published_at: '2018-03-28 00:00:00'
-    created_at: '2017-12-28 00:00:00'
-    updated_at: '2018-03-28 14:03:10'
   - &198
     title_multiloc:
       nl-BE: Quia saepe possimus quo nesciunt doloribus.
@@ -1145,25 +1123,6 @@ models:
     published_at: '2018-02-18 00:00:00'
     created_at: '2017-10-27 00:00:00'
     updated_at: '2018-03-28 13:35:17'
-  - &346
-    title_multiloc:
-      nl-BE: Consequatur quaerat cumque necessitatibus.
-    body_multiloc:
-      nl-BE: "<p>Enim inventore laboriosam et. Porro dolores laudantium. Est magnam alias
-        minima odio voluptatum consequatur voluptas. Totam et quaerat iusto.</p><p>Ducimus
-        qui natus unde voluptatem enim similique. Nemo similique tempora blanditiis
-        perferendis. Omnis quia nobis incidunt. Nesciunt eligendi id ea placeat voluptas
-        velit deleniti. Libero officiis ut eveniet ad expedita rerum.</p><p>Enim nobis
-        rerum quia voluptatem. Ullam repellat pariatur veritatis omnis et ab. Modi
-        aperiam voluptatem nesciunt tempore architecto autem omnis. Architecto et
-        quisquam.</p>"
-    publication_status: published
-    project_ref: *71
-    author_ref: *139
-    location_description:
-    published_at: '2018-02-15 00:00:00'
-    created_at: '2017-12-05 00:00:00'
-    updated_at: '2018-03-28 14:04:38'
   - &388
     title_multiloc:
       nl-BE: Delectus consectetur sit natus.
@@ -1183,24 +1142,6 @@ models:
     published_at: '2018-02-13 00:00:00'
     created_at: '2018-01-07 00:00:00'
     updated_at: '2018-03-28 13:35:18'
-  - &336
-    title_multiloc:
-      en-GB: Illo omnis animi quisquam voluptate.
-    body_multiloc:
-      nl-BE: "<p>Eveniet dolorem ad repellendus occaecati voluptate. Aliquid non minus.
-        Excepturi amet facere.</p><p>Omnis reprehenderit mollitia quas ipsum sapiente.
-        Consequatur repellat quasi rem deserunt et voluptas. Earum dolores non harum
-        occaecati qui. Natus et est dolores.</p><p>Amet a magnam soluta quae distinctio
-        cupiditate. Illo distinctio aspernatur eum temporibus accusantium ea. Incidunt
-        hic ratione voluptatem. Sed laboriosam consequatur iure iste. Neque dolor
-        dolore consequatur non iure cum qui.</p>"
-    publication_status: published
-    project_ref: *71
-    author_ref: *admin
-    location_description:
-    published_at: '2018-03-11 00:00:00'
-    created_at: '2018-02-20 00:00:00'
-    updated_at: '2018-03-28 14:04:06'
   - &443
     title_multiloc:
       nl-BE: Minus consectetur qui repudiandae voluptates et nulla laboriosam.
@@ -1395,24 +1336,6 @@ models:
     published_at: '2018-01-23 00:00:00'
     created_at: '2017-12-10 00:00:00'
     updated_at: '2018-03-28 13:35:22'
-  - &1298
-    title_multiloc:
-      nl-BE: Et ut quam optio sunt.
-    body_multiloc:
-      en-GB: "<p>Nesciunt esse et soluta animi assumenda delectus rem. Et voluptate culpa
-        vel. Deleniti velit est. Id ex aut ut sit facilis sunt placeat. Aut aliquam
-        laboriosam ex officia.</p><p>Neque molestiae est similique repellat dolor.
-        Consectetur sunt quis tempora sed sit odit. Voluptas minima accusamus atque
-        ratione. Esse eius illo id sunt. Sequi sunt eveniet culpa est aut earum doloremque.</p><p>Mollitia
-        nihil ea et. Dolorem cum quo dolor. Provident sed quos explicabo. Saepe excepturi
-        iusto nisi. Fugit amet id doloremque dolor cupiditate.</p>"
-    publication_status: published
-    project_ref: *71
-    author_ref: *181
-    location_description: 85082 Florencio Circle
-    published_at: '2018-03-13 00:00:00'
-    created_at: '2017-08-13 00:00:00'
-    updated_at: '2018-03-28 14:03:55'
   - &449
     title_multiloc:
       en-GB: Facere autem molestias consequuntur inventore.
@@ -1689,98 +1612,6 @@ models:
     post_ref: *206
     created_at: '2018-03-27 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-  - body_multiloc:
-      en-GB: "<p>Explicabo eum voluptatem et vero quis. Qui aspernatur error deleniti
-        ad culpa. Aut perspiciatis ducimus velit ratione accusantium labore. Est ut
-        quam accusamus illo nisi. Voluptas mollitia veritatis numquam voluptas accusamus
-        consequuntur.</p><p>At ut sit totam maxime. Asperiores quod quas. Recusandae
-        cum est quis.</p><p>Voluptas voluptas itaque pariatur ut vel ullam. Aut dolor
-        perferendis nesciunt. Suscipit aut qui omnis. Quia adipisci ut hic in soluta.
-        Unde aut est deleniti.</p>"
-      nl-BE: "<p>Inventore totam quia ab. Ut dolor nihil ipsam autem fugit tempore illo.
-        Id architecto adipisci quia.</p><p>Quas et non temporibus nostrum qui in.
-        Laboriosam minima voluptatibus cum dolorem. Error consequatur ratione odio
-        similique ut qui.</p><p>Quaerat totam labore esse inventore saepe velit omnis.
-        Molestiae est mollitia. Temporibus laboriosam ut odit. Nesciunt aliquam aspernatur
-        dolor.</p>"
-    author_ref: *194
-    post_ref: *221
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:11'
-  - &228
-    body_multiloc:
-      en-GB: "<p>Facilis non possimus alias. Soluta veritatis doloremque quia. Repellat
-        doloremque molestiae dolor expedita voluptatem.</p><p>Animi perspiciatis vel
-        rerum. Sequi ut et. Consequatur dicta possimus repellat nihil illum magnam
-        maiores. Illo qui at. Ducimus et nam labore.</p><p>Et ut est id et. Eligendi
-        aut ab eveniet natus. Ut iure sapiente sint dolor voluptas. Veniam quo aliquid
-        voluptatem. Ipsam est eius quos impedit unde.</p>"
-      nl-BE: "<p>Accusamus ipsa accusantium voluptatem asperiores consequatur ut. Itaque
-        quia in eum ut iure atque. Praesentium non labore facere.</p><p>Sequi dolore
-        sint. Neque quae inventore animi facilis minus quo aliquid. Laudantium cumque
-        dolore molestias. Qui omnis et fuga ratione.</p><p>Officiis nesciunt praesentium
-        rerum. Voluptatum sequi deleniti sed dolore vitae voluptatem. Et quae consectetur
-        deleniti laboriosam iste. Incidunt et rerum facilis eos.</p>"
-    author_ref: *moderator
-    post_ref: *221
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:11'
-  - body_multiloc:
-      en-GB: "<p>Itaque delectus reprehenderit. Accusantium sunt sed. Magni iste quia
-        hic et voluptatibus velit fugiat.</p><p>Alias voluptatem laboriosam architecto
-        nesciunt. Qui et quam est qui architecto. Maxime nesciunt ea doloribus blanditiis
-        saepe sint rerum. Aut voluptatem natus minima fuga.</p><p>Aspernatur qui dolorem
-        non ipsum quis fuga molestiae. Iste laudantium repellendus mollitia error
-        officia. Sed explicabo molestias nesciunt et. Quia veritatis facere eos. Aliquam
-        molestiae ad est quis illum.</p>"
-      nl-BE: "<p>Aut rerum nesciunt minima quia ut magnam. Aspernatur consequatur non
-        possimus. Dolor qui perspiciatis placeat et. Sapiente voluptas impedit asperiores
-        quas quia. Dolore et velit quo facere porro.</p><p>Et tempora iste. Commodi
-        fugiat ex aspernatur est non omnis et. Modi aliquam corrupti magnam ullam
-        voluptatem. Est quae quos.</p><p>Nihil tempora aperiam alias molestiae. Quia
-        repellat illum. Dolorem eveniet labore illum quam. Voluptas vero repudiandae
-        sed nemo accusantium sapiente cumque.</p>"
-    author_ref: *mortal3
-    post_ref: *221
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:11'
-    parent_ref: *228
-  - &233
-    body_multiloc:
-      en-GB: "<p>Accusantium reiciendis illo ratione omnis officia. Reiciendis labore
-        omnis exercitationem et non ut ea. Ut nobis fugiat voluptatibus recusandae.
-        Quo numquam accusantium id inventore qui molestias.</p><p>Eveniet officia
-        quaerat sunt aut esse magni. Eaque et unde. Ad velit ut.</p><p>Fugit ut non
-        amet. Amet nam et nostrum enim similique quas assumenda. Ex natus est. Cumque
-        officiis voluptatem voluptas. Eos optio beatae ut enim praesentium corrupti.</p>"
-      nl-BE: "<p>Impedit animi consequatur. Eligendi in unde sequi. Aspernatur quae sint
-        repudiandae. Modi quos molestiae ipsum quia recusandae voluptas reprehenderit.
-        Deleniti totam saepe beatae.</p><p>Fugiat ut dolores. Quos quidem qui ipsa.
-        Repudiandae sunt et asperiores eum.</p><p>Et illum aliquam dolorum. Sed expedita
-        consectetur sunt enim ut. Et quis nam ut.</p>"
-    author_ref: *94
-    post_ref: *221
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:11'
-  - body_multiloc:
-      en-GB: "<p>Tempora pariatur officiis. Optio soluta autem quam qui fugit. Praesentium
-        ut neque. Dolor eveniet corrupti repudiandae rem magnam velit. Accusamus deleniti
-        ut ipsa praesentium consequatur deserunt est.</p><p>Vel fugiat eaque ut maiores
-        facere. Minus atque voluptatem doloremque qui. Quisquam aut iure sit qui nisi
-        dignissimos. Ex suscipit est praesentium eveniet. Corrupti quasi aliquid occaecati
-        magnam vitae qui earum.</p><p>Mollitia ullam ducimus ratione tempora officia.
-        Veritatis dolorem in et sed. Blanditiis eveniet et possimus temporibus. Vitae
-        accusantium corrupti et quia et est incidunt.</p>"
-      nl-BE: "<p>Natus et sint ut. Voluptatem maxime ullam modi eligendi eos dolores.
-        Explicabo magni aliquid.</p><p>Eos qui aut nihil iusto officia atque numquam.
-        Non itaque voluptatibus tempore et autem praesentium saepe. Optio qui iste
-        quos assumenda hic. Qui explicabo ex id nulla.</p><p>Laudantium sequi vel
-        doloribus enim. Ut eaque fugiat ut eum id sit odio. Aspernatur ratione libero.</p>"
-    author_ref: *163
-    post_ref: *221
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:11'
-    parent_ref: *233
   - body_multiloc:
       en-GB: "<p>Odit nulla voluptatibus cupiditate architecto. Sunt nam ipsum maxime
         rem. Nisi sit dolor voluptates quia saepe et ut. Nemo et occaecati voluptatem
@@ -2529,135 +2360,6 @@ models:
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:15'
     parent_ref: *335
-  - body_multiloc:
-      en-GB: "<p>Sunt dolores recusandae rerum et accusamus. Rerum doloribus culpa dolor
-        expedita at voluptas. Eos qui libero dolor illo. Accusantium quisquam aut.</p><p>Quia
-        tempora molestiae tenetur in ducimus iusto omnis. Dolore ea asperiores inventore
-        perspiciatis et sunt saepe. Ducimus aspernatur porro qui doloremque suscipit
-        accusamus voluptatem. Consectetur fugiat fuga. Ipsam accusantium minima tempora
-        tenetur odit accusamus doloribus.</p><p>Praesentium eveniet qui dolor aperiam
-        voluptatem amet. Natus nesciunt numquam repudiandae. Voluptas qui rerum vel
-        qui facere doloremque placeat. Fugit qui aut similique ut quasi architecto
-        rerum. Ut a facere consequatur quasi quod.</p>"
-      nl-BE: "<p>Cupiditate corporis adipisci. Magnam tempora sapiente voluptatibus dignissimos
-        et. Tempore aut totam laudantium nemo.</p><p>Exercitationem consequatur aut
-        accusamus ut. Odit quis dignissimos sit. Vero aperiam ex beatae. Vel facilis
-        et.</p><p>Ut natus perferendis. Laborum odio pariatur ea. Porro commodi rem
-        enim voluptatem vero sit. Ducimus sed et sint esse ut.</p>"
-    author_ref: *102
-    post_ref: *336
-    created_at: '2018-03-13 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-  - &343
-    body_multiloc:
-      en-GB: "<p>Et quasi velit. Tempore laudantium voluptatem nihil numquam quas aut.
-        Ea aut animi fugit ab.</p><p>Non voluptatibus et impedit incidunt. Similique
-        nobis ea voluptates et. Non perspiciatis ut. Non amet officia magni adipisci
-        enim velit quia.</p><p>Molestiae aut ullam et voluptatem. Tempora quae ab
-        et autem rerum esse. Consectetur ut aliquid.</p>"
-      nl-BE: "<p>Corporis fugit qui. Necessitatibus et hic molestias dolores nostrum.
-        Eligendi et dolore sit aut iste. Eos at amet enim. Reiciendis sint quo totam
-        ut sit quo.</p><p>In nam soluta ipsam ut. Esse quos alias rerum libero. Non
-        eius in sed ut similique. Modi est qui facere voluptatibus distinctio aut
-        laudantium.</p><p>Quia aut nisi. Hic qui eveniet. Ipsa quam deserunt voluptatem
-        sunt ea non.</p>"
-    author_ref: *159
-    post_ref: *336
-    created_at: '2018-03-18 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-  - body_multiloc:
-      en-GB: "<p>Adipisci sapiente provident exercitationem modi est accusamus aut. Voluptatem
-        omnis natus ratione enim eaque. Et et porro dolorem non saepe eos.</p><p>Vitae
-        ut mollitia et voluptatibus veritatis. Alias quaerat molestiae excepturi voluptatibus
-        recusandae. Tempora dignissimos dolorem eum. Mollitia blanditiis veniam et
-        autem sequi. Est dignissimos et modi sit et.</p><p>Perspiciatis voluptatem
-        eveniet cupiditate ipsa consequuntur. Et dolores odio. Qui velit sit numquam.
-        Unde incidunt soluta placeat.</p>"
-      nl-BE: "<p>Facilis eius ipsam quia saepe eum. Est aliquid adipisci. Nihil odit
-        atque. Voluptates et blanditiis quia.</p><p>Possimus et omnis animi. Pariatur
-        at commodi. Autem expedita aut amet aut est. Sit quae neque eum ea nulla ut.</p><p>Quasi
-        id sed laborum sapiente. Laudantium et occaecati temporibus tenetur incidunt.
-        Laboriosam sed voluptate fugiat. Explicabo minus nulla at quaerat. Optio perspiciatis
-        labore ipsa.</p>"
-    author_ref: *102
-    post_ref: *336
-    created_at: '2018-03-23 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-    parent_ref: *343
-  - body_multiloc:
-      en-GB: "<p>Magnam corporis quia ut facilis ut. Doloribus consequatur aperiam omnis
-        repudiandae. Nobis fugiat cumque dolorem placeat. Est ut unde laboriosam accusamus
-        inventore sequi. Voluptas autem est.</p><p>Sed perferendis quos et. Harum
-        veritatis aut. Officia sapiente est labore sit dolor.</p><p>Sunt ab deserunt
-        eos. Excepturi sequi non et qui illo. Aut hic ab possimus rerum. Sed harum
-        laborum architecto voluptatum.</p>"
-      nl-BE: "<p>Et saepe in quis ipsam id iusto doloremque. Occaecati voluptatem qui
-        vitae consequuntur. Iste quo beatae sit repudiandae consectetur qui modi.
-        Assumenda nesciunt et autem quisquam odio non. Dolores sequi ad culpa.</p><p>Vel
-        vel molestias possimus asperiores est voluptatem harum. Doloribus harum soluta
-        vel quia. Officiis neque quis tenetur quae. Id dolores nostrum laborum quos.</p><p>Adipisci
-        iusto eaque qui. Iste fugiat corporis quibusdam temporibus beatae harum. Aut
-        sit deserunt repudiandae consequatur saepe placeat.</p>"
-    author_ref: *114
-    post_ref: *336
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-  - body_multiloc:
-      en-GB: "<p>Qui voluptas sint. Quis ex cumque aliquid iste. Ut et et esse nulla
-        dignissimos rerum. Quis neque dolores.</p><p>Quidem esse velit impedit rerum
-        eum debitis. Qui eaque iure. Magni rem et ut voluptas eius. Et perferendis
-        qui excepturi iste velit. Libero ex quis veniam quam.</p><p>Est unde veniam
-        id et ut. Corrupti commodi eveniet dignissimos autem aliquam quia et. Dolorem
-        sint mollitia occaecati ad quo placeat. Doloribus et eveniet consequatur voluptas
-        sunt repellendus animi.</p>"
-      nl-BE: "<p>Ut est ut ut. Nihil necessitatibus qui voluptatum quas voluptatem. Recusandae
-        facere exercitationem et voluptas corporis eveniet qui. Est aliquam rerum
-        ipsum maiores. Porro optio sed aut commodi pariatur suscipit.</p><p>Ut quas
-        consequatur iusto quia repellendus enim. Temporibus expedita consectetur.
-        Veniam vero consequatur dolores.</p><p>Aut dolor odio nulla est ipsum. Reprehenderit
-        fugit ipsam consequuntur. Perferendis rerum minus distinctio eveniet. Et rerum
-        velit commodi cum.</p>"
-    author_ref: *110
-    post_ref: *346
-    created_at: '2018-03-27 00:00:00'
-    updated_at: '2018-03-28 13:35:16'
-  - &353
-    body_multiloc:
-      en-GB: "<p>Ipsum laudantium repudiandae. Reiciendis aperiam quia eligendi. Dolorum
-        pariatur in. Sint illo ad perspiciatis recusandae et voluptatem.</p><p>Et
-        esse magnam eius velit. Provident voluptates hic iusto id cumque consequatur
-        ut. Nostrum ut quasi. Dolor ex architecto temporibus sint sequi aut.</p><p>Voluptatem
-        molestias qui est aperiam magni aut maiores. Et quam aut nisi. Ipsam ut autem
-        facere dolore maxime mollitia et.</p>"
-      nl-BE: "<p>Non modi consectetur aut. Provident accusantium recusandae et molestias.
-        Est laboriosam mollitia.</p><p>Tempora dolorem a provident voluptates voluptas
-        quo adipisci. Quisquam ut est odit. Quos id repudiandae et.</p><p>Qui ut sapiente
-        doloribus nobis velit molestiae enim. Porro sed commodi molestias occaecati
-        aperiam. Et repudiandae est. Nihil eligendi architecto quibusdam tempora sit
-        velit quod. Fuga saepe quas.</p>"
-    author_ref: *mortal3
-    post_ref: *346
-    created_at: '2018-03-02 00:00:00'
-    updated_at: '2018-03-28 13:35:16'
-  - body_multiloc:
-      en-GB: "<p>Corrupti repellendus commodi possimus. Ipsum velit quidem porro. Dolor
-        quae qui aspernatur quisquam totam ut eos.</p><p>Et sint praesentium rerum
-        quia harum. Laborum inventore culpa ducimus. Amet optio qui fugiat doloribus
-        voluptatem. Et et placeat ipsum.</p><p>Molestiae doloribus ea doloremque.
-        Nobis quia ut vitae quo adipisci numquam. Ut sit fugiat maxime ad nesciunt
-        minima. Sit delectus tempore.</p>"
-      nl-BE: "<p>Voluptatum dolor qui quas quod voluptate quos. Culpa a reprehenderit
-        eveniet autem sit repudiandae consequuntur. Qui sint error. Aut soluta laborum
-        itaque est aut. Officiis perferendis saepe ab est asperiores.</p><p>Eaque
-        reiciendis nulla illum enim dicta. Ratione commodi ducimus modi. Hic dolores
-        aut nihil. Eaque minus ratione quam dolor quidem mollitia.</p><p>Animi similique
-        nemo voluptatum. Ut in repellat inventore ut provident qui. Officia iusto
-        excepturi aspernatur.</p>"
-    author_ref: *143
-    post_ref: *346
-    created_at: '2018-03-04 00:00:00'
-    updated_at: '2018-03-28 13:35:16'
-    parent_ref: *353
   - &359
     body_multiloc:
       en-GB: "<p>Autem blanditiis praesentium architecto. Excepturi sequi nesciunt rerum
@@ -3848,96 +3550,6 @@ models:
     updated_at: '2018-03-28 13:35:10'
     votable_ref: *206
   - mode: up
-    user_ref: *mortal2
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: down
-    user_ref: *mortal3
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: up
-    user_ref: *94
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: up
-    user_ref: *102
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: up
-    user_ref: *174
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: down
-    user_ref: *139
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: up
-    user_ref: *86
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: down
-    user_ref: *98
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: up
-    user_ref: *110
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: down
-    user_ref: *114
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: down
-    user_ref: *163
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: up
-    user_ref: *181
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: up
-    user_ref: *77
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: up
-    user_ref: *67
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:10'
-    votable_ref: *221
-  - mode: down
-    user_ref: *moderator
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:11'
-    votable_ref: *221
-  - mode: up
     user_ref: *admin
     votable_type: Idea
     created_at: '2018-03-19 00:00:00'
@@ -4915,120 +4527,6 @@ models:
     created_at: '2018-03-12 00:00:00'
     updated_at: '2018-03-28 13:35:15'
     votable_ref: *328
-  - mode: up
-    user_ref: *mortal1
-    votable_type: Idea
-    created_at: '2018-03-11 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-    votable_ref: *336
-  - mode: up
-    user_ref: *mortal2
-    votable_type: Idea
-    created_at: '2018-03-12 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-    votable_ref: *336
-  - mode: down
-    user_ref: *94
-    votable_type: Idea
-    created_at: '2018-03-18 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-    votable_ref: *336
-  - mode: up
-    user_ref: *194
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-    votable_ref: *336
-  - mode: up
-    user_ref: *139
-    votable_type: Idea
-    created_at: '2018-03-17 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-    votable_ref: *336
-  - mode: up
-    user_ref: *86
-    votable_type: Idea
-    created_at: '2018-03-28 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-    votable_ref: *336
-  - mode: up
-    user_ref: *98
-    votable_type: Idea
-    created_at: '2018-03-16 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-    votable_ref: *336
-  - mode: up
-    user_ref: *110
-    votable_type: Idea
-    created_at: '2018-03-24 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-    votable_ref: *336
-  - mode: up
-    user_ref: *114
-    votable_type: Idea
-    created_at: '2018-03-14 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-    votable_ref: *336
-  - mode: up
-    user_ref: *moderator
-    votable_type: Idea
-    created_at: '2018-03-15 00:00:00'
-    updated_at: '2018-03-28 13:35:15'
-    votable_ref: *336
-  - mode: up
-    user_ref: *admin
-    votable_type: Idea
-    created_at: '2018-02-19 00:00:00'
-    updated_at: '2018-03-28 13:35:16'
-    votable_ref: *346
-  - mode: down
-    user_ref: *mortal3
-    votable_type: Idea
-    created_at: '2018-03-10 00:00:00'
-    updated_at: '2018-03-28 13:35:16'
-    votable_ref: *346
-  - mode: down
-    user_ref: *94
-    votable_type: Idea
-    created_at: '2018-03-22 00:00:00'
-    updated_at: '2018-03-28 13:35:16'
-    votable_ref: *346
-  - mode: up
-    user_ref: *194
-    votable_type: Idea
-    created_at: '2018-03-01 00:00:00'
-    updated_at: '2018-03-28 13:35:16'
-    votable_ref: *346
-  - mode: up
-    user_ref: *174
-    votable_type: Idea
-    created_at: '2018-03-06 00:00:00'
-    updated_at: '2018-03-28 13:35:16'
-    votable_ref: *346
-  - mode: up
-    user_ref: *139
-    votable_type: Idea
-    created_at: '2018-03-03 00:00:00'
-    updated_at: '2018-03-28 13:35:16'
-    votable_ref: *346
-  - mode: down
-    user_ref: *86
-    votable_type: Idea
-    created_at: '2018-02-19 00:00:00'
-    updated_at: '2018-03-28 13:35:16'
-    votable_ref: *346
-  - mode: up
-    user_ref: *98
-    votable_type: Idea
-    created_at: '2018-03-23 00:00:00'
-    updated_at: '2018-03-28 13:35:16'
-    votable_ref: *346
-  - mode: down
-    user_ref: *163
-    votable_type: Idea
-    created_at: '2018-02-18 00:00:00'
-    updated_at: '2018-03-28 13:35:16'
-    votable_ref: *346
   - mode: up
     user_ref: *admin
     votable_type: Idea
@@ -6079,84 +5577,6 @@ models:
     created_at: '2017-11-11 00:00:00'
     updated_at: '2018-03-28 13:35:22'
     votable_ref: *449
-  - mode: down
-    user_ref: *admin
-    votable_type: Idea
-    created_at: '2018-03-16 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
-  - mode: up
-    user_ref: *94
-    votable_type: Idea
-    created_at: '2018-03-27 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
-  - mode: up
-    user_ref: *194
-    votable_type: Idea
-    created_at: '2018-03-20 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
-  - mode: up
-    user_ref: *143
-    votable_type: Idea
-    created_at: '2018-03-21 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
-  - mode: down
-    user_ref: *102
-    votable_type: Idea
-    created_at: '2018-03-26 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
-  - mode: down
-    user_ref: *139
-    votable_type: Idea
-    created_at: '2018-03-20 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
-  - mode: up
-    user_ref: *98
-    votable_type: Idea
-    created_at: '2018-03-23 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
-  - mode: up
-    user_ref: *110
-    votable_type: Idea
-    created_at: '2018-03-18 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
-  - mode: down
-    user_ref: *159
-    votable_type: Idea
-    created_at: '2018-03-14 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
-  - mode: up
-    user_ref: *114
-    votable_type: Idea
-    created_at: '2018-03-13 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
-  - mode: down
-    user_ref: *163
-    votable_type: Idea
-    created_at: '2018-03-27 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
-  - mode: down
-    user_ref: *67
-    votable_type: Idea
-    created_at: '2018-03-25 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
-  - mode: up
-    user_ref: *moderator
-    votable_type: Idea
-    created_at: '2018-03-22 00:00:00'
-    updated_at: '2018-03-28 13:35:23'
-    votable_ref: *1298
   - mode: up
     user_ref: *admin
     votable_type: Idea
@@ -6409,9 +5829,10 @@ models:
   - remote_image_url: http://test.hanvecforum.fr/wp-content/uploads/2015/11/covoiturage2.jpg
     initiative_ref: *initiative1
   phase:
-  - title_multiloc:
-      en-GB: Quidem corrupti et ab ducimus ratione saepe illo doloribus.
-      nl-BE: Et illum repudiandae quia iusto consequatur est.
+  - &project1current
+    title_multiloc:
+      en-GB: Current phase
+      nl-BE: Current phase
     description_multiloc:
       en-GB: "<p>Qui quidem sed inventore in nobis reprehenderit odit. Reiciendis quo
         dolorem. Non incidunt soluta ut quae possimus. Libero sunt ullam.</p><p>Sit
@@ -6426,10 +5847,8 @@ models:
         rerum. Autem deleniti exercitationem non qui eligendi et. Similique iste dolorem
         labore. Corporis nisi voluptatem doloribus laborum.</p>"
     project_ref: *project1
-    start_at_timediff: -1440 # 24*60
-    # start_at: 2018-02-13
-    end_at_timediff: 1440 # 24*60
-    # end_at: 2018-02-28
+    start_at_timediff: -1440
+    end_at_timediff: 1440
     participation_method: ideation
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
@@ -6438,9 +5857,10 @@ models:
     voting_enabled: true
     voting_method: limited
     voting_limited_max: 12
-  - title_multiloc:
-      en-GB: Cum mollitia voluptatum est voluptas voluptatem eos.
-      nl-BE: Ea illum est nemo eaque dolores facere vel ut.
+  - &project1pastIdeation
+    title_multiloc:
+      en-GB: Past ideation
+      nl-BE: Past ideation
     description_multiloc:
       en-GB: "<p>Suscipit et dolorem expedita aut quae. Qui ut a nam tempora voluptatem
         nihil. Dolores voluptatem fugiat et totam officiis. Accusantium perspiciatis
@@ -6457,8 +5877,8 @@ models:
         Eligendi labore et aut veritatis nisi dolore vel. Modi suscipit explicabo
         nihil.</p>"
     project_ref: *project1
-    start_at: 2018-03-01
-    end_at: 2018-03-07
+    start_at_timediff: -4320
+    end_at_timediff: -2880
     participation_method: ideation
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
@@ -6467,9 +5887,41 @@ models:
     voting_enabled: false
     voting_method: unlimited
     voting_limited_max: 3
-  - title_multiloc:
-      en-GB: Maxime perspiciatis eum sint est ut at sed aut.
-      nl-BE: Ducimus debitis est quam cum alias eum laborum.
+  - &project1pastSurvey
+    title_multiloc:
+      en-GB: Past survey
+      nl-BE: Past survey
+    description_multiloc:
+      en-GB: "<p>Tempore quis fugiat. Accusantium ipsum dolore optio ab illum aperiam
+        doloremque. In voluptatem incidunt recusandae odio. Et incidunt maiores consequatur
+        at. Eos fugit nihil cum.</p><p>Quis libero tempore laudantium similique aliquid.
+        Necessitatibus aliquid fugiat in deserunt consequatur. Nihil earum quis ut
+        et ut molestiae reprehenderit. Quo voluptas ab ut eveniet.</p><p>Perspiciatis
+        non rem consectetur. Consequuntur voluptatum qui. Temporibus voluptas ea omnis
+        harum porro et. Temporibus quia voluptatem et aut quisquam laboriosam.</p>"
+      nl-BE: "<p>Nam voluptate non et. Et quod repellat quis est ipsa commodi aut. Nemo
+        illum labore error. Quos voluptas praesentium.</p><p>Distinctio placeat adipisci.
+        Ratione sit eius animi. Quis ex officiis dicta dolor et. Est autem maiores
+        molestiae enim.</p><p>Expedita est repellat quia et et ut inventore. Perspiciatis
+        fugit qui. Autem earum laudantium ut aut. Voluptates at ea dolores aliquam.
+        Magni asperiores molestiae doloremque minus fugit.</p>"
+    project_ref: *project1
+    start_at_timediff: -6226
+    end_at_timediff: -5978
+    participation_method: survey
+    created_at: '2018-03-28 13:35:05'
+    updated_at: '2018-03-28 13:35:05'
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 1
+    survey_service: google_forms
+    survey_embed_url: https://docs.google.com/forms/d/e/1FAIpQLSc4y8oV05wjBtr_Vanvk1PERxRd5wUFLMdgufi9wfTBigORbQ/viewform?embedded=true
+  - &project1pastPB
+    title_multiloc:
+      en-GB: Past pb
+      nl-BE: Past pb
     description_multiloc:
       en-GB: "<p>Nihil autem iusto fuga dicta earum officiis veritatis. Distinctio numquam
         ut consequatur sint est assumenda. Vel molestiae ea omnis dolores est ipsum.
@@ -6487,77 +5939,21 @@ models:
         porro cumque fugiat. Et ducimus saepe delectus odit quis. Nam ex omnis in
         consequatur modi porro atque. Dolor voluptas est architecto.</p>"
     project_ref: *project1
-    start_at: 2018-03-08
-    end_at: 2018-03-27
-    participation_method: ideation
+    start_at_timediff: -5678
+    end_at_timediff: -4760
+    participation_method: budgeting
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
-    posting_enabled: true
+    posting_enabled: false
     commenting_enabled: true
     voting_enabled: false
     voting_method: unlimited
     voting_limited_max: 10
-  - title_multiloc:
-      en-GB: Molestiae nemo cupiditate est fugiat temporibus.
-      nl-BE: Alias inventore rem voluptatem ullam ratione culpa aperiam.
-    description_multiloc:
-      en-GB: "<p>Tempore quis fugiat. Accusantium ipsum dolore optio ab illum aperiam
-        doloremque. In voluptatem incidunt recusandae odio. Et incidunt maiores consequatur
-        at. Eos fugit nihil cum.</p><p>Quis libero tempore laudantium similique aliquid.
-        Necessitatibus aliquid fugiat in deserunt consequatur. Nihil earum quis ut
-        et ut molestiae reprehenderit. Quo voluptas ab ut eveniet.</p><p>Perspiciatis
-        non rem consectetur. Consequuntur voluptatum qui. Temporibus voluptas ea omnis
-        harum porro et. Temporibus quia voluptatem et aut quisquam laboriosam.</p>"
-      nl-BE: "<p>Nam voluptate non et. Et quod repellat quis est ipsa commodi aut. Nemo
-        illum labore error. Quos voluptas praesentium.</p><p>Distinctio placeat adipisci.
-        Ratione sit eius animi. Quis ex officiis dicta dolor et. Est autem maiores
-        molestiae enim.</p><p>Expedita est repellat quia et et ut inventore. Perspiciatis
-        fugit qui. Autem earum laudantium ut aut. Voluptates at ea dolores aliquam.
-        Magni asperiores molestiae doloremque minus fugit.</p>"
-    project_ref: *project1
-    start_at: 2018-03-28
-    end_at: 2018-04-12
-    participation_method: ideation
-    created_at: '2018-03-28 13:35:05'
-    updated_at: '2018-03-28 13:35:05'
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 1
-  - title_multiloc:
-      en-GB: Molestias molestiae et cupiditate deleniti quis incidunt.
-      nl-BE: Doloremque et autem cupiditate delectus molestiae.
-    description_multiloc:
-      en-GB: "<p>Dolores omnis quae enim aut sapiente aperiam. Voluptates voluptatem
-        inventore ipsam sit vel quos minima. Tenetur et officiis consequatur optio
-        minus et ipsum. Placeat iusto error dolor quos sit et.</p><p>Ea laboriosam
-        iusto ut voluptates ex voluptatem. Qui occaecati voluptatem est corporis mollitia
-        quia. Omnis molestiae totam deserunt repellat id possimus. Amet perspiciatis
-        nobis in dolorem occaecati animi sunt. Harum blanditiis expedita et et voluptates
-        laboriosam ut.</p><p>Est ut eos quod. Aliquid quis omnis dolor corrupti et
-        non voluptas. Et officia iste.</p>"
-      nl-BE: "<p>Vero quis eveniet iusto. Nesciunt consequatur distinctio. Nemo quia
-        placeat. Excepturi nostrum omnis in aut.</p><p>Quia cumque dolorem ipsum et.
-        Dicta dignissimos consequatur beatae voluptatem. Id officiis qui repellendus
-        est accusamus distinctio esse. Placeat ea aut enim similique quisquam corporis
-        adipisci. Voluptates eum perspiciatis temporibus.</p><p>Consequatur iure accusantium
-        enim consectetur quas deleniti. Laborum temporibus dolor iste eaque soluta.
-        Consequatur beatae iste. Recusandae in quis.</p>"
-    project_ref: *project1
-    start_at: 2018-04-13
-    end_at: 2018-05-04
-    participation_method: ideation
-    created_at: '2018-03-28 13:35:05'
-    updated_at: '2018-03-28 13:35:05'
-    posting_enabled: true
-    commenting_enabled: false
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 1
-  - title_multiloc:
-      en-GB: Quo illum aut accusantium assumenda delectus.
-      nl-BE: Alias rerum illum corporis voluptatem quia beatae.
+    max_budget: 100000
+  - &project1futureIdeation
+    title_multiloc:
+      en-GB: Future Ideation
+      nl-BE: Future Ideation
     description_multiloc:
       en-GB: "<p>Commodi autem quo natus doloribus libero qui numquam. Deleniti vel quas.
         Explicabo dolores corporis magni.</p><p>Consectetur assumenda nemo est itaque
@@ -6571,8 +5967,8 @@ models:
         iste optio ducimus vel debitis libero. Laboriosam et tempore repellendus ut
         ab dignissimos. Voluptatem accusamus quo necessitatibus neque similique quod.</p>"
     project_ref: *project1
-    start_at: 2018-05-05
-    end_at: 2018-05-24
+    start_at_timediff: 2280
+    end_at_timediff: 3798
     participation_method: ideation
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
@@ -6581,34 +5977,6 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 13
-  - title_multiloc:
-      en-GB: Velit nihil magni accusantium neque eum voluptas doloremque.
-      nl-BE: Vitae aut ab facere dolores sequi et.
-    description_multiloc:
-      en-GB: "<p>Iure non quia labore quos. Esse illo distinctio eos et quia voluptatem.
-        Corporis saepe ut ipsum alias.</p><p>Occaecati qui et ut cumque voluptatem
-        quos veritatis. Mollitia praesentium occaecati in. Architecto vitae reiciendis
-        asperiores odit perferendis voluptatem. Autem non voluptatem et rerum. Quae
-        vel quo earum.</p><p>Expedita suscipit occaecati ut eum quos vel. Vero aspernatur
-        sequi voluptatem laborum nam. Consequatur accusamus fugit et et non sunt nulla.
-        Quibusdam quam vel sint ut. Expedita nulla laudantium totam.</p>"
-      nl-BE: "<p>Aut labore nulla ut et magnam. Pariatur iusto sit. Vitae rerum voluptatem.</p><p>Ab
-        est id voluptatem. Delectus ut excepturi ad ut animi est. Et inventore exercitationem
-        nobis est sit. Est officiis asperiores. Numquam aperiam consectetur.</p><p>Sunt
-        est impedit quia qui et ut perferendis. Incidunt ipsa voluptatem eaque. Est
-        id labore tempore corporis sed et. Beatae molestiae est mollitia quisquam
-        corrupti neque ea.</p>"
-    project_ref: *project1
-    start_at: 2018-05-25
-    end_at: 2018-06-21
-    participation_method: ideation
-    created_at: '2018-03-28 13:35:05'
-    updated_at: '2018-03-28 13:35:05'
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: false
-    voting_method: unlimited
-    voting_limited_max: 1
   - &polling
     title_multiloc:
       en-GB: The big polling
@@ -6616,13 +5984,14 @@ models:
     description_multiloc:
       en-GB: "<p>Lots of fun guaranteed!</p>"
       nl-BE: "<p>Dolle pret gegarandeerd!</p>"
-    project_ref: *project1
+    project_ref: *project2
     start_at: 2018-06-22
     end_at: 2018-08-21
     participation_method: poll
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
-  - title_multiloc:
+  - &42
+    title_multiloc:
       en-GB: Voluptatem accusantium temporibus mollitia minus quasi.
       nl-BE: Omnis similique saepe fugiat.
     description_multiloc:
@@ -6651,7 +6020,9 @@ models:
     voting_enabled: false
     voting_method: unlimited
     voting_limited_max: 2
-  - title_multiloc:
+    presentation_mode: map
+  - &55
+    title_multiloc:
       en-GB: Non praesentium accusamus odit atque iusto culpa occaecati consequatur.
       nl-BE: Dolor est aut aspernatur libero.
     description_multiloc:
@@ -6670,8 +6041,8 @@ models:
         dolores. Odit nemo assumenda iste neque odio in tempora. Id accusantium quibusdam
         rerum et vel voluptatum. Laudantium expedita rerum a saepe in in sed.</p>"
     project_ref: *90
-    start_at: 2017-10-29
-    end_at: 2017-11-19
+    start_at_timediff: -1440
+    end_at_timediff: 1440
     participation_method: ideation
     created_at: '2018-03-28 13:35:07'
     updated_at: '2018-03-28 13:35:07'
@@ -6680,6 +6051,7 @@ models:
     voting_enabled: false
     voting_method: unlimited
     voting_limited_max: 0
+    presentation_mode: map
   - title_multiloc:
       en-GB: Nobis saepe illo soluta.
       nl-BE: Reiciendis quia natus eius.
@@ -6705,38 +6077,6 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-  - title_multiloc:
-      en-GB: Facilis dolor at molestiae impedit ut ducimus nam.
-      nl-BE: Molestias sequi ex enim.
-    description_multiloc:
-      en-GB: "<p>Dolores modi dolorem deleniti iste et placeat iusto. Dolorem qui quam
-        adipisci quaerat numquam. Dolorum doloribus consequatur minus inventore ex.
-        Quaerat molestias minus consequatur sunt mollitia et. Veniam maiores enim
-        aut hic.</p><p>Rerum assumenda ut ex ab reprehenderit. Quis recusandae cumque.
-        Illum fugiat necessitatibus sint ut magni quia. Molestiae porro quo quasi
-        quia minima. Illo excepturi nam tenetur veniam dolore.</p><p>Et enim necessitatibus
-        doloremque non et omnis. Eos assumenda voluptatum similique laudantium facilis.
-        Dolorem vitae voluptatum sed voluptas enim sed. Voluptas nulla aut odio totam
-        nostrum.</p>"
-      nl-BE: "<p>Vitae est consectetur numquam nisi soluta necessitatibus enim. Architecto
-        ut provident rerum doloribus ipsum tempore. Cupiditate animi ducimus quis
-        enim hic sit numquam. Aperiam ab id explicabo quam facilis voluptatem non.</p><p>Et
-        dolores error officiis. Iure voluptatem eum ex laborum inventore est. Officia
-        quo eos est dolorem architecto molestiae. Ratione ut molestiae. Quia ut labore
-        perspiciatis.</p><p>Commodi saepe rerum. Velit autem blanditiis eos. Omnis
-        tempora debitis nostrum dolorum expedita. Est similique ut tenetur omnis suscipit
-        quia. Accusantium nobis sed ratione.</p>"
-    project_ref: *90
-    start_at: 2017-12-13
-    end_at: 2018-01-07
-    participation_method: ideation
-    created_at: '2018-03-28 13:35:07'
-    updated_at: '2018-03-28 13:35:07'
-    posting_enabled: false
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 9
   - title_multiloc:
       en-GB: Dolorum minima labore corrupti.
       nl-BE: Vel consequatur odio quia voluptatem suscipit magnam.
@@ -6989,7 +6329,8 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-  - title_multiloc:
+  - &001
+    title_multiloc:
       en-GB: Consequatur sed aut consequatur et similique.
       nl-BE: Distinctio ullam et excepturi perspiciatis.
     description_multiloc:
@@ -7017,224 +6358,6 @@ models:
     voting_enabled: false
     voting_method: unlimited
     voting_limited_max: 7
-  - &1510
-    title_multiloc:
-      nl-BE: 'Fase 1: eerste participatie 60 dagen'
-    description_multiloc:
-      nl-BE: |-
-        <p>Bedoeling van deze eerste fase is om <strong>het draagvlak voor de komende veranderingen te verbreden, door een efficiënte, maatgerichte participatie vanaf het begin van het proces</strong>. </p>
-        <p>De 'ideeën' die je hier vindt, tonen de grote lijnen van een het voorontwerp. Nog nies is definitief en als burgers kun je in deze periode zelf je ideeën geven en reageren op de eerste voorstellen. Je kunt zelfs stemmen op ideeën die je goed of minder goed vindt!</p>
-        <p></p>
-        <p><strong>Wat gebeurt er dus in deze fase? </strong></p>
-        <ul>
-          <li>Afbakening RUP</li>
-          <li>Vragen aan de dienste planning mbt inhoud RUP</li>
-          <li>RUP-advies toets</li>
-        </ul>
-        <p>Welke documenten zijn op dit moment beschikbaar? </p>
-        <p>Alle documenten vind je <a href="https://www.ruimtelijkeordening.be/nl-nl/NL/Diensten/GRUPS/Wat-is-een-RUP-">achter deze link</a> . </p>
-    project_ref: *71
-    start_at: 2018-02-01
-    end_at: 2018-02-19
-    participation_method: ideation
-    created_at: '2018-03-28 13:57:59'
-    updated_at: '2018-03-28 13:57:59'
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max:
-  - title_multiloc:
-      nl-BE: Input via enquête
-    description_multiloc:
-      nl-BE: "<p>Vul de enquête in. De input zal gebruikt worden bij de verdere opmaak
-        van de startnota. </p>"
-    project_ref: *71
-    start_at: 2018-02-20
-    end_at: 2018-03-11
-    participation_method: information
-    created_at: '2018-03-28 13:57:59'
-    updated_at: '2018-03-28 13:57:59'
-    posting_enabled:
-    commenting_enabled:
-    voting_enabled:
-    voting_method:
-    voting_limited_max:
-  - title_multiloc:
-      nl-BE: 'Fase 2: Uitwerking RUP: ''gesloten'', informatieve fase '
-    description_multiloc:
-      nl-BE: |-
-        <p><strong>Wat gebeurt er in deze fase? </strong></p>
-        <ul>
-          <li>De administratie werkt het RUP verder uit</li>
-          <li>Ook de afbakening van het RUP wordt gefinaliseerd</li>
-          <li>Op het einde van deze fase moet er een voorontwerp RUP klaar zijn</li>
-          <li>We organiseren ook een plenaire vergadering: klik op 'Activiteiten' om te weten wanneer deze plaatsvind. </li>
-        </ul>
-        <p>Alle openbare documenten zijn hier raadpleegbaar: </p>
-        <ul>
-          <li>
-        <a href="https://www.ruimtelijkeordening.be/nl-nl/NL/Algemeen/Home/Nieuwsberichten/articleType/ArticleView/articleId/8999">Procesnota A</a> </li>
-          <li>Startnota RUB</li>
-          <li>Kaartenbundel startnota</li>
-        </ul>
-        <p><em><strong>Contact? </strong></em></p>
-        <ul>
-          <li>Ruimtelijke planning en mobiliteit </li>
-          <li>Hertogin Sofieplein </li>
-          <li>11233 Gemeente Stad</li>
-          <li>Tel. 091 001 002 - 011 000 808</li>
-          <li><a href="mailto:%70%6c%61%6e%6e%69%6e%67%40%6c%6f%6d%6d%65%6c%2e%62%65">planning@gemeente.be</a></li>
-          <li>Van 9 tot 12u</li>
-        </ul>
-        <p><strong>In de namiddag enkel op afspraak</strong></p>
-    project_ref: *71
-    start_at: 2018-03-12
-    end_at: 2018-03-29
-    participation_method: information
-    created_at: '2018-03-28 13:57:59'
-    updated_at: '2018-03-28 13:57:59'
-    posting_enabled:
-    commenting_enabled:
-    voting_enabled:
-    voting_method:
-    voting_limited_max:
-  - title_multiloc:
-      nl-BE: 'Fase 3: tweede participatie: openbaar onderzoek '
-    description_multiloc:
-      nl-BE: |-
-        <p>Officiële openbaar onderzoek. </p>
-        <p></p>
-        <p><strong>Reageren?</strong></p>
-        <p>Tijdens de periode van de raadpleging kan iedereen reacties indienen. Dit kan op de volgende drie manieren-GB:</p>
-        <ol>
-          <li>Door hier in te loggen met een geldig e-mailadres en </li>
-          <li>Door een aangetekende brief te sturen naar het College van Burgemeester en Schepenen, p/a X, Y </li>
-          <li><a href="https://www.lommel.be/eloketdetail/162/reacties-rup-hertog-jansite"><u><strong>Via dit formulier</strong></u></a></li>
-          <li>Door opmerkingen af te geven tegen ontvangstbewijs bij de dienst Ruimtelijke Planning en Mobiliteit in het Huis van de Stad.  </li>
-        </ol>
-        <p><strong>Participatiemoment</strong> </p>
-        <p>De Stad Y licht de plannen toe tijdens een participatiemoment op <strong>dinsdag ... januari 2018</strong> om <strong>19u00</strong> in de zaal F van het <strong>Stadhuis</strong></p>
-    project_ref: *71
-    start_at: 2018-03-30
-    end_at: 2018-04-11
-    participation_method: ideation
-    created_at: '2018-03-28 13:57:59'
-    updated_at: '2018-03-28 13:57:59'
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max:
-  - title_multiloc:
-      nl-BE: 'Eerste verwerking en categorisering '
-    description_multiloc:
-      nl-BE: |-
-        <p><em>Voorbeeld van wat je in deze fase kunt communiceren:</em> "In deze fase analyseert de stuurgroep de reacties en de adviesen van de verschillende diensten en werkgroepen. In deze fase is het niet langer mogelijk om ideeën te geven. Je kunt wel nog de ideeën en reacties uit vorige fase consulteren."</p>
-        <p><strong>TIPS voor beheerders</strong>:</p>
-        <ol>
-          <li>De fases in dit voorbeeldproject zijn indicatief,  bedoeld om de mogelijkheden van de tijdslijn te tonen als manier om te communiceren over je proces. </li>
-          <li>Je kunt de algemene beschrijving van deze projectpagina gebruiken om informatie (pdf's, links, afbeeldingen) te delen. Hou deze pagina up-to-date. </li>
-          <li>Plaats als gemeente of stad zelf al ideeën, waarop het personeel kan reageren. Maak hiervoor een profiel aan met het e-mailadres en bijvoorbeeld het logo van de gemeente. Gebruik dit profiel ook om te reageren op ideeën of reacties van je doelpubliek. </li>
-        </ol>
-    project_ref: *1453
-    start_at: 2018-03-01
-    end_at: 2018-03-25
-    participation_method: information
-    created_at: '2018-03-28 13:58:21'
-    updated_at: '2018-03-28 13:58:21'
-    posting_enabled:
-    commenting_enabled:
-    voting_enabled:
-    voting_method:
-    voting_limited_max:
-  - title_multiloc:
-      nl-BE: 'Interne bevraging bij gemeentepersoneel '
-    description_multiloc:
-      nl-BE: |-
-        <p><em>Voorbeeld van wat je in deze fase kunt communiceren</em>: "In deze fase kan al het gemeentepersoneel reageren op DESTEP-voorstellen, zich laten inspireren door en reageren op de Duurzaamheidsdoelstellingen of zelf nieuwe ideeën geven. </p>
-        <ul>
-          <li>Laat je hierbij inspireren door <a href="http://www.vvsg.be/Werking_Organisatie/bbc/Pages/meerjarenplan.aspx">deze infotekst</a> .</li>
-          <li>Contacteer in deze fase zeker <a href="mailto:communicatie@voorbeeld.be">communicatie@jouwgemeente.be</a>  voor meer achtergrondvragen.  </li>
-          <li>Ondertussen kun je hier om meevolgen wat de input van vorige adviesraden en wijkraden was.</li>
-        </ul>
-        <p>Of neem contact op met iemand uit onderstaande adviesraden: Bijvoorbeeld:</p>
-        <ul>
-          <li><strong>Culturele raad </strong></li>
-        </ul>
-        <p><em>Voorzitter/contact</em></p>
-        <ul>
-          <li><strong>Gecoro (Gemeentelijke commissie voor Ruimtelijke Ordening) </strong></li>
-        </ul>
-        <p><em>Voorzitter/contact</em></p>
-        <ul>
-          <li><strong>Jeugdraad </strong></li>
-        </ul>
-        <p><em>Voorzitter/contactpersoon</em></p>
-        <ul>
-          <li><strong>etc.."</strong></li>
-        </ul>
-        <p><strong>TIPS voor beheerders: </strong></p>
-        <ol>
-          <li>Plaats als gemeente of stad zelf al ideeën, waarop het personeel kan reageren. Maak hiervoor een profiel aan met het e-mailadres en bijvoorbeeld het logo van de gemeente. </li>
-          <li>Bepaal <strong>in de instellingen van deze tijdslijnfase</strong> of je aan het personeel 1. nog toelaat om zelf nog andere ideeën te plaatsen of 2. enkel toelaat om te reageren of te stemmen op ideeën.</li>
-        </ol>
-    project_ref: *1453
-    start_at: 2018-03-26
-    end_at: 2018-04-21
-    participation_method: ideation
-    created_at: '2018-03-28 13:58:21'
-    updated_at: '2018-03-28 13:58:21'
-    posting_enabled: false
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max:
-  - title_multiloc:
-      nl-BE: Vul deze enquête in
-    description_multiloc:
-      nl-BE: |-
-        <p><em>Voorbeeld van wat je in deze fase kunt communiceren:</em> "Vul deze enquête in. We nemen de resultaten mee naar de volgende fase." (de enquête-url is toegevoegd als voorbeeld)</p>
-        <p> </p>
-        <p><strong>TIPS voor beheerders</strong>: </p>
-        <ul>
-          <li>Je kunt in je platform gemakkelijk een enquête integreren. Maak je enquête makkelijk aan via Typeform of Survey Monkey en copy-paste de 'embed url' hierboven. <a href="http://support.citizenlab.co/nl-hoe-bereik-je-nog-meer-burgers/een-enquete-toevoegen-aan-je-platform">In dit artikel</a>  lees je meer over het toevoegen van een enquête.</li>
-          <li>Deze tijdslijnfases zijn indicatief opgemaakt. Je kunt je enquête natuurlijk op een ander moment inplannen. </li>
-        </ul>
-    project_ref: *1453
-    start_at: 2018-04-22
-    end_at: 2018-04-26
-    participation_method: survey
-    created_at: '2018-03-28 13:58:21'
-    updated_at: '2018-03-28 13:58:21'
-    posting_enabled:
-    commenting_enabled:
-    voting_enabled:
-    voting_method:
-    voting_limited_max:
-    survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
-    survey_service: typeform
-  - title_multiloc:
-      nl-BE: 'Omgevingsanalyse input verzamelen bij groot publiek '
-    description_multiloc:
-      nl-BE: |-
-        <p>Voorbeeld van wat je in deze fase kunt communiceren: "Nu is het aan jullie. We gebruiken de resultaten van de eerste fase als input voor deze belangrijke 'open' fase. </p>
-        <p>Vanaf nu kunnen alle bewoners zich uitspreken rond de verschillende thema's, projecten en ideeën die naar boven zijn gekomen. </p>
-        <p><strong>TIPS voor de beheerders</strong>: </p>
-        <p>1. Een makkelijk manier om ideeën te beheren, is door in instellingen van het project op 'Ideeën' te klikken. In dat overzicht kun je lijst ideeën beheren: <strong>één idee of verschillende ideeën aanvinken en verslepen naar de linkerkolom</strong>. Op die manier kun je ze makkelijk verplaatsen naar de volgende fase, kun je kernwoorden toevoegen of de status veranderen. De beschrijvingen van de statussen kunnen aangepast worden. Laat ons jullie keuze weten via <a href="mailto:support@citizenlab.co">support@citizenlab.co.</a> </p>
-        <p>2. Als je een idee in een ander project wilt plaatsen, klik dan in de algemene platform-instellingen op 'Ideeën' en verplaats de ideeën daar naar eventueel een ander project.</p>
-        <p>3. Twijfel niet om de beschrijving van de verschillende fases of van het 'project' up to date te houden (tekst aanpassen, extra pdf's toevoegen, ...) Blijf communiceren met je doelpubliek en gebruik hiervoor de beschrijving van het project en de beschrijving in de tijdslijnfases. </p>
-    project_ref: *1453
-    start_at: 2018-04-27
-    end_at: 2018-05-05
-    participation_method: ideation
-    created_at: '2018-03-28 13:58:21'
-    updated_at: '2018-03-28 13:58:21'
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max:
   event:
   - project_ref: *76
     title_multiloc: events.council_meeting_title
@@ -7425,39 +6548,6 @@ models:
       nl-BE: 414 Declan Vista
     created_at: '2018-03-28 13:35:07'
     updated_at: '2018-03-28 13:35:07'
-  - title_multiloc:
-      nl-BE: Participatieavond
-    description_multiloc:
-      nl-BE: |-
-        <p><strong>Op deze avond geeft de dienst Ruimtelijke Planning jullie uitleg bij de verschillende plannen en krijgen jullie antwoorden op jullie opmerkingen en bezwaren. </strong></p>
-        <ul>
-          <li>Ideeën en vragen worden beantwoord, en komen ook op het platform</li>
-          <li>Zo blijft alles op één plaats</li>
-          <li>e-mailadressen kunnen worden geïmporteerd op het platform </li>
-          <li>Geregistreerde gebruikers krijgen ook de uitnodigen</li>
-          <li>Ideeën van bewoners tijdens bewonersvergadering worden geïmporteerd op het platform</li>
-        </ul>
-    project_ref: *71
-    start_at: '2019-06-01 17:00:00'
-    end_at: '2019-06-01 19:00:00'
-    location_multiloc:
-      nl-BE: Gemeentehuis Stadhuis
-    created_at: '2018-03-28 13:57:59'
-    updated_at: '2018-03-28 13:57:59'
-  - title_multiloc:
-      nl-BE: 'Bewonersbijeenkomst: jullie vragen en opmerkingen'
-    description_multiloc:
-      nl-BE: "<p>We komen samen in het gemeentehuis om jullie meer uitleg te geven en
-        de nodige tijd te nemen om op jullie vragen te antwoorden. We nemen ook de
-        tijd om de input die via het platform is verzameld, op deze bijeenkomst te
-        delen. </p>"
-    project_ref: *1453
-    start_at: '2018-08-13 18:00:00'
-    end_at: '2018-08-13 20:00:00'
-    location_multiloc:
-      nl-BE: Gemeentehuis Stadhuis
-    created_at: '2018-03-28 13:58:21'
-    updated_at: '2018-03-28 13:58:21'
   polls/question:
     - &question-kicker
       participation_context_ref: *polling
@@ -7486,15 +6576,43 @@ models:
   - idea_ref: *topic_idea
     topic_ref: *topic_waste
   ideas_phase:
-  - idea_ref: *221
-    phase_ref: *1510
-  - idea_ref: *346
-    phase_ref: *1510
-  - idea_ref: *336
-    phase_ref: *1510
-  - idea_ref: *1298
-    phase_ref: *1510
+  - idea_ref: *234
+    phase_ref: *project1pastIdeation
+  - idea_ref: *375
+    phase_ref: *project1pastIdeation
+  - idea_ref: *303
+    phase_ref: *project1pastPB
+  - idea_ref: *449
+    phase_ref: *project1pastPB
+  - idea_ref: *277
+    phase_ref: *project1current
+  - idea_ref: *239
+    phase_ref: *42
+  - idea_ref: *254
+    phase_ref: *42
+  - idea_ref: *388
+    phase_ref: *55
+  - idea_ref: *461
+    phase_ref: *55
+  - idea_ref: *609
+    phase_ref: *001
   areas:
     - title_multiloc:
         en-GB: Carrotgem
         nl-BE: Wortelgem
+  groups:
+    - &verified
+      title_multiloc:
+        en-GB: Verified
+      rules:
+        - ruleType: verified
+          predicate: is_verified
+      membership_type: rules
+  permissions:
+    - &111
+      action: posting
+      permitted_by: groups
+      permittable_ref: *verifiedIdeation
+  groups_permissions:
+  - permission_ref: *111
+    group_ref: *verified
