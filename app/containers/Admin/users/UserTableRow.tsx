@@ -2,7 +2,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
-import Link from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
 
 // Components
 import Avatar from 'components/Avatar';
@@ -108,28 +108,6 @@ const IconWrapper = styled.div`
   }
 `;
 
-const DropdownListLink = styled(Link)`
-  flex: 1 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: ${colors.adminLightText};
-  font-size: ${fontSizes.small}px;
-  font-weight: 400;
-  white-space: nowrap;
-  padding: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  cursor: pointer;
-  white-space: nowrap;
-
-  &:hover, &:focus {
-    outline: none;
-    color: white;
-    background: ${lighten(.1, colors.adminMenuBackground)};
-  }
-`;
-
-// Typings
 interface Props {
   user: IUserData;
   selected: boolean;
@@ -197,6 +175,11 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  goToUserProfile = (slug: string) => (event: FormEvent) => {
+    event.preventDefault();
+    clHistory.push(`/profile/${slug}`);
+  }
+
   handePopoverOnClickOutside = (event: FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
@@ -238,12 +221,12 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
           <Popover
             content={
               <DropdownList>
-                <DropdownListLink to={`/profile/${this.props.user.attributes.slug}`}>
+                <DropdownListButton onClick={this.goToUserProfile(this.props.user.attributes.slug)}>
                   <FormattedMessage {...messages.seeProfile} />
                   <IconWrapper>
                     <Icon name="eye" />
                   </IconWrapper>
-                </DropdownListLink>
+                </DropdownListButton>
                 <DropdownListButton onClick={this.handleDeleteClick}>
                   <FormattedMessage {...messages.deleteUser} />
                   <IconWrapper>
