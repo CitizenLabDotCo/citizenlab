@@ -87,7 +87,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
     <FeatureFlag name="verification">
       <StyledFormSection className={className}>
         {authUser.data.attributes.verified ?
-          <LeftContainer>
+          <LeftContainer className="e2e-verified">
             <StyledAvatar
               userId={authUser.data.id}
               size="55px"
@@ -105,7 +105,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
           </LeftContainer>
           :
           <>
-            <LeftContainer>
+            <LeftContainer className="e2e-not-verified">
               <StyledVerificationIllustration aria-hidden/>
               <StyledTitle>
                 <TitleStyles>
@@ -116,7 +116,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 </TextStyles>
               </StyledTitle>
             </LeftContainer>
-            <StyledButton onClick={openVerificationModal}>
+            <StyledButton className="e2e-verify" onClick={openVerificationModal}>
               <FormattedMessage {...messages.verifyNow} />
             </StyledButton>
           </>
