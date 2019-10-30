@@ -334,6 +334,7 @@
   "app.components.VerificationModal.notEntitledFormError": "",
   "app.components.VerificationModal.participationConditions": "",
   "app.components.VerificationModal.peopleMatchingConditions": "",
+  "app.components.VerificationModal.showCOWHelp": "",
   "app.components.VerificationModal.somethingWentWrongError": "",
   "app.components.VerificationModal.submit": "",
   "app.components.VerificationModal.takenFormError": "",
