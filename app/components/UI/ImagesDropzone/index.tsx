@@ -453,27 +453,29 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
           ratio={imagePreviewRatio}
           className={(maxNumberOfImages !== 1 && images && images.length > 0 ? 'hasSpacing' : '')}
         >
-          <StyledDropzone
-            className={`${this.props.imageRadius === '50%' && 'rounded'}`}
-            accept={acceptedFileTypes}
-            maxSize={maxImageFileSize}
-            disabled={processing || maxNumberOfImages === images.length}
-            disablePreview={true}
-            onDrop={this.onDrop}
-            onDropRejected={this.onDropRejected}
-          >
-            {!processing ? (
-              <DropzoneContent>
-                <DropzonePlaceholderIcon name="upload" ariaHidden />
-                <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
-                <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
-              </DropzoneContent>
-            ) : (
-              <DropzoneContent>
-                <Spinner />
-              </DropzoneContent>
-            )}
-          </StyledDropzone>
+          <label>
+            <StyledDropzone
+              className={`${this.props.imageRadius === '50%' && 'rounded'}`}
+              accept={acceptedFileTypes}
+              maxSize={maxImageFileSize}
+              disabled={processing || maxNumberOfImages === images.length}
+              disablePreview={true}
+              onDrop={this.onDrop}
+              onDropRejected={this.onDropRejected}
+            >
+              {!processing ? (
+                <DropzoneContent>
+                  <DropzonePlaceholderIcon name="upload" ariaHidden />
+                  <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
+                  <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
+                </DropzoneContent>
+              ) : (
+                <DropzoneContent>
+                  <Spinner />
+                </DropzoneContent>
+              )}
+            </StyledDropzone>
+          </label>
         </Box>
       </CSSTransition>
     ) : null;
