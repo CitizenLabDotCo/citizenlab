@@ -290,7 +290,7 @@ models:
     updated_at: '2018-03-28 13:35:02'
   - &mortal1
     id: 09ef05a1-1723-4ca4-bc69-d4ad8a115bf3
-    email: kenyatta_torp@senger.org
+    email: mortal@citizenlab.co
     first_name: Casey
     last_name: Luettgen
     cl1_migrated: false
