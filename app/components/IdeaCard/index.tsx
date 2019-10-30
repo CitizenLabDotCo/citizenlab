@@ -281,7 +281,6 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                   <DisabledWrapper>
                     <AssignBudgetDisabled
                       budgetingDescriptor={budgetingDescriptor}
-                      projectId={projectId}
                     />
                   </DisabledWrapper>
                 </BottomBounceUp>

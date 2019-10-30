@@ -8,8 +8,8 @@ import useAuthUser from 'hooks/useAuthUser';
 import FeatureFlag from 'components/FeatureFlag';
 import { FormSection } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
+import Icon from 'components/UI/Icon';
 import Avatar from 'components/Avatar';
-import VerificationIllustration from 'components/VerificationIllustration';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -17,62 +17,60 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 // events
 import { openVerificationModalWithoutContext } from 'containers/App/events';
 
-const StyledFormSection = styled(FormSection)`
+const Container = styled(FormSection)`
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 40px 40px 20px;
-  flex-wrap: wrap;
+  padding: 30px 40px;
 `;
 
-const LeftContainer = styled.div`
+const AvatarAndShield = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+  justify-content: center;
 `;
 
-const StyledTitle = styled.h2`
-  margin: 0;
-  margin-bottom: 20px !important;
-  max-width: 455px;
+const StyledAvatar = styled(Avatar)`
+  margin-right: -5px;
+  z-index: 2;
 `;
 
-const TitleStyles = styled.div`
+const ShieldIcon = styled(Icon)`
+  fill: ${colors.label};
+  width: 48px;
+  height: 53px;
+  margin-left: -5px;
+`;
+
+const Content = styled.div`
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  margin-right: 20px;
+`;
+
+const Title = styled.h2`
   font-size: ${fontSizes.large}px;
   font-weight: 600;
   line-height: normal;
-  margin-bottom: 5px;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 2px;
 `;
 
-const TextStyles = styled.div`
+const Text = styled.p`
   font-size: ${fontSizes.large}px;
   font-weight: 300;
   line-height: normal;
 `;
 
-const StyledAvatar = styled(Avatar)`
-  margin-left: -3px;
-  margin-bottom: 20px;
-  margin-right: 25px;
-`;
-
-const StyledVerificationIllustration = styled(VerificationIllustration)`
-  margin-left: -3px;
-  margin-bottom: 20px;
-  margin-right: 25px;
-`;
-
-const StyledButton = styled(Button)`
-  margin: 0 0 20px;
-`;
+const VerifyButton = styled(Button)``;
 
 const VerificationStatus = memo(({ className }: { className?: string }) => {
   const authUser = useAuthUser();
@@ -83,45 +81,48 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
 
   if (isNilOrError(authUser)) return null;
 
+  const authIsVerified =   .data.attributes.verified;
+
   return (
     <FeatureFlag name="verification">
-      <StyledFormSection className={className}>
-        {authUser.data.attributes.verified ?
-          <LeftContainer className="e2e-verified">
+      <Container className={`className e2e${authIsVerified ? '' : '-not'}-verified`}>
+        {authIsVerified ?
+          <>
             <StyledAvatar
               userId={authUser.data.id}
               size="55px"
               verified
               aria-hidden
             />
-            <StyledTitle>
-              <TitleStyles>
+            <Content>
+              <Title>
                 <FormattedMessage {...messages.verifiedTitle} />
-              </TitleStyles>
-              <TextStyles>
+              </Title>
+              <Text>
                 <FormattedMessage {...messages.verifiedText} />
-              </TextStyles>
-            </StyledTitle>
-          </LeftContainer>
+              </Text>
+            </Content>
+          </>
           :
           <>
-            <LeftContainer className="e2e-not-verified">
-              <StyledVerificationIllustration aria-hidden/>
-              <StyledTitle>
-                <TitleStyles>
-                  <FormattedMessage {...messages.verifyTitle} />
-                </TitleStyles>
-                <TextStyles>
-                  <FormattedMessage {...messages.verifyText} />
-                </TextStyles>
-              </StyledTitle>
-            </LeftContainer>
-            <StyledButton className="e2e-verify" onClick={openVerificationModal}>
+            <AvatarAndShield aria-hidden >
+              <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
+              <ShieldIcon name="verify" />
+            </AvatarAndShield>
+            <Content>
+              <Title>
+                <FormattedMessage {...messages.verifyTitle} />
+              </Title>
+              <Text>
+                <FormattedMessage {...messages.verifyText} />
+              </Text>
+            </Content>
+            <VerifyButton onClick={openVerificationModal}>
               <FormattedMessage {...messages.verifyNow} />
-            </StyledButton>
+            </VerifyButton>
           </>
         }
-      </StyledFormSection>
+      </Container>
     </FeatureFlag>
   );
 });

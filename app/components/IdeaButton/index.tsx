@@ -8,7 +8,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
-import { ButtonStyles } from 'components/UI/Button';
+import { ButtonContainerProps } from 'components/UI/Button';
 import Tooltip from 'components/UI/Tooltip';
 import { IPosition } from 'components/UI/Popover';
 import Icon from 'components/UI/Icon';
@@ -30,28 +30,27 @@ import tracks from './tracks';
 // styling
 import { fontSizes, colors } from 'utils/styleUtils';
 
-const Container = styled.div`
-  &.bannerStyle {
-    height: 100%;
-  }
-`;
+const Container = styled.div``;
 
 const StyledIcon = styled(Icon)`
-  height: 2rem;
-  width: 2rem;
+  flex: 0 0 25px;
+  width: 20px;
+  height: 25px;
   margin-right: 1rem;
 `;
 
 const StyledA = styled.a`
+  padding: 0;
   transition: all 100ms ease-out;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     text-decoration: underline;
   }
-  padding: 0;
 `;
 
 const TooltipWrapper = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   min-width: 300px;
@@ -59,6 +58,14 @@ const TooltipWrapper = styled.div`
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   padding: 15px;
+  border: solid 1px red;
+
+  > span {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
 `;
 
 interface DataProps {
@@ -71,18 +78,10 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
-interface InputProps {
+interface InputProps extends ButtonContainerProps {
   projectId?: string | undefined;
   phaseId?: string | undefined;
-  style?: ButtonStyles;
-  size?: '1' | '2' | '3' | '4';
-  fullWidth?: boolean;
   className?: string;
-  fullHeight?: boolean;
-  bgColor?: string;
-  textColor?: string;
-  fontWeight?: string;
-  padding?: string;
   smallViewportTooltipPosition?: IPosition;
 }
 
@@ -101,11 +100,12 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
     notVerified: messages.postingNotVerified
   };
 
-  onVerify = () => {
+  onVerify = (event: React.MouseEvent) => {
+    event.preventDefault();
     openVerificationModalWithContext('ActionIdea');
   }
 
-  onNewIdea = (_event) => {
+  onNewIdea = () => {
     this.props.clickNewIdea({ extra: { urlFrom: this.locationRef } });
   }
 
@@ -118,20 +118,13 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
     });
 
     if (show) {
-      let { style, size, fullWidth, bgColor, textColor, fontWeight, padding } = this.props;
-      const { fullHeight } = this.props;
+      const  { fullWidth, height, style, size, bgColor, textColor, fontWeight, padding, borderRadius } = this.props;
       const startAnIdeaText = this.props.intl.formatMessage(messages.startAnIdea);
-
-      style = (style || 'primary');
-      size = (size || '1');
-      fullWidth = (fullWidth || false);
-      bgColor = (bgColor || undefined);
-      textColor = (textColor || undefined);
-      fontWeight = (fontWeight || undefined);
-      padding = (padding || undefined);
+      const linkTo = !isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new';
+      const numberHeight = parseInt(height as any, 10);
 
       return (
-        <Container className={`${className} ${fullHeight ? 'bannerStyle' : ''} e2e-idea-button`}>
+        <Container className={`${className} e2e-idea-button`}>
           <Tooltip
             enabled={!enabled && !!disabledReason}
             content={
@@ -152,25 +145,25 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             }
             backgroundColor={colors.popoverDarkBg}
             borderColor={colors.popoverDarkBg}
-            offset={59}
+            offset={numberHeight ? numberHeight + 3 : 45}
             position="bottom"
-            openDelay={100}
             buttonProps={{
               style,
               size,
+              height,
               fullWidth,
-              fullHeight,
               bgColor,
               textColor,
               fontWeight,
               padding,
-              linkTo: (!isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new'),
+              borderRadius,
+              linkTo,
               text: startAnIdeaText,
               disabled: !enabled,
               onClick: this.onNewIdea
             }}
             smallViewportPosition={smallViewportTooltipPosition}
-            withPin
+            withPin={true}
           />
         </Container>
       );
@@ -185,7 +178,7 @@ const IdeaButtonWithHOCs = injectIntl<Props>(injectTracks<Props & InjectedIntlPr
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   project: ({ projectId, render, }) => <GetProject id={projectId}>{render}</GetProject>,
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 
 export default (inputProps: InputProps) => (

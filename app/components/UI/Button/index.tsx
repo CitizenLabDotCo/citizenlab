@@ -144,8 +144,11 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
   const finalBorderHoverColor = props.borderHoverColor || get(defaultStyleValues, `${props.buttonStyle}.borderHoverColor`) || darken(0.2, finalBorderColor);
   const finalBoxShadow = props.boxShadow || get(defaultStyleValues, `${props.buttonStyle}.boxShadow`) || 'none';
   const finalBoxShadowHover = props.boxShadowHover || get(defaultStyleValues, `${props.buttonStyle}.boxShadowHover`) || 'none';
+  const finalBorderRadius = props.borderRadius || get(defaultStyleValues, `${props.buttonStyle}.borderRadius`) || props.theme.borderRadius;
 
   return `
+    border-radius: ${finalBorderRadius};
+
     &:not(.disabled) {
       background: ${finalBgColor};
       border-color: ${finalBorderColor};
@@ -227,13 +230,18 @@ const Container = styled.div<ButtonContainerProps>`
 
   &.fullWidth {
     width: 100%;
+
+    button,
+    a {
+      flex: 1;
+      width: 100%;
+    }
   }
 
   button,
   a {
     align-items: center;
     border: ${(props) => props.borderThickness || '1px'} solid transparent;
-    border-radius: ${(props) => props.theme.borderRadius};
     display: ${(props) => !props.width ? 'inline-flex' : 'flex'};
     height: ${(props) => props.height || 'auto'};
     justify-content: ${(props) => props.justify || 'center'};
@@ -242,18 +250,12 @@ const Container = styled.div<ButtonContainerProps>`
     position: relative;
     min-width: ${(props) => props.minWidth || 'auto'};
     width: ${(props) => props.width || '100%'};
-    outline: none;
     transition: background 100ms ease-out,
                 border-color 100ms ease-out,
                 box-shadow 100ms ease-out;
 
     &:not(.disabled) {
       cursor: pointer;
-    }
-
-    &.fullWidth {
-      width: 100%;
-      flex: 1;
     }
 
     ${ButtonText} {
@@ -280,22 +282,6 @@ const Container = styled.div<ButtonContainerProps>`
   a.disabled {
     pointer-events: none;
   }
-
-  &.bannerStyle {
-    height: 100%;
-
-    .Button {
-      display: flex;
-      align-items: center;
-      height: 100%;
-      border-radius: 0;
-    }
-
-    .buttonText {
-      display: inline-flex;
-      align-items: center;
-    }
-  }
 `;
 
 const SpinnerWrapper = styled.div`
@@ -313,13 +299,14 @@ const HiddenText = styled.span`
   ${invisibleA11yText()}
 `;
 
-interface ButtonContainerProps {
+export interface ButtonContainerProps {
   buttonStyle?: ButtonStyles;
   style?: ButtonStyles;
   id?: string;
   size?: '1' | '2' | '3' | '4';
   width?: string;
   height?: string;
+  fullWidth?: boolean;
   padding?: string;
   justify?: 'left' | 'center' | 'right' | 'space-between';
   justifyWrapper?: 'left' | 'center' | 'right' | 'space-between';
@@ -335,6 +322,7 @@ interface ButtonContainerProps {
   borderThickness?: string;
   boxShadow?: string;
   boxShadowHover?: string;
+  borderRadius?: string;
   fontWeight?: string;
   minWidth?: string;
   fontSize?: string;
@@ -345,7 +333,6 @@ export interface Props extends ButtonContainerProps {
   children?: any;
   className?: string;
   form?: string;
-  fullWidth?: boolean;
   hiddenText?: string | JSX.Element;
   icon?: IconProps['name'];
   iconPos?: 'left' | 'right';
@@ -358,7 +345,6 @@ export interface Props extends ButtonContainerProps {
   theme?: object | undefined;
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
   spinnerColor?: string;
-  fullHeight?: boolean;
   ariaLabel?: string;
   autoFocus?: boolean;
   fontSize?: string;
@@ -381,6 +367,10 @@ class Button extends PureComponent<Props, State> {
         onClick(event);
       }
     }
+  }
+
+  removeFocus = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
   }
 
   getSpinnerSize = (size) => {
@@ -424,6 +414,7 @@ class Button extends PureComponent<Props, State> {
       borderThickness,
       boxShadow,
       boxShadowHover,
+      borderRadius,
       minWidth,
       width,
       height,
@@ -439,21 +430,20 @@ class Button extends PureComponent<Props, State> {
       linkTo,
       openInNewTab,
       fontWeight,
-      fullHeight,
+      fullWidth,
       ariaLabel,
       fontSize,
       autoFocus,
       ariaExpanded,
       iconAriaHidden
     } = this.props;
-    let { id, size, style, processing, disabled, fullWidth, iconPos, className } = this.props;
+    let { id, size, style, processing, disabled, iconPos, className } = this.props;
 
     id = (id || '');
     size = (size || '1');
     style = (style || 'primary');
     processing = (isBoolean(processing) ? processing : false);
     disabled = (isBoolean(disabled) ? disabled : false);
-    fullWidth = (isBoolean(fullWidth) ? fullWidth : false);
     iconPos = (iconPos || 'left');
     className = `${className ? className : ''}`;
 
@@ -492,8 +482,9 @@ class Button extends PureComponent<Props, State> {
 
     return (
       <Container
-        className={`${className} ${buttonClassnames} ${fullHeight ? 'bannerStyle' : ''}`}
+        className={`${className} ${buttonClassnames}`}
         onClick={this.handleOnClick}
+        onMouseDown={this.removeFocus}
         buttonStyle={style}
         id={id}
         size={size}
@@ -514,6 +505,7 @@ class Button extends PureComponent<Props, State> {
         borderThickness={borderThickness}
         boxShadow={boxShadow}
         boxShadowHover={boxShadowHover}
+        borderRadius={borderRadius}
         fontWeight={fontWeight}
         minWidth={minWidth}
         fontSize={fontSize}
