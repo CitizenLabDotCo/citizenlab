@@ -624,6 +624,31 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
+  - &verifiedPb
+    title_multiloc:
+      en-GB: Verified Participatory Budgeting
+      nl-BE: Verified Participatory Budgeting
+    description_multiloc:
+      en-GB: "<p>Let's renew the parc at the city border and make it an enjoyable place
+        for young and old.</p>"
+      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
+        plek van maken, voor jong en oud.</p>"
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    description_preview_multiloc:
+      en-GB: Let's renew the parc at the city border.
+      nl-BE: Laten we het park op de grend van de stad vernieuwen.
+    presentation_mode: card
+    participation_method: budgeting
+    process_type: continuous
+    publication_status: published
+    created_at: '2018-03-28 13:35:04'
+    updated_at: '2018-03-28 13:35:04'
+    posting_enabled: false
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 100000
   - &project2
     title_multiloc:
       en-GB: Test project 2 timeline
@@ -852,12 +877,13 @@ models:
         Quia sint harum molestiae assumenda. Quisquam iste aliquam cumque aut. Ipsam
         fugit sit illo suscipit modi dolor. Cupiditate at ea ipsa fuga numquam voluptas.</p>"
     publication_status: published
-    project_ref: *66
+    project_ref: *verifiedPb
     author_ref: *67
     location_description: 8185 Austen Green
     published_at: '2018-03-03 00:00:00'
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
+    budget: 800
   - &198
     title_multiloc:
       nl-BE: Quia saepe possimus quo nesciunt doloribus.
@@ -870,12 +896,13 @@ models:
         ipsum deserunt fugiat culpa velit odio ea. Ad possimus delectus vitae. Quae
         omnis aut molestiae recusandae. Dolores impedit eligendi incidunt aut aut.</p>"
     publication_status: published
-    project_ref: *76
+    project_ref: *verifiedPb
     author_ref: *77
     location_description:
     published_at: '2017-11-24 00:00:00'
     created_at: '2017-06-09 00:00:00'
     updated_at: '2018-03-28 13:35:09'
+    budget: 800
   - &234
     title_multiloc:
       en-GB: Accusantium blanditiis dolor voluptas ratione odit iusto.
@@ -1519,7 +1546,7 @@ models:
         odit et. Dolores et dolorum similique reiciendis ex nostrum dolor. Iste quia
         dolores praesentium assumenda.</p>"
     author_ref: *194
-    post_ref: *198
+    post_ref: *verifiedIdea
     created_at: '2018-03-01 00:00:00'
     updated_at: '2018-03-28 13:35:10'
   - body_multiloc:
@@ -6633,10 +6660,16 @@ models:
       action: commenting
       permitted_by: groups
       permittable_ref: *verifiedIdeation
+    - &114
+      action: budgeting
+      permitted_by: groups
+      permittable_ref: *verifiedPb
   groups_permissions:
   - permission_ref: *111
     group_ref: *verified
   - permission_ref: *112
     group_ref: *verified
   - permission_ref: *113
+    group_ref: *verified
+  - permission_ref: *114
     group_ref: *verified
