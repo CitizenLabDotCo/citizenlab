@@ -23,8 +23,12 @@ import { verifyCOW } from 'services/verify';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// image
+const helpImage = require('./COWHelpImage.png');
+
 // style
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -76,6 +80,16 @@ const SubmitButton = styled(Button)`
 
 const CancelButton = styled(Button)``;
 
+const HelpImage = styled.img`
+  width: 100%;
+`;
+
+const HelpButton = styled.button`
+   margin: 0;
+   padding: 0;
+   color: ${colors.label};
+`;
+
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
@@ -91,6 +105,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
   const [runError, setRunError] = useState<JSX.Element | null>(null);
   const [idError, setIdError] = useState<JSX.Element | null>(null);
   const [formError, setFormError] = useState<JSX.Element | null>(null);
+  const [showHelp, setShowHelp] = useState<boolean>(false);
 
   const onRunChange = useCallback((run: string) => {
     setRunError(null);
@@ -163,6 +178,14 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
     onCancel();
   }, []);
 
+  const onShowHelpButtonClick = useCallback(() => {
+    setShowHelp(showHelp => !showHelp);
+  }, []);
+
+  const removeFocus = useCallback((event) => {
+    event.preventDefault();
+  }, []);
+
   return (
     <Container className={className}>
       <Title>
@@ -200,6 +223,16 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
               error={idError}
             />
           </StyledLabel>
+          <HelpButton onClick={onShowHelpButtonClick} onMouseDown={removeFocus}>
+          {showHelp
+            ? (
+              <HelpImage src={helpImage} alt="help" />
+            )
+            : (
+                <FormattedMessage {...messages.showCOWHelp} />
+            )
+          }
+          </HelpButton>
         </FormField>
 
         {formError &&

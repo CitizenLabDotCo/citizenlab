@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyCow',
     defaultMessage: 'Verify using COW',
   },
+  showCOWHelp: {
+    id: 'app.components.VerificationModal.showCOWHelp',
+    defaultMessage: 'Where can I find my ID Serial Number ?',
+  },
   cowRunNumber: {
     id: 'app.components.VerificationModal.cowRunNumber',
     defaultMessage: 'RUN',
