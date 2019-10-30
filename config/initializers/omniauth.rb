@@ -53,12 +53,37 @@ FRANCECONNECT_SETUP_PROC = lambda do |env|
 
   end
 end
+
+BOSA_FAS_SETUP_PROC = lambda { |env| 
+  tenant = Tenant.current
+  if tenant.has_feature?('bosa_fas_login')
+    host = SingleSignOnService::BosaFAS.new.host
+
+    options = env['omniauth.strategy'].options
+    options[:scope] = [:openid, :profile, :citizen]
+    options[:response_type] = :code
+    options[:state] = true
+    options[:nonce] = true
+    options[:issuer] = "https://#{host}"
+    options[:acr_values] = "urn:be:fedict:iam:fas:Level450"
+    options[:client_options] = {
+      identifier: Tenant.settings("bosa_fas_login", "identifier"),
+      secret: Tenant.settings("bosa_fas_login", "secret"),
+      port: 443,
+      scheme: 'https',
+      host: host,
+      token_endpoint: '/access_token',
+      redirect_uri: "#{tenant.base_backend_uri}/auth/bosa_fas/callback"
+    }
+  end
+}
  
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :facebook, :setup => FACEBOOK_SETUP_PROC
   provider :google_oauth2, :setup => GOOGLE_SETUP_PROC, name: 'google'
   provider :azure_activedirectory, :setup => AZURE_AD_SETUP_PROC
   provider :openid_connect, :setup => FRANCECONNECT_SETUP_PROC, name: 'franceconnect'
+  provider :bosa_fas, :setup => BOSA_FAS_SETUP_PROC, name: 'bosa_fas'
 end
 
 

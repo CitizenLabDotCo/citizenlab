@@ -266,6 +266,33 @@
         }
       },
 
+      "bosa_fas_login": {
+        "type": "object",
+        "description":  "Allow signing in and registering through Bosa FAS, supporting Belgian eID and itsme",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["environment", "identifier", "secret"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "environment": {
+            "type": "string",
+            "description": "Are we live on the production FAS environment, or still testing on their integration environment?",
+            "enum": ["production", "integration"],
+            "default": "production",
+            "private": true
+          },
+          "identifier": {
+            "type": "string",
+            "private": true
+          },
+          "secret": {
+            "type": "string",
+            "private": true
+          }
+        }
+      },
+
       /* "twitter_login": {
         "type": "object",
         "description":  "Allow signing in and registering through a twitter account",
