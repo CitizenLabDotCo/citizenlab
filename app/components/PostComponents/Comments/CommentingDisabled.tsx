@@ -92,7 +92,7 @@ class CommentingDisabled extends PureComponent<Props> {
 
     if (messageDescriptor) {
       return (
-        <Container>
+        <Container className="e2e-commenting-disabled">
           <Warning>
             <FormattedMessage
               {...messageDescriptor}
