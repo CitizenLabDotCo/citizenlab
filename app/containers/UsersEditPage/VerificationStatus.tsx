@@ -99,7 +99,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
 
   return (
     <FeatureFlag name="verification">
-      <Container className={`className e2e${authIsVerified ? '' : '-not'}-verified`}>
+      <Container className={`${className} e2e${authIsVerified ? '' : '-not'}-verified`}>
         {authIsVerified ?
           <>
             <StyledAvatar
