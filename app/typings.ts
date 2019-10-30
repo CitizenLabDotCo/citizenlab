@@ -68,6 +68,11 @@ export type Multiloc = {
   [key in Locale]?: string
 };
 
+export type GraphqlMultiloc = {
+  content: string;
+  locale: Locale;
+}[];
+
 export type MultilocStringOrJSX = {
   [key in Locale]?: string | JSX.Element;
 };

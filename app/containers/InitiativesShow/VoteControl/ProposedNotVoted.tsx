@@ -155,8 +155,8 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
                 </TooltipWrapper>
               }
               offset={24}
+              withPin={true}
               position="bottom"
-              withPin
             >
               <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />} />
             </Tooltip>

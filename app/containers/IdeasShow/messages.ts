@@ -128,5 +128,9 @@ export default defineMessages({
   createdTimeAgo: {
     id: 'app.components.IdeasShow.createdTimeAgo',
     defaultMessage: 'Created {timeAgo}'
-  }
+  },
+  or: {
+    id: 'app.components.IdeasShow.or',
+    defaultMessage: 'or'
+  },
 });

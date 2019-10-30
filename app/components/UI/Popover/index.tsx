@@ -1,5 +1,5 @@
-// libraries
-import React, { PureComponent } from 'react';
+import React, { memo, useCallback } from 'react';
+import { isBoolean } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 
@@ -7,120 +7,117 @@ import clickOutside from 'utils/containers/clickOutside';
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
-const Container = styled.div`
-  height: 100%;
+const animationDuration = 250;
+
+const Container = styled(clickOutside)`
   position: relative;
   display: flex;
   align-items: center;
-  outline: none;
-
-  * {
-    outline: none;
-    user-select: none;
-  }
 `;
 
-const Trigger = styled.div`
-  display: flex;
-  height: 100%;
-`;
-
-const Content = styled(clickOutside) <{ offset: number }>`
+const Content = styled.div<{ offset: number, delay: number }>`
   position: absolute;
   z-index: 4;
+  transform-origin: center left;
+  transition: all ${animationDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1) ${({ delay }) => delay}ms;
 
   ${media.biggerThanMaxTablet`
     &.bottom {
-      top: ${({ offset }) => offset || '0'}px;
+      top: ${({ offset }) => offset}px;
       left: 50%;
       transform-origin: top left;
     }
 
     &.top {
-      bottom: ${({ offset }) => offset || '0'}px;
+      bottom: ${({ offset }) => offset}px;
       left: 50%;
       transform-origin: bottom left;
     }
 
     &.top-left {
-      bottom: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
-      right: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
+      bottom: ${({ offset }) => Math.round(offset / 1.5)}px;
+      right: ${({ offset }) => Math.round(offset / 1.5)}px;
       transform-origin: bottom right;
     }
 
     &.bottom-left {
-      top: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
-      right: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
+      top: ${({ offset }) => Math.round(offset / 1.5)}px;
+      right: ${({ offset }) => Math.round(offset / 1.5)}px;
       transform-origin: top right;
     }
 
     &.bottom-right {
-      top: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
-      left: ${({ offset }) => Math.round(offset / 1.5) || '0'}px;
+      top: ${({ offset }) => Math.round(offset / 1.5)}px;
+      left: ${({ offset }) => Math.round(offset / 1.5)}px;
       transform-origin: top left;
     }
 
     &.left {
-      right: ${({ offset }) => offset || '0'}px;
+      right: ${({ offset }) => offset}px;
       transform-origin: bottom right;
     }
 
     &.right {
-      left: ${({ offset }) => offset || '0'}px;
+      left: ${({ offset }) => offset}px;
       transform-origin: bottom left;
     }
   `}
 
   ${media.smallerThanMaxTablet`
     &.small-bottom {
-      top: ${({ offset }) => offset || '0'}px;
+      top: ${({ offset }) => offset}px;
       left: 50%;
       transform-origin: top left;
     }
 
     &.small-top {
-      bottom: ${({ offset }) => offset || '0'}px;
+      bottom: ${({ offset }) => offset}px;
       left: 50%;
       transform-origin: bottom left;
     }
 
     &.small-top-left {
-      bottom: ${({ offset }) => Math.round(offset / 1.1) || '0'}px;
-      right: ${({ offset }) => Math.round(offset / 1.9) || '0'}px;
+      bottom: ${({ offset }) => Math.round(offset / 1.1)}px;
+      right: ${({ offset }) => Math.round(offset / 1.9)}px;
       transform-origin: bottom right;
     }
 
     &.small-bottom-left {
-      top: ${({ offset }) => offset || '0'}px;
+      top: ${({ offset }) => offset}px;
       right: 0px;
       transform-origin: top right;
     }
 
     &.small-bottom-right {
-      top: ${({ offset }) => offset || '0'}px;
+      top: ${({ offset }) => offset}px;
       left: 0px;
       transform-origin: top left;
     }
 
     &.small-left {
-      right: ${({ offset }) => offset || '0'}px;
+      right: ${({ offset }) => offset}px;
       transform-origin: bottom right;
     }
 
     &.small-right {
-      left: ${({ offset }) => offset || '0'}px;
+      left: ${({ offset }) => offset}px;
       transform-origin: bottom left;
     }
   `}
 
   &.dropdown-enter {
     opacity: 0;
-    transform: scale(0.92);
+
+    &.scaleIn {
+      transform: scale(0.96);
+    }
 
     &.dropdown-enter-active {
       opacity: 1;
-      transform: scale(1);
-      transition: all 250ms cubic-bezier(0.19, 1, 0.22, 1);
+
+      &.scaleIn {
+        transform: scale(1);
+      }
     }
   }
 `;
@@ -137,6 +134,21 @@ const ContentInner = styled.div<{
   border-radius: ${(props: any) => props.theme.borderRadius};
   background-color: ${({ backgroundColor }) => backgroundColor};
   border: solid 1px ${({ borderColor }) => borderColor || colors.separation};
+
+  a {
+    color: ${colors.clBlueLight};
+    text-decoration: underline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
+
+    &:hover {
+      color: ${colors.clBlueLighter};
+      text-decoration: underline;
+    }
+  }
 
   ${({ textColor }) => textColor ? `
     color: ${textColor};
@@ -214,17 +226,22 @@ const ContentInner = styled.div<{
       }
     }
   `}
-
-
 `;
 
 export type IPosition = 'top' | 'left' | 'right' | 'bottom' | 'top-left' | 'bottom-left' | 'bottom-right';
 
 export interface Props {
-  content: JSX.Element;
-  offset: number;
-  backgroundColor: string;
-  onClickOutside: (event) => void;
+  children: JSX.Element;
+  content: JSX.Element | null;
+  offset?: number;
+  delay?: number;
+  scaleIn?: boolean;
+  backgroundColor?: string;
+  onClick?: (event) => void;
+  onClickOutside?: (event) => void;
+  onMouseEnter?: (event) => void;
+  onMouseLeave?: (event) => void;
+  onMouseDown?: (event) => void;
   dropdownOpened: boolean;
   borderColor?: string;
   textColor?: string;
@@ -240,46 +257,96 @@ export interface Props {
 * children must be a button or link
 */
 
-export default class Popover extends PureComponent<Props> {
-  render() {
-    const { onClickOutside, dropdownOpened, children, content, offset, withPin, textColor, backgroundColor, borderColor, className, id } = this.props;
+const Popover = memo<Props>(({
+  onClick,
+  onClickOutside,
+  onMouseEnter,
+  onMouseLeave,
+  onMouseDown,
+  dropdownOpened,
+  children,
+  content,
+  offset,
+  delay,
+  scaleIn,
+  withPin,
+  position,
+  smallViewportPosition,
+  textColor,
+  backgroundColor,
+  borderColor,
+  className,
+  id
+}) => {
+  const finalOffset = (offset || 0);
+  const finalDelay = (delay || 0);
+  const finalScaleIn = (isBoolean(scaleIn) ? scaleIn : true);
+  const finalBackgroundColor = (backgroundColor || '#fff');
+  const finalWithPin = (isBoolean(withPin) ? withPin : true);
+  const finalPosition = (position || 'right');
+  const finalSmallViewportPosition = (smallViewportPosition || position);
 
-    let { position, smallViewportPosition } = this.props;
-    position = (position || 'right');
-    smallViewportPosition = (smallViewportPosition || position);
+  const handleOnMouseEnter = useCallback((event) => {
+    onMouseEnter && onMouseEnter(event);
+  }, [onMouseEnter]);
 
-    return (
-      <Container className={`${className || ''} popover`}>
-        <Trigger className="tooltip-trigger">{children}</Trigger>
+  const handleOnMouseLeave = useCallback((event) => {
+    onMouseLeave && onMouseLeave(event);
+  }, [onMouseLeave]);
 
-        <CSSTransition
-          in={dropdownOpened}
-          timeout={200}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          classNames="dropdown"
-          exit={false}
+  const handleOnClick = useCallback((event) => {
+    onClick && onClick(event);
+  }, [onClick]);
+
+  const handleOnClickOutside = useCallback((event) => {
+    onClickOutside && onClickOutside(event);
+  }, [onClickOutside]);
+
+  const handleOnMouseDown = useCallback((event) => {
+    onMouseDown && onMouseDown(event);
+  }, [onMouseDown]);
+
+  return (
+    <Container
+      className={`${className || ''} popover`}
+      onMouseEnter={handleOnMouseEnter}
+      onMouseLeave={handleOnMouseLeave}
+      onMouseDown={handleOnMouseDown}
+      onClick={handleOnClick}
+      onClickOutside={handleOnClickOutside}
+    >
+      <div className="tooltip-trigger">{children}</div>
+
+      <CSSTransition
+        classNames="dropdown"
+        in={dropdownOpened}
+        timeout={animationDuration}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        enter={true}
+        exit={false}
+      >
+        <Content
+          offset={finalOffset}
+          delay={finalDelay}
+          className={`${finalPosition} small-${finalSmallViewportPosition} ${finalScaleIn ? 'scaleIn' : ''} tooltip-container`}
+          role="tooltip"
         >
-          <Content
-            onClickOutside={onClickOutside}
-            offset={offset}
-            className={`${position} small-${smallViewportPosition} tooltip-container`}
-            role="tooltip"
+          <ContentInner
+            id={id}
+            backgroundColor={finalBackgroundColor}
+            textColor={textColor}
+            borderColor={borderColor}
+            className={`${finalPosition} small-${finalSmallViewportPosition} tooltip-content ${finalWithPin ? 'withPin' : ''}`}
+            position={finalPosition}
+            smallViewportPosition={finalSmallViewportPosition}
           >
-            <ContentInner
-              id={id}
-              backgroundColor={backgroundColor}
-              textColor={textColor}
-              borderColor={borderColor}
-              className={`${position} small-${smallViewportPosition} tooltip-content ${withPin ? 'withPin' : ''}`}
-              position={position}
-              smallViewportPosition={smallViewportPosition}
-            >
-              {content}
-            </ContentInner>
-          </Content>
-        </CSSTransition>
-      </Container>
-    );
-  }
-}
+            {content}
+          </ContentInner>
+        </Content>
+      </CSSTransition>
+    </Container>
+  );
+});
+
+export default Popover;

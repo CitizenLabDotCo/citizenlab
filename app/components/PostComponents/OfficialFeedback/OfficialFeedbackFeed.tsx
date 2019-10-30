@@ -11,7 +11,7 @@ import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
@@ -29,6 +29,12 @@ const FeedbackHeader = styled.div`
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: left;
+  `}
 `;
 
 const FeedbackTitle = styled.div`
@@ -94,10 +100,10 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
               <FeedbackTitle>
                 <FormattedMessage tagName="h2" {...messages.officialUpdates} />
               </FeedbackTitle>
-                <FormattedMessage
-                  {...messages.lastUpdate}
-                  values={{ lastUpdateDate: (<StyledSpan>{formattedDate}</StyledSpan>) }}
-                />
+              <FormattedMessage
+                {...messages.lastUpdate}
+                values={{ lastUpdateDate: (<StyledSpan>{formattedDate}</StyledSpan>) }}
+              />
             </FeedbackHeader>
 
             {officialFeedbacksList.data.map((officialFeedbackPost) => {

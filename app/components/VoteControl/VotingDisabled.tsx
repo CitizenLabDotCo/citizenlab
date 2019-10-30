@@ -10,35 +10,34 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import messages from './messages';
 import clHistory from 'utils/cl-router/history';
 import { fontSizes, colors } from 'utils/styleUtils';
-// events
 import { openVerificationModalWithContext } from 'containers/App/events';
 
 const Container = styled.div`
+  width: 100%;
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
   font-weight: 300;
   line-height: 20px;
-`;
 
-const ProjectLink = styled.span`
-  color: ${colors.clBlueDark};
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    color: ${darken(0.15, colors.clBlueDark)};
-    text-decoration: underline;
+  > span {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
   }
 `;
 
 const StyledButton = styled.button`
-  color: #1391A1;
+  color: ${colors.clBlueDark};
   text-decoration: underline;
   transition: all 100ms ease-out;
   display: inline-block;
+  margin: 0;
   padding: 0;
+  cursor: pointer;
 
   &:hover {
+    color: ${darken(0.15, colors.clBlueDark)};
     text-decoration: underline;
   }
 `;
@@ -59,6 +58,10 @@ interface State { }
 class VotingDisabled extends PureComponent<Props, State> {
   onVerify = () => {
     openVerificationModalWithContext('ActionVote');
+  }
+
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
   }
 
   reasonToMessage = () => {
@@ -103,12 +106,12 @@ class VotingDisabled extends PureComponent<Props, State> {
       />
     ) : null);
     const projectName = (
-      <ProjectLink onClick={this.handleProjectLinkClick} role="navigation">
+      <StyledButton onClick={this.handleProjectLinkClick} onMouseDown={this.removeFocus} role="navigation">
         <T value={projectTitle} />
-      </ProjectLink>
+      </StyledButton>
     );
     const verificationLink = (
-      <StyledButton onClick={this.onVerify}>
+      <StyledButton onClick={this.onVerify} onMouseDown={this.removeFocus}>
         <FormattedMessage {...messages.verificationLinkText} />
       </StyledButton>
     );

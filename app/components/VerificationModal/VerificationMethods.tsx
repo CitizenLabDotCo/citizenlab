@@ -27,6 +27,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
 `;
 
 const AboveTitle = styled.div`
@@ -50,13 +51,13 @@ const ShieldIcon = styled(Icon)`
 `;
 
 const Content = styled.div`
-  width: 100%;
+  flex: 1 1 auto;
   display: flex;
   justify-content: center;
 `;
 
 const Context = styled.div`
-  flex: 1;
+  flex: 1 1 auto;
   padding-left: 40px;
   padding-right: 40px;
   padding-top: 32px;
@@ -72,7 +73,9 @@ const ContextLabel = styled.div`
 `;
 
 const ButtonsContainer = styled.div`
-  flex: 1;
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 420px;
   padding-left: 40px;
   padding-right: 40px;
   padding-top: 32px;
@@ -83,7 +86,6 @@ const ButtonsContainer = styled.div`
   align-items: stretch;
   background: ${colors.background};
   border-radius: ${(props: any) => props.theme.borderRadius};
-  max-width: 420px;
 `;
 
 const MethodButton = styled(Button)`

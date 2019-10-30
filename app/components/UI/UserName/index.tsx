@@ -23,9 +23,9 @@ const Container = styled.div`
   display: inline-block;
 `;
 
-const Name: any = styled.div<{ color?: string }>`
+const Name = styled.div<{ color?: string, emphasize?: boolean }>`
   color: ${({ color, theme }) => color || theme.colorText};
-  font-weight: ${({ emphasize }: any) => emphasize ? '500' : 'normal'};
+  font-weight: ${({ emphasize }) => emphasize ? 500 : 'normal'};
   text-decoration: none;
   hyphens: auto;
 
@@ -51,8 +51,6 @@ const Name: any = styled.div<{ color?: string }>`
     font-style: italic;
   }
 `;
-
-//  padding: 1px 4px;
 
 const Badge = styled.div`
   color: #fff;

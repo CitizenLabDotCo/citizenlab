@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -23,14 +23,13 @@ interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
   className?: string;
   children?: JSX.Element | null;
   offset?: number;
-  openDelay?: number;
   position?: IPosition;
   iconColor?: string;
 }
 
 const Container = styled.div`
   display: inline-block;
-  height: 16px;
+  height: 17px;
 `;
 
 const IconWrapper = styled.div`
@@ -38,11 +37,12 @@ const IconWrapper = styled.div`
   align-items: center;
 `;
 
-const StyledIcon = styled(Icon) <({ color?: string }) >`
-  width: 16px;
-  height: 16px;
+const StyledIcon = styled(Icon)<{ color?: string }>`
+  width: 17px;
+  height: 17px;
   cursor: pointer;
   fill: ${({ color }) => color ? color : colors.label};
+  transform: translateY(-1px);
 
   &:hover {
     fill: ${({ color }) => color ? darken(.2, color) : darken(.2, colors.label)};
@@ -56,20 +56,6 @@ const TooltipWrapper = styled.div<{ pxSize: 500 | 300 | 200 | 400 }>`
   font-weight: 400;
   line-height: normal;
   text-align: left;
-  a {
-    color: ${colors.clBlueLight};
-    text-decoration: underline;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
-
-    &:hover {
-      color: ${colors.clBlueLighter};
-      text-decoration: underline;
-    }
-  }
 `;
 
 const getPxSize = (size: undefined | 'big' | 'small' | 'xs') => {
@@ -84,26 +70,30 @@ const getPxSize = (size: undefined | 'big' | 'small' | 'xs') => {
   }
 };
 
-const InfoTooltip = (props: Props) => {
-  const { position, size, className, children, offset, openDelay, iconColor, ...passthroughProps } = props;
+const InfoTooltip = memo<Props>((props) => {
+  const { position, size, className, children, offset, iconColor, ...passthroughProps } = props;
   const pxSize = getPxSize(size);
+
+  const onTooltipClick = useCallback((event: React.MouseEvent) => {
+    event.preventDefault();
+  }, []);
 
   return (
     <Container className={`${className} infoTooltip`}>
       <Tooltip
-        enabled
+        enabled={true}
         content={(
           <TooltipWrapper pxSize={pxSize}>
             <FormattedMessage {...passthroughProps} />
           </TooltipWrapper>
         )}
-        offset={offset || 20}
+        offset={offset || 28}
         position={position}
         className={className}
-        openDelay={openDelay}
-        backgroundColor="rgba(34, 34, 34, 0.95)"
+        backgroundColor={colors.popoverDarkBg}
+        borderColor={colors.popoverDarkBg}
       >
-        <IconWrapper>
+        <IconWrapper onClick={onTooltipClick}>
           <div className="tooltip-trigger">
             {children || <StyledIcon name="info3" className="infoTooltipIcon" />}
           </div>
@@ -111,6 +101,6 @@ const InfoTooltip = (props: Props) => {
       </Tooltip >
     </Container>
   );
-};
+});
 
 export default InfoTooltip;

@@ -33,9 +33,9 @@ import { Locale } from 'typings';
 
 const padding = 30;
 const mobilePadding = 15;
-const greyTransparent = css`rgba(116, 116, 116, 0.3)`;
+const greyTransparent = 'rgba(116, 116, 116, 0.3)';
 const greyOpaque = `${colors.label}`;
-const greenTransparent = css`rgba(4, 136, 76, 0.3)`;
+const greenTransparent = 'rgba(4, 136, 76, 0.3)';
 const greenOpaque = `${colors.clGreen}`;
 
 const Container = styled.div`

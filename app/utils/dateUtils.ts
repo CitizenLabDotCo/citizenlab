@@ -35,3 +35,13 @@ export function getIsoDate(date: string) {
 export function getDaysRemainingUntil(date: string) : number {
   return moment(date).diff(moment({ hours: 0 }), 'days');
 }
+
+export function convertSecondsToDDHHMM(seconds: number) {
+  const daysLeft = Math.floor(seconds / (3600 * 24));
+  const formattedDaysLeft = daysLeft < 10 ? `0${daysLeft}` : daysLeft;
+  const hoursLeft = Math.floor(seconds % (3600 * 24) / 3600);
+  const formattedHoursLeft = hoursLeft < 10 ? `0${hoursLeft}` : hoursLeft;
+  const minutesLeft = Math.floor(seconds % 3600 / 60);
+  const formattedMinutesLeft = minutesLeft < 10 ? `0${minutesLeft}` : minutesLeft;
+  return `${formattedDaysLeft}:${formattedHoursLeft}:${formattedMinutesLeft}`;
+}

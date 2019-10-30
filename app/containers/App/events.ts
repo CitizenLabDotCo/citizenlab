@@ -26,3 +26,11 @@ export function openVerificationModalWithoutContext(location: string) {
     { step: 'method-selection', withContext: false }
   );
 }
+
+export function closeVerificationModal(location: string) {
+  eventEmitter.emit(
+    location,
+    VerificationModalEvents.close,
+    null
+  );
+}
