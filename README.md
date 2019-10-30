@@ -117,6 +117,15 @@ Two environment variables can be used for this purpose: `SEED_SIZE` (e.g. small,
 NOTE: Watch out that you don't accidently commit these changes!
 
 
+## Using S3 storage in development
+
+1. Go to desired image and/or file uploader.
+
+2. Always include `storage :fog` (comment out if-condition).
+
+3. Comment out `asset_host` method (use original implementation from Carrierwave)
+
+
 ## Creating Engines
 
 In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine.

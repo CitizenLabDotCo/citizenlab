@@ -57,6 +57,94 @@ namespace :fix_existing_tenants do
       end
     end
   end
+
+  desc "Runs the TextImageService on all HTML multilocs that can have images"
+  task :swap_all_html_images => [:environment] do |t, args|
+    Tenant.all.map do |tenant|
+      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
+        imageable_html_multilocs.map do |claz, attributes|
+          claz.all.map do |instance|
+            attributes.each do |attribute|
+              multiloc = instance.send attribute
+              multiloc = TextImageService.new.swap_data_images instance, attribute
+              instance.send "#{attribute}=", multiloc
+              instance.save!
+            end
+          end
+        end
+      end
+    end
+  end
+
+  desc "Substitutes HTML URLs by the S3 url, according to a list of requested sustitutions (tenants that changed host)"
+  task :substitute_html_relative_paths, [:url] => [:environment] do |t, args|
+    tofix = JSON.parse open(args[:url]).read
+    tofix.each do |host, clazzes|
+      Apartment::Tenant.switch(host.gsub('.', '_')) do
+        clazzes.each do |claz, instances|
+          instances.each do |id, attributes|
+            object = claz.constantize.find id
+            attributes.each do |attribute, _|
+              multiloc = object.send attribute
+              multiloc.keys.each do |k|
+                text = multiloc[k]
+                doc = Nokogiri::HTML.fragment(text)
+                doc.css("img")
+                  .select do |img| 
+                    img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/
+                  end
+                  .each do |img|
+                    url = img.attr('src')
+                    path = "#{Frontend::UrlService.new.home_url}/uploads/#{url.partition('/uploads/').last}"
+                    img.set_attribute('src', path)
+                  end
+                multiloc[k] = doc.to_s
+              end
+              multiloc = TextImageService.new.swap_data_images object, attribute
+              object.send "#{attribute}=", multiloc
+              object.save!
+            end
+          end
+        end
+      end
+    end
+  end
+
+  desc "List HTML URLs not starting with home URL to be fixed"
+  task :list_html_links_to_fix_not_home => [:environment] do |t, args|
+    results = {}
+    Tenant.all.map do |tenant|
+      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
+        imageable_html_multilocs.map do |claz, attributes|
+          claz.all.map do |instance|
+            attributes.each do |attribute|
+              multiloc = instance.send attribute
+              multiloc&.keys&.each do |k|
+                text = multiloc[k]
+                doc = Nokogiri::HTML.fragment(text)
+                doc.css("img")
+                  .select do |img| 
+                    ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
+                      !img.attr('src').include?("#{tenant.host}/uploads/") &&
+                      !img.attr('src').include?("s3.amazonaws.com") &&
+                      !img.attr('src').include?("res.cloudinary.com")
+                      )
+                  end
+                  .each do |img|
+                    results[tenant.host] ||= {}
+                    results[tenant.host][claz.name] ||= {}
+                    results[tenant.host][claz.name][instance.id] ||= {}
+                    results[tenant.host][claz.name][instance.id][attribute] ||= []
+                    results[tenant.host][claz.name][instance.id][attribute] += [img.attr('src')]
+                  end
+              end
+            end
+          end
+        end
+      end
+    end
+    puts JSON.pretty_generate(results)
+  end
 end
 
 def convert_multiloc multiloc
@@ -74,4 +162,16 @@ def convert_html html
     node.name = 'h2'
   end
   doc.to_s
+end
+
+def imageable_html_multilocs
+  {
+    Area       => [:description_multiloc],
+    Event      => [:description_multiloc],
+    Idea       => [:body_multiloc],
+    Initiative => [:body_multiloc],
+    Page       => [:body_multiloc],
+    Phase      => [:description_multiloc],
+    Project    => [:description_multiloc]
+  }
 end
