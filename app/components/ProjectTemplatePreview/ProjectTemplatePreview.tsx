@@ -377,7 +377,7 @@ const ProjectTemplatePreview = memo<Props>(({ projectTemplateId, className }) =>
     clipboard.writeText(`${window.location.origin}/templates/${projectTemplateId}`);
     setLinkCopied(true);
     trackEventByName(tracks.linkCopied, { projectTemplateId });
-  }, []);
+  }, [projectTemplateId]);
 
   useEffect(() => {
     if (linkCopied) {
