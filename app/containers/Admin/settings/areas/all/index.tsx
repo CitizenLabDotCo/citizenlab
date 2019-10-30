@@ -44,9 +44,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
   }
 
   handleToggleTerminology = () => {
-    this.setState({
-      terminologyOpened: !this.state.terminologyOpened,
-    });
+    this.setState(({ terminologyOpened }) => ({ terminologyOpened: !terminologyOpened }));
   }
 
   handleDeleteClick = (areaId: string) => (event: React.FormEvent<any>) => {
