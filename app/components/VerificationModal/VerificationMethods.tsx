@@ -17,7 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // typings
@@ -86,6 +86,12 @@ const ButtonsContainer = styled.div`
   align-items: stretch;
   background: ${colors.background};
   border-radius: ${(props: any) => props.theme.borderRadius};
+
+  ${media.smallerThanMaxTablet`
+    padding: 0;
+    max-width: auto;
+    background: transparent;
+  `}
 `;
 
 const MethodButton = styled(Button)`

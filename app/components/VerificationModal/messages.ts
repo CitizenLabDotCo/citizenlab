@@ -25,14 +25,6 @@ export default defineMessages({
     id: 'app.components.VerificationModal.cowIdSerialNumber',
     defaultMessage: 'ID serial number',
   },
-  cowRunNumberTooltip: {
-    id: 'app.components.VerificationModal.cowRunNumberTooltip',
-    defaultMessage: '???',
-  },
-  cowIdSerialNumberTooltip: {
-    id: 'app.components.VerificationModal.cowIdSerialNumberTooltip',
-    defaultMessage: '???',
-  },
   emptyFieldError: {
     id: 'app.components.VerificationModal.emptyFieldError',
     defaultMessage: 'This field cannot be empty.',
