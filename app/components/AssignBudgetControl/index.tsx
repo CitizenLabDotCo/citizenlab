@@ -242,9 +242,11 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
       const isInBasket = includes(basketIdeaIds, ideaId);
       const disabled = this.isDisabled();
 
+      const fullClassName = `e2e-assign-budget ${className}`;
+
       if (view === 'ideaCard') {
         return (
-          <IdeaCardContainer className={className} aria-live="polite">
+          <IdeaCardContainer className={fullClassName} aria-live="polite">
             <IdeaCardButton
               onClick={this.assignBudget}
               processing={processing}
@@ -262,7 +264,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
         );
       } else if (view === 'ideaPage') {
         return (
-          <IdeaPageContainer className={className} aria-live="polite">
+          <IdeaPageContainer className={fullClassName} aria-live="polite">
             <BudgetBox>
               <Budget>
                 <FormattedNumber
