@@ -169,7 +169,7 @@ export default class FileInput extends PureComponent<Props> {
           accept={fileAccept.join(',')}
           tabIndex={0}
         />
-        <Label htmlFor="file-attachment-uploader">
+        <Label aria-hidden htmlFor="file-attachment-uploader">
           <StyledIcon name="upload-file" />
           <FormattedMessage {...messages.fileInputDescription} />
         </Label>
