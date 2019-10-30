@@ -36,7 +36,7 @@ describe('Idea voting permissions', () => {
       cy.get('.e2e-voting-disabled').find('button').click();
       cy.get('.e2e-verification-modal');
     });
-    it('lets verified users post', () => {
+    it('lets verified users vote', () => {
       cy.login(verifiedEmail, verifiedPassword);
       cy.acceptCookies();
       cy.visit('projects/verified-ideation/ideas');
