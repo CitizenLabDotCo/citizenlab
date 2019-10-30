@@ -81,7 +81,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
 
   if (isNilOrError(authUser)) return null;
 
-  const authIsVerified =   .data.attributes.verified;
+  const authIsVerified = authUser.data.attributes.verified;
 
   return (
     <FeatureFlag name="verification">
