@@ -17,7 +17,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 
 // events
 import { openVerificationModalWithoutContext } from 'containers/App/events';
@@ -27,6 +27,12 @@ const Container = styled(FormSection)`
   align-items: center;
   justify-content: space-between;
   padding: 30px 40px;
+
+  ${media.smallerThanMaxTablet`
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: left;
+  `}
 `;
 
 const AvatarAndShield = styled.div`
@@ -53,6 +59,14 @@ const Content = styled.div`
   flex-direction: column;
   margin-left: 20px;
   margin-right: 20px;
+
+  ${media.smallerThanMaxTablet`
+    text-align: left;
+    margin-left: 00px;
+    margin-right: 00px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  `}
 `;
 
 const Title = styled.h2`
