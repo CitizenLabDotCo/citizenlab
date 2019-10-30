@@ -451,21 +451,15 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
         <FormElement id="e2e-idea-image-upload">
           <FormLabel labelMessage={messages.imageUploadLabel} />
-          <label htmlFor="idea-img-dropzone">
-            <HiddenLabel>
-              <FormattedMessage {...messages.imageDropzonePlaceholder} />
-            </HiddenLabel>
-            <ImagesDropzone
-              id="idea-img-dropzone"
-              images={imageFile}
-              imagePreviewRatio={135 / 298}
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              maxImageFileSize={5000000}
-              maxNumberOfImages={1}
-              onAdd={this.handleUploadOnAdd}
-              onRemove={this.handleUploadOnRemove}
-            />
-          </label>
+          <ImagesDropzone
+            images={imageFile}
+            imagePreviewRatio={135 / 298}
+            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+            maxImageFileSize={5000000}
+            maxNumberOfImages={1}
+            onAdd={this.handleUploadOnAdd}
+            onRemove={this.handleUploadOnRemove}
+          />
         </FormElement>
 
         {pbContext && (
