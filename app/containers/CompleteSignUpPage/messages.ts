@@ -13,8 +13,4 @@ export default defineMessages({
     id: 'app.containers.CompleteSignUpPage.notSignedIn',
     defaultMessage: "Something went wrong and we can't sign you in right now. Please try again in a few minutes.",
   },
-  selectedTopics: {
-    id: 'app.containers.CompleteSignUpPage.numberOfSelectedTopics',
-    defaultMessage: 'Selected {numberOfSelectedTopics, plural, =0 {zero topics} one {one topic} other {# topics}}: {selectedTopicNames}',
-  },
 });
