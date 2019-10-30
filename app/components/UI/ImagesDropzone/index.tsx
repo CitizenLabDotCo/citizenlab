@@ -464,7 +464,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
           >
             {!processing ? (
               <DropzoneContent>
-                <DropzonePlaceholderIcon name="upload" />
+                <DropzonePlaceholderIcon name="upload" ariaHidden />
                 <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
                 <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
               </DropzoneContent>
