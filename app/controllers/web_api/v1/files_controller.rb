@@ -46,7 +46,7 @@ class WebApi::V1::FilesController < ApplicationController
   }
 
   before_action :set_container, only: [:index, :create]
-  before_action :set_file, only: [:show, :update, :destroy]
+  before_action :set_file, only: [:show, :destroy]
   skip_after_action :verify_policy_scoped
 
   def index
@@ -60,24 +60,13 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def create
-    @file = @container.send(secure_constantize(:file_relationship)).create(file_params)
+    @file = @container.send(secure_constantize(:file_relationship)).new(file_params)
     authorize @file
     if @file.save
       render json: WebApi::V1::FileSerializer.new(
         @file, 
         params: fastjson_params
         ).serialized_json, status: :created
-    else
-      render json: {errors: transform_errors_details!(@file.errors.details)}, status: :unprocessable_entity
-    end
-  end
-
-  def update
-    if @file.update(file_params)
-      render json: WebApi::V1::FileSerializer.new(
-        @file, 
-        params: fastjson_params
-        ).serialized_json, status: :ok
     else
       render json: {errors: transform_errors_details!(@file.errors.details)}, status: :unprocessable_entity
     end
@@ -100,11 +89,20 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def file_params
-    params.require(:file).permit(
+    params_of_file = params.require(:file).permit(
       :file,
       :ordering,
       :name
     )
+    returned_file_params = {}
+    if params_of_file[:file] || params_of_file[:name]
+      returned_file_params[:file_by_content] = {
+        content: params_of_file[:file],
+        name: params_of_file[:name]
+      }
+    end
+    returned_file_params[:ordering] ||= params_of_file[:ordering]
+    returned_file_params
   end
 
   def set_file

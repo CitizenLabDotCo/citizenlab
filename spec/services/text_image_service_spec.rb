@@ -38,8 +38,8 @@ describe TextImageService do
   end
 
   describe "swap_data_images_text" do
-    let(:url_from_base64) { "#{Frontend::UrlService.new.home_url}/from/base64/image.jpg" }
-    let(:url_from_url) { "#{Frontend::UrlService.new.home_url}/from/url/image.jpg" }
+    let(:url_from_base64) { "https://cl2-bucket.s3.amazonaws.com/from/base64/image.jpg" }
+    let(:url_from_url) { "https://cl2-bucket.s3.amazonaws.com/from/url/image.jpg" }
     let(:external_url) { "https://i.pinimg.com/originals/f9/08/de/f908deb0fbac29cd7445e42c15d674e2.jpg" }
     let(:image_url_builder) { -> (image_data, image_type) { 
       case image_type
