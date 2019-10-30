@@ -137,6 +137,14 @@
               "type": "string",
               "enum": ["Google Analytics", "Google Tag Manager", "Facebook Pixel", "AdWords"]
             }
+          },
+          "areas_term": {
+            "description": "How should the areas be called on this platform? (e.g. neighbourhoods, quarters, counties, ...). Fully lowercase",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "area_term": {
+            "description": "How should one area be called on this platform? Singular version of `areas_term`. Fully lowercase.",
+            "$ref": "#/definitions/multiloc_string"
           }
         }
       },
