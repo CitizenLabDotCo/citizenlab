@@ -143,4 +143,37 @@ namespace :inconsistent_data do
       end
     end
   end
+
+  task :fix_empty_multilocs => :environment do
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        {
+          Area                     => [:title_multiloc, :description_multiloc],
+          Clustering               => [:title_multiloc],
+          Comment                  => [:body_multiloc],
+          CustomFieldOption        => [:title_multiloc],
+          CustomField              => [:title_multiloc, :description_multiloc],
+          EmailCampaigns::Campaign => [:subject_multiloc, :body_multiloc],
+          Event                    => [:title_multiloc, :description_multiloc, :location_multiloc],
+          Group                    => [:title_multiloc],
+          IdeaStatus               => [:title_multiloc, :description_multiloc],
+          Idea                     => [:title_multiloc, :body_multiloc],
+          InitiativeStatus         => [:title_multiloc, :description_multiloc],
+          Initiative               => [:title_multiloc, :body_multiloc],
+          OfficialFeedback         => [:body_multiloc, :author_multiloc],
+          Page                     => [:title_multiloc, :body_multiloc],
+          Phase                    => [:title_multiloc, :description_multiloc],
+          Polls::Option            => [:title_multiloc],
+          Polls::Question          => [:title_multiloc],
+          Project                  => [:title_multiloc, :description_multiloc, :description_preview_multiloc],
+          Topic                    => [:title_multiloc, :description_multiloc],
+          User                     => [:bio_multiloc],
+        }.each do |claz, attributes|
+          attributes.each do |attribute|
+            claz.where("#{attribute} IS NULL").update_all(attribute => {})
+          end
+        end
+      end
+    end
+  end
 end
