@@ -42,7 +42,7 @@ const ErrorWrapper = styled.div`
   margin-top: -12px;
 `;
 
-const DropzonePlaceholderText = styled.div`
+const DropzonePlaceholderText = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
