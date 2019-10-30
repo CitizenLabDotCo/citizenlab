@@ -49,30 +49,30 @@ const StyledIcon = styled(Icon)<{ color?: string }>`
   }
 `;
 
-const TooltipWrapper = styled.div<{ pxSize: 500 | 300 | 200 | 400 }>`
+const TooltipWrapper = styled.div<{ minWidth: number }>`
   padding: 12px;
-  min-width: ${(props: any) => props.pxSize}px;
+  min-width: ${({ minWidth }) => minWidth}px;
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: normal;
   text-align: left;
 `;
 
-const getPxSize = (size: undefined | 'big' | 'small' | 'xs') => {
+const getMinWidth = (size: undefined | 'big' | 'small' | 'xs') => {
   if (size === 'big') {
     return 500;
   } else if (size === 'small') {
     return 300;
   } else if (size === 'xs') {
     return 200;
-  } else {
-    return 400;
   }
+
+  return 300;
 };
 
 const InfoTooltip = memo<Props>((props) => {
   const { position, size, className, children, offset, iconColor, ...passthroughProps } = props;
-  const pxSize = getPxSize(size);
+  const minWidth = getMinWidth(size);
 
   const onTooltipClick = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
@@ -83,7 +83,7 @@ const InfoTooltip = memo<Props>((props) => {
       <Tooltip
         enabled={true}
         content={(
-          <TooltipWrapper pxSize={pxSize}>
+          <TooltipWrapper minWidth={minWidth}>
             <FormattedMessage {...passthroughProps} />
           </TooltipWrapper>
         )}

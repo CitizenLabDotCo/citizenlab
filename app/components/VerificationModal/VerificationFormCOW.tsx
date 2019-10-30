@@ -28,7 +28,7 @@ const helpImage = require('./COWHelpImage.png');
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -40,6 +40,10 @@ const Container = styled.div`
 const Form = styled.form`
   width: 100%;
   max-width: 350px;
+
+  ${media.smallerThanMaxTablet`
+    max-width: auto;
+  `}
 `;
 
 const FormField = styled.div`
@@ -196,8 +200,11 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
         <FormField>
           <StyledLabel>
             <LabelTextContainer>
-              <FormattedMessage {...messages.cowRunNumber} />
-              <StyledInfoTooltip {...messages.cowRunNumberTooltip} />
+              <span>RUN</span>
+              <StyledInfoTooltip
+                id="RUN"
+                defaultMessage="Ingrese su numero de RUN (RUT)"
+              />
             </LabelTextContainer>
             <Input
               type="text"
@@ -212,8 +219,11 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
         <FormField>
           <StyledLabel>
             <LabelTextContainer>
-              <FormattedMessage {...messages.cowIdSerialNumber} />
-              <StyledInfoTooltip {...messages.cowIdSerialNumberTooltip} />
+              <span>Número de Documento</span>
+              <StyledInfoTooltip
+                id="id-serial"
+                defaultMessage="Ingrese el número de documento que se encuentra al frente en cédulas nuevas y atras en cédulas antiguas."
+              />
             </LabelTextContainer>
             <Input
               type="text"
