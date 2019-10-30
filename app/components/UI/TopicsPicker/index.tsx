@@ -15,7 +15,7 @@ import { ITopicData } from 'services/topics';
 // intl
 import T from 'components/T';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from 'containers/CompleteSignUpPage/messages';
+import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const TopicsContainer = styled.div`

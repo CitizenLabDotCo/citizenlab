@@ -502,7 +502,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             files={ideaFiles}
           />
         </FormElement>
-
       </Form>
     );
   }
