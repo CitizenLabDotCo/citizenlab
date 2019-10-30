@@ -109,7 +109,7 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
       <ScreenReaderOnly>
         <FormattedMessage tagName="h2" {...messages.invisibleTitleComments} />
       </ScreenReaderOnly>
-      {loaded ? (
+      {loaded && !isNilOrError(commentsList) ? (
         <>
           {/*
             Show warning messages when there are no comments and you're logged in as an admin.
