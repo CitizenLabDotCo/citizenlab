@@ -58,7 +58,6 @@ const TooltipWrapper = styled.div`
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   padding: 15px;
-  border: solid 1px red;
 
   > span {
     overflow-wrap: break-word;
