@@ -41,7 +41,7 @@ const ErrorWrapper = styled.div`
   margin-top: -12px;
 `;
 
-const DropzonePlaceholderText = styled.div`
+const DropzonePlaceholderText = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
@@ -347,26 +347,28 @@ class ImageDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                 maxWidth={maxImagePreviewWidth}
                 ratio={imagePreviewRatio}
               >
-                <StyledDropzone
-                  className={`${this.props.imageRadius === '50%' && 'rounded'}`}
-                  accept={acceptedFileTypes}
-                  maxSize={maxImageFileSize}
-                  disabled={processing}
-                  disablePreview={true}
-                  onDropRejected={this.onDropRejected}
-                  onDropAccepted={this.onDropAccepted}
-                >
-                  {!processing ? (
-                    <DropzoneContent>
-                      <DropzonePlaceholderIcon name="upload" />
-                      <DropzonePlaceholderText>{formatMessage(messages.uploadImage)}</DropzonePlaceholderText>
-                    </DropzoneContent>
-                  ) : (
+                <label>
+                  <StyledDropzone
+                    className={`${this.props.imageRadius === '50%' && 'rounded'}`}
+                    accept={acceptedFileTypes}
+                    maxSize={maxImageFileSize}
+                    disabled={processing}
+                    disablePreview={true}
+                    onDropRejected={this.onDropRejected}
+                    onDropAccepted={this.onDropAccepted}
+                  >
+                    {!processing ? (
                       <DropzoneContent>
-                        <Spinner />
+                        <DropzonePlaceholderIcon name="upload" ariaHidden />
+                        <DropzonePlaceholderText>{formatMessage(messages.uploadImage)}</DropzonePlaceholderText>
                       </DropzoneContent>
-                    )}
-                </StyledDropzone>
+                    ) : (
+                        <DropzoneContent>
+                          <Spinner />
+                        </DropzoneContent>
+                      )}
+                  </StyledDropzone>
+                </label>
               </Box>
             )}
         </ContentWrapper>
