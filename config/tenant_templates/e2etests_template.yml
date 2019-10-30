@@ -827,6 +827,18 @@ models:
     published_at: '2018-03-03 00:00:00'
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
+  - &verifiedIdea
+    title_multiloc:
+      en-GB: Verified Idea
+    body_multiloc:
+      en-GB: "This idea is from a verified user and can only be commented or voted on by verified users."
+    publication_status: published
+    project_ref: *verifiedIdeation
+    author_ref: *mortal1
+    location_description: 8185 Austen Green
+    published_at: '2018-03-03 00:00:00'
+    created_at: '2018-02-22 00:00:00'
+    updated_at: '2018-03-28 13:35:10'
   - &206
     title_multiloc:
       nl-BE: Iure sit eos placeat labore amet.
@@ -6613,6 +6625,18 @@ models:
       action: posting
       permitted_by: groups
       permittable_ref: *verifiedIdeation
+    - &112
+      action: voting
+      permitted_by: groups
+      permittable_ref: *verifiedIdeation
+    - &113
+      action: commenting
+      permitted_by: groups
+      permittable_ref: *verifiedIdeation
   groups_permissions:
   - permission_ref: *111
+    group_ref: *verified
+  - permission_ref: *112
+    group_ref: *verified
+  - permission_ref: *113
     group_ref: *verified
