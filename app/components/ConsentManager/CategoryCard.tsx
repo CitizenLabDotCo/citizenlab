@@ -48,10 +48,6 @@ const InputContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-const HiddenLabel = styled.label`
-  ${hideVisually()}
-`;
-
 const StyledInput = styled.input`
   ${hideVisually()}
 `;
@@ -116,13 +112,7 @@ const CategoryCard = ({ category, destinations, checked, handleChange }: Props) 
         tagName="h2"
         {...messages[category]}
       />
-      <InputContainer role="radiogroup" aria-labelledby={`${category}-radio`}>
-        <HiddenLabel id={`${category}-radio`}>
-          <FormattedMessage
-            {...messages.ariaRadioGroup}
-            values={{ category }}
-          />
-        </HiddenLabel>
+      <InputContainer role="radiogroup">
         <StyledLabel htmlFor={`${category}-radio-true`}>
           <StyledInput
             type="radio"

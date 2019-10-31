@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.areas',
     defaultMessage: 'Areas',
   },
-  selectYourArea: {
-    id: 'app.components.FilterBoxes.selectYourArea',
-    defaultMessage: 'Select your area',
-  },
   topicsTitle: {
     id: 'app.components.FilterBoxes.topicsTitle',
     defaultMessage: 'Topics',
