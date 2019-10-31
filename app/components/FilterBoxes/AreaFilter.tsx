@@ -1,17 +1,17 @@
 import React, { memo, useMemo, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 // components
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 // resources
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
+import useTenant from 'hooks/useTenant';
 
 // i18n
 import messages from './messages';
 import localize, { InjectedLocalized } from 'utils/localize';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
@@ -20,6 +20,7 @@ import { Header, Title } from './styles';
 // typings
 import { IOption } from 'typings';
 import { IAreaData } from 'services/areas';
+import T from 'components/T';
 
 const Container = styled.div`
   width: 100%;
@@ -44,7 +45,9 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const AreaFilter = memo<Props & InjectedIntlProps & InjectedLocalized>(({ selectedAreaIds, onChange, className, localize, intl, areas }) => {
+const AreaFilter = memo<Props & InjectedLocalized>(({ selectedAreaIds, onChange, className, localize, areas }) => {
+
+  const tenant = useTenant();
 
   const selectedOptions = useMemo(() => {
     if (!isNilOrError(areas) && selectedAreaIds) {
@@ -77,13 +80,16 @@ const AreaFilter = memo<Props & InjectedIntlProps & InjectedLocalized>(({ select
     onChange(output.length > 0 ? output : null);
   }, []);
 
-  const placeholder = intl.formatMessage(messages.selectYourArea);
+  const areasTerm = !isNilOrError(tenant) && tenant.data.attributes.settings.core.areas_term;
 
   return (
     <Container className={className}>
       <Header>
         <Title>
-          <FormattedMessage {...messages.areas} />
+          {areasTerm && !isEmptyMultiloc(areasTerm)
+            ? <T value={areasTerm} />
+            : <FormattedMessage {...messages.areas} />
+          }
         </Title>
       </Header>
 
@@ -91,13 +97,12 @@ const AreaFilter = memo<Props & InjectedIntlProps & InjectedLocalized>(({ select
         value={selectedOptions}
         options={options}
         onChange={handleOnChange}
-        placeholder={placeholder}
       />
     </Container>
   );
 });
 
-const AreaFilterWithHoC = injectIntl(localize(AreaFilter));
+const AreaFilterWithHoC = localize(AreaFilter);
 
 export default (inputProps: InputProps) => (
   <GetAreas>
