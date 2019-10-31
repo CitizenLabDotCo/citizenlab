@@ -91,6 +91,10 @@ const ModalContainer: any = styled(clickOutside)`
     max-height: 600px;
   }
 
+  @media (min-height: 1200px) {
+    margin-top: 120px;
+  }
+
   ${media.smallerThanMinTablet`
     margin-top: 40px;
     padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '20px'};

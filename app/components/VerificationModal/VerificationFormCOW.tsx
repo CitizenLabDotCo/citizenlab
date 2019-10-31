@@ -47,7 +47,26 @@ const Form = styled.form`
 `;
 
 const FormField = styled.div`
+  width: 100%;
   margin-bottom: 20px;
+`;
+
+const StyledLabel = styled(Label)`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const LabelTextContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const StyledInfoTooltip = styled(InfoTooltip)`
+  margin-left: 2px;
 `;
 
 const Footer = styled.div`
@@ -62,20 +81,6 @@ const FooterInner = styled.div`
   padding-top: 20px;
   padding-bottom: 20px;
   display: flex;
-`;
-
-const StyledLabel = styled(Label)`
-  display: flex;
-  flex-direction: column;
-`;
-
-const LabelTextContainer = styled.div`
-  display: inline-block;
-  margin-bottom: 10px;
-`;
-
-const StyledInfoTooltip = styled(InfoTooltip)`
-  margin-left: 2px;
 `;
 
 const SubmitButton = styled(Button)`
@@ -204,15 +209,18 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
               <StyledInfoTooltip
                 id="RUN"
                 defaultMessage="Ingrese su numero de RUN (RUT)"
+                size="small"
               />
             </LabelTextContainer>
-            <Input
-              type="text"
-              placeholder="xx.xxx.xxx-x"
-              onChange={onRunChange}
-              value={run}
-              error={runError}
-            />
+            <div>
+              <Input
+                type="text"
+                placeholder="xx.xxx.xxx-x"
+                onChange={onRunChange}
+                value={run}
+                error={runError}
+              />
+            </div>
           </StyledLabel>
         </FormField>
 
@@ -223,15 +231,18 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
               <StyledInfoTooltip
                 id="id-serial"
                 defaultMessage="Ingrese el número de documento que se encuentra al frente en cédulas nuevas y atras en cédulas antiguas."
+                size="small"
               />
             </LabelTextContainer>
-            <Input
-              type="text"
-              placeholder="xxx.xxx.xxx"
-              onChange={onIdSerialChange}
-              value={idSerial}
-              error={idError}
-            />
+            <div>
+              <Input
+                type="text"
+                placeholder="xxx.xxx.xxx"
+                onChange={onIdSerialChange}
+                value={idSerial}
+                error={idError}
+              />
+            </div>
           </StyledLabel>
           <HelpButton onClick={onShowHelpButtonClick} onMouseDown={removeFocus}>
           {showHelp
