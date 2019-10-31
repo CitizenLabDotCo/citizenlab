@@ -63,7 +63,7 @@ export default memo<Props>(({ className }) => {
   if (isNilOrError(authUser)) return null;
 
   return (
-    <Container className={className}>
+    <Container id="e2e-verification-success" className={className}>
       <ImageAvatarContainer aria-hidden>
         <img src={illustration} alt="" role="presentation"/>
         <StyledAvatar userId={authUser.data.id} size="96px" verified/>
