@@ -18,7 +18,7 @@ const Container = styled.div``;
 
 const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProps, ...otherProps  }) => {
 
-  const randomNumber =  Math.floor(Math.random() * 10000000);
+  const randomNumber = Math.floor(Math.random() * 10000000);
   const idName = `tooltipinfo-${randomNumber}`;
 
   const [opened, setOpened] = useState(false);
@@ -36,12 +36,12 @@ const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProp
   }, []);
 
   const onKeyDown = useCallback((event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !opened) {
       event.preventDefault();
       setOpened(!opened);
     }
 
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' && opened) {
       event.preventDefault();
       setOpened(false);
     }

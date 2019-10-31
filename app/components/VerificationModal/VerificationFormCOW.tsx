@@ -24,7 +24,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // image
-const helpImage = require('./COWHelpImage.png');
+const helpImage: string = require('./COWHelpImage.png');
 
 // style
 import styled from 'styled-components';
@@ -250,7 +250,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
               <HelpImage src={helpImage} alt="help" />
             )
             : (
-                <FormattedMessage {...messages.showCOWHelp} />
+              <FormattedMessage {...messages.showCOWHelp} />
             )
           }
           </HelpButton>

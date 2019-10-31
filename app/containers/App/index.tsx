@@ -75,6 +75,7 @@ const InnerContainer = styled.div`
 
   ${media.smallerThanMaxTablet`
     padding-top: 0px;
+    min-height: auto;
   `}
 `;
 
@@ -286,12 +287,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const ideaFormPage = isPage('idea_form', location.pathname);
     const ideaEditPage = isPage('idea_edit', location.pathname);
     const initiativeEditPage = isPage('initiative_edit', location.pathname);
+    const signInPage = isPage('sign_in', location.pathname);
+    const signUpPage = isPage('sign_up', location.pathname);
     const theme = getTheme(tenant);
     const showFooter = !adminPage &&
                        !ideaFormPage &&
                        !initiativeFormPage &&
                        !ideaEditPage &&
                        !initiativeEditPage;
+    const showShortFeedback = !signInPage && !signUpPage;
 
     return (
       <>
@@ -346,7 +350,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                     <Navbar />
                   </ErrorBoundary>
 
-                  <InnerContainer >
+                  <InnerContainer>
                     <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
                       <ErrorBoundary>
                         {children}
@@ -357,7 +361,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                     </HasPermission>
                   </InnerContainer>
 
-                  {showFooter && <Footer />}
+                  {showFooter && <Footer showShortFeedback={showShortFeedback} />}
                 </Container>
               </>
             </ThemeProvider>
