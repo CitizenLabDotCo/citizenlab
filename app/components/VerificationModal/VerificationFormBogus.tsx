@@ -133,7 +133,7 @@ const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, className }) 
   return (
     <Container className={className}>
       <Title>
-        Verify your identity (fake)
+        <strong>Verify your identity (fake)</strong>
       </Title>
 
       <Form>

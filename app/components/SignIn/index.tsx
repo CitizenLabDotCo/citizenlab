@@ -40,7 +40,7 @@ const facebookLogo = require('components/AuthProviderButton/svg/facebook.svg') a
 const franceconnectLogo = require('components/AuthProviderButton/svg/franceconnect.svg') as string;
 
 const Container = styled.div`
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
 `;

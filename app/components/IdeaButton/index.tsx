@@ -51,9 +51,10 @@ const StyledA = styled.a`
 
 const TooltipWrapper = styled.div`
   width: 100%;
+  min-width: 300px;
+  max-width: 400px;
   display: flex;
   align-items: center;
-  min-width: 300px;
   color: ${colors.popoverDarkFg};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
