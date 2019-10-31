@@ -26,7 +26,7 @@ export default defineMessages({
     defaultMessage: 'Files to be uploaded: {fileNames}'
   },
   a11y_file: {
-    id: 'app.components.FileUploader.a11y_filesToBeUploaded',
+    id: 'app.components.FileUploader.a11y_file',
     defaultMessage: 'File: '
   }
 });
