@@ -36,6 +36,7 @@ declare global {
       apiCreateCustomField: typeof apiCreateCustomField;
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
+      apiVerifyBogus: typeof apiVerifyBogus;
     }
   }
 }
@@ -746,7 +747,7 @@ export function apiCreateCustomField(fieldName: string, enabled: boolean, requir
             'nl-BE': fieldName
           }
         }
-      }
+        }
     });
   });
 }
@@ -763,6 +764,22 @@ export function apiRemoveCustomField(fieldId: string) {
       method: 'DELETE',
       url: `web_api/v1/users/custom_fields/${fieldId}`
     });
+  });
+}
+
+export function apiVerifyBogus(jwt: string, error?: string) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`
+    },
+    method: 'POST',
+    url: 'web_api/v1/verification_methods/bogus/verification',
+    body: {
+      verification: {
+        desired_error: error || ''
+      }
+    }
   });
 }
 
@@ -799,3 +816,4 @@ Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
+Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);

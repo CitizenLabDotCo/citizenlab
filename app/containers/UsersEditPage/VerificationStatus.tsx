@@ -95,10 +95,12 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
 
   if (isNilOrError(authUser)) return null;
 
+  const authIsVerified = authUser.data.attributes.verified;
+
   return (
     <FeatureFlag name="verification">
-      <Container className={className}>
-        {authUser.data.attributes.verified ?
+      <Container className={`${className} e2e${authIsVerified ? '' : '-not'}-verified`}>
+        {authIsVerified ?
           <>
             <StyledAvatar
               userId={authUser.data.id}
@@ -117,7 +119,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
           </>
           :
           <>
-            <AvatarAndShield aria-hidden>
+            <AvatarAndShield aria-hidden >
               <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
               <ShieldIcon name="verify" />
             </AvatarAndShield>

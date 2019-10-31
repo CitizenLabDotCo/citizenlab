@@ -117,7 +117,7 @@ class VotingDisabled extends PureComponent<Props, State> {
     );
 
     return (
-      <Container>
+      <Container className="e2e-voting-disabled">
         <FormattedMessage
           {...message}
           values={{
