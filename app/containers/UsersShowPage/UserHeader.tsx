@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { adopt } from 'react-adopt';
 import { isEmpty, forOwn } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
@@ -6,6 +7,7 @@ import moment from 'moment';
 // components
 import Avatar from 'components/Avatar';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import Button from 'components/UI/Button';
 
 // resources
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
@@ -20,8 +22,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
-import { adopt } from 'react-adopt';
-import Button from 'components/UI/Button';
 
 const Container = styled.div`
   background-color: white;
@@ -93,12 +93,11 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-export const UserHeader = memo<Props>(props => {
+export const UserHeader = memo<Props>((props) => {
     const { user, authUser, windowSize } = props;
     const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
     if (!isNilOrError(user)) {
-
       const memberSinceMoment = moment(user.attributes.created_at).format('LL');
       let hasDescription = false;
 

@@ -133,7 +133,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
   }
 
   return (
-    <Container className={className}>
+    <Container id="e2e-verification-methods" className={className}>
       <AboveTitle aria-hidden>
         <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
         <ShieldIcon name="verify" />
@@ -182,6 +182,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
 
           {showBogusButton &&
             <MethodButton
+              id="e2e-bogus-button"
               icon="verify_manually"
               onClick={onVerifyBogusButtonClick}
               fullWidth={true}

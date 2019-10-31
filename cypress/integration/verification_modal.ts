@@ -18,11 +18,20 @@ describe('Verification modal', () => {
     cy.visit('/profile/edit');
     cy.wait(2000);
     cy.acceptCookies();
-    cy.get('#e2e-user-edit-profile-page');
   });
 
   it('verifies the user using the bogus form', () => {
-
+    cy.get('#e2e-user-edit-profile-page');
+    cy.get('#e2e-verify-user-button').click();
+    cy.get('#e2e-verification-methods');
+    cy.get('#e2e-verification-methods #e2e-bogus-button').click();
+    cy.get('#e2e-verification-bogus-form');
+    cy.get('#e2e-verification-bogus-submit-button').click();
+    cy.get('#e2e-verification-success');
+    cy.get('.e2e-modal-close-button').click();
+    cy.wait(1000);
+    cy.get('#e2e-user-edit-profile-page');
+    cy.get('.e2e-verified');
   });
 
   after(() => {

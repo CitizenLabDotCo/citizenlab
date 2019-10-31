@@ -131,7 +131,7 @@ const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, className }) 
   }, []);
 
   return (
-    <Container className={className}>
+    <Container id="e2e-verification-bogus-form" className={className}>
       <Title>
         <strong>Verify your identity (fake)</strong>
       </Title>
@@ -143,6 +143,7 @@ const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, className }) 
               Desired error (taken, no_match, not_entitled or invalid)
             </LabelTextContainer>
             <Input
+              id="e2e-verification-bogus-input"
               type="text"
               onChange={onDesiredErrorChange}
               value={desiredError}
@@ -157,7 +158,7 @@ const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, className }) 
 
         <Footer>
           <FooterInner>
-            <SubmitButton onClick={onSubmit}>
+            <SubmitButton id="e2e-verification-bogus-submit-button" onClick={onSubmit}>
               <FormattedMessage {...messages.submit} />
             </SubmitButton>
             <CancelButton onClick={onCancelButtonClicked} style="secondary">
