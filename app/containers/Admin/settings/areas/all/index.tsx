@@ -16,7 +16,7 @@ import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import AreaTermConfig from './AreaTermConfig';
 import Collapse from 'components/admin/Collapse';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 
 const TerminologyCollapse = styled(Collapse)`
   padding-bottom: 30px;
