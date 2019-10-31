@@ -27,7 +27,6 @@ import { deleteIdea, IIdeaData } from 'services/ideas';
 import clHistory from 'utils/cl-router/history';
 import { fontSizes } from 'utils/styleUtils';
 
-
 const Container = styled.div``;
 
 const MoreActionsMenuWrapper = styled.div``;

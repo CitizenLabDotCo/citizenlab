@@ -32,6 +32,7 @@ describe('Verification modal', () => {
     cy.wait(1000);
     cy.get('#e2e-user-edit-profile-page');
     cy.get('.e2e-verified');
+    cy.get('#e2e-user-menu-container.e2e-verified');
   });
 
   after(() => {
