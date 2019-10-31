@@ -124,12 +124,12 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
       const numberHeight = parseInt(height as any, 10);
 
       return (
-        <Container className={className}>
+        <Container className={`${className} e2e-idea-button`}>
           <Tooltip
             enabled={!enabled && !!disabledReason}
             content={
               disabledReason ? (
-                <TooltipWrapper>
+                <TooltipWrapper className="e2e-disabled-tooltip">
                   <StyledIcon name="lock-outlined" />
                   <FormattedMessage
                     {...this.disabledMessages[disabledReason]}
