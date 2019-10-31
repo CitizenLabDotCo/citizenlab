@@ -171,7 +171,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
   return (
     <Container className={className}>
       <Title>
-        <FormattedMessage {...messages.verifyYourIdentity} />
+        <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
       </Title>
 
       <Form>

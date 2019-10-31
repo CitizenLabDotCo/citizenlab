@@ -87,8 +87,9 @@ const ButtonsContainer = styled.div`
   background: ${colors.background};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     padding: 0;
+    margin-bottom: 10px;
     max-width: auto;
     background: transparent;
   `}
@@ -165,7 +166,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
               fullWidth={true}
               size="2"
               justify="left"
-              padding="20px 20px"
+              padding="14px 20px"
               bgColor="#fff"
               bgHoverColor="#fff"
               textColor={colors.text}
@@ -186,7 +187,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
               fullWidth={true}
               size="2"
               justify="left"
-              padding="20px 20px"
+              padding="14px 20px"
               bgColor="#fff"
               bgHoverColor="#fff"
               textColor={colors.text}

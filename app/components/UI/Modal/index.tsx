@@ -59,6 +59,7 @@ const CloseButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 
   &:hover {
     ${CloseIcon} {
@@ -96,7 +97,7 @@ const ModalContainer: any = styled(clickOutside)`
 
     &.fixedHeight {
       height: auto;
-      max-height: 80vh;
+      max-height: 85vh;
     }
   `}
 `;

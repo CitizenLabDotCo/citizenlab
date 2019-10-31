@@ -211,7 +211,7 @@ const ButtonText = styled.div`
   margin: 0;
   margin-top: -1px;
   padding: 0;
-  white-space: nowrap;
+  text-align: left;
   transition: all 100ms ease-out;
 `;
 
@@ -349,6 +349,7 @@ export interface Props extends ButtonContainerProps {
   autoFocus?: boolean;
   fontSize?: string;
   ariaExpanded?: boolean;
+  ariaDescribedby?: string;
   iconAriaHidden?: boolean;
 }
 
@@ -435,6 +436,7 @@ class Button extends PureComponent<Props, State> {
       fontSize,
       autoFocus,
       ariaExpanded,
+      ariaDescribedby,
       iconAriaHidden
     } = this.props;
     let { id, size, style, processing, disabled, iconPos, className } = this.props;
@@ -535,6 +537,7 @@ class Button extends PureComponent<Props, State> {
           <StyledButton
             aria-label={ariaLabel}
             aria-expanded={ariaExpanded}
+            aria-describedby={ariaDescribedby}
             disabled={disabled}
             ref={this.props.setSubmitButtonRef}
             className={buttonClassnames}

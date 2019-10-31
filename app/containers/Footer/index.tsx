@@ -77,7 +77,7 @@ const ShortFeedback: any = styled.div`
   ${media.biggerThanMinTablet`
     position: absolute;
     z-index: 5;
-    top: -42px;
+    top: -41px;
     left: 0px;
   `}
 
