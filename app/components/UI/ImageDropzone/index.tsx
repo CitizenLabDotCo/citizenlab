@@ -357,16 +357,16 @@ class ImageDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                     onDropRejected={this.onDropRejected}
                     onDropAccepted={this.onDropAccepted}
                   >
-                    {!processing ? (
-                      <DropzoneContent>
-                        <DropzonePlaceholderIcon name="upload" ariaHidden />
-                        <DropzonePlaceholderText>{formatMessage(messages.uploadImage)}</DropzonePlaceholderText>
-                      </DropzoneContent>
-                    ) : (
-                        <DropzoneContent>
-                          <Spinner />
-                        </DropzoneContent>
+                    <DropzoneContent>
+                      {!processing ? (
+                        <>
+                          <DropzonePlaceholderIcon name="upload" ariaHidden />
+                          <DropzonePlaceholderText>{formatMessage(messages.uploadImage)}</DropzonePlaceholderText>
+                        </>
+                      ) : (
+                        <Spinner />
                       )}
+                    </DropzoneContent>
                   </StyledDropzone>
                 </label>
               </Box>
