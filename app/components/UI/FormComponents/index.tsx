@@ -242,6 +242,7 @@ export const FormSubmitFooter = withTheme(memo(({
             onClick={onSubmit}
             className="e2e-submit-form"
             disabled={disabled}
+            ariaDisabled={disabled}
             {...otherProps}
           >
             <FormattedMessage {...message} values={values} />

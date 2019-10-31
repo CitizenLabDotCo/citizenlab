@@ -312,6 +312,7 @@ export type Props = {
   autoFocus?: boolean
   ariaExpanded?: boolean;
   iconAriaHidden?: boolean;
+  ariaDisabled?: boolean;
 };
 
 type State = {};
@@ -389,7 +390,8 @@ class Button extends PureComponent<Props, State> {
       fontSize,
       autoFocus,
       ariaExpanded,
-      iconAriaHidden
+      iconAriaHidden,
+      ariaDisabled
     } = this.props;
     let { id, size, style, processing, disabled, fullWidth, iconPos, className } = this.props;
 
@@ -482,6 +484,7 @@ class Button extends PureComponent<Props, State> {
           <StyledButton
             aria-label={ariaLabel}
             aria-expanded={ariaExpanded}
+            aria-disabled={ariaDisabled}
             disabled={disabled}
             ref={this.props.setSubmitButtonRef}
             className={buttonClassnames}
