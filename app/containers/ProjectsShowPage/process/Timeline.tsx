@@ -285,6 +285,8 @@ const PhaseBar: any = styled.button`
   -moz-appearance: none;
 `;
 
+const PhaseBarText = styled.span``;
+
 const PhaseArrow = styled(Icon)`
   width: 20px;
   height: ${phaseBarHeight};
@@ -548,7 +550,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                 <HeaderFirstRow aria-live="polite">
                   <HeaderLeftSection>
                     {isSelected &&
-                      <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                      <PhaseNumberWrapper aria-hidden className={`${isSelected && 'selected'} ${phaseStatus}`}>
                         <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus}`}>
                           {selectedPhaseNumber}
                         </PhaseNumber>
@@ -556,9 +558,18 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                     }
 
                     <HeaderTitleWrapper className={bowser.msie ? 'ie' : ''}>
-                      <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                      <HeaderTitle aria-hidden className={`${isSelected && 'selected'} ${phaseStatus}`}>
                         {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
                       </HeaderTitle>
+                      <ScreenReaderOnly>
+                        <FormattedMessage
+                          {...messages.a11y_selectedPhaseX}
+                          values={{
+                            selectedPhaseNumber,
+                            selectedPhaseTitle: selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />
+                          }}
+                        />
+                      </ScreenReaderOnly>
                       <MobileDate>
                         {phaseStatus === 'past' && (
                           <FormattedMessage {...messages.endedOn} values={{ date: mobileSelectedPhaseEnd }} />
@@ -634,7 +645,11 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
             </Header>
 
             <Phases className="e2e-phases">
+              <ScreenReaderOnly>
+                <FormattedMessage {...messages.a11y_phasesOverview} />
+              </ScreenReaderOnly>
               {phases.data.map((phase, index) => {
+                const phaseNumber = index + 1;
                 const phaseTitle = getLocalized(phase.attributes.title_multiloc, locale, currentTenantLocales);
                 const isFirst = (index === 0);
                 const isLast = (index === phases.data.length - 1);
@@ -659,11 +674,19 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                     onClick={this.handleOnPhaseSelection(phase)}
                   >
                     <PhaseBar>
-                      {index + 1}
+                      <PhaseBarText aria-hidden>
+                        {phaseNumber}
+                      </PhaseBarText>
                       <ScreenReaderOnly>
-                        {phaseTitle}
+                        <FormattedMessage
+                          {...messages.a11y_phaseX}
+                          values={{
+                            phaseNumber,
+                            phaseTitle
+                          }}
+                        />
                       </ScreenReaderOnly>
-                      {!isLast && <PhaseArrow name="phase_arrow" />}
+                      {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
                     </PhaseBar>
                     <PhaseText
                       current={isCurrentPhase}
