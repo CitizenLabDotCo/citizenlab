@@ -566,7 +566,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                           {...messages.a11y_selectedPhaseX}
                           values={{
                             selectedPhaseNumber,
-                            selectedPhaseTitle: selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />
+                            selectedPhaseTitle
                           }}
                         />
                       </ScreenReaderOnly>
