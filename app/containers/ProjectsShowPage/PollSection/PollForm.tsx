@@ -120,7 +120,7 @@ class PollForm extends PureComponent<Props, State> {
                         <T value={question.attributes.title_multiloc} />
                       </QuestionText>
                     </Label>
-                    {options.map((option, optionIndex) => (
+                    {options.map((option) => (
                       <StyledRadio
                         className="e2e-poll-option"
                         key={option.id}
@@ -130,7 +130,6 @@ class PollForm extends PureComponent<Props, State> {
                         name={option.id}
                         id={option.id}
                         label={<T value={option.attributes.title_multiloc} />}
-                        autoFocus={questionIndex === 0 && optionIndex === 0}
                       />
                     ))}
                   </QuestionContainer>
