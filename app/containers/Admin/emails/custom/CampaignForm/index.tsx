@@ -24,7 +24,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import FormikInput from 'components/UI/FormikInput';
 import { fontSizes } from 'utils/styleUtils';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;

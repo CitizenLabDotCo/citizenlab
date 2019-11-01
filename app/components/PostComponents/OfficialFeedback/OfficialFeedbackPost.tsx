@@ -13,7 +13,7 @@ import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // styles
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // i18n
@@ -37,6 +37,11 @@ const Container = styled.div`
   font-size: ${fontSizes.base}px;
   padding: 30px;
   padding-top: 35px;
+
+  ${media.smallerThanMinTablet`
+    padding: 20px;
+    padding-top: 25px;
+  `}
 `;
 
 const PostContainer = styled(Container)`
@@ -69,6 +74,7 @@ const DatePosted = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
   font-weight: 300;
+  margin-top: -1px;
 `;
 
 const DateEdited = styled.span`
@@ -82,6 +88,11 @@ const StyledMoreActionsMenu = styled(MoreActionsMenu)`
   position: absolute;
   top: 10px;
   right: 10px;
+
+  ${media.smallerThanMinTablet`
+    top: 5px;
+    right: 5px;
+  `}
 `;
 
 interface DataProps {
@@ -103,8 +114,8 @@ interface State {
 }
 
 export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       showEditForm: false
     };
@@ -182,7 +193,11 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
       return (
         <PostContainer key={officialFeedbackPost.id} className={`e2e-official-feedback-post ${className || ''}`}>
           {editingAllowed &&
-            <StyledMoreActionsMenu ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)} actions={this.getActions(officialFeedbackPost.id)} />
+            <StyledMoreActionsMenu
+              ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+              actions={this.getActions(officialFeedbackPost.id)}
+              tooltipPositionSmallViewPort="bottom-left"
+            />
           }
 
           <QuillEditedContent>

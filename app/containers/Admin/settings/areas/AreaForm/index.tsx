@@ -14,7 +14,7 @@ import Error from 'components/UI/Error';
 
 // Typings
 import { Multiloc } from 'typings';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 export interface Props { }
 export interface FormValues {
   title_multiloc: Multiloc;

@@ -110,7 +110,7 @@ const config = {
       {
         test: /\.(svg|jpg|png|gif)$/,
         use: [
-          { loader: 'cache-loader' },
+          // { loader: 'cache-loader' },
           {
             loader: 'url-loader',
             options: {

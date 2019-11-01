@@ -2,9 +2,12 @@ import React, { PureComponent } from 'react';
 
 type Props = {
   children?: any;
-  onClickOutside: (arg: any) => void;
+  onClick?: (event) => void;
+  onClickOutside: (event) => void;
+  onMouseEnter?: (event) => void;
+  onMouseLeave?: (event) => void;
+  onMouseDown?: (event) => void;
   className?: string;
-  onClick?: () => void;
   id?: string;
   setRef?: (arg: HTMLElement) => void;
   role?: string;
@@ -70,10 +73,19 @@ export default class ClickOutside extends PureComponent<Props, State> {
 
   handleRef = (element: HTMLDivElement) => {
     this.container = element;
+    this.props.setRef && this.props.setRef(element);
+  }
 
-    if (this.props.setRef) {
-      this.props.setRef(element);
-    }
+  handleOnMouseEnter = (event) => {
+    this.props.onMouseEnter && this.props.onMouseEnter(event);
+  }
+
+  handleOnMouseLeave = (event) => {
+    this.props.onMouseLeave && this.props.onMouseLeave(event);
+  }
+
+  handleOnMouseDown = (event) => {
+    this.props.onMouseDown && this.props.onMouseDown(event);
   }
 
   render() {
@@ -85,6 +97,9 @@ export default class ClickOutside extends PureComponent<Props, State> {
         ref={this.handleRef}
         className={className}
         onClick={onClick}
+        onMouseEnter={this.handleOnMouseEnter}
+        onMouseLeave={this.handleOnMouseLeave}
+        onMouseDown={this.handleOnMouseDown}
         role={role}
       >
         {children}
