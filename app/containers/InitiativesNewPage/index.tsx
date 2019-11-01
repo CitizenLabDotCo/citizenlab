@@ -68,7 +68,7 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
           location_description,
           location_point_geojson: {
             type: 'Point',
-            coordinates: [lng, lat] as number[]
+            coordinates: [lng, lat]
           }
         }});
       });

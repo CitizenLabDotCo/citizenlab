@@ -25,16 +25,32 @@ const Footer = ({ validate, mode, handleCancelBack, handleCancelConfirm, handleC
   return (
     mode === 'cancelling' ? (
       <ButtonContainer>
-        <CancelButton onClick={handleCancelBack} style="primary-inverse" textColor={colors.adminTextColor}>
+        <CancelButton
+          onClick={handleCancelBack}
+          style="primary-inverse"
+          textColor={colors.adminTextColor}
+          textHoverColor={colors.adminTextColor}
+        >
           <FormattedMessage {...messages.back} />
         </CancelButton>
-        <Button onClick={handleCancelConfirm} style="primary" bgColor={colors.adminTextColor} bgHoverColor={darken(0.1, colors.adminTextColor)}>
+        <Button
+          onClick={handleCancelConfirm}
+          style="primary"
+          bgColor={colors.adminTextColor}
+          bgHoverColor={darken(0.1, colors.adminTextColor)}
+        >
           <FormattedMessage {...messages.confirm} />
         </Button>
       </ButtonContainer>
     ) : mode === 'preferenceForm' ? (
       <ButtonContainer>
-        <CancelButton onClick={handleCancel} className="integration-cancel" style="primary-inverse" textColor={colors.adminTextColor}>
+        <CancelButton
+          onClick={handleCancel}
+          className="integration-cancel"
+          style="primary-inverse"
+          textColor={colors.adminTextColor}
+          textHoverColor={colors.adminTextColor}
+        >
           <FormattedMessage {...messages.cancel} />
         </CancelButton>
         <Button

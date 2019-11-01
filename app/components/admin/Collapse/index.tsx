@@ -100,7 +100,7 @@ interface Props {
   label: JSX.Element | string;
   children: JSX.Element | string;
   opened: boolean;
-  onToggle: () => void;
+  onToggle: (event: React.MouseEvent) => void;
   className?: string;
 }
 
@@ -111,8 +111,9 @@ const CollapseInner = styled.div`
 
 class Collapse extends PureComponent<Props> {
 
-  handleToggle = () => {
-    this.props.onToggle();
+  handleToggle = (event: React.MouseEvent) => {
+    event.preventDefault();
+    this.props.onToggle(event);
   }
 
   render() {

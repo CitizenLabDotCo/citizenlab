@@ -201,6 +201,7 @@ export const stylingConsts = {
   menuHeight: 78,
   mobileMenuHeight: 72,
   mobileTopBarHeight: 66,
+  footerHeight: 60,
   maxPageWidth: 952,
   bannerWidth: 1340,
   pageWidth: 1150,

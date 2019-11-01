@@ -11,7 +11,7 @@ import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
 import { Section, SectionField } from 'components/admin/Section';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';

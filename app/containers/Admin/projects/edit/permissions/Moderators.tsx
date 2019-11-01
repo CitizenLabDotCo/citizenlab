@@ -6,7 +6,7 @@ import ModeratorList from './ModeratorList';
 import UserSearch from 'components/UserSearch';
 import { GetModeratorsChildProps } from 'resources/GetModerators';
 import { SubSectionTitle } from 'components/admin/Section';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 import { InjectedIntlProps } from 'react-intl';
 
 interface InputProps {

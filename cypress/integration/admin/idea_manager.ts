@@ -114,7 +114,7 @@ describe('Idea manager', () => {
       // close modal
       cy.get('.e2e-modal-close-button').click();
       // check if the modal is no longer on the page
-      cy.get('#e2e-modal-container').should('have.length', 0);
+      cy.get('#e2e-modal-container').should('not.exist');
     });
   });
 

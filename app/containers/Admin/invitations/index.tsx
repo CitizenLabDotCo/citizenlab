@@ -16,7 +16,7 @@ import { Section, PageTitle, SectionField, SectionSubtitle } from 'components/ad
 import InvitesTable from './all';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 
 // services
 import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from 'services/invites';
@@ -28,7 +28,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
-import { FormattedHTMLMessage, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { API_PATH, appLocalePairs } from 'containers/App/constants';
@@ -561,7 +561,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
               <>
                 <SectionField>
                   <Label>
-                    <FormattedHTMLMessage {...messages.importLabel} />
+                    <FormattedMessage {...messages.importLabel} />
                     <InfoTooltip
                       position="right"
                       {...messages.importInfo}
