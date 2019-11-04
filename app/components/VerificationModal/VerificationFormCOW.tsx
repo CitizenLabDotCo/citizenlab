@@ -245,7 +245,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
               />
             </div>
           </StyledLabel>
-          <HelpButton onClick={onShowHelpButtonClick} onMouseDown={removeFocus}>
+          <HelpButton onClick={onShowHelpButtonClick} onMouseDown={removeFocus} type="button">
           {showHelp
             ? (
               <HelpImage src={helpImage} alt="help" />
