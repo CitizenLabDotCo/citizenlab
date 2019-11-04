@@ -151,7 +151,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
         await verifyCOW(run, idSerial);
 
         const endpointsToRefetch = [`${API_PATH}/users/me`, `${API_PATH}/projects`];
-        const partialEndpointsToRefetch = [`${API_PATH}/projects/`];
+        const partialEndpointsToRefetch = [`${API_PATH}/projects/`, `${API_PATH}/ideas/`];
 
         if (!isNilOrError(authUser)) {
           endpointsToRefetch.push(`${API_PATH}/users/${authUser.data.id}`);
