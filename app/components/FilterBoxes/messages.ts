@@ -17,8 +17,8 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.topicsTitle',
     defaultMessage: 'Topics',
   },
-  numberOfIdeas: {
-    id: 'app.components.FilterBoxes.numberOfIdeas',
+  a11y_numberOfIdeas: {
+    id: 'app.components.FilterBoxes.a11y_numberOfIdeas',
     defaultMessage: '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
 });
