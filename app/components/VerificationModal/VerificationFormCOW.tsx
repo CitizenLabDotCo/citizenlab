@@ -97,6 +97,7 @@ const HelpButton = styled.button`
    margin: 0;
    padding: 0;
    color: ${colors.label};
+   cursor: pointer;
 `;
 
 interface Props {
