@@ -139,7 +139,6 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
           cursorStyle={Object {}}
           filterNull={true}
           isAnimationActive={false}
-          itemSorter={[Function]}
           itemStyle={Object {}}
           labelStyle={Object {}}
           offset={10}
