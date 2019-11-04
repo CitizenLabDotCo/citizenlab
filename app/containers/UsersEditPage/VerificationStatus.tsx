@@ -131,7 +131,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 <FormattedMessage {...messages.verifyText} />
               </Text>
             </Content>
-            <VerifyButton onClick={openVerificationModal}>
+            <VerifyButton onClick={openVerificationModal} id="e2e-verify-user-button">
               <FormattedMessage {...messages.verifyNow} />
             </VerifyButton>
           </>

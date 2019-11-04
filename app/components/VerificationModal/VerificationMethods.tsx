@@ -87,8 +87,9 @@ const ButtonsContainer = styled.div`
   background: ${colors.background};
   border-radius: ${(props: any) => props.theme.borderRadius};
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     padding: 0;
+    margin-bottom: 10px;
     max-width: auto;
     background: transparent;
   `}
@@ -132,7 +133,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
   }
 
   return (
-    <Container className={className}>
+    <Container id="e2e-verification-methods" className={className}>
       <AboveTitle aria-hidden>
         <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
         <ShieldIcon name="verify" />
@@ -165,7 +166,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
               fullWidth={true}
               size="2"
               justify="left"
-              padding="20px 20px"
+              padding="14px 20px"
               bgColor="#fff"
               bgHoverColor="#fff"
               textColor={colors.text}
@@ -181,12 +182,13 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
 
           {showBogusButton &&
             <MethodButton
+              id="e2e-bogus-button"
               icon="verify_manually"
               onClick={onVerifyBogusButtonClick}
               fullWidth={true}
               size="2"
               justify="left"
-              padding="20px 20px"
+              padding="14px 20px"
               bgColor="#fff"
               bgHoverColor="#fff"
               textColor={colors.text}

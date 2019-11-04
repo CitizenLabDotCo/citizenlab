@@ -23,6 +23,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 30px;
 `;
 
 const ImageAvatarContainer = styled.div`
@@ -37,23 +38,18 @@ const StyledAvatar = styled(Avatar)`
 `;
 
 const Subtitle = styled.h2`
-  flex-shrink: 0;
   width: 100%;
   max-width: 500px;
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
-  line-height: 25px;
+  line-height: normal;
   font-weight: 300;
   text-align: center;
   margin: 0;
-  margin-top: 10px;
-  margin-bottom: 35px;
   padding: 0;
 
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.base}px;
-    line-height: 21px;
-    margin-bottom: 20px;
   `}
 `;
 
@@ -67,7 +63,7 @@ export default memo<Props>(({ className }) => {
   if (isNilOrError(authUser)) return null;
 
   return (
-    <Container className={className}>
+    <Container id="e2e-verification-success" className={className}>
       <ImageAvatarContainer aria-hidden>
         <img src={illustration} alt="" role="presentation"/>
         <StyledAvatar userId={authUser.data.id} size="96px" verified/>

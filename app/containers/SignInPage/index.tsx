@@ -25,7 +25,7 @@ const Container = styled.div`
   position: relative;
 
   ${media.biggerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+    min-height: calc(100vh - ${props => props.theme.menuHeight + props.theme.footerHeight}px);
   `}
 
   ${media.smallerThanMaxTablet`
@@ -35,15 +35,9 @@ const Container = styled.div`
 
 const Section = styled.div`
   flex: 1;
-  height: 100%;
 `;
 
 const Left = styled(Section)`
-  width: 50vw;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
   display: none;
 
   ${media.biggerThanMaxTablet`
@@ -51,13 +45,7 @@ const Left = styled(Section)`
   `}
 `;
 
-const Right = styled(Section)`
-  width: 100%;
-
-  ${media.biggerThanMaxTablet`
-    padding-left: 50vw;
-  `}
-`;
+const Right = styled(Section)``;
 
 const RightInner = styled.div`
   width: 100%;

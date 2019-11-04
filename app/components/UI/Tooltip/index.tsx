@@ -18,6 +18,9 @@ const Container = styled.div``;
 
 const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProps, ...otherProps  }) => {
 
+  const randomNumber = Math.floor(Math.random() * 10000000);
+  const idName = `tooltipinfo-${randomNumber}`;
+
   const [opened, setOpened] = useState(false);
 
   const onPopoverMouseEnter = useCallback(() => {
@@ -33,28 +36,16 @@ const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProp
   }, []);
 
   const onKeyDown = useCallback((event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !opened) {
       event.preventDefault();
       setOpened(!opened);
     }
 
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' && opened) {
       event.preventDefault();
       setOpened(false);
     }
   }, [opened]);
-
-  const removeFocus = useCallback((event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-  }, []);
-
-  const WrappedChildren = buttonProps ? (
-    <Button {...buttonProps} ariaExpanded={opened} />
-  ) : (
-    <button aria-expanded={opened} onMouseDown={removeFocus}>
-      {children}
-    </button>
-  );
 
   return (
     <Container
@@ -64,8 +55,8 @@ const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProp
     >
       <Popover
         {...otherProps}
-        children={WrappedChildren}
-        content={content}
+        children={buttonProps ? <Button {...buttonProps} ariaDescribedby={idName} /> : <div aria-describedby={idName}>{children}</div>}
+        content={<div id={idName} aria-hidden={!opened} role="tooltip">{content}</div>}
         delay={250}
         scaleIn={false}
         dropdownOpened={opened}

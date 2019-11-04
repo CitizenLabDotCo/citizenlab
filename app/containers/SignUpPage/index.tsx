@@ -35,12 +35,11 @@ const Container = styled.div`
   padding: 0;
   display: flex;
   flex-direction: row;
-  align-items: stretch;
   background: ${colors.background};
   position: relative;
 
   ${media.biggerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+    min-height: calc(100vh - ${props => props.theme.menuHeight + props.theme.footerHeight}px);
   `}
 
   ${media.smallerThanMaxTablet`
@@ -50,16 +49,9 @@ const Container = styled.div`
 
 const Section = styled.div`
   flex: 1;
-  display: flex;
-  align-items: stretch;
 `;
 
 const Left = styled(Section)`
-  width: 50vw;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
   display: none;
 
   ${media.biggerThanMaxTablet`
@@ -67,15 +59,7 @@ const Left = styled(Section)`
   `}
 `;
 
-const Right = styled(Section)`
-  width: 100%;
-  display: flex;
-  align-items: stretch;
-
-  ${media.biggerThanMaxTablet`
-    padding-left: 50vw;
-  `}
-`;
+const Right = styled(Section)``;
 
 const RightInner = styled.div`
   width: 100%;
