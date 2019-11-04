@@ -10,6 +10,11 @@ import { CLError, UploadFile } from 'typings';
 
 // style
 import styled from 'styled-components';
+import { ScreenReaderOnly } from 'utils/styleUtils';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   width: 100%;
@@ -38,7 +43,7 @@ export default class FileUploader extends PureComponent<Props, State>{
 
   render() {
     const { files, errors, id, className } = this.props;
-
+    const fileNames = Array.isArray(files) && files.map(file => file.filename).join(', ');
     return (
       <Container className={className}>
         <FileInput
@@ -55,6 +60,14 @@ export default class FileUploader extends PureComponent<Props, State>{
             file={file}
           />)
         )}
+        <ScreenReaderOnly aria-live="polite">
+          {Array.isArray(files) && files.length === 0 &&
+            <FormattedMessage {...messages.a11y_noFiles} />
+          }
+          {Array.isArray(files) && files.length > 0 &&
+            <FormattedMessage {...messages.a11y_filesToBeUploaded} values={{ fileNames }} />
+          }
+        </ScreenReaderOnly>
       </Container>
     );
   }
