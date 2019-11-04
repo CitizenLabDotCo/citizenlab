@@ -196,7 +196,6 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
             "styledComponentId": "Checkbox__Container-cbcutw-0",
             "target": "div",
             "toString": [Function],
-            "usesTheme": false,
             "warnTooManyClasses": [Function],
             "withComponent": [Function],
           }
@@ -248,7 +247,6 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   "styledComponentId": "Checkbox__InputWrapper-cbcutw-1",
                   "target": "div",
                   "toString": [Function],
-                  "usesTheme": true,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
@@ -294,7 +292,6 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                         "styledComponentId": "Checkbox__Input-cbcutw-2",
                         "target": "input",
                         "toString": [Function],
-                        "usesTheme": false,
                         "warnTooManyClasses": [Function],
                         "withComponent": [Function],
                       }
@@ -366,7 +363,6 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                           "type": [Function],
                         },
                         "toString": [Function],
-                        "usesTheme": false,
                         "warnTooManyClasses": [Function],
                         "withComponent": [Function],
                       }
@@ -487,7 +483,6 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   "styledComponentId": "Checkbox__Label-cbcutw-4",
                   "target": "label",
                   "toString": [Function],
-                  "usesTheme": false,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
@@ -703,7 +698,6 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
             "styledComponentId": "Checkbox__Container-cbcutw-0",
             "target": "div",
             "toString": [Function],
-            "usesTheme": false,
             "warnTooManyClasses": [Function],
             "withComponent": [Function],
           }
@@ -755,7 +749,6 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                   "styledComponentId": "Checkbox__InputWrapper-cbcutw-1",
                   "target": "div",
                   "toString": [Function],
-                  "usesTheme": true,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
@@ -801,7 +794,6 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                         "styledComponentId": "Checkbox__Input-cbcutw-2",
                         "target": "input",
                         "toString": [Function],
-                        "usesTheme": false,
                         "warnTooManyClasses": [Function],
                         "withComponent": [Function],
                       }
@@ -873,7 +865,6 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                   "styledComponentId": "Checkbox__Label-cbcutw-4",
                   "target": "label",
                   "toString": [Function],
-                  "usesTheme": false,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
