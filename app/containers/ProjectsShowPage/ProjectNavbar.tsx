@@ -24,7 +24,7 @@ import IdeaButton from 'components/IdeaButton';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const ProjectNavbarWrapper = styled.nav`
+const ProjectNavbarWrapper = styled.div`
   width: 100%;
   color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   font-size: ${fontSizes.base}px;
@@ -56,7 +56,7 @@ const StyledContentContainer = styled(ContentContainer)`
   `};
 `;
 
-const ProjectNavbarItems = styled.ul`
+const ProjectNavbarItems = styled.nav`
   display: flex;
   align-items: center;
   margin: 0;

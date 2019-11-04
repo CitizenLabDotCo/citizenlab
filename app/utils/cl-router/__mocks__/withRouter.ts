@@ -4,7 +4,7 @@ export const mockWithRouterProps : WithRouterProps = {
   location: {
     pathname: 'some-page',
     search: '',
-    query: '',
+    query: {},
     state: '',
     hash: '',
     action: 'PUSH',
