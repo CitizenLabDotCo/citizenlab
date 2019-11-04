@@ -5862,10 +5862,10 @@ models:
     updated_at_timediff: -1440
     votable_ref: *initiative1
   idea_image:
-  - remote_image_url: http://test.hanvecforum.fr/wp-content/uploads/2015/11/covoiturage2.jpg
+  - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
     idea_ref: *controversial_idea
   initiative_image:
-  - remote_image_url: http://test.hanvecforum.fr/wp-content/uploads/2015/11/covoiturage2.jpg
+  - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
     initiative_ref: *initiative1
   phase:
   - &project1current
