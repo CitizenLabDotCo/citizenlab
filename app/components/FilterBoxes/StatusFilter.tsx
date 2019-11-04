@@ -133,7 +133,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
             {allIdeasCount}
           </Count>
           <ScreenReaderOnly>
-            <FormattedMessage {...messages.numberOfIdeas} values={{ ideasCount: allIdeasCount}} />
+            <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: allIdeasCount}} />
           </ScreenReaderOnly>
         </AllStatus>
 
@@ -158,7 +158,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
                 <CloseIcon name="close" />
               )}
               <ScreenReaderOnly>
-                <FormattedMessage {...messages.numberOfIdeas} values={{ ideasCount: filterIdeasCount }} />
+                <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: filterIdeasCount }} />
               </ScreenReaderOnly>
             </Status>
           );
