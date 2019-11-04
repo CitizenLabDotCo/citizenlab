@@ -15,7 +15,6 @@ en-GB:
       "initiative_assigned_to_you": Assignment of an initiative to me
       "initiative_marked_as_spam": Initiative spam report
       "initiative_published": Publication of my initiative
-      "invite_accepted": Accepted invitation
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
       "mention_in_comment": Mention in a comment
@@ -65,7 +64,6 @@ en-GB:
       "initiative_assigned_to_you": Assignment of an initiative - admins
       "initiative_marked_as_spam": Initiative spam report - admins
       "initiative_published": Publication of your initiative - all users
-      "invite_accepted": Accepted invitation - admins
       "invite_received": Invitation - all users
       "invite_reminder": Invitation reminder - all users
       "mention_in_comment": Mention in a comment - all users
