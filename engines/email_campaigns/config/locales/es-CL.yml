@@ -15,7 +15,6 @@ es-CL:
       "initiative_assigned_to_you": Asignación de una iniciativa para mí
       "initiative_marked_as_spam": Informar de spam de iniciativa
       "initiative_published": Publicación de mi iniciativa
-      "invite_accepted": Invitación aceptada
       "invite_received": Invitación
       "invite_reminder": Recordatorio de invitación
       "mention_in_comment": Mención en un comentario
@@ -65,7 +64,6 @@ es-CL:
       "initiative_assigned_to_you": 'Asignación de una iniciativa: administradores'
       "initiative_marked_as_spam": 'Informar de spam de iniciativa: administradores'
       "initiative_published": 'Publicación de tu iniciativa: todos los usuarios'
-      "invite_accepted": 'Invitación aceptada: administradores'
       "invite_received": 'Invitación: todos los usuarios'
       "invite_reminder": 'Recordatorio de invitación: todos los usuarios'
       "mention_in_comment": 'Mencionar en un comentario: todos los usuarios'
