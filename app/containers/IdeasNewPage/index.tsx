@@ -10,6 +10,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
+import IdeasNewMeta from './IdeasNewMeta';
 
 // services
 import { addIdea, IIdeaAdd } from 'services/ideas';
@@ -198,6 +199,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     if (!isNilOrError(authUser) && !isNilOrError(project)) {
       return (
         <Container id="e2e-idea-new-page">
+          <IdeasNewMeta />
           <PageContainer className="ideaForm">
             <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} projectId={project.id} />
           </PageContainer>
