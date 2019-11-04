@@ -77,6 +77,7 @@
   "app.components.FileUploader.incorrect_extension": "{fileName} no es compatible con nuestro sistema, no será cargado.",
   "app.components.FilterBoxes.all": "Todos",
   "app.components.FilterBoxes.areas": "Localidad/Barrio/Zona",
+  "app.components.FilterBoxes.numberOfIdeas": "",
   "app.components.FilterBoxes.statusTitle": "Estado",
   "app.components.FilterBoxes.topicsTitle": "Temas",
   "app.components.FiltersModal.filters": "Filtros",

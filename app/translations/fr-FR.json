@@ -77,6 +77,7 @@
   "app.components.FileUploader.incorrect_extension": "{fileName} n'est pas supporté par notre système, il ne sera pas chargé.",
   "app.components.FilterBoxes.all": "Toutes",
   "app.components.FilterBoxes.areas": "Lieux",
+  "app.components.FilterBoxes.numberOfIdeas": "",
   "app.components.FilterBoxes.statusTitle": "Statut",
   "app.components.FilterBoxes.topicsTitle": "Thèmes",
   "app.components.FiltersModal.filters": "Filtres",

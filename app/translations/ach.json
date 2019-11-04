@@ -77,6 +77,7 @@
   "app.components.FileUploader.incorrect_extension": "",
   "app.components.FilterBoxes.all": "",
   "app.components.FilterBoxes.areas": "",
+  "app.components.FilterBoxes.numberOfIdeas": "",
   "app.components.FilterBoxes.statusTitle": "",
   "app.components.FilterBoxes.topicsTitle": "",
   "app.components.FiltersModal.filters": "",
