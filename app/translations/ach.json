@@ -201,6 +201,7 @@
   "app.components.PagesForm.pageTitle": "",
   "app.components.PagesShowPage.notFoundDescription": "",
   "app.components.PagesShowPage.notFoundTitle": "",
+  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "",
   "app.components.PostComponents.OfficialFeedback.cancel": "",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "",
