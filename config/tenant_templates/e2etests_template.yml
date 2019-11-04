@@ -250,7 +250,6 @@ models:
     ordering: 6
   user:
   - &admin
-    id: 071efce1-b2cd-45e1-8b46-bc921656e555
     email: admin@citizenlab.co
     first_name: Sylvester
     last_name: Kalinoski
@@ -269,7 +268,6 @@ models:
     created_at: '2018-03-28 13:34:57'
     updated_at: '2018-03-28 13:39:17'
   - &moderator
-    id: '3723141d-cc47-4cf8-a570-100b79b978ec'
     email: moderator@citizenlab.co
     first_name: Angeline
     last_name: Ankunding
@@ -289,7 +287,6 @@ models:
     created_at: '2018-03-28 13:35:02'
     updated_at: '2018-03-28 13:35:02'
   - &mortal1
-    id: 09ef05a1-1723-4ca4-bc69-d4ad8a115bf3
     email: mortal@citizenlab.co
     first_name: Casey
     last_name: Luettgen
@@ -306,7 +303,6 @@ models:
     created_at: '2018-03-28 13:34:57'
     updated_at: '2018-03-28 13:34:57'
   - &mortal2
-    id: 026527c6-13ad-4eb0-be52-fd83ff1cec28
     email: phoebe_rolfson@homenick.io
     first_name: Charles
     last_name:
@@ -323,7 +319,6 @@ models:
     created_at: '2018-03-28 13:34:57'
     updated_at: '2018-03-28 13:34:57'
   - &mortal3
-    id: 5663bb5d-e8ed-496b-81a4-35896ee57866
     email: olaf_daniel@goodwinspinka.com
     first_name: Candida
     last_name: Macejkovic
@@ -688,7 +683,6 @@ models:
     voting_method: unlimited
     remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
   - &121
-    id: '3dd0206b-1956-4685-bddf-b3c34d2c79f3'
     title_multiloc:
       en-GB: Continuous ideation map
       nl-BE: Continuous ideation map
@@ -734,8 +728,7 @@ models:
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-  - id: '3dd0206b-1956-4685-bddf-d768c79f3'
-    title_multiloc:
+  - title_multiloc:
       en-GB: Continuous survey
       nl-BE: Continuous survey
     description_multiloc:
