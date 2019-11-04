@@ -238,7 +238,6 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
             <div>
               <Input
                 type="text"
-                placeholder="xxx.xxx.xxx"
                 onChange={onIdSerialChange}
                 value={idSerial}
                 error={idError}
