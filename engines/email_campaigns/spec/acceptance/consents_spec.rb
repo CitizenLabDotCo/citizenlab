@@ -33,7 +33,6 @@ resource "Campaign consents" do
         create(:initiative_assigned_to_you_campaign),
         create(:initiative_marked_as_spam_campaign),
         create(:initiative_published_campaign),
-        create(:invite_accepted_campaign),
         create(:mention_in_comment_campaign),
         create(:mention_in_official_feedback_campaign),
         create(:new_comment_for_admin_campaign),
