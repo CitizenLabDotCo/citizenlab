@@ -35,7 +35,7 @@ const BoxContainer = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   position: relative;
   overflow: hidden;
-  margin-bottom: 50px;
+  margin-bottom: 70px;
 
   &::before,
   &::after {

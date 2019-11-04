@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import { get } from 'lodash-es';
+import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -137,7 +137,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   render() {
     const { location } = this.props;
     const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
-    const token: string | null = get(location.query, 'token', null);
+    const token = isString(location.query.token) ? location.query.token : null;
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
 
     return (

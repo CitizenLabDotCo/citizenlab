@@ -72,13 +72,34 @@ export function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
 }
 
-export function isAdminPage(pathName: string, specificAdminPage?: string) {
+type pageKeys = 'admin' | 'idea_form' | 'initiative_form' | 'idea_edit' | 'initiative_edit';
+
+export function isPage(pageKey: pageKeys, pathName: string) {
+   /**
+   * Checks whether current page is the desired page
+   *
+   * @param pageKey - key to indicate the desired page
+   * @param pathName - pathname to check (usually current path aka location.pathname)
+   *
+   * @returns Boolean. True if current page matches the pageKey's url, false otherwise.
+   */
+
   const pathnameWithoutLocale = removeUrlLocale(pathName);
 
-  if (specificAdminPage) {
-    return pathnameWithoutLocale.startsWith(`/admin/${specificAdminPage}`);
+  switch (pageKey) {
+    case 'admin':
+      return pathnameWithoutLocale.startsWith('/admin/');
+    case 'initiative_form':
+      // Needs to use endsWith
+      // Otherwise an initiative with the name 'new playground for our children' would also pass
+      return pathnameWithoutLocale.endsWith('/initiatives/new');
+    case 'idea_form':
+      return pathnameWithoutLocale.endsWith('/ideas/new');
+    case 'idea_edit':
+      return pathnameWithoutLocale.startsWith('/ideas/edit/');
+    case 'initiative_edit':
+      return pathnameWithoutLocale.startsWith('/initiatives/edit/');
   }
-  return pathnameWithoutLocale.startsWith('/admin');
 }
 
 export function stopPropagation(event) {
@@ -93,7 +114,7 @@ export function stripHtmlTags(str: string | null | undefined) {
   }
 }
 
-// e.g. 'en-GB' -> 'enGb' (for use in graphQl query)
+// e.g. 'en-GB' -> 'enGb'
 export function convertToGraphqlLocale(locale: Locale) {
   const newLocale = locale.replace('-', '');
   const length = newLocale.length - 1;

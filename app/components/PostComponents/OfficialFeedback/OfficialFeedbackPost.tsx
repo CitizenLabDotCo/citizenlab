@@ -67,15 +67,17 @@ const Author = styled.span`
 
 const DatePosted = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
+  margin-top: -2px;
 `;
 
 const DateEdited = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   font-style: italic;
+  margin-top: -2px;
 `;
 
 const StyledMoreActionsMenu = styled(MoreActionsMenu)`

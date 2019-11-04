@@ -245,7 +245,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
     setResponseError(null);
   }, [opened]);
 
-  const templateTitle = <T graphql={true} value={get(data, 'projectTemplate.titleMultiloc')} />;
+  const templateTitle = <T value={get(data, 'projectTemplate.titleMultiloc')} />;
 
   return (
     <Modal

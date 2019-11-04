@@ -208,13 +208,13 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
         >
           <Checkbox__InputWrapper
             checked={true}
-            className=""
+            className="e2e-checkbox checked "
             onClick={[Function]}
             size="22px"
           >
             <StyledComponent
               checked={true}
-              className=""
+              className="e2e-checkbox checked "
               forwardedComponent={
                 Object {
                   "$$typeof": Symbol(react.forward_ref),
@@ -258,13 +258,12 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
             >
               <div
                 checked={true}
-                className="c1"
+                className="c1 e2e-checkbox checked "
                 onClick={[Function]}
                 size="22px"
               >
                 <Checkbox__Input
                   aria-checked={true}
-                  className="e2e-checkbox"
                   defaultChecked={true}
                   id="checkbox"
                   onBlur={[Function]}
@@ -273,7 +272,6 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                 >
                   <StyledComponent
                     aria-checked={true}
-                    className="e2e-checkbox"
                     defaultChecked={true}
                     forwardedComponent={
                       Object {
@@ -314,7 +312,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
 <input
                           aria-checked="true"
                           checked=""
-                          class="c0 e2e-checkbox"
+                          class="c0"
                           id="checkbox"
                           type="checkbox"
                         />,
@@ -327,7 +325,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   >
                     <input
                       aria-checked={true}
-                      className="c2 e2e-checkbox"
+                      className="c2"
                       defaultChecked={true}
                       id="checkbox"
                       onBlur={[Function]}
@@ -445,7 +443,6 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                           height="100%"
                           role="img"
                           viewBox="0 0 19 15"
-                          width="100%"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
@@ -711,13 +708,13 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
         >
           <Checkbox__InputWrapper
             checked={false}
-            className=""
+            className="e2e-checkbox  "
             onClick={[Function]}
             size="22px"
           >
             <StyledComponent
               checked={false}
-              className=""
+              className="e2e-checkbox  "
               forwardedComponent={
                 Object {
                   "$$typeof": Symbol(react.forward_ref),
@@ -761,13 +758,12 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
             >
               <div
                 checked={false}
-                className="c1"
+                className="c1 e2e-checkbox  "
                 onClick={[Function]}
                 size="22px"
               >
                 <Checkbox__Input
                   aria-checked={false}
-                  className="e2e-checkbox"
                   defaultChecked={false}
                   id="checkbox"
                   onBlur={[Function]}
@@ -776,7 +772,6 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                 >
                   <StyledComponent
                     aria-checked={false}
-                    className="e2e-checkbox"
                     defaultChecked={false}
                     forwardedComponent={
                       Object {
@@ -816,7 +811,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
 
 <input
                           aria-checked="false"
-                          class="c0 e2e-checkbox"
+                          class="c0"
                           id="checkbox"
                           type="checkbox"
                         />,
@@ -829,7 +824,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                   >
                     <input
                       aria-checked={false}
-                      className="c2 e2e-checkbox"
+                      className="c2"
                       defaultChecked={false}
                       id="checkbox"
                       onBlur={[Function]}

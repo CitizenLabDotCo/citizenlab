@@ -100,7 +100,7 @@ const StyledContentContainer = styled(ContentContainer)`
 const ProjectSection = styled.div`
   width: 100%;
   padding-top: 40px;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
 
   ${media.smallerThanMinTablet`
     padding-bottom: 60px;
@@ -230,7 +230,7 @@ class LandingPage extends PureComponent<Props, State> {
                   {headerSloganMultiLoc ? (
                     <T value={headerSloganMultiLoc}>
                       {translatedSlogan =>
-                        translatedSlogan ? <h2>translatedSlogan</h2> : genericSlogan
+                        translatedSlogan ? <h2>{translatedSlogan}</h2> : genericSlogan
                       }
                     </T>
                   ) : genericSlogan}

@@ -24,7 +24,7 @@ const Svg = React.memo(({ className, children, name, title, viewBox, fill, ariaH
       fill={fill || 'none'}
       xmlns="http://www.w3.org/2000/svg"
       height={height || '100%'}
-      width={width || '100%'}
+      width={width}
     >
       {title && <title id={name}>{title}</title>}
       {children}
