@@ -101,7 +101,7 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
         </FileDownloadLink>
         <FileSize>({returnFileSize(file.size)})</FileSize>
         {onDeleteClick &&
-          <DeleteButton onClick={onDeleteClick}>
+          <DeleteButton type="button" onClick={onDeleteClick}>
             <StyledIcon name="delete" />
           </DeleteButton>
         }
