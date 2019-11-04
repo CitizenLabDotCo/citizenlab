@@ -578,20 +578,10 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <T value={project.attributes.title_multiloc} />
             </ProjectTitle>
 
-            <T value={project.attributes.description_preview_multiloc}>
-              {(description) => {
-                if (!isEmpty(description)) {
-                  return (
-                    <ProjectDescription>
-                      <FormattedMessage {...messages.a11y_projectDescription} />
-                      {description}
-                    </ProjectDescription>
-                  );
-                }
-
-                return null;
-              }}
-            </T>
+            <ProjectDescription>
+              <FormattedMessage {...messages.a11y_projectDescription} />
+              <T value={project.attributes.description_preview_multiloc} />
+            </ProjectDescription>
           </ScreenReaderOnly>
           {size !== 'large' && contentHeader}
 
@@ -614,7 +604,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
             <ContentBody className={size} aria-hidden>
               <ProjectTitle className="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
-                <T as="h3" value={project.attributes.title_multiloc} />
+                <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
               <T value={project.attributes.description_preview_multiloc}>
