@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import Popover, { Props as PopoverProps } from 'components/UI/Popover';
 import styled from 'styled-components';
+import { customOutline } from 'utils/styleUtils';
 
 interface Props extends Omit<PopoverProps, 'onClickOutside' | 'dropdownOpened' | 'content'> {
   /** whether the tooltip should be active at all. NOT it's opened state */
@@ -20,7 +21,7 @@ const Container = styled.button`
   outline: none;
 
   &:focus .tooltip-trigger {
-    outline: rgb(59, 153, 252) solid 2px;
+    outline: ${customOutline};
   }
 `;
 
