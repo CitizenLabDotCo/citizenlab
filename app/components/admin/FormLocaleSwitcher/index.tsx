@@ -95,7 +95,7 @@ class FormLocaleSwitcher extends PureComponent<Props> {
               onMouseDown={this.removeFocus}
               onClick={this.handleOnClick(locale)}
               type="button"
-              className={`${locale} ${locale === selectedLocale && 'isSelected'} ${this.validatePerLocale(locale) && 'isComplete'}`}
+              className={`e2e-locale-switch ${locale} ${locale === selectedLocale ? 'isSelected' : ''} ${this.validatePerLocale(locale) ? 'isComplete' : 'notComplete'}`}
             >
               <Icon name="dot" />
               {locale}
