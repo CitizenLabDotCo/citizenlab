@@ -31,9 +31,12 @@ describe('Idea show page actions', () => {
       const officialFeedbackBody = randomString(30);
       const officialFeedbackAuthor = randomString();
 
-      // input
-      cy.get('#official-feedback-form textarea').type(officialFeedbackBody);
-      cy.get('#official-feedback-form input').type(officialFeedbackAuthor);
+      cy.get('.e2e-locale-switch').each(button => {
+        // input
+        cy.wrap(button).click();
+        cy.get('#official-feedback-form textarea').type(officialFeedbackBody);
+        cy.get('#official-feedback-form input').type(officialFeedbackAuthor);
+      });
 
       // save
       cy.get('.e2e-submit-wrapper-button').click();
