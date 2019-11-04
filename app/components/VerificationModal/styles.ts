@@ -1,4 +1,4 @@
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 export const Title = styled.h1`
@@ -18,6 +18,10 @@ export const Title = styled.h1`
   strong {
     font-weight: 600;
   }
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 20px;
+  `}
 `;
 
 export const Subtitle = styled.h2`

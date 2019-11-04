@@ -315,7 +315,7 @@ const Popover = memo<Props>(({
       onClick={handleOnClick}
       onClickOutside={handleOnClickOutside}
     >
-      <div className="tooltip-trigger">{children}</div>
+      {children}
 
       <CSSTransition
         classNames="dropdown"
@@ -330,7 +330,6 @@ const Popover = memo<Props>(({
           offset={finalOffset}
           delay={finalDelay}
           className={`${finalPosition} small-${finalSmallViewportPosition} ${finalScaleIn ? 'scaleIn' : ''} tooltip-container`}
-          role="tooltip"
         >
           <ContentInner
             id={id}

@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -28,21 +28,22 @@ interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
 }
 
 const Container = styled.div`
-  display: inline-block;
-  height: 17px;
+  width: 16px;
+  height: 16px;
 `;
 
 const IconWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 4px;
+  padding-right: 10px;
 `;
 
 const StyledIcon = styled(Icon)<{ color?: string }>`
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   cursor: pointer;
   fill: ${({ color }) => color ? color : colors.label};
-  transform: translateY(-1px);
 
   &:hover {
     fill: ${({ color }) => color ? darken(.2, color) : darken(.2, colors.label)};
@@ -67,36 +68,30 @@ const getMinWidth = (size: undefined | 'big' | 'small' | 'xs') => {
     return 200;
   }
 
-  return 300;
+  return 400;
 };
 
 const InfoTooltip = memo<Props>((props) => {
   const { position, size, className, children, offset, iconColor, ...passthroughProps } = props;
   const minWidth = getMinWidth(size);
 
-  const onTooltipClick = useCallback((event: React.MouseEvent) => {
-    event.preventDefault();
-  }, []);
-
   return (
     <Container className={`${className} infoTooltip`}>
       <Tooltip
         enabled={true}
-        content={(
+        content={
           <TooltipWrapper minWidth={minWidth}>
             <FormattedMessage {...passthroughProps} />
           </TooltipWrapper>
-        )}
+        }
         offset={offset || 28}
         position={position}
         className={className}
         backgroundColor={colors.popoverDarkBg}
         borderColor={colors.popoverDarkBg}
       >
-        <IconWrapper onClick={onTooltipClick}>
-          <div className="tooltip-trigger">
-            {children || <StyledIcon name="info3" className="infoTooltipIcon" />}
-          </div>
+        <IconWrapper>
+          {children || <StyledIcon name="info3" className="infoTooltipIcon" />}
         </IconWrapper>
       </Tooltip >
     </Container>

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 type Props = {
   children?: any;
-  onClick: (event) => void;
+  onClick?: (event) => void;
   onClickOutside: (event) => void;
   onMouseEnter?: (event) => void;
   onMouseLeave?: (event) => void;

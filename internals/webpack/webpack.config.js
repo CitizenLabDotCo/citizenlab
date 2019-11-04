@@ -109,15 +109,10 @@ const config = {
       },
       {
         test: /\.(svg|jpg|png|gif)$/,
-        use: [
-          { loader: 'cache-loader' },
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-            },
-          },
-        ],
+        loader: 'url-loader',
+        options: {
+          limit: 8192,
+        }
       },
       {
         test: /\.(eot|ttf|woff|woff2)$/,
