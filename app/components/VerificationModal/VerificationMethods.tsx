@@ -16,7 +16,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
@@ -103,9 +103,10 @@ interface Props {
   withContext: boolean;
   onMethodSelected: (selectedMethod: VerificationMethodNames) => void;
   className?: string;
+  theme: any;
 }
 
-const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, className }) => {
+const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, className, theme }) => {
 
   const authUser = useAuthUser();
   const verificationMethods = useVerificationMethods();
@@ -164,13 +165,15 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
               icon="verify_manually"
               onClick={onVerifyCowButtonClick}
               fullWidth={true}
-              size="2"
+              size="1"
               justify="left"
               padding="14px 20px"
               bgColor="#fff"
               bgHoverColor="#fff"
-              textColor={colors.text}
-              textHoverColor={darken(0.2, colors.text)}
+              iconColor={theme.colorMain}
+              iconHoverColor={darken(0.2, theme.colorMain)}
+              textColor={theme.colorText}
+              textHoverColor={darken(0.2, theme.colorText)}
               borderColor="#e3e3e3"
               borderHoverColor={darken(0.2, '#e3e3e3')}
               boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
@@ -186,13 +189,15 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
               icon="verify_manually"
               onClick={onVerifyBogusButtonClick}
               fullWidth={true}
-              size="2"
+              size="1"
               justify="left"
               padding="14px 20px"
               bgColor="#fff"
+              iconColor={theme.colorMain}
+              iconHoverColor={darken(0.2, theme.colorMain)}
               bgHoverColor="#fff"
-              textColor={colors.text}
-              textHoverColor={darken(0.2, colors.text)}
+              textColor={theme.colorText}
+              textHoverColor={darken(0.2, theme.colorText)}
               borderColor="#e3e3e3"
               borderHoverColor={darken(0.2, '#e3e3e3')}
               boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
@@ -207,4 +212,4 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
   );
 });
 
-export default VerificationMethods;
+export default withTheme(VerificationMethods);
