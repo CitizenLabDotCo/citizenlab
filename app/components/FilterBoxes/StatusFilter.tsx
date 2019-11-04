@@ -12,7 +12,7 @@ import Icon from 'components/UI/Icon';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 import { darken } from 'polished';
 import { Header, Title } from './styles';
 
@@ -113,6 +113,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
   }, []);
 
   if (!isNilOrError(statuses) && statuses.length > 0) {
+    const allIdeasCount = filterCounts && filterCounts.total ? filterCounts.total : 0;
     return (
       <Container className={`e2e-statuses-filters ${className}`}>
         <Header>
@@ -128,12 +129,16 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
           className={!selectedStatusId ? 'selected' : ''}
         >
           <FormattedMessage {...messages.all} />
-          <Count>
-            {filterCounts && filterCounts.total ? filterCounts.total : 0}
+          <Count aria-hidden>
+            {allIdeasCount}
           </Count>
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.numberOfIdeas} values={{ ideasCount: allIdeasCount}} />
+          </ScreenReaderOnly>
         </AllStatus>
 
         {statuses.map((status) => {
+          const filterIdeasCount = get(filterCounts, `${type}_status_id.${status.id}`, 0);
           return (
             <Status
               key={status.id}
@@ -146,12 +151,15 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
                 {statusTitle => <>{capitalize(statusTitle)}</>}
               </T>
               {selectedStatusId !== status.id ? (
-                <Count>
-                  {get(filterCounts, `${type}_status_id.${status.id}`, 0)}
+                <Count aria-hidden>
+                  {filterIdeasCount}
                 </Count>
               ) : (
                 <CloseIcon name="close" />
               )}
+              <ScreenReaderOnly>
+                <FormattedMessage {...messages.numberOfIdeas} values={{ ideasCount: filterIdeasCount }} />
+              </ScreenReaderOnly>
             </Status>
           );
         })}
