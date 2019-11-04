@@ -648,7 +648,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                             <VoteWrapper
                               ideaId={ideaId}
-                              votingDescriptor={idea.attributes.action_descriptor.voting}
                               projectId={projectId}
                             />
                           </>
