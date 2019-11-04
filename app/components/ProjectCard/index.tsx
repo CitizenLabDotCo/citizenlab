@@ -306,12 +306,10 @@ const ContentBody = styled.div`
   }
 `;
 
-const ProjectTitle = styled.div`
-  h3 {
-    line-height: normal;
-    font-weight: 500;
-    font-size: ${fontSizes.xl}px;
-  }
+const ProjectTitle = styled.h3`
+  line-height: normal;
+  font-weight: 500;
+  font-size: ${fontSizes.xl}px;
   color: ${({ theme }) => theme.colorText};
   margin: 0;
   padding: 0;
@@ -574,6 +572,27 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
           to={projectUrl}
           onClick={this.handleProjectCardOnClick(project.id)}
         >
+          <ScreenReaderOnly>
+            <ProjectTitle>
+              <FormattedMessage {...messages.a11y_projectTitle} />
+              <T value={project.attributes.title_multiloc} />
+            </ProjectTitle>
+
+            <T value={project.attributes.description_preview_multiloc}>
+              {(description) => {
+                if (!isEmpty(description)) {
+                  return (
+                    <ProjectDescription>
+                      <FormattedMessage {...messages.a11y_projectDescription} />
+                      {description}
+                    </ProjectDescription>
+                  );
+                }
+
+                return null;
+              }}
+            </T>
+          </ScreenReaderOnly>
           {size !== 'large' && contentHeader}
 
           <ProjectImageContainer className={size}>
@@ -593,7 +612,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
           <ProjectContent className={size}>
             {size === 'large' && contentHeader}
 
-            <ContentBody className={size}>
+            <ContentBody className={size} aria-hidden>
               <ProjectTitle className="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
                 <T as="h3" value={project.attributes.title_multiloc} />
               </ProjectTitle>
