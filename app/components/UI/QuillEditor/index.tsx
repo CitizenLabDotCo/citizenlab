@@ -112,9 +112,9 @@ const Container: any = styled.div`
   }
 
   .ql-toolbar {
-    background: white;
-    box-shadow: inset 0 0 2px rgba(0,0,0,0.1);
+    background: #f8f8f8;
     border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
+    box-shadow: none !important;
     border-bottom: 0 !important;
   }
 
