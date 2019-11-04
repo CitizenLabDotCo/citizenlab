@@ -100,7 +100,7 @@ const StyledContentContainer = styled(ContentContainer)`
 const ProjectSection = styled.div`
   width: 100%;
   padding-top: 40px;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
 
   ${media.smallerThanMinTablet`
     padding-bottom: 60px;
