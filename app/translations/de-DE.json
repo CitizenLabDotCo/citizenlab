@@ -198,6 +198,7 @@
   "app.components.PagesForm.pageTitle": "Überschrift",
   "app.components.PagesShowPage.notFoundDescription": "Entschuldigen Sie, die angeforderte Seite konnte leider nicht gefunden werden",
   "app.components.PagesShowPage.notFoundTitle": "Seite nicht gefunden",
+  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "",
   "app.components.PostComponents.OfficialFeedback.cancel": "Abbrechen",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Löschen",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Sind Sie sicher, dass Sie dieses offizielle Update löschen möchten?",
