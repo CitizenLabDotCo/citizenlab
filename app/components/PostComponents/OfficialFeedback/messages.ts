@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  addOfficalUpdate: {
+    id: 'app.components.PostComponents.OfficialFeedback.addOfficalUpdate',
+    defaultMessage: 'Add an official update',
+  },
   officialUpdates: {
     id: 'app.components.PostComponents.OfficialFeedback.officialUpdates',
     defaultMessage: 'Official updates',
