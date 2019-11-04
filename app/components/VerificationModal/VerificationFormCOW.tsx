@@ -97,6 +97,7 @@ const HelpButton = styled.button`
    margin: 0;
    padding: 0;
    color: ${colors.label};
+   cursor: pointer;
 `;
 
 interface Props {
@@ -237,14 +238,13 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
             <div>
               <Input
                 type="text"
-                placeholder="xxx.xxx.xxx"
                 onChange={onIdSerialChange}
                 value={idSerial}
                 error={idError}
               />
             </div>
           </StyledLabel>
-          <HelpButton onClick={onShowHelpButtonClick} onMouseDown={removeFocus}>
+          <HelpButton onClick={onShowHelpButtonClick} onMouseDown={removeFocus} type="button">
           {showHelp
             ? (
               <HelpImage src={helpImage} alt="help" />
