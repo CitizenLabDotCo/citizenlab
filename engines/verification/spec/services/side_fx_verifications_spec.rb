@@ -16,6 +16,11 @@ describe Verification::SideFxVerificationService do
       service.after_create(verification, user)
       expect(user.reload.verified).to be true
     end
+
+    it "schedules an UpdateMemberCountJob" do
+      expect{service.after_create(verification, user)}
+        .to have_enqueued_job(UpdateMemberCountJob)
+    end
   end
 
 end
