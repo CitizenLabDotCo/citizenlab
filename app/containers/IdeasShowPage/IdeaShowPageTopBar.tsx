@@ -7,6 +7,7 @@ import Icon from 'components/UI/Icon';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+import { openVerificationModalWithContext } from 'containers/App/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -121,6 +122,12 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className }) => {
     clHistory.push('/sign-in');
   }, []);
 
+  const onDisabledVoteClick = useCallback((disabled_reason: string) => {
+    if (disabled_reason === 'not_verified') {
+      openVerificationModalWithContext('ActionVote');
+    }
+  }, []);
+
   return (
     <Container className={className}>
       <TopBarInner>
@@ -136,6 +143,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className }) => {
           <VoteControl
             ideaId={ideaId}
             unauthenticatedVoteClick={onUnauthenticatedVoteClick}
+            disabledVoteClick={onDisabledVoteClick}
             size="1"
           />
         </Right>
