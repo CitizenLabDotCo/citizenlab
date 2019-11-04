@@ -42,7 +42,6 @@ import { IOption, UploadFile, Locale } from 'typings';
 
 // style
 import styled from 'styled-components';
-import { hideVisually } from 'polished';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 
