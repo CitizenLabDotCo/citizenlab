@@ -41,8 +41,6 @@ module Verification
         raise VerificationService::ParameterInvalidError.new("id_serial") unless id_serial_valid?(id_serial)
 
         cow_valid_citizen!(run, id_serial)
-
-        clean_id_serial(id_serial)
       end
 
       private
@@ -64,6 +62,8 @@ module Verification
         )
 
         valid_response!(response.body[:get_data_document_response].slice(:ind_vigencia, :ind_bloqueo, :estado_respuesta))
+
+        response.body[:get_data_document_response][:num_serie]
       end
 
       # A transaction is successful if it meets one of the following rules:
