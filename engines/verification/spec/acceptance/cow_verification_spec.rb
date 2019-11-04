@@ -82,7 +82,7 @@ resource "Verifications" do
             "typens:DVEmpresa" => 'k',
             "typens:CodTipoDocumento" => 'C',
             "typens:NumRUN" => '12025365',
-            "typens:NumSerie" => '001529382',
+            "typens:NumSerie" => 'A001529382',
           })
           .returns(File.read("engines/verification/spec/fixtures/get_data_document_match.xml"))
         do_request
@@ -92,7 +92,7 @@ resource "Verifications" do
           method_name: "cow",
           user_id: @user.id,
           active: true,
-          hashed_uid: 'edf6e3b986a782f63f6c28f47d33f2cd327e12bc70c2e07779d60999cd811b50'
+          hashed_uid: '6a35b8e317fad56c885efc7397d8c14b6c4008f549abc5ae27222e8b2e3380c5'
         })
       end
     end
@@ -107,7 +107,7 @@ resource "Verifications" do
             "typens:DVEmpresa" => 'k',
             "typens:CodTipoDocumento" => 'C',
             "typens:NumRUN" => '11111111',
-            "typens:NumSerie" => '001529382',
+            "typens:NumSerie" => 'A001529382',
           })
           .returns(File.read("engines/verification/spec/fixtures/get_data_document_no_match.xml"))
         do_request
@@ -127,7 +127,7 @@ resource "Verifications" do
             "typens:DVEmpresa" => 'k',
             "typens:CodTipoDocumento" => 'C',
             "typens:NumRUN" => '11111111',
-            "typens:NumSerie" => '001529382',
+            "typens:NumSerie" => 'A001529382',
           })
           .returns(File.read("engines/verification/spec/fixtures/get_data_document_match_no_citizen.xml"))
         do_request
