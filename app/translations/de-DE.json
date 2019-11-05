@@ -195,6 +195,7 @@
   "app.components.InitiativesShowPage.goBack": "Zurück",
   "app.components.InitiativesShowPage.goBackToList": "Zurück zur Liste",
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Hier wurde keine Initiative gefunden.",
+  "app.components.Input.charactersLeft": "",
   "app.components.Modal.closeModal": "Schließen dieses Popup",
   "app.components.PagesForm.dontChange": "Verändern Sie dies nicht! (Es sei denn, Sie wissen wirklich, was Sie tun)",
   "app.components.PagesForm.editContent": "Inhalt",
