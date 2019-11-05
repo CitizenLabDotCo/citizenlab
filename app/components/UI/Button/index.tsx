@@ -443,8 +443,8 @@ class Button extends PureComponent<Props, State> {
       fontSize,
       autoFocus,
       ariaExpanded,
-      ariaDescribedby,
       iconAriaHidden,
+      ariaDescribedby,
       ariaDisabled
     } = this.props;
     let { id, size, style, processing, disabled, iconPos, className } = this.props;
