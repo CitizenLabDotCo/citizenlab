@@ -204,7 +204,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
           <StyledLabel>
             <LabelTextContainer>
               <span>RUN</span>
-              <IconTooltip content="Ingrese su numero de RUN (RUT)" />
+              <IconTooltip maxTooltipWidth={200} content="Ingrese su numero de RUN (RUT)" />
             </LabelTextContainer>
             <div>
               <Input
@@ -222,7 +222,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
           <StyledLabel>
             <LabelTextContainer>
               <span>Número de Documento</span>
-              <IconTooltip content="Ingrese el número de documento que se encuentra al frente en cédulas nuevas y atras en cédulas antiguas." />
+              <IconTooltip maxTooltipWidth={200} content="Ingrese el número de documento que se encuentra al frente en cédulas nuevas y atras en cédulas antiguas." />
             </LabelTextContainer>
             <div>
               <Input

@@ -61,12 +61,12 @@ const UserCount = styled.span`
 `;
 
 const ActionButton = styled.button`
-  height: 42px;
+  height: 38px;
   margin-right: 40px;
   position: relative;
   padding: 0px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 4px;
+  padding-right: 4px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   display: flex;
@@ -113,6 +113,7 @@ const DropdownWrapper = styled.div`
 `;
 
 const DropdownListItemText = styled.div`
+  flex: 1;
   color: ${colors.label};
   font-size: 17px;
   font-weight: 400;
@@ -124,8 +125,15 @@ const DropdownListItemText = styled.div`
   hyphens: auto;
 `;
 
-const DropdownListItem = styled.div`
+const DropdownList = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const DropdownListItem = styled.button`
+  flex: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -159,7 +167,6 @@ const StyledCheckbox = styled(Checkbox)`
 
 const DropdownFooterButton = styled(Button)`
   .Button {
-    padding: 12px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
@@ -377,7 +384,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                 opened={dropdownOpened}
                 onClickOutside={this.toggleDropdown}
                 content={(
-                  <>
+                  <DropdownList>
                     {groupsList.map((group) => (
                       <DropdownListItem
                         role="button"
@@ -394,7 +401,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                         />
                       </DropdownListItem>
                     ))}
-                  </>
+                  </DropdownList>
                 )}
                 footer={(
                   <DropdownFooterButton
@@ -403,6 +410,8 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                     onClick={this.addUsersToGroups}
                     processing={processing}
                     fullWidth={true}
+                    padding="12px"
+                    whiteSpace="normal"
                     disabled={!selectedGroupIds || selectedGroupIds.length === 0}
                   >
                     <FormattedMessage {...messages.moveUsers} />

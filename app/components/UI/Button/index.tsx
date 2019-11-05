@@ -209,12 +209,12 @@ const StyledIcon = styled(Icon)`
   }
 `;
 
-const ButtonText = styled.div`
+const ButtonText = styled.div<{ whiteSpace?: string }>`
   margin: 0;
   margin-top: -1px;
   padding: 0;
   text-align: left;
-  white-space: nowrap;
+  white-space: ${({ whiteSpace}) => whiteSpace || 'nowrap'};
   transition: all 100ms ease-out;
 `;
 
@@ -329,6 +329,7 @@ export interface ButtonContainerProps {
   boxShadowHover?: string;
   borderRadius?: string;
   fontWeight?: string;
+  whiteSpace?: string;
   minWidth?: string;
   fontSize?: string;
   onClick?: (arg: FormEvent<HTMLButtonElement>) => void;
@@ -438,6 +439,7 @@ class Button extends PureComponent<Props, State> {
       linkTo,
       openInNewTab,
       fontWeight,
+      whiteSpace,
       fullWidth,
       ariaLabel,
       fontSize,
@@ -470,7 +472,7 @@ class Button extends PureComponent<Props, State> {
             colorTheme={iconTheme}
             ariaHidden={iconAriaHidden}
           />}
-        {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
+        {hasText && <ButtonText className="buttonText" whiteSpace={whiteSpace}>{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
         {icon && iconPos === 'right' &&
           <StyledIcon
@@ -518,6 +520,7 @@ class Button extends PureComponent<Props, State> {
         boxShadowHover={boxShadowHover}
         borderRadius={borderRadius}
         fontWeight={fontWeight}
+        whiteSpace={whiteSpace}
         minWidth={minWidth}
         fontSize={fontSize}
       >

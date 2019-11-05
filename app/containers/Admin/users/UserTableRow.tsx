@@ -50,15 +50,17 @@ const MoreOptionsIcon = styled(Icon) `
   fill: ${colors.adminSecondaryTextColor};
 `;
 
-const MoreOptionsIconButton = styled.button`
+const MoreOptionsButton = styled.button`
   width: 25px;
   height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   padding: 0;
   margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 
   &:hover ${MoreOptionsIcon} {
     fill: #000;
@@ -78,7 +80,7 @@ const DropdownList = styled.div`
 `;
 
 const DropdownListButton = styled.button`
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -226,6 +228,10 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
               interactive={true}
               arrow={true}
               trigger="click"
+              duration={[200, 0]}
+              flip={true}
+              flipBehavior="flip"
+              flipOnUpdate={true}
               content={
                 <DropdownList>
                   <DropdownListButton onClick={this.goToUserProfile(this.props.user.attributes.slug)}>
@@ -243,9 +249,9 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                 </DropdownList>
               }
             >
-              <MoreOptionsIconButton onMouseDown={this.removeFocus}>
+              <MoreOptionsButton onMouseDown={this.removeFocus}>
                 <MoreOptionsIcon name="more-options" />
-              </MoreOptionsIconButton>
+              </MoreOptionsButton>
             </Tippy>
           </MoreOptionsWrapper>
         </td>
