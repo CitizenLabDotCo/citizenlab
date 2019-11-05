@@ -405,6 +405,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             onChange={this.handleTitleOnChange}
             setRef={this.handleTitleInputSetRef}
             maxCharCount={80}
+            autocomplete="off"
           />
         </FormElement>
 
