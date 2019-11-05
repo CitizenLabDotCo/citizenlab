@@ -338,6 +338,10 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
       selectedCount = selectedUsers.length;
     }
 
+    const exportType = selectedUsers === 'none' && !groupId ? 'exportAllUsers'
+    : selectedUsers === 'none' && groupId ? 'exportGroup'
+    : 'exportSelectedUsers';
+
     return (
       <TableOptions>
         <ActionButton onClick={this.toggleAllUsers}>
@@ -417,11 +421,9 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
           </ActionButton>
         }
 
-        <ActionButton onClick={this.exportUsers} className="export">
+        <ActionButton onClick={this.exportUsers} className={`export e2e-${exportType}`}>
           <StyledIcon name="userExport" />
-          {selectedUsers === 'none' && !groupId && <FormattedMessage {...messages.exportAllUsers} />}
-          {selectedUsers === 'none' && groupId && <FormattedMessage {...messages.exportGroup} />}
-          {selectedUsers !== 'none' && <FormattedMessage {...messages.exportSelectedUsers} />}
+          <FormattedMessage {...messages[exportType]} />
         </ActionButton>
       </TableOptions>
     );

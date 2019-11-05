@@ -3,7 +3,7 @@ import { randomString } from '../../../support/commands';
 describe('Admin: add project', () => {
 
   beforeEach(() => {
-    cy.login('admin@citizenlab.co', 'testtest');
+    cy.setAdminLoginCookie();
     cy.visit('/admin/projects/');
     cy.get('.e2e-create-project-expand-collapse-button').click();
     cy.wait(1000);

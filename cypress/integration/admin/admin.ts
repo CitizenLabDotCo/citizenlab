@@ -6,7 +6,7 @@ describe('/admin route', () => {
   });
 
   it('redirects admins to dashboard', () => {
-    cy.login('admin@citizenlab.co', 'testtest');
+    cy.setAdminLoginCookie();
     cy.visit('/admin');
     cy.wait(1000);
     cy.location('pathname').should('eq', '/en-GB/admin/dashboard');

@@ -7,6 +7,8 @@ declare global {
       goToLandingPage: typeof goToLandingPage;
       login: typeof login;
       apiLogin: typeof apiLogin;
+      setAdminLoginCookie: typeof setAdminLoginCookie;
+      setLoginCookie: typeof setLoginCookie;
       apiSignup: typeof apiSignup;
       apiCreateAdmin: typeof apiCreateAdmin;
       apiRemoveUser: typeof apiRemoveUser;
@@ -67,20 +69,20 @@ export function unregisterServiceWorkers() {
 }
 
 export function goToLandingPage() {
-  cy.wait(1000);
+  cy.wait(500);
   cy.visit('/');
   cy.get('#e2e-landing-page');
-  cy.wait(1000);
+  cy.wait(500);
 }
 
 export function login(email: string, password: string) {
-  cy.wait(1000);
+  cy.wait(500);
   cy.visit('/sign-in');
   cy.get('.e2e-sign-in-container');
   cy.get('#email').type(email);
   cy.get('#password').type(password);
   cy.get('.e2e-submit-signin').click();
-  cy.wait(5000);
+  cy.wait(2000);
 }
 
 export function apiLogin(email: string, password: string) {
@@ -97,6 +99,16 @@ export function apiLogin(email: string, password: string) {
       }
     }
   });
+}
+
+export function setLoginCookie(email: string, password: string) {
+  cy.apiLogin(email, password).then(res => {
+    cy.setCookie('cl2_jwt', res.body.jwt);
+  });
+}
+
+export function setAdminLoginCookie() {
+  cy.setLoginCookie('admin@citizenlab.co', 'testtest');
 }
 
 export function apiSignup(firstName: string, lastName: string, email: string, password: string) {
@@ -205,6 +217,7 @@ export function signup(firstName: string, lastName: string, email: string, passw
 export function acceptCookies() {
   cy.get('#e2e-cookie-banner').as('cookieBanner');
   cy.get('@cookieBanner').find('.e2e-accept-cookies-btn').click();
+  cy.wait(200);
 }
 
 export function getIdeaById(ideaId: string) {
@@ -799,3 +812,5 @@ Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
+Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
+Cypress.Commands.add('setLoginCookie', setLoginCookie);
