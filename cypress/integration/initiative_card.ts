@@ -14,19 +14,19 @@ describe('Initiaitve card component', () => {
   let childCommentId: string;
 
   const preparePage = () => {
-    cy.login(email, password);
+    cy.setLoginCookie(email, password);
 
     // visit initiatives page and sort initiative cards by newest first
     cy.visit('/initiatives');
 
-    cy.wait(2000);
+    cy.wait(500);
     cy.get('#e2e-initiatives-list');
 
     // sort initiatives by newest first
     cy.get('#e2e-initiatives-sort-dropdown').click();
     cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
 
-    cy.wait(2000);
+    cy.wait(500);
     cy.get('#e2e-initiatives-list');
 
     // create a reference to the initiative card for later use

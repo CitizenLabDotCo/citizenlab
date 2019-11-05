@@ -26,11 +26,12 @@ describe('Idea edit page', () => {
     }).then((idea) => {
       ideaId = idea.body.data.id;
       ideaSlug = idea.body.data.attributes.slug;
+      cy.wait(500);
     });
   });
 
   beforeEach(() => {
-    cy.login(email, password);
+    cy.setLoginCookie(email, password);
     cy.visit(`/ideas/edit/${ideaId}`);
     cy.acceptCookies();
     cy.get('#e2e-idea-edit-page');
