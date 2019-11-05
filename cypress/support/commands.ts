@@ -829,6 +829,6 @@ Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
-Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
+Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);

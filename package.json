@@ -181,7 +181,7 @@
     "css-loader": "3.2.0",
     "cssnano": "4.1.10",
     "cypress": "3.6.0",
-    "cypress-file-upload": "3.3.4",
+    "cypress-file-upload": "3.4.0",
     "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.15.1",
     "enzyme-to-json": "3.4.3",
