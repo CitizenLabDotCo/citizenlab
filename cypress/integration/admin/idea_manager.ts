@@ -3,7 +3,7 @@ import { randomString, randomEmail } from '../../support/commands';
 describe('Idea manager', () => {
 
   beforeEach(() => {
-    cy.login('admin@citizenlab.co', 'testtest');
+    cy.setAdminLoginCookie();
   });
 
   describe('Assignee filter', () => {
@@ -71,7 +71,8 @@ describe('Idea manager', () => {
             cy.apiCreateOfficialFeedbackForIdea(ideaId, officialFeedbackContent, officialFeedbackAuthor);
 
             // Create one idea without official feedback
-            cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2). then(() => {
+            cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2).then(() => {
+              cy.wait(500);
               cy.visit('/admin/ideas/');
 
               // Select the newly create project as a filter and check if it just shows our two created ideas
@@ -82,6 +83,7 @@ describe('Idea manager', () => {
               cy.get('#e2e-feedback_needed_filter_toggle').click();
               cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
             });
+            cy.wait(500);
           });
 
         });
@@ -90,7 +92,7 @@ describe('Idea manager', () => {
   });
 
   describe('Idea preview ', () => {
-    it('Opens when you click an idea title', () => {
+    it('Opens when you click an idea title, then closes with X button', () => {
       cy.visit('/admin/ideas/');
       // grab and open assignee filter menu
       cy.get('#e2e-select-assignee-filter').click();
@@ -98,23 +100,13 @@ describe('Idea manager', () => {
       cy.get('#e2e-assignee-filter-all-posts').click();
       // click on title of first idea
       cy.get('.e2e-idea-manager-idea-title').first().click().then(ideaTitle => {
-      // check if the modal popped out and has the idea in it
-      cy.get('#e2e-modal-container').find('#e2e-idea-title').contains(ideaTitle.text());
+        // check if the modal popped out and has the idea in it
+        cy.get('#e2e-modal-container').find('#e2e-idea-title').contains(ideaTitle.text());
+        // close modal
+        cy.get('.e2e-modal-close-button').click();
+        // check if the modal is no longer on the page
+        cy.get('#e2e-modal-container').should('have.length', 0);
       });
-    });
-
-    it('Closes when you click the X (close button)', () => {
-      cy.visit('/admin/ideas/');
-      // grab and open assignee filter menu
-      cy.get('#e2e-select-assignee-filter').click();
-      // click on All ideas filter
-      cy.get('#e2e-assignee-filter-all-posts').click();
-      // click on title of first idea to open modal
-      cy.get('.e2e-idea-manager-idea-title').first().click();
-      // close modal
-      cy.get('.e2e-modal-close-button').click();
-      // check if the modal is no longer on the page
-      cy.get('#e2e-modal-container').should('not.exist');
     });
   });
 
@@ -137,7 +129,7 @@ describe('Idea manager', () => {
         // Pick first idea in idea table and assign it to our user
         cy.wait(500);
         cy.get('.e2e-idea-manager-idea-row').first()
-          .find('.e2e-post-manager-post-row-assignee-select').scrollIntoView().click()
+          .find('.e2e-post-manager-post-row-assignee-select').scrollIntoView({ offset: { top: 100, left: 0 } }).click()
           .contains(`${newAdminFirstName} ${newAdminLastName}`).click();
         // Select this user in the assignee filter
         cy.get('#e2e-select-assignee-filter').click()
