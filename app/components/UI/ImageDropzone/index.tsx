@@ -19,7 +19,7 @@ import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/fileT
 
 // style
 import styled, { css } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 
 // typings
 import { UploadFile } from 'typings';
@@ -41,7 +41,7 @@ const ErrorWrapper = styled.div`
   margin-top: -12px;
 `;
 
-const DropzonePlaceholderText = styled.div`
+const DropzonePlaceholderText = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
@@ -109,6 +109,10 @@ const StyledDropzone = styled(Dropzone)`
     }
   ` : css`
     cursor: pointer !important;
+
+    &:focus-within {
+      outline: ${customOutline};
+    }
 
     &:hover, &:focus-within {
       border-color: #000;
@@ -343,26 +347,28 @@ class ImageDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                 maxWidth={maxImagePreviewWidth}
                 ratio={imagePreviewRatio}
               >
-                <StyledDropzone
-                  className={`${this.props.imageRadius === '50%' && 'rounded'}`}
-                  accept={acceptedFileTypes}
-                  maxSize={maxImageFileSize}
-                  disabled={processing}
-                  disablePreview={true}
-                  onDropRejected={this.onDropRejected}
-                  onDropAccepted={this.onDropAccepted}
-                >
-                  {!processing ? (
+                <label>
+                  <StyledDropzone
+                    className={`${this.props.imageRadius === '50%' && 'rounded'}`}
+                    accept={acceptedFileTypes}
+                    maxSize={maxImageFileSize}
+                    disabled={processing}
+                    disablePreview={true}
+                    onDropRejected={this.onDropRejected}
+                    onDropAccepted={this.onDropAccepted}
+                  >
                     <DropzoneContent>
-                      <DropzonePlaceholderIcon name="upload" />
-                      <DropzonePlaceholderText>{formatMessage(messages.dropYourImageHere)}</DropzonePlaceholderText>
-                    </DropzoneContent>
-                  ) : (
-                      <DropzoneContent>
+                      {!processing ? (
+                        <>
+                          <DropzonePlaceholderIcon name="upload" ariaHidden />
+                          <DropzonePlaceholderText>{formatMessage(messages.uploadImage)}</DropzonePlaceholderText>
+                        </>
+                      ) : (
                         <Spinner />
-                      </DropzoneContent>
-                    )}
-                </StyledDropzone>
+                      )}
+                    </DropzoneContent>
+                  </StyledDropzone>
+                </label>
               </Box>
             )}
         </ContentWrapper>

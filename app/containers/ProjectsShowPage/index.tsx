@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import Meta from './Meta';
+import ProjectsShowPageMeta from './ProjectsShowPageMeta';
 import Header from './Header';
 import Button from 'components/UI/Button';
 import Spinner from 'components/UI/Spinner';
@@ -102,7 +102,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
 
     return (
       <>
-        <Meta projectSlug={slug} />
+        <ProjectsShowPageMeta projectSlug={slug} />
         <Container className={`${(lastUrlSegment === 'events' || lastUrlSegment === 'info') ? 'greyBackground' : ''} ${!loading ? 'loaded' : 'loading'}`}>
           {projectNotFound ? (
             <ProjectNotFoundWrapper>
