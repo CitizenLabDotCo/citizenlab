@@ -81,14 +81,14 @@ module SmartGroupRules
         case predicate
         when 'has_value'
           case value
-          when 'outisde'
+          when 'outside'
             I18n.t('smart_group_rules.lives_in_outside')
           else
             I18n.t('smart_group_rules.lives_in_has_value', domicile: Area.find(value).title_multiloc[locale])
           end
         when 'not_has_value'
           case value
-          when 'outisde'
+          when 'outside'
             I18n.t('smart_group_rules.lives_in_not_outside')
           else
             I18n.t('smart_group_rules.lives_in_not_has_value', domicile: Area.find(value).title_multiloc[locale])
