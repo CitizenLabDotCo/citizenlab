@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 
 const Container = styled.div`
@@ -34,7 +34,7 @@ const InputWrapper = styled.div<{ checked: boolean, size: string | undefined }>`
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
 
   &.focused {
-    outline: rgb(59, 153, 252) solid 2px;
+    outline: ${customOutline};
   }
 
   &:hover {

@@ -11,7 +11,7 @@ import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styles
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
 import styled, { withTheme } from 'styled-components';
 
 // components
@@ -228,7 +228,11 @@ class ProjectNavbar extends PureComponent<Props, State> {
         }
 
         return (
-          <ProjectNavbarWrapper>
+          <>
+            <ScreenReaderOnly>
+              <FormattedMessage {...messages.a11y_projectNav} />
+            </ScreenReaderOnly>
+            <ProjectNavbarWrapper>
             <StyledContentContainer>
               <ProjectNavbarItems>
 
@@ -326,6 +330,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
               </ProjectNavbarItems>
             </StyledContentContainer>
           </ProjectNavbarWrapper>
+          </>
         );
       }
     }
