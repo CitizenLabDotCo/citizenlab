@@ -23,9 +23,9 @@ describe('Continuous project with poll', () => {
   });
 
   beforeEach(() => {
-    cy.login('admin@citizenlab.co', 'testtest');
-    cy.acceptCookies();
+    cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlug}/poll`);
+    cy.acceptCookies();
     cy.wait(2000);
   });
 
@@ -55,7 +55,6 @@ describe('Timeline project with poll phase', () => {
   let projectId: string;
   let projectSlug: string;
   let phaseId: string;
-  let phaseSlug: string;
 
   before(() => {
     cy.apiCreateProject('timeline', projectTitle, projectDescriptionPreview, projectDescription).then((project) => {
@@ -75,7 +74,6 @@ describe('Timeline project with poll phase', () => {
       );
     }).then((phase) => {
       phaseId = phase.body.data.id;
-      phaseSlug = phase.body.data.attributes.slug;
       return cy.apiAddPoll('Phase', phaseId, ['What is your favourite ice cream flavour ?', 'Are you in favour of car-free sundays ?'], [['Vanilla', 'Chocolate', 'Pistachio'], ['Yes', 'No', 'I decline to answer']]);
     });
   });
