@@ -103,6 +103,8 @@ export const media = {
   `,
 };
 
+export const customOutline = 'rgb(59,153,252) solid 2px';
+
 export const colors = {
   background: '#f4f4f5',
   text: '#333',

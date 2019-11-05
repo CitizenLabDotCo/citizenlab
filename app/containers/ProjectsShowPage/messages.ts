@@ -160,5 +160,21 @@ export default defineMessages({
   removeItem: {
     id: 'app.containers.Projects.removeItem',
     defaultMessage: 'Remove item',
-  }
+  },
+  a11y_phaseX: {
+    id: 'app.containers.Projects.a11y_phase',
+    defaultMessage: 'Phase {phaseNumber}: {phaseTitle}',
+  },
+  a11y_phasesOverview: {
+    id: 'app.containers.Projects.a11y_phasesOverview',
+    defaultMessage: 'Phases overview',
+  },
+  a11y_selectedPhaseX: {
+    id: 'app.containers.Projects.a11y_selectedPhaseX',
+    defaultMessage: 'Selected phase. Phase {selectedPhaseNumber}: {selectedPhaseTitle}',
+  },
+  a11y_projectNav: {
+    id: 'app.containers.Projects.a11y_projectNav',
+    defaultMessage: 'Project navigation',
+  },
 });

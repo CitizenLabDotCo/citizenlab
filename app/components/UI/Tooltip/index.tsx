@@ -17,7 +17,6 @@ interface Props extends Omit<PopoverProps, 'onClickOutside' | 'onMouseEnter' | '
 const Container = styled.div``;
 
 const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProps, ...otherProps  }) => {
-
   const randomNumber = Math.floor(Math.random() * 10000000);
   const idName = `tooltipinfo-${randomNumber}`;
 
