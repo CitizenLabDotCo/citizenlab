@@ -83,7 +83,7 @@ gem "counter_culture", "~> 2.1"
 gem "liquid", "~> 4.0"
 gem "premailer-rails" # , "~> 1.9.6"
 gem 'groupdate' # , "~> 3.2.0"
-gem 'rubyzip', '~> 1.2.1'
+gem 'rubyzip', '~> 1.3.0'
 gem 'axlsx', '3.0.0.pre'
 gem 'rgeo-geojson'
 

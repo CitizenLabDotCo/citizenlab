@@ -15,7 +15,6 @@ da:
       "initiative_assigned_to_you": Tildeling af et initiativ til mig
       "initiative_marked_as_spam": Rapportering af initiativ-spam
       "initiative_published": Publicering af mit initiativ
-      "invite_accepted": Accepteret invitation
       "invite_received": Invitation
       "invite_reminder": Invitationspåmindelse
       "mention_in_comment": Nævnelse i en kommentar
@@ -65,7 +64,6 @@ da:
       "initiative_assigned_to_you": Assignment of an initiative - admins
       "initiative_marked_as_spam": Initiative spam report - admins
       "initiative_published": Publication of your initiative - all users
-      "invite_accepted": Accepted invitation - admins
       "invite_received": Invitation - all users
       "invite_reminder": Invitation reminder - all users
       "mention_in_comment": Mention in a comment - all users
