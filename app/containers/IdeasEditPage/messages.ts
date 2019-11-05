@@ -21,4 +21,12 @@ export default defineMessages({
     id: 'app.containers.IdeasEditPage.fileOrImageError',
     defaultMessage: 'Your idea was submitted, but a file failed to be uploaded, please edit your idea to try again.',
   },
+  metaTitle: {
+    id: 'app.containers.IdeasEditPage.metaTitle',
+    defaultMessage: 'Edit your idea for {projectName} | {orgName}',
+  },
+  metaDescription: {
+    id: 'app.containers.IdeasEditPage.metaDescription',
+    defaultMessage: 'Edit your idea. Add new and change old information to make it even better.'
+  },
 });

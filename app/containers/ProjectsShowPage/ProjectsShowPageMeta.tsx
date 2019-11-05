@@ -38,7 +38,7 @@ interface Props extends InputProps, DataProps { }
 
 const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, project, authUser, intl }) => {
 
-  if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project)) {
+  if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project) && project.attributes) {
     const { formatMessage } = intl;
     const metaTitle = formatMessage(messages.metaTitle, { projectTitle: getLocalized(project.attributes.title_multiloc, locale, tenantLocales, 50) });
     const description = stripHtml(getLocalized(project.attributes.description_multiloc, locale, tenantLocales), 250);

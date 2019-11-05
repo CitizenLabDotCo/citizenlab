@@ -355,6 +355,7 @@ export interface Props extends ButtonContainerProps {
   ariaExpanded?: boolean;
   ariaDescribedby?: string;
   iconAriaHidden?: boolean;
+  ariaDisabled?: boolean;
 }
 
 type State = {};
@@ -443,7 +444,8 @@ class Button extends PureComponent<Props, State> {
       autoFocus,
       ariaExpanded,
       ariaDescribedby,
-      iconAriaHidden
+      iconAriaHidden,
+      ariaDisabled
     } = this.props;
     let { id, size, style, processing, disabled, iconPos, className } = this.props;
 
@@ -546,6 +548,7 @@ class Button extends PureComponent<Props, State> {
             aria-label={ariaLabel}
             aria-expanded={ariaExpanded}
             aria-describedby={ariaDescribedby}
+            aria-disabled={ariaDisabled}
             disabled={disabled}
             ref={this.props.setSubmitButtonRef}
             className={buttonClassnames}

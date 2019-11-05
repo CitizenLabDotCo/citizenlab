@@ -10,6 +10,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import IdeasEditButtonBar from './IdeasEditButtonBar';
+import IdeasEditMeta from './IdeasEditMeta';
 
 // services
 import { localeStream } from 'services/locale';
@@ -266,6 +267,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
       return (
         <Container id="e2e-idea-edit-page">
+          <IdeasEditMeta />
           <FormContainer>
             <Title>
               <FormattedMessage {...messages.formTitle} />
