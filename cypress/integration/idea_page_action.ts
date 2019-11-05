@@ -107,7 +107,7 @@ describe('Idea show page actions', () => {
       });
 
       beforeEach(() => {
-        cy.login(email, password);
+        cy.setLoginCookie(email, password);
         cy.visit('/ideas/controversial-idea');
         cy.acceptCookies();
         cy.get('#e2e-idea-show');

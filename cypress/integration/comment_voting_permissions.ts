@@ -29,14 +29,14 @@ describe('Comment voting permissions', () => {
   });
   describe('a project that requires verification on comment voting', () => {
     it('doesn\'t let unverified users vote', () => {
-      cy.login(unverifiedEmail, unverifiedPassword);
+      cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('ideas/verified-idea');
       cy.acceptCookies();
       cy.get('.e2e-comments-loaded');
       cy.get('.e2e-comment-vote').should('have.class', 'disabled');
     });
     it('lets verified users vote', () => {
-      cy.login(verifiedEmail, verifiedPassword);
+      cy.setLoginCookie(verifiedEmail, verifiedPassword);
       cy.visit('ideas/verified-idea');
       cy.acceptCookies();
       cy.get('.e2e-comments-loaded');

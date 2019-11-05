@@ -12,7 +12,7 @@ describe('profile verification', () => {
     cy.apiSignup(firstName, lastName, peasantEmail, peasantPassword).then(response => {
       userId = response.body.data.id;
     });
-    cy.login(peasantEmail, peasantPassword);
+    cy.setLoginCookie(peasantEmail, peasantPassword);
     cy.visit('/profile/edit');
     cy.acceptCookies();
   });
@@ -25,7 +25,7 @@ describe('profile verification', () => {
     cy.apiLogin(peasantEmail, peasantPassword).then(response => {
       cy.apiVerifyBogus(response.body.jwt);
     });
-    cy.login(peasantEmail, peasantPassword);
+    cy.setLoginCookie(peasantEmail, peasantPassword);
     cy.visit('/profile/edit');
     cy.acceptCookies();
 
