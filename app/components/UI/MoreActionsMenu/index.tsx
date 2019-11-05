@@ -2,8 +2,8 @@
 import React, { PureComponent } from 'react';
 
 // Components
-import Popover, { IPosition } from 'components/UI/Popover';
 import Icon, { IconNames } from 'components/UI/Icon';
+import Tippy from '@tippy.js/react';
 
 // Styling
 import styled from 'styled-components';
@@ -22,10 +22,10 @@ const MoreOptionsIcon = styled(Icon)<{color?: string}>`
   transition: all 100ms ease-out;
 `;
 
-const MoreOptionsLabel: any = styled.div`
+const MoreOptionsLabel = styled.div`
   color: ${colors.label};
-  font-size: ${(props: any) => props.fontSize ? `${props.fontSize}px` : `${fontSizes.base}px`};
-  line-height: ${(props: any) => props.fontSize ? `${props.fontSize}px` : `${fontSizes.base}px`};
+  font-size: ${fontSizes.small}px;
+  line-height: normal;
   font-weight: 400;
   white-space: nowrap;
   margin-left: 10px;
@@ -36,10 +36,16 @@ const MoreOptionsLabel: any = styled.div`
   `}
 `;
 
-const MoreOptions = styled.button`
-  height: 20px;
+const MoreOptionsButton = styled.button`
+  min-width: 25px;
+  min-height: 20px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
   cursor: pointer;
 
   &:hover,
@@ -55,25 +61,24 @@ const MoreOptions = styled.button`
 `;
 
 const List = styled.div`
-  max-height: 210px;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin: 6px;
+  margin-top: 3px;
+  margin-bottom: 3px;
 `;
 
-const ListItem: any = styled.button`
-  flex: 1 0 auto;
+const ListItem = styled.button`
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: ${colors.adminLightText};
-  font-size: ${(props: any) => props.fontSize ? `${props.fontSize}px` : `${fontSizes.base}px`};
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   white-space: nowrap;
   padding: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
   white-space: nowrap;
   transition: all 100ms ease-out;
@@ -106,18 +111,15 @@ export interface Props {
   label?: string | JSX.Element;
   ariaLabel?: string;
   className?: string;
-  fontSize?: number;
   id?: string;
   color?: string;
-  tooltipPosition?: IPosition;
-  tooltipPositionSmallViewPort?: IPosition;
 }
 
 interface State {
   visible: boolean;
 }
 
-export default class MoreActionsMenu extends PureComponent<Props, State> {
+export default class Popover extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -146,7 +148,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
   }
 
   render() {
-    const { actions, ariaLabel, fontSize, id, color, tooltipPosition, tooltipPositionSmallViewPort, label } = this.props;
+    const { actions, ariaLabel, color, label } = this.props;
     const { visible } = this.state;
     const className = this.props.className;
 
@@ -156,10 +158,15 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
 
     return (
       <Container className={className}>
-        <Popover
-          id={id}
-          position={tooltipPosition || 'bottom'}
-          smallViewportPosition={tooltipPositionSmallViewPort || 'bottom'}
+        <Tippy
+          placement="bottom"
+          interactive={true}
+          arrow={true}
+          trigger="click"
+          duration={[200, 0]}
+          flip={true}
+          flipBehavior="flip"
+          flipOnUpdate={true}
           content={
             <List>
               {actions.map((action, index) => {
@@ -171,7 +178,6 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
                     onMouseDown={this.removeFocus}
                     onClick={this.handleListItemOnClick(handler)}
                     className={`e2e-action-${name}`}
-                    fontSize={fontSize}
                   >
                     {label}
                     {icon && <StyledIcon name={icon} />}
@@ -180,21 +186,16 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
               })}
             </List>
           }
-          offset={35}
-          backgroundColor={colors.adminMenuBackground}
-          borderColor={colors.adminMenuBackground}
-          onClickOutside={this.hideMenu}
-          dropdownOpened={visible}
         >
-          <MoreOptions
+          <MoreOptionsButton
             onMouseDown={this.removeFocus}
             onClick={this.toggleMenu}
             aria-expanded={visible}
           >
             <MoreOptionsIcon title={label || ariaLabel} name="more-options" color={color} ariaHidden={!!label} />
-            {label && <MoreOptionsLabel fontSize={fontSize}>{label}</MoreOptionsLabel>}
-          </MoreOptions>
-        </Popover>
+            {label && <MoreOptionsLabel>{label}</MoreOptionsLabel>}
+          </MoreOptionsButton>
+        </Tippy>
       </Container>
     );
   }
