@@ -19,7 +19,7 @@ import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 import HasPermission from 'components/HasPermission';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 import Link from 'utils/cl-router/Link';
 
@@ -638,7 +638,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.statusLabel} />
-                <Tooltip content={<FormattedMessage {...messages.publicationStatusTooltip} />} />
+                <IconTooltip content={<FormattedMessage {...messages.publicationStatusTooltip} />} />
               </Label>
               <Radio
                 onChange={this.handleStatusChange}
@@ -675,7 +675,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 type="text"
                 valueMultiloc={projectAttrs.title_multiloc}
                 label={<FormattedMessage {...messages.titleLabel} />}
-                labelTooltip={<Tooltip content={<FormattedMessage {...messages.titleLabelTooltip} />} />}
+                labelTooltip={<IconTooltip content={<FormattedMessage {...messages.titleLabelTooltip} />} />}
                 onChange={this.handleTitleMultilocOnChange}
                 errorMultiloc={noTitleError}
               />
@@ -687,7 +687,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 <>
                   <Label htmlFor="projectype-timeline">
                     <FormattedMessage {...messages.projectType} />
-                    <Tooltip content={<FormattedMessage {...messages.projectTypeTooltip} />} />
+                    <IconTooltip content={<FormattedMessage {...messages.projectTypeTooltip} />} />
                   </Label>
                   <Radio
                     className="e2e-project-type-timeline"
@@ -712,7 +712,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   <>
                     <Label>
                       <FormattedMessage {...messages.projectTypeEdit} />
-                      <Tooltip content={<FormattedMessage {...messages.projectTypeEditTooltip} />} />
+                      <IconTooltip content={<FormattedMessage {...messages.projectTypeEditTooltip} />} />
                     </Label>
                     <ProjectType>{<FormattedMessage {...messages[projectType]} />}</ProjectType>
                   </>
@@ -751,7 +751,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <SectionField>
               <Label htmlFor="project-area">
                 <FormattedMessage {...messages.areasLabel} />
-                <Tooltip
+                <IconTooltip
                   content={
                     <FormattedMessage
                       {...messages.areasLabelTooltip}
@@ -799,7 +799,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <StyledSectionField>
               <Label>
                 <FormattedMessage {...messages.headerImageLabel} />
-                <Tooltip
+                <IconTooltip
                   content={
                     <FormattedMessage
                       {...messages.headerImageLabelTooltip}
@@ -830,7 +830,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <StyledSectionField>
               <Label>
                 <FormattedMessage {...messages.projectImageLabel} />
-                <Tooltip
+                <IconTooltip
                   content={
                     <FormattedMessage
                       {...messages.projectImageLabelTooltip}
@@ -861,7 +861,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fileUploadLabel} />
-                <Tooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
+                <IconTooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
               </Label>
               <FileUploader
                 onFileAdd={this.handleProjectFileOnAdd}
@@ -876,7 +876,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 <SectionField>
                   <Label>
                     <FormattedMessage {...messages.deleteProjectLabel} />
-                    <Tooltip content={<FormattedMessage {...messages.deleteProjectLabelTooltip} />} />
+                    <IconTooltip content={<FormattedMessage {...messages.deleteProjectLabelTooltip} />} />
                   </Label>
                   <ButtonWrapper>
                     <Button

@@ -214,6 +214,7 @@ const ButtonText = styled.div`
   margin-top: -1px;
   padding: 0;
   text-align: left;
+  white-space: nowrap;
   transition: all 100ms ease-out;
 `;
 

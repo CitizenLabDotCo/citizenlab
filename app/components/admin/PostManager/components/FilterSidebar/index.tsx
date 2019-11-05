@@ -11,7 +11,7 @@ import StatusesMenu from './FilterSidebarStatuses';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 interface Props {
   phases?: IPhaseData[];
@@ -44,7 +44,7 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
         <span>
           {title}{selectionSign}&nbsp;
         </span>
-        {active ? <Tooltip content={this.props.intl.formatMessage(messages[`${message}Tooltip`])} /> : null}
+        {active ? <IconTooltip content={this.props.intl.formatMessage(messages[`${message}Tooltip`])} /> : null}
       </>
     );
   }

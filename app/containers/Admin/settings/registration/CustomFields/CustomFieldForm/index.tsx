@@ -16,8 +16,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
-import Tooltip from 'components/UI/Tooltip';
-
+import IconTooltip from 'components/UI/IconTooltip';
 
 export interface FormValues {
   enabled: boolean;
@@ -97,7 +96,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
               label={
                 <>
                   <FormattedMessage {...messages.fieldTitle} />
-                  <Tooltip content={<FormattedMessage {...messages.fieldTitleTooltip} />} />
+                  <IconTooltip content={<FormattedMessage {...messages.fieldTitleTooltip} />} />
                 </>
               }
               disabled={builtInField}
@@ -115,7 +114,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
               label={
                 <>
                   <FormattedMessage {...messages.fieldDescription} />
-                  <Tooltip content={<FormattedMessage {...messages.fieldDescriptionTooltip} />} />
+                  <IconTooltip content={<FormattedMessage {...messages.fieldDescriptionTooltip} />} />
                 </>
               }
               disabled={builtInField}

@@ -42,7 +42,7 @@ import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
 import Toggle from 'components/UI/Toggle';
 import FeatureFlag from 'components/FeatureFlag';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 
@@ -328,7 +328,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 <HeaderTitle>
                   <FormattedMessage {...messages.published} />
                 </HeaderTitle>
-                <Tooltip content={<FormattedMessage {...messages.publishedTooltip} />} />
+                <IconTooltip content={<FormattedMessage {...messages.publishedTooltip} />} />
 
                 <Spacer />
 
@@ -399,7 +399,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 <HeaderTitle>
                   <FormattedMessage {...messages.draft} />
                 </HeaderTitle>
-                <Tooltip content={<FormattedMessage {...messages.draftTooltip} />} />
+                <IconTooltip content={<FormattedMessage {...messages.draftTooltip} />} />
               </ListHeader>
               <HasPermission item="project" action="reorder">
                 <SortableList
@@ -443,7 +443,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 <HeaderTitle>
                   <FormattedMessage {...messages.archived} />
                 </HeaderTitle>
-                <Tooltip content={<FormattedMessage {...messages.archivedTooltip} />} />
+                <IconTooltip content={<FormattedMessage {...messages.archivedTooltip} />} />
               </ListHeader>
               <HasPermission item="project" action="reorder">
                 <SortableList

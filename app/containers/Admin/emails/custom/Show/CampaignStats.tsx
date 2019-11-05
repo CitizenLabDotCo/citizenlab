@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedNumber } from 'react-intl';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 const Container = styled.div`
   display: flex;
@@ -95,7 +95,7 @@ class CampaignStats extends React.Component<Props, State> {
             </GraphCardCount>
             <GraphCardTitle>
               <FormattedMessage {...messages[`deliveryStatus_${status}`]} />
-              {status === 'clicked' && <Tooltip content={<FormattedMessage {...messages.deliveryStatus_clickedTooltip} />} />}
+              {status === 'clicked' && <IconTooltip content={<FormattedMessage {...messages.deliveryStatus_clickedTooltip} />} />}
             </GraphCardTitle>
           </GraphCard>
         ))}

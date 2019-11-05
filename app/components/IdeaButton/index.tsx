@@ -117,7 +117,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
     if (show) {
       const linkTo = !isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new';
       const isPostingDisabled = (!enabled && !!disabledReason);
-      const tooltipContent = (!enabled && !!disabledReason) ? (
+      const tippyContent = (!enabled && !!disabledReason) ? (
         <TooltipWrapper className="e2e-disabled-tooltip">
           <LockIcon name="lock-outlined" />
           <FormattedMessage
@@ -138,7 +138,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             enabled={isPostingDisabled}
             interactive={true}
             placement="bottom"
-            content={tooltipContent}
+            content={tippyContent}
           >
             <ButtonWrapper tabIndex={0}>
               <Button {...this.props} linkTo={linkTo} disabled={isPostingDisabled}>
