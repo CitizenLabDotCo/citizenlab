@@ -82,7 +82,7 @@ export function login(email: string, password: string) {
   cy.get('#email').type(email);
   cy.get('#password').type(password);
   cy.get('.e2e-submit-signin').click();
-  cy.wait(1000);
+  cy.wait(2000);
 }
 
 export function apiLogin(email: string, password: string) {
