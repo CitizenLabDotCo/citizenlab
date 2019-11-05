@@ -4,7 +4,8 @@ class ParticipationContextService
     project_inactive: 'project_inactive',
     not_ideation: 'not_ideation',
     posting_disabled: 'posting_disabled',
-    not_permitted: 'not_permitted'
+    not_permitted: 'not_permitted',
+    not_verified: 'not_verified'
   }
 
   COMMENTING_DISABLED_REASONS = {
@@ -12,7 +13,8 @@ class ParticipationContextService
     not_supported: 'not_supported',
     idea_not_in_current_phase: 'idea_not_in_current_phase',
     commenting_disabled: 'commenting_disabled',
-    not_permitted: 'not_permitted'
+    not_permitted: 'not_permitted',
+    not_verified: 'not_verified'
   }
 
   VOTING_DISABLED_REASONS = {
@@ -20,6 +22,7 @@ class ParticipationContextService
     not_ideation: 'not_ideation',
     voting_disabled: 'voting_disabled',
     not_permitted: 'not_permitted',
+    not_verified: 'not_verified',
     voting_limited_max_reached: 'voting_limited_max_reached',
     idea_not_in_current_phase: 'idea_not_in_current_phase'
   }
@@ -27,18 +30,21 @@ class ParticipationContextService
   BUDGETING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_permitted: 'not_permitted',
+    not_verified: 'not_verified',
     idea_not_in_current_phase: 'idea_not_in_current_phase'
   }
 
   TAKING_SURVEY_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_permitted: 'not_permitted',
+    not_verified: 'not_verified',
     not_survey: 'not_survey'
   }
 
   TAKING_POLL_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_permitted: 'not_permitted',
+    not_verified: 'not_verified',
     not_poll: 'not_poll',
     already_responded: 'already_responded',
   }
@@ -47,6 +53,7 @@ class ParticipationContextService
   def initialize
     @memoized_votes_in_context = Hash.new{|hash,key| hash[key] = Hash.new}
     @timeline_service = TimelineService.new
+    @verification_service = Verification::VerificationService.new
   end
 
   def get_participation_context project
@@ -90,7 +97,7 @@ class ParticipationContextService
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
     elsif !context_permission(context, 'posting')&.granted_to?(user)
-      POSTING_DISABLED_REASONS[:not_permitted]
+      not_permitted_reason context, user, 'posting', POSTING_DISABLED_REASONS
     else
       nil
     end
@@ -120,7 +127,7 @@ class ParticipationContextService
     elsif !context.commenting_enabled
       COMMENTING_DISABLED_REASONS[:commenting_disabled]
     elsif !context_permission(context, 'commenting')&.granted_to?(user)
-      COMMENTING_DISABLED_REASONS[:not_permitted]
+      not_permitted_reason context, user, 'commenting', COMMENTING_DISABLED_REASONS
     else
       nil
     end
@@ -165,7 +172,7 @@ class ParticipationContextService
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
-      VOTING_DISABLED_REASONS[:not_permitted]
+      not_permitted_reason context, user, 'voting', VOTING_DISABLED_REASONS
     elsif (
       user && 
       context.voting_limited? && 
@@ -188,7 +195,7 @@ class ParticipationContextService
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
-      VOTING_DISABLED_REASONS[:not_permitted]
+      not_permitted_reason context, user, 'voting', VOTING_DISABLED_REASONS
     else
       nil
     end
@@ -205,7 +212,7 @@ class ParticipationContextService
     elsif !context.survey?
       TAKING_SURVEY_DISABLED_REASONS[:not_survey]
     elsif !context_permission(context, 'taking_survey')&.granted_to?(user)
-      TAKING_SURVEY_DISABLED_REASONS[:not_permitted]
+      not_permitted_reason context, user, 'taking_survey', TAKING_SURVEY_DISABLED_REASONS
     else
       nil
     end
@@ -222,7 +229,7 @@ class ParticipationContextService
     elsif !context.poll?
       TAKING_POLL_DISABLED_REASONS[:not_poll]
     elsif !context_permission(context, 'taking_poll')&.granted_to?(user)
-      TAKING_POLL_DISABLED_REASONS[:not_permitted]
+      not_permitted_reason context, user, 'taking_poll', TAKING_POLL_DISABLED_REASONS
     elsif user && context.poll_responses.where(user: user).exists?
       TAKING_POLL_DISABLED_REASONS[:already_responded]
     else
@@ -243,7 +250,7 @@ class ParticipationContextService
     if !context
       BUDGETING_DISABLED_REASONS[:project_inactive]
     elsif !context_permission(context, 'budgeting')&.granted_to?(user)
-      BUDGETING_DISABLED_REASONS[:not_permitted]
+      not_permitted_reason context, user, 'budgeting', BUDGETING_DISABLED_REASONS
     else
       nil
     end
@@ -310,7 +317,23 @@ class ParticipationContextService
     # We use ruby #find instead of SQL to have a higher chance of hitting
     # ActiveRecord's query cache, since this can be repeated a lot for the
     # same context.
-    context.permissions.find{|permission| permission.action == action}
+    context.permissions.includes(:groups).find{|permission| permission.action == action}
+  end
+
+  def groups_by_permission_id id
+    # Also reduces the amount of SQL queries.
+    Permission.includes(:groups).find{|permission| permission.id == id}.groups
+  end
+
+  def not_permitted_reason context, user, action, reasons
+    permission = context_permission context, action
+    if !permission || !user
+      reasons[:not_permitted]
+    elsif !user.verified && permission.permitted_by == 'groups' && @verification_service.find_verification_group(groups_by_permission_id(permission.id))
+      reasons[:not_verified]
+    else
+      reasons[:not_permitted]
+    end
   end
 
 end

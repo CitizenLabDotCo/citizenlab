@@ -9,6 +9,10 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     view_private_attributes? object, params
   }
 
+  attribute :verified, if: Proc.new {|object, params|
+    view_private_attributes? object, params
+  }
+
   attribute :avatar, if: Proc.new { |object|
     object.avatar
   } do |object|

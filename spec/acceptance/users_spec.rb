@@ -330,6 +330,7 @@ resource "Users" do
       example_request "Get the authenticated user" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq(@user.id)
+        expect(json_response.dig(:data, :attributes, :verified)).to eq false
       end
     end
 
