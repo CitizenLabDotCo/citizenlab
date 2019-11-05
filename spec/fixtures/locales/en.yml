@@ -1,0 +1,8 @@
+en:
+  smart_group_rules:
+    lives_in_has_value: "Lives in %{domicile}"
+    lives_in_outside: "Lives outside this region"
+    lives_in_not_has_value: "Doesn't live in %{domicile}"
+    lives_in_not_outside: "Doesn't live outside this region"
+    lives_in_is_empty: "Hasn't specified where they live"
+    lives_in_not_is_empty: "Specified where they live"

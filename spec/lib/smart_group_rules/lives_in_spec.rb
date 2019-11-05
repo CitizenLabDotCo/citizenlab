@@ -73,18 +73,74 @@ describe SmartGroupRules::LivesIn do
   end
 
   describe "description_multiloc" do
-    let(:area) {create(:area)}
+    let(:area) {create(:area, title_multiloc: {
+      'en'    => 'Brussels',
+      'fr-FR' => 'Bruxelles',
+      'nl-NL' => 'Brussel'
+    })}
+    
     let(:lives_in_has_value_rule) {SmartGroupRules::LivesIn.from_json({
-      'ruleType' => 'lives_in',
+      'ruleType'  => 'lives_in',
       'predicate' => 'has_value',
-      'value' => area.id
+      'value'     => area.id
+    })}
+    let(:lives_in_outside_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'  => 'lives_in',
+      'predicate' => 'has_value',
+      'value'     => 'outside'
+    })}
+    let(:lives_in_not_has_value_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'  => 'lives_in',
+      'predicate' => 'not_has_value',
+      'value'     => area.id
+    })}
+    let(:lives_in_not_outside_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'  => 'lives_in',
+      'predicate' => 'not_has_value',
+      'value'     => 'outside'
+    })}
+    let(:lives_in_is_empty_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'  => 'lives_in',
+      'predicate' => 'is_empty'
+    })}
+    let(:lives_in_not_is_empty_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'  => 'lives_in',
+      'predicate' => 'not_is_empty'
     })}
 
     it "successfully translates different combinations of rules" do
+      # Stubbing the translations so the specs don't depend on those.
+      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
+
       expect(lives_in_has_value_rule.description_multiloc).to eq ({
-        'en' => "Lives in #{area.title_multiloc['en']}",
-        'fr-FR' => "Habite à #{area.title_multiloc['fr-FR']}",
-        'nl-NL' => "Woont in #{area.title_multiloc['nl-NL']}"
+        'en'    => 'Lives in Brussels',
+        'fr-FR' => 'Habite à Bruxelles',
+        'nl-NL' => 'Woont in Brussel'
+      })
+      expect(lives_in_outside_rule.description_multiloc).to eq ({
+        'en'    => 'Lives outside this region',
+        'fr-FR' => 'Habite hors de cette region',
+        'nl-NL' => 'Woont buiten deze regio'
+      })
+      expect(lives_in_not_has_value_rule.description_multiloc).to eq ({
+        'en'    => 'Doesn\'t live in Brussels',
+        'fr-FR' => 'N\'habite pas à Bruxelles',
+        'nl-NL' => 'Woont niet in Brussel'
+      })
+      expect(lives_in_not_outside_rule.description_multiloc).to eq ({
+        'en'    => 'Doesn\'t live outside this region',
+        'fr-FR' => 'N\'habite pas hors de cette region',
+        'nl-NL' => 'Woont niet buiten deze regio'
+      })
+      expect(lives_in_is_empty_rule.description_multiloc).to eq ({
+        'en'    => 'Hasn\'t specified where they live',
+        'fr-FR' => 'N\'a pas specifié leurs domicile',
+        'nl-NL' => 'Heeft hun woonplaats niet aangegeven'
+      })
+      expect(lives_in_not_is_empty_rule.description_multiloc).to eq ({
+        'en'    => 'Specified where they live',
+        'fr-FR' => 'A specifié leurs domicile',
+        'nl-NL' => 'Heeft hun woonplaats aangegeven'
       })
     end
   end

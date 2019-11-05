@@ -1,0 +1,8 @@
+fr:
+  smart_group_rules:
+    lives_in_has_value: "Habite à %{domicile}"
+    lives_in_outside: "Habite hors de cette region"
+    lives_in_not_has_value: "N'habite pas à %{domicile}"
+    lives_in_not_outside: "N'habite pas hors de cette region"
+    lives_in_is_empty: "N'a pas specifié leurs domicile"
+    lives_in_not_is_empty: "A specifié leurs domicile"
