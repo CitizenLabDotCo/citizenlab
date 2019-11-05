@@ -3,11 +3,11 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   helmetTitle: {
     id: 'app.containers.PasswordReset.helmetTitle',
-    defaultMessage: `Reset your password`,
+    defaultMessage: 'Reset your password',
   },
   helmetDescription: {
     id: 'app.containers.PasswordReset.helmetDescription',
-    defaultMessage: `Reset your password page`,
+    defaultMessage: 'Reset your password page',
   },
   title: {
     id: 'app.containers.PasswordReset.title',
@@ -16,6 +16,10 @@ export default defineMessages({
   passwordPlaceholder: {
     id: 'app.containers.PasswordReset.passwordPlaceholder',
     defaultMessage: 'New password',
+  },
+  passwordLabel: {
+    id: 'app.containers.PasswordReset.passwordLabel',
+    defaultMessage: 'Password',
   },
   passwordError: {
     id: 'app.containers.PasswordReset.passwordError',
