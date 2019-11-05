@@ -10,16 +10,20 @@ class Initiative < ApplicationRecord
   has_many :topics, through: :initiatives_topics
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
-
-  belongs_to :initiative_status, optional: true
+  has_many :initiative_status_changes, dependent: :destroy
+  has_one :initiative_initiative_status
+  has_one :initiative_status, through: :initiative_initiative_status
+  has_many :notifications, foreign_key: :post_id, dependent: :nullify
 
   belongs_to :assignee, class_name: 'User', optional: true
 
   with_options unless: :draft? do |initiative|
-    initiative.validates :initiative_status, presence: true
+    # Problem is that this validation happens too soon, as the first idea status change is created after create.
+    # initiative.validates :initiative_status, presence: true
+    initiative.validates :initiative_status_changes, presence: true
     initiative.validate :assignee_can_moderate_initiatives
 
-    initiative.before_validation :set_initiative_status
+    initiative.before_validation :initialize_initiative_status_changes
     initiative.before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
@@ -27,8 +31,8 @@ class Initiative < ApplicationRecord
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
     joins(:initiatives_topics)
-    .where(initiatives_topics: {topic_id: uniq_topic_ids})
-    .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
+      .where(initiatives_topics: {topic_id: uniq_topic_ids})
+      .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
   end)
 
   scope :with_some_topics, (Proc.new do |topic_ids|
@@ -39,8 +43,8 @@ class Initiative < ApplicationRecord
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
     joins(:areas_initiatives)
-    .where(areas_initiatives: {area_id: uniq_area_ids})
-    .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
+      .where(areas_initiatives: {area_id: uniq_area_ids})
+      .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
   end)
 
   scope :with_some_areas, (Proc.new do |area_ids|
@@ -48,14 +52,28 @@ class Initiative < ApplicationRecord
       .where(areas_initiatives: {area_id: area_ids})
   end)
 
-  scope :order_status, -> (direction=:desc) {
-    joins(:initiative_status)
-    .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
+  scope :with_status_code, (Proc.new do |code|
+    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
+      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
+      .where('initiative_statuses.code = ?', code)
+  end)
+
+  scope :order_status, -> (direction=:asc) {
+    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
+      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
+      .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
   }
 
   scope :feedback_needed, -> {
-    joins(:initiative_status).where(initiative_statuses: {code: 'threshold_reached'})
-      .where('initiatives.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
+    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
+      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
+      .where('initiative_statuses.code = ?', 'threshold_reached')
+  }
+
+  scope :proposed, -> {
+    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
+      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
+      .where('initiative_statuses.code = ?', 'proposed')
   }
 
 
@@ -69,6 +87,12 @@ class Initiative < ApplicationRecord
     else
       nil
     end
+  end
+
+  def threshold_reached_at
+    initiative_status_changes
+      .where(initiative_status: InitiativeStatus.where(code: 'threshold_reached'))
+      .order(:created_at).pluck(:created_at).last
   end
 
 
@@ -94,8 +118,11 @@ class Initiative < ApplicationRecord
     end
   end
 
-  def set_initiative_status
-    self.initiative_status ||= InitiativeStatus.find_by!(code: 'proposed') unless self.draft?
+  def initialize_initiative_status_changes
+    initial_status = InitiativeStatus.find_by code: 'proposed'
+    if initial_status && self.initiative_status_changes.empty? && !self.draft?
+      self.initiative_status_changes.build(initiative_status: initial_status) 
+    end
   end
 
 end

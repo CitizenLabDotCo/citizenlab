@@ -1,13 +1,7 @@
 module Notifications
   class MentionInComment < Notification
-    
-    belongs_to :initiating_user, class_name: 'User'
-    belongs_to :comment
-    belongs_to :idea
-    belongs_to :project, optional: true
 
-    validates :comment_id, presence: true
-    validates :initiating_user, presence: true
+    validates :initiating_user, :comment, :post, presence: true
 
 
     ACTIVITY_TRIGGERS = {'Comment' => {'mentioned' => true}}
@@ -16,23 +10,21 @@ module Notifications
 
     def self.make_notifications_on activity
       comment = activity.item
-      recipient_id = activity.payload["mentioned_user"]
-
-      comment_id = comment&.id
-      idea = comment&.post
-      idea_id = idea&.id
+      recipient_id = activity.payload['mentioned_user']
       initiator_id = comment&.author_id
 
-      if comment_id && (comment.post_type == 'Idea') && recipient_id && initiator_id && (recipient_id != initiator_id)
-        project_id = idea&.project_id
-        
-        [self.new(
-           recipient_id: recipient_id,
-           initiating_user: User.find(initiator_id),
-           idea_id: idea_id,
-           comment_id: comment_id,
-           project_id: project_id
-         )]
+      if recipient_id && initiator_id && (recipient_id != initiator_id)
+        attributes = {
+          recipient_id: recipient_id,
+          initiating_user_id: initiator_id,
+          comment: comment,
+          post_id: comment.post_id,
+          post_type: comment.post_type
+        }
+        if attributes[:post_type] == 'Idea'
+          attributes[:project_id] = comment.post.project_id
+        end 
+        [self.new(attributes)]
       else
         []
       end
