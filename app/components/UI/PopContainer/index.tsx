@@ -50,12 +50,11 @@ const Container = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   display:flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
   border-radius: 50%;
   border: solid 1px ${colors.separation};
   background: #fff;
@@ -66,8 +65,6 @@ const StyledIcon = styled(Icon) `
   height: 20px;
   fill: #333;
 `;
-
-const ContentWrapper = styled.div``;
 
 type Props = {
   icon?: IconNames;
@@ -89,9 +86,8 @@ export default class PopContainer extends React.PureComponent<Props> {
             <StyledIcon name={this.props.icon} ariaHidden />
           </IconWrapper>
         }
-        <ContentWrapper>
-          {this.props.children}
-        </ContentWrapper>
+
+        {this.props.children}
       </Container>
     );
   }

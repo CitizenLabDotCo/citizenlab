@@ -11,6 +11,7 @@ import IdeaMoreActions from './IdeaMoreActions';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,13 +24,14 @@ interface InputProps {
 
 interface DataProps {
   idea: GetIdeaChildProps;
+  authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
 
-const ActionBar = memo<Props>(({ project, onTranslateIdea, translateButtonClicked, idea, locale }) => {
+const ActionBar = memo<Props>(({ project, onTranslateIdea, translateButtonClicked, idea, authUser, locale }) => {
 
   const showTranslateButton = (
     !isNilOrError(idea) &&
@@ -37,20 +39,22 @@ const ActionBar = memo<Props>(({ project, onTranslateIdea, translateButtonClicke
     !idea.attributes.title_multiloc[locale]
   );
 
+  const leftContent = !isNilOrError(project) ? (
+    <BreadCrumbs
+      postType="idea"
+      links={[{
+        text: project.attributes.title_multiloc,
+        to: `/projects/${project.attributes.slug}`
+      }]}
+    />
+  ) : null;
+
+  const rightContent = !isNilOrError(authUser) && !isNilOrError(idea) ? <IdeaMoreActions id="e2e-idea-more-actions" idea={idea} /> : null;
+
   return (
     <ActionBarLayout
-      leftContent={!isNilOrError(project) ? (
-        <BreadCrumbs
-          postType="idea"
-          links={[{
-            text: project.attributes.title_multiloc,
-            to: `/projects/${project.attributes.slug}`
-          }]}
-        />
-      ) : null}
-      rightContent={isNilOrError(idea)
-        ? null
-        : <IdeaMoreActions id="e2e-idea-more-actions" idea={idea} />}
+      leftContent={leftContent}
+      rightContent={rightContent}
       showTranslateButton={showTranslateButton}
       onTranslate={onTranslateIdea}
       translateButtonClicked={translateButtonClicked}
@@ -60,8 +64,9 @@ const ActionBar = memo<Props>(({ project, onTranslateIdea, translateButtonClicke
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
+  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>
 });
 
 export default (inputProps: InputProps) => (

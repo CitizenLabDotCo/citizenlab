@@ -57,8 +57,8 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
 
 .c2[type='checkbox'] {
   position: absolute;
-  height: 1px;
   width: 1px;
+  height: 1px;
   overflow: hidden;
   -webkit-clip: rect(1px 1px 1px 1px);
   clip: rect(1px 1px 1px 1px);
@@ -67,9 +67,8 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
 }
 
 .c3 {
-  position: absolute;
   fill: #fff;
-  height: 55%;
+  width: 15px;
 }
 
 .c4 {
@@ -151,6 +150,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
         "xxxxl": 34,
         "xxxxxl": 42,
       },
+      "footerHeight": 60,
       "maxPageWidth": 952,
       "menuHeight": 78,
       "menuStyle": "light",
@@ -196,7 +196,6 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
             "styledComponentId": "Checkbox__Container-cbcutw-0",
             "target": "div",
             "toString": [Function],
-            "usesTheme": false,
             "warnTooManyClasses": [Function],
             "withComponent": [Function],
           }
@@ -210,6 +209,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
             checked={true}
             className="e2e-checkbox checked "
             onClick={[Function]}
+            onKeyDown={[Function]}
             size="22px"
           >
             <StyledComponent
@@ -249,19 +249,20 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   "styledComponentId": "Checkbox__InputWrapper-cbcutw-1",
                   "target": "div",
                   "toString": [Function],
-                  "usesTheme": true,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
               }
               forwardedRef={null}
               onClick={[Function]}
+              onKeyDown={[Function]}
               size="22px"
             >
               <div
                 checked={true}
                 className="c1 e2e-checkbox checked "
                 onClick={[Function]}
+                onKeyDown={[Function]}
                 size="22px"
               >
                 <Checkbox__Input
@@ -284,7 +285,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                           "isStatic": false,
                           "lastClassName": "c2",
                           "rules": Array [
-                            "&[type='checkbox']{position:absolute;height:1px;width:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);}",
+                            "&[type='checkbox']{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);}",
                           ],
                         },
                         "displayName": "Checkbox__Input",
@@ -293,7 +294,6 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                         "styledComponentId": "Checkbox__Input-cbcutw-2",
                         "target": "input",
                         "toString": [Function],
-                        "usesTheme": false,
                         "warnTooManyClasses": [Function],
                         "withComponent": [Function],
                       }
@@ -302,8 +302,8 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                       Object {
                         "current": .c0[type='checkbox'] {
   position: absolute;
-  height: 1px;
   width: 1px;
+  height: 1px;
   overflow: hidden;
   -webkit-clip: rect(1px 1px 1px 1px);
   clip: rect(1px 1px 1px 1px);
@@ -352,7 +352,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                           "isStatic": false,
                           "lastClassName": "c3",
                           "rules": Array [
-                            "position:absolute;fill:#fff;height:55%;",
+                            "fill:#fff;width:15px;",
                           ],
                         },
                         "displayName": "Checkbox__CheckmarkIcon",
@@ -365,7 +365,6 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                           "type": [Function],
                         },
                         "toString": [Function],
-                        "usesTheme": false,
                         "warnTooManyClasses": [Function],
                         "withComponent": [Function],
                       }
@@ -461,6 +460,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
           </Checkbox__InputWrapper>
           <Checkbox__Label
             htmlFor="checkbox"
+            onClick={[Function]}
           >
             <StyledComponent
               forwardedComponent={
@@ -485,17 +485,18 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   "styledComponentId": "Checkbox__Label-cbcutw-4",
                   "target": "label",
                   "toString": [Function],
-                  "usesTheme": false,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
               }
               forwardedRef={null}
               htmlFor="checkbox"
+              onClick={[Function]}
             >
               <label
                 className="c4"
                 htmlFor="checkbox"
+                onClick={[Function]}
               >
                 test
               </label>
@@ -565,8 +566,8 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
 
 .c2[type='checkbox'] {
   position: absolute;
-  height: 1px;
   width: 1px;
+  height: 1px;
   overflow: hidden;
   -webkit-clip: rect(1px 1px 1px 1px);
   clip: rect(1px 1px 1px 1px);
@@ -653,6 +654,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
         "xxxxl": 34,
         "xxxxxl": 42,
       },
+      "footerHeight": 60,
       "maxPageWidth": 952,
       "menuHeight": 78,
       "menuStyle": "light",
@@ -698,7 +700,6 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
             "styledComponentId": "Checkbox__Container-cbcutw-0",
             "target": "div",
             "toString": [Function],
-            "usesTheme": false,
             "warnTooManyClasses": [Function],
             "withComponent": [Function],
           }
@@ -712,6 +713,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
             checked={false}
             className="e2e-checkbox  "
             onClick={[Function]}
+            onKeyDown={[Function]}
             size="22px"
           >
             <StyledComponent
@@ -751,19 +753,20 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                   "styledComponentId": "Checkbox__InputWrapper-cbcutw-1",
                   "target": "div",
                   "toString": [Function],
-                  "usesTheme": true,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
               }
               forwardedRef={null}
               onClick={[Function]}
+              onKeyDown={[Function]}
               size="22px"
             >
               <div
                 checked={false}
                 className="c1 e2e-checkbox  "
                 onClick={[Function]}
+                onKeyDown={[Function]}
                 size="22px"
               >
                 <Checkbox__Input
@@ -786,7 +789,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                           "isStatic": false,
                           "lastClassName": "c2",
                           "rules": Array [
-                            "&[type='checkbox']{position:absolute;height:1px;width:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);}",
+                            "&[type='checkbox']{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);}",
                           ],
                         },
                         "displayName": "Checkbox__Input",
@@ -795,7 +798,6 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                         "styledComponentId": "Checkbox__Input-cbcutw-2",
                         "target": "input",
                         "toString": [Function],
-                        "usesTheme": false,
                         "warnTooManyClasses": [Function],
                         "withComponent": [Function],
                       }
@@ -804,8 +806,8 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                       Object {
                         "current": .c0[type='checkbox'] {
   position: absolute;
-  height: 1px;
   width: 1px;
+  height: 1px;
   overflow: hidden;
   -webkit-clip: rect(1px 1px 1px 1px);
   clip: rect(1px 1px 1px 1px);
@@ -842,6 +844,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
           </Checkbox__InputWrapper>
           <Checkbox__Label
             htmlFor="checkbox"
+            onClick={[Function]}
           >
             <StyledComponent
               forwardedComponent={
@@ -866,17 +869,18 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                   "styledComponentId": "Checkbox__Label-cbcutw-4",
                   "target": "label",
                   "toString": [Function],
-                  "usesTheme": false,
                   "warnTooManyClasses": [Function],
                   "withComponent": [Function],
                 }
               }
               forwardedRef={null}
               htmlFor="checkbox"
+              onClick={[Function]}
             >
               <label
                 className="c3"
                 htmlFor="checkbox"
+                onClick={[Function]}
               >
                 test
               </label>

@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
@@ -16,11 +16,11 @@ const Container = styled.div`
   }
 `;
 
-const InputWrapper: any = styled.div`
+const InputWrapper = styled.div<{ checked: boolean, size: string | undefined }>`
   position: relative;
-  flex: 0 0 ${(props: any) => props.size};
-  width: ${(props: any) => props.size};
-  height: ${(props: any) => props.size};
+  flex: 0 0 ${(props) => props.size};
+  width: ${(props) => props.size};
+  height: ${(props) => props.size};
   color: #fff;
   text-align: center;
   display: flex;
@@ -28,9 +28,9 @@ const InputWrapper: any = styled.div`
   justify-content: center;
   cursor: pointer;
   border: solid 1px #aaa;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${(props: any) => props.checked ? colors.clGreen : '#fff'};
-  border-color: ${(props: any) => props.checked ? colors.clGreen : '#aaa'};
+  border-radius: ${(props) => props.theme.borderRadius};
+  background: ${(props) => props.checked ? colors.clGreen : '#fff'};
+  border-color: ${(props) => props.checked ? colors.clGreen : '#aaa'};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
 
   &.focused {
@@ -46,7 +46,8 @@ const Input = styled.input`
   &[type='checkbox'] {
     /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
     position: absolute;
-    height: 1px; width: 1px;
+    width: 1px;
+    height: 1px;
     overflow: hidden;
     clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
     clip: rect(1px, 1px, 1px, 1px);
@@ -54,9 +55,8 @@ const Input = styled.input`
 `;
 
 const CheckmarkIcon = styled(Icon)`
-  position: absolute;
   fill: #fff;
-  height: 55%;
+  width: 15px;
 `;
 
 const Label = styled.label`
@@ -73,7 +73,7 @@ interface DefaultProps {
 interface Props extends DefaultProps {
   label?: string | JSX.Element | null | undefined;
   checked: boolean;
-  onChange: (event: FormEvent | KeyboardEvent) => void;
+  onChange: (event: React.FormEvent | React.KeyboardEvent) => void;
   className?: string;
 }
 
@@ -95,10 +95,18 @@ export default class Checkbox extends PureComponent<Props, State> {
     };
   }
 
-  handleOnChange = (event: FormEvent | KeyboardEvent) => {
+  handleOnClick = (event: React.FormEvent | React.KeyboardEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.props.onChange(event);
+  }
+
+  handleOnEnterKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.props.onChange(event);
+    }
   }
 
   handleOnFocus = () => {
@@ -120,7 +128,8 @@ export default class Checkbox extends PureComponent<Props, State> {
     return (
       <Container className={`${className ? className : ''} ${label ? 'hasLabel' : ''}`}>
         <InputWrapper
-          onClick={this.handleOnChange}
+          onClick={this.handleOnClick}
+          onKeyDown={this.handleOnEnterKeyPress}
           className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
           checked={checked}
           size={size}
@@ -138,7 +147,7 @@ export default class Checkbox extends PureComponent<Props, State> {
         </InputWrapper>
 
         {label &&
-          <Label htmlFor="checkbox">
+          <Label htmlFor="checkbox" onClick={this.handleOnClick}>
             {label}
           </Label>
         }

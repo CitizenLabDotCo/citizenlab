@@ -121,4 +121,8 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.register',
     defaultMessage: 'Create an account',
   },
+  or: {
+    id: 'app.containers.InitiativesShow.VoteControl.or',
+    defaultMessage: 'or',
+  },
 });

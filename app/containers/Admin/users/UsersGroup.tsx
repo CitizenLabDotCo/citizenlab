@@ -1,8 +1,9 @@
 // Libraries
 import React from 'react';
+import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
-import { Formik } from 'formik';
-import { isString, isEmpty } from 'lodash-es';
+import { Formik, FormikErrors } from 'formik';
+import { isEmpty, values as getValues, every, isString } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -28,6 +29,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // Resources
 import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
+import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 
 // Services
 import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
@@ -40,10 +42,12 @@ import tracks from './tracks';
 // Typings
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-interface InputProps { }
+
+export interface InputProps { }
 
 interface DataProps {
   group: GetGroupChildProps;
+  verificationActive: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -146,6 +150,21 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
     }
   }
 
+  validateRulesWithFeatureFlag = (values: RulesFormValues) => {
+    const errors: FormikErrors<RulesFormValues> = {};
+
+    if (every(getValues(values.title_multiloc), isEmpty)) {
+      errors.title_multiloc = [{ error: 'blank' }] as any;
+    }
+
+    if (!this.props.verificationActive
+      && values.rules.find(rule => rule.ruleType === 'verified')) {
+      errors.rules = 'verificationDisabled' as any;
+    }
+
+    return errors;
+  }
+
   render() {
     const { group } = this.props;
     const { groupEditionModal, search } = this.state;
@@ -197,7 +216,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
               {groupEditionModal === 'rules' &&
                 <Formik
                   initialValues={group.attributes}
-                  validate={RulesGroupForm.validate}
+                  validate={this.validateRulesWithFeatureFlag}
                   render={this.renderForm('rules')}
                   onSubmit={this.handleSubmitForm(group.id)}
                 />
@@ -212,12 +231,17 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
   }
 }
 
-const UsersGroupWithHoCs = injectTracks<Props>({
+const UsersGroupWithHoCs = withRouter(injectTracks<Props>({
   trackEditGroup: tracks.editGroup,
-})(injectIntl<Props>(UsersGroup));
+})(injectIntl<Props>(UsersGroup)));
 
-export default withRouter((inputProps: WithRouterProps) => (
-  <GetGroup id={inputProps.params.groupId}>
-    {group => <UsersGroupWithHoCs {...inputProps} group={group} />}
-  </GetGroup>
-));
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  group: ({ params, render }) => <GetGroup id={params.groupId}>{render}</GetGroup>,
+  verificationActive: <GetFeatureFlag name="verification" />
+});
+
+export default (inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <UsersGroupWithHoCs {...inputProps} {...dataProps} />}
+  </Data>
+);

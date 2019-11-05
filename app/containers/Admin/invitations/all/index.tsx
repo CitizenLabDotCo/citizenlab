@@ -10,7 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import Row from './Row';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 
 // resources
 import GetInvites, { GetInvitesChildProps, SortAttribute } from 'resources/GetInvites';

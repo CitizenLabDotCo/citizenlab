@@ -12,7 +12,7 @@ import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors, FormikProps } from 'formik';
 import Label from 'components/UI/Label';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 

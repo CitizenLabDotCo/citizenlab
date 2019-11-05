@@ -1,7 +1,7 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
-import { isString, isObject, uniq } from 'lodash-es';
+import { isString, isObject, uniq, has } from 'lodash-es';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import moment from 'moment';
 import 'moment-timezone';
@@ -33,6 +33,8 @@ import Footer from 'containers/Footer';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
+import VerificationModal from 'components/VerificationModal';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -43,8 +45,9 @@ import { IUser } from 'services/users';
 import { authUserStream, signOut, signOutAndDeleteAccountPart2 } from 'services/auth';
 import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
-// utils
+// events
 import eventEmitter from 'utils/eventEmitter';
+import { VerificationModalEvents, OpenVerificationModalData } from 'containers/App/events';
 import { getJwt } from 'utils/auth/jwt';
 
 // style
@@ -52,23 +55,28 @@ import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import ErrorBoundary from 'components/ErrorBoundary';
+import { VerificationModalSteps } from 'components/VerificationModal/VerificationModal';
 
 const Container = styled.div`
-  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   position: relative;
+  background: #fff;
 `;
 
 const InnerContainer = styled.div`
   padding-top: ${props => props.theme.menuHeight}px;
   min-width: 100vw;
-  min-height: 100vh;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px);
   display: flex;
   flex-direction: column;
+  align-items: stretch;
 
   ${media.smallerThanMaxTablet`
     padding-top: 0px;
-`}
+    min-height: auto;
+  `}
 `;
 
 export interface IOpenPostPageModalEvent {
@@ -89,6 +97,9 @@ type State = {
   visible: boolean;
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
+  verificationModalOpened: boolean;
+  verificationModalInitialStep: VerificationModalSteps;
+  verificationContext?: boolean;
 };
 
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
@@ -108,7 +119,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       modalType: null,
       visible: true,
       userDeletedModalOpened: false,
-      userActuallyDeleted: false
+      userActuallyDeleted: false,
+      verificationModalOpened: false,
+      verificationModalInitialStep: null
     };
     this.subscriptions = [];
   }
@@ -117,6 +130,11 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
+
+    if (has(this.props.location.query, 'verification_success')) {
+      window.history.replaceState(null, '', window.location.pathname);
+      this.openVerificationModal('success');
+    }
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const { authUser } = this.state;
@@ -185,6 +203,14 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         this.openPostPageModal(id, slug, type);
       }),
 
+      eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.open).subscribe(({ eventValue }) => {
+        this.openVerificationModal(eventValue.step, eventValue.withContext);
+      }),
+
+      eventEmitter.observeEvent(VerificationModalEvents.close).subscribe(() => {
+        this.closeVerificationModal();
+      }),
+
       eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
         this.closePostPageModal();
       }),
@@ -226,6 +252,21 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ userDeletedModalOpened: false });
   }
 
+  openVerificationModal = (step: VerificationModalSteps, context?: boolean) => {
+    this.setState({
+      verificationModalOpened: true,
+      verificationModalInitialStep: step,
+      verificationContext: context
+    });
+  }
+
+  closeVerificationModal = () => {
+    this.setState({
+      verificationModalOpened: false,
+      verificationModalInitialStep: null
+    });
+  }
+
   render() {
     const { location, children } = this.props;
     const {
@@ -236,19 +277,25 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       modalType,
       visible,
       userDeletedModalOpened,
-      userActuallyDeleted
+      userActuallyDeleted,
+      verificationModalOpened,
+      verificationModalInitialStep,
+      verificationContext
     } = this.state;
     const adminPage = isPage('admin', location.pathname);
     const initiativeFormPage = isPage('initiative_form', location.pathname);
     const ideaFormPage = isPage('idea_form', location.pathname);
     const ideaEditPage = isPage('idea_edit', location.pathname);
     const initiativeEditPage = isPage('initiative_edit', location.pathname);
+    const signInPage = isPage('sign_in', location.pathname);
+    const signUpPage = isPage('sign_up', location.pathname);
+    const theme = getTheme(tenant);
     const showFooter = !adminPage &&
                        !ideaFormPage &&
                        !initiativeFormPage &&
                        !ideaEditPage &&
                        !initiativeEditPage;
-    const theme = getTheme(tenant);
+    const showShortFeedback = !signInPage && !signUpPage;
 
     return (
       <>
@@ -282,6 +329,16 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
+                    <Suspense fallback={null}>
+                      <VerificationModal
+                        opened={verificationModalOpened}
+                        initialActiveStep={verificationModalInitialStep}
+                        context={verificationContext}
+                      />
+                    </Suspense>
+                  </ErrorBoundary>
+
+                  <ErrorBoundary>
                     <div id="modal-portal" />
                   </ErrorBoundary>
 
@@ -293,7 +350,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                     <Navbar />
                   </ErrorBoundary>
 
-                  <InnerContainer >
+                  <InnerContainer>
                     <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
                       <ErrorBoundary>
                         {children}
@@ -303,7 +360,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                       </HasPermission.No>
                     </HasPermission>
                   </InnerContainer>
-                  {showFooter && <Footer />}
+
+                  {showFooter && <Footer showShortFeedback={showShortFeedback} />}
                 </Container>
               </>
             </ThemeProvider>

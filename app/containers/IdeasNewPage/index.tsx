@@ -117,7 +117,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           position,
           position_coordinates: {
             type: 'Point',
-            coordinates: [lng, lat] as number[]
+            coordinates: [lng, lat]
           }
         });
       });

@@ -266,7 +266,8 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
               aria-label={intl.formatMessage(messages.upvoteComment)}
               onMouseDown={this.removeFocus}
               onClick={this.onVote}
-              className={`${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'} ${votingEnabled ? 'enabled' : 'disabled'}`}
+              disabled={!votingEnabled}
+              className={`e2e-comment-vote ${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'} ${votingEnabled ? 'enabled' : 'disabled'}`}
             >
               <UpvoteIcon name="upvote" className={`${voted ? 'voted' : ''} ${votingEnabled ? 'enabled' : 'disabled'}`} />
             </UpvoteButton>
@@ -277,7 +278,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
           }
 
           {votingEnabled &&
-            <UpvoteLabel onMouseDown={this.removeFocus} onClick={this.onVote}>
+            <UpvoteLabel onMouseDown={this.removeFocus} onClick={this.onVote} disabled={!votingEnabled}>
               {!voted ? <FormattedMessage {...messages.commentUpvote} /> : <FormattedMessage {...messages.commentCancelUpvote} />}
             </UpvoteLabel>
           }

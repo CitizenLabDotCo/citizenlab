@@ -72,7 +72,7 @@ export function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
 }
 
-type pageKeys = 'admin' | 'idea_form' | 'initiative_form' | 'idea_edit' | 'initiative_edit';
+type pageKeys = 'admin' | 'idea_form' | 'initiative_form' | 'idea_edit' | 'initiative_edit' | 'sign_in' | 'sign_up';
 
 export function isPage(pageKey: pageKeys, pathName: string) {
    /**
@@ -99,6 +99,10 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.startsWith('/ideas/edit/');
     case 'initiative_edit':
       return pathnameWithoutLocale.startsWith('/initiatives/edit/');
+    case 'sign_in':
+      return pathnameWithoutLocale.startsWith('/sign-in');
+    case 'sign_up':
+      return pathnameWithoutLocale.startsWith('/sign-up');
   }
 }
 

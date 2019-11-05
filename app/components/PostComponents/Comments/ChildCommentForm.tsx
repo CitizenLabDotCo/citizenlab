@@ -68,8 +68,8 @@ const FormInner = styled.div`
   align-items: stretch;
   padding-top: 25px;
   padding-bottom: 25px;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 35px;
+  padding-right: 35px;
 
   ${media.smallerThanMinTablet`
     padding-left: 20px;
@@ -299,7 +299,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
                     name="comment"
                     className={`childcommentform-${parentId}`}
                     placeholder={this.placeholder}
-                    rows={smallerThanSmallTablet ? 2 : 1}
+                    rows={smallerThanSmallTablet ? 3 : 2}
                     value={inputValue}
                     error={errorMessage}
                     onChange={this.handleTextareaOnChange}
