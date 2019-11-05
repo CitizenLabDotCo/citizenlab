@@ -110,7 +110,7 @@ module Verification
       end
 
       def clean_id_serial id_serial
-        id_serial.strip
+        id_serial.tr('^0-9a-zA-Z', '')
       end
     end
   end

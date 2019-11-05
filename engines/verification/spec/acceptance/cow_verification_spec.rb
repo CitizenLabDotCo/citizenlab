@@ -119,7 +119,7 @@ resource "Verifications" do
 
     describe do
       let(:run) { "11.111.111-1" }
-      let(:id_serial) { "A001529382" }
+      let(:id_serial) { "A.001.529.382" }
       example"[error] Verify with cow with a match that's not entitled to verification" do
         savon.expects(:get_data_document)
           .with(message: {
