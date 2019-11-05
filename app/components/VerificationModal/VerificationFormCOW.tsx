@@ -10,7 +10,8 @@ import Input from 'components/UI/Input';
 import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import InfoTooltip from 'components/UI/InfoTooltip';
+import Tooltip from 'components/UI/Tooltip';
+
 import { Title } from './styles';
 
 // hooks
@@ -63,10 +64,6 @@ const LabelTextContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-`;
-
-const StyledInfoTooltip = styled(InfoTooltip)`
-  margin-left: 2px;
 `;
 
 const Footer = styled.div`
@@ -206,11 +203,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
           <StyledLabel>
             <LabelTextContainer>
               <span>RUN</span>
-              <StyledInfoTooltip
-                id="RUN"
-                defaultMessage="Ingrese su numero de RUN (RUT)"
-                size="small"
-              />
+              <Tooltip content="Ingrese su numero de RUN (RUT)" />
             </LabelTextContainer>
             <div>
               <Input
@@ -228,11 +221,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
           <StyledLabel>
             <LabelTextContainer>
               <span>Número de Documento</span>
-              <StyledInfoTooltip
-                id="id-serial"
-                defaultMessage="Ingrese el número de documento que se encuentra al frente en cédulas nuevas y atras en cédulas antiguas."
-                size="small"
-              />
+              <Tooltip content="Ingrese el número de documento que se encuentra al frente en cédulas nuevas y atras en cédulas antiguas." />
             </LabelTextContainer>
             <div>
               <Input

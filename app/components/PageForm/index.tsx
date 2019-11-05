@@ -13,7 +13,7 @@ import ErrorComponent from 'components/UI/Error';
 import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
 import FileUploader from 'components/UI/FileUploader';
-import InfoTooltip from 'components/UI/InfoTooltip';
+import Tooltip from 'components/UI/Tooltip';
 
 // I18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -151,7 +151,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fileUploadLabel} />
-              <InfoTooltip {...messages.fileUploadLabelTooltip} />
+              <Tooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
             </Label>
             <Field
               name="page_files"

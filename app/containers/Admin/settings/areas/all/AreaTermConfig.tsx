@@ -18,7 +18,21 @@ import { InjectedIntlProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
 
-interface InputProps {}
+// styling
+import styled from 'styled-components';
+
+const Container = styled.form`
+  width: 100%;
+  max-width: 500px;
+  padding: 25px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px #ddd;
+  background: #fff;
+`;
+
+interface InputProps {
+  className?: string;
+}
 
 interface DataProps {
   tenant: GetTenantChildProps;
@@ -78,7 +92,7 @@ class AreaTermConfig extends PureComponent<Props, State> {
   }
 
   render() {
-    const { tenant, intl: { formatMessage } } = this.props;
+    const { tenant, className, intl: { formatMessage } } = this.props;
     const { submitState } = this.state;
 
     if (isNilOrError(tenant)) return null;
@@ -87,8 +101,7 @@ class AreaTermConfig extends PureComponent<Props, State> {
     const areaTerm = this.state.areaTerm || tenant.attributes.settings.core.area_term || {};
 
     return (
-      <form onSubmit={this.save}>
-
+      <Container onSubmit={this.save} className={className}>
         <SectionField>
           <InputMultilocWithLocaleSwitcher
             type="text"
@@ -121,7 +134,7 @@ class AreaTermConfig extends PureComponent<Props, State> {
             <FormattedMessage {...messages.areasTermsSave} />
           </Button>
         </ButtonWrapper>
-      </form>
+      </Container>
     );
   }
 }

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { getPostingPermission, DisabledReasons } from 'services/ideaPostingRules';
@@ -8,9 +8,8 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
-import { ButtonContainerProps } from 'components/UI/Button';
-import Tooltip from 'components/UI/Tooltip';
-import { IPosition } from 'components/UI/Popover';
+import Button, { ButtonContainerProps } from 'components/UI/Button';
+import Tippy from '@tippy.js/react';
 import Icon from 'components/UI/Icon';
 
 // i18n
@@ -18,7 +17,6 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 
 // events
 import { openVerificationModalWithContext } from 'containers/App/events';
@@ -28,11 +26,14 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // styling
+import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
-const StyledIcon = styled(Icon)`
+const ButtonWrapper = styled.div``;
+
+const LockIcon = styled(Icon)`
   flex: 0 0 25px;
   width: 20px;
   height: 25px;
@@ -50,9 +51,6 @@ const StyledA = styled.a`
 `;
 
 const TooltipWrapper = styled.div`
-  width: 100%;
-  min-width: 300px;
-  max-width: 400px;
   display: flex;
   align-items: center;
   color: ${colors.popoverDarkFg};
@@ -82,7 +80,6 @@ interface InputProps extends ButtonContainerProps {
   projectId?: string | undefined;
   phaseId?: string | undefined;
   className?: string;
-  smallViewportTooltipPosition?: IPosition;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -110,7 +107,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
   }
 
   render() {
-    const { project, phase, authUser, className, smallViewportTooltipPosition } = this.props;
+    const { project, phase, authUser, className } = this.props;
     const { show, enabled, disabledReason } = getPostingPermission({
       project,
       phase,
@@ -118,53 +115,37 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
     });
 
     if (show) {
-      const  { fullWidth, height, style, size, bgColor, textColor, fontWeight, padding, borderRadius } = this.props;
-      const startAnIdeaText = this.props.intl.formatMessage(messages.startAnIdea);
       const linkTo = !isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new';
-      const numberHeight = parseInt(height as any, 10);
+      const isPostingDisabled = (!enabled && !!disabledReason);
+      const tooltipContent = (!enabled && !!disabledReason) ? (
+        <TooltipWrapper className="e2e-disabled-tooltip">
+          <LockIcon name="lock-outlined" />
+          <FormattedMessage
+            {...this.disabledMessages[disabledReason]}
+            values={{
+              verificationLink:
+                <StyledA href="" onClick={this.onVerify} className="tooltipLink">
+                  <FormattedMessage {...messages.verificationLinkText} />
+                </StyledA>,
+            }}
+          />
+        </TooltipWrapper>
+      ) : <></>;
 
       return (
         <Container className={`${className} e2e-idea-button`}>
-          <Tooltip
-            enabled={!enabled && !!disabledReason}
-            content={
-              disabledReason ? (
-                <TooltipWrapper className="e2e-disabled-tooltip">
-                  <StyledIcon name="lock-outlined" />
-                  <FormattedMessage
-                    {...this.disabledMessages[disabledReason]}
-                    values={{
-                      verificationLink:
-                        <StyledA href="" onClick={this.onVerify} className="tooltipLink">
-                          <FormattedMessage {...messages.verificationLinkText} />
-                        </StyledA>,
-                    }}
-                  />
-                </TooltipWrapper>
-              ) : null
-            }
-            backgroundColor={colors.popoverDarkBg}
-            borderColor={colors.popoverDarkBg}
-            offset={numberHeight ? numberHeight + 3 : 45}
-            position="bottom"
-            buttonProps={{
-              style,
-              size,
-              height,
-              fullWidth,
-              bgColor,
-              textColor,
-              fontWeight,
-              padding,
-              borderRadius,
-              linkTo,
-              text: startAnIdeaText,
-              disabled: !enabled,
-              onClick: this.onNewIdea
-            }}
-            smallViewportPosition={smallViewportTooltipPosition}
-            withPin={true}
-          />
+          <Tippy
+            enabled={isPostingDisabled}
+            interactive={true}
+            placement="bottom"
+            content={tooltipContent}
+          >
+            <ButtonWrapper tabIndex={0}>
+              <Button {...this.props} linkTo={linkTo} disabled={isPostingDisabled}>
+                <FormattedMessage {...messages.startAnIdea} />
+              </Button>
+            </ButtonWrapper>
+          </Tippy>
         </Container>
       );
     }

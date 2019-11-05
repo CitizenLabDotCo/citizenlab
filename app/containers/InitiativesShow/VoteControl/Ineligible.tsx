@@ -7,8 +7,9 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
 import Icon from 'components/UI/Icon';
-import { StatusWrapper, StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
+import { StatusWrapper, StatusExplanation, TooltipWrapper } from './SharedStyles';
 import Tooltip from 'components/UI/Tooltip';
+
 import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';
 
@@ -98,17 +99,13 @@ class Ineligible extends PureComponent<Props, State> {
           />
           {eligibility_criteria &&
             <Tooltip
+              theme="light"
               content={
                 <TooltipWrapper>
                   <T value={eligibility_criteria} supportHtml />
                 </TooltipWrapper>
               }
-              position="bottom"
-              offset={24}
-              withPin={true}
-            >
-              <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />}/>
-            </Tooltip>
+            />
           }
         </StatusExplanation>
         <VoteCounter>

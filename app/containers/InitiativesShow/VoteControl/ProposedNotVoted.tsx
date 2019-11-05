@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
-import { StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
+import { StatusExplanation, TooltipWrapper } from './SharedStyles';
 import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -12,6 +12,7 @@ import { ITenantSettings } from 'services/tenant';
 import CountDown from './CountDown';
 import Icon from 'components/UI/Icon';
 import Tooltip from 'components/UI/Tooltip';
+
 import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';
 
@@ -149,17 +150,13 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
           </OnMobile>
           {threshold_reached_message &&
             <Tooltip
+              theme="light"
               content={
                 <TooltipWrapper>
                   <T value={threshold_reached_message} supportHtml />
                 </TooltipWrapper>
               }
-              offset={24}
-              withPin={true}
-              position="bottom"
-            >
-              <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />} />
-            </Tooltip>
+            />
           }
         </StatusExplanation>
         <VoteCounter>

@@ -19,7 +19,8 @@ import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 import HasPermission from 'components/HasPermission';
-import InfoTooltip from 'components/UI/InfoTooltip';
+import Tooltip from 'components/UI/Tooltip';
+
 import Link from 'utils/cl-router/Link';
 
 // animation
@@ -637,7 +638,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.statusLabel} />
-                <InfoTooltip {...messages.publicationStatusTooltip} />
+                <Tooltip content={<FormattedMessage {...messages.publicationStatusTooltip} />} />
               </Label>
               <Radio
                 onChange={this.handleStatusChange}
@@ -674,7 +675,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 type="text"
                 valueMultiloc={projectAttrs.title_multiloc}
                 label={<FormattedMessage {...messages.titleLabel} />}
-                labelTooltip={<InfoTooltip {...messages.titleLabelTooltip} />}
+                labelTooltip={<Tooltip content={<FormattedMessage {...messages.titleLabelTooltip} />} />}
                 onChange={this.handleTitleMultilocOnChange}
                 errorMultiloc={noTitleError}
               />
@@ -686,7 +687,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 <>
                   <Label htmlFor="projectype-timeline">
                     <FormattedMessage {...messages.projectType} />
-                    <InfoTooltip {...messages.projectTypeTooltip} />
+                    <Tooltip content={<FormattedMessage {...messages.projectTypeTooltip} />} />
                   </Label>
                   <Radio
                     className="e2e-project-type-timeline"
@@ -711,7 +712,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   <>
                     <Label>
                       <FormattedMessage {...messages.projectTypeEdit} />
-                      <InfoTooltip {...messages.projectTypeEditTooltip} />
+                      <Tooltip content={<FormattedMessage {...messages.projectTypeEditTooltip} />} />
                     </Label>
                     <ProjectType>{<FormattedMessage {...messages[projectType]} />}</ProjectType>
                   </>
@@ -750,15 +751,19 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <SectionField>
               <Label htmlFor="project-area">
                 <FormattedMessage {...messages.areasLabel} />
-                <InfoTooltip
-                  {...messages.areasLabelTooltip}
-                  values={{
-                    areasLabelTooltipLink: (
-                      <Link to="/admin/settings/areas">
-                        <FormattedMessage {...messages.areasLabelTooltipLinkText} />
-                      </Link>
-                    )
-                  }}
+                <Tooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.areasLabelTooltip}
+                      values={{
+                        areasLabelTooltipLink: (
+                          <Link to="/admin/settings/areas">
+                            <FormattedMessage {...messages.areasLabelTooltipLinkText} />
+                          </Link>
+                        )
+                      }}
+                    />
+                  }
                 />
               </Label>
               <Radio
@@ -794,17 +799,20 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <StyledSectionField>
               <Label>
                 <FormattedMessage {...messages.headerImageLabel} />
-                <InfoTooltip
-                  {...messages.headerImageLabelTooltip}
-                  values={{
-                    // tslint:disable-next-line:react-a11y-anchors
-                    imageSupportArticleLink: <a
-                      target="_blank"
-                      href={this.props.intl.formatMessage(messages.imageSupportArticleLinkTarget)}
-                    >
-                      <FormattedMessage {...messages.imageSupportArticleLinkText} />
-                    </a>
-                  }}
+                <Tooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.headerImageLabelTooltip}
+                      values={{
+                        imageSupportArticleLink: (
+                          // tslint:disable-next-line:react-a11y-anchors
+                          <a target="_blank" href={this.props.intl.formatMessage(messages.imageSupportArticleLinkTarget)}>
+                            <FormattedMessage {...messages.imageSupportArticleLinkText} />
+                          </a>
+                        )
+                      }}
+                    />
+                  }
                 />
               </Label>
               <StyledImagesDropzone
@@ -822,17 +830,20 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <StyledSectionField>
               <Label>
                 <FormattedMessage {...messages.projectImageLabel} />
-                <InfoTooltip
-                  {...messages.projectImageLabelTooltip}
-                  values={{
-                    // tslint:disable-next-line:react-a11y-anchors
-                    imageSupportArticleLink: <a
-                      target="_blank"
-                      href={this.props.intl.formatMessage(messages.imageSupportArticleLinkTarget)}
-                    >
-                      <FormattedMessage {...messages.imageSupportArticleLinkText} />
-                    </a>
-                  }}
+                <Tooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.projectImageLabelTooltip}
+                      values={{
+                        imageSupportArticleLink: (
+                          // tslint:disable-next-line:react-a11y-anchors
+                          <a target="_blank" href={this.props.intl.formatMessage(messages.imageSupportArticleLinkTarget)}>
+                            <FormattedMessage {...messages.imageSupportArticleLinkText} />
+                          </a>
+                        )
+                      }}
+                    />
+                  }
                 />
               </Label>
               <StyledImagesDropzone
@@ -850,7 +861,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fileUploadLabel} />
-                <InfoTooltip {...messages.fileUploadLabelTooltip} />
+                <Tooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
               </Label>
               <FileUploader
                 onFileAdd={this.handleProjectFileOnAdd}
@@ -865,7 +876,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 <SectionField>
                   <Label>
                     <FormattedMessage {...messages.deleteProjectLabel} />
-                    <InfoTooltip {...messages.deleteProjectLabelTooltip} />
+                    <Tooltip content={<FormattedMessage {...messages.deleteProjectLabelTooltip} />} />
                   </Label>
                   <ButtonWrapper>
                     <Button
