@@ -6,6 +6,7 @@ import Button from 'components/UI/Button';
 import Success from 'components/UI/Success';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
+import { FormLabel } from 'components/UI/FormComponents';
 
 // services
 import { sendPasswordResetMail } from 'services/auth';
@@ -183,8 +184,12 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
           <Subtitle>{subtitle}</Subtitle>
 
           <Form onSubmit={this.handleOnSubmit}>
+            <FormLabel
+              htmlFor="email"
+              labelMessage={messages.emailLabel}
+              thin
+            />
             <StyledInput
-              ariaLabel={emailPlaceholder}
               id="email"
               type="text"
               value={email}
