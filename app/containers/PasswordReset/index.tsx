@@ -10,6 +10,7 @@ import Button from 'components/UI/Button';
 import Success from 'components/UI/Success';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
+import { FormLabel } from 'components/UI/FormComponents';
 
 // services
 import { resetPassword } from 'services/auth';
@@ -175,8 +176,12 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
           <Title>{title}</Title>
 
           <Form onSubmit={this.handleOnSubmit}>
+            <FormLabel
+              htmlFor="password"
+              labelMessage={messages.passwordLabel}
+              thin
+            />
             <StyledInput
-              ariaLabel={passwordPlaceholder}
               type="password"
               id="password"
               value={password}
