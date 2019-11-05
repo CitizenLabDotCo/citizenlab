@@ -195,7 +195,7 @@
   "app.components.InitiativesShowPage.goBack": "",
   "app.components.InitiativesShowPage.goBackToList": "",
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "",
-  "app.components.Input.charactersLeft": "",
+  "app.components.Input.a11y_charactersLeft": "",
   "app.components.Modal.closeModal": "",
   "app.components.PagesForm.dontChange": "",
   "app.components.PagesForm.editContent": "",

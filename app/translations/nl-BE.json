@@ -195,7 +195,7 @@
   "app.components.InitiativesShowPage.goBack": "Ga terug",
   "app.components.InitiativesShowPage.goBackToList": "Ga terug naar de lijst",
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Geen initiatieven gevonden.",
-  "app.components.Input.charactersLeft": "",
+  "app.components.Input.a11y_charactersLeft": "",
   "app.components.Modal.closeModal": "Sluit deze pop-up",
   "app.components.PagesForm.dontChange": "Dit niet veranderen! (tenzij je goed weet waar je mee bezig bent)",
   "app.components.PagesForm.editContent": "Inhoud",
