@@ -1,13 +1,25 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react';
+import { Table, Popup } from 'semantic-ui-react';
 import Checkbox from 'components/UI/Checkbox';
 import { FormattedMessage } from 'utils/cl-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
-import IconTooltip from 'components/UI/IconTooltip';
-
+import Icon from 'components/UI/Icon';
 import FeatureFlag from 'components/FeatureFlag';
 import messages from '../../messages';
 import { TableHeaderCellText } from '.';
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
+const InfoIcon = styled(Icon)`
+  fill: ${colors.clBlueDarker};
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+
+  &:hover {
+    fill: #000;
+  }
+`;
 
 export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, handleSortClick }) => (
   <Table.Header>
@@ -64,8 +76,7 @@ export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, ha
             <TableHeaderCellText>
               <FormattedMessage {...messages.participatoryBudgettingPicks} />
             </TableHeaderCellText>
-            &nbsp;
-            <IconTooltip content={<FormattedMessage {...messages.basketsCountTooltip} />} />
+            <Popup content={<FormattedMessage {...messages.basketsCountTooltip} />} trigger={<button><InfoIcon name="info3" /></button>} />
           </SortableTableHeader>
         </Table.HeaderCell>
       </FeatureFlag>
