@@ -795,7 +795,7 @@ export interface Props {
   ariaHidden?: boolean;
 }
 
-const Icon = memo((props: Props) => {
+const Icon = memo<Props>((props) => {
   const { colorTheme, ...otherProps } = props;
   const theme = colorTheme ? colorTheme : colors;
   const propsWithTheme = { ...otherProps, theme };

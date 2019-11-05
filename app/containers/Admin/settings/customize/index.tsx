@@ -39,7 +39,8 @@ import { updatePage } from 'services/pages';
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
-import InfoTooltip from 'components/UI/InfoTooltip';
+import Tooltip from 'components/UI/Tooltip';
+
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const ColorPickerSectionField = styled(SectionField)``;
@@ -376,11 +377,11 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
   uploadPlaceholder = this.props.intl.formatMessage(messages.uploadPlaceholder);
   headerTitleLabel = <FormattedMessage {...messages.headerTitleLabel} />;
-  headerTitleTooltip = <InfoTooltip {...messages.headerTitleTooltip} />;
+  headerTitleTooltip = <Tooltip content={<FormattedMessage {...messages.headerTitleTooltip} />} />;
   headerSubtitleLabel = <FormattedMessage {...messages.headerSubtitleLabel} />;
-  headerSubtitleTooltip = <InfoTooltip {...messages.headerSubtitleTooltip} />;
+  headerSubtitleTooltip = <Tooltip content={<FormattedMessage {...messages.headerSubtitleTooltip} />} />;
   customSectionLabel = <FormattedMessage {...messages.customSectionLabel} />;
-  customSectionTooltip = <InfoTooltip {...messages.customSectionInfo} />;
+  customSectionTooltip = <Tooltip content={<FormattedMessage {...messages.customSectionInfo} />} />;
 
   render() {
     const { locale, tenant } = this.state;
@@ -475,7 +476,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionField key={'header_bg'}>
               <Label>
                 <FormattedMessage {...messages.header_bg} />
-                <InfoTooltip {...messages.header_bgTooltip} />
+                <Tooltip content={<FormattedMessage {...messages.header_bgTooltip} />} />
               </Label>
               <ImagesDropzone
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"

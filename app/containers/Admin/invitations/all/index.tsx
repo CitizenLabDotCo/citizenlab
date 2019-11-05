@@ -10,7 +10,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import Row from './Row';
-import InfoTooltip from 'components/UI/InfoTooltip';
+import Tooltip from 'components/UI/Tooltip';
+
 
 // resources
 import GetInvites, { GetInvitesChildProps, SortAttribute } from 'resources/GetInvites';
@@ -155,7 +156,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
                     <SDiv>
                       <FormattedMessage {...messages.deleteInvite} />
                       &nbsp;
-                      <InfoTooltip {...messages.deleteInviteTooltip} position="top-left" size="small" />
+                      <Tooltip content={<FormattedMessage {...messages.deleteInviteTooltip} />} />
                     </SDiv>
                   </Table.HeaderCell>
                 </Table.Row>

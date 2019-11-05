@@ -628,7 +628,6 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                     projectId={this.props.projectId}
                     phaseId={selectedPhaseId || undefined}
                     fullWidth={true}
-                    smallViewportTooltipPosition="bottom-right"
                   />
                 </HeaderSecondRow>
               </HeaderRows>
