@@ -201,6 +201,7 @@
   "app.components.PagesForm.pageTitle": "Titel",
   "app.components.PagesShowPage.notFoundDescription": "De opgevraagde pagina kon niet worden gevonden",
   "app.components.PagesShowPage.notFoundTitle": "Pagina niet gevonden",
+  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "",
   "app.components.PostComponents.OfficialFeedback.cancel": "Annuleren",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Verwijder",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Ben je zeker dat je deze update wilt verwijderen?",
