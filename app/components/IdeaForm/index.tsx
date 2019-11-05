@@ -42,7 +42,6 @@ import { IOption, UploadFile, Locale } from 'typings';
 
 // style
 import styled from 'styled-components';
-import { hideVisually } from 'polished';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 
@@ -63,10 +62,6 @@ const StyledTopicsPicker = styled(TopicsPicker)`
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #e0e0e0;
-`;
-
-const HiddenLabel = styled.span`
-  ${hideVisually()}
 `;
 
 export interface IIdeaFormOutput {
@@ -451,22 +446,15 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
         <FormElement id="e2e-idea-image-upload">
           <FormLabel labelMessage={messages.imageUploadLabel} />
-          <label htmlFor="idea-img-dropzone">
-            <HiddenLabel>
-              <FormattedMessage {...messages.imageDropzonePlaceholder} />
-            </HiddenLabel>
-            <ImagesDropzone
-              id="idea-img-dropzone"
-              images={imageFile}
-              imagePreviewRatio={135 / 298}
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              maxImageFileSize={5000000}
-              maxNumberOfImages={1}
-              placeholder={<FormattedMessage {...messages.imageUploadPlaceholder} />}
-              onAdd={this.handleUploadOnAdd}
-              onRemove={this.handleUploadOnRemove}
-            />
-          </label>
+          <ImagesDropzone
+            images={imageFile}
+            imagePreviewRatio={135 / 298}
+            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+            maxImageFileSize={5000000}
+            maxNumberOfImages={1}
+            onAdd={this.handleUploadOnAdd}
+            onRemove={this.handleUploadOnRemove}
+          />
         </FormElement>
 
         {pbContext && (
@@ -503,7 +491,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             files={ideaFiles}
           />
         </FormElement>
-
       </Form>
     );
   }

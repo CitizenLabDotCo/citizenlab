@@ -2,6 +2,7 @@ import React, { memo, useState, useCallback } from 'react';
 import Popover, { Props as PopoverProps } from 'components/UI/Popover';
 import styled from 'styled-components';
 import Button, { Props as ButtonProps } from 'components/UI/Button';
+import { customOutline } from 'utils/styleUtils';
 
 /* should not have button elements in content nor children */
 interface Props extends Omit<PopoverProps, 'onClickOutside' | 'onMouseEnter' | 'onMouseLeave' | 'dropdownOpened' | 'children' | 'content'> {
@@ -14,7 +15,11 @@ interface Props extends Omit<PopoverProps, 'onClickOutside' | 'onMouseEnter' | '
   children?: JSX.Element | null;
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  &:focus .tooltip-trigger {
+    outline: ${customOutline};
+  }
+`;
 
 const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProps, ...otherProps  }) => {
 
