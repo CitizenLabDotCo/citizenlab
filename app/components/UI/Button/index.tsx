@@ -214,7 +214,7 @@ const ButtonText = styled.div<{ whiteSpace?: string }>`
   margin-top: -1px;
   padding: 0;
   text-align: left;
-  white-space: ${({ whiteSpace}) => whiteSpace || 'nowrap'};
+  white-space: ${({ whiteSpace }) => whiteSpace || 'nowrap'};
   transition: all 100ms ease-out;
 `;
 

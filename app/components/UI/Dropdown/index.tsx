@@ -1,14 +1,13 @@
 import React, { PureComponent, FormEvent } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
+import bowser from 'bowser';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const timeout = 200;
 
 const Container: any = styled(clickOutside)`
-  display: flex;
-  flex-direction: column;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background-color: #fff;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.18);
@@ -49,8 +48,11 @@ const ContainerInner: any = styled.div`
 `;
 
 const Content: any = styled.div`
-  flex: 1;
+  flex: 1 1 auto;
   max-height: ${(props: any) => props.maxHeight};
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 5px;
@@ -67,7 +69,7 @@ const Content: any = styled.div`
 `;
 
 const Footer = styled.div`
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
 `;
 
@@ -190,7 +192,7 @@ export default class Dropdown extends PureComponent<Props, State> {
               maxHeight={maxHeight}
               mobileMaxHeight={mobileMaxHeight}
               ref={this.setRef}
-              className="ignore-body-scroll-lock"
+              className={`${bowser.msie ? 'ie' : ''} ignore-body-scroll-lock`}
             >
               {content}
             </Content>

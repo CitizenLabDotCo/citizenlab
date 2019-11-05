@@ -38,7 +38,7 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 const TableOptions = styled.div`
@@ -113,29 +113,24 @@ const DropdownWrapper = styled.div`
 `;
 
 const DropdownListItemText = styled.div`
-  flex: 1;
+  flex: 1 1 auto;
   color: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 21px;
+  line-height: normal;
   text-align: left;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
+  margin-right: 10px;
 `;
 
 const DropdownList = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
 `;
 
 const DropdownListItem = styled.button`
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin: 0px;
   margin-bottom: 4px;
@@ -159,10 +154,6 @@ const DropdownListItem = styled.button`
       color: #000;
     }
   }
-`;
-
-const StyledCheckbox = styled(Checkbox)`
-  margin-left: 10px;
 `;
 
 const DropdownFooterButton = styled(Button)`
@@ -387,7 +378,6 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                   <DropdownList>
                     {groupsList.map((group) => (
                       <DropdownListItem
-                        role="button"
                         key={group.id}
                         onClick={this.toggleGroup(group.id)}
                         className="e2e-dropdown-item"
@@ -395,7 +385,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                         <DropdownListItemText>
                           <T value={group.attributes.title_multiloc} />
                         </DropdownListItemText>
-                        <StyledCheckbox
+                        <Checkbox
                           checked={includes(selectedGroupIds, group.id)}
                           onChange={this.toggleGroup(group.id)}
                         />
