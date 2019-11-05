@@ -114,6 +114,8 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
 
   if (!isNilOrError(statuses) && statuses.length > 0) {
     const allIdeasCount = filterCounts && filterCounts.total ? filterCounts.total : 0;
+    const selectedStatus = selectedStatusId && statuses.find(status => status.id === selectedStatusId);
+
     return (
       <Container className={`e2e-statuses-filters ${className}`}>
         <Header>
@@ -133,24 +135,26 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
             {allIdeasCount}
           </Count>
           <ScreenReaderOnly>
-            <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: allIdeasCount}} />
+            <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: allIdeasCount }} />
           </ScreenReaderOnly>
         </AllStatus>
 
         {statuses.map((status) => {
           const filterIdeasCount = get(filterCounts, `${type}_status_id.${status.id}`, 0);
+          const isFilterSelected = selectedStatusId === status.id;
+
           return (
             <Status
               key={status.id}
               data-id={status.id}
               onMouseDown={removeFocus}
               onClick={handleOnClick}
-              className={`e2e-status ${selectedStatusId === status.id ? 'selected' : ''}`}
+              className={`e2e-status ${isFilterSelected ? 'selected' : ''}`}
             >
               <T value={status.attributes.title_multiloc}>
                 {statusTitle => <>{capitalize(statusTitle)}</>}
               </T>
-              {selectedStatusId !== status.id ? (
+              {!isFilterSelected ? (
                 <Count aria-hidden>
                   {filterIdeasCount}
                 </Count>
@@ -163,6 +167,34 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
             </Status>
           );
         })}
+
+        <ScreenReaderOnly aria-live="polite">
+          {/* Pronounce selected status */}
+          {selectedStatus ?
+            <FormattedMessage
+              {...messages.a11y_selectedStatus}
+              values={{
+                selectedStatus: <T value={selectedStatus.attributes.title_multiloc} />
+              }}
+            />
+            :
+            <FormattedMessage
+              {...messages.a11y_selectedAllStatus}
+            />
+          }
+
+          {/* Pronounce number of ideas per status */}
+          <FormattedMessage
+            {...messages.a11y_allIdeas}
+            values={{
+              allIdeasCount
+            }}
+          />
+          {statuses.map(status => {
+            const filterIdeasCount = get(filterCounts, `${type}_status_id.${status.id}`, 0);
+            return `${<T value={status.attributes.title_multiloc} />}: ${filterIdeasCount}`;
+          })}
+        </ScreenReaderOnly>
       </Container>
     );
   }
