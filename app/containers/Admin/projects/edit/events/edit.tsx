@@ -16,8 +16,7 @@ import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import FileUploader from 'components/UI/FileUploader';
-import Tooltip from 'components/UI/Tooltip';
-
+import IconTooltip from 'components/UI/IconTooltip';
 
 // utils
 import unsubscribe from 'utils/unsubscribe';
@@ -307,7 +306,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
               <SectionField>
                   <Label>
                     <FormattedMessage {...messages.fileUploadLabel} />
-                    <Tooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
+                    <IconTooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
                   </Label>
                 <FileUploader
                   onFileAdd={this.handleEventFileOnAdd}

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 import { fontSizes, colors } from 'utils/styleUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -67,7 +67,7 @@ const CollapseContainer = styled.div`
 
     &.collapse-enter-active {
       opacity: 1;
-      max-height: 500px;
+      max-height: 1000px;
       overflow: hidden;
       display: block;
     }
@@ -81,7 +81,7 @@ const CollapseContainer = styled.div`
 
   &.collapse-exit {
     opacity: 1;
-    max-height: 500px;
+    max-height: 1000px;
     overflow: hidden;
     display: block;
 
@@ -127,7 +127,7 @@ class Collapse extends PureComponent<Props> {
             <ArrowIcon name="chevron-right" className={`${opened && 'opened'}`} />
             {label}
           </CollapseExpandButton>
-          {labelTooltip && <Tooltip content={labelTooltip} />}
+          {labelTooltip && <IconTooltip content={labelTooltip} />}
         </Label>
 
         <CSSTransition

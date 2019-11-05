@@ -3,7 +3,7 @@ import { Table } from 'semantic-ui-react';
 import Checkbox from 'components/UI/Checkbox';
 import { FormattedMessage } from 'utils/cl-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 import FeatureFlag from 'components/FeatureFlag';
 import messages from '../../messages';
@@ -65,7 +65,7 @@ export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, ha
               <FormattedMessage {...messages.participatoryBudgettingPicks} />
             </TableHeaderCellText>
             &nbsp;
-            <Tooltip content={<FormattedMessage {...messages.basketsCountTooltip} />} />
+            <IconTooltip content={<FormattedMessage {...messages.basketsCountTooltip} />} />
           </SortableTableHeader>
         </Table.HeaderCell>
       </FeatureFlag>

@@ -6,7 +6,7 @@ import ModeratorList from './ModeratorList';
 import UserSearch from 'components/UserSearch';
 import { GetModeratorsChildProps } from 'resources/GetModerators';
 import { SubSectionTitle } from 'components/admin/Section';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 import { InjectedIntlProps } from 'react-intl';
 
@@ -37,7 +37,7 @@ class Moderators extends PureComponent<Props & InjectedIntlProps>{
       <Container>
         <SubSectionTitle>
           <FormattedMessage {...messages.moderatorsSectionTitle} />
-          <Tooltip
+          <IconTooltip
             content={
               <FormattedMessage
                 {...messages.moderatorsSectionTooltip}

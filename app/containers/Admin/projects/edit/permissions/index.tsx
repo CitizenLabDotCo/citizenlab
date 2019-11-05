@@ -16,7 +16,7 @@ import { Section, SubSectionTitle, SectionTitle, SectionSubtitle, SectionField }
 import Moderators from './Moderators';
 import FeatureFlag from 'components/FeatureFlag';
 import Granular from './Granular';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
@@ -209,7 +209,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
             <SectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.permissionTypeLabel} />
-                <Tooltip content={<FormattedMessage {...messages.permissionsTypeTooltip} />} />
+                <IconTooltip content={<FormattedMessage {...messages.permissionsTypeTooltip} />} />
               </SubSectionTitle>
 
               <RadioButtonsWrapper>
@@ -268,7 +268,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
           <StyledSection>
             <SubSectionTitle>
               <FormattedMessage {...messages.ideaAssignmentSectionTitle} />
-              <Tooltip
+              <IconTooltip
                 content={
                   <FormattedMessage
                     {...messages.ideaAssignmentTooltip}

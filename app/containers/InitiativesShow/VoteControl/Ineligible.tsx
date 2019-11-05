@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -7,8 +7,8 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
 import Icon from 'components/UI/Icon';
-import { StatusWrapper, StatusExplanation, TooltipWrapper } from './SharedStyles';
-import Tooltip from 'components/UI/Tooltip';
+import { StatusWrapper, StatusExplanation } from './SharedStyles';
+import IconTooltip from 'components/UI/IconTooltip';
 
 import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';
@@ -65,7 +65,9 @@ interface InputProps {
 }
 interface DataProps {}
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme?: any;
+}
 
 interface State {}
 
@@ -96,17 +98,24 @@ class Ineligible extends PureComponent<Props, State> {
                 </b>
               )
             }}
-          />
-          {eligibility_criteria &&
-            <Tooltip
-              theme="light"
-              content={
-                <TooltipWrapper>
-                  <T value={eligibility_criteria} supportHtml />
-                </TooltipWrapper>
-              }
-            />
-          }
+          >
+            {(text) => (
+              <>
+                {text}
+                {eligibility_criteria &&
+                  <IconTooltip
+                    icon="info"
+                    iconColor={this.props.theme.colorText}
+                    theme="light"
+                    placement="bottom"
+                    content={
+                      <T value={eligibility_criteria} supportHtml />
+                    }
+                  />
+                }
+              </>
+            )}
+          </FormattedMessage>
         </StatusExplanation>
         <VoteCounter>
           <VoteTexts>
@@ -131,4 +140,4 @@ class Ineligible extends PureComponent<Props, State> {
   }
 }
 
-export default Ineligible;
+export default withTheme(Ineligible);

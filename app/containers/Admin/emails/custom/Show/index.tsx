@@ -29,7 +29,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import { fontSizes } from 'utils/styleUtils';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 import Stamp from './Stamp';
 
@@ -229,7 +229,7 @@ class Show extends React.Component<Props, State> {
                   <FormattedMessage {...messages.sendTestEmailButton} />
                 </SendTestEmailButton>
                 &nbsp;
-                <Tooltip content={<FormattedMessage {...messages.sendTestEmailTooltip} />} />
+                <IconTooltip content={<FormattedMessage {...messages.sendTestEmailTooltip} />} />
               </StyledButtonContainer>
             }
           </CampaignHeader>

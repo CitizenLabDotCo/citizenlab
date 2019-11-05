@@ -16,7 +16,7 @@ import { Section, PageTitle, SectionField, SectionSubtitle } from 'components/ad
 import InvitesTable from './all';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 
 // services
@@ -457,7 +457,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
           <SectionField>
             <Label>
               <FormattedMessage {...messages.adminLabel} />
-              <Tooltip content={<FormattedMessage {...messages.adminLabelTooltip} />} />
+              <IconTooltip content={<FormattedMessage {...messages.adminLabelTooltip} />} />
             </Label>
             <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
           </SectionField>
@@ -465,7 +465,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
           <SectionField>
             <Label>
               <FormattedMessage {...messages.moderatorLabel} />
-              <Tooltip
+              <IconTooltip
                 content={
                   <FormattedMessage
                     {...messages.moderatorLabelTooltip}
@@ -570,7 +570,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                 <SectionField>
                   <Label>
                     <FormattedMessage {...messages.importLabel} />
-                    <Tooltip
+                    <IconTooltip
                       content={
                         <FormattedMessage
                           {...messages.importInfo}

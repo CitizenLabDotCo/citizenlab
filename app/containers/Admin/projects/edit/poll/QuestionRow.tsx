@@ -9,7 +9,7 @@ import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptio
 // Components
 import Button from 'components/UI/Button';
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 import T from 'components/T';
 
@@ -63,7 +63,7 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
       <GetPollOptions questionId={question.id} >
         {(options: GetPollOptionsChildProps) => !isNilOrError(options) && options.length === 0 ? (
           <NoOptionsIndicator>
-            <Tooltip content={<FormattedMessage {...messages.noOptionsTooltip} />} />
+            <IconTooltip content={<FormattedMessage {...messages.noOptionsTooltip} />} />
             <FormattedMessage {...messages.noOptions} />
           </NoOptionsIndicator>
         ) : null}

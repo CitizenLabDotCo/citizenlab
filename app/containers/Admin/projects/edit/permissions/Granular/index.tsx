@@ -9,8 +9,7 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { StyledSection } from '../';
-import Tooltip from 'components/UI/Tooltip';
-
+import IconTooltip from 'components/UI/IconTooltip';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
@@ -28,7 +27,7 @@ class Granular extends Component<Props> {
       <StyledSection>
         <SubSectionTitle>
           <FormattedMessage {...messages.granularPermissionsTitle} />
-          <Tooltip content={<FormattedMessage {...messages.granularPermissionsTooltip} />} />
+          <IconTooltip content={<FormattedMessage {...messages.granularPermissionsTooltip} />} />
         </SubSectionTitle>
         <StyledWarning>
           <FormattedMessage {...messages.engagementWarning} />

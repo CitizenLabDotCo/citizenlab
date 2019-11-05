@@ -10,7 +10,7 @@ import Input from 'components/UI/Input';
 import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 import { Title } from './styles';
 
@@ -204,7 +204,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
           <StyledLabel>
             <LabelTextContainer>
               <span>RUN</span>
-              <Tooltip content="Ingrese su numero de RUN (RUT)" />
+              <IconTooltip content="Ingrese su numero de RUN (RUT)" />
             </LabelTextContainer>
             <div>
               <Input
@@ -222,7 +222,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
           <StyledLabel>
             <LabelTextContainer>
               <span>Número de Documento</span>
-              <Tooltip content="Ingrese el número de documento que se encuentra al frente en cédulas nuevas y atras en cédulas antiguas." />
+              <IconTooltip content="Ingrese el número de documento que se encuentra al frente en cédulas nuevas y atras en cédulas antiguas." />
             </LabelTextContainer>
             <div>
               <Input
