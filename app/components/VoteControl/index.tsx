@@ -227,7 +227,7 @@ interface Props {
   ideaId: string;
   size: '1' | '2' | '3';
   unauthenticatedVoteClick?: () => void;
-  disabledVoteClick?: () => void;
+  disabledVoteClick?: (disabled_reason?: string) => void;
   className?: string;
 }
 
@@ -441,13 +441,13 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   onClickVote = async (voteMode: 'up' | 'down') => {
-    const { authUser, myVoteId, myVoteMode, votingEnabled, cancellingEnabled } = this.state;
+    const { authUser, myVoteId, myVoteMode, votingEnabled, cancellingEnabled, votingDisabledReason } = this.state;
     const { ideaId, unauthenticatedVoteClick, disabledVoteClick } = this.props;
 
     if (!authUser) {
       unauthenticatedVoteClick && unauthenticatedVoteClick();
     } else if ((!votingEnabled && voteMode !== myVoteMode) || (!cancellingEnabled && voteMode === myVoteMode)) {
-      disabledVoteClick && disabledVoteClick();
+      disabledVoteClick && disabledVoteClick(votingDisabledReason || undefined);
     } else if (authUser && this.state.voting === null) {
       try {
         this.voting$.next(voteMode);
