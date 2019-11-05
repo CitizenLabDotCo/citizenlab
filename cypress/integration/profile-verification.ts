@@ -18,7 +18,7 @@ describe('profile verification', () => {
   });
   it('show not verified section and verification button', () => {
     cy.get('.e2e-not-verified');
-    cy.get('.e2e-verify').click();
+    cy.get('#e2e-verify-user-button').click();
     cy.get('.e2e-verification-modal');
   });
   it('shows verified section', () => {
