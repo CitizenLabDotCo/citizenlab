@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.SignIn.emailLabel',
     defaultMessage: 'Email',
   },
-  emailPlaceholder: {
-    id: 'app.containers.SignIn.emailPlaceholder',
-    defaultMessage: 'Email',
-  },
   noEmailError: {
     id: 'app.containers.SignIn.noEmailError',
     defaultMessage: 'Please enter your email address',
@@ -23,10 +19,6 @@ export default defineMessages({
   },
   passwordLabel: {
     id: 'app.containers.SignIn.passwordLabel',
-    defaultMessage: 'Password',
-  },
-  passwordPlaceholder: {
-    id: 'app.containers.SignIn.passwordPlaceholder',
     defaultMessage: 'Password',
   },
   noPasswordError: {

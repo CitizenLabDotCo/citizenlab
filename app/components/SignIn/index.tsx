@@ -12,6 +12,7 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import FeatureFlag from 'components/FeatureFlag';
 import AuthProviderButton, { Providers } from 'components/AuthProviderButton';
+import { FormLabel } from 'components/UI/FormComponents';
 
 // resources
 import GetFeatureFlag from 'resources/GetFeatureFlag';
@@ -302,12 +303,15 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
           {passwordLoginEnabled &&
             <PasswordLogin>
               <FormElement>
+                <FormLabel
+                  htmlFor="email"
+                  labelMessage={messages.emailLabel}
+                  thin
+                />
                 <StyledInput
-                  ariaLabel={formatMessage(messages.emailPlaceholder)}
                   type="email"
                   id="email"
                   value={email}
-                  placeholder={formatMessage(messages.emailPlaceholder)}
                   error={emailError}
                   onChange={this.handleEmailOnChange}
                   setRef={this.handleEmailInputSetRef}
@@ -316,12 +320,15 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
               </FormElement>
 
               <FormElement>
+                <FormLabel
+                  htmlFor="password"
+                  labelMessage={messages.passwordLabel}
+                  thin
+                />
                 <PasswordInput
-                  ariaLabel={formatMessage(messages.passwordPlaceholder)}
                   type="password"
                   id="password"
                   value={password}
-                  placeholder={formatMessage(messages.passwordPlaceholder)}
                   error={passwordError}
                   onChange={this.handlePasswordOnChange}
                   setRef={this.handlePasswordInputSetRef}
