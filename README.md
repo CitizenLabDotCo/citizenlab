@@ -1,4 +1,4 @@
-# cl2_back
+# cl2-back
 
 # Getting started
 
@@ -117,6 +117,15 @@ Two environment variables can be used for this purpose: `SEED_SIZE` (e.g. small,
 NOTE: Watch out that you don't accidently commit these changes!
 
 
+## Using S3 storage in development
+
+1. Go to desired image and/or file uploader.
+
+2. Always include `storage :fog` (comment out if-condition).
+
+3. Comment out `asset_host` method (use original implementation from Carrierwave)
+
+
 ## Creating Engines
 
 In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine.
@@ -175,3 +184,16 @@ require './engines/blorgh/spec/factories/blorghs.rb'
 2. Execute the requests you want to profile
 
 3. Go to http://localhost:4000/profiler.html?pp=normal-backtrace
+
+
+## Finding back JSON-formatted events from RabbitMQ
+
+1. Run the backend
+
+2. Navigate to `http://localhost:8088` -> `Admin` -> `Tracing`. Log in with `guest`, `guest`.
+
+3. Add a new trace in TEXT (not JSON) format
+
+4. Generate the desired events
+
+5. Click on the trace log file you created on `http://localhost:8088` to see the events

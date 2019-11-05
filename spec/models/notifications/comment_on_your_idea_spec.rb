@@ -4,14 +4,14 @@ RSpec.describe Notifications::CommentOnYourIdea, type: :model do
 
   describe "make_notifications_on" do
     it "makes a notification on created comment activity" do
-      comment = create(:comment)
+      comment = create(:comment, post: create(:idea))
       activity = create(:activity, item: comment, action: 'created')
 
       notifications = Notifications::CommentOnYourIdea.make_notifications_on activity
       expect(notifications.first).to have_attributes(
-        recipient_id: comment.idea.author_id,
+        recipient_id: comment.post.author_id,
         initiating_user_id: comment.author_id,
-        idea_id: comment.post_id,
+        post_id: comment.post_id,
         comment_id: comment.id,
         project_id: comment.post.project_id
       )
