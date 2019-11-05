@@ -21,7 +21,7 @@ describe('Idea show page actions', () => {
 
   describe('logged in as admin', () => {
     before(() => {
-      cy.login('admin@citizenlab.co', 'testtest');
+      cy.setAdminLoginCookie();
       cy.visit('/ideas/controversial-idea');
       cy.acceptCookies();
       cy.get('#e2e-idea-show');
@@ -31,9 +31,12 @@ describe('Idea show page actions', () => {
       const officialFeedbackBody = randomString(30);
       const officialFeedbackAuthor = randomString();
 
-      // input
-      cy.get('#official-feedback-form textarea').type(officialFeedbackBody);
-      cy.get('#official-feedback-form input').type(officialFeedbackAuthor);
+      cy.get('.e2e-locale-switch').each(button => {
+        // input
+        cy.wrap(button).click();
+        cy.get('#official-feedback-form textarea').type(officialFeedbackBody);
+        cy.get('#official-feedback-form input').type(officialFeedbackAuthor);
+      });
 
       // save
       cy.get('.e2e-submit-wrapper-button').click();
@@ -57,9 +60,9 @@ describe('Idea show page actions', () => {
           const projectId = project.body.data.id;
           cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
           cy.apiSignup(firstName, lastName, email, password);
-          cy.login(email, password);
+          cy.setLoginCookie(email, password);
           cy.visit(`/ideas/${ideaTitle}`);
-          cy.wait(3000);
+          cy.wait(500);
           cy.get('#e2e-idea-show');
         });
       });
