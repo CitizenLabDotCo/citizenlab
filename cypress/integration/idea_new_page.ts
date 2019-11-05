@@ -58,7 +58,7 @@ describe('Idea new page', () => {
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // add a topic
-    cy.get('.e2e-topics-picker').find('button').eq(3).click();
+    cy.get('.e2e-topics-picker').find('button').eq(4).click();
 
     // verify that the topic has been selected
     cy.get('.e2e-topics-picker').find('button.selected').should('have.length', 1);
