@@ -154,7 +154,8 @@ RSpec.describe Group, type: :model do
       {ruleType: 'custom_field_number', customFieldId: create(:custom_field_number).id, predicate: 'is_smaller_than', value: 42},
       {ruleType: 'participated_in_project', predicate: 'in', value: create(:project).id},
       {ruleType: 'participated_in_topic', predicate: 'in', value: create(:topic).id},
-      {ruleType: 'participated_in_idea_status', predicate: 'in', value: create(:idea_status).id}
+      {ruleType: 'participated_in_idea_status', predicate: 'in', value: create(:idea_status).id},
+      {ruleType: 'verified', predicate: 'not_is_verified'}
     ])}
     let!(:user) { create(:user) }
 
