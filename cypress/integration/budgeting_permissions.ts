@@ -29,17 +29,17 @@ describe('Idea voting permissions', () => {
   });
   describe('a project that requires verification on votes', () => {
     it('sends unverified users to the verification flow', () => {
-      cy.login(unverifiedEmail, unverifiedPassword);
-      cy.acceptCookies();
+      cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('projects/verified-participatory-budgeting/ideas');
+      cy.acceptCookies();
       cy.get('.e2e-assign-budget').first().find('button').click();
       cy.get('.e2e-assign-disabled').find('button').click();
       cy.get('.e2e-verification-modal');
     });
     it('lets verified users budget', () => {
-      cy.login(verifiedEmail, verifiedPassword);
-      cy.acceptCookies();
+      cy.setLoginCookie(verifiedEmail, verifiedPassword);
       cy.visit('projects/verified-participatory-budgeting/ideas');
+      cy.acceptCookies();
       cy.get('.e2e-assign-budget').first().find('button').click();
       cy.wait(500);
       cy.get('.e2e-assign-budget').contains('Undo');

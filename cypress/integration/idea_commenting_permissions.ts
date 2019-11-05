@@ -29,7 +29,7 @@ describe('Idea commenting permissions', () => {
   });
   describe('a project that requires verification on comments', () => {
     it('sends unverified users to the verification flow', () => {
-      cy.login(unverifiedEmail, unverifiedPassword);
+      cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('ideas/verified-idea');
       cy.acceptCookies();
       cy.get('.e2e-comments-loaded');
@@ -38,7 +38,7 @@ describe('Idea commenting permissions', () => {
       cy.get('.e2e-verification-modal');
     });
     it('lets verified users comment', () => {
-      cy.login(verifiedEmail, verifiedPassword);
+      cy.setLoginCookie(verifiedEmail, verifiedPassword);
       cy.visit('ideas/verified-idea');
       cy.acceptCookies();
       cy.get('#submit-comment');
