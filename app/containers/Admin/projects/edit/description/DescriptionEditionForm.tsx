@@ -12,7 +12,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 
 // Typings
 import { Multiloc } from 'typings';

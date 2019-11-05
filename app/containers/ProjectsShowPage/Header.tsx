@@ -181,7 +181,7 @@ class ProjectsShowPage extends PureComponent<Props, State> {
                   </ArchivedLabel>
                 </ArchivedLabelWrapper>
               }
-              {/* Continuous Ideation Idea Button */}
+              {/* Continuous Ideation Idea Button Desktop*/}
               {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
                 <ButtonWrapper>
                   <StyledIdeaButton

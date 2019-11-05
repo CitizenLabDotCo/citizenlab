@@ -64,7 +64,6 @@ interface Props {
 }
 
 export default memo<Props>(({ rightContent, leftContent, showTranslateButton, translateButtonClicked, onTranslate }) => {
-
   return (
     <Container>
       <Inner>
@@ -80,9 +79,11 @@ export default memo<Props>(({ rightContent, leftContent, showTranslateButton, tr
               />
             }
           </FeatureFlag>
-          <StyledRight>
-            {rightContent}
-          </StyledRight>
+          {rightContent &&
+            <StyledRight>
+              {rightContent}
+            </StyledRight>
+          }
         </Right>
       </Inner>
     </Container>

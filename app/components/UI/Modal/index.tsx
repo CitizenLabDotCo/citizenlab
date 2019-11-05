@@ -59,6 +59,7 @@ const CloseButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 
   &:hover {
     ${CloseIcon} {
@@ -74,6 +75,8 @@ const CloseButton = styled.button`
 
 const ModalContainer: any = styled(clickOutside)`
   width: 100%;
+  max-height: 80vh;
+  margin-top: 60px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
@@ -84,16 +87,21 @@ const ModalContainer: any = styled(clickOutside)`
   position: relative;
 
   &.fixedHeight {
-    height: 600px;
+    height: 100%;
+    max-height: 600px;
+  }
+
+  @media (min-height: 1200px) {
+    margin-top: 120px;
   }
 
   ${media.smallerThanMinTablet`
-    width: 100%;
-    height: auto;
-    max-height: 100vh;
+    margin-top: 40px;
+    padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '20px'};
 
     &.fixedHeight {
       height: auto;
+      max-height: 85vh;
     }
   `}
 `;
@@ -101,13 +109,7 @@ const ModalContainer: any = styled(clickOutside)`
 const StyledFocusLock = styled(FocusLock)<{ width: number }>`
   width: 100%;
   max-width: ${({ width }) => width}px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-
-  ${media.smallerThanMinTablet`
-    max-width: 100vw;
-  `}
+  height: 100vh;
 `;
 
 const Overlay: any = styled.div`
@@ -122,9 +124,8 @@ const Overlay: any = styled.div`
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.75);
-  padding: 30px;
-  padding-top: 50px;
-  padding-bottom: 60px;
+  padding-left: 30px;
+  padding-right: 30px;
   overflow: hidden;
   z-index: 1000001;
   will-change: opacity, transform;
@@ -134,9 +135,8 @@ const Overlay: any = styled.div`
   `}
 
   ${media.smallerThanMinTablet`
-    padding: 15px;
-    padding-top: 30px;
-    padding-bottom: 80px;
+    padding-left: 15px;
+    padding-right: 15px;
   `}
 
   &.modal-enter {

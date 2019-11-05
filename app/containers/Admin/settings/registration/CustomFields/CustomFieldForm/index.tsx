@@ -16,7 +16,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 
 export interface FormValues {
   enabled: boolean;

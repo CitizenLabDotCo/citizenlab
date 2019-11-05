@@ -29,6 +29,14 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingDisabledNotPermitted',
     defaultMessage: 'Voting on this idea is currently not allowed',
   },
+  votingDisabledNotVerified: {
+    id: 'app.components.VoteControl.votingDisabledNotVerified',
+    defaultMessage: 'Voting on this idea requires verification of your account. {verificationLink}',
+  },
+  verificationLinkText: {
+    id: 'app.components.VoteControl.verificationLinkText',
+    defaultMessage: 'Verify your account now.'
+  },
   upvote: {
     id: 'app.components.VoteControl.upvote',
     defaultMessage: 'Upvote',

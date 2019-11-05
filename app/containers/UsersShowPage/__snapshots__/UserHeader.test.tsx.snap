@@ -46,18 +46,4 @@ exports[`<UserHeader /> renders correctly on some user without a bio 1`] = `
 </UserHeader__Container>
 `;
 
-exports[`<UserHeader /> renders correctly on your own profile 1`] = `
-<UserHeader__EditProfile
-  to="/profile/edit"
->
-  <UserHeader__EditIcon
-    name="pencil"
-  />
-  <FormattedMessage
-    defaultMessage="Edit my profile"
-    id="app.containers.UsersShowPage.editProfile"
-  />
-</UserHeader__EditProfile>
-`;
-
 exports[`<UserHeader /> renders correctly when user is null 1`] = `null`;

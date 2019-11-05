@@ -10,17 +10,30 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import messages from './messages';
 import clHistory from 'utils/cl-router/history';
 import { fontSizes, colors } from 'utils/styleUtils';
+import { openVerificationModalWithContext } from 'containers/App/events';
 
 const Container = styled.div`
+  width: 100%;
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
   font-weight: 300;
   line-height: 20px;
+
+  > span {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
 `;
 
-const ProjectLink = styled.span`
+const StyledButton = styled.button`
   color: ${colors.clBlueDark};
-  text-decoration: none;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
   cursor: pointer;
 
   &:hover {
@@ -38,11 +51,20 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class VotingDisabled extends PureComponent<Props, State> {
+  onVerify = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    openVerificationModalWithContext('ActionVote');
+  }
+
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
 
   reasonToMessage = () => {
     const { disabled_reason, future_enabled } = this.props.votingDescriptor;
@@ -57,6 +79,8 @@ class VotingDisabled extends PureComponent<Props, State> {
       return future_enabled ? messages.votingDisabledPhaseNotYetStarted : messages.votingDisabledPhaseCompleted;
     } else if (disabled_reason === 'not_permitted') {
       return messages.votingDisabledNotPermitted;
+    } else if (disabled_reason === 'not_verified') {
+      return messages.votingDisabledNotVerified;
     } else {
       return messages.votingDisabledForProject;
     }
@@ -84,14 +108,26 @@ class VotingDisabled extends PureComponent<Props, State> {
       />
     ) : null);
     const projectName = (
-      <ProjectLink onClick={this.handleProjectLinkClick} role="navigation">
+      <StyledButton onClick={this.handleProjectLinkClick} onMouseDown={this.removeFocus} role="navigation">
         <T value={projectTitle} />
-      </ProjectLink>
+      </StyledButton>
+    );
+    const verificationLink = (
+      <StyledButton onClick={this.onVerify} onMouseDown={this.removeFocus}>
+        <FormattedMessage {...messages.verificationLinkText} />
+      </StyledButton>
     );
 
     return (
-      <Container>
-        <FormattedMessage {...message} values={{ enabledFromDate, projectName }} />
+      <Container className="e2e-voting-disabled">
+        <FormattedMessage
+          {...message}
+          values={{
+            enabledFromDate,
+            projectName,
+            verificationLink
+          }}
+        />
       </Container>
     );
   }

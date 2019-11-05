@@ -16,6 +16,9 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
+// events
+import { openVerificationModalWithContext } from 'containers/App/events';
+
 // styling
 import styled from 'styled-components';
 
@@ -23,6 +26,18 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const Container = styled.div``;
+
+const StyledButton = styled.button`
+  color: #1391A1;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+  display: inline-block;
+  padding: 0;
+`;
 
 interface InputProps {
   projectId: string | null;
@@ -38,17 +53,21 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class Survey extends PureComponent<Props, State> {
+  onVerify = () => {
+    openVerificationModalWithContext('ActionSurvey');
+  }
 
-  disabledMessage: {[key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor} = {
+  disabledMessage: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
     projectInactive: messages.surveyDisabledProjectInactive,
     maybeNotPermitted: messages.surveyDisabledMaybeNotPermitted,
     notPermitted: messages.surveyDisabledNotPermitted,
     notActivePhase: messages.surveyDisabledNotActivePhase,
+    notVerified: messages.surveyDisabledNotVerified,
   };
 
   render() {
@@ -56,7 +75,7 @@ class Survey extends PureComponent<Props, State> {
 
     if (isNilOrError(project)) return null;
 
-    const { show, disabledReason } = surveyTakingState({
+     const { show, disabledReason } = surveyTakingState({
       project,
       phaseContext: phase,
       signedIn: !isNilOrError(authUser),
@@ -93,7 +112,12 @@ class Survey extends PureComponent<Props, State> {
       return (
         <Container className={`warning ${className}`}>
           <Warning icon="lock">
-            <FormattedMessage {...message} />
+            <FormattedMessage
+              {...message}
+              values={{
+                verificationLink: <StyledButton onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
+              }}
+            />
           </Warning>
         </Container>
       );

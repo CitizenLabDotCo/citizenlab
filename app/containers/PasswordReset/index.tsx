@@ -139,7 +139,6 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
         this.setState({ processing: true, success: false });
         await resetPassword(password, token);
         this.setState({ password: null, processing: false, success: true });
-        /* setTimeout(() => this.setState({ success: false }), 8000); */
       } catch (error) {
         this.setState({ processing: false, success: false, submitError: true });
       }
