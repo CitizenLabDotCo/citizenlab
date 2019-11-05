@@ -68,6 +68,12 @@ const FormElement = styled.div`
   position: relative;
 `;
 
+const PasswordLabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const StyledInput = styled(Input)`
   input {
     &::placeholder {
@@ -94,9 +100,6 @@ const ForgotPassword = styled(Link)`
   font-weight: 300;
   text-decoration: none;
   cursor: pointer;
-  position: absolute;
-  right: 16px;
-  top: 16px;
 
   &:hover {
     color: #000;
@@ -320,11 +323,16 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
               </FormElement>
 
               <FormElement>
-                <FormLabel
-                  htmlFor="password"
-                  labelMessage={messages.passwordLabel}
-                  thin
-                />
+                <PasswordLabelContainer>
+                  <FormLabel
+                    htmlFor="password"
+                    labelMessage={messages.passwordLabel}
+                    thin
+                  />
+                  <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
+                    <FormattedMessage {...messages.forgotPassword} />
+                  </ForgotPassword>
+                </PasswordLabelContainer>
                 <PasswordInput
                   type="password"
                   id="password"
@@ -334,9 +342,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                   setRef={this.handlePasswordInputSetRef}
                   autocomplete="current-password"
                 />
-                <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
-                  <FormattedMessage {...messages.forgotPassword} />
-                </ForgotPassword>
+
               </FormElement>
 
               <FormElement>
