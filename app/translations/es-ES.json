@@ -195,7 +195,7 @@
   "app.components.InitiativesShowPage.goBack": "Volver",
   "app.components.InitiativesShowPage.goBackToList": "Volver a la lista",
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "No se encontraron iniciativas.",
-  "app.components.Input.charactersLeft": "",
+  "app.components.Input.a11y_charactersLeft": "",
   "app.components.Modal.closeModal": "Cerrar esta ventana",
   "app.components.PagesForm.dontChange": "No cambies esto! (a menos realmente sepas lo que estás haciendo)",
   "app.components.PagesForm.editContent": "Contenido",
