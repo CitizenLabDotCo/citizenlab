@@ -27,7 +27,7 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -53,7 +53,6 @@ const StyledA = styled.a`
 const TooltipWrapper = styled.div`
   display: flex;
   align-items: center;
-  color: ${colors.popoverDarkFg};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   padding: 15px;
@@ -139,6 +138,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             interactive={true}
             placement="bottom"
             content={tippyContent}
+            theme="light"
           >
             <ButtonWrapper tabIndex={0}>
               <Button {...this.props} linkTo={linkTo} disabled={isPostingDisabled}>
