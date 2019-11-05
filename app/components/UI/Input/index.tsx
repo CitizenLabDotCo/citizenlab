@@ -193,7 +193,7 @@ class Input extends React.PureComponent<Props, State> {
           <>
             <ScreenReaderOnly aria-live="polite">
               <FormattedMessage
-                {...messages.charactersLeft}
+                {...messages.a11y_charactersLeft}
                 values={{
                   currentCharCount,
                   maxCharCount
