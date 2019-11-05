@@ -201,6 +201,7 @@
   "app.components.PagesForm.pageTitle": "Titre",
   "app.components.PagesShowPage.notFoundDescription": "La page demandée est introuvable",
   "app.components.PagesShowPage.notFoundTitle": "Page introuvable",
+  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "",
   "app.components.PostComponents.OfficialFeedback.cancel": "Annuler",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Supprimer",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Êtes-vous sûr de vouloir supprimer ce statut ?",

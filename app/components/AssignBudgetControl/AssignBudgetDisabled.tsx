@@ -70,7 +70,7 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
     );
 
     return (
-      <Container>
+      <Container className="e2e-assign-disabled">
         <FormattedMessage {...message} values={{ enabledFromDate, verificationLink }} />
       </Container>
     );

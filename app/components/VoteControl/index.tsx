@@ -519,7 +519,8 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
     const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
     const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
     const shouldVerify = !votingEnabled && votingDisabledReason === 'not_verified';
-    const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify));
+    const verifiedButNotPermitted = !shouldVerify &&  votingDisabledReason === 'not_permitted';
+    const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify || verifiedButNotPermitted));
 
     if (!showVoteControl) return null;
 

@@ -267,7 +267,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
               onMouseDown={this.removeFocus}
               onClick={this.onVote}
               disabled={!votingEnabled}
-              className={`${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'} ${votingEnabled ? 'enabled' : 'disabled'}`}
+              className={`e2e-comment-vote ${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'} ${votingEnabled ? 'enabled' : 'disabled'}`}
             >
               <UpvoteIcon name="upvote" className={`${voted ? 'voted' : ''} ${votingEnabled ? 'enabled' : 'disabled'}`} />
             </UpvoteButton>

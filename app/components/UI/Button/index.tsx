@@ -140,6 +140,8 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
   const finalBgHoverColor = props.bgHoverColor || get(defaultStyleValues, `${props.buttonStyle}.bgHoverColor`) || darken(0.12, finalBgColor);
   const finalTextColor = props.textColor || get(defaultStyleValues, `${props.buttonStyle}.textColor`);
   const finalTextHoverColor = props.textHoverColor || get(defaultStyleValues, `${props.buttonStyle}.textHoverColor`) || darken(0.2, finalTextColor);
+  const finalIconColor = props.iconColor || get(defaultStyleValues, `${props.buttonStyle}.iconColor`) || finalTextColor;
+  const finalIconHoverColor = props.iconHoverColor || get(defaultStyleValues, `${props.buttonStyle}.iconHoverColor`) || finalTextHoverColor;
   const finalBorderColor = props.borderColor || get(defaultStyleValues, `${props.buttonStyle}.borderColor`) || 'transparent';
   const finalBorderHoverColor = props.borderHoverColor || get(defaultStyleValues, `${props.buttonStyle}.borderHoverColor`) || darken(0.2, finalBorderColor);
   const finalBoxShadow = props.boxShadow || get(defaultStyleValues, `${props.buttonStyle}.boxShadow`) || 'none';
@@ -159,7 +161,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
       }
 
       ${StyledIcon} {
-        fill: ${finalTextColor};
+        fill: ${finalIconColor};
       }
 
       &:not(.processing):hover,
@@ -173,7 +175,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
         }
 
         ${StyledIcon} {
-          fill: ${finalTextHoverColor};
+          fill: ${finalIconHoverColor};
         }
       }
     }
@@ -313,6 +315,8 @@ export interface ButtonContainerProps {
   iconSize?: string;
   processing?: boolean;
   disabled?: boolean;
+  iconColor?: string;
+  iconHoverColor?: string;
   textColor?: string;
   textHoverColor?: string;
   bgColor?: string;
@@ -406,6 +410,8 @@ class Button extends PureComponent<Props, State> {
       type,
       text,
       form,
+      iconColor,
+      iconHoverColor,
       textColor,
       textHoverColor,
       bgColor,
@@ -498,6 +504,8 @@ class Button extends PureComponent<Props, State> {
         iconSize={iconSize}
         processing={processing}
         disabled={disabled}
+        iconColor={iconColor}
+        iconHoverColor={iconHoverColor}
         textColor={textColor}
         textHoverColor={textHoverColor}
         bgColor={bgColor}
