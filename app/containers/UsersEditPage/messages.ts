@@ -196,5 +196,9 @@ export default defineMessages({
   verifiedText: {
     id: 'app.containers.UsersEditPage.verifiedText',
     defaultMessage: 'Your identity has been verified. Your city will be able to base decision on you as part of the community',
+  },
+  verifyAgain: {
+    id: 'app.containers.UsersEditPage.verifyAgain',
+    defaultMessage: 'Information about you are outdated ? Click here to verify again.',
   }
 });

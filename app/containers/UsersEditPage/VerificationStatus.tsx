@@ -84,6 +84,12 @@ const Text = styled.p`
   line-height: normal;
 `;
 
+const VerifyAgainButton = styled.button`
+  text-align: left;
+  margin: 0;
+  padding: 0;
+`;
+
 const VerifyButton = styled(Button)``;
 
 const VerificationStatus = memo(({ className }: { className?: string }) => {
@@ -115,6 +121,9 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
               <Text>
                 <FormattedMessage {...messages.verifiedText} />
               </Text>
+              <VerifyAgainButton onClick={openVerificationModal} id="e2e-verify-user-button">
+                <FormattedMessage {...messages.verifyAgain} />
+              </VerifyAgainButton>
             </Content>
           </>
           :
