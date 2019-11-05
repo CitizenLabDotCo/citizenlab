@@ -198,6 +198,7 @@
   "app.components.PagesForm.pageTitle": "Título",
   "app.components.PagesShowPage.notFoundDescription": "La página que busca no fue encontrada",
   "app.components.PagesShowPage.notFoundTitle": "Página no encontrada",
+  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "",
   "app.components.PostComponents.OfficialFeedback.cancel": "Cancelar",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Eliminar",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "¿Está seguro que deseas eliminar esta actualización oficial?",
