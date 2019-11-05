@@ -13,9 +13,9 @@ describe('Idea new page', () => {
   });
 
   beforeEach(() => {
-    cy.login(email, password);
+    cy.setLoginCookie(email, password);
     cy.visit('/projects/an-idea-bring-it-to-your-council/ideas/new');
-    cy.wait(1000);
+    cy.wait(500);
     cy.acceptCookies();
   });
 

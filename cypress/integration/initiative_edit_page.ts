@@ -11,7 +11,6 @@ describe('Initiative form page', () => {
   const newInitiativeContent = randomString(60);
   let jwt: string;
   let initiativeId: string;
-  let initiativeSlug: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password);
@@ -20,12 +19,11 @@ describe('Initiative form page', () => {
       return cy.apiCreateInitiative({ initiativeTitle, initiativeContent, jwt });
     }).then((initiative) => {
       initiativeId = initiative.body.data.id;
-      initiativeSlug = initiative.body.data.attributes.slug;
     });
   });
 
   beforeEach(() => {
-    cy.login(email, password);
+    cy.setLoginCookie(email, password);
     cy.visit(`/initiatives/edit/${initiativeId}`);
     cy.acceptCookies();
     cy.get('.e2e-initiative-edit-page');
@@ -76,7 +74,7 @@ describe('Initiative form page', () => {
     });
 
     // save the form
-    cy.get('.e2e-initiative-publish-button').click();
+    cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
     cy.wait(3000);
 
     // TODO

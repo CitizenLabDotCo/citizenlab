@@ -10,8 +10,8 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
     cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
       projectId = project.body.data.id;
       return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
-    }).then((idea1) => {
-      ideaId = idea1.body.data.id;
+    }).then((idea) => {
+      ideaId = idea.body.data.id;
     });
   });
 
@@ -82,9 +82,12 @@ describe('Idea cards without filter sidebar pagination', () => {
   const ideaContent1 = randomString();
   const ideaTitle2 = randomString();
   const ideaContent2 = randomString();
+  const ideaTitle3 = randomString();
+  const ideaContent3 = randomString();
   let projectId: string;
   let ideaId1: string;
   let ideaId2: string;
+  let ideaId3: string;
 
   before(() => {
     cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
@@ -95,6 +98,9 @@ describe('Idea cards without filter sidebar pagination', () => {
       return cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2);
     }).then((idea2) => {
       ideaId2 = idea2.body.data.id;
+      return cy.apiCreateIdea(projectId, ideaTitle3, ideaContent3);
+    }).then((idea3) => {
+      ideaId3 = idea3.body.data.id;
       cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
       cy.wait(1000);
     });
@@ -109,5 +115,6 @@ describe('Idea cards without filter sidebar pagination', () => {
   after(() => {
     cy.apiRemoveIdea(ideaId1);
     cy.apiRemoveIdea(ideaId2);
+    cy.apiRemoveIdea(ideaId3);
   });
 });
