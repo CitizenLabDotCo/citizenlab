@@ -8,8 +8,12 @@ import Label from 'components/UI/Label';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 import { isBoolean } from 'util';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Container: any = styled.div`
   width: 100%;
@@ -164,12 +168,6 @@ class Input extends React.PureComponent<Props, State> {
           </LabelWrapper>
         }
 
-        {maxCharCount &&
-          <CharCount className={`${tooManyChars && 'error'}`}>
-            {currentCharCount}/{maxCharCount}
-          </CharCount>
-        }
-
         <input
           aria-label={ariaLabel}
           id={id}
@@ -190,6 +188,23 @@ class Input extends React.PureComponent<Props, State> {
           autoComplete={autocomplete}
           {...optionalProps}
         />
+
+       {maxCharCount &&
+          <>
+            <ScreenReaderOnly aria-live="polite">
+              <FormattedMessage
+                {...messages.charactersLeft}
+                values={{
+                  currentCharCount,
+                  maxCharCount
+                }}
+              />
+            </ScreenReaderOnly>
+            <CharCount className={`${tooManyChars && 'error'}`} aria-hidden>
+              {currentCharCount}/{maxCharCount}
+            </CharCount>
+          </>
+        }
 
         <div>
           <Error className="e2e-input-error" text={error} size="1" />
