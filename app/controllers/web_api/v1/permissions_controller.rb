@@ -31,8 +31,9 @@ class WebApi::V1::PermissionsController < ApplicationController
     end
   end
 
-  def groups_inclusion
+  def participation_conditions
     if current_user
+      # TODO
       render json: @permission.groups_inclusion(current_user), status: :ok
     else
       user_not_authorized

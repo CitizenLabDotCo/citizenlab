@@ -150,3 +150,10 @@ en:
       <p>The initiators are invited to present their initiative on the next council meeting. We will provide an official update.</p>
     default_eligibility_criteria: >
       <p>The initiative should</p> <p>- be within the city's competences</p>
+  smart_group_rules:
+    lives_in_has_value: "Lives in %{domicile}"
+    lives_in_outside: "Lives outside this region"
+    lives_in_not_has_value: "Doesn't live in %{domicile}"
+    lives_in_not_outside: "Doesn't live outside this region"
+    lives_in_is_empty: "Hasn't specified where they live"
+    lives_in_not_is_empty: "Specified where they live"
