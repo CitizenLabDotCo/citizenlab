@@ -72,4 +72,21 @@ describe SmartGroupRules::LivesIn do
     end
   end
 
+  describe "description_multiloc" do
+    let(:area) {create(:area)}
+    let(:lives_in_has_value_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType' => 'lives_in',
+      'predicate' => 'has_value',
+      'value' => area.id
+    })}
+
+    it "successfully translates different combinations of rules" do
+      expect(lives_in_has_value_rule.description_multiloc).to eq ({
+        'en' => "Lives in #{area.title_multiloc['en']}",
+        'fr-FR' => "Habite à #{area.title_multiloc['fr-FR']}",
+        'nl-NL' => "Woont in #{area.title_multiloc['nl-NL']}"
+      })
+    end
+  end
+
 end
