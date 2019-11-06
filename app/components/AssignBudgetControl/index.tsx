@@ -2,6 +2,7 @@ import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { includes, isUndefined, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import { setMightOpenVerificationModal, verificationNeeded } from 'containers/App/events';
 
 // components
 import Button from 'components/UI/Button';
@@ -137,6 +138,13 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    const disabledReason = !isNilOrError(this.props.idea) && get(this.props.idea.attributes.action_descriptor.budgeting, 'disabled_reason', null);
+    if (disabledReason === 'not_verified') {
+      verificationNeeded('ActionBudget');
+    }
+  }
+
   isDisabled = () => {
     const { participationContextType, project, phase } = this.props;
 
@@ -163,6 +171,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
     };
 
     if (!authUser) {
+      setMightOpenVerificationModal('ActionBudget');
       unauthenticatedAssignBudgetClick && unauthenticatedAssignBudgetClick();
       this.props.unauthenticatedAssignClick();
     } else if (!isNilOrError(idea) && !isNilOrError(authUser)) {
