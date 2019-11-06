@@ -46,7 +46,7 @@ describe SingleSignOnService do
         })
       })
 
-      expect_any_instance_of(SingleSignOnService::Google).to receive(:image_available?).and_return(true)
+      expect_any_instance_of(OmniauthMethods::Google).to receive(:image_available?).and_return(true)
       user_attrs = service.profile_to_user_attrs(auth)
 
       expect(user_attrs).to include({
