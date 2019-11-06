@@ -13,7 +13,6 @@ import Toggle from 'components/UI/Toggle';
 import { Section, SectionField } from 'components/admin/Section';
 import IconTooltip from 'components/UI/IconTooltip';
 
-
 // services
 import { projectByIdStream, IProject } from 'services/projects';
 import { phaseStream, IPhase } from 'services/phases';
