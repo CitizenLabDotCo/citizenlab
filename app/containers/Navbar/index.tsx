@@ -179,7 +179,7 @@ const NavigationDropdown = styled.div`
   position: relative;
 `;
 
-const NavigationDropdownItem = styled.a`
+const NavigationDropdownItem = styled.button`
   color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   fill: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   font-size: ${fontSizes.base}px;
