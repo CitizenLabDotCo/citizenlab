@@ -83,7 +83,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :google_oauth2, :setup => GOOGLE_SETUP_PROC, name: 'google'
   provider :azure_activedirectory, :setup => AZURE_AD_SETUP_PROC
   provider :openid_connect, :setup => FRANCECONNECT_SETUP_PROC, name: 'franceconnect'
-  provider :bosa_fas, :setup => BOSA_FAS_SETUP_PROC, name: 'bosa_fas'
+  provider :openid_connect, :setup => BOSA_FAS_SETUP_PROC, name: 'bosa_fas'
 end
 
 

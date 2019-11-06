@@ -39,6 +39,10 @@ module Verification
       end
     end
 
+    def is_active? method_name
+      active_methods_for_tenant.include? method_by_name(method_name)
+    end
+
     class NoMatchError < StandardError; end
     class NotEntitledError < StandardError; end
     class VerificationTakenError < StandardError; end
@@ -47,7 +51,18 @@ module Verification
     def verify_sync user:, method_name:, verification_parameters:
       method = method_by_name(method_name)
       uid = method.verify_sync verification_parameters
+      make_verification(user: user, method_name: method_name, uid: uid)
+    end
 
+    def verify_omniauth user:, auth:
+      method = method_by_name(auth.provider)
+      uid = auth['uid']
+      make_verification(user: user, method_name: method.name, uid: uid)
+    end
+
+    private
+
+    def make_verification user:, method_name:, uid:
       if taken?(user, uid, method_name)
         raise VerificationTakenError.new
       end
@@ -67,8 +82,6 @@ module Verification
 
       verification
     end
-
-    private
 
     def taken?(user, uid, method_name)
       ::Verification::Verification.where(
