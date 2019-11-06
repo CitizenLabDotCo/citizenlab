@@ -34,11 +34,12 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
 import { darken, rgba } from 'polished';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
+import { ideasCount } from 'services/stats';
 
 const gapWidth = 35;
 
@@ -572,6 +573,11 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
           selectedTopicIds={selectedIdeaFilters.topics}
           onChange={!biggerThanLargeTablet ? this.handleTopicsOnChange : this.handleTopicsOnChangeAndApplyFilter}
         />
+
+        <ScreenReaderOnly aria-live="polite">
+          Search term: {selectedIdeaFilters.search}
+          {ideasFilterCounts && `Total ideas: ${ideasFilterCounts.total}`}
+        </ScreenReaderOnly>
       </FiltersSidebarContainer>
     );
 

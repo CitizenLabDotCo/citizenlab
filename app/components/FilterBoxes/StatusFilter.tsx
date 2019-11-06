@@ -170,9 +170,9 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
           );
         })}
 
-        <ScreenReaderOnly aria-live="polite">
+        {/* <ScreenReaderOnly aria-live="polite"> */}
           {/* Pronounce selected status + number of ideas visible for this status */}
-          {selectedStatus ?
+          {/* {selectedStatus ?
             <>
               <FormattedMessage
                 {...messages.a11y_selectedStatus}
@@ -190,7 +190,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
               <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: allIdeasCount }} />
             </>
           }
-        </ScreenReaderOnly>
+        </ScreenReaderOnly> */}
       </Container>
     );
   }
