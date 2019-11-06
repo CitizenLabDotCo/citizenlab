@@ -100,6 +100,7 @@ type State = {
   verificationModalOpened: boolean;
   verificationModalInitialStep: VerificationModalSteps;
   verificationContext?: boolean;
+  mightOpenVerificationModal: boolean;
 };
 
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
@@ -121,7 +122,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       userDeletedModalOpened: false,
       userActuallyDeleted: false,
       verificationModalOpened: false,
-      verificationModalInitialStep: null
+      verificationModalInitialStep: null,
+      mightOpenVerificationModal: false
     };
     this.subscriptions = [];
   }
@@ -137,7 +139,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     }
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
-      const { authUser } = this.state;
+      const { authUser, mightOpenVerificationModal } = this.state;
       const previousPathname = location.pathname;
       const nextPathname = newLocation.pathname;
       const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
@@ -148,6 +150,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
       trackPage(newLocation.pathname);
 
+      console.log(nextPathname, nextPathname.endsWith('sign-up'));
+      console.log(authUser, mightOpenVerificationModal);
+
       // If already created a user (step 1 of sign-up) and there's a required field in step 2,
       // redirect to complete-signup page
       if (isObject(authUser) && !isString(registrationCompletedAt) && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')) {
@@ -155,6 +160,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           pathname: '/complete-signup',
           search: newLocation.search
         });
+        // If coming from signUp step one or two and awaiting to open verification modal, open verificationModal
+      }else if (!authUser && mightOpenVerificationModal && !nextPathname.endsWith('sign-up') && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')) {
+        console.log('mightOpen + didnt sign up -> settofalse');
+        this.setState({ mightOpenVerificationModal: false });
       }
     });
 
@@ -207,7 +216,20 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         this.openVerificationModal(eventValue.step, eventValue.withContext);
       }),
 
+      eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.verificationNeeded).subscribe(({ eventValue }) => {
+        if (this.state.mightOpenVerificationModal) {
+          this.openVerificationModal(eventValue.step, eventValue.withContext);
+          this.setState({ mightOpenVerificationModal: false });
+        }
+      }),
+
+      eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.mightOpen).subscribe(() => {
+        console.log('mightOpenCatched');
+        this.setState({ mightOpenVerificationModal: true });
+      }),
+
       eventEmitter.observeEvent(VerificationModalEvents.close).subscribe(() => {
+        console.log('emittedclose');
         this.closeVerificationModal();
       }),
 
@@ -253,6 +275,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   openVerificationModal = (step: VerificationModalSteps, context?: boolean) => {
+    console.log('openverificationmodal');
     this.setState({
       verificationModalOpened: true,
       verificationModalInitialStep: step,
@@ -261,9 +284,11 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   closeVerificationModal = () => {
+    console.log('closingIt');
     this.setState({
       verificationModalOpened: false,
-      verificationModalInitialStep: null
+      verificationModalInitialStep: null,
+      mightOpenVerificationModal: false
     });
   }
 
@@ -296,6 +321,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                        !ideaEditPage &&
                        !initiativeEditPage;
     const showShortFeedback = !signInPage && !signUpPage;
+    console.log(verificationModalOpened);
 
     return (
       <>
