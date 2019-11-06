@@ -14,7 +14,7 @@ describe('Verification modal', () => {
   });
 
   beforeEach(() => {
-    cy.login(email, password);
+    cy.setLoginCookie(email, password);
     cy.visit('/profile/edit');
     cy.wait(2000);
     cy.acceptCookies();

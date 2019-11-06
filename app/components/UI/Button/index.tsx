@@ -551,8 +551,8 @@ class Button extends PureComponent<Props, State> {
           <StyledButton
             aria-label={ariaLabel}
             aria-expanded={ariaExpanded}
-            aria-disabled={ariaDisabled}
             aria-describedby={ariaDescribedby}
+            aria-disabled={ariaDisabled}
             disabled={disabled}
             ref={this.props.setSubmitButtonRef}
             className={buttonClassnames}
