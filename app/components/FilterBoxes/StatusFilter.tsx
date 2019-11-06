@@ -135,13 +135,14 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
             {allIdeasCount}
           </Count>
           <ScreenReaderOnly>
+            {/* Pronounce number of ideas of All status when focus/hover it */}
             <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: allIdeasCount }} />
           </ScreenReaderOnly>
         </AllStatus>
 
         {statuses.map((status) => {
           const filterIdeasCount = get(filterCounts, `${type}_status_id.${status.id}`, 0);
-          const isFilterSelected = selectedStatusId === status.id;
+          const isFilterSelected = status.id === selectedStatusId;
 
           return (
             <Status
@@ -162,6 +163,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
                 <CloseIcon name="close" />
               )}
               <ScreenReaderOnly>
+                {/* Pronounce number of ideas per status when focus/hover it */}
                 <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: filterIdeasCount }} />
               </ScreenReaderOnly>
             </Status>
@@ -169,31 +171,25 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
         })}
 
         <ScreenReaderOnly aria-live="polite">
-          {/* Pronounce selected status */}
+          {/* Pronounce selected status + number of ideas visible for this status */}
           {selectedStatus ?
-            <FormattedMessage
-              {...messages.a11y_selectedStatus}
-              values={{
-                selectedStatus: <T value={selectedStatus.attributes.title_multiloc} />
-              }}
-            />
+            <>
+              <FormattedMessage
+                {...messages.a11y_selectedStatus}
+                values={{
+                  selectedStatus: <T value={selectedStatus.attributes.title_multiloc} />
+                }}
+              />
+              <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: get(filterCounts, `${type}_status_id.${selectedStatusId}`, 0) }} />
+            </>
             :
-            <FormattedMessage
-              {...messages.a11y_selectedAllStatus}
-            />
+            <>
+              <FormattedMessage
+                {...messages.a11y_selectedAllStatus}
+              />
+              <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: allIdeasCount }} />
+            </>
           }
-
-          {/* Pronounce number of ideas per status */}
-          <FormattedMessage
-            {...messages.a11y_allIdeas}
-            values={{
-              allIdeasCount
-            }}
-          />
-          {statuses.map(status => {
-            const filterIdeasCount = get(filterCounts, `${type}_status_id.${status.id}`, 0);
-            return `${<T value={status.attributes.title_multiloc} />}: ${filterIdeasCount}`;
-          })}
         </ScreenReaderOnly>
       </Container>
     );
