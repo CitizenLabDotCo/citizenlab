@@ -106,7 +106,7 @@ const ModalContainer: any = styled(clickOutside)`
   `}
 `;
 
-const StyledFocusLock = styled(FocusLock)<{ width: number }>`
+const StyledFocusLock = styled(FocusLock) <{ width: number }>`
   width: 100%;
   max-width: ${({ width }) => width}px;
   height: 100vh;
@@ -249,6 +249,7 @@ export type Props = {
   label?: string;
   children?: any;
   closeOnClickOutside?: boolean;
+  remaining?: boolean;
 };
 
 type State = {};
@@ -313,7 +314,9 @@ export default class Modal extends PureComponent<Props, State> {
     window.addEventListener('keydown', this.handleKeypress);
     disableBodyScroll(this.ModalContentElement);
     eventEmitter.emit('modal', 'modalOpened', null);
-    this.unlisten = clHistory.listen(this.props.close);
+    if (!this.props.remaining) {
+      this.unlisten = clHistory.listen(this.props.close);
+    }
   }
 
   manuallyCloseModal = () => {
