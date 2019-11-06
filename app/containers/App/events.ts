@@ -3,8 +3,13 @@ import { VerificationModalSteps } from 'components/VerificationModal/Verificatio
 
 /* might open is fired when a user attempts to achieve an action they need to sign up for
  * it sets a flag on the apps state.
- * when the user leaves the registration flow with signinp up, we remove that flag and nothing happens.
- * if the user does sign up and an action requires verification, we fire verification verificationNeeded
+ * When the flag is up,
+ * and the user is not signed in, navigating to any page but sign-up or complete sign up removes the flag
+ * and the user is signed in, navigating from any page but sign up or complete sign up removes the flag
+ -> leaving the signup flow, whether signed or unsigned, removes the flag.
+ * The only case where the flag is stil up when loading a page is
+ * when the user is redirected from the signup flow to the page he attempted to perform the action.
+ * When accessing action requires verification, we fire verification verificationNeeded
  * when the might open flag is still up, it opens the modal, when the might open flag is not up nothing happens
 */
 

@@ -150,9 +150,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
       trackPage(newLocation.pathname);
 
-      console.log(nextPathname, nextPathname.endsWith('sign-up'));
-      console.log(authUser, mightOpenVerificationModal);
-
       // If already created a user (step 1 of sign-up) and there's a required field in step 2,
       // redirect to complete-signup page
       if (isObject(authUser) && !isString(registrationCompletedAt) && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')) {
@@ -160,9 +157,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           pathname: '/complete-signup',
           search: newLocation.search
         });
-        // If coming from signUp step one or two and awaiting to open verification modal, open verificationModal
-      }else if (!authUser && mightOpenVerificationModal && !nextPathname.endsWith('sign-up') && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')) {
-        console.log('mightOpen + didnt sign up -> settofalse');
+        // when unsigned and leaving the flow or signed in and not coming from the flow, remove the flag
+      } else if (!authUser && mightOpenVerificationModal && !nextPathname.endsWith('sign-up') && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')
+        || (authUser && mightOpenVerificationModal && !previousPathname.endsWith('sign-up') && !previousPathname.replace(/\/$/, '').endsWith('complete-signup'))) {
         this.setState({ mightOpenVerificationModal: false });
       }
     });
@@ -224,12 +221,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       }),
 
       eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.mightOpen).subscribe(() => {
-        console.log('mightOpenCatched');
         this.setState({ mightOpenVerificationModal: true });
       }),
 
       eventEmitter.observeEvent(VerificationModalEvents.close).subscribe(() => {
-        console.log('emittedclose');
         this.closeVerificationModal();
       }),
 
@@ -275,7 +270,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   openVerificationModal = (step: VerificationModalSteps, context?: boolean) => {
-    console.log('openverificationmodal');
     this.setState({
       verificationModalOpened: true,
       verificationModalInitialStep: step,
@@ -284,7 +278,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   closeVerificationModal = () => {
-    console.log('closingIt');
     this.setState({
       verificationModalOpened: false,
       verificationModalInitialStep: null,
@@ -316,12 +309,11 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const signUpPage = isPage('sign_up', location.pathname);
     const theme = getTheme(tenant);
     const showFooter = !adminPage &&
-                       !ideaFormPage &&
-                       !initiativeFormPage &&
-                       !ideaEditPage &&
-                       !initiativeEditPage;
+      !ideaFormPage &&
+      !initiativeFormPage &&
+      !ideaEditPage &&
+      !initiativeEditPage;
     const showShortFeedback = !signInPage && !signUpPage;
-    console.log(verificationModalOpened);
 
     return (
       <>
