@@ -48,6 +48,7 @@ class OmniauthCallbackController < ApplicationController
       end
 
       set_auth_cookie(provider: provider)
+      handle_verification(auth, @user)
       redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), omniauth_params))
 
     else # New user
@@ -58,6 +59,7 @@ class OmniauthCallbackController < ApplicationController
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
         set_auth_cookie(provider: provider)
+        handle_verification(auth, @user)
         redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), omniauth_params))
 
       rescue ActiveRecord::RecordInvalid => e
@@ -119,6 +121,18 @@ class OmniauthCallbackController < ApplicationController
       value: auth_token(@user, provider).token,
       expires: 1.month.from_now
     }
+  end
+
+  def handle_verification auth, user
+    if Tenant.current.has_feature? 'verification'
+      verification_service = Verification::VerificationService.new
+      if verification_service.is_active? auth.provider
+        verification_service.verify_omniauth(
+          auth: auth,
+          user: user
+        )
+      end
+    end
   end
 
 end
