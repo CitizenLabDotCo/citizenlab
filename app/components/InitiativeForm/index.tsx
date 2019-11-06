@@ -222,6 +222,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onChange={onChangeTitle}
                 onBlur={this.onBlur('title_multiloc')}
                 selectedLocale={locale}
+                autocomplete="off"
               />
               {touched.title_multiloc
                 && errors.title_multiloc ? <Error message={errors.title_multiloc.message} />

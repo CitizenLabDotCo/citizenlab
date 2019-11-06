@@ -96,7 +96,7 @@ export type InputProps = {
   spellCheck?: boolean;
   readOnly?: boolean;
   required?: boolean;
-  autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password' | 'off'; // https://www.w3.org/TR/WCAG21/#input-purposes
+  autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password' | 'off' | 'on'; // https://www.w3.org/TR/WCAG21/#input-purposes
   className?: string;
 };
 
