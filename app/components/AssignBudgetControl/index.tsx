@@ -138,7 +138,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     const disabledReason = !isNilOrError(this.props.idea) && get(this.props.idea.attributes.action_descriptor.budgeting, 'disabled_reason', null);
     if (disabledReason === 'not_verified') {
       verificationNeeded('ActionBudget');
