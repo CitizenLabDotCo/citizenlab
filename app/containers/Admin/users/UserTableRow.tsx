@@ -9,7 +9,7 @@ import Avatar from 'components/Avatar';
 import Toggle from 'components/UI/Toggle';
 import Checkbox from 'components/UI/Checkbox';
 import Icon from 'components/UI/Icon';
-import Popover from 'components/UI/Popover';
+import Tippy from '@tippy.js/react';
 
 // Translation
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -46,14 +46,21 @@ const MoreOptionsWrapper = styled.div`
 
 const MoreOptionsIcon = styled(Icon) `
   width: 20px;
+  height: 20px;
   fill: ${colors.adminSecondaryTextColor};
-  cursor: pointer;
 `;
 
-const MoreOptionsIconWrapper = styled.button`
-  cursor: pointer;
+const MoreOptionsButton = styled.button`
+  width: 25px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0;
   margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 
   &:hover ${MoreOptionsIcon} {
     fill: #000;
@@ -65,16 +72,15 @@ const CreatedAt = styled.td`
 `;
 
 const DropdownList = styled.div`
-  max-height: 210px;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 `;
 
 const DropdownListButton = styled.button`
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -123,7 +129,6 @@ interface Props {
 }
 
 interface State {
-  optionsOpened: boolean;
   isAdmin: boolean;
   createdAt: string;
 }
@@ -132,7 +137,6 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      optionsOpened: false,
       isAdmin: isAdmin({ data: this.props.user }),
       createdAt: moment(this.props.user.attributes.created_at).format('LL')
     };
@@ -186,23 +190,13 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     clHistory.push(`/profile/${slug}`);
   }
 
-  handePopoverOnClickOutside = (event: FormEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    this.setState({ optionsOpened: false });
-  }
-
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
   }
 
-  toggleOpened = () => {
-    this.setState({ optionsOpened: !this.state.optionsOpened });
-  }
-
   render() {
     const { user, selected } = this.props;
-    const { optionsOpened, isAdmin } = this.state;
+    const { isAdmin } = this.state;
 
     return (
       <tr key={user.id} className="e2e-user-table-row">
@@ -229,7 +223,15 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
         </td>
         <td>
           <MoreOptionsWrapper>
-            <Popover
+            <Tippy
+              placement="bottom-end"
+              interactive={true}
+              arrow={true}
+              trigger="click"
+              duration={[200, 0]}
+              flip={true}
+              flipBehavior="flip"
+              flipOnUpdate={true}
               content={
                 <DropdownList>
                   <DropdownListButton onClick={this.goToUserProfile(this.props.user.attributes.slug)}>
@@ -246,17 +248,11 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                   </DropdownListButton>
                 </DropdownList>
               }
-              offset={35}
-              position="bottom"
-              backgroundColor={colors.adminMenuBackground}
-              borderColor={colors.adminMenuBackground}
-              onClickOutside={this.handePopoverOnClickOutside}
-              dropdownOpened={optionsOpened}
             >
-              <MoreOptionsIconWrapper onMouseDown={this.removeFocus} onClick={this.toggleOpened}>
+              <MoreOptionsButton onMouseDown={this.removeFocus}>
                 <MoreOptionsIcon name="more-options" />
-              </MoreOptionsIconWrapper>
-            </Popover>
+              </MoreOptionsButton>
+            </Tippy>
           </MoreOptionsWrapper>
         </td>
       </tr>

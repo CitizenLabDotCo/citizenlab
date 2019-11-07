@@ -4,17 +4,21 @@ import { fontSizes, colors, invisibleA11yText, booleanClass } from 'utils/styleU
 
 const Container = styled.label`
   color: ${colors.label};
-  display: inline-block;
   display: flex;
   align-items: center;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
+  line-height: 21px;
   margin: 0;
   padding: 0;
   margin-bottom: 10px;
 
   & > :not(last-child) {
     margin-right: 4px;
+  }
+
+  & .tooltip-icon {
+    margin-left: 6px;
   }
 
   &.invisible {
