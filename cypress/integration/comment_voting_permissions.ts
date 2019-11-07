@@ -33,6 +33,7 @@ describe('Comment voting permissions', () => {
       cy.visit('ideas/verified-idea');
       cy.acceptCookies();
       cy.get('.e2e-comments-loaded');
+      cy.wait(1000);
       cy.get('.e2e-comment-vote').should('have.class', 'disabled');
     });
     it('lets verified users vote', () => {
