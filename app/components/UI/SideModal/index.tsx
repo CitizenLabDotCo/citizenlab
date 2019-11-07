@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import FocusLock from 'react-focus-lock';
 import eventEmitter from 'utils/eventEmitter';
 import { Subscription } from 'rxjs';
+import { FocusOn } from 'react-focus-on';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -163,7 +162,6 @@ type State = {
 export default class SideModal extends PureComponent<Props, State> {
   private el: HTMLDivElement;
   private ModalPortal = document.getElementById('modal-portal');
-  private ModalContentElement: HTMLDivElement | null;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -172,7 +170,6 @@ export default class SideModal extends PureComponent<Props, State> {
       innerModalOpened: false
     };
     this.el = document.createElement('div');
-    this.ModalContentElement = null;
     this.subscriptions = [];
   }
 
@@ -181,10 +178,6 @@ export default class SideModal extends PureComponent<Props, State> {
       console.log('There was no Portal to insert the modal. Please make sure you have a Portal root');
     } else {
       this.ModalPortal.appendChild(this.el);
-    }
-
-    if (this.props.opened) {
-      this.openModal();
     }
 
     this.subscriptions = [
@@ -198,10 +191,6 @@ export default class SideModal extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    if (this.props.opened) {
-      this.cleanup();
-    }
-
     if (!this.ModalPortal) {
       console.log('There was no Portal to insert the modal. Please make sure you have a Portal root');
     } else {
@@ -211,24 +200,8 @@ export default class SideModal extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if (!prevProps.opened && this.props.opened) {
-      this.openModal();
-    } else if (prevProps.opened && !this.props.opened) {
-      this.cleanup();
-    }
-  }
-
-  openModal = () => {
-    setTimeout(() => disableBodyScroll(this.ModalContentElement), 500);
-  }
-
   manuallyCloseModal = () => {
     this.props.close();
-  }
-
-  cleanup = () => {
-    enableBodyScroll(this.ModalContentElement);
   }
 
   clickOutsideModal = () => {
@@ -239,10 +212,6 @@ export default class SideModal extends PureComponent<Props, State> {
     event.preventDefault();
     event.stopPropagation();
     this.props.close();
-  }
-
-  setContentRef = (element: HTMLDivElement) => {
-    this.ModalContentElement = (element || null);
   }
 
   render() {
@@ -268,12 +237,12 @@ export default class SideModal extends PureComponent<Props, State> {
           role="dialog"
           aria-label={label}
         >
-          <FocusLock autoFocus={false}>
+          <FocusOn autoFocus={false}>
             <ModalContainer
               onClickOutside={this.manuallyCloseModal}
               closeOnClickOutsideEnabled={!this.state.innerModalOpened}
             >
-              <ModalContent id="e2e-side-modal-content" ref={this.setContentRef}>
+              <ModalContent id="e2e-side-modal-content">
                 {children}
               </ModalContent>
             </ModalContainer>
@@ -287,7 +256,7 @@ export default class SideModal extends PureComponent<Props, State> {
               </HiddenSpan>
               <CloseIcon name="close" />
             </CloseButton >
-          </FocusLock>
+          </FocusOn>
         </Overlay>
       </CSSTransition>
     ), document.body);

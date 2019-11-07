@@ -18,7 +18,7 @@ import messages from './messages';
 
 // Components
 import Button from 'components/UI/Button';
-import AsyncSelect from 'react-select/lib/Async';
+import AsyncSelect from 'react-select/async';
 
 // Style
 import styled from 'styled-components';
