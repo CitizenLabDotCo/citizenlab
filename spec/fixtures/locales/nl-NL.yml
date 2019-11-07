@@ -1,8 +1,12 @@
 nl:
   smart_group_rules:
-    lives_in_has_value: "Woont in %{domicile}"
-    lives_in_outside: "Woont buiten deze regio"
-    lives_in_not_has_value: "Woont niet in %{domicile}"
-    lives_in_not_outside: "Woont niet buiten deze regio"
-    lives_in_is_empty: "Heeft hun woonplaats niet aangegeven"
-    lives_in_not_is_empty: "Heeft hun woonplaats aangegeven"
+    custom_field_checkbox:
+      is_checked: "Heeft '%{title}' aangevinkt"
+      not_is_checked: "Heeft '%{title}' niet aangevinkt"
+    lives_in:
+      has_value: "Woont in %{domicile}"
+      has_value_outside: "Woont buiten deze regio"
+      not_has_value: "Woont niet in %{domicile}"
+      not_has_value_outside: "Woont niet buiten deze regio"
+      is_empty: "Heeft geen woonplaats aangegeven"
+      not_is_empty: "Heeft een woonplaats aangegeven"

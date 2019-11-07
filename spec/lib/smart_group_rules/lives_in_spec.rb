@@ -135,12 +135,12 @@ describe SmartGroupRules::LivesIn do
       expect(lives_in_is_empty_rule.description_multiloc).to eq ({
         'en'    => 'Hasn\'t specified where they live',
         'fr-FR' => 'N\'a pas specifié leurs domicile',
-        'nl-NL' => 'Heeft hun woonplaats niet aangegeven'
+        'nl-NL' => 'Heeft geen woonplaats aangegeven'
       })
       expect(lives_in_not_is_empty_rule.description_multiloc).to eq ({
         'en'    => 'Specified where they live',
         'fr-FR' => 'A specifié leurs domicile',
-        'nl-NL' => 'Heeft hun woonplaats aangegeven'
+        'nl-NL' => 'Heeft een woonplaats aangegeven'
       })
     end
   end
