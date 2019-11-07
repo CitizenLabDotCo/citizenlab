@@ -87,8 +87,8 @@ const DateEdited = styled.span`
 
 const StyledMoreActionsMenu = styled(MoreActionsMenu)`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
 
   ${media.smallerThanMinTablet`
     top: 5px;
@@ -197,7 +197,6 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
             <StyledMoreActionsMenu
               ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
               actions={this.getActions(officialFeedbackPost.id)}
-              tooltipPositionSmallViewPort="bottom-left"
             />
           }
 

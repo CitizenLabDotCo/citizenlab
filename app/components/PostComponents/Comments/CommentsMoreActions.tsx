@@ -162,7 +162,6 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
           ariaLabel={ariaLabel}
           className={className}
           actions={actions}
-          tooltipPositionSmallViewPort="bottom-left"
         />
 
         <Modal
