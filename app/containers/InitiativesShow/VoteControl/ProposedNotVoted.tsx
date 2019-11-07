@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
-import { StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
+import { StatusExplanation } from './SharedStyles';
 import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -11,7 +11,8 @@ import { ITenantSettings } from 'services/tenant';
 
 import CountDown from './CountDown';
 import Icon from 'components/UI/Icon';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
+
 import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';
 
@@ -113,6 +114,18 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
     const voteLimit = voting_threshold;
     const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
 
+    const thresholdReachedTooltip = threshold_reached_message ? (
+      <IconTooltip
+        icon="info"
+        iconColor={this.props.theme.colorText}
+        theme="light"
+        placement="bottom"
+        content={
+          <T value={threshold_reached_message} supportHtml />
+        }
+      />
+    ) : <></>;
+
     return (
       <Container>
         <CountDownWrapper>
@@ -131,7 +144,14 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
                   </b>
                 )
               }}
-            />
+            >
+              {(text) => (
+                <>
+                  {text}
+                  {thresholdReachedTooltip}
+                </>
+              )}
+            </FormattedMessage>
           </OnDesktop>
           <OnMobile>
             <FormattedMessage
@@ -145,22 +165,15 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
                   </b>
                 )
               }}
-            />
-          </OnMobile>
-          {threshold_reached_message &&
-            <Tooltip
-              content={
-                <TooltipWrapper>
-                  <T value={threshold_reached_message} supportHtml />
-                </TooltipWrapper>
-              }
-              offset={24}
-              withPin={true}
-              position="bottom"
             >
-              <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />} />
-            </Tooltip>
-          }
+              {(text) => (
+                <>
+                  {text}
+                  {thresholdReachedTooltip}
+                </>
+              )}
+            </FormattedMessage>
+          </OnMobile>
         </StatusExplanation>
         <VoteCounter>
           <VoteText aria-hidden={true}>

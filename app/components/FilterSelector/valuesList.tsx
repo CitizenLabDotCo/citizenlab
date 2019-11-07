@@ -10,10 +10,14 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const List = styled.div`
-  width: 100%;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 `;
 
 const ListItemText = styled.div`
+  flex: 1 1 auto;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -23,13 +27,13 @@ const ListItemText = styled.div`
   word-wrap: break-word;
   word-break: break-word;
   hyphens: auto;
+  margin-right: 10px;
 `;
 
 const ListItem = styled.button`
-  width: 100%;
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin: 0px;
   margin-bottom: 4px;
   padding: 10px;
@@ -51,10 +55,6 @@ const ListItem = styled.button`
       color: #000;
     }
   }
-`;
-
-const StyledCheckbox = styled(Checkbox)`
-  margin-left: 10px;
 `;
 
 interface Value {
@@ -151,7 +151,7 @@ export default class ValuesList extends PureComponent<Props, State> {
                   <ListItemText>{entry.text}</ListItemText>
 
                   {multiple &&
-                    <StyledCheckbox
+                    <Checkbox
                       checked={checked}
                       onChange={this.handleOnToggle(entry, index)}
                     />

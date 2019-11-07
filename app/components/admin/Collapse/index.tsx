@@ -1,43 +1,40 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import Label from 'components/UI/Label';
 import Icon from 'components/UI/Icon';
-import { colors } from 'utils/styleUtils';
+import IconTooltip from 'components/UI/IconTooltip';
+
+import { fontSizes, colors } from 'utils/styleUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 const timeout = 400;
 
-const StyledLabel = styled(Label)`
-  padding-bottom: 0px;
-  transition: all 80ms ease-out;
-  cursor: pointer;
-`;
+const Container = styled.div``;
 
 const ArrowIcon = styled(Icon) `
   fill: ${(props) => props.theme.colors.label};
+  flex: 0 0 11px;
   height: 11px;
   width: 11px;
   margin-right: 8px;
-  transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
-              fill 80ms ease-out;
+  transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1), fill 80ms ease-out;
 
   &.opened {
     transform: rotate(90deg);
   }
 `;
 
-const Options: any = styled.div`
+const CollapseExpandButton = styled.button`
   display: flex;
   align-items: center;
-  flex-direction: row;
-  padding-bottom: 8px;
-  transition: all 80ms ease-out;
+  padding: 0;
+  margin: 0;
+  margin-right: 8px;
+  border: none;
   cursor: pointer;
+  transition: all 80ms ease-out;
 
   &:hover {
-    ${StyledLabel} {
-      color: ${colors.adminTextColor};
-    }
+    color: ${colors.adminTextColor};
 
     ${ArrowIcon} {
       fill: ${colors.adminTextColor};
@@ -45,13 +42,18 @@ const Options: any = styled.div`
   }
 `;
 
+const Label = styled.label`
+  color: ${colors.label};
+  display: flex;
+  align-items: center;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+`;
+
 const CollapseContainer = styled.div`
-  width: 497px;
-  position: relative;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px #ddd;
-  background: #fff;
-  z-index: 1;
   opacity: 0;
   display: none;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -65,7 +67,7 @@ const CollapseContainer = styled.div`
 
     &.collapse-enter-active {
       opacity: 1;
-      max-height: 500px;
+      max-height: 1000px;
       overflow: hidden;
       display: block;
     }
@@ -79,7 +81,7 @@ const CollapseContainer = styled.div`
 
   &.collapse-exit {
     opacity: 1;
-    max-height: 500px;
+    max-height: 1000px;
     overflow: hidden;
     display: block;
 
@@ -98,18 +100,17 @@ const CollapseContainer = styled.div`
 
 interface Props {
   label: JSX.Element | string;
-  children: JSX.Element | string;
+  labelTooltip?: React.ReactChild | null;
   opened: boolean;
   onToggle: (event: React.MouseEvent) => void;
   className?: string;
 }
 
-const CollapseInner = styled.div`
-  padding: 20px;
-  padding-bottom: 0px;
-`;
-
 class Collapse extends PureComponent<Props> {
+
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
 
   handleToggle = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -117,16 +118,17 @@ class Collapse extends PureComponent<Props> {
   }
 
   render() {
-    const { label, children, opened, className } = this.props;
+    const { label, labelTooltip, children, opened, className } = this.props;
 
     return (
-      <>
-        <Options onClick={this.handleToggle}>
-          <ArrowIcon name="chevron-right" className={`${opened && 'opened'}`} />
-          <StyledLabel>
+      <Container className={className}>
+        <Label>
+          <CollapseExpandButton type="button" onMouseDown={this.removeFocus} onClick={this.handleToggle}>
+            <ArrowIcon name="chevron-right" className={`${opened && 'opened'}`} />
             {label}
-          </StyledLabel>
-        </Options>
+          </CollapseExpandButton>
+          {labelTooltip && <IconTooltip content={labelTooltip} />}
+        </Label>
 
         <CSSTransition
           classNames="collapse"
@@ -137,13 +139,11 @@ class Collapse extends PureComponent<Props> {
           enter={true}
           exit={true}
         >
-          <CollapseContainer className={className}>
-            <CollapseInner>
-              {children}
-            </CollapseInner>
+          <CollapseContainer>
+            {children}
           </CollapseContainer>
         </CSSTransition>
-      </>
+      </Container>
     );
   }
 }

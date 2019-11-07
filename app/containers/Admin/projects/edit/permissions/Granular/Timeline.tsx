@@ -1,36 +1,40 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
+// components
 import Collapse from 'components/admin/Collapse';
 import ActionsForm from './ActionsForm';
 
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetPhasePermissions from 'resources/GetPhasePermissions';
-import { isNilOrError } from 'utils/helperUtils';
+// services
 import { IPermissionData, updatePhasePermission } from 'services/participationContextPermissions';
 
+// resources
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetPhasePermissions from 'resources/GetPhasePermissions';
+
+// i18n
 import T from 'components/T';
 
-const StyledCollapse = styled(Collapse)`
-  width: 100%;
-`;
+// styling
+import styled from 'styled-components';
 
-const InnerCollapse = styled.div`
+const Permissions = styled.div`
+  flex: 1;
   display: flex;
-  flex-wrap: wrap;
-  margin: 20px 0;
-  padding-bottom: 20px;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 25px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px #ddd;
+  background: #fff;
 `;
 
-interface InputProps {
-}
+interface InputProps { }
 
 interface DataProps {
   phases: GetPhasesChildProps;
 }
-interface Props extends InputProps, DataProps {
-}
+
+interface Props extends InputProps, DataProps { }
 
 interface State {
   openedPhase: string | null;
@@ -45,7 +49,7 @@ class Timeline extends PureComponent<Props, State> {
     };
   }
 
-  handleCollapseToggle = (phaseId) => () => {
+  handleCollapseToggle = (phaseId: string) => () => {
     const { openedPhase } = this.state;
     this.setState({ openedPhase: openedPhase === phaseId ? null : phaseId });
   }
@@ -65,14 +69,14 @@ class Timeline extends PureComponent<Props, State> {
 
     return (
       <div>
-        {phases && phases.map(phase => (
-          <StyledCollapse
+        {phases && phases.map((phase) => (
+          <Collapse
             key={phase.id}
             opened={openedPhase === phase.id}
             onToggle={this.handleCollapseToggle(phase.id)}
             label={<T value={phase.attributes.title_multiloc} />}
           >
-            <InnerCollapse>
+            <Permissions>
               <GetPhasePermissions phaseId={phase.id}>
                 {(permissions) => isNilOrError(permissions) ? null :
                   <ActionsForm
@@ -81,8 +85,8 @@ class Timeline extends PureComponent<Props, State> {
                   />
                 }
               </GetPhasePermissions>
-            </InnerCollapse>
-          </StyledCollapse>
+            </Permissions>
+          </Collapse>
         ))}
       </div>
     );

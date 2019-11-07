@@ -2,9 +2,8 @@ import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { isFunction } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import FocusLock from 'react-focus-lock';
 import eventEmitter from 'utils/eventEmitter';
+import { FocusOn } from 'react-focus-on';
 
 // i18n
 import messages from './messages';
@@ -106,7 +105,7 @@ const ModalContainer: any = styled(clickOutside)`
   `}
 `;
 
-const StyledFocusLock = styled(FocusLock)<{ width: number }>`
+const StyledFocusOn = styled(FocusOn)<{ width: number }>`
   width: 100%;
   max-width: ${({ width }) => width}px;
   height: 100vh;
@@ -311,7 +310,6 @@ export default class Modal extends PureComponent<Props, State> {
     this.goBackUrl = window.location.href;
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.handleKeypress);
-    disableBodyScroll(this.ModalContentElement);
     eventEmitter.emit('modal', 'modalOpened', null);
     this.unlisten = clHistory.listen(this.props.close);
   }
@@ -340,7 +338,6 @@ export default class Modal extends PureComponent<Props, State> {
     this.goBackUrl = null;
     window.removeEventListener('popstate', this.handlePopstateEvent);
     window.removeEventListener('keydown', this.handleKeypress);
-    enableBodyScroll(this.ModalContentElement);
 
     if (isFunction(this.unlisten)) {
       this.unlisten();
@@ -394,7 +391,7 @@ export default class Modal extends PureComponent<Props, State> {
           role="dialog"
           aria-label={label}
         >
-          <StyledFocusLock width={width as number}>
+          <StyledFocusOn width={width as number}>
             <ModalContainer
               className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
               onClickOutside={this.clickOutsideModal}
@@ -430,7 +427,7 @@ export default class Modal extends PureComponent<Props, State> {
                 <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
               }
             </ModalContainer>
-          </StyledFocusLock>
+          </StyledFocusOn>
         </Overlay>
       </CSSTransition>
     ),

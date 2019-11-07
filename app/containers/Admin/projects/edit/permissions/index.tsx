@@ -16,7 +16,8 @@ import { Section, SubSectionTitle, SectionTitle, SectionSubtitle, SectionField }
 import Moderators from './Moderators';
 import FeatureFlag from 'components/FeatureFlag';
 import Granular from './Granular';
-import InfoTooltip from 'components/UI/InfoTooltip';
+import IconTooltip from 'components/UI/IconTooltip';
+
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
 
@@ -208,7 +209,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
             <SectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.permissionTypeLabel} />
-                <InfoTooltip {...messages.permissionsTypeTooltip} />
+                <IconTooltip content={<FormattedMessage {...messages.permissionsTypeTooltip} />} />
               </SubSectionTitle>
 
               <RadioButtonsWrapper>
@@ -267,14 +268,19 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
           <StyledSection>
             <SubSectionTitle>
               <FormattedMessage {...messages.ideaAssignmentSectionTitle} />
-              <InfoTooltip
-                {...messages.ideaAssignmentTooltip}
-                values={{
-                  linkToIdeasOverview: (
-                    <StyledLink to={`/admin/projects/${projectId}/ideas`}>
-                      <FormattedMessage {...messages.ideasOverview} />
-                    </StyledLink>)
-                }}
+              <IconTooltip
+                content={
+                  <FormattedMessage
+                    {...messages.ideaAssignmentTooltip}
+                    values={{
+                      linkToIdeasOverview: (
+                        <StyledLink to={`/admin/projects/${projectId}/ideas`}>
+                          <FormattedMessage {...messages.ideasOverview} />
+                        </StyledLink>
+                      )
+                    }}
+                  />
+                }
               />
             </SubSectionTitle>
             <IdeaAssignment projectId={projectId} />
