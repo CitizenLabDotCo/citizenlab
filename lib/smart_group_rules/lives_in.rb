@@ -4,7 +4,6 @@ module SmartGroupRules
 
     PREDICATE_VALUES = %w(has_value not_has_value is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
-    RULE_TYPE = 'lives_in'
 
     attr_accessor :predicate, :value
 
@@ -22,7 +21,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "predicate" => {
               "type": "string",
@@ -41,7 +40,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "predicate" => {
               "type" => "string",
@@ -50,6 +49,10 @@ module SmartGroupRules
           }
         }
       ]
+    end
+
+    def self.rule_type
+      'lives_in'
     end
 
     def self.from_json json

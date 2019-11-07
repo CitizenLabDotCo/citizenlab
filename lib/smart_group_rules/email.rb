@@ -3,7 +3,6 @@ module SmartGroupRules
     include ActiveModel::Validations
 
     PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on)
-    RULE_TYPE = 'email'
 
     attr_accessor :predicate, :value
 
@@ -21,7 +20,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "predicate" => {
               "type": "string",
@@ -33,6 +32,10 @@ module SmartGroupRules
           },
         }
       ]
+    end
+
+    def self.rule_type
+      'email'
     end
 
     def self.from_json json

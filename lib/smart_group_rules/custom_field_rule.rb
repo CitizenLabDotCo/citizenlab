@@ -23,7 +23,7 @@ module SmartGroupRules
 
     def as_json
       json = {
-        'ruleType' => self.class::RULE_TYPE,
+        'ruleType' => rule_type,
         'customFieldId' => custom_field_id,
         'predicate' => predicate,
       }

@@ -10,7 +10,6 @@ module SmartGroupRules
       is_normal_user
       not_is_normal_user
     )
-    RULE_TYPE = "role"
 
     attr_accessor :predicate
 
@@ -25,7 +24,7 @@ module SmartGroupRules
         "properties" => {
           "ruleType" => {
             "type" => "string",
-            "enum" => [RULE_TYPE]
+            "enum" => [rule_type]
           },
           "predicate" => {
             "type" => "string",
@@ -33,6 +32,10 @@ module SmartGroupRules
           }
         }
       }
+    end
+
+    def self.rule_type
+      'role'
     end
 
     def self.from_json json

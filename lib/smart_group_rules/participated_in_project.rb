@@ -4,7 +4,6 @@ module SmartGroupRules
 
     PREDICATE_VALUES = %w(in not_in posted_in not_posted_in commented_in not_commented_in voted_idea_in not_voted_idea_in voted_comment_in not_voted_comment_in budgeted_in not_budgeted_in)
     VALUELESS_PREDICATES = []
-    RULE_TYPE = 'participated_in_project'
 
     attr_accessor :predicate, :value
 
@@ -21,7 +20,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [participated_in_project],
             },
             "predicate" => {
               "type": "string",
@@ -34,6 +33,10 @@ module SmartGroupRules
           },
         },
       ]
+    end
+
+    def self.rule_type
+      'participated_in_project'
     end
 
     def self.from_json json
