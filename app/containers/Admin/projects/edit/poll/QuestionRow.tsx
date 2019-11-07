@@ -9,7 +9,8 @@ import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptio
 // Components
 import Button from 'components/UI/Button';
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
-import InfoTooltip from 'components/UI/InfoTooltip';
+import IconTooltip from 'components/UI/IconTooltip';
+
 import T from 'components/T';
 
 import styled from 'styled-components';
@@ -17,16 +18,11 @@ import { colors } from 'utils/styleUtils';
 
 // Inline block so the button acts as a character and is stuck to the end of the title to make it clear it will edit the title text
 const EditTitleButton = styled(Button)`
-  display: inline-block
+  display: inline-block;
 `;
 
 const NoOptionsIndicator = styled(TextCell)`
   color: ${colors.clRed};
-`;
-
-const StyledInfoTooltip = styled(InfoTooltip)`
-  display: inline-block;
-  margin-right: 5px;
 `;
 
 // i18n
@@ -67,7 +63,7 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
       <GetPollOptions questionId={question.id} >
         {(options: GetPollOptionsChildProps) => !isNilOrError(options) && options.length === 0 ? (
           <NoOptionsIndicator>
-            <StyledInfoTooltip {...messages.noOptionsTooltip} position="bottom-left" iconColor={colors.clRed} />
+            <IconTooltip content={<FormattedMessage {...messages.noOptionsTooltip} />} />
             <FormattedMessage {...messages.noOptions} />
           </NoOptionsIndicator>
         ) : null}

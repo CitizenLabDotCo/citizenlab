@@ -3,23 +3,27 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   helmetTitle: {
     id: 'app.containers.PasswordRecovery.helmetTitle',
-    defaultMessage: `Forgot your password`,
+    defaultMessage: 'Forgot your password',
   },
   helmetDescription: {
     id: 'app.containers.PasswordRecovery.helmetDescription',
-    defaultMessage: `Forgot your password page`,
+    defaultMessage: 'Forgot your password page',
   },
   title: {
     id: 'app.containers.PasswordRecovery.title',
-    defaultMessage: `Forgot your password?`,
+    defaultMessage: 'Forgot your password?',
   },
   subtitle: {
     id: 'app.containers.PasswordRecovery.subtitle',
-    defaultMessage: `Enter your email below to receive a password reset link.`,
+    defaultMessage: 'Enter your email below to receive a password reset link.',
   },
   emailPlaceholder: {
     id: 'app.containers.PasswordRecovery.emailPlaceholder',
     defaultMessage: 'My email address',
+  },
+  emailLabel: {
+    id: 'app.containers.PasswordRecovery.emailLabel',
+    defaultMessage: 'Email',
   },
   resetPassword: {
     id: 'app.containers.PasswordRecovery.resetPassword',
