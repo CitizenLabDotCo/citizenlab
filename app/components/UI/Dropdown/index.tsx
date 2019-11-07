@@ -1,7 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
-import bowser from 'bowser';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
@@ -192,7 +191,6 @@ export default class Dropdown extends PureComponent<Props, State> {
               maxHeight={maxHeight}
               mobileMaxHeight={mobileMaxHeight}
               ref={this.setRef}
-              className={`${bowser.msie ? 'ie' : ''} ignore-body-scroll-lock`}
             >
               {content}
             </Content>

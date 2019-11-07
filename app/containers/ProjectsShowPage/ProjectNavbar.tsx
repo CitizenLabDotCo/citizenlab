@@ -322,7 +322,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     height="58px"
                     bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
                     textColor={theme.projectNavbarIdeaButtonTextColor}
-                    borderRadius="none"
+                    borderRadius="0px"
                   />
                 }
               </ProjectNavbarItems>
