@@ -84,7 +84,7 @@ describe('<ConsentManager />', () => {
       const handleMapCustomPreferences = wrapper.find('ConsentManagerBuilder').props().mapCustomPreferences;
 
       const preferences = initialPreferences;
-      const { customPreferences, destinationPreferences } = handleMapCustomPreferences({ destinations, preferences });
+      const { customPreferences, destinationPreferences } = handleMapCustomPreferences(destinations, preferences);
       expect(customPreferences).toEqual({
         advertising: true,
         analytics: true,
@@ -107,7 +107,7 @@ describe('<ConsentManager />', () => {
         analytics: false,
         functional: true
       } as CustomPreferences;
-      const { customPreferences, destinationPreferences } = handleMapCustomPreferences({ destinations, preferences });
+      const { customPreferences, destinationPreferences } = handleMapCustomPreferences(destinations, preferences);
       expect(customPreferences).toEqual({
         advertising: false,
         analytics: false,
@@ -133,7 +133,7 @@ describe('<ConsentManager />', () => {
         analytics: true,
         functional: false
       } as CustomPreferences;
-      const { customPreferences, destinationPreferences } = handleMapCustomPreferences({ destinations, preferences });
+      const { customPreferences, destinationPreferences } = handleMapCustomPreferences(destinations, preferences);
       expect(customPreferences).toEqual({
         advertising: true,
         analytics: true,
@@ -154,7 +154,7 @@ describe('<ConsentManager />', () => {
       const handleMapCustomPreferences = wrapper.find('ConsentManagerBuilder').props().mapCustomPreferences;
 
       const preferences = initialPreferences;
-      const { customPreferences, destinationPreferences } = handleMapCustomPreferences({ destinations, preferences });
+      const { customPreferences, destinationPreferences } = handleMapCustomPreferences(destinations, preferences);
       expect(customPreferences).toEqual({
         advertising: true,
         analytics: true,
