@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
+import uuidv1 from 'uuid/v1';
 
 const Container = styled.div`
   &:not(.hasLabel) {
@@ -124,6 +125,7 @@ export default class Checkbox extends PureComponent<Props, State> {
   render() {
     const { label, size, checked, className } = this.props;
     const { inputFocused } = this.state;
+    const uuid = uuidv1();
 
     return (
       <Container className={`${className ? className : ''} ${label ? 'hasLabel' : ''}`}>
@@ -136,7 +138,7 @@ export default class Checkbox extends PureComponent<Props, State> {
         >
           <Input
             ref={this.checkbox}
-            id="checkbox"
+            id={uuid}
             aria-checked={checked}
             type="checkbox"
             defaultChecked={checked}
@@ -147,7 +149,7 @@ export default class Checkbox extends PureComponent<Props, State> {
         </InputWrapper>
 
         {label &&
-          <Label htmlFor="checkbox" onClick={this.handleOnClick}>
+          <Label htmlFor={uuid} onClick={this.handleOnClick}>
             {label}
           </Label>
         }
