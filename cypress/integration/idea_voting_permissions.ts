@@ -69,7 +69,7 @@ describe('Idea voting permissions', () => {
     const lastName = randomString();
     const email = randomEmail();
     const password = randomString();
-    it('sends unsigned user to log-in then verify', () => {
+    it('sends unsigned user to log-in and not to verify', () => {
       cy.visit('projects/an-idea-bring-it-to-your-council/ideas');
       cy.acceptCookies();
       cy.get('.e2e-ideacard-upvote-button').first().click();
