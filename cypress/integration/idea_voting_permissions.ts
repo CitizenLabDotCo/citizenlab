@@ -47,22 +47,22 @@ describe('Idea voting permissions', () => {
       cy.wait(300);
       cy.get('.e2e-verification-modal');
     });
-    // it('sends unverified users to the verification flow', () => {
-    //   cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
-    //   cy.visit('projects/verified-ideation/ideas');
-    //   cy.acceptCookies();
-    //   cy.get('.e2e-ideacard-upvote-button').click();
-    //   cy.wait(100);
-    //   cy.get('.e2e-voting-disabled').find('button').click();
-    //   cy.get('.e2e-verification-modal');
-    // });
-    // it('lets verified users vote', () => {
-    //   cy.setLoginCookie(verifiedEmail, verifiedPassword);
-    //   cy.visit('projects/verified-ideation/ideas');
-    //   cy.acceptCookies();
-    //   cy.get('.e2e-ideacard-upvote-button').click();
-    //   cy.get('.e2e-vote-controls.up');
-    // });
+    it('sends unverified users to the verification flow', () => {
+      cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
+      cy.visit('projects/verified-ideation/ideas');
+      cy.acceptCookies();
+      cy.get('.e2e-ideacard-upvote-button').click();
+      cy.wait(100);
+      cy.get('.e2e-voting-disabled').find('button').click();
+      cy.get('.e2e-verification-modal');
+    });
+    it('lets verified users vote', () => {
+      cy.setLoginCookie(verifiedEmail, verifiedPassword);
+      cy.visit('projects/verified-ideation/ideas');
+      cy.acceptCookies();
+      cy.get('.e2e-ideacard-upvote-button').click();
+      cy.get('.e2e-vote-controls.up');
+    });
   });
   describe('a project that does not require verification', () => {
     const firstName = randomString();
