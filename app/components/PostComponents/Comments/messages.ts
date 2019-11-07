@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'app.components.Comments.commentingDisabledIdeaNotInCurrentPhase',
     defaultMessage: "Commenting on this idea is not possible since it's no longer or not yet in consideration.",
   },
+  commentingDisabledNotVerified: {
+    id: 'app.components.Comments.commentingDisabledNotVerified',
+    defaultMessage: 'Commenting on this idea requires verification of your account. {verificationLink}',
+  },
   commentingNotPermitted: {
     id: 'app.components.Comments.commentingNotPermitted',
     defaultMessage: 'Commenting on this idea is currently not allowed',
@@ -64,6 +68,10 @@ export default defineMessages({
   signInLinkText: {
     id: 'app.containers.Comments.signInLinkText',
     defaultMessage: 'log in',
+  },
+  verificationLinkText: {
+    id: 'app.containers.Comments.verificationLinkText',
+    defaultMessage: 'Verify your account now.',
   },
   adminCommentDeletionCancelButton: {
     id: 'app.containers.Comments.adminCommentDeletionCancelButton',

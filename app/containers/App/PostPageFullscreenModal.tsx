@@ -12,10 +12,11 @@ interface Props {
   type: 'idea' | 'initiative' | null;
   id: string | null;
   slug: string | null;
+  navbarRef?: HTMLElement | null;
   close: () => void;
 }
 
-const PostPageFullscreenModal = memo<Props>(({ id, slug, type, close }) => {
+const PostPageFullscreenModal = memo<Props>(({ id, slug, type, navbarRef, close }) => {
 
   const onClose = useCallback(() => {
     close();
@@ -57,6 +58,7 @@ const PostPageFullscreenModal = memo<Props>(({ id, slug, type, close }) => {
       close={onClose}
       url={slug ? `/${type}s/${slug}` : null}
       topBar={topBar}
+      navbarRef={navbarRef}
     >
       {content}
     </FullscreenModal>

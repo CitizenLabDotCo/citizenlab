@@ -2,7 +2,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
-import Link from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
 
 // Components
 import Avatar from 'components/Avatar';
@@ -39,23 +39,29 @@ const StyledCheckbox = styled(Checkbox) `
   margin-left: 5px;
 `;
 
-const StyledIcon = styled(Icon) `
+const MoreOptionsWrapper = styled.div`
   width: 20px;
-  height: 30px;
+  position: relative;
+`;
+
+const MoreOptionsIcon = styled(Icon) `
+  width: 20px;
   fill: ${colors.adminSecondaryTextColor};
   cursor: pointer;
+`;
 
-  &:hover {
+const MoreOptionsIconWrapper = styled.button`
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+
+  &:hover ${MoreOptionsIcon} {
     fill: #000;
   }
 `;
 
 const CreatedAt = styled.td`
   white-space: nowrap;
-`;
-
-const Options = styled.td`
-  display: inline-block;
 `;
 
 const DropdownList = styled.div`
@@ -108,28 +114,6 @@ const IconWrapper = styled.div`
   }
 `;
 
-const DropdownListLink = styled(Link)`
-  flex: 1 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: ${colors.adminLightText};
-  font-size: ${fontSizes.small}px;
-  font-weight: 400;
-  white-space: nowrap;
-  padding: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  cursor: pointer;
-  white-space: nowrap;
-
-  &:hover, &:focus {
-    outline: none;
-    color: white;
-    background: ${lighten(.1, colors.adminMenuBackground)};
-  }
-`;
-
-// Typings
 interface Props {
   user: IUserData;
   selected: boolean;
@@ -197,10 +181,19 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  goToUserProfile = (slug: string) => (event: FormEvent) => {
+    event.preventDefault();
+    clHistory.push(`/profile/${slug}`);
+  }
+
   handePopoverOnClickOutside = (event: FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ optionsOpened: false });
+  }
+
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
   }
 
   toggleOpened = () => {
@@ -234,33 +227,38 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
             onChange={this.handleAdminRoleOnChange}
           />
         </td>
-        <Options onClick={this.toggleOpened}>
-          <Popover
-            content={
-              <DropdownList>
-                <DropdownListLink to={`/profile/${this.props.user.attributes.slug}`}>
-                  <FormattedMessage {...messages.seeProfile} />
-                  <IconWrapper>
-                    <Icon name="eye" />
-                  </IconWrapper>
-                </DropdownListLink>
-                <DropdownListButton onClick={this.handleDeleteClick}>
-                  <FormattedMessage {...messages.deleteUser} />
-                  <IconWrapper>
-                    <Icon name="trash" />
-                  </IconWrapper>
-                </DropdownListButton>
-              </DropdownList>
-            }
-            top="35px"
-            backgroundColor={colors.adminMenuBackground}
-            borderColor={colors.adminMenuBackground}
-            onClickOutside={this.handePopoverOnClickOutside}
-            dropdownOpened={optionsOpened}
-          >
-            <StyledIcon name="more-options" />
-          </Popover>
-        </Options>
+        <td>
+          <MoreOptionsWrapper>
+            <Popover
+              content={
+                <DropdownList>
+                  <DropdownListButton onClick={this.goToUserProfile(this.props.user.attributes.slug)}>
+                    <FormattedMessage {...messages.seeProfile} />
+                    <IconWrapper>
+                      <Icon name="eye" />
+                    </IconWrapper>
+                  </DropdownListButton>
+                  <DropdownListButton onClick={this.handleDeleteClick}>
+                    <FormattedMessage {...messages.deleteUser} />
+                    <IconWrapper>
+                      <Icon name="trash" />
+                    </IconWrapper>
+                  </DropdownListButton>
+                </DropdownList>
+              }
+              offset={35}
+              position="bottom"
+              backgroundColor={colors.adminMenuBackground}
+              borderColor={colors.adminMenuBackground}
+              onClickOutside={this.handePopoverOnClickOutside}
+              dropdownOpened={optionsOpened}
+            >
+              <MoreOptionsIconWrapper onMouseDown={this.removeFocus} onClick={this.toggleOpened}>
+                <MoreOptionsIcon name="more-options" />
+              </MoreOptionsIconWrapper>
+            </Popover>
+          </MoreOptionsWrapper>
+        </td>
       </tr>
     );
   }

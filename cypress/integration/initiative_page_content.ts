@@ -56,7 +56,7 @@ describe('when logged out', () => {
 
 describe('when logged in as an admin', () => {
   it('has the More Options menu and opens it', () => {
-    cy.login('admin@citizenlab.co', 'testtest');
+    cy.setAdminLoginCookie();
     cy.visit('/initiatives/cleaning-the-sidewalks-party');
     cy.wait(1000);
     cy.get('#e2e-initiative-more-actions').click();

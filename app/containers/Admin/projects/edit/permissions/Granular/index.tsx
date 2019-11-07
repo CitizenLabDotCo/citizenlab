@@ -9,7 +9,7 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { StyledSection } from '../';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 30px;

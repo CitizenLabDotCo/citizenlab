@@ -5,14 +5,16 @@ import { fontSizes, colors, invisibleA11yText, booleanClass } from 'utils/styleU
 const Container = styled.label`
   color: ${colors.label};
   display: inline-block;
+  display: flex;
+  align-items: center;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin: 0;
   padding: 0;
-  padding-bottom: 10px;
+  margin-bottom: 10px;
 
   & > :not(last-child) {
-    margin-right: 7px;
+    margin-right: 4px;
   }
 
   &.invisible {

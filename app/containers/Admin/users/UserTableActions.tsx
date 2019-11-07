@@ -48,7 +48,7 @@ const TableOptions = styled.div`
   padding-bottom: 15px;
   padding-left: 5px;
   padding-right: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
   border-bottom: solid 1px ${colors.separation};
   user-select: none;
 `;
@@ -61,9 +61,12 @@ const UserCount = styled.span`
 `;
 
 const ActionButton = styled.button`
+  height: 42px;
   margin-right: 40px;
   position: relative;
-  padding: 5px;
+  padding: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   display: flex;
@@ -338,6 +341,10 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
       selectedCount = selectedUsers.length;
     }
 
+    const exportType = selectedUsers === 'none' && !groupId ? 'exportAllUsers'
+    : selectedUsers === 'none' && groupId ? 'exportGroup'
+    : 'exportSelectedUsers';
+
     return (
       <TableOptions>
         <ActionButton onClick={this.toggleAllUsers}>
@@ -417,11 +424,9 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
           </ActionButton>
         }
 
-        <ActionButton onClick={this.exportUsers} className="export">
+        <ActionButton onClick={this.exportUsers} className={`export e2e-${exportType}`}>
           <StyledIcon name="userExport" />
-          {selectedUsers === 'none' && !groupId && <FormattedMessage {...messages.exportAllUsers} />}
-          {selectedUsers === 'none' && groupId && <FormattedMessage {...messages.exportGroup} />}
-          {selectedUsers !== 'none' && <FormattedMessage {...messages.exportSelectedUsers} />}
+          <FormattedMessage {...messages[exportType]} />
         </ActionButton>
       </TableOptions>
     );

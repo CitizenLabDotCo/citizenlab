@@ -49,7 +49,7 @@ describe('Landing page - signed in', () => {
   before(() => {
     cy.apiSignup(firstName, lastName, email, password).then((user) => {
       userId = user.body.data.id;
-      cy.login(email, password);
+      cy.setLoginCookie(email, password);
       cy.goToLandingPage();
     });
   });

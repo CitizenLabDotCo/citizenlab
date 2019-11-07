@@ -3,7 +3,7 @@ import { Table } from 'semantic-ui-react';
 import Checkbox from 'components/UI/Checkbox';
 import { FormattedMessage } from 'utils/cl-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import InfoTooltip from 'components/UI/InfoTooltip';
 import FeatureFlag from 'components/FeatureFlag';
 import messages from '../../messages';
 import { TableHeaderCellText } from '.';
