@@ -101,6 +101,7 @@ type State = {
   verificationModalInitialStep: VerificationModalSteps;
   verificationContext?: boolean;
   mightOpenVerificationModal: boolean;
+  navbarRef: HTMLElement | null;
 };
 
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
@@ -123,7 +124,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       userActuallyDeleted: false,
       verificationModalOpened: false,
       verificationModalInitialStep: null,
-      mightOpenVerificationModal: false
+      mightOpenVerificationModal: false,
+      navbarRef: null
     };
     this.subscriptions = [];
   }
@@ -285,6 +287,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     });
   }
 
+  setNavbarRef = (navbarRef: HTMLElement) => {
+    this.setState({ navbarRef });
+  }
+
   render() {
     const { location, children } = this.props;
     const {
@@ -298,7 +304,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       userActuallyDeleted,
       verificationModalOpened,
       verificationModalInitialStep,
-      verificationContext
+      verificationContext,
+      navbarRef
     } = this.state;
     const adminPage = isPage('admin', location.pathname);
     const initiativeFormPage = isPage('initiative_form', location.pathname);
@@ -333,6 +340,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                         id={modalId}
                         slug={modalSlug}
                         close={this.closePostPageModal}
+                        navbarRef={navbarRef}
                       />
                     </Suspense>
                   </ErrorBoundary>
@@ -365,7 +373,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <Navbar />
+                    <Navbar setRef={this.setNavbarRef} />
                   </ErrorBoundary>
 
                   <InnerContainer>
