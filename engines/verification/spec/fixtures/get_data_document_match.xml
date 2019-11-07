@@ -1,0 +1,16 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <type:GetDataDocumentResponse xmlns:type="http://tempuri.org/COW/type/">
+         <type:EstadoRespuesta>000</type:EstadoRespuesta>
+         <type:RUNPersona>12025365</type:RUNPersona>
+         <type:DvPersona>0</type:DvPersona>
+         <type:CodTipoDocumento>C</type:CodTipoDocumento>
+         <type:CodClaseDocumento>10</type:CodClaseDocumento>
+         <type:NumDocumento>518137850</type:NumDocumento>
+         <type:NumSerie>A001529382</type:NumSerie>
+         <type:IndVigencia>S</type:IndVigencia>
+         <type:FhoVcto>24/07/2029 00:00:00</type:FhoVcto>
+         <type:IndBloqueo>NO BLOQUEADO</type:IndBloqueo>
+      </type:GetDataDocumentResponse>
+   </soap:Body>
+</soapenv:Envelope>
