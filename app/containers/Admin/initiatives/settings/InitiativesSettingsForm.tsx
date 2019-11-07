@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { pick } from 'lodash-es';
 import { isNilOrError, isFullMultiloc } from 'utils/helperUtils';
-
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
@@ -12,10 +11,8 @@ import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors, FormikProps } from 'formik';
 import Label from 'components/UI/Label';
-import InfoTooltip from 'components/UI/InfoTooltip';
-
+import IconTooltip from 'components/UI/IconTooltip';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
 import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc, Locale } from 'typings';
 import messages from '../messages';
@@ -128,7 +125,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
               label={(
                 <FormattedMessage {...messages.fieldThresholdReachedMessage} />
               )}
-              labelTooltip={<InfoTooltip {...messages.fieldThresholdReachedMessageInfo} />}
+              labelTooltip={<IconTooltip content={<FormattedMessage {...messages.fieldThresholdReachedMessageInfo} />} />}
               name="threshold_reached_message"
               noImages
               noVideos
@@ -140,10 +137,8 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
           <SectionField>
             <Field
               selectedLocale={this.state.selectedLocale}
-              label={(
-                <FormattedMessage {...messages.fieldEligibilityCriteria} />
-              )}
-              labelTooltip={<InfoTooltip {...messages.fieldEligibilityCriteriaInfo} />}
+              label={<FormattedMessage {...messages.fieldEligibilityCriteria} />}
+              labelTooltip={<IconTooltip content={<FormattedMessage {...messages.fieldEligibilityCriteriaInfo} />} />}
               name="eligibility_criteria"
               noImages
               noVideos

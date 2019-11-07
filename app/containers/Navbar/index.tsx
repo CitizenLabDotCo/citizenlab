@@ -353,7 +353,9 @@ const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
   `}
 `;
 
-interface InputProps {}
+interface InputProps {
+  setRef?: (arg: HTMLElement) => void | undefined;
+}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
@@ -399,6 +401,10 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     LoadableLanguageSelector.preload();
   }
 
+  handleRef = (element: HTMLElement) => {
+    this.props.setRef && this.props.setRef(element);
+  }
+
   render() {
     const {
       projects,
@@ -440,6 +446,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
         <Container
           id="navbar"
           className={`${adminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
+          ref={this.handleRef}
         >
           <ContainerInner>
             <Left>
