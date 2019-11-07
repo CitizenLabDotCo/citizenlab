@@ -1,8 +1,12 @@
 en:
   smart_group_rules:
-    lives_in_has_value: "Lives in %{domicile}"
-    lives_in_outside: "Lives outside this region"
-    lives_in_not_has_value: "Doesn't live in %{domicile}"
-    lives_in_not_outside: "Doesn't live outside this region"
-    lives_in_is_empty: "Hasn't specified where they live"
-    lives_in_not_is_empty: "Specified where they live"
+    custom_field_checkbox:
+      is_checked: "Checked '%{title}'"
+      not_is_checked: "Didn't check '%{title}'"
+    lives_in:
+      has_value: "Lives in %{domicile}"
+      has_value_outside: "Lives outside this region"
+      not_has_value: "Doesn't live in %{domicile}"
+      not_has_value_outside: "Doesn't live outside this region"
+      is_empty: "Hasn't specified where they live"
+      not_is_empty: "Specified where they live"

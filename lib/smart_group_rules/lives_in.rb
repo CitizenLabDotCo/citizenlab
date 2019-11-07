@@ -82,21 +82,21 @@ module SmartGroupRules
         when 'has_value'
           case value
           when 'outside'
-            I18n.t('smart_group_rules.lives_in_outside')
+            I18n.t('smart_group_rules.lives_in.has_value_outside')
           else
-            I18n.t('smart_group_rules.lives_in_has_value', domicile: Area.find(value).title_multiloc[locale])
+            I18n.t('smart_group_rules.lives_in.has_value', domicile: Area.find(value).title_multiloc[locale])
           end
         when 'not_has_value'
           case value
           when 'outside'
-            I18n.t('smart_group_rules.lives_in_not_outside')
+            I18n.t('smart_group_rules.lives_in.not_has_value_outside')
           else
-            I18n.t('smart_group_rules.lives_in_not_has_value', domicile: Area.find(value).title_multiloc[locale])
+            I18n.t('smart_group_rules.lives_in.not_has_value', domicile: Area.find(value).title_multiloc[locale])
           end
         when 'is_empty'
-          I18n.t('smart_group_rules.lives_in_is_empty')
+          I18n.t('smart_group_rules.lives_in.is_empty')
         when 'not_is_empty'
-          I18n.t('smart_group_rules.lives_in_not_is_empty')    
+          I18n.t('smart_group_rules.lives_in.not_is_empty')    
         else
           raise "Unsupported predicate #{predicate}"
         end
