@@ -270,7 +270,22 @@ if ['public','example_org'].include? Apartment::Tenant.current
       polls: {
         enabled: true,
         allowed: true
-      }
+      },
+      verification: {
+        enabled: true,
+        allowed: true,
+        verification_methods: [
+          {
+            name: 'cow',
+            api_username: 'fake_username',
+            api_password: 'fake_password',
+            rut_empresa: 'fake_rut_empresa'
+          },
+          {
+            name: 'bogus'
+          },
+        ],
+      },
     }
   })
 
