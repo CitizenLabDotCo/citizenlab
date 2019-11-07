@@ -20,7 +20,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [participated_in_project],
+              "enum" => [rule_type],
             },
             "predicate" => {
               "type": "string",
