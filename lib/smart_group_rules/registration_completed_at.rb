@@ -4,8 +4,6 @@ module SmartGroupRules
 
     PREDICATE_VALUES = %w(is_before is_exactly is_after is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
-    RULE_TYPE = 'registration_completed_at'
-
     attr_accessor :predicate, :value
 
     validates :predicate, presence: true
@@ -22,7 +20,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "predicate" => {
               "type": "string",
@@ -43,7 +41,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "predicate" => {
               "type" => "string",
@@ -52,6 +50,10 @@ module SmartGroupRules
           }
         }
       ]
+    end
+
+    def self.rule_type
+      'registration_completed_at'
     end
 
     def self.from_json json
