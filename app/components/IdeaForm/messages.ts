@@ -53,10 +53,6 @@ export default defineMessages({
     id: 'app.components.IdeaForm.imageUploadPlaceholder',
     defaultMessage: 'Select an image for your idea.<br /> This will increase the visibility of your idea!',
   },
-  imageDropzonePlaceholder: {
-    id: 'app.container.IdeaForm.imageDropzonePlaceholder',
-    defaultMessage: 'Drop your image here',
-  },
   budgetLabel: {
     id: 'app.container.IdeaForm.budgetLabel',
     defaultMessage: 'Budget (in {currency}, max. {maxBudget})',

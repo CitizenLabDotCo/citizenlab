@@ -1,5 +1,5 @@
 import { Multiloc, GraphqlMultiloc, Locale } from 'typings';
-import { keys, uniq, isArray, isObject, isEmpty, get } from 'lodash-es';
+import { keys, uniq, isArray, isObject, isEmpty, get, has } from 'lodash-es';
 import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
 
@@ -14,7 +14,7 @@ export function getLocalized(
     const graphqlTenantLocales = tenantLocales.map(tenantLocale => convertToGraphqlLocale(tenantLocale));
     const baseLocales = uniq([locale, graphqlLocale, ...tenantLocales, ...graphqlTenantLocales]);
 
-    if (isArray(multiloc) && !isEmpty(multiloc) && multiloc[0].content && multiloc[0].locale) {
+    if (isArray(multiloc) && !isEmpty(multiloc) && has(multiloc[0], 'content') && has(multiloc[0], 'locale')) {
       const multilocLocales = multiloc.map(item => item.locale);
       const graphqlMultilocLocales = multilocLocales.map(multilocLocale => convertToGraphqlLocale(multilocLocale));
       const candidateLocales = uniq([...baseLocales, ...multilocLocales, ...graphqlMultilocLocales]).filter(locale => !locale.startsWith('__'));

@@ -414,32 +414,23 @@ export class PostManager extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  posts: ({ type, projectId, projects, render }) => type === 'Initiatives' ? (
-    <GetInitiatives
-      type="paginated"
-      pageSize={10}
-      sort="new"
-    >
-      {render}
-    </GetInitiatives>
-  ) : (
-    <GetIdeas
-      type="paginated"
-      pageSize={10}
-      sort="new"
-      projectIds={type === 'ProjectIdeas' && projectId
-        ? [projectId]
-        : type === 'AllIdeas' && projects
-          ? projects.map(project => project.id)
-          : undefined
-      }
-    >
-      {render}
-    </GetIdeas>
-  ),
-  postStatuses: ({ type, render }) => type === 'Initiatives'
-    ? <GetInitiativeStatuses>{render}</GetInitiativeStatuses>
-    : <GetIdeaStatuses>{render}</GetIdeaStatuses>
+  posts: ({ type, projectId, projects, render }) => {
+    if (type === 'Initiatives') {
+      return <GetInitiatives type="paginated" pageSize={10} sort="new">{render}</GetInitiatives>;
+    }
+
+    if (type === 'ProjectIdeas') {
+      return <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={projectId ? [projectId] : undefined}>{render}</GetIdeas>;
+    }
+
+    if (type === 'AllIdeas') {
+      const projectIds = !!(projects && projects.length > 0) ? projects.map(project => project.id) : undefined;
+      return <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={projectIds}>{render}</GetIdeas>;
+    }
+
+    return null;
+  },
+  postStatuses: ({ type, render }) => type === 'Initiatives' ? <GetInitiativeStatuses>{render}</GetInitiativeStatuses> : <GetIdeaStatuses>{render}</GetIdeaStatuses>
 });
 
 const PostManagerWithDragDropContext = DragDropContext(HTML5Backend)(PostManager);

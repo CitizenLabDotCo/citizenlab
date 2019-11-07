@@ -25,4 +25,12 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.postingNotActivePhase',
     defaultMessage: 'You can\'t post ideas in a past or future phase.',
   },
+  postingNotVerified: {
+    id: 'app.containers.IdeaButton.postingNotVerified',
+    defaultMessage: 'You need to verify your account to post an idea here. {verificationLink}',
+  },
+  verificationLinkText: {
+    id: 'app.containers.IdeaButton.verificationLinkText',
+    defaultMessage: 'Verify your account now.',
+  },
 });

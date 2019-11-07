@@ -12,6 +12,7 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import FeatureFlag from 'components/FeatureFlag';
 import AuthProviderButton, { Providers } from 'components/AuthProviderButton';
+import { FormLabel } from 'components/UI/FormComponents';
 
 // resources
 import GetFeatureFlag from 'resources/GetFeatureFlag';
@@ -40,7 +41,7 @@ const facebookLogo = require('components/AuthProviderButton/svg/facebook.svg') a
 const franceconnectLogo = require('components/AuthProviderButton/svg/franceconnect.svg') as string;
 
 const Container = styled.div`
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
 `;
@@ -65,6 +66,12 @@ const FormElement = styled.div`
   width: 100%;
   margin-bottom: 15px;
   position: relative;
+`;
+
+const PasswordLabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const StyledInput = styled(Input)`
@@ -93,9 +100,6 @@ const ForgotPassword = styled(Link)`
   font-weight: 300;
   text-decoration: none;
   cursor: pointer;
-  position: absolute;
-  right: 16px;
-  top: 16px;
 
   &:hover {
     color: #000;
@@ -302,12 +306,15 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
           {passwordLoginEnabled &&
             <PasswordLogin>
               <FormElement>
+                <FormLabel
+                  htmlFor="email"
+                  labelMessage={messages.emailLabel}
+                  thin
+                />
                 <StyledInput
-                  ariaLabel={formatMessage(messages.emailPlaceholder)}
                   type="email"
                   id="email"
                   value={email}
-                  placeholder={formatMessage(messages.emailPlaceholder)}
                   error={emailError}
                   onChange={this.handleEmailOnChange}
                   setRef={this.handleEmailInputSetRef}
@@ -316,20 +323,26 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
               </FormElement>
 
               <FormElement>
+                <PasswordLabelContainer>
+                  <FormLabel
+                    htmlFor="password"
+                    labelMessage={messages.passwordLabel}
+                    thin
+                  />
+                  <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
+                    <FormattedMessage {...messages.forgotPassword} />
+                  </ForgotPassword>
+                </PasswordLabelContainer>
                 <PasswordInput
-                  ariaLabel={formatMessage(messages.passwordPlaceholder)}
                   type="password"
                   id="password"
                   value={password}
-                  placeholder={formatMessage(messages.passwordPlaceholder)}
                   error={passwordError}
                   onChange={this.handlePasswordOnChange}
                   setRef={this.handlePasswordInputSetRef}
                   autocomplete="current-password"
                 />
-                <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
-                  <FormattedMessage {...messages.forgotPassword} />
-                </ForgotPassword>
+
               </FormElement>
 
               <FormElement>

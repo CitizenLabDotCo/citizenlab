@@ -4,7 +4,7 @@ import { lighten } from 'polished';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -92,17 +92,22 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
   if (file && !isError(file)) {
     return (
       <Container error={!!file.error}>
-        <Paperclip name="paperclip" />
+        <Paperclip name="paperclip" ariaHidden />
         <FileDownloadLink error={!!file.error} href={file.url} download={file.filename} target="_blank" rel="noopener noreferrer">
           {!!file.error
             ? <FormattedMessage {...messages[file.error[0]]} values={{ fileName: file.filename }} />
-            : file.filename
+            : <>
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.a11y_file} />
+                </ScreenReaderOnly>
+                {file.filename}
+              </>
           }
         </FileDownloadLink>
         <FileSize>({returnFileSize(file.size)})</FileSize>
         {onDeleteClick &&
-          <DeleteButton onClick={onDeleteClick}>
-            <StyledIcon name="delete" />
+          <DeleteButton type="button" onClick={onDeleteClick}>
+            <StyledIcon name="delete" title={<FormattedMessage {...messages.a11y_removeFile} />} />
           </DeleteButton>
         }
       </Container>

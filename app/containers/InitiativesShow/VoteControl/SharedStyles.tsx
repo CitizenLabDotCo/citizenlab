@@ -34,6 +34,7 @@ export const TooltipWrapper = styled.div`
   min-width: 150px;
   max-width: 300px;
   font-size: ${fontSizes.small}px;
+  color: ${({ theme }) => theme.colorText};
   font-weight: 400;
   line-height: 16px;
   text-align: left;

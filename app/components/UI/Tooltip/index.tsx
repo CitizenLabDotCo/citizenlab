@@ -1,94 +1,88 @@
-import React, { PureComponent } from 'react';
+import React, { memo, useState, useCallback } from 'react';
 import Popover, { Props as PopoverProps } from 'components/UI/Popover';
 import styled from 'styled-components';
+import Button, { Props as ButtonProps } from 'components/UI/Button';
+import { customOutline } from 'utils/styleUtils';
 
-interface Props extends Omit<PopoverProps, 'onClickOutside' | 'dropdownOpened' | 'content'> {
+/* should not have button elements in content nor children */
+interface Props extends Omit<PopoverProps, 'onClickOutside' | 'onMouseEnter' | 'onMouseLeave' | 'dropdownOpened' | 'children' | 'content'> {
   /** whether the tooltip should be active at all. NOT it's opened state */
-  enabled: boolean;
+  enabled?: boolean;
   content: PopoverProps['content'] | null;
   className?: string;
+  /** If you want a button component as trigger, pass in button props as an object here*/
+  buttonProps?: ButtonProps;
+  children?: JSX.Element | null;
 }
 
-interface State {
-  opened: boolean;
-}
-
-const Container = styled.button`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  outline: none;
-
+const Container = styled.div`
   &:focus .tooltip-trigger {
-    outline: rgb(59, 153, 252) solid 2px;
+    outline: ${customOutline};
   }
 `;
 
-export default class Tooltip extends PureComponent<Props, State> {
+const Tooltip = memo<Props>(({ enabled, children, content, className, buttonProps, ...otherProps  }) => {
 
-    public static defaultProps = {
-      top: '0px',
-      backgroundColor: 'white',
-      enabled: true,
-    };
+  const randomNumber = Math.floor(Math.random() * 10000000);
+  const idName = `tooltipinfo-${randomNumber}`;
 
-    constructor(props) {
-      super(props);
-      this.state = {
-        opened: false,
-      };
-    }
+  const [opened, setOpened] = useState(false);
 
-    handleOnMouseEnter = () => {
-      this.setState({ opened: true });
-    }
+  const onPopoverMouseEnter = useCallback(() => {
+    enabled && setOpened(true);
+  }, [enabled]);
 
-    handleOnMouseLeave = () => {
-      this.setState({ opened: false });
-    }
+  const onPopoverMouseLeave = useCallback(() => {
+    setOpened(false);
+  }, []);
 
-    handleOnClick = (event: React.MouseEvent) => {
+  const onPopoverClickOutside = useCallback(() => {
+    setOpened(false);
+  }, []);
+
+  const onKeyDown = useCallback((event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && !opened) {
       event.preventDefault();
-      this.setState({ opened: !this.state.opened });
+      setOpened(!opened);
     }
 
-    handleOnFocus = () => {
-      this.setState({ opened: true });
+    if (event.key === 'Escape' && opened) {
+      event.preventDefault();
+      setOpened(false);
     }
+  }, [opened]);
 
-    handleOnBlur = () => {
-      this.setState({ opened: false });
-    }
+  return (
+    <Container
+      className={`${className || ''} tooltip`}
+      tabIndex={0}
+      onKeyDown={onKeyDown}
+    >
+      <Popover
+        {...otherProps}
+        children={buttonProps ? <Button {...buttonProps} ariaDescribedby={idName} /> : <div aria-describedby={idName}>{children}</div>}
+        content={<div id={idName} aria-hidden={!opened} role="tooltip">{content}</div>}
+        delay={250}
+        scaleIn={false}
+        dropdownOpened={opened}
+        onClickOutside={onPopoverClickOutside}
+        onMouseEnter={onPopoverMouseEnter}
+        onMouseLeave={onPopoverMouseLeave}
+      />
+    </Container>
+  );
+});
 
-    render() {
-      const { opened } = this.state;
-      const { enabled, children, content, className } = this.props;
+const defaultProps: Partial<Props> = {
+  offset: 0,
+  backgroundColor: '#fff',
+  borderColor: '#fff',
+  textColor: '#fff',
+  enabled: true,
+  position: 'right',
+  withPin: false
+};
 
-      if (!enabled) {
-        return children;
-      }
+(Tooltip as any).defaultProps = defaultProps;
 
-      if (!content) {
-        return children;
-      }
-
-      return (
-        <Container
-          className={className}
-          onFocus={this.handleOnFocus}
-          onBlur={this.handleOnBlur}
-          onMouseEnter={this.handleOnMouseEnter}
-          onMouseLeave={this.handleOnMouseLeave}
-          onClick={this.handleOnClick}
-          aria-expanded={opened}
-        >
-          <Popover
-            {...this.props}
-            content={content}
-            dropdownOpened={opened}
-            onClickOutside={this.handleOnMouseLeave}
-          />
-        </Container>
-      );
-    }
-}
+export default Tooltip;

@@ -53,6 +53,10 @@ export const getMockProject = (id: string, processType: ProcessType, participati
       taking_survey: {
         enabled: true,
         disabled_reason: null // SurveyDisabledReasons | null,
+      },
+      taking_poll: {
+        enabled: true,
+        disabled_reason: null // SurveyDisabledReasons | null,
       }
     }
   },

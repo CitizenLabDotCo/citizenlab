@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 import styled, { withTheme } from 'styled-components';
-import { fontSizes, colors, booleanClass, invisibleA11yText, media } from 'utils/styleUtils';
+import { fontSizes, colors, booleanClass, invisibleA11yText, media, ScreenReaderOnly } from 'utils/styleUtils';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { Messages, FormattedMessage as OriginalFormattedMessage } from 'react-intl';
@@ -10,17 +10,18 @@ import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
 
 export const FormSection = styled.div`
-  background: white;
-  border-radius: ${({ theme }) => theme.borderRadius};
-  padding: 50px 40px 30px;
-  color: ${({ theme }) => theme.colorText};
-  margin-bottom: 10px;
   max-width: 620px;
   min-width: 560px;
-  ${media.smallerThanMaxTablet`
-    min-width: unset;
-  `}
+  background: white;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  padding: 40px 40px 30px;
+  color: ${({ theme }) => theme.colorText};
+  margin-bottom: 10px;
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05);
+
+  ${media.smallerThanMaxTablet`
+    min-width: auto;
+  `}
 `;
 
 const TitleContainer = styled.div`
@@ -32,11 +33,12 @@ const FormSectionTitleStyled = styled.h2`
   font-weight: 600;
   line-height: 28px;
 `;
+
 const FormSectionSubtitleStyled = styled.p`
-  font-size: ${fontSizes.large}px;
-  font-weight: 400;
   color: ${colors.label};
-  line-height: 21px;
+  font-size: ${fontSizes.medium}px;
+  font-weight: 300;
+  line-height: normal;
 `;
 
 interface FormSectionTitleProps extends IMessageInfo {
@@ -227,6 +229,7 @@ export const FormSubmitFooter = withTheme(memo(({
   className,
   error,
   errorMessage,
+  disabled,
   ...otherProps
 }: FormSubmitFooterProps) => (
   <SubmitFooterContainer className={className}>
@@ -240,10 +243,15 @@ export const FormSubmitFooter = withTheme(memo(({
             type="submit"
             onClick={onSubmit}
             className="e2e-submit-form"
+            disabled={disabled}
+            ariaDisabled={disabled}
             {...otherProps}
           >
             <FormattedMessage {...message} values={values} />
           </Button>
+          <ScreenReaderOnly aria-live="polite">
+            {disabled ? <FormattedMessage {...messages.buttonDisabled}/> : <FormattedMessage {...messages.buttonEnabled} />}
+          </ScreenReaderOnly>
           {error && <ErrorContainer className="e2e-error-form">
             <FormattedMessage {...errorMessage} />
           </ErrorContainer>}
