@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import MediaQuery from 'react-responsive';
 import { reportError } from 'utils/loggingUtils';
 import { adopt } from 'react-adopt';
 
@@ -28,6 +27,7 @@ import { LEGAL_PAGES } from 'services/pages';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // style
 import styled from 'styled-components';
@@ -286,6 +286,7 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -375,7 +376,8 @@ class Footer extends PureComponent<Props, State> {
 
   render() {
     const { shortFeedbackButtonClicked, feedbackModalOpen, feedbackSubmitting, feedbackSubmitted } = this.state;
-    const { showShortFeedback, className } = this.props;
+    const { showShortFeedback, className, windowSize } = this.props;
+    const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
     return (
       <Container id="hook-footer" className={className}>
@@ -469,9 +471,7 @@ class Footer extends PureComponent<Props, State> {
               </CitizenlabLink>
             </PoweredBy>
 
-            <MediaQuery minWidth={viewportWidths.smallTablet}>
-              {matches => <StyledSendFeedback showFeedbackText={!matches} />}
-            </MediaQuery>
+            <StyledSendFeedback showFeedbackText={smallerThanSmallTablet} />
           </Right>
         </Inner>
       </Container>
@@ -480,7 +480,8 @@ class Footer extends PureComponent<Props, State> {
 }
 
 const Data = adopt<Props>({
-  locale: <GetLocale />
+  locale: <GetLocale />,
+  windowSize: <GetWindowSize />
 });
 
 export default (inputProps: InputProps) => (
