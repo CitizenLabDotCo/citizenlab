@@ -1415,7 +1415,7 @@
   "app.containers.InitiativesShow.initiativeOgDescription": "Hvad synes du om dette initiativ? Bliv en del af diskussionen og stem for at blive hørt.",
   "app.containers.InitiativesShow.invisibleTitleContent": "Hvad handler dette initiativ om?\n",
   "app.containers.InitiativesShow.learnMore": "Lær mere om initiativer",
-  "app.containers.InitiativesShow.metaOgTitle": "Støt dette initiativ : {initiativeTitle}",
+  "app.containers.InitiativesShow.metaOgTitle": "Støt dette initiativ: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Initiativ  • {initiativeTitle}",
   "app.containers.InitiativesShow.postedBy": "Initiativ slået op af {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Slået op af {authorName}",

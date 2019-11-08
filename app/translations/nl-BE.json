@@ -1415,7 +1415,7 @@
   "app.containers.InitiativesShow.initiativeOgDescription": "Wat denk je van dit idee? Neem deel aan de discussie en laat je stem horen.",
   "app.containers.InitiativesShow.invisibleTitleContent": "Waar gaat dit initiatief over?",
   "app.containers.InitiativesShow.learnMore": "Leer meer over initiatieven",
-  "app.containers.InitiativesShow.metaOgTitle": "Steun dit initiatief : {initiativeTitle}",
+  "app.containers.InitiativesShow.metaOgTitle": "Steun dit initiatief: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Initiatief • {initiativeTitle}",
   "app.containers.InitiativesShow.postedBy": "Initiatief geplaatst door {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Geplaatst door {authorName}",
