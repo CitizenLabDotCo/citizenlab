@@ -1,4 +1,3 @@
-import { IProject } from './projects';
 import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';

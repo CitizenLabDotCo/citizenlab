@@ -3,6 +3,7 @@ import { isString, get, isEmpty, last, sortBy } from 'lodash-es';
 import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
+import { setMightOpenVerificationModal, verificationNeeded } from 'containers/App/events';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -229,6 +230,7 @@ interface Props {
   unauthenticatedVoteClick?: () => void;
   disabledVoteClick?: (disabled_reason?: string) => void;
   className?: string;
+  noVerificationShortFlow?: boolean;
 }
 
 interface State {
@@ -379,6 +381,9 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
         const cancellingEnabled = idea.data.attributes.action_descriptor.voting.cancelling_enabled;
         const votingDisabledReason = idea.data.attributes.action_descriptor.voting.disabled_reason;
         const votingFutureEnabled = idea.data.attributes.action_descriptor.voting.future_enabled;
+        if (votingDisabledReason === 'not_verified' && !this.props.noVerificationShortFlow) {
+          verificationNeeded('ActionVote');
+        }
 
         this.setState({
           idea,
@@ -445,6 +450,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
     const { ideaId, unauthenticatedVoteClick, disabledVoteClick } = this.props;
 
     if (!authUser) {
+      setMightOpenVerificationModal('ActionVote');
       unauthenticatedVoteClick && unauthenticatedVoteClick();
     } else if ((!votingEnabled && voteMode !== myVoteMode) || (!cancellingEnabled && voteMode === myVoteMode)) {
       disabledVoteClick && disabledVoteClick(votingDisabledReason || undefined);

@@ -7,8 +7,6 @@ import { media } from 'utils/styleUtils';
 const timeout = 200;
 
 const Container: any = styled(clickOutside)`
-  display: flex;
-  flex-direction: column;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background-color: #fff;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.18);
@@ -40,7 +38,8 @@ const Container: any = styled(clickOutside)`
   }
 `;
 
-const ContainerInner = styled.div`
+const ContainerInner: any = styled.div`
+  width: ${(props: Props) => props.width};
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -48,8 +47,11 @@ const ContainerInner = styled.div`
 `;
 
 const Content: any = styled.div`
-  width: ${(props: Props) => props.width};
+  flex: 1 1 auto;
   max-height: ${(props: any) => props.maxHeight};
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 5px;
@@ -66,8 +68,7 @@ const Content: any = styled.div`
 `;
 
 const Footer = styled.div`
-  flex: 1 0 auto;
-  width: 100%;
+  flex: 1 1 auto;
   display: flex;
 `;
 
@@ -178,7 +179,12 @@ export default class Dropdown extends PureComponent<Props, State> {
           onClickOutside={this.close}
           className={className}
         >
-          <ContainerInner>
+          <ContainerInner
+            width={width}
+            mobileWidth={mobileWidth}
+            maxHeight={maxHeight}
+            mobileMaxHeight={mobileMaxHeight}
+          >
             <Content
               width={width}
               mobileWidth={mobileWidth}

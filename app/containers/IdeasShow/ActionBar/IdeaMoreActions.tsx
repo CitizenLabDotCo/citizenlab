@@ -25,7 +25,6 @@ import { deleteIdea, IIdeaData } from 'services/ideas';
 
 // router
 import clHistory from 'utils/cl-router/history';
-import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -87,6 +86,8 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
           <MoreActionsMenuWrapper id={id}>
             <HasPermission item={idea} action="edit" context={idea}>
               <MoreActionsMenu
+                id="e2e-idea-more-actions-menu"
+                label={<FormattedMessage {...messages.moreOptions} />}
                 actions={[
                   {
                     label: <FormattedMessage {...messages.reportAsSpam} />,
@@ -101,10 +102,6 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
                     handler: this.onDeleteIdea(idea.id),
                   }
                 ]}
-                label={<FormattedMessage {...messages.moreOptions} />}
-                fontSize={fontSizes.small}
-                id="e2e-idea-more-actions-menu"
-                tooltipPositionSmallViewPort="bottom-left"
               />
               <HasPermission.No>
                 <MoreActionsMenu
@@ -113,7 +110,6 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
                     handler: this.openSpamModal,
                   }]}
                   label={<FormattedMessage {...messages.moreOptions} />}
-                  fontSize={fontSizes.small}
                 />
               </HasPermission.No>
             </HasPermission>
