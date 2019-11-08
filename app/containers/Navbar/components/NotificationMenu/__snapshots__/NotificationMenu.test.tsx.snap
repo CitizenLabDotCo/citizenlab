@@ -4,6 +4,7 @@ exports[`<NotificationMenu /> renders correctly when everything is there 1`] = `
 <NotificationMenu__Container>
   <NotificationCount
     count={0}
+    dropdownOpened={false}
     onClick={[Function]}
   />
   <Dropdown
@@ -84,6 +85,7 @@ exports[`<NotificationMenu /> renders correctly when there is no notifs 1`] = `
 <NotificationMenu__Container>
   <NotificationCount
     count={0}
+    dropdownOpened={false}
     onClick={[Function]}
   />
   <Dropdown

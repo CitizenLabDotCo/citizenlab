@@ -114,6 +114,7 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
         <NotificationCount
           count={authUser.attributes.unread_notifications}
           onClick={this.toggleDropdown}
+          dropdownOpened={dropdownOpened}
         />
         <Dropdown
           width="300px"

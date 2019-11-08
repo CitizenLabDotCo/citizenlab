@@ -466,8 +466,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 {tenantLocales && projectsList && projectsList.length > 0 &&
                   <NavigationDropdown>
                     <NavigationDropdownItem
+                      tabIndex={0}
                       className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' ? 'active' : ''}`}
-                      aria-haspopup="true"
+                      aria-expanded={projectsDropdownOpened}
                       onMouseDown={this.removeFocus}
                       onClick={this.toggleProjectsDropdown}
                     >
