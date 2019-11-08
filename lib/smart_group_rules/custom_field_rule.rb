@@ -38,7 +38,7 @@ module SmartGroupRules
     def description_multiloc
       MultilocService.new.block_to_multiloc do |locale|
         custom_field_title = CustomField.find(custom_field_id).title_multiloc[locale]
-        case rule_type
+        case predicate
         when 'is_empty'
           I18n.t!('smart_group_rules.is_empty', title: custom_field_title)
         when 'not_is_empty'

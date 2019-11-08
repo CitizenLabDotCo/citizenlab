@@ -165,5 +165,5 @@ en:
       not_is_empty: "Specified where they live"
     custom_field_date:
       is_before: "'%{title}' is before %{value}" 
-      is_exactly: "'%{title}' is on %{value}"
+      is_exactly: "'%{title}' is %{value}"
       is_after: "'%{title}' is after %{value}"

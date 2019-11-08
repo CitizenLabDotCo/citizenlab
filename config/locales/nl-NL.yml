@@ -150,5 +150,5 @@ nl:
       not_is_empty: "Heeft een woonplaats aangegeven"
     custom_field_date:
       is_before: "'%{title}' is voor %{value}" 
-      is_exactly: "'%{title}' is op %{value}"
+      is_exactly: "'%{title}' is %{value}"
       is_after: "'%{title}' is na %{value}"
