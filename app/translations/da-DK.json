@@ -1344,7 +1344,7 @@
   "app.containers.IdeasShow.ideaOgDescription": "Hvad synes du om denne idé? Deltag i diskussionen og stemme for at få din stemme hørt.",
   "app.containers.IdeasShow.invisibleTitleContent": "Hovedideeindhold\n",
   "app.containers.IdeasShow.metaOgTitle": "Støt min idé: {ideaTitle}",
-  "app.containers.IdeasShow.metaTitle": "Idé  • {ideaTitle}",
+  "app.containers.IdeasShow.metaTitle": "Idé: {ideaTitle}",
   "app.containers.IdeasShow.postedIn": "Opslog i {projectLink}",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Hvorfor ønsker du at rapportere dette som spam?",
   "app.containers.IdeasShow.shareSubtitle": "Nå flere og bliv hørt.",

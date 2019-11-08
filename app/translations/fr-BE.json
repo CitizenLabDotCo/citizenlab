@@ -1344,7 +1344,7 @@
   "app.containers.IdeasShow.ideaOgDescription": "Que pensez-vous de cette idée ? Rejoignez la discussion et votez pour que votre voix soit entendue.",
   "app.containers.IdeasShow.invisibleTitleContent": "Contenu principale de l'idée",
   "app.containers.IdeasShow.metaOgTitle": "Soutenir cette idée : {ideaTitle}",
-  "app.containers.IdeasShow.metaTitle": "Idée  • {ideaTitle}",
+  "app.containers.IdeasShow.metaTitle": "Idée: {ideaTitle}",
   "app.containers.IdeasShow.postedIn": "Posté dans {projectLink}",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Pourquoi voulez vous signaler cet élément comme spam ?",
   "app.containers.IdeasShow.shareSubtitle": "Rejoignez plus de personnes et faites entendre votre voix.",

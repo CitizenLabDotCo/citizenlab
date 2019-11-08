@@ -23,7 +23,7 @@ export default defineMessages({
   },
   metaTitle: {
     id: 'app.containers.IdeasShow.metaTitle',
-    defaultMessage: 'Idea • {ideaTitle}',
+    defaultMessage: 'Idea: {ideaTitle}',
   },
   metaOgTitle: {
     id: 'app.containers.IdeasShow.metaOgTitle',
