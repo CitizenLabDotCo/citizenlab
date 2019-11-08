@@ -160,8 +160,7 @@ export default class Radio extends PureComponent<Props, State> {
             name={name}
             value={value}
             aria-checked={checked}
-            checked={checked}
-            tabIndex={-1}
+            defaultChecked={checked}
             onChange={this.handleChange}
           />
           {checked &&
