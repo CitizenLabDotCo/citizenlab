@@ -52,6 +52,7 @@ const Label = styled.label`
   padding: 10px 20px;
   color: ${colors.label};
   background: transparent;
+  font-weight: 400;
 
   &:hover {
     color: #000;
