@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { fontSizes, customOutline } from 'utils/styleUtils';
-import { hideVisually } from 'polished';
-import uuidv1 from 'uuid/v1';
 
 export const CustomRadio = styled.div`
   flex: 0 0 20px;
@@ -22,7 +20,8 @@ export const CustomRadio = styled.div`
   cursor: pointer;
 
   &.focused {
-      outline: ${customOutline};
+    outline: ${customOutline};
+    border-color: #000;
   }
 
   &:not(.disabled) {
@@ -33,9 +32,7 @@ export const CustomRadio = styled.div`
       border-color: #000;
     }
 
-    &.focused {
-      border-color: #000;
-    }
+
   }
 
   &.disabled {
@@ -49,17 +46,6 @@ const Wrapper = styled.div`
   flex-direction: row;
   align-items: center;
   margin-bottom: 12px;
-  cursor: pointer;
-
-  &.disabled {
-    cursor: not-allowed;
-  }
-
-  // &:hover, &:focus-within {
-  //   .circle {
-  //     border: 1px solid #000;
-  //   }
-  // }
 `;
 
 export const Checked = styled.div`
@@ -80,7 +66,7 @@ const Label = styled.label`
   }
 `;
 
-const HiddenInput = styled.input`
+const Input = styled.input`
   &[type='radio'] {
     /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
     position: absolute;
@@ -153,35 +139,36 @@ export default class Radio extends PureComponent<Props, State> {
   }
 
   render() {
-    const { name, value, currentValue, disabled, buttonColor, label, className } = this.props;
+    const { id, name, value, currentValue, disabled, buttonColor, label, className } = this.props;
     const { inputFocused } = this.state;
     const checked = (value === currentValue);
-    const uuid = uuidv1();
 
     return (
-      <Wrapper className={`${className} ${disabled ? 'disabled' : ''}`}>
+      <Wrapper>
         <CustomRadio
           onMouseDown={this.removeFocus}
           onClick={this.handleClick}
           onKeyDown={this.handleOnEnterKeyPress}
+          onFocus={this.handleOnFocus}
+          onBlur={this.handleOnBlur}
           className={`${inputFocused ? 'focused' : ''} ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} circle`}
+          tabIndex={0}
         >
-          <HiddenInput
+          <Input
+            id={id}
             type="radio"
             name={name}
             value={value}
             aria-checked={checked}
             checked={checked}
-            // onChange={this.handleChange}
-            id={uuid}
-            onFocus={this.handleOnFocus}
-            onBlur={this.handleOnBlur}
+            tabIndex={-1}
+            onChange={this.handleChange}
           />
           {checked &&
             <Checked aria-hidden color={(buttonColor || '#49B47D')}/>
           }
         </CustomRadio>
-        <Label htmlFor={uuid} className="text">{label}</Label>
+        <Label htmlFor={id} className="text">{label}</Label>
       </Wrapper>
     );
   }
