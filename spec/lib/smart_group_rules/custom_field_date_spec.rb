@@ -65,4 +65,30 @@ describe SmartGroupRules::CustomFieldDate do
  
   end
 
+  describe "description_multiloc" do
+    let(:date_picker) {create(:custom_field_date, title_multiloc: {
+      'en'    => 'When will we have a new government?',
+      'fr-FR' => 'Quand est-ce que on aura un nouveau gouvernement?',
+      'nl-NL' => 'Wanneer zullen we een nieuwe regering hebben?'
+    })}
+    
+    let(:custom_field_date_is_before_rule) {SmartGroupRules::CustomFieldDate.from_json({
+      'ruleType'      => 'custom_field_date',
+      'predicate'     => 'is_before',
+      'customFieldId' => date_picker.id,
+      'value'         => '2027-11-08'
+    })}
+
+    it "successfully translates different combinations of rules" do
+      # Stubbing the translations so the specs don't depend on those.
+      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
+
+      expect(custom_field_date_is_before_rule.description_multiloc).to eq ({
+        'en'    => '\'When will we have a new government?\' is before 2027-11-08',
+        'fr-FR' => '\'Quand est-ce que on aura un nouveau gouvernement?\' est avant 08/11/2027',
+        'nl-NL' => '\'Wanneer zullen we een nieuwe regering hebben?\' is voor 08-11-2027'
+      })
+    end
+  end
+
 end

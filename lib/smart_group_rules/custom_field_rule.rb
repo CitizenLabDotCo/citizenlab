@@ -38,16 +38,27 @@ module SmartGroupRules
     def description_multiloc
       MultilocService.new.block_to_multiloc do |locale|
         custom_field_title = CustomField.find(custom_field_id).title_multiloc[locale]
-        begin
-          I18n.t!("smart_group_rules.#{rule_type}.#{predicate}_#{value}", title: custom_field_title)
-        rescue I18n::MissingTranslationData
-          begin 
-            I18n.t!("smart_group_rules.#{rule_type}.#{predicate}", title: custom_field_title, value: value)
+        case rule_type
+        when 'is_empty'
+          I18n.t!('smart_group_rules.is_empty', title: custom_field_title)
+        when 'not_is_empty'
+          I18n.t!('smart_group_rules.not_is_empty', title: custom_field_title)
+        else
+          begin
+            I18n.t!("smart_group_rules.#{rule_type}.#{predicate}_#{value}", title: custom_field_title)
           rescue I18n::MissingTranslationData
-            raise "Unsupported rule description: smart_group_rules.#{rule_type}.#{predicate}{_#{value}}"
+            begin 
+              I18n.t!("smart_group_rules.#{rule_type}.#{predicate}", title: custom_field_title, value: description_value(locale: locale))
+            rescue I18n::MissingTranslationData
+              raise "Unsupported rule description: smart_group_rules.#{rule_type}.#{predicate}{_#{value}}"
+            end
           end
         end
       end
+    end
+
+    def description_value locale: nil
+      value
     end
 
   end
