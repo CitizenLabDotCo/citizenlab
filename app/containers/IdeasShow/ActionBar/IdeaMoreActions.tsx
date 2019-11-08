@@ -32,7 +32,6 @@ const MoreActionsMenuWrapper = styled.div``;
 
 interface InputProps {
   idea: IIdeaData;
-  id: string;
   className?: string;
 }
 
@@ -77,16 +76,15 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
   }
 
   render() {
-    const { idea, id, className, authUser } = this.props;
+    const { idea, className, authUser } = this.props;
     const { spamModalVisible } = this.state;
 
     if (!isNilOrError(authUser) && !isNilOrError(idea)) {
       return (
         <Container className={className}>
-          <MoreActionsMenuWrapper id={id}>
+          <MoreActionsMenuWrapper>
             <HasPermission item={idea} action="edit" context={idea}>
               <MoreActionsMenu
-                id="e2e-idea-more-actions-menu"
                 label={<FormattedMessage {...messages.moreOptions} />}
                 actions={[
                   {

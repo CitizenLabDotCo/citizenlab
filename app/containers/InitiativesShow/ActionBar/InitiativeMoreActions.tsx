@@ -34,17 +34,15 @@ const MoreActionsMenuWrapper = styled.div`
 
 interface InputProps {
   initiative: IInitiativeData;
-  id: string;
   className?: string;
   color?: string;
-  tooltipPosition?: 'bottom-left';
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   spamModalVisible: boolean;
@@ -81,16 +79,15 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
   }
 
   render() {
-    const { initiative, id, className, authUser, color } = this.props;
+    const { initiative, className, authUser, color } = this.props;
     const { spamModalVisible } = this.state;
 
     return !isNilOrError(authUser) && !isNilOrError(initiative) ? (
       <Container className={className}>
-        <MoreActionsMenuWrapper id={id}>
+        <MoreActionsMenuWrapper>
           <HasPermission item={initiative} action="edit" context={initiative}>
             <MoreActionsMenu
               label={<FormattedMessage {...messages.moreOptions} />}
-              id="e2e-initiative-more-actions-menu"
               color={color}
               actions={[
                 {
@@ -131,8 +128,8 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
         </Modal>
       </Container>
     )
-    :
-    null;
+      :
+      null;
   }
 
 }
