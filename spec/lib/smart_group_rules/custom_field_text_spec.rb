@@ -94,4 +94,105 @@ describe SmartGroupRules::CustomFieldText do
     end
   end
 
+  describe "description_multiloc" do
+    let(:text_field) {create(:custom_field, title_multiloc: {
+      'en'    => 'What\'s your favourite Star Wars quote?',
+      'fr-FR' => 'Quelle est votre citation Star Wars préférée?',
+      'nl-NL' => 'Wat is uw favoriete Star Wars citaat?'
+    })}
+    
+    let(:custom_field_text_is_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_text',
+      'predicate'     => 'is',
+      'customFieldId' => text_field.id,
+      'value'         => 'Never tell me the odds'
+    })}
+    let(:custom_field_date_not_is_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_text',
+      'predicate'     => 'not_is',
+      'customFieldId' => number_picker.id,
+      'value'         => 0
+    })}
+    let(:custom_field_date_is_larger_than_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_date',
+      'predicate'     => 'is_larger_than',
+      'customFieldId' => number_picker.id,
+      'value'         => 0
+    })}
+    let(:custom_field_date_not_is_larger_than_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_date',
+      'predicate'     => 'not_is_larger_than',
+      'customFieldId' => number_picker.id,
+      'value'         => 0
+    })}
+    let(:custom_field_date_is_smaller_than_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_date',
+      'predicate'     => 'is_smaller_than',
+      'customFieldId' => number_picker.id,
+      'value'         => 0
+    })}
+    let(:custom_field_date_not_is_smaller_than_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_date',
+      'predicate'     => 'not_is_smaller_than',
+      'customFieldId' => number_picker.id,
+      'value'         => 0
+    })}
+    let(:custom_field_date_is_empty_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_date',
+      'predicate'     => 'is_empty',
+      'customFieldId' => number_picker.id
+    })}
+    let(:custom_field_date_not_is_empty_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_date',
+      'predicate'     => 'not_is_empty',
+      'customFieldId' => number_picker.id
+    })}
+
+    it "successfully translates different combinations of rules" do
+      # Stubbing the translations so the specs don't depend on those.
+      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
+
+      expect(custom_field_text_is_rule.description_multiloc).to eq ({
+        'en'    => '\'What\'s your favourite Star Wars quote?\' is \'Never tell me the odds\'',
+        'fr-FR' => '\'Quelle est votre citation Star Wars préférée?\' est \'Never tell me the odds\'',
+        'nl-NL' => '\'Wat is uw favoriete Star Wars citaat?\' is \'Never tell me the odds\''
+      })
+      # expect(custom_field_date_not_is_equal_rule.description_multiloc).to eq ({
+      #   'en'    => '\'How many politicians do you need to solve climate change?\' doesn\'t equal 0',
+      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' n\'est pas égal à 0',
+      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is verschillend van 0'
+      # })
+      # expect(custom_field_date_is_larger_than_rule.description_multiloc).to eq ({
+      #   'en'    => '\'How many politicians do you need to solve climate change?\' is larger than 0',
+      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' est plus grand que 0',
+      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is groter dan 0'
+      # })
+      # expect(custom_field_date_not_is_larger_than_rule.description_multiloc).to eq ({
+      #   'en'    => '\'How many politicians do you need to solve climate change?\' is not larger than 0',
+      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' n\'est pas plus grand que 0',
+      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is niet groter dan 0'
+      # })
+      # expect(custom_field_date_is_smaller_than_rule.description_multiloc).to eq ({
+      #   'en'    => '\'How many politicians do you need to solve climate change?\' is smaller than 0',
+      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' est moins que 0',
+      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is kleiner dan 0'
+      # })
+      # expect(custom_field_date_not_is_smaller_than_rule.description_multiloc).to eq ({
+      #   'en'    => '\'How many politicians do you need to solve climate change?\' is not smaller than 0',
+      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' n\'est pas moins que 0',
+      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is niet kleiner dan 0'
+      # })
+      # expect(custom_field_date_is_empty_rule.description_multiloc).to eq ({
+      #   'en'    => '\'How many politicians do you need to solve climate change?\' has no value',
+      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' n\'as pas de value',
+      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' heeft geen waarde'
+      # })
+      # expect(custom_field_date_not_is_empty_rule.description_multiloc).to eq ({
+      #   'en'    => '\'How many politicians do you need to solve climate change?\' has any value',
+      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' peut avoir n\'importe quel value',
+      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' heeft om het even welke waarde'
+      # })
+    end
+  end
+
 end
