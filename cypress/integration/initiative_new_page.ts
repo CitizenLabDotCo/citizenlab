@@ -92,7 +92,7 @@ describe('Initiative new page', () => {
     // save the form
     cy.wait(500);
     cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
-    cy.wait(500);
+    cy.wait(1000);
 
     // verify the content of the newly created initiative page
     cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeTitle}`);

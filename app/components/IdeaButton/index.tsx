@@ -132,7 +132,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
       ) : <></>;
 
       return (
-        <Container className={`${className} e2e-idea-button`}>
+        <Container className={className}>
           <Tippy
             enabled={isPostingDisabled}
             interactive={true}
@@ -140,7 +140,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             content={tippyContent}
             theme="light"
           >
-            <ButtonWrapper tabIndex={0}>
+            <ButtonWrapper tabIndex={0} className="e2e-idea-button">
               <Button {...this.props} linkTo={linkTo} disabled={isPostingDisabled}>
                 <FormattedMessage {...messages.startAnIdea} />
               </Button>
