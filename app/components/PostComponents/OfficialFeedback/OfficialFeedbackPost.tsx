@@ -72,7 +72,7 @@ const Author = styled.span`
 
 const DatePosted = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   font-weight: 300;
   margin-top: -2px;
 `;
