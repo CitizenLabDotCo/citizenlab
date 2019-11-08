@@ -485,12 +485,13 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         )}
 
         <FormElement id="e2e-idea-file-upload">
-          <FormLabel labelMessage={messages.fileUploadLabel} />
-          <FileUploader
-            onFileAdd={this.handleIdeaFileOnAdd}
-            onFileRemove={this.handleIdeaFileOnRemove}
-            files={ideaFiles}
-          />
+          <FormLabel labelMessage={messages.fileUploadLabel}>
+            <FileUploader
+              onFileAdd={this.handleIdeaFileOnAdd}
+              onFileRemove={this.handleIdeaFileOnRemove}
+              files={ideaFiles}
+            />
+          </FormLabel>
         </FormElement>
       </Form>
     );
