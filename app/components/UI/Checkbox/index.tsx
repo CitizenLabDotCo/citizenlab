@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
-import uuidv1 from 'uuid/v1';
 
 const Container = styled.div`
   &:not(.hasLabel) {
@@ -72,6 +71,7 @@ interface DefaultProps {
 }
 
 interface Props extends DefaultProps {
+  id?: string | undefined;
   label?: string | JSX.Element | null | undefined;
   checked: boolean;
   onChange: (event: React.FormEvent | React.KeyboardEvent) => void;
@@ -123,9 +123,8 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   render() {
-    const { label, size, checked, className } = this.props;
+    const { label, size, checked, className, id } = this.props;
     const { inputFocused } = this.state;
-    const uuid = uuidv1();
 
     return (
       <Container className={`${className ? className : ''} ${label ? 'hasLabel' : ''}`}>
@@ -138,7 +137,7 @@ export default class Checkbox extends PureComponent<Props, State> {
         >
           <Input
             ref={this.checkbox}
-            id={uuid}
+            id={id}
             aria-checked={checked}
             type="checkbox"
             defaultChecked={checked}
@@ -149,7 +148,7 @@ export default class Checkbox extends PureComponent<Props, State> {
         </InputWrapper>
 
         {label &&
-          <Label htmlFor={uuid} onClick={this.handleOnClick}>
+          <Label htmlFor={id} onClick={this.handleOnClick}>
             {label}
           </Label>
         }
