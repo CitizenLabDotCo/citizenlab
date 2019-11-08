@@ -136,6 +136,8 @@ nl:
     default_eligibility_criteria: >
       <p>Het initiatief</p> <p>- valt binnen de bevoegdheden van de gemeente</p>
   smart_group_rules:
+    is_empty: "'%{title}' heeft geen waarde"
+    not_is_empty: "'%{title}' heeft om het even welke waarde"
     custom_field_checkbox:
       is_checked: "Heeft '%{title}' aangevinkt"
       not_is_checked: "Heeft '%{title}' niet aangevinkt"
@@ -146,3 +148,7 @@ nl:
       not_has_value_outside: "Woont niet buiten deze regio"
       is_empty: "Heeft geen woonplaats aangegeven"
       not_is_empty: "Heeft een woonplaats aangegeven"
+    custom_field_date:
+      is_before: "'%{title}' is voor %{value}" 
+      is_exactly: "'%{title}' is op %{value}"
+      is_after: "'%{title}' is na %{value}"

@@ -149,6 +149,8 @@ fr:
     default_eligibility_criteria: >
       <p>L'initiative devra/p> <p>- rentrer dans les compétences de la ville</p>
   smart_group_rules:
+    is_empty: "'%{title}' n'as pas de value"
+    not_is_empty: "'%{title}' peut avoir n'importe quel value"
     custom_field_checkbox:
       is_checked: "A coché '%{title}'"
       not_is_checked: "N'as pas coché '%{title}'"
@@ -159,3 +161,7 @@ fr:
       not_has_value_outside: "N'habite pas hors de cette region"
       is_empty: "N'a pas specifié leurs domicile"
       not_is_empty: "A specifié leurs domicile"
+    custom_field_date:
+      is_before: "'%{title}' est avant %{value}" 
+      is_exactly: "'%{title}' est %{value}"
+      is_after: "'%{title}' est après %{value}"

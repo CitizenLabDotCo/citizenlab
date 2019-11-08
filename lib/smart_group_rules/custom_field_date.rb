@@ -93,6 +93,14 @@ module SmartGroupRules
       end
     end
 
+    
+    def description_value locale: nil
+      locale ||= I18n.locale
+      I18n.with_locale(locale) do
+        I18n.l Date.parse(value), format: :default
+      end
+    end
+
     private
 
     def needs_value?
