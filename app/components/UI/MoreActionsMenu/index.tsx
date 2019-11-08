@@ -167,7 +167,7 @@ export default class Popover extends PureComponent<Props, State> {
           flipBehavior="flip"
           flipOnUpdate={true}
           content={
-            <List id="e2e-more-actions-list">
+            <List className="e2e-more-actions-list">
               {actions.map((action, index) => {
                 const { handler, label, icon, name } = action;
 

@@ -60,8 +60,8 @@ describe('when logged in as an admin', () => {
     cy.visit('/initiatives/cleaning-the-sidewalks-party');
     cy.wait(1000);
     cy.get('#e2e-initiative-more-actions-desktop').click();
-    cy.get('#e2e-more-actions-list button').eq(0).contains('Report as spam');
-    cy.get('#e2e-more-actions-list button').eq(1).contains('Edit initiative');
-    cy.get('#e2e-more-actions-list button').eq(2).contains('Delete initiative');
+    cy.get('.e2e-more-actions-list button').eq(0).contains('Report as spam');
+    cy.get('.e2e-more-actions-list button').eq(1).contains('Edit initiative');
+    cy.get('.e2e-more-actions-list button').eq(2).contains('Delete initiative');
   });
 });
