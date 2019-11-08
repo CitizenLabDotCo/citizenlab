@@ -198,6 +198,7 @@
   "app.components.InitiativesShowPage.goBack": "Retour",
   "app.components.InitiativesShowPage.goBackToList": "Retour à la liste",
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Aucune initiative n'est disponible ici.",
+  "app.components.Input.a11y_charactersLeft": "",
   "app.components.Modal.closeModal": "Fermer cet écran popup",
   "app.components.PagesForm.dontChange": "Ne changez pas cela (sauf si vous savez vraiment ce que vous faîtes !)",
   "app.components.PagesForm.editContent": "Contenu",
