@@ -100,6 +100,10 @@ module SmartGroupRules
       end
     end
 
+    def description_value locale: nil
+      CustomFieldOption.find(value).title_multiloc[locale]
+    end
+
     private
 
     def needs_value?
