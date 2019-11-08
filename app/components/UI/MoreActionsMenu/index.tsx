@@ -111,8 +111,8 @@ export interface Props {
   label?: string | JSX.Element;
   ariaLabel?: string;
   className?: string;
-  id?: string;
   color?: string;
+  id?: string;
 }
 
 interface State {
@@ -148,9 +148,8 @@ export default class Popover extends PureComponent<Props, State> {
   }
 
   render() {
-    const { actions, ariaLabel, color, label } = this.props;
+    const { actions, ariaLabel, color, label, className, id } = this.props;
     const { visible } = this.state;
-    const className = this.props.className;
 
     if (!actions || actions.length === 0) {
       return null;
@@ -168,7 +167,7 @@ export default class Popover extends PureComponent<Props, State> {
           flipBehavior="flip"
           flipOnUpdate={true}
           content={
-            <List>
+            <List className="e2e-more-actions-list">
               {actions.map((action, index) => {
                 const { handler, label, icon, name } = action;
 
@@ -177,7 +176,7 @@ export default class Popover extends PureComponent<Props, State> {
                     key={index}
                     onMouseDown={this.removeFocus}
                     onClick={this.handleListItemOnClick(handler)}
-                    className={`e2e-action-${name}`}
+                    className={name ? `e2e-action-${name}` : undefined}
                   >
                     {label}
                     {icon && <StyledIcon name={icon} />}
@@ -191,6 +190,8 @@ export default class Popover extends PureComponent<Props, State> {
             onMouseDown={this.removeFocus}
             onClick={this.toggleMenu}
             aria-expanded={visible}
+            id={id}
+            className="e2e-more-actions"
           >
             <MoreOptionsIcon title={label || ariaLabel} name="more-options" color={color} ariaHidden={!!label} />
             {label && <MoreOptionsLabel>{label}</MoreOptionsLabel>}

@@ -32,7 +32,7 @@ describe('Idea posting permissions', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('projects/verified-ideation/info');
       cy.acceptCookies();
-      cy.get('.e2e-idea-button:visible').trigger('mouseover');
+      cy.get('.e2e-idea-button:visible').focus();
       cy.get('.e2e-disabled-tooltip').find('a').click();
       cy.get('.e2e-verification-modal');
     });
