@@ -95,9 +95,11 @@ module SmartGroupRules
 
     
     def description_value locale: nil
-      locale ||= I18n.locale
-      I18n.with_locale(locale) do
-        I18n.l Date.parse(value), format: :default
+      if value.present?
+        locale ||= I18n.locale
+        I18n.with_locale(locale) do
+          I18n.l Date.parse(value), format: :default
+        end
       end
     end
 
