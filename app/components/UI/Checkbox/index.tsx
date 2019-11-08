@@ -82,7 +82,6 @@ interface State {
 }
 
 export default class Checkbox extends PureComponent<Props, State> {
-  checkbox = React.createRef<HTMLInputElement>();
 
   static defaultProps: DefaultProps = {
     size: '22px'
@@ -138,7 +137,6 @@ export default class Checkbox extends PureComponent<Props, State> {
           size={size}
         >
           <Input
-            ref={this.checkbox}
             id="checkbox"
             aria-checked={checked}
             type="checkbox"
