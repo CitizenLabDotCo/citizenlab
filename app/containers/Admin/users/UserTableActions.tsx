@@ -38,7 +38,7 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 const TableOptions = styled.div`
@@ -61,12 +61,12 @@ const UserCount = styled.span`
 `;
 
 const ActionButton = styled.button`
-  height: 42px;
+  height: 38px;
   margin-right: 40px;
   position: relative;
   padding: 0px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 4px;
+  padding-right: 4px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   display: flex;
@@ -113,21 +113,24 @@ const DropdownWrapper = styled.div`
 `;
 
 const DropdownListItemText = styled.div`
+  flex: 1 1 auto;
   color: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 21px;
+  line-height: normal;
   text-align: left;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
+  margin-right: 10px;
 `;
 
-const DropdownListItem = styled.div`
-  width: 100%;
+const DropdownList = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const DropdownListItem = styled.button`
+  flex: 1 1 auto;
+  display: flex;
   align-items: center;
   margin: 0px;
   margin-bottom: 4px;
@@ -153,13 +156,8 @@ const DropdownListItem = styled.div`
   }
 `;
 
-const StyledCheckbox = styled(Checkbox)`
-  margin-left: 10px;
-`;
-
 const DropdownFooterButton = styled(Button)`
   .Button {
-    padding: 12px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
@@ -347,7 +345,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
 
     return (
       <TableOptions>
-        <ActionButton onClick={this.toggleAllUsers}>
+        <ActionButton>
           <Checkbox
             label={
               <>
@@ -381,10 +379,9 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                 opened={dropdownOpened}
                 onClickOutside={this.toggleDropdown}
                 content={(
-                  <>
+                  <DropdownList>
                     {groupsList.map((group) => (
                       <DropdownListItem
-                        role="button"
                         key={group.id}
                         onClick={this.toggleGroup(group.id)}
                         className="e2e-dropdown-item"
@@ -392,13 +389,13 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                         <DropdownListItemText>
                           <T value={group.attributes.title_multiloc} />
                         </DropdownListItemText>
-                        <StyledCheckbox
+                        <Checkbox
                           checked={includes(selectedGroupIds, group.id)}
                           onChange={this.toggleGroup(group.id)}
                         />
                       </DropdownListItem>
                     ))}
-                  </>
+                  </DropdownList>
                 )}
                 footer={(
                   <DropdownFooterButton
@@ -407,6 +404,8 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                     onClick={this.addUsersToGroups}
                     processing={processing}
                     fullWidth={true}
+                    padding="12px"
+                    whiteSpace="normal"
                     disabled={!selectedGroupIds || selectedGroupIds.length === 0}
                   >
                     <FormattedMessage {...messages.moveUsers} />

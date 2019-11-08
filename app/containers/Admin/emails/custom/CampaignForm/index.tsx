@@ -24,7 +24,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import FormikInput from 'components/UI/FormikInput';
 import { fontSizes } from 'utils/styleUtils';
-import InfoTooltip from 'components/UI/InfoTooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -91,7 +91,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
     return (
       <FormikQuillMultiloc
         label={<FormattedMessage {...messages.fieldBody} />}
-        labelTooltip={<InfoTooltip {...messages.nameVariablesInfo} />}
+        labelTooltip={<IconTooltip content={<FormattedMessage {...messages.nameVariablesInfo} />} />}
         noVideos
         noAlign
         {...props}
@@ -110,7 +110,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldSender} />
-              <InfoTooltip {...messages.fieldSenderTooltip} />
+              <IconTooltip content={<FormattedMessage {...messages.fieldSenderTooltip} />} />
             </Label>
             <FastField
               name="sender"
@@ -127,7 +127,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldTo} />
-              <InfoTooltip {...messages.fieldToTooltip} />
+              <IconTooltip content={<FormattedMessage {...messages.fieldToTooltip} />} />
             </Label>
             <GetGroups>
               {(groups) => (isNilOrError(groups)) ? null : (
@@ -148,7 +148,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldReplyTo} />
-              <InfoTooltip {...messages.fieldReplyToTooltip} />
+              <IconTooltip content={<FormattedMessage {...messages.fieldReplyToTooltip} />} />
             </Label>
             <FastField
               name="reply_to"
@@ -171,7 +171,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               name="subject_multiloc"
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldSubject} />}
-              labelTooltip={<InfoTooltip {...messages.fieldSubjectTooltip} />}
+              labelTooltip={<IconTooltip content={<FormattedMessage {...messages.fieldSubjectTooltip} />} />}
               maxCharCount={80}
             />
             {touched.subject_multiloc && <Error

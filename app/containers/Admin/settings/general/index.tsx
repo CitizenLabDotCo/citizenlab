@@ -17,6 +17,7 @@ import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField, SectionSubtitle } from 'components/admin/Section';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // services
 import {
@@ -28,7 +29,6 @@ import {
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
-import InfoTooltip from 'components/UI/InfoTooltip';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface Props {}
@@ -208,7 +208,7 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.languages} />
-                <InfoTooltip {...messages.languagesTooltip} />
+                <IconTooltip content={<FormattedMessage {...messages.languagesTooltip} />} />
               </Label>
               <MultipleSelect
                 placeholder=""
@@ -221,7 +221,7 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.urlTitle} />
-                <InfoTooltip {...messages.urlTitleTooltip} />
+                <IconTooltip content={<FormattedMessage {...messages.urlTitleTooltip} />} />
               </Label>
               <Input
                 type="text"

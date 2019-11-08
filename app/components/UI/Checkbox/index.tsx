@@ -95,16 +95,14 @@ export default class Checkbox extends PureComponent<Props, State> {
     };
   }
 
-  handleOnClick = (event: React.FormEvent | React.KeyboardEvent) => {
+  handleOnClick = (event: React.MouseEvent) => {
     event.preventDefault();
-    event.stopPropagation();
     this.props.onChange(event);
   }
 
-  handleOnEnterKeyPress = (event: React.KeyboardEvent) => {
+  handleOnKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      event.stopPropagation();
       this.props.onChange(event);
     }
   }
@@ -121,6 +119,10 @@ export default class Checkbox extends PureComponent<Props, State> {
     });
   }
 
+  // removeFocus = (event: React.FormEvent) => {
+  //   event.preventDefault();
+  // }
+
   render() {
     const { label, size, checked, className } = this.props;
     const { inputFocused } = this.state;
@@ -128,8 +130,9 @@ export default class Checkbox extends PureComponent<Props, State> {
     return (
       <Container className={`${className ? className : ''} ${label ? 'hasLabel' : ''}`}>
         <InputWrapper
+          // onMouseDown={this.removeFocus}
           onClick={this.handleOnClick}
-          onKeyDown={this.handleOnEnterKeyPress}
+          onKeyDown={this.handleOnKeyDown}
           className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
           checked={checked}
           size={size}
@@ -147,7 +150,7 @@ export default class Checkbox extends PureComponent<Props, State> {
         </InputWrapper>
 
         {label &&
-          <Label htmlFor="checkbox" onClick={this.handleOnClick}>
+          <Label htmlFor="checkbox">
             {label}
           </Label>
         }
