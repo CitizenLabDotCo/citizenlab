@@ -165,6 +165,9 @@ fr:
       not_is_larger_than: "'%{title}' n'est pas plus grand que %{value}"
       is_smaller_than: "'%{title}' est moins que %{value}"
       not_is_smaller_than: "'%{title}' n'est pas moins que %{value}"
+    custom_field_select:
+      has_value: "'%{title}' est '%{value}'"
+      not_has_value: "'%{title}' n'est pas '%{value}'"
     lives_in:
       has_value: "Habite à %{domicile}"
       has_value_outside: "Habite hors de cette region"

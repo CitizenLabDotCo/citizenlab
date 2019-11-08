@@ -152,6 +152,9 @@ nl:
       not_is_larger_than: "'%{title}' is niet groter dan %{value}"
       is_smaller_than: "'%{title}' is kleiner dan %{value}"
       not_is_smaller_than: "'%{title}' is niet kleiner dan %{value}"
+    custom_field_select:
+      has_value: "'%{title}' is '%{value}'"
+      not_has_value: "'%{title}' is niet '%{value}'"
     lives_in:
       has_value: "Woont in %{domicile}"
       has_value_outside: "Woont buiten deze regio"

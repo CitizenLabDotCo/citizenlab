@@ -126,14 +126,12 @@ describe SmartGroupRules::CustomFieldNumber do
     let(:custom_field_date_is_empty_rule) {SmartGroupRules::CustomFieldNumber.from_json({
       'ruleType'      => 'custom_field_date',
       'predicate'     => 'is_empty',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
+      'customFieldId' => number_picker.id
     })}
     let(:custom_field_date_not_is_empty_rule) {SmartGroupRules::CustomFieldNumber.from_json({
       'ruleType'      => 'custom_field_date',
       'predicate'     => 'not_is_empty',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
+      'customFieldId' => number_picker.id
     })}
 
     it "successfully translates different combinations of rules" do
