@@ -86,11 +86,7 @@ const StyledInput = styled(Input)`
   }
 `;
 
-const PasswordInput = styled(StyledInput)`
-  input {
-    padding-right: 100px;
-  }
-`;
+const PasswordInput = styled(StyledInput)``;
 
 const ForgotPassword = styled(Link)`
   color: ${colors.label};
@@ -125,6 +121,7 @@ const CreateAnAccountLink = styled(Link)`
 
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
+    text-decoration: underline;
   }
 `;
 
