@@ -1,6 +1,7 @@
 module SmartGroupRules
   class LivesIn
     include ActiveModel::Validations
+    include DescribableRule
 
     PREDICATE_VALUES = %w(has_value not_has_value is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
@@ -80,29 +81,33 @@ module SmartGroupRules
     end
 
     def description_multiloc
-      MultilocService.new.block_to_multiloc do |locale|
-        case predicate
-        when 'has_value'
-          case value
-          when 'outside'
-            I18n.t('smart_group_rules.lives_in.has_value_outside')
-          else
-            I18n.t('smart_group_rules.lives_in.has_value', domicile: Area.find(value).title_multiloc[locale])
-          end
-        when 'not_has_value'
-          case value
-          when 'outside'
-            I18n.t('smart_group_rules.lives_in.not_has_value_outside')
-          else
-            I18n.t('smart_group_rules.lives_in.not_has_value', domicile: Area.find(value).title_multiloc[locale])
-          end
-        when 'is_empty'
-          I18n.t('smart_group_rules.lives_in.is_empty')
-        when 'not_is_empty'
-          I18n.t('smart_group_rules.lives_in.not_is_empty')    
-        else
-          raise "Unsupported predicate #{predicate}"
-        end
+      case value
+      when 'outside'
+        I18n.t("smart_group_rules.lives_in.#{predicate}_outside")
+      else
+        super
+      end
+    end
+
+    def description_property locale: nil
+        CustomField.find_by(key: 'domicile').title_multiloc[locale]
+      end
+
+    def description_rule_type
+      case value
+      when 'outside'
+        rule_type
+      else
+        SmartGroupRules::CustomFieldSelect.rule_type
+      end
+    end
+
+    def description_value locale: nil
+      case value
+      when 'outside'
+        value
+      else
+        Area.find(value).title_multiloc[locale]
       end
     end
 
