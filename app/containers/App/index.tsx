@@ -100,6 +100,7 @@ type State = {
   verificationModalOpened: boolean;
   verificationModalInitialStep: VerificationModalSteps;
   verificationContext?: boolean;
+  mightOpenVerificationModal: boolean;
   navbarRef: HTMLElement | null;
 };
 
@@ -123,6 +124,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       userActuallyDeleted: false,
       verificationModalOpened: false,
       verificationModalInitialStep: null,
+      mightOpenVerificationModal: false,
       navbarRef: null
     };
     this.subscriptions = [];
@@ -139,7 +141,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     }
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
-      const { authUser } = this.state;
+      const { authUser, mightOpenVerificationModal } = this.state;
       const previousPathname = location.pathname;
       const nextPathname = newLocation.pathname;
       const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
@@ -157,6 +159,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           pathname: '/complete-signup',
           search: newLocation.search
         });
+        // when unsigned and leaving the flow or signed in and not coming from the flow, remove the flag
+      } else if (!authUser && mightOpenVerificationModal && !nextPathname.endsWith('sign-up') && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')
+        || (authUser && mightOpenVerificationModal && !previousPathname.endsWith('sign-up') && !previousPathname.replace(/\/$/, '').endsWith('complete-signup'))) {
+        this.setState({ mightOpenVerificationModal: false });
       }
     });
 
@@ -207,6 +213,17 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
       eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.open).subscribe(({ eventValue }) => {
         this.openVerificationModal(eventValue.step, eventValue.withContext);
+      }),
+
+      eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.verificationNeeded).subscribe(({ eventValue }) => {
+        if (this.state.mightOpenVerificationModal) {
+          this.openVerificationModal(eventValue.step, eventValue.withContext);
+          this.setState({ mightOpenVerificationModal: false });
+        }
+      }),
+
+      eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.mightOpen).subscribe(() => {
+        this.setState({ mightOpenVerificationModal: true });
       }),
 
       eventEmitter.observeEvent(VerificationModalEvents.close).subscribe(() => {
@@ -265,7 +282,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   closeVerificationModal = () => {
     this.setState({
       verificationModalOpened: false,
-      verificationModalInitialStep: null
+      verificationModalInitialStep: null,
+      mightOpenVerificationModal: false
     });
   }
 
@@ -298,10 +316,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const signUpPage = isPage('sign_up', location.pathname);
     const theme = getTheme(tenant);
     const showFooter = !adminPage &&
-                       !ideaFormPage &&
-                       !initiativeFormPage &&
-                       !ideaEditPage &&
-                       !initiativeEditPage;
+      !ideaFormPage &&
+      !initiativeFormPage &&
+      !ideaEditPage &&
+      !initiativeEditPage;
     const showShortFeedback = !signInPage && !signUpPage;
 
     return (
@@ -355,7 +373,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <Navbar setRef={this.setNavbarRef}/>
+                    <Navbar setRef={this.setNavbarRef} />
                   </ErrorBoundary>
 
                   <InnerContainer>

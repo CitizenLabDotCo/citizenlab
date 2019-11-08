@@ -248,6 +248,7 @@ export type Props = {
   label?: string;
   children?: any;
   closeOnClickOutside?: boolean;
+  remaining?: boolean;
 };
 
 type State = {};
@@ -311,7 +312,9 @@ export default class Modal extends PureComponent<Props, State> {
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.handleKeypress);
     eventEmitter.emit('modal', 'modalOpened', null);
-    this.unlisten = clHistory.listen(this.props.close);
+    if (!this.props.remaining) {
+      this.unlisten = clHistory.listen(this.props.close);
+    }
   }
 
   manuallyCloseModal = () => {
