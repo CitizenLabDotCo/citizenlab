@@ -4,13 +4,12 @@ import { isArray, find, isEmpty, isString, cloneDeep, includes, without } from '
 // components
 import Title from './title';
 import ValuesList from './valuesList';
-import clickOutside from 'utils/containers/clickOutside';
 
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const Container = styled(clickOutside)`
+const Container = styled.div`
   display: inline-block;
   position: relative;
 
@@ -150,7 +149,6 @@ export default class FilterSelector extends PureComponent<Props, State> {
     return (
       <Container
         id={id}
-        onClickOutside={this.handleClickOutside}
         className={`e2e-filter-selector-${this.props.name} ${className} ${last ? 'last' : ''}`}
       >
         <Title
@@ -166,6 +164,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
           values={values}
           selected={selected}
           onChange={this.selectionChange}
+          onClickOutside={this.handleClickOutside}
           multiple={multiple}
           baseID={this.baseID}
           width={width}
