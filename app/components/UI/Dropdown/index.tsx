@@ -176,6 +176,7 @@ export default class Dropdown extends PureComponent<Props, State> {
           mobileLeft={mobileLeft}
           right={right}
           mobileRight={mobileRight}
+          closeOnClickOutsideEnabled={opened}
           onClickOutside={this.close}
           className={className}
         >
