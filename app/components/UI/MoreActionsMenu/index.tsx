@@ -112,6 +112,7 @@ export interface Props {
   ariaLabel?: string;
   className?: string;
   color?: string;
+  id?: string;
 }
 
 interface State {
@@ -147,7 +148,7 @@ export default class Popover extends PureComponent<Props, State> {
   }
 
   render() {
-    const { actions, ariaLabel, color, label, className } = this.props;
+    const { actions, ariaLabel, color, label, className, id } = this.props;
     const { visible } = this.state;
 
     if (!actions || actions.length === 0) {
@@ -189,6 +190,7 @@ export default class Popover extends PureComponent<Props, State> {
             onMouseDown={this.removeFocus}
             onClick={this.toggleMenu}
             aria-expanded={visible}
+            id={id}
             className="e2e-more-actions"
           >
             <MoreOptionsIcon title={label || ariaLabel} name="more-options" color={color} ariaHidden={!!label} />

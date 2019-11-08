@@ -36,6 +36,7 @@ interface InputProps {
   initiative: IInitiativeData;
   className?: string;
   color?: string;
+  id: string;
 }
 
 interface DataProps {
@@ -79,7 +80,7 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
   }
 
   render() {
-    const { initiative, className, authUser, color } = this.props;
+    const { initiative, className, authUser, color, id } = this.props;
     const { spamModalVisible } = this.state;
 
     return !isNilOrError(authUser) && !isNilOrError(initiative) ? (
@@ -89,6 +90,7 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
             <MoreActionsMenu
               label={<FormattedMessage {...messages.moreOptions} />}
               color={color}
+              id={id}
               actions={[
                 {
                   label: <FormattedMessage {...messages.reportAsSpam} />,
@@ -107,6 +109,8 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
             <HasPermission.No>
               <MoreActionsMenu
                 label={<FormattedMessage {...messages.moreOptions} />}
+                color={color}
+                id={id}
                 actions={[{
                   label: <FormattedMessage {...messages.reportAsSpam} />,
                   handler: this.openSpamModal,
