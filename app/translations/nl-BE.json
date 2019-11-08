@@ -1517,7 +1517,7 @@
   "app.containers.Projects.invisibleTitleSurvey": "Deelnemen aan de enquête",
   "app.containers.Projects.location": "Locatie:",
   "app.containers.Projects.manageBudget": "Beheer uitgaven",
-  "app.containers.Projects.metaTitle": "Project : {projectTitle}",
+  "app.containers.Projects.metaTitle": "Project: {projectTitle}",
   "app.containers.Projects.navEvents": "Activiteiten",
   "app.containers.Projects.navIdeas": "Ideeën",
   "app.containers.Projects.navInformation": "Info",
