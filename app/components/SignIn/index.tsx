@@ -326,7 +326,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                     labelMessage={messages.passwordLabel}
                     thin
                   />
-                  <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
+                  <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link" tabIndex={1 as any}>
                     <FormattedMessage {...messages.forgotPassword} />
                   </ForgotPassword>
                 </PasswordLabelContainer>
@@ -339,7 +339,6 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                   setRef={this.handlePasswordInputSetRef}
                   autocomplete="current-password"
                 />
-
               </FormElement>
 
               <FormElement>

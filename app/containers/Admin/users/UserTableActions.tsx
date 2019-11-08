@@ -345,7 +345,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
 
     return (
       <TableOptions>
-        <ActionButton onClick={this.toggleAllUsers}>
+        <ActionButton>
           <Checkbox
             label={
               <>
