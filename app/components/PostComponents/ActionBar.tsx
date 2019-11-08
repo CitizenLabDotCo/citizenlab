@@ -65,7 +65,7 @@ interface Props {
 
 export default memo<Props>(({ rightContent, leftContent, showTranslateButton, translateButtonClicked, onTranslate }) => {
   return (
-    <Container id="e2e-action-bar">
+    <Container>
       <Inner>
         <Left>
           {leftContent}
