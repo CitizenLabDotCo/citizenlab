@@ -16,7 +16,7 @@ import Checkbox from 'components/UI/Checkbox';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
-import { FormSectionTitle, FormSection, FormLabelValue } from 'components/UI/FormComponents';
+import { FormSectionTitle, FormSection } from 'components/UI/FormComponents';
 
 const CheckboxContainer = styled.div`
   padding-bottom: 0.5rem;
