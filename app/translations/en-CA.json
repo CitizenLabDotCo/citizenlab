@@ -1415,7 +1415,7 @@
   "app.containers.InitiativesShow.initiativeOgDescription": "What do you think of this initiative? Join the discussion and vote to make your voice heard.",
   "app.containers.InitiativesShow.invisibleTitleContent": "What is this initiative about?",
   "app.containers.InitiativesShow.learnMore": "Learn more about initiatives",
-  "app.containers.InitiativesShow.metaOgTitle": "Support this initiative : {initiativeTitle}",
+  "app.containers.InitiativesShow.metaOgTitle": "Support this initiative: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Initiative  • {initiativeTitle}",
   "app.containers.InitiativesShow.postedBy": "Initiative posted by {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Posted by {authorName}",
