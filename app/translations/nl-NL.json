@@ -1344,7 +1344,7 @@
   "app.containers.IdeasShow.ideaOgDescription": "Wat denk je van dit idee? Neem deel aan de discussie en laat je stem horen.",
   "app.containers.IdeasShow.invisibleTitleContent": "Idee-inhoud",
   "app.containers.IdeasShow.metaOgTitle": "Steun dit idee: {ideaTitle}",
-  "app.containers.IdeasShow.metaTitle": "Idee  • {ideaTitle}",
+  "app.containers.IdeasShow.metaTitle": "Idee: {ideaTitle}",
   "app.containers.IdeasShow.postedIn": "Geplaatst in {projectLink}",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Waarom wil je dit als spam markeren?",
   "app.containers.IdeasShow.shareSubtitle": "Bereik meer mensen en laat je stem horen.",
