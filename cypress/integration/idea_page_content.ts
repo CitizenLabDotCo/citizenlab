@@ -43,8 +43,8 @@ describe('Idea Page', () => {
       cy.get('#e2e-idea-content-footer');
 
       // has the More Options menu and opens it
-      cy.get('#e2e-idea-more-actions').click();
-      cy.get('#e2e-idea-more-actions-menu');
+      cy.get('#e2e-action-bar').find('.e2e-more-actions').click();
+      cy.get('#e2e-more-actions-list');
     });
   });
 
