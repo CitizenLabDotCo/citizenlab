@@ -151,29 +151,25 @@ en:
     default_eligibility_criteria: >
       <p>The initiative should</p> <p>- be within the city's competences</p>
   smart_group_rules:
-    is_empty: "'%{title}' has no value"
-    not_is_empty: "'%{title}' has any value"
+    is_empty: "'%{property}' has no value"
+    not_is_empty: "'%{property}' has any value"
     custom_field_checkbox:
-      is_checked: "Checked '%{title}'"
-      not_is_checked: "Didn't check '%{title}'"
+      is_checked: "Checked '%{property}'"
+      not_is_checked: "Didn't check '%{property}'"
     custom_field_date:
-      is_before: "'%{title}' is before %{value}" 
-      is_exactly: "'%{title}' is %{value}"
-      is_after: "'%{title}' is after %{value}"
+      is_before: "'%{property}' is before %{value}" 
+      is_exactly: "'%{property}' is %{value}"
+      is_after: "'%{property}' is after %{value}"
     custom_field_number:
-      is_equal: "'%{title}' equals %{value}"
-      not_is_equal: "'%{title}' doesn't equal %{value}"
-      is_larger_than: "'%{title}' is larger than %{value}"
-      not_is_larger_than: "'%{title}' is not larger than %{value}"
-      is_smaller_than: "'%{title}' is smaller than %{value}"
-      not_is_smaller_than: "'%{title}' is not smaller than %{value}"
+      is_equal: "'%{property}' equals %{value}"
+      not_is_equal: "'%{property}' doesn't equal %{value}"
+      is_larger_than: "'%{property}' is larger than %{value}"
+      not_is_larger_than: "'%{property}' is not larger than %{value}"
+      is_smaller_than: "'%{property}' is smaller than %{value}"
+      not_is_smaller_than: "'%{property}' is not smaller than %{value}"
     custom_field_select:
-      has_value: "'%{title}' is '%{value}'"
-      not_has_value: "'%{title}' isn't '%{value}'"
+      has_value: "'%{property}' is '%{value}'"
+      not_has_value: "'%{property}' isn't '%{value}'"
     lives_in:
-      has_value: "Lives in %{domicile}"
       has_value_outside: "Lives outside this region"
-      not_has_value: "Doesn't live in %{domicile}"
       not_has_value_outside: "Doesn't live outside this region"
-      is_empty: "Hasn't specified where they live"
-      not_is_empty: "Specified where they live"

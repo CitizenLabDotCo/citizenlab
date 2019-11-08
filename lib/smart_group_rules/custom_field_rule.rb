@@ -5,6 +5,7 @@ module SmartGroupRules
 
     included do
       include ActiveModel::Validations
+      include DescribableRule
 
       attr_accessor :custom_field_id, :predicate, :value
 
@@ -13,6 +14,13 @@ module SmartGroupRules
       validates :value, absence: true, unless: :needs_value?
       validates :value, presence: true, if: :needs_value?
       validates :custom_field_id, presence: true
+
+      # Must be defined here in order to be able
+      # to overwrite the same method in 
+      # DescribableRule.
+      def description_property locale: nil
+        CustomField.find(custom_field_id).title_multiloc[locale]
+      end
     end
 
     class_methods do
@@ -33,32 +41,6 @@ module SmartGroupRules
 
     def rule_type
       self.class.rule_type
-    end
-
-    def description_multiloc
-      MultilocService.new.block_to_multiloc do |locale|
-        custom_field_title = CustomField.find(custom_field_id).title_multiloc[locale]
-        case predicate
-        when 'is_empty'
-          I18n.t!('smart_group_rules.is_empty', title: custom_field_title)
-        when 'not_is_empty'
-          I18n.t!('smart_group_rules.not_is_empty', title: custom_field_title)
-        else
-          begin
-            I18n.t!("smart_group_rules.#{rule_type}.#{predicate}_#{value}", title: custom_field_title)
-          rescue I18n::MissingTranslationData
-            begin 
-              I18n.t!("smart_group_rules.#{rule_type}.#{predicate}", title: custom_field_title, value: description_value(locale: locale))
-            rescue I18n::MissingTranslationData
-              raise "Unsupported rule description: smart_group_rules.#{rule_type}.#{predicate}{_#{value}}"
-            end
-          end
-        end
-      end
-    end
-
-    def description_value locale: nil
-      value
     end
 
   end

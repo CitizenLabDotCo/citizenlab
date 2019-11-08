@@ -73,6 +73,19 @@ describe SmartGroupRules::LivesIn do
   end
 
   describe "description_multiloc" do
+    before do
+      CustomField.create!(
+        resource_type: 'User',
+        key: 'domicile',
+        title_multiloc: {'en' => 'Place of residence', 'fr-FR' => 'Domicile', 'nl-NL' => 'Woonplaats'},
+        input_type: 'select',
+        required: false,
+        ordering: 2,
+        enabled: true,
+        code: 'domicile'
+      ) 
+    end
+
     let(:area) {create(:area, title_multiloc: {
       'en'    => 'Brussels',
       'fr-FR' => 'Bruxelles',
@@ -113,9 +126,9 @@ describe SmartGroupRules::LivesIn do
       I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
 
       expect(lives_in_has_value_rule.description_multiloc).to eq ({
-        'en'    => 'Lives in Brussels',
-        'fr-FR' => 'Habite à Bruxelles',
-        'nl-NL' => 'Woont in Brussel'
+        'en'    => 'Place of residence is Brussels',
+        'fr-FR' => 'Domicile est Bruxelles',
+        'nl-NL' => 'Woonplaats is Brussel'
       })
       expect(lives_in_outside_rule.description_multiloc).to eq ({
         'en'    => 'Lives outside this region',
