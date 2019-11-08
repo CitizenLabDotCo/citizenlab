@@ -1517,7 +1517,7 @@
   "app.containers.Projects.invisibleTitleSurvey": "Répondre à l'enquête",
   "app.containers.Projects.location": "Localisation :",
   "app.containers.Projects.manageBudget": "Gérer le budget",
-  "app.containers.Projects.metaTitle": "Projet  • {projectTitle}",
+  "app.containers.Projects.metaTitle": "Projet : {projectTitle}",
   "app.containers.Projects.navEvents": "Événements",
   "app.containers.Projects.navIdeas": "Idées",
   "app.containers.Projects.navInformation": "Informations",

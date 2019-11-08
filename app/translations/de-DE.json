@@ -1517,7 +1517,7 @@
   "app.containers.Projects.invisibleTitleSurvey": "An der Umfrage teilnehmen",
   "app.containers.Projects.location": "Adresse oder Standort:",
   "app.containers.Projects.manageBudget": "Budget verwalten",
-  "app.containers.Projects.metaTitle": "Projekt • {projectTitle}",
+  "app.containers.Projects.metaTitle": "Projekt: {projectTitle}",
   "app.containers.Projects.navEvents": "Veranstaltungen",
   "app.containers.Projects.navIdeas": "{orgName, select, München {Meldungen} other {Ideen}}",
   "app.containers.Projects.navInformation": "Information",
