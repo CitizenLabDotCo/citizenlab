@@ -31,7 +31,15 @@ export default defineMessages({
   },
   signUpToTakePoll: {
     id: 'app.containers.Projects.PollForm.signUpToTakePoll',
-    defaultMessage: 'Please sign up to take this poll',
+    defaultMessage: 'Please {signUpLink} or {logInLink} to take this poll',
+  },
+  signUpLinkText: {
+    id: 'app.containers.Projects.PollForm.signUpLinkText',
+    defaultMessage: 'sign up',
+  },
+  logInLinkText: {
+    id: 'app.containers.Projects.PollForm.logInLinkText',
+    defaultMessage: 'log in',
   },
   verificationLinkText: {
     id: 'app.containers.Projects.PollForm.verificationLinkText',
