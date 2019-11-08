@@ -70,6 +70,7 @@ const VerificationModal = memo<Props>((props) => {
       width={820}
       opened={props.opened}
       close={onClose}
+      remaining
     >
       <Container className={`e2e-verification-modal ${props.className || ''}`}>
         {activeStep === 'method-selection' &&
