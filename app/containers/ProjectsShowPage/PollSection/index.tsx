@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import Link from 'utils/cl-router/Link';
 
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPollQuestions, { GetPollQuestionsChildProps } from 'resources/GetPollQuestions';
@@ -29,7 +30,19 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
 `;
 
-const StyledButton = styled.button`
+const VerifyButton = styled.button`
+  color: #1391A1;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+  display: inline-block;
+  padding: 0;
+`;
+
+const SignUpLink = styled(Link)`
   color: #1391A1;
   text-decoration: underline;
   transition: all 100ms ease-out;
@@ -100,14 +113,20 @@ export class PollSection extends PureComponent<Props> {
                 <FormattedMessage
                   {...message}
                   values={{
-                    verificationLink: <StyledButton onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
+                    verificationLink: <VerifyButton onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></VerifyButton>
                   }}
                 />
               </StyledWarning>
             }
             {enabled && isNilOrError(authUser) &&
               <StyledWarning icon="lock">
-                <FormattedMessage {...messages.signUpToTakePoll} />
+                <FormattedMessage
+                  {...messages.signUpToTakePoll}
+                  values={{
+                    signUpLink: <SignUpLink to="/sign-up"><FormattedMessage {...messages.signUpLinkText} /></SignUpLink>,
+                    logInLink: <SignUpLink to="/sign-in"><FormattedMessage {...messages.logInLinkText} /></SignUpLink>
+                  }}
+                />
               </StyledWarning>
             }
             <PollForm
