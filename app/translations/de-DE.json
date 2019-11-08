@@ -1416,7 +1416,7 @@
   "app.containers.InitiativesShow.invisibleTitleContent": "Worum geht es bei dieser Initiative?",
   "app.containers.InitiativesShow.learnMore": "Mehr über Initiativen erfahren",
   "app.containers.InitiativesShow.metaOgTitle": "Diese Initiative unterstützen: {initiativeTitle}",
-  "app.containers.InitiativesShow.metaTitle": "Initiative  • {initiativeTitle}",
+  "app.containers.InitiativesShow.metaTitle": "Initiative: {initiativeTitle}",
   "app.containers.InitiativesShow.postedBy": "Initiative von {authorName} gepostet",
   "app.containers.InitiativesShow.postedByShort": "Gepostet von {authorName}",
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "Warum wollen Sie dies als Spam melden?",
