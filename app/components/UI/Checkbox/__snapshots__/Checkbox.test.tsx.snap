@@ -268,7 +268,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                 <Checkbox__Input
                   aria-checked={true}
                   defaultChecked={true}
-                  id="checkbox"
+                  id="955f1df0-0241-11ea-895a-b1f8bd141b74"
                   onBlur={[Function]}
                   onFocus={[Function]}
                   type="checkbox"
@@ -315,12 +315,12 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                           aria-checked="true"
                           checked=""
                           class="c0"
-                          id="checkbox"
+                          id="955f1df0-0241-11ea-895a-b1f8bd141b74"
                           type="checkbox"
                         />,
                       }
                     }
-                    id="checkbox"
+                    id="955f1df0-0241-11ea-895a-b1f8bd141b74"
                     onBlur={[Function]}
                     onFocus={[Function]}
                     type="checkbox"
@@ -329,7 +329,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                       aria-checked={true}
                       className="c2"
                       defaultChecked={true}
-                      id="checkbox"
+                      id="955f1df0-0241-11ea-895a-b1f8bd141b74"
                       onBlur={[Function]}
                       onFocus={[Function]}
                       type="checkbox"
@@ -459,7 +459,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
             </StyledComponent>
           </Checkbox__InputWrapper>
           <Checkbox__Label
-            htmlFor="checkbox"
+            htmlFor="955f1df0-0241-11ea-895a-b1f8bd141b74"
             onClick={[Function]}
           >
             <StyledComponent
@@ -490,12 +490,12 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                 }
               }
               forwardedRef={null}
-              htmlFor="checkbox"
+              htmlFor="955f1df0-0241-11ea-895a-b1f8bd141b74"
               onClick={[Function]}
             >
               <label
                 className="c4"
-                htmlFor="checkbox"
+                htmlFor="955f1df0-0241-11ea-895a-b1f8bd141b74"
                 onClick={[Function]}
               >
                 test
@@ -772,7 +772,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                 <Checkbox__Input
                   aria-checked={false}
                   defaultChecked={false}
-                  id="checkbox"
+                  id="9558dc60-0241-11ea-895a-b1f8bd141b74"
                   onBlur={[Function]}
                   onFocus={[Function]}
                   type="checkbox"
@@ -818,12 +818,12 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
 <input
                           aria-checked="false"
                           class="c0"
-                          id="checkbox"
+                          id="9558dc60-0241-11ea-895a-b1f8bd141b74"
                           type="checkbox"
                         />,
                       }
                     }
-                    id="checkbox"
+                    id="9558dc60-0241-11ea-895a-b1f8bd141b74"
                     onBlur={[Function]}
                     onFocus={[Function]}
                     type="checkbox"
@@ -832,7 +832,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                       aria-checked={false}
                       className="c2"
                       defaultChecked={false}
-                      id="checkbox"
+                      id="9558dc60-0241-11ea-895a-b1f8bd141b74"
                       onBlur={[Function]}
                       onFocus={[Function]}
                       type="checkbox"
@@ -843,7 +843,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
             </StyledComponent>
           </Checkbox__InputWrapper>
           <Checkbox__Label
-            htmlFor="checkbox"
+            htmlFor="9558dc60-0241-11ea-895a-b1f8bd141b74"
             onClick={[Function]}
           >
             <StyledComponent
@@ -874,12 +874,12 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
                 }
               }
               forwardedRef={null}
-              htmlFor="checkbox"
+              htmlFor="9558dc60-0241-11ea-895a-b1f8bd141b74"
               onClick={[Function]}
             >
               <label
                 className="c3"
-                htmlFor="checkbox"
+                htmlFor="9558dc60-0241-11ea-895a-b1f8bd141b74"
                 onClick={[Function]}
               >
                 test
