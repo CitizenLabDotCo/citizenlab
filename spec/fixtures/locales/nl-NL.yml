@@ -5,20 +5,3 @@ nl:
     custom_field_checkbox:
       is_checked: "Heeft '%{property}' aangevinkt"
       not_is_checked: "Heeft '%{property}' niet aangevinkt"
-    custom_field_date:
-      is_before: "'%{property}' is voor %{value}" 
-      is_exactly: "'%{property}' is %{value}"
-      is_after: "'%{property}' is na %{value}"
-    custom_field_number:
-      is_equal: "'%{property}' is gelijk aan %{value}"
-      not_is_equal: "'%{property}' is verschillend van %{value}"
-      is_larger_than: "'%{property}' is groter dan %{value}"
-      not_is_larger_than: "'%{property}' is niet groter dan %{value}"
-      is_smaller_than: "'%{property}' is kleiner dan %{value}"
-      not_is_smaller_than: "'%{property}' is niet kleiner dan %{value}"
-    custom_field_select:
-      has_value: "'%{property}' is '%{value}'"
-      not_has_value: "'%{property}' is niet '%{value}'"
-    lives_in:
-      has_value_outside: "Woont buiten deze regio"
-      not_has_value_outside: "Woont niet buiten deze regio"
