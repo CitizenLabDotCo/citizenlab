@@ -5,20 +5,3 @@ en:
     custom_field_checkbox:
       is_checked: "Checked '%{property}'"
       not_is_checked: "Didn't check '%{property}'"
-    custom_field_date:
-      is_before: "'%{property}' is before %{value}" 
-      is_exactly: "'%{property}' is %{value}"
-      is_after: "'%{property}' is after %{value}"
-    custom_field_number:
-      is_equal: "'%{property}' equals %{value}"
-      not_is_equal: "'%{property}' doesn't equal %{value}"
-      is_larger_than: "'%{property}' is larger than %{value}"
-      not_is_larger_than: "'%{property}' is not larger than %{value}"
-      is_smaller_than: "'%{property}' is smaller than %{value}"
-      not_is_smaller_than: "'%{property}' is not smaller than %{value}"
-    custom_field_select:
-      has_value: "'%{property}' is '%{value}'"
-      not_has_value: "'%{property}' isn't '%{value}'"
-    lives_in:
-      has_value_outside: "Lives outside this region"
-      not_has_value_outside: "Doesn't live outside this region"
