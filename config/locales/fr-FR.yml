@@ -154,6 +154,17 @@ fr:
     custom_field_checkbox:
       is_checked: "A coché '%{title}'"
       not_is_checked: "N'as pas coché '%{title}'"
+    custom_field_date:
+      is_before: "'%{title}' est avant %{value}" 
+      is_exactly: "'%{title}' est %{value}"
+      is_after: "'%{title}' est après %{value}"
+    custom_field_number:
+      is_equal: "'%{title}' est égal à %{value}"
+      not_is_equal: "'%{title}' n'est pas égal à %{value}"
+      is_larger_than: "'%{title}' est plus grand que %{value}"
+      not_is_larger_than: "'%{title}' n'est pas plus grand que %{value}"
+      is_smaller_than: "'%{title}' est moins que %{value}"
+      not_is_smaller_than: "'%{title}' n'est pas moins que %{value}"
     lives_in:
       has_value: "Habite à %{domicile}"
       has_value_outside: "Habite hors de cette region"
@@ -161,7 +172,3 @@ fr:
       not_has_value_outside: "N'habite pas hors de cette region"
       is_empty: "N'a pas specifié leurs domicile"
       not_is_empty: "A specifié leurs domicile"
-    custom_field_date:
-      is_before: "'%{title}' est avant %{value}" 
-      is_exactly: "'%{title}' est %{value}"
-      is_after: "'%{title}' est après %{value}"

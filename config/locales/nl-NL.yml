@@ -141,6 +141,17 @@ nl:
     custom_field_checkbox:
       is_checked: "Heeft '%{title}' aangevinkt"
       not_is_checked: "Heeft '%{title}' niet aangevinkt"
+    custom_field_date:
+      is_before: "'%{title}' is voor %{value}" 
+      is_exactly: "'%{title}' is %{value}"
+      is_after: "'%{title}' is na %{value}"
+    custom_field_number:
+      is_equal: "'%{title}' is gelijk aan %{value}"
+      not_is_equal: "'%{title}' is verschillend van %{value}"
+      is_larger_than: "'%{title}' is groter dan %{value}"
+      not_is_larger_than: "'%{title}' is niet groter dan %{value}"
+      is_smaller_than: "'%{title}' is kleiner dan %{value}"
+      not_is_smaller_than: "'%{title}' is niet kleiner dan %{value}"
     lives_in:
       has_value: "Woont in %{domicile}"
       has_value_outside: "Woont buiten deze regio"
@@ -148,7 +159,3 @@ nl:
       not_has_value_outside: "Woont niet buiten deze regio"
       is_empty: "Heeft geen woonplaats aangegeven"
       not_is_empty: "Heeft een woonplaats aangegeven"
-    custom_field_date:
-      is_before: "'%{title}' is voor %{value}" 
-      is_exactly: "'%{title}' is %{value}"
-      is_after: "'%{title}' is na %{value}"
