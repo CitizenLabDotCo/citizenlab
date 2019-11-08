@@ -170,6 +170,9 @@ en:
     custom_field_select:
       has_value: "'%{property}' is '%{value}'"
       not_has_value: "'%{property}' isn't '%{value}'"
+    custom_field_text:
+      is: "'%{property}' is '%{value}'"
+      not_is: "'%{property}' is not '%{value}'"
     lives_in:
       has_value_outside: "Lives outside this region"
       not_has_value_outside: "Doesn't live outside this region"

@@ -155,6 +155,9 @@ nl:
     custom_field_select:
       has_value: "'%{property}' is '%{value}'"
       not_has_value: "'%{property}' is niet '%{value}'"
+    custom_field_text:
+      is: "'%{property}' is '%{value}'"
+      not_is: "'%{property}' is niet '%{value}'"
     lives_in:
       has_value_outside: "Woont buiten deze regio"
       not_has_value_outside: "Woont niet buiten deze regio"
