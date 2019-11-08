@@ -57,7 +57,11 @@ const config = {
       splitChunks: {
         chunks: 'all',
       },
-      // minimize: true,
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({ sourceMap: true }),
+        new OptimizeCSSAssetsPlugin()
+      ]
       // minimizer: [
       //   new TerserPlugin({
       //       cache: true,
