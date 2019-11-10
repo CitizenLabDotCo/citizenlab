@@ -28,13 +28,6 @@ import { UploadFile } from 'typings';
 
 const Container = styled.div`
   width: 100%;
-  display: column;
-`;
-
-const ContentWrapper: any = styled(TransitionGroup)`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
 `;
 
 const ErrorWrapper = styled.div`
@@ -70,19 +63,16 @@ const DropzoneImagesRemaining = styled.div`
 `;
 
 const DropzoneContent = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  width: 100%;
+  height: 200px;
+  border: solid 1px blue;
 `;
 
-const StyledDropzone = styled(Dropzone)`
+const DropzoneInput = styled.input`
+  height: 100%;
+`;
+
+const StyledDropzone = styled(Dropzone)<{ className: string, disablePreview: boolean }>`
   box-sizing: border-box;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px dashed ${colors.label};
@@ -442,50 +432,77 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
       }).reverse()
     ) : null);
 
-    const imageDropzone = (
-      processing ||
-      (maxNumberOfImages && maxNumberOfImages > 1) ||
-      (maxNumberOfImages && maxNumberOfImages === 1 && (!images || images.length < 1))
-    ) ? (
-      <CSSTransition classNames="image" timeout={0} enter={false} exit={false}>
-        <Box
-          maxWidth={maxImagePreviewWidth}
-          ratio={imagePreviewRatio}
-          className={(maxNumberOfImages !== 1 && images && images.length > 0 ? 'hasSpacing' : '')}
-        >
-          <label>
-            <StyledDropzone
-              className={`${this.props.imageRadius === '50%' && 'rounded'}`}
-              accept={acceptedFileTypes}
-              maxSize={maxImageFileSize}
-              disabled={processing || maxNumberOfImages === images.length}
-              disablePreview={true}
-              onDrop={this.onDrop}
-              onDropRejected={this.onDropRejected}
-            >
-              {!processing ? (
-                <DropzoneContent>
-                  <DropzonePlaceholderIcon name="upload" ariaHidden />
-                  <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
-                  <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
-                </DropzoneContent>
-              ) : (
-                <DropzoneContent>
-                  <Spinner />
-                </DropzoneContent>
-              )}
-            </StyledDropzone>
-          </label>
-        </Box>
-      </CSSTransition>
-    ) : null;
+    {/* {!processing ? (
+      <DropzoneContent>
+        <DropzonePlaceholderIcon name="upload" ariaHidden />
+        <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
+        <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
+      </DropzoneContent>
+    ) : (
+      <DropzoneContent>
+        <Spinner />
+      </DropzoneContent>
+    )} */}
+
+    {/* {isDragActive ? <p>Drop the files here ...</p> : <p>Drag 'n' drop some files here, or click to select files</p>} */}
+
+    // const imageDropzone = (
+    //   processing ||
+    //   (maxNumberOfImages && maxNumberOfImages > 1) ||
+    //   (maxNumberOfImages && maxNumberOfImages === 1 && (!images || images.length < 1))
+    // ) ? (
+    //   <CSSTransition classNames="image" timeout={0} enter={false} exit={false}>
+    //     <Box
+    //       maxWidth={maxImagePreviewWidth}
+    //       ratio={imagePreviewRatio}
+    //       className={(maxNumberOfImages !== 1 && images && images.length > 0 ? 'hasSpacing' : '')}
+    //     >
+    //       <label>
+    //         <Dropzone
+    //           className={`${this.props.imageRadius === '50%' && 'rounded'}`}
+    //           accept={acceptedFileTypes}
+    //           maxSize={maxImageFileSize}
+    //           disabled={processing || maxNumberOfImages === images.length}
+    //           disablePreview={true}
+    //           onDrop={this.onDrop as any}
+    //           onDropRejected={this.onDropRejected as any}
+    //         >
+    //           {({ getRootProps, getInputProps, isDragActive }) => (
+    //             <DropzoneContent {...getRootProps()}>
+    //               <DropzoneInput {...getInputProps()} />
+    //               {/*
+    //               <DropzonePlaceholderIcon name="upload" ariaHidden />
+    //               <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
+    //               <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
+    //               */}
+    //             </DropzoneContent>
+    //           )}
+    //         </Dropzone>
+    //       </label>
+    //     </Box>
+    //   </CSSTransition>
+    // ) : null;
 
     return (
       <Container className={className}>
-        <ContentWrapper>
-          {imageDropzone}
-          {imageList}
-        </ContentWrapper>
+        <Dropzone
+          accept={acceptedFileTypes}
+          maxSize={maxImageFileSize}
+          disabled={processing || maxNumberOfImages === images.length}
+          onDrop={this.onDrop as any}
+          onDropRejected={this.onDropRejected as any}
+        >
+          {({ getRootProps, getInputProps, isDragActive }) => (
+            <DropzoneContent {...getRootProps()}>
+              <DropzoneInput {...getInputProps()} />
+              {/*
+              <DropzonePlaceholderIcon name="upload" ariaHidden />
+              <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
+              <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
+              */}
+            </DropzoneContent>
+          )}
+        </Dropzone>
 
         <ErrorWrapper>
           <Error text={errorMessage} />
@@ -496,3 +513,31 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 export default injectIntl<Props>(ImagesDropzone);
+
+
+// import React, { useCallback, memo } from 'react';
+// import { useDropzone } from 'react-dropzone';
+
+// interface Props { }
+
+// const imageDropzone = memo<Props>(() => {
+
+//   const onDrop = useCallback((acceptedFiles) => {
+//     console.log('drop');
+//   }, []);
+
+//   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+//   return (
+//     <div {...getRootProps()}>
+//       <input {...getInputProps()} />
+//       {
+//         isDragActive ?
+//           <p>Drop the files here ...</p> :
+//           <p>Drag 'n' drop some files here, or click to select files</p>
+//       }
+//     </div>
+//   );
+// });
+
+// export default imageDropzone;
