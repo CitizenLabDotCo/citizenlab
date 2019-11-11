@@ -30,7 +30,7 @@ const ListItemText = styled.div`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-  hyphens: auto;
+  /* hyphens: auto; */
 `;
 
 const ListItemCheckbox = styled(Checkbox)`
