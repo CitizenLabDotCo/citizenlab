@@ -10,9 +10,6 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const List = styled.ul`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -30,7 +27,6 @@ const ListItemText = styled.div`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-  /* hyphens: auto; */
 `;
 
 const ListItemCheckbox = styled(Checkbox)`
@@ -38,6 +34,7 @@ const ListItemCheckbox = styled(Checkbox)`
 `;
 
 const ListItem = styled.li`
+  width: 100%;
   display: flex;
   align-items: center;
   margin: 0px;
