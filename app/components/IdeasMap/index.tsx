@@ -13,7 +13,6 @@ import tracks from './tracks';
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import IdeaPreview from './IdeaPreview';
-import IdeaAddButton from './IdeaAddButton';
 
 // Resources
 import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'resources/GetIdeaMarkers';
@@ -29,11 +28,7 @@ import { media, ScreenReaderOnly } from 'utils/styleUtils';
 // Typing
 import { IGeotaggedIdeaData } from 'services/ideas';
 
-const Container = styled.div`
-  > .create-idea-wrapper {
-    display: none;
-  }
-`;
+const Container = styled.div``;
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 10px;
@@ -155,7 +150,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
   noIdeasWithLocationMessage = <FormattedMessage {...messages.noIdeasWithLocation} />;
 
   render() {
-    const { phaseId, projectIds, ideaMarkers, className } = this.props;
+    const { ideaMarkers, className } = this.props;
     const { selectedIdeaId, points } = this.state;
 
     return (
@@ -176,16 +171,6 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
           boxContent={selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null}
           onBoxClose={this.deselectIdea}
         />
-
-        {projectIds && projectIds.length === 1 &&
-          <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
-            <IdeaAddButton
-              projectId={projectIds[0]}
-              phaseId={phaseId}
-              onClick={this.redirectToIdeaCreation}
-            />
-          </div>
-        }
       </Container>
     );
   }

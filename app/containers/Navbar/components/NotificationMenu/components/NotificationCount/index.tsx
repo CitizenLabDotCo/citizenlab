@@ -55,6 +55,7 @@ const NewNotificationsIndicator = styled.div`
 type Props = {
   count?: number;
   onClick?: (event: React.FormEvent<any>) => void;
+  dropdownOpened: boolean;
 };
 
 type State = {};
@@ -65,13 +66,14 @@ class NotificationCount extends PureComponent<Props & InjectedIntlProps, State> 
   }
 
   render() {
-    const { count } = this.props;
+    const { count, dropdownOpened } = this.props;
 
     return (
       <Container
         aria-label={this.props.intl.formatMessage(messages.notificationsLabel)}
         onMouseDown={this.removeFocus}
         onClick={this.props.onClick}
+        aria-expanded={dropdownOpened}
       >
         <NotificationIcon name="notification" />
         {(isNumber(count) && count > 0) ?

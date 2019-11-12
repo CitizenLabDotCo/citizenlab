@@ -11,7 +11,7 @@ describe('profile deletion', () => {
     cy.apiSignup(firstName, lastName, peasantEmail, peasantPassword);
   });
   beforeEach(() => {
-    cy.login(peasantEmail, peasantPassword);
+    cy.setLoginCookie(peasantEmail, peasantPassword);
     cy.visit('/profile/edit');
     cy.acceptCookies();
   });

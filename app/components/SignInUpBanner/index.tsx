@@ -25,8 +25,6 @@ const Slogan = styled.div`
   font-size: ${fontSizes.xxxxl}px;
   line-height: 44px;
   font-weight: 600;
-  position: sticky;
-  top: 140px;
 `;
 
 type Props = {};

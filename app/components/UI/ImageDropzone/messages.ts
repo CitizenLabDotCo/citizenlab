@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.components.ImageDropzone.errorImageMaxSizeExceeded',
     defaultMessage: 'The selected image exceeds the maximum allowed size of {maxFileSize} Mb',
   },
-  dropYourImageHere: {
-    id: 'app.components.ImageDropzone.dropYourImageHere',
-    defaultMessage: 'Drop your image here or click to upload.',
+  uploadImage: {
+    id: 'app.components.ImageDropzone.uploadImage',
+    defaultMessage: 'Upload an image',
   },
   unkownError: {
     id: 'app.components.ImageDropzone.unkownError',

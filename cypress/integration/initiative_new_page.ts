@@ -6,43 +6,47 @@ describe('Initiative new page', () => {
   const email = randomEmail();
   const password = randomString();
   const initiativeTitle = randomString(40);
-  const initiativeContent = randomString(60);
+  const initiativeContent = randomString(501);
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password);
   });
 
   beforeEach(() => {
-    cy.login(email, password);
+    cy.setLoginCookie(email, password);
     cy.visit('/initiatives/new');
-    cy.wait(1000);
+    cy.wait(500);
     cy.acceptCookies();
     cy.get('#initiative-form');
   });
 
   it('shows an error when no title is provided', () => {
     cy.get('#e2e-initiative-title-input-en-GB').click();
-    cy.get('.e2e-submit-form').should('have.class', 'disabled').click();
+    cy.get('.e2e-submit-form').should('have.class', 'disabled');
+    cy.get('.e2e-tips').click();
 
     cy.get('.e2e-error-message').should('contain', 'Please provide a title');
   });
 
   it('shows an error when no description is provided', () => {
     cy.get('#body .ql-editor').click();
-    cy.get('.e2e-submit-form').should('have.class', 'disabled').click();
+    cy.get('.e2e-submit-form').should('have.class', 'disabled');
+    cy.get('.e2e-tips').click();
 
     cy.get('.e2e-error-message').should('contain', 'Please provide a description');
   });
 
   it('shows an error when the title is less than 10 characters long', () => {
     cy.get('#e2e-initiative-title-input-en-GB').type(randomString(9));
-    cy.get('.e2e-submit-form').should('have.class', 'disabled').click().wait(200);
+    cy.get('.e2e-submit-form').should('have.class', 'disabled');
+    cy.get('.e2e-tips').click().wait(200);
     cy.get('.e2e-error-message').should('contain', 'The initiative title must be at least 10 characters long');
   });
 
   it('shows an error when the description is less than 300 characters long ()', () => {
     cy.get('#body .ql-editor').type(randomString(9));
-    cy.get('.e2e-submit-form').should('have.class', 'disabled').click().wait(200);
+    cy.get('.e2e-submit-form').should('have.class', 'disabled');
+    cy.get('.e2e-tips').click().wait(200);
     cy.get('.e2e-error-message').should('contain', 'The initiative description must be at least 500 characters long');
   });
 
@@ -76,7 +80,7 @@ describe('Initiative new page', () => {
     cy.get('#iniatiative-banner-dropzone');
     cy.get('#e2e-initiative-file-upload');
 
-    // add an inamge
+    // add an image
     cy.fixture('cy.png', 'base64').then(fileContent => {
       cy.get('#iniatiative-img-dropzone').upload(
         { fileContent, fileName: 'cy.png', mimeType: 'image/png' },
@@ -86,17 +90,17 @@ describe('Initiative new page', () => {
     });
 
     // save the form
-    cy.get('.e2e-initiative-publish-button').click();
-    cy.wait(3000);
+    cy.wait(500);
+    cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
+    cy.wait(1000);
 
     // verify the content of the newly created initiative page
-    // cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeTitle}`);
-    // cy.get('#e2e-initiative-show');
-    // cy.get('#e2e-initiative-show').find('.e2e-initiativetitle').contains(initiativeTitle);
-    // cy.get('#e2e-initiative-show').find('#e2e-initiative-description').contains(initiativeContent);
-    // cy.get('#e2e-initiative-show').find('#e2e-initiative-topics').find('.e2e-initiative-topic').should('have.length', 1);
-    // cy.get('#e2e-initiative-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
-    // cy.get('#e2e-initiative-show').find('.e2e-initiative-author-link .e2e-username').contains(`${firstName} ${lastName}`);
+    cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeTitle}`);
+    cy.get('#e2e-initiative-show');
+    cy.get('#e2e-initiative-show').find('#e2e-initiative-title').contains(initiativeTitle);
+    cy.get('#e2e-initiative-show').find('#e2e-initiative-description').contains(initiativeContent);
+    cy.get('#e2e-initiative-show').find('#e2e-initiative-topics').find('.e2e-initiative-topic').should('have.length', 1);
+    cy.get('#e2e-initiative-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
   });
 
 });

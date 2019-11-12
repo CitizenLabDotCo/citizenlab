@@ -20,9 +20,15 @@ import tracks from './tracks';
 
 const Container = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
 `;
+
+const WidgetConfigWrapper = styled.div`
+  flex: 1 1 500px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const WidgetPreviewWrapper = styled.div``;
 
 const WidgetTitle = styled.h3``;
 
@@ -128,7 +134,7 @@ class IdeasWidget extends PureComponent<Props & InjectedIntlProps & ITracks, Sta
     const { widgetParams: { width, height }, codeModalOpened } = this.state;
     return (
       <Container>
-        <div>
+        <WidgetConfigWrapper>
           <WidgetTitle>
             <FormattedMessage {...messages.settingsTitle} />
           </WidgetTitle>
@@ -138,8 +144,8 @@ class IdeasWidget extends PureComponent<Props & InjectedIntlProps & ITracks, Sta
             validate={this.validate}
             onSubmit={this.handleOnSubmit}
           />
-        </div>
-        <div>
+        </WidgetConfigWrapper>
+        <WidgetPreviewWrapper>
           <WidgetTitle>
             <FormattedMessage {...messages.previewTitle} />
           </WidgetTitle>
@@ -155,7 +161,8 @@ class IdeasWidget extends PureComponent<Props & InjectedIntlProps & ITracks, Sta
           >
             <FormattedMessage {...messages.exportHtmlCodeButton} />
           </Button>
-        </div>
+        </WidgetPreviewWrapper>
+
         <Modal
           opened={codeModalOpened}
           close={this.handleCloseCodeModal}

@@ -11,7 +11,7 @@ import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styles
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
 import styled, { withTheme } from 'styled-components';
 
 // components
@@ -32,7 +32,7 @@ const ProjectNavbarWrapper = styled.div`
   position: sticky;
   top: ${({ theme }) => theme.menuHeight}px;
   z-index: 10;
-  background: ${({ theme }) => theme.projectNavbarBackgroundColor || '#002332'};
+  background: ${({ theme }) => theme.projectNavbarBackgroundColor || '#171717'};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 
   ${media.smallerThanMinTablet`
@@ -146,8 +146,6 @@ const StyledPBNavbarButton = styled(PBNavbarButton)`
 // TODO support different tooltip positions, this includes a quickfix to show
 // tooltip content on smaller than max tablets
 const StyledIdeaButton = styled(IdeaButton)`
-  margin-left: 40px;
-
   ${media.smallerThanMaxTablet`
     .tooltip-container {
       left: 0;
@@ -228,7 +226,11 @@ class ProjectNavbar extends PureComponent<Props, State> {
         }
 
         return (
-          <ProjectNavbarWrapper>
+          <>
+            <ScreenReaderOnly>
+              <FormattedMessage {...messages.a11y_projectNav} />
+            </ScreenReaderOnly>
+            <ProjectNavbarWrapper>
             <StyledContentContainer>
               <ProjectNavbarItems>
 
@@ -317,14 +319,16 @@ class ProjectNavbar extends PureComponent<Props, State> {
                 {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
                   <StyledIdeaButton
                     projectId={project.id}
-                    fullHeight={true}
+                    height="58px"
                     bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
                     textColor={theme.projectNavbarIdeaButtonTextColor}
+                    borderRadius="0px"
                   />
                 }
               </ProjectNavbarItems>
             </StyledContentContainer>
           </ProjectNavbarWrapper>
+          </>
         );
       }
     }

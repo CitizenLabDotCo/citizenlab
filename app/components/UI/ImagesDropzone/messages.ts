@@ -11,7 +11,7 @@ export default defineMessages({
   },
   remaining: {
     id: 'app.components.Upload.remaining',
-    defaultMessage: `remaining`,
+    defaultMessage: 'remaining',
   },
   onlyOneImage: {
     id: 'app.components.Upload.onlyOneImage',
@@ -21,12 +21,12 @@ export default defineMessages({
     id: 'app.components.Upload.onlyXImages',
     defaultMessage: 'You can only upload {maxItemsCount} images',
   },
-  dropYourImageHere: {
-    id: 'app.components.Upload.dropYourImageHere',
-    defaultMessage: 'Drop your image here',
+  uploadImage: {
+    id: 'app.components.Upload.uploadImage',
+    defaultMessage: 'Upload an image',
   },
-  dropYourImagesHere: {
-    id: 'app.components.Upload.dropYourImagesHere',
-    defaultMessage: 'Drop your images here',
+  uploadMultipleImages: {
+    id: 'app.components.Upload.uploadMultipleImages',
+    defaultMessage: 'Upload one or more images',
   },
 });
