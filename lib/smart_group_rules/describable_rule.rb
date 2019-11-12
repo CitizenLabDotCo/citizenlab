@@ -36,7 +36,15 @@ module SmartGroupRules
     end
 
     def description_rule_type
-      rule_type
+      self.class.rule_type
+    end
+
+    def description_property locale
+      nil
+    end
+
+    def value
+      nil
     end
 
   end

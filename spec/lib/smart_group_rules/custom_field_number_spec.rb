@@ -139,44 +139,44 @@ describe SmartGroupRules::CustomFieldNumber do
       I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
 
       expect(custom_field_number_is_equal_rule.description_multiloc).to eq ({
-        'en'    => '\'How many politicians do you need to solve climate change?\' equals 0',
-        'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' est égal à 0',
-        'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is gelijk aan 0'
+        'en'    => 'How many politicians do you need to solve climate change? equals 0',
+        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? est égal à 0',
+        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? is gelijk aan 0'
       })
       expect(custom_field_number_not_is_equal_rule.description_multiloc).to eq ({
-        'en'    => '\'How many politicians do you need to solve climate change?\' doesn\'t equal 0',
-        'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' n\'est pas égal à 0',
-        'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is verschillend van 0'
+        'en'    => 'How many politicians do you need to solve climate change? doesn\'t equal 0',
+        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? n\'est pas égal à 0',
+        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? is verschillend van 0'
       })
       expect(custom_field_number_is_larger_than_rule.description_multiloc).to eq ({
-        'en'    => '\'How many politicians do you need to solve climate change?\' is larger than 0',
-        'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' est plus grand que 0',
-        'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is groter dan 0'
+        'en'    => 'How many politicians do you need to solve climate change? is larger than 0',
+        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? est plus grand que 0',
+        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? is groter dan 0'
       })
       expect(custom_field_number_not_is_larger_than_rule.description_multiloc).to eq ({
-        'en'    => '\'How many politicians do you need to solve climate change?\' is not larger than 0',
-        'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' n\'est pas plus grand que 0',
-        'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is niet groter dan 0'
+        'en'    => 'How many politicians do you need to solve climate change? is not larger than 0',
+        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? n\'est pas plus grand que 0',
+        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? is niet groter dan 0'
       })
       expect(custom_field_number_is_smaller_than_rule.description_multiloc).to eq ({
-        'en'    => '\'How many politicians do you need to solve climate change?\' is smaller than 0',
-        'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' est moins que 0',
-        'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is kleiner dan 0'
+        'en'    => 'How many politicians do you need to solve climate change? is smaller than 0',
+        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? est moins que 0',
+        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? is kleiner dan 0'
       })
       expect(custom_field_number_not_is_smaller_than_rule.description_multiloc).to eq ({
-        'en'    => '\'How many politicians do you need to solve climate change?\' is not smaller than 0',
-        'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' n\'est pas moins que 0',
-        'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is niet kleiner dan 0'
+        'en'    => 'How many politicians do you need to solve climate change? is not smaller than 0',
+        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? n\'est pas moins que 0',
+        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? is niet kleiner dan 0'
       })
       expect(custom_field_number_is_empty_rule.description_multiloc).to eq ({
-        'en'    => '\'How many politicians do you need to solve climate change?\' has no value',
-        'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' n\'as pas de value',
-        'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' heeft geen waarde'
+        'en'    => 'How many politicians do you need to solve climate change? has no value',
+        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? n\'as pas de value',
+        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? heeft geen waarde'
       })
       expect(custom_field_number_not_is_empty_rule.description_multiloc).to eq ({
-        'en'    => '\'How many politicians do you need to solve climate change?\' has any value',
-        'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' peut avoir n\'importe quel value',
-        'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' heeft om het even welke waarde'
+        'en'    => 'How many politicians do you need to solve climate change? has any value',
+        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? peut avoir n\'importe quel value',
+        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? heeft om het even welke waarde'
       })
     end
   end

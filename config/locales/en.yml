@@ -186,3 +186,10 @@ en:
       not_has_value_outside: "%{property} is not somewhere else"
     registration_completed_at:
       property: "registration"
+    role:
+      is_admin: "Role is admin"
+      not_is_admin: "Role is not admin"
+      is_project_moderator: "Role is project moderator"
+      not_is_project_moderator: "Role is not project moderator"
+      is_normal_user: "Role is normal user"
+      not_is_normal_user: "Role is not normal user"
