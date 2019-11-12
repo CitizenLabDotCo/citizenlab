@@ -9,13 +9,13 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.invisibleTitleContent',
     defaultMessage: 'Main idea content',
   },
-  invisibleTitleMetaContent: {
-    id: 'app.containers.IdeasShow.invisibleTitleMetaContent',
-    defaultMessage: 'More info',
+  a11y_voteControl: {
+    id: 'app.containers.IdeasShow.a11y_voteControl',
+    defaultMessage: 'Voting and status',
   },
-  invisibleTitleVoteControls: {
-    id: 'app.containers.IdeasShow.invisibleTitleVoteControls',
-    defaultMessage: 'Votes',
+  a11y_budgetControl: {
+    id: 'app.containers.IdeasShow.a11y_budgetControl',
+    defaultMessage: 'Idea assignment ans status',
   },
   voteOnThisIdea: {
     id: 'app.containers.IdeasShow.voteOnThisIdea',
@@ -23,7 +23,7 @@ export default defineMessages({
   },
   metaTitle: {
     id: 'app.containers.IdeasShow.metaTitle',
-    defaultMessage: 'Idea • {ideaTitle}',
+    defaultMessage: 'Idea: {ideaTitle}',
   },
   metaOgTitle: {
     id: 'app.containers.IdeasShow.metaOgTitle',

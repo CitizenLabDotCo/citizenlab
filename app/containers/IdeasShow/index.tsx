@@ -629,15 +629,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
               {biggerThanLargeTablet &&
                 <RightColumnDesktop>
-                  <ScreenReaderOnly>
-                    <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
-                  </ScreenReaderOnly>
                   <MetaContent>
                     {(showVoteControl || showBudgetControl || statusId) &&
                       <ControlWrapper className="e2e-vote-controls-desktop">
                         {(showVoteControl || showBudgetControl) &&
                           <ScreenReaderOnly>
-                            <FormattedMessage tagName="h3" {...messages.invisibleTitleVoteControls} />
+                            {showVoteControl && <FormattedMessage tagName="h2" {...messages.a11y_voteControl} />}
+                            {showBudgetControl && <FormattedMessage tagName="h2" {...messages.a11y_budgetControl} />}
                           </ScreenReaderOnly>
                         }
                         {showVoteControl &&
@@ -664,7 +662,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                         }
 
                         {(showVoteControl || showBudgetControl) &&
-                          <ControlWrapperHorizontalRule />
+                          <ControlWrapperHorizontalRule aria-hidden />
                         }
 
                         {statusId &&
