@@ -2,31 +2,34 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
+import { get } from 'lodash-es';
 
-const Container = styled.div`
-  &:not(.hasLabel) {
-    flex: 0 0 ${(props: any) => props.size};
-    width: ${(props: any) => props.size};
-    height: ${(props: any) => props.size};
+const Container = styled.div<{ size: string }>`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &.hasNoLabel {
+    flex: 0 0 ${({ size }) => parseInt(size, 10) + 2}px;
+    width: ${({ size }) => parseInt(size, 10) + 2}px;
+    height: ${({ size }) => parseInt(size, 10) + 2}px;
   }
 
-  &.hasLabel {
-    display: flex;
-    align-items: center;
+  label {
+    cursor: pointer;
   }
 `;
 
-const InputWrapper = styled.div<{ checked: boolean, size: string | undefined }>`
+const InputWrapper = styled.div<{ checked: boolean, size: string }>`
   position: relative;
-  flex: 0 0 ${(props) => props.size};
-  width: ${(props) => props.size};
-  height: ${(props) => props.size};
+  flex: 0 0 ${({ size }) => parseInt(size, 10)}px;
+  width: ${({ size }) => parseInt(size, 10)}px;
+  height: ${({ size }) => parseInt(size, 10)}px;
   color: #fff;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   border: solid 1px #aaa;
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${(props) => props.checked ? colors.clGreen : '#fff'};
@@ -62,8 +65,8 @@ const CheckmarkIcon = styled(Icon)`
 const Label = styled.label`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
-  padding: 5px 0 5px 10px;
-  cursor: pointer;
+  line-height: normal;
+  margin-left: 10px;
 `;
 
 interface DefaultProps {
@@ -73,7 +76,7 @@ interface DefaultProps {
 interface Props extends DefaultProps {
   label?: string | JSX.Element | null | undefined;
   checked: boolean;
-  onChange: (event: React.FormEvent | React.KeyboardEvent) => void;
+  onChange: (event: React.MouseEvent | React.KeyboardEvent) => void;
   className?: string;
 }
 
@@ -96,46 +99,57 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   handleOnClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-    this.props.onChange(event);
+    const targetElement = get(event, 'target') as any;
+    const parentElement = get(event, 'target.parentElement');
+    const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
+    const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+
+    if (!targetElementIsLink && !parentElementIsLink) {
+      event && event.preventDefault();
+      this.props.onChange(event);
+    }
   }
 
   handleOnKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
+    const targetElement = get(event, 'target') as any;
+    const parentElement = get(event, 'target.parentElement');
+    const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
+    const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+
+    if (!targetElementIsLink && !parentElementIsLink && event.key === 'Enter') {
+      event && event.preventDefault();
       this.props.onChange(event);
     }
   }
 
   handleOnFocus = () => {
-    this.setState({
-      inputFocused: true
-    });
+    this.setState({ inputFocused: true });
   }
 
   handleOnBlur = () => {
-    this.setState({
-      inputFocused: false
-    });
+    this.setState({ inputFocused: false });
   }
 
-  // removeFocus = (event: React.FormEvent) => {
-  //   event.preventDefault();
-  // }
+  removeFocus = (event: React.FormEvent) => {
+    event.preventDefault();
+  }
 
   render() {
     const { label, size, checked, className } = this.props;
     const { inputFocused } = this.state;
 
     return (
-      <Container className={`${className ? className : ''} ${label ? 'hasLabel' : ''}`}>
+      <Container
+        size={size as string}
+        onMouseDown={this.removeFocus}
+        onClick={this.handleOnClick}
+        onKeyDown={this.handleOnKeyDown}
+        className={`e2e-checkbox ${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
+      >
         <InputWrapper
-          // onMouseDown={this.removeFocus}
-          onClick={this.handleOnClick}
-          onKeyDown={this.handleOnKeyDown}
-          className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
+          className={`${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
           checked={checked}
-          size={size}
+          size={size as string}
         >
           <Input
             ref={this.checkbox}

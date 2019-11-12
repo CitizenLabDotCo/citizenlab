@@ -34,17 +34,16 @@ const MoreActionsMenuWrapper = styled.div`
 
 interface InputProps {
   initiative: IInitiativeData;
-  id: string;
   className?: string;
   color?: string;
-  tooltipPosition?: 'bottom-left';
+  id: string;
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   spamModalVisible: boolean;
@@ -81,17 +80,17 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
   }
 
   render() {
-    const { initiative, id, className, authUser, color } = this.props;
+    const { initiative, className, authUser, color, id } = this.props;
     const { spamModalVisible } = this.state;
 
     return !isNilOrError(authUser) && !isNilOrError(initiative) ? (
       <Container className={className}>
-        <MoreActionsMenuWrapper id={id}>
+        <MoreActionsMenuWrapper>
           <HasPermission item={initiative} action="edit" context={initiative}>
             <MoreActionsMenu
               label={<FormattedMessage {...messages.moreOptions} />}
-              id="e2e-initiative-more-actions-menu"
               color={color}
+              id={id}
               actions={[
                 {
                   label: <FormattedMessage {...messages.reportAsSpam} />,
@@ -110,6 +109,8 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
             <HasPermission.No>
               <MoreActionsMenu
                 label={<FormattedMessage {...messages.moreOptions} />}
+                color={color}
+                id={id}
                 actions={[{
                   label: <FormattedMessage {...messages.reportAsSpam} />,
                   handler: this.openSpamModal,
@@ -131,8 +132,8 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
         </Modal>
       </Container>
     )
-    :
-    null;
+      :
+      null;
   }
 
 }
