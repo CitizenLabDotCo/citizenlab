@@ -77,4 +77,93 @@ describe SmartGroupRules::Email do
     end
   end
 
+  describe "description_multiloc" do
+    let(:email_is_rule) {SmartGroupRules::Email.from_json({
+      'ruleType'      => 'email',
+      'predicate'     => 'is',
+      'value'         => 'sebi@citizenlab.co'
+    })}
+    let(:email_not_is_rule) {SmartGroupRules::Email.from_json({
+      'ruleType'      => 'email',
+      'predicate'     => 'not_is',
+      'value'         => 'sebi@citizenlab.co'
+    })}
+    let(:email_contains_rule) {SmartGroupRules::Email.from_json({
+      'ruleType'      => 'email',
+      'predicate'     => 'contains',
+      'value'         => '@citizenlab'
+    })}
+    let(:email_not_contains_rule) {SmartGroupRules::Email.from_json({
+      'ruleType'      => 'email',
+      'predicate'     => 'not_contains',
+      'value'         => '@citizenlab'
+    })}
+    let(:email_begins_with_rule) {SmartGroupRules::Email.from_json({
+      'ruleType'      => 'email',
+      'predicate'     => 'begins_with',
+      'value'         => 'sebi'
+    })}
+    let(:email_not_begins_with_rule) {SmartGroupRules::Email.from_json({
+      'ruleType'      => 'email',
+      'predicate'     => 'not_begins_with',
+      'value'         => 'sebi'
+    })}
+    let(:email_ends_on_rule) {SmartGroupRules::Email.from_json({
+      'ruleType'      => 'email',
+      'predicate'     => 'ends_on',
+      'value'         => 'citizenlab.co'
+    })}
+    let(:email_not_ends_on_rule) {SmartGroupRules::Email.from_json({
+      'ruleType'      => 'email',
+      'predicate'     => 'not_ends_on',
+      'value'         => 'citizenlab.co'
+    })}
+
+    it "successfully translates different combinations of rules" do
+      # Stubbing the translations so the specs don't depend on those.
+      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
+
+      expect(email_is_rule.description_multiloc).to eq ({
+        'en'    => 'email is \'Never tell me the odds!\'',
+        'fr-FR' => 'corrier électronique est \'Never tell me the odds!\'',
+        'nl-NL' => 'email is \'Never tell me the odds!\''
+      })
+      expect(email_not_is_rule.description_multiloc).to eq ({
+        'en'    => 'email is not \'Never tell me the odds!\'',
+        'fr-FR' => 'corrier électronique n\'est pas \'Never tell me the odds!\'',
+        'nl-NL' => 'email is niet \'Never tell me the odds!\''
+      })
+      expect(email_contains_rule.description_multiloc).to eq ({
+        'en'    => 'email contains \'Never tell me the odds!\'',
+        'fr-FR' => 'corrier électronique contient \'Never tell me the odds!\'',
+        'nl-NL' => 'email bevat \'Never tell me the odds!\''
+      })
+      expect(email_not_contains_rule.description_multiloc).to eq ({
+        'en'    => 'email doesn\'t contain \'Never tell me the odds!\'',
+        'fr-FR' => 'corrier électronique ne contient pas \'Never tell me the odds!\'',
+        'nl-NL' => 'email bevat niet \'Never tell me the odds!\''
+      })
+      expect(email_begins_with_rule.description_multiloc).to eq ({
+        'en'    => 'email begins with \'Never tell me the odds!\'',
+        'fr-FR' => 'corrier électronique commence par \'Never tell me the odds!\'',
+        'nl-NL' => 'email begint op \'Never tell me the odds!\''
+      })
+      expect(email_not_begins_with_rule.description_multiloc).to eq ({
+        'en'    => 'email doesn\'t begin with \'Never tell me the odds!\'',
+        'fr-FR' => 'corrier électronique ne commence pas par \'Never tell me the odds!\'',
+        'nl-NL' => 'email begint niet op \'Never tell me the odds!\''
+      })
+      expect(email_ends_on_rule.description_multiloc).to eq ({
+        'en'    => 'email ends on \'Never tell me the odds!\'',
+        'fr-FR' => 'corrier électronique se termine sur \'Never tell me the odds!\'',
+        'nl-NL' => 'email eindigt op \'Never tell me the odds!\''
+      })
+      expect(email_not_ends_on_rule.description_multiloc).to eq ({
+        'en'    => 'email doesn\'t end on \'Never tell me the odds!\'',
+        'fr-FR' => 'corrier électronique ne se termine pas sur \'Never tell me the odds!\'',
+        'nl-NL' => 'email eindigt niet op \'Never tell me the odds!\''
+      })
+    end
+  end
+
 end
