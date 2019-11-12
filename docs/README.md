@@ -13,6 +13,7 @@
 - It's possible again to unassign an idea in the idea manager
 - The popup for adding a video or link URL is no longer invisible or unusable in some situations
 - Uploading files is no longer failing for various filetypes we want to support
+- Keyboard accessibility for modals
 
 
 ### Added
