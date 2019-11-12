@@ -3,16 +3,14 @@ import styled from 'styled-components';
 import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 
-const Container = styled.div`
-  &:not(.hasLabel) {
-    flex: 0 0 ${(props: any) => props.size};
-    width: ${(props: any) => props.size};
-    height: ${(props: any) => props.size};
-  }
+const Container = styled.div<{ size: string }>`
+  display: flex;
+  align-items: center;
 
-  &.hasLabel {
-    display: flex;
-    align-items: center;
+  &.hasNoLabel {
+    flex: 0 0 ${(props) => props.size};
+    width: ${(props) => props.size};
+    height: ${(props) => props.size};
   }
 `;
 
@@ -95,13 +93,8 @@ export default class Checkbox extends PureComponent<Props, State> {
     };
   }
 
-  handleOnClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-    this.props.onChange(event);
-  }
-
-  handleOnKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
+  handleOnToggle = (event: React.MouseEvent | React.KeyboardEvent) => {
+    if (event.type === 'click' || (event.type === 'keydown' && event['key'] === 'Enter')) {
       event.preventDefault();
       this.props.onChange(event);
     }
@@ -119,20 +112,23 @@ export default class Checkbox extends PureComponent<Props, State> {
     });
   }
 
-  // removeFocus = (event: React.FormEvent) => {
-  //   event.preventDefault();
-  // }
+  removeFocus = (event: React.FormEvent) => {
+    event.preventDefault();
+  }
 
   render() {
     const { label, size, checked, className } = this.props;
     const { inputFocused } = this.state;
 
     return (
-      <Container className={`${className ? className : ''} ${label ? 'hasLabel' : ''}`}>
+      <Container
+        size={size as string}
+        onMouseDown={this.removeFocus}
+        onClick={this.handleOnToggle}
+        onKeyDown={this.handleOnToggle}
+        className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
+      >
         <InputWrapper
-          // onMouseDown={this.removeFocus}
-          onClick={this.handleOnClick}
-          onKeyDown={this.handleOnKeyDown}
           className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
           checked={checked}
           size={size}

@@ -55,12 +55,13 @@ const TableOptions = styled.div`
 
 const UserCount = styled.span`
   color: ${colors.label};
-  font-weight: 300;
-  margin-left: 7px;
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
   white-space: nowrap;
+  margin-left: 5px;
 `;
 
-const ActionButton = styled.button`
+const SelectAllCheckbox = styled(Checkbox)`
   height: 38px;
   margin-right: 40px;
   position: relative;
@@ -69,11 +70,42 @@ const ActionButton = styled.button`
   padding-right: 4px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
+
+  &:hover,
+  &:focus {
+    background: ${rgba(colors.adminTextColor, .1)};
+    color: ${colors.adminTextColor};
+    outline: none;
+  }
+`;
+
+const SelectAllCheckboxLabel = styled.span`
+  display: inline-block;
+  /* align-items: center;
+  white-space: wrap; */
+`;
+
+const ActionButton = styled.button`
+  max-width: 250px;
+  min-height: 38px;
+  margin-right: 40px;
+  position: relative;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  cursor: pointer;
   display: flex;
   align-items: center;
 
   span {
+    white-space: normal;
     text-align: left;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
   }
 
   &.noRightMargin {
@@ -102,6 +134,7 @@ const ActionButtonWrapper = styled.div`
   margin-right: 40px;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 `;
 
 const DropdownWrapper = styled.div`
@@ -113,7 +146,6 @@ const DropdownWrapper = styled.div`
 `;
 
 const DropdownListItemText = styled.div`
-  flex: 1 1 auto;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -129,9 +161,9 @@ const DropdownList = styled.div`
 `;
 
 const DropdownListItem = styled.button`
-  flex: 1 1 auto;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin: 0px;
   margin-bottom: 4px;
   padding: 10px;
@@ -345,25 +377,20 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
 
     return (
       <TableOptions>
-        <ActionButton>
-          <Checkbox
-            label={
-              <>
-                <FormattedMessage {...messages.select} />
+        <SelectAllCheckbox
+          label={
+            <SelectAllCheckboxLabel>
+              <FormattedMessage {...messages.select} />
+              {selectedCount > 0 &&
                 <UserCount className="e2e-selected-count">
-                  (<FormattedMessage
-                    {...messages.userCount}
-                    values={{
-                      count: selectedCount,
-                    }}
-                  />)
+                  (<FormattedMessage {...messages.userCount} values={{ count: selectedCount }} />)
                 </UserCount>
-              </>
-            }
-            checked={(selectedUsers === 'all')}
-            onChange={this.toggleAllUsers}
-          />
-        </ActionButton>
+              }
+            </SelectAllCheckboxLabel>
+          }
+          checked={(selectedUsers === 'all')}
+          onChange={this.toggleAllUsers}
+        />
 
         {selectedUsers !== 'none' && !isNilOrError(groupsList) &&
           <ActionButtonWrapper>
