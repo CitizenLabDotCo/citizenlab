@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // utils
@@ -21,7 +20,7 @@ interface State {
   newStatusId: string | null;
 }
 
-class StatusChangeModal extends PureComponent<Props & InjectedIntlProps, State> {
+class StatusChangeModal extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -50,14 +49,12 @@ class StatusChangeModal extends PureComponent<Props & InjectedIntlProps, State> 
   }
 
   render() {
-    const { intl: { formatMessage } } = this.props;
     const { initiativeId, newStatusId } = this.state;
 
     return (
       <Modal
         opened={!!initiativeId && !!newStatusId}
         close={this.close}
-        label={formatMessage(messages.changeStatusModalLabel)}
         header={<FormattedMessage {...messages.changeStatusModalTitle} />}
       >
         {!!initiativeId && !!newStatusId &&
@@ -72,4 +69,4 @@ class StatusChangeModal extends PureComponent<Props & InjectedIntlProps, State> 
 
 }
 
-export default injectIntl(StatusChangeModal);
+export default StatusChangeModal;
