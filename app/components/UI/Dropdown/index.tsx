@@ -40,14 +40,13 @@ const Container: any = styled(clickOutside)`
 
 const ContainerInner: any = styled.div`
   width: ${(props: Props) => props.width};
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  overflow: hidden;
+
+  ${media.smallerThanMaxTablet`
+    width: ${(props: Props) => props.mobileWidth};
+  `}
 `;
 
 const Content: any = styled.div`
-  flex: 1 1 auto;
   max-height: ${(props: any) => props.maxHeight};
   display: flex;
   flex-direction: column;
@@ -62,13 +61,11 @@ const Content: any = styled.div`
   -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
-    width: ${(props: Props) => props.mobileWidth};
     max-height: ${(props: any) => props.mobileMaxHeight};
   `}
 `;
 
 const Footer = styled.div`
-  flex: 1 1 auto;
   display: flex;
 `;
 
@@ -169,13 +166,12 @@ export default class Dropdown extends PureComponent<Props, State> {
       >
         <Container
           id={id}
-          width={width}
-          mobileWidth={mobileWidth}
           top={top}
           left={left}
           mobileLeft={mobileLeft}
           right={right}
           mobileRight={mobileRight}
+          closeOnClickOutsideEnabled={opened}
           onClickOutside={this.close}
           className={className}
         >

@@ -35,7 +35,7 @@ export default defineMessages({
   },
   metaTitle: {
     id: 'app.containers.Projects.metaTitle',
-    defaultMessage: 'Project  • {projectTitle}',
+    defaultMessage: 'Project: {projectTitle}',
   },
   navInformation: {
     id: 'app.containers.Projects.navInformation',

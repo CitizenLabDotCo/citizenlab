@@ -35,7 +35,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 const IdeaCardContainer = styled.div`
   display: flex;
@@ -282,6 +282,9 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
           <IdeaPageContainer className={fullClassName} aria-live="polite">
             <BudgetBox>
               <Budget>
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.a11y_price} />
+                </ScreenReaderOnly>
                 <FormattedNumber
                   value={idea.attributes.budget}
                   style="currency"

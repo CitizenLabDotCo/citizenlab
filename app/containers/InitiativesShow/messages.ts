@@ -3,19 +3,15 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   metaTitle: {
     id: 'app.containers.InitiativesShow.metaTitle',
-    defaultMessage: 'Initiative  • {initiativeTitle}',
+    defaultMessage: 'Initiative: {initiativeTitle}',
   },
   invisibleTitleContent: {
     id: 'app.containers.InitiativesShow.invisibleTitleContent',
-    defaultMessage: 'What is this initiative about ?',
-  },
-  invisibleTitleMetaContent: {
-    id: 'app.containers.InitiativesShow.invisibleTitleMetaContent',
-    defaultMessage: 'More info about this initiative',
+    defaultMessage: 'What is this initiative about?',
   },
   metaOgTitle: {
     id: 'app.containers.InitiativesShow.metaOgTitle',
-    defaultMessage: 'Support this initiative : {initiativeTitle}',
+    defaultMessage: 'Support this initiative: {initiativeTitle}',
   },
   initiativeOgDescription: {
     id: 'app.containers.InitiativesShow.initiativeOgDescription',
@@ -96,5 +92,9 @@ export default defineMessages({
   shareSubtitle: {
     id: 'app.components.InitiativesShow.shareSubtitle',
     defaultMessage: 'Share your initiative to reach {votingThreshold} votes in {daysLimit} days.',
+  },
+  a11y_voteControl: {
+    id: 'app.containers.InitiativesShow.a11y_voteControl',
+    defaultMessage: 'Voting and status',
   },
 });
