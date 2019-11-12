@@ -6,7 +6,7 @@ describe('Initiative new page', () => {
   const email = randomEmail();
   const password = randomString();
   const initiativeTitle = randomString(40);
-  const initiativeContent = randomString(60);
+  const initiativeContent = randomString(501);
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password);
@@ -80,7 +80,7 @@ describe('Initiative new page', () => {
     cy.get('#iniatiative-banner-dropzone');
     cy.get('#e2e-initiative-file-upload');
 
-    // add an inamge
+    // add an image
     cy.fixture('cy.png', 'base64').then(fileContent => {
       cy.get('#iniatiative-img-dropzone').upload(
         { fileContent, fileName: 'cy.png', mimeType: 'image/png' },
