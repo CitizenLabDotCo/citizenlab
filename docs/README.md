@@ -24,6 +24,12 @@
   - Users are prompted to verify their account when taking an actions that requires verification
 - Total population for a tenant can now be entered in Admin HQ
 - It's now possible to configure the word used for areas towards citizens from the areas admin
+- Improvements to accessibility:
+  - Idea and initiative forms: clearer for screen readers, keyboard accessibility, and more accessible input fields
+  - Nav bar: clearer for screen readers and improved keyboard navigation
+  - Project navigation and phases: clearer for screen readers
+  - Sign-in, password reset and recovery pages: labeling of the input fields, clearer for screen readers
+  - Participatory budgeting: clearer for screen readers
 
 ### Changed
 
