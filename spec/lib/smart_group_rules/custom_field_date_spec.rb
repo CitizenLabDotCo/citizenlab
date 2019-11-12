@@ -106,29 +106,29 @@ describe SmartGroupRules::CustomFieldDate do
       I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
 
       expect(custom_field_date_is_before_rule.description_multiloc).to eq ({
-        'en'    => '\'When will we have a new government?\' is before 2027-11-08',
-        'fr-FR' => '\'Quand est-ce que on aura un nouveau gouvernement?\' est avant 08/11/2027',
-        'nl-NL' => '\'Wanneer zullen we een nieuwe regering hebben?\' is voor 08-11-2027'
+        'en'    => 'When will we have a new government? is before 2027-11-08',
+        'fr-FR' => 'Quand est-ce que on aura un nouveau gouvernement? est avant 08/11/2027',
+        'nl-NL' => 'Wanneer zullen we een nieuwe regering hebben? is voor 08-11-2027'
       })
       expect(custom_field_date_is_after_rule.description_multiloc).to eq ({
-        'en'    => '\'When will we have a new government?\' is after 2027-11-08',
-        'fr-FR' => '\'Quand est-ce que on aura un nouveau gouvernement?\' est après 08/11/2027',
-        'nl-NL' => '\'Wanneer zullen we een nieuwe regering hebben?\' is na 08-11-2027'
+        'en'    => 'When will we have a new government? is after 2027-11-08',
+        'fr-FR' => 'Quand est-ce que on aura un nouveau gouvernement? est après 08/11/2027',
+        'nl-NL' => 'Wanneer zullen we een nieuwe regering hebben? is na 08-11-2027'
       })
       expect(custom_field_date_is_exactly_rule.description_multiloc).to eq ({
-        'en'    => '\'When will we have a new government?\' is 2027-11-08',
-        'fr-FR' => '\'Quand est-ce que on aura un nouveau gouvernement?\' est 08/11/2027',
-        'nl-NL' => '\'Wanneer zullen we een nieuwe regering hebben?\' is 08-11-2027'
+        'en'    => 'When will we have a new government? is 2027-11-08',
+        'fr-FR' => 'Quand est-ce que on aura un nouveau gouvernement? est 08/11/2027',
+        'nl-NL' => 'Wanneer zullen we een nieuwe regering hebben? is 08-11-2027'
       })
       expect(custom_field_date_is_empty_rule.description_multiloc).to eq ({
-        'en'    => '\'When will we have a new government?\' has no value',
-        'fr-FR' => '\'Quand est-ce que on aura un nouveau gouvernement?\' n\'as pas de value',
-        'nl-NL' => '\'Wanneer zullen we een nieuwe regering hebben?\' heeft geen waarde'
+        'en'    => 'When will we have a new government? has no value',
+        'fr-FR' => 'Quand est-ce que on aura un nouveau gouvernement? n\'as pas de value',
+        'nl-NL' => 'Wanneer zullen we een nieuwe regering hebben? heeft geen waarde'
       })
       expect(custom_field_date_not_is_empty_rule.description_multiloc).to eq ({
-        'en'    => '\'When will we have a new government?\' has any value',
-        'fr-FR' => '\'Quand est-ce que on aura un nouveau gouvernement?\' peut avoir n\'importe quel value',
-        'nl-NL' => '\'Wanneer zullen we een nieuwe regering hebben?\' heeft om het even welke waarde'
+        'en'    => 'When will we have a new government? has any value',
+        'fr-FR' => 'Quand est-ce que on aura un nouveau gouvernement? peut avoir n\'importe quel value',
+        'nl-NL' => 'Wanneer zullen we een nieuwe regering hebben? heeft om het even welke waarde'
       })
     end
   end

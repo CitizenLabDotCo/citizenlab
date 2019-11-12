@@ -171,3 +171,10 @@ nl:
       not_has_value_outside: "%{property} is niet ergens anders"
     registration_completed_at:
       property: "registratie"
+    role:
+      is_admin: "Rol is beheerder"
+      not_is_admin: "Rol is niet beheerder"
+      is_project_moderator: "Rol is project moderator"
+      not_is_project_moderator: "Rol is niet project moderator"
+      is_normal_user: "Rol is gewone gebruiker"
+      not_is_normal_user: "Rol is niet gewone gebruiker"

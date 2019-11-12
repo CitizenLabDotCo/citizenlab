@@ -116,6 +116,7 @@ describe SmartGroupRules::RegistrationCompletedAt do
         'nl-NL' => 'registratie heeft om het even welke waarde'
       })
     end
+    
   end
 
 end

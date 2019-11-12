@@ -184,3 +184,10 @@ fr:
       not_has_value_outside: "%{property} n'est pas ailleurs"
     registration_completed_at:
       property: "date d'inscription"
+    role:
+      is_admin: "Statut est administrateur"
+      not_is_admin: "Statut n'est pas administrateur"
+      is_project_moderator: "Statut est modérateur de projet"
+      not_is_project_moderator: "Statut n'est pas modérateur de projet"
+      is_normal_user: "Statut est utilisateur normal"
+      not_is_normal_user: "Statut n'est pas utilisateur normal"

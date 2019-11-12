@@ -155,24 +155,24 @@ describe SmartGroupRules::CustomFieldSelect do
       I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
 
       expect(custom_field_select_has_value_rule.description_multiloc).to eq ({
-        'en'    => '\'Where should we put the immigrants?\' is \'In the train station\'',
-        'fr-FR' => '\'Où devrions-nous placer les immigrants?\' est \'Dans la gare\'',
-        'nl-NL' => '\'Waar moeten we de immigraten plaatsen?\' is \'In het treinstation\''
+        'en'    => 'Where should we put the immigrants? is In the train station',
+        'fr-FR' => 'Où devrions-nous placer les immigrants? est Dans la gare',
+        'nl-NL' => 'Waar moeten we de immigraten plaatsen? is In het treinstation'
       })
       expect(custom_field_select_not_has_value_rule.description_multiloc).to eq ({
-        'en'    => '\'Where should we put the immigrants?\' isn\'t \'In the train station\'',
-        'fr-FR' => '\'Où devrions-nous placer les immigrants?\' n\'est pas \'Dans la gare\'',
-        'nl-NL' => '\'Waar moeten we de immigraten plaatsen?\' is niet \'In het treinstation\''
+        'en'    => 'Where should we put the immigrants? isn\'t In the train station',
+        'fr-FR' => 'Où devrions-nous placer les immigrants? n\'est pas Dans la gare',
+        'nl-NL' => 'Waar moeten we de immigraten plaatsen? is niet In het treinstation'
       })
       expect(custom_field_select_is_empty_rule.description_multiloc).to eq ({
-        'en'    => '\'Where should we put the immigrants?\' has no value',
-        'fr-FR' => '\'Où devrions-nous placer les immigrants?\' n\'as pas de value',
-        'nl-NL' => '\'Waar moeten we de immigraten plaatsen?\' heeft geen waarde'
+        'en'    => 'Where should we put the immigrants? has no value',
+        'fr-FR' => 'Où devrions-nous placer les immigrants? n\'as pas de value',
+        'nl-NL' => 'Waar moeten we de immigraten plaatsen? heeft geen waarde'
       })
       expect(custom_field_select_not_is_empty_rule.description_multiloc).to eq ({
-        'en'    => '\'Where should we put the immigrants?\' has any value',
-        'fr-FR' => '\'Où devrions-nous placer les immigrants?\' peut avoir n\'importe quel value',
-        'nl-NL' => '\'Waar moeten we de immigraten plaatsen?\' heeft om het even welke waarde'
+        'en'    => 'Where should we put the immigrants? has any value',
+        'fr-FR' => 'Où devrions-nous placer les immigrants? peut avoir n\'importe quel value',
+        'nl-NL' => 'Waar moeten we de immigraten plaatsen? heeft om het even welke waarde'
       })
     end
   end
