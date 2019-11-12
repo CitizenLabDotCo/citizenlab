@@ -144,10 +144,10 @@ export default class Checkbox extends PureComponent<Props, State> {
         onMouseDown={this.removeFocus}
         onClick={this.handleOnClick}
         onKeyDown={this.handleOnKeyDown}
-        className={`e2e-checkbox ${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
+        className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
       >
         <InputWrapper
-          className={`${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
+          className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
           checked={checked}
           size={size as string}
         >
