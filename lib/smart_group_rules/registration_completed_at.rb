@@ -83,6 +83,25 @@ module SmartGroupRules
       end
     end
 
+    def description_property locale
+      I18n.with_locale(locale) do
+        I18n.t!('smart_group_rules.registration_completed_at.property')
+      end
+    end
+
+    def description_rule_type
+      CustomFieldDate.rule_type
+    end
+
+    def description_value locale
+      if value.present?
+        locale ||= I18n.locale
+        I18n.with_locale(locale) do
+          I18n.l Date.parse(value), format: :default
+        end
+      end
+    end
+
 
     private
 

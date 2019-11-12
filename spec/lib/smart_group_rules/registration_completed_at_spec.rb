@@ -60,4 +60,62 @@ describe SmartGroupRules::RegistrationCompletedAt do
  
   end
 
+  describe "description_multiloc" do
+    
+    let(:registration_completed_at_is_before_rule) {SmartGroupRules::RegistrationCompletedAt.from_json({
+      'ruleType'      => 'registration_completed_at',
+      'predicate'     => 'is_before',
+      'value'         => '2019-11-12'
+    })}
+    let(:registration_completed_at_is_after_rule) {SmartGroupRules::RegistrationCompletedAt.from_json({
+      'ruleType'      => 'registration_completed_at',
+      'predicate'     => 'is_after',
+      'value'         => '2019-11-12'
+    })}
+    let(:registration_completed_at_is_exactly_rule) {SmartGroupRules::RegistrationCompletedAt.from_json({
+      'ruleType'      => 'registration_completed_at',
+      'predicate'     => 'is_exactly',
+      'value'         => '2019-11-12'
+    })}
+    let(:registration_completed_at_is_empty_rule) {SmartGroupRules::RegistrationCompletedAt.from_json({
+      'ruleType'      => 'registration_completed_at',
+      'predicate'     => 'is_empty'
+    })}
+    let(:registration_completed_at_not_is_empty_rule) {SmartGroupRules::RegistrationCompletedAt.from_json({
+      'ruleType'      => 'registration_completed_at',
+      'predicate'     => 'not_is_empty'
+    })}
+
+    it "successfully translates different combinations of rules" do
+      # Stubbing the translations so the specs don't depend on those.
+      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
+
+      expect(registration_completed_at_is_before_rule.description_multiloc).to eq ({
+        'en'    => 'registration is before 2019-11-12',
+        'fr-FR' => 'date d\'inscription est avant 12/11/2019',
+        'nl-NL' => 'registratie is voor 12-11-2019'
+      })
+      expect(registration_completed_at_is_after_rule.description_multiloc).to eq ({
+        'en'    => 'registration is after 2019-11-12',
+        'fr-FR' => 'date d\'inscription est après 12/11/2019',
+        'nl-NL' => 'registratie is na 12-11-2019'
+      })
+      expect(registration_completed_at_is_exactly_rule.description_multiloc).to eq ({
+        'en'    => 'registration is 2019-11-12',
+        'fr-FR' => 'date d\'inscription est 12/11/2019',
+        'nl-NL' => 'registratie is 12-11-2019'
+      })
+      expect(registration_completed_at_is_empty_rule.description_multiloc).to eq ({
+        'en'    => 'registration has no value',
+        'fr-FR' => 'date d\'inscription n\'as pas de value',
+        'nl-NL' => 'registratie heeft geen waarde'
+      })
+      expect(registration_completed_at_not_is_empty_rule.description_multiloc).to eq ({
+        'en'    => 'registration has any value',
+        'fr-FR' => 'date d\'inscription peut avoir n\'importe quel value',
+        'nl-NL' => 'registratie heeft om het even welke waarde'
+      })
+    end
+  end
+
 end

@@ -185,4 +185,4 @@ en:
       has_value_outside: "%{property} is somewhere else"
       not_has_value_outside: "%{property} is not somewhere else"
     registration_completed_at:
-      property: "registratie"
+      property: "registration"
