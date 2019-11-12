@@ -34,8 +34,8 @@ describe('Comment voting permissions', () => {
       cy.acceptCookies();
       cy.get('.e2e-comments-loaded');
       cy.wait(1000);
-      cy.get('#e2e-parent-and-childcomments').find('.e2e-comment')
-        .find('.e2e-comment-vote').should('have.class', 'disabled');
+      cy.get('#e2e-parent-and-childcomments')
+        .find('.e2e-comment-vote').should('not.exist');
     });
     it('lets verified users vote', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);
