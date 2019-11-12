@@ -80,25 +80,16 @@ module SmartGroupRules
       end
     end
 
-    def description_multiloc
-      case value
-      when 'outside'
-        I18n.t("smart_group_rules.lives_in.#{predicate}_outside")
-      else
-        super
-      end
-    end
-
     def description_property locale
-        CustomField.find_by(key: 'domicile').title_multiloc[locale]
-      end
+      CustomField.find_by(key: 'domicile').title_multiloc[locale]
+    end
 
     def description_rule_type
       case value
       when 'outside'
-        rule_type
+        self.class.rule_type
       else
-        SmartGroupRules::CustomFieldSelect.rule_type
+        CustomFieldSelect.rule_type
       end
     end
 

@@ -182,7 +182,7 @@ en:
     email:
       property: "e-mail"
     lives_in:
-      has_value_outside: "Lives outside this region"
-      not_has_value_outside: "Doesn't live outside this region"
+      has_value_outside: "%{property} is somewhere else"
+      not_has_value_outside: "%{property} is not somewhere else"
     registration_completed_at:
       property: "registratie"

@@ -180,7 +180,7 @@ fr:
     email:
       property: "adresse e-mail"
     lives_in:
-      has_value_outside: "Habite hors de cette region"
-      not_has_value_outside: "N'habite pas hors de cette region"
+      has_value_outside: "%{property} est ailleurs"
+      not_has_value_outside: "%{property} n'est pas ailleurs"
     registration_completed_at:
       property: "date d'inscription"

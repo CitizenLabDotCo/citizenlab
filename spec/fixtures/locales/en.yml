@@ -1,7 +1,7 @@
 en:
   smart_group_rules:
-    is_empty: "'%{property}' has no value"
-    not_is_empty: "'%{property}' has any value"
+    is_empty: "%{property} has no value"
+    not_is_empty: "%{property} has any value"
     custom_field_checkbox:
-      is_checked: "Checked '%{property}'"
-      not_is_checked: "Didn't check '%{property}'"
+      is_checked: "Checked %{property}"
+      not_is_checked: "Didn't check %{property}"

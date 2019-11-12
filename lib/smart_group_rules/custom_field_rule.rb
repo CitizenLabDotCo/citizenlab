@@ -18,7 +18,7 @@ module SmartGroupRules
       # Must be defined here in order to be able
       # to overwrite the same method in 
       # DescribableRule.
-      def description_property locale: nil
+      def description_property locale
         CustomField.find(custom_field_id).title_multiloc[locale]
       end
     end

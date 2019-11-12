@@ -131,29 +131,29 @@ describe SmartGroupRules::LivesIn do
         'nl-NL' => 'Woonplaats is Brussel'
       })
       expect(lives_in_outside_rule.description_multiloc).to eq ({
-        'en'    => 'Lives outside this region',
-        'fr-FR' => 'Habite hors de cette region',
-        'nl-NL' => 'Woont buiten deze regio'
+        'en'    => 'Place of residence is somewhere else',
+        'fr-FR' => 'Domicile est ailleurs',
+        'nl-NL' => 'Woonplaats is ergens anders'
       })
       expect(lives_in_not_has_value_rule.description_multiloc).to eq ({
-        'en'    => 'Doesn\'t live in Brussels',
-        'fr-FR' => 'N\'habite pas à Bruxelles',
-        'nl-NL' => 'Woont niet in Brussel'
+        'en'    => 'Place of residence isn\'t Brussels',
+        'fr-FR' => 'Domicile n\'est pas Bruxelles',
+        'nl-NL' => 'Woonplaats is niet Brussel'
       })
       expect(lives_in_not_outside_rule.description_multiloc).to eq ({
-        'en'    => 'Doesn\'t live outside this region',
-        'fr-FR' => 'N\'habite pas hors de cette region',
-        'nl-NL' => 'Woont niet buiten deze regio'
+        'en'    => 'Place of residence is not somewhere else',
+        'fr-FR' => 'Domicile n\'est pas ailleurs',
+        'nl-NL' => 'Woonplaats is niet ergens anders'
       })
       expect(lives_in_is_empty_rule.description_multiloc).to eq ({
-        'en'    => 'Hasn\'t specified where they live',
-        'fr-FR' => 'N\'a pas specifié leurs domicile',
-        'nl-NL' => 'Heeft geen woonplaats aangegeven'
+        'en'    => 'Place of residence has no value',
+        'fr-FR' => 'Domicile n\'as pas de value',
+        'nl-NL' => 'Woonplaats heeft geen waarde'
       })
       expect(lives_in_not_is_empty_rule.description_multiloc).to eq ({
-        'en'    => 'Specified where they live',
-        'fr-FR' => 'A specifié leurs domicile',
-        'nl-NL' => 'Heeft een woonplaats aangegeven'
+        'en'    => 'Place of residence has any value',
+        'fr-FR' => 'Domicile peut avoir n\'importe quel value',
+        'nl-NL' => 'Woonplaats heeft om het even welke waarde'
       })
     end
   end
