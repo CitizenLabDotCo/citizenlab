@@ -1,3 +1,4 @@
+require('intersection-observer');
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
