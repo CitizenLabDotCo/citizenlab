@@ -1,6 +1,7 @@
 module SmartGroupRules
   class RegistrationCompletedAt
     include ActiveModel::Validations
+    include DescribableRule
 
     PREDICATE_VALUES = %w(is_before is_exactly is_after is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)

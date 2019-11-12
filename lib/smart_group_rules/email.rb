@@ -1,6 +1,7 @@
 module SmartGroupRules
   class Email
     include ActiveModel::Validations
+    include DescribableRule
 
     PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on)
 
@@ -74,7 +75,7 @@ module SmartGroupRules
       CustomFieldText.rule_type
     end
 
-    def description_property locale: nil
+    def description_property locale
       I18n.with_locale(locale) do
         I18n.t!('smart_group_rules.email.property')
       end

@@ -1,6 +1,7 @@
 module SmartGroupRules
   class Role
     include ActiveModel::Validations
+    include DescribableRule
 
     PREDICATE_VALUES = %w(
       is_admin

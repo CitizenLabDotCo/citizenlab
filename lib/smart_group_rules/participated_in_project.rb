@@ -1,6 +1,7 @@
 module SmartGroupRules
   class ParticipatedInProject
     include ActiveModel::Validations
+    include DescribableRule
 
     PREDICATE_VALUES = %w(in not_in posted_in not_posted_in commented_in not_commented_in voted_idea_in not_voted_idea_in voted_comment_in not_voted_comment_in budgeted_in not_budgeted_in)
     VALUELESS_PREDICATES = []
