@@ -103,23 +103,6 @@ export default class Radio extends PureComponent<Props, State> {
     };
   }
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  }
-
-  handleClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-    this.handleChange();
-  }
-
-  handleOnEnterKeyPress = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      event.stopPropagation();
-      this.handleChange();
-    }
-  }
-
   handleChange = () => {
     if (!this.props.disabled && this.props.onChange) {
       this.props.onChange(this.props.value);
@@ -139,30 +122,25 @@ export default class Radio extends PureComponent<Props, State> {
   }
 
   render() {
-    const { id, name, value, currentValue, disabled, buttonColor, label, className } = this.props;
+    const { id, name, value, currentValue, disabled, buttonColor, label } = this.props;
     const { inputFocused } = this.state;
     const checked = (value === currentValue);
 
     return (
       <Wrapper>
-        <CustomRadio
-          onMouseDown={this.removeFocus}
-          onClick={this.handleClick}
-          onKeyDown={this.handleOnEnterKeyPress}
+        <Input
+          id={id}
+          type="radio"
+          name={name}
+          value={value}
+          defaultChecked={checked}
+          onChange={this.handleChange}
           onFocus={this.handleOnFocus}
           onBlur={this.handleOnBlur}
+        />
+        <CustomRadio
           className={`${inputFocused ? 'focused' : ''} ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} circle`}
-          tabIndex={0}
         >
-          <Input
-            id={id}
-            type="radio"
-            name={name}
-            value={value}
-            aria-checked={checked}
-            defaultChecked={checked}
-            onChange={this.handleChange}
-          />
           {checked &&
             <Checked aria-hidden color={(buttonColor || '#49B47D')}/>
           }
