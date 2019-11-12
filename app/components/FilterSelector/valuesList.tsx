@@ -82,6 +82,7 @@ interface Props extends DefaultProps {
   title: string | JSX.Element;
   values: Value[];
   onChange: (arg: string) => void;
+  onClickOutside?: (event: React.FormEvent) => void;
   selected: any[];
   right?: string;
   mobileRight?: string;
@@ -116,6 +117,10 @@ export default class ValuesList extends PureComponent<Props, State> {
     }
   }
 
+  handleOnClickOutside = (event: React.FormEvent) => {
+    this.props.onClickOutside && this.props.onClickOutside(event);
+  }
+
   render() {
     const { values, selected, multiple, opened, baseID, width, mobileWidth, maxHeight, mobileMaxHeight, top, left, mobileLeft, right, mobileRight } = this.props;
 
@@ -132,6 +137,7 @@ export default class ValuesList extends PureComponent<Props, State> {
         right={right}
         mobileRight={mobileRight}
         opened={opened}
+        onClickOutside={this.handleOnClickOutside}
         content={(
           <List
             className="e2e-sort-items"
