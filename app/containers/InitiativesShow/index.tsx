@@ -456,7 +456,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   initiative={initiative}
                   id="e2e-initiative-more-actions-mobile"
                   color="white"
-                  tooltipPosition="bottom-left"
                 />
               </MobileMoreActionContainer>
               <Title

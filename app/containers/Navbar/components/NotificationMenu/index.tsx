@@ -34,14 +34,16 @@ const LoadingContainer = styled.div`
 `;
 
 const EmptyStateContainer = styled.div`
+  height: 200px;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   justify-content: center;
-  align-items: center;
-  height: 200px;
-  color: ${colors.label};
-  font-size: ${fontSizes.large}px;
-  line-height: 24px;
+`;
+
+const EmptyStateImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const EmptyStateImage = styled.img`
@@ -49,7 +51,16 @@ const EmptyStateImage = styled.img`
 `;
 
 const EmptyStateText = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
   text-align: center;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  margin-left: 15px;
+  margin-right: 15px;
 `;
 
 interface InputProps {}
@@ -88,66 +99,64 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
     });
   }
 
-  renderList = () => {
-    const { notifications: { list } } = this.props;
-    if (isNilOrError(list) || list.length === 0) return [];
-    return list.map((notification) => {
-      return (
-        <Notification
-          notification={notification}
-          key={notification.id}
-        />
-      );
-    });
-  }
-
   render() {
     const { dropdownOpened } = this.state;
     const { notifications, authUser } = this.props;
 
-    const notificationsList = this.renderList();
+    console.log(notifications);
 
-    if (isNilOrError(authUser)) return null;
-
-    return (
-      <Container>
-        <NotificationCount
-          count={authUser.attributes.unread_notifications}
-          onClick={this.toggleDropdown}
-        />
-        <Dropdown
-          width="300px"
-          mobileWidth="220px"
-          top="42px"
-          right="-5px"
-          mobileRight="-15px"
-          opened={dropdownOpened}
-          onClickOutside={this.toggleDropdown}
-          content={(
-            <InfiniteScroll
-              pageStart={0}
-              loadMore={notifications.onLoadMore}
-              useWindow={false}
-              hasMore={notifications.hasMore}
-              threshold={50}
-              loader={
-                <LoadingContainer key="0">
-                  <Spinner />
-                </LoadingContainer>
-              }
-            >
-              {notificationsList}
-              {notifications.list !== undefined && notificationsList && notificationsList.length === 0 &&
-                <EmptyStateContainer>
+    if (!isNilOrError(authUser)) {
+      return (
+        <Container>
+          <NotificationCount
+            count={authUser.attributes.unread_notifications}
+            onClick={this.toggleDropdown}
+            dropdownOpened={dropdownOpened}
+          />
+          <Dropdown
+            width="300px"
+            mobileWidth="220px"
+            top="42px"
+            right="-5px"
+            mobileRight="-15px"
+            opened={dropdownOpened}
+            onClickOutside={this.toggleDropdown}
+            content={!isNilOrError(notifications) && notifications.list && notifications.list.length > 0 ? (
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={notifications.onLoadMore}
+                useWindow={false}
+                hasMore={notifications.hasMore}
+                threshold={50}
+                loader={
+                  <LoadingContainer key="0">
+                    <Spinner />
+                  </LoadingContainer>
+                }
+              >
+                {notifications.list.map((notification) => (
+                  <Notification
+                    notification={notification}
+                    key={notification.id}
+                  />
+                ))}
+              </InfiniteScroll>
+            ) : (
+              <EmptyStateContainer>
+                <EmptyStateImageWrapper>
                   <EmptyStateImage src={EmptyStateImg} role="presentation" alt="" />
-                  <EmptyStateText><FormattedMessage {...messages.noNotifications} /></EmptyStateText>
-                </EmptyStateContainer>
-              }
-            </InfiniteScroll>
-          )}
-        />
-      </Container>
-    );
+                </EmptyStateImageWrapper>
+                <EmptyStateText>
+                  <FormattedMessage {...messages.noNotifications} />
+                </EmptyStateText>
+              </EmptyStateContainer>
+            )}
+          />
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
