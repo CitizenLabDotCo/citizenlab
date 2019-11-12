@@ -4,7 +4,6 @@ import { Formik } from 'formik';
 import OfficialFeedbackForm, { FormValues, formatMentionsBodyMultiloc } from './OfficialFeedbackForm';
 import { CLErrorsJSON } from 'typings';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -93,7 +92,7 @@ class OfficialFeedbackNew extends PureComponent<Props, State> {
   }
 
   initialValues = () => ({
-    author_multiloc: get(this.props.tenant, 'attributes.settings.core.organization_name', {}),
+    author_multiloc: {},
     body_multiloc: {}
   })
 
