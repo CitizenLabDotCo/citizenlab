@@ -167,7 +167,7 @@ nl:
     email:
       property: "e-mail"
     lives_in:
-      has_value_outside: "Woont buiten deze regio"
-      not_has_value_outside: "Woont niet buiten deze regio"
+      has_value_outside: "%{property} is ergens anders"
+      not_has_value_outside: "%{property} is niet ergens anders"
     registration_completed_at:
       property: "registratie"

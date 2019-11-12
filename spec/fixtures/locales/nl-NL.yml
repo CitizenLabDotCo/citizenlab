@@ -1,7 +1,7 @@
 nl:
   smart_group_rules:
-    is_empty: "'%{property}' heeft geen waarde"
-    not_is_empty: "'%{property}' heeft om het even welke waarde"
+    is_empty: "%{property} heeft geen waarde"
+    not_is_empty: "%{property} heeft om het even welke waarde"
     custom_field_checkbox:
-      is_checked: "Heeft '%{property}' aangevinkt"
-      not_is_checked: "Heeft '%{property}' niet aangevinkt"
+      is_checked: "Heeft %{property} aangevinkt"
+      not_is_checked: "Heeft %{property} niet aangevinkt"
