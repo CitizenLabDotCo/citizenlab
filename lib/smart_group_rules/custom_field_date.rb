@@ -94,7 +94,7 @@ module SmartGroupRules
     end
 
     
-    def description_value locale: nil
+    def description_value locale
       if value.present?
         locale ||= I18n.locale
         I18n.with_locale(locale) do
