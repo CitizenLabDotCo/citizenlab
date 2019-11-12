@@ -70,6 +70,16 @@ module SmartGroupRules
       end
     end
 
+    def description_rule_type
+      CustomFieldText.rule_type
+    end
+
+    def description_property locale: nil
+      I18n.with_locale(locale) do
+        I18n.t!('smart_group_rules.email.property')
+      end
+    end
+
 
     private
 

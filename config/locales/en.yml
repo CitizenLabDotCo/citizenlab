@@ -179,6 +179,8 @@ en:
       not_begins_with: "'%{property}' doesn't begin with '%{value}'"
       ends_on: "'%{property}' ends on '%{value}'"
       not_ends_on: "'%{property}' doesn't end on '%{value}'"
+    email:
+      property: "email"
     lives_in:
       has_value_outside: "Lives outside this region"
       not_has_value_outside: "Doesn't live outside this region"

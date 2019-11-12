@@ -164,6 +164,8 @@ nl:
       not_begins_with: "'%{property}' begint niet op '%{value}'"
       ends_on: "'%{property}' eindigt op '%{value}'"
       not_ends_on: "'%{property}' eindigt niet op '%{value}'"
+    email:
+      property: "email"
     lives_in:
       has_value_outside: "Woont buiten deze regio"
       not_has_value_outside: "Woont niet buiten deze regio"

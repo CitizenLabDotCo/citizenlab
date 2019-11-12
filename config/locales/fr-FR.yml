@@ -177,6 +177,8 @@ fr:
       not_begins_with: "'%{property}' ne commence pas par '%{value}'"
       ends_on: "'%{property}' se termine sur '%{value}'"
       not_ends_on: "'%{property}' ne se termine pas sur '%{value}'"
+    email:
+      property: "courrier électronique"
     lives_in:
       has_value_outside: "Habite hors de cette region"
       not_has_value_outside: "N'habite pas hors de cette region"
