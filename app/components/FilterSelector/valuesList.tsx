@@ -82,7 +82,7 @@ interface Props extends DefaultProps {
   title: string | JSX.Element;
   values: Value[];
   onChange: (arg: string) => void;
-  onClickOutside?: (event: FormEvent) => void;
+  onClickOutside?: (event: React.FormEvent) => void;
   selected: any[];
   right?: string;
   mobileRight?: string;
@@ -117,7 +117,7 @@ export default class ValuesList extends PureComponent<Props, State> {
     }
   }
 
-  handleOnClickOutside = (event: FormEvent) => {
+  handleOnClickOutside = (event: React.FormEvent) => {
     this.props.onClickOutside && this.props.onClickOutside(event);
   }
 
