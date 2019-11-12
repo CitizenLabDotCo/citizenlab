@@ -170,7 +170,13 @@ fr:
       not_has_value: "'%{property}' n'est pas '%{value}'"
     custom_field_text:
       is: "'%{property}' est '%{value}'"
-      not_is: "'%{property}' n'est pas'%{value}'"
+      not_is: "'%{property}' n'est pas '%{value}'"
+      contains: "'%{property}' contient '%{value}'"
+      not_contains: "'%{property}' ne contient pas '%{value}'"
+      begins_with: "'%{property}' commence par '%{value}'"
+      not_begins_with: "'%{property}' ne commence pas par '%{value}'"
+      ends_on: "'%{property}' se termine sur '%{value}'"
+      not_ends_on: "'%{property}' ne se termine pas sur '%{value}'"
     lives_in:
       has_value_outside: "Habite hors de cette region"
       not_has_value_outside: "N'habite pas hors de cette region"

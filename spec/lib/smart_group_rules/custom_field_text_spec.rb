@@ -105,47 +105,59 @@ describe SmartGroupRules::CustomFieldText do
       'ruleType'      => 'custom_field_text',
       'predicate'     => 'is',
       'customFieldId' => text_field.id,
-      'value'         => 'Never tell me the odds'
+      'value'         => 'Never tell me the odds!'
     })}
-    let(:custom_field_date_not_is_rule) {SmartGroupRules::CustomFieldText.from_json({
+    let(:custom_field_text_not_is_rule) {SmartGroupRules::CustomFieldText.from_json({
       'ruleType'      => 'custom_field_text',
       'predicate'     => 'not_is',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
+      'customFieldId' => text_field.id,
+      'value'         => 'Never tell me the odds!'
     })}
-    let(:custom_field_date_is_larger_than_rule) {SmartGroupRules::CustomFieldText.from_json({
-      'ruleType'      => 'custom_field_date',
-      'predicate'     => 'is_larger_than',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
+    let(:custom_field_text_contains_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_text',
+      'predicate'     => 'contains',
+      'customFieldId' => text_field.id,
+      'value'         => 'Never tell me the odds!'
     })}
-    let(:custom_field_date_not_is_larger_than_rule) {SmartGroupRules::CustomFieldText.from_json({
-      'ruleType'      => 'custom_field_date',
-      'predicate'     => 'not_is_larger_than',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
+    let(:custom_field_text_not_contains_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_text',
+      'predicate'     => 'not_contains',
+      'customFieldId' => text_field.id,
+      'value'         => 'Never tell me the odds!'
     })}
-    let(:custom_field_date_is_smaller_than_rule) {SmartGroupRules::CustomFieldText.from_json({
-      'ruleType'      => 'custom_field_date',
-      'predicate'     => 'is_smaller_than',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
+    let(:custom_field_text_begins_with_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_text',
+      'predicate'     => 'begins_with',
+      'customFieldId' => text_field.id,
+      'value'         => 'Never tell me the odds!'
     })}
-    let(:custom_field_date_not_is_smaller_than_rule) {SmartGroupRules::CustomFieldText.from_json({
-      'ruleType'      => 'custom_field_date',
-      'predicate'     => 'not_is_smaller_than',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
+    let(:custom_field_text_not_begins_with_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_text',
+      'predicate'     => 'not_begins_with',
+      'customFieldId' => text_field.id,
+      'value'         => 'Never tell me the odds!'
     })}
-    let(:custom_field_date_is_empty_rule) {SmartGroupRules::CustomFieldText.from_json({
-      'ruleType'      => 'custom_field_date',
+    let(:custom_field_text_ends_on_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_text',
+      'predicate'     => 'ends_on',
+      'customFieldId' => text_field.id,
+      'value'         => 'Never tell me the odds!'
+    })}
+    let(:custom_field_text_not_ends_on_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_text',
+      'predicate'     => 'not_ends_on',
+      'customFieldId' => text_field.id,
+      'value'         => 'Never tell me the odds!'
+    })}
+    let(:custom_field_text_is_empty_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_text',
       'predicate'     => 'is_empty',
-      'customFieldId' => number_picker.id
+      'customFieldId' => text_field.id
     })}
-    let(:custom_field_date_not_is_empty_rule) {SmartGroupRules::CustomFieldText.from_json({
-      'ruleType'      => 'custom_field_date',
+    let(:custom_field_text_not_is_empty_rule) {SmartGroupRules::CustomFieldText.from_json({
+      'ruleType'      => 'custom_field_text',
       'predicate'     => 'not_is_empty',
-      'customFieldId' => number_picker.id
+      'customFieldId' => text_field.id
     })}
 
     it "successfully translates different combinations of rules" do
@@ -153,45 +165,55 @@ describe SmartGroupRules::CustomFieldText do
       I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
 
       expect(custom_field_text_is_rule.description_multiloc).to eq ({
-        'en'    => '\'What\'s your favourite Star Wars quote?\' is \'Never tell me the odds\'',
-        'fr-FR' => '\'Quelle est votre citation Star Wars préférée?\' est \'Never tell me the odds\'',
-        'nl-NL' => '\'Wat is uw favoriete Star Wars citaat?\' is \'Never tell me the odds\''
+        'en'    => '\'What\'s your favourite Star Wars quote?\' is \'Never tell me the odds!\'',
+        'fr-FR' => '\'Quelle est votre citation Star Wars préférée?\' est \'Never tell me the odds!\'',
+        'nl-NL' => '\'Wat is uw favoriete Star Wars citaat?\' is \'Never tell me the odds!\''
       })
-      # expect(custom_field_date_not_is_equal_rule.description_multiloc).to eq ({
-      #   'en'    => '\'How many politicians do you need to solve climate change?\' doesn\'t equal 0',
-      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' n\'est pas égal à 0',
-      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is verschillend van 0'
-      # })
-      # expect(custom_field_date_is_larger_than_rule.description_multiloc).to eq ({
-      #   'en'    => '\'How many politicians do you need to solve climate change?\' is larger than 0',
-      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' est plus grand que 0',
-      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is groter dan 0'
-      # })
-      # expect(custom_field_date_not_is_larger_than_rule.description_multiloc).to eq ({
-      #   'en'    => '\'How many politicians do you need to solve climate change?\' is not larger than 0',
-      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' n\'est pas plus grand que 0',
-      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is niet groter dan 0'
-      # })
-      # expect(custom_field_date_is_smaller_than_rule.description_multiloc).to eq ({
-      #   'en'    => '\'How many politicians do you need to solve climate change?\' is smaller than 0',
-      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' est moins que 0',
-      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is kleiner dan 0'
-      # })
-      # expect(custom_field_date_not_is_smaller_than_rule.description_multiloc).to eq ({
-      #   'en'    => '\'How many politicians do you need to solve climate change?\' is not smaller than 0',
-      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' n\'est pas moins que 0',
-      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' is niet kleiner dan 0'
-      # })
-      # expect(custom_field_date_is_empty_rule.description_multiloc).to eq ({
-      #   'en'    => '\'How many politicians do you need to solve climate change?\' has no value',
-      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' n\'as pas de value',
-      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' heeft geen waarde'
-      # })
-      # expect(custom_field_date_not_is_empty_rule.description_multiloc).to eq ({
-      #   'en'    => '\'How many politicians do you need to solve climate change?\' has any value',
-      #   'fr-FR' => '\'Combien de politicians faut-il pour resoudre le changement du climat?\' peut avoir n\'importe quel value',
-      #   'nl-NL' => '\'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?\' heeft om het even welke waarde'
-      # })
+      expect(custom_field_text_not_is_rule.description_multiloc).to eq ({
+        'en'    => '\'What\'s your favourite Star Wars quote?\' is not \'Never tell me the odds!\'',
+        'fr-FR' => '\'Quelle est votre citation Star Wars préférée?\' n\'est pas \'Never tell me the odds!\'',
+        'nl-NL' => '\'Wat is uw favoriete Star Wars citaat?\' is niet \'Never tell me the odds!\''
+      })
+      expect(custom_field_text_contains_rule.description_multiloc).to eq ({
+        'en'    => '\'What\'s your favourite Star Wars quote?\' contains \'Never tell me the odds!\'',
+        'fr-FR' => '\'Quelle est votre citation Star Wars préférée?\' contient \'Never tell me the odds!\'',
+        'nl-NL' => '\'Wat is uw favoriete Star Wars citaat?\' bevat \'Never tell me the odds!\''
+      })
+      expect(custom_field_text_not_contains_rule.description_multiloc).to eq ({
+        'en'    => '\'What\'s your favourite Star Wars quote?\' doesn\'t contain \'Never tell me the odds!\'',
+        'fr-FR' => '\'Quelle est votre citation Star Wars préférée?\' ne contient pas \'Never tell me the odds!\'',
+        'nl-NL' => '\'Wat is uw favoriete Star Wars citaat?\' bevat niet \'Never tell me the odds!\''
+      })
+      expect(custom_field_text_begins_with_rule.description_multiloc).to eq ({
+        'en'    => '\'What\'s your favourite Star Wars quote?\' begins with \'Never tell me the odds!\'',
+        'fr-FR' => '\'Quelle est votre citation Star Wars préférée?\' commence par \'Never tell me the odds!\'',
+        'nl-NL' => '\'Wat is uw favoriete Star Wars citaat?\' begint op \'Never tell me the odds!\''
+      })
+      expect(custom_field_text_not_begins_with_rule.description_multiloc).to eq ({
+        'en'    => '\'What\'s your favourite Star Wars quote?\' doesn\'t begin with \'Never tell me the odds!\'',
+        'fr-FR' => '\'Quelle est votre citation Star Wars préférée?\' ne commence pas par \'Never tell me the odds!\'',
+        'nl-NL' => '\'Wat is uw favoriete Star Wars citaat?\' begint niet op \'Never tell me the odds!\''
+      })
+      expect(custom_field_text_ends_on_rule.description_multiloc).to eq ({
+        'en'    => '\'What\'s your favourite Star Wars quote?\' ends on \'Never tell me the odds!\'',
+        'fr-FR' => '\'Quelle est votre citation Star Wars préférée?\' se termine sur \'Never tell me the odds!\'',
+        'nl-NL' => '\'Wat is uw favoriete Star Wars citaat?\' eindigt op \'Never tell me the odds!\''
+      })
+      expect(custom_field_text_not_ends_on_rule.description_multiloc).to eq ({
+        'en'    => '\'What\'s your favourite Star Wars quote?\' doesn\'t end on \'Never tell me the odds!\'',
+        'fr-FR' => '\'Quelle est votre citation Star Wars préférée?\' ne se termine pas sur \'Never tell me the odds!\'',
+        'nl-NL' => '\'Wat is uw favoriete Star Wars citaat?\' eindigt niet op \'Never tell me the odds!\''
+      })
+      expect(custom_field_text_is_empty_rule.description_multiloc).to eq ({
+        'en'    => '\'What\'s your favourite Star Wars quote?\' has no value',
+        'fr-FR' => '\'Quelle est votre citation Star Wars préférée?\' n\'as pas de value',
+        'nl-NL' => '\'Wat is uw favoriete Star Wars citaat?\' heeft geen waarde'
+      })
+      expect(custom_field_text_not_is_empty_rule.description_multiloc).to eq ({
+        'en'    => '\'What\'s your favourite Star Wars quote?\' has any value',
+        'fr-FR' => '\'Quelle est votre citation Star Wars préférée?\' peut avoir n\'importe quel value',
+        'nl-NL' => '\'Wat is uw favoriete Star Wars citaat?\' heeft om het even welke waarde'
+      })
     end
   end
 
