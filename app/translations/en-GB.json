@@ -1493,7 +1493,7 @@
   "app.containers.Projects.PollForm.pollDisabledNotVerified": "Taking this poll requires verification of your identity. {verificationLink}",
   "app.containers.Projects.PollForm.pollDisabledProjectInactive": "The poll is no longer available since this project is no longer active.",
   "app.containers.Projects.PollForm.sendAnswer": "Send",
-  "app.containers.Projects.PollForm.signUpToTakePoll": "Please sign up to take this poll",
+  "app.containers.Projects.PollForm.signUpToTakePoll": "Please {signUpLink} or {logInLink} to take this poll",
   "app.containers.Projects.PollForm.verificationLinkText": "Verify your identity now.",
   "app.containers.Projects.a11y_phase": "Phase {phaseNumber}: {phaseTitle}",
   "app.containers.Projects.a11y_phasesOverview": "Phases overview",
