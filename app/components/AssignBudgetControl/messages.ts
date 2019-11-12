@@ -29,4 +29,16 @@ export default defineMessages({
     id: 'app.components.VoteControl.budgetingDisabledNotPermitted',
     defaultMessage: "Sorry. You don't have the permission to assign budget to this idea.",
   },
+  budgetingDisabledNotVerified: {
+    id: 'app.components.VoteControl.budgetingDisabledNotVerified',
+    defaultMessage: 'You have to verify your account to assign budget to this idea. {verificationLink}',
+  },
+  verificationLinkText: {
+    id: 'app.components.AssignBudgetControl.verificationLinkText',
+    defaultMessage: 'Verify your account now.',
+  },
+  a11y_price: {
+    id: 'app.components.AssignBudgetControl.a11y_price',
+    defaultMessage: 'Price: ',
+  },
 });

@@ -548,7 +548,13 @@ class Streams {
       });
     }
 
-    uniq([...streamIds1, ...streamIds2]).forEach((streamId) => {
+    const mergedStreamIds = [...streamIds1, ...streamIds2];
+
+    if (includes(keys, authApiEndpoint)) {
+      mergedStreamIds.push(authApiEndpoint);
+    }
+
+    uniq(mergedStreamIds).forEach((streamId) => {
       if (!onlyFetchActiveStreams || this.isActiveStream(streamId)) {
         promises.push(this.streams[streamId].fetch());
       }

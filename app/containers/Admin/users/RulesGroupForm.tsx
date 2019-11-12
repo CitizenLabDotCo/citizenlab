@@ -1,7 +1,6 @@
 // Libraries
 import React from 'react';
-import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import { isEmpty, values as getValues, every } from 'lodash-es';
+import { Form, Field, InjectedFormikProps } from 'formik';
 
 // Components
 import { FormikUserFilterConditions } from 'components/admin/UserFilterConditions';
@@ -30,7 +29,7 @@ const SSectionField = styled(SectionField)`
 // Typings
 import { Multiloc } from 'typings';
 import { TRule } from 'components/admin/UserFilterConditions/rules';
-export interface Props {}
+export interface Props { }
 export interface RulesFormValues {
   rules: TRule[];
   title_multiloc: Multiloc;
@@ -38,19 +37,6 @@ export interface RulesFormValues {
 }
 
 export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Props, RulesFormValues>> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  public static validate = (values: RulesFormValues): FormikErrors<RulesFormValues> => {
-    const errors: FormikErrors<RulesFormValues> = {};
-
-    if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
-    }
-    return errors;
-  }
 
   render() {
     const { isSubmitting, errors, isValid, touched, status } = this.props;
@@ -77,7 +63,10 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
               component={FormikUserFilterConditions}
             />
             {touched.rules && errors.rules && <Error
-              text={<FormattedMessage {...messages.rulesError} />}
+              text={(errors.rules as any) === 'verificationDisabled'
+                ? <FormattedMessage {...messages.verificationDisabled} />
+                : <FormattedMessage {...messages.rulesError} />
+              }
             />}
           </SSectionField>
         </StyledFill>

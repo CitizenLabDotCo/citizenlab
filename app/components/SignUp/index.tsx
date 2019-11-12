@@ -44,7 +44,7 @@ const Container = styled.div`
 const ContainerInner = styled.div`
   width: 100%;
   position: relative;
-  flex: 1;
+  flex: 1 1 auto;
 `;
 
 const StepContainer = styled.div`

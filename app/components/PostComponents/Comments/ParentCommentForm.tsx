@@ -38,8 +38,8 @@ const Container = styled.div`
 const CommentContainer = styled.div`
   padding-top: 20px;
   padding-bottom: 20px;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 35px;
+  padding-right: 35px;
   background: #fff;
   border: 1px solid #e3e3e3;
   box-sizing: border-box;
@@ -213,7 +213,6 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
                 notALink={authUser.id ? false : true}
                 size="32px"
                 showModeration={isModerator}
-                avatarBadgeBgColor="#f1f2f4"
               />
             </AuthorWrapper>
 

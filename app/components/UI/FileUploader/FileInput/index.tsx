@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -30,6 +30,16 @@ const Input = styled.input`
   pointer-events: none;
   width: 1px;
   height: 1px;
+
+  &:focus + label {
+    color: #000;
+    border-color: #000;
+    outline: ${customOutline};
+
+    ${StyledIcon} {
+      fill: #000;
+    }
+  }
 `;
 
 const Label = styled.label`
@@ -42,8 +52,8 @@ const Label = styled.label`
   padding: 10px 20px;
   color: ${colors.label};
   background: transparent;
+  font-weight: 400;
 
-  &:focus,
   &:hover {
     color: #000;
     border-color: #000;
@@ -158,8 +168,9 @@ export default class FileInput extends PureComponent<Props> {
           onClick={this.onClick}
           type="file"
           accept={fileAccept.join(',')}
+          tabIndex={0}
         />
-        <Label htmlFor="file-attachment-uploader">
+        <Label aria-hidden htmlFor="file-attachment-uploader">
           <StyledIcon name="upload-file" />
           <FormattedMessage {...messages.fileInputDescription} />
         </Label>

@@ -456,7 +456,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   initiative={initiative}
                   id="e2e-initiative-more-actions-mobile"
                   color="white"
-                  tooltipPosition="bottom-left"
                 />
               </MobileMoreActionContainer>
               <Title
@@ -568,9 +567,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
                 {smallerThanLargeTablet &&
                   <>
-                    <ScreenReaderOnly>
-                      <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
-                    </ScreenReaderOnly>
                     <SharingMobile
                       context="initiative"
                       url={initiativeUrl}
@@ -587,7 +583,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 <RightColumnDesktop>
                   <MetaContent>
                     <ScreenReaderOnly>
-                      <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
+                      <FormattedMessage tagName="h2" {...messages.a11y_voteControl} />}
                     </ScreenReaderOnly>
                     <VoteControl
                       initiativeId={initiative.id}

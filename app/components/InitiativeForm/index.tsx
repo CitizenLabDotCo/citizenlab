@@ -222,6 +222,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onChange={onChangeTitle}
                 onBlur={this.onBlur('title_multiloc')}
                 selectedLocale={locale}
+                autocomplete="off"
               />
               {touched.title_multiloc
                 && errors.title_multiloc ? <Error message={errors.title_multiloc.message} />
@@ -255,7 +256,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
         <FormSection>
           <FormSectionTitle message={messages.formDetailsSectionTitle} />
 
-          <SectionField>
+          <SectionField aria-live="polite">
             <FormLabel
               labelMessage={messages.topicsLabel}
               subtextMessage={messages.topicsLabelSubtext}
@@ -336,14 +337,15 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               labelMessage={messages.fileUploadLabel}
               subtextMessage={messages.fileUploadLabelSubtext}
               optional
-            />
-            <FileUploader
-              id="e2e-initiative-file-upload"
-              onFileAdd={onAddFile}
-              onFileRemove={onRemoveFile}
-              files={files}
-              errors={apiErrors}
-            />
+            >
+              <FileUploader
+                id="e2e-initiative-file-upload"
+                onFileAdd={onAddFile}
+                onFileRemove={onRemoveFile}
+                files={files}
+                errors={apiErrors}
+              />
+            </FormLabel>
           </SectionField>
         </FormSection>
         <FormSubmitFooter

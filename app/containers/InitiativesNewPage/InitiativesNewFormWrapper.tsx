@@ -1,3 +1,4 @@
+require('intersection-observer');
 import React from 'react';
 
 // components
@@ -201,6 +202,10 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
       }
       this.setState({ saving: false });
     } catch (errorResponse) {
+      // const apiErrors = get(errorResponse, 'json.errors');
+      // saving changes while working should have a minimal error feedback,
+      // maybe in the saving indicator, since it's error-resistant, ie what wasn't
+      // saved this time will be next time user leaves a field, or on publish call.
       this.setState({ saving: false });
     }
   }

@@ -135,6 +135,17 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
     };
   }
 
+  componentDidUpdate(prevProps : Props) {
+    const { idea } = this.props;
+    const prevIdea = prevProps.idea;
+    if (!isNilOrError(idea) && !isNilOrError(prevIdea) && (
+      idea.attributes.action_descriptor.voting.enabled !== prevIdea.attributes.action_descriptor.voting.enabled
+      || idea.attributes.action_descriptor.voting.disabled_reason !== prevIdea.attributes.action_descriptor.voting.disabled_reason
+    )) {
+      this.setState({ showVotingDisabled: null });
+    }
+  }
+
   onCardClick = (event: FormEvent) => {
     event.preventDefault();
 
@@ -281,7 +292,6 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                   <DisabledWrapper>
                     <AssignBudgetDisabled
                       budgetingDescriptor={budgetingDescriptor}
-                      projectId={projectId}
                     />
                   </DisabledWrapper>
                 </BottomBounceUp>

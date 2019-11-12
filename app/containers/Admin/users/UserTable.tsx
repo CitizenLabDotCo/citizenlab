@@ -53,13 +53,6 @@ const StyledTable = styled(Table)`
   }
 `;
 
-const OptionsTH = styled.th`
-  text-align: center;
-  display: flex;
-  justify-content: center;
-`;
-
-// Typings
 interface InputProps {
   selectedUsers: string[] | 'none' | 'all';
   handleSelect: (userId: string) => void;
@@ -170,9 +163,9 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
                     sorted={sortAttribute === 'role' ? sortDirection : null}
                   />
                 </th>
-                <OptionsTH>
+                <th>
                   <FormattedMessage tagName="div" {...messages.options} />
-                </OptionsTH>
+                </th>
               </tr>
             </thead>
             <tbody>
