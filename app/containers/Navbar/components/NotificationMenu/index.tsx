@@ -103,8 +103,6 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
     const { dropdownOpened } = this.state;
     const { notifications, authUser } = this.props;
 
-    console.log(notifications);
-
     if (!isNilOrError(authUser)) {
       return (
         <Container>
