@@ -1,3 +1,4 @@
+require('intersection-observer');
 import React from 'react';
 
 // components
