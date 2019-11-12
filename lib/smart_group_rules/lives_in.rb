@@ -89,7 +89,7 @@ module SmartGroupRules
       end
     end
 
-    def description_property locale: nil
+    def description_property locale
         CustomField.find_by(key: 'domicile').title_multiloc[locale]
       end
 
@@ -102,7 +102,7 @@ module SmartGroupRules
       end
     end
 
-    def description_value locale: nil
+    def description_value locale
       case value
       when 'outside'
         value

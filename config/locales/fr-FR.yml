@@ -149,36 +149,38 @@ fr:
     default_eligibility_criteria: >
       <p>L'initiative devra/p> <p>- rentrer dans les compétences de la ville</p>
   smart_group_rules:
-    is_empty: "'%{property}' n'as pas de value"
-    not_is_empty: "'%{property}' peut avoir n'importe quel value"
+    is_empty: "%{property} n'as pas de value"
+    not_is_empty: "%{property} peut avoir n'importe quel value"
     custom_field_checkbox:
-      is_checked: "A coché '%{property}'"
-      not_is_checked: "N'as pas coché '%{property}'"
+      is_checked: "A coché %{property}"
+      not_is_checked: "N'as pas coché %{property}"
     custom_field_date:
-      is_before: "'%{property}' est avant %{value}" 
-      is_exactly: "'%{property}' est %{value}"
-      is_after: "'%{property}' est après %{value}"
+      is_before: "%{property} est avant %{value}" 
+      is_exactly: "%{property} est %{value}"
+      is_after: "%{property} est après %{value}"
     custom_field_number:
-      is_equal: "'%{property}' est égal à %{value}"
-      not_is_equal: "'%{property}' n'est pas égal à %{value}"
-      is_larger_than: "'%{property}' est plus grand que %{value}"
-      not_is_larger_than: "'%{property}' n'est pas plus grand que %{value}"
-      is_smaller_than: "'%{property}' est moins que %{value}"
-      not_is_smaller_than: "'%{property}' n'est pas moins que %{value}"
+      is_equal: "%{property} est égal à %{value}"
+      not_is_equal: "%{property} n'est pas égal à %{value}"
+      is_larger_than: "%{property} est plus grand que %{value}"
+      not_is_larger_than: "%{property} n'est pas plus grand que %{value}"
+      is_smaller_than: "%{property} est moins que %{value}"
+      not_is_smaller_than: "%{property} n'est pas moins que %{value}"
     custom_field_select:
-      has_value: "'%{property}' est '%{value}'"
-      not_has_value: "'%{property}' n'est pas '%{value}'"
+      has_value: "%{property} est %{value}"
+      not_has_value: "%{property} n'est pas %{value}"
     custom_field_text:
-      is: "'%{property}' est '%{value}'"
-      not_is: "'%{property}' n'est pas '%{value}'"
-      contains: "'%{property}' contient '%{value}'"
-      not_contains: "'%{property}' ne contient pas '%{value}'"
-      begins_with: "'%{property}' commence par '%{value}'"
-      not_begins_with: "'%{property}' ne commence pas par '%{value}'"
-      ends_on: "'%{property}' se termine sur '%{value}'"
-      not_ends_on: "'%{property}' ne se termine pas sur '%{value}'"
+      is: "%{property} est %{value}"
+      not_is: "%{property} n'est pas %{value}"
+      contains: "%{property} contient %{value}"
+      not_contains: "%{property} ne contient pas %{value}"
+      begins_with: "%{property} commence par %{value}"
+      not_begins_with: "%{property} ne commence pas par %{value}"
+      ends_on: "%{property} se termine sur %{value}"
+      not_ends_on: "%{property} ne se termine pas sur %{value}"
     email:
-      property: "courrier électronique"
+      property: "adresse e-mail"
     lives_in:
       has_value_outside: "Habite hors de cette region"
       not_has_value_outside: "N'habite pas hors de cette region"
+    registration_completed_at:
+      property: "date d'inscription"

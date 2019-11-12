@@ -148,6 +148,8 @@ describe SmartGroupRules::CustomFieldSelect do
       'customFieldId' => custom_field.id
     })}
 
+    # TODO test education: return education description instead of number
+
     it "successfully translates different combinations of rules" do
       # Stubbing the translations so the specs don't depend on those.
       I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]

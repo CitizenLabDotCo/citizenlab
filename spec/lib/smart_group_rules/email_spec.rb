@@ -124,44 +124,44 @@ describe SmartGroupRules::Email do
       I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
 
       expect(email_is_rule.description_multiloc).to eq ({
-        'en'    => 'email is \'Never tell me the odds!\'',
-        'fr-FR' => 'corrier électronique est \'Never tell me the odds!\'',
-        'nl-NL' => 'email is \'Never tell me the odds!\''
+        'en'    => 'e-mail is sebi@citizenlab.co',
+        'fr-FR' => 'adresse e-mail est sebi@citizenlab.co',
+        'nl-NL' => 'e-mail is sebi@citizenlab.co'
       })
       expect(email_not_is_rule.description_multiloc).to eq ({
-        'en'    => 'email is not \'Never tell me the odds!\'',
-        'fr-FR' => 'corrier électronique n\'est pas \'Never tell me the odds!\'',
-        'nl-NL' => 'email is niet \'Never tell me the odds!\''
+        'en'    => 'e-mail is not sebi@citizenlab.co',
+        'fr-FR' => 'adresse e-mail n\'est pas sebi@citizenlab.co',
+        'nl-NL' => 'e-mail is niet sebi@citizenlab.co'
       })
       expect(email_contains_rule.description_multiloc).to eq ({
-        'en'    => 'email contains \'Never tell me the odds!\'',
-        'fr-FR' => 'corrier électronique contient \'Never tell me the odds!\'',
-        'nl-NL' => 'email bevat \'Never tell me the odds!\''
+        'en'    => 'e-mail contains @citizenlab',
+        'fr-FR' => 'adresse e-mail contient @citizenlab',
+        'nl-NL' => 'e-mail bevat @citizenlab'
       })
       expect(email_not_contains_rule.description_multiloc).to eq ({
-        'en'    => 'email doesn\'t contain \'Never tell me the odds!\'',
-        'fr-FR' => 'corrier électronique ne contient pas \'Never tell me the odds!\'',
-        'nl-NL' => 'email bevat niet \'Never tell me the odds!\''
+        'en'    => 'e-mail doesn\'t contain @citizenlab',
+        'fr-FR' => 'adresse e-mail ne contient pas @citizenlab',
+        'nl-NL' => 'e-mail bevat niet @citizenlab'
       })
       expect(email_begins_with_rule.description_multiloc).to eq ({
-        'en'    => 'email begins with \'Never tell me the odds!\'',
-        'fr-FR' => 'corrier électronique commence par \'Never tell me the odds!\'',
-        'nl-NL' => 'email begint op \'Never tell me the odds!\''
+        'en'    => 'e-mail begins with sebi',
+        'fr-FR' => 'adresse e-mail commence par sebi',
+        'nl-NL' => 'e-mail begint op sebi'
       })
       expect(email_not_begins_with_rule.description_multiloc).to eq ({
-        'en'    => 'email doesn\'t begin with \'Never tell me the odds!\'',
-        'fr-FR' => 'corrier électronique ne commence pas par \'Never tell me the odds!\'',
-        'nl-NL' => 'email begint niet op \'Never tell me the odds!\''
+        'en'    => 'e-mail doesn\'t begin with sebi',
+        'fr-FR' => 'adresse e-mail ne commence pas par sebi',
+        'nl-NL' => 'e-mail begint niet op sebi'
       })
       expect(email_ends_on_rule.description_multiloc).to eq ({
-        'en'    => 'email ends on \'Never tell me the odds!\'',
-        'fr-FR' => 'corrier électronique se termine sur \'Never tell me the odds!\'',
-        'nl-NL' => 'email eindigt op \'Never tell me the odds!\''
+        'en'    => 'e-mail ends on citizenlab.co',
+        'fr-FR' => 'adresse e-mail se termine sur citizenlab.co',
+        'nl-NL' => 'e-mail eindigt op citizenlab.co'
       })
       expect(email_not_ends_on_rule.description_multiloc).to eq ({
-        'en'    => 'email doesn\'t end on \'Never tell me the odds!\'',
-        'fr-FR' => 'corrier électronique ne se termine pas sur \'Never tell me the odds!\'',
-        'nl-NL' => 'email eindigt niet op \'Never tell me the odds!\''
+        'en'    => 'e-mail doesn\'t end on citizenlab.co',
+        'fr-FR' => 'adresse e-mail ne se termine pas sur citizenlab.co',
+        'nl-NL' => 'e-mail eindigt niet op citizenlab.co'
       })
     end
   end
