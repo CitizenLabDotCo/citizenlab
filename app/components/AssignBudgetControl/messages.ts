@@ -37,4 +37,8 @@ export default defineMessages({
     id: 'app.components.AssignBudgetControl.verificationLinkText',
     defaultMessage: 'Verify your account now.',
   },
+  a11y_price: {
+    id: 'app.components.AssignBudgetControl.a11y_price',
+    defaultMessage: 'Price: ',
+  },
 });

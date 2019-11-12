@@ -6,7 +6,7 @@ describe('Initiative new page', () => {
   const email = randomEmail();
   const password = randomString();
   const initiativeTitle = randomString(40);
-  const initiativeContent = randomString(60);
+  const initiativeContent = randomString(501);
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password);
@@ -80,7 +80,7 @@ describe('Initiative new page', () => {
     cy.get('#iniatiative-banner-dropzone');
     cy.get('#e2e-initiative-file-upload');
 
-    // add an inamge
+    // add an image
     cy.fixture('cy.png', 'base64').then(fileContent => {
       cy.get('#iniatiative-img-dropzone').upload(
         { fileContent, fileName: 'cy.png', mimeType: 'image/png' },
@@ -92,7 +92,7 @@ describe('Initiative new page', () => {
     // save the form
     cy.wait(500);
     cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
-    cy.wait(500);
+    cy.wait(1000);
 
     // verify the content of the newly created initiative page
     cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeTitle}`);

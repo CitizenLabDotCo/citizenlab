@@ -45,19 +45,23 @@ export default class ClickOutside extends PureComponent<Props, State> {
   addEventListeners = () => {
     if (this.props.closeOnClickOutsideEnabled) {
       document.addEventListener('click', this.handle, true);
-      document.addEventListener('keydown', this.handle, true);
+      document.addEventListener('keyup', this.handle, true);
     }
   }
 
   removeEventListeners = () => {
     document.removeEventListener('click', this.handle, true);
-    document.removeEventListener('keydown', this.handle, true);
+    document.removeEventListener('keyup', this.handle, true);
   }
 
   handle = (event) => {
     // Press esc to close
-    if (event.type === 'keydown' && event.key === 'Escape') {
+    if (event.type === 'keyup' && event.key === 'Escape') {
       event.preventDefault();
+      this.props.onClickOutside(event);
+    }
+
+    if (event.type === 'keyup' && event.key === 'Tab' && this.container && !this.container.contains(event.target)) {
       this.props.onClickOutside(event);
     }
 

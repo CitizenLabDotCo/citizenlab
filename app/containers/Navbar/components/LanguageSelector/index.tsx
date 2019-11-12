@@ -151,7 +151,7 @@ class LanguageSelector extends PureComponent<Props, State> {
 
       return (
         <Container className={className} onMouseDown={this.removeFocus} onClick={this.toggleDropdown}>
-          <DropdownButton className="e2e-langage-dropdown-toggle">
+          <DropdownButton className="e2e-langage-dropdown-toggle" aria-expanded={dropdownOpened}>
             <DropdownButtonText>{currentlySelectedLocale.substr(0, 2).toUpperCase()}</DropdownButtonText>
             <DropdownButtonIcon name="dropdown" />
           </DropdownButton>

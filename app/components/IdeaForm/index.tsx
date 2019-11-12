@@ -405,6 +405,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             onChange={this.handleTitleOnChange}
             setRef={this.handleTitleInputSetRef}
             maxCharCount={80}
+            autocomplete="off"
           />
         </FormElement>
 
@@ -434,14 +435,14 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         )}
 
         <FormElement>
-          <FormLabel labelMessage={messages.locationLabel} htmlFor="location" />
-          <LocationInput
-            id="location"
-            className="e2e-idea-form-location-input-field"
-            value={address}
-            placeholder={formatMessage(messages.locationPlaceholder)}
-            onChange={this.handleLocationOnChange}
-          />
+          <FormLabel labelMessage={messages.locationLabel}>
+            <LocationInput
+              className="e2e-idea-form-location-input-field"
+              value={address}
+              placeholder={formatMessage(messages.locationPlaceholder)}
+              onChange={this.handleLocationOnChange}
+            />
+          </FormLabel>
         </FormElement>
 
         <FormElement id="e2e-idea-image-upload">
@@ -484,12 +485,13 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         )}
 
         <FormElement id="e2e-idea-file-upload">
-          <FormLabel labelMessage={messages.fileUploadLabel} />
-          <FileUploader
-            onFileAdd={this.handleIdeaFileOnAdd}
-            onFileRemove={this.handleIdeaFileOnRemove}
-            files={ideaFiles}
-          />
+          <FormLabel labelMessage={messages.fileUploadLabel}>
+            <FileUploader
+              onFileAdd={this.handleIdeaFileOnAdd}
+              onFileRemove={this.handleIdeaFileOnRemove}
+              files={ideaFiles}
+            />
+          </FormLabel>
         </FormElement>
       </Form>
     );
