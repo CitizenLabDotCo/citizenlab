@@ -478,7 +478,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 <FormattedMessage {...messages.header_bg} />
                 <IconTooltip content={<FormattedMessage {...messages.header_bgTooltip} />} />
               </Label>
-              <ImagesDropzone
+              {/* <ImagesDropzone
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 maxNumberOfImages={1}
                 maxImageFileSize={5000000}
@@ -489,7 +489,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 onRemove={this.handleHeaderBgOnRemove}
                 placeholder={this.uploadPlaceholder}
                 errorMessage={headerError}
-              />
+              /> */}
             </SectionField>
 
             <SectionField>
