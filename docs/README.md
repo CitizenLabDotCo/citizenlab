@@ -1,5 +1,34 @@
 # Changelog
 
+## 2019-11-12
+
+### Fixed
+
+- An email with subject `hihi` is no longer sent to admins that had their invite accepted
+- Whe clicking the delete button in the file uploader, the page no longer refreshes
+- Project templates no longer show with empty copy when the language is missing
+- The countdown timer on initiatives now shows the correct value for days
+- The radio buttons in the cookie manager are clickable again
+- Changing the host of a tenant no longer breaks images embedded in texts
+- It's possible again to unassign an idea in the idea manager
+- The popup for adding a video or link URL is no longer invisible or unusable in some situations
+- Uploading files is no longer failing for various filetypes we want to support
+
+
+### Added
+
+- ID Verification iteration 1
+  - Users can verify their account by entering their ID card numbers (currently Chile only)
+  - Verification is feature flagged and off by default
+  - Smart groups can include the criterium 'is verified'
+  - Users are prompted to verify their account when taking an actions that requires verification
+- Total population for a tenant can now be entered in Admin HQ
+- It's now possible to configure the word used for areas towards citizens from the areas admin
+
+### Changed
+
+- The organization name is now the default author in an official update
+
 ## 2019-10-22
 
 ### Fixed
