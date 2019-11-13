@@ -99,19 +99,19 @@ class Tenant < ApplicationRecord
   end
 
   def base_frontend_uri
-    if Rails.env.development? || Rails.env.test?
+    if Rails.env.development?
       "http://localhost:3000"
     else
-      transport = 'https' # request.ssl? ? 'https' : 'http'
+      transport = Rails.env.test? ? 'http' : 'https'
       "#{transport}://#{self.host}"
     end
   end
 
   def base_backend_uri
-    if Rails.env.development? || Rails.env.test?
+    if Rails.env.development?
       "http://localhost:4000"
     else
-      transport = 'https' # request.ssl? ? 'https' : 'http'
+      transport = Rails.env.test? ? 'http' : 'https'
       "#{transport}://#{self.host}"
     end
   end

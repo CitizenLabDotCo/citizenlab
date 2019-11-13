@@ -3,6 +3,7 @@ class OmniauthCallbackController < ApplicationController
   skip_after_action :verify_authorized
 
   def create
+    byebug
     auth = request.env['omniauth.auth']
     provider = auth['provider']
     auth_method = AuthenticationService.new.method_by_provider(provider)
@@ -10,19 +11,19 @@ class OmniauthCallbackController < ApplicationController
     if auth_method
       auth_callback verify: !!verification_method
     elsif verification_method
-      verification_callback
+      verification_callback verification_method
     else
       raise "#{provider} not supported"
     end
   end
 
-  def verification_callback
+  def verification_callback verification_method
     auth = request.env['omniauth.auth']
-    omniauth_params = request.env['omniauth.params']
+    omniauth_params = request.env['omniauth.params'].except('token')
     @user = current_user
 
     if @user&.active?
-      @user.update!(auth_service.profile_to_user_attrs(auth))
+      @user.update!(verification_method.profile_to_user_attrs(auth))
       begin
         handle_verification(auth, @user)
         redirect_to(add_uri_params(Frontend::UrlService.new.verification_success_url(locale: @user.locale), omniauth_params))

@@ -13,14 +13,7 @@ class AuthenticationService
 
   def profile_to_user_attrs auth
     provider = auth.provider
-    default_user_attrs = {
-      first_name: auth.info['first_name'],
-      last_name: auth.info['last_name'],
-      email: auth.info['email'],
-      remote_avatar_url: auth.info['image'],
-    }
-    custom_user_attrs = all_methods[provider].profile_to_user_attrs(auth)
-    {**default_user_attrs, **custom_user_attrs}
+    all_methods[provider].profile_to_user_attrs(auth)
   end
 
   def method_by_provider provider

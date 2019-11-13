@@ -3,21 +3,19 @@ module OmniauthMethods
 
     include Verification::Methods::BosaFAS
 
-    # def profile_to_user_attrs auth
-    #   # Todo: Do something smart with the address auth.extra.raw_info.address.formatted
-    #   {
-    #     last_name: auth.info['last_name'].titleize, # FC returns last names in ALL CAPITALS
-    #     gender: auth.extra.raw_info.gender,
-    #     locale: Tenant.current.closest_locale_to('fr-FR'),
-    #     birthyear: (Date.parse(auth.extra.raw_info.birthdate)&.year rescue nil)
-    #   }
-    # end
+    def profile_to_user_attrs auth
+      {}.tap do |info|
+        info[:last_name] = auth.info.last_name if auth.info.last_name
+        info[:first_name] = auth.info.first_name if auth.info.first_name
+      end
+    end
 
     def omniauth_setup tenant, env
       if Verification::VerificationService.new.is_active?(tenant, name)
         host = OmniauthMethods::BosaFAS.new.host
 
         options = env['omniauth.strategy'].options
+        # options[:scope] = [:openid, :profile]
         options[:scope] = [:openid, :profile]
         options[:response_type] = :code
         options[:state] = true
