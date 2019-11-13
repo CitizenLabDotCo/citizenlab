@@ -60,7 +60,11 @@ module Verification
       if method.respond_to?(:entitled?) && !method.entitled?(auth)
         raise NotEntitledError.new
       end
-      uid = auth['uid']
+      uid = if method.respond_to?(:profile_to_uid)
+        method.profile_to_uid(auth)
+      else
+        auth['uid']
+      end
       make_verification(user: user, method_name: method.name, uid: uid)
     end
 

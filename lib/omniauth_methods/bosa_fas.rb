@@ -5,8 +5,8 @@ module OmniauthMethods
 
     def profile_to_user_attrs auth
       {}.tap do |info|
-        info[:last_name] = auth.info.last_name if auth.info.last_name
-        info[:first_name] = auth.info.first_name if auth.info.first_name
+        info[:first_name] = auth.dig('extra','raw_info','givenName') if auth.dig('extra','raw_info','givenName')
+        info[:last_name] = auth.dig('extra','raw_info','surname') if auth.dig('extra','raw_info','surname')
       end
     end
 
@@ -15,8 +15,7 @@ module OmniauthMethods
         host = OmniauthMethods::BosaFAS.new.host
 
         options = env['omniauth.strategy'].options
-        # options[:scope] = [:openid, :profile]
-        options[:scope] = [:openid, :profile]
+        options[:scope] = [:openid, :profile, :egovnrn]
         options[:response_type] = :code
         options[:state] = true
         options[:nonce] = true
