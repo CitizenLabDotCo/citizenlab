@@ -207,8 +207,10 @@ class WebApi::V1::UsersController < ::ApplicationController
     # the custom field value updates cleared out by the 
     # policy (which should stay like before instead of 
     # being cleared out).
-    (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
-      params[:user][:custom_field_values][clear_key] = nil
+    if current_user
+      (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
+        params[:user][:custom_field_values][clear_key] = nil
+      end
     end
   end
 
