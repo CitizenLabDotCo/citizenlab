@@ -161,7 +161,6 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
         <LoadableModal
           opened={isDialogOpen}
           close={this.closeDialog}
-          label={intl.formatMessage(messages.modalLabel)}
           header={<FormattedMessage {...messages.title} />}
           footer={<Footer
             validate={this.validate}
