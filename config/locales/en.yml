@@ -184,6 +184,8 @@ en:
     lives_in:
       has_value_outside: "%{property} is somewhere else"
       not_has_value_outside: "%{property} is not somewhere else"
+    participated_in_idea_status:
+      in: "Participation in an idea with status %{value}"
     registration_completed_at:
       property: "registration"
     role:
