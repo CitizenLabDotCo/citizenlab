@@ -3,10 +3,13 @@ module OmniauthMethods
     def profile_to_user_attrs auth
       # Todo: Do something smart with the address auth.extra.raw_info.address.formatted
       {
+        first_name: auth.info['first_name'],
+        email: auth.info['email'],
         last_name: auth.info['last_name'].titleize, # FC returns last names in ALL CAPITALS
         gender: auth.extra.raw_info.gender,
         locale: Tenant.current.closest_locale_to('fr-FR'),
-        birthyear: (Date.parse(auth.extra.raw_info.birthdate)&.year rescue nil)
+        birthyear: (Date.parse(auth.extra.raw_info.birthdate)&.year rescue nil),
+        remote_avatar_url: auth.info['image'],
       }
     end
 

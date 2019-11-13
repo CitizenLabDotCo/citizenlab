@@ -11,6 +11,9 @@ module OmniauthMethods
 
     def profile_to_user_attrs auth
       user_attrs = {
+        first_name: auth.info['first_name'],
+        last_name: auth.info['last_name'],
+        email: auth.info['email'],
         locale: Tenant.current.closest_locale_to(auth.extra.raw_info.locale)
       }
       gender = auth.extra.raw_info&.gender
@@ -24,8 +27,6 @@ module OmniauthMethods
 
       if picture && !picture.is_silhouette
         user_attrs[:remote_avatar_url] = picture.url
-      else
-        user_attrs[:remote_avatar_url] = nil
       end
 
       user_attrs
