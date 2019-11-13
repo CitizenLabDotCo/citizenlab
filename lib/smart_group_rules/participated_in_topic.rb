@@ -88,5 +88,9 @@ module SmartGroupRules
       end
     end
 
+    def description_value locale
+      Topic.find(value).title_multiloc[locale]
+    end
+
   end
 end

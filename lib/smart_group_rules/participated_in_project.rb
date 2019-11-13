@@ -94,5 +94,9 @@ module SmartGroupRules
       end
     end
 
+    def description_value locale
+      Project.find(value).title_multiloc[locale]
+    end
+
   end
 end
