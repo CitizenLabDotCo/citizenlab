@@ -56,7 +56,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.disallow": "Forbyd",
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funktionel",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Påkrævet for at aktivere og overvåge grundlæggende funktioner på websiden. Nogle af de værktøjer som er angivet her gælder måske ikke for dig. Se venligst vores cookie-politik for mere information.",
-  "app.components.ConsentManager.Modal.PreferencesDialog.modalLabel": "Dine cookie præferencer",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Gem",
   "app.components.ConsentManager.Modal.PreferencesDialog.title": "Dine cookie præferencer",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Værktøjer",
