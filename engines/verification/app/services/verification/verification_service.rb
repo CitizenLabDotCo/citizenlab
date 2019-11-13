@@ -5,6 +5,7 @@ module Verification
       Methods::Cow.new,
       Methods::Bogus.new,
       OmniauthMethods::BosaFAS.new,
+      OmniauthMethods::FranceConnect.new,
     ]
 
     def initialize sfxv_service=SideFxVerificationService.new
@@ -66,6 +67,32 @@ module Verification
         auth['uid']
       end
       make_verification(user: user, method_name: method.name, uid: uid)
+    end
+
+    def locked_attributes user
+      method_names = user.verifications.active.pluck(:method_name).uniq || []
+      attributes = method_names.flat_map do |method_name|
+        ver_method = method_by_name(method_name)
+        if ver_method.respond_to? :locked_attributes
+          ver_method.locked_attributes
+        else
+          []
+        end
+      end
+      attributes.uniq
+    end
+
+    def locked_custom_fields user
+      method_names = user.verifications.active.pluck(:method_name).uniq || []
+      custom_fields = method_names.flat_map do |method_name|
+        ver_method = method_by_name(method_name)
+        if ver_method.respond_to? :locked_custom_fields
+          ver_method.locked_custom_fields
+        else
+          []
+        end
+      end
+      custom_fields.uniq
     end
 
     private

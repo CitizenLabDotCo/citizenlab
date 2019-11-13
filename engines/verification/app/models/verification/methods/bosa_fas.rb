@@ -19,20 +19,20 @@ module Verification
         [:environment, :identifier, :secret]
       end
 
-      def locked_user_attributes
-        [:first_name, :last_name]
-      end
-
-      def locked_user_custom_fields
-        []
-      end
-
       def entitled? auth
         true
       end
 
       def profile_to_uid auth
         auth['uid'] || auth.dig('extra','raw_info','egovNRN')
+      end
+
+      def locked_attributes
+        [:first_name, :last_name]
+      end
+
+      def locked_custom_fields
+        []
       end
 
     end
