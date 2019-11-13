@@ -27,11 +27,13 @@ class OmniauthCallbackController < ApplicationController
       begin
         handle_verification(auth, @user)
         redirect_to(add_uri_params(Frontend::UrlService.new.verification_success_url(locale: @user.locale), omniauth_params))
-      rescue VerificationService::VerificationTakenError => e
-        redirect_to(add_uri_params(Frontend::UrlService.new.verification_error_url(locale: @user.locale), omniauth_params.merge(error: 'taken')))
-      rescue VerificationService::NotEntitledError => e
-        redirect_to(add_uri_params(Frontend::UrlService.new.verification_error_url(locale: @user.locale), omniauth_params.merge(error: 'not_entitled')))
+      rescue Verification::VerificationService::VerificationTakenError => e
+        fail_verification('taken')
+      rescue Verification::VerificationService::NotEntitledError => e
+        fail_verification('not_entitled')
       end
+    else
+      fail_verification('no_token_passed')
     end
   end
 
@@ -105,6 +107,11 @@ class OmniauthCallbackController < ApplicationController
   def failure
     omniauth_params = request.env['omniauth.params']
     redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, omniauth_params))
+  end
+
+  def fail_verification error
+    omniauth_params = request.env['omniauth.params'].except('token')
+    redirect_to(add_uri_params(Frontend::UrlService.new.verification_failure_url, omniauth_params.merge(error: error)))
   end
 
   def logout

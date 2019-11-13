@@ -31,6 +31,10 @@ module Verification
         true
       end
 
+      def profile_to_uid auth
+        auth['uid'] || auth.dig('extra','raw_info','egovNRN')
+      end
+
     end
   end
 end
