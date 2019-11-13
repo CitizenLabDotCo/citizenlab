@@ -122,7 +122,22 @@ export default class ValuesList extends PureComponent<Props, State> {
   }
 
   render() {
-    const { values, selected, multiple, opened, baseID, width, mobileWidth, maxHeight, mobileMaxHeight, top, left, mobileLeft, right, mobileRight } = this.props;
+    const {
+      values,
+      selected,
+      multiple,
+      opened,
+      baseID,
+      width,
+      mobileWidth,
+      maxHeight,
+      mobileMaxHeight,
+      top,
+      left,
+      mobileLeft,
+      right,
+      mobileRight
+    } = this.props;
 
     // ARIA reference example: https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
     return (
@@ -143,6 +158,7 @@ export default class ValuesList extends PureComponent<Props, State> {
             className="e2e-sort-items"
             tabIndex={-1}
             role="listbox"
+            aria-multiselectable={multiple}
           >
             {values && values.map((entry, index) => {
               const checked = includes(selected, entry.value);
@@ -172,6 +188,7 @@ export default class ValuesList extends PureComponent<Props, State> {
 
                   {multiple &&
                     <ListItemCheckbox
+                      notFocusable
                       checked={checked}
                       onChange={this.handleOnToggle(entry)}
                     />
