@@ -73,7 +73,7 @@ const Title = styled.h1`
   `}
 `;
 
-const Subtitle = styled.h3`
+const Description = styled.p`
   flex-shrink: 0;
   width: 100%;
   max-width: 500px;
@@ -84,13 +84,13 @@ const Subtitle = styled.h3`
   text-align: center;
   margin: 0;
   margin-top: 10px;
-  margin-bottom: 35px;
+  margin-bottom: 50px;
   padding: 0;
 
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.base}px;
     line-height: 21px;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
   `}
 `;
 
@@ -158,9 +158,9 @@ class SharingModalContent extends PureComponent<Props & InjectedIntlProps & Inje
           <Title className={`e2e-${postType}-social-sharing-modal-title`}>
             {title}
           </Title>
-          <Subtitle>
+          <Description>
             {subtitle}
-          </Subtitle>
+          </Description>
           <SharingWrapper>
             <Sharing
               context={postType}
