@@ -65,8 +65,8 @@ class UserPolicy < ApplicationPolicy
     if user && user.admin?
       shared += [roles: [:type, :project_id]]
     end
-    unchangeable_attributes = AuthenticationService.new.attributes_user_cant_change(user)
-    shared - unchangeable_attributes
+    locked_attributes = Verification::VerificationService.new.locked_attributes(user)
+    shared - locked_attributes
   end
 
   def permitted_attributes_for_complete_registration
@@ -76,10 +76,10 @@ class UserPolicy < ApplicationPolicy
   private
 
   def allowed_custom_field_keys
-    unchangeable_keys = AuthenticationService.new.custom_fields_user_cant_change(user)
+    locked_keys = Verification::VerificationService.new.locked_custom_fields(user)
     enabled_fields = CustomField
       .fields_for('User')
-      .where.not(key: unchangeable_keys)
+      .where.not(key: locked_keys)
       .enabled
     simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
     array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)

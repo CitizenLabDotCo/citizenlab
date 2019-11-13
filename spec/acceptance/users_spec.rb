@@ -495,8 +495,8 @@ resource "Users" do
         let(:email) { 'ray.mond@rocks.com' }
         let(:locale) { 'fr-FR' }
 
-        example "Can't change some attributes of a user identified with FranceConnect", document: false do
-          create(:franceconnect_identity, user: @user)
+        example "Can't change some attributes of a user verified with FranceConnect", document: false do
+          create(:verification, method_name: 'franceconnect', user: @user)
           @user.update(custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950})
           do_request
           expect(response_status).to eq 200
@@ -550,12 +550,12 @@ resource "Users" do
           cf.key => "new value",
           birthyear_cf.key => 1969,
         }}
-        example "Can't change some custom_field_values of a user identified with FranceConnect", document: false do
+        example "Can't change some custom_field_values of a user verified with FranceConnect", document: false do
           @user.update(
             registration_completed_at: nil,
             custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950}
           )
-          create(:franceconnect_identity, user: @user)
+          create(:verification, method_name: 'franceconnect', user: @user)
           do_request
           expect(response_status).to eq 200
           @user.reload
