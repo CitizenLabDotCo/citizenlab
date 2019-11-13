@@ -3,7 +3,7 @@ class IdeaStatus < ApplicationRecord
   CODES = %w(proposed viewed under_consideration accepted implemented rejected custom)
 
   has_many :ideas, dependent: :nullify
-  has_many :notifications, foreign_key: :idea_status_id, dependent: :nullify
+  has_many :notifications, foreign_key: :post_status_id, dependent: :nullify
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :code, inclusion: {in: CODES}
