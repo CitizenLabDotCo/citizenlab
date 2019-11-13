@@ -43,6 +43,8 @@ const FileDownloadLink = styled.a<{error: boolean}>`
   margin-right: 10px;
   hyphens: auto;
   max-width: 70%;
+  font-weight: 400;
+
 
   &:hover {
     color: inherit;
