@@ -56,7 +56,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.disallow": "Forby",
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funksjonell",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Nødvendig for å aktivere og overvåke nettstedets grunnfunksjonaliteter. Noen verktøy gjelder kanskje ikke deg. Vennligst se våre retningslinjer for informasjonskapsler for mer informasjon.",
-  "app.components.ConsentManager.Modal.PreferencesDialog.modalLabel": "Dine preferanser for informasjonskapsler",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Lagre",
   "app.components.ConsentManager.Modal.PreferencesDialog.title": "Dine preferanser for informasjonskapsler",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Verktøy",

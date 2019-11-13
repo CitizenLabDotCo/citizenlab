@@ -56,7 +56,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.disallow": "Ne pas autoriser",
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Fonctionnel",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Nécessaire pour activer et contrôler les fonctionnalités de base du site Web. Certains outils répertoriés ici peuvent ne pas vous concerner. Veuillez consulter notre politique de cookie pour plus d’informations.",
-  "app.components.ConsentManager.Modal.PreferencesDialog.modalLabel": "Vos préférences de cookie",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Enregistrer",
   "app.components.ConsentManager.Modal.PreferencesDialog.title": "Vos préférences de cookie",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Outils ",
