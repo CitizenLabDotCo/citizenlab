@@ -62,6 +62,7 @@ class OmniauthCallbackController < ApplicationController
           @user.save!
           @invite.save!
           SideFxInviteService.new.after_accept @invite
+          redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), omniauth_params))
         rescue ActiveRecord::RecordInvalid => e
           Raven.capture_exception e
           failure
@@ -78,11 +79,11 @@ class OmniauthCallbackController < ApplicationController
             return
           end
         end
+        redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), omniauth_params))
       end
 
       set_auth_cookie(provider: provider)
       handle_verification(auth, @user) if verify
-      redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), omniauth_params))
 
     else # New user
       @user = User.new(auth_service.profile_to_user_attrs(auth))
