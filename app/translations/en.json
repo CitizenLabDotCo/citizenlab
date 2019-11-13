@@ -1543,7 +1543,7 @@
   "app.containers.ProjectsIndexPage.metaDescription": "Explore all ongoing projects of {orgName} to understand how you can participate.\n Come discuss local projects that matter most to you.",
   "app.containers.ProjectsIndexPage.metaTitle": "Projects • {orgName}",
   "app.containers.ProjectsIndexPage.pageTitle": "Projects",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Only certain people can take this survey. Please sign in first.",
+  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Only certain people can take this survey. Please {signUpLink} or {logInLink} first.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "This survey can only be taken when this phase in the timeline is active.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Unfortunately, you don't have the rights to take this survey.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "It is currently impossible to take this survey.",
