@@ -7,7 +7,11 @@ import Dropdown from 'components/UI/Dropdown';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const List = styled.ul`
   margin: 0;
@@ -138,7 +142,12 @@ export default class ValuesList extends PureComponent<Props, State> {
       right,
       mobileRight
     } = this.props;
+    const selectedFilter = selected && selected[0];
+    const val = values && values.find(value => value.value === selectedFilter);
+    const x = values.find(entry => includes(selected, entry.value));
+    const y = x && x.text;
 
+    debugger;
     // ARIA reference example: https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
     return (
       <Dropdown
@@ -165,8 +174,8 @@ export default class ValuesList extends PureComponent<Props, State> {
               const last = (index === values.length - 1);
               const classNames = [
                 `e2e-sort-item-${entry.value !== '-new' ? entry.value : 'old'}`,
-                !multiple && checked ? 'selected' : null,
-                last ? 'last' : null,
+                !multiple && checked ? 'selected' : '',
+                last ? 'last' : '',
               ].filter(item => !isNil(item)).join(' ');
 
               return (
@@ -197,6 +206,12 @@ export default class ValuesList extends PureComponent<Props, State> {
               );
             }
             )}
+            {!multiple &&
+              <ScreenReaderOnly>
+                <FormattedMessage {...messages.a11y_selectedFilter} />
+                {y}
+              </ScreenReaderOnly>
+            }
           </List>
         )}
       />
