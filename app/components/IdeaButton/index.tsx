@@ -126,6 +126,14 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
                 <StyledA href="" onClick={this.onVerify} className="tooltipLink">
                   <FormattedMessage {...messages.verificationLinkText} />
                 </StyledA>,
+              signUpLink:
+                <StyledA href="/sign-up" className="tooltipLink">
+                  <FormattedMessage {...messages.signUpLinkText} />
+                </StyledA>,
+              signInLink:
+                <StyledA href="/sign-in" className="tooltipLink">
+                  <FormattedMessage {...messages.signInLinkText} />
+                </StyledA>,
             }}
           />
         </TooltipWrapper>
