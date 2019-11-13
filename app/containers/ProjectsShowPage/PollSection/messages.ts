@@ -19,7 +19,7 @@ export default defineMessages({
   },
   pollDisabledMaybeNotPermitted: {
     id: 'app.containers.Projects.PollForm.pollDisabledMaybeNotPermitted',
-    defaultMessage: 'Only certain users can take this poll. Please sign in first.',
+    defaultMessage: 'Only certain users can take this poll. Please {signUpLink} or {logInLink} first.',
   },
   pollDisabledNotPossible: {
     id: 'app.containers.Projects.PollForm.pollDisabledNotPossible',
