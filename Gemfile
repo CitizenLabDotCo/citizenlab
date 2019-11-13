@@ -69,6 +69,7 @@ gem "sidekiq" # , "~> 5.0.5"
 gem "apartment", "~> 2.2.0"
 gem "apartment-sidekiq", "~> 1.2.0"
 gem "carrierwave", "~> 1.2.2"
+gem "carrierwave-base64", "~> 2.6"
 gem "kaminari", "~> 1.1.1"
 gem 'api-pagination', "~> 4.8.2"
 gem "activerecord_json_validator", "~> 1.2.0"
@@ -76,14 +77,13 @@ gem "activerecord_json_validator", "~> 1.2.0"
 gem "rest-client"
 gem "fog-aws"
 gem "mini_magick", "~> 4.9"
-gem "carrierwave-base64", "~> 2.6"
 gem "awesome_nested_set" # , "~> 3.1.3"
 gem "pg_search", "~> 2.1.2"
 gem "counter_culture", "~> 2.1"
 gem "liquid", "~> 4.0"
 gem "premailer-rails" # , "~> 1.9.6"
 gem 'groupdate' # , "~> 3.2.0"
-gem 'rubyzip', '~> 1.2.1'
+gem 'rubyzip', '~> 1.3.0'
 gem 'axlsx', '3.0.0.pre'
 gem 'rgeo-geojson'
 
@@ -127,3 +127,5 @@ gem 'public_api', path: 'engines/public_api'
 gem 'onboarding', path: 'engines/onboarding'
 gem 'surveys', path: 'engines/surveys'
 gem 'frontend', path: 'engines/frontend'
+gem 'polls', path: 'engines/polls'
+gem 'verification', path: 'engines/verification'

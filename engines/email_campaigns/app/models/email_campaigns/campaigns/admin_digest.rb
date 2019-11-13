@@ -17,7 +17,7 @@ module EmailCampaigns
 
 
     def self.default_schedule
-      IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2018)) do |s|
+      IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2019)) do |s|
         s.add_recurrence_rule(
           IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
         )
@@ -29,19 +29,27 @@ module EmailCampaigns
     end
 
     def generate_commands recipient:, time: nil
+      time ||= Time.now
       @statistics ||= statistics
       @top_project_ideas ||= top_project_ideas
-      @idea_ids ||= top_project_ideas.flat_map do |tpi|
+      @new_initiatives ||= new_initiatives time: time
+      @succesful_initiatives ||= succesful_initiatives time: time
+      @idea_ids ||= @top_project_ideas.flat_map do |tpi|
         tpi[:top_ideas].map{|idea_h| idea_h[:id]}
       end
+      @initiative_ids ||= (@new_initiatives + @succesful_initiatives).map do |d|
+        d[:id]
+      end.compact
       [{
         event_payload: {
           statistics: @statistics,
           top_project_ideas: @top_project_ideas,
-          has_new_ideas: (@top_project_ideas.size > 0)
+          new_initiatives: @new_initiatives,
+          succesful_initiatives: @succesful_initiatives
         },
         tracked_content: {
-          idea_ids: @idea_ids
+          idea_ids: @idea_ids,
+          initiative_ids: @initiative_ids
         }
       }]
     end
@@ -61,6 +69,8 @@ module EmailCampaigns
       @statistics ||= statistics
       !( (@statistics.dig(:activities,:new_ideas,:increase) == 0) &&
          (@statistics.dig(:activities,:new_ideas,:increase) == 0) &&
+         (@statistics.dig(:activities,:new_initiatives,:increase) == 0) &&
+         (@statistics.dig(:activities,:new_initiatives,:increase) == 0) &&
          (@statistics.dig(:activities,:new_comments,:increase) == 0) &&
          (@statistics.dig(:users,:new_visitors,:increase) == 0) &&
          (@statistics.dig(:users,:new_users,:increase) == 0) &&
@@ -72,15 +82,19 @@ module EmailCampaigns
       {
         activities: {
           new_ideas: stat_increase(
-            Idea.all.map(&:published_at).compact
+            Idea.pluck(:published_at).compact
+            ),
+          new_initiatives: stat_increase(
+            Initiative.pluck(:published_at).compact
             ),
           new_votes: stat_increase(
-            Vote.all.map(&:created_at).compact
+            Vote.pluck(:created_at).compact
             ),
           new_comments: stat_increase(
-            Comment.all.map(&:created_at).compact
+            Comment.pluck(:created_at).compact
             ),
           total_ideas: Idea.count,
+          total_initiatives: Initiative.count,
           total_users: User.count
         },
         users: {
@@ -88,7 +102,7 @@ module EmailCampaigns
             []
             ),
           new_users: stat_increase(
-            User.all.map(&:registration_completed_at).compact
+            User.pluck(:registration_completed_at).compact
             ),
           active_users: stat_increase(
             []
@@ -114,7 +128,7 @@ module EmailCampaigns
 
     def top_project_ideas
       # take N_TOP_IDEAS
-      top_ideas = Idea.where(publication_status: 'published')
+      top_ideas = Idea.published
       activity_counts = ideas_activity_counts top_ideas
       active_ideas = top_ideas.select do |idea|
         activity_counts.dig(idea.id, :total) > 0
@@ -170,6 +184,63 @@ module EmailCampaigns
               comments_count: idea.comments_count,
               comments_increment: activity_counts.dig(idea.id, :comments)
             }
+          }
+        }
+      end
+    end
+
+    def new_initiatives time:
+      Initiative.published.where('published_at > ?', (time - 1.week))
+      .order(published_at: :desc).includes(:initiative_images).map do |initiative|
+        {
+          id: initiative.id,
+          title_multiloc: initiative.title_multiloc,
+          url: Frontend::UrlService.new.model_to_url(initiative),
+          published_at: initiative.published_at.iso8601,
+          author_name: initiative.author_name,
+          upvotes_count: initiative.upvotes_count,
+          comments_count: initiative.comments_count,
+          images: initiative.initiative_images.map{ |image|
+            {
+              ordering: image.ordering,
+              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            }
+          },
+          header_bg: { 
+            versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+          }
+        }
+      end
+    end
+
+    def succesful_initiatives time:
+      Initiative.published
+        .joins(:initiative_status_changes)
+        .includes(:initiative_images)
+        .where(
+          'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?', 
+          InitiativeStatus.where(code: 'threshold_reached').ids.first, 
+          (time - 1.week)
+          )
+        .feedback_needed
+        .map do |initiative|
+        {
+          id: initiative.id,
+          title_multiloc: initiative.title_multiloc,
+          url: Frontend::UrlService.new.model_to_url(initiative),
+          published_at: initiative.published_at.iso8601,
+          author_name: initiative.author_name,
+          upvotes_count: initiative.upvotes_count,
+          comments_count: initiative.comments_count,
+          threshold_reached_at: initiative.threshold_reached_at.iso8601,
+          images: initiative.initiative_images.map{ |image|
+            {
+              ordering: image.ordering,
+              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            }
+          },
+          header_bg: { 
+            versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
           }
         }
       end

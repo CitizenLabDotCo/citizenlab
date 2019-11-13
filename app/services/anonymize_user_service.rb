@@ -59,6 +59,7 @@ class AnonymizeUserService
     else
       random_registration user: user
     end
+    verified = random_verified
     {
       'first_name'                => first_name,
       'last_name'                 => last_name,
@@ -69,8 +70,9 @@ class AnonymizeUserService
       'remote_avatar_url'         => avatar_url,
       'bio_multiloc'              => bio,
       'registration_completed_at' => registration,
-      'created_at'                => registration
-    }  
+      'created_at'                => registration,
+      'verified'                  => verified,
+    }
   end
 
 
@@ -134,7 +136,7 @@ class AnonymizeUserService
   end
 
   def random_email first_name, last_name
-    Faker::Internet.email
+    Faker::Internet.unique.email
   end
 
   def random_avatar_url gender
@@ -150,7 +152,7 @@ class AnonymizeUserService
 
   def random_bio locales
     locales.map do |locale|
-      bio = case %w(greek hipster movie rick_and_morty game_of_thrones nil)
+      bio = case %w(greek hipster movie rick_and_morty game_of_thrones nil).shuffle.first
       when 'greek'
         Faker::GreekPhilosophers.quote
       when 'hipster'
@@ -174,6 +176,13 @@ class AnonymizeUserService
     else
       Faker::Date.between(start_at, Time.now)
     end
+  end
+
+  def random_verified
+    pick_weighted({
+      false => 3,
+      true => 1
+    })
   end
 
 end

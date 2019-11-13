@@ -1,3 +1,5 @@
+require './engines/verification/lib/smart_group_rules/verified'
+
 class SmartGroupsService
 
   RULE_TYPE_TO_CLASS = [
@@ -13,6 +15,7 @@ class SmartGroupsService
     SmartGroupRules::ParticipatedInProject,
     SmartGroupRules::ParticipatedInTopic,
     SmartGroupRules::ParticipatedInIdeaStatus,
+    SmartGroupRules::Verified,
   ].map do |smart_group_class|
     [smart_group_class::RULE_TYPE, smart_group_class]
   end.to_h

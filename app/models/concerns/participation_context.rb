@@ -3,8 +3,9 @@ require 'active_support/concern'
 module ParticipationContext
   extend ActiveSupport::Concern
   include Surveys::SurveyParticipationContext
+  include Polls::PollParticipationContext
 
-  PARTICIPATION_METHODS = %w(information ideation survey budgeting)
+  PARTICIPATION_METHODS = %w(information ideation survey budgeting poll)
   VOTING_METHODS = %w(unlimited limited)
   PRESENTATION_MODES = %w(card map)
 

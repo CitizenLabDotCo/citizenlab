@@ -1,9 +1,7 @@
 module Notifications
   class NewCommentForAdmin < Notification
-    
-    belongs_to :initiating_user, class_name: 'User'
 
-    validates :initiating_user, presence: true
+    validates :initiating_user, :comment, :post, presence: true
 
     ACTIVITY_TRIGGERS = {'Comment' => {'created' => true}}
     EVENT_NAME = 'New comment for admin'
@@ -13,15 +11,24 @@ module Notifications
       comment = activity.item
       initiator = comment.author
       
-      if initiator && (comment.post_type == 'Idea') && !(initiator&.admin? || initiator.project_moderator?(comment.post.project.id))
-        User.admin.or(User.project_moderator(comment.post.project.id)).map do |recipient|
+      if initiator && !initiator&.admin? 
+        attributes = {
+          initiating_user: initiator,
+          comment: comment,
+          post_id: comment.post_id,
+          post_type: comment.post_type,
+        }
+        recipients = User.admin
+        if attributes[:post_type] == 'Idea'
+          return nil if initiator.project_moderator?(comment.post.project.id)
+          attributes[:project_id] = comment.post.project_id
+          recipients = recipients.or(User.project_moderator(comment.post.project.id))
+        end
+        recipients.ids.map do |recipient_id|
           self.new(
-           recipient_id: recipient.id,
-           initiating_user: initiator,
-           comment_id: comment.id,
-           idea_id: comment.post_id,
-           project_id: comment.post.project.id
-         )
+            **attributes,
+            recipient_id: recipient_id
+          )
         end
       else
         []

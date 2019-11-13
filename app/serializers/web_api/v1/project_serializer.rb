@@ -9,10 +9,12 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 
   attribute :action_descriptor do |object, params|
     @participation_context_service ||= ParticipationContextService.new
-    posting_disabled_reason = @participation_context_service.posting_disabled_reason_for_project object, current_user(params)
-    commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_project object, current_user(params)
-    voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_project object, current_user(params)
-    taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason_for_project object, current_user(params)
+    user = current_user(params)
+    posting_disabled_reason = @participation_context_service.posting_disabled_reason_for_project object, user
+    commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_project object, user
+    voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_project object, user
+    taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason_for_project object, user
+    taking_poll_disabled_reason = @participation_context_service.taking_poll_disabled_reason_for_project object, user
     {
       posting: {
         enabled: !posting_disabled_reason,
@@ -35,6 +37,10 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
       taking_survey: {
         enabled:!taking_survey_disabled_reason,
         disabled_reason: taking_survey_disabled_reason
+      },
+      taking_poll: {
+        enabled:!taking_poll_disabled_reason,
+        disabled_reason: taking_poll_disabled_reason
       }
     }
   end

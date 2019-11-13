@@ -90,6 +90,16 @@ PATH
       rails (~> 5.2.1)
 
 PATH
+  remote: engines/polls
+  specs:
+    polls (0.1.0)
+      acts_as_list (~> 0.9.17)
+      apartment (~> 2.2.0)
+      kaminari (~> 1.1.1)
+      pundit (~> 2.0)
+      rails (~> 5.2.1)
+
+PATH
   remote: engines/public_api
   specs:
     public_api (0.1.0)
@@ -111,6 +121,15 @@ PATH
       kaminari (~> 1.1.1)
       pundit (~> 2.0)
       rails (~> 5.2.1)
+
+PATH
+  remote: engines/verification
+  specs:
+    verification (0.1.0)
+      apartment (~> 2.2.0)
+      pundit (~> 2.0)
+      rails (~> 5.2.1)
+      savon (~> 2.12.0)
 
 GEM
   remote: https://rubygems.org/
@@ -175,6 +194,9 @@ GEM
     after_commit_action (1.1.0)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
+    akami (1.3.1)
+      gyoku (>= 0.4.0)
+      nokogiri
     amq-protocol (2.3.0)
     apartment (2.2.0)
       activerecord (>= 3.1.2, < 6.0)
@@ -235,7 +257,7 @@ GEM
       after_commit_action (~> 1.0)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
-    crass (1.0.4)
+    crass (1.0.5)
     css_parser (1.6.0)
       addressable
     dalli (2.7.9)
@@ -281,6 +303,8 @@ GEM
     graphql (1.8.11)
     groupdate (4.1.0)
       activesupport (>= 4.2)
+    gyoku (1.3.1)
+      builder (>= 2.1.2)
     hashdiff (0.3.7)
     hashie (3.6.0)
     htmlentities (4.3.4)
@@ -290,6 +314,9 @@ GEM
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
     httpclient (2.8.3)
+    httpi (2.4.4)
+      rack
+      socksify
     i18n (1.5.3)
       concurrent-ruby (~> 1.0)
     ipaddress (0.8.3)
@@ -320,7 +347,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.2.3)
+    loofah (2.3.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -345,8 +372,9 @@ GEM
     mustache (1.1.0)
     netrc (0.11.0)
     nio4r (2.3.1)
-    nokogiri (1.10.4)
+    nokogiri (1.10.5)
       mini_portile2 (~> 2.4.0)
+    nori (2.6.0)
     oauth (0.5.4)
     oauth2 (1.4.1)
       faraday (>= 0.8, < 0.16.0)
@@ -493,8 +521,16 @@ GEM
       nokogiri (>= 1.4.4)
       rubyzip (>= 1.1.6)
     ruby_dep (1.5.0)
-    rubyzip (1.2.2)
+    rubyzip (1.3.0)
     safe_yaml (1.0.4)
+    savon (2.12.0)
+      akami (~> 1.2)
+      builder (>= 2.1.2)
+      gyoku (~> 1.2)
+      httpi (~> 2.3)
+      nokogiri (>= 1.8.1)
+      nori (~> 2.4)
+      wasabi (~> 3.4)
     scenic (1.4.1)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
@@ -520,6 +556,7 @@ GEM
       skylight-core (= 3.1.1)
     skylight-core (3.1.1)
       activesupport (>= 4.2.0)
+    socksify (1.7.1)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -550,6 +587,9 @@ GEM
     validate_url (1.0.2)
       activemodel (>= 3.0.0)
       addressable
+    wasabi (3.5.0)
+      httpi (~> 2.0)
+      nokogiri (>= 1.4.2)
     webfinger (1.1.0)
       activesupport
       httpclient (>= 2.4)
@@ -611,6 +651,7 @@ DEPENDENCIES
   onboarding!
   pg
   pg_search (~> 2.1.2)
+  polls!
   premailer-rails
   public_api!
   puma
@@ -627,7 +668,7 @@ DEPENDENCIES
   rspec_api_documentation
   rspec_junit_formatter
   rubyXL
-  rubyzip (~> 1.2.1)
+  rubyzip (~> 1.3.0)
   scenic
   sentry-raven
   shoulda-matchers (~> 3.1)
@@ -639,6 +680,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   surveys!
+  verification!
   webmock (~> 3.4)
 
 BUNDLED WITH

@@ -128,7 +128,30 @@ namespace :cl2_back do
               "image_url": "http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg",
             }
           ]
-        }
+        },
+        polls: {
+          enabled: true,
+          allowed: true
+        },
+        admin_project_templates: {
+          enabled: true,
+          allowed: true
+        },
+        verification: {
+          enabled: true,
+          allowed: true,
+          verification_methods: [
+            {
+              name: 'cow',
+              api_username: 'fake_username',
+              api_password: 'fake_password',
+              rut_empresa: 'fake_rut_empresa'
+            },
+            {
+              name: 'bogus'
+            },
+          ]
+        },
       }
     })
 

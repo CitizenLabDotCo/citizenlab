@@ -60,6 +60,8 @@ jobs:
     environment:
       RAILS_ENV: test
     steps:
+      - checkout:
+          path: /tmp/cl2-back
       - wait-for-postgres
       - run: |
           rake db:create
@@ -80,6 +82,8 @@ jobs:
     environment:
       RAILS_ENV: test
     steps:
+      - checkout:
+          path: /tmp/cl2-back
       - wait-for-postgres
       - run: |
           rake db:create
@@ -98,6 +102,8 @@ jobs:
     environment:
       RAILS_ENV: test
     steps:
+      - checkout:
+          path: /tmp/cl2-back
       - wait-for-postgres
       - run: |
           rake db:create

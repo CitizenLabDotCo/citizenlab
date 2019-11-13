@@ -33,7 +33,7 @@ resource "Stats - Initiatives" do
 
   before do
     @current_user = create(:admin)
-    token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
+    token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     Tenant.current.update!(created_at: now - 3.year)
@@ -75,7 +75,7 @@ resource "Stats - Initiatives" do
       example_request "Count all initiatives that need feedback" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq Initiative.published.count - 1
+        expect(json_response[:count]).to eq Initiative.published.count
       end
 
       example "Count all initiatives that need feedback for a specific assignee" do

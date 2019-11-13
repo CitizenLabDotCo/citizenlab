@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_01_091036) do
+ActiveRecord::Schema.define(version: 2019_10_23_121111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
   end
 
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
+    t.jsonb "title_multiloc", default: {}
     t.string "slug"
     t.integer "memberships_count", default: 0, null: false
     t.datetime "created_at", null: false
@@ -280,7 +280,7 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
   end
 
   create_table "idea_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
+    t.jsonb "title_multiloc", default: {}
     t.integer "ordering"
     t.string "code"
     t.string "color"
@@ -310,6 +310,7 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
     t.integer "baskets_count", default: 0, null: false
     t.integer "official_feedbacks_count", default: 0, null: false
     t.uuid "assignee_id"
+    t.datetime "assigned_at"
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
@@ -363,9 +364,22 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
     t.index ["initiative_id"], name: "index_initiative_images_on_initiative_id"
   end
 
+  create_table "initiative_status_changes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "initiative_id"
+    t.uuid "initiative_status_id"
+    t.uuid "official_feedback_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["initiative_id"], name: "index_initiative_status_changes_on_initiative_id"
+    t.index ["initiative_status_id"], name: "index_initiative_status_changes_on_initiative_status_id"
+    t.index ["official_feedback_id"], name: "index_initiative_status_changes_on_official_feedback_id"
+    t.index ["user_id"], name: "index_initiative_status_changes_on_user_id"
+  end
+
   create_table "initiative_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
-    t.jsonb "description_multiloc"
+    t.jsonb "title_multiloc", default: {}
+    t.jsonb "description_multiloc", default: {}
     t.integer "ordering"
     t.string "code"
     t.string "color"
@@ -374,8 +388,8 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
   end
 
   create_table "initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc"
-    t.jsonb "body_multiloc"
+    t.jsonb "title_multiloc", default: {}
+    t.jsonb "body_multiloc", default: {}
     t.string "publication_status"
     t.datetime "published_at"
     t.uuid "author_id"
@@ -391,9 +405,8 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
     t.string "header_bg"
     t.uuid "assignee_id"
     t.integer "official_feedbacks_count", default: 0, null: false
-    t.uuid "initiative_status_id"
+    t.datetime "assigned_at"
     t.index ["author_id"], name: "index_initiatives_on_author_id"
-    t.index ["initiative_status_id"], name: "index_initiatives_on_initiative_status_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
     t.index ["slug"], name: "index_initiatives_on_slug"
   end
@@ -445,7 +458,7 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
     t.string "type"
     t.datetime "read_at"
     t.uuid "recipient_id"
-    t.uuid "idea_id"
+    t.uuid "post_id"
     t.uuid "comment_id"
     t.uuid "project_id"
     t.datetime "created_at", null: false
@@ -455,15 +468,19 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
     t.uuid "invite_id"
     t.string "reason_code"
     t.string "other_reason"
-    t.uuid "idea_status_id"
+    t.uuid "post_status_id"
     t.uuid "official_feedback_id"
     t.uuid "phase_id"
+    t.string "post_type"
+    t.string "post_status_type"
     t.index ["created_at"], name: "index_notifications_on_created_at"
-    t.index ["idea_status_id"], name: "index_notifications_on_idea_status_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["invite_id"], name: "index_notifications_on_invite_id"
     t.index ["official_feedback_id"], name: "index_notifications_on_official_feedback_id"
     t.index ["phase_id"], name: "index_notifications_on_phase_id"
+    t.index ["post_id", "post_type"], name: "index_notifications_on_post_id_and_post_type"
+    t.index ["post_status_id", "post_status_type"], name: "index_notifications_on_post_status_id_and_post_status_type"
+    t.index ["post_status_id"], name: "index_notifications_on_post_status_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
     t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
@@ -560,6 +577,44 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
     t.string "presentation_mode", default: "card"
     t.integer "max_budget"
     t.index ["project_id"], name: "index_phases_on_project_id"
+  end
+
+  create_table "polls_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "question_id"
+    t.jsonb "title_multiloc", default: {}, null: false
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_polls_options_on_question_id"
+  end
+
+  create_table "polls_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "participation_context_id", null: false
+    t.string "participation_context_type", null: false
+    t.jsonb "title_multiloc", default: {}, null: false
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["participation_context_type", "participation_context_id"], name: "index_poll_questions_on_participation_context"
+  end
+
+  create_table "polls_response_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "response_id"
+    t.uuid "option_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_polls_response_options_on_option_id"
+    t.index ["response_id"], name: "index_polls_response_options_on_response_id"
+  end
+
+  create_table "polls_responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "participation_context_id", null: false
+    t.string "participation_context_type", null: false
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["participation_context_type", "participation_context_id"], name: "index_poll_responses_on_participation_context"
+    t.index ["user_id"], name: "index_polls_responses_on_user_id"
   end
 
   create_table "project_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -704,9 +759,21 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
     t.string "invite_status"
     t.jsonb "custom_field_values", default: {}
     t.datetime "registration_completed_at"
+    t.boolean "verified", default: false, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
+  end
+
+  create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.string "method_name", null: false
+    t.string "hashed_uid", null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hashed_uid"], name: "index_verification_verifications_on_hashed_uid"
+    t.index ["user_id"], name: "index_verification_verifications_on_user_id"
   end
 
   create_table "votes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -756,7 +823,6 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
   add_foreign_key "identities", "users"
   add_foreign_key "initiative_files", "initiatives"
   add_foreign_key "initiative_images", "initiatives"
-  add_foreign_key "initiatives", "initiative_statuses"
   add_foreign_key "initiatives", "users", column: "assignee_id"
   add_foreign_key "initiatives", "users", column: "author_id"
   add_foreign_key "initiatives_topics", "initiatives"
@@ -766,8 +832,6 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "comments"
-  add_foreign_key "notifications", "idea_statuses"
-  add_foreign_key "notifications", "ideas"
   add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "official_feedbacks"
   add_foreign_key "notifications", "phases"
@@ -782,6 +846,9 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
   add_foreign_key "pages", "projects"
   add_foreign_key "phase_files", "phases"
   add_foreign_key "phases", "projects"
+  add_foreign_key "polls_options", "polls_questions", column: "question_id"
+  add_foreign_key "polls_response_options", "polls_options", column: "option_id"
+  add_foreign_key "polls_response_options", "polls_responses", column: "response_id"
   add_foreign_key "project_files", "projects"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects", "users", column: "default_assignee_id"
@@ -955,6 +1022,18 @@ ActiveRecord::Schema.define(version: 2019_07_01_091036) do
       initiatives.slug,
       initiatives.official_feedbacks_count
      FROM initiatives;
+  SQL
+
+  create_view "initiative_initiative_statuses",  sql_definition: <<-SQL
+      SELECT initiative_status_changes.initiative_id,
+      initiative_status_changes.initiative_status_id
+     FROM (((initiatives
+       JOIN ( SELECT initiative_status_changes_1.initiative_id,
+              max(initiative_status_changes_1.created_at) AS last_status_changed_at
+             FROM initiative_status_changes initiative_status_changes_1
+            GROUP BY initiative_status_changes_1.initiative_id) initiatives_with_last_status_change ON ((initiatives.id = initiatives_with_last_status_change.initiative_id)))
+       JOIN initiative_status_changes ON (((initiatives.id = initiative_status_changes.initiative_id) AND (initiatives_with_last_status_change.last_status_changed_at = initiative_status_changes.created_at))))
+       JOIN initiative_statuses ON ((initiative_statuses.id = initiative_status_changes.initiative_status_id)));
   SQL
 
 end

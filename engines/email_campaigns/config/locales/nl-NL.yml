@@ -1,72 +1,100 @@
 nl:
   email_campaigns:
     campaign_type_description:
-      "manual": Directe berichten verzonden door beheerders of moderatoren
-      "comment_on_your_comment": Iemand reageert op mijn reactie
-      "comment_on_your_idea": Iemand reageert op mijn idee
-      "admin_rights_received": Beheerdersrechten ontvangen
-      "comment_deleted_by_admin": Een beheerder verwijdert mijn reactie
-      "comment_marked_as_spam": Een reactie is aangeduid als spam (voor beheerders en moderatoren)
-      "idea_assigned_to_you": Wanneer een idee aan mij wordt toegewezen
-      "idea_marked_as_spam": Een idee is aangeduid als spam (voor beheerders en moderatoren)
-      "invite_received": Iemand mij uitnodigt op het platform
-      "invite_reminder": Wanneer iemand me uitnodigde naar het platform (herinnering na 3 dagen)
-      "invite_accepted": Iemand aanvaardt mijn uitnodiging
-      "mention_in_comment": Iemand vernoemt me in een reactie
-      "mention_in_official_feedback": Iemand vernoemt me in een officiële update
+      "manual": Officiële berichten
+      "admin_rights_received": Administratierechten ontvangen
+      "comment_deleted_by_admin": Verwijderen van mijn reactie
+      "comment_marked_as_spam": Reactie spammelding
+      "comment_on_your_comment": Een antwoord op mijn reactie
+      "comment_on_your_idea": Een reactie op mijn idee
+      "comment_on_your_initiative": Een reactie op mijn initiatief
+      "first_idea_published": Posten van mijn eerste idee
+      "idea_assigned_to_you": Toewijzing van een idee aan mij
+      "idea_marked_as_spam": Idee spammelding
+      "idea_published": Posten van mijn idee
+      "initiative_assigned_to_you": Toewijzing van een initiatief aan mij
+      "initiative_marked_as_spam": Initiatief spammelding
+      "initiative_published": Posten van mijn initiatief
+      "invite_received": Uitnodiging
+      "invite_reminder": Herinnering uitnodiging
+      "mention_in_comment": Vermelding in een reactie
+      "mention_in_official_feedback": Vermelding in een update
+      "new_comment_for_admin": Nieuwe reactie in een project dat ik modereer
+      "new_comment_on_commented_idea": Nieuwe reactie op een idee waar ik op reageerde
+      "new_comment_on_commented_initiative": Nieuwe reactie op een initiatief waar ik op reageerde
+      "new_comment_on_voted_idea": Nieuwe reactie op een idee waar ik op stemde
+      "new_comment_on_voted_initiative": Nieuwe reactie op een initiatief waar ik op stemde
+      "new_idea_for_admin": Nieuw idee in een project dat ik modereer
+      "new_initiative_for_admin": Nieuw initiatief
+      "official_feedback_on_commented_idea": Update op een idee waar ik op reageerde
+      "official_feedback_on_commented_initiative": Update op een initiatief waar ik op reageerde
+      "official_feedback_on_voted_idea": Update op een idee waar ik op stemde
+      "official_feedback_on_voted_initiative": Update op een initiatief waar ik op stemde
+      "official_feedback_on_your_idea": Update op mijn idee
+      "official_feedback_on_your_initiative": Update op mijn initiatief
+      "password_reset": Wachtwoord reset
       "project_moderation_rights_received": Projectmoderatorrechten ontvangen
-      "project_phase_started": Een nieuwe projectfase vangt aan
-      "project_phase_upcoming": Een nieuwe projectfase zal aanvangen binnen een week (voor beheerders en moderators)
-      "status_change_of_your_idea": De status van mijn idee verandert
-      "welcome": Ik registreer me op het platform
-      "password_reset": Ik stel het wachtwoord voor mijn account opnieuw in
-      "first_idea_published": Mijn eerste idee wordt gepubliceerd
-      "idea_published": Mijn idee wordt gepubliceerd
-      "new_comment_for_admin": Bij een nieuwe reactie in een project dat ik modereer
-      "new_comment_on_commented_idea": Iemand reageert op een idee waar ik ook op reageerde
-      "new_comment_on_voted_idea": Iemand reageerde op een idee waarvoor ik heb gestemd
-      "new_idea_for_admin": Bij een nieuw idee in een project dat ik modereer
-      "official_feedback_on_commented_idea": Er werd een officiële update geplaatst bij een idee waar ik op reageerde
-      "official_feedback_on_voted_idea": Er werd een officiële update geplaatst bij een idee waar ik op stemde
-      "official_feedback_on_your_idea": Er werd een officiële update geplaatst bij mijn idee
-      "status_change_of_commented_idea": De status van een idee waarop ik reageerde, verandert
-      "status_change_of_voted_idea": De status van een idee waarop ik heb gestemd, verandert
-      "admin_digest": Een weekoverzicht (voor beheerders)
-      "moderator_digest": Een weekoverzicht (voor moderatoren)
-      "assignee_digest": Een weekoverzicht van nieuwe ideeën die aan mij zijn toegewezen (voor beheerders en moderatoren)
-      "user_digest": Een weekoverzicht (voor burgers)
+      "project_phase_started": Nieuwe projectfase
+      "project_phase_upcoming": Opkomende nieuwe projectfase
+      "status_change_of_commented_idea": Statuswijziging van een idee waar ik op reageerde
+      "status_change_of_commented_initiative": Statuswijziging van een initiatief waar ik op reageerde
+      "status_change_of_voted_idea": Statuswijziging van een idee waar ik op stemde
+      "status_change_of_voted_initiative": Statuswijziging van een initiatief waar ik op stemde
+      "status_change_of_your_idea": Statuswijziging van mijn idee
+      "status_change_of_your_initiative": Statuswijziging van mijn initiatief
+      "threshold_reached_for_admin": Een initiatief bereikte het benodigd aantal stemmen
+      "welcome": Na registratie
+      "admin_digest": Weekoverzicht voor admins
+      "moderator_digest": Weekoverzicht voor projectmoderatoren
+      "assignee_digest": Weekoverzicht van toegewezen ideeën
+      "user_digest": Weekoverzicht
+      "your_proposed_initiatives_digest": Weekoverzicht van je initiatieven
     admin_campaign_type_description:
-      "manual": Directe berichten verzonden door beheerders of moderatoren
-      "comment_on_your_comment": Wanneer een gebruiker een reactie ontvangt op een eigen reactie
-      "comment_on_your_idea": Wanneer een gebruiker een reactie ontvangt op een eigen idee
-      "admin_rights_received": Wanneer een gebruiker beheerdersrechten ontvangt
-      "comment_deleted_by_admin": Wanneer een beheerder mijn reactie verwijdert
-      "comment_marked_as_spam": Wanneer een gebruiker een reactie aanduidt als spam (voor beheerders en moderatoren)
-      "idea_assigned_to_you": Wanneer een idee aan mij wordt toegewezen
-      "idea_marked_as_spam": Wanneer een gebruiker een idee aanduidt als spam (voor beheerders en moderatoren)
-      "invite_received": Wanneer een gebruiker uitgenodigd wordt op het platform
-      "invite_reminder": Wanneer iemand me uitnodigde naar het platform (herinnering na 3 dagen)
-      "invite_accepted": Wanneer een gebruiker mijn uitnodiging aanvaardt
-      "mention_in_comment": Wanneer een gebruiker vernoemd wordt in een reactie
-      "mention_in_official_feedback": Iemand vernoemt me in een officiële update
-      "project_moderation_rights_received": Wanneer een gebruiker projectmoderatorrechten ontvangt
-      "project_phase_started": Een nieuwe projectfase vangt aan
-      "project_phase_upcoming": Een nieuwe projectfase zal aanvangen binnen een week (voor beheerders en moderators)
-      "status_change_of_your_idea": Wanneer de status van mijn idee verandert
-      "welcome": Wanneer een gebruiker zich registreert op het platform
-      "password_reset": Wanneer een gebruiker een nieuw wachtwoord aanvraagt
-      "first_idea_published": Wanneer het eerste idee van een gebruiker wordt gepubliceerd
-      "idea_published": Wanneer mijn idee gepubliceerd wordt
-      "new_comment_for_admin": Bij een nieuwe reactie in een project dat ik modereer
-      "new_comment_on_commented_idea": Wanneer een nieuwe reactie wordt geplaatst op een idee waar de gebruiker ook op reageerde
-      "new_comment_on_voted_idea": Wanneer een nieuwe reactie wordt geplaatst op een idee waar de gebruiker op stemde
-      "new_idea_for_admin": Bij een nieuw idee in een project dat ik modereer
-      "official_feedback_on_commented_idea": Er werd een officiële update geplaatst bij een idee waar ik op reageerde
-      "official_feedback_on_voted_idea": Er werd een officiële update geplaatst bij een idee waar ik op stemde
-      "official_feedback_on_your_idea": Er werd een officiële update geplaatst bij mijn idee
-      "status_change_of_commented_idea": Wanneer de status van een idee waarop de gebruiker heeft gereageerd, verandert
-      "status_change_of_voted_idea": Wanneer de status van een idee waarop de gebruiker heeft gestemd, verandert
-      "admin_digest": Een weekoverzicht (voor beheerders)
-      "moderator_digest": Een weekoverzicht (voor moderatoren)
-      "assignee_digest": Een weekoverzicht van nieuwe ideeën die aan mij zijn toegewezen (voor beheerders en moderatoren)
-      "user_digest": Een weekoverzicht (voor burgers)
+      "manual": Officieel bericht - alle gebruikers
+      "admin_rights_received": Administratierechten ontvangen - admins
+      "comment_deleted_by_admin": Verwijderen van je reactie - alle gebruikers
+      "comment_marked_as_spam": Spammeldinig reactie - admins en projectmoderatoren
+      "comment_on_your_comment": Antwoord op je reactie - alle gebruikers
+      "comment_on_your_idea": Reactie op jouw idee - alle gebruikers
+      "comment_on_your_initiative": Reactie op jouw initiatief - alle gebruikers
+      "first_idea_published": Posten van je eerste idee - alle gebruikers
+      "idea_assigned_to_you": Toewijzing van een idee - admins en projectmoderatoren
+      "idea_marked_as_spam": Spammeldinig idee - admins en projectmoderatoren
+      "idea_published": Posten van je idee - alle gebruikers
+      "initiative_assigned_to_you": Toewijzing van een initiatief - admins
+      "initiative_marked_as_spam": Initiatief spammelding - admins
+      "initiative_published": Posten van je initiatief - alle gebruikers
+      "invite_received": Uitnodiging - alle gebruikers
+      "invite_reminder": Herinnering uitnodiging - alle gebruikers
+      "mention_in_comment": Vermelding in een reactie - alle gebruikers
+      "mention_in_official_feedback": Vermelding in een update - alle gebruikers
+      "new_comment_for_admin": Nieuwe reactie - admins en projectmoderatoren
+      "new_comment_on_commented_idea": Nieuwe reactie op een idee waar je op reageerde - alle gebruikers
+      "new_comment_on_commented_initiative": Nieuwe reactie op een initiatief waar je op reageerde - alle gebruikers
+      "new_comment_on_voted_idea": Nieuwe reactie op een idee waar je op stemde - alle gebruikers
+      "new_comment_on_voted_initiative": Nieuwe reactie op een initiatief waar je op stemde - alle gebruikers
+      "new_idea_for_admin": Nieuw idee - admins en projectmoderatoren
+      "new_initiative_for_admin": Nieuw initiatief - admins
+      "official_feedback_on_commented_idea": Update op een idee waar je op reageerde - alle gebruikers
+      "official_feedback_on_commented_initiative": Update op een initiatief waar je op reageerde - alle gebruikers
+      "official_feedback_on_voted_idea": Update op een idee waar je op stemde - alle gebruikers
+      "official_feedback_on_voted_initiative": Update op een initiatief waar je op stemde - alle gebruikers
+      "official_feedback_on_your_idea": Update op jouw idee - alle gebruikers
+      "official_feedback_on_your_initiative": Update op jouw initiatief - alle gebruikers
+      "password_reset": Wachtwoord resetten - alle gebruikers
+      "project_moderation_rights_received": Projectmoderatorrechten ontvangen - projectmoderatoren
+      "project_phase_started": Nieuwe projectfase - alle gebruikers
+      "project_phase_upcoming": Opkomende nieuwe projectfase - admins en projectmoderatoren
+      "status_change_of_commented_idea": Statuswijziging van een idee waar je op reageerde - alle gebruikers
+      "status_change_of_commented_initiative": Statuswijziging van een initiatief waar je op reageerde - alle gebruikers
+      "status_change_of_voted_idea": Statuswijziging van een idee waar je op stemde - alle gebruikers
+      "status_change_of_voted_initiative": Statuswijziging van een initiatief waar je op stemde - alle gebruikers
+      "status_change_of_your_idea": Statuswijziging van je idee - alle gebruikers
+      "status_change_of_your_initiative": Statuswijziging van je initiatief - alle gebruikers
+      "threshold_reached_for_admin": Een initiatief bereikte het benodigd aantal stemmen - admins
+      "welcome": Nieuwe gebruiker - admins
+      "admin_digest": Weekoverzicht - admins
+      "moderator_digest": Weekoverzicht - projectmoderatoren
+      "assignee_digest": Wekelijks overzicht van toegewezen ideeën - admins en projectmoderatoren
+      "user_digest": Weekoverzicht - alle gebruikers
+      "your_proposed_initiatives_digest": Weekoverzicht van je eigen initiatieven - alle gebruikers
