@@ -11,7 +11,7 @@ resource "Initiatives" do
     @first_admin = create(:admin)
     @initiatives = ['published','published','draft','published','spam','published','published'].map { |ps|  create(:initiative, publication_status: ps)}
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
 
@@ -486,6 +486,35 @@ resource "Initiatives" do
     example_request "Delete an initiative" do
       expect(response_status).to eq 200
       expect{Initiative.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  get "web_api/v1/initiatives/:id/allowed_transitions" do
+    before do
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      header 'Authorization', "Bearer #{token}"
+
+      @initiative = create(:initiative)
+      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
+      create(
+        :initiative_status_change, 
+        initiative: @initiative, initiative_status: InitiativeStatus.find_by(code: 'threshold_reached')
+        )
+    end
+    let(:id) { @initiative.id }
+
+    example_request "Allowed transitions" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response).to eq ({
+        **InitiativeStatus.where(code: 'answered').ids.map{ |id|
+          [id.to_sym, { feedback_required: true }]
+        }.to_h,
+        **InitiativeStatus.where(code: 'ineligible').ids.map{ |id|
+          [id.to_sym, { feedback_required: true }]
+        }.to_h
+      })
     end
   end
 

@@ -9,7 +9,7 @@ resource "EventFile" do
   before do
     header "Content-Type", "application/json"
     @user = create(:admin)
-    token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     @project = create(:project)
     @event = create(:event, project: @project)
@@ -40,8 +40,8 @@ resource "EventFile" do
   post "web_api/v1/events/:event_id/files" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file", required: true
-      parameter :ordering, "An integer that is used to order the file attachments within an event", required: false
       parameter :name, "The name of the file, including the file extension", required: true
+      parameter :ordering, "An integer that is used to order the file attachments within an event", required: false
     end
     ValidationErrorHelper.new.error_fields(self, EventFile)
     let(:event_id) { @event.id }
@@ -60,6 +60,7 @@ resource "EventFile" do
 
     describe do
       let(:file) { encode_exe_file_as_base64("keylogger.exe") }
+      let(:name) { "keylogger.exe" }
 
       example_request "[error] Add an unsupported file extension as attachment to an event" do
         expect(response_status).to eq 422
@@ -86,26 +87,6 @@ resource "EventFile" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors,:file)).to include({:error=>"max_size_error"})
       end
-    end
-  end
-
-  patch "web_api/v1/events/:event_id/files/:file_id" do
-    with_options scope: :file do
-      parameter :file, "The base64 encoded file"
-      parameter :ordering, "An integer that is used to order the file attachments within an event"
-      parameter :name, "The name of the file, including the file extension"
-    end
-    ValidationErrorHelper.new.error_fields(self, EventFile)
-    let(:event_id) { @event.id }
-    let(:file_id) { EventFile.first.id }
-    let(:name) { 'ophaalkalender.pdf' }
-    let(:ordering) { 2 }
-
-    example_request "Edit a file attachment for an event" do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:name)).to eq(name)
-      expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
     end
   end
 

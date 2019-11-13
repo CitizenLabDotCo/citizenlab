@@ -32,6 +32,7 @@ class User < ApplicationRecord
   has_many :manual_groups, class_name: 'Group', source: 'group', through: :memberships
   has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
   has_many :baskets, dependent: :destroy
+  has_many :initiative_status_changes, dependent: :nullify
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
@@ -153,6 +154,15 @@ class User < ApplicationRecord
     # case insensitively and forbid login for 
     # invitees.
     not_invited.find_by_cimail request.params["auth"]["email"]
+  end
+
+  def to_token_payload
+    {
+      sub: id,
+      cluster: CL2_CLUSTER,
+      tenant: Tenant.current.id,
+      roles: roles
+    }
   end
 
   def avatar_blank?

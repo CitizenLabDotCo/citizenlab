@@ -36,6 +36,11 @@
             "default": "EUR",
             "enum": [<%= CL2_SUPPORTED_CURRENCIES.map{|l| "\"#{l}\""}.join(",") %>]
           },
+          "total_population": {
+            "description": "The population number of city/municipality's inhabitants",
+            "type": "integer",
+            "minimum": 0
+          },
           "locales": {
             "type": "array",
             "items": {
@@ -132,6 +137,14 @@
               "type": "string",
               "enum": ["Google Analytics", "Google Tag Manager", "Facebook Pixel", "AdWords"]
             }
+          },
+          "areas_term": {
+            "description": "How should the areas be called on this platform? (e.g. neighbourhoods, quarters, counties, ...). Fully lowercase",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "area_term": {
+            "description": "How should one area be called on this platform? Singular version of `areas_term`. Fully lowercase.",
+            "$ref": "#/definitions/multiloc_string"
           }
         }
       },
@@ -515,6 +528,16 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+      "admin_project_templates": {
+        "type": "object",
+        "description":  "Create a project based on a template",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
       "ideaflow_social_sharing": {
         "type": "object",
         "description":  "A social sharing option is presented after posting an idea",
@@ -670,6 +693,66 @@
                 "location": {"type": "string"},
                 "image_url": {"type": "string", "format": "uri"}
               }
+            }
+          }
+        }
+      },
+      "polls": {
+        "type": "object",
+        "description": "Participation methods that allows citizens to answer multiple questions with predefined answers",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+      "fragments": {
+        "type": "object",
+        "description":  "Internal system to allow specific pieces of UI to be overriden with custom HTML for this tenant only",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled", "enabled_fragments"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "enabled_fragments": {
+            "type": "array",
+            "default": [],
+            "description": "List of fragment names that should be enabled. (e.g. `signed-out-header`)",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "verification": {
+        "type": "object",
+        "description": "Let's users prove that they are real citizens, in order to unlock some actions",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled","verification_methods"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "verification_methods": {
+            "private": true,
+            "type": "array",
+            "default": [],
+            "items": {
+              "anyOf":
+                <%= Verification::VerificationService.new.all_methods.map do |method|
+                    {
+                      type: "object",
+                      title: method.name,
+                      required: ["name", *method.config_parameters],
+                      properties: {
+                        name: {type: "string", enum: [method.name], default: method.name, readOnly: true},
+                        **method.config_parameters.map do |cp|
+                          [cp, {type: "string", private: "true"}]
+                        end.to_h
+                      }
+                    }
+                  end.to_json
+                %>
             }
           }
         }

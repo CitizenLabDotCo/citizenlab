@@ -9,7 +9,7 @@ resource "PageFile" do
   before do
     header "Content-Type", "application/json"
     @user = create(:admin)
-    token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     @page = create(:page)
     create_list(:page_file, 2, page: @page)
@@ -59,6 +59,7 @@ resource "PageFile" do
 
     describe do
       let(:file) { encode_exe_file_as_base64("keylogger.exe") }
+      let(:name) { "keylogger.exe" }
 
       example_request "[error] Add an unsupported file extension as attachment to a page" do
         expect(response_status).to eq 422
@@ -77,26 +78,6 @@ resource "PageFile" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors,:file)).to include({:error=>"max_size_error"})
       end
-    end
-  end
-
-  patch "web_api/v1/pages/:page_id/files/:file_id" do
-    with_options scope: :file do
-      parameter :file, "The base64 encoded file"
-      parameter :ordering, "An integer that is used to order the file attachments within a page"
-      parameter :name, "The name of the file, including the file extension"
-    end
-    ValidationErrorHelper.new.error_fields(self, PageFile)
-    let(:page_id) { @page.id }
-    let(:file_id) { PageFile.first.id }
-    let(:name) { 'ophaalkalender.pdf' }
-    let(:ordering) { 2 }
-
-    example_request "Edit a file attachment for a page" do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:name)).to eq(name)
-      expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
     end
   end
 

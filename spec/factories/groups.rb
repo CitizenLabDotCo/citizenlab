@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :group do
-    title_multiloc {{
-      "en" => "Martians",
-      "nl-BE" => "Marsmannen"
+    sequence(:title_multiloc) {|n| {
+      "en" => "Martians #{n}",
+      "nl-BE" => "Marsmannen #{n}"
     }}
     membership_type { 'manual' }
 

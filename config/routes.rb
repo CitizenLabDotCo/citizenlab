@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   mount Onboarding::Engine => "", as: 'onboarding'
   mount Surveys::Engine => "", as: 'surveys'
   mount Frontend::Engine => "", as: 'frontend'
+  mount Polls::Engine => "", as: 'polls'
+  mount Verification::Engine => "", as: 'verification'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -19,6 +21,7 @@ Rails.application.routes.draw do
         end
       end
       concern :post do
+        resources :activities, only: [:index]
         resources :comments, shallow: true, 
           concerns: [:votable, :spam_reportable], 
           defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
@@ -37,10 +40,9 @@ Rails.application.routes.draw do
         concerns: [:votable, :spam_reportable, :post], 
         defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
         
-        resources :official_feedback, shallow: true
         resources :images, defaults: {container_type: 'Idea'}
         resources :files, defaults: {container_type: 'Idea'}
-        resources :activities, only: [:index]
+
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
@@ -53,10 +55,14 @@ Rails.application.routes.draw do
 
         resources :images, defaults: {container_type: 'Initiative'}
         resources :files, defaults: {container_type: 'Initiative'}
+
+        resources :initiative_status_changes, shallow: true, except: [:update, :destroy]
+
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
         get :as_markers, on: :collection, action: 'index_initiative_markers'
         get :filter_counts, on: :collection
+        get :allowed_transitions, on: :member
       end
 
       resources :idea_statuses, only: [:index, :show]

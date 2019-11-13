@@ -19,7 +19,10 @@ class OmniauthCallbackController < ApplicationController
 
       if @user.invite_pending?
         @invite = @user.invitee_invite
-        failure if !@invite || @invite.accepted_at
+        if !@invite || @invite.accepted_at
+          failure
+          return
+        end
         @user.assign_attributes(sso_service.profile_to_user_attrs(auth).merge(invite_status: 'accepted'))
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
@@ -27,13 +30,20 @@ class OmniauthCallbackController < ApplicationController
           @invite.save!
           SideFxInviteService.new.after_accept @invite
         rescue ActiveRecord::RecordInvalid => e
-          Rails.logger.info "Social signup failed: #{e.message}"
+          Raven.capture_exception e
           failure
+          return
         end
 
       else # !@user.invite_pending?
         if sso_service.update_on_sign_in?(provider)
-          @user.update(sso_service.profile_to_user_attrs(auth))
+          begin
+            @user.update!(sso_service.profile_to_user_attrs(auth))
+          rescue ActiveRecord::RecordInvalid => e
+            Raven.capture_exception e
+            failure
+            return
+          end
         end
       end
 

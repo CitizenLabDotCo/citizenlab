@@ -40,7 +40,7 @@ resource "User Custom Field Options" do
   context "when authenticated as admin" do
     before do
       @user = create(:admin)
-      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
 
@@ -128,6 +128,16 @@ resource "User Custom Field Options" do
         do_request
         expect(response_status).to eq 422
         expect(CustomFieldOption.find(id)).to be_present
+      end
+
+      example "Deleting a custom field option that's still referenced in a user's setting", document: false do
+        custom_field_values = {@custom_field.key => custom_field_option.key}
+        user = create(:user, custom_field_values: custom_field_values)
+        expect(user.reload.custom_field_values).to eq custom_field_values
+        do_request
+        expect(response_status).to eq 200
+        expect{CustomFieldOption.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(user.reload.custom_field_values).to eq({})
       end
     end
   end

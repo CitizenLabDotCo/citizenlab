@@ -286,5 +286,10 @@ FactoryBot.define do
       max_budget { 10000 }
     end
 
+    factory :continuous_poll_project do
+      process_type { 'continuous' }
+      participation_method { 'poll' }
+    end
+
   end
 end

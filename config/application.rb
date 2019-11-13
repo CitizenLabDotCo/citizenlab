@@ -37,7 +37,12 @@ module Cl2Back
 
     config.active_job.queue_adapter = ENV.fetch('ACTIVE_JOB_QUEUE_ADAPTER', 'sidekiq').to_sym
 
-    config.autoload_paths << "#{Rails.root}/lib"
+    ### After https://stackoverflow.com/a/44985745/3585671
+    # Without lines below we get an uninitialized constant 
+    # error from files in the lib directory to other files
+    # that need to be loaded.
+    config.eager_load_paths << Rails.root.join('lib')
+    ###
 
     config.action_dispatch.perform_deep_munge = false
 
@@ -46,7 +51,6 @@ module Cl2Back
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
     
     config.skylight.environments = ["staging"]
-    
   end
 end
 

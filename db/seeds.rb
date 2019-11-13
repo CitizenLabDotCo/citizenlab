@@ -85,8 +85,10 @@ end
 
 def generate_file_attributes
   {
-    name: Faker::File.file_name('', nil, ProjectFileUploader.new.extension_whitelist.shuffle.first, ''),
-    file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open
+    file_by_content: {
+      name: Faker::File.file_name('', nil, 'pdf', ''),
+      content: Rails.root.join("spec/fixtures/afvalkalender.pdf").open
+    }
   }
 end
 
@@ -182,6 +184,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      admin_project_templates: {
+        enabled: true,
+        allowed: true
+      },
       ideaflow_social_sharing: {
         enabled: true,
         allowed: true
@@ -233,8 +239,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
       initiatives: {
         enabled: true,
         allowed: true,
-        voting_threshold: 300,
-        days_limit: 90,
+        voting_threshold: 20,
+        days_limit: 5,
         threshold_reached_message: MultilocService.new.i18n_to_multiloc(
           'initiatives.default_threshold_reached_message',
           locales: CL2_SUPPORTED_LOCALES
@@ -260,7 +266,26 @@ if ['public','example_org'].include? Apartment::Tenant.current
             "image_url": "http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg",
           }
         ]
-      }
+      },
+      polls: {
+        enabled: true,
+        allowed: true
+      },
+      verification: {
+        enabled: true,
+        allowed: true,
+        verification_methods: [
+          {
+            name: 'cow',
+            api_username: 'fake_username',
+            api_password: 'fake_password',
+            rut_empresa: 'fake_rut_empresa'
+          },
+          {
+            name: 'bogus'
+          },
+        ],
+      },
     }
   })
 
@@ -432,18 +457,10 @@ if Apartment::Tenant.current == 'localhost'
 
       if project.timeline?
         start_at = Faker::Date.between(Tenant.current.created_at, 1.year.from_now)
-        has_budgeting_phase = false
+        has_budgeting = false
         rand(8).times do
-          participation_method = ['ideation', 'information', 'ideation', 'budgeting', 'ideation'].shuffle.first
-          if participation_method == 'budgeting'
-            if has_budgeting_phase
-              participation_method = 'ideation'
-            else
-              has_budgeting_phase = true
-            end
-          end
           start_at += 1.days
-          phase = project.phases.create!({
+          phase = project.phases.new({
             title_multiloc: {
               "en": Faker::Lorem.sentence,
               "nl-BE": Faker::Lorem.sentence
@@ -454,15 +471,17 @@ if Apartment::Tenant.current == 'localhost'
             },
             start_at: start_at,
             end_at: (start_at += rand(150).days),
-            participation_method: (rand(5) == 0) ? 'information' : 'ideation'
+            participation_method: ['ideation','budgeting','poll','information', 'ideation', 'ideation'][rand(6)]
           })
-          if rand(5) == 0
-            (rand(3)+1).times do
-              phase.phase_files.create!(generate_file_attributes)
+          if phase.budgeting?
+            if has_budgeting
+              phase.participation_method = 'ideation'
+            else
+              has_budgeting = true
             end
           end
           if phase.ideation?
-            phase.update!({
+            phase.assign_attributes({
               posting_enabled: rand(4) != 0,
               voting_enabled: rand(3) != 0,
               commenting_enabled: rand(4) != 0,
@@ -471,9 +490,36 @@ if Apartment::Tenant.current == 'localhost'
             })
           end
           if phase.budgeting?
-            phase.update!({
+            phase.assign_attributes({
               max_budget: (rand(1000000) + 100).round(-2)
             })
+          end
+          phase.save!
+          if rand(5) == 0
+            (rand(3)+1).times do
+              phase.phase_files.create!(generate_file_attributes)
+            end
+          end
+          if phase.poll?
+            questions = (rand(5)+1).times.map do
+              question = Polls::Question.create!(
+                title_multiloc: create_for_some_locales{Faker::Lorem.question},
+                participation_context: phase
+              )
+              (rand(5)+1).times do
+                Polls::Option.create!(
+                  question: question,
+                  title_multiloc: create_for_some_locales{Faker::Lorem.sentence}
+                )
+              end
+              question
+            end
+            User.order('RANDOM()').take(rand(5)+1).each do |user|
+              response = Polls::Response.create!(user: user, participation_context: phase)
+              questions.each do |q|
+                 response.response_options.create!(option: rand_instance(q.options))
+              end
+            end
           end
         end
       end
@@ -567,7 +613,7 @@ if Apartment::Tenant.current == 'localhost'
 
     num_initiatives.times do 
       created_at = Faker::Date.between(Tenant.current.created_at, Time.now)
-      initiative = Initiative.create!({
+      initiative = Initiative.create!(
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
         author: User.offset(rand(User.count)).first,
@@ -580,11 +626,13 @@ if Apartment::Tenant.current == 'localhost'
         topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
         assignee: rand(5) == 0 ? User.admin.shuffle.first : nil,
-        # TODO make initiative statuses correspond with required votes reached
-        initiative_status: InitiativeStatus.offset(rand(InitiativeStatus.count)).first  
-      })
-
-      LogActivityJob.perform_later(initiative, 'created', initiative.author, initiative.created_at.to_i)
+      )
+      # TODO make initiative statuses correspond with required votes reached
+      InitiativeStatusChange.create!(
+        created_at: initiative.published_at,
+        initiative: initiative,
+        initiative_status: InitiativeStatus.offset(rand(InitiativeStatus.count)).first
+      )
 
       [0,0,1,1,2][rand(5)].times do |i|
         initiative.initiative_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
@@ -608,7 +656,6 @@ if Apartment::Tenant.current == 'localhost'
           author_multiloc: create_for_some_locales{Faker::FunnyName.name},
           user: User.admin.shuffle.first
           )
-        LogActivityJob.perform_later(official_feedback, 'created', official_feedback.user, official_feedback.created_at.to_i)
       end
 
       create_comment_tree(initiative, nil)
@@ -663,6 +710,8 @@ if Apartment::Tenant.current == 'localhost'
       end
       permission.save!
     end
+
+    InitiativeStatusService.new.automated_transitions!
   end
 
 end

@@ -9,7 +9,7 @@ resource "IdeaFile" do
   before do
     header "Content-Type", "application/json"
     @user = create(:user)
-    token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     @project = create(:continuous_project, with_permissions: true)
     @idea = create(:idea, author: @user, project: @project)
@@ -40,8 +40,8 @@ resource "IdeaFile" do
   post "web_api/v1/ideas/:idea_id/files" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file", required: true
-      parameter :ordering, "An integer that is used to order the files within an idea", required: false
       parameter :name, "The name of the file, including the file extension", required: true
+      parameter :ordering, "An integer that is used to order the files within an idea", required: false
     end
     ValidationErrorHelper.new.error_fields(self, IdeaFile)
     let(:idea_id) { @idea.id }
@@ -55,26 +55,6 @@ resource "IdeaFile" do
       expect(json_response.dig(:data,:attributes,:file)).to be_present
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
       expect(json_response.dig(:data,:attributes,:name)).to eq(name)
-    end
-  end
-
-  patch "web_api/v1/ideas/:idea_id/files/:file_id" do
-    with_options scope: :file do
-      parameter :file, "The base64 encoded file"
-      parameter :ordering, "An integer that is used to order the file attachments within an idea"
-      parameter :name, "The name of the file, including the file extension"
-    end
-    ValidationErrorHelper.new.error_fields(self, IdeaFile)
-    let(:idea_id) { @idea.id }
-    let(:file_id) { IdeaFile.first.id }
-    let(:file) { encode_file_as_base64("afvalkalender.pdf") }
-    let(:ordering) { 2 }
-
-    example_request "Update a file attachment for an idea" do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:file)).to be_present
-      expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
     end
   end
 

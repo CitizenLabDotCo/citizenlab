@@ -1,4 +1,4 @@
-# cl2_back
+# cl2-back
 
 # Getting started
 
@@ -117,6 +117,15 @@ Two environment variables can be used for this purpose: `SEED_SIZE` (e.g. small,
 NOTE: Watch out that you don't accidently commit these changes!
 
 
+## Using S3 storage in development
+
+1. Go to desired image and/or file uploader.
+
+2. Always include `storage :fog` (comment out if-condition).
+
+3. Comment out `asset_host` method (use original implementation from Carrierwave)
+
+
 ## Creating Engines
 
 In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine.
@@ -136,33 +145,23 @@ end
 
 5. Create a `lib` folder with an empty `tasks` folder. Copy the `blorgh` folder (with `engine.rb` and `version.rb`) and `blorgh.rb` from another engine and do the necessary renamings in the copied files.
 
-6. Create an empty `spec` folder. Add a stage to the `Jenkinsfile` such that CI will execute your engine's tests. Later, you will be able to execute your engine's tests by running:
-```
-docker-compose run --rm web rspec ./engines/blorgh/spec
-```
+6. Copy over `blorgh.gemspec` and rename (no need to include `MIT-LICENSE` or `Rakefile`), remove/add dependencies if you know what you're doing.
 
-7. Copy over `blorgh.gemspec` and rename (no need to include `MIT-LICENSE` or `Rakefile`), remove/add dependencies if you know what you're doing.
-
-8. Add the following line to your `Gemfile`:
+7. Add the following line to your `Gemfile`:
 ```
 gem 'blorgh', path: 'engines/blorgh'
 ```
 
-9. Add the following line to your Dockerfile:
-```
-COPY engines/blorghs ./engines/blorghs/
-```
+8. If you're going to add endpoints to your engine, don't forget to mount it in the main `routes.rb` file.
 
-10. If you're going to add endpoints to your engine, don't forget to mount it in the main `routes.rb` file.
-
-11. If you added a factory into your engine, you have to add this line to `spec_helper.rb`:
+9. If you added a factory into your engine, you have to add this line to `spec_helper.rb`:
 ```
 require './engines/blorgh/spec/factories/blorghs.rb'
 ```
 
-12. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
+10. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
 
-13. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
+11. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
 
 
 ## Adding smart group rules
@@ -185,3 +184,16 @@ require './engines/blorgh/spec/factories/blorghs.rb'
 2. Execute the requests you want to profile
 
 3. Go to http://localhost:4000/profiler.html?pp=normal-backtrace
+
+
+## Finding back JSON-formatted events from RabbitMQ
+
+1. Run the backend
+
+2. Navigate to `http://localhost:8088` -> `Admin` -> `Tracing`. Log in with `guest`, `guest`.
+
+3. Add a new trace in TEXT (not JSON) format
+
+4. Generate the desired events
+
+5. Click on the trace log file you created on `http://localhost:8088` to see the events

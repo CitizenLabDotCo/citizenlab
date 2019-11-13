@@ -16,7 +16,7 @@ resource "Memberships" do
       @users = create_list(:user, 5)
       @memberships = @users.map { |u| create(:membership, group: @group, user: u) }
       @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
 
@@ -96,7 +96,7 @@ resource "Memberships" do
   context "Users search" do
     before do
       @admin = create(:admin, first_name: 'Freddy', last_name: 'Smith', email: 'superadmin@gmail.com')
-      token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
 
@@ -134,7 +134,7 @@ resource "Memberships" do
     context "when admin" do
       before do
         @admin = create(:admin)
-        token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+        token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
 
         @group = create(:group)

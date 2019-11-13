@@ -200,7 +200,7 @@ resource "Comments" do
   context "when authenticated" do
     before do
       @user = create(:user)
-      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
 
@@ -306,7 +306,7 @@ resource "Comments" do
 
       example "Admins cannot mark a comment as deleted without a reason", document: false do
         @admin = create(:admin)
-        token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+        token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
         do_request
         expect(response_status).to eq 422
@@ -335,7 +335,7 @@ resource "Comments" do
 
       example "Admins cannot modify a comment on an idea", document: false do
         @admin = create(:admin)
-        token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+        token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
         do_request
         expect(comment.reload.body_multiloc).not_to eq body_multiloc
