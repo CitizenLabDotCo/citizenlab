@@ -92,4 +92,24 @@ describe SmartGroupRules::ParticipatedInIdeaStatus do
 
   end
 
+  describe "description_multiloc" do
+    let(:idea_status) { create(:idea_status) }
+    let(:participated_in_idea_status_in_rule) {SmartGroupRules::ParticipatedInIdeaStatus.from_json({
+      'ruleType'      => 'participated_in_idea_status',
+      'predicate'     => 'in',
+      'value'         => idea_status.id
+    })}
+
+    it "successfully translates different combinations of rules" do
+      # Stubbing the translations so the specs don't depend on those.
+      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
+
+      expect(participated_in_idea_status.description_multiloc).to eq ({
+        'en'    => 'e-mail is sebi@citizenlab.co',
+        'fr-FR' => 'adresse e-mail est sebi@citizenlab.co',
+        'nl-NL' => 'e-mail is sebi@citizenlab.co'
+      })
+    end
+  end
+
 end
