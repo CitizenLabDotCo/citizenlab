@@ -101,4 +101,36 @@ describe Verification::VerificationService do
 
   end
 
+  describe "locked_attributes" do
+    context "for a user only authenticated with facebook" do
+      it "returns no locked attributes" do
+        identity = create(:facebook_identity)
+        expect(service.locked_attributes(identity.user)).to eq []
+      end
+    end
+
+    context "for a user only verified with bosa_fas" do
+      it "returns some locked attributes" do
+        verification = create(:verification, method_name: 'bosa_fas')
+        expect(service.locked_attributes(verification.user)).to match_array [:first_name, :last_name]
+      end
+    end
+  end
+
+  describe "locked_custom_fields" do
+    context "for a user only authenticated with facebook" do
+      it "returns no locked custom field keys" do
+        identity = create(:facebook_identity)
+        expect(service.locked_custom_fields(identity.user)).to eq []
+      end
+    end
+
+    context "for a user only verified with franceconnect" do
+      it "returns some locked custom field keys" do
+        verification = create(:verification, method_name: 'franceconnect')
+        expect(service.locked_custom_fields(verification.user)).to match_array [:gender, :birthyear]
+      end
+    end
+  end
+
 end

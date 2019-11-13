@@ -1,5 +1,7 @@
 module OmniauthMethods
   class FranceConnect
+    include Verification::Methods::FranceConnect
+
     def profile_to_user_attrs auth
       # Todo: Do something smart with the address auth.extra.raw_info.address.formatted
       {
@@ -68,12 +70,5 @@ module OmniauthMethods
       true
     end
 
-    def unchangeable_attributes
-      [:first_name, :last_name, :gender, :birthyear]
-    end
-
-    def unchangeable_custom_fields
-      [:birthyear, :gender]
-    end
   end
 end
