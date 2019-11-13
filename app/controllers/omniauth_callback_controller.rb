@@ -3,7 +3,6 @@ class OmniauthCallbackController < ApplicationController
   skip_after_action :verify_authorized
 
   def create
-    byebug
     auth = request.env['omniauth.auth']
     provider = auth['provider']
     auth_method = AuthenticationService.new.method_by_provider(provider)
