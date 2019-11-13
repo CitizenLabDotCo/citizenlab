@@ -4,6 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Icon from 'components/UI/Icon';
 import Avatar from 'components/Avatar';
+import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Title, Subtitle } from './styles';
 
@@ -64,12 +65,38 @@ const Context = styled.div`
   padding-bottom: 32px;
   margin-bottom: 30px;
   margin-right: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 `;
 
 const ContextLabel = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
   line-height: normal;
+  margin-bottom: 17px;
+`;
+
+const ContextItem = styled.span`
+  color: ${(props: any) => props.theme.colorText};
+  font-size: ${fontSizes.small}px;
+  line-height: normal;
+  border-radius: ${props => props.theme.borderRadius};
+  border: 1px solid ${colors.lightGreyishBlue};
+  padding: 5px 10px;
+  margin-bottom: 5px;
+`;
+
+const Or = styled.span`
+  color: ${(props: any) => props.theme.colorText};
+  font-size: ${fontSizes.small}px;
+  line-height: normal;
+  border-radius: 50%;
+  border: 1px solid ${colors.lightGreyishBlue};
+  padding: 2px 6px 1px 6px;
+  flex: 1 1 auto;
+  margin-bottom: 5px;
 `;
 
 const ButtonsContainer = styled.div`
@@ -107,6 +134,7 @@ interface Props {
 }
 
 const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, className, theme }) => {
+  const context = withContext ? [[{ en: 'Older than 25' }], [{ en: 'Older than 25' }]] : null;
 
   const authUser = useAuthUser();
   const verificationMethods = useVerificationMethods();
@@ -144,7 +172,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
         {withContext ? <FormattedMessage {...messages.toParticipateInThisProject} /> : <FormattedMessage {...messages.andUnlockYourCitizenPotential} />}
       </Title>
       <Content>
-        {withContext && false && // TODO: pass in context and display additionnal rules if any
+        {withContext && context && // TODO: pass in context and display additionnal rules if any
           <Context>
             <Subtitle>
               <FormattedMessage {...messages.participationConditions} />
@@ -153,6 +181,22 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
             <ContextLabel>
               <FormattedMessage {...messages.peopleMatchingConditions} />
             </ContextLabel>
+
+            {context.map((rulesSet, index) => {
+              const rules = rulesSet.map(rule => (
+                <ContextItem key={index}>
+                  <T value={rule} />
+                </ContextItem>
+              ));
+              return index === 0 ? rules : (
+                <>
+                  <Or>
+                    <FormattedMessage {...messages.or} />
+                  </Or>
+                  {rules}
+                </>
+              );
+            })}
           </Context>
         }
         <ButtonsContainer className={withContext ? 'withContext' : 'withoutContext'}>
@@ -179,7 +223,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
               boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
               boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
             >
-              <FormattedMessage {...messages.verifyCow}/>
+              <FormattedMessage {...messages.verifyCow} />
             </MethodButton>
           }
 
