@@ -98,6 +98,7 @@ class CommentingDisabled extends PureComponent<Props> {
               {...messageDescriptor}
               values={{
                 signInLink: <StyledLink to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></StyledLink>,
+                signUpLink: <StyledLink to="/sign-up"><FormattedMessage {...messages.signUpLinkText} /></StyledLink>,
                 verificationLink: <StyledButton style="text" padding="0" onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
                 projectName: projectTitle && <T value={projectTitle} />
               }}
