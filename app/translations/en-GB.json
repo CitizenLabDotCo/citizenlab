@@ -1486,7 +1486,7 @@
   "app.containers.ProjectInfo.invisibleTitleMainContent": "Information about this project",
   "app.containers.ProjectInfo.twitterMessage": "{title} : share your ideas on",
   "app.containers.Projects.PollForm.formCompleted": "Thank you for answering this poll!",
-  "app.containers.Projects.PollForm.pollDisabledMaybeNotPermitted": "Only certain users can take this poll. Please sign in first.",
+  "app.containers.Projects.PollForm.pollDisabledMaybeNotPermitted": "Only certain users can take this poll. Please {signUpLink} or {logInLink} first.",
   "app.containers.Projects.PollForm.pollDisabledNotActivePhase": "This poll can only be taken when this phase in the timeline is active.",
   "app.containers.Projects.PollForm.pollDisabledNotPermitted": "Unfortunately, you don't have the rights to take this poll.",
   "app.containers.Projects.PollForm.pollDisabledNotPossible": "It is currently impossible to take this poll.",

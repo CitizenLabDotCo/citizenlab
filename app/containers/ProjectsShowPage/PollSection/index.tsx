@@ -113,7 +113,9 @@ export class PollSection extends PureComponent<Props> {
                 <FormattedMessage
                   {...message}
                   values={{
-                    verificationLink: <VerifyButton onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></VerifyButton>
+                    verificationLink: <VerifyButton onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></VerifyButton>,
+                    signUpLink: <SignUpLink to="/sign-up"><FormattedMessage {...messages.signUpLinkText} /></SignUpLink>,
+                    logInLink: <SignUpLink to="/sign-in"><FormattedMessage {...messages.logInLinkText} /></SignUpLink>
                   }}
                 />
               </StyledWarning>
