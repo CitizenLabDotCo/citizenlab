@@ -1,13 +1,15 @@
-class SingleSignOnService
+class AuthenticationService
 
-  @@provider_helpers = {
+  ALL_METHODS = {
     'facebook' => OmniauthMethods::Facebook.new,
     'google' => OmniauthMethods::Google.new,
     'azureactivedirectory' => OmniauthMethods::AzureActiveDirectory.new,
     'franceconnect' => OmniauthMethods::FranceConnect.new,
-    'bosa_fas' => OmniauthMethods::BosaFAS.new,
   }
-  
+
+  def all_methods
+    ALL_METHODS
+  end
 
   def profile_to_user_attrs auth
     provider = auth.provider
@@ -17,29 +19,29 @@ class SingleSignOnService
       email: auth.info['email'],
       remote_avatar_url: auth.info['image'],
     }
-    custom_user_attrs = @@provider_helpers[provider].profile_to_user_attrs(auth)
+    custom_user_attrs = all_methods[provider].profile_to_user_attrs(auth)
     {**default_user_attrs, **custom_user_attrs}
   end
 
-  def helper provider
-    @@provider_helpers[provider] || raise("Unsupported provider #{provider}")
+  def method_by_provider provider
+    all_methods[provider]
   end
 
   def logout_url provider, user
-    provider_helper = helper(provider)
+    omniauth_method = helper(provider)
     if supports_logout?(provider)
-      provider_helper.logout_url(user)
+      omniauth_method.logout_url(user)
     else
       nil
     end
   end
 
   def supports_logout? provider
-    helper(provider).respond_to? :logout_url
+    method_by_provider(provider).respond_to? :logout_url
   end
 
   def update_on_sign_in? provider
-    helper(provider).respond_to?(:update_on_sign_in?) && helper(provider).update_on_sign_in?
+    method_by_provider(provider).respond_to?(:update_on_sign_in?) && method_by_provider(provider).update_on_sign_in?
   end
 
   # Some providers don't allow users to manually change certain properties,
@@ -48,9 +50,9 @@ class SingleSignOnService
   def attributes_user_cant_change user
     providers = user&.identities&.pluck(:provider)&.uniq || []
     attributes = providers.flat_map do |provider| 
-      provider_helper = helper(provider)
-      if provider_helper.respond_to? :unchangeable_attributes
-        provider_helper.unchangeable_attributes
+      omniauth_method = method_by_provider(provider)
+      if omniauth_method.respond_to? :unchangeable_attributes
+        omniauth_method.unchangeable_attributes
       else
         []
       end
@@ -61,9 +63,9 @@ class SingleSignOnService
   def custom_fields_user_cant_change user
     providers = user&.identities&.pluck(:provider)&.uniq || []
     custom_fields = providers.flat_map do |provider| 
-      provider_helper = helper(provider)
-      if provider_helper.respond_to? :unchangeable_custom_fields
-        provider_helper.unchangeable_custom_fields
+      omniauth_method = method_by_provider(provider)
+      if omniauth_method.respond_to? :unchangeable_custom_fields
+        omniauth_method.unchangeable_custom_fields
       else
         []
       end

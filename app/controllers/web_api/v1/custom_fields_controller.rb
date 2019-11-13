@@ -106,7 +106,7 @@ class WebApi::V1::CustomFieldsController < ApplicationController
   end
 
   def mark_unchangeable_fields_as_disabled ui_schema_multiloc
-    sso_service = SingleSignOnService.new
+    sso_service = AuthenticationService.new
     unchangeable_custom_fields = sso_service.custom_fields_user_cant_change(current_user).map(&:to_s)
     ui_schema_multiloc.each do |_locale, ui_schema|
       ui_schema

@@ -1,5 +1,15 @@
 module OmniauthMethods
   class Google
+
+    def omniauth_setup tenant, env
+      if tenant.has_feature?('google_login')
+        env['omniauth.strategy'].options[:client_id] = Tenant.settings("google_login", "client_id")
+        env['omniauth.strategy'].options[:client_secret] = Tenant.settings("google_login", "client_secret")
+        env['omniauth.strategy'].options[:image_size] = 640
+        env['omniauth.strategy'].options[:image_aspect_ratio] = "square"
+      end
+    end
+
     def profile_to_user_attrs auth
       user_attrs = {
         gender: auth.extra.raw_info.gender,

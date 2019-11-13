@@ -282,6 +282,12 @@ if ['public','example_org'].include? Apartment::Tenant.current
             rut_empresa: 'fake_rut_empresa'
           },
           {
+            name: 'bosa_fas',
+            environment: 'integration',
+            identifier: 'fake_identifier',
+            secret: 'fake_secret'
+          },
+          {
             name: 'bogus'
           },
         ],

@@ -148,6 +148,12 @@ namespace :cl2_back do
               rut_empresa: 'fake_rut_empresa'
             },
             {
+              name: 'bosa_fas',
+              environment: 'integration',
+              identifier: 'fake_identifier',
+              secret: 'fake_secret'
+            },
+            {
               name: 'bogus'
             },
           ]

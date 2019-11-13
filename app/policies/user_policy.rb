@@ -65,7 +65,7 @@ class UserPolicy < ApplicationPolicy
     if user && user.admin?
       shared += [roles: [:type, :project_id]]
     end
-    unchangeable_attributes = SingleSignOnService.new.attributes_user_cant_change(user)
+    unchangeable_attributes = AuthenticationService.new.attributes_user_cant_change(user)
     shared - unchangeable_attributes
   end
 
@@ -76,7 +76,7 @@ class UserPolicy < ApplicationPolicy
   private
 
   def allowed_custom_field_keys
-    unchangeable_keys = SingleSignOnService.new.custom_fields_user_cant_change(user)
+    unchangeable_keys = AuthenticationService.new.custom_fields_user_cant_change(user)
     enabled_fields = CustomField
       .fields_for('User')
       .where.not(key: unchangeable_keys)
