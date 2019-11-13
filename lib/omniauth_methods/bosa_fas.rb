@@ -1,5 +1,8 @@
 module OmniauthMethods
   class BosaFAS
+
+    include Verification::Methods::BosaFAS
+
     # def profile_to_user_attrs auth
     #   # Todo: Do something smart with the address auth.extra.raw_info.address.formatted
     #   {
@@ -10,29 +13,38 @@ module OmniauthMethods
     #   }
     # end
 
-    def logout_url user
-      last_identity = user.identities
-        .where(provider: 'bosa_fas')
-        .order(created_at: :desc)
-        .limit(1)
-        &.first
+    def omniauth_setup tenant, env
+      if Verification::VerificationService.new.is_active?(tenant, name)
+        host = OmniauthMethods::BosaFAS.new.host
 
-      id_token = last_identity.auth_hash.dig('credentials', 'id_token')
-
-      url_params = {
-        id_token_hint: id_token,
-        post_logout_redirect_uri: Frontend::UrlService.new.home_url
-      }
-
-      "https://#{host}/api/v1/logout?#{url_params.to_query}"
+        options = env['omniauth.strategy'].options
+        options[:scope] = [:openid, :profile]
+        options[:response_type] = :code
+        options[:state] = true
+        options[:nonce] = true
+        options[:issuer] = "https://#{host}"
+        options[:acr_values] = "urn:be:fedict:iam:fas:Level450"
+        options[:send_scope_to_token_endpoint] = false
+        options[:client_options] = {
+          identifier: config[:identifier],
+          secret: config[:secret],
+          port: 443,
+          scheme: 'https',
+          host: host,
+          authorization_endpoint: '/fas/oauth2/authorize',
+          token_endpoint: '/fas/oauth2/access_token',
+          userinfo_endpoint: '/fas/oauth2/userinfo',
+          redirect_uri: "#{tenant.base_backend_uri}/auth/bosa_fas/callback",
+        }
+      end
     end
 
     def host
-      case Tenant.settings("bosa_fas_login", "environment")
+      case config[:environment]
       when "integration"
-        'idp.iamfas.int.belgium.be/fas/oauth2'
+        'idp.iamfas.int.belgium.be'
       when "production"
-        'idp.iamfas.belgium.be/fas/oauth2'
+        'idp.iamfas.belgium.be'
       end
     end
 

@@ -98,7 +98,11 @@ gem 'omniauth-twitter'
 # This fork was made to update the version of jws which is
 # required for the google omniauth gem.
 gem 'omniauth-azure-activedirectory', github: 'CitizenLabDotCo/omniauth-azure-activedirectory'
-gem 'omniauth_openid_connect'
+gem 'omniauth_openid_connect', '~> 0.3.3'
+# Forked to support a userinfo response in JWT form
+# Can go back to vanilla when this PR is merged and released:
+# https://github.com/nov/openid_connect/pull/48
+gem 'openid_connect', github: 'CitizenLabDotCo/openid_connect'
 gem "bunny", ">= 2.7.2"
 gem 'scenic'
 gem 'acts_as_list'

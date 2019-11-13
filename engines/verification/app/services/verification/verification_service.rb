@@ -4,6 +4,7 @@ module Verification
     ALL_METHODS = [
       Methods::Cow.new,
       Methods::Bogus.new,
+      OmniauthMethods::BosaFAS.new,
     ]
 
     def initialize sfxv_service=SideFxVerificationService.new
@@ -39,8 +40,8 @@ module Verification
       end
     end
 
-    def is_active? method_name
-      active_methods_for_tenant.include? method_by_name(method_name)
+    def is_active? tenant, method_name
+      active_methods_for_tenant(tenant).include? method_by_name(method_name)
     end
 
     class NoMatchError < StandardError; end
@@ -56,6 +57,9 @@ module Verification
 
     def verify_omniauth user:, auth:
       method = method_by_name(auth.provider)
+      if method.respond_to?(:entitled?) && !method.entitled?(auth)
+        raise NotEntitledError.new
+      end
       uid = auth['uid']
       make_verification(user: user, method_name: method.name, uid: uid)
     end

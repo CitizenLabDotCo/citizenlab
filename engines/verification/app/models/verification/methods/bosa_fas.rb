@@ -1,7 +1,6 @@
 module Verification
   module Methods
-    # Fake method for testing purposes only
-    class BosaFas
+    module BosaFAS
       include VerificationMethod
 
       def veritication_method_type
@@ -17,7 +16,7 @@ module Verification
       end
 
       def config_parameters
-        []
+        [:environment, :identifier, :secret]
       end
 
       def locked_user_attributes
@@ -28,8 +27,8 @@ module Verification
         []
       end
 
-      def authentication_method_claz
-        SingleSignOnService::BosaFAS
+      def entitled? auth
+        true
       end
 
     end

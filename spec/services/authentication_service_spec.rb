@@ -1,8 +1,8 @@
 
 require "rails_helper"
 
-describe SingleSignOnService do
-  let(:service) { SingleSignOnService.new }
+describe AuthenticationService do
+  let(:service) { AuthenticationService.new }
 
   describe "profile_to_user_attrs" do
     it "correctly interprets locale for azure_ad" do

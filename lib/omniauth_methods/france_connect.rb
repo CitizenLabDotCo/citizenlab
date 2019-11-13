@@ -10,6 +10,31 @@ module OmniauthMethods
       }
     end
 
+    def omniauth_setup tenant, env
+      if tenant.has_feature?('franceconnect_login')
+        options = env['omniauth.strategy'].options
+        options[:scope] = [:openid, :profile, :email, :address]
+        options[:response_type] = :code
+        options[:state] = true # Requis par France connect
+        options[:nonce] = true # Requis par France connect
+        options[:issuer] = "https://#{host}" # L'environnement d'intégration utilise à présent 'https'
+        options[:client_auth_method] = 'Custom' # France connect n'utilise pas l'authent "BASIC".
+        options[:client_signing_alg] = :HS256   # Format de hashage France Connect
+        options[:client_options] = {
+          identifier: Tenant.settings("franceconnect_login", "identifier"),
+          secret: Tenant.settings("franceconnect_login", "secret"),
+          port: 443,
+          scheme: 'https',
+          host: host,
+          redirect_uri: "#{tenant.base_backend_uri}/auth/franceconnect/callback",
+          authorization_endpoint: '/api/v1/authorize',
+          token_endpoint: '/api/v1/token',
+          userinfo_endpoint: '/api/v1/userinfo'
+        }
+
+      end
+    end
+
     def logout_url user
       last_identity = user.identities
         .where(provider: 'franceconnect')

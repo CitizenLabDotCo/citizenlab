@@ -2,9 +2,40 @@ class OmniauthCallbackController < ApplicationController
   include ActionController::Cookies
   skip_after_action :verify_authorized
 
-
   def create
-    sso_service = SingleSignOnService.new
+    auth = request.env['omniauth.auth']
+    provider = auth['provider']
+    auth_method = AuthenticationService.new.method_by_provider(provider)
+    verification_method = Verification::VerificationService.new.method_by_name(provider)
+    if auth_method
+      auth_callback verify: !!verification_method
+    elsif verification_method
+      verification_callback
+    else
+      raise "#{provider} not supported"
+    end
+  end
+
+  def verification_callback
+    auth = request.env['omniauth.auth']
+    omniauth_params = request.env['omniauth.params']
+    @user = current_user
+
+    if @user&.active?
+      @user.update!(auth_service.profile_to_user_attrs(auth))
+      begin
+        handle_verification(auth, @user)
+        redirect_to(add_uri_params(Frontend::UrlService.new.verification_success_url(locale: @user.locale), omniauth_params))
+      rescue VerificationService::VerificationTakenError => e
+        redirect_to(add_uri_params(Frontend::UrlService.new.verification_error_url(locale: @user.locale), omniauth_params.merge(error: 'taken')))
+      rescue VerificationService::NotEntitledError => e
+        redirect_to(add_uri_params(Frontend::UrlService.new.verification_error_url(locale: @user.locale), omniauth_params.merge(error: 'not_entitled')))
+      end
+    end
+  end
+
+  def auth_callback verify:
+    auth_service = AuthenticationService.new
 
     auth = request.env['omniauth.auth']
     omniauth_params = request.env['omniauth.params']
@@ -23,7 +54,7 @@ class OmniauthCallbackController < ApplicationController
           failure
           return
         end
-        @user.assign_attributes(sso_service.profile_to_user_attrs(auth).merge(invite_status: 'accepted'))
+        @user.assign_attributes(auth_service.profile_to_user_attrs(auth).merge(invite_status: 'accepted'))
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!
@@ -36,9 +67,9 @@ class OmniauthCallbackController < ApplicationController
         end
 
       else # !@user.invite_pending?
-        if sso_service.update_on_sign_in?(provider)
+        if auth_service.update_on_sign_in?(provider)
           begin
-            @user.update!(sso_service.profile_to_user_attrs(auth))
+            @user.update!(auth_service.profile_to_user_attrs(auth))
           rescue ActiveRecord::RecordInvalid => e
             Raven.capture_exception e
             failure
@@ -48,18 +79,18 @@ class OmniauthCallbackController < ApplicationController
       end
 
       set_auth_cookie(provider: provider)
-      handle_verification(auth, @user)
+      handle_verification(auth, @user) if verify
       redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), omniauth_params))
 
     else # New user
-      @user = User.new(sso_service.profile_to_user_attrs(auth))
+      @user = User.new(auth_service.profile_to_user_attrs(auth))
       SideFxUserService.new.before_create(@user, nil)
       @user.identities << @identity
       begin
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
         set_auth_cookie(provider: provider)
-        handle_verification(auth, @user)
+        handle_verification(auth, @user) if verify
         redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), omniauth_params))
 
       rescue ActiveRecord::RecordInvalid => e
@@ -79,9 +110,9 @@ class OmniauthCallbackController < ApplicationController
     provider = params[:provider]
     user_id = params[:user_id]
     user = User.find(user_id)
-    sso_service = SingleSignOnService.new
+    auth_service = AuthenticationService.new
 
-    url = sso_service.logout_url(provider, user)
+    url = auth_service.logout_url(provider, user)
 
     redirect_to url
   rescue ActiveRecord::RecordNotFound => e
@@ -112,7 +143,7 @@ class OmniauthCallbackController < ApplicationController
 
     Knock::AuthToken.new payload: payload.merge({
       provider: provider,
-      logout_supported: SingleSignOnService.new.supports_logout?(provider)
+      logout_supported: AuthenticationService.new.supports_logout?(provider)
     })
   end
 
@@ -126,7 +157,7 @@ class OmniauthCallbackController < ApplicationController
   def handle_verification auth, user
     if Tenant.current.has_feature? 'verification'
       verification_service = Verification::VerificationService.new
-      if verification_service.is_active? auth.provider
+      if verification_service.is_active? Tenant.current, auth.provider
         verification_service.verify_omniauth(
           auth: auth,
           user: user
