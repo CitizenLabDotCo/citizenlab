@@ -87,7 +87,7 @@ const StyledIcon = styled(Icon)`
 
 interface Props {
   file: UploadFile;
-  onDeleteClick?: () => void;
+  onDeleteClick?: (event) => void;
 }
 
 const FileDisplay = ({ file, onDeleteClick }: Props) => {
