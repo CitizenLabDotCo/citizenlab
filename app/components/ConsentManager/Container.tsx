@@ -10,8 +10,7 @@ import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
 import Footer from './Footer';
 import LoadableModal from 'components/Loadable/Modal';
 
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 import { CustomPreferences, CategorizedDestinations } from './';
@@ -39,7 +38,7 @@ interface State {
   isCancelling: boolean;
 }
 
-export class Container extends PureComponent<Props & InjectedIntlProps, State> {
+export class Container extends PureComponent<Props, State> {
   subscriptions: Subscription[] = [];
 
   constructor(props) {
@@ -145,7 +144,6 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
     const {
       preferences,
       isConsentRequired,
-      intl,
       categorizedDestinations
     } = this.props;
     const { isDialogOpen, isCancelling } = this.state;
@@ -202,4 +200,4 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl(Container);
+export default Container;
