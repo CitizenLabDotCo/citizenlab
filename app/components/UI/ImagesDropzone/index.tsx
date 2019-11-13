@@ -5,7 +5,6 @@ import { reportError } from 'utils/loggingUtils';
 
 // components
 import Icon from 'components/UI/Icon';
-import Spinner from 'components/UI/Spinner';
 import Error from 'components/UI/Error';
 
 // i18n
@@ -19,8 +18,6 @@ import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/fileT
 
 // style
 import styled, { css } from 'styled-components';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 
 // typings
@@ -31,7 +28,7 @@ const Container = styled.div`
   display: column;
 `;
 
-const ContentWrapper = styled(TransitionGroup)`
+const ContentWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -150,7 +147,7 @@ const Box = styled.div<{ maxWidth: string | undefined, ratio: number }>`
   margin-bottom: 16px;
   position: relative;
 
-  &.hasSpacing {
+  &.hasRightMargin {
     margin-right: 20px;
   }
 
@@ -160,46 +157,6 @@ const Box = styled.div<{ maxWidth: string | undefined, ratio: number }>`
     height: ${({ maxWidth, ratio }) => ratio !== 1 ? 'auto' : maxWidth};
     padding-bottom: ${({ ratio }) => ratio !== 1 ? `${Math.round(ratio * 100)}%` : '0'};
   }
-
-  &.animate {
-    &.image-enter {
-      opacity: 0;
-      width: 0px;
-      transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1) 2000ms;
-
-      &.hasSpacing {
-        margin-right: 0px;
-      }
-
-      &.image-enter-active {
-        opacity: 1;
-        width: 100%;
-
-        &.hasSpacing {
-          margin-right: 20px;
-        }
-      }
-    }
-
-    &.image-exit {
-      opacity: 1;
-      width: 100%;
-      transition: all 250ms ease-out;
-
-      &.hasSpacing {
-        margin-right: 20px;
-      }
-
-      &.image-exit-active {
-        opacity: 0;
-        width: 0px;
-
-        &.hasSpacing {
-          margin-right: 0px;
-        }
-      }
-    }
-  }
 `;
 
 const RemoveIcon = styled(Icon)`
@@ -208,7 +165,7 @@ const RemoveIcon = styled(Icon)`
   transition: all 100ms ease-out;
 `;
 
-const RemoveButton: any = styled.div`
+const RemoveButton = styled.div`
   width: 30px;
   height: 30px;
   display: flex;
@@ -254,9 +211,6 @@ interface Props {
 interface State {
   images: UploadFile[] | null;
   errorMessage: string | null;
-  processing: boolean;
-  canAnimate: boolean;
-  canAnimateTimeout: any;
 }
 
 class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
@@ -264,10 +218,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       images: [],
-      errorMessage: null,
-      processing: false,
-      canAnimate: false,
-      canAnimateTimeout: null
+      errorMessage: null
     };
   }
 
@@ -290,17 +241,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
       }
 
       const errorMessage = (this.props.errorMessage && this.props.errorMessage !== this.state.errorMessage ? this.props.errorMessage : this.state.errorMessage);
-      const processing = (this.state.canAnimate && !errorMessage && size(images) > size(this.state.images));
-
-      if (processing) {
-        setTimeout(() => this.setState({ processing: false }), 1800);
-      }
-
-      this.setState({
-        images,
-        errorMessage,
-        processing
-      });
+      this.setState({ images, errorMessage });
     }
   }
 
@@ -341,17 +282,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     const newItemsCount = size(images);
     const remainingItemsCount = (maxItemsCount ? maxItemsCount - oldItemsCount : null);
 
-    this.setState((state: State) => {
-      if (state.canAnimateTimeout !== null) {
-        clearTimeout(state.canAnimateTimeout);
-      }
-
-      return {
-        errorMessage: null,
-        canAnimate: true,
-        canAnimateTimeout: setTimeout(() => this.setState({ canAnimate: false, canAnimateTimeout: null }), 5000)
-      };
-    });
+    this.setState({ errorMessage: null });
 
     if (maxItemsCount && remainingItemsCount && newItemsCount > remainingItemsCount) {
       const errorMessage = (maxItemsCount === 1 ? formatMessage(messages.onlyOneImage) : formatMessage(messages.onlyXImages, { maxItemsCount }));
@@ -381,18 +312,6 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   removeImage = (removedImage: UploadFile) => (event: React.FormEvent<any>) => {
     event.preventDefault();
     event.stopPropagation();
-
-    this.setState((state: State) => {
-      if (state.canAnimateTimeout !== null) {
-        clearTimeout(state.canAnimateTimeout);
-      }
-
-      return {
-        canAnimate: true,
-        canAnimateTimeout: setTimeout(() => this.setState({ canAnimate: false, canAnimateTimeout: null }), 1000)
-      };
-    });
-
     setTimeout(() => this.props.onRemove(removedImage), 50);
 
     if (removedImage && removedImage['objectUrl']) {
@@ -405,72 +324,52 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     let { images } = this.state;
     const { maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, imageRadius, className } = this.props;
     const { formatMessage } = this.props.intl;
-    const { errorMessage, processing, canAnimate } = this.state;
+    const { errorMessage } = this.state;
     const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - size(images)} ${formatMessage(messages.remaining)})` : null);
+
     images = (compact(images) || null);
     acceptedFileTypes = (acceptedFileTypes || '*');
     placeholder = (placeholder || (maxNumberOfImages && maxNumberOfImages === 1 ? formatMessage(messages.uploadImage) : formatMessage(messages.uploadMultipleImages)));
     objectFit = (objectFit || 'cover');
 
-    console.log('processing:' + processing);
-    console.log('maxNumberOfImages:' + maxNumberOfImages);
-    console.log('isEmpty(images): ' + isEmpty(images));
-    console.log('show dropzone:' + (processing || maxNumberOfImages > 1 || (maxNumberOfImages === 1 && isEmpty(images))));
+    return (
+      <Container className={className}>
+        <ContentWrapper>
+          {(maxNumberOfImages > 1 || (maxNumberOfImages === 1 && isEmpty(images))) &&
+            <Box
+              maxWidth={maxImagePreviewWidth}
+              ratio={imagePreviewRatio}
+              className={images && maxNumberOfImages > 1 && images.length > 0 ? 'hasRightMargin' : ''}
+            >
+              <Dropzone
+                accept={acceptedFileTypes}
+                maxSize={maxImageFileSize}
+                disabled={maxNumberOfImages === images.length}
+                onDrop={this.onDrop as any}
+                onDropRejected={this.onDropRejected as any}
+              >
+                {({ getRootProps, getInputProps }) => {
+                  return (
+                    <DropzoneContent {...getRootProps()}>
+                      <DropzoneInput {...getInputProps()} />
+                      <DropzoneContentInner>
+                        <DropzonePlaceholderIcon name="upload" ariaHidden />
+                        <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
+                        <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
+                      </DropzoneContentInner>
+                    </DropzoneContent>
+                  );
+                }}
+              </Dropzone>
+            </Box>
+          }
 
-    const dropzone = (processing || maxNumberOfImages > 1 || (maxNumberOfImages === 1 && isEmpty(images))) ? (
-      <Box
-        maxWidth={maxImagePreviewWidth}
-        ratio={imagePreviewRatio}
-        className={(maxNumberOfImages !== 1 && images && images.length > 0 ? 'hasSpacing' : '')}
-      >
-        <Dropzone
-          accept={acceptedFileTypes}
-          maxSize={maxImageFileSize}
-          disabled={processing || maxNumberOfImages === images.length}
-          onDrop={this.onDrop as any}
-          onDropRejected={this.onDropRejected as any}
-        >
-          {({ getRootProps, getInputProps /*, isDragActive */ }) => (
-            <DropzoneContent {...getRootProps()}>
-              {!processing && <DropzoneInput {...getInputProps()} />}
-              <DropzoneContentInner>
-                {!processing ? (
-                  <>
-                    <DropzonePlaceholderIcon name="upload" ariaHidden />
-                    <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
-                    <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
-                  </>
-                ) : (
-                  <Spinner />
-                )}
-              </DropzoneContentInner>
-            </DropzoneContent>
-          )}
-        </Dropzone>
-      </Box>
-    ) : null;
-
-    const imageList = ((images && images.length > 0 && (maxNumberOfImages !== 1 || (maxNumberOfImages === 1 && !processing))) ? (
-      images.map((image, index) => {
-        const hasSpacing = (maxNumberOfImages !== 1 && index !== 0 ? 'hasSpacing' : '');
-        const animate = (canAnimate && maxNumberOfImages && maxNumberOfImages > 1 ? 'animate' : '');
-        const timeout = !isEmpty(animate) ? { enter: 2300, exit: 300 } : 0;
-        const enter = !isEmpty(animate);
-        const exit = !isEmpty(animate);
-
-        return (
-          <CSSTransition
-            key={image.url}
-            classNames="image"
-            timeout={timeout}
-            enter={enter}
-            exit={exit}
-          >
+          {images && images.length > 0 && images.map((image, index) => (
             <Box
               key={index}
               maxWidth={maxImagePreviewWidth}
               ratio={imagePreviewRatio}
-              className={`${hasSpacing} ${animate}`}
+              className={images && maxNumberOfImages > 1 && index !== images.length - 1 ? 'hasRightMargin' : ''}
             >
               <Image
                 imageRadius={imageRadius}
@@ -485,16 +384,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                 </RemoveButton>
               </Image>
             </Box>
-          </CSSTransition>
-        );
-      }).reverse()
-    ) : null);
-
-    return (
-      <Container className={className}>
-        <ContentWrapper>
-          {dropzone}
-          {imageList}
+          ))}
         </ContentWrapper>
 
         <ErrorWrapper>
