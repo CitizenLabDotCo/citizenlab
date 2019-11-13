@@ -139,8 +139,8 @@ nl:
     is_empty: "%{property} heeft geen waarde"
     not_is_empty: "%{property} heeft om het even welke waarde"
     custom_field_checkbox:
-      is_checked: "Heeft %{property} aangevinkt"
-      not_is_checked: "Heeft %{property} niet aangevinkt"
+      is_checked: "%{property} aangevinkt"
+      not_is_checked: "%{property} niet aangevinkt"
     custom_field_date:
       is_before: "%{property} is voor %{value}" 
       is_exactly: "%{property} is %{value}"
@@ -169,6 +169,41 @@ nl:
     lives_in:
       has_value_outside: "%{property} is ergens anders"
       not_has_value_outside: "%{property} is niet ergens anders"
+    participated_in_idea_status:
+      in: "Participatie in een idee met status %{value}"
+      not_in: "Geen participatie in een idea met status %{value}"
+      posted_in: "Plaatste een idee met status %{value}"
+      not_posted_in: "Plaatste geen idee met status %{value}"
+      commented_in: "Reageerde op een idee met status %{value}"
+      not_commented_in: "Reageerde niet op een idee met status %{value}"
+      voted_idea_in: "Stemde op een idee met status %{value}"
+      not_voted_idea_in: "Stemde niet op een idee met status %{value}"
+      voted_comment_in: "Stemde op een reactie op een idee met status %{value}"
+      not_voted_comment_in: "Stemde niet op een reactie op een idee met status %{value}"
+    participated_in_project:
+      in: "Participatie in een idee in het project %{value}"
+      not_in: "Geen participatie in een idee in het project %{value}"
+      posted_in: "Plaatste een idee in het project %{value}"
+      not_posted_in: "Plaatste geen idee in het project %{value}"
+      commented_in: "Reageerde op een idee in het project %{value}"
+      not_commented_in: "Reageerde niet op een idee in het project %{value}"
+      voted_idea_in: "Stemde op een idee in het project %{value}"
+      not_voted_idea_in: "Stemde niet op een idee in het project %{value}"
+      voted_comment_in: "Stemde op een reactie op een idee in het project %{value}"
+      not_voted_comment_in: "Stemde niet op een reactie op een idee in het project %{value}"
+      budgeted_in: "Assigned a budget in het project %{value}"
+      not_budgeted_in: "Didn't assign a budget in het project %{value}"
+    participated_in_topic:
+      in: "Participation in een idee met thema %{value}"
+      not_in: "Geen participatie in een idee met thema %{value}"
+      posted_in: "Plaatste een idee met thema %{value}"
+      not_posted_in: "Plaatste geen idee met thema %{value}"
+      commented_in: "Reageerde op een idee met thema %{value}"
+      not_commented_in: "Reageerde niet op een idee met thema %{value}"
+      voted_idea_in: "Stemde op een idee met thema %{value}"
+      not_voted_idea_in: "Stemde niet op een idee met thema %{value}"
+      voted_comment_in: "Stemde op een reactie op een idee met thema %{value}"
+      not_voted_comment_in: "Stemde niet op een reactie op een idee met thema %{value}"
     registration_completed_at:
       property: "registratie"
     role:
