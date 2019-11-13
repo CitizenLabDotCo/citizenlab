@@ -49,13 +49,6 @@ module OmniauthMethods
       true
     end
 
-    # def unchangeable_attributes
-    #   [:first_name, :last_name, :gender, :birthyear]
-    # end
-
-    # def unchangeable_custom_fields
-    #   [:birthyear, :gender]
-    # end
   end
 
 end
