@@ -61,7 +61,7 @@ const AvatarIcon = styled(Icon)<{ size: string, fillColor: string | undefined }>
   background: transparent;
   position: relative;
   ${({ bgColor }) => bgColor ? `background: ${bgColor};` : ''}
-  ${({ borderThickness, borderColor }) => borderColor ? `border: solid ${borderThickness || '1px'} borderColor;` : ''}
+  ${({ borderThickness, borderColor }) => borderColor ? `border: solid ${borderThickness || '1px'} ${borderColor};` : ''}
 
   &.hasHoverEffect {
     cursor: pointer;
