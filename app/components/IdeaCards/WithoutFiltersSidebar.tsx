@@ -13,7 +13,7 @@ import ProjectFilterDropdown from './ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
-import ViewButtons from 'components/PostCardComponents/ViewButtons';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 // resources
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
