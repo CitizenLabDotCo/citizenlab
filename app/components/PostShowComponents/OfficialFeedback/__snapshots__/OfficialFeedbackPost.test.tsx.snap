@@ -12,7 +12,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
           "handler": [Function],
           "label": <FormattedMessage
             defaultMessage="Edit"
-            id="app.components.PostComponents.OfficialFeedback.editOfficialFeedbackPost"
+            id="app.components.PostShowComponents.OfficialFeedback.editOfficialFeedbackPost"
           />,
           "name": "edit",
         },
@@ -20,7 +20,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
           "handler": [Function],
           "label": <FormattedMessage
             defaultMessage="Delete"
-            id="app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost"
+            id="app.components.PostShowComponents.OfficialFeedback.deleteOfficialFeedbackPost"
           />,
           "name": "delete",
         },
@@ -63,7 +63,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
       <OfficialFeedbackPost__DateEdited>
         <FormattedMessage
           defaultMessage="Last edited on {date}"
-          id="app.components.PostComponents.OfficialFeedback.lastEdition"
+          id="app.components.PostShowComponents.OfficialFeedback.lastEdition"
           values={
             Object {
               "date": <FormattedDate
@@ -121,7 +121,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
       <OfficialFeedbackPost__DateEdited>
         <FormattedMessage
           defaultMessage="Last edited on {date}"
-          id="app.components.PostComponents.OfficialFeedback.lastEdition"
+          id="app.components.PostShowComponents.OfficialFeedback.lastEdition"
           values={
             Object {
               "date": <FormattedDate
