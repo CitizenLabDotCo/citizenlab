@@ -50,7 +50,7 @@ const ViewButton = styled.button`
   }
 `;
 
-const CardsButton = styled(ViewButton)`
+const ListButton = styled(ViewButton)`
   border-top-left-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: ${(props: any) => props.theme.borderRadius};
   border-right: none;
@@ -63,17 +63,17 @@ const MapButton = styled(ViewButton)`
 
 interface Props {
   className?: string;
-  showCardView: boolean;
+  showListView: boolean;
   showMapView: boolean;
-  onClick: (selectedView: 'card' | 'map') => (event: React.MouseEvent) => void;
+  onClick: (selectedView: 'list' | 'map') => (event: React.FormEvent) => void;
 }
 
-const ViewButtons = memo<Props>(({ className, showCardView, showMapView, onClick }: Props) => {
+const ViewButtons = memo<Props>(({ className, showListView, showMapView, onClick }: Props) => {
   return (
-    <Container className={`${className} ${showCardView && 'cardView'}`}>
-      <CardsButton onClick={onClick('card')} className={`${showCardView && 'active'}`}>
-        <FormattedMessage {...messages.cards} />
-      </CardsButton>
+    <Container className={className}>
+      <ListButton onClick={onClick('list')} className={`${showListView && 'active'}`}>
+        <FormattedMessage {...messages.list} />
+      </ListButton>
       <MapButton onClick={onClick('map')} className={`${showMapView && 'active'}`}>
         <FormattedMessage {...messages.map} />
       </MapButton>

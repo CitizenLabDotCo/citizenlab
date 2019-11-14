@@ -317,7 +317,7 @@ const ShowMoreButton = styled(Button)``;
 
 interface InputProps extends GetIdeasInputProps  {
   showViewToggle?: boolean | undefined;
-  defaultView?: 'card' | 'map' | null | undefined;
+  defaultView?: 'list' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: 'Phase' | 'Project' | null;
@@ -335,7 +335,7 @@ interface Props extends InputProps, DataProps {
 }
 
 interface State {
-  selectedView: 'card' | 'map';
+  selectedView: 'list' | 'map';
   filtersModalOpened: boolean;
   selectedIdeaFilters: Partial<IQueryParameters>;
   previouslySelectedIdeaFilters: Partial<IQueryParameters> | null;
@@ -349,7 +349,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      selectedView: (props.defaultView || 'card'),
+      selectedView: (props.defaultView || 'list'),
       filtersModalOpened: false,
       selectedIdeaFilters: get(props.ideas, 'queryParameters', {}),
       previouslySelectedIdeaFilters: null
@@ -365,7 +365,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     }
 
     if (this.props.phaseId !== prevProps.phaseId) {
-      this.setState({ selectedView: this.props.defaultView || 'card' });
+      this.setState({ selectedView: this.props.defaultView || 'list' });
     }
   }
 
@@ -475,7 +475,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   }
 
-  selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
+  selectView = (selectedView: 'list' | 'map') => (event: FormEvent<any>) => {
     event.preventDefault();
     trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
     this.setState({ selectedView });
@@ -494,7 +494,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const { participationMethod, participationContextId, participationContextType, ideas, ideasFilterCounts, windowSize, className, theme, showViewToggle } = this.props;
     const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
     const hasIdeas = (!isNilOrError(list) && list.length > 0);
-    const showCardView = (selectedView === 'card');
+    const showListView = (selectedView === 'list');
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
@@ -589,7 +589,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 {showViewToggle &&
                   <FeatureFlag name="maps">
                     <StyledViewButtons
-                      showCardView={showCardView}
+                      showListView={showListView}
                       showMapView={showMapView}
                       onClick={this.selectView}
                     />
@@ -617,7 +617,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <ContentLeft>
-                {showCardView && !querying && hasIdeas && list &&
+                {showListView && !querying && hasIdeas && list &&
                   <IdeasList id="e2e-ideas-list">
                     {list.map((idea) => (
                       <StyledIdeaCard
@@ -631,7 +631,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   </IdeasList>
                 }
 
-                {showCardView && !querying && hasMore &&
+                {showListView && !querying && hasMore &&
                   <Footer>
                     <ShowMoreButton
                       id="e2e-idea-cards-show-more-button"
@@ -650,7 +650,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   </Footer>
                 }
 
-                {showCardView && querying &&
+                {showListView && querying &&
                   <Loading id="ideas-loading">
                     <Spinner />
                   </Loading>
