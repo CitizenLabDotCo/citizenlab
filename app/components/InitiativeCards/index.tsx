@@ -17,6 +17,7 @@ import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
+import ViewButtons from './ViewButtons';
 
 //  Typings
 import { MessageDescriptor } from 'typings';
@@ -294,57 +295,8 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const ViewButtons = styled.div`
-  display: flex;
-  margin-right: 15px;
-`;
-
-const ViewButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: transparent;
-  border: solid 1px ${({ theme }) => theme.colorText};
-
-  &:not(.active):hover {
-    background: ${({ theme }) => rgba(theme.colorText, 0.08)};
-  }
-
-  &.active {
-    background: ${({ theme }) => theme.colorText};
-
-    > span {
-      color: #fff;
-    }
-  }
-
-  > span {
-    color: ${({ theme }) => theme.colorText};
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: normal;
-    padding-left: 18px;
-    padding-right: 18px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-
-    ${media.smallerThanMinTablet`
-      padding-top: 9px;
-      padding-bottom: 9px;
-    `}
-  }
-`;
-
-const CardsButton = styled(ViewButton)`
-  border-top-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-right: none;
-`;
-
-const MapButton = styled(ViewButton)`
- border-top-right-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
+const StyledViewButtons = styled(ViewButtons)`
+  margin-right: 20px;
 `;
 
 const Footer = styled.div`
@@ -507,16 +459,8 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   }
 
-  selectListView = (event: FormEvent<any>) => {
+  selectView = (selectedView: 'list' | 'map') => (event: FormEvent<any>) => {
     event.preventDefault();
-    const selectedView = 'list';
-    trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
-    this.setState({ selectedView });
-  }
-
-  selectMapView = (event: FormEvent<any>) => {
-    event.preventDefault();
-    const selectedView = 'map';
     trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
     this.setState({ selectedView });
   }
@@ -536,6 +480,8 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     const hasInitiatives = (!isNilOrError(list) && list.length > 0);
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
+    const showListView = selectedView === 'list';
+    const showMapView = selectedView === 'map';
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
@@ -629,20 +575,11 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
                 <FeatureFlag name="maps">
-                  <ViewButtons>
-                    <CardsButton
-                      onClick={this.selectListView}
-                      className={selectedView === 'list' ? 'active' : ''}
-                    >
-                      <FormattedMessage {...messages.cards} />
-                    </CardsButton>
-                    <MapButton
-                      onClick={this.selectMapView}
-                      className={selectedView === 'map' ? 'active' : ''}
-                    >
-                      <FormattedMessage {...messages.map} />
-                    </MapButton>
-                  </ViewButtons>
+                  <StyledViewButtons
+                    onClick={this.selectView}
+                    showListView={showListView}
+                    showMapView={showMapView}
+                  />
                 </FeatureFlag>
 
                 {!isNilOrError(initiativesFilterCounts) &&
