@@ -158,6 +158,17 @@ describe SmartGroupRules::ParticipatedInProject do
       'predicate'     => 'not_voted_comment_in',
       'value'         => project.id
     })}
+    let(:participated_budgeted_in_project_in_rule) {SmartGroupRules::ParticipatedInProject.from_json({
+      'ruleType'      => 'participated_in_project',
+      'predicate'     => 'budgeted_in',
+      'value'         => project.id
+    })}
+    let(:participated_not_budgeted_in_project_in_rule) {SmartGroupRules::ParticipatedInProject.from_json({
+      'ruleType'      => 'participated_in_project',
+      'predicate'     => 'not_budgeted_in',
+      'value'         => project.id
+    })}
+    
 
     it "successfully translates different combinations of rules" do
       # Stubbing the translations so the specs don't depend on those.
