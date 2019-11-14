@@ -191,8 +191,8 @@ nl:
       not_voted_idea_in: "Stemde niet op een idee in het project %{value}"
       voted_comment_in: "Stemde op een reactie op een idee in het project %{value}"
       not_voted_comment_in: "Stemde niet op een reactie op een idee in het project %{value}"
-      budgeted_in: "Assigned a budget in het project %{value}"
-      not_budgeted_in: "Didn't assign a budget in het project %{value}"
+      budgeted_in: "Wees een budget toe in het project %{value}"
+      not_budgeted_in: "Wees geen budget toe in het project %{value}"
     participated_in_topic:
       in: "Participation in een idee met thema %{value}"
       not_in: "Geen participatie in een idee met thema %{value}"
