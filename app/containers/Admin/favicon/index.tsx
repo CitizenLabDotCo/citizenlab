@@ -91,8 +91,13 @@ class Favicon extends PureComponent<Props, State> {
     }
   }
 
-  handleUploadOnAdd = (newImage: UploadFile) => {
-    this.setState({ attributesDiff: { favicon: newImage.base64 as string }, favicon: [newImage] });
+  handleUploadOnAdd = (newImage: UploadFile[]) => {
+    this.setState({
+      attributesDiff: {
+      favicon: newImage[0].base64
+      },
+      favicon: [newImage[0]]
+    });
   }
 
   handleUploadOnRemove = () => {

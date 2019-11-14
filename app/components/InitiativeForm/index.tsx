@@ -174,8 +174,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     this.onBlur('topic_ids')();
   }
 
-  addBanner = (banner: UploadFile) => {
-    this.props.onChangeBanner(banner);
+  addBanner = (banner: UploadFile[]) => {
+    this.props.onChangeBanner(banner[0]);
     this.onBlur('banner')();
   }
 
@@ -184,8 +184,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     this.onBlur('banner')();
   }
 
-  addImage = (image: UploadFile) => {
-    this.props.onChangeImage(image);
+  addImage = (image: UploadFile[]) => {
+    this.props.onChangeImage(image[0]);
     this.onBlur('image')();
   }
 
