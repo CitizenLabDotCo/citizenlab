@@ -7,11 +7,7 @@ import Dropdown from 'components/UI/Dropdown';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const List = styled.ul`
   margin: 0;
