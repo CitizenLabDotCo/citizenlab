@@ -209,6 +209,8 @@
   "app.components.PagesForm.pageTitle": "Titel",
   "app.components.PagesShowPage.notFoundDescription": "De opgevraagde pagina kon niet worden gevonden",
   "app.components.PagesShowPage.notFoundTitle": "Pagina niet gevonden",
+  "app.components.PostCardsComponents.list": "",
+  "app.components.PostCardsComponents.map": "",
   "app.components.PostShowComponents.OfficialFeedback.addOfficalUpdate": "Voeg een update toe",
   "app.components.PostShowComponents.OfficialFeedback.cancel": "Annuleren",
   "app.components.PostShowComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Verwijder",
