@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_23_121111) do
+ActiveRecord::Schema.define(version: 2019_11_14_092523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -576,6 +576,7 @@ ActiveRecord::Schema.define(version: 2019_10_23_121111) do
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
     t.integer "max_budget"
+    t.boolean "location_allowed", default: true, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -662,6 +663,7 @@ ActiveRecord::Schema.define(version: 2019_10_23_121111) do
     t.integer "max_budget"
     t.integer "comments_count", default: 0, null: false
     t.uuid "default_assignee_id"
+    t.boolean "location_allowed", default: true, null: false
     t.index ["created_at"], name: "index_projects_on_created_at", order: :desc
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
