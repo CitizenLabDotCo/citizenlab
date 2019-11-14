@@ -25,8 +25,8 @@ import { darken } from 'polished';
 // Components
 import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
-import CommentHeader from 'components/PostComponents/Comments/CommentHeader';
-import CommentBody from 'components/PostComponents/Comments/CommentBody';
+import CommentHeader from 'components/PostShowComponents/Comments/CommentHeader';
+import CommentBody from 'components/PostShowComponents/Comments/CommentBody';
 
 // intl
 import messages from './messages';

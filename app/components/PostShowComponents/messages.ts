@@ -2,35 +2,35 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   createdTimeAgo: {
-    id: 'app.components.PostComponents.createdTimeAgo',
+    id: 'app.components.PostShowComponents.createdTimeAgo',
     defaultMessage: 'Created {timeAgo}',
   },
   seeTranslation: {
-    id: 'app.components.PostComponents.seeTranslation',
+    id: 'app.components.PostShowComponents.seeTranslation',
     defaultMessage: 'See translation',
   },
   seeOriginal: {
-    id: 'app.components.PostComponents.seeOriginal',
+    id: 'app.components.PostShowComponents.seeOriginal',
     defaultMessage: 'See original',
   },
   linkToHomePage: {
-    id: 'app.components.PostComponents.linkToHomePage',
+    id: 'app.components.PostShowComponents.linkToHomePage',
     defaultMessage: 'Home page'
   },
   lastUpdated: {
-    id: 'app.components.PostComponents.lastUpdated',
+    id: 'app.components.PostShowComponents.lastUpdated',
     defaultMessage: 'Last modified {modificationTime}',
   },
   lastChangesTitleIdea: {
-    id: 'app.components.PostComponents.lastChangesTitleIdea',
+    id: 'app.components.PostShowComponents.lastChangesTitleIdea',
     defaultMessage: 'Last changes to this idea',
   },
   lastChangesTitleInitiative: {
-    id: 'app.components.PostComponents.lastChangesTitleInitiative',
+    id: 'app.components.PostShowComponents.lastChangesTitleInitiative',
     defaultMessage: 'Last changes to this initiative',
   },
   changeLogEntryIdea: {
-    id: 'app.components.PostComponents.changeLogEntryIdea',
+    id: 'app.components.PostShowComponents.changeLogEntryIdea',
     defaultMessage: `{changeType, select,
       changed_status {{userName} has updated the status of this idea}
       published {{userName} created this idea}
@@ -39,7 +39,7 @@ export default defineMessages({
     }`,
   },
   changeLogEntryInitiative: {
-    id: 'app.components.PostComponents.changeLogEntryInitiative',
+    id: 'app.components.PostShowComponents.changeLogEntryInitiative',
     defaultMessage: `{changeType, select,
       changed_status {{userName} has updated the status of this initiative}
       published {{userName} created this initiative}

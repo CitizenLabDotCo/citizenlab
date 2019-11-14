@@ -14,7 +14,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetInitiativeStatus, { GetInitiativeStatusChildProps } from 'resources/GetInitiativeStatus';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
-import OfficialFeedbackForm from 'components/PostComponents/OfficialFeedback/Form/OfficialFeedbackForm';
+import OfficialFeedbackForm from 'components/PostShowComponents/OfficialFeedback/Form/OfficialFeedbackForm';
 
 // services
 import { updateInitiativeStatusWithExistingFeedback, updateInitiativeStatusAddFeedback } from 'services/initiativeStatusChanges';
