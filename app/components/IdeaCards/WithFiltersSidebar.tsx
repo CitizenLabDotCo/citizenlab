@@ -17,6 +17,7 @@ import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
+import ViewButtons from './ViewButtons';
 
 // resources
 import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps, IQueryParameters } from 'resources/GetIdeas';
@@ -293,59 +294,6 @@ const StyledIdeasTopicsFilter = styled(TopicFilterBox)`
 
 const Spacer = styled.div`
   flex: 1;
-`;
-
-const ViewButtons = styled.div`
-  display: flex;
-  margin-right: 10px;
-`;
-
-const ViewButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: transparent;
-  border: solid 1px ${({ theme }) => theme.colorText};
-
-  &:not(.active):hover {
-    background: ${({ theme }) => rgba(theme.colorText, 0.08)};
-  }
-
-  &.active {
-    background: ${({ theme }) => theme.colorText};
-
-    > span {
-      color: #fff;
-    }
-  }
-
-  > span {
-    color: ${({ theme }) => theme.colorText};
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: normal;
-    padding-left: 18px;
-    padding-right: 18px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-
-    ${media.smallerThanMinTablet`
-      padding-top: 9px;
-      padding-bottom: 9px;
-    `}
-  }
-`;
-
-const CardsButton = styled(ViewButton)`
-  border-top-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-right: none;
-`;
-
-const MapButton = styled(ViewButton)`
- border-top-right-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const Footer = styled.div`
@@ -634,16 +582,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
-                {showViewToggle &&
+                {true &&
                   <FeatureFlag name="maps">
-                    <ViewButtons className={`${showCardView && 'cardView'}`}>
-                      <CardsButton onClick={this.selectView('card')} className={`${showCardView && 'active'}`}>
-                        <FormattedMessage {...messages.cards} />
-                      </CardsButton>
-                      <MapButton onClick={this.selectView('map')} className={`${showMapView && 'active'}`}>
-                        <FormattedMessage {...messages.map} />
-                      </MapButton>
-                    </ViewButtons>
+                    <ViewButtons
+                      showCardView={showCardView}
+                      showMapView={showMapView}
+                      onClick={this.selectView}
+                    />
                   </FeatureFlag>
                 }
 
