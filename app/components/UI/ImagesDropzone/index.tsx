@@ -164,12 +164,14 @@ const RemoveIcon = styled(Icon)`
   transition: all 100ms ease-out;
 `;
 
-const RemoveButton = styled.div`
+const RemoveButton = styled.button`
   width: 30px;
   height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  margin: 0;
   position: absolute;
   top: 8px;
   right: 8px;
