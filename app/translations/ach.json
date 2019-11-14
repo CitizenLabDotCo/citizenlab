@@ -209,8 +209,6 @@
   "app.components.PagesForm.pageTitle": "",
   "app.components.PagesShowPage.notFoundDescription": "",
   "app.components.PagesShowPage.notFoundTitle": "",
-  "app.components.PostCardComponents.list": "",
-  "app.components.PostCardComponents.map": "",
   "app.components.PostShowComponents.OfficialFeedback.addOfficalUpdate": "",
   "app.components.PostShowComponents.OfficialFeedback.cancel": "",
   "app.components.PostShowComponents.OfficialFeedback.deleteOfficialFeedbackPost": "",
