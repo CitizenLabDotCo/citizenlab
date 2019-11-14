@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import Dropzone from 'react-dropzone';
-import { size, compact, isEmpty } from 'lodash-es';
+import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
 
 // components
@@ -13,11 +13,10 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import shallowCompare from 'utils/shallowCompare';
-import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/fileTools';
+import { getBase64FromFile } from 'utils/fileTools';
 
 // style
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 
 // typings
@@ -70,7 +69,7 @@ const DropzoneInput = styled.input``;
 
 const DropzoneContent = styled.div`
   box-sizing: border-box;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${({ theme }) => theme.borderRadius};
   border: 1px dashed ${colors.label};
   position: relative;
   cursor: pointer;
@@ -81,21 +80,7 @@ const DropzoneContent = styled.div`
     border-radius: 50%;
   }
 
-  ${(props: any) => props.disabled ? css`
-    cursor: not-allowed;
-    border-color: #ccc;
-    cursor: no-drop !important;
-
-    ${DropzonePlaceholderText},
-    ${DropzoneImagesRemaining} {
-      color: #ccc;
-    }
-
-    ${DropzonePlaceholderIcon} {
-      fill: #ccc;
-    }
-  ` : css`
-    cursor: pointer !important;
+  &:not(.disabled) {
 
     &:focus-within {
       outline: ${customOutline};
@@ -114,7 +99,21 @@ const DropzoneContent = styled.div`
         fill: #000;
       }
     }
-  `}
+  }
+
+  &.disabled {
+    cursor: no-drop;
+    border-color: #ccc;
+
+    ${DropzonePlaceholderText},
+    ${DropzoneImagesRemaining} {
+      color: #ccc;
+    }
+
+    ${DropzonePlaceholderIcon} {
+      fill: #ccc;
+    }
+  }
 `;
 
 const DropzoneContentInner = styled.div`
@@ -202,14 +201,16 @@ interface Props {
   placeholder?: string | JSX.Element | null | undefined;
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
-  onAdd: (arg: UploadFile) => void;
+  onAdd: (arg: UploadFile[]) => void;
   onRemove: (arg: UploadFile) => void;
   imageRadius?: string;
   className?: string;
 }
 
 interface State {
-  images: UploadFile[] | null;
+  urlObjects: {
+    [key: string] : string
+  };
   errorMessage: string | null;
 }
 
@@ -217,62 +218,48 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      images: [],
+      urlObjects: {},
       errorMessage: null
     };
   }
 
-  async componentDidMount() {
-    const images = await this.getImageFiles(this.props.images);
-    this.setState({ images });
+  componentDidMount() {
+    this.setUrlObjects();
   }
 
-  componentWillUnmount() {
-    this.revokeObjectUrls(this.state.images);
-  }
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.images !== this.props.images) {
+      this.setUrlObjects();
+    }
 
-  async componentDidUpdate(prevProps: Props) {
-    if (!shallowCompare(prevProps, this.props)) {
-      let images = this.state.images;
-
-      if (this.props.images !== this.state.images) {
-        this.revokeObjectUrls(this.state.images);
-        images = await this.getImageFiles(this.props.images);
-      }
-
+    if (prevProps.errorMessage !== this.props.errorMessage) {
       const errorMessage = (this.props.errorMessage && this.props.errorMessage !== this.state.errorMessage ? this.props.errorMessage : this.state.errorMessage);
-      this.setState({ images, errorMessage });
+      this.setState({ errorMessage });
     }
   }
 
-  getImageFiles = async (images: UploadFile[] | null) => {
-    if (images && images.length > 0) {
-      for (let i = 0; i < images.length; i += 1) {
-        if (!images[i].base64) {
-          try {
-            images[i].base64 = await getBase64FromFile(images[i]);
-          } catch (error) {
-            reportError(error);
-          }
-        }
-
-        if (!images[i].url) {
-          images[i].url = createObjectUrl(images[i]);
-        }
-      }
-    }
-
-    return images;
+  componentWillMount() {
+    forEach(this.state.urlObjects, (urlObject) => window.URL.revokeObjectURL(urlObject));
   }
 
-  revokeObjectUrls = (images: UploadFile[] | null) => {
-    if (images && images.length > 0) {
-      for (let i = 0; i < images.length; i += 1) {
-        if (images[i].url && images[i].url.startsWith('blob:')) {
-          revokeObjectURL(images[i].url);
-        }
+  setUrlObjects = () => {
+    const images = this.props.images || [];
+    const { urlObjects } = this.state;
+    const newUrlObjects = {};
+
+    images.filter(image => !urlObjects[image.base64]).forEach((image) => {
+      newUrlObjects[image.base64] = window.URL.createObjectURL(image);
+    });
+
+    forEach(urlObjects, (urlObject, key) => {
+      if (!images.some(image => image.base64 === key)) {
+        window.URL.revokeObjectURL(urlObject);
+      } else {
+        newUrlObjects[key] = urlObject;
       }
-    }
+    });
+
+    this.setState({ urlObjects: newUrlObjects });
   }
 
   onDrop = async (images: UploadFile[]) => {
@@ -288,12 +275,18 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
       const errorMessage = (maxItemsCount === 1 ? formatMessage(messages.onlyOneImage) : formatMessage(messages.onlyXImages, { maxItemsCount }));
       this.setState({ errorMessage });
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
-    } else {
-      const imagesWithPreviews = await this.getImageFiles(images);
-
-      if (imagesWithPreviews && imagesWithPreviews.length > 0) {
-        imagesWithPreviews.forEach(image => this.props.onAdd(image));
+    } else if (images && images.length > 0) {
+      for (let i = 0; i < images.length; i += 1) {
+        if (!images[i].base64) {
+          try {
+            images[i].base64 = await getBase64FromFile(images[i]);
+          } catch (error) {
+            reportError(error);
+          }
+        }
       }
+
+      this.props.onAdd(uniqBy([...this.props.images || [], ...images], 'base64') as UploadFile[]);
     }
   }
 
@@ -309,25 +302,19 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  removeImage = (removedImage: UploadFile) => (event: React.FormEvent<any>) => {
+  removeImage = (removedImage: UploadFile) => (event: React.FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    setTimeout(() => this.props.onRemove(removedImage), 50);
-
-    if (removedImage && removedImage['objectUrl']) {
-      revokeObjectURL(removedImage['objectUrl']);
-    }
+    this.props.onRemove(removedImage);
   }
 
   render() {
     let { acceptedFileTypes, placeholder, objectFit } = this.props;
-    let { images } = this.state;
-    const { maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, imageRadius, className } = this.props;
+    const { images, maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, imageRadius, className } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage } = this.state;
     const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - size(images)} ${formatMessage(messages.remaining)})` : null);
 
-    images = (compact(images) || null);
     acceptedFileTypes = (acceptedFileTypes || '*');
     placeholder = (placeholder || (maxNumberOfImages && maxNumberOfImages === 1 ? formatMessage(messages.uploadImage) : formatMessage(messages.uploadMultipleImages)));
     objectFit = (objectFit || 'cover');
@@ -344,13 +331,13 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
               <Dropzone
                 accept={acceptedFileTypes}
                 maxSize={maxImageFileSize}
-                disabled={maxNumberOfImages === images.length}
+                disabled={!!(images && maxNumberOfImages === images.length)}
                 onDrop={this.onDrop as any}
                 onDropRejected={this.onDropRejected as any}
               >
                 {({ getRootProps, getInputProps }) => {
                   return (
-                    <DropzoneContent {...getRootProps()}>
+                    <DropzoneContent {...getRootProps()} className={images && maxNumberOfImages === images.length ? 'disabled' : ''}>
                       <DropzoneInput {...getInputProps()} />
                       <DropzoneContentInner>
                         <DropzonePlaceholderIcon name="upload" ariaHidden />
@@ -373,7 +360,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
             >
               <Image
                 imageRadius={imageRadius}
-                src={image.url}
+                src={this.state.urlObjects[image.base64]}
                 objectFit={objectFit}
               >
                 <RemoveButton

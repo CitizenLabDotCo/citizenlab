@@ -247,9 +247,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.setState({ address });
   }
 
-  handleUploadOnAdd = (imageFile: UploadFile) => {
+  handleUploadOnAdd = (imageFile: UploadFile[]) => {
     this.setState({
-      imageFile: [imageFile]
+      imageFile: [imageFile[0]]
     });
   }
 

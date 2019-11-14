@@ -163,15 +163,15 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     this.subscriptions.forEach(subsription => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile) => {
+  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile[]) => {
     this.setState((state) => ({
       ...state,
       logoError: (name === 'logo' ? null : state.logoError),
       headerError: (name === 'header_bg' ? null : state.headerError),
-      [name]: [newImage],
+      [name]: [newImage[0]],
       attributesDiff: {
         ...(state.attributesDiff || {}),
-        [name]: newImage.base64
+        [name]: newImage[0].base64
       }
     }));
   }

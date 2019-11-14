@@ -40,16 +40,6 @@ export async function getBase64FromFile(file: File) {
   });
 }
 
-export function createObjectUrl(file: UploadFile) {
-  const blob = new Blob([file], { type: file.type });
-  const objectUrl = window.URL.createObjectURL(blob);
-  return objectUrl;
-}
-
-export function revokeObjectURL(objectUrl: string) {
-  window.URL.revokeObjectURL(objectUrl);
-}
-
 function convertBlobToFile(blob: Blob, fileName: string) {
   const b: any = blob;
   b.lastModifiedDate = new Date();
