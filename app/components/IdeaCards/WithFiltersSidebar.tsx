@@ -106,6 +106,10 @@ const AboveContentRight = styled.div`
   align-items: center;
 `;
 
+const StyledViewButtons = styled(ViewButtons)`
+  margin-right: 20px;
+`;
+
 const IdeasCount = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
@@ -582,15 +586,15 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
-                {true &&
+                {showViewToggle &&
                   <FeatureFlag name="maps">
-                    <ViewButtons
+                    <StyledViewButtons
                       showCardView={showCardView}
                       showMapView={showMapView}
                       onClick={this.selectView}
                     />
                   </FeatureFlag>
-                }
+                 }
 
                 {!isNilOrError(ideasFilterCounts) &&
                   <IdeasCount>

@@ -10,7 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const Container = styled.div`
-    display: flex;
+  display: flex;
 `;
 
 const ViewButton = styled.button`
@@ -62,14 +62,15 @@ const MapButton = styled(ViewButton)`
 `;
 
 interface Props {
+  className?: string;
   showCardView: boolean;
   showMapView: boolean;
   onClick: (selectedView: 'card' | 'map') => (event: React.MouseEvent) => void;
 }
 
-const ViewButtons = memo<Props>(({ showCardView, showMapView, onClick }: Props) => {
+const ViewButtons = memo<Props>(({ className, showCardView, showMapView, onClick }: Props) => {
   return (
-    <Container className={`${showCardView && 'cardView'}`}>
+    <Container className={`${className} ${showCardView && 'cardView'}`}>
       <CardsButton onClick={onClick('card')} className={`${showCardView && 'active'}`}>
         <FormattedMessage {...messages.cards} />
       </CardsButton>
