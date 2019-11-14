@@ -65,7 +65,7 @@ const FiltersArea = styled.div`
   }
 
   ${media.smallerThanMaxTablet`
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     flex-direction: column;
     align-items: flex-start;
   `}
@@ -73,10 +73,7 @@ const FiltersArea = styled.div`
 
 const FilterArea = styled.div`
   display: flex;
-
-  ${media.biggerThanMinTablet`
-    align-items: center;
-  `}
+  align-items: center;
 `;
 
 const LeftFilterArea = styled(FilterArea)`
@@ -116,6 +113,10 @@ const DropdownFilters = styled.div`
   &.hidden {
     display: none;
   }
+`;
+
+const StyledViewButtons = styled(ViewButtons)`
+  margin-left: 20px;
 `;
 
 const StyledSearchInput = styled(SearchInput)`
@@ -320,7 +321,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
 
             {showViewToggle &&
               <FeatureFlag name="maps">
-                <ViewButtons
+                <StyledViewButtons
                   showCardView={showCardView}
                   showMapView={showMapView}
                   onClick={this.selectView}
