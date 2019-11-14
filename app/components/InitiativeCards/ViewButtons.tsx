@@ -65,13 +65,13 @@ interface Props {
   className?: string;
   showListView: boolean;
   showMapView: boolean;
-  onClick: (selectedView: 'list' | 'map') => (event: React.FormEvent) => void;
+  onClick: (selectedView: 'card' | 'map') => (event: React.FormEvent) => void;
 }
 
 const ViewButtons = memo<Props>(({ className, showListView, showMapView, onClick }: Props) => {
   return (
     <Container className={className}>
-      <ListButton onClick={onClick('list')} className={`${showListView && 'active'}`}>
+      <ListButton onClick={onClick('card')} className={`${showListView && 'active'}`}>
         <FormattedMessage {...messages.list} />
       </ListButton>
       <MapButton onClick={onClick('map')} className={`${showMapView && 'active'}`}>

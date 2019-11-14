@@ -57,7 +57,7 @@ const ListButton = styled(ViewButton)`
 `;
 
 const MapButton = styled(ViewButton)`
- border-top-right-radius: ${(props: any) => props.theme.borderRadius};
+  border-top-right-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
@@ -65,7 +65,7 @@ interface Props {
   className?: string;
   showListView: boolean;
   showMapView: boolean;
-  onClick: (selectedView: 'list' | 'map') => (event: React.FormEvent) => void;
+  onClick: (selectedView: 'card' | 'map') => (event: React.FormEvent) => void;
 }
 
 const ViewButtons = memo<Props>(({ className, showListView, showMapView, onClick }: Props) => {
@@ -74,7 +74,7 @@ const ViewButtons = memo<Props>(({ className, showListView, showMapView, onClick
       <ListButton
         role="tab"
         aria-selected={showListView}
-        onClick={onClick('list')}
+        onClick={onClick('card')}
         className={`${showListView && 'active'}`}
       >
         <FormattedMessage {...messages.list} />
