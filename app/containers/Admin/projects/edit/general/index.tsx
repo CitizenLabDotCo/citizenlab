@@ -612,6 +612,8 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       processingDelete
     } = this.state;
 
+    console.log(project);
+
     if (!get(this.props, 'params.projectId') || (get(this.props, 'params.projectId') && project !== undefined)) {
       const projectAttrs = { ...(project ? project.data.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
       const areaIds = projectAttrs.area_ids || (project && project.data.relationships.areas.data.map((area) => (area.id))) || [];
