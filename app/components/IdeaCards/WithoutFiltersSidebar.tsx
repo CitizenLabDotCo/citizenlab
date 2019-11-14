@@ -13,7 +13,7 @@ import ProjectFilterDropdown from './ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
-import ViewButtons from './ViewButtons';
+import ViewButtons from 'components/PostCardComponents/ViewButtons';
 
 // resources
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
@@ -203,7 +203,7 @@ const ShowMoreButton = styled(Button)``;
 
 interface InputProps extends GetIdeasInputProps  {
   showViewToggle?: boolean | undefined;
-  defaultView?: 'list' | 'map' | null | undefined;
+  defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: 'Phase' | 'Project' | null;
@@ -221,7 +221,7 @@ interface Props extends InputProps, DataProps {
 }
 
 interface State {
-  selectedView: 'list' | 'map';
+  selectedView: 'card' | 'map';
 }
 
 class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, State> {
@@ -232,13 +232,13 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      selectedView: (props.defaultView || 'list')
+      selectedView: (props.defaultView || 'card')
     };
   }
 
   componentDidUpdate(prevProps: Props) {
     if (this.props.phaseId !== prevProps.phaseId) {
-      this.setState({ selectedView: this.props.defaultView || 'list' });
+      this.setState({ selectedView: this.props.defaultView || 'card' });
     }
   }
 
@@ -263,7 +263,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     this.props.ideas.onChangeTopics(topics);
   }
 
-  selectView = (selectedView: 'list' | 'map') => (event: FormEvent<any>) => {
+  selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
     event.preventDefault();
     trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
     this.setState({ selectedView });
@@ -293,10 +293,11 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       loadingMore
     } = ideas;
     const hasIdeas = (!isNilOrError(list) && list.length > 0);
-    const showListView = (selectedView === 'list');
+    const showListView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
 
+    debugger;
     return (
       <Container id="e2e-ideas-container" className={className}>
         <FiltersArea id="e2e-ideas-filters" className={`${showMapView && 'mapView'}`}>

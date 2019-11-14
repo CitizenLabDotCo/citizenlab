@@ -17,7 +17,7 @@ import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
-import ViewButtons from './ViewButtons';
+import ViewButtons from 'components/PostCardComponents/ViewButtons';
 
 // resources
 import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps, IQueryParameters } from 'resources/GetIdeas';
@@ -317,7 +317,7 @@ const ShowMoreButton = styled(Button)``;
 
 interface InputProps extends GetIdeasInputProps  {
   showViewToggle?: boolean | undefined;
-  defaultView?: 'list' | 'map' | null | undefined;
+  defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: 'Phase' | 'Project' | null;
@@ -335,7 +335,7 @@ interface Props extends InputProps, DataProps {
 }
 
 interface State {
-  selectedView: 'list' | 'map';
+  selectedView: 'card' | 'map';
   filtersModalOpened: boolean;
   selectedIdeaFilters: Partial<IQueryParameters>;
   previouslySelectedIdeaFilters: Partial<IQueryParameters> | null;
@@ -349,7 +349,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      selectedView: (props.defaultView || 'list'),
+      selectedView: (props.defaultView || 'card'),
       filtersModalOpened: false,
       selectedIdeaFilters: get(props.ideas, 'queryParameters', {}),
       previouslySelectedIdeaFilters: null
@@ -365,7 +365,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     }
 
     if (this.props.phaseId !== prevProps.phaseId) {
-      this.setState({ selectedView: this.props.defaultView || 'list' });
+      this.setState({ selectedView: this.props.defaultView || 'card' });
     }
   }
 
@@ -475,7 +475,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   }
 
-  selectView = (selectedView: 'list' | 'map') => (event: FormEvent<any>) => {
+  selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
     event.preventDefault();
     trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
     this.setState({ selectedView });
@@ -494,7 +494,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const { participationMethod, participationContextId, participationContextType, ideas, ideasFilterCounts, windowSize, className, theme, showViewToggle } = this.props;
     const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
     const hasIdeas = (!isNilOrError(list) && list.length > 0);
-    const showListView = (selectedView === 'list');
+    const showListView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);

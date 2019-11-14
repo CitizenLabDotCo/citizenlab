@@ -17,7 +17,7 @@ import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
-import ViewButtons from './ViewButtons';
+import ViewButtons from 'components/PostCardComponents/ViewButtons';
 
 //  Typings
 import { MessageDescriptor } from 'typings';
@@ -330,7 +330,7 @@ interface Props extends InputProps, DataProps {
 }
 
 interface State {
-  selectedView: 'list' | 'map';
+  selectedView: 'card' | 'map';
   filtersModalOpened: boolean;
   selectedInitiativeFilters: Partial<IQueryParameters>;
   previouslySelectedInitiativeFilters: Partial<IQueryParameters> | null;
@@ -341,7 +341,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      selectedView: 'list',
+      selectedView: 'card',
       filtersModalOpened: false,
       selectedInitiativeFilters: get(props.initiatives, 'queryParameters', {}),
       previouslySelectedInitiativeFilters: null
@@ -459,7 +459,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   }
 
-  selectView = (selectedView: 'list' | 'map') => (event: FormEvent<any>) => {
+  selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
     event.preventDefault();
     trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
     this.setState({ selectedView });
@@ -480,7 +480,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     const hasInitiatives = (!isNilOrError(list) && list.length > 0);
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
-    const showListView = selectedView === 'list';
+    const showListView = selectedView === 'card';
     const showMapView = selectedView === 'map';
 
     const filtersSidebar = (
@@ -591,7 +591,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
               <Spacer />
 
-              {selectedView === 'list' &&
+              {selectedView === 'card' &&
                 <AboveContentRight>
                   <SortFilterDropdown
                     onChange={this.handleSortOnChange}
@@ -603,7 +603,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <ContentLeft>
-                {selectedView === 'list' && !querying && hasInitiatives && list &&
+                {selectedView === 'card' && !querying && hasInitiatives && list &&
                   <InitiativesList id="e2e-initiatives-list">
                     {list.map((initiative) => (
                       <StyledInitiativeCard
@@ -614,7 +614,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   </InitiativesList>
                 }
 
-                {selectedView === 'list' && !querying && hasMore &&
+                {selectedView === 'card' && !querying && hasMore &&
                   <Footer>
                     <ShowMoreButton
                       id="e2e-initiative-cards-show-more-button"
@@ -637,7 +637,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   <InitiativesMap />
                 }
 
-                {selectedView === 'list' && querying &&
+                {selectedView === 'card' && querying &&
                   <Loading id="initiatives-loading">
                     <Spinner />
                   </Loading>
