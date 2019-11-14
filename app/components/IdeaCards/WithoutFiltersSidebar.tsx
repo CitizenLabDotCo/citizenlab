@@ -394,7 +394,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </Loading>
         }
 
-        {!querying && !hasIdeas &&
+        {!querying && !hasIdeas && !showMapView &&
           <EmptyContainer id="ideas-empty">
             <IdeaIcon name="idea" />
             <EmptyMessage>
@@ -439,7 +439,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </Footer>
         }
 
-        {showMapView && hasIdeas &&
+        {showMapView &&
           <IdeasMap projectIds={queryParameters.projects} phaseId={queryParameters.phase} />
         }
       </Container>
