@@ -90,7 +90,6 @@ const Description = styled.p`
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.base}px;
     line-height: 21px;
-    margin-bottom: 50px;
   `}
 `;
 
