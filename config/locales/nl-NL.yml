@@ -194,7 +194,7 @@ nl:
       budgeted_in: "Wees een budget toe in het project %{value}"
       not_budgeted_in: "Wees geen budget toe in het project %{value}"
     participated_in_topic:
-      in: "Participation in een idee met thema %{value}"
+      in: "Participatie in een idee met thema %{value}"
       not_in: "Geen participatie in een idee met thema %{value}"
       posted_in: "Plaatste een idee met thema %{value}"
       not_posted_in: "Plaatste geen idee met thema %{value}"
