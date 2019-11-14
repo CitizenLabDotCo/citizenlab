@@ -29,6 +29,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  ${media.smallerThanMinTablet`
+    padding: 10px;
+  `}
+  ${media.largePhone`
+    padding: 0px;
+  `}
 `;
 
 const AboveTitle = styled.div`
@@ -36,12 +42,19 @@ const AboveTitle = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 25px;
-  background: #fff;
+  ${media.smallerThanMinTablet`
+    justify-content: flex-start;
+    margin-top: 15px;
+  `}
 `;
 
 const StyledAvatar = styled(Avatar)`
+  margin-left: -5px;
   margin-right: -5px;
   z-index: 2;
+  ${media.largePhone`
+    margin-left: 0;
+  `}
 `;
 
 const ShieldIcon = styled(Icon)`
@@ -52,23 +65,27 @@ const ShieldIcon = styled(Icon)`
 `;
 
 const Content = styled.div`
-  flex: 1 1 auto;
   display: flex;
-  justify-content: center;
+  ${media.smallerThanMinTablet`
+    flex-wrap: wrap;
+  `}
 `;
 
 const Context = styled.div`
   flex: 1 1 auto;
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  margin-right: 40px;
+  margin-top: 32px;
   margin-bottom: 30px;
-  margin-right: 15px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  ${media.smallerThanMinTablet`
+    padding: 0;
+    margin: 20px 0 30px;
+  `}
 `;
 
 const ContextLabel = styled.div`
@@ -84,25 +101,34 @@ const ContextItem = styled.span`
   line-height: normal;
   border-radius: ${props => props.theme.borderRadius};
   border: 1px solid ${colors.lightGreyishBlue};
-  padding: 5px 10px;
+  padding: 6px 13px;
   margin-bottom: 5px;
+  white-space: nowrap;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
 `;
 
 const Or = styled.span`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.small}px;
-  line-height: normal;
   border-radius: 50%;
   border: 1px solid ${colors.lightGreyishBlue};
-  padding: 2px 6px 1px 6px;
-  flex: 1 1 auto;
-  margin-bottom: 5px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  min-width: 25px;
+  height: 25px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 `;
 
 const ButtonsContainer = styled.div`
   flex: 1 1 auto;
   width: 100%;
-  max-width: 420px;
   padding-left: 40px;
   padding-right: 40px;
   padding-top: 32px;
@@ -115,10 +141,8 @@ const ButtonsContainer = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
 
   ${media.smallerThanMinTablet`
-    padding: 0;
-    margin-bottom: 10px;
-    max-width: auto;
-    background: transparent;
+    padding: 20px;
+    margin: 0;
   `}
 `;
 
