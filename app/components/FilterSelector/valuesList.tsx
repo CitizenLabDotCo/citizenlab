@@ -142,12 +142,7 @@ export default class ValuesList extends PureComponent<Props, State> {
       right,
       mobileRight
     } = this.props;
-    const selectedFilter = selected && selected[0];
-    const val = values && values.find(value => value.value === selectedFilter);
-    const x = values.find(entry => includes(selected, entry.value));
-    const y = x && x.text;
 
-    debugger;
     // ARIA reference example: https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
     return (
       <Dropdown
@@ -206,12 +201,6 @@ export default class ValuesList extends PureComponent<Props, State> {
               );
             }
             )}
-            {!multiple &&
-              <ScreenReaderOnly>
-                <FormattedMessage {...messages.a11y_selectedFilter} />
-                {y}
-              </ScreenReaderOnly>
-            }
           </List>
         )}
       />
