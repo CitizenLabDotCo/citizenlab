@@ -209,6 +209,8 @@
   "app.components.PagesForm.pageTitle": "Título",
   "app.components.PagesShowPage.notFoundDescription": "La página que busca no fue encontrada",
   "app.components.PagesShowPage.notFoundTitle": "Página no encontrada",
+  "app.components.PostCardComponents.list": "",
+  "app.components.PostCardComponents.map": "",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Añade una actualización",
   "app.components.PostComponents.OfficialFeedback.cancel": "Cancelar",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Eliminar",
