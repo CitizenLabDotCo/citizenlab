@@ -104,9 +104,10 @@ export default class Title extends PureComponent<Props, State> {
         aria-expanded={opened}
         id={`${baseID}-label`}
         className={`e2e-filter-selector-button FilterSelectorTitle ${opened ? 'opened' : ''} ${className} ${adminPage ? 'adminpage' : ''}`}
+        aria-live="polite"
       >
         <Text className="FilterSelectorTitleText">{title}</Text>
-        <DropdownIcon className="FilterSelectorTitleIcon" name="dropdown" />
+        <DropdownIcon className="FilterSelectorTitleIcon" name="dropdown" ariaHidden />
       </Container>
     );
   }
