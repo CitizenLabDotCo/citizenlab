@@ -13,6 +13,7 @@ import tracks from './tracks';
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import IdeaPreview from './IdeaPreview';
+import IdeaButton from 'components/IdeaButton';
 
 // Resources
 import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'resources/GetIdeaMarkers';
@@ -150,7 +151,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
   noIdeasWithLocationMessage = <FormattedMessage {...messages.noIdeasWithLocation} />;
 
   render() {
-    const { ideaMarkers, className } = this.props;
+    const { phaseId, projectIds, ideaMarkers, className } = this.props;
     const { selectedIdeaId, points } = this.state;
 
     return (
@@ -171,6 +172,16 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
           boxContent={selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null}
           onBoxClose={this.deselectIdea}
         />
+
+        {projectIds && projectIds.length === 1 &&
+          <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
+            <IdeaButton
+              projectId={projectIds[0]}
+              phaseId={phaseId || undefined}
+              onClick={this.redirectToIdeaCreation}
+            />
+          </div>
+        }
       </Container>
     );
   }
