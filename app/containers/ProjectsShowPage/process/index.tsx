@@ -154,7 +154,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
               {isPBPhase &&
                 <StyledPBExpenses
                   participationContextId={selectedPhaseId}
-                  participationContextType="Phase"
+                  participationContextType="phase"
                 />
               }
               <StyledPhaseSurvey

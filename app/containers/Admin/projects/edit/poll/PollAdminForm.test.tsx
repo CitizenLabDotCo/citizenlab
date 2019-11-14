@@ -43,7 +43,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={pollQuestions}
           locale="en"
         />
@@ -55,7 +55,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={pollQuestions}
           locale="en"
         />
@@ -67,7 +67,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={pollQuestions}
           locale="en"
         />
@@ -85,7 +85,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={pollQuestions}
           locale="en"
         />
@@ -102,7 +102,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={[]}
           locale="en"
         />
@@ -116,7 +116,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={[]}
           locale="en"
         />
@@ -128,7 +128,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={[]}
           locale="en"
         />
@@ -143,7 +143,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={[]}
           locale="en"
         />
@@ -160,7 +160,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={[]}
           locale="en"
         />
@@ -176,7 +176,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -191,7 +191,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -207,7 +207,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -222,7 +222,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -239,7 +239,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -255,7 +255,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -270,7 +270,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
           locale="en"
         />
@@ -287,7 +287,7 @@ describe('<PollAdminForm/>', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
-          participationContextType="projects"
+          participationContextType="project"
           pollQuestions={pollQuestions}
           locale="en"
         />

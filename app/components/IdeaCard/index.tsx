@@ -37,6 +37,7 @@ import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
 import { ParticipationMethod } from 'services/participationContexts';
+import { IParticipationContextType } from 'typings';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -108,7 +109,7 @@ export interface InputProps {
   ideaId: string;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
-  participationContextType?: 'Phase' | 'Project' | null;
+  participationContextType?: IParticipationContextType | null;
   className?: string;
 }
 
@@ -287,11 +288,13 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                 </BottomBounceUp>
               }
 
-              {showAssignBudgetDisabled === 'assignBudgetDisabled' && budgetingDescriptor && projectId &&
+              {showAssignBudgetDisabled === 'assignBudgetDisabled' && budgetingDescriptor && projectId && participationContextId && participationContextType &&
                 <BottomBounceUp icon="lock-outlined">
                   <DisabledWrapper>
                     <AssignBudgetDisabled
                       budgetingDescriptor={budgetingDescriptor}
+                      participationContextId={participationContextId}
+                      participationContextType={participationContextType}
                     />
                   </DisabledWrapper>
                 </BottomBounceUp>
