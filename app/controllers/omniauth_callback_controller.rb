@@ -8,7 +8,7 @@ class OmniauthCallbackController < ApplicationController
     auth_method = AuthenticationService.new.method_by_provider(provider)
     verification_method = Verification::VerificationService.new.method_by_name(provider)
     if auth_method
-      auth_callback verify: !!verification_method
+      auth_callback verify: !!verification_method, authver_method: auth_method
     elsif verification_method
       verification_callback verification_method
     else
@@ -22,7 +22,7 @@ class OmniauthCallbackController < ApplicationController
     @user = current_user
 
     if @user&.active?
-      @user.update!(verification_method.profile_to_user_attrs(auth))
+      update_user!(auth, @user, verification_method)
       begin
         handle_verification(auth, @user)
         redirect_to(add_uri_params(Frontend::UrlService.new.verification_success_url(locale: @user.locale), omniauth_params))
@@ -36,9 +36,7 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
-  def auth_callback verify:
-    auth_service = AuthenticationService.new
-
+  def auth_callback verify:, authver_method:
     auth = request.env['omniauth.auth']
     omniauth_params = request.env['omniauth.params']
     provider = auth['provider']
@@ -56,7 +54,7 @@ class OmniauthCallbackController < ApplicationController
           failure
           return
         end
-        @user.assign_attributes(auth_service.profile_to_user_attrs(auth).merge(invite_status: 'accepted'))
+        @user.assign_attributes(authver_method.profile_to_user_attrs(auth).merge(invite_status: 'accepted'))
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!
@@ -70,14 +68,12 @@ class OmniauthCallbackController < ApplicationController
         end
 
       else # !@user.invite_pending?
-        if auth_service.update_on_sign_in?(provider)
-          begin
-            @user.update!(auth_service.profile_to_user_attrs(auth))
-          rescue ActiveRecord::RecordInvalid => e
-            Raven.capture_exception e
-            failure
-            return
-          end
+        begin
+          update_user!(auth, @user, authver_method)
+        rescue ActiveRecord::RecordInvalid => e
+          Raven.capture_exception e
+          failure
+          return
         end
         redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), omniauth_params))
       end
@@ -86,7 +82,7 @@ class OmniauthCallbackController < ApplicationController
       handle_verification(auth, @user) if verify
 
     else # New user
-      @user = User.new(auth_service.profile_to_user_attrs(auth))
+      @user = User.new(authver_method.profile_to_user_attrs(auth))
       SideFxUserService.new.before_create(@user, nil)
       @user.identities << @identity
       begin
@@ -171,6 +167,14 @@ class OmniauthCallbackController < ApplicationController
           user: user
         )
       end
+    end
+  end
+
+  def update_user! auth, user, authver_method
+    if authver_method.respond_to? :updateable_user_attrs
+      attrs = authver_method.updateable_user_attrs
+      update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
+      user.update!(update_hash)
     end
   end
 

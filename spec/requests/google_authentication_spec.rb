@@ -55,6 +55,11 @@ describe "google authentication" do
         }
       }
     )
+    stub_request(:any, "https://lh3.googleusercontent.com/-Q2YP0Ju3enE/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rcvJkuBGnWEs_vjHZDTGaRUE7RXeg/mo/s640-c/photo.jpg")
+      .to_return(
+        status: 200,
+        body: lambda { |request| File.new(Rails.root.join("spec/fixtures/female_avatar_2.jpg")) },
+      )
 
     @tenant = Tenant.current
     settings = @tenant.settings
@@ -87,6 +92,19 @@ describe "google authentication" do
       user_id: user.id,
     })
     expect(cookies[:cl2_jwt]).to be_present
+  end
+
+  it "updates the avatar when re-authenticating an existing user with an avatar" do
+    user = create(:user,
+      email: 'boris.brompton@orange.uk',
+      avatar: Pathname.new(Rails.root.join("spec/fixtures/female_avatar_3.jpg")).open
+    )
+    original_file = user.avatar.file.file
+
+    get "/auth/google"
+    follow_redirect!
+
+    expect(user.reload.avatar.file.file).not_to eq original_file
   end
 
   it "successfully registers a new user" do

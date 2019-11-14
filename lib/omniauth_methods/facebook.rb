@@ -32,4 +32,8 @@ module OmniauthMethods
       user_attrs
     end
   end
+
+  def updateable_user_attrs
+    [:remote_avatar_url]
+  end
 end

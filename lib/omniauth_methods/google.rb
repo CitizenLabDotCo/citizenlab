@@ -33,6 +33,10 @@ module OmniauthMethods
       user_attrs
     end
 
+    def updateable_user_attrs
+      [:remote_avatar_url]
+    end
+
     private
     
     def image_available? img_url_s
