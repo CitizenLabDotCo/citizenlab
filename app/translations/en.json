@@ -1528,7 +1528,7 @@
   "app.containers.Projects.noExpenses": "You don't have any expenses yet",
   "app.containers.Projects.noPastEvents": "There are no past events",
   "app.containers.Projects.noPhaseSelected": "No phase selected",
-  "app.containers.Projects.noProjectFoundHere": "There is no project here.",
+  "app.containers.Projects.noProjectFoundHere": "{tenantName, select, CQC {Log in to view this project.} other {There is no project here.}}",
   "app.containers.Projects.noUpcomingEvents": "There are no upcoming events at this time",
   "app.containers.Projects.pastEvents": "Past events",
   "app.containers.Projects.project": "Project",
