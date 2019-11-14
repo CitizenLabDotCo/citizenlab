@@ -88,7 +88,6 @@
   "app.components.FilterBoxes.areas": "Lieux",
   "app.components.FilterBoxes.statusTitle": "Statut",
   "app.components.FilterBoxes.topicsTitle": "Thèmes",
-  "app.components.FilterSelector.a11y_selectedFilter": "",
   "app.components.FiltersModal.filters": "Filtres",
   "app.components.FiltersModal.resetFilters": "Réinitialiser",
   "app.components.GoBackButton.group.edit.goBack": "Retour",
