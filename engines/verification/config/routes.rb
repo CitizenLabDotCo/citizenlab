@@ -8,6 +8,7 @@ Verification::Engine.routes.draw do
         .each do |vm|
         post "verification_methods/#{vm.name}/verification" => "verifications#create", :defaults => { :method_name => vm.name }
       end
+      get "users/me/locked_attributes" => "locked_attributes#index"
     end
   end
 end
