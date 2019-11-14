@@ -11,11 +11,6 @@ class AuthenticationService
     ALL_METHODS
   end
 
-  def profile_to_user_attrs auth
-    provider = auth.provider
-    all_methods[provider].profile_to_user_attrs(auth)
-  end
-
   def method_by_provider provider
     all_methods[provider]
   end
