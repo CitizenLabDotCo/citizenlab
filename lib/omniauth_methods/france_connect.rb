@@ -66,8 +66,8 @@ module OmniauthMethods
       end
     end
 
-    def update_on_sign_in?
-      true
+    def updateable_user_attrs
+      [:first_name, :last_name, :birthyear, :remote_avatar_url]
     end
 
   end

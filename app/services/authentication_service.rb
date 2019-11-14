@@ -33,8 +33,4 @@ class AuthenticationService
     method_by_provider(provider).respond_to? :logout_url
   end
 
-  def update_on_sign_in? provider
-    method_by_provider(provider).respond_to?(:update_on_sign_in?) && method_by_provider(provider).update_on_sign_in?
-  end
-
 end
