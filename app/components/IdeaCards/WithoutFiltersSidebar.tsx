@@ -34,6 +34,7 @@ import { rgba } from 'polished';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
+import { IParticipationContextType } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -260,7 +261,7 @@ interface InputProps extends GetIdeasInputProps  {
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
-  participationContextType?: 'Phase' | 'Project' | null;
+  participationContextType?: IParticipationContextType | null;
   className?: string;
   allowProjectsFilter?: boolean;
 }

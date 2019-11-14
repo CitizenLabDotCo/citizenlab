@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
+import { IParticipationContextType } from 'typings';
 
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPollQuestions, { GetPollQuestionsChildProps } from 'resources/GetPollQuestions';
@@ -56,18 +57,18 @@ const SignUpLink = styled(Link)`
 
 // Didn't manage to strongly type this component, here are the two typings it can actually have
 // type ProjectProps = {
-//   type: 'projects',
+//   type: 'project',
 //   phaseId: null,
 //   projectId: string
 // };
 // type PhaseProps = {
-//   type: 'phases',
+//   type: 'phase',
 //   phaseId: string,
 //   projectId: string
 // };
 
 interface InputProps {
-  type: 'phases' | 'projects';
+  type: IParticipationContextType;
   phaseId: string | null;
   projectId: string;
 }
@@ -97,7 +98,7 @@ export class PollSection extends PureComponent<Props> {
 
   render() {
     const { pollQuestions, projectId, phaseId, project, phase, type, authUser } = this.props;
-    if (isNilOrError(pollQuestions) || isNilOrError(project) || type === 'phases' && isNilOrError(phase)) {
+    if (isNilOrError(pollQuestions) || isNilOrError(project) || type === 'phase' && isNilOrError(phase)) {
       return null;
     }
     const { enabled, disabledReason } = pollTakingState({ project, phaseContext: phase, signedIn: !!authUser });
@@ -134,7 +135,7 @@ export class PollSection extends PureComponent<Props> {
             <PollForm
               projectId={projectId}
               questions={pollQuestions}
-              id={type === 'projects' ? projectId : phaseId as string}
+              id={type === 'project' ? projectId : phaseId as string}
               type={type}
               disabled={!enabled || isNilOrError(authUser)}
             />
@@ -147,7 +148,7 @@ export class PollSection extends PureComponent<Props> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  pollQuestions: ({ projectId, phaseId, type, render }) => <GetPollQuestions participationContextId={type === 'projects' ? projectId : phaseId as string} participationContextType={type}>{render}</GetPollQuestions>,
+  pollQuestions: ({ projectId, phaseId, type, render }) => <GetPollQuestions participationContextId={type === 'project' ? projectId : phaseId as string} participationContextType={type}>{render}</GetPollQuestions>,
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });

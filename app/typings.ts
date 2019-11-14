@@ -15,6 +15,8 @@ export interface IHttpMethod {
   method: 'PUT' | 'POST' | 'GET' | 'PATCH' | 'DELETE';
 }
 
+export type IParticipationContextType = 'project' | 'phase';
+
 export interface ITheme {
   theme: {
     color: {
