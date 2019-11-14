@@ -310,6 +310,10 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     this.props.onRemove(removedImage);
   }
 
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
   render() {
     let { acceptedFileTypes, placeholder, objectFit } = this.props;
     const { images, maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, imageRadius, className } = this.props;
@@ -366,6 +370,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                 objectFit={objectFit}
               >
                 <RemoveButton
+                  onMouseDown={this.removeFocus}
                   onClick={this.removeImage(image)}
                   className="remove-button"
                 >
