@@ -17,7 +17,7 @@ import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
-import ViewButtons from 'components/PostCardComponents/ViewButtons';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 //  Typings
 import { MessageDescriptor } from 'typings';
