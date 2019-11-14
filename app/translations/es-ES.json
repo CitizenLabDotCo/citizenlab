@@ -88,7 +88,6 @@
   "app.components.FilterBoxes.areas": "Localidad/Barrio/Zona",
   "app.components.FilterBoxes.statusTitle": "Estado",
   "app.components.FilterBoxes.topicsTitle": "Temas",
-  "app.components.FilterSelector.a11y_selectedFilter": "",
   "app.components.FiltersModal.filters": "Filtros",
   "app.components.FiltersModal.resetFilters": "Restablecer los filtros",
   "app.components.GoBackButton.group.edit.goBack": "Volver",
