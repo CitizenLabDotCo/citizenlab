@@ -110,7 +110,7 @@
   "app.components.IdeasMap.login": "Iniciar sesión",
   "app.components.IdeasMap.mapTitle": "Mapa con un resumen de las ideas basado en la ubicación",
   "app.components.IdeasMap.noIdeasWithLocation": "Las ideas en este proyecto no tienen ninguna información de ubicación.",
-  "app.components.IdeasMap.or": "or",
+  "app.components.IdeasMap.or": "o",
   "app.components.IdeasMap.postIdeaHere": "Comparte una idea aquí",
   "app.components.IdeasMap.postingHereImpossible": "Actualmente no es posible publicar ideas aquí.",
   "app.components.IdeasMap.postingMaybeNotPermitted": "Sólo algunas personas pueden publicar ideas aquí. Por favor regístrate primero.",
