@@ -32,7 +32,8 @@ module.exports = function (api) {
     "@babel/plugin-syntax-dynamic-import",
     "@babel/proposal-class-properties",
     "@babel/proposal-object-rest-spread",
-    "@babel/plugin-transform-runtime"
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-optional-chaining"
   ];
 
   const env = {
@@ -51,7 +52,8 @@ module.exports = function (api) {
         "@babel/proposal-class-properties",
         "@babel/proposal-object-rest-spread",
         "@babel/plugin-transform-runtime",
-        "dynamic-import-node"
+        "dynamic-import-node",
+        "@babel/plugin-proposal-optional-chaining"
       ],
     }
   }
