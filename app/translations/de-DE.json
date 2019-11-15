@@ -110,6 +110,7 @@
   "app.components.IdeasMap.login": "Anmeldung",
   "app.components.IdeasMap.mapTitle": "Karte mit Übersicht der Ideen nach Standort",
   "app.components.IdeasMap.noIdeasWithLocation": "{orgName, select, München {Die Mängel in diesem Bezirk haben keine Standortinformationen.} other {Die Ideen in diesem Projekt haben keine Standortinformationen.}}",
+  "app.components.IdeasMap.or": "",
   "app.components.IdeasMap.postIdeaHere": "{orgName, select, München {Melden Sie hier einen Mangel} other {Fügen Sie eine Idee hier hinzu}}",
   "app.components.IdeasMap.postingHereImpossible": "{orgName, select, München {Das Melden von Mängeln ist zurzeit nicht möglich.} other {Die Veröffentlichung von Ideen ist zurzeit nicht möglich.}}",
   "app.components.IdeasMap.postingMaybeNotPermitted": "Nur bestimmte Leute können hier Ideen veröffentlichen. Bitte zuerst anmelden.",
