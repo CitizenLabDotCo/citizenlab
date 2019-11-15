@@ -297,7 +297,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_enabled: (participation_method === 'ideation' ? true : null),
       voting_method: (participation_method === 'ideation' ? 'unlimited' : null),
       voting_limited_max: null,
-      location_allowed: true,
+      location_allowed: ((participation_method === 'ideation' || participation_method === 'budgeting') ? true : null),
       presentation_mode: (participation_method === 'ideation' ? 'card' : null),
       survey_embed_url: null,
       survey_service: (participation_method === 'survey' ? 'typeform' : null),
@@ -337,7 +337,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
   }
 
   handleLocationAllowedOnChange = (location_allowed: boolean) => {
-    this.setState({ location_allowed });
+    this.setState({
+      location_allowed,
+      presentation_mode: 'card'
+    });
   }
 
   handleIdeasDisplayChange = (presentation_mode: 'map' | 'card') => {
@@ -623,24 +626,26 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
                 </SectionField>
 
-                <SectionField>
-                  <Label>
-                    <FormattedMessage {...messages.defaultDisplay} />
-                    <IconTooltip content={<FormattedMessage {...messages.defaultDisplayTooltip} />} />
-                  </Label>
-                  {['card', 'map'].map((key) => (
-                    <Radio
-                      key={key}
-                      onChange={this.handleIdeasDisplayChange}
-                      currentValue={presentation_mode}
-                      value={key}
-                      name="presentation_mode"
-                      id={`presentation_mode-${key}`}
-                      label={<FormattedMessage {...messages[`${key}Display`]} />}
-                    />
-                  ))}
-                  <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
-                </SectionField>
+                {location_allowed &&
+                  <SectionField>
+                    <Label>
+                      <FormattedMessage {...messages.defaultDisplay} />
+                      <IconTooltip content={<FormattedMessage {...messages.defaultDisplayTooltip} />} />
+                    </Label>
+                    {['card', 'map'].map((key) => (
+                      <Radio
+                        key={key}
+                        onChange={this.handleIdeasDisplayChange}
+                        currentValue={presentation_mode}
+                        value={key}
+                        name="presentation_mode"
+                        id={`presentation_mode-${key}`}
+                        label={<FormattedMessage {...messages[`${key}Display`]} />}
+                      />
+                    ))}
+                    <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+                  </SectionField>
+                }
               </>
             }
 

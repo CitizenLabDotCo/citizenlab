@@ -151,7 +151,7 @@ export default defineMessages({
   },
   allowLocationTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.allowLocationTooltip',
-    defaultMessage: 'Enable or disable the ability to add a location to an idea and show that idea on a map.',
+    defaultMessage: 'Enable or disable the ability to add a location to an idea.',
   },
   enabled: {
     id: 'app.containers.AdminPage.ProjectEdit.enabled',
