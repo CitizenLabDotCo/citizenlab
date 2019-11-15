@@ -1,5 +1,12 @@
 # Changelog
 
+## 2019-11-15
+
+### Fixed
+
+- Fix for 'Click on map to add an idea' functionality not working
+- Fix for notifications not showing
+
 ## 2019-11-12
 
 ### Fixed

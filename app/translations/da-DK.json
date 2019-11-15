@@ -110,6 +110,7 @@
   "app.components.IdeasMap.login": "Log ind",
   "app.components.IdeasMap.mapTitle": "Kort med oversigt over ideer baseret på placering\n",
   "app.components.IdeasMap.noIdeasWithLocation": "Ideerne i dette projekt har ikke nogen lokalitetsinformation.",
+  "app.components.IdeasMap.or": "",
   "app.components.IdeasMap.postIdeaHere": "Tilføj en idé her",
   "app.components.IdeasMap.postingHereImpossible": "Det er i øjeblikket ikke muligt at opslå en idé her.",
   "app.components.IdeasMap.postingMaybeNotPermitted": "Kun visse mennesker kan opslå ideer her. Log venligst ind først.",
