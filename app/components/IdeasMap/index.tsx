@@ -29,7 +29,11 @@ import { media, ScreenReaderOnly } from 'utils/styleUtils';
 // Typing
 import { IGeotaggedIdeaData } from 'services/ideas';
 
-const Container = styled.div``;
+const Container = styled.div`
+  > .create-idea-wrapper {
+    display: none;
+  }
+`;
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 10px;
