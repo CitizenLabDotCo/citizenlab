@@ -33,7 +33,7 @@ import { colors, media, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  flex: 1;
+  flex: 1 1 auto;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -68,7 +68,7 @@ const Address = styled.div`
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.small}px;
-    margin-top: 18px;
+    margin-top: 15px;
   `}
 `;
 
@@ -79,10 +79,14 @@ const MapMarkerIcon = styled(Icon)`
   fill: ${colors.label};
   margin-right: 5px;
   margin-top: -2px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const Description = styled.div`
-  flex: 0 1 100%;
+  flex: 1 1 auto;
   margin-bottom: 1rem;
   overflow: hidden;
   position: relative;
@@ -100,22 +104,19 @@ const Description = styled.div`
   }
 
   ${media.smallerThanMinTablet`
-    margin-top: 18px;
+    margin-top: 15px;
   `}
 `;
 
 const Footer = styled.div`
-  align-items: center;
   display: flex;
-  flex: 1 0 auto;
+  align-items: center;
   justify-content: space-between;
   margin-top: 10px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 `;
 
-const ViewIdeaButton = styled(Button)`
-  justify-self: flex-end;
-`;
+const ViewIdeaButton = styled(Button)``;
 
 const CommentsCount = styled.span`
   color: ${colors.label};
