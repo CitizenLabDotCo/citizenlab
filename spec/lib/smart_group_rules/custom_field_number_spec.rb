@@ -105,9 +105,9 @@ describe SmartGroupRules::CustomFieldNumber do
       'customFieldId' => number_picker.id,
       'value'         => 0
     })}
-    let(:custom_field_number_not_is_larger_than_rule) {SmartGroupRules::CustomFieldNumber.from_json({
+    let(:custom_field_number_is_larger_than_or_equal_rule) {SmartGroupRules::CustomFieldNumber.from_json({
       'ruleType'      => 'custom_field_number',
-      'predicate'     => 'not_is_larger_than',
+      'predicate'     => 'is_larger_than_or_equal',
       'customFieldId' => number_picker.id,
       'value'         => 0
     })}
@@ -117,9 +117,9 @@ describe SmartGroupRules::CustomFieldNumber do
       'customFieldId' => number_picker.id,
       'value'         => 0
     })}
-    let(:custom_field_number_not_is_smaller_than_rule) {SmartGroupRules::CustomFieldNumber.from_json({
+    let(:custom_field_number_is_smaller_than_or_equal_rule) {SmartGroupRules::CustomFieldNumber.from_json({
       'ruleType'      => 'custom_field_number',
-      'predicate'     => 'not_is_smaller_than',
+      'predicate'     => 'is_smaller_than_or_equal',
       'customFieldId' => number_picker.id,
       'value'         => 0
     })}
@@ -153,20 +153,20 @@ describe SmartGroupRules::CustomFieldNumber do
         'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? est plus grand que 0',
         'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? is groter dan 0'
       })
-      expect(custom_field_number_not_is_larger_than_rule.description_multiloc).to eq ({
-        'en'    => 'How many politicians do you need to solve climate change? is not larger than 0',
-        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? n\'est pas plus grand que 0',
-        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? is niet groter dan 0'
+      expect(custom_field_number_is_larger_than_or_equal_rule.description_multiloc).to eq ({
+        'en'    => 'How many politicians do you need to solve climate change? is larger than or equals 0',
+        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? est plus grand ou égal à 0',
+        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? is groter dan of gelijk aan 0'
       })
       expect(custom_field_number_is_smaller_than_rule.description_multiloc).to eq ({
         'en'    => 'How many politicians do you need to solve climate change? is smaller than 0',
         'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? est moins que 0',
         'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? is kleiner dan 0'
       })
-      expect(custom_field_number_not_is_smaller_than_rule.description_multiloc).to eq ({
-        'en'    => 'How many politicians do you need to solve climate change? is not smaller than 0',
-        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? n\'est pas moins que 0',
-        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? is niet kleiner dan 0'
+      expect(custom_field_number_is_smaller_than_or_equal_rule.description_multiloc).to eq ({
+        'en'    => 'How many politicians do you need to solve climate change? is smaller than or equals 0',
+        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? est moins ou égal à 0',
+        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen? is kleiner dan of gelijk aan 0'
       })
       expect(custom_field_number_is_empty_rule.description_multiloc).to eq ({
         'en'    => 'How many politicians do you need to solve climate change? has no value',

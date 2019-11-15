@@ -115,7 +115,7 @@ resource "Permissions" do
       header 'Authorization', "Bearer #{token}"
     end
 
-    get "web_api/v1/projects/:project_id/permissions/:action/groups_inclusion" do
+    get "web_api/v1/projects/:project_id/permissions/:action/participation_conditions" do
       before do 
         @groups = [create(:group), create(:smart_group)]
         @permission = @project.permissions.first
@@ -130,7 +130,7 @@ resource "Permissions" do
       end
     end
 
-    get "web_api/v1/phases/:phase_id/permissions/:action/groups_inclusion" do
+    get "web_api/v1/phases/:phase_id/permissions/:action/participation_conditions" do
       before do 
         @groups = [create(:group), create(:smart_group)]
         @permission = @phase.permissions.first
@@ -148,7 +148,7 @@ resource "Permissions" do
 
   context "when not authenticated" do
 
-    get "web_api/v1/projects/:project_id/permissions/:action/groups_inclusion" do
+    get "web_api/v1/projects/:project_id/permissions/:action/participation_conditions" do
       let(:action) { @project.permissions.first.action }
 
       example_request "[error] Get the groups inclusion of a user", document: false do
@@ -156,7 +156,7 @@ resource "Permissions" do
       end
     end
 
-    get "web_api/v1/phases/:phase_id/permissions/:action/groups_inclusion" do
+    get "web_api/v1/phases/:phase_id/permissions/:action/participation_conditions" do
       let(:action) { @phase.permissions.first.action }
 
       example_request "[error] Get the groups inclusion of a user", document: false do

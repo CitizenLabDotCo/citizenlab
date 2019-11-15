@@ -149,9 +149,9 @@ nl:
       is_equal: "%{property} is gelijk aan %{value}"
       not_is_equal: "%{property} is verschillend van %{value}"
       is_larger_than: "%{property} is groter dan %{value}"
-      not_is_larger_than: "%{property} is niet groter dan %{value}"
+      is_larger_than_or_equal: "%{property} is groter dan of gelijk aan %{value}"
       is_smaller_than: "%{property} is kleiner dan %{value}"
-      not_is_smaller_than: "%{property} is niet kleiner dan %{value}"
+      is_smaller_than_or_equal: "%{property} is kleiner dan of gelijk aan %{value}"
     custom_field_select:
       has_value: "%{property} is %{value}"
       not_has_value: "%{property} is niet %{value}"
