@@ -162,9 +162,9 @@ fr:
       is_equal: "%{property} est égal à %{value}"
       not_is_equal: "%{property} n'est pas égal à %{value}"
       is_larger_than: "%{property} est plus grand que %{value}"
-      not_is_larger_than: "%{property} n'est pas plus grand que %{value}"
+      is_larger_than_or_equal: "%{property} est plus grand ou égal à %{value}"
       is_smaller_than: "%{property} est moins que %{value}"
-      not_is_smaller_than: "%{property} n'est pas moins que %{value}"
+      is_smaller_than_or_equal: "%{property} est moins ou égal à %{value}"
     custom_field_select:
       has_value: "%{property} est %{value}"
       not_has_value: "%{property} n'est pas %{value}"

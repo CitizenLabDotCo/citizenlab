@@ -1,5 +1,5 @@
 class WebApi::V1::PermissionsController < ApplicationController
-  before_action :set_permission, only: [:show, :update, :groups_inclusion]
+  before_action :set_permission, only: [:show, :update, :participation_conditions]
 
   def index
     @permissions = policy_scope(Permission)
@@ -32,12 +32,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def participation_conditions
-    if current_user
-      # TODO
-      render json: @permission.groups_inclusion(current_user), status: :ok
-    else
-      user_not_authorized
-    end
+    render json: @permission.participation_conditions, status: :ok
   end
 
 
