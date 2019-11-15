@@ -110,6 +110,7 @@
   "app.components.IdeasMap.login": "",
   "app.components.IdeasMap.mapTitle": "",
   "app.components.IdeasMap.noIdeasWithLocation": "",
+  "app.components.IdeasMap.or": "",
   "app.components.IdeasMap.postIdeaHere": "",
   "app.components.IdeasMap.postingHereImpossible": "",
   "app.components.IdeasMap.postingMaybeNotPermitted": "",
