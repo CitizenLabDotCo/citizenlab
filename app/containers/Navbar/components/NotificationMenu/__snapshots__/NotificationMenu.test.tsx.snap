@@ -90,21 +90,44 @@ exports[`<NotificationMenu /> renders correctly when there is no notifs 1`] = `
   />
   <Dropdown
     content={
-      <ForwardRef(NotificationMenu__EmptyStateContainer)>
-        <ForwardRef(NotificationMenu__EmptyStateImageWrapper)>
-          <ForwardRef(NotificationMenu__EmptyStateImage)
-            alt=""
-            role="presentation"
-            src={null}
-          />
-        </ForwardRef(NotificationMenu__EmptyStateImageWrapper)>
-        <ForwardRef(NotificationMenu__EmptyStateText)>
-          <FormattedMessage
-            defaultMessage="You don't have any notifications yet"
-            id="app.containers.NotificationMenu.noNotifications"
-          />
-        </ForwardRef(NotificationMenu__EmptyStateText)>
-      </ForwardRef(NotificationMenu__EmptyStateContainer)>
+      <InfiniteScroll
+        element="div"
+        getScrollParent={null}
+        hasMore={false}
+        initialLoad={true}
+        isReverse={false}
+        loadMore={[MockFunction]}
+        loader={
+          <ForwardRef(NotificationMenu__LoadingContainer)>
+            <Spinner
+              color="#666"
+              size="32px"
+              thickness="3px"
+            />
+          </ForwardRef(NotificationMenu__LoadingContainer)>
+        }
+        pageStart={0}
+        ref={null}
+        threshold={50}
+        useCapture={false}
+        useWindow={false}
+      >
+        <ForwardRef(NotificationMenu__EmptyStateContainer)>
+          <ForwardRef(NotificationMenu__EmptyStateImageWrapper)>
+            <ForwardRef(NotificationMenu__EmptyStateImage)
+              alt=""
+              role="presentation"
+              src={null}
+            />
+          </ForwardRef(NotificationMenu__EmptyStateImageWrapper)>
+          <ForwardRef(NotificationMenu__EmptyStateText)>
+            <FormattedMessage
+              defaultMessage="You don't have any notifications yet"
+              id="app.containers.NotificationMenu.noNotifications"
+            />
+          </ForwardRef(NotificationMenu__EmptyStateText)>
+        </ForwardRef(NotificationMenu__EmptyStateContainer)>
+      </InfiniteScroll>
     }
     left="auto"
     maxHeight="320px"
