@@ -47,6 +47,7 @@ const StyledButton = styled(Button) `
 
 interface InputProps {
   projectId: string | null;
+  phaseId: string | undefined;
   isLoggedIn: boolean | null;
   commentingEnabled: boolean | null;
   commentingDisabledReason: IIdeaData['attributes']['action_descriptor']['commenting']['disabled_reason'] | null;
@@ -82,7 +83,13 @@ class CommentingDisabled extends PureComponent<Props> {
   }
 
   onVerify = () => {
-    openVerificationModalWithContext('ActionComment');
+    const { projectId, phaseId } = this.props;
+    console.log(projectId, phaseId);
+    if (phaseId) {
+      openVerificationModalWithContext('ActionComment', phaseId, 'phase', 'commenting');
+    } else if (projectId) {
+      openVerificationModalWithContext('ActionComment', projectId, 'project', 'commenting');
+    }
   }
 
   render() {

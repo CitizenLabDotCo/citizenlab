@@ -15,6 +15,7 @@ import styled from 'styled-components';
 
 // typings
 import { VerificationMethodNames } from 'services/verificationMethods';
+import { IParticipationContextType, ICitizenAction } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -23,23 +24,25 @@ const Container = styled.div`
   align-items: center;
 `;
 
+export type ContextShape = { id: string, type: IParticipationContextType, action: ICitizenAction } | null;
+
 export type VerificationModalSteps = 'method-selection' | 'cow' | 'bogus' | 'success' | null;
 
 export interface Props {
   opened: boolean;
   initialActiveStep?: VerificationModalSteps;
   className?: string;
-  context?: boolean; // TODO change to pass in additionnal rules info
+  context: ContextShape; // TODO change to pass in additionnal rules info
 }
 
-const VerificationModal = memo<Props>((props) => {
+const VerificationModal = memo<Props>(({ opened, className, context, initialActiveStep }) => {
 
-  const [activeStep, setActiveStep] = useState<VerificationModalSteps>(props.initialActiveStep || 'method-selection');
+  const [activeStep, setActiveStep] = useState<VerificationModalSteps>(initialActiveStep || 'method-selection');
 
   useEffect(() => {
     // reset active step when modal opens or closes
-    setActiveStep(props.initialActiveStep || 'method-selection');
-  }, [props.opened, props.initialActiveStep]);
+    setActiveStep(initialActiveStep || 'method-selection');
+  }, [opened, initialActiveStep]);
 
   const onMethodSelected = useCallback((selectedMethod: VerificationMethodNames) => {
     setActiveStep(selectedMethod);
@@ -68,13 +71,13 @@ const VerificationModal = memo<Props>((props) => {
   return (
     <Modal
       width={820}
-      opened={props.opened}
+      opened={opened}
       close={onClose}
       remaining
     >
-      <Container className={`e2e-verification-modal ${props.className || ''}`}>
+      <Container className={`e2e-verification-modal ${className || ''}`}>
         {activeStep === 'method-selection' &&
-          <VerificationMethods withContext={!!props.context} onMethodSelected={onMethodSelected} />
+          <VerificationMethods context={context} onMethodSelected={onMethodSelected} />
         }
 
         {activeStep === 'cow' &&

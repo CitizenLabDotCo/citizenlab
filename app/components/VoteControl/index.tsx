@@ -381,8 +381,12 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
         const cancellingEnabled = idea.data.attributes.action_descriptor.voting.cancelling_enabled;
         const votingDisabledReason = idea.data.attributes.action_descriptor.voting.disabled_reason;
         const votingFutureEnabled = idea.data.attributes.action_descriptor.voting.future_enabled;
-        if (votingDisabledReason === 'not_verified' && !this.props.noVerificationShortFlow) {
-          verificationNeeded('ActionVote');
+        const pbPhase = (phases ? phases.find(phase => phase.data.attributes.participation_method === 'budgeting') : null);
+
+        if (votingDisabledReason === 'not_verified' && !this.props.noVerificationShortFlow && project) {
+          const pcType = pbPhase ? 'phase' : 'project';
+          const pcId = pbPhase ? pbPhase.data.id : project.data.id;
+          verificationNeeded('ActionVote', pcId, pcType, 'voting');
         }
 
         this.setState({

@@ -72,7 +72,12 @@ interface State { }
 
 class Survey extends PureComponent<Props, State> {
   onVerify = () => {
-    openVerificationModalWithContext('ActionSurvey');
+    const { projectId, phaseId } = this.props;
+    if (phaseId) {
+      openVerificationModalWithContext('ActionPost', phaseId, 'phase', 'taking_survey');
+    } else if (projectId) {
+      openVerificationModalWithContext('ActionPost', projectId, 'project', 'taking_survey');
+    }
   }
 
   disabledMessage: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {

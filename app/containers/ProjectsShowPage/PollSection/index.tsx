@@ -93,7 +93,12 @@ const disabledMessages: { [key in Partial<DisabledReasons>]: ReactIntl.Formatted
 
 export class PollSection extends PureComponent<Props> {
   onVerify = () => {
-    openVerificationModalWithContext('ActionPoll');
+    const { type, projectId, phaseId } = this.props;
+    if (type === 'project' && projectId) {
+      openVerificationModalWithContext('ActionPost', projectId, 'project', 'taking_poll');
+    } else if (type === 'phase' && phaseId) {
+      openVerificationModalWithContext('ActionPost', phaseId, 'phase', 'taking_poll');
+    }
   }
 
   render() {

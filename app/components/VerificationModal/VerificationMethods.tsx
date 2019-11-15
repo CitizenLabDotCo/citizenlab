@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -10,6 +10,7 @@ import { Title, Subtitle } from './styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useParticipationConditions from 'hooks/useParticipationConditions';
 import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // i18n
@@ -23,6 +24,7 @@ import { darken } from 'polished';
 
 // typings
 import { VerificationMethodNames } from 'services/verificationMethods';
+import { ContextShape } from './VerificationModal';
 
 const Container = styled.div`
   width: 100%;
@@ -151,14 +153,16 @@ const MethodButton = styled(Button)`
 `;
 
 interface Props {
-  withContext: boolean;
+  context: ContextShape | null;
   onMethodSelected: (selectedMethod: VerificationMethodNames) => void;
   className?: string;
   theme: any;
 }
 
-const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, className, theme }) => {
-  const context = withContext ? [[{ en: 'Older than 25' }], [{ en: 'Older than 25' }]] : null;
+const VerificationMethods = memo<Props>(({ context, onMethodSelected, className, theme }) => {
+
+  const participationConditions = useParticipationConditions(context);
+  const withContext = !!context;
 
   const authUser = useAuthUser();
   const verificationMethods = useVerificationMethods();
@@ -196,7 +200,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
         {withContext ? <FormattedMessage {...messages.toParticipateInThisProject} /> : <FormattedMessage {...messages.andUnlockYourCitizenPotential} />}
       </Title>
       <Content>
-        {withContext && context && // TODO: pass in context and display additionnal rules if any
+        {withContext && !isNilOrError(participationConditions) && participationConditions.length > 0 &&
           <Context>
             <Subtitle>
               <FormattedMessage {...messages.participationConditions} />
@@ -206,19 +210,19 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
               <FormattedMessage {...messages.peopleMatchingConditions} />
             </ContextLabel>
 
-            {context.map((rulesSet, index) => {
-              const rules = rulesSet.map(rule => (
-                <ContextItem key={index}>
+            {participationConditions.map((rulesSet, index) => {
+              const rules = rulesSet.map((rule, ruleIndex) => (
+                <ContextItem key={ruleIndex}>
                   <T value={rule} />
                 </ContextItem>
               ));
               return index === 0 ? rules : (
-                <>
+                <Fragment key={index}>
                   <Or>
                     <FormattedMessage {...messages.or} />
                   </Or>
                   {rules}
-                </>
+                </Fragment>
               );
             })}
           </Context>

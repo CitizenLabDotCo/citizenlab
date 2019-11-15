@@ -57,6 +57,8 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
         {error === 'budgetingDisabled' &&
           <PopContainer icon="lock-outlined">
             <AssignBudgetDisabled
+              participationContextId={participationContextId}
+              participationContextType={participationContextType}
               budgetingDescriptor={budgetingDescriptor}
             />
           </PopContainer>
