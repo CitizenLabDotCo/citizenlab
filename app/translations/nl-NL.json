@@ -110,6 +110,7 @@
   "app.components.IdeasMap.login": "Inloggen",
   "app.components.IdeasMap.mapTitle": "Kaart met overzicht van ideeën op basis van hun locatie",
   "app.components.IdeasMap.noIdeasWithLocation": "De ideeën in dit project bevatten geen informatie ivm de locatie. ",
+  "app.components.IdeasMap.or": "or",
   "app.components.IdeasMap.postIdeaHere": "Plaats hier een idee",
   "app.components.IdeasMap.postingHereImpossible": "Het is momenteel niet mogelijk om hier een idee the plaatsen.",
   "app.components.IdeasMap.postingMaybeNotPermitted": "Enkel bepaalde personen kunnen hier ideeën posten. Meld je eerst aan.",
