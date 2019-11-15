@@ -50,7 +50,7 @@ class Permission < ApplicationRecord
       end.map do |rule|
         service.parse_json_rule rule
       end.map(&:description_multiloc)
-    end
+    end.reject { |rules| rules.empty? }
   end
 
 

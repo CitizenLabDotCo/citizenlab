@@ -117,51 +117,53 @@ resource "Permissions" do
 
     get "web_api/v1/projects/:project_id/permissions/:action/participation_conditions" do
       before do 
-        @groups = [create(:group), create(:smart_group)]
+        @rule = {'ruleType' => 'email', 'predicate' => 'ends_on', 'value' => 'test.com'}
+        @groups = [create(:group), create(:smart_group, rules: [@rule])]
         @permission = @project.permissions.first
         @permission.update!(permitted_by: 'groups', groups: @groups)
       end
       let(:action) { @permission.action }
 
-      example_request "Get the groups inclusion of a user" do
+      example_request "Get the participation conditions of a user" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.map{|h| h[:id]}).to match_array @groups.map(&:id)
+        expect(json_response).to eq [[SmartGroupsService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
       end
     end
 
     get "web_api/v1/phases/:phase_id/permissions/:action/participation_conditions" do
       before do 
-        @groups = [create(:group), create(:smart_group)]
+        @rule = {'ruleType' => 'email', 'predicate' => 'ends_on', 'value' => 'test.com'}
+        @groups = [create(:group), create(:smart_group, rules: [@rule])]
         @permission = @phase.permissions.first
         @permission.update!(permitted_by: 'groups', groups: @groups)
       end
       let(:action) { @permission.action }
 
-      example_request "Get the groups inclusion of a user" do
+      example_request "Get the participation conditions of a user" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.map{|h| h[:id]}).to match_array @groups.map(&:id)
+        expect(json_response).to eq [[SmartGroupsService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
       end
     end
   end
 
-  context "when not authenticated" do
+  # context "when not authenticated" do
 
-    get "web_api/v1/projects/:project_id/permissions/:action/participation_conditions" do
-      let(:action) { @project.permissions.first.action }
+  #   get "web_api/v1/projects/:project_id/permissions/:action/participation_conditions" do
+  #     let(:action) { @project.permissions.first.action }
 
-      example_request "[error] Get the groups inclusion of a user", document: false do
-        expect(status).to eq 401
-      end
-    end
+  #     example_request "[error] Get the participation conditions of a user", document: false do
+  #       expect(status).to eq 401
+  #     end
+  #   end
 
-    get "web_api/v1/phases/:phase_id/permissions/:action/participation_conditions" do
-      let(:action) { @phase.permissions.first.action }
+  #   get "web_api/v1/phases/:phase_id/permissions/:action/participation_conditions" do
+  #     let(:action) { @phase.permissions.first.action }
 
-      example_request "[error] Get the groups inclusion of a user", document: false do
-        expect(status).to eq 401
-      end
-    end
-  end
+  #     example_request "[error] Get the participation conditions of a user", document: false do
+  #       expect(status).to eq 401
+  #     end
+  #   end
+  # end
 end
