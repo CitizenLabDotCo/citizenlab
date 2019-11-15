@@ -42,7 +42,7 @@ interface State { }
 class AssignBudgetDisabled extends PureComponent<Props, State> {
   onVerify = () => {
     const { participationContextId, participationContextType } = this.props;
-    openVerificationModalWithContext('ActionBudget', participationContextId, participationContextType);
+    openVerificationModalWithContext('ActionBudget', participationContextId, participationContextType, 'budgeting');
   }
 
   removeFocus = (event: React.MouseEvent) => {

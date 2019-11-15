@@ -125,7 +125,8 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
             isLoggedIn={!!authUser}
             commentingEnabled={commentingEnabled}
             commentingDisabledReason={commentingDisabledReason}
-            projectId={!isNilOrError(project) ? project.id : null}
+            projectId={get(post, 'relationships.project.data.id')}
+            phaseId={get(post, 'relationships.phases.data', [{ id: undefined }])[0].id} // TODO better.
           />
 
           <Comments

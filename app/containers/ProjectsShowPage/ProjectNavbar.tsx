@@ -326,6 +326,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
                     textColor={theme.projectNavbarIdeaButtonTextColor}
                     borderRadius="0px"
+                    participationContextType="project"
                   />
                 }
               </ProjectNavbarItems>

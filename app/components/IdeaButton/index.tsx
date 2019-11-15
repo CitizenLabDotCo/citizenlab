@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
+// typings
+import { IParticipationContextType } from 'typings';
+
 // services
 import { getPostingPermission, DisabledReasons } from 'services/ideaPostingRules';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -79,6 +82,7 @@ interface InputProps extends ButtonContainerProps {
   projectId?: string | undefined;
   phaseId?: string | undefined;
   className?: string;
+  participationContextType: IParticipationContextType | null;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -98,7 +102,12 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
 
   onVerify = (event: React.MouseEvent) => {
     event.preventDefault();
-    openVerificationModalWithContext('ActionIdea');
+    const { participationContextType, projectId, phaseId } = this.props;
+    if (participationContextType === 'project' && projectId) {
+      openVerificationModalWithContext('ActionPost', projectId, 'project', 'posting');
+    } else if (participationContextType === 'phase' && phaseId) {
+      openVerificationModalWithContext('ActionPost', phaseId, 'phase', 'posting');
+    }
   }
 
   onNewIdea = () => {
