@@ -1,5 +1,6 @@
 import React, { memo, useCallback, Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { AUTH_PATH } from 'containers/App/constants';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -12,6 +13,9 @@ import { Title, Subtitle } from './styles';
 import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
 import useVerificationMethods from 'hooks/useVerificationMethods';
+
+// services
+import { getJwt, decode } from 'utils/auth/jwt';
 
 // i18n
 import messages from './messages';
@@ -178,8 +182,14 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
     onMethodSelected('bogus');
   }, []);
 
+  const onVerifyBOSAButtonClick = useCallback(() => {
+    const jwt = getJwt();
+    window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${window.location.pathname}`;
+  }, []);
+
   let showCOWButton = false;
   let showBogusButton = false;
+  let showBOSAButton = false;
 
   if (!isNilOrError(verificationMethods) && verificationMethods.data && verificationMethods.data.length > 0) {
     verificationMethods.data.forEach((item) => {
@@ -188,6 +198,9 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
       }
       if (item.attributes.name === 'bogus') {
         showBogusButton = true;
+      }
+      if (item.attributes.name === 'bosa_fas') {
+        showBOSAButton = true;
       }
     });
   }
@@ -255,6 +268,29 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
               boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
             >
               <FormattedMessage {...messages.verifyCow} />
+            </MethodButton>
+          }
+
+          {showBOSAButton &&
+            <MethodButton
+              icon="verify_manually"
+              onClick={onVerifyBOSAButtonClick}
+              fullWidth={true}
+              size="1"
+              justify="left"
+              padding="14px 20px"
+              bgColor="#fff"
+              bgHoverColor="#fff"
+              iconColor={theme.colorMain}
+              iconHoverColor={darken(0.2, theme.colorMain)}
+              textColor={theme.colorText}
+              textHoverColor={darken(0.2, theme.colorText)}
+              borderColor="#e3e3e3"
+              borderHoverColor={darken(0.2, '#e3e3e3')}
+              boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
+              boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+            >
+              <FormattedMessage {...messages.verifyBOSA} />
             </MethodButton>
           }
 
