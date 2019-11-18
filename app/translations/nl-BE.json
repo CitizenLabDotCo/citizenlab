@@ -321,6 +321,7 @@
   "app.components.Upload.onlyOneImage": "Je kan maximum 1 afbeelding uploaden",
   "app.components.Upload.onlyXImages": "Je kunt slechts {maxItemsCount} afbeeldingen uploaden",
   "app.components.Upload.remaining": "overblijvend",
+  "app.components.Upload.removeImage": "",
   "app.components.Upload.uploadImage": "Upload een afbeelding",
   "app.components.Upload.uploadMultipleImages": "Een of meer afbeeldingen uploaden",
   "app.components.UserName.deletedUser": "onbekende auteur",
