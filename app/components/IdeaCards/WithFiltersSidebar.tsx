@@ -589,8 +589,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 {showViewToggle &&
                   <FeatureFlag name="maps">
                     <StyledViewButtons
-                      showListView={showListView}
-                      showMapView={showMapView}
+                      selectedView={selectedView}
                       onClick={this.selectView}
                     />
                   </FeatureFlag>

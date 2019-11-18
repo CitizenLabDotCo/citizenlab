@@ -63,12 +63,14 @@ const MapButton = styled(ViewButton)`
 
 interface Props {
   className?: string;
-  showListView: boolean;
-  showMapView: boolean;
+  selectedView: 'card' | 'map';
   onClick: (selectedView: 'card' | 'map') => (event: React.FormEvent) => void;
 }
 
-const ViewButtons = memo<Props>(({ className, showListView, showMapView, onClick }: Props) => {
+const ViewButtons = memo<Props>(({ className, selectedView, onClick }: Props) => {
+  const showListView = selectedView === 'card';
+  const showMapView = selectedView === 'map';
+
   return (
     <Container className={className} role="tablist">
       <ListButton
