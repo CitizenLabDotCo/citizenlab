@@ -321,6 +321,7 @@
   "app.components.Upload.onlyOneImage": "You can only upload 1 image",
   "app.components.Upload.onlyXImages": "You can only upload {maxItemsCount} images",
   "app.components.Upload.remaining": "remaining",
+  "app.components.Upload.removeImage": "",
   "app.components.Upload.uploadImage": "Upload an image",
   "app.components.Upload.uploadMultipleImages": "Upload one or more images",
   "app.components.UserName.deletedUser": "unknown author",

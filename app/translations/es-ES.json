@@ -321,6 +321,7 @@
   "app.components.Upload.onlyOneImage": "Sólo puede cargar 1 imagen",
   "app.components.Upload.onlyXImages": "Solo puede subir {maxItemsCount} imágines",
   "app.components.Upload.remaining": "restante",
+  "app.components.Upload.removeImage": "",
   "app.components.Upload.uploadImage": "Subir una imagen",
   "app.components.Upload.uploadMultipleImages": "Subir una o más imágenes",
   "app.components.UserName.deletedUser": "autor desconocido",

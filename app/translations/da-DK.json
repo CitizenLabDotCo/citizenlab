@@ -321,6 +321,7 @@
   "app.components.Upload.onlyOneImage": "Du kan kun overføre 1 billede",
   "app.components.Upload.onlyXImages": "Du kan kun overføre {maxItemsCount} billeder",
   "app.components.Upload.remaining": "resterende",
+  "app.components.Upload.removeImage": "",
   "app.components.Upload.uploadImage": "Overfør billede",
   "app.components.Upload.uploadMultipleImages": "Upload et eller flere billeder",
   "app.components.UserName.deletedUser": "ukendt forfatter",

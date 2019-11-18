@@ -321,6 +321,7 @@
   "app.components.Upload.onlyOneImage": "Vous ne pouvez télécharger qu'une image",
   "app.components.Upload.onlyXImages": "Vous ne pouvez charger que {maxItemsCount} images",
   "app.components.Upload.remaining": "restant(s)",
+  "app.components.Upload.removeImage": "",
   "app.components.Upload.uploadImage": "Télécharger une image",
   "app.components.Upload.uploadMultipleImages": "Télécharger une ou plusieurs images",
   "app.components.UserName.deletedUser": "auteur inconnu",
