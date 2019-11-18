@@ -89,4 +89,8 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyNow',
     defaultMessage: 'Verify now'
   },
+  verifyBOSA: {
+    id: 'app.components.VerificationModal.verifyBOSA',
+    defaultMessage: 'Verify with itsme or eID'
+  },
 });
