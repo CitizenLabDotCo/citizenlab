@@ -29,4 +29,8 @@ export default defineMessages({
     id: 'app.components.Upload.uploadMultipleImages',
     defaultMessage: 'Upload one or more images',
   },
+  removeImage: {
+    id: 'app.components.Upload.removeImage',
+    defaultMessage: 'Remove image',
+  },
 });
