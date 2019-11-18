@@ -1,7 +1,6 @@
 {
   "//": [
-    "** Use this section to describe why certain dependencies are used and versioned as they are **",
-    "react-dropzone: Currently locked to 5.x since there are significant API changes to following major versions, which requires some refactoring"
+    "** Use this section to describe why certain dependencies are used and versioned as they are **"
   ],
   "name": "cl2-front",
   "version": "1.0.0",
@@ -85,7 +84,7 @@
     "react-dnd": "5.0.0",
     "react-dnd-html5-backend": "5.0.1",
     "react-dom": "16.11.0",
-    "react-dropzone": "5.0.1",
+    "react-dropzone": "10.1.10",
     "react-focus-on": "3.3.0",
     "react-frame-component": "4.0.2",
     "react-helmet": "5.2.1",
@@ -152,7 +151,6 @@
     "@types/react-color": "3.0.1",
     "@types/react-dates": "17.1.5",
     "@types/react-dom": "16.9.3",
-    "@types/react-dropzone": "4.2.2",
     "@types/react-intl": "2.3.18",
     "@types/react-jsonschema-form": "1.0.14",
     "@types/react-loadable": "5.5.2",

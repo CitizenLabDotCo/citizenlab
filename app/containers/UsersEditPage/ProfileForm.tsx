@@ -221,9 +221,9 @@ class ProfileForm extends PureComponent<Props, State> {
       setFieldTouched(fieldName);
     };
 
-    const handleAvatarOnAdd = (newAvatar: UploadFile) => {
-      this.setState(() => ({ avatar: [newAvatar] }));
-      setFieldValue('avatar', newAvatar.base64);
+    const handleAvatarOnAdd = (newAvatar: UploadFile[]) => {
+      this.setState(() => ({ avatar: [newAvatar[0]] }));
+      setFieldValue('avatar', newAvatar[0].base64);
       setFieldTouched('avatar');
     };
 
