@@ -15,7 +15,7 @@ import useParticipationConditions from 'hooks/useParticipationConditions';
 import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // services
-import { getJwt, decode } from 'utils/auth/jwt';
+import { getJwt } from 'utils/auth/jwt';
 
 // i18n
 import messages from './messages';
@@ -28,7 +28,7 @@ import { darken } from 'polished';
 
 // typings
 import { VerificationMethodNames } from 'services/verificationMethods';
-import { ContextShape } from './VerificationModal';
+import { ProjectContext } from './VerificationModal';
 
 const Container = styled.div`
   width: 100%;
@@ -160,7 +160,7 @@ const MethodButton = styled(Button)`
 `;
 
 interface Props {
-  context: ContextShape | null;
+  context: ProjectContext | null;
   onMethodSelected: (selectedMethod: VerificationMethodNames) => void;
   className?: string;
   theme: any;
