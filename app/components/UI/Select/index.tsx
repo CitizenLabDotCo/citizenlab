@@ -1,8 +1,12 @@
 import React, { PureComponent } from 'react';
-import { isBoolean } from 'lodash-es';
+import { isString } from 'lodash-es';
 import { IOption } from 'typings';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+
+const Container = styled.div`
+  position: relative;
+`;
 
 const Arrow = styled.div`
   width: 0;
@@ -17,7 +21,6 @@ const Arrow = styled.div`
 
 const CustomSelect = styled.select`
   width: 100%;
-  color: #333;
   font-size: ${fontSizes.base}px;
   line-height: normal;
   cursor: pointer;
@@ -26,41 +29,48 @@ const CustomSelect = styled.select`
   padding: 10px;
   padding-right: 27px;
   border-radius: 5px;
-  border: solid 1px #ccc;
+  border: solid 1px #aaa;
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
 
-  &:focus {
-    color: #333 !important;
-    border-color: #000 !important;
-  }
-
   &::-ms-expand {
     display: none;
   }
-`;
 
-const Container = styled.div`
-  position: relative;
+  &:not(.disabled) {
+    color: #333;
+    border: solid 1px #999;
 
-  &:not(.disabled):hover {
-    ${CustomSelect} {
-      border-color: #aaa;
+    &:focus,
+    &:hover {
+      color: #000;
+      border-color: #000;
+
+      ${Arrow} {
+        display: none;
+        border-top-color: red !important;
+      }
+    }
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    color: #aaa;
+    border: solid 1px #aaa;
+
+    ${Arrow} {
+      border-top-color: #aaa;
     }
   }
 `;
 
 export type Props = {
   id?: string;
-  inputId?: string;
   value?: IOption | string | null;
   placeholder?: string | JSX.Element | null;
   options: IOption[] | null;
-  autoBlur?: boolean;
-  clearable?: boolean;
   onChange: (arg: IOption) => void;
-  onBlur?: () => void;
   disabled?: boolean;
   borderColor?: string;
   className?: string;
@@ -70,83 +80,46 @@ type State = {};
 
 export default class Select extends PureComponent<Props, State> {
 
-  handleOnChange = (newValue: IOption) => {
-    this.props.onChange(newValue || null);
-  }
-
-  //  Needed to keep our API compatible with react-select v1
-  //  For a native react-select solution, follow this issue:
-  //  https://github.com/JedWatson/react-select/issues/2669
-  findFullOptionValue = () => {
-    const { options, value } = this.props;
-
-    if (typeof value === 'string') {
-      return options && options.find((option) => option.value === value);
-    } else {
-      return value;
+  handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    if (this.props.options) {
+      const selectedOption = this.props.options.find(option => option.value === event.target.value) as IOption;
+      this.props.onChange(selectedOption);
     }
   }
-
-  handleOpen = () => {
-    const innerForm = document.getElementById('rules-group-inner-form');
-
-    if (innerForm) {
-      setTimeout(() => {
-        innerForm.scrollTop = innerForm.scrollHeight;
-      }, 10);
-    }
-  }
-
-  emptyArray = [];
 
   render() {
-    const { id, borderColor, className } = this.props;
-    let { value, placeholder, options, autoBlur, clearable } = this.props;
-    const { inputId } = this.props;
-    const { disabled } = this.props;
+    const { id, borderColor, disabled, className } = this.props;
+    let { value, placeholder, options } = this.props;
 
-    value = this.findFullOptionValue();
+    value = isString(value) && options ? options.find((option) => option.value === value) : value;
     placeholder = (placeholder || '');
-    options = (options || this.emptyArray);
-    autoBlur = (isBoolean(autoBlur) ? autoBlur : true);
-    clearable = (isBoolean(clearable) ? clearable : true);
-
-    console.log('value:');
-    console.log(value);
-    console.log('options:');
-    console.log(options);
+    options = (options || []);
 
     return (
       <Container className={className}>
-        <CustomSelect>
-          <option>Apples</option>
-          <option>Bananas</option>
-          <option>Grapes</option>
-          <option>Oranges</option>
-          <option selected>A very long option name to test wrapping that makes no sense whatsoever</option>
+        <CustomSelect
+          id={id}
+          disabled={disabled}
+          onChange={this.handleOnChange}
+          className={disabled ? 'disabled' : ''}
+        >
+          {options && options.length > 0 && options.map((option, index) => {
+            const isSelected = value && value['value'] && option.value === value['value'];
+
+            return (
+              <option
+                key={index}
+                value={option.value}
+                selected={isSelected}
+                aria-selected={isSelected}
+              >
+                {option.label}
+              </option>
+            );
+          })}
         </CustomSelect>
-        <Arrow />
+        <Arrow className={disabled ? 'disabled' : ''} />
       </Container>
     );
-
-    // return (
-    //   <ReactSelect
-    //     id={id}
-    //     inputId={inputId}
-    //     className={className}
-    //     isClearable={clearable}
-    //     menuShouldScrollIntoView={false}
-    //     blurInputOnSelect={autoBlur}
-    //     value={value}
-    //     placeholder={placeholder as string}
-    //     options={options}
-    //     onChange={this.handleOnChange}
-    //     onBlur={this.props.onBlur}
-    //     isDisabled={disabled}
-    //     styles={styles}
-    //     onMenuOpen={this.handleOpen}
-    //     menuPlacement="auto"
-    //   />
-    // );
   }
 }

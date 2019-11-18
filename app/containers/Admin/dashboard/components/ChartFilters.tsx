@@ -63,8 +63,7 @@ export default class ChartFilters extends PureComponent<Props> {
                 onChange={onProjectFilter}
                 value={currentProjectFilter || ''}
                 options={projectFilterOptions}
-                clearable={false}
-                borderColor="#EAEAEA"
+                disabled={true}
               />
             </HiddenLabel>
           </FilterContainer>
@@ -79,8 +78,6 @@ export default class ChartFilters extends PureComponent<Props> {
                 onChange={onGroupFilter}
                 value={currentGroupFilter || ''}
                 options={groupFilterOptions}
-                clearable={false}
-                borderColor="#EAEAEA"
               />
             </HiddenLabel >
           </FilterContainer>
@@ -95,8 +92,6 @@ export default class ChartFilters extends PureComponent<Props> {
                 onChange={onTopicFilter}
                 value={currentTopicFilter || ''}
                 options={topicFilterOptions}
-                clearable={false}
-                borderColor="#EAEAEA"
               />
             </HiddenLabel>
           </FilterContainer>
