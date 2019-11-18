@@ -67,7 +67,6 @@ const FiltersArea = styled.div`
   }
 
   ${media.smallerThanMaxTablet`
-    margin-bottom: 20px;
     flex-direction: column;
     align-items: flex-start;
   `}
@@ -310,7 +309,6 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       locationAllowed =  project?.attributes?.location_allowed;
     }
 
-    debugger;
     return (
       <Container id="e2e-ideas-container" className={className}>
         <FiltersArea id="e2e-ideas-filters" className={`${showMapView && 'mapView'}`}>
