@@ -1577,7 +1577,7 @@
   "app.containers.SignUp.acceptTermsAndConditions": "Godta våre {tacLink} for å melde deg på med {loginMechanismName}",
   "app.containers.SignUp.alreadyHaveAnAccount": "Har du allerede en konto?",
   "app.containers.SignUp.continue": "Fortsett",
-  "app.containers.SignUp.defaultSignUpHelper": "Fortell oss hvem du er og vi vil fortelle deg hvordan du kan delta.",
+  "app.containers.SignUp.defaultSignUpHelper": "Tell us who you are and we’ll tell you how you can participate.",
   "app.containers.SignUp.emailInvitationTokenInvalid": "Your invitation has expired. You can still create an account on the {signUpPageLink}.",
   "app.containers.SignUp.emailLabel": "E-post",
   "app.containers.SignUp.emailPlaceholder": " ",
