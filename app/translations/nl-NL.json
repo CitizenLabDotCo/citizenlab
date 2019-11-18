@@ -1577,7 +1577,7 @@
   "app.containers.SignUp.acceptTermsAndConditions": "Keur onze {tacLink} goed om te registreren met {loginMechanismName}",
   "app.containers.SignUp.alreadyHaveAnAccount": "Heb je al een account?",
   "app.containers.SignUp.continue": "Ga verder",
-  "app.containers.SignUp.defaultSignUpHelper": "Vertel ons wie je bent, en wij vertellen je hoe je kan participeren.",
+  "app.containers.SignUp.defaultSignUpHelper": "Tell us who you are and we’ll tell you how you can participate.",
   "app.containers.SignUp.emailInvitationTokenInvalid": "Je uitnodiging is niet langer geldig. Je kan wel nog steeds een account aanmaken op de {signUpPageLink}.",
   "app.containers.SignUp.emailLabel": "E-mail",
   "app.containers.SignUp.emailPlaceholder": " ",
