@@ -1577,7 +1577,7 @@
   "app.containers.SignUp.acceptTermsAndConditions": "Unsere {tacLink} akzeptieren, um sich mit {loginMechanismName} einzuloggen",
   "app.containers.SignUp.alreadyHaveAnAccount": "Sie haben bereits ein Konto?",
   "app.containers.SignUp.continue": "Fortfahren",
-  "app.containers.SignUp.defaultSignUpHelper": "Teilen Sie uns mit, wer Sie sind, und wir sagen Ihnen, wie Sie teilnehmen können.",
+  "app.containers.SignUp.defaultSignUpHelper": "Tell us who you are and we’ll tell you how you can participate.",
   "app.containers.SignUp.emailInvitationTokenInvalid": "Ihre Einladung ist abgelaufen. Sie können weiterhin ein Konto über die {signUpPageLink} erstellen.",
   "app.containers.SignUp.emailLabel": "Mail",
   "app.containers.SignUp.emailPlaceholder": " ",
