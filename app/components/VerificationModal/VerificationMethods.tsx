@@ -68,6 +68,7 @@ const ShieldIcon = styled(Icon)`
 
 const Content = styled.div`
   display: flex;
+  justify-content: center;
   ${media.smallerThanMinTablet`
     flex-wrap: wrap;
   `}
@@ -141,10 +142,12 @@ const ButtonsContainer = styled.div`
   align-items: stretch;
   background: ${colors.background};
   border-radius: ${(props: any) => props.theme.borderRadius};
+  max-width: 423px;
 
   ${media.smallerThanMinTablet`
     padding: 20px;
     margin: 0;
+    max-width: unset;
   `}
 `;
 
@@ -274,6 +277,7 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
               borderHoverColor={darken(0.2, '#e3e3e3')}
               boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
               boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+              overflowEllipsis
             >
               Bogus verification (testing)
             </MethodButton>

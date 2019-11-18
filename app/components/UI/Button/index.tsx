@@ -209,13 +209,18 @@ const StyledIcon = styled(Icon)`
   }
 `;
 
-const ButtonText = styled.div<{ whiteSpace?: string }>`
+const ButtonText = styled.div<{ whiteSpace?: string, overflowEllipsis?: boolean }>`
   margin: 0;
   margin-top: -1px;
   padding: 0;
   text-align: left;
   white-space: ${({ whiteSpace }) => whiteSpace || 'nowrap'};
   transition: all 100ms ease-out;
+  ${({ overflowEllipsis }) => overflowEllipsis ? `
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  ` : ''}
 `;
 
 const Container = styled.div<ButtonContainerProps>`
@@ -358,6 +363,7 @@ export interface Props extends ButtonContainerProps {
   ariaDescribedby?: string;
   iconAriaHidden?: boolean;
   ariaDisabled?: boolean;
+  overflowEllipsis?: boolean;
 }
 
 type State = {};
@@ -448,7 +454,8 @@ class Button extends PureComponent<Props, State> {
       ariaExpanded,
       iconAriaHidden,
       ariaDescribedby,
-      ariaDisabled
+      ariaDisabled,
+      overflowEllipsis
     } = this.props;
     let { id, size, style, processing, disabled, iconPos, className } = this.props;
 
@@ -474,7 +481,7 @@ class Button extends PureComponent<Props, State> {
             colorTheme={iconTheme}
             ariaHidden={iconAriaHidden}
           />}
-        {hasText && <ButtonText className="buttonText" whiteSpace={whiteSpace}>{text || children}</ButtonText>}
+        {hasText && <ButtonText className="buttonText" whiteSpace={whiteSpace} overflowEllipsis={overflowEllipsis}>{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
         {icon && iconPos === 'right' &&
           <StyledIcon
