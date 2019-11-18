@@ -321,6 +321,7 @@
   "app.components.Upload.onlyOneImage": "",
   "app.components.Upload.onlyXImages": "",
   "app.components.Upload.remaining": "",
+  "app.components.Upload.removeImage": "",
   "app.components.Upload.uploadImage": "",
   "app.components.Upload.uploadMultipleImages": "",
   "app.components.UserName.deletedUser": "",

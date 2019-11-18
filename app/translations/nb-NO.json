@@ -321,6 +321,7 @@
   "app.components.Upload.onlyOneImage": "Du kan kun laste opp 1 bilde",
   "app.components.Upload.onlyXImages": "Du kan kun laste opp {maxItemsCount} bilder",
   "app.components.Upload.remaining": "gjenværende",
+  "app.components.Upload.removeImage": "",
   "app.components.Upload.uploadImage": "Upload an image",
   "app.components.Upload.uploadMultipleImages": "Upload one or more images",
   "app.components.UserName.deletedUser": "ukjent forfatter",
