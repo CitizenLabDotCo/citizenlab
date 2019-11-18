@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { trackEventByName } from 'utils/analytics';
 
 // styling
 import styled from 'styled-components';
@@ -65,18 +66,24 @@ interface Props {
   className?: string;
   selectedView: 'card' | 'map';
   onClick: (selectedView: 'card' | 'map') => (event: React.FormEvent) => void;
+  trackEventName?: string;
 }
 
-const ViewButtons = memo<Props>(({ className, selectedView, onClick }: Props) => {
+const ViewButtons = memo<Props>(({ className, selectedView, trackEventName, ...props }: Props) => {
   const showListView = selectedView === 'card';
   const showMapView = selectedView === 'map';
+
+  const handleOnClick = (selectedView: 'card' | 'map') => (_event: React.FormEvent) => {
+    trackEventName && trackEventByName(trackEventName, { selectedDisplayMode: selectedView });
+    props.onClick(selectedView);
+  };
 
   return (
     <Container className={className} role="tablist">
       <ListButton
         role="tab"
         aria-selected={showListView}
-        onClick={onClick('card')}
+        onClick={handleOnClick('card')}
         className={`${showListView && 'active'}`}
       >
         <FormattedMessage {...messages.list} />
@@ -84,7 +91,7 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }: Props) =>
       <MapButton
         role="tab"
         aria-selected={showMapView}
-        onClick={onClick('map')}
+        onClick={handleOnClick('map')}
         className={`${showMapView && 'active'}`}
       >
         <FormattedMessage {...messages.map} />
