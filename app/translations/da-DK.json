@@ -1577,7 +1577,7 @@
   "app.containers.SignUp.acceptTermsAndConditions": "Accepter vores {tacLink} for at tilmelde dig med {loginMechanismName}",
   "app.containers.SignUp.alreadyHaveAnAccount": "Har du allerede en konto?",
   "app.containers.SignUp.continue": "Fortsæt",
-  "app.containers.SignUp.defaultSignUpHelper": "Fortæl os hvem du er, og vi viser dig hvordan du kan deltage.",
+  "app.containers.SignUp.defaultSignUpHelper": "Tell us who you are and we’ll tell you how you can participate.",
   "app.containers.SignUp.emailInvitationTokenInvalid": "Din invitation er udløbet. Du kan stadig oprette en konto på {signUpPageLink}.",
   "app.containers.SignUp.emailLabel": "E-mail",
   "app.containers.SignUp.emailPlaceholder": " ",
