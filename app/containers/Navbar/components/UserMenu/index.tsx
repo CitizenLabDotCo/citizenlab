@@ -32,7 +32,7 @@ const Container = styled.div`
 
 const StyledUserName = styled(UserName)`
   color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
-  margin-right: 2px;
+  margin-right: 4px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
   font-weight: 500;
@@ -142,11 +142,12 @@ class UserMenu extends PureComponent<Props, State> {
           >
             <StyledUserName
               userId={userId}
+              hideLastName
               verificationBadge
             />
             <StyledAvatar
               userId={userId}
-              size="43px"
+              size="30px"
               hasHoverEffect={false}
               fillColor={theme && theme.navbarTextColor ? theme.navbarTextColor : colors.label}
               verified
