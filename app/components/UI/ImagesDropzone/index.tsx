@@ -374,7 +374,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                   onClick={this.removeImage(image)}
                   className="remove-button"
                 >
-                  <RemoveIcon name="close" title={formatMessage(messages.removeImage)} />
+                  <RemoveIcon name="close" title={formatMessage(messages.a11y_removeImage)} />
                 </RemoveButton>
               </Image>
             </Box>

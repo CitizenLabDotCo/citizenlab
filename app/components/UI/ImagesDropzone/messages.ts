@@ -30,7 +30,7 @@ export default defineMessages({
     defaultMessage: 'Upload one or more images',
   },
   removeImage: {
-    id: 'app.components.Upload.removeImage',
+    id: 'app.components.Upload.a11y_removeImage',
     defaultMessage: 'Remove',
   },
 });
