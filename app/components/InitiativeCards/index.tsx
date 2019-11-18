@@ -480,8 +480,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     const hasInitiatives = (!isNilOrError(list) && list.length > 0);
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
-    const showListView = selectedView === 'card';
-    const showMapView = selectedView === 'map';
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
@@ -577,8 +575,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                 <FeatureFlag name="maps">
                   <StyledViewButtons
                     onClick={this.selectView}
-                    showListView={showListView}
-                    showMapView={showMapView}
+                    selectedView={selectedView}
                   />
                 </FeatureFlag>
 
