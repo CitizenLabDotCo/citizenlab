@@ -30,63 +30,71 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, media, fontSizes, viewportWidths } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { darken, lighten } from 'polished';
 
 const Container = styled.div`
-  flex: 1;
   width: 100%;
+  height: 550px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   padding: 30px;
   position: relative;
   overflow: hidden;
+
+  ${media.smallerThanMaxTablet`
+    height: 500px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    height: 400px;
+  `}
+`;
+
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-bottom: 20px;
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 15px;
+  `}
 `;
 
 const Title = styled.h3`
+  width: calc(100% - 25px);
   color: ${colors.text};
-  width: calc(100% - 50px);
-  margin: 0;
-  padding: 0;
-  font-size: ${fontSizes.xxl}px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;
+  margin: 0;
+  padding: 0;
 
   ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.xl}px;
+    width: calc(100% - 10px);
   `}
 `;
 
 const Address = styled.div`
-  color: ${colors.label};
+  color: ${lighten(0.1, colors.label)};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
   display: flex;
-  align-items: center;
-  margin-top: 20px;
+  align-items: flex-start;
+  margin-top: 10px;
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.small}px;
-    margin-top: 18px;
   `}
 `;
 
-const MapMarkerIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
-  fill: ${colors.label};
-  margin-right: 5px;
-  margin-top: -2px;
-`;
-
 const Description = styled.div`
-  flex: 0 1 100%;
-  margin-bottom: 1rem;
+  flex: 1;
   overflow: hidden;
   position: relative;
-  margin-top: 20px;
+  margin-bottom: 25px;
 
   &::after {
     background: linear-gradient(0deg, white, rgba(255, 255, 255, 0));
@@ -100,21 +108,21 @@ const Description = styled.div`
   }
 
   ${media.smallerThanMinTablet`
-    margin-top: 18px;
+    margin-bottom: 20px;
   `}
 `;
 
 const Footer = styled.div`
-  align-items: center;
   display: flex;
-  flex: 1 0 auto;
-  justify-content: space-between;
-  margin-top: 10px;
-  margin-bottom: 25px;
+  flex-direction: column;
+  align-items: stretch;
 `;
 
-const ViewIdeaButton = styled(Button)`
-  justify-self: flex-end;
+const VotingAndCommenting = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 `;
 
 const CommentsCount = styled.span`
@@ -145,15 +153,31 @@ const Unauthenticated = styled.div`
   justify-content: space-between;
 `;
 
+const Divider = styled.span`
+  color: ${lighten(0.1, colors.label)};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
+`;
+
 const RegisterLink = styled(Link)`
   color: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.small}px;
-  font-weight: 500;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  text-decoration: underline;
   cursor: pointer;
 
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
+    text-decoration: underline;
   }
+`;
+
+const ViewIdeaButtonContainer = styled.div`
+  display: flex;
 `;
 
 interface InputProps {
@@ -225,16 +249,13 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
 
       return (
         <Container className={className}>
-          <Title>
-            <T value={idea.attributes.title_multiloc} />
-          </Title>
+          <Header>
+            <Title>
+              <T value={idea.attributes.title_multiloc} />
+            </Title>
 
-          {ideaAddress &&
-            <Address>
-              <MapMarkerIcon name="mapmarker" />
-              {ideaAddress}
-            </Address>
-          }
+            {ideaAddress && <Address>{ideaAddress}</Address>}
+          </Header>
 
           <Description>
             <Body
@@ -246,47 +267,54 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
           </Description>
 
           <Footer>
-            {!showFooter &&
-              <>
-                <VoteControl
-                  ideaId={idea.id}
-                  size={smallerThanSmallTablet ? '1' : '2'}
-                  unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
-                  disabledVoteClick={this.handleDisabledVoteClick}
-                  noVerificationShortFlow
+            <VotingAndCommenting>
+              {!showFooter &&
+                <>
+                  <VoteControl
+                    ideaId={idea.id}
+                    size={smallerThanSmallTablet ? '1' : '2'}
+                    unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
+                    disabledVoteClick={this.handleDisabledVoteClick}
+                    noVerificationShortFlow
+                  />
+                  <CommentsCount>
+                    <CommentIcon name="comments" />
+                    {idea.attributes.comments_count}
+                  </CommentsCount>
+                </>
+              }
+
+              {showFooter === 'unauthenticated' &&
+                <Unauthenticated>
+                  <Button onClick={this.goToLogin}>
+                    <FormattedMessage {...messages.login} />
+                  </Button>
+                  <Divider>
+                    <FormattedMessage {...messages.or} />
+                  </Divider>
+                  <RegisterLink to="/sign-up">
+                    <FormattedMessage {...messages.register} />
+                  </RegisterLink>
+                </Unauthenticated>
+              }
+
+              {showFooter === 'votingDisabled' &&
+                <VotingDisabled
+                  votingDescriptor={idea.attributes.action_descriptor.voting}
+                  projectId={idea.relationships.project.data.id}
                 />
-                <CommentsCount>
-                  <CommentIcon name="comments" />
-                  {idea.attributes.comments_count}
-                </CommentsCount>
-              </>
-            }
+              }
+            </VotingAndCommenting>
 
-            {showFooter === 'unauthenticated' &&
-              <Unauthenticated>
-                <Button onClick={this.goToLogin}>
-                  <FormattedMessage {...messages.login} />
-                </Button>
-                <RegisterLink to="/sign-up">
-                  <FormattedMessage {...messages.register} />
-                </RegisterLink>
-              </Unauthenticated>
-            }
-
-            {showFooter === 'votingDisabled' &&
-              <VotingDisabled
-                votingDescriptor={idea.attributes.action_descriptor.voting}
-                projectId={idea.relationships.project.data.id}
-              />
-            }
+            <ViewIdeaButtonContainer>
+              <Button
+                fullWidth={true}
+                onClick={this.createIdeaClickHandler}
+              >
+                <FormattedMessage {...messages.seeIdea} />
+              </Button>
+            </ViewIdeaButtonContainer>
           </Footer>
-
-          <ViewIdeaButton
-            fullWidth={true}
-            onClick={this.createIdeaClickHandler}
-          >
-            <FormattedMessage {...messages.seeIdea} />
-          </ViewIdeaButton>
         </Container>
       );
     }
