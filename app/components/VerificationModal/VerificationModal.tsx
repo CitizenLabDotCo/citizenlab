@@ -6,6 +6,7 @@ import VerificationMethods from './VerificationMethods';
 import VerificationFormCOW from './VerificationFormCOW';
 import VerificationFormBogus from './VerificationFormBogus';
 import VerificationSuccess from './VerificationSuccess';
+import VerificationError from './VerificationError';
 
 // events
 import { closeVerificationModal } from 'containers/App/events';
@@ -24,9 +25,11 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export type ContextShape = { id: string, type: IParticipationContextType, action: ICitizenAction } | null;
+export type ContextShape = { id: string, type: IParticipationContextType, action: ICitizenAction }
+| { error: 'taken' | 'not_entitled' | null }
+| null;
 
-export type VerificationModalSteps = 'method-selection' | 'cow' | 'bogus' | 'success' | null;
+export type VerificationModalSteps = 'method-selection' | 'cow' | 'bogus' | 'success' | 'error' | null;
 
 export interface Props {
   opened: boolean;
@@ -44,7 +47,7 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
     setActiveStep(initialActiveStep || 'method-selection');
   }, [opened, initialActiveStep]);
 
-  const onMethodSelected = useCallback((selectedMethod: VerificationMethodNames) => {
+  const onMethodSelected = useCallback((selectedMethod: Exclude<VerificationMethodNames, 'bosa_fas'>) => {
     setActiveStep(selectedMethod);
   }, []);
 
@@ -58,6 +61,10 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
 
   const onCowVerified = useCallback(() => {
     setActiveStep('success');
+  }, []);
+
+  const onErrorBack = useCallback(() => {
+    setActiveStep('method-selection');
   }, []);
 
   const onBogusCancel = useCallback(() => {
@@ -90,6 +97,10 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
 
         {activeStep === 'success' &&
           <VerificationSuccess />
+        }
+
+        {activeStep === 'error' &&
+          <VerificationError onBack={onErrorBack} context={context}/>
         }
       </Container>
     </Modal>
