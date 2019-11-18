@@ -7,7 +7,7 @@ resource "Onboarding campaigns" do
   explanation "Indicates which call to action to show to the current user"
 
   before do
-    @user = create(:user)
+    @user = create(:user, verified: true)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
