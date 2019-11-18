@@ -28,7 +28,6 @@ import GetInitiativesFilterCounts, { GetInitiativesFilterCountsChildProps } from
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // utils
-import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
@@ -461,7 +460,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
     event.preventDefault();
-    trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
     this.setState({ selectedView });
   }
 
@@ -576,6 +574,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   <StyledViewButtons
                     onClick={this.selectView}
                     selectedView={selectedView}
+                    trackEventName={tracks.toggleDisplay}
                   />
                 </FeatureFlag>
 

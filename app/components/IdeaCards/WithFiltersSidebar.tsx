@@ -30,7 +30,6 @@ import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // utils
-import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
@@ -477,7 +476,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
     event.preventDefault();
-    trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
     this.setState({ selectedView });
   }
 
@@ -591,6 +589,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     <StyledViewButtons
                       selectedView={selectedView}
                       onClick={this.selectView}
+                      trackEventName={tracks.toggleDisplay}
                     />
                   </FeatureFlag>
                  }
