@@ -25,9 +25,31 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export type ContextShape = { id: string, type: IParticipationContextType, action: ICitizenAction }
-| { error: 'taken' | 'not_entitled' | null }
+export type ProjectContext = { id: string, type: IParticipationContextType, action: ICitizenAction };
+
+export type ErrorContext = { error: 'taken' | 'not_entitled' | null };
+
+export type ContextShape = ProjectContext
+| ErrorContext
 | null;
+
+export function isProjectContext(obj: ContextShape): obj is ProjectContext {
+  return (obj as ProjectContext).id !== undefined;
+}
+
+export function isErrorContext(obj: ContextShape): obj is ErrorContext {
+  return (obj as ErrorContext).error !== undefined;
+}
+
+export function isProjectOrErrorContext(obj: ContextShape) {
+  if (obj === null) {
+    return 'null';
+  } else if ((obj as any).error !== undefined) {
+    return 'ProjectContext';
+  } else {
+    return 'ErrorContext';
+  }
+}
 
 export type VerificationModalSteps = 'method-selection' | 'cow' | 'bogus' | 'success' | 'error' | null;
 
@@ -83,7 +105,7 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
       remaining
     >
       <Container className={`e2e-verification-modal ${className || ''}`}>
-        {activeStep === 'method-selection' &&
+        {activeStep === 'method-selection' && (context === null || isProjectContext(context)) &&
           <VerificationMethods context={context} onMethodSelected={onMethodSelected} />
         }
 
@@ -99,7 +121,7 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
           <VerificationSuccess />
         }
 
-        {activeStep === 'error' &&
+        {activeStep === 'error' && (context === null || isErrorContext(context)) &&
           <VerificationError onBack={onErrorBack} context={context}/>
         }
       </Container>

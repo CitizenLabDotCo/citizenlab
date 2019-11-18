@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { getParticipationConditions, IParticipationConditions } from 'services/participationConditions';
-import { ContextShape } from 'components/VerificationModal/VerificationModal';
+import { ProjectContext } from 'components/VerificationModal/VerificationModal';
 
 // doesn't react to prop changes, which is ok here because components are unmounted btwn uses
 
-export default function useParticipationConditions(props: ContextShape | null) {
+export default function useParticipationConditions(props: ProjectContext | null) {
   const [conditions, setConditions] = useState<IParticipationConditions | undefined | null | Error>(undefined);
 
   useEffect(() => {

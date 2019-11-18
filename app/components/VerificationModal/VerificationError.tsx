@@ -17,9 +17,7 @@ import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 
 // Types
-import { ContextShape } from './VerificationModal';
-
-const illustration = require('./illustration.svg');
+import { ErrorContext } from './VerificationModal';
 
 const Container = styled.div`
   width: 100%;
@@ -52,7 +50,7 @@ const CancelButton = styled(Button)`
 interface Props {
   className?: string;
   onBack: () => void;
-  context: ContextShape;
+  context: ErrorContext | null;
 }
 
 export default memo<Props>(({ className, onBack, context }) => {
@@ -65,8 +63,6 @@ export default memo<Props>(({ className, onBack, context }) => {
   if (isNilOrError(authUser)) return null;
 
   let message;
-
-  console.log(context);
 
   if (context) {
     if (context.error === 'taken') {
