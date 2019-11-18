@@ -218,18 +218,19 @@ resource "Projects" do
         parameter :area_ids, "Array of ids of the associated areas"
         parameter :topic_ids, "Array of ids of the associated topics"
         parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
-        parameter :participation_method, "Only for continuous project. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
-        parameter :posting_enabled, "Only for continuous project. Can citizens post ideas in this project? Defaults to true", required: false
-        parameter :commenting_enabled, "Only for continuous project. Can citizens post comment in this project? Defaults to true", required: false
-        parameter :voting_enabled, "Only for continuous project. Can citizens vote in this project? Defaults to true", required: false
-        parameter :voting_method, "Only for continuous project with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
+        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
+        parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project? Defaults to true", required: false
+        parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project? Defaults to true", required: false
+        parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project? Defaults to true", required: false
+        parameter :voting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+        parameter :voting_limited_max, "Only for continuous projects with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
         parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false
+        parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas? Defaults to true", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -274,6 +275,7 @@ resource "Projects" do
         let(:voting_enabled) { project.voting_enabled }
         let(:voting_method) { project.voting_method }
         let(:voting_limited_max) { project.voting_limited_max }
+        let(:location_allowed) { false }
 
         example_request "Create a continuous project" do
           expect(response_status).to eq 201
@@ -291,6 +293,7 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
           expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method 
           expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max 
+          expect(json_response.dig(:data,:attributes,:location_allowed)).to eq location_allowed 
         end
 
         context 'when not admin' do
@@ -333,18 +336,19 @@ resource "Projects" do
         parameter :area_ids, "Array of ids of the associated areas"
         parameter :topic_ids, "Array of ids of the associated topics"
         parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}.", required: false
-        parameter :participation_method, "Only for continuous project. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}.", required: false
-        parameter :posting_enabled, "Only for continuous project. Can citizens post ideas in this project?", required: false
-        parameter :commenting_enabled, "Only for continuous project. Can citizens post comment in this project?", required: false
-        parameter :voting_enabled, "Only for continuous project. Can citizens vote in this project?", required: false
-        parameter :voting_method, "Only for continuous project with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
-        parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project.", required: false
+        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}.", required: false
+        parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project?", required: false
+        parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project?", required: false
+        parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project?", required: false
+        parameter :voting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
+        parameter :voting_limited_max, "Only for continuous projects with limited voting. Number of votes a citizen can perform in this project.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
         parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false
+        parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas? Defaults to true", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Project)
 
