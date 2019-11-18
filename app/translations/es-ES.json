@@ -1577,7 +1577,7 @@
   "app.containers.SignUp.acceptTermsAndConditions": "Acepta nuestra {tacLink} para registrarse con {loginMechanismName}",
   "app.containers.SignUp.alreadyHaveAnAccount": "¿Ya tienes una cuenta?",
   "app.containers.SignUp.continue": "Continuar",
-  "app.containers.SignUp.defaultSignUpHelper": "Cuéntanos quien eres y te diremos cómo puedes participar.",
+  "app.containers.SignUp.defaultSignUpHelper": "Tell us who you are and we’ll tell you how you can participate.",
   "app.containers.SignUp.emailInvitationTokenInvalid": "Tu invitación ha expirado. Aun puedes crear una cuenta en nuestra {signUpPageLink}.",
   "app.containers.SignUp.emailLabel": "Correo",
   "app.containers.SignUp.emailPlaceholder": " ",
