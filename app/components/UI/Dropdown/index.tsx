@@ -7,8 +7,6 @@ import { media } from 'utils/styleUtils';
 const timeout = 200;
 
 const Container: any = styled(clickOutside)`
-  display: flex;
-  flex-direction: column;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background-color: #fff;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.18);
@@ -40,16 +38,19 @@ const Container: any = styled(clickOutside)`
   }
 `;
 
-const ContainerInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  overflow: hidden;
+const ContainerInner: any = styled.div`
+  width: ${(props: Props) => props.width};
+
+  ${media.smallerThanMaxTablet`
+    width: ${(props: Props) => props.mobileWidth};
+  `}
 `;
 
 const Content: any = styled.div`
-  width: ${(props: Props) => props.width};
   max-height: ${(props: any) => props.maxHeight};
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 5px;
@@ -60,14 +61,11 @@ const Content: any = styled.div`
   -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
-    width: ${(props: Props) => props.mobileWidth};
     max-height: ${(props: any) => props.mobileMaxHeight};
   `}
 `;
 
 const Footer = styled.div`
-  flex: 1 0 auto;
-  width: 100%;
   display: flex;
 `;
 
@@ -168,24 +166,27 @@ export default class Dropdown extends PureComponent<Props, State> {
       >
         <Container
           id={id}
-          width={width}
-          mobileWidth={mobileWidth}
           top={top}
           left={left}
           mobileLeft={mobileLeft}
           right={right}
           mobileRight={mobileRight}
+          closeOnClickOutsideEnabled={opened}
           onClickOutside={this.close}
           className={className}
         >
-          <ContainerInner>
+          <ContainerInner
+            width={width}
+            mobileWidth={mobileWidth}
+            maxHeight={maxHeight}
+            mobileMaxHeight={mobileMaxHeight}
+          >
             <Content
               width={width}
               mobileWidth={mobileWidth}
               maxHeight={maxHeight}
               mobileMaxHeight={mobileMaxHeight}
               ref={this.setRef}
-              className="ignore-body-scroll-lock"
             >
               {content}
             </Content>

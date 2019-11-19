@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 
 // components
-import Footer from 'components/Footer';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
 import SuccessStories from './SuccessStories';
 import InitiativeCards from 'components/InitiativeCards';
 import ContentContainer from 'components/ContentContainer';
+import CityLogoSection from 'components/CityLogoSection';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -65,13 +65,17 @@ const StyledContentContainer = styled(ContentContainer)`
 const Padding = styled.div`
   width: 100%;
   height: 100px;
+
+  ${media.smallerThanMinTablet`
+    height: 40px;
+  `}
 `;
 
 const trackInitiative = () => {
   trackEventByName(tracks.clickStartInitiativesCTA, { extra: { location: 'initiatives footer' } });
 };
 
-export default withTheme(memo(({ theme }: any) => (
+export default withTheme(memo((_props) => (
   <>
     <InitiativesIndexMeta />
     <InitiativesHeader />
@@ -90,8 +94,7 @@ export default withTheme(memo(({ theme }: any) => (
       <Button
         fontWeight="500"
         padding="13px 22px"
-        bgColor="#fff"
-        textColor={theme.colorText}
+        style="primary-inverse"
         linkTo="/initiatives/new"
         onClick={trackInitiative}
         icon="arrowLeft"
@@ -99,6 +102,6 @@ export default withTheme(memo(({ theme }: any) => (
         text={<FormattedMessage {...messages.startInitiative} />}
       />
     </FooterBanner>
-    <Footer />
+    <CityLogoSection />
   </>
 )));

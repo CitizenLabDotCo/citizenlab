@@ -56,11 +56,10 @@ const ButtonWrapper = styled.div`
   padding-top: 10px;
 `;
 
-const TermsAndConditionsWrapper: any = styled.div`
-  padding: 15px 30px;
+const TermsAndConditionsWrapper = styled.div`
+  padding: 15px 20px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${darken(0.035, colors.background)};
-  border: solid 1px transparent;
+  background: ${darken(0.04, colors.background)};
 
   &.error {
     border-color: ${(props: any) => props.theme.colors.clRedError};
@@ -95,6 +94,7 @@ const AlreadyHaveAnAccount = styled(Link)`
 
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
+    text-decoration: underline;
   }
 `;
 
@@ -417,9 +417,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
             <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
               <Checkbox
                 className="e2e-terms-and-conditions"
-                value={this.state.tacAccepted}
+                checked={this.state.tacAccepted}
                 onChange={this.handleTaCAcceptedOnChange}
-                disableLabelClick={true}
                 label={
                   <FormattedMessage
                     {...messages.gdprApproval}

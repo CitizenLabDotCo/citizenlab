@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { adopt } from 'react-adopt';
 
 // components
@@ -62,9 +62,11 @@ export const NoDataContainer = styled.div`
   align-items: center;
   min-height: 150px;
   font-size: ${fontSizes.base}px;
-  // Needed to vertically center the text
-  // Reason being: we have a margin-bottom on the header,
-  // Which we want to keep when there's an actual graph
+  /*
+   * Needed to vertically center the text
+   * Reason being: we have a margin-bottom on the header,
+   * Which we want to keep when there's an actual graph
+   */
   padding: 20px;
 `;
 
@@ -205,6 +207,7 @@ interface Props {
   authUser: GetAuthUserChildProps;
   insightsEnabled: GetFeatureFlagChildProps;
   geographicDashboardEnabled: GetFeatureFlagChildProps;
+  children: JSX.Element;
 }
 
 export const chartTheme = (theme) => {
@@ -223,55 +226,48 @@ export const chartTheme = (theme) => {
   };
 };
 
-export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps> {
-  private tabs = [
-    { label: this.props.intl.formatMessage(messages.tabSummary), url: '/admin/dashboard' },
-    { label: this.props.intl.formatMessage(messages.tabUsers), url: '/admin/dashboard/users' },
+export const DashboardsPage = memo(({ insightsEnabled, geographicDashboardEnabled, authUser, children, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+  const staticTabs = [
+    { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
+    { label: formatMessage(messages.tabUsers), url: '/admin/dashboard/users' },
   ];
-  private resource = {
-    title: this.props.intl.formatMessage(messages.titleDashboard),
-    subtitle: this.props.intl.formatMessage(messages.subtitleDashboard)
+
+  const resource = {
+    title: formatMessage(messages.titleDashboard),
+    subtitle: formatMessage(messages.subtitleDashboard)
   };
 
-  componentWillMount() {
-    if (this.props.insightsEnabled) {
-      this.tabs.push(
-        { label: this.props.intl.formatMessage(messages.tabInsights), url: '/admin/dashboard/insights' }
+  const tabs = useCallback(() => {
+    return [
+      ...staticTabs,
+      ...(insightsEnabled ? [{ label: formatMessage(messages.tabInsights), url: '/admin/dashboard/insights' }] : []),
+      ...(geographicDashboardEnabled ? [{ label: formatMessage(messages.tabMap), url: '/admin/dashboard/map' }] : [])
+    ];
+  }, [insightsEnabled, geographicDashboardEnabled])();
+
+  if (authUser) {
+    if (isAdmin({ data: authUser })) {
+      return (
+        <TabbedResource
+          resource={resource}
+          tabs={tabs}
+        >
+          <HelmetIntl
+            title={messages.helmetTitle}
+            description={messages.helmetDescription}
+          />
+          {children}
+        </TabbedResource>
       );
-    }
-    if (this.props.geographicDashboardEnabled) {
-      this.tabs.push(
-        { label: this.props.intl.formatMessage(messages.tabMap), url: '/admin/dashboard/map' }
+    } else if (isProjectModerator({ data: authUser })) {
+      return (
+        <Summary onlyModerator />
       );
     }
   }
-  render() {
-    const { children, authUser } = this.props;
 
-    if (authUser) {
-      if (isAdmin({ data: authUser })) {
-        return (
-          <TabbedResource
-            resource={this.resource}
-            tabs={this.tabs}
-          >
-            <HelmetIntl
-              title={messages.helmetTitle}
-              description={messages.helmetDescription}
-            />
-            {children}
-          </TabbedResource>
-        );
-      } else if (isProjectModerator({ data: authUser })) {
-        return (
-          <Summary onlyModerator />
-        );
-      }
-    }
-
-    return null;
-  }
-}
+  return null;
+});
 
 const DashboardsPageWithHoC = injectIntl(DashboardsPage);
 

@@ -1,4 +1,3 @@
-import { IProject } from './projects';
 import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
@@ -10,11 +9,11 @@ type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
-export type PostingDisabledReasons = 'project_inactive' | 'not_ideation' | 'posting_disabled' | 'not_permitted';
+export type PostingDisabledReasons = 'project_inactive' | 'not_ideation' | 'posting_disabled' | 'not_permitted' | 'not_verified';
 export type CommentingDisabledReasons = 'project_inactive' | 'not_supported' | 'commenting_disabled' | 'not_permitted';
 export type VotingDisabledReasons = 'project_inactive' | 'not_ideation' | 'voting_disabled' | 'not_permitted' | 'voting_limited_max_reached';
-export type SurveyDisabledReasons = 'project_inactive' | 'not_survey' | 'not_permitted';
-export type PollDisabledReasons = 'project_inactive' | 'not_poll' | 'not_permitted' | 'already_responded';
+export type SurveyDisabledReasons = 'project_inactive' | 'not_survey' | 'not_permitted' | 'not_verified';
+export type PollDisabledReasons = 'project_inactive' | 'not_poll' | 'not_permitted' | 'already_responded' | 'not_verified';
 export interface IProjectData {
   id: string;
   type: 'project';
@@ -45,6 +44,7 @@ export interface IProjectData {
     survey_service?: SurveyServices;
     survey_embed_url?: string;
     ordering: number;
+    location_allowed?: boolean;
     action_descriptor: {
       posting: {
         enabled: boolean,
@@ -136,7 +136,7 @@ export function projectByIdStream(projectId: string, streamParams: IStreamParams
 export async function addProject(projectData: IUpdatedProjectProperties) {
   const response = await streams.add<IProject>(apiEndpoint, { project: projectData });
   const projectId = response.data.id;
-  streams.fetchAllWith({
+  await streams.fetchAllWith({
     dataId: [projectId],
     apiEndpoint: [`${API_PATH}/projects`]
   });

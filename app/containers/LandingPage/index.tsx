@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectCards from 'components/ProjectCards';
-import Footer from 'components/Footer';
+import CityLogoSection from 'components/CityLogoSection';
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
 import SignedOutHeader from './SignedOutHeader';
@@ -38,7 +38,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import { PublicationStatus } from 'resources/GetProjects';
 import FeatureFlag from 'components/FeatureFlag';
 
-const Container: any = styled.div`
+const Container = styled.main`
   height: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
@@ -100,7 +100,7 @@ const StyledContentContainer = styled(ContentContainer)`
 const ProjectSection = styled.div`
   width: 100%;
   padding-top: 40px;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
 
   ${media.smallerThanMinTablet`
     padding-bottom: 60px;
@@ -170,13 +170,9 @@ class LandingPage extends PureComponent<Props, State> {
   projectsPublicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
   render() {
-    const { locale, tenant, authUser, homepageInfoPage, theme } = this.props;
+    const { locale, tenant, authUser, homepageInfoPage } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
-      // header image
-      const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
-      const hasHeaderImage = (tenantHeaderImage !== null);
-
       // custom section
       const showCustomSection = !isEmptyMultiloc(homepageInfoPage.attributes.body_multiloc);
       const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
@@ -187,8 +183,15 @@ class LandingPage extends PureComponent<Props, State> {
 
       return (
         <>
-          <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
-            {authUser ? <SignedInHeader /> : <SignedOutHeader />}
+          <Container id="e2e-landing-page">
+
+            {!isNilOrError(authUser)
+              ? <SignedInHeader />
+              :
+                <Fragment name="signed-out-header">
+                  <SignedOutHeader />
+                </Fragment>
+            }
 
             <Content>
               <StyledContentContainer mode="page">
@@ -224,7 +227,7 @@ class LandingPage extends PureComponent<Props, State> {
                   {headerSloganMultiLoc ? (
                     <T value={headerSloganMultiLoc}>
                       {translatedSlogan =>
-                        translatedSlogan ? <h2>translatedSlogan</h2> : genericSlogan
+                        translatedSlogan ? <h2>{translatedSlogan}</h2> : genericSlogan
                       }
                     </T>
                   ) : genericSlogan}
@@ -232,15 +235,14 @@ class LandingPage extends PureComponent<Props, State> {
                   <Button
                     fontWeight="500"
                     padding="13px 22px"
-                    bgColor="#fff"
-                    textColor={theme.colorText}
+                    style="primary-inverse"
                     linkTo="/sign-up"
                     text={<FormattedMessage {...messages.createAccount} />}
                     onClick={this.clickCreateAccountCTAFooter}
                   />
                 </FooterBanner>
               }
-              <Footer />
+              <CityLogoSection />
             </Content>
           </Container>
         </>

@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { pick } from 'lodash-es';
 import { isNilOrError, isFullMultiloc } from 'utils/helperUtils';
-
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
@@ -12,10 +11,8 @@ import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors, FormikProps } from 'formik';
 import Label from 'components/UI/Label';
-import InfoTooltip from 'components/admin/InfoTooltip';
-
+import IconTooltip from 'components/UI/IconTooltip';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
 import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc, Locale } from 'typings';
 import messages from '../messages';
@@ -44,6 +41,14 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
 `;
 
+const StyledSectionField = styled(SectionField)`
+  margin-top: 45px;
+`;
+
+const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
+  margin-bottom: 10px;
+`;
+
 class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props, FormValues>, State> {
   constructor(props) {
     super(props);
@@ -52,7 +57,7 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
     };
   }
 
-  onLocaleChange = (locale: Locale) => () => {
+  onLocaleChange = (locale: Locale) => {
     this.setState({ selectedLocale: locale });
   }
 
@@ -108,21 +113,19 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
             />}
           </SectionField>
 
-          <SectionField>
-            <FormLocaleSwitcher
+          <StyledSectionField>
+            <StyledFormLocaleSwitcher
               onLocaleChange={this.onLocaleChange}
               selectedLocale={selectedLocale}
               values={multilocValues}
             />
-          </SectionField>
-          <SectionField>
             <Field
               component={FormikQuillMultiloc}
-              shownLocale={this.state.selectedLocale}
+              selectedLocale={this.state.selectedLocale}
               label={(
                 <FormattedMessage {...messages.fieldThresholdReachedMessage} />
               )}
-              labelTooltip={<InfoTooltip {...messages.fieldThresholdReachedMessageInfo} />}
+              labelTooltip={<IconTooltip content={<FormattedMessage {...messages.fieldThresholdReachedMessageInfo} />} />}
               name="threshold_reached_message"
               noImages
               noVideos
@@ -130,14 +133,12 @@ class InitiativesSettingsForm extends React.Component<InjectedFormikProps<Props,
               inAdmin
               limitedTextFormatting
             />
-          </SectionField>
+          </StyledSectionField>
           <SectionField>
             <Field
-              shownLocale={this.state.selectedLocale}
-              label={(
-                <FormattedMessage {...messages.fieldEligibilityCriteria} />
-              )}
-              labelTooltip={<InfoTooltip {...messages.fieldEligibilityCriteriaInfo} />}
+              selectedLocale={this.state.selectedLocale}
+              label={<FormattedMessage {...messages.fieldEligibilityCriteria} />}
+              labelTooltip={<IconTooltip content={<FormattedMessage {...messages.fieldEligibilityCriteriaInfo} />} />}
               name="eligibility_criteria"
               noImages
               noVideos

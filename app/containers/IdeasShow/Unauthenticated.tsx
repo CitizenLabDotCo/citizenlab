@@ -1,11 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
-import clHistory from 'utils/cl-router/history';
+import styled, { withTheme } from 'styled-components';
 import { darken } from 'polished';
 import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const VerticalContainer = styled.div`
   display: flex;
@@ -14,51 +13,51 @@ const VerticalContainer = styled.div`
   justify-content: center;
 `;
 
-const StyledButton = styled(Button)`
-  margin-bottom: 8px;
-`;
-
 const Separator = styled.div`
-  color: #999;
-  font-size: ${fontSizes.small}px;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
-`;
-
-const RegisterLink = styled.span`
-  color: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.small}px;
-  font-weight: 400;
-  line-height: 18px;
-  text-align: center;
-  cursor: pointer;
   margin-top: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
+`;
 
-  &:hover {
-    color: ${(props) => darken(0.15, props.theme.colorMain)};
+const StyledButton = styled(Button)`
+  &:hover .buttonText {
+    text-decoration: underline;
   }
 `;
 
-export default class Unauthenticated extends React.PureComponent {
-  goToLogin = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    clHistory.push('/sign-in');
-  }
+interface Props {
+  theme: any;
+}
 
-  goToRegister = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    clHistory.push('/sign-up');
-  }
+interface State { }
 
+class Unauthenticated extends React.PureComponent<Props, State> {
   render() {
     return (
       <VerticalContainer>
-        <StyledButton className="e2e-login-button" onClick={this.goToLogin}><FormattedMessage {...messages.login} /></StyledButton>
-        <Separator>or</Separator>
-        <RegisterLink className="e2e-register-button" onClick={this.goToRegister}><FormattedMessage {...messages.register} /></RegisterLink>
+        <Button
+          className="e2e-login-button"
+          linkTo="/sign-in"
+        >
+          <FormattedMessage {...messages.login} />
+        </Button>
+        <Separator>
+          <FormattedMessage {...messages.or} />
+        </Separator>
+        <StyledButton
+          className="e2e-register-button"
+          linkTo="/sign-up"
+          style="text"
+          textColor={this.props.theme.colorMain}
+          textHoverColor={darken(0.15, this.props.theme.colorMain)}
+        >
+          <FormattedMessage {...messages.register} />
+        </StyledButton>
       </VerticalContainer>
     );
   }
 }
+
+export default withTheme(Unauthenticated);

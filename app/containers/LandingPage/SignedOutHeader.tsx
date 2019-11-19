@@ -176,7 +176,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, className, theme } = this.props;
+    const { locale, tenant, className } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       // tranlate header title into a h1 wih a fallback
@@ -186,7 +186,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
       const title = (headerTitleMultiLoc ? (
         <T as="h1" value={headerTitleMultiLoc}>
           {translatedTitle =>
-             translatedTitle ? <h1>translatedTitle</h1> : genericTitle
+             translatedTitle ? <h1>{translatedTitle}</h1> : genericTitle
           }
         </T>
       ) : genericTitle);
@@ -198,7 +198,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
       const subtitle = (headerSloganMultiLoc ? (
         <T value={headerSloganMultiLoc}>
           {translatedSlogan =>
-             translatedSlogan ? <h2>translatedSlogan</h2> : genericSlogan
+             translatedSlogan ? <h2>{translatedSlogan}</h2> : genericSlogan
           }
         </T>
       ) : genericSlogan);
@@ -229,8 +229,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
               <SignUpButton
                 fontWeight="500"
                 padding="13px 22px"
-                bgColor="#fff"
-                textColor={theme.colorMain}
+                style="primary-inverse"
                 onClick={this.goToSignUpPage}
                 text={<FormattedMessage {...messages.createAccount} />}
                 className="e2e-signed-out-header-cta-button"

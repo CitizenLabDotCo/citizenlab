@@ -1,53 +1,72 @@
-import React, { PureComponent, FormEvent } from 'react';
-import Icon from 'components/UI/Icon';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, customOutline } from 'utils/styleUtils';
+import Icon from 'components/UI/Icon';
+import { get } from 'lodash-es';
 
-const Container: any = styled.div`
-  &:not(.hasLabel) {
-    flex: 0 0 ${(props: any) => props.size};
-    width: ${(props: any) => props.size};
-    height: ${(props: any) => props.size};
+const Container = styled.div<{ size: string }>`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &.hasNoLabel {
+    flex: 0 0 ${({ size }) => parseInt(size, 10) + 2}px;
+    width: ${({ size }) => parseInt(size, 10) + 2}px;
+    height: ${({ size }) => parseInt(size, 10) + 2}px;
   }
 
-  &.hasLabel {
-    display: flex;
-    align-items: center;
+  label {
+    cursor: pointer;
   }
 `;
 
-const CheckboxContainer: any = styled.div`
-  flex: 0 0 ${(props: any) => props.size};
-  width: ${(props: any) => props.size};
-  height: ${(props: any) => props.size};
+const InputWrapper = styled.div<{ checked: boolean, size: string }>`
+  position: relative;
+  flex: 0 0 ${({ size }) => parseInt(size, 10)}px;
+  width: ${({ size }) => parseInt(size, 10)}px;
+  height: ${({ size }) => parseInt(size, 10)}px;
   color: #fff;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   border: solid 1px #aaa;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: #fff;
-  background: ${(props: any) => props.checked ? colors.clGreen : '#fff'};
-  border-color: ${(props: any) => props.checked ? colors.clGreen : '#aaa'};
+  border-radius: ${(props) => props.theme.borderRadius};
+  background: ${(props) => props.checked ? colors.clGreen : '#fff'};
+  border-color: ${(props) => props.checked ? colors.clGreen : '#aaa'};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
+
+  &.focused {
+    outline: ${customOutline};
+  }
 
   &:hover {
     border-color: ${(props: any) => props.checked ? colors.clGreen : '#333'};
   }
 `;
 
+const Input = styled.input`
+  &[type='checkbox'] {
+    /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
+  }
+`;
+
 const CheckmarkIcon = styled(Icon)`
   fill: #fff;
-  height: 55%;
+  width: 15px;
 `;
 
 const Label = styled.label`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
-  padding: 5px 0 5px 10px;
-  cursor: pointer;
+  line-height: normal;
+  margin-left: 10px;
 `;
 
 interface DefaultProps {
@@ -55,70 +74,98 @@ interface DefaultProps {
 }
 
 interface Props extends DefaultProps {
-  value: boolean;
-  onChange: (event: FormEvent | KeyboardEvent) => void;
+  id?: string | undefined;
   label?: string | JSX.Element | null | undefined;
-  disableLabelClick?: boolean;
+  checked: boolean;
+  onChange: (event: React.MouseEvent | React.KeyboardEvent) => void;
   className?: string;
 }
 
-type State = {};
+interface State {
+  inputFocused: boolean;
+}
 
 export default class Checkbox extends PureComponent<Props, State> {
-  checkboxContainer: HTMLDivElement | null = null;
+  checkbox = React.createRef<HTMLInputElement>();
 
   static defaultProps: DefaultProps = {
     size: '22px'
   };
 
-  toggleCheckbox = (event: FormEvent | KeyboardEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    this.props.onChange(event);
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputFocused: false
+    };
   }
 
-  setRef = (element: HTMLDivElement) => {
-    this.checkboxContainer = element;
-  }
+  handleOnClick = (event: React.MouseEvent) => {
+    const targetElement = get(event, 'target') as any;
+    const parentElement = get(event, 'target.parentElement');
+    const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
+    const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
 
-  removeFocus = (event: MouseEvent) => {
-    event.preventDefault();
-  }
-
-  handleLabelOnClick = (event: FormEvent) => {
-    if (this.props.disableLabelClick !== true) {
-      this.toggleCheckbox(event);
+    if (!targetElementIsLink && !parentElementIsLink) {
+      event && event.preventDefault();
+      this.props.onChange(event);
     }
   }
 
-  handleKeyPress = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      this.toggleCheckbox(event);
+  handleOnKeyDown = (event: React.KeyboardEvent) => {
+    const targetElement = get(event, 'target') as any;
+    const parentElement = get(event, 'target.parentElement');
+    const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
+    const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+
+    if (!targetElementIsLink && !parentElementIsLink && event.key === 'Enter') {
+      event && event.preventDefault();
+      this.props.onChange(event);
     }
+  }
+
+  handleOnFocus = () => {
+    this.setState({ inputFocused: true });
+  }
+
+  handleOnBlur = () => {
+    this.setState({ inputFocused: false });
+  }
+
+  removeFocus = (event: React.FormEvent) => {
+    event.preventDefault();
   }
 
   render() {
-    const className = this.props['className'];
-    const { size, value, label } = this.props;
+    const { label, size, checked, className, id } = this.props;
+    const { inputFocused } = this.state;
 
     return (
-      <Container className={`${className} ${label ? 'hasLabel' : ''}`} size={size}>
-        <CheckboxContainer
-          className={`e2e-checkbox ${value ? 'checked' : 'unchecked'}`}
-          ref={this.setRef}
-          tabIndex={0}
-          checked={value}
-          size={size}
-          onMouseDown={this.removeFocus}
-          onClick={this.toggleCheckbox}
-          onKeyPress={this.handleKeyPress}
-          role="button"
-          aria-labelledby="checkbox-label"
+      <Container
+        size={size as string}
+        onMouseDown={this.removeFocus}
+        onClick={this.handleOnClick}
+        onKeyDown={this.handleOnKeyDown}
+        className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
+      >
+        <InputWrapper
+          className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
+          checked={checked}
+          size={size as string}
         >
-          {value && <CheckmarkIcon name="checkmark" />}
-        </CheckboxContainer>
+          <Input
+            ref={this.checkbox}
+            id={id}
+            aria-checked={checked}
+            type="checkbox"
+            defaultChecked={checked}
+            onFocus={this.handleOnFocus}
+            onBlur={this.handleOnBlur}
+          />
+          {checked && <CheckmarkIcon ariaHidden name="checkmark" />}
+        </InputWrapper>
+
         {label &&
-          <Label id="checkbox-label" onClick={this.handleLabelOnClick}>
+          <Label htmlFor={id} onClick={this.handleOnClick}>
             {label}
           </Label>
         }

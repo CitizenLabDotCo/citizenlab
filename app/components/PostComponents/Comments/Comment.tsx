@@ -39,6 +39,10 @@ const ContainerInner = styled.div`
   padding-bottom: 35px;
   position: relative;
 
+  &.parent {
+    padding-top: 28px;
+  }
+
   &.hasBottomBorder {
     border-bottom: solid 1px #e8e8e8;
   }
@@ -48,13 +52,13 @@ const ContainerInner = styled.div`
   }
 
   &.parent {
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 35px;
+    padding-right: 35px;
   }
 
   &.child {
-    margin-left: 90px;
-    margin-right: 50px;
+    margin-left: 75px;
+    margin-right: 35px;
   }
 
   ${media.smallerThanMinTablet`

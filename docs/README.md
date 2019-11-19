@@ -1,5 +1,123 @@
 # Changelog
 
+## 2019-11-15
+
+### Fixed
+
+- Fix for 'Click on map to add an idea' functionality not working
+- Fix for notifications not showing
+
+## 2019-11-12
+
+### Fixed
+
+- An email with subject `hihi` is no longer sent to admins that had their invite accepted
+- Whe clicking the delete button in the file uploader, the page no longer refreshes
+- Project templates no longer show with empty copy when the language is missing
+- The countdown timer on initiatives now shows the correct value for days
+- The radio buttons in the cookie manager are clickable again
+- Changing the host of a tenant no longer breaks images embedded in texts
+- It's possible again to unassign an idea in the idea manager
+- The popup for adding a video or link URL is no longer invisible or unusable in some situations
+- Uploading files is no longer failing for various filetypes we want to support
+- Keyboard accessibility for modals
+
+
+### Added
+
+- ID Verification iteration 1
+  - Users can verify their account by entering their ID card numbers (currently Chile only)
+  - Verification is feature flagged and off by default
+  - Smart groups can include the criterium 'is verified'
+  - Users are prompted to verify their account when taking an actions that requires verification
+- Total population for a tenant can now be entered in Admin HQ
+- It's now possible to configure the word used for areas towards citizens from the areas admin
+- Improvements to accessibility:
+  - Idea and initiative forms: clearer for screen readers, keyboard accessibility, and more accessible input fields
+  - Nav bar: clearer for screen readers and improved keyboard navigation
+  - Project navigation and phases: clearer for screen readers
+  - Sign-in, password reset and recovery pages: labeling of the input fields, clearer for screen readers
+  - Participatory budgeting: clearer for screen readers
+
+### Changed
+
+- The organization name is now the default author in an official update
+
+## 2019-10-22
+
+### Fixed
+
+- The sharing title on the idea page is now vertically aligned
+- Improvements to the 'bad gateway' message sometimes affecting social sharing
+- The map and markers are again visible in the admin dashboard
+- First round of accessibility fixes and improvements
+  - Dynamics of certain interactions are picked up by screen readers (PB, voting, ...)
+  - Overall clarity for screen readers has improved
+  - Improvements to information structure: HTML structure, W3C errors, head element with correct titles
+  - Keyboard accessibility has generally improved: sign-up problems, login links, PB assignment, ...
+
+### Added
+
+- Initiatives iteration 3
+  - Automatic status changes on threshold reached or time expired
+  - When updating the status, official feedback needs to be provided simultaneously
+  - Users receive emails and notifications related to (their) initiative
+  - Initiatives support images in their body text
+- Project templates
+  - Admins can now create projects starting from a template
+  - Templates contain images, a description and a timeline and let admin filter them by tags
+  - Admins can share template descriptions with a publically accessible link
+- It's now possible to configure the banner overlay color from the customize settings
+- A custom email campaign now contains a CTA button by default
+
+### Changed
+
+- Complete copy overhaul of all emails
+
+## 2019-10-03
+
+### Fixed
+
+- PB phase now has a basket button in the project navbar
+- The datepicker in the timeline admin now works in IE11
+
+### Changed
+
+- For fragments (small pieces of UI that can be overridden per tenant) to work, they need to be enabled individually in admin HQ.
+
+## 2019-09-25
+
+### Fixed
+
+- It's again possible to change a ideation/PB phase to something else when it contains no ideas
+- Older browsers no longer crash when scrolling through comments (intersection observer error)
+- Pagination controls are now correctly shown when there's multiple pages of users in the users manager
+- The user count of groups in the users manager no longer includes invitees and matches the data shown
+- Transition of timeline phases now happen at midnight, properly respecting the tenant timezone
+- When looking at the map of an idea or initiative, the map marker is visible again
+- The initiatives overview pages now uses the correct header and text colors
+- The vote control on an initiative is no longer invisible on a tablet screen size
+- The idea page in a budgeting context now shows the idea's budget
+- The assign button on an idea card in a budgeting context behaves as expected when not logged in
+- Project copy in Admin HQ that includes comments no longer fails
+- Changing granular permissions by project moderator no longer fails
+
+### Added
+
+- Polling is now supported as a new participation method in a continuous project or a phase
+  - A poll consists of multiple question with predefined answers
+  - Users can only submit a poll once
+  - Taking a poll can be restricted to certain groups, using granular permissions
+  - The poll results can be exported to excel from the project settings
+- It's now possible to disable Google Analytics, Google Tag Manager, Facebook Pixel and AdWords for specific tenants through Admin HQ
+
+### Changed
+
+- Large amount of copy improvements throughout to improve consistency and experience
+- The ideas overview page is no longer enabled by default for new tenants
+- The built-in 'Open idea project' can now be deleted in the project admin
+
+
 ## 2019-08-30
 
 ### Fixed

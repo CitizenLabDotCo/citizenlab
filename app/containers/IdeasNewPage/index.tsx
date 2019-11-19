@@ -10,12 +10,13 @@ import clHistory from 'utils/cl-router/history';
 // components
 import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
+import IdeasNewMeta from './IdeasNewMeta';
 
 // services
 import { addIdea, IIdeaAdd } from 'services/ideas';
 import { addIdeaFile } from 'services/ideaFiles';
 import { addIdeaImage } from 'services/ideaImages';
-import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
+import { globalState, IGlobalStateService, IIdeasPageGlobalState } from 'services/globalState';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -58,10 +59,6 @@ const ButtonBarContainer = styled.div`
   right: 0;
   background: #fff;
   border-top: solid 1px #ddd;
-
-  ${media.phone`
-    display: none;
-  `}
 `;
 
 interface InputProps {}
@@ -77,11 +74,11 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
-  globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
+  globalState: IGlobalStateService<IIdeasPageGlobalState>;
 
   constructor(props) {
     super(props);
-    const initialGlobalState: IIdeasNewPageGlobalState = {
+    const initialGlobalState: IIdeasPageGlobalState = {
       title: null,
       description: null,
       selectedTopics: [],
@@ -107,7 +104,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       this.redirectToSignUpPage();
     }
 
-    if (location.query.position) {
+    if (isString(location.query.position)) {
       const coordinates = JSON.parse(location.query.position);
       const lat = coordinates[0];
       const lng = coordinates[1];
@@ -120,7 +117,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           position,
           position_coordinates: {
             type: 'Point',
-            coordinates: [lng, lat] as number[]
+            coordinates: [lng, lat]
           }
         });
       });
@@ -202,6 +199,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     if (!isNilOrError(authUser) && !isNilOrError(project)) {
       return (
         <Container id="e2e-idea-new-page">
+          <IdeasNewMeta />
           <PageContainer className="ideaForm">
             <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} projectId={project.id} />
           </PageContainer>
