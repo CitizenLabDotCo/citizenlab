@@ -70,7 +70,7 @@ const DropzoneInput = styled.input``;
 const DropzoneContent = styled.div`
   box-sizing: border-box;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: 1px dashed ${colors.label};
+  border: 1px dashed ${colors.separationDark};
   position: relative;
   cursor: pointer;
   background: transparent;
