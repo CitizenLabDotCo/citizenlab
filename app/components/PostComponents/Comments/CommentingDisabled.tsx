@@ -20,10 +20,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // events
 import { openVerificationModalWithContext } from 'containers/App/events';
 
-// styling
-import { colors } from 'utils/styleUtils';
-import { darken } from 'polished';
-
 const Container = styled.div`
   margin-bottom: 40px;
 `;
