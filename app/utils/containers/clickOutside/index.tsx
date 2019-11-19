@@ -2,9 +2,12 @@ import React, { PureComponent } from 'react';
 
 type Props = {
   children?: any;
-  onClickOutside: (arg: any) => void;
+  onClick?: (event) => void;
+  onClickOutside: (event) => void;
+  onMouseEnter?: (event) => void;
+  onMouseLeave?: (event) => void;
+  onMouseDown?: (event) => void;
   className?: string;
-  onClick?: () => void;
   id?: string;
   setRef?: (arg: HTMLElement) => void;
   role?: string;
@@ -42,19 +45,23 @@ export default class ClickOutside extends PureComponent<Props, State> {
   addEventListeners = () => {
     if (this.props.closeOnClickOutsideEnabled) {
       document.addEventListener('click', this.handle, true);
-      document.addEventListener('keydown', this.handle, true);
+      document.addEventListener('keyup', this.handle, true);
     }
   }
 
   removeEventListeners = () => {
     document.removeEventListener('click', this.handle, true);
-    document.removeEventListener('keydown', this.handle, true);
+    document.removeEventListener('keyup', this.handle, true);
   }
 
   handle = (event) => {
     // Press esc to close
-    if (event.type === 'keydown' && event.key === 'Escape') {
+    if (event.type === 'keyup' && event.key === 'Escape') {
       event.preventDefault();
+      this.props.onClickOutside(event);
+    }
+
+    if (event.type === 'keyup' && event.key === 'Tab' && this.container && !this.container.contains(event.target)) {
       this.props.onClickOutside(event);
     }
 
@@ -70,10 +77,19 @@ export default class ClickOutside extends PureComponent<Props, State> {
 
   handleRef = (element: HTMLDivElement) => {
     this.container = element;
+    this.props.setRef && this.props.setRef(element);
+  }
 
-    if (this.props.setRef) {
-      this.props.setRef(element);
-    }
+  handleOnMouseEnter = (event) => {
+    this.props.onMouseEnter && this.props.onMouseEnter(event);
+  }
+
+  handleOnMouseLeave = (event) => {
+    this.props.onMouseLeave && this.props.onMouseLeave(event);
+  }
+
+  handleOnMouseDown = (event) => {
+    this.props.onMouseDown && this.props.onMouseDown(event);
   }
 
   render() {
@@ -85,6 +101,9 @@ export default class ClickOutside extends PureComponent<Props, State> {
         ref={this.handleRef}
         className={className}
         onClick={onClick}
+        onMouseEnter={this.handleOnMouseEnter}
+        onMouseLeave={this.handleOnMouseLeave}
+        onMouseDown={this.handleOnMouseDown}
         role={role}
       >
         {children}

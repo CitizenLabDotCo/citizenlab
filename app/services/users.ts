@@ -39,6 +39,7 @@ export interface IUserData {
     unread_notifications?: number;
     custom_field_values?: object;
     invite_status: 'pending' | 'accepted' | null;
+    verified?: boolean;
   };
 }
 

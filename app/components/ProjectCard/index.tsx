@@ -37,7 +37,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, invisibleA11yText } from 'utils/styleUtils';
+import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 import { rgba, darken } from 'polished';
 
 const Container = styled(Link)`
@@ -404,10 +404,6 @@ const MetaItem = styled.div`
   ${media.smallerThanMinTablet`
     margin-left: 20px;
   `};
-
-  .screenreader-only {
-    ${invisibleA11yText}
-  }
 `;
 
 const MetaItemIcon = styled(Icon)`
@@ -586,15 +582,11 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             </ProjectImagePlaceholder>
 
             {imageUrl &&
-              <T value={project.attributes.title_multiloc}>
-                {projectTitle => (
-                  <ProjectImage
-                    src={imageUrl}
-                    alt={formatMessage(messages.imageAltText, { projectTitle })}
-                    cover={true}
-                  />
-                )}
-              </T>
+              <ProjectImage
+                src={imageUrl}
+                alt=""
+                cover={true}
+              />
             }
           </ProjectImageContainer>
 
@@ -642,7 +634,9 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                         <MetaItemText aria-hidden>
                           {ideasCount}
                         </MetaItemText>
-                        <span className="screenreader-only">{formatMessage(messages.xIdeas, { ideasCount })}</span>
+                        <ScreenReaderOnly>
+                          {formatMessage(messages.xIdeas, { ideasCount })}
+                        </ScreenReaderOnly>
                       </MetaItem>
                     }
 
@@ -652,7 +646,9 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                         <MetaItemText aria-hidden>
                           {commentsCount}
                         </MetaItemText>
-                        <span className="screenreader-only">{formatMessage(messages.xComments, { commentsCount })}</span>
+                        <ScreenReaderOnly>
+                          {formatMessage(messages.xComments, { commentsCount })}
+                        </ScreenReaderOnly>
                       </MetaItem>
                     }
                   </ProjectMetaItems>

@@ -9,7 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import FeatureFlag from 'components/FeatureFlag';
 
-const Container = styled.div`
+const Container = styled.nav`
   height: ${(props) => props.theme.mobileMenuHeight}px;
   position: fixed;
   bottom: 0;

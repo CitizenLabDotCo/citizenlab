@@ -11,7 +11,7 @@ import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
@@ -26,17 +26,24 @@ const Container = styled.div`
 
 const FeedbackHeader = styled.div`
   color: ${colors.clRedError};
+  font-weight: 400;
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: left;
+  `}
 `;
 
-const FeedbackTitle = styled.div`
-  h2 {
-    margin-bottom: 0;
-    font-weight: 500;
-    font-size: ${fontSizes.base}px;
-  }
+const FeedbackTitle = styled.h2`
+  font-size: ${fontSizes.medium}px;
+  line-height: normal;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
 `;
 
 const StyledOfficialFeedbackPost = styled(OfficialFeedbackPost)`
@@ -48,7 +55,7 @@ const StyledOfficialFeedbackPost = styled(OfficialFeedbackPost)`
 `;
 
 const StyledSpan = styled.span`
-  font-weight: 500;
+  font-weight: 400;
 `;
 
 const LoadMoreButton = styled(Button)`
@@ -92,12 +99,12 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
           <Container className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}>
             <FeedbackHeader>
               <FeedbackTitle>
-                <FormattedMessage tagName="h2" {...messages.officialUpdates} />
+                <FormattedMessage {...messages.officialUpdates} />
               </FeedbackTitle>
-                <FormattedMessage
-                  {...messages.lastUpdate}
-                  values={{ lastUpdateDate: (<StyledSpan>{formattedDate}</StyledSpan>) }}
-                />
+              <FormattedMessage
+                {...messages.lastUpdate}
+                values={{ lastUpdateDate: (<StyledSpan>{formattedDate}</StyledSpan>) }}
+              />
             </FeedbackHeader>
 
             {officialFeedbacksList.data.map((officialFeedbackPost) => {

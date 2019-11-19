@@ -34,7 +34,7 @@ describe('InitiativesNewPage', () => {
       <InitiativesNewFormWrapper locale="en" />
     );
 
-    setTimeout(() => {// lets the component finish componentWillMount before starting the test
+    setTimeout(() => {// lets the component finish mounting before starting the test
       expect(addInitiative).toHaveBeenCalledTimes(1);
       expect(addInitiative).toHaveBeenNthCalledWith(1, { publication_status: 'draft' });
 

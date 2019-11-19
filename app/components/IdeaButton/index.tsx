@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { getPostingPermission, DisabledReasons } from 'services/ideaPostingRules';
@@ -8,8 +8,8 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
-import Button, { ButtonStyles } from 'components/UI/Button';
-import Tooltip from 'components/UI/Tooltip';
+import Button, { ButtonContainerProps } from 'components/UI/Button';
+import Tippy from '@tippy.js/react';
 import Icon from 'components/UI/Icon';
 
 // i18n
@@ -17,35 +17,52 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+
+// events
+import { openVerificationModalWithContext } from 'containers/App/events';
 
 // tracks
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // styling
-import { fontSizes, colors } from 'utils/styleUtils';
+import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div`
-  &.bannerStyle {
-    height: 100%;
-  }
+const Container = styled.div``;
+
+const ButtonWrapper = styled.div``;
+
+const LockIcon = styled(Icon)`
+  flex: 0 0 25px;
+  width: 20px;
+  height: 25px;
+  margin-right: 1rem;
 `;
 
-const StyledIcon = styled(Icon)`
-  height: 2rem;
-  width: 2rem;
-  margin-right: 1rem;
+const StyledA = styled.a`
+  padding: 0;
+  transition: all 100ms ease-out;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
 `;
 
 const TooltipWrapper = styled.div`
   display: flex;
   align-items: center;
-  min-width: 300px;
-  color: ${colors.popoverDarkFg};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   padding: 15px;
+
+  > span {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
 `;
 
 interface DataProps {
@@ -58,21 +75,13 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
-interface InputProps {
+interface InputProps extends ButtonContainerProps {
   projectId?: string | undefined;
   phaseId?: string | undefined;
-  style?: ButtonStyles;
-  size?: '1' | '2' | '3' | '4';
-  fullWidth?: boolean;
   className?: string;
-  fullHeight?: boolean;
-  bgColor?: string;
-  textColor?: string;
-  fontWeight?: string;
-  padding?: string;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
   locationRef = window.location.href;
@@ -84,9 +93,15 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
     projectInactive: messages.postingProjectInactive,
     notActivePhase: messages.postingNotActivePhase,
     futureEnabled: messages.postingHereImpossible,
+    notVerified: messages.postingNotVerified
   };
 
-  onNewIdea = (_event) => {
+  onVerify = (event: React.MouseEvent) => {
+    event.preventDefault();
+    openVerificationModalWithContext('ActionIdea');
+  }
+
+  onNewIdea = () => {
     this.props.clickNewIdea({ extra: { urlFrom: this.locationRef } });
   }
 
@@ -99,51 +114,38 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
     });
 
     if (show) {
-      let { style, size, fullWidth, bgColor, textColor, fontWeight, padding } = this.props;
-      const { fullHeight } = this.props;
-      const startAnIdeaText = this.props.intl.formatMessage(messages.startAnIdea);
-
-      style = (style || 'primary');
-      size = (size || '1');
-      fullWidth = (fullWidth || false);
-      bgColor = (bgColor || undefined);
-      textColor = (textColor || undefined);
-      fontWeight = (fontWeight || undefined);
-      padding = (padding || undefined);
+      const linkTo = !isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new';
+      const isPostingDisabled = (!enabled && !!disabledReason);
+      const tippyContent = (!enabled && !!disabledReason) ? (
+        <TooltipWrapper className="e2e-disabled-tooltip">
+          <LockIcon name="lock-outlined" />
+          <FormattedMessage
+            {...this.disabledMessages[disabledReason]}
+            values={{
+              verificationLink:
+                <StyledA href="" onClick={this.onVerify} className="tooltipLink">
+                  <FormattedMessage {...messages.verificationLinkText} />
+                </StyledA>,
+            }}
+          />
+        </TooltipWrapper>
+      ) : <></>;
 
       return (
-        <Container className={`${className} ${fullHeight ? 'bannerStyle' : ''}`}>
-          <Tooltip
-            enabled={!enabled && !!disabledReason}
-            content={
-              disabledReason ? (
-                <TooltipWrapper>
-                  <StyledIcon name="lock-outlined" />
-                  <FormattedMessage
-                    {...this.disabledMessages[disabledReason]}
-                  />
-                </TooltipWrapper>
-              ) : null
-            }
-            backgroundColor={colors.popoverDarkBg}
-            borderColor={colors.popoverDarkBg}
-            top="57px"
+        <Container className={className}>
+          <Tippy
+            enabled={isPostingDisabled}
+            interactive={true}
+            placement="bottom"
+            content={tippyContent}
+            theme="light"
           >
-            <Button
-              linkTo={(!isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new')}
-              style={style}
-              size={size}
-              text={startAnIdeaText}
-              disabled={!enabled}
-              fullWidth={fullWidth}
-              fullHeight={fullHeight}
-              bgColor={bgColor}
-              textColor={textColor}
-              fontWeight={fontWeight}
-              padding={padding}
-              onClick={this.onNewIdea}
-            />
-          </Tooltip>
+            <ButtonWrapper tabIndex={0} className="e2e-idea-button">
+              <Button {...this.props} linkTo={linkTo} disabled={isPostingDisabled}>
+                <FormattedMessage {...messages.startAnIdea} />
+              </Button>
+            </ButtonWrapper>
+          </Tippy>
         </Container>
       );
     }
@@ -157,7 +159,7 @@ const IdeaButtonWithHOCs = injectIntl<Props>(injectTracks<Props & InjectedIntlPr
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   project: ({ projectId, render, }) => <GetProject id={projectId}>{render}</GetProject>,
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 
 export default (inputProps: InputProps) => (

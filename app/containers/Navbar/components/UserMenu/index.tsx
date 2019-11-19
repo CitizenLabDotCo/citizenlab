@@ -32,10 +32,13 @@ const Container = styled.div`
 
 const StyledUserName = styled(UserName)`
   color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
-  margin-right: 2px;
+  margin-right: 4px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
   font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   transition: all 100ms ease-out;
 
   ${media.smallerThanMinTablet`
@@ -51,6 +54,7 @@ const DropdownButton = styled.button`
   align-items: center;
   cursor: pointer;
   padding: 0px;
+  padding-top: 2px;
   margin: 0px;
 
   &:hover,
@@ -130,20 +134,23 @@ class UserMenu extends PureComponent<Props, State> {
       const userSlug = authUser.attributes.slug;
 
       return (
-        <Container id="e2e-user-menu-container">
+        <Container id="e2e-user-menu-container" className={authUser.attributes.verified ? 'e2e-verified' : 'e2e-not-verified'}>
           <DropdownButton
             onMouseDown={this.removeFocus}
             onClick={this.toggleDropdown}
+            aria-expanded={opened}
           >
             <StyledUserName
               userId={userId}
               hideLastName
+              verificationBadge
             />
             <StyledAvatar
               userId={userId}
               size="30px"
               hasHoverEffect={false}
               fillColor={theme && theme.navbarTextColor ? theme.navbarTextColor : colors.label}
+              verified
             />
           </DropdownButton>
 
@@ -164,7 +171,9 @@ class UserMenu extends PureComponent<Props, State> {
                     linkTo={'/admin/dashboard'}
                     onClick={this.closeDropdown}
                     style="text"
+                    bgHoverColor={colors.clDropdownHoverBackground}
                     icon="admin"
+                    iconAriaHidden
                     iconPos="right"
                     iconSize="20px"
                     padding="11px 11px"
@@ -179,7 +188,9 @@ class UserMenu extends PureComponent<Props, State> {
                   linkTo={`/profile/${userSlug}`}
                   onClick={this.closeDropdown}
                   style="text"
+                  bgHoverColor={colors.clDropdownHoverBackground}
                   icon="profile1"
+                  iconAriaHidden
                   iconPos="right"
                   iconSize="20px"
                   padding="11px 11px"
@@ -193,7 +204,9 @@ class UserMenu extends PureComponent<Props, State> {
                   linkTo={'/profile/edit'}
                   onClick={this.closeDropdown}
                   style="text"
+                  bgHoverColor={colors.clDropdownHoverBackground}
                   icon="settings"
+                  iconAriaHidden
                   iconPos="right"
                   iconSize="20px"
                   padding="11px 11px"
@@ -206,7 +219,9 @@ class UserMenu extends PureComponent<Props, State> {
                   id="e2e-sign-out-link"
                   onClick={this.signOut}
                   style="text"
+                  bgHoverColor={colors.clDropdownHoverBackground}
                   icon="power"
+                  iconAriaHidden
                   iconPos="right"
                   iconSize="20px"
                   padding="11px 11px"

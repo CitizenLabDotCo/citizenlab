@@ -9,11 +9,18 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 const ActionPermissionWrapper = styled.div`
-  flex-basis: 220px;
-  flex-grow: 1;
-  flex-shrink: 1;
-  padding: 0 20px;
-  min-width: 160px;
+  flex: 1 1 0;
+  width: calc((100% - 40px) * (1/3));
+  margin-left: 20px;
+  margin-right: 20px;
+
+  &.first {
+    margin-left: 0px;
+  }
+
+  &.last {
+    margin-right: 0px;
+  }
 `;
 
 interface Props {
@@ -34,8 +41,11 @@ export default class ActionsForm extends PureComponent<Props> {
     if (isEmpty(permissions)) {
       return <p><FormattedMessage {...messages.noActionsCanBeTaken} /></p>;
     } else {
-      return permissions.map((permission) => (
-        <ActionPermissionWrapper key={permission.id}>
+      return permissions.map((permission, index) => (
+        <ActionPermissionWrapper
+          key={permission.id}
+          className={`${index === 0 ? 'first' : ''} ${index === permissions.length - 1 ? 'last' : ''}`}
+        >
           <h4><FormattedMessage {...messages[`permissionAction_${permission.attributes.action}`]} /></h4>
           <ActionForm
             permissionId={permission.id}

@@ -15,6 +15,7 @@ type Props = {
   children?: children;
   maxLength?: number;
   supportHtml?: boolean;
+  graphql?: boolean;
 };
 
 type State = {

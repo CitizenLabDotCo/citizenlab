@@ -1,6 +1,6 @@
 describe('Project selection page', () => {
   beforeEach(() => {
-    cy.visit('/projects/test-project-1/info');
+    cy.visit('/projects/test-project-1-timeline-with-file/info');
     cy.acceptCookies();
   });
 

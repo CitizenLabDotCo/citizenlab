@@ -45,10 +45,6 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.successStoryTitle',
     defaultMessage: 'Learn from success stories'
   },
-  successImageAltText: {
-    id: 'app.containers.InitiativesIndexPage.successImageAltText',
-    defaultMessage: '{orgName} - main image for the story {storyTitle}'
-  },
   success: {
     id: 'app.containers.InitiativesIndexPage.success',
     defaultMessage: 'success'

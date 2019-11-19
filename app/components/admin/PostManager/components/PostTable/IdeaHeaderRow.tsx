@@ -1,18 +1,31 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react';
+import { Table, Popup } from 'semantic-ui-react';
 import Checkbox from 'components/UI/Checkbox';
 import { FormattedMessage } from 'utils/cl-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import Icon from 'components/UI/Icon';
 import FeatureFlag from 'components/FeatureFlag';
 import messages from '../../messages';
 import { TableHeaderCellText } from '.';
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
+const InfoIcon = styled(Icon)`
+  fill: ${colors.clBlueDarker};
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+
+  &:hover {
+    fill: #000;
+  }
+`;
 
 export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, handleSortClick }) => (
   <Table.Header>
     <Table.Row>
       <Table.HeaderCell width={1}>
-        <Checkbox value={!!allSelected} onChange={toggleSelectAll} size="17px"/>
+        <Checkbox checked={!!allSelected} onChange={toggleSelectAll} size="17px"/>
       </Table.HeaderCell>
       <Table.HeaderCell width={4}>
         <TableHeaderCellText>
@@ -63,8 +76,7 @@ export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, ha
             <TableHeaderCellText>
               <FormattedMessage {...messages.participatoryBudgettingPicks} />
             </TableHeaderCellText>
-            &nbsp;
-            <InfoTooltip {...messages.basketsCountTooltip} size="small" position="top-left" />
+            <Popup content={<FormattedMessage {...messages.basketsCountTooltip} />} trigger={<button><InfoIcon name="info3" /></button>} />
           </SortableTableHeader>
         </Table.HeaderCell>
       </FeatureFlag>

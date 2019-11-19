@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 // components
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
-import Footer from 'components/Footer';
+import CityLogoSection from 'components/CityLogoSection';
 import IdeasIndexMeta from './IdeaIndexMeta';
 
 // i18n
@@ -42,8 +42,8 @@ const PageTitle = styled.div`
     font-size: ${fontSizes.xxxxl}px;
     line-height: normal;
     font-weight: 500;
+    margin-bottom: 35px;
   }
-  margin-bottom: 35px;
   color: ${colors.text};
   text-align: center;
   margin: 0;
@@ -76,7 +76,7 @@ export default memo(() => (
           invisibleTitleMessage={messages.invisibleIdeasListTitle}
         />
       </StyledContentContainer>
-      <Footer />
+      <CityLogoSection />
     </Container>
   </>
 ));

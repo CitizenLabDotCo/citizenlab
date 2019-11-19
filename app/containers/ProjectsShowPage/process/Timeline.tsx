@@ -26,16 +26,16 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
 
 const padding = 30;
 const mobilePadding = 15;
-const greyTransparent = css`rgba(116, 116, 116, 0.3)`;
+const greyTransparent = 'rgba(116, 116, 116, 0.3)';
 const greyOpaque = `${colors.label}`;
-const greenTransparent = css`rgba(4, 136, 76, 0.3)`;
+const greenTransparent = 'rgba(4, 136, 76, 0.3)';
 const greenOpaque = `${colors.clGreen}`;
 
 const Container = styled.div`
@@ -284,6 +284,8 @@ const PhaseBar: any = styled.button`
   -webkit-appearance: none;
   -moz-appearance: none;
 `;
+
+const PhaseBarText = styled.span``;
 
 const PhaseArrow = styled(Icon)`
   width: 20px;
@@ -545,10 +547,10 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
           <ContainerInner>
             <Header>
               <HeaderRows>
-                <HeaderFirstRow>
+                <HeaderFirstRow aria-live="polite">
                   <HeaderLeftSection>
                     {isSelected &&
-                      <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                      <PhaseNumberWrapper aria-hidden className={`${isSelected && 'selected'} ${phaseStatus}`}>
                         <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus}`}>
                           {selectedPhaseNumber}
                         </PhaseNumber>
@@ -556,9 +558,18 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                     }
 
                     <HeaderTitleWrapper className={bowser.msie ? 'ie' : ''}>
-                      <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                      <HeaderTitle aria-hidden className={`${isSelected && 'selected'} ${phaseStatus}`}>
                         {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
                       </HeaderTitle>
+                      <ScreenReaderOnly>
+                        <FormattedMessage
+                          {...messages.a11y_selectedPhaseX}
+                          values={{
+                            selectedPhaseNumber,
+                            selectedPhaseTitle
+                          }}
+                        />
+                      </ScreenReaderOnly>
                       <MobileDate>
                         {phaseStatus === 'past' && (
                           <FormattedMessage {...messages.endedOn} values={{ date: mobileSelectedPhaseEnd }} />
@@ -634,7 +645,11 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
             </Header>
 
             <Phases className="e2e-phases">
+              <ScreenReaderOnly>
+                <FormattedMessage {...messages.a11y_phasesOverview} />
+              </ScreenReaderOnly>
               {phases.data.map((phase, index) => {
+                const phaseNumber = index + 1;
                 const phaseTitle = getLocalized(phase.attributes.title_multiloc, locale, currentTenantLocales);
                 const isFirst = (index === 0);
                 const isLast = (index === phases.data.length - 1);
@@ -659,12 +674,24 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                     onClick={this.handleOnPhaseSelection(phase)}
                   >
                     <PhaseBar>
-                      {index + 1}
-                      {!isLast && <PhaseArrow name="phase_arrow" />}
+                      <PhaseBarText aria-hidden>
+                        {phaseNumber}
+                      </PhaseBarText>
+                      <ScreenReaderOnly>
+                        <FormattedMessage
+                          {...messages.a11y_phaseX}
+                          values={{
+                            phaseNumber,
+                            phaseTitle
+                          }}
+                        />
+                      </ScreenReaderOnly>
+                      {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
                     </PhaseBar>
                     <PhaseText
                       current={isCurrentPhase}
                       selected={isSelectedPhase}
+                      aria-hidden
                     >
                       {phaseTitle}
                     </PhaseText>

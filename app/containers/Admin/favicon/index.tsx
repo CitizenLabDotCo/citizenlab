@@ -22,25 +22,29 @@ import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+
 // styling
 import styled from 'styled-components';
-
-const MainDropzone = styled(ImagesDropzone)`
-  margin-top : 20px;
-`;
-const Preview = styled(ImagesDropzone)`
-  margin-top : 20px;
-  .remove-button {
-    display: none;
-  }
-  * {
-    border-radius: 0;
-  }
-`;
 
 // typings
 import { CLError, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
+
+const MainDropzone = styled(ImagesDropzone)`
+  margin-top : 20px;
+`;
+
+const Preview = styled(ImagesDropzone)`
+  margin-top : 20px;
+
+  .remove-button {
+    display: none;
+  }
+
+  * {
+    border-radius: 0;
+  }
+`;
 
 interface IAttributesDiff {
   favicon?: string;
@@ -87,8 +91,13 @@ class Favicon extends PureComponent<Props, State> {
     }
   }
 
-  handleUploadOnAdd = (newImage: UploadFile) => {
-    this.setState({ attributesDiff: { favicon: newImage.base64 as string }, favicon: [newImage] });
+  handleUploadOnAdd = (newImage: UploadFile[]) => {
+    this.setState({
+      attributesDiff: {
+      favicon: newImage[0].base64
+      },
+      favicon: [newImage[0]]
+    });
   }
 
   handleUploadOnRemove = () => {

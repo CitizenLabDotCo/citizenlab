@@ -103,6 +103,8 @@ export const media = {
   `,
 };
 
+export const customOutline = 'rgb(59,153,252) solid 2px';
+
 export const colors = {
   background: '#f4f4f5',
   text: '#333',
@@ -201,6 +203,7 @@ export const stylingConsts = {
   menuHeight: 78,
   mobileMenuHeight: 72,
   mobileTopBarHeight: 66,
+  footerHeight: 60,
   maxPageWidth: 952,
   bannerWidth: 1340,
   pageWidth: 1150,
@@ -389,7 +392,7 @@ export function booleanClass(value: any, className: string | undefined) {
 export function invisibleA11yText() {
   /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
   return `
-    position: absolute !important;
+    position: absolute;
     height: 1px; width: 1px;
     overflow: hidden;
     clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
@@ -400,7 +403,7 @@ export function invisibleA11yText() {
 /**
  * Wrap in this component any element that should only be visible by screen readers
  */
-export const ScreenReaderOnly = styled.div`
+export const ScreenReaderOnly = styled.span`
   ${invisibleA11yText()}
 `;
 

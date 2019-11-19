@@ -3,9 +3,12 @@ import React, { PureComponent } from 'react';
 // components
 import Icon from 'components/UI/Icon';
 
+// utils
+import { isPage } from 'utils/helperUtils';
+
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Text = styled.span`
@@ -14,6 +17,9 @@ const Text = styled.span`
   font-weight: 400;
   line-height: 26px;
   transition: all 100ms ease-out;
+  &::first-letter {
+    text-transform: uppercase;
+  }
 `;
 
 const DropdownIcon = styled(Icon)`
@@ -35,6 +41,16 @@ const Container = styled.button`
   margin: 0;
   position: relative;
 
+  &.adminpage {
+    ${Text} {
+      color: ${colors.adminTextColor};
+    }
+
+    ${DropdownIcon} {
+      fill: ${colors.adminTextColor};
+    }
+  }
+
   &:hover,
   &:focus,
   &.opened {
@@ -44,6 +60,16 @@ const Container = styled.button`
 
     ${DropdownIcon} {
       fill: ${({ theme }) => darken(0.15, theme.colorText)};
+    }
+
+    &.adminpage {
+      ${Text} {
+        color: ${darken(0.15, colors.adminTextColor)};
+      }
+
+      ${DropdownIcon} {
+        fill: ${darken(0.15, colors.adminTextColor)};
+      }
     }
   }
 `;
@@ -69,6 +95,7 @@ export default class Title extends PureComponent<Props, State> {
 
   render() {
     const { title, opened, baseID, className } = this.props;
+    const adminPage = isPage('admin', location.pathname);
 
     return (
       <Container
@@ -76,7 +103,7 @@ export default class Title extends PureComponent<Props, State> {
         onClick={this.handleOnClick}
         aria-expanded={opened}
         id={`${baseID}-label`}
-        className={`e2e-filter-selector-button FilterSelectorTitle ${opened ? 'opened' : ''} ${className}`}
+        className={`e2e-filter-selector-button FilterSelectorTitle ${opened ? 'opened' : ''} ${className} ${adminPage ? 'adminpage' : ''}`}
       >
         <Text className="FilterSelectorTitleText">{title}</Text>
         <DropdownIcon className="FilterSelectorTitleIcon" name="dropdown" />

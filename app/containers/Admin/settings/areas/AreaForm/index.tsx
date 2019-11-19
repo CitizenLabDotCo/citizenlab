@@ -14,7 +14,8 @@ import Error from 'components/UI/Error';
 
 // Typings
 import { Multiloc } from 'typings';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import IconTooltip from 'components/UI/IconTooltip';
+
 export interface Props { }
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -43,7 +44,7 @@ export default class AreaForm extends React.Component<InjectedFormikProps<Props,
               name="title_multiloc"
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldTitle} />}
-              labelTooltip={<InfoTooltip {...messages.fieldTitleTooltip} />}
+              labelTooltip={<IconTooltip content={<FormattedMessage {...messages.fieldTitleTooltip} />} />}
             />
             {touched.title_multiloc && <Error
               fieldName="title_multiloc"
@@ -56,7 +57,7 @@ export default class AreaForm extends React.Component<InjectedFormikProps<Props,
               inAdmin
               name="description_multiloc"
               label={<FormattedMessage {...messages.fieldDescription} />}
-              labelTooltip={<InfoTooltip {...messages.fieldDescriptionTooltip} />}
+              labelTooltip={<IconTooltip content={<FormattedMessage {...messages.fieldDescriptionTooltip} />} />}
             />
             {touched.description_multiloc && <Error
               fieldName="description_multiloc"

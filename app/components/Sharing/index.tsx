@@ -33,19 +33,20 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Title: any = styled.div<({ titleLevel: string })>`
-  ${({ titleLevel }) => titleLevel} {
-    font-size: ${fontSizes.large}px;
-    font-weight: 500;
-    margin: 0;
-  }
+const Title = styled.div<{ location: 'modal' | undefined }>`
+  font-size: ${fontSizes.large}px;
+  font-weight: 500;
   color: ${({ theme }) => theme.colorText};
   display: flex;
   align-items: center;
   padding: 0;
   margin-bottom: 18px;
-  justify-content: ${(props: any) => props.location === 'modal' ? 'center' : 'start'};
-`;
+  justify-content: ${({ location }) => location === 'modal' ? 'center' : 'start'};
+
+  h2, h3 {
+    margin: 0;
+  }
+  `;
 
 const ShareIcon = styled(Icon)`
   margin-right: 14px;
@@ -81,6 +82,10 @@ const Buttons = styled.div`
 
       &:nth-child(odd) {
         margin-right: 5px;
+
+        &.last {
+          margin-right: 0px;
+        }
       }
 
       &:nth-child(-n+2) {
@@ -262,7 +267,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
         <TwitterButton
           message={twitterMessage}
           url={this.buildUrl('twitter')}
-          className="sharingButton twitter"
+          className={`sharingButton twitter ${!emailSubject || !emailBody ? 'last' : ''}`}
           sharer={true}
           onClick={trackTwitterShare}
           aria-label={twitterButtonText}
@@ -285,7 +290,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
 
       return (
         <Container id={id || ''} className={className || ''}>
-          <Title location={location} titleLevel={titleLevel || 'h3'}>
+          <Title location={location}>
             <ShareIcon name="share" />
             {context === 'idea' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisIdea} />}
             {context === 'project' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisProject} />}

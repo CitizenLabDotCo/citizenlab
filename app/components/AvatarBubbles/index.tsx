@@ -18,63 +18,53 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styling
-import styled, { css } from 'styled-components';
-import { colors, fontSizes, invisibleA11yText } from 'utils/styleUtils';
+import styled from 'styled-components';
+import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 const EmptyContainer = styled.div``;
 
-const AvatarWrapper = styled.div`
-  border: 2px solid #fff;
-  border-radius: 50%;
-  display: flex;
-  background: #fff;
+const Container = styled.div<{ width: number, height: number }>`
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
+  position: relative;
 `;
 
-const AvatarImage: any = styled.img`
-  height: ${(props: any) => props.size}px;
-  width: ${(props: any) => props.size}px;
+const AvatarWrapper = styled.div<{ overlap: number, index: number, size: number }>`
+  width: ${(props) => props.size}px;
+  height: ${(props) => props.size}px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  position: absolute;
+  z-index: ${(props) => props.index + 1};
+  left: ${(props) => props.index * (props.size - props.overlap)}px;
+`;
+
+const AvatarImage = styled.img<{ size: number }>`
+  width: ${(props) => props.size}px;
+  height: ${(props) => props.size}px;
   border-radius: 50%;
   text-indent: -9999px;
 `;
 
-const Container: any = styled.div`
-  width: ${(props: any) => props.width}px;
-  height: ${(props: any) => props.size + 6}px;
-  position: relative;
-
-  ${(props: any) => props.count >= 1 ? [...Array(props.count + 1).keys()].map(index =>
-    css`
-    ${AvatarWrapper} {
-      position: absolute;
-
-      &:nth-child(${index + 1}) {
-        z-index: ${index};
-        left: ${index * (props.size - props.overlap)}px;
-      }
-    }
-  `) : css``};
-`;
-
-const UserCount: any = styled.div`
+const UserCount = styled.div<{ size: number, bgColor: string }>`
+  width: ${(props) => props.size}px;
+  height: ${(props) => props.size}px;
+  color: #fff;
+  line-height: ${(props) => props.size}px;
+  font-size: ${fontSizes.small}px;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: ${(props: any) => props.size}px;
-  line-height: ${(props: any) => props.size}px;
-  width: ${(props: any) => props.size}px;
   padding-bottom: 0;
-  font-size: ${fontSizes.small}px;
-  background: ${(props: any) => props.bgColor};
   border-radius: 50%;
-  color: white;
-  font-weight: 500;
+  background: ${(props: any) => props.bgColor};
 
   &.too-many-users {
     font-size: ${fontSizes.xs}px;
-  }
-
-  .screenreader-only {
-    ${invisibleA11yText}
   }
 `;
 
@@ -123,45 +113,57 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
     const { avatars, avatarIds, context, size, overlap, userCount, className, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
-      const definedSize = size || 34;
-      const definedOverlap = overlap || 10;
-      const imageSize = (definedSize > 160 ? 'large' : 'medium');
+      const bubbleInnerSize = size || 34;
+      const bubbleOuterSize = bubbleInnerSize + 4;
+      const bubbleOverlap = overlap || 10;
+      const imageSize = (bubbleInnerSize > 160 ? 'large' : 'medium');
       const avatarsWithImage = avatars.filter(avatar => (!isError(avatar) && avatar.attributes.avatar) && avatar.attributes.avatar[imageSize]) as IAvatarData[];
-      const avatarCount = avatarsWithImage.length;
+      const avatarImagesCount = avatarsWithImage.length;
       const userCountBgColor = this.props.userCountBgColor || colors.clIconSecondary;
-      const remainingUsers = userCount - avatarCount;
-      const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
+      const remainingUsers = userCount - avatarImagesCount;
+      const bubblesCount = avatarImagesCount + (remainingUsers > 0 ? 1 : 0);
+      const containerHeight = bubbleOuterSize + 2;
+      const containerWidth = bubblesCount * (bubbleOuterSize - bubbleOverlap) + bubbleOverlap + 2;
 
-      if (avatarIds || context || (avatarCount > 0)) {
+      if (avatarIds || context || (avatarImagesCount > 0)) {
         return (
           <Container
             className={className}
-            count={avatarCount}
-            size={definedSize}
-            width={calcWidth}
-            overlap={definedOverlap}
+            width={containerWidth}
+            height={containerHeight}
           >
             {avatarsWithImage.map((avatar, index) => (
-              <AvatarWrapper key={index}>
+              <AvatarWrapper
+                key={index}
+                className={index === 0 ? 'first' : ''}
+                overlap={bubbleOverlap}
+                size={bubbleOuterSize}
+                index={index}
+              >
                 <AvatarImage
                   src={avatar.attributes.avatar[imageSize]}
                   alt=""
-                  size={definedSize}
+                  size={bubbleInnerSize}
                 />
               </AvatarWrapper>
             ))}
             {remainingUsers > 0 &&
-              <AvatarWrapper key={avatarCount}>
+              <AvatarWrapper
+                key={avatarImagesCount}
+                overlap={bubbleOverlap}
+                size={bubbleOuterSize}
+                index={avatarsWithImage.length}
+              >
                 <UserCount
                   className={(remainingUsers > 999) ? 'too-many-users' : ''}
-                  size={definedSize}
+                  size={bubbleInnerSize}
                   bgColor={userCountBgColor}
                 >
                   <PlusIcon name="plus" ariaHidden />
                   <span aria-hidden>{remainingUsers}</span>
-                  <span className="screenreader-only">
+                  <ScreenReaderOnly>
                     {formatMessage(messages.numberOfUsers, { numberOfUsers: userCount })}
-                  </span>
+                  </ScreenReaderOnly>
                 </UserCount>
               </AvatarWrapper>
             }

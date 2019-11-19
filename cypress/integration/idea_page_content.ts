@@ -4,9 +4,9 @@ describe('Idea Page', () => {
 
   describe('Various Idea Page Components', () => {
     before(() => {
-      cy.login('admin@citizenlab.co', 'testtest');
+      cy.setAdminLoginCookie();
       cy.visit('/ideas/controversial-idea');
-      cy.wait(3000);
+      cy.wait(500);
     });
 
     it('shows the correct content', () => {
@@ -44,7 +44,7 @@ describe('Idea Page', () => {
 
       // has the More Options menu and opens it
       cy.get('#e2e-idea-more-actions').click();
-      cy.get('#e2e-idea-more-actions-menu');
+      cy.get('.e2e-more-actions-list');
     });
   });
 

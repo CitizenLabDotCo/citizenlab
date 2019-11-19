@@ -7,6 +7,7 @@ import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import EventsPreview from '../EventsPreview';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
+import Fragment from 'components/Fragment';
 
 // resources
 import GetProject from 'resources/GetProject';
@@ -34,7 +35,9 @@ export default withRouter<InputProps>((props: WithRouterProps) => (
         <>
           <StyledProjectArchivedIndicator projectId={project.id} />
           <StyledContentContainer>
-            <ProjectInfo projectId={project.id} />
+            <Fragment name={`projects/${project.id}/info`}>
+              <ProjectInfo projectId={project.id} />
+            </Fragment>
           </StyledContentContainer>
           <EventsPreview projectId={project.id} />
         </>
