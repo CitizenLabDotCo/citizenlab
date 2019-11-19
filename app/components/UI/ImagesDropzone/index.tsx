@@ -193,7 +193,6 @@ const RemoveButton = styled.button`
 `;
 
 interface Props {
-  id?: string | undefined;
   images: UploadFile[] | null;
   acceptedFileTypes?: string | null | undefined;
   imagePreviewRatio: number;
