@@ -63,17 +63,16 @@ const Header = styled.div`
 `;
 
 const Title = styled.h3`
-  width: calc(100% - 30px);
+  width: calc(100% - 25px);
   color: ${colors.text};
-  font-size: ${fontSizes.xxl}px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;
   margin: 0;
   padding: 0;
 
   ${media.smallerThanMinTablet`
-    width: 100%;
-    font-size: ${fontSizes.xl}px;
+    width: calc(100% - 10px);
   `}
 `;
 
