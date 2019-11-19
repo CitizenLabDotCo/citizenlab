@@ -86,11 +86,7 @@ const StyledInput = styled(Input)`
   }
 `;
 
-const PasswordInput = styled(StyledInput)`
-  input {
-    padding-right: 100px;
-  }
-`;
+const PasswordInput = styled(StyledInput)``;
 
 const ForgotPassword = styled(Link)`
   color: ${colors.label};
@@ -125,6 +121,7 @@ const CreateAnAccountLink = styled(Link)`
 
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
+    text-decoration: underline;
   }
 `;
 
@@ -329,7 +326,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                     labelMessage={messages.passwordLabel}
                     thin
                   />
-                  <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
+                  <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link" tabIndex={1 as any}>
                     <FormattedMessage {...messages.forgotPassword} />
                   </ForgotPassword>
                 </PasswordLabelContainer>
@@ -342,7 +339,6 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                   setRef={this.handlePasswordInputSetRef}
                   autocomplete="current-password"
                 />
-
               </FormElement>
 
               <FormElement>

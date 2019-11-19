@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { includes, isNil } from 'lodash-es';
 
 // components
@@ -9,11 +9,16 @@ import Dropdown from 'components/UI/Dropdown';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-const List = styled.div`
-  width: 100%;
+const List = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style: none;
 `;
 
 const ListItemText = styled.div`
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -22,17 +27,20 @@ const ListItemText = styled.div`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-  hyphens: auto;
 `;
 
-const ListItem = styled.button`
+const ListItemCheckbox = styled(Checkbox)`
+  margin-left: 10px;
+`;
+
+const ListItem = styled.li`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin: 0px;
   margin-bottom: 4px;
   padding: 10px;
+  list-style: none;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
@@ -51,10 +59,6 @@ const ListItem = styled.button`
       color: #000;
     }
   }
-`;
-
-const StyledCheckbox = styled(Checkbox)`
-  margin-left: 10px;
 `;
 
 interface Value {
@@ -78,6 +82,7 @@ interface Props extends DefaultProps {
   title: string | JSX.Element;
   values: Value[];
   onChange: (arg: string) => void;
+  onClickOutside?: (event: React.FormEvent) => void;
   selected: any[];
   right?: string;
   mobileRight?: string;
@@ -101,19 +106,25 @@ export default class ValuesList extends PureComponent<Props, State> {
     mobileRight:undefined
   };
 
-  removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
+  removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
   }
 
-  handleOnToggle = (entry, index) => (event: FormEvent) => {
-    event.preventDefault();
-    this.setState({ currentFocus: index });
-    this.props.onChange(entry.value);
+  handleOnToggle = (entry) => (event: React.MouseEvent | React.KeyboardEvent) => {
+    if (event.type === 'click' || (event.type === 'keydown' && event['key'] === 'Enter')) {
+      event.preventDefault();
+      this.props.onChange(entry.value);
+    }
+  }
+
+  handleOnClickOutside = (event: React.FormEvent) => {
+    this.props.onClickOutside && this.props.onClickOutside(event);
   }
 
   render() {
     const { values, selected, multiple, opened, baseID, width, mobileWidth, maxHeight, mobileMaxHeight, top, left, mobileLeft, right, mobileRight } = this.props;
 
+    // ARIA reference example: https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
     return (
       <Dropdown
         width={width}
@@ -126,8 +137,13 @@ export default class ValuesList extends PureComponent<Props, State> {
         right={right}
         mobileRight={mobileRight}
         opened={opened}
+        onClickOutside={this.handleOnClickOutside}
         content={(
-          <List className="e2e-sort-items">
+          <List
+            className="e2e-sort-items"
+            tabIndex={-1}
+            role="listbox"
+          >
             {values && values.map((entry, index) => {
               const checked = includes(selected, entry.value);
               const last = (index === values.length - 1);
@@ -145,15 +161,19 @@ export default class ValuesList extends PureComponent<Props, State> {
                   aria-selected={checked}
                   key={entry.value}
                   onMouseDown={this.removeFocus}
-                  onClick={this.handleOnToggle(entry, index)}
+                  onKeyDown={this.handleOnToggle(entry)}
+                  onClick={this.handleOnToggle(entry)}
+                  tabIndex={0}
                   className={classNames}
                 >
-                  <ListItemText>{entry.text}</ListItemText>
+                  <ListItemText>
+                    {entry.text}
+                  </ListItemText>
 
                   {multiple &&
-                    <StyledCheckbox
+                    <ListItemCheckbox
                       checked={checked}
-                      onChange={this.handleOnToggle(entry, index)}
+                      onChange={this.handleOnToggle(entry)}
                     />
                   }
                 </ListItem>

@@ -42,7 +42,7 @@ const Right = styled.div`
 `;
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
-  margin-right: 12px;
+  margin-right: 10px;
 `;
 
 const TimeAgo = styled.div`

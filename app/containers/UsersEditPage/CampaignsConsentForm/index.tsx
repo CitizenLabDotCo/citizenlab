@@ -19,7 +19,7 @@ import tracks from './tracks';
 import { FormSectionTitle, FormSection } from 'components/UI/FormComponents';
 
 const CheckboxContainer = styled.div`
-  padding-bottom: 0.5rem;
+  margin-bottom: 16px;
 `;
 
 const ConsentList = styled.div`

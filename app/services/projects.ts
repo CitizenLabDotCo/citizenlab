@@ -1,4 +1,3 @@
-import { IProject } from './projects';
 import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
@@ -45,6 +44,7 @@ export interface IProjectData {
     survey_service?: SurveyServices;
     survey_embed_url?: string;
     ordering: number;
+    location_allowed?: boolean;
     action_descriptor: {
       posting: {
         enabled: boolean,

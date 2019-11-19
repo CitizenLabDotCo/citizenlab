@@ -227,11 +227,13 @@ const NavigationDropdownItemIcon = styled(Icon)`
   margin-top: 3px;
 `;
 
-const ProjectsListItem = styled(Link)`
-  width: 100%;
+const ProjectsList = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const ProjectsListItem = styled(Link)`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -241,7 +243,6 @@ const ProjectsListItem = styled(Link)`
   margin-bottom: 4px;
   background: transparent;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  text-decoration: none;
 
   &.last {
     margin-bottom: 0px;
@@ -466,8 +467,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 {tenantLocales && projectsList && projectsList.length > 0 &&
                   <NavigationDropdown>
                     <NavigationDropdownItem
+                      tabIndex={0}
                       className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' ? 'active' : ''}`}
-                      aria-haspopup="true"
+                      aria-expanded={projectsDropdownOpened}
                       onMouseDown={this.removeFocus}
                       onClick={this.toggleProjectsDropdown}
                     >
@@ -482,7 +484,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                       opened={projectsDropdownOpened}
                       onClickOutside={this.toggleProjectsDropdown}
                       content={(
-                        <>
+                        <ProjectsList>
                           {projectsList.map((project, index) => (
                             <ProjectsListItem
                               key={project.id}
@@ -492,7 +494,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                               {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
                             </ProjectsListItem>
                           ))}
-                        </>
+                        </ProjectsList>
                       )}
                       footer={
                         <>
