@@ -443,6 +443,7 @@ if Apartment::Tenant.current == 'localhost'
           commenting_enabled: rand(4) != 0,
           voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
           voting_limited_max: rand(15)+1,
+          location_allowed: rand(4) != 0,
         })
       end
       project.save!
@@ -487,6 +488,7 @@ if Apartment::Tenant.current == 'localhost'
               commenting_enabled: rand(4) != 0,
               voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
               voting_limited_max: rand(15)+1,
+              location_allowed: rand(4) != 0,
             })
           end
           if phase.budgeting?

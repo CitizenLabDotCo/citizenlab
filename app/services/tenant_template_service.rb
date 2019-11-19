@@ -473,7 +473,8 @@ class TenantTemplateService
       'voting_enabled'               => pc.voting_enabled,
       'voting_method'                => pc.voting_method,
       'voting_limited_max'           => pc.voting_limited_max,
-      'max_budget'                   => pc.max_budget
+      'max_budget'                   => pc.max_budget,
+      'location_allowed'             => pc.location_allowed
     }
     if yml_pc['participation_method'] == 'survey'
       yml_pc.merge!({

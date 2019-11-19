@@ -73,6 +73,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :survey_embed_url,
       :survey_service,
       :max_budget,
+      :location_allowed,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     )
