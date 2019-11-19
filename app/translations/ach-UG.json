@@ -1531,7 +1531,7 @@
   "app.containers.Projects.noExpenses": "crwdns19740:0crwdne19740:0",
   "app.containers.Projects.noPastEvents": "crwdns18408:0crwdne18408:0",
   "app.containers.Projects.noPhaseSelected": "crwdns18397:0crwdne18397:0",
-  "app.containers.Projects.noProjectFoundHere": "crwdns18585:0crwdne18585:0",
+  "app.containers.Projects.noProjectFoundHere": "crwdns18585:0tenantName={tenantName}crwdne18585:0",
   "app.containers.Projects.noUpcomingEvents": "crwdns18409:0crwdne18409:0",
   "app.containers.Projects.pastEvents": "crwdns18410:0crwdne18410:0",
   "app.containers.Projects.project": "crwdns15833:0crwdne15833:0",
