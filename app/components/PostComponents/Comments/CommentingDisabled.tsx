@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Warning from 'components/UI/Warning';
-import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
 
@@ -21,28 +20,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 // events
 import { openVerificationModalWithContext } from 'containers/App/events';
 
+// styling
+import { colors } from 'utils/styleUtils';
+import { darken } from 'polished';
+
 const Container = styled.div`
   margin-bottom: 40px;
-`;
-
-const StyledLink = styled(Link) `
-  color: #1391A1;
-  text-decoration: underline;
-  transition: all 100ms ease-out;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-const StyledButton = styled(Button) `
-  color: #1391A1;
-  text-decoration: underline;
-  transition: all 100ms ease-out;
-  display: inline-block;
-
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 interface InputProps {
@@ -81,6 +64,10 @@ class CommentingDisabled extends PureComponent<Props> {
     return messages.signInToComment;
   }
 
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
   onVerify = () => {
     openVerificationModalWithContext('ActionComment');
   }
@@ -97,8 +84,8 @@ class CommentingDisabled extends PureComponent<Props> {
             <FormattedMessage
               {...messageDescriptor}
               values={{
-                signInLink: <StyledLink to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></StyledLink>,
-                verificationLink: <StyledButton style="text" padding="0" onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
+                signInLink: <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>,
+                verificationLink: <button onMouseDown={this.removeFocus} onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></button>,
                 projectName: projectTitle && <T value={projectTitle} />
               }}
             />
