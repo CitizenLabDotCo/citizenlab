@@ -221,9 +221,9 @@ class ProfileForm extends PureComponent<Props, State> {
       setFieldTouched(fieldName);
     };
 
-    const handleAvatarOnAdd = (newAvatar: UploadFile) => {
-      this.setState(() => ({ avatar: [newAvatar] }));
-      setFieldValue('avatar', newAvatar.base64);
+    const handleAvatarOnAdd = (newAvatar: UploadFile[]) => {
+      this.setState(() => ({ avatar: [newAvatar[0]] }));
+      setFieldValue('avatar', newAvatar[0].base64);
       setFieldTouched('avatar');
     };
 
@@ -244,7 +244,6 @@ class ProfileForm extends PureComponent<Props, State> {
             {/* Wrapping image dropzone with a label for accesibility */}
             <FormLabel thin labelMessage={messages.imageDropzonePlaceholder} hidden />
             <ImagesDropzone
-              id="images-dropzone"
               images={this.state.avatar}
               imagePreviewRatio={1}
               maxImagePreviewWidth="160px"

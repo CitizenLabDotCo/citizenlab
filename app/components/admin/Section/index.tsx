@@ -14,10 +14,11 @@ export const SubSectionTitle = styled.h3`
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
   line-height: ${remCalc(30)};
-  display: inline-block;
+  display: flex;
+  align-items: center;
 
   & > :not(last-child) {
-    margin-right: 5px;
+    margin-right: 7px;
   }
 `;
 

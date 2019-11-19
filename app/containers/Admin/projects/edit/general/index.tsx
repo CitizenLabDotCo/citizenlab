@@ -369,14 +369,14 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
     }));
   }
 
-  handleHeaderOnAdd = (newHeader: UploadFile) => {
+  handleHeaderOnAdd = (newHeader: UploadFile[]) => {
     this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
         ...projectAttributesDiff,
-        header_bg: newHeader.base64
+        header_bg: newHeader[0].base64
       },
-      projectHeaderImage: [newHeader]
+      projectHeaderImage: [newHeader[0]]
     }));
   }
 
@@ -415,14 +415,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
     }));
   }
 
-  handleProjectImageOnAdd = (newProjectImage: UploadFile) => {
-    this.setState((prevState) => {
-      const isDuplicate = prevState.projectImages.some(image => image.base64 === newProjectImage.base64);
-
-      return {
-        submitState: (isDuplicate ? prevState.submitState : 'enabled'),
-        projectImages: (isDuplicate ? prevState.projectImages : [...prevState.projectImages, newProjectImage])
-      };
+  handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
+    this.setState({
+      projectImages,
+      submitState: 'enabled'
     });
   }
 
@@ -853,7 +849,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 maxImageFileSize={5000000}
                 maxNumberOfImages={5}
-                onAdd={this.handleProjectImageOnAdd}
+                onAdd={this.handleProjectImagesOnAdd}
                 onRemove={this.handleProjectImageOnRemove}
               />
             </StyledSectionField>
