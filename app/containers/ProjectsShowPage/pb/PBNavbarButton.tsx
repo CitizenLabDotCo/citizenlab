@@ -80,7 +80,7 @@ export default class PBNavbarButton extends PureComponent<Props, State> {
     return (
       <Container className={className}>
         <ManageBudgetButton onClick={this.toggleDropdown}>
-          <StyledIcon name="moneybag" className="moneybag" />
+          <StyledIcon name="moneybag" className="moneybag" ariaHidden />
           <FormattedMessage {...messages.manageBudget} />
         </ManageBudgetButton>
 

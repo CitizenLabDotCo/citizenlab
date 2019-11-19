@@ -51,7 +51,7 @@ const TipsBox = memo(({ tenant, className, theme }: Props) => {
   const eligibilityCriteriaMultiloc = get(tenant, 'attributes.settings.initiatives.eligibility_criteria');
 
   return (
-    <Container className={className}>
+    <Container className={`${className} e2e-tips`}>
       <TipsTitle>
         <FormattedMessage {...messages.tipsTitle} />
       </TipsTitle>

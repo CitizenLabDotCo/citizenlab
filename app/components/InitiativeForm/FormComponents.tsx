@@ -1,10 +1,9 @@
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import { fontSizes, colors, booleanClass, invisibleA11yText } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { Messages, FormattedMessage as OriginalFormattedMessage } from 'react-intl';
-
-import React, { memo } from 'react';
 
 export const FormSection = styled.div`
   background: white;

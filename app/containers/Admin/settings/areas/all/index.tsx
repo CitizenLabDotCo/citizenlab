@@ -13,6 +13,8 @@ import { Section, SectionSubtitle, SectionTitle } from 'components/admin/Section
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
+import AreaTermConfig from './AreaTermConfig';
+import Collapse from 'components/admin/Collapse';
 
 interface InputProps { }
 
@@ -22,7 +24,23 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
+interface State {
+  terminologyOpened: boolean;
+}
+
+class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      terminologyOpened: false,
+    };
+  }
+
+  handleToggleTerminology = () => {
+    this.setState(({ terminologyOpened }) => ({ terminologyOpened: !terminologyOpened }));
+  }
+
   handleDeleteClick = (areaId: string) => (event: React.FormEvent<any>) => {
     const deleteMessage = this.props.intl.formatMessage(messages.areaDeletionConfirmation);
     event.preventDefault();
@@ -33,6 +51,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
   }
 
   render() {
+    const { terminologyOpened } = this.state;
     const { areas } = this.props;
 
     if (isNilOrError(areas)) return null;
@@ -45,6 +64,16 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
         <SectionSubtitle>
           <FormattedMessage {...messages.subtitleAreas} />
         </SectionSubtitle>
+
+        <Collapse
+          opened={terminologyOpened}
+          onToggle={this.handleToggleTerminology}
+          label={<FormattedMessage {...messages.subtitleTerminology} />}
+          labelTooltip={<FormattedMessage {...messages.terminologyTooltip} />}
+        >
+          <AreaTermConfig />
+        </Collapse>
+
         <ButtonWrapper>
           <Button
             style="cl-blue"

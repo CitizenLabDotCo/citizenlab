@@ -1,5 +1,5 @@
 import React, { PureComponent, createRef } from 'react';
-import { get, isUndefined } from 'lodash-es';
+import { get, isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -334,7 +334,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
     this.setLoaded();
 
-    if (newInitiativeId) {
+    if (isString(newInitiativeId)) {
       setTimeout(() => {
         this.setState({ initiativeIdForSocialSharing: newInitiativeId });
       }, 1500);
@@ -456,7 +456,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   initiative={initiative}
                   id="e2e-initiative-more-actions-mobile"
                   color="white"
-                  tooltipPosition="bottom-left"
                 />
               </MobileMoreActionContainer>
               <Title
@@ -525,7 +524,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 {initiativeImageLarge &&
                   <Image
                     src={initiativeImageLarge}
-                    alt={formatMessage(messages.imageAltText, { initiativeTitle })}
+                    alt=""
                     id="e2e-initiative-image"
                   />
                 }
@@ -561,16 +560,13 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
                 <ContentFooter
                   postType="initiative"
-                  id={initiativeId}
+                  postId={initiativeId}
                   publishedAt={initiativePublishedAt}
                   commentsCount={initiative.attributes.comments_count}
                 />
 
                 {smallerThanLargeTablet &&
                   <>
-                    <ScreenReaderOnly>
-                      <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
-                    </ScreenReaderOnly>
                     <SharingMobile
                       context="initiative"
                       url={initiativeUrl}
@@ -587,7 +583,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 <RightColumnDesktop>
                   <MetaContent>
                     <ScreenReaderOnly>
-                      <FormattedMessage tagName="h2" {...messages.invisibleTitleMetaContent} />
+                      <FormattedMessage tagName="h2" {...messages.a11y_voteControl} />}
                     </ScreenReaderOnly>
                     <VoteControl
                       initiativeId={initiative.id}

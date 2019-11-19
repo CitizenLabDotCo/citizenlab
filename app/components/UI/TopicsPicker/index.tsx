@@ -4,7 +4,7 @@ import { orderBy } from 'lodash-es';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
 
 // resources
@@ -15,6 +15,8 @@ import { ITopicData } from 'services/topics';
 // intl
 import T from 'components/T';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const TopicsContainer = styled.div`
   display: flex;
@@ -62,7 +64,7 @@ const TopicSwitch = styled.button`
   &:disabled {
     color: ${({ theme }) => lighten(0.4, theme.colors.label)};
     border-color: ${({ theme }) => lighten(0.45, theme.colors.label)};
-    cursor: default;
+    cursor: not-allowed;
   }
 `;
 
@@ -108,25 +110,33 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, cla
   const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
   }, []);
+  const numberOfSelectedTopics = value.length;
+  const selectedTopics = value.map(topicId => topics.find(topic => !isNilOrError(topic) && topic.id === topicId));
+  const selectedTopicNames = selectedTopics && selectedTopics.map(topic => !isNilOrError(topic) && localize(topic.attributes.title_multiloc)).join(', ');
 
   return (
-    <TopicsContainer onBlur={onBlur} className={`${className} e2e-topics-picker`}>
-      {orderBy(workingTopics, topic => localize(topic.attributes.title_multiloc)).map((topic) => {
-        const isActive = value && !!value.find(id => id === topic.id);
-        const isDisabled = !isActive && value.length >= max;
-        return (
-          <TopicSwitch
-            key={topic.id}
-            onClick={handleOnChange(topic.id)}
-            className={isActive ? 'selected' : ''}
-            disabled={isDisabled}
-            onMouseDown={removeFocus}
-          >
-            <T value={topic.attributes.title_multiloc} />
-          </TopicSwitch>
-        );
-      })}
-    </TopicsContainer>
+    <>
+      <TopicsContainer onBlur={onBlur} className={`${className} e2e-topics-picker`}>
+        {orderBy(workingTopics, topic => localize(topic.attributes.title_multiloc)).map((topic) => {
+          const isActive = value && !!value.find(id => id === topic.id);
+          const isDisabled = !isActive && value.length >= max;
+          return (
+            <TopicSwitch
+              key={topic.id}
+              onClick={handleOnChange(topic.id)}
+              className={isActive ? 'selected' : ''}
+              disabled={isDisabled}
+              onMouseDown={removeFocus}
+            >
+              <T value={topic.attributes.title_multiloc} />
+            </TopicSwitch>
+          );
+        })}
+      </TopicsContainer>
+      <ScreenReaderOnly aria-live="polite">
+        <FormattedMessage {...messages.selectedTopics} values={{ numberOfSelectedTopics, selectedTopicNames }} />}
+      </ScreenReaderOnly>
+    </>
   );
 });
 

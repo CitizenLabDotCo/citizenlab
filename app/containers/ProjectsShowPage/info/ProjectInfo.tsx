@@ -21,7 +21,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { media, colors, ScreenReaderOnly } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -97,10 +97,12 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 const ProjectInfo = (props: Props & InjectedIntlProps) => {
-  const { project, projectImages, projectFiles, intl: { formatMessage }, authUser } = props;
+  const { project, projectImages, projectFiles, theme, intl: { formatMessage }, authUser } = props;
 
   if (isNilOrError(project)) return null;
 
@@ -122,7 +124,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
         </ScreenReaderOnly>
         <Left>
           <ProjectDescription>
-            <QuillEditedContent>
+            <QuillEditedContent textColor={theme.colorText}>
               <T value={project.attributes.description_multiloc} supportHtml={true}/>
             </QuillEditedContent>
           </ProjectDescription>
@@ -134,16 +136,16 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
         <Right>
           {!isNilOrError(projectImages) && projectImages.length > 0 &&
             <ProjectImages className="e2e-project-images">
-              {projectImages.filter(projectImage => projectImage).map((projectImage, index) => (
+              {projectImages.filter(projectImage => projectImage).map((projectImage) => (
                 <ImageZoom
                   key={projectImage.id}
                   image={{
                     src: projectImage.attributes.versions.large,
-                    alt: formatMessage(messages.imageAltText, { index: index + 1 })
+                    alt: ''
                   }}
                   zoomImage={{
                     src: projectImage.attributes.versions.large,
-                    alt: formatMessage(messages.imageAltText, { index: index + 1 })
+                    alt: ''
                   }}
                 />
               ))}
@@ -167,7 +169,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
   );
 };
 
-const ProjectInfoWhithHoc = injectIntl<DataProps & InputProps>(ProjectInfo);
+const ProjectInfoWhithHoc = withTheme(injectIntl<Props>(ProjectInfo));
 
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,

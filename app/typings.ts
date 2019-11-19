@@ -1,4 +1,4 @@
-import { appLocalePairs } from 'containers/App/constants';
+import { appLocalePairs, appGraphqlLocalePairs } from 'containers/App/constants';
 
 declare global {
   interface Function {
@@ -58,6 +58,8 @@ export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;
 
+export type GraphqlLocale = keyof typeof appGraphqlLocalePairs;
+
 export const isLocale = (test: any) => {
   return Object.keys(appLocalePairs).includes(test);
 };
@@ -65,6 +67,11 @@ export const isLocale = (test: any) => {
 export type Multiloc = {
   [key in Locale]?: string
 };
+
+export type GraphqlMultiloc = {
+  content: string;
+  locale: Locale;
+}[];
 
 export type MultilocStringOrJSX = {
   [key in Locale]?: string | JSX.Element;

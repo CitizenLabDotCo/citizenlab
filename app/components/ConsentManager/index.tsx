@@ -71,14 +71,16 @@ const reducerArrayToObject = (acc, curr) => (acc[curr] = false, acc);
 // gives out both the custom preferences picked by the user to save and the preferences
 // of the user in the format { [preferenceId]: booleanConsent }
 const mapCustomPreferences = (
-  { destinations, preferences }: { destinations: IDestination[], preferences: CustomPreferences },
+  { destinations, preferences }: { destinations: IDestination[], preferences: CustomPreferences},
   blacklistedDestinationsList: string[] | null
 ) => {
   const destinationPreferences = {};
   const customPreferences = {} as CustomPreferences;
 
   // remove blacklisted destinations from the destination array
-  const remainingDestinations = destinations.filter(destination => !(blacklistedDestinationsList || []).includes(destination.id));
+  const remainingDestinations = destinations ?
+    destinations.filter(destination => !(blacklistedDestinationsList || []).includes(destination.id))
+    : [];
 
   // get user preferences, default unset preferences to true
   // for categories that contain destinations (for implicit consent)
@@ -141,7 +143,7 @@ function reportToSegment(err) {
 }
 
 export class ConsentManager extends PureComponent<Props> {
-  handleMapCustomPreferences = ({ destinations, preferences }) => {
+  handleMapCustomPreferences = (destinations, preferences) => {
     const { tenant } = this.props;
     if (isNilOrError(tenant)) return ({ customPreferences: {}, destinationPreferences: {} });
     return mapCustomPreferences(

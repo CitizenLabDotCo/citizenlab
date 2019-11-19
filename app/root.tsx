@@ -7,6 +7,8 @@ import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
+import 'tippy.js/dist/tippy.css';
+import 'tippy.js/themes/light.css';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import 'file-loader?name=[name].[ext]!./.htaccess';
