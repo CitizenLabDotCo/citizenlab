@@ -64,13 +64,13 @@ describe('Initiative form page', () => {
     cy.get('#e2e-initiative-file-upload');
 
     // add an image
-    cy.get('#iniatiative-banner-dropzone');
+    cy.get('#e2e-iniatiative-banner-dropzone');
     cy.fixture('cy.png', 'base64').then(fileContent => {
-      cy.get('#iniatiative-img-dropzone').upload(
+      cy.get('#e2e-iniatiative-img-dropzone').upload(
         { fileContent, fileName: 'cy.png', mimeType: 'image/png' },
         { subjectType: 'drag-n-drop' },
       );
-      cy.get('#iniatiative-img-dropzone input').should('have.length', 0);
+      cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
     });
 
     // save the form
