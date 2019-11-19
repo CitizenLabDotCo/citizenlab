@@ -113,6 +113,10 @@ export const colors = {
   placeholder: '#aaa',
   separation: '#e0e0e0',
   /**
+  * this is the first grey to get 3.0 contrast ratio on a white background, needed for non-text contrast such as button/label borders
+  */
+  separationDark: '#949494',
+  /**
   * this is the first grey to get 4.5 contrast ratio on the light greyish background we often use (#f9f9fa)
   */
   clGreyOnGreyBackground: '#707070',
@@ -184,7 +188,7 @@ export const colors = {
   emailBg: '#e6ebec',
 
   // buttons
-  disabledPrimaryButtonBg: '#d0d0d0'
+  disabledPrimaryButtonBg: '#767676'
 };
 
 export const fontSizes = {

@@ -50,7 +50,7 @@ const Topic = styled.button`
   margin-bottom: 8px;
   cursor: pointer;
   user-select: none;
-  border: solid 1px ${colors.separation};
+  border: solid 1px ${colors.separationDark};
   border-radius: 5px;
   transition: all 80ms ease-out;
 
