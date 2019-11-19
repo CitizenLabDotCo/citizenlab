@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent, ChangeEvent } from 'react';
-import { getBase64FromFile, createObjectUrl } from 'utils/fileTools';
+import { getBase64FromFile } from 'utils/fileTools';
 import { UploadFile } from 'typings';
 
 // i18n
@@ -150,7 +150,6 @@ export default class FileInput extends PureComponent<Props> {
         if (!fileAccept.includes(file.extension)) {
           file.error = ['incorrect_extension'];
         }
-        file.url = createObjectUrl(file);
         file.remote = false;
         this.props.onAdd(file);
       });
