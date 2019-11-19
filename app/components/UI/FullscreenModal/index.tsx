@@ -164,8 +164,6 @@ class FullscreenModal extends PureComponent<Props, State> {
     const shards = compact([navbarRef, mobileNavbarRef]);
     let modalContent: React.ReactChild | null = null;
 
-    console.log(shards);
-
     if (animateInOut || (!animateInOut && opened)) {
       modalContent = (
         <Container
