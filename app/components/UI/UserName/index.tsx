@@ -16,11 +16,16 @@ import { FormattedMessage } from 'utils/cl-intl';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // components
+import FeatureFlag from 'components/FeatureFlag';
 import Link from 'utils/cl-router/Link';
 
-const Name: any = styled.span<{color?: string}>`
+const Container = styled.div`
+  display: inline-block;
+`;
+
+const Name = styled.div<{ color?: string, emphasize?: boolean }>`
   color: ${({ color, theme }) => color || theme.colorText};
-  font-weight: ${({ emphasize }: any) => emphasize ? '500' : 'normal'};
+  font-weight: ${({ emphasize }) => emphasize ? 500 : 'normal'};
   text-decoration: none;
   hyphens: auto;
 
@@ -47,6 +52,20 @@ const Name: any = styled.span<{color?: string}>`
   }
 `;
 
+const Badge = styled.div`
+  color: #fff;
+  font-size: 10px;
+  line-height: normal;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  padding: 1px 6px;
+  display: inline-block;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 2px;
+  background-color: ${(props: any) => props.color};
+`;
+
 interface DataProps {
   user: GetUserChildProps;
 }
@@ -59,11 +78,12 @@ interface InputProps {
   emphasize?: boolean;
   canModerate?: boolean;
   color?: string;
+  verificationBadge?: boolean;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, emphasize, canModerate, color }) => {
+const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, emphasize, canModerate, color, verificationBadge }) => {
   if (!isNilOrError(user)) {
     const firstName = get(user, 'attributes.first_name', '');
     const lastName = get(user, 'attributes.last_name', '');
@@ -71,8 +91,7 @@ const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, em
       <Name
         emphasize={emphasize}
         className={
-          `${className || ''}
-          ${linkToProfile ? 'linkToProfile' : ''}
+          `${linkToProfile ? 'linkToProfile' : ''}
           ${canModerate ? 'canModerate' : ''}
           e2e-username`
         }
@@ -81,16 +100,34 @@ const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, em
         {`${firstName} ${hideLastName ? '' : lastName}`}
       </Name>
     );
+    const verificationBadgeComponent = (isVerified?: boolean) => (
+      <FeatureFlag name="verification">
+        <Badge color={isVerified ? colors.clGreen : colors.label}>
+          {isVerified
+            ? <FormattedMessage {...messages.verified} />
+            : <FormattedMessage {...messages.notVerified} />
+          }
+        </Badge>
+      </FeatureFlag>
+    );
 
     if (linkToProfile) {
       return (
-        <Link to={`/profile/${user.attributes.slug}`} className="e2e-author-link">
-          {nameComponent}
+        <Link to={`/profile/${user.attributes.slug}`} className={`e2e-author-link ${className || ''}`}>
+          <Container>
+            {nameComponent}
+            {verificationBadge && verificationBadgeComponent(user.attributes.verified)}
+          </Container>
         </Link>
       );
     }
 
-    return nameComponent;
+    return (
+      <Container className={className || ''}>
+        {nameComponent}
+        {verificationBadge && verificationBadgeComponent(user.attributes.verified)}
+      </Container>
+    );
   }
 
   return (

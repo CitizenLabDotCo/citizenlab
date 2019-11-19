@@ -64,7 +64,7 @@ class ProgressBar extends PureComponent<Props, State> {
     const { visible } = this.state;
 
     return (
-      <Container className={className}>
+      <Container className={className} aria-hidden>
         <Observer onChange={this.handleIntersection}>
           <ProgressBarOuter bgColor={bgColor} bgShaded={!!bgShaded}>
             <ProgressBarInner progress={clamp(progress, 0, 1)} className={visible ? 'visible' : ''} color={color} />

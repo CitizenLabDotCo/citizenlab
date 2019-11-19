@@ -11,7 +11,7 @@ const Container = styled.div`
   display: flex;
   padding: 20px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background-color: ${transparentize(.95, colors.adminTextColor)};;
+  background-color: ${transparentize(.95, colors.adminTextColor)};
   border: 1px solid ${colors.separation};
   margin-bottom: 10px;
 
@@ -46,10 +46,6 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
-`;
-
-const HiddenLabel = styled.label`
-  ${hideVisually()}
 `;
 
 const StyledInput = styled.input`
@@ -116,13 +112,7 @@ const CategoryCard = ({ category, destinations, checked, handleChange }: Props) 
         tagName="h2"
         {...messages[category]}
       />
-      <InputContainer role="radiogroup" aria-labelledby={`${category}-radio`}>
-        <HiddenLabel id={`${category}-radio`}>
-          <FormattedMessage
-            {...messages.ariaRadioGroup}
-            values={{ category }}
-          />
-        </HiddenLabel>
+      <InputContainer role="radiogroup">
         <StyledLabel htmlFor={`${category}-radio-true`}>
           <StyledInput
             type="radio"

@@ -102,13 +102,14 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
   const commentingEnabled: boolean = get(post, 'attributes.action_descriptor.commenting.enabled', true);
   const commentingDisabledReason = get(post, 'attributes.action_descriptor.commenting.disabled_reason', null);
   const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data : authUser }) : false;
+  const loaded = (!isNilOrError(post) && !isNilOrError(commentsList) && !isUndefined(project));
 
   return (
-    <Container className={className}>
+    <Container className={`e2e-comments-${loaded ? 'loaded' : 'loading'} ${className}`}>
       <ScreenReaderOnly>
         <FormattedMessage tagName="h2" {...messages.invisibleTitleComments} />
       </ScreenReaderOnly>
-      {(!isNilOrError(post) && !isNilOrError(commentsList) && !isUndefined(project)) ? (
+      {loaded && !isNilOrError(commentsList) ? (
         <>
           {/*
             Show warning messages when there are no comments and you're logged in as an admin.

@@ -1,4 +1,4 @@
-import { sum, isNilOrError, isEmptyMultiloc, isNonEmptyString, isAdminPage } from './helperUtils';
+import { sum, isNilOrError, isEmptyMultiloc, isNonEmptyString, isPage } from './helperUtils';
 
 test('adds 1 + 2 to equal 3', () => {
   expect(sum(1, 2)).toBe(3);
@@ -51,29 +51,39 @@ describe('isNonEmptyString', () => {
   });
 });
 
-describe('isAdminPage', () => {
-  it('returns true for admin URLs', () => {
-    expect(isAdminPage('/en/admin')).toBe(true);
-    expect(isAdminPage('/en/admin/dashboard')).toBe(true);
+describe('isPage', () => {
+  describe('admin', () => {
+    it('returns true for an admin path name', () => {
+      expect(isPage('admin', '/en/admin/ideas')).toBe(true);
+      expect(isPage('admin', '/en/admin/dashboard')).toBe(true);
+    });
+
+    it('returns false for a non-admin page', () => {
+      expect(isPage('admin', '/en/ideas')).toBe(false);
+    });
   });
 
-  it('returns true when testing a specific admin URL', () => {
-    // test whether URL is an admin page AND that we're at admin/projects
-    expect(isAdminPage('/en/admin/projects', 'projects')).toBe(true);
-    expect(isAdminPage('/en/admin/users/4f3da66a-f6d1-42ab-9962-3f08be4c75e5', 'users')).toBe(true);
+  describe('initiative_form', () => {
+    it('returns true we are at the new initiative form', () => {
+      expect(isPage('initiative_form', '/nl-BE/initiatives/new')).toBe(true);
+    });
+
+    it('returns false when we are not at the new initiative form', () => {
+      expect(isPage('initiative_form', '/en/')).toBe(false);
+      expect(isPage('initiative_form', '/en/initiatives/new-playground')).toBe(false);
+    });
   });
 
-  it('returns false when testing a specific admin URL that does not match our expected page', () => {
-    // test whether URL is an admin page AND that we're at admin/ideas
-    expect(isAdminPage('/en/admin/projects', 'ideas')).toBe(false);
-  });
+  describe('idea_edit', () => {
+    it('returns true we are at the idea edit form', () => {
+      expect(isPage('idea_edit', '/en/ideas/edit/9b49db98-7de5-4010-892c-5a15a89b0c56')).toBe(true);
+    });
 
-  it('returns false for an non-admin URLs', () => {
-    expect(isAdminPage('/en')).toBe(false);
-    expect(isAdminPage('/en/projects/choose-where-to-plant-the-tree/info')).toBe(false);
-  });
-
-  it('returns false for an non-admin URL with the word "admin" in it', () => {
-    expect(isAdminPage('en/ideas/admin')).toBe(false);
+    it('returns false when we are not at the idea edit form', () => {
+      expect(isPage('idea_edit', '/en/')).toBe(false);
+      expect(isPage('idea_edit', '/en/initiatives/new-playground')).toBe(false);
+      expect(isPage('idea_edit', '/en/admin/dashboard')).toBe(false);
+      expect(isPage('idea_edit', '/en/ideas/edit-this-is-an-example-idea')).toBe(false);
+    });
   });
 });

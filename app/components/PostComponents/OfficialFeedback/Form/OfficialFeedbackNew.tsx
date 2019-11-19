@@ -3,16 +3,43 @@ import { addOfficialFeedbackToIdea, addOfficialFeedbackToInitiative } from 'serv
 import { Formik } from 'formik';
 import OfficialFeedbackForm, { FormValues, formatMentionsBodyMultiloc } from './OfficialFeedbackForm';
 import { CLErrorsJSON } from 'typings';
+import { adopt } from 'react-adopt';
+
+// resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // utils
-import { isAdminPage } from 'utils/helperUtils';
+import { isPage, isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-interface Props {
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+
+// styles
+import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
+
+const AddOfficialUpdateTitle = styled.h2`
+  color: ${colors.text};
+  font-size: ${fontSizes.medium}px;
+  line-height: normal;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+`;
+
+interface DataProps {
+  tenant: GetTenantChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface InputProps {
   postId: string;
   postType: 'idea' | 'initiative';
   className?: string;
@@ -20,7 +47,7 @@ interface Props {
 
 interface State {}
 
-export default class OfficialFeedbackNew extends PureComponent<Props, State> {
+class OfficialFeedbackNew extends PureComponent<Props, State> {
   handleSubmit = async (values: FormValues, { setErrors, setSubmitting, setStatus, resetForm }) => {
     const formattedMentionsBodyMultiloc = formatMentionsBodyMultiloc(values.body_multiloc);
     const { postId, postType } = this.props;
@@ -54,9 +81,9 @@ export default class OfficialFeedbackNew extends PureComponent<Props, State> {
 
     // analytics
     if (postType === 'idea') {
-      trackEventByName(tracks.officialFeedbackGiven, { location: isAdminPage(location.pathname) ? 'Admin/idea manager' : 'Citizen/idea page' });
+      trackEventByName(tracks.officialFeedbackGiven, { location: isPage('admin', location.pathname) ? 'Admin/idea manager' : 'Citizen/idea page' });
     } else if (postType === 'initiative') {
-      trackEventByName(tracks.officialFeedbackGiven, { location: isAdminPage(location.pathname) ? 'Admin/initiative manager' : 'Citizen/initiative page' });
+      trackEventByName(tracks.officialFeedbackGiven, { location: isPage('admin', location.pathname) ? 'Admin/initiative manager' : 'Citizen/initiative page' });
     }
   }
 
@@ -70,15 +97,32 @@ export default class OfficialFeedbackNew extends PureComponent<Props, State> {
   })
 
   render() {
-    return (
-      <div className={this.props.className} >
-        <Formik
-          initialValues={this.initialValues()}
-          render={this.renderFn}
-          onSubmit={this.handleSubmit}
-          validate={OfficialFeedbackForm.validate}
-        />
-      </div>
-    );
+    if (!isNilOrError(this.props.tenant)) {
+      return (
+        <div className={this.props.className} >
+          <AddOfficialUpdateTitle>
+            <FormattedMessage {...messages.addOfficalUpdate} />
+          </AddOfficialUpdateTitle>
+          <Formik
+            initialValues={this.initialValues()}
+            render={this.renderFn}
+            onSubmit={this.handleSubmit}
+            validate={OfficialFeedbackForm.validate}
+          />
+        </div>
+      );
+    }
+
+    return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <OfficialFeedbackNew {...inputProps} {...dataProps} />}
+  </Data>
+);

@@ -132,7 +132,6 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
       initiativeImages,
       initiativeFiles,
       handleClickEdit,
-      intl: { formatMessage }
     } = this.props;
 
     if (!isNilOrError(initiative)) {
@@ -172,7 +171,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
             <Row>
               <Left>
                 {initiativeImageLarge &&
-                  <Image src={initiativeImageLarge} alt={formatMessage(messages.imageAltText, { postTitle: initiativeTitle })} className="e2e-initiativeImage"/>
+                  <Image src={initiativeImageLarge} alt="" className="e2e-initiativeImage"/>
                 }
 
                 <PostedBy

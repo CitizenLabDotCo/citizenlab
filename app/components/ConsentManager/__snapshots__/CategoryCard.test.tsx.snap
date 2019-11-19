@@ -9,22 +9,8 @@ exports[`<CategoryCard /> renders correctly when allowed 1`] = `
       tagName="h2"
     />
     <CategoryCard__InputContainer
-      aria-labelledby="analytics-radio"
       role="radiogroup"
     >
-      <CategoryCard__HiddenLabel
-        id="analytics-radio"
-      >
-        <FormattedMessage
-          defaultMessage="Allow {category} tracking?"
-          id="app.components.ConsentManager.Modal.PreferencesDialog.ariaRadioGroup"
-          values={
-            Object {
-              "category": "analytics",
-            }
-          }
-        />
-      </CategoryCard__HiddenLabel>
       <CategoryCard__StyledLabel
         htmlFor="analytics-radio-true"
       >
@@ -108,22 +94,8 @@ exports[`<CategoryCard /> renders correctly when disallowed 1`] = `
       tagName="h2"
     />
     <CategoryCard__InputContainer
-      aria-labelledby="analytics-radio"
       role="radiogroup"
     >
-      <CategoryCard__HiddenLabel
-        id="analytics-radio"
-      >
-        <FormattedMessage
-          defaultMessage="Allow {category} tracking?"
-          id="app.components.ConsentManager.Modal.PreferencesDialog.ariaRadioGroup"
-          values={
-            Object {
-              "category": "analytics",
-            }
-          }
-        />
-      </CategoryCard__HiddenLabel>
       <CategoryCard__StyledLabel
         htmlFor="analytics-radio-true"
       >
@@ -207,22 +179,8 @@ exports[`<CategoryCard /> renders correctly when null 1`] = `
       tagName="h2"
     />
     <CategoryCard__InputContainer
-      aria-labelledby="analytics-radio"
       role="radiogroup"
     >
-      <CategoryCard__HiddenLabel
-        id="analytics-radio"
-      >
-        <FormattedMessage
-          defaultMessage="Allow {category} tracking?"
-          id="app.components.ConsentManager.Modal.PreferencesDialog.ariaRadioGroup"
-          values={
-            Object {
-              "category": "analytics",
-            }
-          }
-        />
-      </CategoryCard__HiddenLabel>
       <CategoryCard__StyledLabel
         htmlFor="analytics-radio-true"
       >

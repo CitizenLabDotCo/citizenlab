@@ -2,14 +2,12 @@
 
 exports[`IdeasMap renders correctly 1`] = `
 <IdeasMap__Container>
-  <IdeasMap__MapTitle
-    className="screenreader-only"
-  >
+  <styleUtils__ScreenReaderOnly>
     <FormattedMessage
       defaultMessage="Map with overview of ideas based on location"
       id="app.components.IdeasMap.mapTitle"
     />
-  </IdeasMap__MapTitle>
+  </styleUtils__ScreenReaderOnly>
   <IdeasMap__StyledMap
     boxContent={null}
     fitBounds={true}
@@ -21,7 +19,7 @@ exports[`IdeasMap renders correctly 1`] = `
   <div
     className="create-idea-wrapper"
   >
-    <WrappedIdeaAddButton
+    <Component
       onClick={[Function]}
       phaseId="c43968d3-171e-570c-8b71-f5fc0e55bbfa"
       projectId="379cac45-d26b-505c-9215-b2677a693d37"

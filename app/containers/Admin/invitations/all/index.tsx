@@ -5,12 +5,12 @@ import { isEmpty } from 'lodash-es';
 import { saveAs } from 'file-saver';
 
 // components
-import { Table, Input } from 'semantic-ui-react';
+import { Table, Input, Popup } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
+import Icon from 'components/UI/Icon';
 import Row from './Row';
-import InfoTooltip from 'components/admin/InfoTooltip';
 
 // resources
 import GetInvites, { GetInvitesChildProps, SortAttribute } from 'resources/GetInvites';
@@ -24,6 +24,7 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   th::after {
@@ -50,10 +51,15 @@ const EmptyStateContainer = styled.div`
   justify-content: center;
 `;
 
-const SDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const InfoIcon = styled(Icon)`
+  fill: ${colors.clBlueDarker};
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+
+  &:hover {
+    fill: #000;
+  }
 `;
 
 interface InputProps { }
@@ -152,11 +158,8 @@ class InvitesTable extends React.PureComponent<Props, State> {
                     width={1}
                     textAlign="center"
                   >
-                    <SDiv>
-                      <FormattedMessage {...messages.deleteInvite} />
-                      &nbsp;
-                      <InfoTooltip {...messages.deleteInviteTooltip} position="top-left" size="small" />
-                    </SDiv>
+                    <FormattedMessage {...messages.deleteInvite} />
+                    <Popup content={<FormattedMessage {...messages.deleteInviteTooltip} />} trigger={<button><InfoIcon name="info3" /></button>} />
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>

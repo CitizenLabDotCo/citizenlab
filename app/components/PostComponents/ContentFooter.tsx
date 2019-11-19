@@ -6,6 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import AvatarBubbles from 'components/AvatarBubbles';
 import Icon from 'components/UI/Icon';
+import ContentChangeLog from 'components/PostComponents/ContentChangeLog';
 
 // resources
 import GetRandomAvatars, { GetRandomAvatarsChildProps } from 'resources/GetRandomAvatars';
@@ -41,7 +42,7 @@ const Right = styled.div`
 `;
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
-  margin-right: 12px;
+  margin-right: 10px;
 `;
 
 const TimeAgo = styled.div`
@@ -68,7 +69,7 @@ const CommentsCount = styled.div`
 `;
 
 interface InputProps {
-  id: string;
+  postId: string;
   postType: 'idea' | 'initiative';
   publishedAt: string;
   commentsCount: number;
@@ -83,7 +84,7 @@ interface Props extends InputProps, DataProps {}
 
 const avatarLimit = 3;
 
-const ContentFooter = memo<Props>(({ postType, publishedAt, commentsCount, randomAvatars, className }) => {
+const ContentFooter = memo<Props>(({ postType, publishedAt, commentsCount, randomAvatars, className, postId }) => {
 
   const avatarIds = (!isNilOrError(randomAvatars) && randomAvatars.data.length > 0 ? randomAvatars.data.map(avatar => avatar.id) : []);
   const userCount = !isNilOrError(randomAvatars) ? randomAvatars.meta.total : undefined;
@@ -102,6 +103,7 @@ const ContentFooter = memo<Props>(({ postType, publishedAt, commentsCount, rando
 
         <TimeAgo>
           <FormattedMessage {...messages.createdTimeAgo} values={{ timeAgo: <FormattedRelative value={publishedAt} /> }} />
+          <ContentChangeLog postId={postId} postType={postType} />
         </TimeAgo>
       </Left>
 
@@ -114,7 +116,7 @@ const ContentFooter = memo<Props>(({ postType, publishedAt, commentsCount, rando
 });
 
 const Data = adopt<DataProps, InputProps>({
-  randomAvatars: ({ id, postType, render }) => <GetRandomAvatars limit={avatarLimit} context={{ id, type: postType }}>{render}</GetRandomAvatars>,
+  randomAvatars: ({ postId, postType, render }) => <GetRandomAvatars limit={avatarLimit} context={{ id: postId, type: postType }}>{render}</GetRandomAvatars>,
 });
 
 export default (inputProps: InputProps) => (

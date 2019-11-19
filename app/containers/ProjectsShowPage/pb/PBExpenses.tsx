@@ -32,7 +32,7 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -194,6 +194,7 @@ const Buttons = styled.div`
 
   ${media.smallerThanMinTablet`
     margin-top: 20px;
+    flex-direction: column;
   `}
 `;
 
@@ -218,7 +219,8 @@ const SubmitExpensesButton = styled(Button)`
   margin-left: 10px;
 
   ${media.smallerThanMinTablet`
-    display: none;
+    margin-left: 0px;
+    margin-top: 12px;
   `}
 `;
 
@@ -345,7 +347,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                 }
               </Title>
               <Spacer />
-              <TotalBudgetDesktop>
+              <TotalBudgetDesktop aria-hidden>
                 <BudgetLabel>
                   <FormattedMessage {...messages.totalBudget} />:
                 </BudgetLabel>
@@ -361,7 +363,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
               </TotalBudgetDesktop>
             </Header>
 
-            <ProgressBar>
+            <ProgressBar aria-hidden>
               <ProgressBarOverlay
                 className={progressBarColor}
                 progress={budgetExceedsLimit ? 100 : progress}
@@ -372,7 +374,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
 
             <Footer>
               <Budgets>
-                <Budget>
+                <Budget aria-hidden>
                   <BudgetLabel>
                     <FormattedMessage {...messages.spentBudget} />:
                   </BudgetLabel>
@@ -386,7 +388,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                     />
                   </BudgetAmount>
                 </Budget>
-                <TotalBudgetMobile>
+                <TotalBudgetMobile aria-hidden>
                   <BudgetLabel>
                     <FormattedMessage {...messages.totalBudget} />:
                   </BudgetLabel>
@@ -400,6 +402,12 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                     />
                   </BudgetAmount>
                 </TotalBudgetMobile>
+                <ScreenReaderOnly aria-live="polite">
+                  <FormattedMessage {...messages.totalBudget} />:
+                  {`${totalBudget} ${currency}`}
+                  <FormattedMessage {...messages.spentBudget} />:
+                  {`${spentBudget} ${currency}`}
+                </ScreenReaderOnly>
               </Budgets>
               <Spacer />
               <Buttons>
@@ -407,11 +415,11 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                   <ManageBudgetButton
                     onClick={this.toggleExpensesDropdown}
                     icon="moneybag"
-                    textColor={colors.adminTextColor}
-                    bgColor="transparent"
-                    bgHoverColor="transparent"
+                    style="primary-inverse"
                     borderColor={colors.separation}
+                    bgColor="transparent"
                     borderThickness="2px"
+                    ariaExpanded={dropdownOpened}
                   >
                     <FormattedMessage {...messages.manageBudget} />
                   </ManageBudgetButton>
@@ -420,8 +428,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                     <Dropdown
                       top="10px"
                       left={bowser.msie ? '-5px' : 'auto'}
-                      mobileWidth="250px"
-                      mobileLeft="-5px"
+                      mobileWidth="calc(100vw - 80px)"
                       opened={dropdownOpened}
                       onClickOutside={this.toggleExpensesDropdown}
                       content={
@@ -437,6 +444,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                 <SubmitExpensesButton
                   onClick={this.handleSubmitExpensesOnClick}
                   icon="submit"
+                  iconAriaHidden
                   iconPos="right"
                   bgColor={colors.adminTextColor}
                   disabled={validationStatus === 'validationSuccess' || budgetExceedsLimit || spentBudget === 0}

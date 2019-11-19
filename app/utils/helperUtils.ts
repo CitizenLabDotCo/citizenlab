@@ -1,4 +1,4 @@
-import { Locale, Multiloc } from 'typings';
+import { Locale, Multiloc, GraphqlLocale } from 'typings';
 import { isString } from 'util';
 import { trim } from 'lodash-es';
 import { removeUrlLocale } from 'services/locale';
@@ -72,13 +72,38 @@ export function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
 }
 
-export function isAdminPage(pathName: string, specificAdminPage?: string) {
+type pageKeys = 'admin' | 'idea_form' | 'initiative_form' | 'idea_edit' | 'initiative_edit' | 'sign_in' | 'sign_up';
+
+export function isPage(pageKey: pageKeys, pathName: string) {
+   /**
+   * Checks whether current page is the desired page
+   *
+   * @param pageKey - key to indicate the desired page
+   * @param pathName - pathname to check (usually current path aka location.pathname)
+   *
+   * @returns Boolean. True if current page matches the pageKey's url, false otherwise.
+   */
+
   const pathnameWithoutLocale = removeUrlLocale(pathName);
 
-  if (specificAdminPage) {
-    return pathnameWithoutLocale.startsWith(`/admin/${specificAdminPage}`);
+  switch (pageKey) {
+    case 'admin':
+      return pathnameWithoutLocale.startsWith('/admin/');
+    case 'initiative_form':
+      // Needs to use endsWith
+      // Otherwise an initiative with the name 'new playground for our children' would also pass
+      return pathnameWithoutLocale.endsWith('/initiatives/new');
+    case 'idea_form':
+      return pathnameWithoutLocale.endsWith('/ideas/new');
+    case 'idea_edit':
+      return pathnameWithoutLocale.startsWith('/ideas/edit/');
+    case 'initiative_edit':
+      return pathnameWithoutLocale.startsWith('/initiatives/edit/');
+    case 'sign_in':
+      return pathnameWithoutLocale.startsWith('/sign-in');
+    case 'sign_up':
+      return pathnameWithoutLocale.startsWith('/sign-up');
   }
-  return pathnameWithoutLocale.startsWith('/admin');
 }
 
 export function stopPropagation(event) {
@@ -91,4 +116,16 @@ export function stripHtmlTags(str: string | null | undefined) {
   } else {
     return str.replace(/<\/?(p|div|span|ul|ol|li|br|em|img|strong|a)[^>]{0,}\/?>/g, '');
   }
+}
+
+// e.g. 'en-GB' -> 'enGb'
+export function convertToGraphqlLocale(locale: Locale) {
+  const newLocale = locale.replace('-', '');
+  const length = newLocale.length - 1;
+  return newLocale.substring(0, length) + newLocale.substr(length).toLowerCase() as GraphqlLocale;
+}
+
+export function isUUID(value: string) {
+  const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
+  return uuidRegExp.test(value);
 }
