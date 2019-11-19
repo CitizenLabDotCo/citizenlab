@@ -41,6 +41,11 @@ module Frontend
       end
     end
 
+    def verification_url options={}
+      pathname = options[:location]
+      "#{home_url(options)}#{pathname}"
+    end
+
     def signin_success_url options={}
       home_url options
     end
@@ -54,11 +59,12 @@ module Frontend
     end
 
     def verification_success_url options={}
-      "#{home_url(options)}/verification-success"
+      "#{verification_url(options)}?verification-success"
     end
 
     def verification_failure_url options={}
-      "#{home_url(options)}/verification-error"
+      error = options[:error]
+      "#{verification_url(options)}?verification-error&error=#{error}"
     end
 
     def invite_url token, options={}
