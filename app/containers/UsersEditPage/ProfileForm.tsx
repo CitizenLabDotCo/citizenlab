@@ -244,7 +244,6 @@ class ProfileForm extends PureComponent<Props, State> {
             {/* Wrapping image dropzone with a label for accesibility */}
             <FormLabel thin labelMessage={messages.imageDropzonePlaceholder} hidden />
             <ImagesDropzone
-              id="images-dropzone"
               images={this.state.avatar}
               imagePreviewRatio={1}
               maxImagePreviewWidth="160px"
