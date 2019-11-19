@@ -1070,7 +1070,7 @@
   "app.containers.AdminPage.SettingsPage.tabPages": "Pagina's",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Gebruikersgegevens",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Algemeen",
-  "app.containers.AdminPage.SettingsPage.tabWidgets": "Widget",
+  "app.containers.AdminPage.SettingsPage.tabWidgetsLabel": "Widget",
   "app.containers.AdminPage.SettingsPage.terminologyTooltip": "Hoe moeten de geografische gebieden naar gebruikers toe worden genoemd? bv. wijken, kernen, buurten, ...",
   "app.containers.AdminPage.SettingsPage.titleAreaTerms": "Terminologie voor gebieden",
   "app.containers.AdminPage.SettingsPage.titleAreas": "Geografische gebieden",
