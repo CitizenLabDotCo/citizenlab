@@ -222,7 +222,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
           <StyledLabel>
             <LabelTextContainer>
               <span>Número de Documento</span>
-              <IconTooltip maxTooltipWidth={200} content="Ingrese el número de documento que se encuentra al frente de las cédulas y atrás en las cédulas antiguas." />
+              <IconTooltip maxTooltipWidth={200} content="Ingrese el número de documento que se encuentra al frente de las cédulas y atrás en las cédulas antiguas. Ej: 111.222.333 en las cédulas nuevas o A012345678 en las cédulas antiguas." />
             </LabelTextContainer>
             <div>
               <Input

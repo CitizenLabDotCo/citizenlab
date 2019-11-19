@@ -145,6 +145,22 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.limited',
     defaultMessage: 'Limited',
   },
+  allowLocation: {
+    id: 'app.containers.AdminPage.ProjectEdit.allowLocation',
+    defaultMessage: 'Idea location',
+  },
+  allowLocationTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.allowLocationTooltip',
+    defaultMessage: 'Enable or disable the ability to add a location to an idea.',
+  },
+  enabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.enabled',
+    defaultMessage: 'Enabled',
+  },
+  disabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.disabled',
+    defaultMessage: 'Disabled',
+  },
   defaultDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.defaultDisplay',
     defaultMessage: 'Ideas displayed by default as:',
