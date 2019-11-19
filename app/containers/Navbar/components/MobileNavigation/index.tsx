@@ -92,6 +92,7 @@ const NavigationItem = styled(Link)`
 `;
 
 interface InputProps {
+  setRef?: (arg: HTMLElement) => void | undefined;
   className?: string;
 }
 
@@ -102,13 +103,17 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
+  handleRef = (element: HTMLElement) => {
+    this.props.setRef && this.props.setRef(element);
+  }
+
   render() {
     const { location, className } = this.props;
     const urlSegments = (!isNilOrError(location) ? location.pathname.replace(/^\/|\/$/g, '').split('/') : ['']);
     const secondUrlSegment = (urlSegments && urlSegments.length >= 1 ? urlSegments[1] : null);
 
     return (
-      <Container className={className}>
+      <Container className={className} ref={this.handleRef}>
 
         <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex>
           <NavigationIconWrapper>
