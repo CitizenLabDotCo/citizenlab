@@ -52,9 +52,9 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
     };
   }
 
-  componentWillReceiveProps(nextProps : Props) {
-    const { locale } = nextProps;
-    if (!this.state.selectedLocale && this.props.locale !== locale) {
+  componentDidUpdate(prevProps: Props) {
+    const { locale } = this.props;
+    if (!this.state.selectedLocale && locale !== prevProps.locale) {
       this.setState({ selectedLocale: locale });
     }
   }

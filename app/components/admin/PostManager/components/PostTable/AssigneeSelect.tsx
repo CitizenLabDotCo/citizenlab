@@ -78,10 +78,8 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  prospectAssignees: ({ projectId, render }) => projectId
-    ? <GetUsers canModerateProject={projectId}>{render}</GetUsers>
-    : <GetUsers canAdmin>{render}</GetUsers>,
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
+  prospectAssignees: ({ projectId, render }) => projectId ? <GetUsers canModerateProject={projectId}>{render}</GetUsers> : <GetUsers canAdmin>{render}</GetUsers>
 });
 
 const AssigneeSelectWithHocs = injectIntl<Props>(AssigneeSelect);

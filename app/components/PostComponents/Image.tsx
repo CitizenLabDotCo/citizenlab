@@ -4,7 +4,6 @@ import { colors } from 'utils/styleUtils';
 
 const Image = styled.img`
   width: 100%;
-  height: auto;
   margin-bottom: 25px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px solid ${colors.separation};
@@ -16,12 +15,10 @@ interface Props {
   id?: string;
 }
 
-export default memo(({ src, alt, id }: Props) => {
-  return (
-    <Image
-      src={src}
-      alt={alt}
-      id={id}
-    />
-  );
-});
+export default memo<Props>(({ src, alt, id }) => (
+  <Image
+    src={src}
+    alt={alt}
+    id={id}
+  />
+));

@@ -9,7 +9,7 @@ describe('Initiative show page actions', () => {
     });
 
     it('asks unauthorised users to log in or sign up before they vote', () => {
-      cy.wait(1000);
+      cy.wait(500);
       cy.get('#e2e-initiative-vote-control').find('#e2e-initiative-upvote-button').click();
       cy.get('#e2e-initiative-vote-control').find('.e2e-login-button');
       cy.get('#e2e-initiative-vote-control').find('.e2e-register-button');
@@ -18,7 +18,7 @@ describe('Initiative show page actions', () => {
 
   describe('logged in as admin', () => {
     before(() => {
-      cy.login('admin@citizenlab.co', 'testtest');
+      cy.setAdminLoginCookie();
       cy.visit('/initiatives/cleaning-the-sidewalks-party');
       cy.acceptCookies();
       cy.get('#e2e-initiative-show');
@@ -29,8 +29,11 @@ describe('Initiative show page actions', () => {
       const officialFeedbackAuthor = randomString();
 
       // input
-      cy.get('#official-feedback-form textarea').type(officialFeedbackBody);
-      cy.get('#official-feedback-form input').type(officialFeedbackAuthor);
+      cy.get('.e2e-locale-switch').each(button => {
+        cy.wrap(button).click();
+        cy.get('#official-feedback-form textarea').type(officialFeedbackBody);
+        cy.get('#official-feedback-form input').type(officialFeedbackAuthor);
+      });
 
       // save
       cy.get('.e2e-submit-wrapper-button').click();
@@ -55,9 +58,9 @@ describe('Initiative show page actions', () => {
       });
 
       beforeEach(() => {
-        cy.login(email, password);
+        cy.setLoginCookie(email, password);
         cy.visit(`/initiatives/${initiativeTitle}`);
-        cy.wait(1000);
+        cy.wait(500);
         cy.get('#e2e-initiative-show');
       });
 
@@ -98,7 +101,7 @@ describe('Initiative show page actions', () => {
       });
 
       beforeEach(() => {
-        cy.login(email, password);
+        cy.setLoginCookie(email, password);
         cy.visit('/initiatives/cleaning-the-sidewalks-party');
         cy.acceptCookies();
         cy.get('#e2e-initiative-show');
