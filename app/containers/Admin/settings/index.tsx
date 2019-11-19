@@ -48,7 +48,7 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
     ];
     if (showWidgets) {
       tabs.push({
-        label: formatMessage(messages.tabWidgets),
+        label: formatMessage(messages.tabWidgetsLabel),
         url: '/admin/settings/widgets',
       });
     }
