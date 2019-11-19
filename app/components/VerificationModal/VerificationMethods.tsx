@@ -111,6 +111,9 @@ const ContextItem = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  ${media.largePhone`
+    white-space: normal;
+  `}
 `;
 
 const Or = styled.span`
