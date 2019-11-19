@@ -17,7 +17,7 @@ import IdeaDetails from './IdeaDetails';
 import ClusterDetails from './ClusterDetails';
 import Radio from 'components/UI/Radio';
 import ComparisonLegend from './ComparisonLegend';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -220,7 +220,7 @@ class InfoPane extends PureComponent<Props, State> {
                   label={(
                     <>
                       <FormattedMessage {...messages.relative} />
-                      <InfoTooltip {...messages.relativeTooltip} position="bottom-left" size="xs" />
+                      <IconTooltip content={<FormattedMessage {...messages.relativeTooltip} />} />
                     </>
                   )}
                 />

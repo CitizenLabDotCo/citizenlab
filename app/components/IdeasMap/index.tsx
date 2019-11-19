@@ -13,7 +13,7 @@ import tracks from './tracks';
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import IdeaPreview from './IdeaPreview';
-import IdeaAddButton from './IdeaAddButton';
+import IdeaButton from 'components/IdeaButton';
 
 // Resources
 import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'resources/GetIdeaMarkers';
@@ -179,9 +179,9 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
 
         {projectIds && projectIds.length === 1 &&
           <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
-            <IdeaAddButton
+            <IdeaButton
               projectId={projectIds[0]}
-              phaseId={phaseId}
+              phaseId={phaseId || undefined}
               onClick={this.redirectToIdeaCreation}
             />
           </div>

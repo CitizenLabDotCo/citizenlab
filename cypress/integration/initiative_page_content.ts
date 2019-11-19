@@ -56,13 +56,12 @@ describe('when logged out', () => {
 
 describe('when logged in as an admin', () => {
   it('has the More Options menu and opens it', () => {
-    cy.login('admin@citizenlab.co', 'testtest');
+    cy.setAdminLoginCookie();
     cy.visit('/initiatives/cleaning-the-sidewalks-party');
     cy.wait(1000);
-    cy.get('#e2e-initiative-more-actions').click();
-    cy.get('#e2e-initiative-more-actions-menu');
-    cy.get('#e2e-initiative-more-actions-menu button').eq(0).contains('Report as spam');
-    cy.get('#e2e-initiative-more-actions-menu button').eq(1).contains('Edit initiative');
-    cy.get('#e2e-initiative-more-actions-menu button').eq(2).contains('Delete initiative');
+    cy.get('#e2e-initiative-more-actions-desktop').click();
+    cy.get('.e2e-more-actions-list button').eq(0).contains('Report as spam');
+    cy.get('.e2e-more-actions-list button').eq(1).contains('Edit initiative');
+    cy.get('.e2e-more-actions-list button').eq(2).contains('Delete initiative');
   });
 });

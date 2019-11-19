@@ -103,6 +103,8 @@ export const media = {
   `,
 };
 
+export const customOutline = 'rgb(59,153,252) solid 2px';
+
 export const colors = {
   background: '#f4f4f5',
   text: '#333',
@@ -201,6 +203,7 @@ export const stylingConsts = {
   menuHeight: 78,
   mobileMenuHeight: 72,
   mobileTopBarHeight: 66,
+  footerHeight: 60,
   maxPageWidth: 952,
   bannerWidth: 1340,
   pageWidth: 1150,

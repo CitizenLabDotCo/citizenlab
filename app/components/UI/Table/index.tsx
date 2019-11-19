@@ -21,7 +21,7 @@ const StyledTable: any = styled.table`
         fill: ${colors.label};
         color: ${colors.label};
         font-size: ${fontSizes.small}px;
-        font-weight: 500;
+        font-weight: 600;
         text-transform: uppercase;
         line-height: 20px;
         padding-top: 0px;
@@ -48,16 +48,14 @@ const StyledTable: any = styled.table`
   tbody {
     tr {
       border-radius: ${(props: any) => props.theme.borderRadius};
-      padding-top: 50px;
-      padding-bottom: 50px;
 
       td {
         color: ${colors.adminTextColor};
         font-size: ${fontSizes.small}px;
         font-weight: 400;
         line-height: 20px;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding-top: 6px;
+        padding-bottom: 6px;
 
         &.center {
           justify-content: center;

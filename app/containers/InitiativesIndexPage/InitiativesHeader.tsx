@@ -31,6 +31,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+
   ${media.smallerThanMinTablet`
     background-color: ${colors.background};
   `}
@@ -94,13 +95,11 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 `;
 
 const StartInitiative = styled(Button)`
-  margin-bottom: 50px;
   margin-top: 18px;
+  margin-bottom: 50px;
 
   ${media.smallerThanMinTablet`
-    width: 100%;
-    padding-left: 15px;
-    padding-right: 15px;
+    margin-top: 25px;
     margin-bottom: 20px;
   `}
 `;

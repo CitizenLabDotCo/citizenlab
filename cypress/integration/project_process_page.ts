@@ -1,6 +1,6 @@
 describe('Project process page', () => {
   beforeEach(() => {
-    cy.visit('/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/process');
+    cy.visit('/projects/test-project-1-timeline-with-file/process');
     cy.acceptCookies();
   });
 

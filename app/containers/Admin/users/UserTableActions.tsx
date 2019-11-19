@@ -38,7 +38,7 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 const TableOptions = styled.div`
@@ -48,29 +48,64 @@ const TableOptions = styled.div`
   padding-bottom: 15px;
   padding-left: 5px;
   padding-right: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
   border-bottom: solid 1px ${colors.separation};
   user-select: none;
 `;
 
 const UserCount = styled.span`
   color: ${colors.label};
-  font-weight: 300;
-  margin-left: 7px;
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
   white-space: nowrap;
+  margin-left: 5px;
+`;
+
+const SelectAllCheckbox = styled(Checkbox)`
+  height: 38px;
+  margin-right: 40px;
+  position: relative;
+  padding: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    background: ${rgba(colors.adminTextColor, .1)};
+    color: ${colors.adminTextColor};
+    outline: none;
+  }
+`;
+
+const SelectAllCheckboxLabel = styled.span`
+  display: inline-block;
+  /* align-items: center;
+  white-space: wrap; */
 `;
 
 const ActionButton = styled.button`
+  max-width: 250px;
+  min-height: 38px;
   margin-right: 40px;
   position: relative;
-  padding: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 4px;
+  padding-right: 4px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   display: flex;
   align-items: center;
 
   span {
+    white-space: normal;
     text-align: left;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
   }
 
   &.noRightMargin {
@@ -99,6 +134,7 @@ const ActionButtonWrapper = styled.div`
   margin-right: 40px;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 `;
 
 const DropdownWrapper = styled.div`
@@ -111,21 +147,23 @@ const DropdownWrapper = styled.div`
 
 const DropdownListItemText = styled.div`
   color: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 21px;
+  line-height: normal;
   text-align: left;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
+  margin-right: 10px;
 `;
 
-const DropdownListItem = styled.div`
-  width: 100%;
+const DropdownList = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const DropdownListItem = styled.button`
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   margin: 0px;
   margin-bottom: 4px;
   padding: 10px;
@@ -150,13 +188,8 @@ const DropdownListItem = styled.div`
   }
 `;
 
-const StyledCheckbox = styled(Checkbox)`
-  margin-left: 10px;
-`;
-
 const DropdownFooterButton = styled(Button)`
   .Button {
-    padding: 12px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
@@ -338,27 +371,26 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
       selectedCount = selectedUsers.length;
     }
 
+    const exportType = selectedUsers === 'none' && !groupId ? 'exportAllUsers'
+    : selectedUsers === 'none' && groupId ? 'exportGroup'
+    : 'exportSelectedUsers';
+
     return (
       <TableOptions>
-        <ActionButton onClick={this.toggleAllUsers}>
-          <Checkbox
-            label={
-              <>
-                <FormattedMessage {...messages.select} />
+        <SelectAllCheckbox
+          label={
+            <SelectAllCheckboxLabel>
+              <FormattedMessage {...messages.select} />
+              {selectedCount > 0 &&
                 <UserCount className="e2e-selected-count">
-                  (<FormattedMessage
-                    {...messages.userCount}
-                    values={{
-                      count: selectedCount,
-                    }}
-                  />)
+                  (<FormattedMessage {...messages.userCount} values={{ count: selectedCount }} />)
                 </UserCount>
-              </>
-            }
-            checked={(selectedUsers === 'all')}
-            onChange={this.toggleAllUsers}
-          />
-        </ActionButton>
+              }
+            </SelectAllCheckboxLabel>
+          }
+          checked={(selectedUsers === 'all')}
+          onChange={this.toggleAllUsers}
+        />
 
         {selectedUsers !== 'none' && !isNilOrError(groupsList) &&
           <ActionButtonWrapper>
@@ -374,10 +406,9 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                 opened={dropdownOpened}
                 onClickOutside={this.toggleDropdown}
                 content={(
-                  <>
+                  <DropdownList>
                     {groupsList.map((group) => (
                       <DropdownListItem
-                        role="button"
                         key={group.id}
                         onClick={this.toggleGroup(group.id)}
                         className="e2e-dropdown-item"
@@ -385,13 +416,13 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                         <DropdownListItemText>
                           <T value={group.attributes.title_multiloc} />
                         </DropdownListItemText>
-                        <StyledCheckbox
+                        <Checkbox
                           checked={includes(selectedGroupIds, group.id)}
                           onChange={this.toggleGroup(group.id)}
                         />
                       </DropdownListItem>
                     ))}
-                  </>
+                  </DropdownList>
                 )}
                 footer={(
                   <DropdownFooterButton
@@ -400,6 +431,8 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                     onClick={this.addUsersToGroups}
                     processing={processing}
                     fullWidth={true}
+                    padding="12px"
+                    whiteSpace="normal"
                     disabled={!selectedGroupIds || selectedGroupIds.length === 0}
                   >
                     <FormattedMessage {...messages.moveUsers} />
@@ -417,11 +450,9 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
           </ActionButton>
         }
 
-        <ActionButton onClick={this.exportUsers} className="export">
+        <ActionButton onClick={this.exportUsers} className={`export e2e-${exportType}`}>
           <StyledIcon name="userExport" />
-          {selectedUsers === 'none' && !groupId && <FormattedMessage {...messages.exportAllUsers} />}
-          {selectedUsers === 'none' && groupId && <FormattedMessage {...messages.exportGroup} />}
-          {selectedUsers !== 'none' && <FormattedMessage {...messages.exportSelectedUsers} />}
+          <FormattedMessage {...messages[exportType]} />
         </ActionButton>
       </TableOptions>
     );

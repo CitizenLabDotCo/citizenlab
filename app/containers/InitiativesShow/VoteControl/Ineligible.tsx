@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -7,8 +7,9 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
 import Icon from 'components/UI/Icon';
-import { StatusWrapper, StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
-import Tooltip from 'components/UI/Tooltip';
+import { StatusWrapper, StatusExplanation } from './SharedStyles';
+import IconTooltip from 'components/UI/IconTooltip';
+
 import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';
 
@@ -25,10 +26,6 @@ const StatusIcon = styled(Icon)`
   width: 30px;
   height: 30px;
   margin-bottom: 20px;
-`;
-
-const StyledTooltip = styled(Tooltip)`
-  display: inline;
 `;
 
 const VoteCounter = styled.div`
@@ -68,7 +65,9 @@ interface InputProps {
 }
 interface DataProps {}
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme?: any;
+}
 
 interface State {}
 
@@ -80,7 +79,6 @@ class Ineligible extends PureComponent<Props, State> {
 
   render() {
     const { initiative, initiativeSettings: { eligibility_criteria, voting_threshold }, initiativeStatus } = this.props;
-
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
 
@@ -100,19 +98,24 @@ class Ineligible extends PureComponent<Props, State> {
                 </b>
               )
             }}
-          />
-          {eligibility_criteria &&
-            <StyledTooltip
-              content={
-                <TooltipWrapper>
-                  <T value={eligibility_criteria} supportHtml />
-                </TooltipWrapper>
-              }
-              top="20"
-            >
-              <HelpIcon name="info" title={<FormattedMessage {...messages.moreInfo} />}/>
-            </StyledTooltip>
-          }
+          >
+            {(text) => (
+              <>
+                {text}
+                {eligibility_criteria &&
+                  <IconTooltip
+                    icon="info"
+                    iconColor={this.props.theme.colorText}
+                    theme="light"
+                    placement="bottom"
+                    content={
+                      <T value={eligibility_criteria} supportHtml />
+                    }
+                  />
+                }
+              </>
+            )}
+          </FormattedMessage>
         </StatusExplanation>
         <VoteCounter>
           <VoteTexts>
@@ -137,4 +140,4 @@ class Ineligible extends PureComponent<Props, State> {
   }
 }
 
-export default Ineligible;
+export default withTheme(Ineligible);

@@ -22,6 +22,12 @@ export const CustomRadio = styled.div`
 
   &:not(.disabled) {
     cursor: pointer;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border-color: #000;
+    }
   }
 
   &.disabled {
