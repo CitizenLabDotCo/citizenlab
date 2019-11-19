@@ -84,7 +84,6 @@ class CommentingDisabled extends PureComponent<Props> {
 
   onVerify = () => {
     const { projectId, phaseId } = this.props;
-    console.log(projectId, phaseId);
     if (phaseId) {
       openVerificationModalWithContext('ActionComment', phaseId, 'phase', 'commenting');
     } else if (projectId) {
