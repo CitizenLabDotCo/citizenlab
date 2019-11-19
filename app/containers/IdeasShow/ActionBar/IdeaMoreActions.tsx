@@ -25,7 +25,6 @@ import { deleteIdea, IIdeaData } from 'services/ideas';
 
 // router
 import clHistory from 'utils/cl-router/history';
-import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -33,7 +32,6 @@ const MoreActionsMenuWrapper = styled.div``;
 
 interface InputProps {
   idea: IIdeaData;
-  id: string;
   className?: string;
 }
 
@@ -41,7 +39,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   spamModalVisible: boolean;
@@ -78,15 +76,17 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
   }
 
   render() {
-    const { idea, id, className, authUser } = this.props;
+    const { idea, className, authUser } = this.props;
     const { spamModalVisible } = this.state;
 
     if (!isNilOrError(authUser) && !isNilOrError(idea)) {
       return (
         <Container className={className}>
-          <MoreActionsMenuWrapper id={id}>
+          <MoreActionsMenuWrapper>
             <HasPermission item={idea} action="edit" context={idea}>
               <MoreActionsMenu
+                label={<FormattedMessage {...messages.moreOptions} />}
+                id="e2e-idea-more-actions"
                 actions={[
                   {
                     label: <FormattedMessage {...messages.reportAsSpam} />,
@@ -101,19 +101,15 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
                     handler: this.onDeleteIdea(idea.id),
                   }
                 ]}
-                label={<FormattedMessage {...messages.moreOptions} />}
-                fontSize={fontSizes.small}
-                id="e2e-idea-more-actions-menu"
-                tooltipPositionSmallViewPort="bottom-left"
               />
               <HasPermission.No>
                 <MoreActionsMenu
+                  id="e2e-idea-more-actions"
                   actions={[{
                     label: <FormattedMessage {...messages.reportAsSpam} />,
                     handler: this.openSpamModal,
                   }]}
                   label={<FormattedMessage {...messages.moreOptions} />}
-                  fontSize={fontSizes.small}
                 />
               </HasPermission.No>
             </HasPermission>

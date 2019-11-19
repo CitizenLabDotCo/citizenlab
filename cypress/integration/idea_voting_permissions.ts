@@ -28,6 +28,25 @@ describe('Idea voting permissions', () => {
     });
   });
   describe('a project that requires verification on votes', () => {
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
+    it('sends unsigned user to log-in then verify', () => {
+      cy.visit('projects/verified-ideation/ideas');
+      cy.acceptCookies();
+      cy.get('.e2e-ideacard-upvote-button').click();
+      cy.get('.e2e-register-button').click();
+      cy.wait(100);
+      cy.get('#firstName').type(firstName);
+      cy.get('#lastName').type(lastName);
+      cy.get('#email').type(email);
+      cy.get('#password').type(password);
+      cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
+      cy.get('#e2e-signup-step1-button').click();
+      cy.wait(300);
+      cy.get('.e2e-verification-modal');
+    });
     it('sends unverified users to the verification flow', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('projects/verified-ideation/ideas');
@@ -43,6 +62,28 @@ describe('Idea voting permissions', () => {
       cy.acceptCookies();
       cy.get('.e2e-ideacard-upvote-button').click();
       cy.get('.e2e-vote-controls.up');
+    });
+  });
+  describe('a project that does not require verification', () => {
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
+    it('sends unsigned user to log-in and not to verify', () => {
+      cy.visit('projects/an-idea-bring-it-to-your-council/ideas');
+      cy.acceptCookies();
+      cy.get('.e2e-ideacard-upvote-button').first().click();
+      cy.get('.e2e-register-button').click();
+      cy.wait(100);
+      cy.get('#firstName').type(firstName);
+      cy.get('#lastName').type(lastName);
+      cy.get('#email').type(email);
+      cy.get('#password').type(password);
+      cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
+      cy.get('#e2e-signup-step1-button').click();
+      cy.wait(1000);
+      cy.get('.e2e-ideacard-upvote-button');
+      cy.get('.e2e-verification-modal').should('not.exist');
     });
   });
   after(() => {

@@ -59,32 +59,36 @@ const config = {
       },
       minimize: true,
       minimizer: [
-        new TerserPlugin({
-          cache: true,
-          parallel: true,
-          sourceMap: true,
-          terserOptions: {
-            warnings: false,
-            compress: {
-              comparisons: false,
-            },
-            parse: {},
-            mangle: true,
-            output: {
-              comments: false,
-              ascii_only: true,
-            },
-          },
-        }),
-        new OptimizeCSSAssetsPlugin({
-          assetNameRegExp: /\.css$/g,
-          cssProcessor: cssnano,
-          cssProcessorPluginOptions: {
-            preset: ['default', { discardComments: { removeAll: true } }],
-          },
-          canPrint: true
-        })
+        new TerserPlugin({ parallel: false, sourceMap: true }),
+        new OptimizeCSSAssetsPlugin()
       ]
+      // minimizer: [
+      //   new TerserPlugin({
+      //       cache: true,
+      //       parallel: true,
+      //       sourceMap: true,
+      //       terserOptions: {
+      //         warnings: false,
+      //         compress: {
+      //           comparisons: false,
+      //         },
+      //         parse: {},
+      //         mangle: true,
+      //         output: {
+      //           comments: false,
+      //           ascii_only: true,
+      //         },
+      //       },
+      //   }),
+      //   new OptimizeCSSAssetsPlugin({
+      //     assetNameRegExp: /\.css$/g,
+      //     cssProcessor: cssnano,
+      //     cssProcessorPluginOptions: {
+      //       preset: ['default', { discardComments: { removeAll: true } }],
+      //     },
+      //     canPrint: true
+      //   })
+      // ]
     }
   },
 

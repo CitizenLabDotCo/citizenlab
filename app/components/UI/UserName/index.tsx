@@ -54,10 +54,10 @@ const Name = styled.div<{ color?: string, emphasize?: boolean }>`
 
 const Badge = styled.div`
   color: #fff;
-  font-size: 12px;
+  font-size: 10px;
   line-height: normal;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  padding: 2px 6px;
+  padding: 1px 6px;
   display: inline-block;
   text-transform: uppercase;
   text-align: center;

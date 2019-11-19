@@ -32,7 +32,7 @@ const Container = styled.div`
 
 const StyledUserName = styled(UserName)`
   color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
-  margin-right: 2px;
+  margin-right: 4px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
   font-weight: 500;
@@ -138,14 +138,16 @@ class UserMenu extends PureComponent<Props, State> {
           <DropdownButton
             onMouseDown={this.removeFocus}
             onClick={this.toggleDropdown}
+            aria-expanded={opened}
           >
             <StyledUserName
               userId={userId}
+              hideLastName
               verificationBadge
             />
             <StyledAvatar
               userId={userId}
-              size="43px"
+              size="30px"
               hasHoverEffect={false}
               fillColor={theme && theme.navbarTextColor ? theme.navbarTextColor : colors.label}
               verified
@@ -171,6 +173,7 @@ class UserMenu extends PureComponent<Props, State> {
                     style="text"
                     bgHoverColor={colors.clDropdownHoverBackground}
                     icon="admin"
+                    iconAriaHidden
                     iconPos="right"
                     iconSize="20px"
                     padding="11px 11px"
@@ -187,6 +190,7 @@ class UserMenu extends PureComponent<Props, State> {
                   style="text"
                   bgHoverColor={colors.clDropdownHoverBackground}
                   icon="profile1"
+                  iconAriaHidden
                   iconPos="right"
                   iconSize="20px"
                   padding="11px 11px"
@@ -202,6 +206,7 @@ class UserMenu extends PureComponent<Props, State> {
                   style="text"
                   bgHoverColor={colors.clDropdownHoverBackground}
                   icon="settings"
+                  iconAriaHidden
                   iconPos="right"
                   iconSize="20px"
                   padding="11px 11px"
@@ -216,6 +221,7 @@ class UserMenu extends PureComponent<Props, State> {
                   style="text"
                   bgHoverColor={colors.clDropdownHoverBackground}
                   icon="power"
+                  iconAriaHidden
                   iconPos="right"
                   iconSize="20px"
                   padding="11px 11px"

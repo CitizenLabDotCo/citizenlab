@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent, ChangeEvent } from 'react';
-import { getBase64FromFile, createObjectUrl } from 'utils/fileTools';
+import { getBase64FromFile } from 'utils/fileTools';
 import { UploadFile } from 'typings';
 
 // i18n
@@ -52,6 +52,7 @@ const Label = styled.label`
   padding: 10px 20px;
   color: ${colors.label};
   background: transparent;
+  font-weight: 400;
 
   &:hover {
     color: #000;
@@ -149,7 +150,6 @@ export default class FileInput extends PureComponent<Props> {
         if (!fileAccept.includes(file.extension)) {
           file.error = ['incorrect_extension'];
         }
-        file.url = createObjectUrl(file);
         file.remote = false;
         this.props.onAdd(file);
       });
