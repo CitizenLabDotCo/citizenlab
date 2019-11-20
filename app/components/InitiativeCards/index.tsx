@@ -459,6 +459,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
+    console.log('hi');
     event.preventDefault();
     this.setState({ selectedView });
   }
@@ -570,13 +571,14 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
-                <FeatureFlag name="maps">
+                {/* <FeatureFlag name="maps"> */}
                   <StyledViewButtons
                     onClick={this.selectView}
                     selectedView={selectedView}
                     trackEventName={tracks.toggleDisplay}
+                    location={location.pathname}
                   />
-                </FeatureFlag>
+                {/* </FeatureFlag> */}
 
                 {!isNilOrError(initiativesFilterCounts) &&
                   <InitiativesCount>

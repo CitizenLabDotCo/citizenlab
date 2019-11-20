@@ -590,6 +590,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                       selectedView={selectedView}
                       onClick={this.selectView}
                       trackEventName={tracks.toggleDisplay}
+                      location={location.pathname}
                     />
                   </FeatureFlag>
                  }
