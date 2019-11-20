@@ -67,6 +67,7 @@ interface InputProps {
   postType: 'idea' | 'initiative';
   editingAllowed: boolean | undefined;
   className?: string;
+  ariaLiveLatestPost?: boolean;
 }
 
 interface DataProps {
@@ -79,7 +80,7 @@ interface State {}
 
 class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { officialFeedbacks, editingAllowed, className } = this.props;
+    const { officialFeedbacks, editingAllowed, className, ariaLiveLatestPost } = this.props;
 
     if (officialFeedbacks) {
       const { officialFeedbacksList, querying, hasMore, loadingMore, onLoadMore } = officialFeedbacks;
@@ -107,13 +108,14 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
               />
             </FeedbackHeader>
 
-            {officialFeedbacksList.data.map((officialFeedbackPost) => {
+            {officialFeedbacksList.data.map((officialFeedbackPost, i) => {
               return (
                 <StyledOfficialFeedbackPost
                   key={officialFeedbackPost.id}
                   editingAllowed={editingAllowed}
                   officialFeedbackPost={officialFeedbackPost}
                   postType="initiative"
+                  ariaLiveLatestPost={i === 0 && ariaLiveLatestPost}
                 />
               );
             })}
