@@ -67,18 +67,14 @@ const DropzoneImagesRemaining = styled.div`
 
 const DropzoneInput = styled.input``;
 
-const DropzoneContent = styled.div`
+const DropzoneContent = styled.div<{ borderRadius?: string }>`
   box-sizing: border-box;
-  border-radius: ${({ theme }) => theme.borderRadius};
+  border-radius: ${(props) => props.borderRadius ? props.borderRadius : props.theme.borderRadius};
   border: 1px dashed ${colors.label};
   position: relative;
   cursor: pointer;
   background: transparent;
   transition: all 100ms ease-out;
-
-  &.rounded {
-    border-radius: 50%;
-  }
 
   &:not(.disabled) {
 
@@ -129,14 +125,14 @@ const DropzoneContentInner = styled.div`
   padding: 20px;
 `;
 
-const Image = styled.div<{ imageRadius: string | undefined, src: string, objectFit: 'cover' | 'contain' | undefined }>`
+const Image = styled.div<{ borderRadius: string | undefined, src: string, objectFit: 'cover' | 'contain' | undefined }>`
   background-repeat: no-repeat;
   background-position: center center;
   background-size: ${(props) => props.objectFit};
   background-image: url(${(props) => props.src});
   position: relative;
   box-sizing: border-box;
-  border-radius: ${(props) => props.imageRadius ? props.imageRadius : props.theme.borderRadius};
+  border-radius: ${(props) => props.borderRadius ? props.borderRadius : props.theme.borderRadius};
   border: solid 1px #ccc;
 `;
 
@@ -204,7 +200,7 @@ interface Props {
   objectFit?: 'cover' | 'contain' | undefined;
   onAdd: (arg: UploadFile[]) => void;
   onRemove: (arg: UploadFile) => void;
-  imageRadius?: string;
+  borderRadius?: string;
   className?: string;
 }
 
@@ -315,7 +311,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     let { acceptedFileTypes, placeholder, objectFit } = this.props;
-    const { images, maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, imageRadius, className } = this.props;
+    const { images, maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, borderRadius, className } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage } = this.state;
     const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - size(images)} ${formatMessage(messages.remaining)})` : null);
@@ -342,7 +338,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
               >
                 {({ getRootProps, getInputProps }) => {
                   return (
-                    <DropzoneContent {...getRootProps()} className={images && maxNumberOfImages === images.length ? 'disabled' : ''}>
+                    <DropzoneContent {...getRootProps()} borderRadius={borderRadius} className={images && maxNumberOfImages === images.length ? 'disabled' : ''}>
                       <DropzoneInput {...getInputProps()} />
                       <DropzoneContentInner>
                         <DropzonePlaceholderIcon name="upload" ariaHidden />
@@ -364,7 +360,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
               className={images && maxNumberOfImages > 1 && index !== images.length - 1 ? 'hasRightMargin' : ''}
             >
               <Image
-                imageRadius={imageRadius}
+                borderRadius={borderRadius}
                 src={this.state.urlObjects[image.base64]}
                 objectFit={objectFit}
               >

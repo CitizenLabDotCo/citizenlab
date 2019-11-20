@@ -307,11 +307,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
         <FormSection>
           <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
           <SectionField id="e2e-iniatiative-banner-dropzone">
-            {/* Contrary to other form fields, the image uploads are not wrapped
-            in the label tag because they trigger a double file dialog issue in our
-            current version of react-dropzone
-            https://stackoverflow.com/questions/49671325/react-dropzone-opens-files-chooser-twice
-            */}
             <FormLabel
               labelMessage={messages.bannerUploadLabel}
               subtextMessage={messages.bannerUploadLabelSubtext}
