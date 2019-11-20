@@ -44,7 +44,6 @@ class CustomFieldOptionValueSelector extends React.PureComponent<Props & Injecte
         value={value}
         options={this.generateOptions()}
         onChange={this.handleOnChange}
-        clearable={false}
       />
     );
   }

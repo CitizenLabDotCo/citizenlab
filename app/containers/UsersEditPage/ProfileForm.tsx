@@ -331,12 +331,11 @@ class ProfileForm extends PureComponent<Props, State> {
           <SectionField>
             <FormLabel thin htmlFor="language" labelMessage={messages.language} />
             <Select
-              inputId="language"
+              id="language"
               onChange={createChangeHandler('locale')}
               onBlur={createBlurHandler('locale')}
               value={values.locale}
               options={localeOptions}
-              clearable={false}
             />
             <Error apiErrors={errors.locale} />
           </SectionField>
