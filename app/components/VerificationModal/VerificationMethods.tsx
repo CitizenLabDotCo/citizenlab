@@ -216,7 +216,7 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
 
             {participationConditions.map((rulesSet, index) => {
               const rules = rulesSet.map((rule, ruleIndex) => (
-                <ContextItem key={ruleIndex}>
+                <ContextItem className="e2e-rule-item" key={ruleIndex}>
                   <T value={rule} />
                 </ContextItem>
               ));
