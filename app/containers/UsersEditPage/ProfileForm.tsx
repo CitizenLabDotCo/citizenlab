@@ -221,9 +221,9 @@ class ProfileForm extends PureComponent<Props, State> {
       setFieldTouched(fieldName);
     };
 
-    const handleAvatarOnAdd = (newAvatar: UploadFile) => {
-      this.setState(() => ({ avatar: [newAvatar] }));
-      setFieldValue('avatar', newAvatar.base64);
+    const handleAvatarOnAdd = (newAvatar: UploadFile[]) => {
+      this.setState(() => ({ avatar: [newAvatar[0]] }));
+      setFieldValue('avatar', newAvatar[0].base64);
       setFieldTouched('avatar');
     };
 
@@ -244,7 +244,6 @@ class ProfileForm extends PureComponent<Props, State> {
             {/* Wrapping image dropzone with a label for accesibility */}
             <FormLabel thin labelMessage={messages.imageDropzonePlaceholder} hidden />
             <ImagesDropzone
-              id="images-dropzone"
               images={this.state.avatar}
               imagePreviewRatio={1}
               maxImagePreviewWidth="160px"
@@ -253,7 +252,7 @@ class ProfileForm extends PureComponent<Props, State> {
               maxNumberOfImages={1}
               onAdd={handleAvatarOnAdd}
               onRemove={handleAvatarOnRemove}
-              imageRadius="50%"
+              borderRadius="50%"
             />
             <Error apiErrors={errors.avatar} />
           </SectionField>
@@ -332,12 +331,11 @@ class ProfileForm extends PureComponent<Props, State> {
           <SectionField>
             <FormLabel thin htmlFor="language" labelMessage={messages.language} />
             <Select
-              inputId="language"
+              id="language"
               onChange={createChangeHandler('locale')}
               onBlur={createBlurHandler('locale')}
               value={values.locale}
               options={localeOptions}
-              clearable={false}
             />
             <Error apiErrors={errors.locale} />
           </SectionField>
