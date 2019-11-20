@@ -31,6 +31,6 @@ export default defineMessages({
   },
   a11y_removeImage: {
     id: 'app.components.Upload.a11y_removeImage',
-    defaultMessage: 'Remove',
+    defaultMessage: 'Remove image',
   },
 });
