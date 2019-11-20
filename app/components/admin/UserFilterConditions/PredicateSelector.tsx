@@ -46,7 +46,6 @@ class PredicateSelector extends React.PureComponent<Props & InjectedIntlProps, S
         value={predicate}
         options={this.generateOptions()}
         onChange={this.handleOnChange}
-        clearable={false}
       />
     );
   }

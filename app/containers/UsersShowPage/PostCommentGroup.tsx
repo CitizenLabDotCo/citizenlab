@@ -19,7 +19,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
-import { colors, media, fontSizes } from 'utils/styleUtils';
+import { colors, media, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // Components
@@ -167,16 +167,27 @@ export class PostCommentGroup extends PureComponent<Props> {
 
       return (
         <Container>
+          <ScreenReaderOnly>
+            {postType === 'idea' ?
+              <FormattedMessage {...messages.a11y_ideaPostedIn} />
+              :
+              <FormattedMessage {...messages.a11y_initiativePostedIn} />
+            }
+          </ScreenReaderOnly>
           <PostLink
             to={`/${postType}s/${slug}`}
             onClick={this.onIdeaLinkClick}
           >
             <PostLinkLeft>
-              <StyledIcon name={postType === 'idea' ? 'idea2' : 'initiatives'} />
+              <StyledIcon ariaHidden name={postType === 'idea' ? 'idea2' : 'initiatives'} />
               <T value={title_multiloc} className="text" />
             </PostLinkLeft>
             <PostLinkRight>
-              {postType === 'idea' ? <FormattedMessage {...messages.seeIdea} /> : <FormattedMessage {...messages.seeInitiative} />}
+              {postType === 'idea' ?
+                <FormattedMessage {...messages.seeIdea} />
+                :
+                <FormattedMessage {...messages.seeInitiative} />
+              }
             </PostLinkRight>
           </PostLink>
 
@@ -199,10 +210,18 @@ export class PostCommentGroup extends PureComponent<Props> {
                   onCancelEditing={nothingHappens}
                 />
                 <VotesContainer>
-                  <VoteIcon name="upvote"/>
-                  <VoteCount>
+                  <VoteIcon ariaHidden name="upvote"/>
+                  <VoteCount aria-hidden>
                     {comment.attributes.upvotes_count}
                   </VoteCount>
+                  <ScreenReaderOnly>
+                    <FormattedMessage
+                      {...messages.a11y_upvotesCount}
+                      values={{
+                        upvotesCount: comment.attributes.upvotes_count
+                      }}
+                    />
+                  </ScreenReaderOnly>
                 </VotesContainer>
               </CommentContainer>
             );
