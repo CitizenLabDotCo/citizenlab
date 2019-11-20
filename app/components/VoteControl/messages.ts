@@ -45,12 +45,12 @@ export default defineMessages({
     id: 'app.components.VoteControl.downvote',
     defaultMessage: 'Downvote',
   },
-  xDownvotes: {
-    id: 'app.containers.VoteControl.xDownvotes',
-    defaultMessage: '{count, plural, =0 {no downvotes} one {1 downvote} other {# downvotes}}',
+  a11y_xDownvotes: {
+    id: 'app.containers.VoteControl.a11y_xDownvotes',
+    defaultMessage: 'Downvote. {count, plural, =0 {no downvotes} one {1 downvote} other {# downvotes}}',
   },
-  xUpvotes: {
-    id: 'app.containers.VoteControl.xUpvotes',
-    defaultMessage: '{count, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
+  a11y_xUpvotes: {
+    id: 'app.containers.VoteControl.a11y_xUpvotes',
+    defaultMessage: 'Upvote. {count, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
   },
 });
