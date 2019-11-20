@@ -1070,7 +1070,7 @@
   "app.containers.AdminPage.SettingsPage.tabPages": "Páginas",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Datos de usuarios",
   "app.containers.AdminPage.SettingsPage.tabSettings": "General",
-  "app.containers.AdminPage.SettingsPage.tabWidgetsLabel": "Widget",
+  "app.containers.AdminPage.SettingsPage.tabWidgets": "Widget",
   "app.containers.AdminPage.SettingsPage.terminologyTooltip": "¿Cómo se deben llamar las áreas hacia los usuarios? por ejemplo, barrios, barrios, condados...",
   "app.containers.AdminPage.SettingsPage.titleAreaTerms": "Terminología del área",
   "app.containers.AdminPage.SettingsPage.titleAreas": "Localidades/Barrios/Zonas",
