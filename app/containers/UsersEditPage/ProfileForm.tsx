@@ -252,7 +252,7 @@ class ProfileForm extends PureComponent<Props, State> {
               maxNumberOfImages={1}
               onAdd={handleAvatarOnAdd}
               onRemove={handleAvatarOnRemove}
-              imageRadius="50%"
+              borderRadius="50%"
             />
             <Error apiErrors={errors.avatar} />
           </SectionField>
