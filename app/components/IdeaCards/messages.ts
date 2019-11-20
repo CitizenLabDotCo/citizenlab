@@ -100,5 +100,9 @@ export default defineMessages({
   resetFilters: {
     id: 'app.containers.IdeaCards.resetFilters',
     defaultMessage: 'Reset filters',
+  },
+  a11y_totalIdeas: {
+    id: 'app.containers.IdeaCards.a11y_totalIdeas',
+    defaultMessage: 'Total ideas: {ideasCount}',
   }
 });

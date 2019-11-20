@@ -563,9 +563,14 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
           }
         </div>
 
-        {/* <ScreenReaderOnly aria-live="polite">
-          {ideasFilterCounts && `Total ideas: ${ideasFilterCounts.total}`}
-        </ScreenReaderOnly> */}
+        <ScreenReaderOnly aria-live="polite">
+          {ideasFilterCounts &&
+            <FormattedMessage
+              {...messages.a11y_totalIdeas}
+              values={{ ideasCount: ideasFilterCounts.total }}
+            />
+          }
+        </ScreenReaderOnly>
 
         <StyledSearchInput
           placeholder={this.searchPlaceholder}
