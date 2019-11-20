@@ -1,5 +1,15 @@
 # Changelog
 
+## 2019-11-19
+
+### Added
+- New ideation project/phase setting called 'Idea location', which enables or disabled the ability to add a location to an idea and show the ideas on a map
+
+### Changed
+- Improved accessibility of the image upload component
+- COW tooltipy copy
+- Sharing modal layout improvement
+
 ## 2019-11-15
 
 ### Fixed
