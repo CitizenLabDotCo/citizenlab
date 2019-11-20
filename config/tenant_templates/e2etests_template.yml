@@ -185,7 +185,7 @@ models:
   - resource_type: User
     key: birthyear
     title_multiloc: custom_fields.birthyear
-    input_type: select
+    input_type: number
     required: false
     ordering: 1
     enabled: false
@@ -304,12 +304,12 @@ models:
     created_at: '2018-03-28 13:34:57'
     registration_completed_at: '2018-03-28 13:34:57'
     updated_at: '2018-03-28 13:34:57'
-  - &karel
-    email: karel+mortal@citizenlab.co
-    first_name: Karel
-    last_name: Test
+  - &charlie
+    email: charlie+mortal@citizenlab.co
+    first_name: Chalie
+    last_name: Charles
     cl1_migrated: true
-    locale: en-GB
+    locale: fr-BE
     bio_multiloc: {}
     gender:
     birthyear:
@@ -647,12 +647,12 @@ models:
     voting_method: unlimited
     voting_limited_max: 10
     max_budget: 100000
-  - &karelsPb
+  - &charliesPb
     title_multiloc:
-      en-GB: Karels Participatory Budgeting
-      nl-BE: Karels Participatory Budgeting
+      en-GB: Charlie Participatory Budgeting
+      nl-BE: Charlie Participatory Budgeting
     description_multiloc:
-      en-GB: "<p>Karels only. Let's renew the parc at the city border and make it an enjoyable place
+      en-GB: "<p>Charlie only. Let's renew the parc at the city border and make it an enjoyable place
         for young and old.</p>"
       nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.</p>"
@@ -759,6 +759,30 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 7
+  - &charliesVerifiedPPlproject
+    title_multiloc:
+      en-GB: Verified Charlie poeple project
+      nl-BE: Verified Charlie poeple project
+    description_multiloc:
+      en-GB: "<p>Let's renew the parc at the city border and make it an enjoyable place
+        for young and old.</p>"
+      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
+        plek van maken, voor jong en oud.</p>"
+    description_preview_multiloc:
+      en-GB: Let's renew the parc at the city border.
+      nl-BE: Laten we het park op de grend van de stad vernieuwen.
+    presentation_mode: map
+    participation_method: ideation
+    process_type: continuous
+    internal_role:
+    publication_status: published
+    created_at: '2018-03-28 13:35:06'
+    updated_at: '2018-03-28 13:35:06'
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 7
   - &verifiedIdeation
     title_multiloc:
       en-GB: Verified Ideation
@@ -781,10 +805,10 @@ models:
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-  - &karelsIdeation
+  - &charliesIdeation
     title_multiloc:
-      en-GB: Karels Crew Ideation
-      nl-BE: Karels Crew Ideation
+      en-GB: Charlie Crew Ideation
+      nl-BE: Charlie Crew Ideation
     description_multiloc:
       en-GB: "<p>Test group permissions with meLet's renew the parc at the city border and make it an enjoyable place
         for young and old.</p>"
@@ -890,10 +914,10 @@ models:
     publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-  - &karelsSurvey
+  - &charliesSurvey
     title_multiloc:
-      en-GB: Karels Crew survey
-      nl-BE: Karels Crew survey
+      en-GB: Charlie Crew survey
+      nl-BE: Charlie Crew survey
     description_multiloc:
       en-GB: "<p>Test group permissions with me Let's renew the parc at the city border and make it an enjoyable place
         for young and old.</p>"
@@ -916,10 +940,10 @@ models:
     voting_limited_max: 7
     survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
     survey_service: typeform
-  - &karelsPoll
+  - &charliesPoll
     title_multiloc:
-      en-GB: Karels Crew poll
-      nl-BE: Karels Crew poll
+      en-GB: Charlie Crew poll
+      nl-BE: Charlie Crew poll
     description_multiloc:
       en-GB: "<p>Test group permissions with me Let's renew the parc at the city border and make it an enjoyable place
         for young and old.</p>"
@@ -1043,14 +1067,14 @@ models:
     published_at: '2018-03-03 00:00:00'
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
-  - &karelsIdea
+  - &charliesIdea
     title_multiloc:
-      en-GB: Karels Idea
+      en-GB: Charlie Idea
     body_multiloc:
-      en-GB: "This idea is from a karel user and can only be commented or voted on by karel users."
+      en-GB: "This idea is from a charlie user and can only be commented or voted on by charlie users."
     publication_status: published
-    project_ref: *karelsIdeation
-    author_ref: *karel
+    project_ref: *charliesIdeation
+    author_ref: *charlie
     location_description: 8185 Austen Green
     published_at: '2018-03-03 00:00:00'
     created_at: '2018-02-22 00:00:00'
@@ -1087,7 +1111,7 @@ models:
         Quia sint harum molestiae assumenda. Quisquam iste aliquam cumque aut. Ipsam
         fugit sit illo suscipit modi dolor. Cupiditate at ea ipsa fuga numquam voluptas.</p>"
     publication_status: published
-    project_ref: *karelsPb
+    project_ref: *charliesPb
     author_ref: *67
     location_description: 8185 Austen Green
     published_at: '2018-03-03 00:00:00'
@@ -1386,7 +1410,7 @@ models:
         minus exercitationem velit aut ratione.</p>"
     publication_status: published
     project_ref: *project1
-    author_ref: *karel
+    author_ref: *charlie
     location_description:
     published_at: '2018-02-18 00:00:00'
     created_at: '2017-10-27 00:00:00'
@@ -1636,7 +1660,7 @@ models:
         eos tempore qui.</p>"
     publication_status: published
     project_ref: *90
-    author_ref: *karel
+    author_ref: *charlie
     location_description: 651 Sanford Mountain
     published_at: '2018-03-05 00:00:00'
     created_at: '2017-09-13 00:00:00'
@@ -1694,7 +1718,7 @@ models:
       en-GB: "<p>ollapod stipendless scriptitious orgulous reconfuse tritetartemorion ruche tridecylene exemption competitiveness octopetalous asfetida polygenistic monotonousness Intertype fumado prominimum chopstick Bashilange petary overrusset triolet Coelata mousery<p>
       <p>aureomycin unlowered furan scobiform tridiurnal Heterodera uncementing hydronitrous soapfish clairaudient pyropen ceraunograph punchproof waistcoateer tractrix erythrine acquittal Notogaeal versatility underhive recrimination unrooted coraciiform gesithcund</p>"
     publication_status: published
-    author_ref: *karel
+    author_ref: *charlie
     location_description: Brussels Bourse
     published_at_timediff: -2400 # 24*100
     created_at_timediff: -2400 # 24*100
@@ -1979,7 +2003,7 @@ models:
         eveniet perferendis dolore aut provident sit. Quia velit esse est.</p><p>Quaerat
         aut dolorem. Id et neque quis cum. Et fugiat voluptas et adipisci tenetur.
         Aut et veniam deserunt accusantium quos. Alias accusantium dolorem.</p>"
-    author_ref: *karel
+    author_ref: *charlie
     post_ref: *239
     created_at: '2018-03-11 00:00:00'
     updated_at: '2018-03-28 13:35:11'
@@ -2387,7 +2411,7 @@ models:
         sunt labore laborum. Quam hic qui qui. Voluptas harum ut repudiandae ex aut
         ut.</p><p>Illum ut porro. Sed incidunt a explicabo corporis et perspiciatis
         tenetur. Aut sit et omnis aut odio quod et.</p>"
-    author_ref: *karel
+    author_ref: *charlie
     post_ref: *297
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:14'
@@ -3002,7 +3026,7 @@ models:
         corporis error nemo ex et. Aut est praesentium quia sapiente. Exercitationem
         ut iure eligendi.</p><p>Nesciunt cum veritatis eos voluptatem deleniti accusantium.
         Et earum omnis laborum. Deserunt placeat vitae dolores eveniet.</p>"
-    author_ref: *karel
+    author_ref: *charlie
     post_ref: *405
     created_at: '2018-03-15 00:00:00'
     updated_at: '2018-03-28 13:35:19'
@@ -3733,7 +3757,7 @@ models:
     updated_at: '2018-03-28 13:35:09'
     votable_ref: *198
   - mode: up
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:10'
@@ -4153,7 +4177,7 @@ models:
     updated_at: '2018-03-28 13:35:12'
     votable_ref: *262
   - mode: up
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2018-03-04 00:00:00'
     updated_at: '2018-03-28 13:35:12'
@@ -4309,7 +4333,7 @@ models:
     updated_at: '2018-03-28 13:35:13'
     votable_ref: *290
   - mode: up
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2017-08-25 00:00:00'
     updated_at: '2018-03-28 13:35:13'
@@ -4489,7 +4513,7 @@ models:
     updated_at: '2018-03-28 13:35:14'
     votable_ref: *303
   - mode: up
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:14'
@@ -4657,7 +4681,7 @@ models:
     updated_at: '2018-03-28 13:35:15'
     votable_ref: *854
   - mode: up
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2018-02-10 00:00:00'
     updated_at: '2018-03-28 13:35:15'
@@ -4717,7 +4741,7 @@ models:
     updated_at: '2018-03-28 13:35:15'
     votable_ref: *854
   - mode: down
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2018-03-15 00:00:00'
     updated_at: '2018-03-28 13:35:15'
@@ -4807,7 +4831,7 @@ models:
     updated_at: '2018-03-28 13:35:16'
     votable_ref: *354
   - mode: up
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2017-11-30 00:00:00'
     updated_at: '2018-03-28 13:35:16'
@@ -4873,7 +4897,7 @@ models:
     updated_at: '2018-03-28 13:35:17'
     votable_ref: *362
   - mode: up
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2018-03-20 00:00:00'
     updated_at: '2018-03-28 13:35:17'
@@ -4981,7 +5005,7 @@ models:
     updated_at: '2018-03-28 13:35:17'
     votable_ref: *375
   - mode: up
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2018-03-25 00:00:00'
     updated_at: '2018-03-28 13:35:17'
@@ -5125,7 +5149,7 @@ models:
     updated_at: '2018-03-28 13:35:19'
     votable_ref: *394
   - mode: up
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2017-11-12 00:00:00'
     updated_at: '2018-03-28 13:35:19'
@@ -5335,7 +5359,7 @@ models:
     updated_at: '2018-03-28 13:35:20'
     votable_ref: *412
   - mode: up
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2018-03-24 00:00:00'
     updated_at: '2018-03-28 13:35:20'
@@ -5569,7 +5593,7 @@ models:
     updated_at: '2018-03-28 13:35:21'
     votable_ref: *425
   - mode: down
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2018-01-28 00:00:00'
     updated_at: '2018-03-28 13:35:21'
@@ -5671,7 +5695,7 @@ models:
     updated_at: '2018-03-28 13:35:22'
     votable_ref: *443
   - mode: up
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2018-02-13 00:00:00'
     updated_at: '2018-03-28 13:35:22'
@@ -5815,7 +5839,7 @@ models:
     updated_at: '2018-03-28 13:35:22'
     votable_ref: *449
   - mode: down
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2017-09-17 00:00:00'
     updated_at: '2018-03-28 13:35:22'
@@ -5857,7 +5881,7 @@ models:
     updated_at: '2018-03-28 13:35:24'
     votable_ref: *461
   - mode: down
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2018-03-23 00:00:00'
     updated_at: '2018-03-28 13:35:24'
@@ -6007,7 +6031,7 @@ models:
     updated_at: '2018-03-28 13:35:24'
     votable_ref: *471
   - mode: up
-    user_ref: *karel
+    user_ref: *charlie
     votable_type: Idea
     created_at: '2018-03-21 00:00:00'
     updated_at: '2018-03-28 13:35:24'
@@ -6837,8 +6861,8 @@ models:
       title_multiloc:
         en-GB: 'Should we get a new kicker?'
       ordering: 1
-    - &question-kicker-karel
-      participation_context_ref: *karelsPoll
+    - &question-kicker-charlie
+      participation_context_ref: *charliesPoll
       title_multiloc:
         en-GB: 'Should we get a new kicker?'
       ordering: 1
@@ -6873,13 +6897,13 @@ models:
       title_multiloc:
         en-GB: 'Yes'
       ordering: 1
-    - &kikcer-no-karel
-      question_ref: *question-kicker-karel
+    - &kikcer-no-charlie
+      question_ref: *question-kicker-charlie
       title_multiloc:
         en-GB: 'No'
       ordering: 2
-    - &kicker-yes-karel
-      question_ref: *question-kicker-karel
+    - &kicker-yes-charlie
+      question_ref: *question-kicker-charlie
       title_multiloc:
         en-GB: 'Yes'
       ordering: 1
@@ -6918,6 +6942,9 @@ models:
     - title_multiloc:
         en-GB: Carrotgem
         nl-BE: Wortelgem
+    - title_multiloc:
+        en-GB: Hatter Manor
+        nl-BE: Kasteel
   groups:
     - &verified
       title_multiloc:
@@ -6926,13 +6953,23 @@ models:
         - ruleType: verified
           predicate: is_verified
       membership_type: rules
-    - &karelsCrew
+    - &charliesCrew
       title_multiloc:
-        en-GB: Karels
+        en-GB: Charlie
       rules:
         - ruleType: email
           predicate: contains
-          value: karel
+          value: charlie
+      membership_type: rules
+    - &verifiedCharlie
+      title_multiloc:
+        en-GB: Verified old people
+      rules:
+        - ruleType: email
+          predicate: contains
+          value: charlie
+        - ruleType: verified
+          predicate: is_verified
       membership_type: rules
   permissions:
     - &111
@@ -6962,27 +6999,39 @@ models:
     - &1111
       action: posting
       permitted_by: groups
-      permittable_ref: *karelsIdeation
+      permittable_ref: *charliesIdeation
     - &1112
       action: voting
       permitted_by: groups
-      permittable_ref: *karelsIdeation
+      permittable_ref: *charliesIdeation
     - &1113
       action: commenting
       permitted_by: groups
-      permittable_ref: *karelsIdeation
+      permittable_ref: *charliesIdeation
     - &1114
       action: budgeting
       permitted_by: groups
-      permittable_ref: *karelsPb
+      permittable_ref: *charliesPb
     - &1115
       action: taking_survey
       permitted_by: groups
-      permittable_ref: *karelsSurvey
+      permittable_ref: *charliesSurvey
     - &1116
       action: taking_poll
       permitted_by: groups
-      permittable_ref: *karelsPoll
+      permittable_ref: *charliesPoll
+    - &1117
+      action: posting
+      permitted_by: groups
+      permittable_ref: *charliesVerifiedPPlproject
+    - &1118
+      action: voting
+      permitted_by: groups
+      permittable_ref: *charliesVerifiedPPlproject
+    - &1119
+      action: commenting
+      permitted_by: groups
+      permittable_ref: *charliesVerifiedPPlproject
   groups_permissions:
   - permission_ref: *111
     group_ref: *verified
@@ -6997,14 +7046,20 @@ models:
   - permission_ref: *115
     group_ref: *verified
   - permission_ref: *1111
-    group_ref: *karelsCrew
+    group_ref: *charliesCrew
   - permission_ref: *1112
-    group_ref: *karelsCrew
+    group_ref: *charliesCrew
   - permission_ref: *1113
-    group_ref: *karelsCrew
+    group_ref: *charliesCrew
   - permission_ref: *1114
-    group_ref: *karelsCrew
+    group_ref: *charliesCrew
   - permission_ref: *1115
-    group_ref: *karelsCrew
+    group_ref: *charliesCrew
   - permission_ref: *1116
-    group_ref: *karelsCrew
+    group_ref: *charliesCrew
+  - permission_ref: *1117
+    group_ref: *verifiedCharlie
+  - permission_ref: *1118
+    group_ref: *verifiedCharlie
+  - permission_ref: *1119
+    group_ref: *verifiedCharlie
