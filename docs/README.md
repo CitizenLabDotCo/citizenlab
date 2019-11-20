@@ -10,6 +10,10 @@
 - COW tooltipy copy
 - Sharing modal layout improvement
 
+### Fixed
+- Checkboxes have unique ids to correctly identify their corresponding label, which improves screen reader friendliness when you have multiple checkboxes on one page.
+- Avatar layout is back to the previous, smaller version
+
 ## 2019-11-15
 
 ### Fixed
