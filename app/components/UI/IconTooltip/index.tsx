@@ -67,13 +67,13 @@ interface Props {
 
 const IconTooltip = memo<Props>(({ content, icon, placement, theme, iconColor, iconHoverColor, maxTooltipWidth }) => (
   <Tippy
-    content={<ContentWrapper tippytheme={theme}>{content}</ContentWrapper>}
+    content={<ContentWrapper id="tooltip-content" tippytheme={theme}>{content}</ContentWrapper>}
     interactive={true}
     placement={placement || 'right-end'}
     theme={theme || ''}
     maxWidth={maxTooltipWidth || 350}
   >
-    <TooltipIconButton type="button" className="tooltip-icon">
+    <TooltipIconButton aria-describedby="tooltip-content" type="button" className="tooltip-icon">
       <TooltipIcon name={icon || 'info3'} iconColor={iconColor} iconHoverColor={iconHoverColor} />
     </TooltipIconButton>
   </Tippy>
