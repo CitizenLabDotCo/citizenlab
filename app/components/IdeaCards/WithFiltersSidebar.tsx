@@ -35,11 +35,10 @@ import tracks from './tracks';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
-import { darken, rgba } from 'polished';
+import { rgba } from 'polished';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
-import { ideasCount } from 'services/stats';
 
 const gapWidth = 35;
 
@@ -547,16 +546,26 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
+    const filtersActive = selectedIdeaFilters.search ||
+      selectedIdeaFilters.idea_status ||
+      selectedIdeaFilters.areas ||
+      selectedIdeaFilters.topics;
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
-        {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
-          <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnResetAndApply}>
-            <ClearFiltersText>
-              <FormattedMessage {...messages.resetFilters} />
-            </ClearFiltersText>
-          </ClearFiltersButton>
-        }
+        <div aria-live="polite">
+          {filtersActive &&
+            <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnResetAndApply}>
+              <ClearFiltersText>
+                <FormattedMessage {...messages.resetFilters} />
+              </ClearFiltersText>
+            </ClearFiltersButton>
+          }
+        </div>
+
+        {/* <ScreenReaderOnly aria-live="polite">
+          {ideasFilterCounts && `Total ideas: ${ideasFilterCounts.total}`}
+        </ScreenReaderOnly> */}
 
         <StyledSearchInput
           placeholder={this.searchPlaceholder}
@@ -573,11 +582,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
           selectedTopicIds={selectedIdeaFilters.topics}
           onChange={!biggerThanLargeTablet ? this.handleTopicsOnChange : this.handleTopicsOnChangeAndApplyFilter}
         />
-
-        <ScreenReaderOnly aria-live="polite">
-          Search term: {selectedIdeaFilters.search}
-          {ideasFilterCounts && `Total ideas: ${ideasFilterCounts.total}`}
-        </ScreenReaderOnly>
       </FiltersSidebarContainer>
     );
 
@@ -716,7 +720,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 {!querying && !hasIdeas &&
                   <EmptyContainer id="ideas-empty">
                     <EmptyContainerInner>
-                      <IdeaIcon name="idea" />
+                      <IdeaIcon name="idea" ariaHidden />
                       <EmptyMessage>
                         <EmptyMessageMainLine><FormattedMessage {...messages.noIdeasForFilter} /></EmptyMessageMainLine>
                         <EmptyMessageSubLine><FormattedMessage {...messages.tryOtherFilter} /></EmptyMessageSubLine>
