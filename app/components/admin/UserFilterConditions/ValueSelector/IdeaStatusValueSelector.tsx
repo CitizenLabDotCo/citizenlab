@@ -42,7 +42,6 @@ class IdeaStatusValueSelector extends React.PureComponent<Props & InjectedLocali
         value={value}
         options={this.generateOptions()}
         onChange={this.handleOnChange}
-        clearable={false}
       />
     );
   }
