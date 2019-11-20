@@ -1070,7 +1070,7 @@
   "app.containers.AdminPage.SettingsPage.tabPages": "Sider",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "User data",
   "app.containers.AdminPage.SettingsPage.tabSettings": "General",
-  "app.containers.AdminPage.SettingsPage.tabWidgetsLabel": "Widget",
+  "app.containers.AdminPage.SettingsPage.tabWidgets": "Widget",
   "app.containers.AdminPage.SettingsPage.terminologyTooltip": "How should areas be called towards users? E.g. neighborhoods, quarters, counties, ...",
   "app.containers.AdminPage.SettingsPage.titleAreaTerms": "Area terminology",
   "app.containers.AdminPage.SettingsPage.titleAreas": "Geographic areas",
