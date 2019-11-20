@@ -149,7 +149,11 @@ export default defineMessages({
   },
   imageDropzonePlaceholder: {
     id: 'app.containers.UsersEditPage.imageDropzonePlaceholder',
-    defaultMessage: 'Drop your image here',
+    defaultMessage: 'Add your profile picture here (max. 5 Mb)',
+  },
+  imageDropzoneRemoveIconAriaTitle: {
+    id: 'app.containers.UsersEditPage.imageDropzoneRemoveIconAriaTitle',
+    defaultMessage: 'Remove profile picture',
   },
   outside: {
     id: 'app.containers.UsersEditPage.outside',

@@ -8,12 +8,8 @@ import Label from 'components/UI/Label';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import { isBoolean } from 'util';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const Container: any = styled.div`
   width: 100%;
@@ -125,7 +121,7 @@ class Input extends React.PureComponent<Props, State> {
   }
 
   handleOnBlur = (event: React.FormEvent<HTMLInputElement>) => {
-    const { onBlur, formikContext, /*, name */ } = this.props;
+    const { onBlur, formikContext } = this.props;
 
     if (onBlur) {
       onBlur(event);
@@ -190,25 +186,12 @@ class Input extends React.PureComponent<Props, State> {
         />
 
        {maxCharCount &&
-          <>
-            <ScreenReaderOnly aria-live="polite">
-              <FormattedMessage
-                {...messages.a11y_charactersLeft}
-                values={{
-                  currentCharCount,
-                  maxCharCount
-                }}
-              />
-            </ScreenReaderOnly>
-            <CharCount className={`${tooManyChars && 'error'}`} aria-hidden>
-              {currentCharCount}/{maxCharCount}
-            </CharCount>
-          </>
+          <CharCount className={`${tooManyChars && 'error'}`} aria-hidden>
+            {currentCharCount}/{maxCharCount}
+          </CharCount>
         }
 
-        <div>
-          <Error className="e2e-input-error" text={error} size="1" />
-        </div>
+        <Error className="e2e-input-error" text={error} size="1" />
 
       </Container>
     );

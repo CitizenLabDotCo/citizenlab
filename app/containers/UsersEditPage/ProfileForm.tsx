@@ -174,6 +174,7 @@ class ProfileForm extends PureComponent<Props, State> {
   formikRender = (props) => {
     const { values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid, status, touched } = props;
     const { hasCustomFields, localeOptions } = this.state;
+    const { formatMessage } = this.props.intl;
 
     const getStatus = () => {
       let returnValue: 'enabled' | 'disabled' | 'error' | 'success' = 'enabled';
@@ -241,17 +242,17 @@ class ProfileForm extends PureComponent<Props, State> {
           <FormSectionTitle message={messages.h1} subtitleMessage={messages.h1sub}/>
 
           <SectionField>
-            {/* Wrapping image dropzone with a label for accesibility */}
-            <FormLabel thin labelMessage={messages.imageDropzonePlaceholder} hidden />
             <ImagesDropzone
               images={this.state.avatar}
               imagePreviewRatio={1}
-              maxImagePreviewWidth="160px"
+              maxImagePreviewWidth="170px"
               acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
               maxImageFileSize={5000000}
               maxNumberOfImages={1}
               onAdd={handleAvatarOnAdd}
               onRemove={handleAvatarOnRemove}
+              label={formatMessage(messages.imageDropzonePlaceholder)}
+              removeIconAriaTitle={formatMessage(messages.imageDropzoneRemoveIconAriaTitle)}
               borderRadius="50%"
             />
             <Error apiErrors={errors.avatar} />
@@ -306,7 +307,7 @@ class ProfileForm extends PureComponent<Props, State> {
               noVideos
               limitedTextFormatting
               value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
-              placeholder={this.props.intl.formatMessage({ ...messages.bio_placeholder })}
+              placeholder={formatMessage({ ...messages.bio_placeholder })}
               onChange={createChangeHandler('bio_multiloc')}
               onBlur={createBlurHandler('bio_multiloc')}
             />

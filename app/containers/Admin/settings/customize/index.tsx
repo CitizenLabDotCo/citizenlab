@@ -375,7 +375,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   handleHeaderBgOnAdd = this.handleUploadOnAdd('header_bg');
   handleLogoOnRemove = this.handleUploadOnRemove('logo');
   handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
-  uploadPlaceholder = this.props.intl.formatMessage(messages.uploadPlaceholder);
   headerTitleLabel = <FormattedMessage {...messages.headerTitleLabel} />;
   headerTitleTooltip = <IconTooltip content={<FormattedMessage {...messages.headerTitleTooltip} />} />;
   headerSubtitleLabel = <FormattedMessage {...messages.headerSubtitleLabel} />;
@@ -462,7 +461,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 objectFit="contain"
                 onAdd={this.handleLogoOnAdd}
                 onRemove={this.handleLogoOnRemove}
-                placeholder={this.uploadPlaceholder}
                 errorMessage={logoError}
               />
             </SectionField>
@@ -487,7 +485,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 maxImagePreviewWidth="500px"
                 onAdd={this.handleHeaderBgOnAdd}
                 onRemove={this.handleHeaderBgOnRemove}
-                placeholder={this.uploadPlaceholder}
                 errorMessage={headerError}
               />
             </SectionField>
