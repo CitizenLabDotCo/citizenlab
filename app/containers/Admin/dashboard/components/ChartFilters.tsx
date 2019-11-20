@@ -63,7 +63,6 @@ export default class ChartFilters extends PureComponent<Props> {
                 onChange={onProjectFilter}
                 value={currentProjectFilter || ''}
                 options={projectFilterOptions}
-                disabled={true}
               />
             </HiddenLabel>
           </FilterContainer>

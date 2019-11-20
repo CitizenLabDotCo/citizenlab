@@ -4,16 +4,13 @@ import { IOption } from 'typings';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div`
-  position: relative;
-`;
-
 const Arrow = styled.div`
   width: 0;
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid #333;
+  border-top: solid 5px #333;
+  cursor: pointer;
   position: absolute;
   top: 20px;
   right: 11px;
@@ -21,15 +18,16 @@ const Arrow = styled.div`
 
 const CustomSelect = styled.select`
   width: 100%;
+  color: #333;
   font-size: ${fontSizes.base}px;
   line-height: normal;
-  cursor: pointer;
   margin: 0;
   padding: 0;
   padding: 10px;
   padding-right: 27px;
   border-radius: 5px;
-  border: solid 1px #aaa;
+  border: solid 1px #ccc;
+  cursor: pointer;
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
@@ -37,30 +35,36 @@ const CustomSelect = styled.select`
   &::-ms-expand {
     display: none;
   }
+`;
 
-  &:not(.disabled) {
-    color: #333;
-    border: solid 1px #999;
+const Container = styled.div`
+  position: relative;
 
-    &:focus,
-    &:hover {
-      color: #000;
-      border-color: #000;
+  &.enabled {
+    &:hover,
+    &:focus {
+      ${CustomSelect} {
+        color: #000;
+        border-color: #999;
+      }
 
       ${Arrow} {
-        display: none;
-        border-top-color: red !important;
+        border-top-color: #000;
       }
     }
   }
 
   &.disabled {
-    cursor: not-allowed;
-    color: #aaa;
-    border: solid 1px #aaa;
+    ${CustomSelect} {
+      cursor: not-allowed;
+      color: #bbb;
+      border-color: #ddd;
+      background: #f9f9f9;
+    }
 
     ${Arrow} {
-      border-top-color: #aaa;
+      cursor: not-allowed;
+      border-top-color: #bbb;
     }
   }
 `;
@@ -71,8 +75,8 @@ export type Props = {
   placeholder?: string | JSX.Element | null;
   options: IOption[] | null;
   onChange: (arg: IOption) => void;
+  onBlur?: (event: React.FocusEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
-  borderColor?: string;
   className?: string;
 };
 
@@ -87,8 +91,14 @@ export default class Select extends PureComponent<Props, State> {
     }
   }
 
+  handleOnBlur = (event: React.FocusEvent<HTMLSelectElement>) => {
+    if (this.props.onBlur) {
+      this.props.onBlur(event);
+    }
+  }
+
   render() {
-    const { id, borderColor, disabled, className } = this.props;
+    const { id, disabled, className } = this.props;
     let { value, placeholder, options } = this.props;
 
     value = isString(value) && options ? options.find((option) => option.value === value) : value;
@@ -96,12 +106,13 @@ export default class Select extends PureComponent<Props, State> {
     options = (options || []);
 
     return (
-      <Container className={className}>
+      <Container className={`${className} ${disabled ? 'disabled' : 'enabled'}`}>
         <CustomSelect
           id={id}
           disabled={disabled}
           onChange={this.handleOnChange}
-          className={disabled ? 'disabled' : ''}
+          onBlur={this.handleOnBlur}
+          className={disabled ? 'disabled' : 'enabled'}
         >
           {options && options.length > 0 && options.map((option, index) => {
             const isSelected = value && value['value'] && option.value === value['value'];
@@ -118,7 +129,7 @@ export default class Select extends PureComponent<Props, State> {
             );
           })}
         </CustomSelect>
-        <Arrow className={disabled ? 'disabled' : ''} />
+        <Arrow className={disabled ? 'disabled' : 'enabled'} />
       </Container>
     );
   }
