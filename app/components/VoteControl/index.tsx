@@ -3,6 +3,7 @@ import { isString, get, isEmpty, last, sortBy } from 'lodash-es';
 import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
+import { setMightOpenVerificationModal, verificationNeeded } from 'containers/App/events';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -227,8 +228,9 @@ interface Props {
   ideaId: string;
   size: '1' | '2' | '3';
   unauthenticatedVoteClick?: () => void;
-  disabledVoteClick?: () => void;
+  disabledVoteClick?: (disabled_reason?: string) => void;
   className?: string;
+  noVerificationShortFlow?: boolean;
 }
 
 interface State {
@@ -379,6 +381,9 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
         const cancellingEnabled = idea.data.attributes.action_descriptor.voting.cancelling_enabled;
         const votingDisabledReason = idea.data.attributes.action_descriptor.voting.disabled_reason;
         const votingFutureEnabled = idea.data.attributes.action_descriptor.voting.future_enabled;
+        if (votingDisabledReason === 'not_verified' && !this.props.noVerificationShortFlow) {
+          verificationNeeded('ActionVote');
+        }
 
         this.setState({
           idea,
@@ -441,13 +446,14 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   onClickVote = async (voteMode: 'up' | 'down') => {
-    const { authUser, myVoteId, myVoteMode, votingEnabled, cancellingEnabled } = this.state;
+    const { authUser, myVoteId, myVoteMode, votingEnabled, cancellingEnabled, votingDisabledReason } = this.state;
     const { ideaId, unauthenticatedVoteClick, disabledVoteClick } = this.props;
 
     if (!authUser) {
+      setMightOpenVerificationModal('ActionVote');
       unauthenticatedVoteClick && unauthenticatedVoteClick();
     } else if ((!votingEnabled && voteMode !== myVoteMode) || (!cancellingEnabled && voteMode === myVoteMode)) {
-      disabledVoteClick && disabledVoteClick();
+      disabledVoteClick && disabledVoteClick(votingDisabledReason || undefined);
     } else if (authUser && this.state.voting === null) {
       try {
         this.voting$.next(voteMode);
@@ -506,7 +512,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { size, className, intl: { formatMessage } } = this.props;
-    const { project, phases, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, votingFutureEnabled, upvotesCount, downvotesCount } = this.state;
+    const { project, phases, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, votingFutureEnabled, upvotesCount, downvotesCount, votingDisabledReason } = this.state;
     const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
     const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
     const projectProcessType = get(project, 'data.attributes.process_type');
@@ -518,7 +524,9 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
     const lastPhaseHasPassed = (lastPhase ? pastPresentOrFuture([lastPhase.data.attributes.start_at, lastPhase.data.attributes.end_at]) === 'past' : false);
     const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
     const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
-    const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0));
+    const shouldVerify = !votingEnabled && votingDisabledReason === 'not_verified';
+    const verifiedButNotPermitted = !shouldVerify &&  votingDisabledReason === 'not_permitted';
+    const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify || verifiedButNotPermitted));
 
     if (!showVoteControl) return null;
 

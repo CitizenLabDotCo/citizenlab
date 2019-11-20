@@ -14,23 +14,23 @@ describe('<UserHeader />', () => {
 
   it('renders correctly on some user without a bio', () => {
     const user = makeUser();
-    const Wrapper = shallow(<UserHeader user={user.data} />);
+    const Wrapper = shallow(<UserHeader windowSize={950} user={user.data} />);
     expect(Wrapper).toMatchSnapshot();
   });
   it('renders correctly on some user with a bio', () => {
     const user = makeUser({ bio_multiloc: { en: 'Hi there ! ' } });
-    const Bio = shallow(<UserHeader user={user.data} />).find('UserHeader__Bio');
+    const Bio = shallow(<UserHeader windowSize={950} user={user.data} />).find('UserHeader__Bio');
     expect(Bio).toMatchSnapshot();
   });
   it('renders correctly on your own profile', () => {
     const user = makeUser({}, 'someUser');
-    const Edit = shallow(<UserHeader user={user.data} authUser={{ id: 'someUser' }} />)
-    .find('UserHeader__EditProfile');
-    expect(Edit).toMatchSnapshot();
+    const Edit = shallow(<UserHeader windowSize={950} user={user.data} authUser={{ id: 'someUser' }} />)
+    .find('.e2e-edit-profile');
+    expect(Edit.prop('linkTo')).toBe('/profile/edit');
   });
   it('renders correctly when user is null', () => {
-    const Edit = shallow(<UserHeader user={null} />)
-    .find('UserHeader__EditProfile');
+    const Edit = shallow(<UserHeader windowSize={950} user={null} />)
+    .find('.e2e-edit-profile');
     expect(Edit).toMatchSnapshot();
   });
 

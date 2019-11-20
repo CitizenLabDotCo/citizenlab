@@ -122,8 +122,6 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                 onChange={onResourceByXChange}
                 value={currentSelectedResource}
                 options={resourceOptions}
-                clearable={false}
-                borderColor="#EAEAEA"
               />
             </SHiddenLabel>
           </GraphCardHeaderWithFilter>

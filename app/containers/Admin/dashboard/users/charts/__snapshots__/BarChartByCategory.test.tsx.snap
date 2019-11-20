@@ -122,6 +122,12 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
         />
         <Tooltip
           active={false}
+          allowEscapeViewBox={
+            Object {
+              "x": false,
+              "y": false,
+            }
+          }
           animationDuration={400}
           animationEasing="ease"
           contentStyle={Object {}}
@@ -139,7 +145,6 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
           cursorStyle={Object {}}
           filterNull={true}
           isAnimationActive={false}
-          itemSorter={[Function]}
           itemStyle={Object {}}
           labelStyle={Object {}}
           offset={10}

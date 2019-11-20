@@ -39,7 +39,8 @@ import { updatePage } from 'services/pages';
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import IconTooltip from 'components/UI/IconTooltip';
+
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const ColorPickerSectionField = styled(SectionField)``;
@@ -162,15 +163,15 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     this.subscriptions.forEach(subsription => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile) => {
+  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile[]) => {
     this.setState((state) => ({
       ...state,
       logoError: (name === 'logo' ? null : state.logoError),
       headerError: (name === 'header_bg' ? null : state.headerError),
-      [name]: [newImage],
+      [name]: [newImage[0]],
       attributesDiff: {
         ...(state.attributesDiff || {}),
-        [name]: newImage.base64
+        [name]: newImage[0].base64
       }
     }));
   }
@@ -376,11 +377,11 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
   uploadPlaceholder = this.props.intl.formatMessage(messages.uploadPlaceholder);
   headerTitleLabel = <FormattedMessage {...messages.headerTitleLabel} />;
-  headerTitleTooltip = <InfoTooltip {...messages.headerTitleTooltip} />;
+  headerTitleTooltip = <IconTooltip content={<FormattedMessage {...messages.headerTitleTooltip} />} />;
   headerSubtitleLabel = <FormattedMessage {...messages.headerSubtitleLabel} />;
-  headerSubtitleTooltip = <InfoTooltip {...messages.headerSubtitleTooltip} />;
+  headerSubtitleTooltip = <IconTooltip content={<FormattedMessage {...messages.headerSubtitleTooltip} />} />;
   customSectionLabel = <FormattedMessage {...messages.customSectionLabel} />;
-  customSectionTooltip = <InfoTooltip {...messages.customSectionInfo} />;
+  customSectionTooltip = <IconTooltip content={<FormattedMessage {...messages.customSectionInfo} />} />;
 
   render() {
     const { locale, tenant } = this.state;
@@ -475,7 +476,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionField key={'header_bg'}>
               <Label>
                 <FormattedMessage {...messages.header_bg} />
-                <InfoTooltip {...messages.header_bgTooltip} />
+                <IconTooltip content={<FormattedMessage {...messages.header_bgTooltip} />} />
               </Label>
               <ImagesDropzone
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"

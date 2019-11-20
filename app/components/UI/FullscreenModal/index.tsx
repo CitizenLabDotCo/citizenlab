@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { isFunction } from 'lodash-es';
-import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import { isFunction, compact } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { FocusOn } from 'react-focus-on';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -27,10 +27,8 @@ const Container = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  overflow: hidden;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  overflow: hidden;
   background: #fff;
   z-index: 997;
 
@@ -63,6 +61,13 @@ const Container = styled.div`
   `}
 `;
 
+const StyledFocusOn = styled(FocusOn)`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
 const Content = styled.div`
   flex: 1;
   overflow-y: scroll;
@@ -78,6 +83,8 @@ interface InputProps {
   topBar?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
   animateInOut?: boolean;
+  navbarRef?: HTMLElement | null;
+  mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
 }
 
@@ -95,7 +102,6 @@ class FullscreenModal extends PureComponent<Props, State> {
   unlisten: Function | null = null;
   url: string | null | undefined = null;
   goBackUrl: string | null | undefined = null;
-  ContentElement: HTMLDivElement | null = null;
 
   componentDidUpdate(prevProps: Props) {
     if (!prevProps.opened && this.props.opened) {
@@ -146,38 +152,34 @@ class FullscreenModal extends PureComponent<Props, State> {
 
     this.url = null;
     this.goBackUrl = null;
-    this.ContentElement = null;
 
     if (isFunction(this.unlisten)) {
       this.unlisten();
       this.unlisten = null;
     }
-
-    clearAllBodyScrollLocks();
-  }
-
-  setRef = (element: HTMLDivElement) => {
-    this.ContentElement = (element || null);
-
-    if (this.ContentElement) {
-      disableBodyScroll(this.ContentElement, {
-        // @ts-ignore
-        allowTouchMove: (element) => {
-          while (element && element !== document.body) {
-            if (element && element.className && element.className.includes('ignore-body-scroll-lock')) {
-              return true;
-            }
-
-            // tslint:disable-next-line
-            element = element.parentNode;
-          }
-        }
-      });
-    }
   }
 
   render() {
-    const { children, opened, topBar, bottomBar, animateInOut } = this.props;
+    const { children, opened, topBar, bottomBar, animateInOut, navbarRef, mobileNavbarRef } = this.props;
+    const shards = compact([navbarRef, mobileNavbarRef]);
+    let modalContent: React.ReactChild | null = null;
+
+    if (animateInOut || (!animateInOut && opened)) {
+      modalContent = (
+        <Container
+          id="e2e-fullscreenmodal-content"
+          className={bottomBar ? 'hasBottomBar' : ''}
+        >
+          <StyledFocusOn autoFocus={false} shards={shards}>
+            {topBar}
+            <Content>
+              {children}
+            </Content>
+            {bottomBar}
+          </StyledFocusOn>
+        </Container>
+      );
+    }
 
     if (animateInOut) {
       return ReactDOM.createPortal((
@@ -193,27 +195,13 @@ class FullscreenModal extends PureComponent<Props, State> {
           enter={true}
           exit={true}
         >
-          <Container id="e2e-fullscreenmodal-content" className={bottomBar ? 'hasBottomBar' : ''}>
-            {topBar}
-            <Content ref={this.setRef}>
-              {children}
-            </Content>
-            {bottomBar}
-          </Container>
+          {modalContent}
         </CSSTransition>
       ), document.getElementById('modal-portal') as HTMLElement);
     }
 
     if (!animateInOut && opened) {
-      return ReactDOM.createPortal((
-        <Container id="e2e-fullscreenmodal-content" className={bottomBar ? 'hasBottomBar' : ''}>
-          {topBar}
-          <Content ref={this.setRef}>
-            {children}
-          </Content>
-          {bottomBar}
-        </Container>
-      ), document.getElementById('modal-portal') as HTMLElement);
+      return ReactDOM.createPortal(modalContent, document.getElementById('modal-portal') as HTMLElement);
     }
 
     return null;

@@ -38,7 +38,7 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
   }
 
   render() {
-    const { ideaId, projectId, participationContextId, participationContextType, budgetingDescriptor } = this.props;
+    const { ideaId, participationContextId, participationContextType, budgetingDescriptor } = this.props;
     const { error } = this.state;
 
     return (
@@ -57,7 +57,6 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
           <PopContainer icon="lock-outlined">
             <AssignBudgetDisabled
               budgetingDescriptor={budgetingDescriptor}
-              projectId={projectId}
             />
           </PopContainer>
         }

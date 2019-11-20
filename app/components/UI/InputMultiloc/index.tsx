@@ -48,6 +48,7 @@ export type Props = {
   ariaLabel?: string;
   setRef?: (arg: HTMLInputElement) => void | undefined;
   autoFocus?: boolean;
+  autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password' | 'off' | 'on'; // https://www.w3.org/TR/WCAG21/#input-purposes
 };
 
 type State = {
@@ -96,7 +97,7 @@ export default class InputMultiloc extends PureComponent<Props, State> {
 
   render() {
     const { locale, currentTenant } = this.state;
-    const { selectedLocale, label, placeholder, valueMultiloc, errorMultiloc, ariaLabel, setRef, autoFocus } = this.props;
+    const { selectedLocale, label, placeholder, valueMultiloc, errorMultiloc, ariaLabel, setRef, autoFocus, autocomplete } = this.props;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -127,6 +128,7 @@ export default class InputMultiloc extends PureComponent<Props, State> {
               disabled={this.props.disabled}
               ariaLabel={ariaLabel}
               autoFocus={autoFocus}
+              autocomplete={autocomplete}
             />
           </InputWrapper>
         );

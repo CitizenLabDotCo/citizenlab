@@ -16,7 +16,7 @@ import { Section, PageTitle, SectionField, SectionSubtitle } from 'components/ad
 import InvitesTable from './all';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // services
 import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from 'services/invites';
@@ -28,7 +28,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
-import { FormattedHTMLMessage, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { API_PATH, appLocalePairs } from 'containers/App/constants';
@@ -46,6 +46,14 @@ import { rgba } from 'polished';
 
 // typings
 import { Locale, IOption } from 'typings';
+
+const InvitationOptions = styled.div`
+  width: 497px;
+  padding: 20px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px #ddd;
+  background: #fff;
+`;
 
 const ViewButtons = styled.div`
   display: flex;
@@ -433,27 +441,22 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
       <Collapse
         opened={invitationOptionsOpened}
         onToggle={this.toggleOptions}
-        label={(
-          <>
-            <FormattedMessage {...messages.invitationOptions} />
-            {selectedView === 'import' &&
-              <InfoTooltip
-                position="right"
-                {...messages.importOptionsInfo}
-                values={{
-                  // tslint:disable-next-line
-                  supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
-                }}
-              />
-            }
-          </>
-        )}
+        label={<FormattedMessage {...messages.invitationOptions} />}
+        labelTooltip={selectedView === 'import' ? (
+          <FormattedMessage
+            {...messages.importOptionsInfo}
+            values={{
+              // tslint:disable-next-line
+              supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
+            }}
+          />
+        ) : null}
       >
-        <>
+        <InvitationOptions>
           <SectionField>
             <Label>
               <FormattedMessage {...messages.adminLabel} />
-              <InfoTooltip position="right" {...messages.adminLabelTooltip} />
+              <IconTooltip content={<FormattedMessage {...messages.adminLabelTooltip} />} />
             </Label>
             <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
           </SectionField>
@@ -461,16 +464,20 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
           <SectionField>
             <Label>
               <FormattedMessage {...messages.moderatorLabel} />
-              <InfoTooltip
-                position="right"
-                {...messages.moderatorLabelTooltip}
-                values={{
-                  moderatorLabelTooltipLink: (
-                    // tslint:disable-next-line
-                    <a href={this.props.intl.formatMessage(messages.moderatorLabelTooltipLink)} target="_blank">
-                      <FormattedMessage {...messages.moderatorLabelTooltipLinkText} />
-                    </a>)
-                }}
+              <IconTooltip
+                content={
+                  <FormattedMessage
+                    {...messages.moderatorLabelTooltip}
+                    values={{
+                      moderatorLabelTooltipLink: (
+                        // tslint:disable-next-line
+                        <a href={this.props.intl.formatMessage(messages.moderatorLabelTooltipLink)} target="_blank">
+                          <FormattedMessage {...messages.moderatorLabelTooltipLinkText} />
+                        </a>
+                      )
+                    }}
+                  />
+                }
               />
             </Label>
             <StyledToggle value={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
@@ -528,7 +535,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
             />
           </SectionField>
 
-        </>
+        </InvitationOptions>
       </Collapse>
     );
 
@@ -561,15 +568,18 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
               <>
                 <SectionField>
                   <Label>
-                    <FormattedHTMLMessage {...messages.importLabel} />
-                    <InfoTooltip
-                      position="right"
-                      {...messages.importInfo}
-                      values={{
-                        emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
-                        downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
-                        supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
-                      }}
+                    <FormattedMessage {...messages.importLabel} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...messages.importInfo}
+                          values={{
+                            emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
+                            downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
+                            supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
+                          }}
+                        />
+                      }
                     />
                   </Label>
 

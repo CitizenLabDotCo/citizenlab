@@ -13,7 +13,8 @@ import Comments from 'components/PostComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import VotePreview from './VotePreview';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import IconTooltip from 'components/UI/IconTooltip';
+
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
@@ -281,7 +282,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                       <Picks>
                         <FormattedMessage {...messages.picks} values={{ picksNumber: idea.attributes.baskets_count }} />
                         &nbsp;
-                        <InfoTooltip {...messages.basketsCountTooltip} size="small" position="top-left" />
+                        <IconTooltip content={<FormattedMessage {...messages.basketsCountTooltip} />} />
                       </Picks>
                     </BudgetBox>
                   </>

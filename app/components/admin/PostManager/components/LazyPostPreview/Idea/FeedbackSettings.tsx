@@ -162,19 +162,16 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
 
           <StyledLabel value={<FormattedMessage {...messages.currentStatus}/>} htmlFor="idea-preview-select-status"/>
           <Select
-            inputId="idea-preview-select-status"
+            id="idea-preview-select-status"
             options={statusOptions}
             onChange={this.onStatusChange}
             value={ideaStatusOption}
-            clearable={false}
-            borderColor={ideaStatusOption ? ideaStatusOption.color : undefined}
           />
           <StyledLabel value={<FormattedMessage {...messages.assignee}/>} htmlFor="idea-preview-select-assignee"/>
           <Select
-            inputId="idea-preview-select-assignee"
+            id="idea-preview-select-assignee"
             options={assigneeOptions}
             onChange={this.onAssigneeChange}
-            clearable={false}
             value={ideaAssigneeOption}
           />
         </Container>

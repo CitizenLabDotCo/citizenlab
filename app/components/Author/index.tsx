@@ -73,6 +73,7 @@ export interface InputProps {
   showAvatar?: boolean;
   avatarBadgeBgColor?: string;
   showModeration?: boolean; // will show red styling on admins and moderators of projectId
+  emphasize?: boolean;
   className?: string;
 }
 
@@ -98,13 +99,14 @@ class Author extends PureComponent<Props, State> {
   }
 
   render() {
-    const { authorId, createdAt, size, notALink, projectId, showAvatar, showModeration, className, author, avatarBadgeBgColor } = this.props;
+    const { authorId, createdAt, size, notALink, projectId, showAvatar, showModeration, className, author, avatarBadgeBgColor, emphasize } = this.props;
     const authorCanModerate = !isNilOrError(author) && showModeration && canModerate(projectId, { data: author });
     const authorName = (
       <UserName
         userId={authorId}
         linkToProfile={!notALink}
         canModerate={authorCanModerate}
+        emphasize={emphasize}
       />
     );
 
@@ -117,7 +119,7 @@ class Author extends PureComponent<Props, State> {
               size={size}
               onClick={notALink ? undefined : this.goToUserProfile}
               moderator={authorCanModerate}
-              badgeBgColor={avatarBadgeBgColor}
+              bgColor={avatarBadgeBgColor}
             />
           }
 

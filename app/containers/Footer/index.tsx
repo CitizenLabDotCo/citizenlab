@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import MediaQuery from 'react-responsive';
 import { reportError } from 'utils/loggingUtils';
 import { adopt } from 'react-adopt';
 
@@ -28,6 +27,7 @@ import { LEGAL_PAGES } from 'services/pages';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // style
 import styled from 'styled-components';
@@ -48,7 +48,7 @@ const Container = styled.footer`
 
 const Inner = styled.div`
   width: 100%;
-  min-height: 60px;
+  min-height: ${props => props.theme.footerHeight}px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -57,6 +57,7 @@ const Inner = styled.div`
   padding-top: 12px;
   padding-bottom: 12px;
   background: #fff;
+  border-top: solid 1px #e8e8e8;
 
   ${media.smallerThanMaxTablet`
     display: flex;
@@ -66,24 +67,28 @@ const Inner = styled.div`
 
   ${media.smallerThanMinTablet`
     padding: 15px;
+    border-top: solid 1px #e8e8e8;
+
+    &.showShortFeedback {
+      border-top: none;
+    }
   `}
 `;
 
 const ShortFeedback: any = styled.div`
   width: 100%;
   display: flex;
-  border-bottom: 1px solid #e8e8e8;
 
   ${media.biggerThanMinTablet`
     position: absolute;
     z-index: 5;
-    top: -42px;
+    top: -41px;
     left: 0px;
   `}
 
   ${media.smallerThanMinTablet`
-    border-top: 1px solid ${({ theme }) => rgba(theme.colorText, 0.2)};
-    border-bottom: 1px solid ${({ theme }) => rgba(theme.colorText, 0.2)};
+    border-top: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
+    border-bottom: solid 1px ${({ theme }) => rgba(theme.colorText, 0.3)};
   `}
 `;
 
@@ -276,10 +281,12 @@ const ShortFeedbackFormModalFooter = styled.div`
 
 interface InputProps {
   showShortFeedback?: boolean;
+  className?: string;
 }
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -369,10 +376,11 @@ class Footer extends PureComponent<Props, State> {
 
   render() {
     const { shortFeedbackButtonClicked, feedbackModalOpen, feedbackSubmitting, feedbackSubmitted } = this.state;
-    const { showShortFeedback } = this.props;
+    const { showShortFeedback, className, windowSize } = this.props;
+    const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
     return (
-      <Container className={this.props['className']} id="hook-footer">
+      <Container id="hook-footer" className={className}>
         {showShortFeedback &&
           <>
             <ShortFeedback>
@@ -435,7 +443,7 @@ class Footer extends PureComponent<Props, State> {
           </>
         }
 
-        <Inner>
+        <Inner className={showShortFeedback ? 'showShortFeedback' : ''}>
           <PagesNav>
             {LEGAL_PAGES.map((slug, index) => (
               <React.Fragment key={slug}>
@@ -463,9 +471,7 @@ class Footer extends PureComponent<Props, State> {
               </CitizenlabLink>
             </PoweredBy>
 
-            <MediaQuery minWidth={viewportWidths.smallTablet}>
-              {matches => <StyledSendFeedback showFeedbackText={!matches} />}
-            </MediaQuery>
+            <StyledSendFeedback showFeedbackText={smallerThanSmallTablet} />
           </Right>
         </Inner>
       </Container>
@@ -475,6 +481,7 @@ class Footer extends PureComponent<Props, State> {
 
 const Data = adopt<Props>({
   locale: <GetLocale />,
+  windowSize: <GetWindowSize />
 });
 
 export default (inputProps: InputProps) => (

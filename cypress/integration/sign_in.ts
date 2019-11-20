@@ -54,7 +54,7 @@ describe('Sign in page', () => {
     cy.location('pathname').should('eq', '/en-GB/');
   });
 
-  it('shows an error when trying to log in with invalid credentials', () => {
+  it('shows an error when trying to log in with invalid credentials', async () => {
     const email = randomEmail();
     const password = randomString();
 
