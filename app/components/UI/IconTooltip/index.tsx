@@ -4,6 +4,10 @@ import Tippy from '@tippy.js/react';
 // components
 import Icon, { IconNames } from 'components/UI/Icon';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
@@ -63,9 +67,10 @@ interface Props {
   iconColor?: string;
   iconHoverColor?: string;
   maxTooltipWidth?: number;
+  iconAriaTitle?: string;
 }
 
-const IconTooltip = memo<Props>(({ content, icon, placement, theme, iconColor, iconHoverColor, maxTooltipWidth }) => (
+const IconTooltip = memo<Props>(({ content, icon, placement, theme, iconColor, iconHoverColor, maxTooltipWidth, iconAriaTitle }) => (
   <Tippy
     interactive={true}
     placement={placement || 'right-end'}
@@ -86,6 +91,7 @@ const IconTooltip = memo<Props>(({ content, icon, placement, theme, iconColor, i
         name={icon || 'info3'}
         iconColor={iconColor}
         iconHoverColor={iconHoverColor}
+        title={iconAriaTitle || <FormattedMessage {...messages.info} />}
       />
     </TooltipIconButton>
   </Tippy>
