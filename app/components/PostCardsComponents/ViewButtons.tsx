@@ -10,6 +10,9 @@ import { media, fontSizes } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// tracks
+import tracks from './tracks';
+
 const Container = styled.div`
   display: flex;
 `;
@@ -66,17 +69,16 @@ interface Props {
   className?: string;
   selectedView: 'card' | 'map';
   onClick: (selectedView: 'card' | 'map') => (event: React.FormEvent) => void;
-  trackEventName?: string;
-  location: string;
 }
 
-const ViewButtons = memo<Props>(({ className, selectedView, trackEventName, onClick, location }: Props) => {
+const ViewButtons = memo<Props>(({ className, selectedView, onClick }: Props) => {
   const showListView = selectedView === 'card';
   const showMapView = selectedView === 'map';
 
   const handleOnClick = (selectedView: 'card' | 'map') => (_event: React.FormEvent) => {
-    trackEventName && trackEventByName(trackEventName, { selectedDisplayMode: selectedView });
     onClick(selectedView);
+
+    trackEventByName(tracks.toggleDisplay, { locationButtonWasClicked: location.pathname, selectedDisplayMode: selectedView });
   };
 
   return (

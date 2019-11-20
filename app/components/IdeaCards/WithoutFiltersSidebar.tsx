@@ -26,9 +26,6 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
-// utils
-import tracks from './tracks';
-
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
@@ -334,8 +331,6 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
                 <StyledViewButtons
                   selectedView={selectedView}
                   onClick={this.selectView}
-                  trackEventName={tracks.toggleDisplay}
-                  location={location.pathname}
                 />
               </FeatureFlag>
             }

@@ -27,9 +27,6 @@ import GetInitiatives, { Sort, GetInitiativesChildProps, IQueryParameters } from
 import GetInitiativesFilterCounts, { GetInitiativesFilterCountsChildProps } from 'resources/GetInitiativesFilterCounts';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
-// utils
-import tracks from './tracks';
-
 // i18n
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
@@ -571,14 +568,12 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
-                {/* <FeatureFlag name="maps"> */}
+                <FeatureFlag name="maps">
                   <StyledViewButtons
                     onClick={this.selectView}
                     selectedView={selectedView}
-                    trackEventName={tracks.toggleDisplay}
-                    location={location.pathname}
                   />
-                {/* </FeatureFlag> */}
+                </FeatureFlag>
 
                 {!isNilOrError(initiativesFilterCounts) &&
                   <InitiativesCount>

@@ -30,7 +30,6 @@ import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // utils
-import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
@@ -589,8 +588,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     <StyledViewButtons
                       selectedView={selectedView}
                       onClick={this.selectView}
-                      trackEventName={tracks.toggleDisplay}
-                      location={location.pathname}
                     />
                   </FeatureFlag>
                  }
