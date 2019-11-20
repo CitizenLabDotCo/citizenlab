@@ -48,7 +48,7 @@ const vote = keyframes`
   }
 `;
 
-const Container: any = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
 
@@ -57,7 +57,7 @@ const Container: any = styled.div`
   }
 `;
 
-const VoteIconContainer: any = styled.div`
+const VoteIconContainer = styled.div<{ size: '1' | '2' | '3', votingEnabled: boolean | null }>`
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -68,43 +68,43 @@ const VoteIconContainer: any = styled.div`
   transition: all 60ms ease-out;
   will-change: transform;
 
-  ${(props: any) => !props.votingEnabled ? css`
+  ${(props) => !props.votingEnabled ? css`
     margin-left: 5px;
   ` : css``}
 
-  ${(props: any) => props.size === '1' && props.votingEnabled ? css`
+  ${(props) => props.size === '1' && props.votingEnabled ? css`
     width: 45px;
     height: 45px;
   ` : css``}
 
-  ${(props: any) => props.size === '2' && props.votingEnabled ? css`
+  ${(props) => props.size === '2' && props.votingEnabled ? css`
     width: 48px;
     height: 48px;
   ` : css``}
 
-  ${(props: any) => props.size === '3' && props.votingEnabled ? css`
+  ${(props) => props.size === '3' && props.votingEnabled ? css`
     width: 52px;
     height: 52px;
   ` : css``}
 `;
 
-const VoteIcon: any = styled(Icon)`
+const VoteIcon = styled(Icon)<{ size: '1' | '2' | '3', enabled: boolean | null }>`
   width: 19px;
   height: 19px;
   fill: ${colors.label};
   transition: all 100ms ease-out;
 
-  ${(props: any) => props.size === '1' ? css`
+  ${(props) => props.size === '1' ? css`
     width: 18px;
     height: 18px;
   ` : css``}
 
-  ${(props: any) => props.size === '2' ? css`
+  ${(props) => props.size === '2' ? css`
     width: 20px;
     height: 20px;
   ` : css``}
 
-  ${(props: any) => props.size === '3' ? css`
+  ${(props) => props.size === '3' ? css`
     width: 21px;
     height: 21px;
   ` : css``}
@@ -131,8 +131,6 @@ const Vote = styled.button<IVoteComponent>`
   padding: 0;
   margin: 0;
   border: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
 
   &.voteClick ${VoteIconContainer} {
     animation: ${css`${vote} 350ms`};
@@ -532,6 +530,14 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode} ${votingEnabled && 'enabled'}`}>
+        <ScreenReaderOnly id="upvote-button">
+          <FormattedMessage {...messages.a11y_xUpvotes} values={{ count: upvotesCount }} />
+        </ScreenReaderOnly>
+
+        <ScreenReaderOnly id="downvote-button">
+          <FormattedMessage {...messages.a11y_xDownvotes} values={{ count: downvotesCount }} />
+        </ScreenReaderOnly>
+
         <Upvote
           active={myVoteMode === 'up'}
           onMouseDown={this.removeFocus}
@@ -539,15 +545,14 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
           ref={this.setUpvoteRef}
           className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'} e2e-ideacard-upvote-button`}
           enabled={upvotingEnabled}
+          aria-describedby="upvote-button"
         >
           <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
             <VoteIcon ariaHidden title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
           </VoteIconContainer>
           <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
-          <ScreenReaderOnly>
-            <FormattedMessage {...messages.xUpvotes} values={{ count: upvotesCount }} />
-          </ScreenReaderOnly>
         </Upvote>
+
         <Downvote
           active={myVoteMode === 'down'}
           onMouseDown={this.removeFocus}
@@ -555,14 +560,12 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
           ref={this.setDownvoteRef}
           className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
           enabled={downvotingEnabled}
+          aria-describedby="downvote-button"
         >
           <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
             <VoteIcon ariaHidden title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
           </VoteIconContainer>
           <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
-          <ScreenReaderOnly>
-            <FormattedMessage {...messages.xDownvotes} values={{ count: downvotesCount }} />
-          </ScreenReaderOnly>
         </Downvote>
       </Container>
     );
