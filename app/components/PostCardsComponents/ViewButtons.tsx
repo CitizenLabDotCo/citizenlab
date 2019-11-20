@@ -67,15 +67,16 @@ interface Props {
   selectedView: 'card' | 'map';
   onClick: (selectedView: 'card' | 'map') => (event: React.FormEvent) => void;
   trackEventName?: string;
+  location: string;
 }
 
-const ViewButtons = memo<Props>(({ className, selectedView, trackEventName, ...props }: Props) => {
+const ViewButtons = memo<Props>(({ className, selectedView, trackEventName, onClick, location }: Props) => {
   const showListView = selectedView === 'card';
   const showMapView = selectedView === 'map';
 
   const handleOnClick = (selectedView: 'card' | 'map') => (_event: React.FormEvent) => {
     trackEventName && trackEventByName(trackEventName, { selectedDisplayMode: selectedView });
-    props.onClick(selectedView);
+    onClick(selectedView);
   };
 
   return (

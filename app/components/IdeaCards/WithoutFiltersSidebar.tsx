@@ -335,6 +335,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
                   selectedView={selectedView}
                   onClick={this.selectView}
                   trackEventName={tracks.toggleDisplay}
+                  location={location.pathname}
                 />
               </FeatureFlag>
             }
