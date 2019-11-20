@@ -313,6 +313,7 @@ interface State {
   spamModalVisible: boolean;
   initiativeIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
+  ariaLiveLatestPost: boolean;
 }
 
 export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
@@ -326,6 +327,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       spamModalVisible: false,
       initiativeIdForSocialSharing: null,
       translateButtonClicked: false,
+      ariaLiveLatestPost: false
     };
   }
 
@@ -384,6 +386,8 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       });
       this.officialFeedbackElement.current.focus();
     }
+
+    this.setState({ ariaLiveLatestPost: true });
   }
 
   render() {
@@ -399,7 +403,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       postOfficialFeedbackPermission,
       tenant
     } = this.props;
-    const { loaded, initiativeIdForSocialSharing, translateButtonClicked } = this.state;
+    const { loaded, initiativeIdForSocialSharing, translateButtonClicked, ariaLiveLatestPost } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
     const initiativeSettings = !isNilOrError(tenant) ? tenant.attributes.settings.initiatives : null;
@@ -556,6 +560,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                     postId={initiativeId}
                     postType="initiative"
                     permissionToPost={postOfficialFeedbackPermission}
+                    ariaLiveLatestPost={ariaLiveLatestPost}
                   />
                 </div>
 
