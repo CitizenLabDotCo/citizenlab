@@ -35,7 +35,7 @@ const PostedByWrapper = styled.div`
   flex-direction: column;
 `;
 
-const PostedByText = styled.span`
+const PostedByText = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   margin-bottom: 3px;

@@ -99,7 +99,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
     const initiativeId = initiative.id;
 
     updateInitiative(initiativeId, {
-      assignee_id: assigneeId,
+      assignee_id: assigneeId || null,
     });
 
     trackEventByName(tracks.changeInitiativeAssignment, {

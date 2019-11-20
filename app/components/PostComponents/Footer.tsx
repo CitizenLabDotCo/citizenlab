@@ -9,7 +9,7 @@ import { media, postPageContentMaxWidth } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const Container = styled.div`
-  flex: 1;
+  flex: 1 1 auto;
   width: 100%;
   margin-top: 60px;
   background: #f8f8f9;
@@ -28,7 +28,7 @@ const Content = styled.div`
   margin-top: 50px;
   padding-left: 60px;
   padding-right: 60px;
-  padding-bottom: 60px;
+  padding-bottom: 70px;
 
   ${media.smallerThanMaxTablet`
     margin-top: 60px;

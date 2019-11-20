@@ -8,10 +8,9 @@ import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter } from 'comp
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import { Multiloc, Locale, UploadFile } from 'typings';
 import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import LocationInput from 'components/UI/LocationInput';
-import ImageDropzone from 'components/UI/ImageDropzone';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FileUploader from 'components/UI/FileUploader';
 import Error from 'components/UI/Error';
 
@@ -19,6 +18,9 @@ import Error from 'components/UI/Error';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { IMessageInfo, injectIntl } from 'utils/cl-intl';
+
+// typings
+import { Multiloc, Locale, UploadFile } from 'typings';
 
 const Form = styled.form`
   margin-bottom: 100px;
@@ -171,12 +173,24 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     this.props.onChangeTopics(topic_ids);
     this.onBlur('topic_ids')();
   }
-  changeAndSaveBanner = (banner) => {
-    this.props.onChangeBanner(banner);
+
+  addBanner = (banner: UploadFile[]) => {
+    this.props.onChangeBanner(banner[0]);
     this.onBlur('banner')();
   }
-  changeAndSaveImage = (image) => {
-    this.props.onChangeImage(image);
+
+  removeBanner = () => {
+    this.props.onChangeBanner(null);
+    this.onBlur('banner')();
+  }
+
+  addImage = (image: UploadFile[]) => {
+    this.props.onChangeImage(image[0]);
+    this.onBlur('image')();
+  }
+
+  removeImage = () => {
+    this.props.onChangeImage(null);
     this.onBlur('image')();
   }
 
@@ -222,6 +236,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onChange={onChangeTitle}
                 onBlur={this.onBlur('title_multiloc')}
                 selectedLocale={locale}
+                autocomplete="off"
               />
               {touched.title_multiloc
                 && errors.title_multiloc ? <Error message={errors.title_multiloc.message} />
@@ -255,7 +270,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
         <FormSection>
           <FormSectionTitle message={messages.formDetailsSectionTitle} />
 
-          <SectionField>
+          <SectionField aria-live="polite">
             <FormLabel
               labelMessage={messages.topicsLabel}
               subtextMessage={messages.topicsLabelSubtext}
@@ -291,41 +306,35 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
         </FormSection>
         <FormSection>
           <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
-
-          <SectionField>
-            {/* Contrary to other form fields, the image uploads are not wrapped
-            in the label tag because they trigger a double file dialog issue in our
-            current version of react-dropzone
-            https://stackoverflow.com/questions/49671325/react-dropzone-opens-files-chooser-twice
-            */}
+          <SectionField id="e2e-iniatiative-banner-dropzone">
             <FormLabel
               labelMessage={messages.bannerUploadLabel}
               subtextMessage={messages.bannerUploadLabelSubtext}
               optional
             />
-            <ImageDropzone
-              id="iniatiative-banner-dropzone"
-              image={banner || null}
+            <ImagesDropzone
+              images={banner ? [banner] : null}
               imagePreviewRatio={360 / 1440}
+              maxNumberOfImages={1}
               acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              onChange={this.changeAndSaveBanner}
+              onAdd={this.addBanner}
+              onRemove={this.removeBanner}
             />
-            {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />
-            }
+            {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />}
           </SectionField>
-
-          <SectionField>
+          <SectionField id="e2e-iniatiative-img-dropzone">
             <FormLabel
               labelMessage={messages.imageUploadLabel}
               subtextMessage={messages.imageUploadLabelSubtext}
               optional
             />
-            <ImageDropzone
-              id="iniatiative-img-dropzone"
-              image={image || null}
+            <ImagesDropzone
+              images={image ? [image] : null}
               imagePreviewRatio={135 / 298}
+              maxNumberOfImages={1}
               acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              onChange={this.changeAndSaveImage}
+              onAdd={this.addImage}
+              onRemove={this.removeImage}
             />
             {touched.image
               && errors.image
@@ -336,14 +345,15 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               labelMessage={messages.fileUploadLabel}
               subtextMessage={messages.fileUploadLabelSubtext}
               optional
-            />
-            <FileUploader
-              id="e2e-initiative-file-upload"
-              onFileAdd={onAddFile}
-              onFileRemove={onRemoveFile}
-              files={files}
-              errors={apiErrors}
-            />
+            >
+              <FileUploader
+                id="e2e-initiative-file-upload"
+                onFileAdd={onAddFile}
+                onFileRemove={onRemoveFile}
+                files={files}
+                errors={apiErrors}
+              />
+            </FormLabel>
           </SectionField>
         </FormSection>
         <FormSubmitFooter

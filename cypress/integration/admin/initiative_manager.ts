@@ -3,7 +3,7 @@ import { randomString, randomEmail } from '../../support/commands';
 describe('Initaitve manager', () => {
 
   beforeEach(() => {
-    cy.login('admin@citizenlab.co', 'testtest');
+    cy.setAdminLoginCookie();
   });
 
   describe('Assignee filter', () => {
@@ -60,6 +60,7 @@ describe('Initaitve manager', () => {
           assigneeId: userId
         }).then((initiative) => {
           initiativeId3 = initiative.body.data.id;
+          cy.wait(500);
         });
       });
     });

@@ -82,13 +82,11 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
       idea: ideaId
     });
   }
-  onUpdateIdeaAssignee = (assigneeId) => {
+  onUpdateIdeaAssignee = (assigneeId: string | undefined) => {
     const { idea }  = this.props;
     const ideaId = idea.id;
 
-    updateIdea(ideaId, {
-      assignee_id: assigneeId,
-    });
+    updateIdea(ideaId, { assignee_id: assigneeId || null });
 
     trackEventByName(tracks.changeIdeaAssignment, {
       location: 'Idea Manager',

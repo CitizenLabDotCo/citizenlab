@@ -170,6 +170,7 @@ exports[`<UserComments /> renders correctly with actual comments and more 1`] = 
   bgHoverColor="rgba(230,143,81,0.12)"
   height="50px"
   icon="showMore"
+  iconAriaHidden={true}
   onClick={
     [MockFunction] {
       "calls": Array [

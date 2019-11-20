@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -16,11 +15,6 @@ import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import AreaTermConfig from './AreaTermConfig';
 import Collapse from 'components/admin/Collapse';
-import InfoTooltip from 'components/admin/InfoTooltip';
-
-const TerminologyCollapse = styled(Collapse)`
-  padding-bottom: 30px;
-`;
 
 interface InputProps { }
 
@@ -71,16 +65,14 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
           <FormattedMessage {...messages.subtitleAreas} />
         </SectionSubtitle>
 
-        <TerminologyCollapse
+        <Collapse
           opened={terminologyOpened}
           onToggle={this.handleToggleTerminology}
-          label={<>
-            <FormattedMessage {...messages.subtitleTerminology} />
-            <InfoTooltip {...messages.terminologyTooltip} />
-          </>}
+          label={<FormattedMessage {...messages.subtitleTerminology} />}
+          labelTooltip={<FormattedMessage {...messages.terminologyTooltip} />}
         >
           <AreaTermConfig />
-        </TerminologyCollapse>
+        </Collapse>
 
         <ButtonWrapper>
           <Button

@@ -19,6 +19,7 @@ import messages from './messages';
 import ProfileForm from './ProfileForm';
 import CampaignsConsentForm from './CampaignsConsentForm';
 import ProfileDeletion from './ProfileDeletion';
+import VerificationStatus from './VerificationStatus';
 
 // Styles
 import styled from 'styled-components';
@@ -31,6 +32,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 30px;
+  padding-bottom: 50px;
   overflow-x: hidden;
 `;
 
@@ -90,11 +92,12 @@ export default class ProfileEditor extends PureComponent<Props, State> {
 
     if (loaded && currentTenant && authUser && areas) {
       return (
-        <Container>
+        <Container id="e2e-user-edit-profile-page">
           <ScreenReaderOnly>
             <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
           </ScreenReaderOnly>
           <Wrapper>
+            <VerificationStatus />
             <ProfileForm
               user={authUser.data}
               areas={areas.data}
