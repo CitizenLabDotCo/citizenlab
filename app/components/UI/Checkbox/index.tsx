@@ -79,6 +79,7 @@ interface Props extends DefaultProps {
   checked: boolean;
   onChange: (event: React.MouseEvent | React.KeyboardEvent) => void;
   className?: string;
+  notFocusable?: boolean;
 }
 
 interface State {
@@ -136,7 +137,7 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   render() {
-    const { label, size, checked, className, id } = this.props;
+    const { label, size, checked, className, notFocusable, id } = this.props;
     const { inputFocused } = this.state;
 
     return (
@@ -153,6 +154,7 @@ export default class Checkbox extends PureComponent<Props, State> {
           size={size as string}
         >
           <Input
+            tabIndex={notFocusable ? -1 : 0}
             ref={this.checkbox}
             id={id}
             aria-checked={checked}

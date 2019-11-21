@@ -43,6 +43,8 @@ const FileDownloadLink = styled.a<{error: boolean}>`
   margin-right: 10px;
   hyphens: auto;
   max-width: 70%;
+  font-weight: 400;
+
 
   &:hover {
     color: inherit;
@@ -85,7 +87,7 @@ const StyledIcon = styled(Icon)`
 
 interface Props {
   file: UploadFile;
-  onDeleteClick?: () => void;
+  onDeleteClick?: (event) => void;
 }
 
 const FileDisplay = ({ file, onDeleteClick }: Props) => {

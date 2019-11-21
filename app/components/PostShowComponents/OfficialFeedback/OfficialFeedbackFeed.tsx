@@ -96,7 +96,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
         );
 
         return (
-          <Container className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}>
+          <Container aria-live="polite" className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}>
             <FeedbackHeader>
               <FeedbackTitle>
                 <FormattedMessage {...messages.officialUpdates} />
@@ -128,6 +128,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                 height="50px"
                 icon="showMore"
                 iconPos="left"
+                iconAriaHidden
                 textColor={colors.clRedError}
                 fontWeight="500"
                 borderColor="#ccc"

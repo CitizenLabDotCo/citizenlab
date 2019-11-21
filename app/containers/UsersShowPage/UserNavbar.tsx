@@ -120,14 +120,16 @@ const UserNavbar = memo<Props>(props => {
   }, []);
 
   return (
-    <UserNavbarWrapper>
+    <UserNavbarWrapper role="tablist">
       <UserNavbarButton
         onMouseDown={removeFocus}
         onClick={selectTab('ideas')}
         className={currentTab === 'ideas' ? 'active' : ''}
+        role="tab"
+        aria-selected={currentTab === 'ideas'}
       >
-        <Border />
-        <TabIcon name="idea2" />
+        <Border aria-hidden />
+        <TabIcon name="idea2" ariaHidden />
         {!isNilOrError(ideasCount) &&
           <FormattedMessage {...messages.ideasWithCount} values={{ ideasCount }} />
         }
@@ -136,9 +138,11 @@ const UserNavbar = memo<Props>(props => {
         onMouseDown={removeFocus}
         onClick={selectTab('comments')}
         className={`e2e-comment-section-nav ${currentTab === 'comments' ? 'active' : ''}`}
+        role="tab"
+        aria-selected={currentTab === 'comments'}
       >
-        <Border />
-        <TabIcon name="comments" />
+        <Border aria-hidden />
+        <TabIcon name="comments" ariaHidden />
         {!isNilOrError(commentsCount) &&
           <FormattedMessage {...messages.commentsWithCount} values={{ commentsCount }} />
         }
