@@ -168,7 +168,6 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
           opened={modalVisible_delete}
           close={this.closeDeleteModal}
           className="e2e-comment-deletion-modal"
-          label={this.props.intl.formatMessage(messages.spanModalLabelComment)}
           header={<FormattedMessage {...messages.confirmCommentDeletion} />}
         >
           <HasPermission item={comment} action="justifyDeletion" context={{ projectId }}>
@@ -200,7 +199,6 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
         <Modal
           opened={modalVisible_spam}
           close={this.closeSpamModal}
-          label={this.props.intl.formatMessage(messages.spanModalLabelComment)}
           header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
         >
           <SpamReportForm resourceId={comment.id} resourceType="comments" />

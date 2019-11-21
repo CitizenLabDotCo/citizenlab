@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-import { hideVisually } from 'polished';
+import { fontSizes, customOutline } from 'utils/styleUtils';
 
 export const CustomRadio = styled.div`
   flex: 0 0 20px;
@@ -20,14 +19,20 @@ export const CustomRadio = styled.div`
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.15);
   cursor: pointer;
 
+  &.focused {
+    outline: ${customOutline};
+    border-color: #000;
+  }
+
   &:not(.disabled) {
     cursor: pointer;
 
     &:hover,
-    &:focus,
     &:active {
       border-color: #000;
     }
+
+
   }
 
   &.disabled {
@@ -36,22 +41,11 @@ export const CustomRadio = styled.div`
   }
 `;
 
-const Wrapper = styled.label`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-bottom: 12px;
-  cursor: pointer;
-
-  &.disabled {
-    cursor: not-allowed;
-  }
-
-  &:hover, &:focus-within {
-    .circle {
-      border: 1px solid #000;
-    }
-  }
 `;
 
 export const Checked = styled.div`
@@ -62,7 +56,7 @@ export const Checked = styled.div`
   border-radius: 50%;
 `;
 
-const Text = styled.div`
+const Label = styled.label`
   display: flex;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -72,8 +66,16 @@ const Text = styled.div`
   }
 `;
 
-const HiddenInput = styled.input`
-  ${hideVisually()}
+const Input = styled.input`
+  &[type='radio'] {
+    /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
+  }
 `;
 
 export interface Props {
@@ -88,15 +90,17 @@ export interface Props {
   className?: string;
 }
 
-export default class Radio extends PureComponent<Props> {
+interface State {
+  inputFocused: boolean;
+}
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  }
+export default class Radio extends PureComponent<Props, State> {
 
-  handleClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-    this.handleChange();
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputFocused: false
+    };
   }
 
   handleChange = () => {
@@ -105,30 +109,43 @@ export default class Radio extends PureComponent<Props> {
     }
   }
 
+  handleOnFocus = () => {
+    this.setState({
+      inputFocused: true
+    });
+  }
+
+  handleOnBlur = () => {
+    this.setState({
+      inputFocused: false
+    });
+  }
+
   render() {
-    const { name, value, currentValue, disabled, buttonColor, label, className } = this.props;
+    const { id, name, value, currentValue, disabled, buttonColor, label } = this.props;
+    const { inputFocused } = this.state;
     const checked = (value === currentValue);
 
     return (
-      <Wrapper className={`${className} ${disabled ? 'disabled' : ''}`}>
-        <HiddenInput
+      <Wrapper>
+        <Input
+          id={id}
           type="radio"
           name={name}
           value={value}
-          aria-checked={checked}
-          checked={checked}
+          defaultChecked={checked}
           onChange={this.handleChange}
+          onFocus={this.handleOnFocus}
+          onBlur={this.handleOnBlur}
         />
         <CustomRadio
-          onMouseDown={this.removeFocus}
-          onClick={this.handleClick}
-          className={`${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} circle`}
+          className={`${inputFocused ? 'focused' : ''} ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} circle`}
         >
           {checked &&
-            <Checked color={(buttonColor || '#49B47D')}/>
+            <Checked aria-hidden color={(buttonColor || '#49B47D')}/>
           }
         </CustomRadio>
-        <Text className="text">{label}</Text>
+        <Label htmlFor={id} className="text">{label}</Label>
       </Wrapper>
     );
   }
