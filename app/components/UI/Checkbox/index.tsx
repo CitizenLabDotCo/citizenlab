@@ -74,6 +74,7 @@ interface DefaultProps {
 }
 
 interface Props extends DefaultProps {
+  id?: string | undefined;
   label?: string | JSX.Element | null | undefined;
   checked: boolean;
   onChange: (event: React.MouseEvent | React.KeyboardEvent) => void;
@@ -134,7 +135,7 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   render() {
-    const { label, size, checked, className } = this.props;
+    const { label, size, checked, className, id } = this.props;
     const { inputFocused } = this.state;
 
     return (
@@ -143,10 +144,10 @@ export default class Checkbox extends PureComponent<Props, State> {
         onMouseDown={this.removeFocus}
         onClick={this.handleOnClick}
         onKeyDown={this.handleOnKeyDown}
-        className={`e2e-checkbox ${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
+        className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
       >
         <InputWrapper
-          className={`${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
+          className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
           checked={checked}
           size={size as string}
         >
@@ -162,7 +163,7 @@ export default class Checkbox extends PureComponent<Props, State> {
         </InputWrapper>
 
         {label &&
-          <Label htmlFor="checkbox">
+          <Label htmlFor={id} onClick={this.handleOnClick}>
             {label}
           </Label>
         }

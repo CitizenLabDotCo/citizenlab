@@ -206,13 +206,11 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Select
-          clearable={true}
-          searchable={false}
           value={selectedOption}
           options={props.options.enumOptions}
           onChange={onChange}
           key={props.id}
-          inputId={props.id}
+          id={props.id}
           disabled={props.disabled}
           aria-label={props.label}
         />
