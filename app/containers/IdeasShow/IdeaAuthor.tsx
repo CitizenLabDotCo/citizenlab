@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import Avatar from 'components/Avatar';
-import ContentChangeLog from 'components/PostComponents/ContentChangeLog';
+import ContentChangeLog from 'components/PostShowComponents/ContentChangeLog';
 import IdeaPostedBy from './IdeaPostedBy';
 
 // resources

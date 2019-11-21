@@ -15,7 +15,7 @@ import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import VoteControl from 'components/VoteControl';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
-import Body from 'components/PostComponents/Body';
+import Body from 'components/PostShowComponents/Body';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
