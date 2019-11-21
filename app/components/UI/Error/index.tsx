@@ -231,7 +231,7 @@ export default class Error extends PureComponent<Props, State> {
           >
             {showIcon &&
               <IconWrapper>
-                <Icon title={<FormattedMessage {...messages.error} />} name="error" />
+                <Icon title={<FormattedMessage {...messages.error} />} name="error" ariaHidden />
               </IconWrapper>
             }
 
