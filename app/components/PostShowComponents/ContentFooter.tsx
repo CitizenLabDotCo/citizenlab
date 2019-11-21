@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import AvatarBubbles from 'components/AvatarBubbles';
 import Icon from 'components/UI/Icon';
-import ContentChangeLog from 'components/PostComponents/ContentChangeLog';
+import ContentChangeLog from 'components/PostShowComponents/ContentChangeLog';
 
 // resources
 import GetRandomAvatars, { GetRandomAvatarsChildProps } from 'resources/GetRandomAvatars';

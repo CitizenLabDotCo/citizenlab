@@ -37,10 +37,11 @@ export default class FileUploader extends PureComponent<Props, State>{
     this.props.onFileAdd(fileToAdd);
   }
 
-  handleFileOnRemove = (fileToRemove: UploadFile) => () => {
+  handleFileOnRemove = (fileToRemove: UploadFile) => (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     this.props.onFileRemove(fileToRemove);
   }
-
   render() {
     const { files, errors, id, className } = this.props;
     const fileNames = Array.isArray(files) && files.map(file => file.filename).join(', ');

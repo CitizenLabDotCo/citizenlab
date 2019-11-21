@@ -16,17 +16,17 @@ import FileAttachments from 'components/UI/FileAttachments';
 import Spinner from 'components/UI/Spinner';
 import Sharing from 'components/Sharing';
 import FeatureFlag from 'components/FeatureFlag';
-import SharingModalContent from 'components/PostComponents/SharingModalContent';
+import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
-import Topics from 'components/PostComponents/Topics';
-import Title from 'components/PostComponents/Title';
-import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
-import Body from 'components/PostComponents/Body';
-import Image from 'components/PostComponents/Image';
-import Footer from 'components/PostComponents/Footer';
-import ContentFooter from 'components/PostComponents/ContentFooter';
-import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
-import TranslateButton from 'components/PostComponents/TranslateButton';
+import Topics from 'components/PostShowComponents/Topics';
+import Title from 'components/PostShowComponents/Title';
+import LoadableDropdownMap from 'components/PostShowComponents/DropdownMap/LoadableDropdownMap';
+import Body from 'components/PostShowComponents/Body';
+import Image from 'components/PostShowComponents/Image';
+import Footer from 'components/PostShowComponents/Footer';
+import ContentFooter from 'components/PostShowComponents/ContentFooter';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+import TranslateButton from 'components/PostShowComponents/TranslateButton';
 
 import InitiativeMeta from './InitiativeMeta';
 import PostedBy from './PostedBy';
@@ -641,7 +641,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             close={this.closeInitiativeSocialSharingModal}
             hasSkipButton={true}
             skipText={<FormattedMessage {...messages.skipSharing} />}
-            label={formatMessage(messages.modalShareLabel)}
           >
             {initiativeIdForSocialSharing &&
               <SharingModalContent
