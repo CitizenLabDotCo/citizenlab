@@ -315,7 +315,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "",
   "app.components.UI.Card.login": "",
   "app.components.UI.Card.register": "",
-  "app.components.UI.IconTooltip.info": "",
+  "app.components.UI.IconTooltip.a11y_informationTooltip": "",
   "app.components.UI.TranslateButton.seeOriginal": "",
   "app.components.UI.TranslateButton.seeTranslation": "",
   "app.components.Upload.a11y_removeImage": "",
