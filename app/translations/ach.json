@@ -1651,7 +1651,7 @@
   "app.containers.UsersEditPage.h1": "",
   "app.containers.UsersEditPage.h1sub": "",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "",
-  "app.containers.UsersEditPage.imageDropzoneRemoveIconAriaTitle": "",
+  "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "",
   "app.containers.UsersEditPage.language": "",
   "app.containers.UsersEditPage.lastName": "",

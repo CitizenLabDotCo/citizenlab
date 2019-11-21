@@ -1651,7 +1651,7 @@
   "app.containers.UsersEditPage.h1": "Your account information",
   "app.containers.UsersEditPage.h1sub": "Edit your account information",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "Click to select a profile picture (max. 5MB)",
-  "app.containers.UsersEditPage.imageDropzoneRemoveIconAriaTitle": "Remove profile picture",
+  "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Remove profile picture",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "All settings for your profile",
   "app.containers.UsersEditPage.language": "Language",
   "app.containers.UsersEditPage.lastName": "Last name",

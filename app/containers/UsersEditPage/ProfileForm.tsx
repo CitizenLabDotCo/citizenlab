@@ -252,7 +252,7 @@ class ProfileForm extends PureComponent<Props, State> {
               onAdd={handleAvatarOnAdd}
               onRemove={handleAvatarOnRemove}
               label={formatMessage(messages.imageDropzonePlaceholder)}
-              removeIconAriaTitle={formatMessage(messages.imageDropzoneRemoveIconAriaTitle)}
+              removeIconAriaTitle={formatMessage(messages.a11y_imageDropzoneRemoveIconAriaTitle)}
               borderRadius="50%"
             />
             <Error apiErrors={errors.avatar} />
