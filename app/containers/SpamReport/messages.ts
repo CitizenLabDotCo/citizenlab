@@ -1,14 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  title: {
-    id: 'app.containers.SpamReport.title',
-    defaultMessage: 'Why do you want to report this as spam?',
-  },
-  subtitle: {
-    id: 'app.containers.SpamReport.subtitle',
-    defaultMessage: 'Select the reason for your report',
-  },
   wrong_content: {
     id: 'app.containers.SpamReport.wrong_content',
     defaultMessage: 'This content does not belong here',

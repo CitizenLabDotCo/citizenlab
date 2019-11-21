@@ -13,27 +13,27 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
-import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
-import Topics from 'components/PostComponents/Topics';
-import Title from 'components/PostComponents/Title';
-import Body from 'components/PostComponents/Body';
-import ContentFooter from 'components/PostComponents/ContentFooter';
-import Image from 'components/PostComponents/Image';
-import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
+import LoadableDropdownMap from 'components/PostShowComponents/DropdownMap/LoadableDropdownMap';
+import Topics from 'components/PostShowComponents/Topics';
+import Title from 'components/PostShowComponents/Title';
+import Body from 'components/PostShowComponents/Body';
+import ContentFooter from 'components/PostShowComponents/ContentFooter';
+import Image from 'components/PostShowComponents/Image';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
 import FileAttachments from 'components/UI/FileAttachments';
-import SharingModalContent from 'components/PostComponents/SharingModalContent';
+import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
-import Footer from 'components/PostComponents/Footer';
+import Footer from 'components/PostShowComponents/Footer';
 import Spinner from 'components/UI/Spinner';
 import ActionBar from './ActionBar';
-import TranslateButton from 'components/PostComponents/TranslateButton';
+import TranslateButton from 'components/PostShowComponents/TranslateButton';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -726,7 +726,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             close={this.closeIdeaSocialSharingModal}
             hasSkipButton={true}
             skipText={<FormattedMessage {...messages.skipSharing} />}
-            label={formatMessage(messages.modalShareLabel)}
           >
             {ideaIdForSocialSharing &&
               <SharingModalContent
