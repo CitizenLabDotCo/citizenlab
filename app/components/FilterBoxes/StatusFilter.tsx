@@ -50,6 +50,8 @@ const CloseIcon = styled(Icon)`
   fill: #fff;
 `;
 
+const StatusesContainer = styled.div``;
+
 const Status = styled.button`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
@@ -69,6 +71,7 @@ const Status = styled.button`
   border-radius: 5px;
   user-select: none;
   transition: all 80ms ease-out;
+  width: 100%;
 
   &:not(.selected):hover {
     background: rgba(132, 147, 158, 0.15);
@@ -123,51 +126,56 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
           </Title>
         </Header>
 
-        <AllStatus
-          data-id={null}
-          onMouseDown={removeFocus}
-          onClick={handleOnClick}
-          className={!selectedStatusId ? 'selected' : ''}
-        >
-          <FormattedMessage {...messages.all} />
-          <Count aria-hidden>
-            {allIdeasCount}
-          </Count>
-          <ScreenReaderOnly>
-            {/* Pronounce number of ideas of All status when focus/hover it */}
-            <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: allIdeasCount }} />
-          </ScreenReaderOnly>
-        </AllStatus>
+        <StatusesContainer role="tablist">
+          <AllStatus
+            data-id={null}
+            onMouseDown={removeFocus}
+            onClick={handleOnClick}
+            className={!selectedStatusId ? 'selected' : ''}
+            role="tab"
+          >
+            <FormattedMessage {...messages.all} />
+            <Count aria-hidden>
+              {allIdeasCount}
+            </Count>
+            <ScreenReaderOnly>
+              {/* Pronounce number of ideas of All status when focus/hover it */}
+              <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: allIdeasCount }} />
+            </ScreenReaderOnly>
+          </AllStatus>
 
-        {statuses.map((status) => {
-          const filterIdeasCount = get(filterCounts, `${type}_status_id.${status.id}`, 0);
-          const isFilterSelected = status.id === selectedStatusId;
+          {statuses.map((status) => {
+            const filterIdeasCount = get(filterCounts, `${type}_status_id.${status.id}`, 0);
+            const isFilterSelected = status.id === selectedStatusId;
 
-          return (
-            <Status
-              key={status.id}
-              data-id={status.id}
-              onMouseDown={removeFocus}
-              onClick={handleOnClick}
-              className={`e2e-status ${isFilterSelected ? 'selected' : ''}`}
-            >
-              <T value={status.attributes.title_multiloc}>
-                {statusTitle => <>{capitalize(statusTitle)}</>}
-              </T>
-              {!isFilterSelected ? (
-                <Count aria-hidden>
-                  {filterIdeasCount}
-                </Count>
-              ) : (
-                <CloseIcon name="close" />
-              )}
-              <ScreenReaderOnly>
-                {/* Pronounce number of ideas per status when focus/hover it */}
-                <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: filterIdeasCount }} />
-              </ScreenReaderOnly>
-            </Status>
-          );
-        })}
+            return (
+              <Status
+                key={status.id}
+                data-id={status.id}
+                onMouseDown={removeFocus}
+                onClick={handleOnClick}
+                className={`e2e-status ${isFilterSelected ? 'selected' : ''}`}
+                role="tab"
+                aria-selected={isFilterSelected}
+              >
+                <T value={status.attributes.title_multiloc}>
+                  {statusTitle => <>{capitalize(statusTitle)}</>}
+                </T>
+                {!isFilterSelected ? (
+                  <Count aria-hidden>
+                    {filterIdeasCount}
+                  </Count>
+                ) : (
+                  <CloseIcon name="close" />
+                )}
+                <ScreenReaderOnly>
+                  {/* Pronounce number of ideas per status when focus/hover it */}
+                  <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: filterIdeasCount }} />
+                </ScreenReaderOnly>
+              </Status>
+            );
+          })}
+        </StatusesContainer>
       </Container>
     );
   }
