@@ -10,24 +10,40 @@ import Icon from 'components/UI/Icon';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  display: flex;
   width: 100%;
-  justify-content: flex-end;
-
-  & > :not(:last-child) {
-    margin-right: 5px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
-const StyledButton = styled.button`
+const ChildContent = styled.div`
+  margin-right: 15px;
+`;
+
+const Spacer = styled.div`
+  flex: 1;
+`;
+
+const LocaleButtons = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const LocaleButton = styled.button`
   color: ${colors.label};
   display: flex;
   align-items: center;
   text-transform: uppercase;
+  white-space: nowrap;
   padding: 7px 9px;
+  margin-left: 5px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   transition: all 80ms ease-out;
+
+  &.first {
+    margin-left: 0px;
+  }
 
   svg {
     fill: ${colors.clRed};
@@ -59,6 +75,7 @@ interface InputProps {
   values: MultilocFormValues;
   selectedLocale: Locale;
   className?: string;
+  children?: any;
 }
 
 interface DataProps {
@@ -84,23 +101,33 @@ class FormLocaleSwitcher extends PureComponent<Props> {
   }
 
   render() {
-    const { tenantLocales, selectedLocale, className } = this.props;
+    const { tenantLocales, selectedLocale, className, children } = this.props;
 
     if (!isNilOrError(tenantLocales) && tenantLocales.length > 1) {
       return (
         <Container className={className}>
-          {tenantLocales.map((locale) => (
-            <StyledButton
-              key={locale}
-              onMouseDown={this.removeFocus}
-              onClick={this.handleOnClick(locale)}
-              type="button"
-              className={`e2e-locale-switch ${locale} ${locale === selectedLocale ? 'isSelected' : ''} ${this.validatePerLocale(locale) ? 'isComplete' : 'notComplete'}`}
-            >
-              <Icon name="dot" />
-              {locale}
-            </StyledButton>
-          ))}
+          {children &&
+            <ChildContent>
+              {children}
+            </ChildContent>
+          }
+
+          <Spacer aria-hidden />
+
+          <LocaleButtons>
+            {tenantLocales.map((locale, index) => (
+              <LocaleButton
+                key={locale}
+                onMouseDown={this.removeFocus}
+                onClick={this.handleOnClick(locale)}
+                type="button"
+                className={`e2e-locale-switch ${locale} ${index === 0 ? 'first' : ''} ${locale === selectedLocale ? 'isSelected' : ''} ${this.validatePerLocale(locale) ? 'isComplete' : 'notComplete'}`}
+              >
+                <Icon name="dot" ariaHidden />
+                {locale}
+              </LocaleButton>
+            ))}
+          </LocaleButtons>
         </Container>
       );
     }
