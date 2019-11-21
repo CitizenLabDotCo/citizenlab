@@ -1557,6 +1557,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "La encuesta ya no está disponible, ya que este proyecto ya no está activo.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verifica tu identidad ahora.",
   "app.containers.SearchInput.a11y_searchTerm": "",
+  "app.containers.SearchInput.a11y_searchTermBlank": "",
   "app.containers.SearchInput.removeSearchTerm": "Eliminar término de búsqueda",
   "app.containers.SearchInput.searchAriaLabel": "Búsqueda",
   "app.containers.SearchInput.searchPlaceholder": "Búsqueda",
