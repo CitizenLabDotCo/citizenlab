@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.a11y_allIdeas',
     defaultMessage: 'All ideas: {allIdeasCount}',
   },
+  a11y_removeFilter: {
+    id: 'app.components.FilterBoxes.a11y_removeFilter',
+    defaultMessage: 'Remove filter',
+  }
 });
