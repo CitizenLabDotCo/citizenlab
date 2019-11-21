@@ -247,6 +247,7 @@ interface State {
   cancellingEnabled: boolean | null;
   votingFutureEnabled: string | null;
   votingDisabledReason: string | null;
+  a11yVoteMessage: string;
 }
 
 class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
@@ -273,6 +274,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
       cancellingEnabled: null,
       votingFutureEnabled: null,
       votingDisabledReason: null,
+      a11yVoteMessage: ''
     };
     this.voting$ = new BehaviorSubject(null);
     this.id$ = new BehaviorSubject(null);
@@ -490,6 +492,11 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
 
         await ideaByIdStream(ideaId).fetch();
         this.voting$.next(null);
+        this.setState(({ upvotesCount, downvotesCount }) => {
+          const actionMessage = this.props.intl.formatMessage(voteMode === 'up' ? messages.a11y_upvoteButtonClicked : messages.a11y_downvoteButtonClicked);
+          const totalVotesMessage = this.props.intl.formatMessage(messages.a11y_totalVotes, { upvotesCount, downvotesCount });
+          return { a11yVoteMessage: `${actionMessage} ${totalVotesMessage}` };
+        });
       } catch (error) {
         this.voting$.next(null);
         await ideaByIdStream(ideaId).fetch();
@@ -511,7 +518,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { size, className, intl: { formatMessage } } = this.props;
-    const { project, phases, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, votingFutureEnabled, upvotesCount, downvotesCount, votingDisabledReason } = this.state;
+    const { project, phases, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, votingFutureEnabled, upvotesCount, downvotesCount, votingDisabledReason, a11yVoteMessage } = this.state;
     const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
     const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
     const projectProcessType = get(project, 'data.attributes.process_type');
@@ -539,6 +546,8 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
           <FormattedMessage {...messages.a11y_xDownvotes} values={{ count: downvotesCount }} />
         </ScreenReaderOnly>
 
+        <LiveMessage message={a11yVoteMessage} aria-live="polite" />
+
         <Upvote
           active={myVoteMode === 'up'}
           onMouseDown={this.removeFocus}
@@ -552,7 +561,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             <VoteIcon ariaHidden title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
           </VoteIconContainer>
           <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
-          <LiveMessage message={`Upvote button clicked. Total upvotes: ${upvotesCount}`} aria-live="polite" />
         </Upvote>
 
         <Downvote
@@ -568,7 +576,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             <VoteIcon ariaHidden title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
           </VoteIconContainer>
           <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
-          <LiveMessage message={`Downvote button clicked. Total downvotes: ${downvotesCount}`} aria-live="polite" />
         </Downvote>
       </Container>
     );
