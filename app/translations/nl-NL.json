@@ -1557,6 +1557,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "De enquête is niet langer beschikbaar, omdat het project niet langer actief is.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verifieer nu je identiteit.",
   "app.containers.SearchInput.a11y_searchTerm": "",
+  "app.containers.SearchInput.a11y_searchTermBlank": "",
   "app.containers.SearchInput.removeSearchTerm": "Zoekterm verwijderen",
   "app.containers.SearchInput.searchAriaLabel": "Zoeken",
   "app.containers.SearchInput.searchPlaceholder": "Zoeken",
