@@ -1557,6 +1557,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "",
   "app.containers.SearchInput.a11y_searchTerm": "",
+  "app.containers.SearchInput.a11y_searchTermBlank": "",
   "app.containers.SearchInput.removeSearchTerm": "",
   "app.containers.SearchInput.searchAriaLabel": "",
   "app.containers.SearchInput.searchPlaceholder": "",

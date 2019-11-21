@@ -1557,6 +1557,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Diese Umfrage ist nicht länger zugänglich, da dieses Projekt nicht mehr aktiv ist.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verifizieren Sie jetzt Ihr Konto.",
   "app.containers.SearchInput.a11y_searchTerm": "",
+  "app.containers.SearchInput.a11y_searchTermBlank": "",
   "app.containers.SearchInput.removeSearchTerm": "Suchbegriff entfernen",
   "app.containers.SearchInput.searchAriaLabel": "Suche",
   "app.containers.SearchInput.searchPlaceholder": "Suche",
