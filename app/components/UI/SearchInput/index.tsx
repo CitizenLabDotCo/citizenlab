@@ -188,7 +188,7 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
         className="e2e-search-input"
       />
       <ScreenReaderOnly aria-live="polite">
-        <FormattedMessage {...messages.searchTerm} values={{ searchTerm }} />
+        <FormattedMessage {...messages.a11y_searchTerm} values={{ searchTerm }} />
       </ScreenReaderOnly>
       {isEmpty(searchTerm) ?
         <SearchIcon ariaHidden name="search2" />
