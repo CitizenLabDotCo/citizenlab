@@ -114,7 +114,6 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
 
   if (!isNilOrError(statuses) && statuses.length > 0) {
     const allIdeasCount = filterCounts && filterCounts.total ? filterCounts.total : 0;
-    const selectedStatus = selectedStatusId && statuses.find(status => status.id === selectedStatusId);
 
     return (
       <Container className={`e2e-statuses-filters ${className}`}>
@@ -169,28 +168,6 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
             </Status>
           );
         })}
-
-        <ScreenReaderOnly aria-live="polite">
-          {/* Pronounce selected status + number of ideas visible for this status */}
-          {selectedStatus ?
-            <>
-              <FormattedMessage
-                {...messages.a11y_selectedStatus}
-                values={{
-                  selectedStatus: <T value={selectedStatus.attributes.title_multiloc} />
-                }}
-              />
-              <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: get(filterCounts, `${type}_status_id.${selectedStatusId}`, 0) }} />
-            </>
-            :
-            <>
-              <FormattedMessage
-                {...messages.a11y_selectedAllStatus}
-              />
-              <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: allIdeasCount }} />
-            </>
-          }
-        </ScreenReaderOnly>
       </Container>
     );
   }
