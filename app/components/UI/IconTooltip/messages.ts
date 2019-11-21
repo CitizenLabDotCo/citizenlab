@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  info: {
-    id: 'app.components.UI.IconTooltip.info',
-    defaultMessage: 'Info',
+  a11y_informationTooltip: {
+    id: 'app.components.UI.IconTooltip.a11y_informationTooltip',
+    defaultMessage: 'Information tooltip',
   },
 });
