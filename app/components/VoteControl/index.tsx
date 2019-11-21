@@ -392,7 +392,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
         const currentOrLatestPhaseId = lastPhaseHasPassed ? lastPhase?.data.id : project?.data.relationships.current_phase?.data?.id;
 
         if (shouldVerify && !this.props.noVerificationShortFlow) {
-          console.log('hi');
           const pcType = phases ? 'phase' : 'project';
           const pcId = pcType === 'phase' ? currentOrLatestPhaseId : project?.data.id;
           verificationNeeded('ActionVote', pcId || '', pcType, 'voting');

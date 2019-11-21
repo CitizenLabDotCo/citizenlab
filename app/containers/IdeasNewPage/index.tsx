@@ -167,7 +167,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           await Promise.all([imageToAddPromise, ...filesToAddPromises] as Promise<any>[]);
         } catch (error) {
           const apiErrors = get(error, 'json.errors');
-          console.log(apiErrors);
+          if (process.env.NODE_ENV === 'development') console.log(error);
           if (apiErrors && !apiErrors.idea) {
             this.globalState.set({ submitError: false, fileOrImageError: true });
           }
