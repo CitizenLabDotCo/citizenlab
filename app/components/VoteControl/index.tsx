@@ -12,6 +12,7 @@ import messages from './messages';
 
 // components
 import Icon from 'components/UI/Icon';
+import { LiveMessage } from 'react-aria-live';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -551,6 +552,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             <VoteIcon ariaHidden title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
           </VoteIconContainer>
           <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
+          <LiveMessage message={`Upvote button clicked. Total upvotes: ${upvotesCount}`} aria-live="polite" />
         </Upvote>
 
         <Downvote
@@ -566,6 +568,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             <VoteIcon ariaHidden title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
           </VoteIconContainer>
           <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
+          <LiveMessage message={`Downvote button clicked. Total downvotes: ${downvotesCount}`} aria-live="polite" />
         </Downvote>
       </Container>
     );
