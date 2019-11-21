@@ -124,7 +124,6 @@
   "app.components.IdeasShow.goBack": "Gå tilbage",
   "app.components.IdeasShow.ideaPostedBy": "{tenantName, select, DeloitteDK {Indlæg af {userName}} other {Ide opslået af {userName}}}",
   "app.components.IdeasShow.login": "Log ind",
-  "app.components.IdeasShow.modalShareLabel": "{tenantName, select, DeloitteDK {Dit indlæg blev slået op, del det nu for at opnå flere stemmer!} other {Din idé blev slået op, del den nu for at opnå flere stemmer!}}",
   "app.components.IdeasShow.moreOptions": "Flere valgmuligheder",
   "app.components.IdeasShow.or": "eller",
   "app.components.IdeasShow.register": "Registrer dig",
