@@ -6,9 +6,13 @@ import { FormikConsumer, FormikContext } from 'formik';
 import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 import { isBoolean } from 'util';
 
 const Container: any = styled.div`
@@ -185,10 +189,21 @@ class Input extends React.PureComponent<Props, State> {
           {...optionalProps}
         />
 
-       {maxCharCount &&
-          <CharCount className={`${tooManyChars && 'error'}`} aria-hidden>
-            {currentCharCount}/{maxCharCount}
-          </CharCount>
+        {maxCharCount &&
+          <>
+            <ScreenReaderOnly aria-live="polite">
+              <FormattedMessage
+                {...messages.a11y_charactersLeft}
+                values={{
+                  currentCharCount,
+                  maxCharCount
+                }}
+              />
+            </ScreenReaderOnly>
+            <CharCount className={`${tooManyChars && 'error'}`} aria-hidden>
+              {currentCharCount}/{maxCharCount}
+            </CharCount>
+          </>
         }
 
         <Error className="e2e-input-error" text={error} size="1" />
