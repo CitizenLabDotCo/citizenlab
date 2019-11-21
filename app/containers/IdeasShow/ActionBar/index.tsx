@@ -3,8 +3,8 @@ import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 
 // components
-import BreadCrumbs from 'components/PostComponents/Breadcrumbs';
-import ActionBarLayout from 'components/PostComponents/ActionBar';
+import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
+import ActionBarLayout from 'components/PostShowComponents/ActionBar';
 import IdeaMoreActions from './IdeaMoreActions';
 
 // resource

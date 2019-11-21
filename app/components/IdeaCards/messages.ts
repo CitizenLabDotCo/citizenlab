@@ -65,9 +65,9 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.map',
     defaultMessage: 'Map',
   },
-  cards: {
-    id: 'app.containers.IdeaCards.cards',
-    defaultMessage: 'Cards',
+  list: {
+    id: 'app.containers.IdeaCards.list',
+    defaultMessage: 'List',
   },
   searchPlaceholder: {
     id: 'app.containers.IdeaCards.searchPlaceholder',

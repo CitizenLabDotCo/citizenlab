@@ -13,7 +13,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // components
-import OfficialFeedbackPost from 'components/PostComponents/OfficialFeedback/OfficialFeedbackPost';
+import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
 import Radio from 'components/UI/Radio';
 import { Section } from 'components/admin/Section';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
