@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
 
 // services
 import { getPostingPermission, DisabledReasons } from 'services/ideaPostingRules';
@@ -16,7 +17,6 @@ import Icon from 'components/UI/Icon';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import { adopt } from 'react-adopt';
 
 // events
 import { openVerificationModalWithContext } from 'containers/App/events';
@@ -117,8 +117,8 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
       const linkTo = !isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new';
       const isPostingDisabled = (!enabled && !!disabledReason);
       const tippyContent = (!enabled && !!disabledReason) ? (
-        <TooltipWrapper className="e2e-disabled-tooltip">
-          <LockIcon name="lock-outlined" />
+        <TooltipWrapper id="tooltip-content" className="e2e-disabled-tooltip">
+          <LockIcon name="lock-outlined" ariaHidden />
           <FormattedMessage
             {...this.disabledMessages[disabledReason]}
             values={{
@@ -140,8 +140,8 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             content={tippyContent}
             theme="light"
           >
-            <ButtonWrapper tabIndex={0} className="e2e-idea-button">
-              <Button {...this.props} linkTo={linkTo} disabled={isPostingDisabled}>
+            <ButtonWrapper className="e2e-idea-button">
+              <Button {...this.props} aria-describedby="tooltip-content" linkTo={linkTo} disabled={isPostingDisabled}>
                 <FormattedMessage {...messages.startAnIdea} />
               </Button>
             </ButtonWrapper>
