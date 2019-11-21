@@ -1,3 +1,4 @@
+require('intersection-observer');
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
@@ -102,6 +103,7 @@ type State = {
   verificationModalContext: ContextShape | null;
   mightOpenVerificationModal: boolean;
   navbarRef: HTMLElement | null;
+  mobileNavbarRef: HTMLElement | null;
 };
 
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
@@ -127,7 +129,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       verificationModalContext: null,
       verificationModalInitialStep: null,
       mightOpenVerificationModal: false,
-      navbarRef: null
+      navbarRef: null,
+      mobileNavbarRef: null
     };
     this.subscriptions = [];
   }
@@ -294,6 +297,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ navbarRef });
   }
 
+  setMobileNavigationRef = (mobileNavbarRef: HTMLElement) => {
+    this.setState({ mobileNavbarRef });
+  }
+
   render() {
     const { location, children } = this.props;
     const {
@@ -308,7 +315,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       verificationModalOpened,
       verificationModalInitialStep,
       verificationModalContext,
-      navbarRef
+      navbarRef,
+      mobileNavbarRef
     } = this.state;
     const adminPage = isPage('admin', location.pathname);
     const initiativeFormPage = isPage('initiative_form', location.pathname);
@@ -344,6 +352,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                         slug={modalSlug}
                         close={this.closePostPageModal}
                         navbarRef={navbarRef}
+                        mobileNavbarRef={mobileNavbarRef}
                       />
                     </Suspense>
                   </ErrorBoundary>
@@ -376,7 +385,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <Navbar setRef={this.setNavbarRef} />
+                    <Navbar setRef={this.setNavbarRef} setMobileNavigationRef={this.setMobileNavigationRef} />
                   </ErrorBoundary>
 
                   <InnerContainer>

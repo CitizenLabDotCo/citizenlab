@@ -17,6 +17,8 @@ import FeatureFlag from 'components/FeatureFlag';
 // resources
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
 import messages from './messages';
@@ -269,6 +271,8 @@ interface InputProps extends GetIdeasInputProps  {
 interface DataProps {
   windowSize: GetWindowSizeChildProps;
   ideas: GetIdeasChildProps;
+  project: GetProjectChildProps;
+  phase: GetPhaseChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -335,6 +339,8 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       participationContextType,
       windowSize,
       ideas,
+      project,
+      phase,
       className,
       theme,
       allowProjectsFilter,
@@ -351,6 +357,13 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
+    let locationAllowed: boolean | undefined = true;
+
+    if (participationContextType === 'Phase' && !isNilOrError(phase)) {
+      locationAllowed =  phase?.attributes?.location_allowed;
+    } else if (participationContextType === 'Project' && !isNilOrError(project)) {
+      locationAllowed =  project?.attributes?.location_allowed;
+    }
 
     return (
       <Container id="e2e-ideas-container" className={className}>
@@ -374,7 +387,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
 
             <Spacer />
 
-            {showViewToggle &&
+            {locationAllowed && showViewToggle &&
               <FeatureFlag name="maps">
                 <ViewButtons className={`${showCardView && 'cardView'}`}>
                   <CardsButton onClick={this.selectView('card')} className={`${showCardView && 'active'}`}>
@@ -395,7 +408,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </Loading>
         }
 
-        {!querying && !hasIdeas &&
+        {!querying && !hasIdeas && !showMapView &&
           <EmptyContainer id="ideas-empty">
             <IdeaIcon name="idea" />
             <EmptyMessage>
@@ -440,7 +453,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </Footer>
         }
 
-        {showMapView && hasIdeas &&
+        {showMapView &&
           <IdeasMap projectIds={queryParameters.projects} phaseId={queryParameters.phase} />
         }
       </Container>
@@ -450,7 +463,9 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
-  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>
+  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
+  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'Project' ? participationContextId : null}>{render}</GetProject>,
+  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'Phase' ? participationContextId : null}>{render}</GetPhase>,
 });
 
 const WithoutFiltersSidebarWithHoCs = withTheme(injectIntl(WithoutFiltersSidebar));

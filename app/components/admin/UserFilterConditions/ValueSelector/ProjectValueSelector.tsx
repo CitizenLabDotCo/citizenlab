@@ -45,7 +45,6 @@ class ProjectValueSelector extends React.PureComponent<Props & InjectedLocalized
         value={value}
         options={this.generateOptions()}
         onChange={this.handleOnChange}
-        clearable={false}
       />
     );
   }

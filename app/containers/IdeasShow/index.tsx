@@ -143,7 +143,7 @@ const Content = styled.div`
 `;
 
 const LeftColumn = styled.div`
-  flex: 1 1 auto;
+  flex: 2;
   margin: 0;
   padding: 0;
   padding-right: ${columnsGapDesktop}px;

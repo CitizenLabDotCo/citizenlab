@@ -40,7 +40,9 @@ interface Props {
 interface State { }
 
 class AssignBudgetDisabled extends PureComponent<Props, State> {
-  onVerify = () => {
+  onVerify = (event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
     const { participationContextId, participationContextType } = this.props;
     openVerificationModalWithContext('ActionBudget', participationContextId, participationContextType, 'budgeting');
   }
