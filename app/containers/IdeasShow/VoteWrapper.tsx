@@ -58,7 +58,7 @@ class VoteWrapper extends PureComponent<Props, State> {
     if (!ideaId || !votingDescriptor) return null;
 
     return (
-      <div aria-live="polite">
+      <>
         {!error &&
           <VoteControl
             ideaId={ideaId}
@@ -80,7 +80,7 @@ class VoteWrapper extends PureComponent<Props, State> {
             <Unauthenticated />
           </PopContainer>
         }
-      </div>
+      </>
     );
   }
 }
