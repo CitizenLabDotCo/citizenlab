@@ -1560,7 +1560,6 @@
   "app.containers.SearchInput.removeSearchTerm": "Remove search term",
   "app.containers.SearchInput.searchAriaLabel": "Search",
   "app.containers.SearchInput.searchPlaceholder": "Search",
-  "app.containers.SearchInput.searchTerm": "Search term: {searchTerm}",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "I've already accepted the {tacLink}",
   "app.containers.SignIn.createAnAccount": "Sign up",
   "app.containers.SignIn.emailLabel": "Email",

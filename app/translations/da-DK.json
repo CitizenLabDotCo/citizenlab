@@ -1560,7 +1560,6 @@
   "app.containers.SearchInput.removeSearchTerm": "Fjern søgeterm\n",
   "app.containers.SearchInput.searchAriaLabel": "Søg",
   "app.containers.SearchInput.searchPlaceholder": "Søg",
-  "app.containers.SearchInput.searchTerm": "",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "Jeg har allerede accepteret {tacLink}",
   "app.containers.SignIn.createAnAccount": "Registrer dig",
   "app.containers.SignIn.emailLabel": "E-mail",

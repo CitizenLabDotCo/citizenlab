@@ -1560,7 +1560,6 @@
   "app.containers.SearchInput.removeSearchTerm": "",
   "app.containers.SearchInput.searchAriaLabel": "",
   "app.containers.SearchInput.searchPlaceholder": "",
-  "app.containers.SearchInput.searchTerm": "",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "",
   "app.containers.SignIn.createAnAccount": "",
   "app.containers.SignIn.emailLabel": "",

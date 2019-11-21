@@ -1560,7 +1560,6 @@
   "app.containers.SearchInput.removeSearchTerm": "Supprimer le terme de recherche",
   "app.containers.SearchInput.searchAriaLabel": "Chercher",
   "app.containers.SearchInput.searchPlaceholder": "Chercher",
-  "app.containers.SearchInput.searchTerm": "",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "J’ai déjà accepté les {tacLink}",
   "app.containers.SignIn.createAnAccount": "S'inscrire",
   "app.containers.SignIn.emailLabel": "Adresse e-mail",

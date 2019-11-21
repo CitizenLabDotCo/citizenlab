@@ -1560,7 +1560,6 @@
   "app.containers.SearchInput.removeSearchTerm": "Zoekterm verwijderen",
   "app.containers.SearchInput.searchAriaLabel": "Zoeken",
   "app.containers.SearchInput.searchPlaceholder": "Zoeken",
-  "app.containers.SearchInput.searchTerm": "",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "Ik heb de {tacLink} al geaccepteerd",
   "app.containers.SignIn.createAnAccount": "Registreren",
   "app.containers.SignIn.emailLabel": "E-mail",
