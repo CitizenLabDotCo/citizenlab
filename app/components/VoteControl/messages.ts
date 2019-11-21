@@ -53,4 +53,16 @@ export default defineMessages({
     id: 'app.containers.VoteControl.a11y_xUpvotes',
     defaultMessage: 'Upvote. {count, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
   },
+  a11y_upvoteButtonClicked: {
+    id: 'app.containers.VoteControl.a11y_upvoteButtonClicked',
+    defaultMessage: 'Upvote button clicked.',
+  },
+  a11y_downvoteButtonClicked: {
+    id: 'app.containers.VoteControl.a11y_downvoteButtonClicked',
+    defaultMessage: 'Downvote button clicked.',
+  },
+  a11y_totalVotes: {
+    id: 'app.containers.VoteControl.a11y_totalVotes',
+    defaultMessage: 'Total upvotes: {upvotesCount}. Total downvotes: {downvotesCount}.',
+  },
 });
