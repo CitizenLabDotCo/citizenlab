@@ -54,7 +54,6 @@ module.exports = function (api) {
         "@babel/plugin-proposal-optional-chaining",
         "@babel/plugin-transform-runtime",
         "dynamic-import-node",
-        "@babel/plugin-proposal-optional-chaining"
       ],
     }
   }
