@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
-import { has } from 'lodash-es';
+import { has, isBoolean } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 // libraries
@@ -25,7 +25,7 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/projects';
-import { phasesStream, IPhaseData } from 'services/phases';
+import { phasesStream, IPhaseData, getCurrentPhase } from 'services/phases';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -90,6 +90,7 @@ interface Props {
 interface State {
   tenant: ITenant | null;
   topics: IOption[] | null;
+  locationAllowed: boolean;
   pbContext: IProjectData | IPhaseData | null;
   projects: IOption[] | null;
   title: string;
@@ -117,6 +118,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       topics: null,
       pbContext: null,
       projects: null,
+      locationAllowed: true,
       title: '',
       titleError: null,
       description: '',
@@ -160,21 +162,44 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         return of(null) as Observable<any>;
       })
     );
+    const locationAllowed$ = project$.pipe(
+      switchMap((project) => {
+        if (project) {
+          if (project.data.attributes.process_type === 'continuous' && isBoolean(project.data.attributes.location_allowed)) {
+            return of(project.data.attributes.location_allowed);
+          }
 
-    this.updateState();
+          if (project.data.attributes.process_type === 'timeline') {
+            return phasesStream(project.data.id).observable.pipe(
+              map((phases) => {
+                const currentPhase = getCurrentPhase(phases.data);
+                const locationAllowed = currentPhase?.attributes?.location_allowed;
+                return isBoolean(locationAllowed) ? locationAllowed : true;
+              })
+            );
+          }
+        }
+
+        return of(true);
+      })
+    );
+
+    this.mapPropsToState();
 
     this.subscriptions = [
       combineLatest(
         locale$,
         tenant$,
         topics$,
-        pbContext$
-      ).subscribe(([locale, tenant, topics, pbContext]) => {
+        pbContext$,
+        locationAllowed$
+      ).subscribe(([locale, tenant, topics, pbContext, locationAllowed]) => {
         const tenantLocales = tenant.data.attributes.settings.core.locales;
 
         this.setState({
           tenant,
           pbContext,
+          locationAllowed,
           topics: this.getOptions(topics, locale, tenantLocales)
         });
       }),
@@ -189,7 +214,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   componentDidUpdate(prevProps: Props) {
     if (!shallowCompare(prevProps, this.props)) {
-      this.updateState();
+      this.mapPropsToState();
     }
   }
 
@@ -197,7 +222,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  updateState = () => {
+  mapPropsToState = () => {
     const { title, description, selectedTopics, address, budget, imageFile, remoteIdeaFiles } = this.props;
     const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
 
@@ -247,9 +272,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.setState({ address });
   }
 
-  handleUploadOnAdd = (imageFile: UploadFile) => {
+  handleUploadOnAdd = (imageFile: UploadFile[]) => {
     this.setState({
-      imageFile: [imageFile]
+      imageFile: [imageFile[0]]
     });
   }
 
@@ -388,7 +413,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       titleError,
       descriptionError,
       budgetError,
-      ideaFiles
+      ideaFiles,
+      locationAllowed
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
 
@@ -434,16 +460,18 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           </FormElement>
         )}
 
-        <FormElement>
-          <FormLabel labelMessage={messages.locationLabel}>
-            <LocationInput
-              className="e2e-idea-form-location-input-field"
-              value={address}
-              placeholder={formatMessage(messages.locationPlaceholder)}
-              onChange={this.handleLocationOnChange}
-            />
-          </FormLabel>
-        </FormElement>
+        {locationAllowed &&
+          <FormElement>
+            <FormLabel labelMessage={messages.locationLabel}>
+              <LocationInput
+                className="e2e-idea-form-location-input-field"
+                value={address}
+                placeholder={formatMessage(messages.locationPlaceholder)}
+                onChange={this.handleLocationOnChange}
+              />
+            </FormLabel>
+          </FormElement>
+        }
 
         <FormElement id="e2e-idea-image-upload">
           <FormLabel labelMessage={messages.imageUploadLabel} />
