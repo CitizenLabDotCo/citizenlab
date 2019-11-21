@@ -1651,7 +1651,7 @@
   "app.containers.UsersEditPage.h1": "Ihre Kontoinformationen",
   "app.containers.UsersEditPage.h1sub": "Bearbeiten Sie Ihre Kontoinformationen",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "Klicken, um ein Profilbild auszuwählen  (max. 5MB)",
-  "app.containers.UsersEditPage.imageDropzoneRemoveIconAriaTitle": "",
+  "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "Alle Einstellungen für dein Profil",
   "app.containers.UsersEditPage.language": "Sprache",
   "app.containers.UsersEditPage.lastName": "Nachname",

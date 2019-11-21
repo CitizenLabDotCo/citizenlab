@@ -1651,7 +1651,7 @@
   "app.containers.UsersEditPage.h1": "Dine kontooplysninger",
   "app.containers.UsersEditPage.h1sub": "Rediger dine kontooplysninger",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "Klik for at vælge et profilbillede (max. 5MB)",
-  "app.containers.UsersEditPage.imageDropzoneRemoveIconAriaTitle": "",
+  "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "Alle indstillinger for din konto\n",
   "app.containers.UsersEditPage.language": "Sprog",
   "app.containers.UsersEditPage.lastName": "Efternavn",

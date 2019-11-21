@@ -1651,7 +1651,7 @@
   "app.containers.UsersEditPage.h1": "Kontoinformasjonen din",
   "app.containers.UsersEditPage.h1sub": "Rediger kontoinformasjonen din",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "Click to select a profile picture (max. 5MB)",
-  "app.containers.UsersEditPage.imageDropzoneRemoveIconAriaTitle": "",
+  "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "All settings for your profile",
   "app.containers.UsersEditPage.language": "Språk",
   "app.containers.UsersEditPage.lastName": "Etternavn",
