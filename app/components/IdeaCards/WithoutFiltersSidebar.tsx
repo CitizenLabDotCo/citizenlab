@@ -359,9 +359,9 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     let locationAllowed: boolean | undefined = true;
 
-    if (participationContextType === 'Phase' && !isNilOrError(phase)) {
+    if (participationContextType === 'phase' && !isNilOrError(phase)) {
       locationAllowed =  phase?.attributes?.location_allowed;
-    } else if (participationContextType === 'Project' && !isNilOrError(project)) {
+    } else if (participationContextType === 'project' && !isNilOrError(project)) {
       locationAllowed =  project?.attributes?.location_allowed;
     }
 
@@ -464,8 +464,8 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
-  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'Project' ? participationContextId : null}>{render}</GetProject>,
-  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'Phase' ? participationContextId : null}>{render}</GetPhase>,
+  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
+  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
 });
 
 const WithoutFiltersSidebarWithHoCs = withTheme(injectIntl(WithoutFiltersSidebar));
