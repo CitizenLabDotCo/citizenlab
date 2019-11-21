@@ -6,14 +6,14 @@ import { FormikConsumer, FormikContext } from 'formik';
 import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 import { isBoolean } from 'util';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const Container: any = styled.div`
   width: 100%;
@@ -125,7 +125,7 @@ class Input extends React.PureComponent<Props, State> {
   }
 
   handleOnBlur = (event: React.FormEvent<HTMLInputElement>) => {
-    const { onBlur, formikContext, /*, name */ } = this.props;
+    const { onBlur, formikContext } = this.props;
 
     if (onBlur) {
       onBlur(event);
@@ -189,7 +189,7 @@ class Input extends React.PureComponent<Props, State> {
           {...optionalProps}
         />
 
-       {maxCharCount &&
+        {maxCharCount &&
           <>
             <ScreenReaderOnly aria-live="polite">
               <FormattedMessage
@@ -206,9 +206,7 @@ class Input extends React.PureComponent<Props, State> {
           </>
         }
 
-        <div>
-          <Error className="e2e-input-error" text={error} size="1" />
-        </div>
+        <Error className="e2e-input-error" text={error} size="1" />
 
       </Container>
     );
