@@ -166,7 +166,10 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
                     {filterIdeasCount}
                   </Count>
                 ) : (
-                  <CloseIcon name="close" />
+                  <CloseIcon
+                    title={<FormattedMessage {...messages.a11y_removeFilter} />}
+                    name="close"
+                  />
                 )}
                 <ScreenReaderOnly>
                   {/* Pronounce number of ideas per status when focus/hover it */}
