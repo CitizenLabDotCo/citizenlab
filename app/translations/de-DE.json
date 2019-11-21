@@ -315,7 +315,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Ausgewählt {AnzahlausgewählterThemen, Plural, =0 {null Themen} eins {ein Thema} weitere {# Themen}}. {ausgewählteThemennamen}",
   "app.components.UI.Card.login": "Anmeldung",
   "app.components.UI.Card.register": "Registrieren",
-  "app.components.UI.IconTooltip.info": "",
+  "app.components.UI.IconTooltip.a11y_informationTooltip": "",
   "app.components.UI.TranslateButton.seeOriginal": "Original anzeigen",
   "app.components.UI.TranslateButton.seeTranslation": "Siehe Übersetzung",
   "app.components.Upload.a11y_removeImage": "Remove",
