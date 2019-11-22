@@ -5,11 +5,11 @@ import { get } from 'lodash-es';
 
 // components
 import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
-import Title from 'components/PostComponents/Title';
-import Body from 'components/PostComponents/Body';
-import LoadableDropdownMap from 'components/PostComponents/DropdownMap';
-import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
-import Comments from 'components/PostComponents/Comments';
+import Title from 'components/PostShowComponents/Title';
+import Body from 'components/PostShowComponents/Body';
+import LoadableDropdownMap from 'components/PostShowComponents/DropdownMap';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+import Comments from 'components/PostShowComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import VotePreview from './VotePreview';

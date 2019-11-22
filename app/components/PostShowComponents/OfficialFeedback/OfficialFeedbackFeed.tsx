@@ -29,6 +29,7 @@ const FeedbackHeader = styled.div`
   font-weight: 400;
   margin-bottom: 20px;
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
 
   ${media.smallerThanMinTablet`
@@ -97,7 +98,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
         );
 
         return (
-          <Container className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}>
+          <Container aria-live="polite" className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}>
             <FeedbackHeader>
               <FeedbackTitle>
                 <FormattedMessage {...messages.officialUpdates} />
@@ -130,6 +131,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                 height="50px"
                 icon="showMore"
                 iconPos="left"
+                iconAriaHidden
                 textColor={colors.clRedError}
                 fontWeight="500"
                 borderColor="#ccc"
