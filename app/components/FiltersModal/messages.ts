@@ -8,5 +8,9 @@ export default defineMessages({
   resetFilters: {
     id: 'app.components.FiltersModal.resetFilters',
     defaultMessage: 'Reset filters',
-  }
+  },
+  closeFilterPanel: {
+    id: 'app.components.FiltersModal.closeFilterPanel',
+    defaultMessage: 'Close filter panel',
+  },
 });
