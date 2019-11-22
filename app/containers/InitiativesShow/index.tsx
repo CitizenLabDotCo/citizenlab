@@ -319,6 +319,7 @@ interface State {
 export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
   initialState: State;
   officialFeedbackElement = createRef<HTMLDivElement>();
+  timeoutRef: any;
 
   constructor(props) {
     super(props);
@@ -347,6 +348,10 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
   componentDidUpdate() {
     this.setLoaded();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeoutRef);
   }
 
   setLoaded = () => {
@@ -387,6 +392,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     }
 
     this.setState({ a11y_pronounceLatestOfficialFeedbackPost: true });
+    this.timeoutRef = setTimeout(() => this.setState({ a11y_pronounceLatestOfficialFeedbackPost: false }), 2000);
   }
 
   render() {
