@@ -10,14 +10,14 @@ interface Props {
   postType: 'idea' | 'initiative';
   permissionToPost: boolean | undefined;
   className?: string;
-  ariaLiveLatestPost?: boolean;
+  a11y_pronounceLatestOfficialFeedbackPost?: boolean;
 }
 
 interface State {}
 
 export default class OfficialFeedback extends PureComponent<Props, State> {
   render() {
-    const { postId, postType, permissionToPost, className, ariaLiveLatestPost } = this.props;
+    const { postId, postType, permissionToPost, className, a11y_pronounceLatestOfficialFeedbackPost } = this.props;
 
     if (isBoolean(permissionToPost)) {
       return (
@@ -33,7 +33,7 @@ export default class OfficialFeedback extends PureComponent<Props, State> {
             postId={postId}
             postType={postType}
             editingAllowed={permissionToPost}
-            ariaLiveLatestPost={ariaLiveLatestPost}
+            a11y_pronounceLatestOfficialFeedbackPost={a11y_pronounceLatestOfficialFeedbackPost}
           />
         </div>
       );
