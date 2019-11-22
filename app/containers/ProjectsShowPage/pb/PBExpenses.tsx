@@ -79,8 +79,13 @@ const Title = styled.h2`
 `;
 
 const TitleIcon = styled(Icon)`
+  flex: 0 0 18px;
   height: 18px;
   margin-right: 10px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const Spacer = styled.div`

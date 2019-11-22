@@ -27,6 +27,15 @@ import styled from 'styled-components';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
+const AddOfficialUpdateTitle = styled.h2`
+  color: ${colors.text};
+  font-size: ${fontSizes.medium}px;
+  line-height: normal;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+`;
+
 const ButtonContainer = styled.div`
   >:not(:last-child) {
     margin-right: 5px;
@@ -38,7 +47,7 @@ const CancelButton = styled(Button)`
 `;
 
 const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 `;
 
 interface DataProps {
@@ -62,8 +71,8 @@ interface State {
 }
 
 class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikProps<FormValues>, State> {
-  constructor(props: Props & InjectedIntlProps) {
-    super(props as any);
+  constructor(props: Props & InjectedIntlProps & FormikProps<FormValues>) {
+    super(props);
     this.state = {
       selectedLocale: props.locale,
     };
@@ -109,7 +118,11 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
             onLocaleChange={this.onLocaleChange}
             selectedLocale={selectedLocale}
             values={values}
-          />
+          >
+            <AddOfficialUpdateTitle>
+              <FormattedMessage {...messages.addOfficalUpdate} />
+            </AddOfficialUpdateTitle>
+          </StyledFormLocaleSwitcher>
 
           <Field
             render={this.renderFormikMentionsTextAreaMultiloc}

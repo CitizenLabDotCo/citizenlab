@@ -20,7 +20,6 @@ exports[`<Container /> renders correclty when no destinations are allowed by the
         id="app.components.ConsentManager.Modal.PreferencesDialog.title"
       />
     }
-    label="Your cookie preferences"
     opened={true}
   >
     <Component

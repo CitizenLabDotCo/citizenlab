@@ -87,7 +87,6 @@ class FieldSelector extends React.PureComponent<Props & InjectedIntlProps & Inje
         options={this.generateOptions()}
         onChange={this.handleOnChange}
         value={this.descriptorToOptionValue(field)}
-        clearable={false}
         id={`${fieldName}-e2e`}
       />
     );

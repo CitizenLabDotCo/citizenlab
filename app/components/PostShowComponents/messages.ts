@@ -46,5 +46,13 @@ export default defineMessages({
       changed_title {{userName} updated the title of this initiative}
       changed_body {{userName} updated the description of this initiative}
     }`,
+  },
+  a11y_numberOfContributors: {
+    id: 'app.components.PostComponents.a11y_numberOfParticipantsIdea',
+    defaultMessage: '{numberOfContributors, plural, no {# contributors} one {# contributor} other {# contributors}}'
+  },
+  a11y_commentsCount: {
+    id: 'app.components.PostComponents.a11y_commentsCount',
+    defaultMessage: '{commentsCount, plural, no {# comments} one {# comment} other {# comments}}'
   }
 });
