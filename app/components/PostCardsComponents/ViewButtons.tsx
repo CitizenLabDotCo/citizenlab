@@ -68,14 +68,15 @@ const MapButton = styled(ViewButton)`
 interface Props {
   className?: string;
   selectedView: 'card' | 'map';
-  onClick: (selectedView: 'card' | 'map') => (event: React.FormEvent) => void;
+  onClick: (selectedView: 'card' | 'map') => void;
 }
 
 const ViewButtons = memo<Props>(({ className, selectedView, onClick }: Props) => {
   const showListView = selectedView === 'card';
   const showMapView = selectedView === 'map';
 
-  const handleOnClick = (selectedView: 'card' | 'map') => (_event: React.FormEvent) => {
+  const handleOnClick = (selectedView: 'card' | 'map') => (event: React.FormEvent) => {
+    event.preventDefault();
     onClick(selectedView);
 
     trackEventByName(tracks.toggleDisplay, { locationButtonWasClicked: location.pathname, selectedDisplayMode: selectedView });

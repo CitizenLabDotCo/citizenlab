@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent, MouseEvent } from 'react';
+import React, { PureComponent, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -455,9 +455,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   }
 
-  selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
-    console.log('hi');
-    event.preventDefault();
+  selectView = (selectedView: 'card' | 'map') => {
     this.setState({ selectedView });
   }
 
