@@ -193,7 +193,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
       );
 
       return (
-        <PostContainer tabIndex={0} key={officialFeedbackPost.id} className={`e2e-official-feedback-post ${className || ''}`}>
+        <PostContainer key={officialFeedbackPost.id} className={`e2e-official-feedback-post ${className || ''}`}>
           {editingAllowed &&
             <StyledMoreActionsMenu
               ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
