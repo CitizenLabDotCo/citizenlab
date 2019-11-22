@@ -91,6 +91,7 @@
   "app.components.FilterBoxes.areas": "Områder",
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Emner",
+  "app.components.FiltersModal.closeFilterPanel": "",
   "app.components.FiltersModal.filters": "Filtre",
   "app.components.FiltersModal.resetFilters": "Nulstil filtre",
   "app.components.GoBackButton.group.edit.goBack": "Go back",

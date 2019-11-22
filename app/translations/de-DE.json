@@ -91,6 +91,7 @@
   "app.components.FilterBoxes.areas": "Gebiete",
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Themen",
+  "app.components.FiltersModal.closeFilterPanel": "",
   "app.components.FiltersModal.filters": "Filter",
   "app.components.FiltersModal.resetFilters": "Filter zurücksetzen",
   "app.components.GoBackButton.group.edit.goBack": "Go back",
