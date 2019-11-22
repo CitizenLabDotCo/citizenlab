@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -262,8 +262,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     this.props.ideas.onChangeTopics(topics);
   }
 
-  selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
-    event.preventDefault();
+  selectView = (selectedView: 'card' | 'map') => {
     this.setState({ selectedView });
   }
 
