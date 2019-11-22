@@ -1631,7 +1631,7 @@
   "app.containers.SpamReport.other": "Otra razón",
   "app.containers.SpamReport.otherReasonPlaceholder": "Descripción",
   "app.containers.SpamReport.wrong_content": "Esto no pertenece aquí",
-  "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Remove profile picture",
+  "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Elimina la imagen de perfil",
   "app.containers.UsersEditPage.bio": "Acerca de ti",
   "app.containers.UsersEditPage.bio_placeholder": " ",
   "app.containers.UsersEditPage.buttonSuccessLabel": "¡Perfecto!",
