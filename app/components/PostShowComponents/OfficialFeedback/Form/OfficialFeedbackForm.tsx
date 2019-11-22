@@ -27,6 +27,13 @@ import styled from 'styled-components';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
+const FormLabel = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+`;
+
 const AddOfficialUpdateTitle = styled.h2`
   color: ${colors.text};
   font-size: ${fontSizes.medium}px;
@@ -34,6 +41,11 @@ const AddOfficialUpdateTitle = styled.h2`
   font-weight: 600;
   padding: 0;
   margin: 0;
+`;
+
+const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
+  width: auto;
+  flex: 1;
 `;
 
 const ButtonContainer = styled.div`
@@ -44,10 +56,6 @@ const ButtonContainer = styled.div`
 
 const CancelButton = styled(Button)`
   margin-top: 10px;
-`;
-
-const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
-  margin-bottom: 15px;
 `;
 
 interface DataProps {
@@ -114,15 +122,19 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
     return (
       <Form>
         <Section id="official-feedback-form">
-          <StyledFormLocaleSwitcher
-            onLocaleChange={this.onLocaleChange}
-            selectedLocale={selectedLocale}
-            values={values}
-          >
-            <AddOfficialUpdateTitle>
-              <FormattedMessage {...messages.addOfficalUpdate} />
-            </AddOfficialUpdateTitle>
-          </StyledFormLocaleSwitcher>
+          <FormLabel>
+            {!editForm &&
+              <AddOfficialUpdateTitle>
+                <FormattedMessage {...messages.addOfficalUpdate} />
+              </AddOfficialUpdateTitle>
+            }
+
+            <StyledFormLocaleSwitcher
+              onLocaleChange={this.onLocaleChange}
+              selectedLocale={selectedLocale}
+              values={values}
+            />
+          </FormLabel>
 
           <Field
             render={this.renderFormikMentionsTextAreaMultiloc}
