@@ -384,7 +384,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         block: 'center',
         inline: 'center'
       });
-      this.officialFeedbackElement.current.focus();
     }
 
     this.setState({ a11y_pronounceLatestOfficialFeedbackPost: true });
