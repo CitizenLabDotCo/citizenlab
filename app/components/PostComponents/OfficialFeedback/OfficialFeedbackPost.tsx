@@ -106,7 +106,7 @@ interface InputProps {
   officialFeedbackPost: IOfficialFeedbackData;
   postType: 'idea' | 'initiative';
   className?: string;
-  ariaLiveLatestPost?: boolean;
+  a11y_pronounceLatestOfficialFeedbackPost?: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -167,7 +167,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
   }
 
   render() {
-    const { editingAllowed, officialFeedbackPost, locale, tenantLocales, className, ariaLiveLatestPost } = this.props;
+    const { editingAllowed, officialFeedbackPost, locale, tenantLocales, className, a11y_pronounceLatestOfficialFeedbackPost } = this.props;
     const { showEditForm } = this.state;
     const { body_multiloc, author_multiloc, created_at, updated_at } = officialFeedbackPost.attributes;
 
@@ -202,7 +202,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
           }
 
           <ScreenReaderOnly aria-live="polite">
-            {ariaLiveLatestPost && this.getPostBodyText(body_multiloc, locale, tenantLocales)}
+            {a11y_pronounceLatestOfficialFeedbackPost && this.getPostBodyText(body_multiloc, locale, tenantLocales)}
           </ScreenReaderOnly>
 
           <QuillEditedContent>
