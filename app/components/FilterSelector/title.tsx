@@ -11,6 +11,9 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
+// a11y
+import { LiveMessage } from 'react-aria-live';
+
 const Text = styled.span`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
@@ -104,8 +107,9 @@ export default class Title extends PureComponent<Props, State> {
         aria-expanded={opened}
         id={`${baseID}-label`}
         className={`e2e-filter-selector-button FilterSelectorTitle ${opened ? 'opened' : ''} ${className} ${adminPage ? 'adminpage' : ''}`}
-        aria-live="polite"
+        // aria-live="polite"
       >
+        <LiveMessage message={title} aria-live="polite" />
         <Text className="FilterSelectorTitleText">{title}</Text>
         <DropdownIcon className="FilterSelectorTitleIcon" name="dropdown" ariaHidden />
       </Container>
