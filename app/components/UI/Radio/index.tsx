@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { fontSizes, customOutline } from 'utils/styleUtils';
+import { get } from 'lodash-es';
 
 export const CustomRadio = styled.div`
   flex: 0 0 20px;
@@ -17,35 +18,25 @@ export const CustomRadio = styled.div`
   border-radius: 50%;
   border: 1px solid #a6a6a6;
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
 
   &.focused {
     outline: ${customOutline};
     border-color: #000;
   }
 
-  &:not(.disabled) {
+  &.enabled {
     cursor: pointer;
 
     &:hover,
     &:active {
       border-color: #000;
     }
-
-
   }
 
   &.disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 12px;
 `;
 
 export const Checked = styled.div`
@@ -60,9 +51,14 @@ const Label = styled.label`
   display: flex;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 20px;
+  line-height: normal;
+
   & > :not(last-child) {
     margin-right: 7px;
+  }
+
+  &.enabled {
+    cursor: pointer;
   }
 `;
 
@@ -78,13 +74,27 @@ const Input = styled.input`
   }
 `;
 
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+
+  &.enabled {
+    &:hover {
+      ${CustomRadio} {
+        border-color: #000;
+      }
+    }
+  }
+`;
+
 export interface Props {
   onChange?: {(event): void};
   currentValue?: any;
   value: any;
   name?: string | undefined;
   id?: string | undefined;
-  label: string | JSX.Element;
+  label?: string | JSX.Element;
   disabled?: boolean;
   buttonColor?: string | undefined;
   className?: string;
@@ -103,9 +113,17 @@ export default class Radio extends PureComponent<Props, State> {
     };
   }
 
-  handleChange = () => {
+  handleOnClick = (event: React.MouseEvent) => {
     if (!this.props.disabled && this.props.onChange) {
-      this.props.onChange(this.props.value);
+      const targetElement = get(event, 'target') as any;
+      const parentElement = get(event, 'target.parentElement');
+      const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
+      const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+
+      if (!targetElementIsLink && !parentElementIsLink) {
+        event && event.preventDefault();
+        this.props.onChange(this.props.value);
+      }
     }
   }
 
@@ -121,32 +139,41 @@ export default class Radio extends PureComponent<Props, State> {
     });
   }
 
+  removeFocus = (event: React.FormEvent) => {
+    event.preventDefault();
+  }
+
   render() {
-    const { id, name, value, currentValue, disabled, buttonColor, label } = this.props;
+    const { id, name, value, currentValue, disabled, buttonColor, label, className } = this.props;
     const { inputFocused } = this.state;
     const checked = (value === currentValue);
 
     return (
-      <Wrapper>
+      <Container
+        onMouseDown={this.removeFocus}
+        onClick={this.handleOnClick}
+        className={`${className} ${disabled ? 'disabled' : 'enabled'}`}
+      >
         <Input
           id={id}
           type="radio"
           name={name}
           value={value}
           defaultChecked={checked}
-          onChange={this.handleChange}
           onFocus={this.handleOnFocus}
           onBlur={this.handleOnBlur}
         />
-        <CustomRadio
-          className={`${inputFocused ? 'focused' : ''} ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} circle`}
-        >
+
+        <CustomRadio className={`${inputFocused ? 'focused' : ''} ${checked ? 'checked' : ''} ${disabled ? 'disabled' : 'enabled'} circle`}>
           {checked &&
             <Checked aria-hidden color={(buttonColor || '#49B47D')}/>
           }
         </CustomRadio>
-        <Label htmlFor={id} className="text">{label}</Label>
-      </Wrapper>
+
+        {label &&
+          <Label htmlFor={id} className={`text ${disabled ? 'disabled' : 'enabled'}`}>{label}</Label>
+        }
+      </Container>
     );
   }
 }
