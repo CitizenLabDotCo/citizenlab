@@ -639,7 +639,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                 {!querying && !hasInitiatives &&
                   <EmptyContainer id="initiatives-empty" className="e2e-initiative-cards-empty">
                     <EmptyContainerInner>
-                      <InitiativeIcon name="initiatives" />
+                      <InitiativeIcon ariaHidden name="initiatives" />
                       <EmptyMessage>
                         <EmptyMessageMainLine><FormattedMessage {...messages.noInitiativesForFilter} /></EmptyMessageMainLine>
                         <EmptyMessageSubLine><FormattedMessage {...messages.tryOtherFilter} /></EmptyMessageSubLine>
