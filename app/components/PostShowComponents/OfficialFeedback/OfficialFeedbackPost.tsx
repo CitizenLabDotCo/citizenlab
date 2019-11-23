@@ -13,7 +13,7 @@ import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // styles
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // i18n
@@ -106,6 +106,7 @@ interface InputProps {
   officialFeedbackPost: IOfficialFeedbackData;
   postType: 'idea' | 'initiative';
   className?: string;
+  a11y_pronounceLatestOfficialFeedbackPost?: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -166,7 +167,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
   }
 
   render() {
-    const { editingAllowed, officialFeedbackPost, locale, tenantLocales, className } = this.props;
+    const { editingAllowed, officialFeedbackPost, locale, tenantLocales, className, a11y_pronounceLatestOfficialFeedbackPost } = this.props;
     const { showEditForm } = this.state;
     const { body_multiloc, author_multiloc, created_at, updated_at } = officialFeedbackPost.attributes;
 
@@ -199,6 +200,10 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
               actions={this.getActions(officialFeedbackPost.id)}
             />
           }
+
+          <ScreenReaderOnly aria-live="polite">
+            {a11y_pronounceLatestOfficialFeedbackPost && this.getPostBodyText(body_multiloc, locale, tenantLocales)}
+          </ScreenReaderOnly>
 
           <QuillEditedContent>
             <Body className="e2e-official-feedback-post-body">

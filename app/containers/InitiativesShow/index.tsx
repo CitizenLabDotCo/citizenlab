@@ -313,11 +313,13 @@ interface State {
   spamModalVisible: boolean;
   initiativeIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
+  a11y_pronounceLatestOfficialFeedbackPost: boolean;
 }
 
 export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
   initialState: State;
   officialFeedbackElement = createRef<HTMLDivElement>();
+  timeoutRef: number;
 
   constructor(props) {
     super(props);
@@ -326,6 +328,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       spamModalVisible: false,
       initiativeIdForSocialSharing: null,
       translateButtonClicked: false,
+      a11y_pronounceLatestOfficialFeedbackPost: false
     };
   }
 
@@ -345,6 +348,10 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
   componentDidUpdate() {
     this.setLoaded();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeoutRef);
   }
 
   setLoaded = () => {
@@ -383,6 +390,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         inline: 'center'
       });
     }
+
+    this.setState({ a11y_pronounceLatestOfficialFeedbackPost: true });
+    this.timeoutRef = setTimeout(() => this.setState({ a11y_pronounceLatestOfficialFeedbackPost: false }), 2000);
   }
 
   render() {
@@ -398,7 +408,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       postOfficialFeedbackPermission,
       tenant
     } = this.props;
-    const { loaded, initiativeIdForSocialSharing, translateButtonClicked } = this.state;
+    const { loaded, initiativeIdForSocialSharing, translateButtonClicked, a11y_pronounceLatestOfficialFeedbackPost } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
     const initiativeSettings = !isNilOrError(tenant) ? tenant.attributes.settings.initiatives : null;
@@ -555,6 +565,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                     postId={initiativeId}
                     postType="initiative"
                     permissionToPost={postOfficialFeedbackPermission}
+                    a11y_pronounceLatestOfficialFeedbackPost={a11y_pronounceLatestOfficialFeedbackPost}
                   />
                 </div>
 
