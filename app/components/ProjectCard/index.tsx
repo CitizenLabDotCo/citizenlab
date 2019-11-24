@@ -626,7 +626,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <ContentFooterLeft>
                 {hasAvatars &&
                   <AvatarBubbles
-                    size={30}
+                    size={32}
                     limit={3}
                     userCountBgColor={this.props.theme.colorMain}
                     avatarIds={avatarIds}
