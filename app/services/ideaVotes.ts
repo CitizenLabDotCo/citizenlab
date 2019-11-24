@@ -55,9 +55,12 @@ export function votesStream(ideaId: string, streamParams: IStreamParams | null =
 
 export async function addVote(ideaId: string, object: INewVoteProperties) {
   const response = await streams.add<IIdeaVote>(`${API_PATH}/ideas/${ideaId}/votes`, { vote: object });
+  // streams.fetchAllWith({ partialApiEndpoint: [`${API_PATH}/votes/`, `${API_PATH}/ideas/`], onlyFetchActiveStreams: true });
   return response;
 }
 
-export function deleteVote(_ideaId, voteId: string) {
-  return streams.delete(`${API_PATH}/votes/${voteId}`, voteId);
+export async function deleteVote(_ideaId, voteId: string) {
+  const response = await streams.delete(`${API_PATH}/votes/${voteId}`, voteId);
+  // streams.fetchAllWith({ partialApiEndpoint: [`${API_PATH}/votes/`, `${API_PATH}/ideas/`], onlyFetchActiveStreams: true });
+  return response;
 }

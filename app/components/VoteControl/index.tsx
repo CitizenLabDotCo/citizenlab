@@ -382,6 +382,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
         const cancellingEnabled = idea.data.attributes.action_descriptor.voting.cancelling_enabled;
         const votingDisabledReason = idea.data.attributes.action_descriptor.voting.disabled_reason;
         const votingFutureEnabled = idea.data.attributes.action_descriptor.voting.future_enabled;
+
         if (votingDisabledReason === 'not_verified' && !this.props.noVerificationShortFlow) {
           verificationNeeded('ActionVote');
         }
@@ -434,13 +435,13 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ votingAnimation: null });
   }
 
-  onClickUpvote = (event) => {
+  onClickUpvote = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
     this.onClickVote('up');
   }
 
-  onClickDownvote = (event) => {
+  onClickDownvote = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
     this.onClickVote('down');
