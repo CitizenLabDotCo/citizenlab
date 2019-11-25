@@ -4,10 +4,6 @@ import Tippy from '@tippy.js/react';
 // components
 import Icon, { IconNames } from 'components/UI/Icon';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
