@@ -7,6 +7,7 @@ class SideFxTenantService
 
   def after_create tenant, current_user
     LogActivityJob.perform_later(tenant, 'created', current_user, tenant.created_at.to_i)
+    update_group_by_identify
   end
 
   def after_apply_template tenant, current_user
@@ -48,6 +49,7 @@ class SideFxTenantService
         LogActivityJob.perform_later(tenant, 'changed_lifecycle_stage', current_user, tenant.updated_at.to_i, payload: {changes: lifecycle_change_diff})
       end
     end
+    update_group_by_identify
   end
 
   def before_destroy tenant, current_user
@@ -59,6 +61,15 @@ class SideFxTenantService
   def after_destroy frozen_tenant, current_user
     serialized_tenant = clean_time_attributes(frozen_tenant.attributes)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_tenant), 'deleted', current_user, Time.now.to_i, payload: {tenant: serialized_tenant})
+  end
+
+
+  private
+
+  def update_group_by_identify
+    user = User.admin.first
+    user ||= User.first
+    IdentifyToSegmentJob.perform_later(user) if user
   end
 
 
