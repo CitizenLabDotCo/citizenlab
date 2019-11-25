@@ -26,6 +26,7 @@ class SideFxTenantService
       Phase.all.each do |phase|
         phase.update! description_multiloc: txt_img_srv.swap_data_images(phase, :description_multiloc)
       end
+      update_group_by_identify
     end
   end
 
@@ -48,6 +49,9 @@ class SideFxTenantService
         LogActivityJob.perform_later(tenant, 'changed_lifecycle_stage', current_user, tenant.updated_at.to_i, payload: {changes: lifecycle_change_diff})
       end
     end
+    Apartment::Tenant.switch(tenant.schema_name) do
+      update_group_by_identify
+    end
   end
 
   def before_destroy tenant, current_user
@@ -59,6 +63,15 @@ class SideFxTenantService
   def after_destroy frozen_tenant, current_user
     serialized_tenant = clean_time_attributes(frozen_tenant.attributes)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_tenant), 'deleted', current_user, Time.now.to_i, payload: {tenant: serialized_tenant})
+  end
+
+
+  private
+
+  def update_group_by_identify
+    user = User.admin.first
+    user ||= User.first
+    IdentifyToSegmentJob.perform_later(user) if user
   end
 
 
