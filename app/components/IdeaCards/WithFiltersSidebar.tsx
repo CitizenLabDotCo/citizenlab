@@ -16,7 +16,6 @@ import TopBar from 'components/FiltersModal/TopBar';
 import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
-import FeatureFlag from 'components/FeatureFlag';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 // resources
@@ -583,12 +582,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
                 {showViewToggle &&
-                  <FeatureFlag name="maps">
-                    <StyledViewButtons
-                      selectedView={selectedView}
-                      onClick={this.selectView}
-                    />
-                  </FeatureFlag>
+                  <StyledViewButtons
+                    selectedView={selectedView}
+                    onClick={this.selectView}
+                  />
                  }
 
                 {!isNilOrError(ideasFilterCounts) &&
