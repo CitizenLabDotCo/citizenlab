@@ -21,6 +21,7 @@ import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 const EmptyContainer = styled.div``;
 
 const Container = styled.div<{ width: number, height: number }>`
+  flex: 0 0 ${(props) => props.width}px;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   position: relative;
@@ -113,6 +114,8 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const bubblesCount = avatarImagesCount + (remainingUsers > 0 ? 1 : 0);
       const containerHeight = bubbleSize + 2;
       const containerWidth = bubblesCount * (bubbleSize - bubbleOverlap) + bubbleOverlap + 2;
+
+      console.log(bubblesCount);
 
       if (avatarIds || context || (avatarImagesCount > 0)) {
         return (
