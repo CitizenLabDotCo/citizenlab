@@ -96,7 +96,7 @@ const TopBar = memo<Props>(({ onClose, onReset, className }) => {
       <TopBarInner>
         <Left>
           <CloseButton onClick={onClose}>
-            <CloseIcon title={<FormattedMessage {...messages.closeFilterPanel} />} name="close" />
+            <CloseIcon title={<FormattedMessage {...messages.a11y_closeFilterPanel} />} name="close" />
           </CloseButton>
         </Left>
         <Center>

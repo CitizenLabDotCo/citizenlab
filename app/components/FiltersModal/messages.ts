@@ -9,8 +9,8 @@ export default defineMessages({
     id: 'app.components.FiltersModal.resetFilters',
     defaultMessage: 'Reset filters',
   },
-  closeFilterPanel: {
-    id: 'app.components.FiltersModal.closeFilterPanel',
+  a11y_closeFilterPanel: {
+    id: 'app.components.FiltersModal.a11y_closeFilterPanel',
     defaultMessage: 'Close filter panel',
   },
 });
