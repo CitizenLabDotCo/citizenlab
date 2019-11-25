@@ -19,10 +19,6 @@ import styled from 'styled-components';
 import { colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 const getFontSize = (size: number, digits: number) => {
-
-  console.log(size);
-  console.log(digits);
-
   if (size >= 34) {
     if (digits <= 2) {
       return 14;
