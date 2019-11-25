@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { trackEventByName } from 'utils/analytics';
 
 // styling
@@ -23,7 +23,13 @@ const ViewButton = styled.button`
   justify-content: center;
   cursor: pointer;
   background: transparent;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
   border: solid 1px ${({ theme }) => theme.colorText};
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 
   &:not(.active):hover {
     background: ${({ theme }) => rgba(theme.colorText, 0.08)};
@@ -48,8 +54,8 @@ const ViewButton = styled.button`
     padding-bottom: 10px;
 
     ${media.smallerThanMinTablet`
-      padding-top: 9px;
-      padding-bottom: 9px;
+      padding-top: 8px;
+      padding-bottom: 8px;
     `}
   }
 `;
@@ -68,24 +74,29 @@ const MapButton = styled(ViewButton)`
 interface Props {
   className?: string;
   selectedView: 'card' | 'map';
-  onClick: (selectedView: 'card' | 'map') => (event: React.FormEvent) => void;
+  onClick: (selectedView: 'card' | 'map') => void;
 }
 
 const ViewButtons = memo<Props>(({ className, selectedView, onClick }: Props) => {
   const showListView = selectedView === 'card';
   const showMapView = selectedView === 'map';
 
-  const handleOnClick = (selectedView: 'card' | 'map') => (_event: React.FormEvent) => {
+  const handleOnClick = (selectedView: 'card' | 'map') => (event: React.FormEvent) => {
+    event.preventDefault();
     onClick(selectedView);
-
     trackEventByName(tracks.toggleDisplay, { locationButtonWasClicked: location.pathname, selectedDisplayMode: selectedView });
   };
+
+  const removeFocus = useCallback((event: React.MouseEvent) => {
+    event.preventDefault();
+  }, []);
 
   return (
     <Container className={className} role="tablist">
       <ListButton
         role="tab"
         aria-selected={showListView}
+        onMouseDown={removeFocus}
         onClick={handleOnClick('card')}
         className={`${showListView && 'active'}`}
       >
@@ -94,6 +105,7 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }: Props) =>
       <MapButton
         role="tab"
         aria-selected={showMapView}
+        onMouseDown={removeFocus}
         onClick={handleOnClick('map')}
         className={`${showMapView && 'active'}`}
       >
