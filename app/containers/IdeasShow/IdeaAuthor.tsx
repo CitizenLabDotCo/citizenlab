@@ -35,6 +35,8 @@ const TimeAgo = styled.div`
   font-size: ${fontSizes.small}px;
   line-height: 17px;
   font-weight: 300;
+  display: flex;
+  align-items: center;
   margin-top: 2px;
 `;
 
