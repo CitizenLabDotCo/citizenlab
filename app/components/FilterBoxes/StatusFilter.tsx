@@ -133,6 +133,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
             onClick={handleOnClick}
             className={!selectedStatusId ? 'selected' : ''}
             role="tab"
+            aria-selected={!selectedStatusId}
           >
             <FormattedMessage {...messages.all} />
             <Count aria-hidden>
