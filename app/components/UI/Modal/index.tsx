@@ -22,7 +22,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const timeout = 400;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -245,7 +245,6 @@ export type Props = {
   footer?: JSX.Element;
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
-  label?: string;
   children?: any;
   closeOnClickOutside?: boolean;
   remaining?: boolean;
@@ -375,7 +374,7 @@ export default class Modal extends PureComponent<Props, State> {
   }
 
   render() {
-    const { fixedHeight, width, children, opened, header, footer, hasSkipButton, skipText, label } = this.props;
+    const { fixedHeight, width, children, opened, header, footer, hasSkipButton, skipText } = this.props;
 
     return ReactDOM.createPortal((
       <CSSTransition
@@ -390,15 +389,15 @@ export default class Modal extends PureComponent<Props, State> {
         <Overlay
           id="e2e-modal-container"
           className={this.props.className}
-          aria-modal="true"
-          role="dialog"
-          aria-label={label}
         >
           <StyledFocusOn width={width as number}>
             <ModalContainer
               className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
               onClickOutside={this.clickOutsideModal}
               hasHeaderOrFooter={header !== undefined || footer !== undefined}
+              aria-modal="true"
+              role="dialog"
+              aria-labelledby="modal-header"
             >
               <CloseButton
                 className="e2e-modal-close-button"
@@ -406,15 +405,12 @@ export default class Modal extends PureComponent<Props, State> {
                 onClick={this.clickCloseButton}
                 ref={this.setCloseButtonRef}
               >
-                <CloseIcon name="close" />
-                <ScreenReaderOnly>
-                  <FormattedMessage {...messages.closeModal} />
-                </ScreenReaderOnly>
+                <CloseIcon title={<FormattedMessage {...messages.closeModal} />} name="close" />
               </CloseButton >
 
               {header &&
                 <HeaderContainer>
-                  <HeaderTitle>{header}</HeaderTitle>
+                  <HeaderTitle id="modal-header">{header}</HeaderTitle>
                 </HeaderContainer>
               }
 
@@ -422,7 +418,7 @@ export default class Modal extends PureComponent<Props, State> {
                 {children}
               </ModalContent>
 
-              <Spacer />
+              <Spacer aria-hidden />
 
               {footer && <FooterContainer>{footer}</FooterContainer>}
 

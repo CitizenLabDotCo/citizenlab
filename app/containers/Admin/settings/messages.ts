@@ -49,8 +49,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabRegistration',
     defaultMessage: 'Registration',
   },
-  tabWidgetsLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.tabWidgetsLabel',
+  tabWidgets: {
+    id: 'app.containers.AdminPage.SettingsPage.tabWidgets',
     defaultMessage: 'Widgets',
   },
   organizationName: {

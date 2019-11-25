@@ -1,5 +1,18 @@
 # Changelog
 
+## 2019-11-25
+
+### Changed
+- Updated translations
+- Area filter not shown when no areas are configured
+- Overall accessibility improvements for screen readers
+- Improved accessibility of the select component, radio button, image upload and tooltip
+
+### Fixed
+- When adding a vote that triggers the voting limit on a project/phase, the other idea cards now automatically get updated with disabled vote buttons 
+- Fix for mobile bottom menu not being clickable when idea page was opened
+- Navigating directly between projects via the menu no longer results in faulty idea card collections
+
 ## 2019-11-19
 
 ### Added
@@ -9,6 +22,10 @@
 - Improved accessibility of the image upload component
 - COW tooltipy copy
 - Sharing modal layout improvement
+
+### Fixed
+- Checkboxes have unique ids to correctly identify their corresponding label, which improves screen reader friendliness when you have multiple checkboxes on one page.
+- Avatar layout is back to the previous, smaller version
 
 ## 2019-11-15
 

@@ -45,9 +45,9 @@ export default defineMessages({
     id: 'app.components.InitiativeCards.map',
     defaultMessage: 'Map',
   },
-  cards: {
-    id: 'app.components.InitiativeCards.cards',
-    defaultMessage: 'Cards',
+  list: {
+    id: 'app.components.InitiativeCards.list',
+    defaultMessage: 'List',
   },
   xInitiatives: {
     id: 'app.components.InitiativeCards.xInitiatives',
