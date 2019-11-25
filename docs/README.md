@@ -4,7 +4,7 @@
 
 ### Changed
 - Updated translations
-- Area filter not shown whgen no areas configured
+- Area filter not shown when no areas are configured
 - Overall accessibility improvements for screen readers
 - Improved accessibility of the select component, radio button, image upload and tooltip
 
