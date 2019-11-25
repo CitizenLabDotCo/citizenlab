@@ -12,4 +12,15 @@ namespace :fix_existing_tenants do
     end
   end
 
+  desc "Identify one user per tenant"
+  task :identify_one => [:environment] do |t, args|
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
+        user = User.admin.first
+        user ||= User.first
+        IdentifyToSegmentJob.perform_later(user) if user
+      end
+    end
+  end
+
 end
