@@ -116,7 +116,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
   }, []);
 
   if (!isNilOrError(statuses) && statuses.length > 0) {
-    const allIdeasCount = filterCounts && filterCounts.total ? filterCounts.total : 0;
+    const allPostsCount = filterCounts && filterCounts.total ? filterCounts.total : 0;
 
     return (
       <Container className={`e2e-statuses-filters ${className}`}>
@@ -136,16 +136,17 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
           >
             <FormattedMessage {...messages.all} />
             <Count aria-hidden>
-              {allIdeasCount}
+              {allPostsCount}
             </Count>
             <ScreenReaderOnly>
-              {/* Pronounce number of ideas of All status when focus/hover it */}
-              <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: allIdeasCount }} />
+              {/* Pronounce number of ideas/initiatives of All status when focus/hover it */}
+              {type === 'idea' && <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideaCount: allPostsCount }} />}
+              {type === 'initiative' && <FormattedMessage {...messages.a11y_numberOfInitiatives} values={{ initiativeCount: allPostsCount }} />}
             </ScreenReaderOnly>
           </AllStatus>
 
           {statuses.map((status) => {
-            const filterIdeasCount = get(filterCounts, `${type}_status_id.${status.id}`, 0);
+            const filterPostCount = get(filterCounts, `${type}_status_id.${status.id}`, 0);
             const isFilterSelected = status.id === selectedStatusId;
 
             return (
@@ -163,7 +164,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
                 </T>
                 {!isFilterSelected ? (
                   <Count aria-hidden>
-                    {filterIdeasCount}
+                    {filterPostCount}
                   </Count>
                 ) : (
                   <CloseIcon
@@ -173,7 +174,8 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
                 )}
                 <ScreenReaderOnly>
                   {/* Pronounce number of ideas per status when focus/hover it */}
-                  <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideasCount: filterIdeasCount }} />
+                  {type === 'idea' && <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideaCount: filterPostCount }} />}
+                  {type === 'initiative' && <FormattedMessage {...messages.a11y_numberOfInitiatives} values={{ initiativeCount: filterPostCount }} />}
                 </ScreenReaderOnly>
               </Status>
             );
