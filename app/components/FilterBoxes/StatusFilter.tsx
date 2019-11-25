@@ -128,13 +128,6 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
         </Header>
 
         <StatusesContainer role="tablist">
-          {/*
-            When we focus a selected status filter and hit enter again, this filter gets removed and
-            the 'all' status filter is selected again. Screen readers don't pick this up, so hence this helper text
-          */}
-          <ScreenReaderOnly aria-live="polite">
-            {allFilterSelected && <FormattedMessage {...messages.a11y_allFilterSelected} />}
-          </ScreenReaderOnly>
           <AllStatus
             data-id={null}
             onMouseDown={removeFocus}
@@ -152,6 +145,13 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
               {type === 'idea' && <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideaCount: allPostsCount }} />}
               {type === 'initiative' && <FormattedMessage {...messages.a11y_numberOfInitiatives} values={{ initiativeCount: allPostsCount }} />}
             </ScreenReaderOnly>
+            <ScreenReaderOnly aria-live="polite">
+            {/*
+              When we focus a selected status filter and hit enter again, this filter gets removed and
+              the 'all' status filter is selected again. Screen readers don't pick this up, so hence this helper text
+            */}
+            {allFilterSelected && <FormattedMessage {...messages.a11y_allFilterSelected} />}
+          </ScreenReaderOnly>
           </AllStatus>
 
           {statuses.map((status) => {
@@ -159,12 +159,38 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
             const isFilterSelected = status.id === selectedStatusId;
 
             return (
-              <>
-                {/*
-                  Added this for consistency with the all filter, see comment above AllStatus component.
-                  Pronounces the selected filter.
-                */}
+              <Status
+                key={status.id}
+                data-id={status.id}
+                onMouseDown={removeFocus}
+                onClick={handleOnClick}
+                className={`e2e-status ${isFilterSelected ? 'selected' : ''}`}
+                role="tab"
+                aria-selected={isFilterSelected}
+              >
+                <T value={status.attributes.title_multiloc}>
+                  {statusTitle => <>{capitalize(statusTitle)}</>}
+                </T>
+                {!isFilterSelected ? (
+                  <Count aria-hidden>
+                    {filterPostCount}
+                  </Count>
+                ) : (
+                  <CloseIcon
+                    title={<FormattedMessage {...messages.a11y_removeFilter} />}
+                    name="close"
+                  />
+                )}
+                <ScreenReaderOnly>
+                  {/* Pronounce number of ideas per status when focus/hover it */}
+                  {type === 'idea' && <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideaCount: filterPostCount }} />}
+                  {type === 'initiative' && <FormattedMessage {...messages.a11y_numberOfInitiatives} values={{ initiativeCount: filterPostCount }} />}
+                </ScreenReaderOnly>
                 <ScreenReaderOnly aria-live="polite">
+                  {/*
+                    Added this for consistency with the all filter, see comment above AllStatus component.
+                    Pronounces the selected filter.
+                  */}
                   {isFilterSelected && <FormattedMessage
                     {...messages.a11y_selectedFilter}
                     values={{
@@ -172,35 +198,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
                     }}
                   />}
                 </ScreenReaderOnly>
-                <Status
-                  key={status.id}
-                  data-id={status.id}
-                  onMouseDown={removeFocus}
-                  onClick={handleOnClick}
-                  className={`e2e-status ${isFilterSelected ? 'selected' : ''}`}
-                  role="tab"
-                  aria-selected={isFilterSelected}
-                >
-                  <T value={status.attributes.title_multiloc}>
-                    {statusTitle => <>{capitalize(statusTitle)}</>}
-                  </T>
-                  {!isFilterSelected ? (
-                    <Count aria-hidden>
-                      {filterPostCount}
-                    </Count>
-                  ) : (
-                    <CloseIcon
-                      title={<FormattedMessage {...messages.a11y_removeFilter} />}
-                      name="close"
-                    />
-                  )}
-                  <ScreenReaderOnly>
-                    {/* Pronounce number of ideas per status when focus/hover it */}
-                    {type === 'idea' && <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideaCount: filterPostCount }} />}
-                    {type === 'initiative' && <FormattedMessage {...messages.a11y_numberOfInitiatives} values={{ initiativeCount: filterPostCount }} />}
-                  </ScreenReaderOnly>
-                </Status>
-              </>
+              </Status>
             );
           })}
         </StatusesContainer>
