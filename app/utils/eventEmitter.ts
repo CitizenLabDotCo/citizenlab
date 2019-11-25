@@ -1,7 +1,7 @@
 import { Subject, Observable } from 'rxjs';
 import { filter, share } from 'rxjs/operators';
 
-interface IEventEmitterEvent<T> {
+export interface IEventEmitterEvent<T> {
   eventSource: string;
   eventName: string;
   eventValue: T;

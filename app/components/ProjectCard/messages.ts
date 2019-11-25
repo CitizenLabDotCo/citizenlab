@@ -61,4 +61,12 @@ export default defineMessages({
     id: 'app.components.ProjectCard.viewTheIdeas',
     defaultMessage: 'View the ideas',
   },
+  a11y_projectTitle: {
+    id: 'app.components.ProjectCard.a11y_projectTitle',
+    defaultMessage: 'Project title: ',
+  },
+  a11y_projectDescription: {
+    id: 'app.components.ProjectCard.a11y_projectDescription',
+    defaultMessage: 'Project description: ',
+  }
 });

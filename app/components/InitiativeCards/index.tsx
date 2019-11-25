@@ -456,7 +456,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
-    console.log('hi');
     event.preventDefault();
     this.setState({ selectedView });
   }

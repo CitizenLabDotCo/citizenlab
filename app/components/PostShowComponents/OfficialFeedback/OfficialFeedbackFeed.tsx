@@ -29,6 +29,7 @@ const FeedbackHeader = styled.div`
   font-weight: 400;
   margin-bottom: 20px;
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
 
   ${media.smallerThanMinTablet`
@@ -67,6 +68,7 @@ interface InputProps {
   postType: 'idea' | 'initiative';
   editingAllowed: boolean | undefined;
   className?: string;
+  a11y_pronounceLatestOfficialFeedbackPost?: boolean;
 }
 
 interface DataProps {
@@ -79,7 +81,7 @@ interface State {}
 
 class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { officialFeedbacks, editingAllowed, className } = this.props;
+    const { officialFeedbacks, editingAllowed, className, a11y_pronounceLatestOfficialFeedbackPost } = this.props;
 
     if (officialFeedbacks) {
       const { officialFeedbacksList, querying, hasMore, loadingMore, onLoadMore } = officialFeedbacks;
@@ -107,13 +109,14 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
               />
             </FeedbackHeader>
 
-            {officialFeedbacksList.data.map((officialFeedbackPost) => {
+            {officialFeedbacksList.data.map((officialFeedbackPost, i) => {
               return (
                 <StyledOfficialFeedbackPost
                   key={officialFeedbackPost.id}
                   editingAllowed={editingAllowed}
                   officialFeedbackPost={officialFeedbackPost}
                   postType="initiative"
+                  a11y_pronounceLatestOfficialFeedbackPost={i === 0 && a11y_pronounceLatestOfficialFeedbackPost}
                 />
               );
             })}
