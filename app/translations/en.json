@@ -87,7 +87,6 @@
   "app.components.FilterBoxes.a11y_numberOfIdeas": "{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}",
   "app.components.FilterBoxes.a11y_numberOfInitiatives": "{initiativeCount, plural, no {# initiatives} one {# initiative} other {# initiatives}}",
   "app.components.FilterBoxes.a11y_removeFilter": "Remove filter",
-  "app.components.FilterBoxes.a11y_selectedAllStatus": "Selected status filter: all ideas",
   "app.components.FilterBoxes.a11y_selectedFilter": "Selected status filter: {filter}",
   "app.components.FilterBoxes.a11y_selectedStatus": "Selected status filter: {selectedStatus}",
   "app.components.FilterBoxes.all": "All",
