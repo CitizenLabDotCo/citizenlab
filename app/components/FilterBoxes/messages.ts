@@ -29,10 +29,6 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.a11y_selectedStatus',
     defaultMessage: 'Selected status filter: {selectedStatus}',
   },
-  a11y_selectedAllStatus: {
-    id: 'app.components.FilterBoxes.a11y_selectedAllStatus',
-    defaultMessage: 'Selected status filter: all ideas',
-  },
   a11y_allIdeas: {
     id: 'app.components.FilterBoxes.a11y_allIdeas',
     defaultMessage: 'All ideas: {allIdeasCount}',
