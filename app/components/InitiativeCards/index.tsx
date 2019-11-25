@@ -16,7 +16,6 @@ import TopBar from 'components/FiltersModal/TopBar';
 import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
-import FeatureFlag from 'components/FeatureFlag';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 //  Typings
@@ -566,12 +565,10 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
-                <FeatureFlag name="maps">
-                  <StyledViewButtons
-                    onClick={this.selectView}
-                    selectedView={selectedView}
-                  />
-                </FeatureFlag>
+                <StyledViewButtons
+                  onClick={this.selectView}
+                  selectedView={selectedView}
+                />
 
                 {!isNilOrError(initiativesFilterCounts) &&
                   <InitiativesCount>
