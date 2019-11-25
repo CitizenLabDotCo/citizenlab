@@ -40,5 +40,13 @@ export default defineMessages({
   a11y_removeFilter: {
     id: 'app.components.FilterBoxes.a11y_removeFilter',
     defaultMessage: 'Remove filter',
-  }
+  },
+  a11y_allFilterSelected: {
+    id: 'app.components.FilterBoxes.a11y_allFilterSelected',
+    defaultMessage: 'Selected status filter: all',
+  },
+  a11y_selectedFilter: {
+    id: 'app.components.FilterBoxes.a11y_selectedFilter',
+    defaultMessage: 'Selected status filter: {filter}',
+  },
 });
