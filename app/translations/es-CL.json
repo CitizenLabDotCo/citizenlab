@@ -84,6 +84,7 @@
   "app.components.FileUploader.incorrect_extension": "{fileName} no es compatible con nuestro sistema, no será cargado.",
   "app.components.FilterBoxes.a11y_allIdeas": "",
   "app.components.FilterBoxes.a11y_numberOfIdeas": "",
+  "app.components.FilterBoxes.a11y_numberOfInitiatives": "",
   "app.components.FilterBoxes.a11y_removeFilter": "",
   "app.components.FilterBoxes.a11y_selectedAllStatus": "",
   "app.components.FilterBoxes.a11y_selectedStatus": "",
