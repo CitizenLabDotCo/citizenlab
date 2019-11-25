@@ -482,7 +482,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
-        <div aria-live="polite">
           {filtersActive &&
             <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleInitiativeFiltersOnResetAndApply}>
               <ClearFiltersText>
@@ -490,7 +489,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
               </ClearFiltersText>
             </ClearFiltersButton>
           }
-        </div>
 
         <ScreenReaderOnly aria-live="polite">
           {initiativesFilterCounts &&
