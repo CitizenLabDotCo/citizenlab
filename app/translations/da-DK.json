@@ -1289,6 +1289,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Bekræft din konto nu.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {ingen kommentarer} one {1 kommentar} other {# kommentarer}}",
   "app.containers.IdeaCards.a11y_totalIdeas": "",
+  "app.containers.IdeaCards.a11y_totalInitiatives": "",
   "app.containers.IdeaCards.all": "Alle",
   "app.containers.IdeaCards.filter": "Filtrer",
   "app.containers.IdeaCards.list": "List",

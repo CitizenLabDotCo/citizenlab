@@ -1289,6 +1289,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Verifizieren Sie jetzt Ihr Konto.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {keine Kommentare} one {1 Kommentar} other {# Kommentare}}",
   "app.containers.IdeaCards.a11y_totalIdeas": "",
+  "app.containers.IdeaCards.a11y_totalInitiatives": "",
   "app.containers.IdeaCards.all": "Alle",
   "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.list": "List",

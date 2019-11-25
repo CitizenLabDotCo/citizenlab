@@ -1289,6 +1289,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Verifieer nu je identiteit.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {geen reacties} one {1 reactie} other {# reacties}}",
   "app.containers.IdeaCards.a11y_totalIdeas": "",
+  "app.containers.IdeaCards.a11y_totalInitiatives": "",
   "app.containers.IdeaCards.all": "Alle",
   "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.list": "List",
