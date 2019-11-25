@@ -7,7 +7,6 @@ class SideFxTenantService
 
   def after_create tenant, current_user
     LogActivityJob.perform_later(tenant, 'created', current_user, tenant.created_at.to_i)
-    update_group_by_identify
   end
 
   def after_apply_template tenant, current_user
@@ -27,6 +26,7 @@ class SideFxTenantService
       Phase.all.each do |phase|
         phase.update! description_multiloc: txt_img_srv.swap_data_images(phase, :description_multiloc)
       end
+      update_group_by_identify
     end
   end
 
@@ -49,7 +49,9 @@ class SideFxTenantService
         LogActivityJob.perform_later(tenant, 'changed_lifecycle_stage', current_user, tenant.updated_at.to_i, payload: {changes: lifecycle_change_diff})
       end
     end
-    update_group_by_identify
+    Apartment::Tenant.switch(tenant.schema_name) do
+      update_group_by_identify
+    end
   end
 
   def before_destroy tenant, current_user
