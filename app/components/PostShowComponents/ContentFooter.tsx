@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import AvatarBubbles from 'components/AvatarBubbles';
 import Icon from 'components/UI/Icon';
-import ContentChangeLog from 'components/PostComponents/ContentChangeLog';
+import ContentChangeLog from 'components/PostShowComponents/ContentChangeLog';
 
 // resources
 import GetRandomAvatars, { GetRandomAvatarsChildProps } from 'resources/GetRandomAvatars';
@@ -18,7 +18,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -86,20 +86,27 @@ const avatarLimit = 3;
 
 const ContentFooter = memo<Props>(({ postType, publishedAt, commentsCount, randomAvatars, className, postId }) => {
 
-  const avatarIds = (!isNilOrError(randomAvatars) && randomAvatars.data.length > 0 ? randomAvatars.data.map(avatar => avatar.id) : []);
-  const userCount = !isNilOrError(randomAvatars) ? randomAvatars.meta.total : undefined;
+  const contributorAvatarIds = (!isNilOrError(randomAvatars) && randomAvatars.data.length > 0 ? randomAvatars.data.map(avatar => avatar.id) : []);
+  const contributorUserCount = !isNilOrError(randomAvatars) ? randomAvatars.meta.total : undefined;
 
   return (
     <Container id={`e2e-${postType}-content-footer`} className={className || ''}>
       <Left>
-        {!isEmpty(avatarIds) &&
+        {!isEmpty(contributorAvatarIds) &&
           <StyledAvatarBubbles
             size={26}
             limit={avatarLimit}
-            avatarIds={avatarIds}
-            userCount={userCount}
+            avatarIds={contributorAvatarIds}
+            userCount={contributorUserCount}
           />
         }
+
+        <ScreenReaderOnly>
+          <FormattedMessage
+            {...messages.a11y_numberOfContributors}
+            values={{ numberOfContributors: contributorUserCount }}
+          />
+        </ScreenReaderOnly>
 
         <TimeAgo>
           <FormattedMessage {...messages.createdTimeAgo} values={{ timeAgo: <FormattedRelative value={publishedAt} /> }} />
@@ -108,8 +115,14 @@ const ContentFooter = memo<Props>(({ postType, publishedAt, commentsCount, rando
       </Left>
 
       <Right>
-        <CommentsIcon name="comments" />
-        <CommentsCount>{commentsCount}</CommentsCount>
+        <CommentsIcon name="comments" ariaHidden />
+        <CommentsCount aria-hidden>{commentsCount}</CommentsCount>
+        <ScreenReaderOnly>
+          <FormattedMessage
+            {...messages.a11y_commentsCount}
+            values={{ commentsCount }}
+          />
+        </ScreenReaderOnly>
       </Right>
     </Container>
   );

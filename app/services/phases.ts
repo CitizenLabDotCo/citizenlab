@@ -100,10 +100,11 @@ export function canContainIdeas(phase: IPhaseData) {
   return pm === 'ideation' || pm === 'budgeting';
 }
 
-export function getCurrentPhase(phases: IPhaseData[]) {
-  const currentPhase = phases.find((phase) => {
-    return pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present';
-  });
+export function getCurrentPhase(phases: IPhaseData[] | null) {
+  if (phases) {
+    const currentPhase = phases.find((phase) => pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present');
+    return (currentPhase || null);
+  }
 
-  return (currentPhase || null);
+  return null;
 }

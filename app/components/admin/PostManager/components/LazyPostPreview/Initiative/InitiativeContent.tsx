@@ -5,12 +5,12 @@ import { get } from 'lodash-es';
 import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 // components
-import Title from 'components/PostComponents/Title';
-import Body from 'components/PostComponents/Body';
-import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
-import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
+import Title from 'components/PostShowComponents/Title';
+import Body from 'components/PostShowComponents/Body';
+import LoadableDropdownMap from 'components/PostShowComponents/DropdownMap/LoadableDropdownMap';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import PostedBy from 'containers/InitiativesShow/PostedBy';
-import Comments from 'components/PostComponents/Comments';
+import Comments from 'components/PostShowComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import Button from 'components/UI/Button';
