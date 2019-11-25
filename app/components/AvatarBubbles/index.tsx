@@ -21,7 +21,7 @@ import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 const EmptyContainer = styled.div``;
 
 const Container = styled.div<{ width: number, height: number }>`
-  flex: 0 0 ${(props) => props.width}px;
+  flex-shrink: 0;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   position: relative;
