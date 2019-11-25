@@ -21,6 +21,9 @@ import { getLocalized } from 'utils/i18n';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
+// events
+import eventEmitter from 'utils/eventEmitter';
+
 // utils
 import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
@@ -375,34 +378,37 @@ const PhaseContainer: any = styled.div`
   }
 `;
 
-type Props = {
-  projectId: string
-  onPhaseSelected: (phase: IPhaseData | null) => void;
-  className?: string;
-};
+const SelectedPhaseEvent = 'selectedProjectPhaseChanged';
+type ISelectedPhase = IPhaseData | null;
+export const selectedPhaseObserver = eventEmitter.observeEvent<ISelectedPhase>(SelectedPhaseEvent);
 
-type State = {
+interface Props {
+  projectId: string;
+  className?: string;
+}
+
+interface State {
   locale: Locale | null;
   currentTenant: ITenant | null;
   phases: IPhases | null;
   currentPhaseId: string | null;
-  selectedPhaseId: string | null;
+  selectedPhase: ISelectedPhase;
   loaded: boolean;
-};
+}
 
 class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
   initialState: State;
   projectId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     const initialState = {
       locale: null,
       currentTenant: null,
       phases: null,
       currentPhaseId: null,
-      selectedPhaseId: null,
+      selectedPhase: null,
       loaded: false
     };
     this.initialState = initialState;
@@ -417,6 +423,8 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
     const projectId$ = this.projectId$.pipe(distinctUntilChanged());
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
+
+    eventEmitter.emit<ISelectedPhase>('Timeline', SelectedPhaseEvent, null);
 
     this.subscriptions = [
       projectId$
@@ -436,23 +444,30 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
         .subscribe(([locale, currentTenant, phases]) => {
           const currentPhase = getCurrentPhase(phases.data);
           const currentPhaseId = currentPhase ? currentPhase.id : null;
-          const selectedPhaseId = this.getDefaultSelectedPhase(currentPhase, phases);
-          this.setSelectedPhase(selectedPhaseId);
-          this.setState({ locale, currentTenant, phases, currentPhaseId, loaded: true });
+          const selectedPhase = this.getDefaultSelectedPhase(currentPhase, phases);
+          this.setState({ locale, currentTenant, phases, currentPhaseId, selectedPhase, loaded: true });
         })
     ];
   }
 
-  componentDidUpdate(_prevProps: Props, _prevState: State) {
+  componentDidUpdate(_prevProps: Props, prevState: State) {
     this.projectId$.next(this.props.projectId);
+
+    const oldSelectedPhaseId = prevState.selectedPhase ? prevState.selectedPhase.id : null;
+    const newSelectedPhaseId = this.state.selectedPhase ? this.state.selectedPhase.id : null;
+
+    if (newSelectedPhaseId !== oldSelectedPhaseId) {
+      eventEmitter.emit<ISelectedPhase>('Timeline', SelectedPhaseEvent, this.state.selectedPhase);
+    }
   }
 
   componentWillUnmount() {
+    eventEmitter.emit<ISelectedPhase>('Timeline', SelectedPhaseEvent, null);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getDefaultSelectedPhase(currentPhase: IPhaseData | null, phases: IPhases | null) {
-    let selectedPhase: IPhaseData | null = null;
+  getDefaultSelectedPhase(currentPhase: ISelectedPhase, phases: IPhases | null) {
+    let selectedPhase: ISelectedPhase = null;
 
     if (isString(currentPhase)) {
       selectedPhase = currentPhase;
@@ -476,38 +491,33 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
     return selectedPhase;
   }
 
-  setSelectedPhase = (selectedPhase: IPhaseData | null) => {
-    this.props.onPhaseSelected(selectedPhase);
-    this.setState({
-      selectedPhaseId: (selectedPhase ? selectedPhase.id : null)
-    });
-  }
-
-  handleOnPhaseSelection = (phase: IPhaseData) => (event: FormEvent<MouseEvent>) => {
+  handleOnPhaseSelection = (selectedPhase: ISelectedPhase) => (event: FormEvent<MouseEvent>) => {
     event.preventDefault();
-    this.setSelectedPhase(phase);
+    this.setState({ selectedPhase });
   }
 
-  handleOnPhaseSelectionFromDropdown = (phase: IPhaseData) => {
-    this.setSelectedPhase(phase);
+  handleOnPhaseSelectionFromDropdown = (selectedPhase: ISelectedPhase) => {
+    this.setState({ selectedPhase });
   }
 
   goToNextPhase = () => {
-    const { selectedPhaseId } = this.state;
+    const { selectedPhase } = this.state;
+    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
     const phases = this.state.phases as IPhases;
     const selectedPhaseIndex = findIndex(phases.data, phase => phase.id === selectedPhaseId);
     const nextPhaseIndex = phases.data.length >= selectedPhaseIndex + 2 ? selectedPhaseIndex + 1 : 0;
     const nextPhase = phases.data[nextPhaseIndex];
-    this.setSelectedPhase(nextPhase);
+   this.setState({ selectedPhase: nextPhase });
   }
 
   goToPreviousPhase = () => {
-    const { selectedPhaseId } = this.state;
+    const { selectedPhase } = this.state;
+    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
     const phases = this.state.phases as IPhases;
     const selectedPhaseIndex = findIndex(phases.data, phase => phase.id === selectedPhaseId);
     const prevPhaseIndex = selectedPhaseIndex > 0 ? selectedPhaseIndex - 1 : phases.data.length - 1;
     const prevPhase = phases.data[prevPhaseIndex];
-    this.setSelectedPhase(prevPhase);
+    this.setState({ selectedPhase: prevPhase });
   }
 
   removeFocus = (event: React.MouseEvent) => {
@@ -516,7 +526,8 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { className } = this.props;
-    const { locale, currentTenant, phases, currentPhaseId, selectedPhaseId } = this.state;
+    const { locale, currentTenant, phases, currentPhaseId, selectedPhase } = this.state;
+    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
 
     if (locale && currentTenant && phases && phases.data.length > 0) {
       const phaseIds = (phases ? phases.data.map(phase => phase.id) : null);

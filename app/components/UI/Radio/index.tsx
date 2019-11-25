@@ -128,15 +128,11 @@ export default class Radio extends PureComponent<Props, State> {
   }
 
   handleOnFocus = () => {
-    this.setState({
-      inputFocused: true
-    });
+    this.setState({ inputFocused: true });
   }
 
   handleOnBlur = () => {
-    this.setState({
-      inputFocused: false
-    });
+    this.setState({ inputFocused: false });
   }
 
   removeFocus = (event: React.FormEvent) => {
@@ -165,9 +161,7 @@ export default class Radio extends PureComponent<Props, State> {
         />
 
         <CustomRadio className={`${inputFocused ? 'focused' : ''} ${checked ? 'checked' : ''} ${disabled ? 'disabled' : 'enabled'} circle`}>
-          {checked &&
-            <Checked aria-hidden color={(buttonColor || '#49B47D')}/>
-          }
+          {checked && <Checked aria-hidden color={buttonColor || '#49B47D'}/>}
         </CustomRadio>
 
         {label &&
