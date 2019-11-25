@@ -509,11 +509,13 @@ class Streams {
     dataId,
     apiEndpoint,
     partialApiEndpoint,
+    regexApiEndpoint,
     onlyFetchActiveStreams
   }: {
     dataId?: string[],
     apiEndpoint?: string[],
     partialApiEndpoint?: string[],
+    regexApiEndpoint?: RegExp[],
     onlyFetchActiveStreams?: boolean
   }) {
     const keys = [
@@ -548,7 +550,26 @@ class Streams {
       });
     }
 
-    const mergedStreamIds = [...streamIds1, ...streamIds2];
+    const streamIds3: string[] = [];
+    if (regexApiEndpoint && regexApiEndpoint.length > 0) {
+      forOwn(this.streamIdsByApiEndPointWithQuery, (_value, key) => {
+        regexApiEndpoint.forEach((regex) => {
+          if (regex.test(key) && this.streamIdsByApiEndPointWithQuery[key]) {
+            streamIds3.push(...this.streamIdsByApiEndPointWithQuery[key]);
+          }
+        });
+      });
+
+      forOwn(this.streamIdsByApiEndPointWithoutQuery, (_value, key) => {
+        regexApiEndpoint.forEach((regex) => {
+          if (regex.test(key) && this.streamIdsByApiEndPointWithoutQuery[key]) {
+            streamIds3.push(...this.streamIdsByApiEndPointWithoutQuery[key]);
+          }
+        });
+      });
+    }
+
+    const mergedStreamIds = [...streamIds1, ...streamIds2, ...streamIds3];
 
     if (includes(keys, authApiEndpoint)) {
       mergedStreamIds.push(authApiEndpoint);
