@@ -502,15 +502,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
-        <div aria-live="polite">
-          {filtersActive &&
-            <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnResetAndApply}>
-              <ClearFiltersText>
-                <FormattedMessage {...messages.resetFilters} />
-              </ClearFiltersText>
-            </ClearFiltersButton>
-          }
-        </div>
+        {filtersActive &&
+          <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnResetAndApply}>
+            <ClearFiltersText>
+              <FormattedMessage {...messages.resetFilters} />
+            </ClearFiltersText>
+          </ClearFiltersButton>
+        }
 
         <ScreenReaderOnly aria-live="polite">
           {ideasFilterCounts &&
