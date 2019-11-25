@@ -91,7 +91,7 @@ const IconTooltip = memo<Props>(({ content, icon, placement, theme, iconColor, i
         name={icon || 'info3'}
         iconColor={iconColor}
         iconHoverColor={iconHoverColor}
-        title={iconAriaTitle || <FormattedMessage {...messages.a11y_informationTooltip} />}
+        title={iconAriaTitle}
       />
     </TooltipIconButton>
   </Tippy>

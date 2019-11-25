@@ -54,24 +54,27 @@ const StyledA = styled.a`
 const TooltipWrapper = styled.div`
   display: flex;
   align-items: center;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
   font-weight: 400;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   padding: 15px;
 
   a {
     color: ${colors.clBlueDark};
     text-decoration: underline;
-
-    &:hover {
-      color: ${darken(0.2, colors.clBlueDark)};
-    }
-  }
-
-  > span {
     overflow-wrap: break-word;
     word-wrap: break-word;
+    word-break: break-all;
     word-break: break-word;
     hyphens: auto;
+
+    &:hover {
+      color: ${darken(0.15, colors.clBlueDark)};
+      text-decoration: underline;
+    }
   }
 `;
 
