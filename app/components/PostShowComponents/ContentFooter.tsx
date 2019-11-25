@@ -18,7 +18,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, fontSizes, ScreenReaderOnly, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -48,14 +48,30 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 const TimeAgo = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
+  text-align: left;
   font-weight: 300;
   line-height: normal;
+  display: flex;
+  align-items: center;
   margin-right: 12px;
+
+  ${media.smallerThanMinTablet`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  `}
+`;
+
+const StyledContentChangeLog = styled(ContentChangeLog)`
+  ${media.smallerThanMinTablet`
+    margin-top: 4px;
+  `}
 `;
 
 const CommentsIcon = styled(Icon)`
-  width: 21px;
-  height: 21px;
+  flex: 0 0 23px;
+  width: 23px;
+  height: 23px;
   fill: ${colors.clIconSecondary};
   margin-right: 6px;
 `;
@@ -110,7 +126,7 @@ const ContentFooter = memo<Props>(({ postType, publishedAt, commentsCount, rando
 
         <TimeAgo>
           <FormattedMessage {...messages.createdTimeAgo} values={{ timeAgo: <FormattedRelative value={publishedAt} /> }} />
-          <ContentChangeLog postId={postId} postType={postType} />
+          <StyledContentChangeLog postId={postId} postType={postType} />
         </TimeAgo>
       </Left>
 
