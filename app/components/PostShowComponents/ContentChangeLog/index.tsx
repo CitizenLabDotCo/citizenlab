@@ -21,6 +21,7 @@ const LinkButton = styled.button`
   background: none;
   border: 0;
   color: inherit;
+  text-decoration: underline;
   display: inline;
   margin: 0;
   padding: 0;
