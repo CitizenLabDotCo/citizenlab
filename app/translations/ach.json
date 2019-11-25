@@ -1289,6 +1289,7 @@
   "app.containers.IdeaButton.verificationLinkText": "",
   "app.containers.IdeaCard.xComments": "",
   "app.containers.IdeaCards.a11y_totalIdeas": "",
+  "app.containers.IdeaCards.a11y_totalInitiatives": "",
   "app.containers.IdeaCards.all": "",
   "app.containers.IdeaCards.filter": "",
   "app.containers.IdeaCards.list": "",

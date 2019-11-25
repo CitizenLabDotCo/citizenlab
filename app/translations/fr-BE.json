@@ -1289,6 +1289,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Vérifiez votre identité maintenant.",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {aucun commentaire} one {1 commentaire} other {# commentaires}}",
   "app.containers.IdeaCards.a11y_totalIdeas": "",
+  "app.containers.IdeaCards.a11y_totalInitiatives": "",
   "app.containers.IdeaCards.all": "Tous",
   "app.containers.IdeaCards.filter": "Filtrer",
   "app.containers.IdeaCards.list": "List",
