@@ -281,10 +281,6 @@ const Container = styled.div<ButtonContainerProps>`
   button.disabled {
     cursor: not-allowed;
   }
-
-  a.disabled {
-    pointer-events: none;
-  }
 `;
 
 const SpinnerWrapper = styled.div`

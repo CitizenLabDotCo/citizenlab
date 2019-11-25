@@ -27,7 +27,8 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 const Container = styled.div``;
 
@@ -53,15 +54,27 @@ const StyledA = styled.a`
 const TooltipWrapper = styled.div`
   display: flex;
   align-items: center;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
   font-weight: 400;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   padding: 15px;
 
-  > span {
+  a {
+    color: ${colors.clBlueDark};
+    text-decoration: underline;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    word-break: break-all;
     word-break: break-word;
     hyphens: auto;
+
+    &:hover {
+      color: ${darken(0.15, colors.clBlueDark)};
+      text-decoration: underline;
+    }
   }
 `;
 
@@ -139,9 +152,10 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             placement="bottom"
             content={tippyContent}
             theme="light"
+            hideOnClick={false}
           >
-            <ButtonWrapper className="e2e-idea-button">
-              <Button {...this.props} aria-describedby="tooltip-content" linkTo={linkTo} disabled={isPostingDisabled}>
+            <ButtonWrapper className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}>
+              <Button {...this.props} aria-describedby="tooltip-content" linkTo={linkTo} disabled={isPostingDisabled} ariaDisabled={false}>
                 <FormattedMessage {...messages.startAnIdea} />
               </Button>
             </ButtonWrapper>
