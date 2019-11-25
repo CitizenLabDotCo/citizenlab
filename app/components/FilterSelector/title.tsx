@@ -11,9 +11,6 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-// a11y
-import { LiveMessage } from 'react-aria-live';
-
 const Text = styled.span`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
