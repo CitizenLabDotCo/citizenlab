@@ -16,12 +16,28 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Separator = styled.span`
+  margin-left: 4px;
+  margin-right: 4px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
+`;
 
 const LinkButton = styled.button`
   background: none;
   border: 0;
   color: inherit;
   text-decoration: underline;
+  text-align: left;
   display: inline;
   margin: 0;
   padding: 0;
@@ -40,6 +56,7 @@ const Entries = styled.div`
 interface InputProps {
   postId: string;
   postType: 'idea' | 'initiative';
+  className?: string;
 }
 
 interface DataProps {
@@ -81,8 +98,9 @@ class ContentChangeLog extends PureComponent<Props, State> {
       const lastChangesTitleMessage = (postType === 'idea' ? messages.lastChangesTitleIdea : messages.lastChangesTitleInitiative);
 
       return (
-        <>
-          <span> - <LinkButton onMouseDown={this.removeFocus} onClick={this.openModal} className="e2e-post-last-modified-button">
+        <Container className={this.props.className}>
+          <Separator>-</Separator>
+          <LinkButton onMouseDown={this.removeFocus} onClick={this.openModal} className="e2e-post-last-modified-button">
             <FormattedMessage
               {...messages.lastUpdated}
               values={{
@@ -90,7 +108,7 @@ class ContentChangeLog extends PureComponent<Props, State> {
                 translatedPostType: <FormattedMessage {...messages[postType]} />
               }}
             />
-          </LinkButton></span>
+          </LinkButton>
 
           <Modal
             opened={this.state.modalOpen}
@@ -104,7 +122,7 @@ class ContentChangeLog extends PureComponent<Props, State> {
               ))}
             </Entries>
           </Modal>
-        </>
+        </Container>
       );
     }
 
