@@ -475,16 +475,31 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     const hasInitiatives = (!isNilOrError(list) && list.length > 0);
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
+    const filtersActive = selectedInitiativeFilters.search ||
+    selectedInitiativeFilters.initiative_status ||
+    selectedInitiativeFilters.areas ||
+    selectedInitiativeFilters.topics;
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
-        {(selectedInitiativeFilters.search || selectedInitiativeFilters.initiative_status || selectedInitiativeFilters.areas || selectedInitiativeFilters.topics) &&
-          <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleInitiativeFiltersOnResetAndApply}>
-            <ClearFiltersText>
-              <FormattedMessage {...messages.resetFilters} />
-            </ClearFiltersText>
-          </ClearFiltersButton>
-        }
+        <div aria-live="polite">
+          {filtersActive &&
+            <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleInitiativeFiltersOnResetAndApply}>
+              <ClearFiltersText>
+                <FormattedMessage {...messages.resetFilters} />
+              </ClearFiltersText>
+            </ClearFiltersButton>
+          }
+        </div>
+
+        <ScreenReaderOnly aria-live="polite">
+          {initiativesFilterCounts &&
+            <FormattedMessage
+              {...messages.a11y_totalInitiatives}
+              values={{ initiativeCount: initiativesFilterCounts.total }}
+            />
+          }
+        </ScreenReaderOnly>
 
         <StyledSearchInput
           placeholder={this.searchPlaceholder}
