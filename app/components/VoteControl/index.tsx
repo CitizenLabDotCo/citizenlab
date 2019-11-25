@@ -20,7 +20,7 @@ import { ideaByIdStream, IIdea } from 'services/ideas';
 import { IUser } from 'services/users';
 import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 import { projectByIdStream, IProject } from 'services/projects';
-import { phaseStream, IPhase } from 'services/phases';
+import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -358,11 +358,11 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
           let phases$: Observable<IPhase[] | null> = of(null);
           const hasPhases = !isEmpty(get(idea.data.relationships.phases, 'data', null));
 
-          if (idea.data.attributes.budget && !hasPhases && idea.data.relationships.project.data) {
+          if (!hasPhases && idea.data.relationships.project.data) {
             project$ = projectByIdStream(idea.data.relationships.project.data.id).observable;
           }
 
-          if (idea.data.attributes.budget && hasPhases && idea.data.relationships.phases.data.length > 0) {
+          if (hasPhases && idea.data.relationships.phases.data.length > 0) {
             phases$ = combineLatest(
               idea.data.relationships.phases.data.map(phase => phaseStream(phase.id).observable)
             );
@@ -448,7 +448,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   onClickVote = async (voteMode: 'up' | 'down') => {
-    const { authUser, myVoteId, myVoteMode, votingEnabled, cancellingEnabled, votingDisabledReason } = this.state;
+    const { authUser, myVoteId, myVoteMode, votingEnabled, cancellingEnabled, votingDisabledReason, project, phases } = this.state;
     const { ideaId, unauthenticatedVoteClick, disabledVoteClick } = this.props;
 
     if (!authUser) {
@@ -460,6 +460,10 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
       try {
         this.voting$.next(voteMode);
 
+        const currentPhase = getCurrentPhase(phases ? phases.map(phase => phase.data) : null);
+        const participationContext = project ? project.data : currentPhase;
+        const refetchIdeas = participationContext?.attributes?.voting_method === 'limited';
+
         // Change vote (up -> down or down -> up)
         if (myVoteId && myVoteMode && myVoteMode !== voteMode) {
           this.setState((state) => ({
@@ -467,8 +471,8 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             downvotesCount: (voteMode === 'down' ? state.downvotesCount + 1 : state.downvotesCount - 1),
             myVoteMode: voteMode
           }));
-          await deleteVote(ideaId, myVoteId);
-          await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
+          await deleteVote(ideaId, myVoteId, refetchIdeas);
+          await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode }, refetchIdeas);
         }
 
         // Cancel vote
@@ -478,7 +482,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             downvotesCount: (voteMode === 'down' ? state.downvotesCount - 1 : state.downvotesCount),
             myVoteMode: null
           }));
-          await deleteVote(ideaId, myVoteId);
+          await deleteVote(ideaId, myVoteId, refetchIdeas);
         }
 
         // Vote
@@ -488,7 +492,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             downvotesCount: (voteMode === 'down' ? state.downvotesCount + 1 : state.downvotesCount),
             myVoteMode: voteMode
           }));
-          await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
+          await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode }, refetchIdeas);
         }
 
         await ideaByIdStream(ideaId).fetch();

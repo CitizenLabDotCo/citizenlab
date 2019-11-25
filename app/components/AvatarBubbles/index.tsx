@@ -115,8 +115,6 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const containerHeight = bubbleSize + 2;
       const containerWidth = bubblesCount * (bubbleSize - bubbleOverlap) + bubbleOverlap + 2;
 
-      console.log(bubblesCount);
-
       if (avatarIds || context || (avatarImagesCount > 0)) {
         return (
           <Container
