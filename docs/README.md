@@ -12,6 +12,7 @@
 - When adding a vote that triggers the voting limit on a project/phase, the other idea cards now automatically get updated with disabled vote buttons 
 - Fix for mobile bottom menu not being clickable when idea page was opened
 - Navigating directly between projects via the menu no longer results in faulty idea card collections
+- Display toggle (map or list view) of idea and initiative cards works again
 
 ## 2019-11-19
 
