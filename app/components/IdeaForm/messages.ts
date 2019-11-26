@@ -72,5 +72,17 @@ export default defineMessages({
   fileUploadLabel: {
     id: 'app.container.IdeaForm.fileUploadLabel',
     defaultMessage: 'Add files to your idea',
+  },
+  formGeneralSectionTitle: {
+    id: 'app.components.IdeaForm.formGeneralSectionTitle',
+    defaultMessage: 'What is your idea?',
+  },
+  formDetailsSectionTitle: {
+    id: 'app.components.IdeaForm.formDetailsSectionTitle',
+    defaultMessage: 'What is your idea?',
+  },
+  formAttachmentsSectionTitle: {
+    id: 'app.components.IdeaForm.formAttachmentsSectionTitle',
+    defaultMessage: 'Images and attachments',
   }
 });
