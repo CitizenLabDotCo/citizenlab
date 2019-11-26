@@ -79,7 +79,7 @@ export default defineMessages({
   },
   formDetailsSectionTitle: {
     id: 'app.components.IdeaForm.formDetailsSectionTitle',
-    defaultMessage: 'What is your idea?',
+    defaultMessage: 'Details',
   },
   formAttachmentsSectionTitle: {
     id: 'app.components.IdeaForm.formAttachmentsSectionTitle',
