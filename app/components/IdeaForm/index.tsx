@@ -454,6 +454,32 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
         <FormSection>
           <FormSectionTitle message={messages.formDetailsSectionTitle} />
+          {pbContext && (
+            <FeatureFlag name="participatory_budgeting">
+              <HasPermission
+                item="idea"
+                action="assignBudget"
+                context={{ projectId }}
+              >
+                <FormElement>
+                  <FormLabelWithIcon
+                    labelMessage={messages.budgetLabel}
+                    labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }}
+                    htmlFor="budget"
+                    iconName="admin"
+                  />
+                  <Input
+                    id="budget"
+                    error={budgetError}
+                    value={String(budget)}
+                    type="number"
+                    onChange={this.handleBudgetOnChange}
+                  />
+                </FormElement>
+              </HasPermission>
+            </FeatureFlag>
+          )}
+
           {topics && topics.length > 0 && (
             <FormElement>
               <FormLabel labelMessage={messages.topicsLabel} htmlFor="topics" />
@@ -493,32 +519,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               onRemove={this.handleUploadOnRemove}
             />
           </FormElement>
-
-          {pbContext && (
-            <FeatureFlag name="participatory_budgeting">
-              <HasPermission
-                item="idea"
-                action="assignBudget"
-                context={{ projectId }}
-              >
-                <FormElement>
-                  <FormLabelWithIcon
-                    labelMessage={messages.budgetLabel}
-                    labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }}
-                    htmlFor="budget"
-                    iconName="admin"
-                  />
-                  <Input
-                    id="budget"
-                    error={budgetError}
-                    value={String(budget)}
-                    type="number"
-                    onChange={this.handleBudgetOnChange}
-                  />
-                </FormElement>
-              </HasPermission>
-            </FeatureFlag>
-          )}
 
           <FormElement id="e2e-idea-file-upload">
             <FormLabel labelMessage={messages.fileUploadLabel}>
