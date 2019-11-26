@@ -57,13 +57,6 @@ const FormElement = styled.div`
   margin-bottom: 40px;
 `;
 
-const StyledTopicsPicker = styled(TopicsPicker)`
-  padding: 20px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px #e0e0e0;
-`;
-
 export interface IIdeaFormOutput {
   title: string;
   description: string;
@@ -484,7 +477,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           {topics && topics.length > 0 && (
             <FormElement>
               <FormLabel labelMessage={messages.topicsLabel} htmlFor="topics" />
-              <StyledTopicsPicker
+              <TopicsPicker
                 value={selectedTopics}
                 onChange={this.handleTopicsOnChange}
                 max={2}
