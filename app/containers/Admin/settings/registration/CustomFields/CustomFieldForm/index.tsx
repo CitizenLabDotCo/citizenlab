@@ -1,8 +1,6 @@
 import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
-
 import { IInputType } from 'services/userCustomFields';
-
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikToggle from 'components/UI/FormikToggle';
@@ -12,8 +10,8 @@ import { Section, SectionField } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
 import Label from 'components/UI/Label';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
 import IconTooltip from 'components/UI/IconTooltip';
@@ -32,7 +30,7 @@ export interface Props {
   builtInField: boolean;
 }
 
-class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
+class CustomFieldForm extends React.Component<InjectedFormikProps<Props & InjectedIntlProps, FormValues>> {
 
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
@@ -48,7 +46,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
     const fieldTypes = ['text', 'number', 'multiline_text', 'select', 'multiselect', 'checkbox', 'date'];
     return fieldTypes.map((inputType) => ({
       value: inputType,
-      label: <FormattedMessage {...messages[`inputType_${inputType}`]} />,
+      label: this.props.intl.formatMessage(messages[`inputType_${inputType}`]),
     }));
   }
 
@@ -149,4 +147,4 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
   }
 }
 
-export default CustomFieldForm;
+export default injectIntl(CustomFieldForm);
