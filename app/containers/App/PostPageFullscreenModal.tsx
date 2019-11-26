@@ -13,10 +13,11 @@ interface Props {
   id: string | null;
   slug: string | null;
   navbarRef?: HTMLElement | null;
+  mobileNavbarRef?: HTMLElement | null;
   close: () => void;
 }
 
-const PostPageFullscreenModal = memo<Props>(({ id, slug, type, navbarRef, close }) => {
+const PostPageFullscreenModal = memo<Props>(({ id, slug, type, navbarRef, mobileNavbarRef, close }) => {
 
   const onClose = useCallback(() => {
     close();
@@ -59,6 +60,7 @@ const PostPageFullscreenModal = memo<Props>(({ id, slug, type, navbarRef, close 
       url={slug ? `/${type}s/${slug}` : null}
       topBar={topBar}
       navbarRef={navbarRef}
+      mobileNavbarRef={mobileNavbarRef}
     >
       {content}
     </FullscreenModal>

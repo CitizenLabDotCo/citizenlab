@@ -18,7 +18,7 @@ import Error from 'components/UI/Error';
 import HasPermission from 'components/HasPermission';
 import FileUploader from 'components/UI/FileUploader';
 import FeatureFlag from 'components/FeatureFlag';
-import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter } from 'components/UI/FormComponents';
+import { FormSection, FormSectionTitle, FormLabel } from 'components/UI/FormComponents';
 
 // services
 import { localeStream } from 'services/locale';

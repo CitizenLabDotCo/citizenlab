@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { isFunction } from 'lodash-es';
+import { isFunction, compact } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -84,6 +84,7 @@ interface InputProps {
   bottomBar?: JSX.Element | null;
   animateInOut?: boolean;
   navbarRef?: HTMLElement | null;
+  mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
 }
 
@@ -159,8 +160,8 @@ class FullscreenModal extends PureComponent<Props, State> {
   }
 
   render() {
-    const { children, opened, topBar, bottomBar, animateInOut, navbarRef } = this.props;
-    const shards = navbarRef ? [navbarRef] : undefined;
+    const { children, opened, topBar, bottomBar, animateInOut, navbarRef, mobileNavbarRef } = this.props;
+    const shards = compact([navbarRef, mobileNavbarRef]);
     let modalContent: React.ReactChild | null = null;
 
     if (animateInOut || (!animateInOut && opened)) {

@@ -77,7 +77,6 @@ class IdeaAssignment extends React.PureComponent<Props & InjectedIntlProps> {
           options={this.getOptions()}
           value={defaultAssigneeValue}
           onChange={this.onAssigneeChange}
-          clearable={false}
         />
       );
     }

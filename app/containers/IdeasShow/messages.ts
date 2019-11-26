@@ -109,10 +109,6 @@ export default defineMessages({
     id: 'app.components.IdeasShow.skipSharing',
     defaultMessage: "Skip it, I'll do it later",
   },
-  modalShareLabel: {
-    id: 'app.components.IdeasShow.modalShareLabel',
-    defaultMessage: 'Your idea was posted, share it now to reach more votes!',
-  },
   similarIdeas: {
     id: 'app.components.IdeasShow.similarIdeas',
     defaultMessage: 'Similar ideas',

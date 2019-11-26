@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
+import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Timeline from './Timeline';
+import Timeline, { selectedPhaseObserver } from './Timeline';
 import PhaseAbout from './PhaseAbout';
 import PBExpenses from '../pb/PBExpenses';
 import PhaseSurvey from './PhaseSurvey';
@@ -15,9 +15,6 @@ import PhaseIdeas from './PhaseIdeas';
 import EventsPreview from '../EventsPreview';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ContentContainer from 'components/ContentContainer';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
 
 // services
 import { IPhaseData } from 'services/phases';
@@ -110,25 +107,29 @@ interface State {
 }
 
 class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> {
+  subscription: Subscription;
+
   constructor(props) {
     super(props);
     this.state = {
       selectedPhase: null
     };
-    this.broadcastSelectedPhaseId(null);
+  }
+
+  componentDidMount() {
+    this.subscription = selectedPhaseObserver.subscribe(({ eventValue: selectedPhase }) => {
+      this.setState({ selectedPhase });
+    });
+  }
+
+  componentDidUpdate(prevProps: Props & WithRouterProps, _prevState: State) {
+    if (prevProps.params.slug !== this.props.params.slug) {
+      this.setState({ selectedPhase: null });
+    }
   }
 
   componentWillUnmount() {
-    this.broadcastSelectedPhaseId(null);
-  }
-
-  handleOnPhaseSelected = (selectedPhase: IPhaseData | null) => {
-    this.setState({ selectedPhase });
-    this.broadcastSelectedPhaseId(get(selectedPhase, 'id', null));
-  }
-
-  broadcastSelectedPhaseId = (selectedPhaseId: string | null) => {
-    eventEmitter.emit<string | null>('ProjectTimelinePage', 'SelectedProjectPhaseChanged', selectedPhaseId);
+    this.subscription && this.subscription.unsubscribe();
   }
 
   render() {
@@ -139,7 +140,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
     const isPBPhase = (selectedPhase && selectedPhase.attributes.participation_method === 'budgeting');
     const participationMethod = (!isNilOrError(selectedPhase) ? selectedPhase.attributes.participation_method : null);
 
-    if (!isNilOrError(project)) {
+    if (!isNilOrError(project) && selectedPhase !== undefined) {
       if (project.attributes.process_type !== 'timeline') {
         clHistory.push(`/projects/${slug}/info`);
       }
@@ -147,7 +148,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
       return (
         <Container className={`${className} e2e-project-process-page`}>
           <FirstRow>
-            <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
+            <StyledTimeline projectId={project.id} />
             <StyledProjectArchivedIndicator projectId={project.id} />
             <ContentContainer>
               <StyledPhaseAbout phaseId={selectedPhaseId} />

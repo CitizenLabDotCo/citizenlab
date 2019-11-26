@@ -75,7 +75,7 @@ class General extends React.Component<Props, State> {
         initialValues={this.initialValues()}
         onSubmit={this.handleSubmit}
         render={this.renderFn}
-        validate={CustomFieldForm.validate}
+        validate={CustomFieldForm['validate']}
       />
     );
   }
