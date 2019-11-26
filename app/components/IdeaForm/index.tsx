@@ -467,6 +467,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                     labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }}
                     htmlFor="budget"
                     iconName="admin"
+                    iconAriaHidden
                   />
                   <Input
                     id="budget"
