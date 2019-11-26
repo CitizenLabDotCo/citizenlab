@@ -79,7 +79,7 @@ class New extends React.Component<Props> {
             }}
             onSubmit={this.handleSubmit}
             render={this.renderFn}
-            validate={CustomFieldForm.validate}
+            validate={CustomFieldForm['validate']}
           />
         </PageWrapper>
       </div>
