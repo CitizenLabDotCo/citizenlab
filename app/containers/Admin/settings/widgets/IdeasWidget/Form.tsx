@@ -13,7 +13,8 @@ import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
 import FormikSelect from 'components/UI/FormikSelect';
 
 // I18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from '../messages';
 
@@ -72,7 +73,7 @@ interface State {
   openedCollapse: 'dimensions' | 'ideas' | 'style' | 'headerAndFooter' | null;
 }
 
-class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocalized, FormValues>, State> {
+class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlProps & InjectedLocalized, FormValues>, State> {
 
   constructor(props) {
     super(props);
@@ -92,15 +93,15 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
     return [
       {
         value: 'trending',
-        label: <FormattedMessage {...messages.sortTrending} />
+        label: this.props.intl.formatMessage(messages.sortTrending)
       },
       {
         value: 'popular',
-        label: <FormattedMessage {...messages.sortPopular} />
+        label: this.props.intl.formatMessage(messages.sortPopular)
       },
       {
         value: 'new',
-        label: <FormattedMessage {...messages.sortNewest} />
+        label: this.props.intl.formatMessage(messages.sortNewest)
       },
     ];
   }
@@ -109,7 +110,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
     return [
       {
         value: '/',
-        label: <FormattedMessage {...messages.homepage} />,
+        label: this.props.intl.formatMessage(messages.homepage),
       },
       ...(!projects ? [] : projects.map((project) => ({
         value: `/projects/${project.attributes.slug}`,
@@ -467,4 +468,4 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
   }
 }
 
-export default localize(WidgetForm);
+export default injectIntl(localize(WidgetForm));

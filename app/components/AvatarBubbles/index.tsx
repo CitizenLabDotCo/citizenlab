@@ -2,9 +2,6 @@ import React, { PureComponent } from 'react';
 import { isNumber, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Icon from 'components/UI/Icon';
-
 // services
 import { IAvatarData } from 'services/avatars';
 
@@ -19,59 +16,78 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, ScreenReaderOnly } from 'utils/styleUtils';
+
+const getFontSize = (size: number, digits: number) => {
+  if (size >= 34) {
+    if (digits <= 2) {
+      return 14;
+    }
+
+    if (digits === 3) {
+      return 12;
+    }
+
+    if (digits >= 4) {
+      return 11;
+    }
+  } else {
+    if (digits <= 2) {
+      return 12;
+    }
+
+    if (digits === 3) {
+      return 11;
+    }
+
+    if (digits >= 4) {
+      return 10;
+    }
+  }
+
+  return 14;
+};
 
 const EmptyContainer = styled.div``;
 
 const Container = styled.div<{ width: number, height: number }>`
+  flex-shrink: 0;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   position: relative;
 `;
 
-const AvatarWrapper = styled.div<{ overlap: number, index: number, size: number }>`
+const AvatarImageBubble = styled.img<{ overlap: number, index: number, size: number }>`
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
+  border: solid 2px #fff;
+  text-indent: -9999px;
   position: absolute;
   z-index: ${(props) => props.index + 1};
   left: ${(props) => props.index * (props.size - props.overlap)}px;
 `;
 
-const AvatarImage = styled.img<{ size: number }>`
+const UserCountBubble = styled.div<{ overlap: number, index: number, size: number, bgColor: string }>`
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
-  border-radius: 50%;
-  text-indent: -9999px;
-`;
-
-const UserCount = styled.div<{ size: number, bgColor: string }>`
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  color: #fff;
-  line-height: ${(props) => props.size}px;
-  font-size: ${fontSizes.small}px;
-  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
   padding-bottom: 0;
   border-radius: 50%;
+  border: solid 2px #fff;
   background: ${(props: any) => props.bgColor};
-
-  &.too-many-users {
-    font-size: ${fontSizes.xs}px;
-  }
+  position: absolute;
+  z-index: ${(props) => props.index + 1};
+  left: ${(props) => props.index * (props.size - props.overlap)}px;
 `;
 
-const PlusIcon = styled(Icon)`
-  width: 8px;
-  height: 8px;
-  margin-right: 1px;
+const UserCountBubbleInner = styled.div<{ size: number, digits: number }>`
+  color: #fff;
+  font-size: ${({ size, digits }) => getFontSize(size, digits)}px;
+  font-weight: 500;
+  display: flex;
 `;
 
 /* InputProps
@@ -106,24 +122,25 @@ const defaultLimit = 4;
 
 class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
-    limit: defaultLimit
+    limit: defaultLimit,
+    size: 34
   };
 
   render() {
     const { avatars, avatarIds, context, size, overlap, userCount, className, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
-      const bubbleInnerSize = size || 34;
-      const bubbleOuterSize = bubbleInnerSize + 4;
+      const bubbleSize = (size as number) + 4;
       const bubbleOverlap = overlap || 10;
-      const imageSize = (bubbleInnerSize > 160 ? 'large' : 'medium');
+      const imageSize = (bubbleSize > 160 ? 'large' : 'medium');
       const avatarsWithImage = avatars.filter(avatar => (!isError(avatar) && avatar.attributes.avatar) && avatar.attributes.avatar[imageSize]) as IAvatarData[];
       const avatarImagesCount = avatarsWithImage.length;
       const userCountBgColor = this.props.userCountBgColor || colors.clIconSecondary;
       const remainingUsers = userCount - avatarImagesCount;
+      const remainingUsersDigits = remainingUsers.toString().length;
       const bubblesCount = avatarImagesCount + (remainingUsers > 0 ? 1 : 0);
-      const containerHeight = bubbleOuterSize + 2;
-      const containerWidth = bubblesCount * (bubbleOuterSize - bubbleOverlap) + bubbleOverlap + 2;
+      const containerHeight = bubbleSize + 2;
+      const containerWidth = bubblesCount * (bubbleSize - bubbleOverlap) + bubbleOverlap + 2;
 
       if (avatarIds || context || (avatarImagesCount > 0)) {
         return (
@@ -133,39 +150,33 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
             height={containerHeight}
           >
             {avatarsWithImage.map((avatar, index) => (
-              <AvatarWrapper
+              <AvatarImageBubble
                 key={index}
-                className={index === 0 ? 'first' : ''}
-                overlap={bubbleOverlap}
-                size={bubbleOuterSize}
                 index={index}
-              >
-                <AvatarImage
-                  src={avatar.attributes.avatar[imageSize]}
-                  alt=""
-                  size={bubbleInnerSize}
-                />
-              </AvatarWrapper>
+                overlap={bubbleOverlap}
+                size={bubbleSize}
+                src={avatar.attributes.avatar[imageSize]}
+                alt=""
+              />
             ))}
             {remainingUsers > 0 &&
-              <AvatarWrapper
-                key={avatarImagesCount}
-                overlap={bubbleOverlap}
-                size={bubbleOuterSize}
+              <UserCountBubble
                 index={avatarsWithImage.length}
+                overlap={bubbleOverlap}
+                size={bubbleSize}
+                bgColor={userCountBgColor}
               >
-                <UserCount
-                  className={(remainingUsers > 999) ? 'too-many-users' : ''}
-                  size={bubbleInnerSize}
-                  bgColor={userCountBgColor}
+                <UserCountBubbleInner
+                  size={bubbleSize}
+                  digits={remainingUsersDigits}
+                  aria-hidden
                 >
-                  <PlusIcon name="plus" ariaHidden />
-                  <span aria-hidden>{remainingUsers}</span>
-                  <ScreenReaderOnly>
-                    {formatMessage(messages.numberOfUsers, { numberOfUsers: userCount })}
-                  </ScreenReaderOnly>
-                </UserCount>
-              </AvatarWrapper>
+                  +{remainingUsers}
+                </UserCountBubbleInner>
+                <ScreenReaderOnly>
+                  {formatMessage(messages.numberOfUsers, { numberOfUsers: userCount })}
+                </ScreenReaderOnly>
+              </UserCountBubble>
             }
           </Container>
         );

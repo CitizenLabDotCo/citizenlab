@@ -70,12 +70,11 @@ class NotificationCount extends PureComponent<Props & InjectedIntlProps, State> 
 
     return (
       <Container
-        aria-label={this.props.intl.formatMessage(messages.notificationsLabel)}
         onMouseDown={this.removeFocus}
         onClick={this.props.onClick}
         aria-expanded={dropdownOpened}
       >
-        <NotificationIcon name="notification" />
+        <NotificationIcon title={this.props.intl.formatMessage(messages.notificationsLabel)} name="notification" />
         {(isNumber(count) && count > 0) ?
           <NewNotificationsIndicator>
             {count}

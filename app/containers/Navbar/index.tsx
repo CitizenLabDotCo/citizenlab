@@ -356,6 +356,7 @@ const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
 
 interface InputProps {
   setRef?: (arg: HTMLElement) => void | undefined;
+  setMobileNavigationRef?: (arg: HTMLElement) => void | undefined;
 }
 
 interface DataProps {
@@ -406,6 +407,10 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     this.props.setRef && this.props.setRef(element);
   }
 
+  handleMobileNavigationRef = (element: HTMLElement) => {
+    this.props.setMobileNavigationRef && this.props.setMobileNavigationRef(element);
+  }
+
   render() {
     const {
       projects,
@@ -441,7 +446,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     return (
       <>
         {showMobileNav &&
-          <MobileNavigation />
+          <MobileNavigation setRef={this.handleMobileNavigationRef}/>
         }
 
         <Container

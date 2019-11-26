@@ -16,17 +16,17 @@ import FileAttachments from 'components/UI/FileAttachments';
 import Spinner from 'components/UI/Spinner';
 import Sharing from 'components/Sharing';
 import FeatureFlag from 'components/FeatureFlag';
-import SharingModalContent from 'components/PostComponents/SharingModalContent';
+import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
-import Topics from 'components/PostComponents/Topics';
-import Title from 'components/PostComponents/Title';
-import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
-import Body from 'components/PostComponents/Body';
-import Image from 'components/PostComponents/Image';
-import Footer from 'components/PostComponents/Footer';
-import ContentFooter from 'components/PostComponents/ContentFooter';
-import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
-import TranslateButton from 'components/PostComponents/TranslateButton';
+import Topics from 'components/PostShowComponents/Topics';
+import Title from 'components/PostShowComponents/Title';
+import LoadableDropdownMap from 'components/PostShowComponents/DropdownMap/LoadableDropdownMap';
+import Body from 'components/PostShowComponents/Body';
+import Image from 'components/PostShowComponents/Image';
+import Footer from 'components/PostShowComponents/Footer';
+import ContentFooter from 'components/PostShowComponents/ContentFooter';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+import TranslateButton from 'components/PostShowComponents/TranslateButton';
 
 import InitiativeMeta from './InitiativeMeta';
 import PostedBy from './PostedBy';
@@ -313,11 +313,13 @@ interface State {
   spamModalVisible: boolean;
   initiativeIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
+  a11y_pronounceLatestOfficialFeedbackPost: boolean;
 }
 
 export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
   initialState: State;
   officialFeedbackElement = createRef<HTMLDivElement>();
+  timeoutRef: number;
 
   constructor(props) {
     super(props);
@@ -326,6 +328,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       spamModalVisible: false,
       initiativeIdForSocialSharing: null,
       translateButtonClicked: false,
+      a11y_pronounceLatestOfficialFeedbackPost: false
     };
   }
 
@@ -345,6 +348,10 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
   componentDidUpdate() {
     this.setLoaded();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeoutRef);
   }
 
   setLoaded = () => {
@@ -383,6 +390,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         inline: 'center'
       });
     }
+
+    this.setState({ a11y_pronounceLatestOfficialFeedbackPost: true });
+    this.timeoutRef = setTimeout(() => this.setState({ a11y_pronounceLatestOfficialFeedbackPost: false }), 2000);
   }
 
   render() {
@@ -398,7 +408,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       postOfficialFeedbackPermission,
       tenant
     } = this.props;
-    const { loaded, initiativeIdForSocialSharing, translateButtonClicked } = this.state;
+    const { loaded, initiativeIdForSocialSharing, translateButtonClicked, a11y_pronounceLatestOfficialFeedbackPost } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
     const initiativeSettings = !isNilOrError(tenant) ? tenant.attributes.settings.initiatives : null;
@@ -555,6 +565,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                     postId={initiativeId}
                     postType="initiative"
                     permissionToPost={postOfficialFeedbackPermission}
+                    a11y_pronounceLatestOfficialFeedbackPost={a11y_pronounceLatestOfficialFeedbackPost}
                   />
                 </div>
 
@@ -641,7 +652,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             close={this.closeInitiativeSocialSharingModal}
             hasSkipButton={true}
             skipText={<FormattedMessage {...messages.skipSharing} />}
-            label={formatMessage(messages.modalShareLabel)}
           >
             {initiativeIdForSocialSharing &&
               <SharingModalContent

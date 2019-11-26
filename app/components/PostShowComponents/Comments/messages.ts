@@ -93,10 +93,6 @@ export default defineMessages({
     id: 'app.containers.Comments.editComment',
     defaultMessage: 'Edit',
   },
-  spanModalLabelComment: {
-    id: 'app.components.Comments.spanModalLabelComment',
-    defaultMessage: 'Report comment as spam: select reason',
-  },
   confirmCommentDeletion: {
     id: 'app.containers.Comments.confirmCommentDeletion',
     defaultMessage: "Are you sure you want to delete this comment? There's no turning back!",

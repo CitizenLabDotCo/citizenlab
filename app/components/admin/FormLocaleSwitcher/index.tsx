@@ -10,8 +10,8 @@ import Icon from 'components/UI/Icon';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  display: flex;
   width: 100%;
+  display: flex;
   justify-content: flex-end;
 
   & > :not(:last-child) {

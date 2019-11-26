@@ -63,18 +63,32 @@ interface Props {
   iconColor?: string;
   iconHoverColor?: string;
   maxTooltipWidth?: number;
+  iconAriaTitle?: string;
 }
 
-const IconTooltip = memo<Props>(({ content, icon, placement, theme, iconColor, iconHoverColor, maxTooltipWidth }) => (
+const IconTooltip = memo<Props>(({ content, icon, placement, theme, iconColor, iconHoverColor, maxTooltipWidth, iconAriaTitle }) => (
   <Tippy
-    content={<ContentWrapper tippytheme={theme}>{content}</ContentWrapper>}
     interactive={true}
     placement={placement || 'right-end'}
     theme={theme || ''}
     maxWidth={maxTooltipWidth || 350}
+    content={
+      <ContentWrapper id="tooltip-content" tippytheme={theme}>
+        {content}
+      </ContentWrapper>
+    }
   >
-    <TooltipIconButton type="button" className="tooltip-icon">
-      <TooltipIcon name={icon || 'info3'} iconColor={iconColor} iconHoverColor={iconHoverColor} />
+    <TooltipIconButton
+      type="button"
+      className="tooltip-icon"
+      aria-describedby="tooltip-content"
+    >
+      <TooltipIcon
+        name={icon || 'info3'}
+        iconColor={iconColor}
+        iconHoverColor={iconHoverColor}
+        title={iconAriaTitle}
+      />
     </TooltipIconButton>
   </Tippy>
 ));
