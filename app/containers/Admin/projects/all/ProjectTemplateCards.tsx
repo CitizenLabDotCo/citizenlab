@@ -169,7 +169,6 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
       purposes,
       participationLevels,
       search,
-      locales,
       organizationTypes,
       cursor: null,
     },

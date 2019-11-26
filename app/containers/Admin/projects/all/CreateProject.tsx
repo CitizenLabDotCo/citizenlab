@@ -169,7 +169,6 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const graphqlTenantLocales = useGraphqlTenantLocales();
   const tenant = useTenant();
-  const locales = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.locales : null;
   const organizationTypes = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.organization_type : null;
   const projectTemplatesEnabled: boolean = get(tenant, 'data.attributes.settings.admin_project_templates.enabled', false);
 
@@ -224,7 +223,6 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   // already loaded when expanding the 'create project' section
   useQuery(TEMPLATES_QUERY, {
     variables: {
-      locales,
       organizationTypes,
       departments: null,
       purposes: null,
