@@ -174,7 +174,7 @@ class AnonymizeUserService
     if user
       user[:registration_completed_at]
     else
-      Faker::Date.between(start_at, Time.now)
+      Faker::Date.between(from: start_at, to: Time.now)
     end
   end
 

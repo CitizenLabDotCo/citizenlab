@@ -56,11 +56,11 @@ def create_comment_tree(post, parent, depth=0)
       author: rand_instance(User.normal_user),
       post: post,
       parent: parent,
-      created_at: Faker::Date.between((parent ? parent.created_at : post.published_at), Time.now)
+      created_at: Faker::Date.between(from: (parent ? parent.created_at : post.published_at), to: Time.now)
     })
     User.all.each do |u|
       if rand(5) < 2
-        Vote.create!(votable: c, user: u, mode: "up", created_at: Faker::Date.between(c.created_at, Time.now))
+        Vote.create!(votable: c, user: u, mode: "up", created_at: Faker::Date.between(from: c.created_at, to: Time.now))
       end
     end
     create_comment_tree(post, c, depth+1)
@@ -99,7 +99,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
     host: 'localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
     header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
-    created_at: Faker::Date.between(Time.now - 1.year, Time.now),
+    created_at: Faker::Date.between(from: Time.now - 1.year, to: Time.now),
     settings: {
       core: {
         allowed: true,
@@ -294,7 +294,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
     host: 'empty.localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
     header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
-    created_at: Faker::Date.between(Time.now - 1.year, Time.now),
+    created_at: Faker::Date.between(from: Time.now - 1.year, to: Time.now),
     settings: {
       core: {
         allowed: true,
@@ -457,7 +457,7 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       if project.timeline?
-        start_at = Faker::Date.between(Tenant.current.created_at, 1.year.from_now)
+        start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
         has_budgeting = false
         rand(8).times do
           start_at += 1.days
@@ -527,7 +527,7 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       rand(5).times do
-        start_at = Faker::Date.between(Tenant.current.created_at, 1.year.from_now)
+        start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
         event = project.events.create!({
           title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
           description_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
@@ -558,7 +558,7 @@ if Apartment::Tenant.current == 'localhost'
     MAP_OFFSET = 0.1
 
     num_ideas.times do 
-      created_at = Faker::Date.between(Tenant.current.created_at, Time.now)
+      created_at = Faker::Date.between(from: Tenant.current.created_at, to: Time.now)
       project = rand_instance Project.all
       phases = []
       if project && project.timeline?
@@ -576,7 +576,7 @@ if Apartment::Tenant.current == 'localhost'
         project: project,
         phases: phases,
         publication_status: 'published',
-        published_at: Faker::Date.between(created_at, Time.now),
+        published_at: Faker::Date.between(from: created_at, to: Time.now),
         created_at: created_at,
         location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
@@ -596,9 +596,9 @@ if Apartment::Tenant.current == 'localhost'
       User.all.each do |u|
         r = rand(5)
         if r == 0
-          Vote.create!(votable: idea, user: u, mode: "down", created_at: Faker::Date.between(idea.published_at, Time.now))
+          Vote.create!(votable: idea, user: u, mode: "down", created_at: Faker::Date.between(from: idea.published_at, to: Time.now))
         elsif 0 < r && r < 3
-          Vote.create!(votable: idea, user: u, mode: "up", created_at: Faker::Date.between(idea.published_at, Time.now))
+          Vote.create!(votable: idea, user: u, mode: "up", created_at: Faker::Date.between(from: idea.published_at, to: Time.now))
         end
       end
 
@@ -614,13 +614,13 @@ if Apartment::Tenant.current == 'localhost'
     end
 
     num_initiatives.times do 
-      created_at = Faker::Date.between(Tenant.current.created_at, Time.now)
+      created_at = Faker::Date.between(from: Tenant.current.created_at, to: Time.now)
       initiative = Initiative.create!(
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
         author: User.offset(rand(User.count)).first,
         publication_status: 'published',
-        published_at: Faker::Date.between(created_at, Time.now),
+        published_at: Faker::Date.between(from: created_at, to: Time.now),
         created_at: created_at,
         location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
@@ -648,7 +648,7 @@ if Apartment::Tenant.current == 'localhost'
       User.all.each do |u|
         r = rand(5)
         if r < 2
-          Vote.create!(votable: initiative, user: u, mode: "up", created_at: Faker::Date.between(initiative.published_at, Time.now))
+          Vote.create!(votable: initiative, user: u, mode: "up", created_at: Faker::Date.between(from: initiative.published_at, to: Time.now))
         end
       end
 
