@@ -120,7 +120,7 @@ describe('Idea cards without filter sidebar pagination', () => {
   });
 });
 
-describe('Idea cards with location enabled', () => {
+describe('Idea cards inside of a project with location enabled', () => {
   const projectTitle = randomString();
   let projectId: string;
   let ideaId: string;
@@ -161,7 +161,7 @@ describe('Idea cards with location enabled', () => {
   });
 });
 
-describe('Idea cards with location disabled', () => {
+describe('Idea cards inside of a project with location disabled', () => {
   const projectTitle = randomString();
   let projectId: string;
   let ideaId: string;
