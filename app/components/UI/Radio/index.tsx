@@ -92,7 +92,10 @@ export interface Props {
   onChange?: {(event): void};
   currentValue?: any;
   value: any;
-  name?: string | undefined;
+  /**
+   * name should be a hard-coded string for all radios of the same radio group
+   */
+  name: string | undefined;
   id?: string | undefined;
   label?: string | JSX.Element;
   disabled?: boolean;
