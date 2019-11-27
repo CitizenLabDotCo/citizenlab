@@ -165,7 +165,7 @@ export default class Checkbox extends PureComponent<Props, State> {
         </InputWrapper>
 
         {label &&
-          <Label htmlFor={id} onClick={this.handleOnClick}>
+          <Label htmlFor={id}>
             {label}
           </Label>
         }
