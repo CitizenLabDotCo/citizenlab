@@ -56,7 +56,7 @@ describe('Initiative new page', () => {
 
     // add title and description
     cy.get('@titleInput').type(initiativeTitle);
-    cy.get('@descriptionInput').type(initiativeContent);
+    cy.get('@descriptionInput').type(initiativeContent, { delay: 2 });
 
     // verify the values
     cy.get('@titleInput').should('have.value', initiativeTitle);
@@ -92,11 +92,10 @@ describe('Initiative new page', () => {
     // save the form
     cy.wait(500);
     cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
-    cy.wait(1000);
+    cy.wait(3000);
 
     // verify the content of the newly created initiative page
     cy.get('#e2e-initiative-show');
-    cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeTitle}`);
     cy.get('#e2e-initiative-show').find('#e2e-initiative-title').contains(initiativeTitle);
     cy.get('#e2e-initiative-show').find('#e2e-initiative-description').contains(initiativeContent);
     cy.get('#e2e-initiative-show').find('#e2e-initiative-topics').find('.e2e-initiative-topic').should('have.length', 1);
