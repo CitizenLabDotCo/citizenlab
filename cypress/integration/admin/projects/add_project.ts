@@ -85,10 +85,10 @@ describe('Admin: add project', () => {
         cy.get('#project-title-en-GB').type(projectTitleEN);
         cy.get('#project-title-nl-BE').type(projectTitleNL);
 
-        // Set project type to continous
+        // Set project type to continuous
         cy.get('.e2e-project-type-continuous').click();
 
-        // Disable idea locations
+        // Set idea locations to disabled
         cy.get('.e2e-participation-context-location-allowed');
         cy.get('.e2e-participation-context-location-allowed .e2e-location-disabled');
         cy.get('.e2e-participation-context-location-allowed .e2e-location-disabled').click();

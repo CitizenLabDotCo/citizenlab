@@ -21,7 +21,12 @@ describe('Project timeline page', () => {
 
   before(() => {
     // create new project
-    cy.apiCreateProject('timeline', projectTitle, projectDescriptionPreview, projectDescription).then((project) => {
+    cy.apiCreateProject({
+      type: 'timeline',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription
+    }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
       // create new phases

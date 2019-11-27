@@ -60,7 +60,13 @@ describe('Idea Page', () => {
     const locationDescription = 'Brussel, België';
 
     before(() => {
-      cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published').then((project) => {
+      cy.apiCreateProject({
+        type: 'continuous',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: projectDescription,
+        publicationStatus: 'published'
+      }).then((project) => {
         projectId = project.body.data.id;
         return cy.apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription);
       }).then((idea) => {
@@ -92,7 +98,13 @@ describe('Idea Page', () => {
     const ideaContent = randomString();
 
     before(() => {
-      cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published').then((project) => {
+      cy.apiCreateProject({
+        type: 'continuous',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: projectDescription,
+        publicationStatus: 'published',
+      }).then((project) => {
         projectId = project.body.data.id;
         return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
       }).then((idea) => {
