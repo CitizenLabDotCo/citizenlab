@@ -420,6 +420,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                   <ManageBudgetButton
                     onClick={this.toggleExpensesDropdown}
                     icon="moneybag"
+                    iconAriaHidden
                     style="primary-inverse"
                     borderColor={colors.separation}
                     bgColor="transparent"
