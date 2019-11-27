@@ -8,17 +8,16 @@ describe('Continuous project with survey', () => {
   let projectSlug: string;
 
   before(() => {
-    cy.apiCreateProject(
-      'continuous',
-      projectTitle,
-      projectDescriptionPreview,
-      projectDescription,
-      'published',
-      'survey',
-      undefined,
-      'https://citizenlabco.typeform.com/to/Yv6B7V',
-      'typeform'
-    ).then((project) => {
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'survey',
+      surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
+      surveyService: 'typeform'
+    }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
     });
@@ -54,7 +53,12 @@ describe('Timeline project with survey phase', () => {
   let projectSlug: string;
 
   before(() => {
-    cy.apiCreateProject('timeline', projectTitle, projectDescriptionPreview, projectDescription).then((project) => {
+    cy.apiCreateProject({
+      type: 'timeline',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription
+    }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
