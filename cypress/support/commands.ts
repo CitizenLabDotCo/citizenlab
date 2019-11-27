@@ -647,7 +647,7 @@ export function apiCreateProject({
             'nl-BE': description
           },
           default_assignee_id: assigneeId,
-          participation_method: participationMethod,
+          participation_method: (type === 'continuous' && !participationMethod ? 'ideation' : participationMethod),
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
           location_allowed: locationAllowed

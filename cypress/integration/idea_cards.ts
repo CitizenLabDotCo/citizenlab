@@ -17,6 +17,7 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
 
   beforeEach(() => {
     cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
+    cy.get('#e2e-ideas-container');
     cy.wait(1000);
   });
 
@@ -119,44 +120,82 @@ describe('Idea cards without filter sidebar pagination', () => {
   });
 });
 
-describe('Idea cards with location disabled', () => {
-  const ideaTitle1 = randomString();
-  const ideaContent1 = randomString();
-  const ideaTitle2 = randomString();
-  const ideaContent2 = randomString();
-  const ideaTitle3 = randomString();
-  const ideaContent3 = randomString();
+describe('Idea cards with location enabled', () => {
+  const projectTitle = randomString();
   let projectId: string;
-  let ideaId1: string;
-  let ideaId2: string;
-  let ideaId3: string;
+  let ideaId: string;
 
   before(() => {
-    cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
+    const projectDescriptionPreview = randomString();
+    const projectDescription = randomString();
+
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'ideation',
+      locationAllowed: true
+    }).then((project) => {
       projectId = project.body.data.id;
-      return cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1);
-    }).then((idea1) => {
-      ideaId1 = idea1.body.data.id;
-      return cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2);
-    }).then((idea2) => {
-      ideaId2 = idea2.body.data.id;
-      return cy.apiCreateIdea(projectId, ideaTitle3, ideaContent3);
-    }).then((idea3) => {
-      ideaId3 = idea3.body.data.id;
-      cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
-      cy.wait(1000);
+      const ideaTitle = randomString();
+      const ideaContent = randomString();
+      const locationGeoJSON = { type: 'Point', coordinates: [4.351710300000036, 50.8503396] };
+      const locationDescription = 'Brussel, België';
+      return cy.apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription);
+    }).then((idea) => {
+      ideaId = idea.body.data.id;
     });
   });
 
-  it('lets you load more ideas', () => {
-    cy.get('#e2e-idea-cards-show-more-button').click();
-    cy.wait(1000);
-    cy.get('#e2e-ideas-list').find('.e2e-idea-card').its('length').should('be.gte', 12);
+  it('displays the map/list viewbuttons above the idea cards', () => {
+    cy.visit(`projects/${projectTitle}/ideas`);
+    cy.get('#e2e-ideas-container');
+    cy.get('.e2e-list-map-viewbuttons').should('exist');
   });
 
   after(() => {
-    cy.apiRemoveIdea(ideaId1);
-    cy.apiRemoveIdea(ideaId2);
-    cy.apiRemoveIdea(ideaId3);
+    cy.apiRemoveIdea(ideaId);
+    cy.apiRemoveProject(projectId);
+  });
+});
+
+describe('Idea cards with location disabled', () => {
+  const projectTitle = randomString();
+  let projectId: string;
+  let ideaId: string;
+
+  before(() => {
+    const projectDescriptionPreview = randomString();
+    const projectDescription = randomString();
+
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'ideation',
+      locationAllowed: false
+    }).then((project) => {
+      projectId = project.body.data.id;
+      const ideaTitle = randomString();
+      const ideaContent = randomString();
+      return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+    }).then((idea) => {
+      ideaId = idea.body.data.id;
+    });
+  });
+
+  it('does not display the map/list viewbuttons above the idea cards', () => {
+    cy.visit(`projects/${projectTitle}/ideas`);
+    cy.get('#e2e-ideas-container');
+    cy.get('.e2e-list-map-viewbuttons').should('not.exist');
+  });
+
+  after(() => {
+    cy.apiRemoveIdea(ideaId);
+    cy.apiRemoveProject(projectId);
   });
 });

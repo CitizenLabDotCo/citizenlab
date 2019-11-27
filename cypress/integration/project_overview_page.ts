@@ -13,7 +13,8 @@ describe('Project overview page', () => {
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
-      publicationStatus:'archived'
+      publicationStatus:'archived',
+      participationMethod: 'ideation'
     }).then((project) => {
       projectId = project.body.data.id;
       cy.visit('/projects/');
