@@ -92,7 +92,7 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }: Props) =>
   }, []);
 
   return (
-    <Container className={className} role="tablist">
+    <Container className={`e2e-list-map-viewbuttons ${className}`} role="tablist">
       <ListButton
         role="tab"
         aria-selected={showListView}

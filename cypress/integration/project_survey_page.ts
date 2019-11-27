@@ -57,7 +57,8 @@ describe('Timeline project with survey phase', () => {
       type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription
+      description: projectDescription,
+      publicationStatus: 'published'
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;

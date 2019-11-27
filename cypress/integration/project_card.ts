@@ -14,7 +14,8 @@ describe('Project card component', () => {
       type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription
+      description: projectDescription,
+      publicationStatus: 'published'
     }).then((project) => {
       // save projectId for removal
       projectId = project.body.data.id;
