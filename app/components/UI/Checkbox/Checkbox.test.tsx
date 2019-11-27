@@ -1,31 +1,18 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { mountWithTheme } from 'utils/testUtils/withTheme';
-
-// to both reder the styles and have methods to test them, this is how
+import Checkbox from '.';
 import 'jest-styled-components';
 
-import { colors } from 'utils/styleUtils';
-
-import Checkbox from './';
-
-// creating a mock function to pass in to the component
-const onChangeCheckbox = jest.fn();
-
 describe('Checkbox UI component', () => {
-  it('renders correctly when unchecked', () => {
-    const wrapper = mountWithTheme(<Checkbox label="test" value={false} onChange={onChangeCheckbox} />);
-    expect(wrapper).toMatchSnapshot();
+  let onChange: jest.Mock;
+
+  beforeEach(() => {
+    onChange = jest.fn();
   });
-  it('renders correctly when checked', () => {
-    const wrapper = mountWithTheme(<Checkbox label="test" value={true} onChange={onChangeCheckbox} />);
-    const { clGreen } = colors;
-    expect(wrapper.find('Checkbox__CheckboxContainer')).toHaveStyleRule('background', clGreen);
-    expect(wrapper).toMatchSnapshot();
-  });
+
   it('changes when clicked', () => {
-    const wrapper = shallow(<Checkbox label="test" value={false} onChange={onChangeCheckbox} />);
-    wrapper.find('Checkbox__CheckboxContainer').simulate('click', { preventDefault() { }, stopPropagation() { } });
-    expect(onChangeCheckbox).toBeCalledTimes(1);
+    const wrapper = shallow(<Checkbox checked={false} onChange={onChange} />);
+    wrapper.find('Checkbox__Container').simulate('click', { preventDefault() { }, stopPropagation() { } });
+    expect(onChange).toBeCalledTimes(1);
   });
 });

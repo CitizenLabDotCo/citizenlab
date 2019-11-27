@@ -32,6 +32,8 @@ export interface ITenantSettings {
     custom_onboarding_fallback_message?: Multiloc | null;
     currently_working_on_text?: Multiloc | null;
     segment_destinations_blacklist: string[] | null;
+    areas_term?: Multiloc;
+    area_term?: Multiloc;
   };
   demographic_fields?: {
     allowed: boolean;
@@ -68,6 +70,10 @@ export interface ITenantSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  admin_project_templates?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   pages?: TenantFeature;
   groups?: TenantFeature;
   projects?: TenantFeature;
@@ -97,6 +103,7 @@ export interface ITenantSettings {
     enabled: boolean,
     enabled_fragments: String[]
   };
+  verification?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
@@ -152,7 +159,7 @@ export interface ITenant {
 }
 
 export interface IUpdatedTenantProperties {
-  settings?: Partial<ITenantSettings>;
+  settings?: Partial<{[P in keyof ITenantSettings]: Partial<ITenantSettings[P]>}>;
   logo?: string;
   header_bg?: string;
   favicon?: string;

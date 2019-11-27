@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 // components
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
-import Footer from 'components/Footer';
+import CityLogoSection from 'components/CityLogoSection';
 import IdeasIndexMeta from './IdeaIndexMeta';
 
 // i18n
@@ -37,15 +37,17 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
-const PageTitle = styled.h1`
+const PageTitle = styled.div`
+  h1 {
+    font-size: ${fontSizes.xxxxl}px;
+    line-height: normal;
+    font-weight: 500;
+    margin-bottom: 35px;
+  }
   color: ${colors.text};
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: normal;
-  font-weight: 500;
   text-align: center;
   margin: 0;
   padding: 0;
-  margin-bottom: 35px;
 
   ${media.smallerThanMaxTablet`
     text-align: left;
@@ -63,7 +65,7 @@ export default memo(() => (
     <Container>
       <StyledContentContainer maxWidth="100%">
         <PageTitle>
-          <FormattedMessage {...messages.pageTitle} />
+          <FormattedMessage tagName="h1" {...messages.pageTitle} />
         </PageTitle>
         <IdeaCards
           type="load-more"
@@ -71,9 +73,10 @@ export default memo(() => (
           projectPublicationStatus="published"
           showViewToggle={false}
           showFiltersSidebar={true}
+          invisibleTitleMessage={messages.invisibleIdeasListTitle}
         />
       </StyledContentContainer>
-      <Footer />
+      <CityLogoSection />
     </Container>
   </>
 ));

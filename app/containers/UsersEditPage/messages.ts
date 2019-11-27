@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.loading',
     defaultMessage: 'Loading...',
   },
+  invisibleTitleUserSettings: {
+    id: 'app.containers.UsersEditPage.invisibleTitleUserSettings',
+    defaultMessage: 'All settings for your account',
+  },
   processing: {
     id: 'app.containers.UsersEditPage.processing',
     defaultMessage: 'Sending...',
@@ -145,7 +149,11 @@ export default defineMessages({
   },
   imageDropzonePlaceholder: {
     id: 'app.containers.UsersEditPage.imageDropzonePlaceholder',
-    defaultMessage: 'Drop your image here',
+    defaultMessage: 'Add your profile picture here (max. 5 Mb)',
+  },
+  a11y_imageDropzoneRemoveIconAriaTitle: {
+    id: 'app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle',
+    defaultMessage: 'Remove profile picture',
   },
   outside: {
     id: 'app.containers.UsersEditPage.outside',
@@ -166,4 +174,31 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.notificationsSubTitle',
     defaultMessage: 'When do you want us to send you an email to notify you?',
   },
+  user: {
+    id: 'app.containers.UsersEditPage.user',
+    defaultMessage: 'When do you want us to send you an email to notify you?',
+  },
+  /*
+  * VerificationStatus
+  */
+  verifyTitle: {
+    id: 'app.containers.UsersEditPage.verifyTitle',
+    defaultMessage: 'Verify your identity',
+  },
+  verifyText: {
+    id: 'app.containers.UsersEditPage.verifyText',
+    defaultMessage: 'and become a verified citizen',
+  },
+  verifyNow: {
+    id: 'app.containers.UsersEditPage.verifyNow',
+    defaultMessage: 'Verify now',
+  },
+  verifiedTitle: {
+    id: 'app.containers.UsersEditPage.verifiedTitle',
+    defaultMessage: 'Your account has been verified',
+  },
+  verifiedText: {
+    id: 'app.containers.UsersEditPage.verifiedText',
+    defaultMessage: 'Your identity has been verified. Your city will be able to base decision on you as part of the community',
+  }
 });

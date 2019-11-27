@@ -12,7 +12,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // Typings
 import { Multiloc } from 'typings';
@@ -43,7 +43,7 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
               component={FormikTextAreaMultiloc}
               id="description-preview"
               label={<FormattedMessage {...messages.descriptionPreviewLabel} />}
-              labelTooltip={<InfoTooltip {...messages.descriptionPreviewTooltip} size="small" />}
+              labelTooltip={<IconTooltip content={<FormattedMessage {...messages.descriptionPreviewTooltip} />} />}
               rows={5}
               maxCharCount={280}
             />
@@ -57,7 +57,7 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
               id="project-description"
               name="description_multiloc"
               label={<FormattedMessage {...messages.descriptionLabel} />}
-              labelTooltip={<InfoTooltip {...messages.descriptionTooltip} size="small" />}
+              labelTooltip={<IconTooltip content={<FormattedMessage {...messages.descriptionTooltip} />} />}
             />
             <Error fieldName="description_multiloc" apiErrors={errors.description_multiloc as any} />
           </SectionField>

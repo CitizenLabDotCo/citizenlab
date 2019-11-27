@@ -8,8 +8,8 @@ import ContentContainer from 'components/ContentContainer';
 import ProjectNavbar from './ProjectNavbar';
 import IdeaButton from 'components/IdeaButton';
 
-// utils
-import eventEmitter from 'utils/eventEmitter';
+// events
+import { selectedPhaseObserver } from 'containers/ProjectsShowPage/process/Timeline';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -61,7 +61,7 @@ const ArchivedLabel = styled.span`
   margin-top: 15px;
 `;
 
-const HeaderTitle = styled.h2`
+const HeaderTitle = styled.h1`
   color: #fff;
   font-size: ${fontSizes.xxxxxl}px;
   line-height: normal;
@@ -132,7 +132,7 @@ interface State {
 }
 
 class ProjectsShowPage extends PureComponent<Props, State> {
-  subscriptions: Subscription[] = [];
+  subscription: Subscription;
 
   constructor(props) {
     super(props);
@@ -142,16 +142,13 @@ class ProjectsShowPage extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.subscriptions = [
-      eventEmitter.observeEvent<string | null>('SelectedProjectPhaseChanged').subscribe(({ eventValue }) => {
-        const selectedProjectPhaseId = eventValue;
-        this.setState({ selectedProjectPhaseId });
-      })
-    ];
+    this.subscription = selectedPhaseObserver.subscribe(({ eventValue: selectedPhase }) => {
+      this.setState({ selectedProjectPhaseId: selectedPhase ? selectedPhase.id : null });
+    });
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscription && this.subscription.unsubscribe();
   }
 
   render() {
@@ -181,7 +178,7 @@ class ProjectsShowPage extends PureComponent<Props, State> {
                   </ArchivedLabel>
                 </ArchivedLabelWrapper>
               }
-              {/* Continuous Ideation Idea Button */}
+              {/* Continuous Ideation Idea Button Desktop*/}
               {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
                 <ButtonWrapper>
                   <StyledIdeaButton

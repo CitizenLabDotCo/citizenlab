@@ -31,7 +31,7 @@ import { isAdmin } from 'services/permissions/roles';
 
 // utils
 import { getProjectUrl } from 'services/projects';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -45,7 +45,7 @@ import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.header`
   width: 100%;
   height: ${({ theme }) => theme.menuHeight}px;
   display: flex;
@@ -114,7 +114,7 @@ const Logo = styled.img`
   cursor: pointer;
 `;
 
-const NavigationItems = styled.div`
+const NavigationItems = styled.nav`
   height: 100%;
   display: flex;
   align-items: stretch;
@@ -227,11 +227,13 @@ const NavigationDropdownItemIcon = styled(Icon)`
   margin-top: 3px;
 `;
 
-const ProjectsListItem = styled(Link)`
-  width: 100%;
+const ProjectsList = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const ProjectsListItem = styled(Link)`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -241,7 +243,6 @@ const ProjectsListItem = styled(Link)`
   margin-bottom: 4px;
   background: transparent;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  text-decoration: none;
 
   &.last {
     margin-bottom: 0px;
@@ -353,7 +354,10 @@ const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
   `}
 `;
 
-interface InputProps {}
+interface InputProps {
+  setRef?: (arg: HTMLElement) => void | undefined;
+  setMobileNavigationRef?: (arg: HTMLElement) => void | undefined;
+}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
@@ -399,6 +403,14 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     LoadableLanguageSelector.preload();
   }
 
+  handleRef = (element: HTMLElement) => {
+    this.props.setRef && this.props.setRef(element);
+  }
+
+  handleMobileNavigationRef = (element: HTMLElement) => {
+    this.props.setMobileNavigationRef && this.props.setMobileNavigationRef(element);
+  }
+
   render() {
     const {
       projects,
@@ -410,9 +422,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     } = this.props;
     const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
-    const isAdminPage = (location && location.pathname.startsWith('/admin'));
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
-    const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
     let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
     // Avoids caching issue when an admin changes platform logo (I guess)
     tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : undefined) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
@@ -422,23 +432,33 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const lastUrlSegment = urlSegments[urlSegments.length - 1];
     const onIdeaPage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'ideas' && lastUrlSegment !== 'new');
     const onInitiativePage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'initiatives' && lastUrlSegment !== 'new');
+    const adminPage = isPage('admin', location.pathname);
+    const initiativeFormPage = isPage('initiative_form', location.pathname);
+    const ideaFormPage = isPage('idea_form', location.pathname);
+    const ideaEditPage = isPage('idea_edit', location.pathname);
+    const initiativeEditPage = isPage('initiative_edit', location.pathname);
+    const showMobileNav = !adminPage &&
+                       !ideaFormPage &&
+                       !initiativeFormPage &&
+                       !ideaEditPage &&
+                       !initiativeEditPage;
 
     return (
       <>
-        {!isAdminPage &&
-          <MobileNavigation />
+        {showMobileNav &&
+          <MobileNavigation setRef={this.handleMobileNavigationRef}/>
         }
 
         <Container
-          role="navigation"
           id="navbar"
-          className={`${isAdminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
+          className={`${adminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
+          ref={this.handleRef}
         >
           <ContainerInner>
             <Left>
               {tenantLogo &&
                 <LogoLink to="/" onlyActiveOnIndex={true}>
-                  <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText, { tenantName })} />
+                  <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
                 </LogoLink>
               }
 
@@ -452,8 +472,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 {tenantLocales && projectsList && projectsList.length > 0 &&
                   <NavigationDropdown>
                     <NavigationDropdownItem
+                      tabIndex={0}
                       className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' ? 'active' : ''}`}
-                      aria-haspopup="true"
+                      aria-expanded={projectsDropdownOpened}
                       onMouseDown={this.removeFocus}
                       onClick={this.toggleProjectsDropdown}
                     >
@@ -468,7 +489,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                       opened={projectsDropdownOpened}
                       onClickOutside={this.toggleProjectsDropdown}
                       content={(
-                        <>
+                        <ProjectsList>
                           {projectsList.map((project, index) => (
                             <ProjectsListItem
                               key={project.id}
@@ -478,7 +499,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                               {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
                             </ProjectsListItem>
                           ))}
-                        </>
+                        </ProjectsList>
                       )}
                       footer={
                         <>

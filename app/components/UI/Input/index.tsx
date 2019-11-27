@@ -1,13 +1,18 @@
 import React from 'react';
-import { isFunction, isNil, isEmpty, size } from 'lodash-es';
+import { isNil, isEmpty, size } from 'lodash-es';
 import { FormikConsumer, FormikContext } from 'formik';
 
 // components
 import Error from 'components/UI/Error';
+import Label from 'components/UI/Label';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 import { isBoolean } from 'util';
 
 const Container: any = styled.div`
@@ -17,6 +22,7 @@ const Container: any = styled.div`
   input {
     width: 100%;
     height: 100%;
+    color: ${colors.text};
     font-size: ${fontSizes.base}px;
     line-height: 24px;
     font-weight: 400;
@@ -52,6 +58,10 @@ const Container: any = styled.div`
   }
 `;
 
+const LabelWrapper = styled.div`
+  display: flex;
+`;
+
 const CharCount = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
@@ -69,8 +79,9 @@ const CharCount = styled.div`
 export type InputProps = {
   ariaLabel?: string;
   id?: string | undefined;
+  label?: string | JSX.Element | null | undefined;
   value?: string | null | undefined;
-  type: 'text' | 'email' | 'password' | 'number';
+  type: 'text' | 'email' | 'password' | 'number' | 'date';
   placeholder?: string | null | undefined;
   error?: string | JSX.Element | null | undefined;
   onChange?: (arg: string) => void;
@@ -85,6 +96,8 @@ export type InputProps = {
   spellCheck?: boolean;
   readOnly?: boolean;
   required?: boolean;
+  autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password' | 'off' | 'on'; // https://www.w3.org/TR/WCAG21/#input-purposes
+  className?: string;
 };
 
 interface DataProps {
@@ -112,7 +125,7 @@ class Input extends React.PureComponent<Props, State> {
   }
 
   handleOnBlur = (event: React.FormEvent<HTMLInputElement>) => {
-    const { onBlur, formikContext, /*, name */ } = this.props;
+    const { onBlur, formikContext } = this.props;
 
     if (onBlur) {
       onBlur(event);
@@ -124,17 +137,14 @@ class Input extends React.PureComponent<Props, State> {
   }
 
   handleRef = (element: HTMLInputElement) => {
-    if (isFunction(this.props.setRef)) {
-      this.props.setRef(element);
-    }
+    this.props.setRef && this.props.setRef(element);
   }
 
   render() {
-    const { ariaLabel } = this.props;
+    const { label, ariaLabel, className } = this.props;
     let { value, placeholder, error } = this.props;
-    const className = this.props['className'];
     const { formikContext } = this.props;
-    const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required } = this.props;
+    const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required, autocomplete } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
     const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
 
@@ -150,12 +160,12 @@ class Input extends React.PureComponent<Props, State> {
     const tooManyChars = (maxCharCount && currentCharCount && currentCharCount > maxCharCount);
 
     return (
-      <Container error={hasError} className={className}>
+      <Container error={hasError} className={className || ''}>
 
-        {maxCharCount &&
-          <CharCount className={`${tooManyChars && 'error'}`}>
-            {currentCharCount}/{maxCharCount}
-          </CharCount>
+        {label &&
+          <LabelWrapper>
+            <Label htmlFor={id}>{label}</Label>
+          </LabelWrapper>
         }
 
         <input
@@ -175,12 +185,28 @@ class Input extends React.PureComponent<Props, State> {
           disabled={disabled}
           readOnly={readOnly}
           required={required}
+          autoComplete={autocomplete}
           {...optionalProps}
         />
 
-        <div>
-          <Error className="e2e-input-error" text={error} size="1" />
-        </div>
+        {maxCharCount &&
+          <>
+            <ScreenReaderOnly aria-live="polite">
+              <FormattedMessage
+                {...messages.a11y_charactersLeft}
+                values={{
+                  currentCharCount,
+                  maxCharCount
+                }}
+              />
+            </ScreenReaderOnly>
+            <CharCount className={`${tooManyChars && 'error'}`} aria-hidden>
+              {currentCharCount}/{maxCharCount}
+            </CharCount>
+          </>
+        }
+
+        <Error className="e2e-input-error" text={error} size="1" />
 
       </Container>
     );

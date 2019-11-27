@@ -21,21 +21,24 @@ import { getLocalized } from 'utils/i18n';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
+// events
+import eventEmitter from 'utils/eventEmitter';
+
 // utils
 import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
 
 const padding = 30;
 const mobilePadding = 15;
-const greyTransparent = css`rgba(116, 116, 116, 0.3)`;
+const greyTransparent = 'rgba(116, 116, 116, 0.3)';
 const greyOpaque = `${colors.label}`;
-const greenTransparent = css`rgba(4, 136, 76, 0.3)`;
+const greenTransparent = 'rgba(4, 136, 76, 0.3)';
 const greenOpaque = `${colors.clGreen}`;
 
 const Container = styled.div`
@@ -285,6 +288,8 @@ const PhaseBar: any = styled.button`
   -moz-appearance: none;
 `;
 
+const PhaseBarText = styled.span``;
+
 const PhaseArrow = styled(Icon)`
   width: 20px;
   height: ${phaseBarHeight};
@@ -373,34 +378,37 @@ const PhaseContainer: any = styled.div`
   }
 `;
 
-type Props = {
-  projectId: string
-  onPhaseSelected: (phase: IPhaseData | null) => void;
-  className?: string;
-};
+const SelectedPhaseEvent = 'selectedProjectPhaseChanged';
+type ISelectedPhase = IPhaseData | null;
+export const selectedPhaseObserver = eventEmitter.observeEvent<ISelectedPhase>(SelectedPhaseEvent);
 
-type State = {
+interface Props {
+  projectId: string;
+  className?: string;
+}
+
+interface State {
   locale: Locale | null;
   currentTenant: ITenant | null;
   phases: IPhases | null;
   currentPhaseId: string | null;
-  selectedPhaseId: string | null;
+  selectedPhase: ISelectedPhase;
   loaded: boolean;
-};
+}
 
 class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
   initialState: State;
   projectId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     const initialState = {
       locale: null,
       currentTenant: null,
       phases: null,
       currentPhaseId: null,
-      selectedPhaseId: null,
+      selectedPhase: null,
       loaded: false
     };
     this.initialState = initialState;
@@ -415,6 +423,8 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
     const projectId$ = this.projectId$.pipe(distinctUntilChanged());
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
+
+    eventEmitter.emit<ISelectedPhase>('Timeline', SelectedPhaseEvent, null);
 
     this.subscriptions = [
       projectId$
@@ -434,23 +444,30 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
         .subscribe(([locale, currentTenant, phases]) => {
           const currentPhase = getCurrentPhase(phases.data);
           const currentPhaseId = currentPhase ? currentPhase.id : null;
-          const selectedPhaseId = this.getDefaultSelectedPhase(currentPhase, phases);
-          this.setSelectedPhase(selectedPhaseId);
-          this.setState({ locale, currentTenant, phases, currentPhaseId, loaded: true });
+          const selectedPhase = this.getDefaultSelectedPhase(currentPhase, phases);
+          this.setState({ locale, currentTenant, phases, currentPhaseId, selectedPhase, loaded: true });
         })
     ];
   }
 
-  componentDidUpdate(_prevProps: Props, _prevState: State) {
+  componentDidUpdate(_prevProps: Props, prevState: State) {
     this.projectId$.next(this.props.projectId);
+
+    const oldSelectedPhaseId = prevState.selectedPhase ? prevState.selectedPhase.id : null;
+    const newSelectedPhaseId = this.state.selectedPhase ? this.state.selectedPhase.id : null;
+
+    if (newSelectedPhaseId !== oldSelectedPhaseId) {
+      eventEmitter.emit<ISelectedPhase>('Timeline', SelectedPhaseEvent, this.state.selectedPhase);
+    }
   }
 
   componentWillUnmount() {
+    eventEmitter.emit<ISelectedPhase>('Timeline', SelectedPhaseEvent, null);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getDefaultSelectedPhase(currentPhase: IPhaseData | null, phases: IPhases | null) {
-    let selectedPhase: IPhaseData | null = null;
+  getDefaultSelectedPhase(currentPhase: ISelectedPhase, phases: IPhases | null) {
+    let selectedPhase: ISelectedPhase = null;
 
     if (isString(currentPhase)) {
       selectedPhase = currentPhase;
@@ -474,38 +491,33 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
     return selectedPhase;
   }
 
-  setSelectedPhase = (selectedPhase: IPhaseData | null) => {
-    this.props.onPhaseSelected(selectedPhase);
-    this.setState({
-      selectedPhaseId: (selectedPhase ? selectedPhase.id : null)
-    });
-  }
-
-  handleOnPhaseSelection = (phase: IPhaseData) => (event: FormEvent<MouseEvent>) => {
+  handleOnPhaseSelection = (selectedPhase: ISelectedPhase) => (event: FormEvent<MouseEvent>) => {
     event.preventDefault();
-    this.setSelectedPhase(phase);
+    this.setState({ selectedPhase });
   }
 
-  handleOnPhaseSelectionFromDropdown = (phase: IPhaseData) => {
-    this.setSelectedPhase(phase);
+  handleOnPhaseSelectionFromDropdown = (selectedPhase: ISelectedPhase) => {
+    this.setState({ selectedPhase });
   }
 
   goToNextPhase = () => {
-    const { selectedPhaseId } = this.state;
+    const { selectedPhase } = this.state;
+    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
     const phases = this.state.phases as IPhases;
     const selectedPhaseIndex = findIndex(phases.data, phase => phase.id === selectedPhaseId);
     const nextPhaseIndex = phases.data.length >= selectedPhaseIndex + 2 ? selectedPhaseIndex + 1 : 0;
     const nextPhase = phases.data[nextPhaseIndex];
-    this.setSelectedPhase(nextPhase);
+   this.setState({ selectedPhase: nextPhase });
   }
 
   goToPreviousPhase = () => {
-    const { selectedPhaseId } = this.state;
+    const { selectedPhase } = this.state;
+    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
     const phases = this.state.phases as IPhases;
     const selectedPhaseIndex = findIndex(phases.data, phase => phase.id === selectedPhaseId);
     const prevPhaseIndex = selectedPhaseIndex > 0 ? selectedPhaseIndex - 1 : phases.data.length - 1;
     const prevPhase = phases.data[prevPhaseIndex];
-    this.setSelectedPhase(prevPhase);
+    this.setState({ selectedPhase: prevPhase });
   }
 
   removeFocus = (event: React.MouseEvent) => {
@@ -514,7 +526,8 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { className } = this.props;
-    const { locale, currentTenant, phases, currentPhaseId, selectedPhaseId } = this.state;
+    const { locale, currentTenant, phases, currentPhaseId, selectedPhase } = this.state;
+    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
 
     if (locale && currentTenant && phases && phases.data.length > 0) {
       const phaseIds = (phases ? phases.data.map(phase => phase.id) : null);
@@ -545,10 +558,10 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
           <ContainerInner>
             <Header>
               <HeaderRows>
-                <HeaderFirstRow>
+                <HeaderFirstRow aria-live="polite">
                   <HeaderLeftSection>
                     {isSelected &&
-                      <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                      <PhaseNumberWrapper aria-hidden className={`${isSelected && 'selected'} ${phaseStatus}`}>
                         <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus}`}>
                           {selectedPhaseNumber}
                         </PhaseNumber>
@@ -556,9 +569,18 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                     }
 
                     <HeaderTitleWrapper className={bowser.msie ? 'ie' : ''}>
-                      <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                      <HeaderTitle aria-hidden className={`${isSelected && 'selected'} ${phaseStatus}`}>
                         {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
                       </HeaderTitle>
+                      <ScreenReaderOnly>
+                        <FormattedMessage
+                          {...messages.a11y_selectedPhaseX}
+                          values={{
+                            selectedPhaseNumber,
+                            selectedPhaseTitle
+                          }}
+                        />
+                      </ScreenReaderOnly>
                       <MobileDate>
                         {phaseStatus === 'past' && (
                           <FormattedMessage {...messages.endedOn} values={{ date: mobileSelectedPhaseEnd }} />
@@ -634,7 +656,11 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
             </Header>
 
             <Phases className="e2e-phases">
+              <ScreenReaderOnly>
+                <FormattedMessage {...messages.a11y_phasesOverview} />
+              </ScreenReaderOnly>
               {phases.data.map((phase, index) => {
+                const phaseNumber = index + 1;
                 const phaseTitle = getLocalized(phase.attributes.title_multiloc, locale, currentTenantLocales);
                 const isFirst = (index === 0);
                 const isLast = (index === phases.data.length - 1);
@@ -659,12 +685,24 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                     onClick={this.handleOnPhaseSelection(phase)}
                   >
                     <PhaseBar>
-                      {index + 1}
-                      {!isLast && <PhaseArrow name="phase_arrow" />}
+                      <PhaseBarText aria-hidden>
+                        {phaseNumber}
+                      </PhaseBarText>
+                      <ScreenReaderOnly>
+                        <FormattedMessage
+                          {...messages.a11y_phaseX}
+                          values={{
+                            phaseNumber,
+                            phaseTitle
+                          }}
+                        />
+                      </ScreenReaderOnly>
+                      {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
                     </PhaseBar>
                     <PhaseText
                       current={isCurrentPhase}
                       selected={isSelectedPhase}
+                      aria-hidden
                     >
                       {phaseTitle}
                     </PhaseText>

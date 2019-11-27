@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent, MouseEvent } from 'react';
+import React, { PureComponent, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -16,16 +16,15 @@ import TopBar from 'components/FiltersModal/TopBar';
 import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
-import FeatureFlag from 'components/FeatureFlag';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+
+//  Typings
+import { MessageDescriptor } from 'typings';
 
 // resources
 import GetInitiatives, { Sort, GetInitiativesChildProps, IQueryParameters } from 'resources/GetInitiatives';
 import GetInitiativesFilterCounts, { GetInitiativesFilterCountsChildProps } from 'resources/GetInitiativesFilterCounts';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-
-// utils
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
 // i18n
 import messages from './messages';
@@ -34,8 +33,8 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
-import { darken, rgba } from 'polished';
+import { media, colors, fontSizes, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
 const gapWidth = 35;
 
@@ -291,57 +290,8 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const ViewButtons = styled.div`
-  display: flex;
-  margin-right: 15px;
-`;
-
-const ViewButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: transparent;
-  border: solid 1px ${({ theme }) => theme.colorText};
-
-  &:not(.active):hover {
-    background: ${({ theme }) => rgba(theme.colorText, 0.08)};
-  }
-
-  &.active {
-    background: ${({ theme }) => theme.colorText};
-
-    > span {
-      color: #fff;
-    }
-  }
-
-  > span {
-    color: ${({ theme }) => theme.colorText};
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: normal;
-    padding-left: 18px;
-    padding-right: 18px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-
-    ${media.smallerThanMinTablet`
-      padding-top: 9px;
-      padding-bottom: 9px;
-    `}
-  }
-`;
-
-const CardsButton = styled(ViewButton)`
-  border-top-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-right: none;
-`;
-
-const MapButton = styled(ViewButton)`
- border-top-right-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
+const StyledViewButtons = styled(ViewButtons)`
+  margin-right: 20px;
 `;
 
 const Footer = styled.div`
@@ -361,6 +311,7 @@ const ShowMoreButton = styled(Button)``;
 
 interface InputProps  {
   className?: string;
+  invisibleTitleMessage: MessageDescriptor;
 }
 
 interface DataProps {
@@ -374,7 +325,7 @@ interface Props extends InputProps, DataProps {
 }
 
 interface State {
-  selectedView: 'list' | 'map';
+  selectedView: 'card' | 'map';
   filtersModalOpened: boolean;
   selectedInitiativeFilters: Partial<IQueryParameters>;
   previouslySelectedInitiativeFilters: Partial<IQueryParameters> | null;
@@ -385,7 +336,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      selectedView: 'list',
+      selectedView: 'card',
       filtersModalOpened: false,
       selectedInitiativeFilters: get(props.initiatives, 'queryParameters', {}),
       previouslySelectedInitiativeFilters: null
@@ -503,17 +454,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   }
 
-  selectListView = (event: FormEvent<any>) => {
-    event.preventDefault();
-    const selectedView = 'list';
-    trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
-    this.setState({ selectedView });
-  }
-
-  selectMapView = (event: FormEvent<any>) => {
-    event.preventDefault();
-    const selectedView = 'map';
-    trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
+  selectView = (selectedView: 'card' | 'map') => {
     this.setState({ selectedView });
   }
 
@@ -527,7 +468,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { selectedView, selectedInitiativeFilters, filtersModalOpened } = this.state;
-    const { initiatives, initiativesFilterCounts, windowSize, className, theme } = this.props;
+    const { initiatives, initiativesFilterCounts, windowSize, className, theme, invisibleTitleMessage } = this.props;
     const { list, hasMore, querying, loadingMore } = initiatives;
     const hasInitiatives = (!isNilOrError(list) && list.length > 0);
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
@@ -563,6 +504,10 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container id="e2e-initiatives-container" className={className}>
+        <ScreenReaderOnly>
+          <FormattedMessage tagName="h2" {...invisibleTitleMessage}/>
+        </ScreenReaderOnly>
+
         {list === undefined &&
           <InitialLoading id="initiatives-loading">
             <Spinner />
@@ -620,22 +565,10 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
-                <FeatureFlag name="maps">
-                  <ViewButtons>
-                    <CardsButton
-                      onClick={this.selectListView}
-                      className={selectedView === 'list' ? 'active' : ''}
-                    >
-                      <FormattedMessage {...messages.cards} />
-                    </CardsButton>
-                    <MapButton
-                      onClick={this.selectMapView}
-                      className={selectedView === 'map' ? 'active' : ''}
-                    >
-                      <FormattedMessage {...messages.map} />
-                    </MapButton>
-                  </ViewButtons>
-                </FeatureFlag>
+                <StyledViewButtons
+                  onClick={this.selectView}
+                  selectedView={selectedView}
+                />
 
                 {!isNilOrError(initiativesFilterCounts) &&
                   <InitiativesCount>
@@ -646,7 +579,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
               <Spacer />
 
-              {selectedView === 'list' &&
+              {selectedView === 'card' &&
                 <AboveContentRight>
                   <SortFilterDropdown
                     onChange={this.handleSortOnChange}
@@ -658,7 +591,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <ContentLeft>
-                {selectedView === 'list' && !querying && hasInitiatives && list &&
+                {selectedView === 'card' && !querying && hasInitiatives && list &&
                   <InitiativesList id="e2e-initiatives-list">
                     {list.map((initiative) => (
                       <StyledInitiativeCard
@@ -669,7 +602,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   </InitiativesList>
                 }
 
-                {selectedView === 'list' && !querying && hasMore &&
+                {selectedView === 'card' && !querying && hasMore &&
                   <Footer>
                     <ShowMoreButton
                       id="e2e-initiative-cards-show-more-button"
@@ -681,7 +614,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                       icon="showMore"
                       iconPos="left"
                       textColor={theme.colorText}
-                      textHoverColor={darken(0.1, theme.colorText)}
                       bgColor={rgba(theme.colorText, 0.08)}
                       bgHoverColor={rgba(theme.colorText, 0.12)}
                       fontWeight="500"
@@ -693,7 +625,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   <InitiativesMap />
                 }
 
-                {selectedView === 'list' && querying &&
+                {selectedView === 'card' && querying &&
                   <Loading id="initiatives-loading">
                     <Spinner />
                   </Loading>

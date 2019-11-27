@@ -45,7 +45,6 @@ class AreaValueSelector extends React.PureComponent<Props & InjectedLocalized, S
         value={value}
         options={this.generateOptions()}
         onChange={this.handleOnChange}
-        clearable={false}
       />
     );
   }

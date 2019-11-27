@@ -13,7 +13,8 @@ import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
 import FormikSelect from 'components/UI/FormikSelect';
 
 // I18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from '../messages';
 
@@ -24,6 +25,25 @@ import GetProjects from 'resources/GetProjects';
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
+
+// Styling
+import styled from 'styled-components';
+
+const StyledCollapse = styled(Collapse)`
+  flex: 1;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+const StyledSection = styled(Section)`
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px #ddd;
+  background: #fff;
+`;
 
 export interface Props { }
 
@@ -53,7 +73,7 @@ interface State {
   openedCollapse: 'dimensions' | 'ideas' | 'style' | 'headerAndFooter' | null;
 }
 
-class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocalized, FormValues>, State> {
+class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlProps & InjectedLocalized, FormValues>, State> {
 
   constructor(props) {
     super(props);
@@ -61,6 +81,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
       openedCollapse: null,
     };
   }
+
   resourcesToOptionList = (resources) => {
     return resources && resources.map((resource) => ({
       label: this.props.localize(resource.attributes.title_multiloc),
@@ -72,15 +93,15 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
     return [
       {
         value: 'trending',
-        label: <FormattedMessage {...messages.sortTrending} />
+        label: this.props.intl.formatMessage(messages.sortTrending)
       },
       {
         value: 'popular',
-        label: <FormattedMessage {...messages.sortPopular} />
+        label: this.props.intl.formatMessage(messages.sortPopular)
       },
       {
         value: 'new',
-        label: <FormattedMessage {...messages.sortNewest} />
+        label: this.props.intl.formatMessage(messages.sortNewest)
       },
     ];
   }
@@ -89,7 +110,7 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
     return [
       {
         value: '/',
-        label: <FormattedMessage {...messages.homepage} />,
+        label: this.props.intl.formatMessage(messages.homepage),
       },
       ...(!projects ? [] : projects.map((project) => ({
         value: `/projects/${project.attributes.slug}`,
@@ -115,12 +136,12 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
     return (
       <Form>
 
-        <Collapse
+        <StyledCollapse
           opened={openedCollapse === 'dimensions'}
           onToggle={this.handleCollapseToggle('dimensions')}
           label={<FormattedMessage {...messages.titleDimensions} />}
         >
-          <Section>
+          <StyledSection>
 
             <SectionField>
               <Label>
@@ -167,16 +188,16 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
               />}
             </SectionField>
 
-          </Section>
+          </StyledSection>
 
-        </Collapse>
+        </StyledCollapse>
 
-        <Collapse
+        <StyledCollapse
           opened={openedCollapse === 'style'}
           onToggle={this.handleCollapseToggle('style')}
           label={<FormattedMessage {...messages.titleStyle} />}
         >
-          <Section>
+          <StyledSection>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fieldSiteBackgroundColor} />
@@ -248,16 +269,16 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                 apiErrors={errors.font as any}
               />}
             </SectionField>
-          </Section>
-        </Collapse>
+          </StyledSection>
+        </StyledCollapse>
 
-        <Collapse
+        <StyledCollapse
           opened={openedCollapse === 'headerAndFooter'}
           onToggle={this.handleCollapseToggle('headerAndFooter')}
           label={<FormattedMessage {...messages.titleHeaderAndFooter} />}
         >
           <>
-            <Section>
+            <StyledSection>
 
               <SectionField>
                 <Label>
@@ -336,9 +357,9 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                 </SubSection>
               }
 
-            </Section>
+            </StyledSection>
 
-            <Section>
+            <StyledSection>
               <SectionField>
                 <Field
                   name="showFooter"
@@ -369,17 +390,17 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
                   </SectionField>
                 </SubSection>
               }
-            </Section>
+            </StyledSection>
           </>
 
-        </Collapse>
+        </StyledCollapse>
 
-        <Collapse
+        <StyledCollapse
           opened={openedCollapse === 'ideas'}
           onToggle={this.handleCollapseToggle('ideas')}
           label={<FormattedMessage {...messages.titleIdeaContent} />}
         >
-          <Section>
+          <StyledSection>
 
             <SectionField>
               <Label>
@@ -438,13 +459,13 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocal
               />}
             </SectionField>
 
-          </Section>
+          </StyledSection>
 
-        </Collapse>
+        </StyledCollapse>
 
       </Form>
     );
   }
 }
 
-export default localize(WidgetForm);
+export default injectIntl(localize(WidgetForm));

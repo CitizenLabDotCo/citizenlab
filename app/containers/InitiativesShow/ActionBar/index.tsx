@@ -2,8 +2,8 @@ import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 
 // components
-import BreadCrumbs from 'components/PostComponents/Breadcrumbs';
-import ActionBarLayout from 'components/PostComponents/ActionBar';
+import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
+import ActionBarLayout from 'components/PostShowComponents/ActionBar';
 import InitiativeMoreActions from './InitiativeMoreActions';
 
 // resource
@@ -51,7 +51,7 @@ const ActionBar = memo<Props>(({ onTranslateInitiative, translateButtonClicked, 
       }
       rightContent={isNilOrError(initiative)
         ? null
-        : <InitiativeMoreActions id="e2e-initiative-more-actions" initiative={initiative} />}
+        : <InitiativeMoreActions id="e2e-initiative-more-actions-desktop" initiative={initiative} />}
       showTranslateButton={showTranslateButton}
       onTranslate={onTranslateInitiative}
       translateButtonClicked={translateButtonClicked}

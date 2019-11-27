@@ -1,8 +1,11 @@
 import React, { memo } from 'react';
 
+// hooks
+import useWindowSize from 'hooks/useWindowSize';
+
 // styling
 import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -35,7 +38,7 @@ const BoxContainer = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   position: relative;
   overflow: hidden;
-  margin-bottom: 50px;
+  margin-bottom: 70px;
 
   &::before,
   &::after {
@@ -85,11 +88,13 @@ const NewLabel = styled.div`
 `;
 
 const Title = styled.div`
+  h2 {
+    font-size: ${fontSizes.xxl}px;
+    line-height: 33px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xxl}px;
-  line-height: 33px;
-  font-weight: 600;
-  margin-bottom: 10px;
   max-width: 400px;
   ${media.smallerThanMinTablet`
     max-width: none;
@@ -109,10 +114,11 @@ const ButtonContainer = styled.div`
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: stretch;
     margin-left: 20px;
   `}
+
   ${media.smallerThanMinTablet`
     margin-left: 0;
     width: 100%;
@@ -120,22 +126,29 @@ const ButtonContainer = styled.div`
   `}
 `;
 
-const CTAButton = styled(Button)`
+const BrowseInitiativesButton = styled(Button)`
+  &:hover .buttonText {
+    text-decoration: underline;
+  }
+`;
+
+const StartInitiativeButton = styled(Button)`
   margin-left: 20px;
+
   ${media.smallerThanMaxTablet`
-    &:not(:first-child) {
-      margin-top: 20px;
-    }
+    margin-top: 15px;
     margin-left: 0;
   `}
+
   ${media.smallerThanMinTablet`
     margin-top: 20px;
-    width: 100%;
   `}
 `;
 
 const InitiativesCTABox = withTheme(memo((props: Props) => {
   const { theme, className } = props;
+  const windowSize = useWindowSize();
+  const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
   return (
     <Container className={className}>
@@ -146,28 +159,31 @@ const InitiativesCTABox = withTheme(memo((props: Props) => {
         </NewLabel>
         <div>
           <Title>
-            <FormattedMessage {...messages.initiativesBoxTitle} />
+            <FormattedMessage tagName="h2" {...messages.initiativesBoxTitle} />
           </Title>
           <Text>
             <FormattedMessage {...messages.initiativesBoxText} />
           </Text>
         </div>
         <ButtonContainer>
-          <CTAButton
+          <BrowseInitiativesButton
             fontWeight="500"
             padding="13px 22px"
-            bgColor="rgba(100, 100, 100, 0)"
+            style="text"
             textColor={theme.colorMain}
+            textHoverColor={theme.colorMain}
+            fullWidth={smallerThanSmallTablet}
             linkTo="/initiatives"
             text={<FormattedMessage {...messages.browseInitiative} />}
             className="e2e-initiatives-landing-CTA-browse"
           />
-          <CTAButton
+          <StartInitiativeButton
             fontWeight="500"
             padding="13px 22px"
             bgColor={theme.colorMain}
             linkTo="/initiatives/new"
-            textColor="#FFF"
+            textColor="#fff"
+            fullWidth={smallerThanSmallTablet}
             text={<FormattedMessage {...messages.startInitiative} />}
             className="e2e-initiatives-landing-CTA-new"
           />

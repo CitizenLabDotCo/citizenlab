@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import Icon from 'components/UI/Icon';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { get, isArray, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 import { FormattedMessage, IMessageInfo  } from 'utils/cl-intl';
@@ -205,18 +204,36 @@ export default class Error extends PureComponent<Props, State> {
 
   render() {
     const { text, errors, apiErrors, fieldName, size, marginTop, marginBottom, showIcon, showBackground, className, animate, message } = this.props;
-    const timeout = { enter: 400, exit: 350 };
 
-    const errorElement = (text || errors || apiErrors || message) && (
+    return (
       <CSSTransition
         classNames="error"
-        timeout={timeout}
+        in={!!(text || errors || apiErrors || message)}
+        timeout={{
+          enter: 400,
+          exit: 350
+        }}
+        mounOnEnter={true}
+        unmountOnExit={true}
         enter={animate}
         exit={animate}
       >
-        <StyledErrorMessage tabIndex={-1} className={`e2e-error-message ${className}`} size={size} marginTop={marginTop} marginBottom={marginBottom}>
-          <StyledErrorMessageInner showBackground={showBackground} className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}>
-            {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
+        <StyledErrorMessage
+          className={`e2e-error-message ${className}`}
+          size={size}
+          marginTop={marginTop}
+          marginBottom={marginBottom}
+          role="alert"
+        >
+          <StyledErrorMessageInner
+            showBackground={showBackground}
+            className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
+          >
+            {showIcon &&
+              <IconWrapper>
+                <Icon title={<FormattedMessage {...messages.error} />} name="error" ariaHidden />
+              </IconWrapper>
+            }
 
             <ErrorMessageText>
               {text &&
@@ -292,14 +309,6 @@ export default class Error extends PureComponent<Props, State> {
           </StyledErrorMessageInner>
         </StyledErrorMessage>
       </CSSTransition>
-    );
-
-    return (
-      <div>
-        <TransitionGroup>
-          {errorElement}
-        </TransitionGroup>
-      </div>
     );
   }
 }

@@ -10,6 +10,14 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.editProfile',
     defaultMessage: 'Edit my profile',
   },
+  invisibleTitleUserComments: {
+    id: 'app.containers.UsersShowPage.invisibleTitleUserComments',
+    defaultMessage: 'All the comments posted by this user',
+  },
+  invisibleTitleIdeasList: {
+    id: 'app.containers.UsersShowPage.invisibleTitleIdeasList',
+    defaultMessage: 'All the ideas posted by this user',
+  },
   ideasWithCount: {
     id: 'app.containers.UsersShowPage.ideasWithCount',
     defaultMessage: 'Ideas ({ideasCount})',
@@ -58,4 +66,16 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.metaDescription',
     defaultMessage: 'This is the profile page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can find an overview of the ideas this user.',
   },
+  a11y_ideaPostedIn: {
+    id: 'app.containers.UsersShowPage.a11y_ideaPostedIn',
+    defaultMessage: 'Idea in which this comment was posted: ',
+  },
+  a11y_initiativePostedIn: {
+    id: 'app.containers.UsersShowPage.a11y_initiativePostedIn',
+    defaultMessage: 'Initiative in which this comment was posted: ',
+  },
+  a11y_upvotesCount: {
+    id: 'app.containers.UsersShowPage.a11y_upvotesCount',
+    defaultMessage: '{upvotesCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
+  }
 });

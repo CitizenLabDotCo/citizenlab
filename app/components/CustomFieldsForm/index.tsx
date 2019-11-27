@@ -206,13 +206,11 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Select
-          clearable={true}
-          searchable={false}
           value={selectedOption}
           options={props.options.enumOptions}
           onChange={onChange}
           key={props.id}
-          inputId={props.id}
+          id={props.id}
           disabled={props.disabled}
           aria-label={props.label}
         />
@@ -252,7 +250,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
       <>
         {title && <FormLabelValue thin labelValue={title}/>}
         <Checkbox
-          value={(isBoolean(props.value) ? props.value : false)}
+          checked={(isBoolean(props.value) ? props.value : false)}
           onChange={onChange}
           label={(props.schema.description || null)}
         />

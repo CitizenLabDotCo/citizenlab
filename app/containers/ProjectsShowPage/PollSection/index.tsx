@@ -16,6 +16,9 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// events
+import { openVerificationModalWithContext } from 'containers/App/events';
+
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -24,6 +27,18 @@ const Container = styled.div`
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
+`;
+
+const StyledButton = styled.button`
+  color: #1391A1;
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+  display: inline-block;
+  padding: 0;
 `;
 
 // Didn't manage to strongly type this component, here are the two typings it can actually have
@@ -58,10 +73,15 @@ const disabledMessages: { [key in Partial<DisabledReasons>]: ReactIntl.Formatted
   maybeNotPermitted: messages.pollDisabledMaybeNotPermitted,
   notPermitted: messages.pollDisabledNotPermitted,
   notActivePhase: messages.pollDisabledNotActivePhase,
+  notVerified: messages.pollDisabledNotVerified,
   alreadyResponded: messages.pollDisabledNotPossible // will not be used
 };
 
 export class PollSection extends PureComponent<Props> {
+  onVerify = () => {
+    openVerificationModalWithContext('ActionPoll');
+  }
+
   render() {
     const { pollQuestions, projectId, phaseId, project, phase, type, authUser } = this.props;
     if (isNilOrError(pollQuestions) || isNilOrError(project) || type === 'phases' && isNilOrError(phase)) {
@@ -77,7 +97,12 @@ export class PollSection extends PureComponent<Props> {
           : <>
             {!enabled &&
               <StyledWarning icon="lock">
-                <FormattedMessage {...message} />
+                <FormattedMessage
+                  {...message}
+                  values={{
+                    verificationLink: <StyledButton onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
+                  }}
+                />
               </StyledWarning>
             }
             {enabled && isNilOrError(authUser) &&

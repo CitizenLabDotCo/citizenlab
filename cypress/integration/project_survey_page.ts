@@ -8,17 +8,16 @@ describe('Continuous project with survey', () => {
   let projectSlug: string;
 
   before(() => {
-    cy.apiCreateProject(
-      'continuous',
-      projectTitle,
-      projectDescriptionPreview,
-      projectDescription,
-      'published',
-      'survey',
-      undefined,
-      'https://citizenlabco.typeform.com/to/Yv6B7V',
-      'typeform'
-    ).then((project) => {
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'survey',
+      surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
+      surveyService: 'typeform'
+    }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
     });
@@ -32,7 +31,7 @@ describe('Continuous project with survey', () => {
   it('shows the survey', () => {
     cy.get('#e2e-continuous-project-survey-container');
     cy.get('.e2e-typeform-survey');
-    cy.wait(5000);
+    cy.wait(3000);
     cy.get('.e2e-typeform-survey iframe');
     cy.get('.e2e-typeform-survey iframe').then(($iframe) => {
       const $body = $iframe.contents().find('body');
@@ -52,11 +51,15 @@ describe('Timeline project with survey phase', () => {
   const phaseTitle = randomString();
   let projectId: string;
   let projectSlug: string;
-  let phaseId: string;
-  let phaseSlug: string;
 
   before(() => {
-    cy.apiCreateProject('timeline', projectTitle, projectDescriptionPreview, projectDescription).then((project) => {
+    cy.apiCreateProject({
+      type: 'timeline',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published'
+    }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
@@ -73,9 +76,6 @@ describe('Timeline project with survey phase', () => {
         'https://citizenlabco.typeform.com/to/Yv6B7V',
         'typeform'
       );
-    }).then((phase) => {
-      phaseId = phase.body.data.id;
-      phaseSlug = phase.body.data.attributes.slug;
     });
   });
 
@@ -86,7 +86,7 @@ describe('Timeline project with survey phase', () => {
 
   it('shows the survey', () => {
     cy.get('.e2e-typeform-survey');
-    cy.wait(5000);
+    cy.wait(3000);
     cy.get('.e2e-typeform-survey iframe');
     cy.get('.e2e-typeform-survey iframe').then(($iframe) => {
       const $body = $iframe.contents().find('body');

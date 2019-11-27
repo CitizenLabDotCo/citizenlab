@@ -1,36 +1,14 @@
-import { get } from 'lodash-es';
 import { randomString } from '../../../support/commands';
 
 describe('Admin: add project', () => {
 
-  const getProject = (projectId: string) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'GET',
-      url: `web_api/v1/projects/${projectId}`,
-    });
-  };
-
-  const getArea = (areaId: string) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'GET',
-      url: `web_api/v1/areas/${areaId}`,
-    });
-  };
-
   beforeEach(() => {
-    cy.login('admin@citizenlab.co', 'testtest');
+    cy.setAdminLoginCookie();
     cy.visit('/admin/projects/');
-    // find the add project button on admin/settings/projects and click it
-    cy.get('.e2e-admin-add-project').click();
-    // go to the project creation form
-    cy.location('pathname').should('eq', '/en-GB/admin/projects/new');
-    // check that the page container is loaded
+    cy.get('.e2e-create-project-expand-collapse-button').click();
+    cy.wait(1000);
+    cy.get('.e2e-create-project-tabs .item2').click();
+    cy.wait(1000);
     cy.get('.e2e-project-general-form');
   });
 
@@ -50,8 +28,7 @@ describe('Admin: add project', () => {
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
 
-        // Navigates to admin/settings/projects
-        cy.location('pathname').should('eq', '/en-GB/admin/projects');
+        cy.wait(2000);
 
         // Project should appear on top of the Published projects
         cy.get('#e2e-admin-draft-projects-list').contains(projectTitleEN);
@@ -71,8 +48,7 @@ describe('Admin: add project', () => {
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
 
-        // Navigates to admin/settings/projects
-        cy.location('pathname').should('eq', '/en-GB/admin/projects');
+        cy.wait(2000);
 
         // Project should appear on top of the Published projects
         cy.get('#e2e-admin-published-projects-list').contains(projectTitleEN);
@@ -92,11 +68,51 @@ describe('Admin: add project', () => {
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
 
-        // Navigates to admin/settings/projects
-        cy.location('pathname').should('eq', '/en-GB/admin/projects');
+        cy.wait(2000);
 
         // Project should appear on top of the Published projects
         cy.get('#e2e-admin-archived-projects-list').contains(projectTitleEN);
+      });
+
+      it('creates a continous project with location disabled', () => {
+        const projectTitleEN = randomString();
+        const projectTitleNL = randomString();
+
+        // Select 'Archived' publication status
+        cy.get('.e2e-projecstatus-published').click();
+
+        // Type random project titles for these required fields
+        cy.get('#project-title-en-GB').type(projectTitleEN);
+        cy.get('#project-title-nl-BE').type(projectTitleNL);
+
+        // Set project type to continuous
+        cy.get('.e2e-project-type-continuous').click();
+
+        // Set idea locations to disabled
+        cy.get('.e2e-participation-context-location-allowed');
+        cy.get('.e2e-participation-context-location-allowed .e2e-location-disabled');
+        cy.get('.e2e-participation-context-location-allowed .e2e-location-disabled').click();
+
+        // Submit project
+        cy.get('.e2e-submit-wrapper-button');
+        cy.get('.e2e-submit-wrapper-button').click();
+
+        cy.wait(2000);
+
+        // Click the 'Manage' button for the newly created project
+        cy.get('#e2e-admin-published-projects-list').contains(projectTitleEN);
+        cy.get(`.e2e-admin-edit-project.${projectTitleEN}`);
+        cy.get(`.e2e-admin-edit-project.${projectTitleEN}`).click();
+
+        cy.wait(2000);
+
+        // Check that page navigation occured
+        cy.get('.e2e-project-general-form');
+
+        // Check that location is set to disabled
+        cy.get('.e2e-participation-context-location-allowed');
+        cy.get('.e2e-participation-context-location-allowed .e2e-location-disabled');
+        cy.get('.e2e-participation-context-location-allowed .e2e-location-disabled').should('have.class', 'selected');
       });
     });
 
@@ -121,10 +137,10 @@ describe('Admin: add project', () => {
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
 
-        // Navigates to admin/settings/projects
-        cy.location('pathname').should('eq', '/en-GB/admin/projects');
+        cy.wait(2000);
 
         // Get projectId, then areaId and look up area to compare
+        cy.get('#e2e-admin-published-projects-list').contains(projectTitleEN);
         cy.get(`.e2e-admin-edit-project.${projectTitleEN}`).find('a').then((manageProjectButtonLinks) => {
           const manageProjectButtonLink = manageProjectButtonLinks[0];
           const href = manageProjectButtonLink.href;
@@ -132,12 +148,12 @@ describe('Admin: add project', () => {
           const projectId = hrefSegments[hrefSegments.length - 2];
           return projectId;
         }).then((projectId) => {
-          return getProject(projectId);
+          return cy.getProjectById(projectId);
         }).then((projectData) => {
-          const areaId = get(projectData.body.data.relationships.areas.data[0], 'id');
-          return getArea(areaId);
+          const areaId = projectData.body.data.relationships.areas.data[0].id;
+          return cy.getArea(areaId);
         }).then((areaData) => {
-          const area = get(areaData.body.data.attributes.title_multiloc, 'en-GB');
+          const area = areaData.body.data.attributes.title_multiloc['en-GB'];
           expect(area).to.eq('Carrotgem');
         });
       });

@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 
 import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { StatusExplanation, TooltipWrapper, HelpIcon } from './SharedStyles';
+import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
+import { StatusExplanation } from './SharedStyles';
 import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -11,7 +11,8 @@ import { ITenantSettings } from 'services/tenant';
 
 import CountDown from './CountDown';
 import Icon from 'components/UI/Icon';
-import Tooltip from 'components/UI/Tooltip';
+import IconTooltip from 'components/UI/IconTooltip';
+
 import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';
 
@@ -36,12 +37,6 @@ const StatusIcon = styled(Icon)`
   width: 31px;
   height: 31px;
   margin-bottom: 10px;
-`;
-
-const StyledTooltip = styled(Tooltip)`
-  display: inline;
-  margin-left: 4px;
-  cursor: pointer;
 `;
 
 const VoteCounter = styled.div`
@@ -81,7 +76,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const OnDesktop = styled.div`
+const OnDesktop = styled.span`
   display: inline;
 
   ${media.smallerThanMaxTablet`
@@ -89,7 +84,7 @@ const OnDesktop = styled.div`
   `}
 `;
 
-const OnMobile = styled.div`
+const OnMobile = styled.span`
   display: inline;
 
   ${media.biggerThanMaxTablet`
@@ -105,7 +100,7 @@ interface InputProps {
   onVote: () => void;
 }
 
-interface Props extends InputProps {}
+interface Props extends InputProps { }
 
 class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
 
@@ -119,12 +114,24 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
     const voteLimit = voting_threshold;
     const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
 
+    const thresholdReachedTooltip = threshold_reached_message ? (
+      <IconTooltip
+        icon="info"
+        iconColor={this.props.theme.colorText}
+        theme="light"
+        placement="bottom"
+        content={
+          <T value={threshold_reached_message} supportHtml />
+        }
+      />
+    ) : <></>;
+
     return (
       <Container>
         <CountDownWrapper>
           <CountDown targetTime={initiative.attributes.expires_at} />
         </CountDownWrapper>
-        <StatusIcon name="bullseye" />
+        <StatusIcon ariaHidden name="bullseye" />
         <StatusExplanation>
           <OnDesktop>
             <FormattedMessage
@@ -137,7 +144,14 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
                   </b>
                 )
               }}
-            />
+            >
+              {(text) => (
+                <>
+                  {text}
+                  {thresholdReachedTooltip}
+                </>
+              )}
+            </FormattedMessage>
           </OnDesktop>
           <OnMobile>
             <FormattedMessage
@@ -151,23 +165,18 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
                   </b>
                 )
               }}
-            />
-          </OnMobile>
-          {threshold_reached_message &&
-            <StyledTooltip
-              content={
-                <TooltipWrapper>
-                  <T value={threshold_reached_message} supportHtml />
-                </TooltipWrapper>
-              }
-              top="25px"
             >
-              <HelpIcon name="info" />
-            </StyledTooltip>
-          }
+              {(text) => (
+                <>
+                  {text}
+                  {thresholdReachedTooltip}
+                </>
+              )}
+            </FormattedMessage>
+          </OnMobile>
         </StatusExplanation>
         <VoteCounter>
-          <VoteText>
+          <VoteText aria-hidden={true}>
             <VoteTextLeft id="e2e-initiative-not-voted-vote-count">
               <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
             </VoteTextLeft>
@@ -175,6 +184,15 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
               {voteLimit}
             </VoteTextRight>
           </VoteText>
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.xVotesOfY}
+              values={{
+                xVotes: <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />,
+                votingThreshold: voteLimit
+              }}
+            />
+          </ScreenReaderOnly>
           <StyledProgressBar
             progress={voteCount / voteLimit}
             color={theme.colorMain}
@@ -183,6 +201,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
         </VoteCounter>
         <StyledButton
           icon="upvote"
+          iconAriaHidden
           style="primary"
           onClick={this.handleOnVote}
           id="e2e-initiative-upvote-button"

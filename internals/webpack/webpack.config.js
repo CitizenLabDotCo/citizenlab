@@ -18,6 +18,8 @@ const cssnano = require('cssnano');
 const appLocalesMomentPairs = require(path.join(process.cwd(), 'app/containers/App/constants')).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
+const GRAPHQL_HOST = process.env.GRAPHQL_HOST || 'localhost';
+const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 5001;
 const currentYear = new Date().getFullYear();
 
 const config = {
@@ -45,6 +47,8 @@ const config = {
       '/web_api': `http://${API_HOST}:${API_PORT}`,
       '/auth/': `http://${API_HOST}:${API_PORT}`,
       '/widgets/': `http://${API_HOST}:3200`,
+      '/admin_templates_api': `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`,
+      '/uploads': `http://${API_HOST}:${API_PORT}`,
     },
   },
 
@@ -56,32 +60,36 @@ const config = {
       },
       minimize: true,
       minimizer: [
-        new TerserPlugin({
-          cache: true,
-          parallel: true,
-          sourceMap: true,
-          terserOptions: {
-            warnings: false,
-            compress: {
-              comparisons: false,
-            },
-            parse: {},
-            mangle: true,
-            output: {
-              comments: false,
-              ascii_only: true,
-            },
-          },
-        }),
-        new OptimizeCSSAssetsPlugin({
-          assetNameRegExp: /\.css$/g,
-          cssProcessor: cssnano,
-          cssProcessorPluginOptions: {
-            preset: ['default', { discardComments: { removeAll: true } }],
-          },
-          canPrint: true
-        })
+        new TerserPlugin({ parallel: false, sourceMap: true }),
+        new OptimizeCSSAssetsPlugin()
       ]
+      // minimizer: [
+      //   new TerserPlugin({
+      //       cache: true,
+      //       parallel: true,
+      //       sourceMap: true,
+      //       terserOptions: {
+      //         warnings: false,
+      //         compress: {
+      //           comparisons: false,
+      //         },
+      //         parse: {},
+      //         mangle: true,
+      //         output: {
+      //           comments: false,
+      //           ascii_only: true,
+      //         },
+      //       },
+      //   }),
+      //   new OptimizeCSSAssetsPlugin({
+      //     assetNameRegExp: /\.css$/g,
+      //     cssProcessor: cssnano,
+      //     cssProcessorPluginOptions: {
+      //       preset: ['default', { discardComments: { removeAll: true } }],
+      //     },
+      //     canPrint: true
+      //   })
+      // ]
     }
   },
 
@@ -106,15 +114,10 @@ const config = {
       },
       {
         test: /\.(svg|jpg|png|gif)$/,
-        use: [
-          { loader: 'cache-loader' },
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-            },
-          },
-        ],
+        loader: 'url-loader',
+        options: {
+          limit: 8192,
+        }
       },
       {
         test: /\.(eot|ttf|woff|woff2)$/,
@@ -142,6 +145,8 @@ const config = {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         API_HOST: JSON.stringify(process.env.API_HOST),
         API_PORT: JSON.stringify(process.env.API_PORT),
+        GRAPHQL_HOST: JSON.stringify(process.env.GRAPHQL_HOST),
+        GRAPHQL_PORT: JSON.stringify(process.env.GRAPHQL_PORT),
         CROWDIN_PLUGIN_ENABLED: !!process.env.CROWDIN_PLUGIN_ENABLED,
         SEGMENT_API_KEY: JSON.stringify(process.env.SEGMENT_API_KEY),
         SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
@@ -171,6 +176,7 @@ const config = {
         useShortDoctype: true,
         removeEmptyAttributes: true,
         removeStyleLinkTypeAttributes: true,
+        removeScriptTypeAttributes: true,
         keepClosingSlash: true,
         minifyJS: true,
         minifyCSS: true,
@@ -233,7 +239,7 @@ const config = {
 
   resolve: {
     modules: [path.resolve(process.cwd(), 'app'), 'node_modules'],
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
   },
 };
 

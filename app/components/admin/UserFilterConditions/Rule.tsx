@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { pick, clone, omit } from 'lodash-es';
 import FieldSelector, { FieldDescriptor } from './FieldSelector';
 import PredicateSelector from './PredicateSelector';
@@ -107,26 +107,26 @@ class Rule extends PureComponent<Props, State> {
         </SelectorCell>
         <SelectorCell>
           {rule.ruleType &&
-            <>
+            <Fragment key={rule.ruleType}>
               {showLabels && <FormattedMessage {...messages.rulesFormLabelPredicate} />}
               <PredicateSelector
                 ruleType={rule.ruleType}
                 predicate={rule.predicate}
                 onChange={this.handleChangePredicate}
               />
-            </>
+            </Fragment>
           }
         </SelectorCell>
         <SelectorCell>
           {rule.predicate &&
-            <>
+            <Fragment key={rule.ruleType}>
               {showLabels && hasValue && <FormattedMessage {...messages.rulesFormLabelValue} />}
               <ValueSelector
                 rule={rule}
-                value={rule.value}
+                value={(rule as any).value}
                 onChange={this.handleChangeValue}
               />
-            </>
+            </Fragment>
           }
         </SelectorCell>
       </Container>

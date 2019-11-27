@@ -1,91 +1,138 @@
 import React, { PureComponent } from 'react';
-import { isBoolean } from 'lodash-es';
-import ReactSelect from 'react-select';
+import { isString, get } from 'lodash-es';
 import { IOption } from 'typings';
-import selectStyles, { getSelectStyles } from 'components/UI/Select/styles';
+import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
+
+const Arrow = styled.div`
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: solid 5px #333;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 11px;
+`;
+
+const CustomSelect = styled.select`
+  width: 100%;
+  color: #333;
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  margin: 0;
+  padding: 0;
+  padding: 10px;
+  padding-right: 27px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  background: #fff;
+  border: solid 1px #ccc;
+  cursor: pointer;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+
+  &::-ms-expand {
+    display: none;
+  }
+`;
+
+const Container = styled.div`
+  position: relative;
+
+  &.enabled {
+    &:hover,
+    &:focus {
+      ${CustomSelect} {
+        color: #000;
+        border-color: #999;
+      }
+
+      ${Arrow} {
+        border-top-color: #000;
+      }
+    }
+  }
+
+  &.disabled {
+    ${CustomSelect} {
+      cursor: not-allowed;
+      color: #bbb;
+      border-color: #ddd;
+      background: #f9f9f9;
+    }
+
+    ${Arrow} {
+      cursor: not-allowed;
+      border-top-color: #bbb;
+    }
+  }
+`;
 
 export type Props = {
   id?: string;
-  inputId?: string;
   value?: IOption | string | null;
   placeholder?: string | JSX.Element | null;
   options: IOption[] | null;
-  autoBlur?: boolean;
-  clearable?: boolean;
-  searchable?: boolean;
   onChange: (arg: IOption) => void;
-  onBlur?: () => void;
+  onBlur?: (event: React.FocusEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
-  borderColor?: string;
+  className?: string;
 };
 
 type State = {};
 
 export default class Select extends PureComponent<Props, State> {
 
-  handleOnChange = (newValue: IOption) => {
-    this.props.onChange(newValue || null);
-  }
-
-  //  Needed to keep our API compatible with react-select v1
-  //  For a native react-select solution, follow this issue:
-  //  https://github.com/JedWatson/react-select/issues/2669
-  findFullOptionValue = () => {
-    const { options, value } = this.props;
-
-    if (typeof value === 'string') {
-      return options && options.find((option) => option.value === value);
-    } else {
-      return value;
+  handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    if (this.props.options) {
+      const selectedOption = this.props.options.find(option => option.value.toString() === event.target.value.toString()) as IOption;
+      this.props.onChange(selectedOption);
     }
   }
 
-  handleOpen = () => {
-    const innerForm = document.getElementById('rules-group-inner-form');
-
-    if (innerForm) {
-      setTimeout(() => {
-        innerForm.scrollTop = innerForm.scrollHeight;
-      }, 10);
+  handleOnBlur = (event: React.FocusEvent<HTMLSelectElement>) => {
+    if (this.props.onBlur) {
+      this.props.onBlur(event);
     }
   }
-
-  emptyArray = [];
 
   render() {
-    const className = this.props['className'];
-    const { id, borderColor } = this.props;
-    let { value, placeholder, options, autoBlur, clearable, searchable } = this.props;
-    const { inputId } = this.props;
-    const { disabled } = this.props;
-    const styles = borderColor ? getSelectStyles(borderColor) : selectStyles;
-
-    value = this.findFullOptionValue();
-    placeholder = (placeholder || '');
-    options = (options || this.emptyArray);
-    autoBlur = (isBoolean(autoBlur) ? autoBlur : true);
-    clearable = (isBoolean(clearable) ? clearable : true);
-    searchable = (isBoolean(searchable) ? searchable : false);
+    const { id, disabled, className, options } = this.props;
+    const defaultValue = 'DEFAULT_SELECT_VALUE';
+    const value = isString(this.props.value) ? this.props.value : get(this.props.value, 'value', null) as string | null;
+    const selectedValue = !!(options && options.find(option => option.value === value)) ? options.find(option => option.value === value)?.value as string : defaultValue;
 
     return (
-      <ReactSelect
-        id={id}
-        inputId={inputId}
-        className={className}
-        isClearable={clearable}
-        isSearchable={searchable}
-        menuShouldScrollIntoView={false}
-        blurInputOnSelect={autoBlur}
-        value={value}
-        placeholder={placeholder as string}
-        options={options}
-        onChange={this.handleOnChange}
-        onBlur={this.props.onBlur}
-        isDisabled={disabled}
-        styles={styles}
-        onMenuOpen={this.handleOpen}
-        menuPlacement="auto"
-      />
+      <Container className={`${className} ${disabled ? 'disabled' : 'enabled'}`}>
+        <CustomSelect
+          id={id}
+          disabled={disabled}
+          onChange={this.handleOnChange}
+          onBlur={this.handleOnBlur}
+          className={disabled ? 'disabled' : 'enabled'}
+          value={selectedValue}
+        >
+          <option
+            value={defaultValue}
+            aria-selected={selectedValue === defaultValue}
+            hidden={true}
+            disabled={true}
+          />
+
+          {options && options.length > 0 && options.map((option, index) => (
+            <option
+              key={index}
+              value={option.value}
+              aria-selected={selectedValue === option.value}
+            >
+              {option.label}
+            </option>
+          ))}
+        </CustomSelect>
+        <Arrow className={disabled ? 'disabled' : 'enabled'} />
+      </Container>
     );
   }
 }

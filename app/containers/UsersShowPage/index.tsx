@@ -5,11 +5,13 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import IdeaCards from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
-import Footer from 'components/Footer';
 import UsersShowPageMeta from './UsersShowPageMeta';
 
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
+
+// i18n
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
@@ -105,6 +107,7 @@ export class UsersShowPage extends PureComponent<Props, State> {
                   <IdeaCards
                     type="load-more"
                     authorId={user.id}
+                    invisibleTitleMessage={messages.invisibleTitleIdeasList}
                   />
                 </UserIdeas>
               }
@@ -115,8 +118,6 @@ export class UsersShowPage extends PureComponent<Props, State> {
                 />
               }
             </StyledContentContainer>
-
-            <Footer showCityLogoSection={false} />
           </Container>
         </>
       );

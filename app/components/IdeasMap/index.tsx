@@ -13,7 +13,7 @@ import tracks from './tracks';
 import Map, { Point } from 'components/Map';
 import Warning from 'components/UI/Warning';
 import IdeaPreview from './IdeaPreview';
-import IdeaAddButton from './IdeaAddButton';
+import IdeaButton from 'components/IdeaButton';
 
 // Resources
 import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'resources/GetIdeaMarkers';
@@ -24,7 +24,7 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, ScreenReaderOnly } from 'utils/styleUtils';
 
 // Typing
 import { IGeotaggedIdeaData } from 'services/ideas';
@@ -164,6 +164,10 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
           <StyledWarning text={this.noIdeasWithLocationMessage} />
         }
 
+        <ScreenReaderOnly>
+          <FormattedMessage {...messages.mapTitle} />
+        </ScreenReaderOnly>
+
         <StyledMap
           points={points}
           onMarkerClick={this.toggleIdea}
@@ -175,9 +179,9 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
 
         {projectIds && projectIds.length === 1 &&
           <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
-            <IdeaAddButton
+            <IdeaButton
               projectId={projectIds[0]}
-              phaseId={phaseId}
+              phaseId={phaseId || undefined}
               onClick={this.redirectToIdeaCreation}
             />
           </div>

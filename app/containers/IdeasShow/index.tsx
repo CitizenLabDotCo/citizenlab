@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { sortBy, last, get, isUndefined } from 'lodash-es';
+import { sortBy, last, get, isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -13,27 +13,27 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
-import LoadableDropdownMap from 'components/PostComponents/DropdownMap/LoadableDropdownMap';
-import Topics from 'components/PostComponents/Topics';
-import Title from 'components/PostComponents/Title';
-import Body from 'components/PostComponents/Body';
-import ContentFooter from 'components/PostComponents/ContentFooter';
-import Image from 'components/PostComponents/Image';
-import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
+import LoadableDropdownMap from 'components/PostShowComponents/DropdownMap/LoadableDropdownMap';
+import Topics from 'components/PostShowComponents/Topics';
+import Title from 'components/PostShowComponents/Title';
+import Body from 'components/PostShowComponents/Body';
+import ContentFooter from 'components/PostShowComponents/ContentFooter';
+import Image from 'components/PostShowComponents/Image';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Modal from 'components/UI/Modal';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
 import FileAttachments from 'components/UI/FileAttachments';
-import SharingModalContent from 'components/PostComponents/SharingModalContent';
+import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import SimilarIdeas from './SimilarIdeas';
 import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
-import Footer from 'components/PostComponents/Footer';
+import Footer from 'components/PostShowComponents/Footer';
 import Spinner from 'components/UI/Spinner';
 import ActionBar from './ActionBar';
-import TranslateButton from 'components/PostComponents/TranslateButton';
+import TranslateButton from 'components/PostShowComponents/TranslateButton';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -62,7 +62,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -83,7 +83,7 @@ const Loading = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px);
+  min-height: calc(100vh - ${props => props.theme.menuHeight + props.theme.footerHeight}px);
   background: #fff;
   opacity: 0;
 
@@ -315,7 +315,7 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends DataProps, InputProps {}
+interface Props extends DataProps, InputProps { }
 
 interface IActionInfos {
   participationContextType: 'Project' | 'Phase' | null;
@@ -355,7 +355,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
     this.setLoaded();
 
-    if (newIdeaId) {
+    if (isString(newIdeaId)) {
       setTimeout(() => {
         this.setState({ ideaIdForSocialSharing: newIdeaId });
       }, 1500);
@@ -377,6 +377,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const upvotesCount = idea.attributes.upvotes_count;
       const downvotesCount = idea.attributes.downvotes_count;
       const votingEnabled = idea.attributes.action_descriptor.voting.enabled;
+      const votingDisabledReason = idea.attributes.action_descriptor.voting.disabled_reason;
       const cancellingEnabled = idea.attributes.action_descriptor.voting.cancelling_enabled;
       const votingFutureEnabled = idea.attributes.action_descriptor.voting.future_enabled;
       const pbProject = (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'budgeting' ? project : null);
@@ -386,7 +387,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const lastPhaseHasPassed = (lastPhase ? pastPresentOrFuture([lastPhase.attributes.start_at, lastPhase.attributes.end_at]) === 'past' : false);
       const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.id === pbPhase.id);
       const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
-      const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0));
+      const shouldVerify = !votingEnabled && votingDisabledReason === 'not_verified';
+      const verifiedButNotPermitted = !shouldVerify &&  votingDisabledReason === 'not_permitted';
+      const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify || verifiedButNotPermitted));
       const budgetingDescriptor = get(idea, 'attributes.action_descriptor.budgeting', null);
       let participationContextType: 'Project' | 'Phase' | null = null;
       let participationContextId: string | null = null;
@@ -491,9 +494,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         campaign: 'share_content',
         content: authUser.id
       } : {
-        source: 'share_idea',
-        campaign: 'share_content'
-      };
+          source: 'share_idea',
+          campaign: 'share_content'
+        };
       const showTranslateButton = (
         !isNilOrError(idea) &&
         !isNilOrError(locale) &&
@@ -542,7 +545,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 </IdeaHeader>
 
                 {statusId && smallerThanLargeTablet &&
-                  <StyledMobileIdeaStatus statusId={statusId} />
+                  <StyledMobileIdeaStatus tagName="h2" statusId={statusId} />
                 }
 
                 {biggerThanLargeTablet &&
@@ -556,7 +559,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 {ideaImageLarge &&
                   <Image
                     src={ideaImageLarge}
-                    alt={formatMessage(messages.imageAltText, { ideaTitle })}
+                    alt=""
                     id="e2e-idea-image"
                   />
                 }
@@ -567,7 +570,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     position={ideaGeoPosition}
                   />
                 }
-
+                <ScreenReaderOnly>
+                  <FormattedMessage tagName="h2" {...messages.invisibleTitleContent} />
+                </ScreenReaderOnly>
                 <Body
                   postType="idea"
                   postId={ideaId}
@@ -581,10 +586,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 {showBudgetControl &&
-                 participationContextId &&
-                 participationContextType &&
-                 budgetingDescriptor &&
-                 smallerThanLargeTablet &&
+                  participationContextId &&
+                  participationContextType &&
+                  budgetingDescriptor &&
+                  smallerThanLargeTablet &&
                   <AssignBudgetControlMobile>
                     <AssignBudgetWrapper
                       ideaId={ideaId}
@@ -604,7 +609,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <ContentFooter
                   postType="idea"
-                  id={ideaId}
+                  postId={ideaId}
                   publishedAt={ideaPublishedAt}
                   commentsCount={idea.attributes.comments_count}
                 />
@@ -613,6 +618,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <SharingMobile
                     context="idea"
                     url={ideaUrl}
+                    titleLevel="h2"
                     twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                     emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
                     emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
@@ -626,6 +632,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <MetaContent>
                     {(showVoteControl || showBudgetControl || statusId) &&
                       <ControlWrapper className="e2e-vote-controls-desktop">
+                        {(showVoteControl || showBudgetControl) &&
+                          <ScreenReaderOnly>
+                            {showVoteControl && <FormattedMessage tagName="h2" {...messages.a11y_voteControl} />}
+                            {showBudgetControl && <FormattedMessage tagName="h2" {...messages.a11y_budgetControl} />}
+                          </ScreenReaderOnly>
+                        }
                         {showVoteControl &&
                           <>
                             <VoteLabel>
@@ -634,7 +646,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                             <VoteWrapper
                               ideaId={ideaId}
-                              votingDescriptor={idea.attributes.action_descriptor.voting}
                               projectId={projectId}
                             />
                           </>
@@ -651,11 +662,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                         }
 
                         {(showVoteControl || showBudgetControl) &&
-                          <ControlWrapperHorizontalRule />
+                          <ControlWrapperHorizontalRule aria-hidden />
                         }
 
                         {statusId &&
-                          <IdeaStatus statusId={statusId} />
+                          <IdeaStatus tagName="h3" statusId={statusId} />
                         }
                       </ControlWrapper>
                     }
@@ -710,23 +721,22 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         </CSSTransition>
 
         <FeatureFlag name="ideaflow_social_sharing">
-            <Modal
-              opened={!!ideaIdForSocialSharing}
-              close={this.closeIdeaSocialSharingModal}
-              hasSkipButton={true}
-              skipText={<FormattedMessage {...messages.skipSharing} />}
-              label={formatMessage(messages.modalShareLabel)}
-            >
-              {ideaIdForSocialSharing &&
-                <SharingModalContent
-                  postType="idea"
-                  postId={ideaIdForSocialSharing}
-                  title={formatMessage(messages.shareTitle)}
-                  subtitle={formatMessage(messages.shareSubtitle)}
-                />
-              }
-            </Modal>
-          </FeatureFlag>
+          <Modal
+            opened={!!ideaIdForSocialSharing}
+            close={this.closeIdeaSocialSharingModal}
+            hasSkipButton={true}
+            skipText={<FormattedMessage {...messages.skipSharing} />}
+          >
+            {ideaIdForSocialSharing &&
+              <SharingModalContent
+                postType="idea"
+                postId={ideaIdForSocialSharing}
+                title={formatMessage(messages.shareTitle)}
+                subtitle={formatMessage(messages.shareSubtitle)}
+              />
+            }
+          </Modal>
+        </FeatureFlag>
       </>
     );
   }
@@ -736,7 +746,7 @@ const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl(withRouter(IdeasShow)
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  authUser: <GetAuthUser/>,
+  authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,

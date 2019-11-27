@@ -1,8 +1,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  imageAltText: {
-    id: 'app.components.InitiativesCard.imageAltText',
-    defaultMessage: '{orgName} - main image for the initiative {initiativeTitle}',
+  xComments: {
+    id: 'app.components.InitiativeCard.xComments',
+    defaultMessage: '{commentsCount, plural, =0 {no comments} one {1 comment} other {# comments}}',
+  },
+  xVotesOfY: {
+    id: 'app.components.InitiativeCard.xVotesOfY',
+    defaultMessage: '{count, plural, =0 {no votes} one {1 vote} other {# votes}} out of {votingThreshold}',
   },
 });

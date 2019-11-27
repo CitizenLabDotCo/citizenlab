@@ -11,14 +11,19 @@ import { areasStream, IAreas } from 'services/areas';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IUser } from 'services/users';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
 // Components
 import ProfileForm from './ProfileForm';
 import CampaignsConsentForm from './CampaignsConsentForm';
 import ProfileDeletion from './ProfileDeletion';
+import VerificationStatus from './VerificationStatus';
 
 // Styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -27,6 +32,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 30px;
+  padding-bottom: 50px;
   overflow-x: hidden;
 `;
 
@@ -86,8 +92,12 @@ export default class ProfileEditor extends PureComponent<Props, State> {
 
     if (loaded && currentTenant && authUser && areas) {
       return (
-        <Container>
+        <Container id="e2e-user-edit-profile-page">
+          <ScreenReaderOnly>
+            <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
+          </ScreenReaderOnly>
           <Wrapper>
+            <VerificationStatus />
             <ProfileForm
               user={authUser.data}
               areas={areas.data}

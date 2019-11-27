@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -12,25 +12,23 @@ import SelectSort from './SortFilterDropdown';
 import ProjectFilterDropdown from './ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
-import FeatureFlag from 'components/FeatureFlag';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 // resources
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
-// utils
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
-import { darken, rgba } from 'polished';
+import { rgba } from 'polished';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
@@ -53,6 +51,7 @@ const Loading = styled.div`
 
 const FiltersArea = styled.div`
   width: 100%;
+  min-height: 54px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -64,17 +63,17 @@ const FiltersArea = styled.div`
   }
 
   ${media.smallerThanMaxTablet`
-    margin-bottom: 30px;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   `}
 `;
 
 const FilterArea = styled.div`
   display: flex;
+  align-items: center;
 
-  ${media.biggerThanMinTablet`
-    align-items: center;
+  ${media.smallerThanMaxTablet`
+    align-items: stretch;
   `}
 `;
 
@@ -89,10 +88,6 @@ const LeftFilterArea = styled(FilterArea)`
   `}
 `;
 
-const Spacer = styled.div`
-  flex: 1;
-`;
-
 const RightFilterArea = styled(FilterArea)`
   &.hidden {
     display: none;
@@ -104,7 +99,7 @@ const RightFilterArea = styled(FilterArea)`
     justify-content: space-between;
   `}
 
-  ${media.largePhone`
+  ${media.smallerThanMinTablet`
     width: 100%;
     display: flex;
     flex-direction: column-reverse;
@@ -112,9 +107,23 @@ const RightFilterArea = styled(FilterArea)`
 `;
 
 const DropdownFilters = styled.div`
+  ${media.smallerThanMinTablet`
+    &.hasViewButtons {
+      margin-top: 20px;
+    }
+  `}
+
   &.hidden {
     display: none;
   }
+`;
+
+const StyledViewButtons = styled(ViewButtons)`
+  margin-left: 25px;
+
+  ${media.smallerThanMaxTablet`
+    margin-left: 0px;
+  `}
 `;
 
 const StyledSearchInput = styled(SearchInput)`
@@ -125,62 +134,6 @@ const StyledSearchInput = styled(SearchInput)`
     width: 100%;
     margin-right: 0px;
   `}
-`;
-
-const ViewButtons = styled.div`
-  display: flex;
-
-  &.cardView {
-    margin-left: 35px;
-
-    ${media.smallerThanMinTablet`
-      margin-left: 0px;
-      margin-bottom: 15px;
-    `}
-  }
-`;
-
-const ViewButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: transparent;
-  border: solid 1px ${({ theme }) => theme.colorText};
-
-  &:not(.active):hover {
-    background: ${({ theme }) => rgba(theme.colorText, 0.08)};
-  }
-
-  &.active {
-    background: ${({ theme }) => theme.colorText};
-
-    > span {
-      color: #fff;
-    }
-  }
-
-  > span {
-    color: ${({ theme }) => theme.colorText};
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: normal;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-`;
-
-const CardsButton = styled(ViewButton)`
-  border-top-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-right: none;
-`;
-
-const MapButton = styled(ViewButton)`
- border-top-right-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const IdeasList: any = styled.div`
@@ -268,6 +221,8 @@ interface InputProps extends GetIdeasInputProps  {
 interface DataProps {
   windowSize: GetWindowSizeChildProps;
   ideas: GetIdeasChildProps;
+  project: GetProjectChildProps;
+  phase: GetPhaseChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -317,9 +272,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     this.props.ideas.onChangeTopics(topics);
   }
 
-  selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
-    event.preventDefault();
-    trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
+  selectView = (selectedView: 'card' | 'map') => {
     this.setState({ selectedView });
   }
 
@@ -334,6 +287,8 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       participationContextType,
       windowSize,
       ideas,
+      project,
+      phase,
       className,
       theme,
       allowProjectsFilter,
@@ -347,9 +302,18 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       loadingMore
     } = ideas;
     const hasIdeas = (!isNilOrError(list) && list.length > 0);
-    const showCardView = (selectedView === 'card');
+    const showListView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
+    let locationAllowed: boolean | undefined = true;
+
+    if (participationContextType === 'Phase' && !isNilOrError(phase)) {
+      locationAllowed =  phase?.attributes?.location_allowed;
+    } else if (participationContextType === 'Project' && !isNilOrError(project)) {
+      locationAllowed =  project?.attributes?.location_allowed;
+    }
+
+    const showViewButtons = !!(locationAllowed && showViewToggle);
 
     return (
       <Container id="e2e-ideas-container" className={className}>
@@ -365,36 +329,28 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </LeftFilterArea>
 
           <RightFilterArea>
-            <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'}`}>
+            <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'} ${showViewButtons ? 'hasViewButtons' : ''}`}>
               <SelectSort onChange={this.handleSortOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
               {allowProjectsFilter && <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />}
               <TopicFilterDropdown onChange={this.handleTopicsOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
             </DropdownFilters>
 
-            <Spacer />
-
-            {showViewToggle &&
-              <FeatureFlag name="maps">
-                <ViewButtons className={`${showCardView && 'cardView'}`}>
-                  <CardsButton onClick={this.selectView('card')} className={`${showCardView && 'active'}`}>
-                    <FormattedMessage {...messages.cards} />
-                  </CardsButton>
-                  <MapButton onClick={this.selectView('map')} className={`${showMapView && 'active'}`}>
-                    <FormattedMessage {...messages.map} />
-                  </MapButton>
-                </ViewButtons>
-              </FeatureFlag>
+            {showViewButtons &&
+              <StyledViewButtons
+                selectedView={selectedView}
+                onClick={this.selectView}
+              />
             }
           </RightFilterArea>
         </FiltersArea>
 
-        {showCardView && querying &&
+        {showListView && querying &&
           <Loading id="ideas-loading">
             <Spinner />
           </Loading>
         }
 
-        {!querying && !hasIdeas &&
+        {!querying && !hasIdeas && !showMapView &&
           <EmptyContainer id="ideas-empty">
             <IdeaIcon name="idea" />
             <EmptyMessage>
@@ -405,7 +361,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </EmptyContainer>
         }
 
-        {showCardView && !querying && hasIdeas && list &&
+        {showListView && !querying && hasIdeas && list &&
           <IdeasList id="e2e-ideas-list">
             {list.map((idea) => (
               <StyledIdeaCard
@@ -419,7 +375,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </IdeasList>
         }
 
-        {showCardView && !querying && hasMore &&
+        {showListView && !querying && hasMore &&
           <Footer>
             <ShowMoreButton
               id="e2e-idea-cards-show-more-button"
@@ -432,7 +388,6 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
               icon="showMore"
               iconPos="left"
               textColor={theme.colorText}
-              textHoverColor={darken(0.1, theme.colorText)}
               bgColor={rgba(theme.colorText, 0.08)}
               bgHoverColor={rgba(theme.colorText, 0.12)}
               fontWeight="500"
@@ -440,7 +395,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </Footer>
         }
 
-        {showMapView && hasIdeas &&
+        {showMapView &&
           <IdeasMap projectIds={queryParameters.projects} phaseId={queryParameters.phase} />
         }
       </Container>
@@ -450,7 +405,9 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
-  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>
+  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
+  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'Project' ? participationContextId : null}>{render}</GetProject>,
+  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'Phase' ? participationContextId : null}>{render}</GetPhase>,
 });
 
 const WithoutFiltersSidebarWithHoCs = withTheme(injectIntl(WithoutFiltersSidebar));

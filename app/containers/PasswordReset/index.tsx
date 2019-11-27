@@ -10,6 +10,7 @@ import Button from 'components/UI/Button';
 import Success from 'components/UI/Success';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
+import { FormLabel } from 'components/UI/FormComponents';
 
 // services
 import { resetPassword } from 'services/auth';
@@ -78,12 +79,10 @@ type State = {
 class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State> {
   passwordInputElement: HTMLInputElement | null;
 
-  constructor(props: Props) {
-    super(props as any);
-
+  constructor(props) {
+    super(props);
     const query = clHistory.getCurrentLocation().query;
-    const token = (query.token ? query.token : null);
-
+    const token = isString(query.token) ? query.token : null;
     this.state = {
       token,
       password: null,
@@ -140,7 +139,6 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
         this.setState({ processing: true, success: false });
         await resetPassword(password, token);
         this.setState({ password: null, processing: false, success: true });
-        /* setTimeout(() => this.setState({ success: false }), 8000); */
       } catch (error) {
         this.setState({ processing: false, success: false, submitError: true });
       }
@@ -177,8 +175,12 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
           <Title>{title}</Title>
 
           <Form onSubmit={this.handleOnSubmit}>
+            <FormLabel
+              htmlFor="password"
+              labelMessage={messages.passwordLabel}
+              thin
+            />
             <StyledInput
-              ariaLabel={passwordPlaceholder}
               type="password"
               id="password"
               value={password}
