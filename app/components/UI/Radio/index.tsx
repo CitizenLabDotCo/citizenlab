@@ -93,7 +93,10 @@ export interface Props {
   currentValue?: any;
   value: any;
   /**
-   * name should be a hard-coded string for all radios of the same radio group
+   * Name should be a string that is the same for all radios of the same radio group and unique for each radio group.
+   * E.g. if you have a poll with two questions and each question has four answers/radios,
+   * radios of each question should have the same name, but it should be different from those
+   * of the second question. See PollForm.tsx for a good example.
    */
   name: string | undefined;
   id?: string | undefined;
