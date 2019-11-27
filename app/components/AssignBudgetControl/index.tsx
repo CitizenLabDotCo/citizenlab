@@ -2,6 +2,7 @@ import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { includes, isUndefined, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import { setMightOpenVerificationModal, verificationNeeded } from 'containers/App/events';
 
 // components
 import Button from 'components/UI/Button';
@@ -34,7 +35,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 const IdeaCardContainer = styled.div`
   display: flex;
@@ -137,6 +138,19 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
     };
   }
 
+  componentDidMount() {
+    const disabledReason = !isNilOrError(this.props.idea) && get(this.props.idea.attributes.action_descriptor.budgeting, 'disabled_reason', null);
+    if (disabledReason === 'not_verified') {
+      verificationNeeded('ActionBudget');
+    }
+  }
+  componentDidUpdate() {
+    const disabledReason = !isNilOrError(this.props.idea) && get(this.props.idea.attributes.action_descriptor.budgeting, 'disabled_reason', null);
+    if (disabledReason === 'not_verified') {
+      verificationNeeded('ActionBudget');
+    }
+  }
+
   isDisabled = () => {
     const { participationContextType, project, phase } = this.props;
 
@@ -163,6 +177,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
     };
 
     if (!authUser) {
+      setMightOpenVerificationModal('ActionBudget');
       unauthenticatedAssignBudgetClick && unauthenticatedAssignBudgetClick();
       this.props.unauthenticatedAssignClick();
     } else if (!isNilOrError(idea) && !isNilOrError(authUser)) {
@@ -241,16 +256,18 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
       const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
       const isInBasket = includes(basketIdeaIds, ideaId);
       const disabled = this.isDisabled();
+      const fullClassName = `e2e-assign-budget ${className}`;
 
       if (view === 'ideaCard') {
         return (
-          <IdeaCardContainer className={className}>
+          <IdeaCardContainer className={fullClassName} aria-live="polite">
             <IdeaCardButton
               onClick={this.assignBudget}
               processing={processing}
               bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
               bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
               icon={!isInBasket ? 'add' : 'remove'}
+              className={`e2e-assign-budget-button ${isInBasket ? 'in-basket' : 'not-in-basket'}`}
             >
               {!isInBasket ? (
                 <FormattedMessage {...messages.assign} />
@@ -262,9 +279,12 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
         );
       } else if (view === 'ideaPage') {
         return (
-          <IdeaPageContainer className={className}>
+          <IdeaPageContainer className={fullClassName} aria-live="polite">
             <BudgetBox>
               <Budget>
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.a11y_price} />
+                </ScreenReaderOnly>
                 <FormattedNumber
                   value={idea.attributes.budget}
                   style="currency"
@@ -291,6 +311,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
               bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
               fullWidth={true}
               icon={!isInBasket ? 'add' : 'remove'}
+              iconAriaHidden
             >
               {!isInBasket ? (
                 <FormattedMessage {...messages.assign} />

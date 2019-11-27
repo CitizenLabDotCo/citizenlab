@@ -9,6 +9,22 @@ export default defineMessages({
     id: 'app.containers.Projects.project',
     defaultMessage: 'Project',
   },
+  invisibleTitleIdeasList: {
+    id: 'app.containers.Projects.invisibleTitleIdeasList',
+    defaultMessage: 'All the ideas for this project',
+  },
+  invisibleTitleIdeasListPhase: {
+    id: 'app.containers.Projects.invisibleTitleIdeasListPhase',
+    defaultMessage: 'All the ideas for this phase',
+  },
+  invisibleTitleSurvey: {
+    id: 'app.containers.Projects.invisibleTitleSurvey',
+    defaultMessage: 'Take the survey',
+  },
+  invisibleTitlePhaseAbout: {
+    id: 'app.containers.Projects.invisibleTitlePhaseAbout',
+    defaultMessage: 'About this phase',
+  },
   information: {
     id: 'app.containers.Projects.information',
     defaultMessage: 'Information',
@@ -19,7 +35,7 @@ export default defineMessages({
   },
   metaTitle: {
     id: 'app.containers.Projects.metaTitle',
-    defaultMessage: 'Project  • {projectTitle}',
+    defaultMessage: 'Project: {projectTitle}',
   },
   navInformation: {
     id: 'app.containers.Projects.navInformation',
@@ -140,5 +156,25 @@ export default defineMessages({
   byAuthor: {
     id: 'app.containers.Projects.byAuthor',
     defaultMessage: 'by {authorName}',
-  }
+  },
+  removeItem: {
+    id: 'app.containers.Projects.removeItem',
+    defaultMessage: 'Remove item',
+  },
+  a11y_phaseX: {
+    id: 'app.containers.Projects.a11y_phase',
+    defaultMessage: 'Phase {phaseNumber}: {phaseTitle}',
+  },
+  a11y_phasesOverview: {
+    id: 'app.containers.Projects.a11y_phasesOverview',
+    defaultMessage: 'Phases overview',
+  },
+  a11y_selectedPhaseX: {
+    id: 'app.containers.Projects.a11y_selectedPhaseX',
+    defaultMessage: 'Selected phase. Phase {selectedPhaseNumber}: {selectedPhaseTitle}',
+  },
+  a11y_projectNav: {
+    id: 'app.containers.Projects.a11y_projectNav',
+    defaultMessage: 'Project navigation',
+  },
 });

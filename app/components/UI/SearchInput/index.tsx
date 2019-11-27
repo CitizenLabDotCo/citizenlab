@@ -4,14 +4,17 @@ import { isEmpty } from 'lodash-es';
 // components
 import Icon from 'components/UI/Icon';
 
+// utils
+import { isPage } from 'utils/helperUtils';
+
 // i18n
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 const Container = styled.div`
@@ -24,9 +27,14 @@ const Container = styled.div`
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
   transition: box-shadow 100ms ease-out;
 
-  &.focussed {
+  &.focused {
     border-color: ${({ theme }) => theme.colorSecondary};
     box-shadow: 0px 0px 0px 3px ${({ theme }) => transparentize(0.8, theme.colorSecondary)};
+
+    &.adminpage {
+      border-color: ${colors.adminTextColor};
+      box-shadow: 0px 0px 0px 3px ${transparentize(0.8, colors.adminTextColor)};
+    }
   }
 `;
 
@@ -61,6 +69,8 @@ const SearchIcon = styled(Icon)`
   width: 20px;
   height: 20px;
   fill: ${colors.label};
+  margin-left: 10px;
+  margin-right: 20px;
 `;
 
 const CloseIcon = styled(Icon)`
@@ -69,7 +79,7 @@ const CloseIcon = styled(Icon)`
   fill: ${colors.label};
 `;
 
-const IconWrapper = styled.button`
+const SearchFieldButton = styled.button`
   flex:  0 0 20px;
   width: 20px;
   height: 20px;
@@ -84,13 +94,9 @@ const IconWrapper = styled.button`
   -moz-appearance: none;
   cursor: pointer;
 
-  &.clickable {
-    cursor: pointer;
-
-    &:hover {
-      ${CloseIcon} {
-        fill: #000;
-      }
+  &:hover {
+    ${CloseIcon} {
+      fill: #000;
     }
   }
 `;
@@ -105,7 +111,9 @@ interface Props {
 
 const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placeholder, ariaLabel, className, intl }) => {
 
-  const [focussed, setFocussed] = useState(false);
+  const adminPage = isPage('admin', location.pathname);
+
+  const [focused, setFocused] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string | null>(value || null);
 
   const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -116,19 +124,19 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
 
   const handleOnFocus = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    setFocussed(true);
+    setFocused(true);
   }, []);
 
   const handleOnBlur = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    setFocussed(false);
+    setFocused(false);
   }, []);
 
   const handleOnKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Escape') {
       event.preventDefault();
       setSearchTerm(null);
-      setFocussed(false);
+      setFocused(false);
     }
   }, []);
 
@@ -167,7 +175,7 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
   }, []);
 
   return (
-    <Container className={`${className} ${focussed ? 'focussed' : 'blurred'}`}>
+    <Container className={`${className} ${focused ? 'focused' : 'blurred'} ${adminPage ? 'adminpage' : ''}`}>
       <Input
         type="text"
         aria-label={searchAriaLabel}
@@ -179,13 +187,19 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
         onKeyDown={handleOnKeyDown}
         className="e2e-search-input"
       />
-      <IconWrapper
-        onMouseDown={removeFocus}
-        onClick={handleOnReset}
-        className={!isEmpty(searchTerm) ? 'clickable' : ''}
-      >
-        {isEmpty(searchTerm) ? <SearchIcon name="search2" /> : <CloseIcon name="close" />}
-      </IconWrapper>
+      <ScreenReaderOnly aria-live="polite">
+        <FormattedMessage {...messages.searchTerm} values={{ searchTerm }} />
+      </ScreenReaderOnly>
+      {isEmpty(searchTerm) ?
+        <SearchIcon ariaHidden name="search2" />
+      :
+        <SearchFieldButton
+          onMouseDown={removeFocus}
+          onClick={handleOnReset}
+        >
+          <CloseIcon title={intl.formatMessage(messages.removeSearchTerm)} name="close" />
+        </SearchFieldButton>
+      }
     </Container>
   );
 });

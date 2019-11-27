@@ -1,108 +1,96 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import { adopt } from 'react-adopt';
+import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 // components
 import FilterSelector from 'components/FilterSelector';
 
 // services
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { localeStream } from 'services/locale';
-import { areasStream, IAreas } from 'services/areas';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// typings
-import { Locale } from 'typings';
-
-type Props = {
+interface InputProps {
   selectedAreas: string[];
   onChange: (value: any) => void;
-};
+}
 
-type State = {
-  currentTenant: ITenant | null;
-  locale: Locale | null;
-  areas: IAreas | null;
-};
+interface DataProps {
+  areas: GetAreasChildProps;
+  tenant: GetTenantChildProps;
+}
 
-class SelectAreas extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
+interface Props extends InputProps, DataProps, InjectedLocalized {}
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      currentTenant: null,
-      locale: null,
-      areas: null
-    };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
-    const locale$ = localeStream().observable;
-    const areas$ = areasStream().observable;
-
-    this.subscriptions = [
-      combineLatest(
-        currentTenant$,
-        locale$,
-        areas$
-      ).subscribe(([currentTenant, locale, areas]) => {
-        this.setState({
-          currentTenant,
-          locale,
-          areas
-        });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
+class SelectAreas extends PureComponent<Props> {
 
   handleOnChange = (selectedAreas: string[]) => {
     this.props.onChange((selectedAreas || []));
   }
 
-  render() {
-    const { currentTenant, locale, areas } = this.state;
-    const { selectedAreas } =  this.props;
-    let options: {
-      text: string,
-      value: string
-    }[] = [];
-
-    if (currentTenant && locale && areas && areas.data) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-
-      options = areas.data.map((area) => ({
-        text: getLocalized(area.attributes.title_multiloc, locale, currentTenantLocales),
+  areasOptions = () : {text: string, value: string}[] => {
+    const { areas, localize } = this.props;
+    if (!isNilOrError(areas)) {
+      return areas.map((area) => ({
+        text: localize(area.attributes.title_multiloc),
         value: area.id
       }));
-
-      if (options && options.length > 1) {
-        return (
-          <FilterSelector
-            title={<FormattedMessage {...messages.areasTitle} />}
-            name="areas"
-            selected={selectedAreas}
-            values={options}
-            onChange={this.handleOnChange}
-            multiple={true}
-            right="-5px"
-            mobileLeft="-5px"
-          />
-        );
-      }
+    } else {
+      return [];
     }
+  }
 
-    return null;
+  areasTerm = () => {
+    const { tenant, localize } = this.props;
+    if (!isNilOrError(tenant)) {
+      const customTerm = tenant.attributes.settings.core.areas_term;
+      if (customTerm && !isEmptyMultiloc(customTerm)) {
+        return localize(customTerm);
+      } else {
+        return <FormattedMessage {...messages.areasTitle} />;
+      }
+    } else {
+      return <FormattedMessage {...messages.areasTitle} />;
+    }
+  }
+
+  render() {
+    const { selectedAreas } = this.props;
+    const options = this.areasOptions();
+
+    if (options.length === 0) return null;
+
+    const title = this.areasTerm();
+
+    return (
+      <FilterSelector
+        title={title}
+        name="areas"
+        selected={selectedAreas}
+        values={options}
+        onChange={this.handleOnChange}
+        multiple={true}
+        right="-5px"
+        mobileLeft="-5px"
+      />
+    );
+
   }
 }
 
-export default SelectAreas;
+const SelectAreasWithHOCs = injectLocalize<InputProps>(SelectAreas);
+
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
+  areas: <GetAreas />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <SelectAreasWithHOCs {...inputProps} {...dataProps} />}
+  </Data>
+);

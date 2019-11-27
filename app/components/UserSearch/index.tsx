@@ -18,11 +18,11 @@ import messages from './messages';
 
 // Components
 import Button from 'components/UI/Button';
-import AsyncSelect from 'react-select/lib/Async';
+import AsyncSelect from 'react-select/async';
 
 // Style
 import styled from 'styled-components';
-import selectStyles from 'components/UI/Select/styles';
+import selectStyles from 'components/UI/MultipleSelect/styles';
 
 // Typings
 import { IOption } from 'typings';

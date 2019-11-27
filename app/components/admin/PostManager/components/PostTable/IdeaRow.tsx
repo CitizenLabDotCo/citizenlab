@@ -82,13 +82,11 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
       idea: ideaId
     });
   }
-  onUpdateIdeaAssignee = (assigneeId) => {
+  onUpdateIdeaAssignee = (assigneeId: string | undefined) => {
     const { idea }  = this.props;
     const ideaId = idea.id;
 
-    updateIdea(ideaId, {
-      assignee_id: assigneeId,
-    });
+    updateIdea(ideaId, { assignee_id: assigneeId || null });
 
     trackEventByName(tracks.changeIdeaAssignment, {
       location: 'Idea Manager',
@@ -109,7 +107,7 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
       onClickRow,
       onClickCheckbox,
       onClickTitle,
-      nothingHappens
+      nothingHappens,
     } = this.props;
 
     const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.data.id');
@@ -129,7 +127,7 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
           ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}
         >
           <Table.Cell collapsing={true}>
-            <Checkbox value={!!active} onChange={onClickCheckbox} size="17px"/>
+            <Checkbox checked={!!active} onChange={onClickCheckbox} size="17px"/>
           </Table.Cell>
           <Table.Cell>
             <TitleLink className="e2e-idea-manager-idea-title" onClick={onClickTitle}>
@@ -173,9 +171,11 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
             statuses,
             selectedStatus
           }}
+          allowedTransitions={null}
           onUpdatePhases={this.onUpdateIdeaPhases}
           onUpdateTopics={this.onUpdateIdeaTopics}
           onUpdateStatus={this.onUpdateIdeaStatus}
+          postType="idea"
         />
       </>
     );

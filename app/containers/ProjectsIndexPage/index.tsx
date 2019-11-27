@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectCards from 'components/ProjectCards';
-import Footer from 'components/Footer';
+import CityLogoSection from 'components/CityLogoSection';
 import ProjectsIndexMeta from './ProjectsIndexMeta';
 
 // i18n
@@ -37,15 +37,17 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
-const PageTitle = styled.h1`
-  color: ${colors.text};
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: normal;
-  font-weight: 500;
+const PageTitle = styled.div`
+  & h1 {
+    color: ${colors.text};
+    font-size: ${fontSizes.xxxxl}px;
+    line-height: normal;
+    font-weight: 500;
+  }
   text-align: center;
   margin: 0;
   padding: 0;
-  margin-bottom: 35px;
+  margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
     text-align: left;
@@ -63,7 +65,7 @@ export default React.memo(() => (
     <Container>
       <StyledContentContainer mode="page">
         <PageTitle>
-          <FormattedMessage {...messages.pageTitle} />
+          <FormattedMessage tagName="h1" {...messages.pageTitle} />
         </PageTitle>
         <ProjectCards
           pageSize={50}
@@ -74,7 +76,7 @@ export default React.memo(() => (
           layout="threecolumns"
         />
       </StyledContentContainer>
-      <Footer />
+      <CityLogoSection />
     </Container>
   </>
 ));

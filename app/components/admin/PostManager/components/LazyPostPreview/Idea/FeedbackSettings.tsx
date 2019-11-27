@@ -8,6 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // typings
@@ -33,7 +34,6 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
-import { InjectedIntlProps } from 'react-intl';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -162,19 +162,16 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
 
           <StyledLabel value={<FormattedMessage {...messages.currentStatus}/>} htmlFor="idea-preview-select-status"/>
           <Select
-            inputId="idea-preview-select-status"
+            id="idea-preview-select-status"
             options={statusOptions}
             onChange={this.onStatusChange}
             value={ideaStatusOption}
-            clearable={false}
-            borderColor={ideaStatusOption ? ideaStatusOption.color : undefined}
           />
           <StyledLabel value={<FormattedMessage {...messages.assignee}/>} htmlFor="idea-preview-select-assignee"/>
           <Select
-            inputId="idea-preview-select-assignee"
+            id="idea-preview-select-assignee"
             options={assigneeOptions}
             onChange={this.onAssigneeChange}
-            clearable={false}
             value={ideaAssigneeOption}
           />
         </Container>

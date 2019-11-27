@@ -7,6 +7,7 @@ import { currentTenantApiEndpoint } from 'services/tenant';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
+import { isUUID } from 'utils/helperUtils';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 
 export type pureFn<T> = (arg: T) => T;
@@ -152,11 +153,6 @@ class Streams {
     delete this.streams[streamId];
   }
 
-  isUUID(string) {
-    const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
-    return uuidRegExp.test(string);
-  }
-
   sanitizeQueryParameters = (queryParameters: IObject | null) => {
     const sanitizedQueryParameters = cloneDeep(queryParameters);
 
@@ -171,7 +167,7 @@ class Streams {
 
   isSingleItemStream(lastUrlSegment: string, isQueryStream: boolean) {
     if (!isQueryStream) {
-      return this.isUUID(lastUrlSegment);
+      return isUUID(lastUrlSegment);
     }
 
     return false;
@@ -513,11 +509,13 @@ class Streams {
     dataId,
     apiEndpoint,
     partialApiEndpoint,
+    regexApiEndpoint,
     onlyFetchActiveStreams
   }: {
     dataId?: string[],
     apiEndpoint?: string[],
     partialApiEndpoint?: string[],
+    regexApiEndpoint?: RegExp[],
     onlyFetchActiveStreams?: boolean
   }) {
     const keys = [
@@ -552,7 +550,32 @@ class Streams {
       });
     }
 
-    uniq([...streamIds1, ...streamIds2]).forEach((streamId) => {
+    const streamIds3: string[] = [];
+    if (regexApiEndpoint && regexApiEndpoint.length > 0) {
+      forOwn(this.streamIdsByApiEndPointWithQuery, (_value, key) => {
+        regexApiEndpoint.forEach((regex) => {
+          if (regex.test(key) && this.streamIdsByApiEndPointWithQuery[key]) {
+            streamIds3.push(...this.streamIdsByApiEndPointWithQuery[key]);
+          }
+        });
+      });
+
+      forOwn(this.streamIdsByApiEndPointWithoutQuery, (_value, key) => {
+        regexApiEndpoint.forEach((regex) => {
+          if (regex.test(key) && this.streamIdsByApiEndPointWithoutQuery[key]) {
+            streamIds3.push(...this.streamIdsByApiEndPointWithoutQuery[key]);
+          }
+        });
+      });
+    }
+
+    const mergedStreamIds = [...streamIds1, ...streamIds2, ...streamIds3];
+
+    if (includes(keys, authApiEndpoint)) {
+      mergedStreamIds.push(authApiEndpoint);
+    }
+
+    uniq(mergedStreamIds).forEach((streamId) => {
       if (!onlyFetchActiveStreams || this.isActiveStream(streamId)) {
         promises.push(this.streams[streamId].fetch());
       }

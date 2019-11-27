@@ -6,15 +6,18 @@ import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 import InitiativesShow from 'containers/InitiativesShow';
 import InitiativeShowPageTopBar from 'containers/InitiativesShowPage/InitiativeShowPageTopBar';
+import Footer from 'containers/Footer';
 
 interface Props {
   type: 'idea' | 'initiative' | null;
   id: string | null;
   slug: string | null;
+  navbarRef?: HTMLElement | null;
+  mobileNavbarRef?: HTMLElement | null;
   close: () => void;
 }
 
-const PostPageFullscreenModal = memo<Props>(({ id, slug, type, close }) => {
+const PostPageFullscreenModal = memo<Props>(({ id, slug, type, navbarRef, mobileNavbarRef, close }) => {
 
   const onClose = useCallback(() => {
     close();
@@ -33,9 +36,19 @@ const PostPageFullscreenModal = memo<Props>(({ id, slug, type, close }) => {
   const content = useMemo(() => {
     return (id
       ? type === 'idea'
-        ? <IdeasShow ideaId={id}/>
+        ? (
+        <>
+          <IdeasShow ideaId={id}/>
+          <Footer />
+        </>
+        )
         : type === 'initiative'
-          ? <InitiativesShow initiativeId={id}/>
+          ? (
+          <>
+            <InitiativesShow initiativeId={id}/>
+            <Footer />
+          </>
+          )
           : null
       : null);
   }, [id]);
@@ -46,6 +59,8 @@ const PostPageFullscreenModal = memo<Props>(({ id, slug, type, close }) => {
       close={onClose}
       url={slug ? `/${type}s/${slug}` : null}
       topBar={topBar}
+      navbarRef={navbarRef}
+      mobileNavbarRef={mobileNavbarRef}
     >
       {content}
     </FullscreenModal>

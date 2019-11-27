@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import { get } from 'lodash-es';
+import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -12,6 +12,7 @@ import { PreviousPathnameContext } from 'context';
 // components
 import SignUp from 'components/SignUp';
 import SignInUpBanner from 'components/SignInUpBanner';
+import SignUpPageMeta from './SignUpPageMeta';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -34,12 +35,11 @@ const Container = styled.div`
   padding: 0;
   display: flex;
   flex-direction: row;
-  align-items: stretch;
   background: ${colors.background};
   position: relative;
 
   ${media.biggerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+    min-height: calc(100vh - ${props => props.theme.menuHeight}px);
   `}
 
   ${media.smallerThanMaxTablet`
@@ -49,16 +49,9 @@ const Container = styled.div`
 
 const Section = styled.div`
   flex: 1;
-  display: flex;
-  align-items: stretch;
 `;
 
 const Left = styled(Section)`
-  width: 50vw;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
   display: none;
 
   ${media.biggerThanMaxTablet`
@@ -66,15 +59,7 @@ const Left = styled(Section)`
   `}
 `;
 
-const Right = styled(Section)`
-  width: 100%;
-  display: flex;
-  align-items: stretch;
-
-  ${media.biggerThanMaxTablet`
-    padding-left: 50vw;
-  `}
-`;
+const Right = styled(Section)``;
 
 const RightInner = styled.div`
   width: 100%;
@@ -136,25 +121,28 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   render() {
     const { location } = this.props;
     const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
-    const token: string | null = get(location.query, 'token', null);
+    const token = isString(location.query.token) ? location.query.token : null;
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
 
     return (
-      <Container className="e2e-sign-up-page">
-        <Left>
-          <SignInUpBanner />
-        </Left>
-        <Right>
-          <RightInner>
-            <SignUp
-              step1Title={title}
-              isInvitation={isInvitation}
-              token={token}
-              onSignUpCompleted={this.onSignUpCompleted}
-            />
-          </RightInner>
-        </Right>
-      </Container>
+      <>
+        <SignUpPageMeta />
+        <Container className="e2e-sign-up-page">
+          <Left>
+            <SignInUpBanner />
+          </Left>
+          <Right>
+            <RightInner>
+              <SignUp
+                step1Title={title}
+                isInvitation={isInvitation}
+                token={token}
+                onSignUpCompleted={this.onSignUpCompleted}
+              />
+            </RightInner>
+          </Right>
+        </Container>
+      </>
     );
   }
 }

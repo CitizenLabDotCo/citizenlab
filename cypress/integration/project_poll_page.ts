@@ -8,14 +8,14 @@ describe('Continuous project with poll', () => {
   let projectSlug: string;
 
   before(() => {
-    cy.apiCreateProject(
-      'continuous',
-      projectTitle,
-      projectDescriptionPreview,
-      projectDescription,
-      'published',
-      'poll'
-    ).then((project) => {
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'poll',
+    }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
       cy.apiAddPoll('Project', projectId, ['What is your favourite ice cream flavour ?', 'Are you in favour of car-free sundays ?'], [['Vanilla', 'Chocolate', 'Pistachio'], ['Yes', 'No', 'I decline to answer']]);
@@ -23,9 +23,9 @@ describe('Continuous project with poll', () => {
   });
 
   beforeEach(() => {
-    cy.login('admin@citizenlab.co', 'testtest');
-    cy.acceptCookies();
+    cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlug}/poll`);
+    cy.acceptCookies();
     cy.wait(2000);
   });
 
@@ -55,10 +55,15 @@ describe('Timeline project with poll phase', () => {
   let projectId: string;
   let projectSlug: string;
   let phaseId: string;
-  let phaseSlug: string;
 
   before(() => {
-    cy.apiCreateProject('timeline', projectTitle, projectDescriptionPreview, projectDescription).then((project) => {
+    cy.apiCreateProject({
+      type: 'timeline',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published'
+    }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
@@ -75,7 +80,6 @@ describe('Timeline project with poll phase', () => {
       );
     }).then((phase) => {
       phaseId = phase.body.data.id;
-      phaseSlug = phase.body.data.attributes.slug;
       return cy.apiAddPoll('Phase', phaseId, ['What is your favourite ice cream flavour ?', 'Are you in favour of car-free sundays ?'], [['Vanilla', 'Chocolate', 'Pistachio'], ['Yes', 'No', 'I decline to answer']]);
     });
   });

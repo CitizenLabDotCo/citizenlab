@@ -26,6 +26,7 @@ import { updateInitiative } from 'services/initiatives';
 // resources
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetInitiativeStatuses, { GetInitiativeStatusesChildProps } from 'resources/GetInitiativeStatuses';
+import GetInitiativeAllowedTransitions, { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiativeAllowedTransitions';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -34,6 +35,10 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
 import { InjectedIntlProps } from 'react-intl';
+
+// events
+import eventEmitter from 'utils/eventEmitter';
+import events, { StatusChangeModalOpen } from 'components/admin/PostManager/events';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -47,6 +52,7 @@ interface DataProps {
   statuses: GetInitiativeStatusesChildProps;
   initiative: GetInitiativeChildProps;
   prospectAssignees: GetUsersChildProps;
+  allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
 }
 
 interface InputProps {
@@ -60,16 +66,18 @@ interface PropsWithHoCs extends Props, InjectedLocalized, InjectedIntlProps {}
 
 class FeedbackSettings extends PureComponent<PropsWithHoCs> {
 
-  getStatusOptions = memoize(
-    (statuses) => {
+  getStatusOptions = (statuses, allowedTransitions) => {
       const { localize } = this.props;
       if (!isNilOrError(statuses)) {
-        return statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
+        return statuses.map(status => ({
+          value: status.id,
+          label: localize(status.attributes.title_multiloc),
+          isDisabled: allowedTransitions && allowedTransitions[status.id] === undefined
+        }));
       } else {
         return [];
       }
     }
-  );
 
   getInitiativeStatusOption = memoize(
     (initiative: GetInitiativeChildProps, statuses) => {
@@ -120,9 +128,7 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
     const adminAtWorkId = authUser ? authUser.id : null;
     const tenantId = !isNilOrError(tenant) && tenant.id;
 
-    updateInitiative(initiativeId, {
-      initiative_status_id: statusOption.value
-    });
+    eventEmitter.emit<StatusChangeModalOpen>('initiativeManager', events.statusChangeModalOpen, { initiativeId, newStatusId: statusOption.value });
 
     trackEventByName(tracks.initiativeStatusChange, {
       tenant: tenantId,
@@ -152,9 +158,9 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
   }
 
   render() {
-    const { initiative, className, statuses, prospectAssignees } = this.props;
+    const { initiative, className, statuses, prospectAssignees, allowedTransitions } = this.props;
 
-    const statusOptions = this.getStatusOptions(statuses);
+    const statusOptions = this.getStatusOptions(statuses, allowedTransitions);
     const initiativeStatusOption = this.getInitiativeStatusOption(initiative, statuses);
     const assigneeOptions = this.getAssigneeOptions(prospectAssignees);
     const initiativeAssigneeOption = get(initiative, 'relationships.assignee.data.id', 'unassigned');
@@ -164,19 +170,16 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
         <Container className={`${className} e2e-initiative-settings`}>
           <StyledLabel value={<FormattedMessage {...messages.currentStatus}/>} htmlFor="initiative-preview-select-status"/>
           <Select
-            inputId="initiative-preview-select-status"
+            id="initiative-preview-select-status"
             options={statusOptions}
             onChange={this.onStatusChange}
             value={initiativeStatusOption}
-            clearable={false}
-            borderColor={initiativeStatusOption ? initiativeStatusOption.color : undefined}
           />
           <StyledLabel value={<FormattedMessage {...messages.assignee}/>} htmlFor="initiative-preview-select-assignee"/>
           <Select
-            inputId="initiative-preview-select-assignee"
+            id="initiative-preview-select-assignee"
             options={assigneeOptions}
             onChange={this.onAssigneeChange}
-            clearable={false}
             value={initiativeAssigneeOption}
           />
         </Container>
@@ -192,6 +195,7 @@ const Data = adopt<DataProps, InputProps>({
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   statuses: <GetInitiativeStatuses/>,
   prospectAssignees: <GetUsers canAdmin />,
+  allowedTransitions: ({ initiativeId, render }) => <GetInitiativeAllowedTransitions id={initiativeId}>{render}</GetInitiativeAllowedTransitions>
 });
 
 const FeedbackSettingsWithHOCs = injectIntl(injectLocalize(FeedbackSettings));

@@ -1,15 +1,22 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 import PopContainer from 'components/UI/PopContainer';
 import VoteControl from 'components/VoteControl';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import Unauthenticated from './Unauthenticated';
-import { IIdeaData } from 'services/ideas';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
-type Props = {
+interface InputProps {
   ideaId?: string;
-  votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting'];
   projectId: string;
-};
+}
+
+interface DataProps {
+  idea: GetIdeaChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 type State = {
   error: 'votingDisabled' | 'unauthenticated' | null;
@@ -23,6 +30,17 @@ class VoteWrapper extends PureComponent<Props, State> {
     };
   }
 
+  componentDidUpdate(prevProps : Props) {
+    const { idea } = this.props;
+    const prevIdea = prevProps.idea;
+    if (!isNilOrError(idea) && !isNilOrError(prevIdea) && (
+      idea.attributes.action_descriptor.voting.enabled !== prevIdea.attributes.action_descriptor.voting.enabled
+      || idea.attributes.action_descriptor.voting.disabled_reason !== prevIdea.attributes.action_descriptor.voting.disabled_reason
+    )) {
+      this.setState({ error: null });
+    }
+  }
+
   unauthenticatedVoteClick = () => {
     this.setState({ error: 'unauthenticated' });
   }
@@ -32,10 +50,12 @@ class VoteWrapper extends PureComponent<Props, State> {
   }
 
   render() {
-    const { ideaId, projectId, votingDescriptor } = this.props;
+    const { ideaId, projectId, idea } = this.props;
     const { error } = this.state;
 
-    if (!ideaId) return null;
+    const votingDescriptor = isNilOrError(idea) ? null : idea.attributes.action_descriptor.voting;
+
+    if (!ideaId || !votingDescriptor) return null;
 
     return (
       <>
@@ -65,4 +85,12 @@ class VoteWrapper extends PureComponent<Props, State> {
   }
 }
 
-export default VoteWrapper;
+const Data = adopt<DataProps, InputProps>({
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <VoteWrapper {...inputProps} {...dataProps} />}
+  </Data>
+);

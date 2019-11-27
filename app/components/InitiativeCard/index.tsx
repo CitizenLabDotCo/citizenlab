@@ -10,7 +10,6 @@ import Author from 'components/Author';
 import VoteIndicator from './VoteIndicator';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetInitiativeImage, { GetInitiativeImageChildProps } from 'resources/GetInitiativeImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -20,13 +19,12 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { InjectedIntlProps } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
@@ -76,7 +74,6 @@ export interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
   initiative: GetInitiativeChildProps;
   initiativeImage: GetInitiativeImageChildProps;
   initiativeAuthor: GetUserChildProps;
@@ -86,7 +83,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
+class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
 
   onCardClick = (event: FormEvent) => {
     event.preventDefault();
@@ -103,25 +100,22 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
   }
 
   render() {
-    const { initiative, initiativeImage, initiativeAuthor, tenant, localize, className } = this.props;
-    const { formatMessage } = this.props.intl;
+    const { initiative, initiativeImage, initiativeAuthor, localize, className } = this.props;
 
     if (
-      !isNilOrError(tenant) &&
       !isNilOrError(initiative) &&
       !isUndefined(initiativeImage) &&
       !isUndefined(initiativeAuthor)
     ) {
-      const orgName = localize(tenant.attributes.settings.core.organization_name);
       const initiativeTitle = localize(initiative.attributes.title_multiloc);
       const initiativeAuthorId = !isNilOrError(initiativeAuthor) ? initiativeAuthor.id : null;
       const initiativeImageUrl: string | null = get(initiativeImage, 'attributes.versions.medium', null);
-      const initiativeImageAltText = orgName && initiativeTitle ? formatMessage(messages.imageAltText, { orgName, initiativeTitle }) : null;
+      const commentsCount = initiative.attributes.comments_count;
       const cardClassNames = [
         className,
         'e2e-initiative-card',
         get(initiative, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
-        initiative.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
+        commentsCount > 0 ? 'e2e-has-comments' : null,
       ].filter(item => isString(item) && item !== '').join(' ');
 
       return (
@@ -130,7 +124,6 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
           onClick={this.onCardClick}
           to={`/initiatives/${initiative.attributes.slug}`}
           imageUrl={initiativeImageUrl}
-          imageAltText={initiativeImageAltText}
           title={initiativeTitle}
           body={
             <StyledAuthor
@@ -145,10 +138,13 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
               <VoteIndicator initiativeId={initiative.id} />
               <Spacer />
               <CommentInfo>
-                <CommentIcon name="comments" />
-                <CommentCount className="e2e-initiativecard-comment-count">
-                  <span>{initiative.attributes.comments_count}</span>
+                <CommentIcon name="comments" ariaHidden />
+                <CommentCount aria-hidden className="e2e-initiativecard-comment-count">
+                  {commentsCount}
                 </CommentCount>
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.xComments} values={{ commentsCount }} />
+                </ScreenReaderOnly>
               </CommentInfo>
             </FooterInner>
           }
@@ -161,13 +157,12 @@ class InitiativeCard extends PureComponent<Props & InjectedIntlProps & InjectedL
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   initiativeImage: ({ initiativeId, initiative, render }) => <GetInitiativeImage initiativeId={initiativeId} initiativeImageId={get(initiative, 'relationships.initiative_images.data[0].id')}>{render}</GetInitiativeImage>,
   initiativeAuthor: ({ initiative, render }) => <GetUser id={get(initiative, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
-const InitiativeCardWithHoC = injectIntl(injectLocalize(InitiativeCard));
+const InitiativeCardWithHoC = injectLocalize(InitiativeCard);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

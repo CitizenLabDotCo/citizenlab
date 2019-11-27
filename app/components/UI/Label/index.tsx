@@ -1,17 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import { remCalc, fontSizes, colors, invisibleA11yText, booleanClass } from 'utils/styleUtils';
+import { fontSizes, colors, invisibleA11yText, booleanClass } from 'utils/styleUtils';
 
-const StyledLabel = styled.label`
+const Container = styled.label`
   color: ${colors.label};
   display: flex;
+  align-items: center;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
+  line-height: 21px;
   margin: 0;
-  padding-bottom: ${remCalc(10)};
+  padding: 0;
+  margin-bottom: 10px;
 
   & > :not(last-child) {
-    margin-right: 7px;
+    margin-right: 4px;
+  }
+
+  & .tooltip-icon {
+    margin-left: 6px;
   }
 
   &.invisible {
@@ -25,6 +32,7 @@ type Props = {
   htmlFor?: string;
   children?: any;
   hidden?: boolean;
+  className?: string;
 };
 
 type State = {};
@@ -35,11 +43,16 @@ export default class Label extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { value, htmlFor, children, id } = this.props;
-    const className = this.props['className'];
+    const { value, htmlFor, children, id, className } = this.props;
 
     return (
-      <StyledLabel id={id} className={`${booleanClass(className, className)}${booleanClass(this.props.hidden, 'invisible')}`} htmlFor={htmlFor}>{children || value}</StyledLabel>
+      <Container
+        id={id}
+        className={`${className} ${booleanClass(className, className)} ${booleanClass(this.props.hidden, 'invisible')}`}
+        htmlFor={htmlFor}
+      >
+        {children || value}
+      </Container>
     );
   }
 }

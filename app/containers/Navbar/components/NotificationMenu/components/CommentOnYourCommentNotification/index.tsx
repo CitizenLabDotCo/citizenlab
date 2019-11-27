@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // data
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import { ICommentOnYourCommentNotificationData } from 'services/notifications';
 
 // i18n
@@ -14,27 +13,27 @@ import NotificationWrapper from '../NotificationWrapper';
 import { DeletedUser } from '../Notification';
 import Link from 'utils/cl-router/Link';
 
-interface InputProps {
+interface Props {
   notification: ICommentOnYourCommentNotificationData;
 }
-interface DataProps {
-  idea: GetIdeaChildProps;
-}
 
-interface Props extends InputProps, DataProps {}
+const mapPostTypeToLink = (notification: ICommentOnYourCommentNotificationData) : string => {
+  switch (notification.attributes.post_type) {
+    case 'Idea':
+      return `/ideas/${notification.attributes.post_slug}`;
+    case 'Initiative':
+      return `/initiatives/${notification.attributes.post_slug}`;
+  }
+};
 
 const CommentOnYourCommentNotification = memo<Props>(props => {
-  const { notification, idea } = props;
-
-  if (isNilOrError(idea)) return null;
-
-  const { slug } = idea.attributes;
+  const { notification } = props;
 
   const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
-      linkTo={`/ideas/${slug}`}
+      linkTo={mapPostTypeToLink(notification)}
       timing={notification.attributes.created_at}
       icon="notification_comment"
       isRead={!!notification.attributes.read_at}
@@ -59,14 +58,4 @@ const CommentOnYourCommentNotification = memo<Props>(props => {
   );
 });
 
-export default (inputProps: InputProps) => {
-  const { notification } = inputProps;
-
-  if (!notification.relationships.idea.data) return null;
-
-  return (
-    <GetIdea id={notification.relationships.idea.data.id}>
-      {idea => <CommentOnYourCommentNotification notification={notification} idea={idea} />}
-    </GetIdea>
-  );
-};
+export default CommentOnYourCommentNotification;

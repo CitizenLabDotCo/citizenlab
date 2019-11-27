@@ -124,6 +124,7 @@ import { FieldProps } from 'formik';
 
 export class FormikUserFilterConditions extends React.Component<Props & FieldProps> {
   handleOnChange = (newValue) => {
+    this.props.form.setFieldTouched(this.props.field.name, true);
     this.props.form.setFieldValue(this.props.field.name, newValue);
   }
 

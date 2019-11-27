@@ -14,9 +14,6 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Author from 'components/Author';
 
-// services
-import { IIdeaData } from 'services/ideas';
-
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -28,17 +25,19 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { InjectedIntlProps, FormattedNumber } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
-import messages from './messages';
+import { FormattedNumber } from 'react-intl';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
 import { ParticipationMethod } from 'services/participationContexts';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const IdeaBudget = styled.div`
   color: ${colors.clRed2};
@@ -117,20 +116,31 @@ interface DataProps {
   ideaAuthor: GetUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   showVotingDisabled: 'unauthenticated' | 'votingDisabled' | null;
   showAssignBudgetDisabled: 'unauthenticated' | 'assignBudgetDisabled' | null;
 }
 
-class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
+class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
   constructor(props) {
     super(props);
     this.state = {
       showVotingDisabled: null,
       showAssignBudgetDisabled: null
     };
+  }
+
+  componentDidUpdate(prevProps : Props) {
+    const { idea } = this.props;
+    const prevIdea = prevProps.idea;
+    if (!isNilOrError(idea) && !isNilOrError(prevIdea) && (
+      idea.attributes.action_descriptor.voting.enabled !== prevIdea.attributes.action_descriptor.voting.enabled
+      || idea.attributes.action_descriptor.voting.disabled_reason !== prevIdea.attributes.action_descriptor.voting.disabled_reason
+    )) {
+      this.setState({ showVotingDisabled: null });
+    }
   }
 
   onCardClick = (event: FormEvent) => {
@@ -165,7 +175,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
 
   render() {
     const { idea, ideaImage, ideaAuthor, tenant, participationMethod, participationContextId, participationContextType, localize } = this.props;
-    const { formatMessage } = this.props.intl;
     const { showVotingDisabled, showAssignBudgetDisabled } = this.state;
 
     if (
@@ -174,25 +183,24 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
       !isUndefined(ideaImage) &&
       !isUndefined(ideaAuthor)
     ) {
-      const votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting'] | null = get(idea, 'attributes.action_descriptor.voting', null);
-      const commentingDescriptor: IIdeaData['attributes']['action_descriptor']['commenting'] | null  = get(idea, 'attributes.action_descriptor.commenting', null);
-      const budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'] | null = get(idea, 'attributes.action_descriptor.budgeting', null);
-      const projectId: string | null = get(idea, 'relationships.project.data.id', null);
-      const orgName = localize(tenant.attributes.settings.core.organization_name);
+      const votingDescriptor = idea?.attributes?.action_descriptor?.voting;
+      const commentingDescriptor = idea?.attributes?.action_descriptor?.commenting;
+      const budgetingDescriptor = idea?.attributes?.action_descriptor?.budgeting;
+      const projectId = idea?.relationships?.project.data?.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const ideaAuthorId = !isNilOrError(ideaAuthor) ? ideaAuthor.id : null;
-      const ideaBudget = idea.attributes.budget;
-      const ideaImageUrl: string | null = get(ideaImage, 'attributes.versions.medium', null);
-      const ideaImageAltText = orgName && ideaTitle ? formatMessage(messages.imageAltText, { orgName, ideaTitle }) : null;
+      const ideaBudget = idea?.attributes?.budget;
+      const ideaImageUrl = ideaImage?.attributes?.versions?.medium;
       const tenantCurrency = tenant.attributes.settings.core.currency;
       const className = [
         this.props.className,
         'e2e-idea-card',
-        get(idea, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
+        idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
         commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled',
         idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
         votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'
       ].filter(item => isString(item) && item !== '').join(' ');
+      const commentsCount = idea.attributes.comments_count;
 
       return (
         <Card
@@ -200,22 +208,17 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
           onClick={this.onCardClick}
           to={`/ideas/${idea.attributes.slug}`}
           imageUrl={ideaImageUrl}
-          imageAltText={ideaImageAltText}
-          header={
-            <>
-              {participationMethod === 'budgeting' && ideaBudget &&
-                <IdeaBudget>
-                  <FormattedNumber
-                    value={ideaBudget}
-                    style="currency"
-                    currency={tenantCurrency}
-                    minimumFractionDigits={0}
-                    maximumFractionDigits={0}
-                  />
-                </IdeaBudget>
-              }
-            </>
-          }
+          header={participationMethod === 'budgeting' && ideaBudget ?
+            <IdeaBudget>
+              <FormattedNumber
+                value={ideaBudget}
+                style="currency"
+                currency={tenantCurrency}
+                minimumFractionDigits={0}
+                maximumFractionDigits={0}
+              />
+            </IdeaBudget>
+          : undefined}
           title={ideaTitle}
           body={
             <StyledAuthor
@@ -253,10 +256,13 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
                   <Spacer />
 
                   <CommentInfo className={`${commentingDescriptor && commentingDescriptor.enabled ? 'enabled' : ''}`}>
-                    <CommentIcon name="comments" />
-                    <CommentCount className="e2e-ideacard-comment-count">
-                      <span>{idea.attributes.comments_count}</span>
+                    <CommentIcon name="comments" ariaHidden />
+                    <CommentCount aria-hidden className="e2e-ideacard-comment-count">
+                      {commentsCount}
                     </CommentCount>
+                    <ScreenReaderOnly>
+                      <FormattedMessage {...messages.xComments} values={{ commentsCount }} />
+                    </ScreenReaderOnly>
                   </CommentInfo>
                 </FooterInner>
               }
@@ -283,7 +289,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps & InjectedLocaliz
                   <DisabledWrapper>
                     <AssignBudgetDisabled
                       budgetingDescriptor={budgetingDescriptor}
-                      projectId={projectId}
                     />
                   </DisabledWrapper>
                 </BottomBounceUp>
@@ -305,7 +310,7 @@ const Data = adopt<DataProps, InputProps>({
   ideaAuthor: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
-const IdeaCardWithHoC = injectIntl(injectLocalize(IdeaCard));
+const IdeaCardWithHoC = injectLocalize(IdeaCard);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

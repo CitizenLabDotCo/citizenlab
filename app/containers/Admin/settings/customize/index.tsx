@@ -7,6 +7,7 @@ import { forOwn, get, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 import Label from 'components/UI/Label';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
+import RangeInput from 'components/UI/RangeInput';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import { Section, SectionTitle, SectionField, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -18,7 +19,7 @@ import ErrorMessage from 'components/UI/Error';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 // utils
 import { convertUrlToUploadFileObservable } from 'utils/fileTools';
@@ -38,7 +39,8 @@ import { updatePage } from 'services/pages';
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import IconTooltip from 'components/UI/IconTooltip';
+
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const ColorPickerSectionField = styled(SectionField)``;
@@ -57,6 +59,7 @@ interface DataProps {
 
 interface Props extends DataProps {
   lang: string;
+  theme: any;
 }
 
 interface IAttributesDiff {
@@ -160,15 +163,15 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     this.subscriptions.forEach(subsription => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile) => {
+  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile[]) => {
     this.setState((state) => ({
       ...state,
       logoError: (name === 'logo' ? null : state.logoError),
       headerError: (name === 'header_bg' ? null : state.headerError),
-      [name]: [newImage],
+      [name]: [newImage[0]],
       attributesDiff: {
         ...(state.attributesDiff || {}),
-        [name]: newImage.base64
+        [name]: newImage[0].base64
       }
     }));
   }
@@ -269,6 +272,34 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     });
   }
 
+  handleHeaderOverlayColorOnChange = (hexColor: string) => {
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          style: {
+            ...get(state.attributesDiff, 'style', {}),
+            signedOutHeaderOverlayColor: hexColor
+          }
+        }
+      };
+    });
+  }
+
+  handleHeaderOverlayOpacityOnChange = (opacity: number) => {
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          style: {
+            ...get(state.attributesDiff, 'style', {}),
+            signedOutHeaderOverlayOpacity: opacity
+          }
+        }
+      };
+    });
+  }
+
   validate = (tenant: ITenant, attributesDiff: IAttributesDiff) => {
     const { formatMessage } = this.props.intl;
     const hasRemoteLogo = has(tenant, 'data.attributes.logo.large');
@@ -344,13 +375,12 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   handleHeaderBgOnAdd = this.handleUploadOnAdd('header_bg');
   handleLogoOnRemove = this.handleUploadOnRemove('logo');
   handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
-  uploadPlaceholder = this.props.intl.formatMessage(messages.uploadPlaceholder);
   headerTitleLabel = <FormattedMessage {...messages.headerTitleLabel} />;
-  headerTitleTooltip = <InfoTooltip {...messages.headerTitleTooltip} />;
+  headerTitleTooltip = <IconTooltip content={<FormattedMessage {...messages.headerTitleTooltip} />} />;
   headerSubtitleLabel = <FormattedMessage {...messages.headerSubtitleLabel} />;
-  headerSubtitleTooltip = <InfoTooltip {...messages.headerSubtitleTooltip} />;
+  headerSubtitleTooltip = <IconTooltip content={<FormattedMessage {...messages.headerSubtitleTooltip} />} />;
   customSectionLabel = <FormattedMessage {...messages.customSectionLabel} />;
-  customSectionTooltip = <InfoTooltip {...messages.customSectionInfo} />;
+  customSectionTooltip = <IconTooltip content={<FormattedMessage {...messages.customSectionInfo} />} />;
 
   render() {
     const { locale, tenant } = this.state;
@@ -395,8 +425,32 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               </ColorPickerSectionField>
             ))}
 
+            <ColorPickerSectionField>
+              <Label>
+                <FormattedMessage {...messages.headerOverlayColor} />
+              </Label>
+              <ColorPickerInput
+                type="text"
+                value={get(attributesDiff, 'style.signedOutHeaderOverlayColor') || get(tenant, 'data.attributes.style.signedOutHeaderOverlayColor') || this.props.theme.colorMain}
+                onChange={this.handleHeaderOverlayColorOnChange}
+              />
+            </ColorPickerSectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.headerOverlayOpacity} />
+              </Label>
+              <RangeInput
+                step={1}
+                min={0}
+                max={100}
+                value={get(attributesDiff, 'style.signedOutHeaderOverlayOpacity') || get(tenant, 'data.attributes.style.signedOutHeaderOverlayOpacity') || 90}
+                onChange={this.handleHeaderOverlayOpacityOnChange}
+              />
+            </SectionField>
+
             <SectionField key={'logo'}>
-              <Label><FormattedMessage {...messages['logo']} /></Label>
+              <Label><FormattedMessage {...messages.logo} /></Label>
               <ImagesDropzone
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 maxNumberOfImages={1}
@@ -407,7 +461,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 objectFit="contain"
                 onAdd={this.handleLogoOnAdd}
                 onRemove={this.handleLogoOnRemove}
-                placeholder={this.uploadPlaceholder}
                 errorMessage={logoError}
               />
             </SectionField>
@@ -421,7 +474,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionField key={'header_bg'}>
               <Label>
                 <FormattedMessage {...messages.header_bg} />
-                <InfoTooltip {...messages.header_bgTooltip} />
+                <IconTooltip content={<FormattedMessage {...messages.header_bgTooltip} />} />
               </Label>
               <ImagesDropzone
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -432,7 +485,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 maxImagePreviewWidth="500px"
                 onAdd={this.handleHeaderBgOnAdd}
                 onRemove={this.handleHeaderBgOnRemove}
-                placeholder={this.uploadPlaceholder}
                 errorMessage={headerError}
               />
             </SectionField>
@@ -498,7 +550,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   }
 }
 
-const SettingsCustomizeTabWithHOCs = injectIntl<Props>(SettingsCustomizeTab);
+const SettingsCustomizeTabWithHOCs = withTheme(injectIntl<Props>(SettingsCustomizeTab));
 
 export default (inputProps: Props) => (
   <GetPage slug="homepage-info">

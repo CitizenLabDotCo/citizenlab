@@ -10,4 +10,12 @@ export default defineMessages({
     id: 'app.containers.SearchInput.searchAriaLabel',
     defaultMessage: 'Search',
   },
+  removeSearchTerm: {
+    id: 'app.containers.SearchInput.removeSearchTerm',
+    defaultMessage: 'Remove search term',
+  },
+  searchTerm: {
+    id: 'app.containers.SearchInput.searchTerm',
+    defaultMessage: 'Search term: {searchTerm}',
+  },
 });

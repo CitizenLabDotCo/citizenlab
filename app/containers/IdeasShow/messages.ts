@@ -5,9 +5,17 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.idea',
     defaultMessage: 'Idea',
   },
-  imageAltText: {
-    id: 'app.containers.IdeasShow.imageAltText',
-    defaultMessage: 'Main image for the idea {ideaTitle}',
+  invisibleTitleContent: {
+    id: 'app.containers.IdeasShow.invisibleTitleContent',
+    defaultMessage: 'Main idea content',
+  },
+  a11y_voteControl: {
+    id: 'app.containers.IdeasShow.a11y_voteControl',
+    defaultMessage: 'Voting and status',
+  },
+  a11y_budgetControl: {
+    id: 'app.containers.IdeasShow.a11y_budgetControl',
+    defaultMessage: 'Idea assignment ans status',
   },
   voteOnThisIdea: {
     id: 'app.containers.IdeasShow.voteOnThisIdea',
@@ -15,7 +23,7 @@ export default defineMessages({
   },
   metaTitle: {
     id: 'app.containers.IdeasShow.metaTitle',
-    defaultMessage: 'Idea • {ideaTitle}',
+    defaultMessage: 'Idea: {ideaTitle}',
   },
   metaOgTitle: {
     id: 'app.containers.IdeasShow.metaOgTitle',
@@ -89,23 +97,6 @@ export default defineMessages({
     id: 'app.components.IdeasShow.deleteIdeaConfirmation',
     defaultMessage: 'Are you sure you want to delete this idea?',
   },
-  lastUpdated: {
-    id: 'app.components.IdeasShow.lastUpdated',
-    defaultMessage: 'Last modified {modificationTime}',
-  },
-  lastChangesTitle: {
-    id: 'app.components.IdeasShow.lastChangesTitle',
-    defaultMessage: 'Last changes to this idea',
-  },
-  changeLogEntry: {
-    id: 'app.components.IdeasShow.changeLogEntry',
-    defaultMessage: `{changeType, select,
-      changed_status {{userName} has updated the status of this idea}
-      published {{userName} created this idea}
-      changed_title {{userName} updated the title of this idea}
-      changed_body {{userName} updated the description of this idea}
-    }`,
-  },
   goBack: {
     id: 'app.components.IdeasShow.goBack',
     defaultMessage: 'Go back',
@@ -117,10 +108,6 @@ export default defineMessages({
   skipSharing: {
     id: 'app.components.IdeasShow.skipSharing',
     defaultMessage: "Skip it, I'll do it later",
-  },
-  modalShareLabel: {
-    id: 'app.components.IdeasShow.modalShareLabel',
-    defaultMessage: 'Your idea was posted, share it now to reach more votes!',
   },
   similarIdeas: {
     id: 'app.components.IdeasShow.similarIdeas',
@@ -137,5 +124,9 @@ export default defineMessages({
   createdTimeAgo: {
     id: 'app.components.IdeasShow.createdTimeAgo',
     defaultMessage: 'Created {timeAgo}'
-  }
+  },
+  or: {
+    id: 'app.components.IdeasShow.or',
+    defaultMessage: 'or'
+  },
 });

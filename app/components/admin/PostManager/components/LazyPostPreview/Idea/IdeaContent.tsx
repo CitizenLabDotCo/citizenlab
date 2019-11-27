@@ -5,15 +5,16 @@ import { get } from 'lodash-es';
 
 // components
 import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
-import Title from 'components/PostComponents/Title';
-import Body from 'components/PostComponents/Body';
-import LoadableDropdownMap from 'components/PostComponents/DropdownMap';
-import OfficialFeedback from 'components/PostComponents/OfficialFeedback';
-import Comments from 'components/PostComponents/Comments';
+import Title from 'components/PostShowComponents/Title';
+import Body from 'components/PostShowComponents/Body';
+import LoadableDropdownMap from 'components/PostShowComponents/DropdownMap';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+import Comments from 'components/PostShowComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import VotePreview from './VotePreview';
-import InfoTooltip from 'components/admin/InfoTooltip';
+import IconTooltip from 'components/UI/IconTooltip';
+
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
@@ -115,7 +116,7 @@ const Right = styled.div`
 `;
 
 const BudgetBox = styled.div`
-  margin-top: 20px;
+  margin-top: 25px;
   width: 100%;
   height: 95px;
   display: flex;
@@ -132,7 +133,7 @@ const BudgetBox = styled.div`
 `;
 
 const Picks = styled.div`
-  margin-top: 7px;
+  margin-top: 15px;
   display: flex;
   font-size: ${fontSizes.base}px;
   align-items: center;
@@ -179,7 +180,6 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
       ideaFiles,
       tenant,
       handleClickEdit,
-      intl: { formatMessage }
     } = this.props;
 
     if (!isNilOrError(idea)) {
@@ -195,7 +195,6 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             <Button
               icon="edit"
               style="text"
-              textColor={colors.adminTextColor}
               onClick={handleClickEdit}
             >
               <FormattedMessage {...messages.edit}/>
@@ -203,7 +202,6 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             <Button
               icon="delete"
               style="text"
-              textColor={colors.adminTextColor}
               onClick={this.handleClickDelete}
             >
               <FormattedMessage {...messages.delete}/>
@@ -232,7 +230,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
             <Row>
               <Left>
                 {ideaImageLarge &&
-                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { postTitle: ideaTitle })} className="e2e-ideaImage"/>
+                  <IdeaImage src={ideaImageLarge} alt="" className="e2e-ideaImage"/>
                 }
                 <IdeaAuthor
                   authorId={get(idea, 'relationships.author.data.id', null)}
@@ -284,7 +282,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                       <Picks>
                         <FormattedMessage {...messages.picks} values={{ picksNumber: idea.attributes.baskets_count }} />
                         &nbsp;
-                        <InfoTooltip {...messages.basketsCountTooltip} size="small" position="top-left" />
+                        <IconTooltip content={<FormattedMessage {...messages.basketsCountTooltip} />} />
                       </Picks>
                     </BudgetBox>
                   </>
