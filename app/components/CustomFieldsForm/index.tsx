@@ -3,6 +3,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import moment from 'moment';
 import { isBoolean, forOwn, get, uniq, isNil, isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import { uuid } from 'uuidv4';
 
 // libraries
 import Form, { FieldProps } from 'react-jsonschema-form';
@@ -250,6 +251,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
       <>
         {title && <FormLabelValue thin labelValue={title}/>}
         <Checkbox
+          id={uuid()}
           checked={(isBoolean(props.value) ? props.value : false)}
           onChange={onChange}
           label={(props.schema.description || null)}

@@ -112,6 +112,7 @@
     "regenerator-runtime": "0.13.3",
     "rxjs": "6.5.3",
     "semantic-ui-react": "0.88.1",
+    "uuidv4": "^6.0.0",
     "webfontloader": "1.6.28",
     "whatwg-fetch": "3.0.0"
   },
