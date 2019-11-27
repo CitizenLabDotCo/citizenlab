@@ -95,8 +95,8 @@ describe('Initiative new page', () => {
     cy.wait(1000);
 
     // verify the content of the newly created initiative page
-    cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeTitle}`);
     cy.get('#e2e-initiative-show');
+    cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeTitle}`);
     cy.get('#e2e-initiative-show').find('#e2e-initiative-title').contains(initiativeTitle);
     cy.get('#e2e-initiative-show').find('#e2e-initiative-description').contains(initiativeContent);
     cy.get('#e2e-initiative-show').find('#e2e-initiative-topics').find('.e2e-initiative-topic').should('have.length', 1);

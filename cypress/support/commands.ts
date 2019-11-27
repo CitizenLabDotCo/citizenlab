@@ -391,15 +391,15 @@ export function apiCreateInitiative({
   locationDescription,
   jwt,
   topicIds
-}: {
-    initiativeTitle: string,
-    initiativeContent: string,
-    assigneeId?: string,
-    locationGeoJSON?: { 'type': string, 'coordinates': number[] },
-    locationDescription?: string,
-    jwt?: string,
-    topicIds?: string[]
-  }) {
+} : {
+  initiativeTitle: string,
+  initiativeContent: string,
+  assigneeId?: string,
+  locationGeoJSON?: { 'type': string, 'coordinates': number[] },
+  locationDescription?: string,
+  jwt?: string,
+  topicIds?: string[]
+}) {
   let adminJwt: string;
   let headers: { 'Content-Type': string; Authorization: string; } | null = null;
 
@@ -597,17 +597,29 @@ export function apiRemoveComment(commentId: string) {
   });
 }
 
-export function apiCreateProject(
+export function apiCreateProject({
+  type,
+  title,
+  descriptionPreview,
+  description,
+  publicationStatus = 'published',
+  participationMethod,
+  assigneeId,
+  surveyUrl,
+  surveyService,
+  locationAllowed
+} : {
   type: 'timeline' | 'continuous',
   title: string,
   descriptionPreview: string,
   description: string,
-  publicationStatus: 'draft' | 'published' | 'archived' = 'published',
+  publicationStatus?: 'draft' | 'published' | 'archived',
   participationMethod?: 'ideation' | 'information' | 'survey' | 'budgeting' | 'poll',
   assigneeId?: string,
   surveyUrl?: string,
-  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms'
-) {
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
+  locationAllowed?: boolean
+}) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -635,9 +647,10 @@ export function apiCreateProject(
             'nl-BE': description
           },
           default_assignee_id: assigneeId,
-          participation_method: participationMethod,
+          participation_method: (type === 'continuous' && !participationMethod ? 'ideation' : participationMethod),
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
+          location_allowed: locationAllowed
         }
       }
     });
