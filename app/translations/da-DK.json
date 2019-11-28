@@ -89,6 +89,7 @@
   "app.components.FilterBoxes.a11y_removeFilter": "",
   "app.components.FilterBoxes.a11y_selectedFilter": "",
   "app.components.FilterBoxes.a11y_selectedStatus": "",
+  "app.components.FilterBoxes.a11y_selectedTopicFilters": "",
   "app.components.FilterBoxes.all": "Alle",
   "app.components.FilterBoxes.areas": "Områder",
   "app.components.FilterBoxes.statusTitle": "Status",
