@@ -89,6 +89,7 @@
   "app.components.FilterBoxes.a11y_removeFilter": "",
   "app.components.FilterBoxes.a11y_selectedFilter": "",
   "app.components.FilterBoxes.a11y_selectedStatus": "",
+  "app.components.FilterBoxes.a11y_selectedTopicFilters": "",
   "app.components.FilterBoxes.all": "All",
   "app.components.FilterBoxes.areas": "Areas",
   "app.components.FilterBoxes.statusTitle": "Status",
