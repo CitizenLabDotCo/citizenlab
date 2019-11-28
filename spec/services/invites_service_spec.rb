@@ -176,16 +176,6 @@ describe InvitesService do
       end
     end
 
-    context "to belong in a manual group" do
-      let(:group) { create(:group) }
-      let(:hash_array) {[
-        {email: 'someuser@somedomain.com', groups: group.title_multiloc.values.first}
-      ]}
-      it "updates the group count" do
-        expect{ service.bulk_create_xlsx(xlsx) }.to change{group.reload.memberships_count}.from(0).to(1)
-      end
-    end
-
   end
 
 end
