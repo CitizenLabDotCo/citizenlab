@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "mapRoot": "./",
+    "rootDir": "app",
+    "baseUrl": "app",
+    "mapRoot": "app",
     "target": "esnext",
     "module": "esnext",
     "jsx": "react",
@@ -26,7 +27,7 @@
     "custom.d.ts"
   ],
   "include": [
-      "**/*"
+    "app/**/*"
   ],
   "exclude": [
     "node_modules",

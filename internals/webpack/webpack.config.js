@@ -167,7 +167,7 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html',
+      template: path.join(process.cwd(), 'app/index.html'),
       inject: true,
       minify: !isDev ? {
         removeComments: true,
