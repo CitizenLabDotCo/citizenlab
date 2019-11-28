@@ -2,7 +2,7 @@ import React from 'react';
 import { isBoolean, isString, isArray } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
-import selectStyles from 'components/UI/Select/styles';
+import selectStyles from 'components/UI/MultipleSelect/styles';
 
 export type Props = {
   id?: string;

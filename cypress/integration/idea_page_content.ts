@@ -1,7 +1,6 @@
 import { randomString } from '../support/commands';
 
 describe('Idea Page', () => {
-
   describe('Various Idea Page Components', () => {
     before(() => {
       cy.setAdminLoginCookie();
@@ -60,7 +59,14 @@ describe('Idea Page', () => {
     const locationDescription = 'Brussel, België';
 
     before(() => {
-      cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published').then((project) => {
+      cy.apiCreateProject({
+        type: 'continuous',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: projectDescription,
+        publicationStatus: 'published',
+        participationMethod: 'ideation'
+      }).then((project) => {
         projectId = project.body.data.id;
         return cy.apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription);
       }).then((idea) => {
@@ -92,7 +98,14 @@ describe('Idea Page', () => {
     const ideaContent = randomString();
 
     before(() => {
-      cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published').then((project) => {
+      cy.apiCreateProject({
+        type: 'continuous',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: projectDescription,
+        publicationStatus: 'published',
+        participationMethod: 'ideation'
+      }).then((project) => {
         projectId = project.body.data.id;
         return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
       }).then((idea) => {
@@ -105,6 +118,47 @@ describe('Idea Page', () => {
 
     it('has a correct initial idea status', () => {
       cy.get('#e2e-idea-status-badge').contains('proposed');
+    });
+
+    after(() => {
+      cy.apiRemoveIdea(ideaId);
+      cy.apiRemoveProject(projectId);
+    });
+  });
+
+  describe('Idea with location inside of a project with location enabled', () => {
+    const projectTitle = randomString();
+    let projectId: string;
+    const ideaTitle = randomString();
+    const ideaContent = randomString();
+    const locationGeoJSON = { type: 'Point', coordinates: [4.351710300000036, 50.8503396] };
+    const locationDescription = 'Brussel, België';
+    let ideaId: string;
+
+    before(() => {
+      const projectDescriptionPreview = randomString();
+      const projectDescription = randomString();
+
+      cy.apiCreateProject({
+        type: 'continuous',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: projectDescription,
+        publicationStatus: 'published',
+        participationMethod: 'ideation',
+        locationAllowed: true
+      }).then((project) => {
+        projectId = project.body.data.id;
+        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription);
+      }).then((idea) => {
+        ideaId = idea.body.data.id;
+      });
+    });
+
+    it('displays the location dropdown on the idea page', () => {
+      cy.visit(`/ideas/${ideaTitle}`);
+      cy.get('#e2e-idea-show-page-content');
+      cy.get('#e2e-map-toggle').should('exist');
     });
 
     after(() => {

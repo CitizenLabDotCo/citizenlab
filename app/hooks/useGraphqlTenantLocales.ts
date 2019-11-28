@@ -25,5 +25,5 @@ export default function useGraphqlTenantLocales() {
     return () => subscription.unsubscribe();
   }, []);
 
-  return graphqlTenantLocales;
+  return !isNilOrError(graphqlTenantLocales) ? graphqlTenantLocales : null;
 }
