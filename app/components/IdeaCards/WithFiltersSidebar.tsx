@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent, MouseEvent } from 'react';
+import React, { PureComponent, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -16,7 +16,6 @@ import TopBar from 'components/FiltersModal/TopBar';
 import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
-import FeatureFlag from 'components/FeatureFlag';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 // resources
@@ -473,8 +472,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   }
 
-  selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
-    event.preventDefault();
+  selectView = (selectedView: 'card' | 'map') => {
     this.setState({ selectedView });
   }
 
@@ -598,12 +596,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
                 {showViewToggle &&
-                  <FeatureFlag name="maps">
-                    <StyledViewButtons
-                      selectedView={selectedView}
-                      onClick={this.selectView}
-                    />
-                  </FeatureFlag>
+                  <StyledViewButtons
+                    selectedView={selectedView}
+                    onClick={this.selectView}
+                  />
                  }
 
                 {!isNilOrError(ideasFilterCounts) &&

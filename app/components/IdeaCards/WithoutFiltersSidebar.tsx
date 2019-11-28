@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -12,7 +12,6 @@ import SelectSort from './SortFilterDropdown';
 import ProjectFilterDropdown from './ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
-import FeatureFlag from 'components/FeatureFlag';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 // resources
@@ -52,6 +51,7 @@ const Loading = styled.div`
 
 const FiltersArea = styled.div`
   width: 100%;
+  min-height: 54px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -64,13 +64,17 @@ const FiltersArea = styled.div`
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   `}
 `;
 
 const FilterArea = styled.div`
   display: flex;
   align-items: center;
+
+  ${media.smallerThanMaxTablet`
+    align-items: stretch;
+  `}
 `;
 
 const LeftFilterArea = styled(FilterArea)`
@@ -84,10 +88,6 @@ const LeftFilterArea = styled(FilterArea)`
   `}
 `;
 
-const Spacer = styled.div`
-  flex: 1;
-`;
-
 const RightFilterArea = styled(FilterArea)`
   &.hidden {
     display: none;
@@ -99,7 +99,7 @@ const RightFilterArea = styled(FilterArea)`
     justify-content: space-between;
   `}
 
-  ${media.largePhone`
+  ${media.smallerThanMinTablet`
     width: 100%;
     display: flex;
     flex-direction: column-reverse;
@@ -107,13 +107,23 @@ const RightFilterArea = styled(FilterArea)`
 `;
 
 const DropdownFilters = styled.div`
+  ${media.smallerThanMinTablet`
+    &.hasViewButtons {
+      margin-top: 20px;
+    }
+  `}
+
   &.hidden {
     display: none;
   }
 `;
 
 const StyledViewButtons = styled(ViewButtons)`
-  margin-left: 20px;
+  margin-left: 25px;
+
+  ${media.smallerThanMaxTablet`
+    margin-left: 0px;
+  `}
 `;
 
 const StyledSearchInput = styled(SearchInput)`
@@ -262,8 +272,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     this.props.ideas.onChangeTopics(topics);
   }
 
-  selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
-    event.preventDefault();
+  selectView = (selectedView: 'card' | 'map') => {
     this.setState({ selectedView });
   }
 
@@ -304,6 +313,8 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       locationAllowed =  project?.attributes?.location_allowed;
     }
 
+    const showViewButtons = !!(locationAllowed && showViewToggle);
+
     return (
       <Container id="e2e-ideas-container" className={className}>
         <FiltersArea id="e2e-ideas-filters" className={`${showMapView && 'mapView'}`}>
@@ -318,21 +329,17 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </LeftFilterArea>
 
           <RightFilterArea>
-            <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'}`}>
+            <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'} ${showViewButtons ? 'hasViewButtons' : ''}`}>
               <SelectSort onChange={this.handleSortOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
               {allowProjectsFilter && <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />}
               <TopicFilterDropdown onChange={this.handleTopicsOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
             </DropdownFilters>
 
-            <Spacer />
-
-            {locationAllowed && showViewToggle &&
-              <FeatureFlag name="maps">
-                <StyledViewButtons
-                  selectedView={selectedView}
-                  onClick={this.selectView}
-                />
-              </FeatureFlag>
+            {showViewButtons &&
+              <StyledViewButtons
+                selectedView={selectedView}
+                onClick={this.selectView}
+              />
             }
           </RightFilterArea>
         </FiltersArea>

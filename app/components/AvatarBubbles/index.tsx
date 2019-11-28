@@ -16,7 +16,37 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, ScreenReaderOnly } from 'utils/styleUtils';
+
+const getFontSize = (size: number, digits: number) => {
+  if (size >= 34) {
+    if (digits <= 2) {
+      return 14;
+    }
+
+    if (digits === 3) {
+      return 12;
+    }
+
+    if (digits >= 4) {
+      return 11;
+    }
+  } else {
+    if (digits <= 2) {
+      return 12;
+    }
+
+    if (digits === 3) {
+      return 11;
+    }
+
+    if (digits >= 4) {
+      return 10;
+    }
+  }
+
+  return 14;
+};
 
 const EmptyContainer = styled.div``;
 
@@ -53,15 +83,11 @@ const UserCountBubble = styled.div<{ overlap: number, index: number, size: numbe
   left: ${(props) => props.index * (props.size - props.overlap)}px;
 `;
 
-const UserCountBubbleInner = styled.div<{ size: number }>`
+const UserCountBubbleInner = styled.div<{ size: number, digits: number }>`
   color: #fff;
-  font-size: ${fontSizes.small}px;
+  font-size: ${({ size, digits }) => getFontSize(size, digits)}px;
   font-weight: 500;
   display: flex;
-
-  &.smaller {
-    font-size: ${fontSizes.xs}px;
-  }
 `;
 
 /* InputProps
@@ -111,11 +137,10 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const avatarImagesCount = avatarsWithImage.length;
       const userCountBgColor = this.props.userCountBgColor || colors.clIconSecondary;
       const remainingUsers = userCount - avatarImagesCount;
+      const remainingUsersDigits = remainingUsers.toString().length;
       const bubblesCount = avatarImagesCount + (remainingUsers > 0 ? 1 : 0);
       const containerHeight = bubbleSize + 2;
       const containerWidth = bubblesCount * (bubbleSize - bubbleOverlap) + bubbleOverlap + 2;
-
-      console.log(bubblesCount);
 
       if (avatarIds || context || (avatarImagesCount > 0)) {
         return (
@@ -143,10 +168,10 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
               >
                 <UserCountBubbleInner
                   size={bubbleSize}
-                  className={remainingUsers > 999 ? 'smaller' : ''}
+                  digits={remainingUsersDigits}
                   aria-hidden
                 >
-                  {remainingUsers > 999 ? remainingUsers : `+${remainingUsers}`}
+                  +{remainingUsers}
                 </UserCountBubbleInner>
                 <ScreenReaderOnly>
                   {formatMessage(messages.numberOfUsers, { numberOfUsers: userCount })}

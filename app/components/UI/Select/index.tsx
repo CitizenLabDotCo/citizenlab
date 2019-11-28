@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isString } from 'lodash-es';
+import { isString, get } from 'lodash-es';
 import { IOption } from 'typings';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
@@ -25,7 +25,8 @@ const CustomSelect = styled.select`
   padding: 0;
   padding: 10px;
   padding-right: 27px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  background: #fff;
   border: solid 1px #ccc;
   cursor: pointer;
   -moz-appearance: none;
@@ -86,7 +87,7 @@ export default class Select extends PureComponent<Props, State> {
 
   handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (this.props.options) {
-      const selectedOption = this.props.options.find(option => option.value === event.target.value) as IOption;
+      const selectedOption = this.props.options.find(option => option.value.toString() === event.target.value.toString()) as IOption;
       this.props.onChange(selectedOption);
     }
   }
@@ -98,12 +99,10 @@ export default class Select extends PureComponent<Props, State> {
   }
 
   render() {
-    const { id, disabled, className } = this.props;
-    let { value, placeholder, options } = this.props;
-
-    value = isString(value) && options ? options.find((option) => option.value === value) : value;
-    placeholder = (placeholder || '');
-    options = (options || []);
+    const { id, disabled, className, options } = this.props;
+    const defaultValue = 'DEFAULT_SELECT_VALUE';
+    const value = isString(this.props.value) ? this.props.value : get(this.props.value, 'value', null) as string | null;
+    const selectedValue = !!(options && options.find(option => option.value === value)) ? options.find(option => option.value === value)?.value as string : defaultValue;
 
     return (
       <Container className={`${className} ${disabled ? 'disabled' : 'enabled'}`}>
@@ -113,21 +112,24 @@ export default class Select extends PureComponent<Props, State> {
           onChange={this.handleOnChange}
           onBlur={this.handleOnBlur}
           className={disabled ? 'disabled' : 'enabled'}
+          value={selectedValue}
         >
-          {options && options.length > 0 && options.map((option, index) => {
-            const isSelected = value && value['value'] && option.value === value['value'];
+          <option
+            value={defaultValue}
+            aria-selected={selectedValue === defaultValue}
+            hidden={true}
+            disabled={true}
+          />
 
-            return (
-              <option
-                key={index}
-                value={option.value}
-                selected={isSelected}
-                aria-selected={isSelected}
-              >
-                {option.label}
-              </option>
-            );
-          })}
+          {options && options.length > 0 && options.map((option, index) => (
+            <option
+              key={index}
+              value={option.value}
+              aria-selected={selectedValue === option.value}
+            >
+              {option.label}
+            </option>
+          ))}
         </CustomSelect>
         <Arrow className={disabled ? 'disabled' : 'enabled'} />
       </Container>
