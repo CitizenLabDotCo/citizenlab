@@ -45,4 +45,8 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.a11y_selectedFilter',
     defaultMessage: 'Selected status filter: {filter}',
   },
+  a11y_selectedTopicFilters: {
+    id: 'app.components.FilterBoxes.a11y_selectedTopicFilters',
+    defaultMessage: 'Selected {numberOfSelectedTopics, plural, =0 {zero topic filters} one {one topic filter} other {# topic filters}}. {selectedTopicNames}',
+  },
 });
