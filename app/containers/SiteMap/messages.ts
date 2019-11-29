@@ -97,4 +97,16 @@ export default defineMessages({
     id: 'containers.SubscriptionEndedPage.initiativesInfo',
     defaultMessage: 'More information about initiatives',
   },
+  userSpaceSection: {
+    id: 'containers.SubscriptionEndedPage.userSpaceSection',
+    defaultMessage: 'Your Account',
+  },
+  profilePage: {
+    id: 'containers.SubscriptionEndedPage.profilePage',
+    defaultMessage: 'Your Profile Page',
+  },
+  profileSettings: {
+    id: 'containers.SubscriptionEndedPage.profileSettings',
+    defaultMessage: 'Your settings',
+  },
 });

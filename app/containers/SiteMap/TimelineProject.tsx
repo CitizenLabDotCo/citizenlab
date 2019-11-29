@@ -36,7 +36,7 @@ const TimelineProject = ({ project, phases }: Props) => {
       <ul>
         {phases.map(phase => (
           <li key={phase.id}>
-            <Link to={{ pathname: `/projects/${project.attributes.slug}/process`, query: { phase: phases[0].id } }}>
+            <Link to={{ pathname: `/projects/${project.attributes.slug}/process`, query: { phase: phase.id } }}>
               <T value={phase.attributes.title_multiloc} />
             </Link>
           </li>
