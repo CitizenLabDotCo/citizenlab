@@ -431,6 +431,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
             {['color_main', 'color_secondary', 'color_text'].map((colorName: TenantColors) => {
               const contrastRatioOfColor = contrastRatio[colorName];
+              const contrastRatioWarningOfColor = contrastRatioWarning[colorName];
+
               return (
                 <ColorPickerSectionField key={colorName}>
                   <Label>
@@ -447,13 +449,13 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                         <FormattedMessage
                           {...messages.contrastRatio}
                           values={{
-                            contrastRatio: `${contrastRatioOfColor.toFixed(2)}`
+                            contrastRatio: contrastRatioOfColor.toFixed(2)
                           }}
                         />
                       }
                     />
                   }
-                  {contrastRatioWarning[colorName] &&
+                  {contrastRatioWarningOfColor &&
                     <ContrastWarning
                       text={
                         <FormattedMessage
