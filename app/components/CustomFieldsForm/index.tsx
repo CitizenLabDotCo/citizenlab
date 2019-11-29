@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import moment from 'moment';
-import { isBoolean, forOwn, get, uniq, isNil, isEmpty } from 'lodash-es';
+import { isBoolean, forOwn, get, uniq, isNil, isEmpty, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
@@ -37,6 +37,11 @@ import styled from 'styled-components';
 import { Locale, IOption } from 'typings';
 
 const Container = styled.div``;
+
+const StyledFormLabelValue = styled(FormLabelValue)`
+  display: block;
+  margin-bottom: 10px;
+`;
 
 const InvisibleSubmitButton = styled.button`
   visibility: hidden;
@@ -246,17 +251,23 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
   CustomCheckbox = (props: FieldProps) => {
     const onChange = () => props.onChange((isBoolean(props.value) ? !props.value : true));
     const { title } = props.schema;
+    const id = props.id;
 
-    return (
-      <>
-        {title && <FormLabelValue thin labelValue={title}/>}
-        <Checkbox
-          checked={(isBoolean(props.value) ? props.value : false)}
-          onChange={onChange}
-          label={(props.schema.description || null)}
-        />
-      </>
-    );
+    if (isString(id)) {
+      return (
+        <>
+          {title && <StyledFormLabelValue noSpace htmlFor={id} thin labelValue={title}/>}
+          <Checkbox
+            id={id}
+            checked={(isBoolean(props.value) ? props.value : false)}
+            onChange={onChange}
+            label={(props.schema.description || null)}
+          />
+        </>
+      );
+    }
+
+    return null;
   }
 
   CustomDate = (props: FieldProps) => {
