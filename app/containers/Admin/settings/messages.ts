@@ -185,10 +185,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.urlTitleTooltip',
     defaultMessage: 'Add the URL of the website you want to link this platform with. Used in the footer on the home page.',
   },
-  contrastRatioTooLow: {
-    id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
-    defaultMessage: 'Warning: the color you selected doesn\'t have a high enough contrast. This may result in text that\'s hard to read. Choose a darker color to optimize readability.',
-  },
   homePageCustomSection: {
     id: 'app.components.AdminPage.SettingsPage.homePageCustomSection',
     defaultMessage: 'Home page custom section',
@@ -200,5 +196,13 @@ export default defineMessages({
   customSectionInfo: {
     id: 'app.components.AdminPage.SettingsPage.customSectionInfo',
     defaultMessage: 'The content of this field will be shown at the bottom of the platform\'s home page, visible to all visitors.',
+  },
+  contrastRatioTooLow: {
+    id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
+     defaultMessage: 'Warning: the color you selected doesn\'t have a high enough contrast (to a white background) to comply with the {wcagLink} accessibility standard. A ratio of at least 4.5 to 1 is needed to comply. Not meeting this ratio may impair the user experience of users with visual disabilities, or even make it impossible to use the platform altogether.',
+  },
+  contrastRatio: {
+    id: 'app.components.AdminPage.SettingsPage.contrastRatio',
+    defaultMessage: 'Contrast ratio to a white background: {contrastRatio} to 1',
   },
 });
