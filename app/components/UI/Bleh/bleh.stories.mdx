@@ -1,0 +1,14 @@
+import { Meta, Story, Props } from '@storybook/addon-docs/blocks';
+import Bleh, { IBleh } from 'components/UI/Bleh';
+
+<Meta title="Demo/Bleh" component={Bleh} />
+
+# Bleh
+
+With `MDX` we write longform markdown documentation for our `Label` component and embed Doc Blocks inline.
+
+<Props of={Bleh} />
+
+<Story name="positive">
+  <Bleh text="wurps" />
+</Story>
