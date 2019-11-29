@@ -187,7 +187,7 @@ export const colors = {
   emailBg: '#e6ebec',
 
   // buttons
-  disabledPrimaryButtonBg: '#767676'
+  disabledPrimaryButtonBg: '#d0d0d0'
 };
 
 export const fontSizes = {
