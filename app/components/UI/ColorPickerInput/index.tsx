@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // components
 import { ChromePicker, ColorResult } from 'react-color';
@@ -22,6 +23,7 @@ const InputWrapper = styled.div`
 const Color: any = styled.div`
   width: 50px;
   height: 50px;
+  border: 1px solid ${colors.separationDark};
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
