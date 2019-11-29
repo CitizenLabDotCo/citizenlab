@@ -443,7 +443,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                     value={get(attributesDiff, `settings.core.${colorName}`) || get(tenant, `data.attributes.settings.core.${colorName}`)}
                     onChange={this.handleColorPickerOnChange(colorName)}
                   />
-                  {contrastRatioOfColor &&
+                  {contrastRatioWarningOfColor && contrastRatioOfColor &&
                     <ContrastWarning
                       text={
                         <FormattedMessage
@@ -462,6 +462,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                           {...messages.contrastRatioTooLow}
                           values={{
                             wcagLink: <a href="https://www.w3.org/TR/WCAG21/" target="_blank">WCAG 2.1 AA</a>,
+                            lineBreak: <br />
                           }}
                         />
                       }
