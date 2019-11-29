@@ -199,7 +199,7 @@ export default defineMessages({
   },
   contrastRatioTooLow: {
     id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
-     defaultMessage: 'The color you selected doesn\'t have a high enough contrast (to a white background) to comply with the {wcagLink} accessibility standard. A ratio of at least 4.5 to 1 is needed to comply. Not meeting this ratio may impair the user experience of users with visual disabilities, or even make it impossible to use the platform altogether. Choose a darker color to increase the ratio.',
+     defaultMessage: 'The color you selected doesn\'t have a high enough contrast (to a white background) to comply with the {wcagLink} accessibility standard. A ratio of at least 4.5 to 1 is needed to comply. Choose a darker color to increase the ratio. {lineBreak} {lineBreak} Not meeting this ratio may impair the user experience of users with visual disabilities, or even make it impossible to use the platform altogether.',
   },
   contrastRatio: {
     id: 'app.components.AdminPage.SettingsPage.contrastRatio',
