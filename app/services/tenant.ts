@@ -9,6 +9,12 @@ interface TenantFeature {
   enabled: boolean;
 }
 
+export type ISuccessStory = {
+  image_url: string;
+  location: string;
+  page_slug: string;
+};
+
 export interface ITenantSettings {
   core: {
     allowed: boolean;
@@ -90,11 +96,7 @@ export interface ITenantSettings {
     enabled: boolean;
     days_limit: number;
     eligibility_criteria: Multiloc;
-    success_stories?: {
-      image_url: string;
-      location: string;
-      page_slug: string;
-    }[];
+    success_stories?: ISuccessStory[];
     threshold_reached_message: Multiloc;
     voting_threshold: number;
   };

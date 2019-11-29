@@ -456,6 +456,10 @@ class Footer extends PureComponent<Props, State> {
             <StyledButton onClick={this.openConsentManager}>
               <FormattedMessage {...messages.cookieSettings} />
             </StyledButton>
+            <Bullet>•</Bullet>
+            <StyledLink to="/site-map">
+              <FormattedMessage {...messages.siteMap} />
+            </StyledLink>
           </PagesNav>
 
           <Right>
