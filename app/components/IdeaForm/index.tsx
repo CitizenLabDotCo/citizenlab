@@ -52,6 +52,10 @@ const Form = styled.form`
   align-items: center;
 `;
 
+const StyledFormSection = styled(FormSection)`
+  max-width: 100%;
+`;
+
 const FormElement = styled.div`
   width: 100%;
   margin-bottom: 40px;
@@ -413,7 +417,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
     return (
       <Form id="idea-form" className={className}>
-        <FormSection>
+        <StyledFormSection>
           <FormSectionTitle message={messages.formGeneralSectionTitle} />
           <FormElement id="e2e-idea-title-input">
             <FormLabel labelMessage={messages.titleLabel} htmlFor="title" />
@@ -443,9 +447,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             />
             {descriptionError && <Error text={descriptionError} />}
           </FormElement>
-        </FormSection>
+        </StyledFormSection>
 
-        <FormSection>
+        <StyledFormSection>
           <FormSectionTitle message={messages.formDetailsSectionTitle} />
           {pbContext && (
             <FeatureFlag name="participatory_budgeting">
@@ -497,9 +501,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               </FormLabel>
             </FormElement>
           }
-        </FormSection>
+        </StyledFormSection>
 
-        <FormSection>
+        <StyledFormSection>
           <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
           <FormElement id="e2e-idea-image-upload">
             <FormLabel labelMessage={messages.imageUploadLabel} />
@@ -523,7 +527,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               />
             </FormLabel>
           </FormElement>
-        </FormSection>
+        </StyledFormSection>
       </Form>
     );
   }
