@@ -18,6 +18,9 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
+/*
+* This link override doesn't support url parameters, because updateLocationDescriptor doesn't parse them
+*/
 export class Link extends PureComponent<Props, State> {
   render() {
     const { to, locale, ...otherProps } = this.props;

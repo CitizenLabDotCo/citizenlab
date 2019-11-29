@@ -62,6 +62,15 @@ export default function createRoutes() {
           })
         },
         {
+          path: 'site-map',
+          name: 'siteMap',
+          component: Loadable({
+            loader: () => import('containers/SiteMap'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
+        },
+        {
           path: 'profile/edit',
           name: 'usersEditPage',
           component: Loadable({
