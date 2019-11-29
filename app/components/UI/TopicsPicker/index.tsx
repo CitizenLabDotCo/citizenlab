@@ -30,7 +30,7 @@ const TopicSwitch = styled.button`
   font-weight: 400;
   line-height: normal;
   text-align: left;
-  /display: inline-block;
+  display: inline-block;
   padding-left: 18px;
   padding-right: 18px;
   padding-top: 11px;
