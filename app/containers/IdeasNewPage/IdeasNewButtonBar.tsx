@@ -21,7 +21,7 @@ import styled from 'styled-components';
 
 const ButtonBarInner = styled.div`
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   display: flex;
   align-items: center;
   padding-right: 20px;
