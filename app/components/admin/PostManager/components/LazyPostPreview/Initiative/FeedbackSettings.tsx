@@ -170,19 +170,16 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
         <Container className={`${className} e2e-initiative-settings`}>
           <StyledLabel value={<FormattedMessage {...messages.currentStatus}/>} htmlFor="initiative-preview-select-status"/>
           <Select
-            inputId="initiative-preview-select-status"
+            id="initiative-preview-select-status"
             options={statusOptions}
             onChange={this.onStatusChange}
             value={initiativeStatusOption}
-            clearable={false}
-            borderColor={initiativeStatusOption ? initiativeStatusOption.color : undefined}
           />
           <StyledLabel value={<FormattedMessage {...messages.assignee}/>} htmlFor="initiative-preview-select-assignee"/>
           <Select
-            inputId="initiative-preview-select-assignee"
+            id="initiative-preview-select-assignee"
             options={assigneeOptions}
             onChange={this.onAssigneeChange}
-            clearable={false}
             value={initiativeAssigneeOption}
           />
         </Container>

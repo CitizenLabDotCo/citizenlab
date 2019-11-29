@@ -36,6 +36,7 @@ import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import VerificationModal from 'components/VerificationModal';
 import ErrorBoundary from 'components/ErrorBoundary';
+import { LiveAnnouncer } from 'react-aria-live';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -103,6 +104,7 @@ type State = {
   verificationContext?: boolean;
   mightOpenVerificationModal: boolean;
   navbarRef: HTMLElement | null;
+  mobileNavbarRef: HTMLElement | null;
 };
 
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
@@ -126,7 +128,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       verificationModalOpened: false,
       verificationModalInitialStep: null,
       mightOpenVerificationModal: false,
-      navbarRef: null
+      navbarRef: null,
+      mobileNavbarRef: null
     };
     this.subscriptions = [];
   }
@@ -292,6 +295,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ navbarRef });
   }
 
+  setMobileNavigationRef = (mobileNavbarRef: HTMLElement) => {
+    this.setState({ mobileNavbarRef });
+  }
+
   render() {
     const { location, children } = this.props;
     const {
@@ -306,7 +313,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       verificationModalOpened,
       verificationModalInitialStep,
       verificationContext,
-      navbarRef
+      navbarRef,
+      mobileNavbarRef
     } = this.state;
     const adminPage = isPage('admin', location.pathname);
     const initiativeFormPage = isPage('initiative_form', location.pathname);
@@ -328,69 +336,72 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         {tenant && visible && (
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider theme={theme}>
-              <>
-                <GlobalStyle />
+              <LiveAnnouncer>
+                <>
+                  <GlobalStyle />
 
-                <Container>
-                  <Meta />
+                  <Container>
+                    <Meta />
 
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <PostPageFullscreenModal
-                        type={modalType}
-                        id={modalId}
-                        slug={modalSlug}
-                        close={this.closePostPageModal}
-                        navbarRef={navbarRef}
-                      />
-                    </Suspense>
-                  </ErrorBoundary>
+                    <ErrorBoundary>
+                      <Suspense fallback={null}>
+                        <PostPageFullscreenModal
+                          type={modalType}
+                          id={modalId}
+                          slug={modalSlug}
+                          close={this.closePostPageModal}
+                          navbarRef={navbarRef}
+                          mobileNavbarRef={mobileNavbarRef}
+                        />
+                      </Suspense>
+                    </ErrorBoundary>
 
-                  <ErrorBoundary>
-                    <LoadableModal
-                      opened={userDeletedModalOpened}
-                      close={this.closeUserDeletedModal}
-                    >
-                      <LoadableUserDeleted userActuallyDeleted={userActuallyDeleted} />
-                    </LoadableModal>
-                  </ErrorBoundary>
+                    <ErrorBoundary>
+                      <LoadableModal
+                        opened={userDeletedModalOpened}
+                        close={this.closeUserDeletedModal}
+                      >
+                        <LoadableUserDeleted userActuallyDeleted={userActuallyDeleted} />
+                      </LoadableModal>
+                    </ErrorBoundary>
 
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <VerificationModal
-                        opened={verificationModalOpened}
-                        initialActiveStep={verificationModalInitialStep}
-                        context={verificationContext}
-                      />
-                    </Suspense>
-                  </ErrorBoundary>
+                    <ErrorBoundary>
+                      <Suspense fallback={null}>
+                        <VerificationModal
+                          opened={verificationModalOpened}
+                          initialActiveStep={verificationModalInitialStep}
+                          context={verificationContext}
+                        />
+                      </Suspense>
+                    </ErrorBoundary>
 
-                  <ErrorBoundary>
-                    <div id="modal-portal" />
-                  </ErrorBoundary>
+                    <ErrorBoundary>
+                      <div id="modal-portal" />
+                    </ErrorBoundary>
 
-                  <ErrorBoundary>
-                    <ConsentManager />
-                  </ErrorBoundary>
+                    <ErrorBoundary>
+                      <ConsentManager />
+                    </ErrorBoundary>
 
-                  <ErrorBoundary>
-                    <Navbar setRef={this.setNavbarRef} />
-                  </ErrorBoundary>
+                    <ErrorBoundary>
+                      <Navbar setRef={this.setNavbarRef} setMobileNavigationRef={this.setMobileNavigationRef} />
+                    </ErrorBoundary>
 
-                  <InnerContainer>
-                    <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
-                      <ErrorBoundary>
-                        {children}
-                      </ErrorBoundary>
-                      <HasPermission.No>
-                        <ForbiddenRoute />
-                      </HasPermission.No>
-                    </HasPermission>
-                  </InnerContainer>
+                    <InnerContainer>
+                      <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
+                        <ErrorBoundary>
+                          {children}
+                        </ErrorBoundary>
+                        <HasPermission.No>
+                          <ForbiddenRoute />
+                        </HasPermission.No>
+                      </HasPermission>
+                    </InnerContainer>
 
-                  {showFooter && <Footer showShortFeedback={showShortFeedback} />}
-                </Container>
-              </>
+                    {showFooter && <Footer showShortFeedback={showShortFeedback} />}
+                  </Container>
+                </>
+              </LiveAnnouncer>
             </ThemeProvider>
           </PreviousPathnameContext.Provider>
         )}

@@ -8,6 +8,7 @@ import { FormLabelProps, FormLabelStyled, FormSubtextStyled, Spacer } from '.';
 
 interface FormLabelWithIconProps extends FormLabelProps {
   iconName: IconNames;
+  iconAriaHidden?: boolean;
 }
 
 const LabelContainer = styled.div`
@@ -33,12 +34,13 @@ export const FormLabelWithIcon = memo(({
   hidden,
   thin,
   noSpace,
-  iconName
+  iconName,
+  iconAriaHidden
 }: FormLabelWithIconProps) => (
   <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
     <LabelContainer>
       <FormattedMessage {...labelMessage} values={labelMessageValues} />
-      <StyledIcon name={iconName} />
+      <StyledIcon name={iconName} ariaHidden={iconAriaHidden}/>
     </LabelContainer>
     {subtextMessage &&
       <>

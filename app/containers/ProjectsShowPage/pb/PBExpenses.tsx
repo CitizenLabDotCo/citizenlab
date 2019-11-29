@@ -27,12 +27,16 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedNumber } from 'react-intl';
+import { FormattedNumber, InjectedIntlProps } from 'react-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
+
+// a11y
+import { LiveMessage } from 'react-aria-live';
 
 const Container = styled.div``;
 
@@ -79,8 +83,13 @@ const Title = styled.h2`
 `;
 
 const TitleIcon = styled(Icon)`
+  flex: 0 0 18px;
   height: 18px;
   margin-right: 10px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const Spacer = styled.div`
@@ -252,7 +261,7 @@ interface State {
   processing: boolean;
 }
 
-class PBExpenses extends PureComponent<Props & Tracks, State> {
+class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -284,7 +293,17 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
   }
 
   render() {
-    const { locale, tenant, participationContextType, participationContextId, project, phase, basket, className } = this.props;
+    const {
+      locale,
+      tenant,
+      participationContextType,
+      participationContextId,
+      project,
+      phase,
+      basket,
+      className,
+      intl: { formatMessage }
+    } = this.props;
     const { processing, dropdownOpened } = this.state;
 
     if (!isNilOrError(locale) &&
@@ -301,6 +320,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
       let totalBudget = 0;
       let progress = 0;
       let validationStatus: 'notValidated' | 'validationSuccess' | 'validationError' = 'notValidated';
+      let validationStatusMessage: string = '';
       let progressBarColor: 'green' | 'red' | '' = '';
 
       if (participationContextType === 'Project' && !isNilOrError(project)) {
@@ -325,6 +345,12 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
         progressBarColor = 'red';
       }
 
+      if (validationStatus === 'validationError') {
+        validationStatusMessage = formatMessage(messages.budgetExceeded);
+      } else if (validationStatus === 'validationSuccess') {
+        validationStatusMessage = formatMessage(messages.budgetValidated);
+      }
+
       return (
         <Container className={className}>
           <InnerContainer>
@@ -335,16 +361,17 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                 }
                 {validationStatus === 'validationError' &&
                   <>
-                    <TitleIcon name="error" />
+                    <TitleIcon name="error" ariaHidden />
                     <FormattedMessage {...messages.budgetExceeded} />
                   </>
                 }
                 {validationStatus === 'validationSuccess' &&
                   <>
-                    <TitleIcon name="checkmark" />
+                    <TitleIcon name="checkmark" ariaHidden />
                     <FormattedMessage {...messages.budgetValidated} />
                   </>
                 }
+                <LiveMessage message={validationStatusMessage} aria-live="polite" />
               </Title>
               <Spacer />
               <TotalBudgetDesktop aria-hidden>
@@ -415,6 +442,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                   <ManageBudgetButton
                     onClick={this.toggleExpensesDropdown}
                     icon="moneybag"
+                    iconAriaHidden
                     style="primary-inverse"
                     borderColor={colors.separation}
                     bgColor="transparent"
@@ -481,12 +509,12 @@ const Data = adopt<DataProps, InputProps>({
   }
 });
 
-const PBExpensesWithHoCs = injectTracks<Props>({
+const PBExpensesWithHoCs = injectIntl(injectTracks<Props>({
   ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
   ideaAddedToBasket: tracks.ideaAddedToBasket,
   basketSubmitted: tracks.basketSubmitted,
   expensesDropdownOpened: tracks.expensesDropdownOpened
-})(PBExpenses);
+})(PBExpenses));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

@@ -127,7 +127,7 @@ class PollForm extends PureComponent<Props, State> {
                         onChange={this.changeAnswer(question.id, option.id)}
                         currentValue={answers[question.id]}
                         value={option.id}
-                        name={option.id}
+                        name={question.id}
                         id={option.id}
                         label={<T value={option.attributes.title_multiloc} />}
                       />
