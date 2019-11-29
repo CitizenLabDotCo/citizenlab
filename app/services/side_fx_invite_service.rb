@@ -19,6 +19,7 @@ class SideFxInviteService
     if invite.invitee&.registration_completed_at
       LogActivityJob.perform_later(invite.invitee, 'completed_registration', invite.invitee, invite.accepted_at.to_i)
     end
+    UpdateMemberCountJob.perform_later
   end
 
   def after_destroy frozen_invite, user
