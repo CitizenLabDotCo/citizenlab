@@ -213,6 +213,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
           id={props.id}
           disabled={props.disabled}
           aria-label={props.label}
+          canBeEmpty={true}
         />
       );
     }
