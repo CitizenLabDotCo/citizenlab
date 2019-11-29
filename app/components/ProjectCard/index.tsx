@@ -263,7 +263,7 @@ const ProgressBarOverlay: any = styled.div`
   width: 0px;
   height: 100%;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: #fc3428;
+  background: ${colors.clRed};
   transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: width;
 
@@ -522,7 +522,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
             </TimeRemaining>
             <Observer onChange={this.handleIntersection}>
-              <ProgressBar>
+              <ProgressBar aria-hidden>
                 <ProgressBarOverlay progress={progress} className={visible ? 'visible' : ''} />
               </ProgressBar>
             </Observer>
