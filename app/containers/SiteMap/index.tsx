@@ -24,6 +24,7 @@ import { media, colors } from 'utils/styleUtils';
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -77,11 +78,12 @@ export const H4 = styled.h4``;
 interface DataProps {
   projects: GetProjectsChildProps;
   tenant: GetTenantChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends DataProps { }
 
-const SiteMap = ({ projects, tenant }: Props) => {
+const SiteMap = ({ projects, tenant, authUser }: Props) => {
 
   const loaded = projects !== undefined;
 
@@ -95,6 +97,7 @@ const SiteMap = ({ projects, tenant }: Props) => {
   const currentSection = useRef(null);
   const draftSection = useRef(null);
   const initiativesSection = useRef(null);
+  const userSpaceSection = useRef(null);
 
   const hasProjectSubsection = archivedSection.current || draftSection.current || currentSection.current;
 
@@ -122,6 +125,11 @@ const SiteMap = ({ projects, tenant }: Props) => {
                   <li>
                     <a onClick={scrollTo(homeSection)} role="button">
                       <FormattedMessage {...messages.homeSection} />
+                    </a>
+                  </li>
+                  <li>
+                    <a onClick={scrollTo(userSpaceSection)} role="button">
+                      <FormattedMessage {...messages.userSpaceSection} />
                     </a>
                   </li>
                   {!isNilOrError(projects) && <li>
@@ -191,17 +199,43 @@ const SiteMap = ({ projects, tenant }: Props) => {
                     <FormattedMessage {...messages.privacyPolicyLink} />
                   </Link>
                 </li>
-                <li>
-                  <Link to="/sign-in">
-                    <FormattedMessage {...messages.signInPage} />
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/sign-up">
-                    <FormattedMessage {...messages.signUpPage} />
-                  </Link>
-                </li>
               </ul>
+
+              <Link to="/">
+                <H2 ref={userSpaceSection}>
+                  <FormattedMessage {...messages.userSpaceSection} />
+                </H2>
+              </Link>
+              <ul>
+                {isNilOrError(authUser) ? (
+                  <>
+                    <li>
+                      <Link to="/sign-in">
+                        <FormattedMessage {...messages.signInPage} />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/sign-up">
+                        <FormattedMessage {...messages.signUpPage} />
+                      </Link>
+                    </li>
+                  </>
+                ) : (
+                    <>
+                      <li>
+                        <Link to={`/profile/${authUser.attributes.slug}`}>
+                          <FormattedMessage {...messages.profilePage} />
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/profile/edit">
+                          <FormattedMessage {...messages.profileSettings} />
+                        </Link>
+                      </li>
+                    </>
+                  )}
+              </ul>
+
               <ProjectsSection
                 projectsSectionRef={projectsSection}
                 currentSectionRef={currentSection}
@@ -249,7 +283,8 @@ const SiteMap = ({ projects, tenant }: Props) => {
 
 const Data = adopt<DataProps>({
   projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} />,
-  tenant: <GetTenant />
+  tenant: <GetTenant />,
+  authUser: <GetAuthUser />
 });
 
 export default () => (

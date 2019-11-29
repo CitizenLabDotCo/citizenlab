@@ -4,6 +4,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { tap, filter, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import moment from 'moment';
 import bowser from 'bowser';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -396,7 +397,7 @@ interface State {
   loaded: boolean;
 }
 
-class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
+class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   initialState: State;
   projectId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -468,6 +469,15 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
 
   getDefaultSelectedPhase(currentPhase: ISelectedPhase, phases: IPhases | null) {
     let selectedPhase: ISelectedPhase = null;
+    const { location } = this.props;
+
+    if (location.query.phase && typeof location.query.phase === 'string') {
+      const phase = phases ? phases.data.find(phase => phase.id === location.query.phase) : null;
+      if (phase) {
+        window.history.replaceState(null, '', location.pathname);
+        return phase;
+      }
+    }
 
     if (isString(currentPhase)) {
       selectedPhase = currentPhase;
@@ -719,4 +729,4 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(Timeline);
+export default withRouter<Props>(injectIntl<Props & WithRouterProps>(Timeline));
