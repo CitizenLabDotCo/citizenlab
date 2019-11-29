@@ -126,7 +126,7 @@ fr:
   custom_fields:
     gender: Genre
     birthyear: Année de naissance
-    domicile: Domicile
+    domicile: Localité
     education: Niveau de scolarité
   custom_field_options:
     gender:
