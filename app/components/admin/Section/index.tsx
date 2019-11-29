@@ -14,10 +14,11 @@ export const SubSectionTitle = styled.h3`
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
   line-height: ${remCalc(30)};
-  display: inline-block;
+  display: flex;
+  align-items: center;
 
   & > :not(last-child) {
-    margin-right: 5px;
+    margin-right: 7px;
   }
 `;
 
@@ -69,7 +70,7 @@ export const SectionField = styled.div`
     -webkit-appearance: none;
     background: #fff;
     border-radius: ${(props: any) => props.theme.borderRadius};
-    border: solid 1px ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
+    border: solid 1px ${(props: any) => props.error ? props.theme.colors.clRedError : colors.separationDark};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     font-size: ${fontSizes.base}px;
     font-weight: 400;

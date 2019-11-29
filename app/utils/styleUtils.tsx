@@ -144,6 +144,7 @@ export const colors = {
   clRedError: '#D61607',
   clRedErrorBackground: '#fde9e8',
   draftYellow: '#8C680D',
+  grey: '#767676',
   mediumGrey: '#BDBDBD',
   lightGreyishBlue: '#EBEDEF',
   clBlue: '#008292',

@@ -69,23 +69,33 @@ const Label = styled.label`
   margin-left: 10px;
 `;
 
-interface DefaultProps {
+type DefaultProps = {
   size?: string;
-}
+};
 
-interface Props extends DefaultProps {
-  label?: string | JSX.Element | null | undefined;
+/**
+ * If we have a label, an id is required. Otherwise id is optional.
+ */
+type LabelProps = {
+  label: string | JSX.Element | null,
+  id: string
+} | {
+  label?: undefined,
+  id?: string | undefined
+};
+
+type Props = DefaultProps & LabelProps & {
   checked: boolean;
   onChange: (event: React.MouseEvent | React.KeyboardEvent) => void;
   className?: string;
-}
+  notFocusable?: boolean;
+};
 
 interface State {
   inputFocused: boolean;
 }
 
 export default class Checkbox extends PureComponent<Props, State> {
-  checkbox = React.createRef<HTMLInputElement>();
 
   static defaultProps: DefaultProps = {
     size: '22px'
@@ -135,7 +145,7 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   render() {
-    const { label, size, checked, className } = this.props;
+    const { label, size, checked, className, notFocusable, id } = this.props;
     const { inputFocused } = this.state;
 
     return (
@@ -152,8 +162,8 @@ export default class Checkbox extends PureComponent<Props, State> {
           size={size as string}
         >
           <Input
-            ref={this.checkbox}
-            id="checkbox"
+            tabIndex={notFocusable ? -1 : 0}
+            id={id}
             aria-checked={checked}
             type="checkbox"
             defaultChecked={checked}
@@ -164,7 +174,7 @@ export default class Checkbox extends PureComponent<Props, State> {
         </InputWrapper>
 
         {label &&
-          <Label htmlFor="checkbox">
+          <Label htmlFor={id}>
             {label}
           </Label>
         }

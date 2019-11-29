@@ -12,7 +12,7 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-import Body from 'components/PostComponents/Body';
+import Body from 'components/PostShowComponents/Body';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
