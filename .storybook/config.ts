@@ -1,5 +1,7 @@
-import { configure, addParameters } from '@storybook/react';
+import { configure, addParameters, addDecorator } from '@storybook/react';
 import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
+import { getTheme } from '../app/utils/styleUtils';
+import { withThemesProvider } from 'themeprovider-storybook';
 
 addParameters({
   docs: {
@@ -7,6 +9,10 @@ addParameters({
     page: DocsPage
   },
 });
+
+const theme = getTheme(null);
+
+addDecorator(withThemesProvider(theme));
 
 configure(
   [

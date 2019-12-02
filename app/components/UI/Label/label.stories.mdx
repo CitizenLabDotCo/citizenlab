@@ -1,4 +1,4 @@
-import { Meta, Story, Props } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 import Label from 'components/UI/Label';
 
 <Meta title="Demo/Label" component={Label} />
@@ -9,6 +9,11 @@ With `MDX` we write longform markdown documentation for our `Label` component an
 
 <Props of={Label} />
 
-<Story name="positive">
-  <Label value="Test value prop" />
-</Story>
+<Preview>
+  <Story name="all labels">
+    <form>
+      <Label value="value prop text" />
+      <Label>child text</Label>
+    </form>
+  </Story>
+</Preview>
