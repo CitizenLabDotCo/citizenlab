@@ -86,7 +86,7 @@ end
 def generate_file_attributes
   {
     file_by_content: {
-      name: Faker::File.file_name('', nil, 'pdf', ''),
+      name: Faker::File.file_name(ext: 'pdf').split('/').last,
       content: Rails.root.join("spec/fixtures/afvalkalender.pdf").open
     }
   }
