@@ -1,5 +1,3 @@
-require_dependency "tenant_schema/extended_schema"
-
 class Tenant < ApplicationRecord
   include PublicApi::TenantDecorator
   include Frontend::TenantStyle

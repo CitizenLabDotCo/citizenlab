@@ -15,7 +15,6 @@ class Notification < ApplicationRecord
 
 
   def self.classes_for activity
-    Dir[File.join(__dir__, 'notifications', '*.rb')].each { |file| require_dependency file }
     self.descendants.select do |notification_class|
       notification_class::ACTIVITY_TRIGGERS.dig(activity.item_type, activity.action)
     end
