@@ -113,7 +113,7 @@ const TopBar = memo<Props>(({ children, goBack, className }) => {
           {!isNil(goBack) &&
             <>
               <GoBackButton onClick={onGoBack}>
-                <GoBackIcon name="arrow-back" />
+                <GoBackIcon name="arrow-back" ariaHidden />
               </GoBackButton>
               <GoBackLabel>
                 <FormattedMessage {...messages.goBack} />

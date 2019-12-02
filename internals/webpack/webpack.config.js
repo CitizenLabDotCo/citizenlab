@@ -48,6 +48,7 @@ const config = {
       '/auth/': `http://${API_HOST}:${API_PORT}`,
       '/widgets/': `http://${API_HOST}:3200`,
       '/admin_templates_api': `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`,
+      '/uploads': `http://${API_HOST}:${API_PORT}`,
     },
   },
 

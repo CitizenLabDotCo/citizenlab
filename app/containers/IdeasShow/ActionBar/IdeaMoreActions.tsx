@@ -117,7 +117,6 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
           <Modal
             opened={spamModalVisible}
             close={this.closeSpamModal}
-            label={this.props.intl.formatMessage(messages.spamModalLabelIdea)}
             header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
           >
             <SpamReportForm

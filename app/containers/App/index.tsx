@@ -36,6 +36,7 @@ import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import VerificationModal from 'components/VerificationModal';
 import ErrorBoundary from 'components/ErrorBoundary';
+import { LiveAnnouncer } from 'react-aria-live';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -338,7 +339,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         {tenant && visible && (
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider theme={theme}>
-              <>
+              <LiveAnnouncer>
                 <GlobalStyle />
 
                 <Container>
@@ -401,7 +402,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
                   {showFooter && <Footer showShortFeedback={showShortFeedback} />}
                 </Container>
-              </>
+                </LiveAnnouncer>
             </ThemeProvider>
           </PreviousPathnameContext.Provider>
         )}

@@ -27,7 +27,15 @@ describe('Idea manager', () => {
         const userId = user.body.data.id;
 
         // create project with signed-in admin/user as default assignee
-        cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published', 'ideation', userId).then((project) => {
+        cy.apiCreateProject({
+          type: 'continuous',
+          title: projectTitle,
+          descriptionPreview: projectDescriptionPreview,
+          description: projectDescription,
+          publicationStatus: 'published',
+          participationMethod: 'ideation',
+          assigneeId: userId
+        }).then((project) => {
           const projectId = project.body.data.id;
           const ideaTitle = randomString();
           const ideaContent = randomString();
@@ -56,7 +64,15 @@ describe('Idea manager', () => {
         const userId = user.body.data.id;
 
         // create project with signed-in admin/user as default assignee
-        cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published', 'ideation', userId).then((project) => {
+        cy.apiCreateProject({
+          type: 'continuous',
+          title: projectTitle,
+          descriptionPreview: projectDescriptionPreview,
+          description: projectDescription,
+          publicationStatus: 'published',
+          participationMethod: 'ideation',
+          assigneeId: userId
+        }).then((project) => {
           const projectId = project.body.data.id;
           const ideaTitle1 = randomString();
           const ideaTitle2 = randomString();

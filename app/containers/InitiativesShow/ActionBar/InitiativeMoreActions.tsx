@@ -122,7 +122,6 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
         <Modal
           opened={spamModalVisible}
           close={this.closeSpamModal}
-          label={this.props.intl.formatMessage(messages.spamModalLabelInitiative)}
           header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
         >
           <SpamReportForm
