@@ -55,7 +55,6 @@ fr:
   pages:
     terms_and_conditions_title: Conditions Générales d'Utilisation
     terms_and_conditions_body: >
-      <p><strong>Conditions générales d’utilisation</strong></p>
       <p>Cette plateforme de participation en ligne vise à donner au plus grand nombre l’opportunité de réfléchir au futur de la ville ou de l’organisation qui, avec CitizenLab, a mis en place cette plateforme. Ces contributions sont soumises à un nombre de règles afin de garder le débat ouvert et constructif. Ci-dessous, vous trouverez les conditions générales d’utilisation de notre plateforme, car nous sommes convaincus que des règles claires sont la meilleure garantie d’une communauté en ligne constructive.</p>
       <p>Parce que CitizenLab apprécie l’avis des utilisateurs de sa plateforme, vos idées afin de l’améliorer sont les bienvenues. Vous pouvez transmettre vos suggestions à l’adresse suivante : <a href="mailto:support@citizenlab.co" target="_blank">support@citizenlab.co</a></p>
       <h2>Qui peut s’enregistrer sur cette plateforme de participation en ligne ?</h2>
@@ -71,6 +70,10 @@ fr:
        <li>
        <strong>Un compte ne peut pas être transféré à une autre personne</strong>
        <p>Puisque chaque compte est strictement lié à une unique personne, ce compte ne peut pas être transféré à une autre personne sans l’autorisation de CitizenLab. Cette interdiction doit être considérée au sens large. CitizenLab se réserve le droit de refuser ou de supprimer ce compte en cas d’abus. Un compte ne peut pas être utilisé à des fins commerciales. La plateforme CitizenLab a pour but d’augmenter la participation. Un compte ne peut donc être utilisé seulement qu’à cet effet. Toute utilisation d’un compte dans l’unique but de bénéficier d’un avantage commercial est interdit.</p>
+       </li>
+       <li>
+       <strong>Un compte ne peut pas être utilisé à des fins commerciales.</strong>
+       <p>La plateforme CitizenLab a pour but d'augmenter la participation. Un compte ne peut pas être utiliisé à d'autres fins. Il est interdit d'utiliser un compte à des fins commerciales ou publicitaires. </p>
        </li>
        <li>
        <strong>Les informations du compte doivent toujours rester confidentielles</strong>
