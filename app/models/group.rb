@@ -1,4 +1,5 @@
 class Group < ApplicationRecord
+  include EmailCampaigns::GroupDecorator
 
   MEMBERSHIP_TYPES = %W(manual rules)
 

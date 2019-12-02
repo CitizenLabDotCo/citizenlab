@@ -1,4 +1,5 @@
 class Idea < ApplicationRecord
+  include MachineTranslations::IdeaDecorator
   include Post
 
   belongs_to :project, touch: true
