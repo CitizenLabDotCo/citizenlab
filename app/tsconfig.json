@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    // "rootDir": "app",
     "baseUrl": "./",
     "mapRoot": "./",
     "target": "esnext",

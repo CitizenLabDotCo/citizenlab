@@ -1,0 +1,29 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import Checkbox from 'components/UI/Checkbox';
+import * as stories from './Checkbox.stories';
+import { withKnobs, text, boolean, number } from "@storybook/addon-knobs";
+
+<Meta title="Checkbox" component={Checkbox} decorators={[withKnobs]} />
+
+# Checkbox
+
+With `MDX` we write longform markdown documentation for our `Checkbox` component and embed Doc Blocks inline.
+
+<Props of={Checkbox} />
+
+<Preview>
+  <Story name="checked">{stories.checked()}</Story>
+</Preview>
+
+<Preview>
+  <Story name="unchecked">{stories.unchecked()}</Story>
+</Preview>
+
+<Preview>
+  <Story name="all checkboxes">
+    <form>
+      <Checkbox checked={boolean('Checked?', true)} label="Checked" />
+      <Checkbox checked={boolean('Uncecked?', true)} label="Unchecked" />
+    </form>
+  </Story>
+</Preview>
