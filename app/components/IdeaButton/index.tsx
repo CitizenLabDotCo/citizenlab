@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -19,7 +20,6 @@ import Icon from 'components/UI/Icon';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import { adopt } from 'react-adopt';
 
 // events
 import { openVerificationModalWithContext } from 'containers/App/events';
@@ -30,7 +30,8 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 const Container = styled.div``;
 
@@ -56,15 +57,27 @@ const StyledA = styled.a`
 const TooltipWrapper = styled.div`
   display: flex;
   align-items: center;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
   font-weight: 400;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   padding: 15px;
 
-  > span {
+  a {
+    color: ${colors.clBlueDark};
+    text-decoration: underline;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    word-break: break-all;
     word-break: break-word;
     hyphens: auto;
+
+    &:hover {
+      color: ${darken(0.15, colors.clBlueDark)};
+      text-decoration: underline;
+    }
   }
 `;
 
@@ -126,8 +139,8 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
       const linkTo = !isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new';
       const isPostingDisabled = (!enabled && !!disabledReason);
       const tippyContent = (!enabled && !!disabledReason) ? (
-        <TooltipWrapper className="e2e-disabled-tooltip">
-          <LockIcon name="lock-outlined" />
+        <TooltipWrapper id="tooltip-content" className="e2e-disabled-tooltip">
+          <LockIcon name="lock-outlined" ariaHidden />
           <FormattedMessage
             {...this.disabledMessages[disabledReason]}
             values={{
@@ -156,9 +169,10 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             placement="bottom"
             content={tippyContent}
             theme="light"
+            hideOnClick={false}
           >
-            <ButtonWrapper tabIndex={0} className="e2e-idea-button">
-              <Button {...this.props} linkTo={linkTo} disabled={isPostingDisabled}>
+            <ButtonWrapper className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}>
+              <Button {...this.props} aria-describedby="tooltip-content" linkTo={linkTo} disabled={isPostingDisabled} ariaDisabled={false}>
                 <FormattedMessage {...messages.startAnIdea} />
               </Button>
             </ButtonWrapper>

@@ -4,7 +4,6 @@ import { Formik } from 'formik';
 import OfficialFeedbackForm, { FormValues, formatMentionsBodyMultiloc } from './OfficialFeedbackForm';
 import { CLErrorsJSON } from 'typings';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -16,23 +15,6 @@ import tracks from '../tracks';
 // utils
 import { isPage, isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
-const AddOfficialUpdateTitle = styled.h2`
-  color: ${colors.text};
-  font-size: ${fontSizes.medium}px;
-  line-height: normal;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
-`;
 
 interface DataProps {
   tenant: GetTenantChildProps;
@@ -93,7 +75,7 @@ class OfficialFeedbackNew extends PureComponent<Props, State> {
   }
 
   initialValues = () => ({
-    author_multiloc: get(this.props.tenant, 'attributes.settings.core.organization_name', {}),
+    author_multiloc: {},
     body_multiloc: {}
   })
 
@@ -101,9 +83,6 @@ class OfficialFeedbackNew extends PureComponent<Props, State> {
     if (!isNilOrError(this.props.tenant)) {
       return (
         <div className={this.props.className} >
-          <AddOfficialUpdateTitle>
-            <FormattedMessage {...messages.addOfficalUpdate} />
-          </AddOfficialUpdateTitle>
           <Formik
             initialValues={this.initialValues()}
             render={this.renderFn}

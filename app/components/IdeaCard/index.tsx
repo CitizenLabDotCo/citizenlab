@@ -14,9 +14,6 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Author from 'components/Author';
 
-// services
-import { IIdeaData } from 'services/ideas';
-
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -140,8 +137,8 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
     const { idea } = this.props;
     const prevIdea = prevProps.idea;
     if (!isNilOrError(idea) && !isNilOrError(prevIdea) && (
-      idea.attributes.action_descriptor.voting.enabled !== prevIdea.attributes.action_descriptor.voting.enabled
-      || idea.attributes.action_descriptor.voting.disabled_reason !== prevIdea.attributes.action_descriptor.voting.disabled_reason
+      idea.attributes.action_descriptor.budgeting.enabled !== prevIdea.attributes.action_descriptor.budgeting.enabled
+      || idea.attributes.action_descriptor.budgeting.disabled_reason !== prevIdea.attributes.action_descriptor.budgeting.disabled_reason
     )) {
       this.setState({ showVotingDisabled: null });
     }
@@ -187,19 +184,19 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
       !isUndefined(ideaImage) &&
       !isUndefined(ideaAuthor)
     ) {
-      const votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting'] | null = get(idea, 'attributes.action_descriptor.voting', null);
-      const commentingDescriptor: IIdeaData['attributes']['action_descriptor']['commenting'] | null = get(idea, 'attributes.action_descriptor.commenting', null);
-      const budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'] | null = get(idea, 'attributes.action_descriptor.budgeting', null);
-      const projectId: string | null = get(idea, 'relationships.project.data.id', null);
+      const votingDescriptor = idea?.attributes?.action_descriptor?.voting;
+      const commentingDescriptor = idea?.attributes?.action_descriptor?.commenting;
+      const budgetingDescriptor = idea?.attributes?.action_descriptor?.budgeting;
+      const projectId = idea?.relationships?.project.data?.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
       const ideaAuthorId = !isNilOrError(ideaAuthor) ? ideaAuthor.id : null;
-      const ideaBudget = idea.attributes.budget;
-      const ideaImageUrl: string | null = get(ideaImage, 'attributes.versions.medium', null);
+      const ideaBudget = idea?.attributes?.budget;
+      const ideaImageUrl = ideaImage?.attributes?.versions?.medium;
       const tenantCurrency = tenant.attributes.settings.core.currency;
       const className = [
         this.props.className,
         'e2e-idea-card',
-        get(idea, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
+        idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
         commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled',
         idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
         votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'
@@ -233,7 +230,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
             />
           }
           footer={
-            <div aria-live="polite">
+            <>
               {!showVotingDisabled && !showAssignBudgetDisabled &&
                 <FooterInner>
                   {participationMethod !== 'budgeting' &&
@@ -299,7 +296,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                   </DisabledWrapper>
                 </BottomBounceUp>
               }
-            </div>
+            </>
           }
         />
       );

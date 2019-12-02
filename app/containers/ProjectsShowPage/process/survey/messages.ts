@@ -34,7 +34,7 @@ export default defineMessages({
     defaultMessage: 'sign up',
   },
   logInLinkText: {
-    id: 'app.containers.ProjectsShowPage.process.survey.signUpLinkText',
+    id: 'app.containers.ProjectsShowPage.process.survey.logInLinkText',
     defaultMessage: 'log in',
   },
 });

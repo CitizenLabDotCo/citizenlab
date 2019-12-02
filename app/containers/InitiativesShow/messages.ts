@@ -81,10 +81,6 @@ export default defineMessages({
     id: 'app.components.InitiativesShow.skipSharing',
     defaultMessage: "Skip it, I'll do it later",
   },
-  modalShareLabel: {
-    id: 'app.components.InitiativesShow.modalShareLabel',
-    defaultMessage: 'Your initiative was posted, share it now to reach more votes!',
-  },
   shareTitle: {
     id: 'app.components.InitiativesShow.shareTitle',
     defaultMessage: 'Congratulations, your initiative was successfully posted!',

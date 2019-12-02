@@ -28,7 +28,7 @@ const Content = styled.div`
   margin-top: 50px;
   padding-left: 60px;
   padding-right: 60px;
-  padding-bottom: 60px;
+  padding-bottom: 70px;
 
   ${media.smallerThanMaxTablet`
     margin-top: 60px;

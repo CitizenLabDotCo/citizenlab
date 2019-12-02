@@ -115,7 +115,6 @@ class SpamReportForm extends React.PureComponent<Props & InjectedIntlProps, Stat
               <ReportReason>
                 <SectionField>
                   <TextArea
-                    autofocus={true}
                     name="reasonText"
                     value={this.props.diff ? this.props.diff.other_reason || '' : ''}
                     onChange={this.props.onTextChange}

@@ -53,4 +53,8 @@ export default defineMessages({
     id: 'app.components.IdeasMap.mapTitle',
     defaultMessage: 'Map with overview of ideas based on location',
   },
+  or: {
+    id: 'app.components.IdeasMap.or',
+    defaultMessage: 'or',
+  },
 });

@@ -40,11 +40,14 @@ describe('Idea voting permissions', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);
       cy.visit('projects/verified-participatory-budgeting/ideas');
       cy.acceptCookies();
-      cy.get('.e2e-assign-budget').first().find('button').click();
-      cy.wait(500);
-      cy.get('.e2e-assign-budget').contains('Undo');
+      cy.get('.e2e-assign-budget');
+      cy.get('.e2e-assign-budget').first().find('.e2e-assign-budget-button').should('have.class', 'not-in-basket');
+      cy.get('.e2e-assign-budget').first().find('.e2e-assign-budget-button').click();
+      cy.wait(2000);
+      cy.get('.e2e-assign-budget').first().find('.e2e-assign-budget-button').should('have.class', 'in-basket');
     });
   });
+
   after(() => {
     cy.apiRemoveUser(verifiedId);
     cy.apiRemoveUser(unverifiedId);

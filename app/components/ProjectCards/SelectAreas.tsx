@@ -62,7 +62,7 @@ class SelectAreas extends PureComponent<Props> {
     const { selectedAreas } = this.props;
     const options = this.areasOptions();
 
-    if (options === []) return null;
+    if (options.length === 0) return null;
 
     const title = this.areasTerm();
 

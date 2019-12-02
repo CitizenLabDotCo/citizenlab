@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
-import { has } from 'lodash-es';
+import { has, isBoolean } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 // libraries
@@ -18,14 +18,14 @@ import Error from 'components/UI/Error';
 import HasPermission from 'components/HasPermission';
 import FileUploader from 'components/UI/FileUploader';
 import FeatureFlag from 'components/FeatureFlag';
-import { FormLabel } from 'components/UI/FormComponents';
+import { FormSection, FormSectionTitle, FormLabel } from 'components/UI/FormComponents';
 
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/projects';
-import { phasesStream, IPhaseData } from 'services/phases';
+import { phasesStream, IPhaseData, getCurrentPhase } from 'services/phases';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -52,16 +52,13 @@ const Form = styled.form`
   align-items: center;
 `;
 
+const StyledFormSection = styled(FormSection)`
+  max-width: 100%;
+`;
+
 const FormElement = styled.div`
   width: 100%;
   margin-bottom: 40px;
-`;
-
-const StyledTopicsPicker = styled(TopicsPicker)`
-  padding: 20px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px #e0e0e0;
 `;
 
 export interface IIdeaFormOutput {
@@ -90,6 +87,7 @@ interface Props {
 interface State {
   tenant: ITenant | null;
   topics: IOption[] | null;
+  locationAllowed: boolean;
   pbContext: IProjectData | IPhaseData | null;
   projects: IOption[] | null;
   title: string;
@@ -117,6 +115,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       topics: null,
       pbContext: null,
       projects: null,
+      locationAllowed: true,
       title: '',
       titleError: null,
       description: '',
@@ -160,21 +159,44 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         return of(null) as Observable<any>;
       })
     );
+    const locationAllowed$ = project$.pipe(
+      switchMap((project) => {
+        if (project) {
+          if (project.data.attributes.process_type === 'continuous' && isBoolean(project.data.attributes.location_allowed)) {
+            return of(project.data.attributes.location_allowed);
+          }
 
-    this.updateState();
+          if (project.data.attributes.process_type === 'timeline') {
+            return phasesStream(project.data.id).observable.pipe(
+              map((phases) => {
+                const currentPhase = getCurrentPhase(phases.data);
+                const locationAllowed = currentPhase?.attributes?.location_allowed;
+                return isBoolean(locationAllowed) ? locationAllowed : true;
+              })
+            );
+          }
+        }
+
+        return of(true);
+      })
+    );
+
+    this.mapPropsToState();
 
     this.subscriptions = [
       combineLatest(
         locale$,
         tenant$,
         topics$,
-        pbContext$
-      ).subscribe(([locale, tenant, topics, pbContext]) => {
+        pbContext$,
+        locationAllowed$
+      ).subscribe(([locale, tenant, topics, pbContext, locationAllowed]) => {
         const tenantLocales = tenant.data.attributes.settings.core.locales;
 
         this.setState({
           tenant,
           pbContext,
+          locationAllowed,
           topics: this.getOptions(topics, locale, tenantLocales)
         });
       }),
@@ -189,7 +211,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   componentDidUpdate(prevProps: Props) {
     if (!shallowCompare(prevProps, this.props)) {
-      this.updateState();
+      this.mapPropsToState();
     }
   }
 
@@ -197,7 +219,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  updateState = () => {
+  mapPropsToState = () => {
     const { title, description, selectedTopics, address, budget, imageFile, remoteIdeaFiles } = this.props;
     const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
 
@@ -247,9 +269,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.setState({ address });
   }
 
-  handleUploadOnAdd = (imageFile: UploadFile) => {
+  handleUploadOnAdd = (imageFile: UploadFile[]) => {
     this.setState({
-      imageFile: [imageFile]
+      imageFile: [imageFile[0]]
     });
   }
 
@@ -388,111 +410,124 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       titleError,
       descriptionError,
       budgetError,
-      ideaFiles
+      ideaFiles,
+      locationAllowed
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
 
     return (
       <Form id="idea-form" className={className}>
-        <FormElement id="e2e-idea-title-input">
-          <FormLabel labelMessage={messages.titleLabel} htmlFor="title" />
-          <Input
-            id="title"
-            type="text"
-            value={title}
-            placeholder={formatMessage(messages.titlePlaceholder)}
-            error={titleError}
-            onChange={this.handleTitleOnChange}
-            setRef={this.handleTitleInputSetRef}
-            maxCharCount={80}
-            autocomplete="off"
-          />
-        </FormElement>
-
-        <FormElement id="e2e-idea-description-input">
-          <FormLabel labelMessage={messages.descriptionLabel} htmlFor="editor" />
-          <QuillEditor
-            id="editor"
-            noImages={true}
-            value={description}
-            placeholder={formatMessage(messages.descriptionPlaceholder)}
-            onChange={this.handleDescriptionOnChange}
-            setRef={this.handleDescriptionSetRef}
-            hasError={descriptionError !== null}
-          />
-          {descriptionError && <Error text={descriptionError} />}
-        </FormElement>
-
-        {topics && topics.length > 0 && (
-          <FormElement>
-            <FormLabel labelMessage={messages.topicsLabel} htmlFor="topics" />
-            <StyledTopicsPicker
-              value={selectedTopics}
-              onChange={this.handleTopicsOnChange}
-              max={2}
+        <StyledFormSection>
+          <FormSectionTitle message={messages.formGeneralSectionTitle} />
+          <FormElement id="e2e-idea-title-input">
+            <FormLabel labelMessage={messages.titleLabel} htmlFor="title" />
+            <Input
+              id="title"
+              type="text"
+              value={title}
+              placeholder={formatMessage(messages.titlePlaceholder)}
+              error={titleError}
+              onChange={this.handleTitleOnChange}
+              setRef={this.handleTitleInputSetRef}
+              maxCharCount={80}
+              autocomplete="off"
             />
           </FormElement>
-        )}
 
-        <FormElement>
-          <FormLabel labelMessage={messages.locationLabel}>
-            <LocationInput
-              className="e2e-idea-form-location-input-field"
-              value={address}
-              placeholder={formatMessage(messages.locationPlaceholder)}
-              onChange={this.handleLocationOnChange}
+          <FormElement id="e2e-idea-description-input">
+            <FormLabel labelMessage={messages.descriptionLabel} htmlFor="editor" />
+            <QuillEditor
+              id="editor"
+              noImages={true}
+              value={description}
+              placeholder={formatMessage(messages.descriptionPlaceholder)}
+              onChange={this.handleDescriptionOnChange}
+              setRef={this.handleDescriptionSetRef}
+              hasError={descriptionError !== null}
             />
-          </FormLabel>
-        </FormElement>
+            {descriptionError && <Error text={descriptionError} />}
+          </FormElement>
+        </StyledFormSection>
 
-        <FormElement id="e2e-idea-image-upload">
-          <FormLabel labelMessage={messages.imageUploadLabel} />
-          <ImagesDropzone
-            images={imageFile}
-            imagePreviewRatio={135 / 298}
-            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-            maxImageFileSize={5000000}
-            maxNumberOfImages={1}
-            onAdd={this.handleUploadOnAdd}
-            onRemove={this.handleUploadOnRemove}
-          />
-        </FormElement>
+        <StyledFormSection>
+          <FormSectionTitle message={messages.formDetailsSectionTitle} />
+          {pbContext && (
+            <FeatureFlag name="participatory_budgeting">
+              <HasPermission
+                item="idea"
+                action="assignBudget"
+                context={{ projectId }}
+              >
+                <FormElement>
+                  <FormLabelWithIcon
+                    labelMessage={messages.budgetLabel}
+                    labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }}
+                    htmlFor="budget"
+                    iconName="admin"
+                    iconAriaHidden
+                  />
+                  <Input
+                    id="budget"
+                    error={budgetError}
+                    value={String(budget)}
+                    type="number"
+                    onChange={this.handleBudgetOnChange}
+                  />
+                </FormElement>
+              </HasPermission>
+            </FeatureFlag>
+          )}
 
-        {pbContext && (
-          <FeatureFlag name="participatory_budgeting">
-            <HasPermission
-              item="idea"
-              action="assignBudget"
-              context={{ projectId }}
-            >
-              <FormElement>
-                <FormLabelWithIcon
-                  labelMessage={messages.budgetLabel}
-                  labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }}
-                  htmlFor="budget"
-                  iconName="admin"
+          {topics && topics.length > 0 && (
+            <FormElement>
+              <FormLabel labelMessage={messages.topicsLabel} htmlFor="topics" />
+              <TopicsPicker
+                value={selectedTopics}
+                onChange={this.handleTopicsOnChange}
+                max={2}
+              />
+            </FormElement>
+          )}
+
+          {locationAllowed &&
+            <FormElement>
+              <FormLabel labelMessage={messages.locationLabel}>
+                <LocationInput
+                  className="e2e-idea-form-location-input-field"
+                  value={address}
+                  placeholder={formatMessage(messages.locationPlaceholder)}
+                  onChange={this.handleLocationOnChange}
                 />
-                <Input
-                  id="budget"
-                  error={budgetError}
-                  value={String(budget)}
-                  type="number"
-                  onChange={this.handleBudgetOnChange}
-                />
-              </FormElement>
-            </HasPermission>
-          </FeatureFlag>
-        )}
+              </FormLabel>
+            </FormElement>
+          }
+        </StyledFormSection>
 
-        <FormElement id="e2e-idea-file-upload">
-          <FormLabel labelMessage={messages.fileUploadLabel}>
-            <FileUploader
-              onFileAdd={this.handleIdeaFileOnAdd}
-              onFileRemove={this.handleIdeaFileOnRemove}
-              files={ideaFiles}
+        <StyledFormSection>
+          <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
+          <FormElement id="e2e-idea-image-upload">
+            <FormLabel labelMessage={messages.imageUploadLabel} />
+            <ImagesDropzone
+              images={imageFile}
+              imagePreviewRatio={135 / 298}
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              maxImageFileSize={5000000}
+              maxNumberOfImages={1}
+              onAdd={this.handleUploadOnAdd}
+              onRemove={this.handleUploadOnRemove}
             />
-          </FormLabel>
-        </FormElement>
+          </FormElement>
+
+          <FormElement id="e2e-idea-file-upload">
+            <FormLabel labelMessage={messages.fileUploadLabel}>
+              <FileUploader
+                onFileAdd={this.handleIdeaFileOnAdd}
+                onFileRemove={this.handleIdeaFileOnRemove}
+                files={ideaFiles}
+              />
+            </FormLabel>
+          </FormElement>
+        </StyledFormSection>
       </Form>
     );
   }
