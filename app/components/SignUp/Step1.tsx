@@ -416,6 +416,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           <FormElement>
             <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
               <Checkbox
+                id="terms-and-conditions-checkbox"
                 className="e2e-terms-and-conditions"
                 checked={this.state.tacAccepted}
                 onChange={this.handleTaCAcceptedOnChange}

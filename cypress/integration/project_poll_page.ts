@@ -8,14 +8,14 @@ describe('Continuous project with poll', () => {
   let projectSlug: string;
 
   before(() => {
-    cy.apiCreateProject(
-      'continuous',
-      projectTitle,
-      projectDescriptionPreview,
-      projectDescription,
-      'published',
-      'poll'
-    ).then((project) => {
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'poll',
+    }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
       cy.apiAddPoll('Project', projectId, ['What is your favourite ice cream flavour ?', 'Are you in favour of car-free sundays ?'], [['Vanilla', 'Chocolate', 'Pistachio'], ['Yes', 'No', 'I decline to answer']]);
@@ -57,7 +57,13 @@ describe('Timeline project with poll phase', () => {
   let phaseId: string;
 
   before(() => {
-    cy.apiCreateProject('timeline', projectTitle, projectDescriptionPreview, projectDescription).then((project) => {
+    cy.apiCreateProject({
+      type: 'timeline',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published'
+    }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 

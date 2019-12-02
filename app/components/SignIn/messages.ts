@@ -35,7 +35,7 @@ export default defineMessages({
   },
   forgotPassword: {
     id: 'app.containers.SignIn.forgotPassword',
-    defaultMessage: 'Forgot?',
+    defaultMessage: 'Forgot password?',
   },
   or: {
     id: 'app.containers.SignIn.or',

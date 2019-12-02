@@ -38,7 +38,7 @@ const ErrorWrapper = styled.div`
   display: flex;
 `;
 
-const DropzonePlaceholderText = styled.span`
+const DropzoneLabelText = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -48,7 +48,7 @@ const DropzonePlaceholderText = styled.span`
   transition: all 100ms ease-out;
 `;
 
-const DropzonePlaceholderIcon = styled(Icon)`
+const DropzoneLabelIcon = styled(Icon)`
   height: 32px;
   fill: ${colors.label};
   margin-bottom: 5px;
@@ -61,7 +61,7 @@ const DropzoneImagesRemaining = styled.div`
   line-height: normal;
   font-weight: 400;
   text-align: center;
-  margin-top: 6px;
+  margin-top: 5px;
   transition: all 100ms ease-out;
 `;
 
@@ -69,8 +69,8 @@ const DropzoneInput = styled.input``;
 
 const DropzoneContent = styled.div<{ borderRadius?: string }>`
   box-sizing: border-box;
+  border: 1px dashed ${colors.separationDark};
   border-radius: ${(props) => props.borderRadius ? props.borderRadius : props.theme.borderRadius};
-  border: 1px dashed ${colors.label};
   position: relative;
   cursor: pointer;
   background: transparent;
@@ -86,12 +86,12 @@ const DropzoneContent = styled.div<{ borderRadius?: string }>`
     &:focus-within {
       border-color: #000;
 
-      ${DropzonePlaceholderText},
+      ${DropzoneLabelText},
       ${DropzoneImagesRemaining} {
         color: #000;
       }
 
-      ${DropzonePlaceholderIcon} {
+      ${DropzoneLabelIcon} {
         fill: #000;
       }
     }
@@ -101,12 +101,12 @@ const DropzoneContent = styled.div<{ borderRadius?: string }>`
     cursor: no-drop;
     border-color: #ccc;
 
-    ${DropzonePlaceholderText},
+    ${DropzoneLabelText},
     ${DropzoneImagesRemaining} {
       color: #ccc;
     }
 
-    ${DropzonePlaceholderIcon} {
+    ${DropzoneLabelIcon} {
       fill: #ccc;
     }
   }
@@ -195,12 +195,13 @@ interface Props {
   maxImagePreviewWidth?: string;
   maxImageFileSize?: number;
   maxNumberOfImages: number;
-  placeholder?: string | JSX.Element | null | undefined;
+  label?: string | JSX.Element | null | undefined;
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
   onAdd: (arg: UploadFile[]) => void;
   onRemove: (arg: UploadFile) => void;
   borderRadius?: string;
+  removeIconAriaTitle?: string;
   className?: string;
 }
 
@@ -289,11 +290,11 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
 
   onDropRejected = (images: UploadFile[]) => {
     const { formatMessage } = this.props.intl;
-    const maxSize = this.props.maxImageFileSize || 5000000;
+    const maxImageSizeInMb = this.getMaxImageSizeInMb();
 
-    if (images.some(image => image.size > maxSize)) {
+    if (images.some(image => (image.size / 1000000) > maxImageSizeInMb)) {
       const maxSizeExceededErrorMessage = (images.length === 1 || this.props.maxNumberOfImages === 1 ? messages.errorImageMaxSizeExceeded : messages.errorImagesMaxSizeExceeded);
-      const errorMessage = formatMessage(maxSizeExceededErrorMessage, { maxFileSize: maxSize / 1000000 });
+      const errorMessage = formatMessage(maxSizeExceededErrorMessage, { maxFileSize: maxImageSizeInMb });
       this.setState({ errorMessage });
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
     }
@@ -309,15 +310,20 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     event.preventDefault();
   }
 
+  getMaxImageSizeInMb = () => {
+    return (this.props.maxImageFileSize || 5000000) / 1000000;
+  }
+
   render() {
-    let { acceptedFileTypes, placeholder, objectFit } = this.props;
+    let { acceptedFileTypes, label, objectFit } = this.props;
     const { images, maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, borderRadius, className } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage } = this.state;
     const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - size(images)} ${formatMessage(messages.remaining)})` : null);
+    const maxImageSizeInMb = this.getMaxImageSizeInMb();
 
     acceptedFileTypes = (acceptedFileTypes || '*');
-    placeholder = (placeholder || (maxNumberOfImages && maxNumberOfImages === 1 ? formatMessage(messages.uploadImage) : formatMessage(messages.uploadMultipleImages)));
+    label = (label || (maxNumberOfImages && maxNumberOfImages === 1 ? formatMessage(messages.uploadImageLabel, { maxImageSizeInMb }) : formatMessage(messages.uploadMultipleImagesLabel)));
     objectFit = (objectFit || 'cover');
 
     return (
@@ -341,9 +347,9 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                     <DropzoneContent {...getRootProps()} borderRadius={borderRadius} className={images && maxNumberOfImages === images.length ? 'disabled' : ''}>
                       <DropzoneInput {...getInputProps()} />
                       <DropzoneContentInner>
-                        <DropzonePlaceholderIcon name="upload" ariaHidden />
-                        <DropzonePlaceholderText>{placeholder}</DropzonePlaceholderText>
-                        <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>
+                        <DropzoneLabelIcon name="upload" ariaHidden />
+                        <DropzoneLabelText>{label}</DropzoneLabelText>
+                        {remainingImages && <DropzoneImagesRemaining>{remainingImages}</DropzoneImagesRemaining>}
                       </DropzoneContentInner>
                     </DropzoneContent>
                   );
@@ -369,7 +375,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                   onClick={this.removeImage(image)}
                   className="remove-button"
                 >
-                  <RemoveIcon name="close" title={formatMessage(messages.a11y_removeImage)} />
+                  <RemoveIcon name="close" title={this.props.removeIconAriaTitle || formatMessage(messages.a11y_removeImage)} />
                 </RemoveButton>
               </Image>
             </Box>

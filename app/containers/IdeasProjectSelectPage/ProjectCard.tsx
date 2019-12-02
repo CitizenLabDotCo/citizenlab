@@ -256,7 +256,7 @@ class ProjectCard extends PureComponent<Props, State> {
             {cardState === 'enabledBecauseAdmin' &&
               <PostingEnabledReason>
                 <AdminIconWrapper>
-                  <Icon name="admin" />
+                  <Icon name="admin" ariaHidden />
                 </AdminIconWrapper>
                 <FormattedMessage {...messages.postingPossibleBecauseAdmin} />
               </PostingEnabledReason>

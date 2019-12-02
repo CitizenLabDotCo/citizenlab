@@ -95,6 +95,9 @@ const IdeaTitle = styled.div`
   font-weight: 500;
   line-height: 21px;
   text-align: left;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   margin-bottom: 6px;
 `;
 
@@ -107,7 +110,6 @@ const IdeaBudget = styled.div`
 `;
 
 const RemoveIconButton = styled.button`
-
   display: flex;
   align-items: center;
   justify-content: center;
