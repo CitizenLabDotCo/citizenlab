@@ -22,6 +22,7 @@ import { openVerificationModalWithContext } from 'containers/App/events';
 
 // styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -29,7 +30,7 @@ import messages from './messages';
 const Container = styled.div``;
 
 const StyledButton = styled.button`
-  color: #1391A1;
+  color: ${colors.clBlueButtonText};
   text-decoration: underline;
   transition: all 100ms ease-out;
 
@@ -41,7 +42,7 @@ const StyledButton = styled.button`
 `;
 
 const SignUpLink = styled(Link)`
-  color: #1391A1;
+  color: ${colors.clBlueButtonText};
   text-decoration: underline;
   transition: all 100ms ease-out;
 
