@@ -67,26 +67,26 @@ describe TrendingIdeaService do
 
   def generate_trending_ideas n
     n.times do |i|
-      published_at = Faker::Time.between(1.years.ago, DateTime.now)
+      published_at = Faker::Time.between(from: 1.years.ago, to: DateTime.now)
       author = create(:user)
       idea = create(:idea, author: author, published_at: published_at)
       is_popular = (rand(3) == 0)
       (if is_popular then rand(20) else rand(3) end).times do |i| 
         create(:vote, votable: idea, mode: 'up',
-               created_at: Faker::Time.between(published_at, DateTime.now))
+               created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
       if (rand(2) == 0)
         create(:vote, votable: idea, mode: 'up', 
                user: author,
-               created_at: Faker::Time.between(published_at, DateTime.now))
+               created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
       (if is_popular then rand(10) else rand(3) end).times do |i| 
         create(:vote, votable: idea, mode: 'down', 
-               created_at: Faker::Time.between(published_at, DateTime.now))
+               created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
       (if is_popular then rand(10) else rand(3) end).times do |i| 
         create(:comment, post: idea, 
-               created_at: Faker::Time.between(published_at, DateTime.now))
+               created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
     end
   end
