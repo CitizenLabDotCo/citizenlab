@@ -48,7 +48,7 @@ const AboveTitle = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 25px;
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     justify-content: flex-start;
     margin-top: 15px;
   `}
@@ -73,13 +73,14 @@ const ShieldIcon = styled(Icon)`
 const Content = styled.div`
   display: flex;
   justify-content: center;
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     flex-wrap: wrap;
   `}
 `;
 
 const Context = styled.div`
   flex: 1 1 auto;
+  width: 100%;
   padding-left: 20px;
   padding-bottom: 20px;
   margin-right: 40px;
@@ -89,7 +90,7 @@ const Context = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     padding: 0;
     margin: 20px 0 30px;
   `}
@@ -110,13 +111,13 @@ const ContextItem = styled.span`
   border: 1px solid ${colors.lightGreyishBlue};
   padding: 6px 13px;
   margin-bottom: 5px;
+  max-width: 100%;
   white-space: nowrap;
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
-  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 300px;
+  ${media.largePhone`
+    white-space: normal;
+  `}
 `;
 
 const Or = styled.span`
@@ -148,7 +149,7 @@ const ButtonsContainer = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   max-width: 423px;
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     padding: 20px;
     margin: 0;
     max-width: unset;
@@ -228,7 +229,7 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
 
             {participationConditions.map((rulesSet, index) => {
               const rules = rulesSet.map((rule, ruleIndex) => (
-                <ContextItem key={ruleIndex}>
+                <ContextItem className="e2e-rule-item" key={ruleIndex}>
                   <T value={rule} />
                 </ContextItem>
               ));

@@ -163,15 +163,15 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     this.subscriptions.forEach(subsription => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile) => {
+  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile[]) => {
     this.setState((state) => ({
       ...state,
       logoError: (name === 'logo' ? null : state.logoError),
       headerError: (name === 'header_bg' ? null : state.headerError),
-      [name]: [newImage],
+      [name]: [newImage[0]],
       attributesDiff: {
         ...(state.attributesDiff || {}),
-        [name]: newImage.base64
+        [name]: newImage[0].base64
       }
     }));
   }
@@ -375,7 +375,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   handleHeaderBgOnAdd = this.handleUploadOnAdd('header_bg');
   handleLogoOnRemove = this.handleUploadOnRemove('logo');
   handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
-  uploadPlaceholder = this.props.intl.formatMessage(messages.uploadPlaceholder);
   headerTitleLabel = <FormattedMessage {...messages.headerTitleLabel} />;
   headerTitleTooltip = <IconTooltip content={<FormattedMessage {...messages.headerTitleTooltip} />} />;
   headerSubtitleLabel = <FormattedMessage {...messages.headerSubtitleLabel} />;
@@ -462,7 +461,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 objectFit="contain"
                 onAdd={this.handleLogoOnAdd}
                 onRemove={this.handleLogoOnRemove}
-                placeholder={this.uploadPlaceholder}
                 errorMessage={logoError}
               />
             </SectionField>
@@ -487,7 +485,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 maxImagePreviewWidth="500px"
                 onAdd={this.handleHeaderBgOnAdd}
                 onRemove={this.handleHeaderBgOnRemove}
-                placeholder={this.uploadPlaceholder}
                 errorMessage={headerError}
               />
             </SectionField>

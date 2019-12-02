@@ -10,7 +10,13 @@ describe('Project card component', () => {
 
   before(() => {
     // create new project
-    cy.apiCreateProject('timeline', projectTitle, projectDescriptionPreview, projectDescription).then((project) => {
+    cy.apiCreateProject({
+      type: 'timeline',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published'
+    }).then((project) => {
       // save projectId for removal
       projectId = project.body.data.id;
 

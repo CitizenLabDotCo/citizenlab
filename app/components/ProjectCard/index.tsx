@@ -263,7 +263,7 @@ const ProgressBarOverlay: any = styled.div`
   width: 0px;
   height: 100%;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: #fc3428;
+  background: ${colors.clRed};
   transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: width;
 
@@ -306,12 +306,10 @@ const ContentBody = styled.div`
   }
 `;
 
-const ProjectTitle = styled.div`
-  h3 {
-    line-height: normal;
-    font-weight: 500;
-    font-size: ${fontSizes.xl}px;
-  }
+const ProjectTitle = styled.h3`
+  line-height: normal;
+  font-weight: 500;
+  font-size: ${fontSizes.xl}px;
   color: ${({ theme }) => theme.colorText};
   margin: 0;
   padding: 0;
@@ -524,7 +522,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
             </TimeRemaining>
             <Observer onChange={this.handleIntersection}>
-              <ProgressBar>
+              <ProgressBar aria-hidden>
                 <ProgressBarOverlay progress={progress} className={visible ? 'visible' : ''} />
               </ProgressBar>
             </Observer>
@@ -574,6 +572,17 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
           to={projectUrl}
           onClick={this.handleProjectCardOnClick(project.id)}
         >
+          <ScreenReaderOnly>
+            <ProjectTitle>
+              <FormattedMessage {...messages.a11y_projectTitle} />
+              <T value={project.attributes.title_multiloc} />
+            </ProjectTitle>
+
+            <ProjectDescription>
+              <FormattedMessage {...messages.a11y_projectDescription} />
+              <T value={project.attributes.description_preview_multiloc} />
+            </ProjectDescription>
+          </ScreenReaderOnly>
           {size !== 'large' && contentHeader}
 
           <ProjectImageContainer className={size}>
@@ -593,9 +602,9 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
           <ProjectContent className={size}>
             {size === 'large' && contentHeader}
 
-            <ContentBody className={size}>
+            <ContentBody className={size} aria-hidden>
               <ProjectTitle className="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
-                <T as="h3" value={project.attributes.title_multiloc} />
+                <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
               <T value={project.attributes.description_preview_multiloc}>
@@ -617,7 +626,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <ContentFooterLeft>
                 {hasAvatars &&
                   <AvatarBubbles
-                    size={30}
+                    size={32}
                     limit={3}
                     userCountBgColor={this.props.theme.colorMain}
                     avatarIds={avatarIds}

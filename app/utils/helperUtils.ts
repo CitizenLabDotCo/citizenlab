@@ -133,6 +133,8 @@ export function convertToGraphqlLocale(locale: Locale) {
   return newLocale.substring(0, length) + newLocale.substr(length).toLowerCase() as GraphqlLocale;
 }
 
+export const uuidRegExp = '[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}';
+
 export function isUUID(value: string) {
   const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
   return uuidRegExp.test(value);

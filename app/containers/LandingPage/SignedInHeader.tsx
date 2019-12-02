@@ -341,12 +341,12 @@ class SignedInHeader extends PureComponent<Props, State> {
                   borderColor="#fff"
                   textColor="#fff"
                   fontWeight="500"
-                  className="e2e-singed-in-header-skip-btn"
+                  className="e2e-singed-in-header-complete-skip-btn"
                 />
                 <AcceptButton
                   text={<FormattedMessage {...messages.completeProfile} />}
                   style="primary-inverse"
-                  onClick={this.handleVerify}
+                  linkTo="/profile/edit"
                   textColor={theme.colorMain}
                   textHoverColor={theme.colorMain}
                   fontWeight="500"
@@ -387,12 +387,12 @@ class SignedInHeader extends PureComponent<Props, State> {
                   borderColor="#fff"
                   textColor="#fff"
                   fontWeight="500"
-                  className="e2e-singed-in-header-skip-btn"
+                  className="e2e-singed-in-header-verification-skip-btn"
                 />
                 <AcceptButton
                   text={<FormattedMessage {...messages.verifyNow} />}
-                  linkTo="/profile/edit"
                   style="primary-inverse"
+                  onClick={this.handleVerify}
                   textColor={theme.colorMain}
                   textHoverColor={theme.colorMain}
                   fontWeight="500"

@@ -261,7 +261,6 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
       const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
       const isInBasket = includes(basketIdeaIds, ideaId);
       const disabled = this.isDisabled();
-
       const fullClassName = `e2e-assign-budget ${className}`;
 
       if (view === 'ideaCard') {
@@ -273,6 +272,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
               bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
               bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
               icon={!isInBasket ? 'add' : 'remove'}
+              className={`e2e-assign-budget-button ${isInBasket ? 'in-basket' : 'not-in-basket'}`}
             >
               {!isInBasket ? (
                 <FormattedMessage {...messages.assign} />

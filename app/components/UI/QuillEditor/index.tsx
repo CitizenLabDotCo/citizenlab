@@ -115,6 +115,7 @@ const Container: any = styled.div`
     background: #f8f8f8;
     border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
     box-shadow: none !important;
+    border: 1px solid ${colors.separationDark} !important;
     border-bottom: 0 !important;
   }
 
@@ -164,7 +165,7 @@ const Container: any = styled.div`
     line-height: 24px;
     font-weight: 400;
     border-radius: 0 0 ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius};
-    border-color: #ccc;
+    border: 1px solid ${colors.separationDark } !important;
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     -webkit-appearance: none;
     overflow-y: auto;

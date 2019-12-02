@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent, ChangeEvent } from 'react';
-import { getBase64FromFile, createObjectUrl } from 'utils/fileTools';
+import { getBase64FromFile } from 'utils/fileTools';
 import { UploadFile } from 'typings';
 
 // i18n
@@ -46,7 +46,7 @@ const Label = styled.label`
   display: flex;
   align-items: center;
   cursor: pointer;
-  border: 1px dashed ${colors.label};
+  border: 1px dashed ${colors.separationDark};
   border-radius: ${(props: any) => props.theme.borderRadius};
   font-size: ${fontSizes.base}px;
   padding: 10px 20px;
@@ -150,7 +150,6 @@ export default class FileInput extends PureComponent<Props> {
         if (!fileAccept.includes(file.extension)) {
           file.error = ['incorrect_extension'];
         }
-        file.url = createObjectUrl(file);
         file.remote = false;
         this.props.onAdd(file);
       });
@@ -171,7 +170,7 @@ export default class FileInput extends PureComponent<Props> {
           tabIndex={0}
         />
         <Label aria-hidden htmlFor="file-attachment-uploader">
-          <StyledIcon name="upload-file" />
+          <StyledIcon name="upload-file" ariaHidden />
           <FormattedMessage {...messages.fileInputDescription} />
         </Label>
       </Container>
