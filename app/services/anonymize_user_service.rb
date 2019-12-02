@@ -160,9 +160,9 @@ class AnonymizeUserService
       when 'movie'
         Faker::Movie.quote
       when 'rick_and_morty'
-        Faker::RickAndMorty.quote
+        Faker::TvShows::RickAndMorty.quote
       when 'game_of_thrones'
-        Faker::GameOfThrones.quote
+        Faker::TvShows::GameOfThrones.quote
       when 'nil'
         ''
       end
