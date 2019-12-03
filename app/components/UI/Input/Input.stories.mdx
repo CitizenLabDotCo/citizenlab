@@ -1,0 +1,41 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import Input from 'components/UI/Input';
+import { text, boolean, date  } from "@storybook/addon-knobs";
+
+<Meta title="Input" component={Input} />
+
+# Input
+
+<Props of={Input} />
+
+<Preview>
+  <Story name="default">
+    <Input
+      type="text"
+      value={text('Value', 'Some random text')}
+      label={text('Label', 'A label')}
+      disabled={boolean('Disabled', false)}
+    />
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="max. char">
+    <Input
+      type="text"
+      value={text('Value', 'Some random text')}
+      label={text('Label', 'A label')}
+      disabled={boolean('Disabled', false)}
+      maxCharCount={20}
+    />
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="date input">
+    <Input
+      type="date"
+      value={text('Date','2019-07-17')}
+    />
+  </Story>
+</Preview>

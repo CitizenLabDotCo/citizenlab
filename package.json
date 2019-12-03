@@ -36,7 +36,7 @@
     "cypress:run": "cypress run --spec 'cypress/integration/*.ts'",
     "majestic": "majestic --port 4231",
     "find-unused-messages": "node internals/scripts/find-unused-messages.js",
-    "storybook": "start-storybook"
+    "storybook": "start-storybook -p 6006 -c .storybook"
   },
   "majestic": {
     "jestScriptPath": "node_modules/jest/bin/jest.js"
@@ -135,10 +135,12 @@
     "@sentry/webpack-plugin": "1.9.3",
     "@storybook/cli": "5.3.0-beta.14",
     "@storybook/react": "5.3.0-beta.14",
+    "@storybook/theming": "5.3.0-beta.14",
     "@storybook/addon-actions": "5.3.0-beta.14",
     "@storybook/addon-docs": "5.3.0-beta.14",
-    "@storybook/addon-info": "5.3.0-beta.14",
     "@storybook/addon-knobs": "5.3.0-beta.14",
+    "@storybook/addon-centered": "5.3.0-beta.14",
+    "@storybook/addon-viewport": "5.3.0-beta.14",
     "@storybook/source-loader": "5.3.0-beta.14",
     "@types/enzyme": "3.10.3",
     "@types/enzyme-adapter-react-16": "1.0.5",
@@ -187,7 +189,7 @@
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
     "chalk": "2.4.2",
     "clean-webpack-plugin": "3.0.0",
-    "css-loader": "3.2.0",
+    "css-loader": "3.2.1",
     "cssnano": "4.1.10",
     "cypress": "3.6.1",
     "cypress-file-upload": "3.5.0",
@@ -218,7 +220,6 @@
     "style-loader": "1.0.1",
     "styled-components": "4.4.1",
     "terser-webpack-plugin": "2.2.1",
-    "themeprovider-storybook": "1.2.4",
     "ts-jest": "24.2.0",
     "ts-loader": "6.2.1",
     "tslint": "5.20.1",
