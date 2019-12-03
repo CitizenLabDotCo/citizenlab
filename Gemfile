@@ -66,6 +66,10 @@ gem "active_model_serializers", "~> 0.10.8"
 #    in an error.
 gem "knock", github: 'CitizenLabDotCo/knock'
 gem "sidekiq" # , "~> 5.0.5"
+
+# This branch must be used because the latest version (2.1.1) 
+# requires activerecord < 6.0, while activerecord = 6.0.1 is
+# required by Rails 6.0.1.
 gem "apartment", github: 'influitive/apartment', branch: 'development'
 gem "apartment-sidekiq", "~> 1.2.0"
 gem "carrierwave", "~> 1.2.2"
