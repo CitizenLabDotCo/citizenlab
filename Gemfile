@@ -72,7 +72,7 @@ gem "sidekiq" # , "~> 5.0.5"
 # required by Rails 6.0.1.
 gem "apartment", github: 'influitive/apartment', branch: 'development'
 gem "apartment-sidekiq", "~> 1.2.0"
-gem "carrierwave", "~> 1.2.2"
+gem "carrierwave", "~> 2.0.2"
 gem "carrierwave-base64", "~> 2.6"
 gem "kaminari", "~> 1.1.1"
 gem 'api-pagination', "~> 4.8.2"
