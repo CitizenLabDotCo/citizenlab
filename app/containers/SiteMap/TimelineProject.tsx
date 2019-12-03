@@ -20,30 +20,34 @@ interface DataProps {
 interface Props extends InputProps, DataProps { }
 
 const TimelineProject = ({ project, phases }: Props) => {
-  if (isNilOrError(phases) || phases.length === 0) return null;
-  if (phases.length === 1) {
-    return (
-      <li key={phases[0].id}>
-        <Link to={{ pathname: `/projects/${project.attributes.slug}/process`, query: { phase: phases[0].id } }}>
-          <T value={phases[0].attributes.title_multiloc} />
-        </Link>
-      </li>
-    );
+  if (!isNilOrError(phases)) {
+    if (phases.length > 1) {
+      return (
+        <li>
+          <FormattedMessage {...messages.timeline} />
+          <ul>
+            {phases.map(phase => (
+              <li key={phase.id}>
+                <Link to={{ pathname: `/projects/${project.attributes.slug}/process`, query: { phase: phase.id } }}>
+                  <T value={phase.attributes.title_multiloc} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </li>
+      );
+    }
+    if (phases.length === 1) {
+      return (
+        <li key={phases[0].id}>
+          <Link to={{ pathname: `/projects/${project.attributes.slug}/process`, query: { phase: phases[0].id } }}>
+            <T value={phases[0].attributes.title_multiloc} />
+          </Link>
+        </li>
+      );
+    }
   }
-  return (
-    <li>
-      <FormattedMessage {...messages.timeline} />
-      <ul>
-        {phases.map(phase => (
-          <li key={phase.id}>
-            <Link to={{ pathname: `/projects/${project.attributes.slug}/process`, query: { phase: phase.id } }}>
-              <T value={phase.attributes.title_multiloc} />
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </li>
-  );
+  return null;
 };
 
 const Data = adopt<DataProps, InputProps>({

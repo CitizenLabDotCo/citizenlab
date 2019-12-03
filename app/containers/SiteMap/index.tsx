@@ -84,13 +84,9 @@ interface DataProps {
 interface Props extends DataProps { }
 
 const SiteMap = ({ projects, tenant, authUser }: Props) => {
-
   const loaded = projects !== undefined;
-
-  const successStories = isNilOrError(tenant) ? [] : tenant.attributes.settings ?.initiatives ?.success_stories;
-
+  const successStories = !isNilOrError(tenant) ? tenant.attributes.settings ?.initiatives ?.success_stories : [];
   const scrollTo = component => () => scrollToComponent(component.current, { align: 'top', offset: -90, duration: 300 });
-
   const homeSection = useRef(null);
   const projectsSection = useRef(null);
   const archivedSection = useRef(null);
@@ -98,7 +94,6 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
   const draftSection = useRef(null);
   const initiativesSection = useRef(null);
   const userSpaceSection = useRef(null);
-
   const hasProjectSubsection = archivedSection.current || draftSection.current || currentSection.current;
 
   return (
@@ -118,7 +113,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
               </Title>
 
               <Nav aria-labelledby="nav-header">
-                <Header>
+                <Header id="nav-header">
                   <FormattedMessage {...messages.pageContents} />
                 </Header>
                 <ul>

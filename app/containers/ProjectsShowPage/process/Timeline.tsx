@@ -471,6 +471,8 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     let selectedPhase: ISelectedPhase = null;
     const { location } = this.props;
 
+    // if, coming from the siteMap, a phase url parameter was passed in, we pick that phase as the default phase,
+    // then remove the param so that when the user navigates to other phases there is no mismatch
     if (location.query.phase && typeof location.query.phase === 'string') {
       const phase = phases ? phases.data.find(phase => phase.id === location.query.phase) : null;
       if (phase) {
