@@ -14,12 +14,10 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { hasCustomFields } from 'utils/customFields';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 
@@ -123,7 +121,6 @@ interface InputProps {
 
 interface DataProps {
   tenant: GetTenantChildProps;
-  locale: GetLocaleChildProps;
   customFieldsSchema: GetCustomFieldsSchemaChildProps;
 }
 
@@ -144,11 +141,11 @@ class SignUp extends PureComponent<Props, State> {
   }
 
   handleStep1Completed = (userId: string) => {
-    const { customFieldsSchema, locale } = this.props;
+    const { customFieldsSchema } = this.props;
 
     this.setState({ userId });
 
-    if (hasCustomFields(customFieldsSchema, locale)) {
+    if (!isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields) {
       eventEmitter.emit('SignUp', 'signUpFlowGoToSecondStep', null);
       this.setState({ visibleStep: 'step2' });
     } else {
@@ -169,7 +166,6 @@ class SignUp extends PureComponent<Props, State> {
   }
 
   focusTitle = (titleEl: HTMLHeadingElement | null) => {
-
     // focus step 2 page title to make the custom field easily reachable with keyboard navigation
     // hitting the tab key once should bring the user to the first custom field
     // before the user had to navigate the entire navbar first
@@ -239,7 +235,6 @@ class SignUp extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  locale: <GetLocale />,
   customFieldsSchema: <GetCustomFieldsSchema />
 });
 

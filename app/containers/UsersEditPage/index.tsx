@@ -1,15 +1,13 @@
 // Libraries
-import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import clHistory from 'utils/cl-router/history';
 
-// Services
-import { authUserStream } from 'services/auth';
-import { areasStream, IAreas } from 'services/areas';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { IUser } from 'services/users';
+// Hooks
+import useTenant from 'hooks/useTenant';
+import useAuthUser from 'hooks/useAuthUser';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -41,75 +39,32 @@ const Container = styled.div`
 // https://stackoverflow.com/questions/34993826/flexbox-column-direction-same-width
 const Wrapper = styled.div``;
 
-interface Props {}
+export default () => {
+  const tenant = useTenant();
+  const authUser = useAuthUser();
+  const loaded = tenant !== undefined && authUser !== undefined;
 
-interface State {
-  authUser: IUser | null;
-  areas: IAreas | null;
-  currentTenant: ITenant | null;
-  loaded: boolean;
-}
-
-export default class ProfileEditor extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      authUser: null,
-      areas: null,
-      currentTenant: null,
-      loaded: false
-    };
+  if (loaded && !authUser) {
+    clHistory.push('/');
   }
 
-  componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
-    const authUser$ = authUserStream().observable;
-    const areas$ = areasStream().observable;
-
-    this.subscriptions = [
-      combineLatest(
-        currentTenant$,
-        authUser$,
-        areas$
-      ).subscribe(([currentTenant, authUser, areas]) => {
-        this.setState({ currentTenant, authUser, areas, loaded: true });
-      })
-    ];
+  if (loaded && !isNilOrError(tenant) && !isNilOrError(authUser)) {
+    return (
+      <Container id="e2e-user-edit-profile-page">
+        <ScreenReaderOnly>
+          <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
+        </ScreenReaderOnly>
+        <Wrapper>
+          <VerificationStatus />
+          <ProfileForm
+            user={authUser.data}
+          />
+          <ProfileDeletion/>
+          <CampaignsConsentForm />
+        </Wrapper>
+      </Container>
+    );
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  render() {
-    const { currentTenant, authUser, areas, loaded } = this.state;
-
-    if (loaded && !authUser) {
-      clHistory.push('/');
-    }
-
-    if (loaded && currentTenant && authUser && areas) {
-      return (
-        <Container id="e2e-user-edit-profile-page">
-          <ScreenReaderOnly>
-            <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
-          </ScreenReaderOnly>
-          <Wrapper>
-            <VerificationStatus />
-            <ProfileForm
-              user={authUser.data}
-              areas={areas.data}
-              tenant={currentTenant.data}
-            />
-            <ProfileDeletion/>
-            <CampaignsConsentForm />
-          </Wrapper>
-        </Container>
-      );
-    }
-
-    return null;
-  }
-}
+  return null;
+};
