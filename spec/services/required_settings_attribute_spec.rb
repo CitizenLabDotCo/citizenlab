@@ -1,5 +1,4 @@
 require 'rails_helper'
-# require './lib/tenant_schema/extended_schema.rb'
 
 describe 'RequiredSettingsAttribute' do
 
