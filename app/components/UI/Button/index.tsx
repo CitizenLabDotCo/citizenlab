@@ -358,7 +358,7 @@ export interface Props extends ButtonContainerProps {
 
 type State = {};
 
-class Button extends PureComponent<Props, State> {
+export class Button extends PureComponent<Props, State> {
 
   handleOnClick = (event) => {
     const { onClick, processing, disabled } = this.props;
