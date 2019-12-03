@@ -1,6 +1,7 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { isEmpty, get } from 'lodash-es';
-import { Subscription, combineLatest } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
+import { isEmpty } from 'lodash-es';
 
 // components
 import Button from 'components/UI/Button';
@@ -9,10 +10,11 @@ import Spinner from 'components/UI/Spinner';
 import CustomFieldsForm from 'components/Loadable/CustomFieldsForm';
 
 // services
-import { authUserStream } from 'services/auth';
-import { IUser, completeRegistration } from 'services/users';
-import { localeStream } from 'services/locale';
-import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
+import { completeRegistration } from 'services/users';
+
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -72,57 +74,31 @@ const SkipButton = styled.button`
   `}
 `;
 
-type Props = {
+type InputProps = {
   onCompleted: () => void;
 };
 
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+  customFieldsSchema: GetCustomFieldsSchemaChildProps;
+}
+
+interface Props extends InputProps, DataProps { }
+
 type State = {
-  authUser: IUser | null;
-  loading: boolean;
-  hasRequiredFields: boolean;
   processing: boolean;
   unknownError: string | null;
   apiErrors: CLErrorsJSON | null;
 };
 
 class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Subscription[];
-
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      authUser: null,
-      hasRequiredFields: true,
-      loading: true,
       processing: false,
       unknownError: null,
       apiErrors: null
     };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const authUser$ = authUserStream().observable;
-    const locale$ = localeStream().observable;
-    const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
-
-    this.subscriptions = [
-      combineLatest(
-        authUser$,
-        locale$,
-        customFieldsSchemaForUsersStream$
-      ).subscribe(([authUser, locale, customFieldsSchemaForUsersStream]) => {
-        this.setState({
-          authUser,
-          hasRequiredFields: !isEmpty(get(customFieldsSchemaForUsersStream, `json_schema_multiloc.${locale}.required`, null)),
-          loading: false
-        });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleOnSubmitButtonClick = (event: FormEvent) => {
@@ -132,7 +108,7 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleCustomFieldsFormOnSubmit = async (formData) => {
     const { formatMessage } = this.props.intl;
-    const { authUser } = this.state;
+    const { authUser } = this.props;
 
     if (authUser) {
       try {
@@ -164,22 +140,21 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { authUser, hasRequiredFields, loading, processing, unknownError } = this.state;
+    const { processing, unknownError } = this.state;
+    const { authUser, customFieldsSchema } = this.props;
 
-    if (loading) {
+    if (authUser === undefined || customFieldsSchema === undefined) {
       return (
         <Loading id="ideas-loading">
           <Spinner />
         </Loading>
       );
-    }
-
-    if (!loading && authUser) {
+    } else if (!isNilOrError(authUser) && !isNilOrError(customFieldsSchema)) {
       return (
         <Container id="e2e-signup-step2">
           <CustomFieldsForm
             id="e2e-custom-signup-form"
-            formData={authUser.data.attributes.custom_field_values}
+            formData={authUser.attributes.custom_field_values}
             onSubmit={this.handleCustomFieldsFormOnSubmit}
           />
 
@@ -192,7 +167,7 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmitButtonClick}
               />
-              {!hasRequiredFields &&
+              {!customFieldsSchema.hasRequiredFields &&
                 <SkipButton
                   className="e2e-signup-step2-skip-btn"
                   onClick={this.skipStep}
@@ -211,4 +186,15 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(Step2);
+const Step2WithHocs = injectIntl<Props>(Step2);
+
+const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  customFieldsSchema: <GetCustomFieldsSchema />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataprops => <Step2WithHocs {...inputProps} {...dataprops} />}
+  </Data>
+);

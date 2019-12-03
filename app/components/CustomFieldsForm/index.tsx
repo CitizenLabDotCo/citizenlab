@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import { adopt } from 'react-adopt';
+import { Subscription } from 'rxjs';
 import moment from 'moment';
 import { isBoolean, forOwn, get, uniq, isNil, isEmpty, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -8,8 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Form, { FieldProps } from 'react-jsonschema-form';
 
 // services
-import { localeStream } from 'services/locale';
-import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
+import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
 
 // components
 import { FormLabelValue } from 'components/UI/FormComponents';
@@ -34,7 +34,7 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // typings
-import { Locale, IOption } from 'typings';
+import { IOption } from 'typings';
 
 const Container = styled.div``;
 
@@ -47,50 +47,32 @@ const InvisibleSubmitButton = styled.button`
   visibility: hidden;
 `;
 
-export interface Props {
+export interface InputProps {
   formData?: object;
   onSubmit?: (arg: any) => void;
   onChange?: (arg: any) => void;
   id?: string;
 }
 
-interface State {
-  locale: Locale | null;
-  schema: object | null;
-  uiSchema: object | null;
+interface DataProps {
+  customFieldsShema: GetCustomFieldsSchemaChildProps;
 }
 
-class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
+interface Props extends InputProps, DataProps { }
+
+class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
   submitbuttonElement: HTMLButtonElement | null;
   subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
-    this.state = {
-      locale: null,
-      schema: null,
-      uiSchema: null
-    };
+
     this.submitbuttonElement = null;
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    const locale$ = localeStream().observable;
-    const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
-
     this.subscriptions = [
-      combineLatest(
-        locale$,
-        customFieldsSchemaForUsersStream$
-      ).subscribe(([locale, customFields]) => {
-        this.setState({
-          locale,
-          schema: customFields['json_schema_multiloc'],
-          uiSchema: customFields['ui_schema_multiloc']
-        });
-      }),
-
       eventEmitter.observeEvent('customFieldsSubmitEvent').subscribe(() => {
         if (this.submitbuttonElement) {
           this.submitbuttonElement.click();
@@ -138,34 +120,39 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   validate = (formData, errors) => {
-    const { schema, locale } = this.state;
-    const requiredFieldNames = get(schema, `${locale}.required`, []);
-    const fieldNames = get(schema, `${locale}.properties`, null) as object;
-    const requiredErrorMessage = this.props.intl.formatMessage(messages.requiredError);
-    const mustBeANumberMessage = this.props.intl.formatMessage(messages.mustBeANumber);
+    const { customFieldsShema } = this.props;
+    if (!isNilOrError(customFieldsShema)) {
+      const { schema, uiSchema } = customFieldsShema;
+      const requiredFieldNames = get(schema, 'required', []);
+      const disabledFieldNames = get(uiSchema, 'ui:disabled', []);
+      const fieldNames = get(schema, 'properties', null) as object;
+      const requiredErrorMessage = this.props.intl.formatMessage(messages.requiredError);
+      const mustBeANumberMessage = this.props.intl.formatMessage(messages.mustBeANumber);
 
-    errors['__errors'] = [];
+      errors['__errors'] = [];
 
-    forOwn(fieldNames, (_value, fieldName) => {
-      errors[fieldName]['__errors'] = [];
-    });
-
-    requiredFieldNames.filter((requiredFieldName) => {
-      return (isNil(formData[requiredFieldName])
-        || (!isBoolean(formData[requiredFieldName]) && !Number.isInteger(formData[requiredFieldName]) && isEmpty(formData[requiredFieldName]))
-        || (isBoolean(formData[requiredFieldName]) && formData[requiredFieldName] === false)
-      );
-    }).forEach((requiredFieldName) => {
-      errors[requiredFieldName].addError(requiredErrorMessage);
-    });
-    if (!isNilOrError(locale) && !isNilOrError(schema)) {
-      Object.keys(fieldNames).filter(fieldName => {
-        return !isNil(formData[fieldName]) && schema[locale].properties[fieldName].type === 'number' && !Number.isInteger(formData[fieldName]);
-      }).forEach((numberFieldWithError) => {
-        errors[numberFieldWithError].addError(mustBeANumberMessage);
+      forOwn(fieldNames, (_value, fieldName) => {
+        errors[fieldName]['__errors'] = [];
       });
+
+      requiredFieldNames.filter((requiredFieldName) => {
+        return (!disabledFieldNames.includes(requiredFieldName)
+          || isNil(formData[requiredFieldName])
+          || (!isBoolean(formData[requiredFieldName]) && !Number.isInteger(formData[requiredFieldName]) && isEmpty(formData[requiredFieldName]))
+          || (isBoolean(formData[requiredFieldName]) && formData[requiredFieldName] === false)
+        );
+      }).forEach((requiredFieldName) => {
+        errors[requiredFieldName].addError(requiredErrorMessage);
+      });
+      if (!isNilOrError(schema)) {
+        Object.keys(fieldNames).filter(fieldName => {
+          return !isNil(formData[fieldName]) && schema.properties[fieldName].type === 'number' && !Number.isInteger(formData[fieldName]);
+        }).forEach((numberFieldWithError) => {
+          errors[numberFieldWithError].addError(mustBeANumberMessage);
+        });
+      }
+      return errors;
     }
-    return errors;
   }
 
   CustomInput = (props: FieldProps) => {
@@ -252,16 +239,18 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
     const onChange = () => props.onChange((isBoolean(props.value) ? !props.value : true));
     const { title } = props.schema;
     const id = props.id;
+    console.log(props);
 
     if (isString(id)) {
       return (
         <>
-          {title && <StyledFormLabelValue noSpace htmlFor={id} thin labelValue={title}/>}
+          {title && <StyledFormLabelValue noSpace htmlFor={id} thin labelValue={title} />}
           <Checkbox
             id={id}
             checked={(isBoolean(props.value) ? props.value : false)}
             onChange={onChange}
             label={(props.schema.description || null)}
+            disabled={props.disabled}
           />
         </>
       );
@@ -277,6 +266,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
       <DateInput
         value={(props.value ? moment(props.value, 'YYYY-MM-DD') : null)}
         onChange={onChange}
+        disabled={props.disabled}
       />
     );
   }
@@ -323,7 +313,10 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { locale, schema, uiSchema } = this.state;
+    const { customFieldsShema } = this.props;
+    if (isNilOrError(customFieldsShema)) return null;
+
+    const { schema, uiSchema } = customFieldsShema;
     const { id } = this.props;
 
     const widgets: any = {
@@ -336,10 +329,10 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container id={id ? id : ''} className={this.props['className']}>
-        {locale && schema && uiSchema &&
+        {schema && uiSchema &&
           <Form
-            schema={schema[locale]}
-            uiSchema={uiSchema[locale]}
+            schema={schema}
+            uiSchema={uiSchema}
             formData={this.props.formData}
             widgets={widgets}
             FieldTemplate={this.CustomFieldTemplate}
@@ -363,10 +356,20 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
 function renderLabel(id, label, required, descriptionJSX) {
   if (label && label.length > 0) {
     return (
-      <FormLabelValue thin htmlFor={id} labelValue={label} optional={!required} subtextValue={descriptionJSX}/>
+      <FormLabelValue thin htmlFor={id} labelValue={label} optional={!required} subtextValue={descriptionJSX} />
     );
   }
   return;
 }
 
-export default injectIntl<Props>(CustomFieldsForm);
+const Data = adopt<DataProps, InputProps>({
+  customFieldsShema: <GetCustomFieldsSchema />
+});
+
+const CustomFieldsFormWithHoc = injectIntl<Props>(CustomFieldsForm);
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataprops => <CustomFieldsFormWithHoc {...inputProps} {...dataprops} />}
+  </Data>
+);

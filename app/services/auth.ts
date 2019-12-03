@@ -17,6 +17,10 @@ export function authUserStream() {
   return streams.get<IUser | null>({ apiEndpoint: authApiEndpoint });
 }
 
+export function lockedFieldsStream() {
+  return streams.get({ apiEndpoint: `${authApiEndpoint}/locked_attributes` });
+}
+
 export async function signIn(email: string, password: string) {
   try {
     const bodyData = { auth: { email, password } };

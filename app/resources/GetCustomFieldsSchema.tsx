@@ -1,50 +1,17 @@
-import React from 'react';
-import { Subscription } from 'rxjs';
-import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
+import useCustomFieldsSchema, { CustomFieldsSchema } from 'hooks/useCustomFieldsSchema';
 
 interface InputProps {}
 
-type children = (renderProps: GetCustomFieldsSchemaChildProps) => JSX.Element | null;
+type children = (renderProps: CustomFieldsSchema) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
 }
 
-interface State {
-  customFieldsSchema: any;
-}
+export type GetCustomFieldsSchemaChildProps = CustomFieldsSchema;
 
-export type GetCustomFieldsSchemaChildProps = any;
-
-export default class GetCustomFieldsSchema extends React.Component<Props, State> {
-  private subscriptions: Subscription[];
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      customFieldsSchema: undefined
-    };
-  }
-
-  componentDidMount() {
-    const customFieldsSchema$ = customFieldsSchemaForUsersStream().observable;
-
-    this.subscriptions = [
-      customFieldsSchema$.subscribe((customFieldsSchema) => {
-        this.setState({
-          customFieldsSchema: (customFieldsSchema || null)
-        });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  render() {
-    const { children } = this.props;
-    const { customFieldsSchema } = this.state;
-    return (children as children)(customFieldsSchema);
-  }
-}
+export default ({ children }: Props) => {
+  const customFieldsSchema = useCustomFieldsSchema();
+  console.log(customFieldsSchema);
+  return (children as children)(customFieldsSchema);
+};

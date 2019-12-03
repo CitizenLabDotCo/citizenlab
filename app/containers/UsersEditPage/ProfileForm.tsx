@@ -1,20 +1,19 @@
 import React, { PureComponent } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
 import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { switchMap, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { isEqual, isEmpty } from 'lodash-es';
 import streams from 'utils/streams';
 
 // services
-import { IAreaData } from 'services/areas';
 import { updateUser, IUserData, mapUserToDiff } from 'services/users';
-import { ITenantData } from 'services/tenant';
-import { localeStream } from 'services/locale';
-import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
+import { lockedFieldsStream } from 'services/auth';
+import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
 
 // utils
 import { Formik } from 'formik';
 import eventEmitter from 'utils/eventEmitter';
-import { hasCustomFields } from 'utils/customFields';
 
 // components
 import Error from 'components/UI/Error';
@@ -44,18 +43,18 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 // Types
 interface InputProps {
   user: IUserData;
-  areas: IAreaData[];
-  tenant: ITenantData;
+}
+
+interface DataProps {
+  customFieldsShema: GetCustomFieldsSchemaChildProps;
 }
 
 interface State {
   avatar: UploadFile[] | null;
-  hasCustomFields: boolean;
-  localeOptions: IOption[];
   customFieldsFormData: any;
 }
 
-type Props = InputProps & InjectedIntlProps & InjectedLocalized;
+type Props = InputProps & DataProps & InjectedIntlProps & InjectedLocalized;
 
 class ProfileForm extends PureComponent<Props, State> {
   localeOptions: IOption[] = [];
@@ -66,8 +65,6 @@ class ProfileForm extends PureComponent<Props, State> {
     super(props as any);
     this.state = {
       avatar: null,
-      hasCustomFields: false,
-      localeOptions: [],
       customFieldsFormData: null
     };
     this.user$ = new BehaviorSubject(null as any);
@@ -79,55 +76,51 @@ class ProfileForm extends PureComponent<Props, State> {
       filter(user => user !== null),
       distinctUntilChanged((x, y) => isEqual(x, y))
     );
-    const locale$ = localeStream().observable;
-    const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
     this.user$.next(this.props.user);
 
     this.subscriptions = [
       combineLatest(
         user$,
-        locale$,
-        customFieldsSchemaForUsersStream$
       ).pipe(
-        switchMap(([user, locale, customFieldsSchema]) => {
+        switchMap(([user]) => {
           const avatarUrl = user.attributes.avatar && user.attributes.avatar.medium;
           const avatar$: Observable<UploadFile | null> = (avatarUrl ? convertUrlToUploadFileObservable(avatarUrl, null, null) : of(null));
 
           return avatar$.pipe(
-            map(avatar => ({ user, avatar, locale, customFieldsSchema }))
+            map(avatar => ({ user, avatar }))
           );
         })
-      ).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
+      ).subscribe(({ user, avatar }) => {
         this.setState({
-          hasCustomFields: hasCustomFields(customFieldsSchema, locale),
           avatar: (avatar ? [avatar] : null),
           customFieldsFormData: user.attributes.custom_field_values
         });
       })
     ];
 
+    console.log(this.props);
+
     // Create options arrays only once, avoid re-calculating them on each render
-    this.setState({
-      localeOptions: this.props.tenantLocales.map((locale) => ({
-        value: locale,
-        label: appLocalePairs[locale],
-      }))
-    });
+    this.setLocaleOptions();
+  }
+
+  setLocaleOptions = () => {
+    this.localeOptions = this.props.tenantLocales.map((locale) => ({
+      value: locale,
+      label: appLocalePairs[locale],
+    }));
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (!isEqual(this.props.user, prevProps.user)) {
-      this.user$.next(this.props.user);
+    const { user, tenantLocales } = this.props;
+    if (!isEqual(user, prevProps.user)) {
+      this.user$.next(user);
     }
 
-    if (!isEqual(this.props.tenantLocales, prevProps.tenantLocales)) {
-      this.setState({
-        localeOptions: this.props.tenantLocales.map((locale) => ({
-          value: locale,
-          label: appLocalePairs[locale],
-        }))
-      });
+    // update locale options if tenant locales would change
+    if (!isEqual(tenantLocales, prevProps.tenantLocales)) {
+      this.setLocaleOptions();
     }
   }
 
@@ -138,8 +131,9 @@ class ProfileForm extends PureComponent<Props, State> {
   handleFormikSubmit = async (values, formikActions) => {
     let newValues = values;
     const { setSubmitting, resetForm, setErrors, setStatus } = formikActions;
+    const { customFieldsShema } = this.props;
 
-    if (this.state.hasCustomFields) {
+    if (!isNilOrError(customFieldsShema) && customFieldsShema.hasCustomFields) {
       newValues = {
         ...values,
         custom_field_values: this.state.customFieldsFormData
@@ -166,7 +160,9 @@ class ProfileForm extends PureComponent<Props, State> {
 
   formikRender = (props) => {
     const { values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid, status, touched } = props;
-    const { hasCustomFields, localeOptions } = this.state;
+    const { customFieldsShema } = this.props;
+    const hasCustomFields = !isNilOrError(customFieldsShema) && customFieldsShema.hasCustomFields;
+
     const { formatMessage } = this.props.intl;
 
     const getStatus = () => {
@@ -194,7 +190,7 @@ class ProfileForm extends PureComponent<Props, State> {
     };
 
     const handleOnSubmit = () => {
-      if (this.state.hasCustomFields) {
+      if (hasCustomFields) {
         eventEmitter.emit('ProfileForm', 'customFieldsSubmitEvent', null);
       } else {
         submitForm();
@@ -230,7 +226,7 @@ class ProfileForm extends PureComponent<Props, State> {
     return (
       <FormSection>
         <form className="e2e-profile-edit-form">
-          <FormSectionTitle message={messages.h1} subtitleMessage={messages.h1sub}/>
+          <FormSectionTitle message={messages.h1} subtitleMessage={messages.h1sub} />
 
           <SectionField>
             <ImagesDropzone
@@ -323,7 +319,7 @@ class ProfileForm extends PureComponent<Props, State> {
               onChange={createChangeHandler('locale')}
               onBlur={createBlurHandler('locale')}
               value={values.locale}
-              options={localeOptions}
+              options={this.localeOptions}
             />
             <Error apiErrors={errors.locale} />
           </SectionField>
@@ -354,6 +350,7 @@ class ProfileForm extends PureComponent<Props, State> {
   }
 
   render() {
+    if (isNilOrError(this.props.customFieldsShema)) return null;
     return (
       <Formik
         initialValues={mapUserToDiff(this.props.user)}
@@ -364,4 +361,14 @@ class ProfileForm extends PureComponent<Props, State> {
   }
 }
 
-export default injectIntl<InputProps>(localize(ProfileForm));
+const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
+
+const Data = adopt<DataProps, InputProps>({
+  customFieldsSchema: <GetCustomFieldsSchema />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ProfileFormWithHocs {...inputProps} {...dataProps} />}
+  </Data>
+);
