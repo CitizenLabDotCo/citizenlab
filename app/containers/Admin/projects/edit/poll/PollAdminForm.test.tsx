@@ -154,7 +154,7 @@ describe('<PollAdminForm/>', () => {
 
       getFormQuestionRow().props().onSave();
       expect(addPollQuestionSpy).toHaveBeenCalledTimes(1);
-      expect(addPollQuestionSpy).toHaveBeenCalledWith('id', 'Project', { en: 'How are you?' });
+      expect(addPollQuestionSpy).toHaveBeenCalledWith('id', 'project', { en: 'How are you?' });
     });
     it('handles closing it', () => {
       const wrapper = shallow(
@@ -183,7 +183,7 @@ describe('<PollAdminForm/>', () => {
       );
       wrapper.find('QuestionRow').props().onDelete();
       expect(deletePollQuestionSpy).toHaveBeenCalledTimes(1);
-      expect(deletePollQuestionSpy).toHaveBeenCalledWith('questionId', 'id', 'projects');
+      expect(deletePollQuestionSpy).toHaveBeenCalledWith('questionId', 'id', 'project');
     });
   });
   describe('handles the edit question form', () => {
