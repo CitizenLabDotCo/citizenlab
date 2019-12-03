@@ -366,7 +366,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.3.1)
+    loofah (2.4.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -621,7 +621,7 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
-    zeitwerk (2.2.1)
+    zeitwerk (2.2.2)
 
 PLATFORMS
   ruby
@@ -680,7 +680,7 @@ DEPENDENCIES
   pundit (~> 2.0)
   rack-cors
   rack-mini-profiler
-  rails (~> 6.0.0)
+  rails (~> 6.0.1)
   rails_semantic_logger
   redcarpet
   rest-client
