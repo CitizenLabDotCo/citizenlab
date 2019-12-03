@@ -450,13 +450,13 @@ class Footer extends PureComponent<Props, State> {
                 <StyledLink to={`/pages/${slug}`} className={index === 0 ? 'first' : ''}>
                   <FormattedMessage {...messages[slug]} />
                 </StyledLink>
-                <Bullet>•</Bullet>
+                <Bullet aria-hidden>•</Bullet>
               </React.Fragment>
             ))}
             <StyledButton onClick={this.openConsentManager}>
               <FormattedMessage {...messages.cookieSettings} />
             </StyledButton>
-            <Bullet>•</Bullet>
+            <Bullet aria-hidden>•</Bullet>
             <StyledLink to="/site-map">
               <FormattedMessage {...messages.siteMap} />
             </StyledLink>

@@ -2,111 +2,111 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   siteMapTitle: {
-    id: 'containers.SubscriptionEndedPage.siteMapTitle',
+    id: 'containers.SiteMap.siteMapTitle',
     defaultMessage: 'Participation platform of {orgName}\'s site map',
   },
   siteMapDescription: {
-    id: 'containers.SubscriptionEndedPage.siteMapDescription',
+    id: 'containers.SiteMap.siteMapDescription',
     defaultMessage: 'From this page, you can navigate to any content on the platform.',
   },
   homeSection: {
-    id: 'containers.SubscriptionEndedPage.homeSection',
+    id: 'containers.SiteMap.homeSection',
     defaultMessage: 'Participation platform of {orgName} home',
   },
   pageContents: {
-    id: 'containers.SubscriptionEndedPage.pageContents',
+    id: 'containers.SiteMap.pageContents',
     defaultMessage: 'Page contents',
   },
   aboutLink: {
-    id: 'containers.SubscriptionEndedPage.aboutLink',
+    id: 'containers.SiteMap.aboutLink',
     defaultMessage: 'About the platform',
   },
   cookiePolicyLink: {
-    id: 'containers.SubscriptionEndedPage.cookiePolicyLink',
+    id: 'containers.SiteMap.cookiePolicyLink',
     defaultMessage: 'Cookie policy',
   },
   termsAndConditionsLink: {
-    id: 'containers.SubscriptionEndedPage.termsAndConditionsLink',
+    id: 'containers.SiteMap.termsAndConditionsLink',
     defaultMessage: 'Terms and Conditions',
   },
   privacyPolicyLink: {
-    id: 'containers.SubscriptionEndedPage.privacyPolicyLink',
+    id: 'containers.SiteMap.privacyPolicyLink',
     defaultMessage: 'Privacy Policy',
   },
   projectsSection: {
-    id: 'containers.SubscriptionEndedPage.projectsSection',
+    id: 'containers.SiteMap.projectsSection',
     defaultMessage: 'All projects of {orgName}',
   },
   projectsCurrent: {
-    id: 'containers.SubscriptionEndedPage.projectsCurrent',
+    id: 'containers.SiteMap.projectsCurrent',
     defaultMessage: 'Current Projects',
   },
   projectsArchived: {
-    id: 'containers.SubscriptionEndedPage.projectsArchived',
+    id: 'containers.SiteMap.projectsArchived',
     defaultMessage: 'Archived Projects',
   },
   projectsDraft: {
-    id: 'containers.SubscriptionEndedPage.projectsDraft',
+    id: 'containers.SiteMap.projectsDraft',
     defaultMessage: 'Draft Projects',
   },
   projectInfo: {
-    id: 'containers.SubscriptionEndedPage.projectInfo',
+    id: 'containers.SiteMap.projectInfo',
     defaultMessage: 'Information',
   },
   projectEvents: {
-    id: 'containers.SubscriptionEndedPage.projectEvents',
+    id: 'containers.SiteMap.projectEvents',
     defaultMessage: 'Events',
   },
   projectIdeas: {
-    id: 'containers.SubscriptionEndedPage.projectIdeas',
+    id: 'containers.SiteMap.projectIdeas',
     defaultMessage: 'Ideas',
   },
   projectPoll: {
-    id: 'containers.SubscriptionEndedPage.projectPoll',
+    id: 'containers.SiteMap.projectPoll',
     defaultMessage: 'Poll',
   },
   projectSurvey: {
-    id: 'containers.SubscriptionEndedPage.projectSurvey',
+    id: 'containers.SiteMap.projectSurvey',
     defaultMessage: 'Survey',
   },
   timeline: {
-    id: 'containers.SubscriptionEndedPage.timeline',
+    id: 'containers.SiteMap.timeline',
     defaultMessage: 'Project phases',
   },
   initiativesSection: {
-    id: 'containers.SubscriptionEndedPage.initiativesSection',
+    id: 'containers.SiteMap.initiativesSection',
     defaultMessage: 'Initiatives',
   },
   signInPage: {
-    id: 'containers.SubscriptionEndedPage.signInPage',
+    id: 'containers.SiteMap.signInPage',
     defaultMessage: 'Sign in',
   },
   signUpPage: {
-    id: 'containers.SubscriptionEndedPage.signUpPage',
+    id: 'containers.SiteMap.signUpPage',
     defaultMessage: 'Sign up',
   },
   successStories: {
-    id: 'containers.SubscriptionEndedPage.successStories',
+    id: 'containers.SiteMap.successStories',
     defaultMessage: 'Success Stories',
   },
   initiativesList: {
-    id: 'containers.SubscriptionEndedPage.initiativesList',
+    id: 'containers.SiteMap.initiativesList',
     defaultMessage: 'All initiatives on this platform',
   },
   initiativesInfo: {
-    id: 'containers.SubscriptionEndedPage.initiativesInfo',
+    id: 'containers.SiteMap.initiativesInfo',
     defaultMessage: 'More information about initiatives',
   },
   userSpaceSection: {
-    id: 'containers.SubscriptionEndedPage.userSpaceSection',
+    id: 'containers.SiteMap.userSpaceSection',
     defaultMessage: 'Your Account',
   },
   profilePage: {
-    id: 'containers.SubscriptionEndedPage.profilePage',
+    id: 'containers.SiteMap.profilePage',
     defaultMessage: 'Your Profile Page',
   },
   profileSettings: {
-    id: 'containers.SubscriptionEndedPage.profileSettings',
+    id: 'containers.SiteMap.profileSettings',
     defaultMessage: 'Your settings',
   },
 });
