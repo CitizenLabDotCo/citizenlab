@@ -21,13 +21,7 @@ interface State {}
 export class Link extends PureComponent<Props, State> {
   render() {
     const { to, locale, ...otherProps } = this.props;
-
-    if (!isNilOrError(locale)) {
-      const descriptor = updateLocationDescriptor(to, locale);
-      return (<RouterLink to={descriptor} {...otherProps} />);
-    }
-
-    return null;
+    return <RouterLink to={!isNilOrError(locale) ? updateLocationDescriptor(to, locale) : '#'} {...otherProps} />;
   }
 }
 

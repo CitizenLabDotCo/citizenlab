@@ -1,19 +1,20 @@
 import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 import Label from 'components/UI/Label';
 
-<Meta title="Demo/Label" component={Label} />
+<Meta title="Label" component={Label} />
 
 # Label
 
-With `MDX` we write longform markdown documentation for our `Label` component and embed Doc Blocks inline.
-
-<Props of={Label} />
-
 <Preview>
-  <Story name="all labels">
-    <form>
-      <Label value="value prop text" />
-      <Label>child text</Label>
-    </form>
+  <Story name="default">
+    <Label>This is a label</Label>
   </Story>
 </Preview>
+
+<Preview>
+  <Story name="with value prop">
+    <Label value="This is a label that uses the value prop" />
+  </Story>
+</Preview>
+
+<Props of={Label} />

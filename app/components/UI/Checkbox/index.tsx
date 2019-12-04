@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
-import { get } from 'lodash-es';
 
 const Container = styled.div<{ size: string }>`
   display: flex;
@@ -100,25 +99,25 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   handleOnClick = (event: React.MouseEvent) => {
-    const targetElement = get(event, 'target') as any;
-    const parentElement = get(event, 'target.parentElement');
-    const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
-    const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+    const targetElement = event?.target as Element | undefined;
+    const parentElement = targetElement?.parentElement;
+    const targetElementIsLink = targetElement?.hasAttribute('href');
+    const parentElementIsLink = parentElement?.hasAttribute('href');
 
-    if (!targetElementIsLink && !parentElementIsLink) {
-      event && event.preventDefault();
+    if (event && !targetElementIsLink && !parentElementIsLink) {
+      event.preventDefault();
       this.props.onChange(event);
     }
   }
 
   handleOnKeyDown = (event: React.KeyboardEvent) => {
-    const targetElement = get(event, 'target') as any;
-    const parentElement = get(event, 'target.parentElement');
-    const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
-    const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+    const targetElement = event?.target as Element | undefined;
+    const parentElement = targetElement?.parentElement;
+    const targetElementIsLink = targetElement?.hasAttribute('href');
+    const parentElementIsLink = parentElement?.hasAttribute('href');
 
-    if (!targetElementIsLink && !parentElementIsLink && event.key === 'Enter') {
-      event && event.preventDefault();
+    if (event && !targetElementIsLink && !parentElementIsLink && event.key === 'Enter') {
+      event.preventDefault();
       this.props.onChange(event);
     }
   }
@@ -145,7 +144,7 @@ export default class Checkbox extends PureComponent<Props, State> {
         onMouseDown={this.removeFocus}
         onClick={this.handleOnClick}
         onKeyDown={this.handleOnKeyDown}
-        className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
+        className={`${className || ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
       >
         <InputWrapper
           className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}

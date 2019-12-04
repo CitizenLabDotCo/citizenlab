@@ -12,6 +12,24 @@ import { action } from '@storybook/addon-actions';
     <div style={{ display: 'flex' }}>
       <Button 
         style="primary"
+        disabled={boolean('Disabled', false)}
+        processing={boolean('Processing', false)}
+        onClick={action('button clicked')}
+      >
+        Button
+      </Button>
+    </div>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="primary with icon">
+    <div style={{ display: 'flex' }}>
+      <Button
+        style="primary"
+        icon="info"
+        disabled={boolean('Disabled', false)}
+        processing={boolean('Processing', false)}
         onClick={action('button clicked')}
       >
         Button
@@ -25,6 +43,8 @@ import { action } from '@storybook/addon-actions';
     <div style={{ display: 'flex' }}>
       <Button
         style="primary-outlined"
+                disabled={boolean('Disabled', false)}
+        processing={boolean('Processing', false)}
         onClick={action('button clicked')}
       >
         Button
@@ -38,6 +58,8 @@ import { action } from '@storybook/addon-actions';
     <div style={{ display: 'flex' }}>
       <Button
         style="primary-inverse"
+        disabled={boolean('Disabled', false)}
+        processing={boolean('Processing', false)}
         onClick={action('button clicked')}
       >
         Button
@@ -51,6 +73,8 @@ import { action } from '@storybook/addon-actions';
     <div style={{ display: 'flex' }}>
       <Button
         style="secondary"
+                disabled={boolean('Disabled', false)}
+        processing={boolean('Processing', false)}
         onClick={action('button clicked')}
       >
         Button
@@ -64,6 +88,83 @@ import { action } from '@storybook/addon-actions';
     <div style={{ display: 'flex' }}>
       <Button
         style="secondary-outlined"
+        disabled={boolean('Disabled', false)}
+        processing={boolean('Processing', false)}
+        onClick={action('button clicked')}
+      >
+        Button
+      </Button>
+    </div>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="success">
+    <div style={{ display: 'flex' }}>
+      <Button
+        style="success"
+        disabled={boolean('Disabled', false)}
+        processing={boolean('Processing', false)}
+        onClick={action('button clicked')}
+      >
+        Button
+      </Button>
+    </div>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="text style">
+    <div style={{ display: 'flex' }}>
+      <Button
+        style="text"
+        disabled={boolean('Disabled', false)}
+        processing={boolean('Processing', false)}
+        onClick={action('button clicked')}
+      >
+        Button
+      </Button>
+    </div>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="cl-blue">
+    <div style={{ display: 'flex' }}>
+      <Button
+        style="cl-blue"
+        disabled={boolean('Disabled', false)}
+        processing={boolean('Processing', false)}
+        onClick={action('button clicked')}
+      >
+        Button
+      </Button>
+    </div>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="admin-dark">
+    <div style={{ display: 'flex' }}>
+      <Button
+        style="admin-dark"
+                disabled={boolean('Disabled', false)}
+        processing={boolean('Processing', false)}
+        onClick={action('button clicked')}
+      >
+        Button
+      </Button>
+    </div>
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="delete">
+    <div style={{ display: 'flex' }}>
+      <Button
+        style="delete"
+        disabled={boolean('Disabled', false)}
+        processing={boolean('Processing', false)}
         onClick={action('button clicked')}
       >
         Button
