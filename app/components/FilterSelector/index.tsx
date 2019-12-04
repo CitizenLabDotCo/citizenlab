@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { isArray, find, isEmpty, isString, cloneDeep, includes, without } from 'lodash-es';
 
 // components
-import Title from './Title';
+import Title from './title';
 import ValuesList from './valuesList';
 
 // style
