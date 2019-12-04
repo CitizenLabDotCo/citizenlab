@@ -68,7 +68,7 @@ const CharCount = styled.div`
   font-weight: 400;
   text-align: right;
   position: absolute;
-  top: 16px;
+  bottom: 14px;
   right: 10px;
 
   &.error {
@@ -108,7 +108,7 @@ interface Props extends InputProps, DataProps {}
 
 type State = {};
 
-class Input extends React.PureComponent<Props, State> {
+export class Input extends React.PureComponent<Props, State> {
 
   handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { maxCharCount, onChange, name, formikContext } = this.props;
