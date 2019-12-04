@@ -3,7 +3,6 @@
   "UI.FormComponents.buttonEnabled": "Schaltfläche \"Versenden\" aktiviert",
   "UI.FormComponents.optional": "optional",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Keine Initiativen gefunden",
-  "app.components.AdminPage.SettingsPage.contrastRatio": "",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "This content is shown at the bottom of your homepage. You can change it at any time.",
   "app.components.AdminPage.SettingsPage.customSectionLabel": "Content",
