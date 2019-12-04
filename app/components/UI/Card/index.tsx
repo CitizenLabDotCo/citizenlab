@@ -99,13 +99,13 @@ interface Props {
   imageUrl?: string | null;
   header?: JSX.Element;
   title: string;
-  body?: JSX.Element;
-  footer?: JSX.Element;
+  body?: JSX.Element | string;
+  footer?: JSX.Element | string;
   onClick: (event: MouseEvent<HTMLDivElement>) => void;
   className?: string;
 }
 
-const Card = memo<Props>(({ to, onClick, imageUrl, header, title, body, footer, className }) => (
+export const Card = ({ to, onClick, imageUrl, header, title, body, footer, className }: Props) => (
   <Container
     onClick={onClick}
     to={to}
@@ -134,6 +134,6 @@ const Card = memo<Props>(({ to, onClick, imageUrl, header, title, body, footer, 
       </Footer>
     </>
   </Container>
-));
+);
 
-export default Card;
+export default memo<Props>(Card);
