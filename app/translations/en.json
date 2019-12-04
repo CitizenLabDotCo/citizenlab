@@ -3,6 +3,7 @@
   "UI.FormComponents.buttonEnabled": "Submit button enabled",
   "UI.FormComponents.optional": "optional",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "No initiatives found",
+  "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "The color you selected doesn't have a high enough contrast (to a white background) to comply with the {wcagLink} accessibility standard. {lineBreak} {lineBreak} Not meeting this ratio may impair the user experience of users with visual disabilities, or even make it impossible to use the platform altogether. {lineBreak} {lineBreak} A ratio of at least 4.5 to 1 is needed to comply. Current ratio: {contrastRatio} to 1. Choose a darker color to increase the ratio.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "This content is shown at the bottom of your homepage. You can change it at any time.",
   "app.components.AdminPage.SettingsPage.customSectionLabel": "Content",
   "app.components.AdminPage.SettingsPage.homePageCustomSection": "Home page custom section",
