@@ -127,14 +127,12 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
           </Title>
         </Header>
 
-        <StatusesContainer role="tablist">
+        <StatusesContainer>
           <AllStatus
             data-id={null}
             onMouseDown={removeFocus}
             onClick={handleOnClick}
             className={allFilterSelected ? 'selected' : ''}
-            role="tab"
-            aria-selected={allFilterSelected}
           >
             <FormattedMessage {...messages.all} />
             <Count aria-hidden>
@@ -165,8 +163,6 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
                 onMouseDown={removeFocus}
                 onClick={handleOnClick}
                 className={`e2e-status ${isFilterSelected ? 'selected' : ''}`}
-                role="tab"
-                aria-selected={isFilterSelected}
               >
                 <T value={status.attributes.title_multiloc}>
                   {statusTitle => <>{capitalize(statusTitle)}</>}
