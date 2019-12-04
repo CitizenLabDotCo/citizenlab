@@ -447,22 +447,11 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                     <ContrastWarning
                       text={
                         <FormattedMessage
-                          {...messages.contrastRatio}
-                          values={{
-                            contrastRatio: contrastRatioOfColor.toFixed(2)
-                          }}
-                        />
-                      }
-                    />
-                  }
-                  {contrastRatioWarningOfColor &&
-                    <ContrastWarning
-                      text={
-                        <FormattedMessage
                           {...messages.contrastRatioTooLow}
                           values={{
                             wcagLink: <a href="https://www.w3.org/TR/WCAG21/" target="_blank">WCAG 2.1 AA</a>,
-                            lineBreak: <br />
+                            lineBreak: <br />,
+                            contrastRatio: contrastRatioOfColor.toFixed(2)
                           }}
                         />
                       }
