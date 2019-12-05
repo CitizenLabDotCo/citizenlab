@@ -1,6 +1,6 @@
 import { colors, fontSizes } from 'utils/styleUtils';
 
-export function getSelectStyles(borderColor = '#ccc') {
+export function getSelectStyles(borderColor = colors.separationDark) {
   return {
     container: (base) => ({
       ...base,
