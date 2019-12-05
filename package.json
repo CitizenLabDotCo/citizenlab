@@ -36,7 +36,8 @@
     "cypress:run": "cypress run --spec 'cypress/integration/*.ts'",
     "majestic": "majestic --port 4231",
     "find-unused-messages": "node internals/scripts/find-unused-messages.js",
-    "storybook": "start-storybook -p 6006 -c .storybook"
+    "storybook": "start-storybook -p 6006 -c .storybook",
+    "build-storybook": "build-storybook -c .storybook -o .out"
   },
   "majestic": {
     "jestScriptPath": "node_modules/jest/bin/jest.js"
