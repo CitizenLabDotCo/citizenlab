@@ -273,7 +273,8 @@ const ProgressBarOverlay: any = styled.div`
 `;
 
 const ProjectLabel = styled.div`
-  color: ${({ theme }) => theme.colorSecondary};
+  // darkened to have higher chances of solid color contrast
+  color: ${({ theme }) => darken(0.05, theme.colorSecondary)};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   text-align: center;
