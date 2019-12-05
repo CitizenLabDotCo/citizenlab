@@ -241,6 +241,10 @@ export type Props = {
   width?: number;
   close: () => void;
   className?: string;
+  /*
+    If you don't provide a header, you can give the header/title
+    an id="modal-header". See VerificationMethods component for an example
+  */
   header?: JSX.Element | string;
   footer?: JSX.Element;
   hasSkipButton?: boolean;
@@ -395,9 +399,8 @@ export default class Modal extends PureComponent<Props, State> {
               className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
               onClickOutside={this.clickOutsideModal}
               hasHeaderOrFooter={header !== undefined || footer !== undefined}
-              aria-modal="true"
-              role="dialog"
-              aria-labelledby="modal-header"
+              ariaLabelledBy="modal-header"
+              isModal
             >
               <CloseButton
                 className="e2e-modal-close-button"
