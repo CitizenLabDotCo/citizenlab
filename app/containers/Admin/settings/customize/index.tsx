@@ -88,6 +88,11 @@ interface State {
     color_secondary: boolean;
     color_text: boolean;
   };
+  contrastRatio: {
+     color_main: number | null;
+     color_secondary: number| null;
+     color_text: number| null;
+  };
 }
 
 type TenantColors = 'color_main' | 'color_secondary' | 'color_text';
@@ -117,6 +122,11 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         color_main: false,
         color_secondary: false,
         color_text: false
+      },
+      contrastRatio: {
+        color_main: null,
+        color_secondary: null,
+        color_text: null
       }
     };
     this.titleMaxCharCount = 45;
@@ -258,6 +268,10 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
           ...state.contrastRatioWarning,
           [colorName]: (contrastRatio && contrastRatio < 4.50 ? true : false)
         },
+        contrastRatio: {
+          ...state.contrastRatio,
+          [colorName]: contrastRatio
+        },
         attributesDiff: {
           ...state.attributesDiff,
           settings: {
@@ -387,7 +401,19 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const { homepageInfoPage } = this.props;
-      const { logo, header_bg, attributesDiff, logoError, headerError, titleError, subtitleError, errors, contrastRatioWarning, saved } = this.state;
+      const {
+        logo,
+        header_bg,
+        attributesDiff,
+        logoError,
+        headerError,
+        titleError,
+        subtitleError,
+        errors,
+        contrastRatioWarning,
+        saved,
+        contrastRatio
+      } = this.state;
 
       return (
         <form onSubmit={this.save}>
@@ -403,27 +429,37 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <FormattedMessage {...messages.titleBranding} />
             </SubSectionTitle>
 
-            {['color_main', 'color_secondary', 'color_text'].map((colorName: TenantColors) => (
-              <ColorPickerSectionField key={colorName}>
-                <Label>
-                  <FormattedMessage {...messages[colorName]} />
-                </Label>
-                <ColorPickerInput
-                  type="text"
-                  value={get(attributesDiff, `settings.core.${colorName}`) || get(tenant, `data.attributes.settings.core.${colorName}`)}
-                  onChange={this.handleColorPickerOnChange(colorName)}
-                />
-                {contrastRatioWarning[colorName] &&
-                  <ContrastWarning
-                    text={
-                      <FormattedMessage
-                        {...messages.contrastRatioTooLow}
-                      />
-                    }
+            {['color_main', 'color_secondary', 'color_text'].map((colorName: TenantColors) => {
+              const contrastRatioOfColor = contrastRatio[colorName];
+              const contrastRatioWarningOfColor = contrastRatioWarning[colorName];
+
+              return (
+                <ColorPickerSectionField key={colorName}>
+                  <Label>
+                    <FormattedMessage {...messages[colorName]} />
+                  </Label>
+                  <ColorPickerInput
+                    type="text"
+                    value={get(attributesDiff, `settings.core.${colorName}`) || get(tenant, `data.attributes.settings.core.${colorName}`)}
+                    onChange={this.handleColorPickerOnChange(colorName)}
                   />
-                }
-              </ColorPickerSectionField>
-            ))}
+                  {contrastRatioWarningOfColor && contrastRatioOfColor &&
+                    <ContrastWarning
+                      text={
+                        <FormattedMessage
+                          {...messages.contrastRatioTooLow}
+                          values={{
+                            wcagLink: <a href="https://www.w3.org/TR/WCAG21/" target="_blank">WCAG 2.1 AA</a>,
+                            lineBreak: <br />,
+                            contrastRatio: contrastRatioOfColor.toFixed(2)
+                          }}
+                        />
+                      }
+                    />
+                  }
+                </ColorPickerSectionField>
+              );
+            })}
 
             <ColorPickerSectionField>
               <Label>
