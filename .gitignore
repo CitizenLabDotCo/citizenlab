@@ -28,3 +28,5 @@ browserstack.err
 
 cypress/videos/
 cypress/screenshots/
+
+.out/
