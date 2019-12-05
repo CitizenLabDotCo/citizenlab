@@ -35,4 +35,24 @@ namespace :setup_and_support do
 
     end
   end
+
+  desc "Delete tenants through list of hostnames"
+  task :delete_tenants, [:url] => [:environment] do |t, args|
+    logs = []
+    data.each do |host|
+      tn = Tenant.find_by host: host
+      if tn.present?
+        SideFxTenantService.new.before_destroy(tn, nil)
+        tn = tn.destroy
+        if tn.destroyed?
+          SideFxTenantService.new.after_destroy(tn, nil)
+        else
+          logs += ["Tenant #{host} could not be deleted"]
+        end
+      else
+        logs += ["Tenant #{host} not found"]
+      end
+    end
+    logs.each{|l| puts l} && true
+  end
 end
