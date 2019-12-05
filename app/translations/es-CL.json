@@ -1574,7 +1574,6 @@
   "app.containers.SearchInput.removeSearchTerm": "Eliminar término de búsqueda",
   "app.containers.SearchInput.searchAriaLabel": "Búsqueda",
   "app.containers.SearchInput.searchPlaceholder": "Búsqueda",
-  "app.containers.SearchInput.searchTerm": "Término de búsqueda: {searchTerm}",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "Ya he aceptado el {tacLink}",
   "app.containers.SignIn.createAnAccount": "Únete",
   "app.containers.SignIn.emailLabel": "Correo",
