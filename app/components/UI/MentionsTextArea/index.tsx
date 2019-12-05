@@ -82,7 +82,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
     fontWeight: '400',
     lineHeight: '24px',
     padding: '24px',
-    border: 'solid 1px #ccc',
+    border: `solid 1px ${colors.separationDark}`,
     borderRadius: '5px',
     boxShadow: 'inset 0 0 2px rgba(0, 0, 0, 0.1)',
     background: 'transparent',

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PlacesAutocomplete, { geocodeByPlaceId, } from 'react-places-autocomplete';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const LocationInputWrapper: any = styled.div`
   width: 100%;
@@ -14,14 +14,15 @@ const LocationInputWrapper: any = styled.div`
     font-weight: 400;
     padding: 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
-    border: solid 1px #ccc;
+    border: solid 1px ${colors.separationDark};
     background: #fff;
     outline: none;
     cursor: text;
 
     ::placeholder {
-      color: #aaa;
+      color: ${colors.label};
       opacity: 1;
+      font-size: ${fontSizes.base}px;
     }
 
     &:focus {

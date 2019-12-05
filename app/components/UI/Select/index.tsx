@@ -70,7 +70,11 @@ const Container = styled.div`
   }
 `;
 
-export type Props = {
+export interface DefaultProps {
+  canBeEmpty?: boolean;
+}
+
+export interface Props extends DefaultProps {
   id?: string;
   value?: IOption | string | null;
   placeholder?: string | JSX.Element | null;
@@ -79,11 +83,15 @@ export type Props = {
   onBlur?: (event: React.FocusEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
   className?: string;
-};
+}
 
-type State = {};
+interface State {}
 
 export default class Select extends PureComponent<Props, State> {
+
+  static defaultProps: DefaultProps = {
+    canBeEmpty: false
+  };
 
   handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (this.props.options) {
@@ -99,7 +107,7 @@ export default class Select extends PureComponent<Props, State> {
   }
 
   render() {
-    const { id, disabled, className, options } = this.props;
+    const { id, disabled, className, options, canBeEmpty } = this.props;
     const defaultValue = 'DEFAULT_SELECT_VALUE';
     const value = isString(this.props.value) ? this.props.value : get(this.props.value, 'value', null) as string | null;
     const selectedValue = !!(options && options.find(option => option.value === value)) ? options.find(option => option.value === value)?.value as string : defaultValue;
@@ -117,8 +125,8 @@ export default class Select extends PureComponent<Props, State> {
           <option
             value={defaultValue}
             aria-selected={selectedValue === defaultValue}
-            hidden={true}
-            disabled={true}
+            hidden={!canBeEmpty}
+            disabled={!canBeEmpty}
           />
 
           {options && options.length > 0 && options.map((option, index) => (

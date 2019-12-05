@@ -602,7 +602,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   </SectionField>
                 }
 
-                <SectionField>
+                <SectionField className="e2e-participation-context-location-allowed">
                   <Label>
                     <FormattedMessage {...messages.allowLocation} />
                     <IconTooltip content={<FormattedMessage {...messages.allowLocationTooltip} />} />
@@ -613,6 +613,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     value={true}
                     name="location_allowed"
                     id="locationd-enabled"
+                    className={`e2e-location-enabled ${location_allowed ? 'selected' : ''}`}
                     label={<FormattedMessage {...messages.enabled} />}
                   />
                   <Radio
@@ -621,6 +622,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     value={false}
                     name="location_allowed"
                     id="location-disabled"
+                    className={`e2e-location-disabled ${!location_allowed ? 'selected' : ''}`}
                     label={<FormattedMessage {...messages.disabled} />}
                   />
                   <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
