@@ -14,11 +14,20 @@ interface Props {
 }
 
 const Svg = React.memo(({ className, children, name, title, viewBox, fill, ariaHidden, height, width }: Props) => {
+  /*
+    When we have multiple icons of the same type on a page,
+    we need unique identifiers. On the profile page, there
+    were two close icons and the screen reader was confused
+    about their titles.
+  */
+  const randomNum = Math.round(Math.random() * 100);
+  const titleId = `${name}-${randomNum}`;
+
   return (
     <svg
       className={className || ''}
       role="img"
-      aria-labelledby={name}
+      aria-labelledby={titleId}
       viewBox={viewBox}
       aria-hidden={ariaHidden || false}
       fill={fill || 'none'}
@@ -26,7 +35,7 @@ const Svg = React.memo(({ className, children, name, title, viewBox, fill, ariaH
       height={height || '100%'}
       width={width}
     >
-      {title && <title id={name}>{title}</title>}
+      {title && <title id={titleId}>{title}</title>}
       {children}
     </svg>
   );
