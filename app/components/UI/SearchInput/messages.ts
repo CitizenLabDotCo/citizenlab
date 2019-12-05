@@ -14,8 +14,12 @@ export default defineMessages({
     id: 'app.containers.SearchInput.removeSearchTerm',
     defaultMessage: 'Remove search term',
   },
-  searchTerm: {
-    id: 'app.containers.SearchInput.searchTerm',
+  a11y_searchTerm: {
+    id: 'app.containers.SearchInput.a11y_searchTerm',
     defaultMessage: 'Search term: {searchTerm}',
   },
+  a11y_searchTermBlank: {
+    id: 'app.containers.SearchInput.a11y_searchTermBlank',
+    defaultMessage: 'Search term: blank',
+  }
 });
