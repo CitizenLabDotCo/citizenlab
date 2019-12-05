@@ -162,6 +162,8 @@ export default class Radio extends PureComponent<Props, State> {
           name={name}
           value={value}
           defaultChecked={checked}
+          checked={checked}
+          aria-checked={checked}
           onFocus={this.handleOnFocus}
           onBlur={this.handleOnBlur}
         />
