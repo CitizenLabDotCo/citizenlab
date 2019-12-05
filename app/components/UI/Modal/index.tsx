@@ -243,7 +243,7 @@ export type Props = {
   className?: string;
   /*
     If you don't provide a header, you can give the header/title
-    an id="modal-header". See VerificationModal component as an example
+    an id="modal-header". See VerificationMethods component for an example
   */
   header?: JSX.Element | string;
   footer?: JSX.Element;
