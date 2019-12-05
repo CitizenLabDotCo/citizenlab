@@ -38,6 +38,7 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps> {
     <CSSTransition classNames="tac" timeout={timeout} exit={true}>
       <AuthProviderButtonInner>
         <Checkbox
+          id="auth-button-terms-condition-checkbox"
           checked={accepted}
           onChange={onCheck}
           label={

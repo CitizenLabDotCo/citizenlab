@@ -139,7 +139,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
         <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
         <ShieldIcon name="verify" />
       </AboveTitle>
-      <Title>
+      <Title id="modal-header">
         <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
         {withContext ? <FormattedMessage {...messages.toParticipateInThisProject} /> : <FormattedMessage {...messages.andUnlockYourCitizenPotential} />}
       </Title>
