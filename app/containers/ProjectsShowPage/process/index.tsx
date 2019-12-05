@@ -41,6 +41,8 @@ const FirstRow = styled.div`
 `;
 
 const StyledTimeline = styled(Timeline)`
+  background: #fff;
+
   ${media.smallerThanMaxTablet`
     margin-bottom: 40px;
   `}

@@ -92,7 +92,13 @@ export interface Props {
   onChange?: {(event): void};
   currentValue?: any;
   value: any;
-  name?: string | undefined;
+  /**
+   * Name should be a string that is the same for all radios of the same radio group and unique for each radio group.
+   * E.g. if you have a poll with two questions and each question has four answers/radios,
+   * radios of each question should have the same name, but it should be different from those
+   * of the second question. See PollForm.tsx for a good example.
+   */
+  name: string | undefined;
   id?: string | undefined;
   label?: string | JSX.Element;
   disabled?: boolean;

@@ -66,7 +66,7 @@ const EventDates = styled.div`
   background: #DF3300;
 
   &.past {
-    background: #939393;
+    background: ${colors.grey};
   }
 `;
 
@@ -105,7 +105,7 @@ const EventYear = styled.div`
   background: #373737;
 
   &.past {
-    background: ${colors.label};
+    background: #555;
   }
 `;
 
@@ -114,10 +114,6 @@ const EventInformation = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 40px;
-
-  &.past {
-    opacity: 0.6;
-  }
 
   ${media.smallerThanMaxTablet`
     order: 3;

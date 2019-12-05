@@ -69,8 +69,8 @@ const DropzoneInput = styled.input``;
 
 const DropzoneContent = styled.div<{ borderRadius?: string }>`
   box-sizing: border-box;
+  border: 1px dashed ${colors.separationDark};
   border-radius: ${(props) => props.borderRadius ? props.borderRadius : props.theme.borderRadius};
-  border: 1px dashed ${colors.label};
   position: relative;
   cursor: pointer;
   background: transparent;

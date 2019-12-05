@@ -29,7 +29,7 @@ const Container: any = styled.div`
     padding: 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
     border: solid 1px;
-    border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
+    border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : colors.separationDark};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     background: #fff;
     outline: none;
