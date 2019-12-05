@@ -399,9 +399,8 @@ export default class Modal extends PureComponent<Props, State> {
               className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
               onClickOutside={this.clickOutsideModal}
               hasHeaderOrFooter={header !== undefined || footer !== undefined}
-              // aria-modal="true"
-              // role="dialog"
-              // aria-labelledby="modal-header"
+              ariaLabelledBy="modal-header"
+              isModal
             >
               <CloseButton
                 className="e2e-modal-close-button"
