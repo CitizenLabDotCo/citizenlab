@@ -16,6 +16,7 @@
   - Color warning when picking too low contrast
   - Improvements to radio buttons, checkboxes, links and buttons for keyboard accessibility
   - Default built-in pages for new tenants have a better hierarchy for screen readers
+- User posted an idea/initiative notification for admins will be in the correct language
 
 ## 2019-11-25
 
