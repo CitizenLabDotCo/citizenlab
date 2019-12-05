@@ -25,13 +25,7 @@ namespace :fix_existing_tenants do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
 
-        Group.all.map do |group|
-          [group, group.update(memberships_count: group.members.active.count)]
-        end.select do |group, fixed|
-           !fixed
-        end.each do |group, fixed|
-          puts "Failed for group #{group.id} (tenant #{tenant.host})"
-        end
+        UpdateMemberCountJob.perform_later
 
       end
     end
