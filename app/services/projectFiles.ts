@@ -34,10 +34,10 @@ export function projectFileStream(projectId: string, fileId: string, streamParam
   return streams.get<IProjectFile>({ apiEndpoint: `${apiEndpoint}/${projectId}/files/${fileId}`, ...streamParams });
 }
 
-export function addProjectFile(projectId: string, base64: string, name: string, ordering: number | null = null) {
-  return streams.add<IProjectFile>(`${apiEndpoint}/${projectId}/files`, { file: { name, ordering, file: base64 } });
+export async function addProjectFile(projectId: string, base64: string, name: string, ordering: number | null = null) {
+  return await streams.add<IProjectFile>(`${apiEndpoint}/${projectId}/files`, { file: { name, ordering, file: base64 } });
 }
 
-export function deleteProjectFile(projectId: string, fileId: string) {
-  return streams.delete(`${apiEndpoint}/${projectId}/files/${fileId}`, fileId);
+export async function deleteProjectFile(projectId: string, fileId: string) {
+  return await streams.delete(`${apiEndpoint}/${projectId}/files/${fileId}`, fileId);
 }
