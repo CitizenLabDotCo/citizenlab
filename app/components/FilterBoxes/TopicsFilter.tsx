@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 // components
 import T from 'components/T';
@@ -19,6 +19,9 @@ import { Header, Title } from './styles';
 
 // typings
 import { ITopicData } from 'services/topics';
+
+// intl
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const Container = styled.div`
   width: 100%;
@@ -80,7 +83,7 @@ interface Props {
   className?: string;
 }
 
-const TopicsFilter = memo<Props>(({ topics, selectedTopicIds, onChange, className }) => {
+const TopicsFilter = memo<Props & InjectedLocalized>(({ topics, selectedTopicIds, onChange, className, localize }) => {
 
   const handleOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
     const topicId = event.currentTarget.dataset.id as string;
@@ -100,6 +103,12 @@ const TopicsFilter = memo<Props>(({ topics, selectedTopicIds, onChange, classNam
   }, []);
 
   if (!isNilOrError(topics) && topics.length > 0) {
+    const selectedTopics = topics.filter(topic => includes(selectedTopicIds, topic.id));
+    const numberOfSelectedTopics = selectedTopics.length;
+    const selectedTopicNames = selectedTopics.map(topic => {
+      return !isNilOrError(topic) && localize(topic.attributes.title_multiloc);
+    }).join(', ');
+
     return (
       <Container className={className}>
         <Header>
@@ -121,6 +130,10 @@ const TopicsFilter = memo<Props>(({ topics, selectedTopicIds, onChange, classNam
             </Topic>
           ))}
         </Topics>
+        <ScreenReaderOnly aria-live="polite">
+          {/* Pronounces numbers of selected topics + selected topic names */}
+          <FormattedMessage {...messages.a11y_selectedTopicFilters} values={{ numberOfSelectedTopics, selectedTopicNames }} />}
+        </ScreenReaderOnly>
       </Container>
     );
   }
@@ -128,4 +141,4 @@ const TopicsFilter = memo<Props>(({ topics, selectedTopicIds, onChange, classNam
   return null;
 });
 
-export default TopicsFilter;
+export default injectLocalize(TopicsFilter);
