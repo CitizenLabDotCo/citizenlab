@@ -22,7 +22,12 @@ const EditTitleButton = styled(Button)`
 `;
 
 const NoOptionsIndicator = styled(TextCell)`
+  display: flex;
   color: ${colors.clRed};
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-right: 5px;
 `;
 
 // i18n
@@ -63,7 +68,7 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
       <GetPollOptions questionId={question.id} >
         {(options: GetPollOptionsChildProps) => !isNilOrError(options) && options.length === 0 ? (
           <NoOptionsIndicator>
-            <IconTooltip content={<FormattedMessage {...messages.noOptionsTooltip} />} />
+            <StyledIconTooltip content={<FormattedMessage {...messages.noOptionsTooltip} />} />
             <FormattedMessage {...messages.noOptions} />
           </NoOptionsIndicator>
         ) : null}

@@ -27,6 +27,11 @@ const PollContainer = styled.div`
   justify-content: center;
 `;
 
+const StyledFieldSet = styled.fieldset`
+  width: 100%;
+  border: none;
+`;
+
 const QuestionContainer = styled.div`
   background-color: white;
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05);
@@ -110,33 +115,35 @@ class PollForm extends PureComponent<Props, State> {
       <>
         <PollContainer className="e2e-poll-form">
           {questions.map((question, questionIndex) => (
-            <GetPollOptions questionId={question.id} key={question.id}>
-              {(options: GetPollOptionsChildProps) => (
-                isNilOrError(options) || options.length === 0 ? null : (
-                  <QuestionContainer className="e2e-poll-question">
-                    <Label>
-                      <QuestionNumber>
-                        {questionIndex + 1}
-                      </QuestionNumber>
-                      <QuestionText>
-                        <T value={question.attributes.title_multiloc} />
-                      </QuestionText>
-                    </Label>
-                    {options.map((option) => (
-                      <StyledRadio
-                        className="e2e-poll-option"
-                        key={option.id}
-                        onChange={this.changeAnswer(question.id, option.id)}
-                        currentValue={answers[question.id]}
-                        value={option.id}
-                        name={question.id}
-                        id={option.id}
-                        label={<T value={option.attributes.title_multiloc} />}
-                      />
-                    ))}
-                  </QuestionContainer>
-                ))}
-            </GetPollOptions>
+            <StyledFieldSet key={question.id}>
+              <GetPollOptions questionId={question.id}>
+                {(options: GetPollOptionsChildProps) => (
+                  isNilOrError(options) || options.length === 0 ? null : (
+                    <QuestionContainer className="e2e-poll-question">
+                      <Label>
+                        <QuestionNumber>
+                          {questionIndex + 1}
+                        </QuestionNumber>
+                        <QuestionText>
+                          <T value={question.attributes.title_multiloc} />
+                        </QuestionText>
+                      </Label>
+                      {options.map((option) => (
+                        <StyledRadio
+                          className="e2e-poll-option"
+                          key={option.id}
+                          onChange={this.changeAnswer(question.id, option.id)}
+                          currentValue={answers[question.id]}
+                          value={option.id}
+                          name={question.id}
+                          id={option.id}
+                          label={<T value={option.attributes.title_multiloc} />}
+                        />
+                      ))}
+                    </QuestionContainer>
+                  ))}
+              </GetPollOptions>
+            </StyledFieldSet>
           ))}
         </PollContainer>
         <Button

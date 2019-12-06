@@ -30,15 +30,15 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 // style
 import styled, { css } from 'styled-components';
 import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { darken, rgba } from 'polished';
 
 // typings
 import { Locale } from 'typings';
 
 const padding = 30;
 const mobilePadding = 15;
-const greyTransparent = 'rgba(116, 116, 116, 0.3)';
 const greyOpaque = `${colors.label}`;
-const greenTransparent = 'rgba(4, 136, 76, 0.3)';
+const greenTransparent = `${rgba(colors.clGreen, 0.15)}`;
 const greenOpaque = `${colors.clGreen}`;
 
 const Container = styled.div`
@@ -273,13 +273,13 @@ const phaseBarHeight = '25px';
 const PhaseBar: any = styled.button`
   width: 100%;
   height: calc( ${phaseBarHeight} - 1px );
-  color: #fff;
+  color: ${greyOpaque};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${greyTransparent};
+  background: ${colors.lightGreyishBlue};
   transition: background 60ms ease-out;
   position: relative;
   cursor: pointer;
@@ -305,7 +305,7 @@ const PhaseArrow = styled(Icon)`
 `;
 
 const PhaseText: any = styled.div`
-  color: ${greyTransparent};
+  color: ${greyOpaque};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-align: center;
@@ -323,17 +323,28 @@ const PhaseText: any = styled.div`
 `;
 
 const selectedPhaseBar = css`
-  ${PhaseBar} { background: ${greyOpaque}; }
+  ${PhaseBar} {
+    background: ${greyOpaque};
+    color: #fff
+  }
   ${PhaseText} { color: ${greyOpaque}; }
 `;
 
 const currentPhaseBar = css`
-  ${PhaseBar} { background: ${greenTransparent}; }
-  ${PhaseText} { color: ${greenTransparent}; }
+  ${PhaseBar} {
+    background: ${greenTransparent};
+    color: ${darken(0.04, greenOpaque)};
+  }
+  ${PhaseText} {
+    color: ${darken(0.04, greenOpaque)};
+  }
 `;
 
 const currentSelectedPhaseBar = css`
-  ${PhaseBar} { background: ${greenOpaque}; }
+  ${PhaseBar} {
+    background: ${greenOpaque};
+    color: #fff;
+  }
   ${PhaseText} { color: ${greenOpaque}; }
 `;
 

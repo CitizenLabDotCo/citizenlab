@@ -39,7 +39,7 @@ const Left = styled.div`
   display: flex;
 `;
 
-const Center = styled.div`
+const Center = styled.h1`
   flex: 1;
   display: flex;
   align-items: center;
@@ -96,7 +96,7 @@ const TopBar = memo<Props>(({ onClose, onReset, className }) => {
       <TopBarInner>
         <Left>
           <CloseButton onClick={onClose}>
-            <CloseIcon name="close" />
+            <CloseIcon title={<FormattedMessage {...messages.a11y_closeFilterPanel} />} name="close" />
           </CloseButton>
         </Left>
         <Center>
