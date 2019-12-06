@@ -202,6 +202,7 @@ export interface InputProps {
   id: string;
   inAdmin?: boolean;
   hasError?: boolean;
+  labelId?: string;
 }
 export interface QuillProps {
   onChange?: (string) => void;
@@ -265,6 +266,12 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
   modules: ModulesConfig;
   formats: string[];
   toolbar: JSX.Element | null;
+  quillRef: any;
+
+  componentDidMount() {
+    const { labelId } = this.props;
+    labelId && this.quillRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-labelledby', labelId);
+  }
 
   constructor(props) {
     super(props);
@@ -276,6 +283,7 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
     this.modules = this.getModuleConfig(props);
     this.formats = this.getFormats(props);
     this.toolbar = this.computeToolbar(props);
+    this.quillRef = React.createRef();
   }
 
   componentDidUpdate(prevProps) {
@@ -536,6 +544,7 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
         remove={formatMessage(messages.remove)}
         onFocus={this.handleOnFocus}
         onBlur={this.handleOnBlur}
+        ref={this.quillRef}
       >
         {this.toolbar}
         <ReactQuill

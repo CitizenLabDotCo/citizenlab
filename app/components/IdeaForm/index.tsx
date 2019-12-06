@@ -435,7 +435,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           </FormElement>
 
           <FormElement id="e2e-idea-description-input">
-            <FormLabel labelMessage={messages.descriptionLabel} htmlFor="editor" />
+            <FormLabel labelMessage={messages.descriptionLabel} id="editor-label" />
             <QuillEditor
               id="editor"
               noImages={true}
@@ -444,6 +444,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               onChange={this.handleDescriptionOnChange}
               setRef={this.handleDescriptionSetRef}
               hasError={descriptionError !== null}
+              labelId="editor-label"
             />
             {descriptionError && <Error text={descriptionError} />}
           </FormElement>
