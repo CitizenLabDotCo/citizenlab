@@ -1868,7 +1868,6 @@
   "containers.SiteMap.signInPage": "Sign in",
   "containers.SiteMap.signUpPage": "Sign up",
   "containers.SiteMap.siteMapDescription": "From this page, you can navigate to any content on the platform.",
-  "containers.SiteMap.siteMapTitle": "Participation platform of {orgName}'s site map",
   "containers.SiteMap.successStories": "Success Stories",
   "containers.SiteMap.termsAndConditionsLink": "Terms and Conditions",
   "containers.SiteMap.timeline": "Project phases",
