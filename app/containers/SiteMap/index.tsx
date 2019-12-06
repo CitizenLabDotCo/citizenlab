@@ -69,7 +69,7 @@ const Title = styled.h1`
 
 const Nav = styled.nav`
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 20px;
   margin-bottom: 30px;
 `;
 
