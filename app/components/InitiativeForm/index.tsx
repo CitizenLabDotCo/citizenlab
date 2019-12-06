@@ -249,7 +249,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.descriptionLabel}
               subtextMessage={messages.descriptionLabelSubtext}
-            >
+              id="description-label-id"
+            />
               <QuillMultiloc
                 id="body"
                 selectedLocale={locale}
@@ -258,12 +259,12 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 noVideos
                 noAlign
                 onBlur={this.onBlur('body_multiloc')}
+                labelId="description-label-id"
               />
               {touched.body_multiloc
                 && errors.body_multiloc ? <Error message={errors.body_multiloc.message} />
                 : apiErrors && apiErrors.body_multiloc && <Error apiErrors={apiErrors.body_multiloc} />
               }
-            </FormLabel>
           </SectionField>
         </FormSection>
 
