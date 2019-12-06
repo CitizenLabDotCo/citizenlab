@@ -509,7 +509,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
   }
 
   save = async (participationContextConfig: IParticipationContextConfig | null = null) => {
-    if (this.validate()) {
+    if (this.validate() && !this.state.processing) {
       const { formatMessage } = this.props.intl;
       const { project, projectImages, projectImagesToRemove, projectFiles, projectFilesToRemove } = this.state;
       const projectAttributesDiff: IUpdatedProjectProperties = {
