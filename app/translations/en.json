@@ -1591,7 +1591,6 @@
   "app.containers.SignUp.emailPlaceholder": " ",
   "app.containers.SignUp.firstNamesLabel": "First name",
   "app.containers.SignUp.firstNamesPlaceholder": " ",
-  "app.containers.SignUp.gdprApproval": "By checking this box you agree with our {tacLink} and our {ppLink}",
   "app.containers.SignUp.lastNameLabel": "Last name",
   "app.containers.SignUp.lastNamePlaceholder": " ",
   "app.containers.SignUp.logIn": "Log in",
