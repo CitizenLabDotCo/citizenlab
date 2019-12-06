@@ -37,8 +37,9 @@ namespace :setup_and_support do
   end
 
   desc "Delete tenants through list of hostnames"
-  task :delete_tenants, [:url] => [:environment] do |t, args|
+  task :delete_tenants_sidefx, [:url] => [:environment] do |t, args|
     logs = []
+    data = open(args[:url]).readlines.map(&:strip)
     data.each do |host|
       tn = Tenant.find_by host: host
       if tn.present?
