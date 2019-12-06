@@ -582,6 +582,19 @@ const icons = {
       </g >
     </Svg>
   ),
+  moderation: (props: IconProps) => (
+    <Svg {...props} className={`cl-icon ${props.className ? props.className : ''}`}  viewBox="0 0 45 45">
+      <defs>
+        <clipPath id="a" clipPathUnits="userSpaceOnUse">
+          <path d="M198.958 198.958h1375v1375h-1375z" clip-rule="evenodd"/>
+        </clipPath>
+      </defs>
+      <g>
+        <path className="cl-icon-primary" fill={props.theme.clIconPrimary} d="M14.025 9.317a.471.471 0 00-.443.31l-5.65 15.537-.028.161v9.417c0 .52.421.941.942.941h27.308c.52 0 .942-.421.942-.941v-9.418l-.028-.16-5.65-15.538a.471.471 0 00-.443-.31zm.33.941h16.29l5.308 14.596h-8.745c-.26 0-.47.211-.47.471v2.825h-8.476v-2.825c0-.26-.21-.47-.47-.47H9.047z"/>
+        <path className="cl-icon-accent" fill={props.theme.clIconAccent} d="M27.208 14.025a.47.47 0 00-.333.138l-6.258 6.259-2.492-2.492a.47.47 0 10-.666.665l2.825 2.825a.47.47 0 00.666 0l6.591-6.591a.47.47 0 00-.333-.804z"/>
+      </g>
+    </Svg>
+  ),
   users: (props: IconProps) => (
     <Svg {...props} className={`cl-icon ${props.className ? props.className : ''}`} width="28" height="28" viewBox="0 0 28 28">
       <g className="Users-icon">
