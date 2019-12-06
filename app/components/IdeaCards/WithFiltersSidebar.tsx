@@ -32,7 +32,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
@@ -493,16 +493,29 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
+    const filtersActive = selectedIdeaFilters.search ||
+      selectedIdeaFilters.idea_status ||
+      selectedIdeaFilters.areas ||
+      selectedIdeaFilters.topics;
 
     const filtersSidebar = (
-      <FiltersSidebarContainer className={className} aria-live="polite">
-        {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
+      <FiltersSidebarContainer className={className}>
+        {filtersActive &&
           <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnResetAndApply}>
             <ClearFiltersText>
               <FormattedMessage {...messages.resetFilters} />
             </ClearFiltersText>
           </ClearFiltersButton>
         }
+
+        <ScreenReaderOnly aria-live="polite">
+          {ideasFilterCounts &&
+            <FormattedMessage
+              {...messages.a11y_totalIdeas}
+              values={{ ideasCount: ideasFilterCounts.total }}
+            />
+          }
+        </ScreenReaderOnly>
 
         <StyledSearchInput
           placeholder={this.searchPlaceholder}
@@ -572,6 +585,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   style="secondary-outlined"
                   onClick={this.openFiltersModal}
                   icon="filter"
+                  iconAriaHidden
                   text={this.filterMessage}
                   borderColor="#ccc"
                   borderHoverColor="#999"
@@ -651,7 +665,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 {!querying && !hasIdeas &&
                   <EmptyContainer id="ideas-empty">
                     <EmptyContainerInner>
-                      <IdeaIcon name="idea" />
+                      <IdeaIcon name="idea" ariaHidden />
                       <EmptyMessage>
                         <EmptyMessageMainLine><FormattedMessage {...messages.noIdeasForFilter} /></EmptyMessageMainLine>
                         <EmptyMessageSubLine><FormattedMessage {...messages.tryOtherFilter} /></EmptyMessageSubLine>

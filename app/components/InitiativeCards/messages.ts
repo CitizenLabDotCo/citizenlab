@@ -69,4 +69,8 @@ export default defineMessages({
     id: 'app.components.InitiativeCards.tryOtherFilter',
     defaultMessage: "Try adjusting your search or filter to find what you're looking for",
   },
+  a11y_totalInitiatives: {
+    id: 'app.containers.IdeaCards.a11y_totalInitiatives',
+    defaultMessage: 'Total initiatives: {initiativeCount}',
+  }
 });
