@@ -271,6 +271,8 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
   componentDidMount() {
     const { labelId } = this.props;
     labelId && this.quillRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-labelledby', labelId);
+    labelId && this.quillRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-multiline', 'true');
+    labelId && this.quillRef.current.getElementsByClassName('ql-editor')[0].setAttribute('role', 'textbox');
   }
 
   constructor(props) {
