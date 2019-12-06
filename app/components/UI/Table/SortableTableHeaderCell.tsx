@@ -30,23 +30,19 @@ interface Props {
   value: string | JSX.Element;
   sorted: 'ascending' | 'descending' | null;
   onClick: () => void;
+  className?: string;
 }
 
 interface State {}
 
 export default class SortableTableHeaderCell extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-  }
-
-  onClick = (event: React.MouseEvent<any>) => {
+  onClick = (event: React.MouseEvent) => {
     event.preventDefault();
     this.props.onClick();
   }
 
   render() {
-    const { value, sorted } = this.props;
-    const className = this.props['className'];
+    const { value, sorted, className } = this.props;
 
     return (
       <Container className={`${className ? className : ''} ${sorted ? 'active' : ''}`} onClick={this.onClick}>
