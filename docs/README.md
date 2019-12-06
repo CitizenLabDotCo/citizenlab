@@ -1,5 +1,16 @@
 # Changelog
 
+## 2019-12-06
+
+### Fixed
+
+- Accessibility improvements:
+  - Polls
+  - Idea/initiative filter boxes
+- Uploading a file in admin project page now shows the loading spinner when in progress
+- Fixed English copy in notifications when other language selected
+- Fixed project copy in Admin HQ not being saved
+
 ## 2019-12-05
 
 ### Fixed
