@@ -1,5 +1,34 @@
 # Changelog
 
+## 2019-12-06
+
+### Fixed
+
+- Accessibility improvements:
+  - Polls
+  - Idea/initiative filter boxes
+- Uploading a file in admin project page now shows the loading spinner when in progress
+- Fixed English copy in notifications when other language selected
+- Fixed project copy in Admin HQ not being saved
+
+## 2019-12-05
+
+### Fixed
+
+- Small popups (popovers) no longer go off-screen on smaller screens
+- Tooltips are no longer occluded by the checkbox in the idea manager
+- The info icon on the initiatives voting box has improved alignment
+- Project templates now display when there's only `en` is configured as a tenant locale
+- When changing the lifecycle stage of a tenant, the update is now sent right away to segment
+- When users accept an inivitation and are in a group, the group count is correctly updated
+- Dropdowns in the registration flow can again support empty values
+- Accessibility:
+  - Various color changes to improve color contrasts
+  - Color warning when picking too low contrast
+  - Improvements to radio buttons, checkboxes, links and buttons for keyboard accessibility
+  - Default built-in pages for new tenants have a better hierarchy for screen readers
+- User posted an idea/initiative notification for admins will be in the correct language
+
 ## 2019-11-25
 
 ### Changed
