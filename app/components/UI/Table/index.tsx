@@ -22,6 +22,7 @@ const StyledTable: any = styled.table`
         color: ${colors.label};
         font-size: ${fontSizes.small}px;
         font-weight: 600;
+        text-align: left;
         text-transform: uppercase;
         line-height: 20px;
         padding-top: 0px;
@@ -54,6 +55,7 @@ const StyledTable: any = styled.table`
         font-size: ${fontSizes.small}px;
         font-weight: 400;
         line-height: 20px;
+        text-align: left;
         padding-top: 6px;
         padding-bottom: 6px;
 

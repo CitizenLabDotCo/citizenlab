@@ -51,6 +51,7 @@ const RightColumn = styled.div`
     padding: 0;
     max-width: none;
   }
+
   @media print {
     padding: 0;
     max-width: none,
@@ -61,7 +62,9 @@ const RightColumn = styled.div`
   `}
 `;
 
-type Props = {};
+type Props = {
+  className?: string;
+};
 
 type State = {
   adminFullWidth: boolean;
@@ -98,12 +101,12 @@ class AdminPage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, className } = this.props;
     const { adminFullWidth, adminNoPadding } = this.state;
 
     return (
       <>
-        <Container className={this.props['className']}>
+        <Container className={className}>
           <Sidebar />
           <RightColumn className={`${adminFullWidth && 'fullWidth'} ${adminNoPadding && 'noPadding'}`}>
             {children}

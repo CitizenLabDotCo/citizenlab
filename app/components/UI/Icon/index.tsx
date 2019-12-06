@@ -586,7 +586,7 @@ const icons = {
     <Svg {...props} className={`cl-icon ${props.className ? props.className : ''}`}  viewBox="0 0 45 45">
       <defs>
         <clipPath id="a" clipPathUnits="userSpaceOnUse">
-          <path d="M198.958 198.958h1375v1375h-1375z" clip-rule="evenodd"/>
+          <path d="M198.958 198.958h1375v1375h-1375z" clipRule="evenodd"/>
         </clipPath>
       </defs>
       <g>
