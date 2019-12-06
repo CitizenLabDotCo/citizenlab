@@ -56,6 +56,7 @@ const TooltipIcon = styled(Icon)<{ iconColor: string | undefined, iconHoverColor
 `;
 
 interface Props {
+  className?: string;
   content: ReactChild;
   icon?: IconNames;
   placement?: 'auto-start' | 'auto' | 'auto-end' | 'top-start' | 'top' | 'top-end' | 'right-start' | 'right' | 'right-end' | 'bottom-end' | 'bottom' | 'bottom-start' | 'left-end' | 'left' | 'left-start';
@@ -66,7 +67,18 @@ interface Props {
   iconAriaTitle?: string;
 }
 
-const IconTooltip = memo<Props>(({ content, icon, placement, theme, iconColor, iconHoverColor, maxTooltipWidth, iconAriaTitle }) => (
+const IconTooltip = memo<Props>((
+  {
+    content,
+    icon,
+    placement,
+    theme,
+    iconColor,
+    iconHoverColor,
+    maxTooltipWidth,
+    iconAriaTitle,
+    className
+  }) => (
   <Tippy
     interactive={true}
     placement={placement || 'right-end'}
@@ -80,7 +92,7 @@ const IconTooltip = memo<Props>(({ content, icon, placement, theme, iconColor, i
   >
     <TooltipIconButton
       type="button"
-      className="tooltip-icon"
+      className={`${className || ''} tooltip-icon`}
       aria-describedby="tooltip-content"
     >
       <TooltipIcon

@@ -352,7 +352,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
 
         {!querying && !hasIdeas && !showMapView &&
           <EmptyContainer id="ideas-empty">
-            <IdeaIcon name="idea" />
+            <IdeaIcon ariaHidden name="idea" />
             <EmptyMessage>
               <EmptyMessageLine>
                 <FormattedMessage {...messages.empty} />

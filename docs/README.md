@@ -1,5 +1,16 @@
 # Changelog
 
+## 2019-12-06
+
+### Fixed
+
+- Accessibility improvements:
+  - Polls
+  - Idea/initiative filter boxes
+- Uploading a file in admin project page now shows the loading spinner when in progress
+- Fixed English copy in notifications when other language selected
+- Fixed project copy in Admin HQ not being saved
+
 ## 2019-12-05
 
 ### Fixed
@@ -16,6 +27,7 @@
   - Color warning when picking too low contrast
   - Improvements to radio buttons, checkboxes, links and buttons for keyboard accessibility
   - Default built-in pages for new tenants have a better hierarchy for screen readers
+- User posted an idea/initiative notification for admins will be in the correct language
 
 ## 2019-11-25
 
