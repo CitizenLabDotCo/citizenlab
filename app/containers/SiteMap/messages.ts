@@ -11,7 +11,7 @@ export default defineMessages({
   },
   homeSection: {
     id: 'containers.SiteMap.homeSection',
-    defaultMessage: 'Participation platform of {orgName} home',
+    defaultMessage: 'General',
   },
   pageContents: {
     id: 'containers.SiteMap.pageContents',
@@ -35,7 +35,7 @@ export default defineMessages({
   },
   projectsSection: {
     id: 'containers.SiteMap.projectsSection',
-    defaultMessage: 'All projects of {orgName}',
+    defaultMessage: 'Projects of {orgName}',
   },
   projectsCurrent: {
     id: 'containers.SiteMap.projectsCurrent',
@@ -108,5 +108,13 @@ export default defineMessages({
   profileSettings: {
     id: 'containers.SiteMap.profileSettings',
     defaultMessage: 'Your settings',
+  },
+  homePage: {
+    id: 'containers.SiteMap.homePage',
+    defaultMessage: 'Home page',
+  },
+  allProjects: {
+    id: 'containers.SiteMap.allProjects',
+    defaultMessage: 'All projects',
   },
 });

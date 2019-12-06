@@ -1,6 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
 
 import { H2, H3 } from './';
 import Project from './Project';
@@ -11,6 +12,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+
+const AllProjectsLink = styled(Link)`
+  display: block;
+  margin-bottom: 20px;
+`;
 
 interface InputProps {
   projectsSectionRef: any;
@@ -43,11 +49,12 @@ const ProjectsSection = ({ projects, projectsSectionRef, archivedSectionRef, cur
 
     return (
       <>
-        <Link to="/projects" id="projects-section">
-          <H2 ref={projectsSectionRef}>
-            <FormattedMessage {...messages.projectsSection} />
-          </H2>
-        </Link>
+        <H2 ref={projectsSectionRef}>
+          <FormattedMessage {...messages.projectsSection} />
+        </H2>
+        <AllProjectsLink to="/projects" id="projects-section">
+          <FormattedMessage {...messages.allProjects} />
+        </AllProjectsLink>
         {publishedProjects.length > 0 && (
           <>
             {severalProjectTypes && (
