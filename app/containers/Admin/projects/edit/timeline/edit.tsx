@@ -9,6 +9,8 @@ import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import moment, { Moment } from 'moment';
 import { get, isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
+import { adopt } from 'react-adopt';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // Services
 import { localeStream } from 'services/locale';
@@ -44,6 +46,9 @@ import { fontSizes } from 'utils/styleUtils';
 import { CLError, Locale, UploadFile, Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
+// Resources
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+
 const PhaseForm = styled.form`
   .DateRangePickerInput {
     border-radius: ${(props: any) => props.theme.borderRadius};
@@ -75,10 +80,13 @@ interface IParams {
   id: string | null;
 }
 
-interface DataProps {}
+interface DataProps {
+  phases: GetPhasesChildProps;
+}
 
-interface Props extends DataProps {
-  params: IParams;
+interface InputProps {}
+
+interface Props extends DataProps, InputProps {
 }
 
 interface State {
@@ -96,7 +104,7 @@ interface State {
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
-class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, State> {
+class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   params$: BehaviorSubject<IParams | null>;
   subscriptions: Subscription[];
 
@@ -338,16 +346,18 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
 
     if (loaded) {
       const { formatMessage } = this.props.intl;
-      const { errors,  phase, attributeDiff, saving, phaseFiles, submitState } = this.state;
-      const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
+      const { errors, phase: phaseBeingEdited, attributeDiff, saving, phaseFiles, submitState } = this.state;
+      const { phases } = this.props;
+      const phaseAttrs = (phaseBeingEdited ? { ...phaseBeingEdited.data.attributes, ...attributeDiff } : { ...attributeDiff });
       const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
       const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null);
+      const phaseIndex = !isNilOrError(phases) && phaseBeingEdited ? phases.find(phase => phase.id === phaseBeingEdited.data.id) : null;
 
       return (
         <>
           <SectionTitle>
-            {phase && <FormattedMessage {...messages.editPhaseTitle} />}
-            {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
+            {phaseBeingEdited && <FormattedMessage {...messages.editPhaseTitle} />}
+            {!phaseBeingEdited && <FormattedMessage {...messages.newPhaseTitle} />}
           </SectionTitle>
 
           <PhaseForm onSubmit={this.handleOnSubmit}>
@@ -365,7 +375,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
 
               <SectionField>
                 <ParticipationContext
-                  phaseId={(phase ? phase.data.id : null)}
+                  phaseId={(phaseBeingEdited ? phaseBeingEdited.data.id : null)}
                   onSubmit={this.handleParcticipationContextOnSubmit}
                   onChange={this.handleParticipationContextOnChange}
                   apiErrors={errors}
@@ -443,4 +453,14 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
   }
 }
 
-export default injectIntl<Props>(AdminProjectTimelineEdit);
+const AdminProjectTimelineEditWithHOCs = injectIntl<Props>(AdminProjectTimelineEdit);
+
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  phases: ({ params, render }) => <GetPhases projectId={params.projectId}>{render}</GetPhases>
+});
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <AdminProjectTimelineEditWithHOCs {...dataProps} {...inputProps} />}
+  </Data>
+));
