@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   siteMapTitle: {
     id: 'containers.SiteMap.siteMapTitle',
-    defaultMessage: 'Participation platform of {orgName}\'s site map',
+    defaultMessage: 'Site map of the participation platform of {orgName}',
   },
   siteMapDescription: {
     id: 'containers.SiteMap.siteMapDescription',
