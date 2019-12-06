@@ -75,6 +75,13 @@ export const H3 = styled.h3``;
 
 export const H4 = styled.h4``;
 
+const NavItem = styled.button`
+  cursor: pointer;
+  &:focus, &:hover {
+    text-decoration: underline;
+  }
+`;
+
 interface DataProps {
   projects: GetProjectsChildProps;
   tenant: GetTenantChildProps;
@@ -86,7 +93,14 @@ interface Props extends DataProps { }
 const SiteMap = ({ projects, tenant, authUser }: Props) => {
   const loaded = projects !== undefined;
   const successStories = !isNilOrError(tenant) ? tenant.attributes.settings ?.initiatives ?.success_stories : [];
-  const scrollTo = component => () => scrollToComponent(component.current, { align: 'top', offset: -90, duration: 300 });
+  const scrollTo = component => () => {
+    scrollToComponent(component.current, { align: 'top', offset: -90, duration: 300 });
+  };
+
+  const removeFocus = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+  };
+
   const homeSection = useRef(null);
   const projectsSection = useRef(null);
   const archivedSection = useRef(null);
@@ -118,40 +132,58 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 </Header>
                 <ul>
                   <li>
-                    <a onClick={scrollTo(homeSection)} role="button">
+                    <NavItem
+                      onMouseDown={removeFocus}
+                      onClick={scrollTo(homeSection)}
+                    >
                       <FormattedMessage {...messages.homeSection} />
-                    </a>
+                    </NavItem>
                   </li>
                   <li>
-                    <a onClick={scrollTo(userSpaceSection)} role="button">
+                    <NavItem
+                      onMouseDown={removeFocus}
+                      onClick={scrollTo(userSpaceSection)}
+                    >
                       <FormattedMessage {...messages.userSpaceSection} />
-                    </a>
+                    </NavItem>
                   </li>
                   {!isNilOrError(projects) && <li>
-                    <a onClick={scrollTo(projectsSection)} role="button">
+                    <NavItem
+                      onMouseDown={removeFocus}
+                      onClick={scrollTo(projectsSection)}
+                    >
                       <FormattedMessage {...messages.projectsSection} />
-                    </a>
+                    </NavItem>
                     {hasProjectSubsection &&
                       <ul>
                         {currentSection.current && (
                           <li>
-                            <a onClick={scrollTo(currentSection)} role="button">
+                            <NavItem
+                              onMouseDown={removeFocus}
+                              onClick={scrollTo(currentSection)}
+                            >
                               <FormattedMessage {...messages.projectsCurrent} />
-                            </a>
+                            </NavItem>
                           </li>
                         )}
                         {archivedSection.current && (
                           <li>
-                            <a onClick={scrollTo(archivedSection)} role="button">
+                            <NavItem
+                              onMouseDown={removeFocus}
+                              onClick={scrollTo(archivedSection)}
+                            >
                               <FormattedMessage {...messages.projectsArchived} />
-                            </a>
+                            </NavItem>
                           </li>
                         )}
                         {draftSection.current && (
                           <li>
-                            <a onClick={scrollTo(draftSection)} role="button">
+                            <NavItem
+                              onMouseDown={removeFocus}
+                              onClick={scrollTo(draftSection)}
+                            >
                               <FormattedMessage {...messages.projectsDraft} />
-                            </a>
+                            </NavItem>
                           </li>
                         )}
                       </ul>
@@ -160,9 +192,12 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                   }
                   <FeatureFlag name="initiatives">
                     <li>
-                      <a onClick={scrollTo(initiativesSection)} role="button">
+                      <NavItem
+                        onMouseDown={removeFocus}
+                        onClick={scrollTo(initiativesSection)}
+                      >
                         <FormattedMessage {...messages.initiativesSection} />
-                      </a>
+                      </NavItem>
                     </li>
                   </FeatureFlag>
                 </ul>
@@ -196,11 +231,9 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 </li>
               </ul>
 
-              <Link to="/">
-                <H2 ref={userSpaceSection}>
-                  <FormattedMessage {...messages.userSpaceSection} />
-                </H2>
-              </Link>
+              <H2 ref={userSpaceSection}>
+                <FormattedMessage {...messages.userSpaceSection} />
+              </H2>
               <ul>
                 {isNilOrError(authUser) ? (
                   <>
@@ -245,7 +278,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 </Link>
                 <ul>
                   <li>
-                    <Link to="pages/initiatives">
+                    <Link to="/pages/initiatives">
                       <FormattedMessage {...messages.initiativesInfo} />
                     </Link>
                   </li>
