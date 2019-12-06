@@ -19,7 +19,7 @@ import Link from 'utils/cl-router/Link';
 
 // styles
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
@@ -63,17 +63,41 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const Title = styled.h1``;
+const Title = styled.h1`
+  margin-bottom: 30px;
+`;
 
-const Nav = styled.nav``;
+const Nav = styled.nav`
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 30px;
+`;
 
-const Header = styled.header``;
+const Ul = styled.ul`
+  list-style-type: initial;
+  margin-bottom: 0 !important;
+`;
 
-export const H2 = styled.h2``;
+const ProjectsSubsectionUl = styled.ul`
+  list-style-type: circle;
+  margin-bottom: 0 !important;
+`;
 
-export const H3 = styled.h3``;
+const Header = styled.header`
+  font-weight: bold;
+`;
 
-export const H4 = styled.h4``;
+export const H2 = styled.h2`
+  font-size: ${fontSizes.xxl}px !important;
+`;
+
+export const H3 = styled.h3`
+  font-size: ${fontSizes.xl}px !important;
+`;
+
+export const H4 = styled.h4`
+  font-size: ${fontSizes.large}px !important;
+`;
 
 const NavItem = styled.button`
   cursor: pointer;
@@ -130,7 +154,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 <Header id="nav-header">
                   <FormattedMessage {...messages.pageContents} />
                 </Header>
-                <ul>
+                <Ul>
                   <li>
                     <NavItem
                       onMouseDown={removeFocus}
@@ -155,7 +179,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                       <FormattedMessage {...messages.projectsSection} />
                     </NavItem>
                     {hasProjectSubsection &&
-                      <ul>
+                      <ProjectsSubsectionUl>
                         {currentSection.current && (
                           <li>
                             <NavItem
@@ -186,7 +210,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                             </NavItem>
                           </li>
                         )}
-                      </ul>
+                      </ProjectsSubsectionUl>
                     }
                   </li>
                   }
@@ -200,15 +224,18 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                       </NavItem>
                     </li>
                   </FeatureFlag>
-                </ul>
+                </Ul>
               </Nav>
 
-              <Link to="/">
-                <H2 ref={homeSection}>
-                  <FormattedMessage {...messages.homeSection} />
-                </H2>
-              </Link>
+              <H2 ref={homeSection}>
+                <FormattedMessage {...messages.homeSection} />
+              </H2>
               <ul>
+                <li>
+                  <Link to="/">
+                    <FormattedMessage {...messages.homePage} />
+                  </Link>
+                </li>
                 <li>
                   <Link to="/pages/information">
                     <FormattedMessage {...messages.aboutLink} />
@@ -271,12 +298,15 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 draftSectionRef={draftSection}
               />
               <FeatureFlag name="initiatives">
-                <Link to="/initiatives" id="initiatives">
-                  <H2 ref={initiativesSection}>
-                    <FormattedMessage {...messages.initiativesSection} />
-                  </H2>
-                </Link>
-                <ul>
+                <H2 ref={initiativesSection}>
+                  <FormattedMessage {...messages.initiativesSection} />
+                </H2>
+                <Ul>
+                  <li>
+                    <Link to="/initiatives">
+                      <FormattedMessage {...messages.initiativesList} />
+                    </Link>
+                  </li>
                   <li>
                     <Link to="/pages/initiatives">
                       <FormattedMessage {...messages.initiativesInfo} />
@@ -294,12 +324,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                       </ul>
                     </li>
                   )}
-                  <li>
-                    <Link to="/initiatives">
-                      <FormattedMessage {...messages.initiativesList} />
-                    </Link>
-                  </li>
-                </ul>
+                </Ul>
               </FeatureFlag>
             </QuillEditedContent>
           </StyledContentContainer>
