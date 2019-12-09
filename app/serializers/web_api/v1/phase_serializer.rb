@@ -1,7 +1,7 @@
 class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   include WebApi::V1::ParticipationContextSerializer
 
-  attributes :title_multiloc, :description_multiloc, :start_at, :end_at, :created_at, :updated_at
+  attributes :title_multiloc, :description_multiloc, :start_at, :end_at, :created_at, :updated_at, :location_allowed
   
   belongs_to :project
 
