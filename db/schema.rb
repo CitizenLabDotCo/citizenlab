@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_14_092523) do
+ActiveRecord::Schema.define(version: 2019_12_09_183623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -596,6 +596,8 @@ ActiveRecord::Schema.define(version: 2019_11_14_092523) do
     t.integer "ordering"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "question_type", default: "single_option", null: false
+    t.integer "max_options"
     t.index ["participation_context_type", "participation_context_id"], name: "index_poll_questions_on_participation_context"
   end
 
