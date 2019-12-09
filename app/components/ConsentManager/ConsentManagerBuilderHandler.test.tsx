@@ -261,7 +261,7 @@ describe('<ConsentManagerBuilderHandler />', () => {
                 advertising: false,
                 analytics: true,
                 functional: false,
-                tenantBlacklisted: ['Intercom', 'Satismeter']
+                tenantBlacklisted: ['Intercom', 'SatisMeter']
               }
             }}
           />

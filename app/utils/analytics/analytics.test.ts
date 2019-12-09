@@ -55,7 +55,7 @@ describe('trackIdentification', () => {
           integrations: {
             All: true,
             Intercom: false,
-            Satismeter: false,
+            SatisMeter: false,
           }
         }
       );
@@ -75,7 +75,7 @@ describe('trackIdentification', () => {
         {
           integrations: {
             Intercom: false,
-            Satismeter: false
+            SatisMeter: false
           }
         }
       );
@@ -109,7 +109,7 @@ describe('trackEvent', () => {
       {
         integrations: {
           Intercom: false,
-          Satismeter: false,
+          SatisMeter: false,
         }
       }
     );
@@ -137,7 +137,7 @@ describe('trackPage', () => {
       {
         integrations: {
           Intercom: false,
-          Satismeter: false,
+          SatisMeter: false,
         }
       }
     );

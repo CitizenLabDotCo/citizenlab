@@ -14,7 +14,7 @@ import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES, MARKETING_AND_ANALYTICS_
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
-export const adminIntegrations = ['Intercom', 'Satismeter'];
+export const adminIntegrations = ['Intercom', 'SatisMeter'];
 
 // the format in which sentry sends out destinations
 export interface IDestination {
