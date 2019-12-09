@@ -345,12 +345,13 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
     const { phase, attributeDiff } = this.state;
     const { phases } = this.props;
     const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
-    const previousPhase = phases && phases[phases.length - 1];
-    const previousPhaseEndDate = previousPhase ? moment(previousPhase.attributes.end_at) : null;
     let startDate: Moment | null = null;
 
     // If this is a new phase
     if (!phase) {
+      const previousPhase = phases && phases[phases.length - 1];
+      const previousPhaseEndDate = previousPhase ? moment(previousPhase.attributes.end_at) : null;
+
       // And there's a previous phase (end date) and the phase hasn't been picked/changed
       if (previousPhaseEndDate && !phaseAttrs.start_at) {
         // Make startDate the previousEndDate + 1 day
