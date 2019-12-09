@@ -5,6 +5,7 @@ module SmartGroupRules
 
     included do
       include ActiveModel::Validations
+      include DescribableRule
 
       attr_accessor :custom_field_id, :predicate, :value
 
@@ -13,6 +14,13 @@ module SmartGroupRules
       validates :value, absence: true, unless: :needs_value?
       validates :value, presence: true, if: :needs_value?
       validates :custom_field_id, presence: true
+
+      # Must be defined here in order to be able
+      # to overwrite the same method in 
+      # DescribableRule.
+      def description_property locale
+        CustomField.find(custom_field_id).title_multiloc[locale]
+      end
     end
 
     class_methods do
@@ -23,7 +31,7 @@ module SmartGroupRules
 
     def as_json
       json = {
-        'ruleType' => self.class::RULE_TYPE,
+        'ruleType' => rule_type,
         'customFieldId' => custom_field_id,
         'predicate' => predicate,
       }
@@ -31,6 +39,9 @@ module SmartGroupRules
       json    
     end
 
+    def rule_type
+      self.class.rule_type
+    end
 
   end
 
