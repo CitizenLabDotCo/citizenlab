@@ -241,6 +241,34 @@ describe('<ConsentManagerBuilderHandler />', () => {
         const { isConsentRequired } = wrapper.find('Container').props();
         expect(isConsentRequired).toEqual(true);
       });
+      it('expects consent again when a user becomes admin', () => {
+        const wrapper = shallow(
+          <ConsentManagerBuilderHandler
+            {...{
+              setPreferences,
+              resetPreferences,
+              saveConsent,
+              destinations: [...destinations, {
+                name: 'Intercom',
+                description: 'Only for admins',
+                category: 'Helpdesk',
+                website: 'intercomUrl',
+                id: 'Intercom',
+              }],
+              blacklistedDestinations: [],
+              newDestinations: [],
+              preferences: {
+                advertising: false,
+                analytics: true,
+                functional: false,
+                tenantBlacklisted: ['Intercom', 'Satismeter']
+              }
+            }}
+          />
+        );
+        const { isConsentRequired } = wrapper.find('Container').props();
+        expect(isConsentRequired).toEqual(true);
+      });
     });
   });
 });

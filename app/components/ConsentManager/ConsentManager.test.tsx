@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 // component to test
-import { ConsentManager, CustomPreferences, IDestination, initialPreferences } from './';
+import { ConsentManager, CustomPreferences, IDestination, initialPreferences, adminIntegrations } from './';
 
 // mock depencies
 jest.mock('services/tenant');
@@ -46,7 +46,7 @@ const destinations = [
   {
     name: 'Intercom',
     description: 'Only for admins',
-    category: 'Help',
+    category: 'Helpdesk',
     website: 'intercomUrl',
     id: 'Intercom',
   }
@@ -97,13 +97,16 @@ describe('<ConsentManager />', () => {
       expect(customPreferences).toEqual({
         advertising: true,
         analytics: true,
-        functional: true
+        functional: true,
+        tenantBlacklisted: adminIntegrations
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
         FunctionalTool: true,
+        Intercom: false,
         'Google Tag Manager': true,
         MarketingTool: true,
+        Satismeter: false
       });
     });
 
@@ -120,13 +123,16 @@ describe('<ConsentManager />', () => {
       expect(customPreferences).toEqual({
         advertising: false,
         analytics: false,
-        functional: true
+        functional: true,
+        tenantBlacklisted: adminIntegrations
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: false,
         FunctionalTool: true,
         'Google Tag Manager': false,
+        Intercom: false,
         MarketingTool: false,
+        Satismeter: false
       });
     });
   });
@@ -147,13 +153,15 @@ describe('<ConsentManager />', () => {
         advertising: true,
         analytics: true,
         functional: false,
-        tenantBlacklisted: blacklist
+        tenantBlacklisted: blacklist.concat(adminIntegrations)
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
         FunctionalTool: false,
+        Intercom: false,
         'Google Tag Manager': false,
         MarketingTool: true,
+        Satismeter: false
       });
     });
 
@@ -168,13 +176,16 @@ describe('<ConsentManager />', () => {
         advertising: true,
         analytics: true,
         functional: true,
-        tenantBlacklisted: blacklist
+        tenantBlacklisted: blacklist.concat(adminIntegrations)
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
         FunctionalTool: true,
+        Intercom: false,
+
         'Google Tag Manager': false,
         MarketingTool: true,
+        Satismeter: false
       });
     });
     it('acts correctly for admins (adds intercom)', () => {
