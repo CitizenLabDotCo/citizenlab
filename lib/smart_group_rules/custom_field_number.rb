@@ -4,8 +4,6 @@ module SmartGroupRules
     PREDICATE_VALUES = %w(is_empty not_is_empty is_equal not_is_equal is_larger_than is_larger_than_or_equal is_smaller_than is_smaller_than_or_equal)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
 
-    RULE_TYPE = "custom_field_number"
-
     include CustomFieldRule
 
     validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: 'number').map(&:id) } }
@@ -21,7 +19,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "customFieldId" => {
               "$ref": "#/definitions/customFieldId"
@@ -42,7 +40,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "customFieldId" => {
               "$ref": "#/definitions/customFieldId"
@@ -54,6 +52,10 @@ module SmartGroupRules
           }
         }
       ]
+    end
+
+    def self.rule_type
+      'custom_field_number'
     end
 
     def initialize custom_field_id, predicate, value=nil
