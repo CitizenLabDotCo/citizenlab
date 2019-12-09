@@ -54,7 +54,7 @@ resource "Poll Responses" do
     let(:pc) { create(:continuous_poll_project, with_permissions: true)}
     let(:participation_context_id) { pc.id }
     let(:q1) { create(:poll_question, :with_options, participation_context: pc) }
-    let(:q2) { create(:poll_question, :with_options, participation_context: pc) }
+    let(:q2) { create(:poll_question_multiple_options, :with_options, participation_context: pc) }
     let(:response_options_attributes) {[
       {option_id: q1.options.first.id},
       {option_id: q2.options.last.id},
