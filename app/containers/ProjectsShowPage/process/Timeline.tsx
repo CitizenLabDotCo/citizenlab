@@ -673,6 +673,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                     projectId={this.props.projectId}
                     phaseId={selectedPhaseId || undefined}
                     fullWidth={true}
+                    participationContextType="phase"
                   />
                 </HeaderSecondRow>
               </HeaderRows>

@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
+import { IParticipationContextType } from 'typings';
+
 import Radio from 'components/UI/Radio';
 import Button from 'components/UI/Button';
 
@@ -69,7 +71,7 @@ interface Props {
   questions: IPollQuestion[];
   projectId: string;
   id: string;
-  type: 'projects' | 'phases';
+  type: IParticipationContextType;
   disabled: boolean;
 }
 

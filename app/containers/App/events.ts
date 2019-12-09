@@ -1,5 +1,11 @@
 import eventEmitter from 'utils/eventEmitter';
-import { VerificationModalSteps } from 'components/VerificationModal/VerificationModal';
+import { ContextShape, VerificationModalSteps } from 'components/VerificationModal/VerificationModal';
+import { IParticipationContextType, ICitizenAction } from 'typings';
+
+export interface OpenVerificationModalData {
+  step: VerificationModalSteps;
+  context: ContextShape | null;
+}
 
 /* might open is fired when a user attempts to achieve an action they need to sign up for
  * it sets a flag on the apps state.
@@ -22,11 +28,6 @@ export enum VerificationModalEvents {
   close = 'closeVerificationModal'
 }
 
-export interface OpenVerificationModalData {
-  step: VerificationModalSteps;
-  withContext?: boolean;
-}
-
 export function setMightOpenVerificationModal(location: string) {
   eventEmitter.emit(
     location,
@@ -35,19 +36,19 @@ export function setMightOpenVerificationModal(location: string) {
   );
 }
 
-export function verificationNeeded(location: string) {
+export function verificationNeeded(location: string, participationContextId: string, participationContextType: IParticipationContextType, action: ICitizenAction) {
   eventEmitter.emit<OpenVerificationModalData>(
     location,
     VerificationModalEvents.verificationNeeded,
-    { step: 'method-selection', withContext: true }
+    { step: 'method-selection', context: { action, id: participationContextId, type: participationContextType } }
   );
 }
 
-export function openVerificationModalWithContext(location: string) {
+export function openVerificationModalWithContext(location: string, participationContextId: string, participationContextType: IParticipationContextType, action: ICitizenAction) {
   eventEmitter.emit<OpenVerificationModalData>(
     location,
     VerificationModalEvents.open,
-    { step: 'method-selection', withContext: true }
+    { step: 'method-selection', context: { action, id: participationContextId, type: participationContextType } }
   );
 }
 
@@ -55,7 +56,7 @@ export function openVerificationModalWithoutContext(location: string) {
   eventEmitter.emit<OpenVerificationModalData>(
     location,
     VerificationModalEvents.open,
-    { step: 'method-selection', withContext: false }
+    { step: 'method-selection', context: null }
   );
 }
 

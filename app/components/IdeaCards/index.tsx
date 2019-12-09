@@ -14,7 +14,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
 import { InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
-import { MessageDescriptor } from 'typings';
+import { MessageDescriptor, IParticipationContextType } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -25,7 +25,7 @@ interface Props extends GetIdeasInputProps  {
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
-  participationContextType?: 'Phase' | 'Project' | null;
+  participationContextType?: IParticipationContextType | null;
   allowProjectsFilter?: boolean;
   showFiltersSidebar?: boolean;
   className?: string;

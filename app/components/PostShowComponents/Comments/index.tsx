@@ -103,6 +103,7 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
   const commentingDisabledReason = get(post, 'attributes.action_descriptor.commenting.disabled_reason', null);
   const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data : authUser }) : false;
   const loaded = (!isNilOrError(post) && !isNilOrError(commentsList) && !isUndefined(project));
+  const phaseId = isNilOrError(project) ? undefined : project.relationships?.current_phase?.data?.id;
 
   return (
     <Container className={`e2e-comments-${loaded ? 'loaded' : 'loading'} ${className}`}>
@@ -125,7 +126,8 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
             isLoggedIn={!!authUser}
             commentingEnabled={commentingEnabled}
             commentingDisabledReason={commentingDisabledReason}
-            projectId={!isNilOrError(project) ? project.id : null}
+            projectId={get(post, 'relationships.project.data.id')}
+            phaseId={phaseId}
           />
 
           <Comments

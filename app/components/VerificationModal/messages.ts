@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.components.VerificationModal.toParticipateInThisProject',
     defaultMessage: 'to participate in this project',
   },
+  or: {
+    id: 'app.components.VerificationModal.or',
+    defaultMessage: 'or',
+  },
   verifyCow: {
     id: 'app.components.VerificationModal.verifyCow',
     defaultMessage: 'Verify using COW',

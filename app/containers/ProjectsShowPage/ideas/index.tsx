@@ -73,7 +73,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
               {isPBProject &&
                 <StyledPBExpenses
                   participationContextId={projectId}
-                  participationContextType="Project"
+                  participationContextType="project"
                 />
               }
               <IdeaCards
@@ -81,7 +81,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
                 projectIds={projectIds}
                 participationMethod={project.attributes.participation_method}
                 participationContextId={projectId}
-                participationContextType="Project"
+                participationContextType="project"
                 showViewToggle={true}
                 defaultView={(project.attributes.presentation_mode || null)}
                 invisibleTitleMessage={messages.invisibleTitleIdeasList}
