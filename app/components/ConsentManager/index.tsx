@@ -14,7 +14,7 @@ import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES, MARKETING_AND_ANALYTICS_
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
-const adminIntegrations = ['Intercom', 'Satismeter'];
+export const adminIntegrations = ['Intercom', 'Satismeter'];
 
 // the format in which sentry sends out destinations
 export interface IDestination {
@@ -76,17 +76,15 @@ const reducerArrayToObject = (acc, curr) => (acc[curr] = false, acc);
 // gives out both the custom preferences picked by the user to save and the preferences
 // of the user in the format { [preferenceId]: booleanConsent }
 const mapCustomPreferences = (
-  { destinations, preferences }: { destinations: IDestination[], preferences: CustomPreferences},
-  blacklistedDestinationsList: string[] | null,
-  isPriviledgedUser: boolean
+  { destinations, preferences }: { destinations: IDestination[], preferences: CustomPreferences },
+  blacklistedDestinationsList: string[] | null
 ) => {
   const destinationPreferences = {};
   const customPreferences = {} as CustomPreferences;
-  const allBlacklistedDestinations = [...(blacklistedDestinationsList || []), ...(!isPriviledgedUser ? adminIntegrations : [])];
 
   // remove blacklisted destinations from the destination array
   const remainingDestinations = destinations ?
-    destinations.filter(destination => !allBlacklistedDestinations.includes(destination.id))
+    destinations.filter(destination => !blacklistedDestinationsList?.includes(destination.id))
     : [];
 
   // get user preferences, default unset preferences to true
@@ -124,7 +122,7 @@ const mapCustomPreferences = (
         reportError('A segment destination doesn\'t belong to a category');
       });
       destinationPreferences[destination.id] =
-      customPreferences.analytics;
+        customPreferences.analytics;
     }
   }
 
@@ -139,7 +137,7 @@ const mapCustomPreferences = (
   return {
     customPreferences,
     destinationPreferences: { ...destinationPreferences, ...blacklistedDestinations },
-  } as { customPreferences: CustomPreferences, destinationPreferences: { [destinationId: string]: boolean }};
+  } as { customPreferences: CustomPreferences, destinationPreferences: { [destinationId: string]: boolean } };
 };
 
 function reportToSegment(err) {
@@ -151,14 +149,21 @@ function reportToSegment(err) {
 
 export class ConsentManager extends PureComponent<Props> {
   handleMapCustomPreferences = (destinations, preferences) => {
-    const { tenant, authUser } = this.props;
+    const { tenant } = this.props;
     if (isNilOrError(tenant)) return ({ customPreferences: {}, destinationPreferences: {} });
-    const isPriviledgedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
     return mapCustomPreferences(
       { destinations, preferences },
-      tenant.attributes.settings.core.segment_destinations_blacklist,
-      isPriviledgedUser
+      this.getBlacklistedDestinations()
     );
+  }
+
+  getBlacklistedDestinations = () => {
+    const { tenant, authUser } = this.props;
+
+    const isPriviledgedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
+    const tenantBlacklisted = !isNilOrError(tenant) ? tenant.attributes.settings.core.segment_destinations_blacklist : [];
+
+    return [...(tenantBlacklisted || []), ...(!isPriviledgedUser ? adminIntegrations : [])];
   }
 
   render() {
