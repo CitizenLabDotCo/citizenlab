@@ -171,7 +171,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             theme="light"
             hideOnClick={false}
           >
-            <ButtonWrapper tabIndex={0} className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}>
+            <ButtonWrapper tabIndex={isPostingDisabled ? 0 : -1} className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}>
               <Button {...this.props} aria-describedby="tooltip-content" linkTo={linkTo} disabled={isPostingDisabled} ariaDisabled={false}>
                 <FormattedMessage {...messages.startAnIdea} />
               </Button>
