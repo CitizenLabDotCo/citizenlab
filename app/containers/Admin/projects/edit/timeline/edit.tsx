@@ -341,17 +341,47 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
 
   quillMultilocLabel = <FormattedMessage {...messages.descriptionLabel} />;
 
+  getStartDate = () => {
+    const { phase, attributeDiff } = this.state;
+    const { phases } = this.props;
+    const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
+    const previousPhase = phases && phases[phases.length - 1];
+    const previousPhaseEndDate = previousPhase ? moment(previousPhase.attributes.end_at) : null;
+    let startDate: Moment | null = null;
+
+    // If this is a new phase
+    if (!phase) {
+      // And there's a previous phase (end date) and the phase hasn't been picked/changed
+      if (previousPhaseEndDate && !phaseAttrs.start_at) {
+        // Make startDate the previousEndDate + 1 day
+        startDate = previousPhaseEndDate.add(1, 'day');
+        // However, if there's been a manual change to this start date
+      } else if (phaseAttrs.start_at) {
+        // Take this date as the start date
+        startDate = moment(phaseAttrs.start_at);
+      }
+      // Otherwise, there is no date yet and it should remain 'null'
+
+    // else there is already a phase (which means we're in the edit form)
+    // and we take it from the attrs
+    } else {
+      if (phaseAttrs.start_at) {
+        startDate = moment(phaseAttrs.start_at);
+      }
+    }
+
+    return startDate;
+  }
+
   render() {
     const { loaded } = this.state;
 
     if (loaded) {
       const { formatMessage } = this.props.intl;
       const { errors, phase: phaseBeingEdited, attributeDiff, saving, phaseFiles, submitState } = this.state;
-      const { phases } = this.props;
       const phaseAttrs = (phaseBeingEdited ? { ...phaseBeingEdited.data.attributes, ...attributeDiff } : { ...attributeDiff });
-      const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
+      const startDate = this.getStartDate();
       const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null);
-      const phaseIndex = !isNilOrError(phases) && phaseBeingEdited ? phases.find(phase => phase.id === phaseBeingEdited.data.id) : null;
 
       return (
         <>
