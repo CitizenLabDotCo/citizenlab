@@ -56,5 +56,13 @@ export default defineMessages({
   new: {
     id: 'app.containers.landing.new',
     defaultMessage: 'new'
+  },
+  verifyYourIdentity: {
+    id: 'app.containers.landing.verifyYourIdentity',
+    defaultMessage: 'Make a bigger impact by verifying your identity'
+  },
+  verifyNow: {
+    id: 'app.containers.landing.verifyNow',
+    defaultMessage: 'Verify now'
   }
 });

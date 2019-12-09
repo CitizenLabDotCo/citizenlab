@@ -182,6 +182,7 @@ class ProjectsShowPage extends PureComponent<Props, State> {
               {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
                 <ButtonWrapper>
                   <StyledIdeaButton
+                    participationContextType="project"
                     projectId={project.id}
                     bgColor="#fff"
                     textColor={theme.colorMain}

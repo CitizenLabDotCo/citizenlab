@@ -8,6 +8,9 @@ import bowser from 'bowser';
 // services
 import { updateBasket } from 'services/baskets';
 
+// typings
+import { IParticipationContextType } from 'typings';
+
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -235,7 +238,7 @@ const SubmitExpensesButton = styled(Button)`
 
 interface InputProps {
   participationContextId: string | null;
-  participationContextType: 'Project' | 'Phase';
+  participationContextType: IParticipationContextType;
   className?: string;
 }
 
@@ -309,8 +312,8 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
     if (!isNilOrError(locale) &&
         !isNilOrError(tenant) &&
         (
-          (participationContextType === 'Project' && !isNilOrError(project)) ||
-          (participationContextType === 'Phase' && !isNilOrError(phase))
+          (participationContextType === 'project' && !isNilOrError(project)) ||
+          (participationContextType === 'phase' && !isNilOrError(phase))
         )
     ) {
       const currency = tenant.attributes.settings.core.currency;
@@ -323,9 +326,9 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
       let validationStatusMessage: string = '';
       let progressBarColor: 'green' | 'red' | '' = '';
 
-      if (participationContextType === 'Project' && !isNilOrError(project)) {
+      if (participationContextType === 'project' && !isNilOrError(project)) {
         totalBudget = project.attributes.max_budget as number;
-      } else if (participationContextType === 'Phase' && !isNilOrError(phase)) {
+      } else if (participationContextType === 'phase' && !isNilOrError(phase)) {
         totalBudget = phase.attributes.max_budget as number;
       }
 
@@ -494,12 +497,12 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'Project' ? participationContextId : null}>{render}</GetProject>,
-  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'Phase' ? participationContextId : null}>{render}</GetPhase>,
+  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
+  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
   basket: ({ participationContextType, project, phase, render }) => {
     let basketId: string | null = null;
 
-    if (participationContextType === 'Project') {
+    if (participationContextType === 'project') {
       basketId = (!isNilOrError(project) && project.relationships.user_basket ? get(project.relationships.user_basket.data, 'id', null) : null);
     } else {
       basketId = (!isNilOrError(phase) && phase.relationships.user_basket ? get(phase.relationships.user_basket.data, 'id', null) : null);

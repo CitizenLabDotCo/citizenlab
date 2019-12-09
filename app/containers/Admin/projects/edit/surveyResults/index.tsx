@@ -47,7 +47,7 @@ class SurveyResults extends React.PureComponent<Props> {
       ) {
         return (
           <ExportSurveyButton
-            type="projects"
+            type="project"
             id={project.id}
           />
         );
@@ -63,7 +63,7 @@ class SurveyResults extends React.PureComponent<Props> {
                 </h3>
                 <ExportSurveyButton
                   id={phase.id}
-                  type="phases"
+                  type="phase"
                 />
               </Fragment>
             );
