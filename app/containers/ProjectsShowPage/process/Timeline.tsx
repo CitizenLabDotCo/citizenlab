@@ -642,6 +642,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                     <IdeaButtonDesktop
                       projectId={this.props.projectId}
                       phaseId={selectedPhaseId}
+                      participationContextType="phase"
                     />
 
                     <PhaseNavigation>
