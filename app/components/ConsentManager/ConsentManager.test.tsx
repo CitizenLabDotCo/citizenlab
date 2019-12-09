@@ -11,6 +11,8 @@ jest.mock('resources/GetTenant', () => 'GetTenant');
 jest.mock('./ConsentManagerBuilderHandler', () => 'ConsentManagerBuilderHandler');
 jest.mock('containers/App/constants', () => ({ CL_SEGMENT_API_KEY: 'IHaveTheKeyInMyHand_AllINeedToFindIsTheLock' }));
 
+import { makeUser } from 'services/__mocks__/users';
+
 // mimics the destination/newDestinations objects from sentry
 const destinations = [
   {
@@ -40,6 +42,13 @@ const destinations = [
     category: 'Security & Fraud',
     website: 'http://random.com/security',
     id: 'FunctionalTool',
+  },
+  {
+    name: 'Intercom',
+    description: 'Only for admins',
+    category: 'Help',
+    website: 'intercomUrl',
+    id: 'Intercom',
   }
 ] as IDestination[];
 
@@ -166,6 +175,28 @@ describe('<ConsentManager />', () => {
         FunctionalTool: true,
         'Google Tag Manager': false,
         MarketingTool: true,
+      });
+    });
+    it('acts correctly for admins (adds intercom)', () => {
+      const blacklist = ['Google Tag Manager'];
+      const user = makeUser({ roles: [{ type: 'admin' }] });
+      const wrapper = shallow(<ConsentManager authUser={user.data} tenant={getTenant(blacklist)} />);
+      const handleMapCustomPreferences = wrapper.find('ConsentManagerBuilder').props().mapCustomPreferences;
+
+      const preferences = initialPreferences;
+      const { customPreferences, destinationPreferences } = handleMapCustomPreferences(destinations, preferences);
+      expect(customPreferences).toEqual({
+        advertising: true,
+        analytics: true,
+        functional: true,
+        tenantBlacklisted: blacklist
+      });
+      expect(destinationPreferences).toEqual({
+        AdvertisingTool: true,
+        FunctionalTool: true,
+        'Google Tag Manager': false,
+        MarketingTool: true,
+        Intercom: true
       });
     });
   });

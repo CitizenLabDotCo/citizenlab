@@ -5,12 +5,16 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
 import { withScope } from '@sentry/browser';
+import { isAdmin, isModerator } from 'services/permissions/roles';
 
 import ConsentManagerBuilderHandler from './ConsentManagerBuilderHandler';
 
 import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES, MARKETING_AND_ANALYTICS_CATEGORIES } from './categories';
 
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
+const adminIntegrations = ['Intercom', 'Satismeter'];
 
 // the format in which sentry sends out destinations
 export interface IDestination {
@@ -59,6 +63,7 @@ export interface ConsentManagerProps {
 interface InputProps { }
 interface DataProps {
   tenant: GetTenantChildProps;
+  authUser: GetAuthUserChildProps;
 }
 interface Props extends InputProps, DataProps { }
 
@@ -72,14 +77,16 @@ const reducerArrayToObject = (acc, curr) => (acc[curr] = false, acc);
 // of the user in the format { [preferenceId]: booleanConsent }
 const mapCustomPreferences = (
   { destinations, preferences }: { destinations: IDestination[], preferences: CustomPreferences},
-  blacklistedDestinationsList: string[] | null
+  blacklistedDestinationsList: string[] | null,
+  isPriviledgedUser: boolean
 ) => {
   const destinationPreferences = {};
   const customPreferences = {} as CustomPreferences;
+  const allBlacklistedDestinations = [...(blacklistedDestinationsList || []), ...(!isPriviledgedUser ? adminIntegrations : [])];
 
   // remove blacklisted destinations from the destination array
   const remainingDestinations = destinations ?
-    destinations.filter(destination => !(blacklistedDestinationsList || []).includes(destination.id))
+    destinations.filter(destination => !allBlacklistedDestinations.includes(destination.id))
     : [];
 
   // get user preferences, default unset preferences to true
@@ -144,11 +151,13 @@ function reportToSegment(err) {
 
 export class ConsentManager extends PureComponent<Props> {
   handleMapCustomPreferences = (destinations, preferences) => {
-    const { tenant } = this.props;
+    const { tenant, authUser } = this.props;
     if (isNilOrError(tenant)) return ({ customPreferences: {}, destinationPreferences: {} });
+    const isPriviledgedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
     return mapCustomPreferences(
       { destinations, preferences },
-      tenant.attributes.settings.core.segment_destinations_blacklist
+      tenant.attributes.settings.core.segment_destinations_blacklist,
+      isPriviledgedUser
     );
   }
 
@@ -174,7 +183,8 @@ export class ConsentManager extends PureComponent<Props> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />
+  tenant: <GetTenant />,
+  authUser: <GetAuthUser />
 });
 
 export default (inputProps: InputProps) => (
