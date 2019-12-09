@@ -378,16 +378,16 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
 
     if (loaded) {
       const { formatMessage } = this.props.intl;
-      const { errors, phase: phaseBeingEdited, attributeDiff, saving, phaseFiles, submitState } = this.state;
-      const phaseAttrs = (phaseBeingEdited ? { ...phaseBeingEdited.data.attributes, ...attributeDiff } : { ...attributeDiff });
+      const { errors, phase, attributeDiff, saving, phaseFiles, submitState } = this.state;
+      const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
       const startDate = this.getStartDate();
       const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null);
 
       return (
         <>
           <SectionTitle>
-            {phaseBeingEdited && <FormattedMessage {...messages.editPhaseTitle} />}
-            {!phaseBeingEdited && <FormattedMessage {...messages.newPhaseTitle} />}
+            {phase && <FormattedMessage {...messages.editPhaseTitle} />}
+            {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
           </SectionTitle>
 
           <PhaseForm onSubmit={this.handleOnSubmit}>
@@ -405,7 +405,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
 
               <SectionField>
                 <ParticipationContext
-                  phaseId={(phaseBeingEdited ? phaseBeingEdited.data.id : null)}
+                  phaseId={(phase ? phase.data.id : null)}
                   onSubmit={this.handleParcticipationContextOnSubmit}
                   onChange={this.handleParticipationContextOnChange}
                   apiErrors={errors}
