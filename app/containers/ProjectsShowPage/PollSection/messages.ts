@@ -49,4 +49,8 @@ export default defineMessages({
     id: 'app.containers.Projects.PollForm.pollDisabledNotVerified',
     defaultMessage: 'Taking this poll requires verification of your account. {verificationLink}',
   },
+  maxOptions: {
+    id: 'app.containers.Projects.PollForm.maxOptions',
+    defaultMessage: '(max {maxNumber})',
+  },
 });
