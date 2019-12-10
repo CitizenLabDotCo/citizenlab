@@ -116,7 +116,6 @@ export class OptionForm extends PureComponent<Props, State> {
               <>
                 <QuestionDetailsForm
                   question={question}
-                  numberOfOptions={pollOptions.length}
                 />
                 {pollOptions.map((pollOption: IPollOption) => (
                   editingId === pollOption.id ? (

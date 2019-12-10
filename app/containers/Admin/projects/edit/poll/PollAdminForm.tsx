@@ -36,9 +36,7 @@ interface Props {
 
 interface State {
   newQuestionTitle: Multiloc | null;
-  newQuestionMaxAnswers: number;
   editingQuestionTitle: Multiloc;
-  editingQuestionMaxAnswers: number;
   editingQuestionId: string | null;
   editingOptionsId: string | null;
   itemsWhileDragging: IPollQuestion[] | null;
@@ -51,7 +49,6 @@ export class PollAdminForm extends PureComponent<Props, State> {
     this.state = {
       newQuestionTitle: null,
       editingQuestionId: null,
-      editingQuestionMaxAnswers: 0,
       editingQuestionTitle: {},
       editingOptionsId: null,
       itemsWhileDragging: null,
@@ -113,10 +110,6 @@ export class PollAdminForm extends PureComponent<Props, State> {
     this.setState({ newQuestionTitle: value });
   }
 
-  changeNewQuestionMaxAnswers = (max) => {
-    this.setState({ newQuestionMaxAnswers: max });
-  }
-
   saveNewQuestion = () => {
     const { participationContextId, participationContextType } = this.props;
     const { newQuestionTitle } = this.state;
@@ -134,10 +127,6 @@ export class PollAdminForm extends PureComponent<Props, State> {
   // Edit question
   editQuestion = (questionId: string, currentTitle: Multiloc) => () => {
     this.setState({ editingQuestionId: questionId, editingQuestionTitle: currentTitle, editingOptionsId: null });
-  }
-
-  changeEditingQuestionMaxAnswers = (max) => {
-    this.setState({ editingQuestionMaxAnswers: max });
   }
 
   changeEditingQuestion = (value) => {
