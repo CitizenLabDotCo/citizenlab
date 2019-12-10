@@ -107,7 +107,7 @@ resource "Poll Questions" do
     patch "web_api/v1/poll_questions/:id" do
       with_options scope: :question do
         parameter :title_multiloc, "The question, as a multiloc string", required: false
-        parameter :question_type, "Either #{Polls::Question::QUESTION_TYPES.join(", ")}", required: true
+        parameter :question_type, "Either #{Polls::Question::QUESTION_TYPES.join(", ")}", required: false
         parameter :max_options, "The maximum count of options a valid response can contain. Only applicable for question_type 'multiple_options'. Nil means no limit.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Polls::Option)
