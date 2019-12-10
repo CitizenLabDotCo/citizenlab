@@ -1,7 +1,7 @@
 import React, { Fragment, FormEvent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { transparentize, hideVisually } from 'polished';
+import { transparentize } from 'polished';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import Radio from 'components/UI/Radio';
@@ -65,30 +65,6 @@ const SSpan = styled.span`
     padding-left: 8px;
     padding-right: 8px;
 `}
-`;
-
-const StyledLabel = styled.label`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: nowrap;
-  font-size: ${fontSizes.base}px;
-  color: ${colors.label};
-  cursor: pointer;
-  font-weight: 400;
-  margin-bottom: 5px;
-
-  input {
-    cursor: pointer;
-  }
-
-  &:focus-within, &:hover {
-    color: black;
-
-    div {
-      border-color: black;
-    }
-  }
 `;
 
 const Tools = styled.span`
