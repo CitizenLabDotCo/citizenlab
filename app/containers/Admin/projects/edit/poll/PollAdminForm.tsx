@@ -3,7 +3,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { isEqual, clone } from 'lodash-es';
-import styled  from 'styled-components';
+import styled from 'styled-components';
 
 // Services / Data loading
 import { addPollQuestion, deletePollQuestion, updatePollQuestion, reorderPollQuestion, IPollQuestion } from 'services/pollQuestions';
@@ -36,7 +36,9 @@ interface Props {
 
 interface State {
   newQuestionTitle: Multiloc | null;
+  newQuestionMaxAnswers: number;
   editingQuestionTitle: Multiloc;
+  editingQuestionMaxAnswers: number;
   editingQuestionId: string | null;
   editingOptionsId: string | null;
   itemsWhileDragging: IPollQuestion[] | null;
@@ -49,6 +51,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
     this.state = {
       newQuestionTitle: null,
       editingQuestionId: null,
+      editingQuestionMaxAnswers: 0,
       editingQuestionTitle: {},
       editingOptionsId: null,
       itemsWhileDragging: null,
@@ -110,6 +113,10 @@ export class PollAdminForm extends PureComponent<Props, State> {
     this.setState({ newQuestionTitle: value });
   }
 
+  changeNewQuestionMaxAnswers = (max) => {
+    this.setState({ newQuestionMaxAnswers: max });
+  }
+
   saveNewQuestion = () => {
     const { participationContextId, participationContextType } = this.props;
     const { newQuestionTitle } = this.state;
@@ -129,13 +136,17 @@ export class PollAdminForm extends PureComponent<Props, State> {
     this.setState({ editingQuestionId: questionId, editingQuestionTitle: currentTitle, editingOptionsId: null });
   }
 
+  changeEditingQuestionMaxAnswers = (max) => {
+    this.setState({ editingQuestionMaxAnswers: max });
+  }
+
   changeEditingQuestion = (value) => {
     this.setState({ editingQuestionTitle: value });
   }
 
   saveEditingQuestion = () => {
     const { editingQuestionTitle, editingQuestionId } = this.state;
-    editingQuestionId && updatePollQuestion(editingQuestionId, editingQuestionTitle).then(() => {
+    editingQuestionId && updatePollQuestion(editingQuestionId, { title_multiloc: editingQuestionTitle }).then(() => {
       this.setState({ editingQuestionId: null, editingQuestionTitle: {} });
     });
   }
