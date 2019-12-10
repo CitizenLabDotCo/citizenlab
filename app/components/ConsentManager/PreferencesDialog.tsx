@@ -43,9 +43,8 @@ interface Props {
 export default class PreferencesDialog extends PureComponent<Props> {
   static displayName = 'PreferencesDialog';
 
-  handleChange = (event) => {
-    event.preventDefault();
-    this.props.onChange(event.target.name, event.target.value === 'true');
+  handleChange = (category: string, value: boolean) => (_event) => {
+    this.props.onChange(category, value);
   }
 
   render() {
