@@ -11,6 +11,7 @@ FactoryBot.define do
 
     factory :poll_question_multiple_options do
       question_type { "multiple_options" }
+      max_options { nil }
     end
 
     trait :with_options do
