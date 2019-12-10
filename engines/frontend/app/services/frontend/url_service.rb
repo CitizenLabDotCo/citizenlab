@@ -33,7 +33,6 @@ module Frontend
     def slug_to_url slug, classname, options={}
       # Does not cover phases, comments and official feedback
       subroute = nil
-      slug = nil
       case classname
       when 'Project'
         subroute = 'projects'
