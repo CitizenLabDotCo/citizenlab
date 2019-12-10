@@ -1,9 +1,9 @@
-class WebApi::V1::ModerationController < ApplicationController
+class WebApi::V1::ModerationsController < ApplicationController
 
   def index
     ids = Idea.published.ids + Initiative.published.ids + Comment.published.ids
     @moderations = policy_scope(Moderation)
-      .where(ids: ids.uniq)
+      .where(id: ids.uniq)
       .order(created_at: :desc)
 
     @moderations = @moderations
