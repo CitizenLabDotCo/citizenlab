@@ -83,10 +83,10 @@ describe('<CategoryCard />', () => {
         handleChange={handleChange}
       />
     );
-    wrapper.find(`#${category}-radio-false`).simulate('change', { target: { name: category, value: 'false' } });
-    expect(handleChange).toBeCalledWith({ target: { name: category, value: 'false' } });
+    wrapper.find(`#${category}-radio-false`).simulate('change', [category, false]);
+    expect(handleChange).toBeCalledWith(category, false);
 
-    wrapper.find(`#${category}-radio-true`).simulate('change', { target: { name: category, value: 'true' } });
-    expect(handleChange).toBeCalledWith({ target: { name: category, value: 'true' } });
+    wrapper.find(`#${category}-radio-true`).simulate('change', [category, true]);
+    expect(handleChange).toBeCalledWith(category, true);
   });
 });
