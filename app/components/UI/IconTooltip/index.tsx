@@ -55,7 +55,7 @@ const TooltipIcon = styled(Icon)<{ iconColor: string | undefined, iconHoverColor
   }
 `;
 
-interface Props {
+export interface Props {
   className?: string;
   content: ReactChild;
   icon?: IconNames;

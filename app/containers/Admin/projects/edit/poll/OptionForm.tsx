@@ -15,6 +15,7 @@ import { Icon } from 'semantic-ui-react';
 import { Row, TextCell, List } from 'components/admin/ResourceList';
 import FormOptionRow from './FormOptionRow';
 import OptionRow from './OptionRow';
+import QuestionDetailsForm from './QuestionDetailsForm';
 
 // Typings
 import { Locale } from 'typings';
@@ -106,30 +107,38 @@ export class OptionForm extends PureComponent<Props, State> {
             onClick={collapse}
             style="secondary"
           >
-            <FormattedMessage  {...messages.editOptionDone}/>
+            <FormattedMessage  {...messages.editOptionDone} />
           </Button>
         </Row>
         <OptionsContainer>
           <List key={isNilOrError(pollOptions) ? 0 : pollOptions.length + (editingId === 'new' ? 1 : 0)}>
-            {!isNilOrError(pollOptions) && pollOptions.map((pollOption: IPollOption) => (
-              editingId === pollOption.id ? (
-                <FormOptionRow
-                  key={pollOption.id}
-                  locale={locale}
-                  mode="edit"
-                  closeRow={this.closeRow}
-                  optionId={pollOption.id}
-                  titleMultiloc={pollOption.attributes.title_multiloc}
+            {!isNilOrError(pollOptions) && (
+              <>
+                <QuestionDetailsForm
+                  question={question}
+                  numberOfOptions={pollOptions.length}
                 />
-              ) : (
-                  <OptionRow
-                    key={pollOption.id}
-                    pollOptionId={pollOption.id}
-                    pollOptionTitle={pollOption.attributes.title_multiloc}
-                    deleteOption={this.deleteOption(pollOption.id)}
-                    editOption={this.editOption(pollOption.id)}
-                  />
-                )))}
+                {pollOptions.map((pollOption: IPollOption) => (
+                  editingId === pollOption.id ? (
+                    <FormOptionRow
+                      key={pollOption.id}
+                      locale={locale}
+                      mode="edit"
+                      closeRow={this.closeRow}
+                      optionId={pollOption.id}
+                      titleMultiloc={pollOption.attributes.title_multiloc}
+                    />
+                  ) : (
+                      <OptionRow
+                        key={pollOption.id}
+                        pollOptionId={pollOption.id}
+                        pollOptionTitle={pollOption.attributes.title_multiloc}
+                        deleteOption={this.deleteOption(pollOption.id)}
+                        editOption={this.editOption(pollOption.id)}
+                      />
+                    )))}
+              </>
+            )}
             {editingId === 'new' ? (
               <FormOptionRow
                 key="new"
