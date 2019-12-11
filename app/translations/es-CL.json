@@ -353,6 +353,7 @@
   "app.components.VerificationModal.cowIdSerialNumber": "CI número de serie /número de documento",
   "app.components.VerificationModal.cowRunNumber": "RUN",
   "app.components.VerificationModal.emptyFieldError": "Este campo no puede estar vacío.",
+  "app.components.VerificationModal.invalidCardIdError": "",
   "app.components.VerificationModal.invalidIdSerialError": "CI número de serie/ documento inválido",
   "app.components.VerificationModal.invalidRunError": "RUN inválido",
   "app.components.VerificationModal.noMatchFormError": "No hubo coincidencia.",
