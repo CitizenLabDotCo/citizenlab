@@ -74,6 +74,9 @@ describe('<CategoryCard />', () => {
     expect(wrapper).toMatchSnapshot();
   });
   it('lets you change your preference', () => {
+    const mockOnChange = jest.fn();
+    handleChange.mockImplementation(() => mockOnChange);
+
     const wrapper = shallow(
       <CategoryCard
         key={category}
@@ -83,10 +86,15 @@ describe('<CategoryCard />', () => {
         handleChange={handleChange}
       />
     );
+    // when you render the component, handle change is called to calculate the onchange handlers.
+    expect(handleChange).toHaveBeenCalledWith(category, false);
+    expect(handleChange).toHaveBeenCalledWith(category, true);
+
+    // when you change the value these onchange handlers should be called
     wrapper.find(`#${category}-radio-false`).simulate('change');
-    expect(handleChange).toBeCalled();
+    expect(mockOnChange).toHaveBeenCalledTimes(1);
 
     wrapper.find(`#${category}-radio-true`).simulate('change');
-    expect(handleChange).toBeCalled();
+    expect(mockOnChange).toHaveBeenCalledTimes(2);
   });
 });
