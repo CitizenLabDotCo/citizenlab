@@ -240,6 +240,7 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
               borderHoverColor={darken(0.2, '#e3e3e3')}
               boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
               boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+              id={`e2e-${method.attributes.name}-button`}
             >
               {method.attributes.name === 'cow' ? (
                 <FormattedMessage {...messages.verifyCow} />
