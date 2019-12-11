@@ -1798,6 +1798,7 @@
   "app.containers.landing.verifyYourIdentity": "",
   "app.errors.after_end_at": "De begindatum start na de einddatum",
   "app.errors.cannot_contain_ideas": "Er {ideasCount, plural, one {is één idee} other {zijn {ideasCount} ideeën}} in deze fase en de participatiemethode die je koos ondersteunt geen ideeën. Gelieve daarom {ideasCount, plural, one {het idee} other {de ideeën}} eerst uit deze fase te verwijderen en opnieuw te proberen.",
+  "app.errors.cant_change_after_first_response": "",
   "app.errors.email_already_active": "Het e-mailadres {value} in rij {row} behoort tot een geregistreerde gebruiker\n\n",
   "app.errors.email_already_invited": "Het e-mailadres {value} in rij {row} kreeg eerder al een uitnodiging",
   "app.errors.email_blank": "Dit mag niet leeg zijn",

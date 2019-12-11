@@ -1798,6 +1798,7 @@
   "app.containers.landing.verifyYourIdentity": "Make a bigger impact by verifying your identity",
   "app.errors.after_end_at": "The start date occurs after the end date",
   "app.errors.cannot_contain_ideas": "This phase contains {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} and the participation method you're trying to change it to doesn't support ideas. Please remove {ideasCount, plural, one {the idea} other {the ideas}} from the phase and try again.",
+  "app.errors.cant_change_after_first_response": "You can no longer change this, since some users already responded",
   "app.errors.email_already_active": "The email address {value} found in row {row} already belongs to a registered user",
   "app.errors.email_already_invited": "The email address {value} found in row {row} was already invited",
   "app.errors.email_blank": "This cannot be empty",

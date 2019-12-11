@@ -1798,6 +1798,7 @@
   "app.containers.landing.verifyYourIdentity": "",
   "app.errors.after_end_at": "La fecha de inicio es anterior a la fecha de término",
   "app.errors.cannot_contain_ideas": "Esta fase contiene {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} y el método de participación al que intenta cambiarla no es compatible con las ideas. Elimine {ideasCount, plural, one {the idea} other {the ideas}} de la fase e inténtelo de nuevo.",
+  "app.errors.cant_change_after_first_response": "",
   "app.errors.email_already_active": "La direccion de correo {value} encontrada en {row} ya pertenece a un usuario registrado",
   "app.errors.email_already_invited": "El correo electrónico {value} en fila {row} ya fue invitado",
   "app.errors.email_blank": "Esto no puede estar vacío",
