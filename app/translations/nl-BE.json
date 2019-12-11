@@ -856,6 +856,8 @@
   "app.containers.AdminPage.ProjectEdit.allowLocation": "Idee locatie",
   "app.containers.AdminPage.ProjectEdit.allowLocationTooltip": "De mogelijkheid om een locatie toe te voegen aan een idee in- of uitschakelen.",
   "app.containers.AdminPage.ProjectEdit.amountPerCitizen": "Totaalbedrag",
+  "app.containers.AdminPage.ProjectEdit.anonymousPolling": "",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "",
   "app.containers.AdminPage.ProjectEdit.archived": "Gearchiveerd",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Gearchiveerd",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Alle gebieden",
