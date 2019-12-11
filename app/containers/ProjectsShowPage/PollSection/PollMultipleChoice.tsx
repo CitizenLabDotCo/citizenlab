@@ -20,6 +20,10 @@ const StyledCheckbox = styled(Checkbox)`
   margin-left: 35px;
 `;
 
+const MaxText = styled.span`
+  font-weight: 400;
+`;
+
 interface InputProps {
   question: IPollQuestion;
   index: number;
@@ -44,7 +48,11 @@ const PollSingleChoice = ({ question, index, options, value, onChange }: Props) 
             </QuestionNumber>
             <QuestionText>
               <T value={question.attributes.title_multiloc} />
-              <FormattedMessage {...messages.maxOptions} values={{ maxNumber: question.attributes.max_options }} />
+              <MaxText>
+                {' ('}
+                <FormattedMessage {...messages.maxOptions} values={{ maxNumber: question.attributes.max_options }} />
+                {')'}
+              </MaxText>
             </QuestionText>
           </Label>
           {options.map((option) => (

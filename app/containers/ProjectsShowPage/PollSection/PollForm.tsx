@@ -54,6 +54,7 @@ export const Label = styled.label`
 export const QuestionText = styled.span`
   font-size: ${fontSizes.large}px;
   font-weight: 700;
+  color: ${({ theme }) => theme.colorText};
 `;
 
 interface Props {

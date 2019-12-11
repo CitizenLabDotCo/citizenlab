@@ -105,6 +105,6 @@ export default defineMessages({
   },
   saveQuestionSettings: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.saveQuestionSettings',
-    defaultMessage: 'Save settings',
+    defaultMessage: 'Save number of choices',
   },
 });
