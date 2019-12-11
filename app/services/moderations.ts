@@ -22,5 +22,5 @@ export interface IModerations {
 }
 
 export function moderationsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IModerations>({ apiEndpoint: `${API_PATH}/moderations`, ...streamParams });
+  return streams.get<IModerations>({ apiEndpoint: `${API_PATH}/moderations`, ...streamParams, cacheStream: false });
 }

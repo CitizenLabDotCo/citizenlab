@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
+import moment from 'moment';
 
 // components
 import Table from 'components/UI/Table';
-import CustomPagination from 'components/admin/Pagination/CustomPagination';
+import Pagination from 'components/admin/Pagination/Pagination';
 import { PageTitle } from 'components/admin/Section';
 
 // resources
@@ -17,22 +18,32 @@ import T from 'components/T';
 
 // styling
 import styled from 'styled-components';
-// import { colors, fontSizes } from 'utils/styleUtils';
-
-// typings
-import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/globalState';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
-  border: solid 1px red;
+  margin-bottom: 100px;
+`;
+
+const PageTitleWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 60px;
 `;
 
 const StyledPageTitle = styled(PageTitle)`
-  margin-bottom: 30px;
+  line-height: ${fontSizes.xxxl}px;
+  margin-bottom: 0px;
+`;
+
+const BetaLabel = styled.span`
+  color: ${colors.clIconAccent};
+  font-size: ${fontSizes.medium}px;
+  line-height: ${fontSizes.medium + 4}px;
+  font-weight: 600;
+  margin-left: 8px;
 `;
 
 const StyledTable = styled(Table)`
-  border: solid 1px red;
-
   th,
   td {
     text-align: left;
@@ -46,14 +57,22 @@ const StyledTable = styled(Table)`
       white-space: nowrap;
     }
 
+    &.date {
+      padding-right: 20px;
+    }
+
     &.type {
-      padding-left: 0px;
+      padding-right: 20px;
     }
 
     &.content {
-      max-width: calc(100vw - 1200px);
+      width: calc(100vw - 900px);
     }
   }
+`;
+
+const StyledPagination = styled(Pagination)`
+  margin-top: 40px;
 `;
 
 interface InputProps {
@@ -69,20 +88,6 @@ interface Props extends InputProps, DataProps { }
 interface State {}
 
 class Moderation extends PureComponent<Props, State> {
-  globalState: IGlobalStateService<IAdminFullWidth>;
-
-  constructor(props) {
-    super(props);
-    this.globalState = globalState.init('AdminFullWidth');
-  }
-
-  componentDidMount() {
-    this.globalState.set({ enabled: true });
-  }
-
-  componentWillUnmount() {
-    this.globalState.set({ enabled: false });
-  }
 
   handlePaginationClick = (pageNumber: number) => {
     this.props.moderations.onChangePage(pageNumber);
@@ -94,13 +99,19 @@ class Moderation extends PureComponent<Props, State> {
 
       return (
         <Container className={this.props.className}>
-          <StyledPageTitle>
-            <FormattedMessage {...messages.pageTitle} />
-          </StyledPageTitle>
+          <PageTitleWrapper>
+            <StyledPageTitle>
+              <FormattedMessage {...messages.pageTitle} />
+            </StyledPageTitle>
+            <BetaLabel>(Beta)</BetaLabel>
+          </PageTitleWrapper>
 
           <StyledTable>
             <thead>
               <tr>
+                <th className="date">
+                  <FormattedMessage {...messages.date} />
+                </th>
                 <th className="type">
                   <FormattedMessage {...messages.type} />
                 </th>
@@ -110,32 +121,35 @@ class Moderation extends PureComponent<Props, State> {
                 <th className="content">
                   <FormattedMessage {...messages.content} />
                 </th>
-                <th className="date">
-                  <FormattedMessage {...messages.date} />
-                </th>
               </tr>
             </thead>
             <tbody>
               {list.map((listItem, index) => {
                 return (
                   <tr key={index}>
-                    <td className="type nowrap">{listItem.type}</td>
+                    <td className="date nowrap">
+                      {moment(listItem.attributes.created_at).format('LLL')}
+                    </td>
+                    <td className="type nowrap">
+                      {listItem.attributes.context_type}
+                    </td>
                     <td className="context">
-                      <T value={listItem.attributes.context_multiloc} />
+                      <a href={listItem.attributes.context_url} role="button">
+                        <T value={listItem.attributes.context_multiloc} />
+                      </a>
                     </td>
                     <td className="content">
                       <T value={listItem.attributes.content_multiloc}>
                         {content => <div dangerouslySetInnerHTML={{ __html: content }} />}
                       </T>
                     </td>
-                    <td className="date nowrap">{listItem.attributes.created_at}</td>
                   </tr>
                 );
               })}
             </tbody>
           </StyledTable>
 
-          <CustomPagination
+          <StyledPagination
             currentPage={currentPage}
             totalPages={lastPage}
             loadPage={this.handlePaginationClick}
@@ -149,7 +163,7 @@ class Moderation extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  moderations: <GetModerations pageSize={4} />
+  moderations: <GetModerations pageSize={8} />
 });
 
 export default (inputProps: InputProps) => (
