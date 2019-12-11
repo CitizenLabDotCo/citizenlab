@@ -769,11 +769,6 @@ ActiveRecord::Schema.define(version: 2019_12_11_104007) do
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
-  create_table "verification_id_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "hashed_card_id"
-    t.index ["hashed_card_id"], name: "index_verification_id_cards_on_hashed_card_id"
-  end
-
   create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
     t.string "method_name", null: false
