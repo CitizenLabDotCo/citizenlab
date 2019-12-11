@@ -23,7 +23,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // typings
-import { VerificationMethodNames } from 'services/verificationMethods';
+import { IVerificationMethod } from 'services/verificationMethods';
 import { ContextShape } from './VerificationModal';
 
 const Container = styled.div`
@@ -161,7 +161,7 @@ const MethodButton = styled(Button)`
 
 interface Props {
   context: ContextShape | null;
-  onMethodSelected: (selectedMethod: VerificationMethodNames) => void;
+  onMethodSelected: (selectedMethod: IVerificationMethod) => void;
   className?: string;
   theme: any;
 }
@@ -174,27 +174,9 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
   const authUser = useAuthUser();
   const verificationMethods = useVerificationMethods();
 
-  const onVerifyCowButtonClick = useCallback(() => {
-    onMethodSelected('cow');
+  const onSelectMethodButtonClick = useCallback((method) => () => {
+    onMethodSelected(method);
   }, []);
-
-  const onVerifyBogusButtonClick = useCallback(() => {
-    onMethodSelected('bogus');
-  }, []);
-
-  let showCOWButton = false;
-  let showBogusButton = false;
-
-  if (!isNilOrError(verificationMethods) && verificationMethods.data && verificationMethods.data.length > 0) {
-    verificationMethods.data.forEach((item) => {
-      if (item.attributes.name === 'cow') {
-        showCOWButton = true;
-      }
-      if (item.attributes.name === 'bogus') {
-        showBogusButton = true;
-      }
-    });
-  }
 
   return (
     <Container id="e2e-verification-methods" className={className}>
@@ -239,10 +221,11 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
             <FormattedMessage {...messages.verifyNow} />
           </Subtitle>
 
-          {showCOWButton &&
+          {!isNilOrError(verificationMethods) && verificationMethods.data && verificationMethods.data.length > 0 && verificationMethods.data.map(method => (
             <MethodButton
+              key={method.id}
               icon="verify_manually"
-              onClick={onVerifyCowButtonClick}
+              onClick={onSelectMethodButtonClick(method)}
               fullWidth={true}
               size="1"
               justify="left"
@@ -258,34 +241,16 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
               boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
               boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
             >
-              <FormattedMessage {...messages.verifyCow} />
+              {method.attributes.name === 'cow' ? (
+                <FormattedMessage {...messages.verifyCow} />
+              ) : method.attributes.name === 'bogus' ?
+                  'Bogus verification (testing)'
+                  : method.attributes.name === 'id_card_lookup' ? (
+                    <T value={method.attributes.method_name_multiloc} />
+                  ) : null
+              }
             </MethodButton>
-          }
-
-          {showBogusButton &&
-            <MethodButton
-              id="e2e-bogus-button"
-              icon="verify_manually"
-              onClick={onVerifyBogusButtonClick}
-              fullWidth={true}
-              size="1"
-              justify="left"
-              padding="14px 20px"
-              bgColor="#fff"
-              iconColor={theme.colorMain}
-              iconHoverColor={darken(0.2, theme.colorMain)}
-              bgHoverColor="#fff"
-              textColor={theme.colorText}
-              textHoverColor={darken(0.2, theme.colorText)}
-              borderColor="#e3e3e3"
-              borderHoverColor={darken(0.2, '#e3e3e3')}
-              boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
-              boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
-              overflowEllipsis
-            >
-              Bogus verification (testing)
-            </MethodButton>
-          }
+          ))}
         </ButtonsContainer>
       </Content>
     </Container>
