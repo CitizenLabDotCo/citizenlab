@@ -13,7 +13,7 @@ export interface Props {
   loadPage: Function;
 }
 
-const Spagination = styled.div`
+const Container = styled.div`
   display: flex;
   font-size: ${fontSizes.base}px;
   align-items: baseline;
@@ -128,6 +128,7 @@ class CustomPagination extends React.PureComponent<Props> {
   handleItemClick = item => () => {
     this.props.loadPage(item);
   }
+
   goTo = page => () => {
     if (page > 0 && page <= this.props.totalPages) { this.props.loadPage(page); }
   }
@@ -138,7 +139,7 @@ class CustomPagination extends React.PureComponent<Props> {
 
     if (totalPages > 1) {
       return (
-        <Spagination className={this.props['className']}>
+        <Container className={this.props['className']}>
           <Back onClick={this.goTo(currentPage - 1)}>
             <ChevronIcon name="chevron-right" />
             <FormattedMessage {...messages.back} />
@@ -157,7 +158,7 @@ class CustomPagination extends React.PureComponent<Props> {
             <FormattedMessage {...messages.next} />
             <ChevronIcon name="chevron-right" />
           </Next>
-        </Spagination>
+        </Container>
       );
     }
     return null;
