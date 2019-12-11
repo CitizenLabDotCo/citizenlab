@@ -1798,6 +1798,7 @@
   "app.containers.landing.verifyYourIdentity": "",
   "app.errors.after_end_at": "Startdatoen ligger efter slutdatoen",
   "app.errors.cannot_contain_ideas": "Denne fase indeholder {ideaCount, flere, en {en ide} andre {{ideasCount} ideer}} og den deltagelsesmetode, du prøver at ændre den til, understøtter ikke ideer. Fjern {ideasCount, flere, en {ideen} andet {ideerne}} fra fasen, og prøv igen.",
+  "app.errors.cant_change_after_first_response": "",
   "app.errors.email_already_active": "E-mailadressen {value} fundet i række {row} tilhører allerede en registreret bruger",
   "app.errors.email_already_invited": "E-mailadressen {value} fundet i række {row} er allerede inviteret",
   "app.errors.email_blank": "Dette kan ikke være tomt",
