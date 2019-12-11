@@ -83,10 +83,10 @@ describe('<CategoryCard />', () => {
         handleChange={handleChange}
       />
     );
-    wrapper.find(`#${category}-radio-false`).simulate('change', [category, false]);
-    expect(handleChange).toBeCalledWith(category, false);
+    wrapper.find(`#${category}-radio-false`).simulate('change');
+    expect(handleChange).toBeCalled();
 
-    wrapper.find(`#${category}-radio-true`).simulate('change', [category, true]);
-    expect(handleChange).toBeCalledWith(category, true);
+    wrapper.find(`#${category}-radio-true`).simulate('change');
+    expect(handleChange).toBeCalled();
   });
 });
