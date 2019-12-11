@@ -4,6 +4,17 @@ import { colors } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 import { isString } from 'lodash-es';
 
+const StyledIcon = styled(Icon) `
+  height: 7px;
+  width: 10px;
+  margin-left: 5px;
+  margin-top: -2px;
+
+  &.ascending {
+    transform: rotate(180deg);
+  }
+`;
+
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -17,19 +28,9 @@ const Container = styled.div`
   &.active {
     color: ${colors.clIconAccent};
 
-    & svg {
+    ${StyledIcon} {
       fill: ${colors.clIconAccent};
     }
-  }
-`;
-
-const StyledIcon = styled(Icon) `
-  height: 7px;
-  margin-left: 5px;
-  margin-top: -2px;
-
-  &.ascending {
-    transform: rotate(180deg);
   }
 `;
 
