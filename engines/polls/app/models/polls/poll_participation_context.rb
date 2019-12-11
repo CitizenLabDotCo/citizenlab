@@ -9,6 +9,7 @@ module Polls::PollParticipationContext
     with_options unless: :is_timeline_project? do
       validates :poll_anonymous, inclusion: {in: [true, false]}, if: :poll?
       validate :poll_questions_allowed_in_participation_method
+      validate :anonymous_immutable_after_responses, on: :update
     end
   end
 
@@ -20,9 +21,17 @@ module Polls::PollParticipationContext
     self.poll_anonymous
   end
 
+  private
+
   def poll_questions_allowed_in_participation_method
     if !poll? && poll_questions.present?
       errors.add(:base, :cannot_contain_poll_questions, questions_count: poll_questions.size, message: 'cannot contain poll questions in the current non-poll participation context')
+    end
+  end
+
+  def anonymous_immutable_after_responses
+    if poll_anonymous_changed? && poll_responses.any?
+      errors.add(:poll_anonymous, :cant_change_after_first_response, message: "can't change after the first response came in")
     end
   end
 end
