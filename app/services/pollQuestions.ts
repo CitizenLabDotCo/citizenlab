@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc, IParticipationContextType } from 'typings';
+import { capitalizeParticipationContextType } from 'utils/helperUtils';
 
 export interface IPollQuestion {
   id: string;
@@ -18,7 +19,7 @@ export function pollQuestionsStream(participationContextId: string, participatio
 export async function addPollQuestion(participationContextId: string, participationContextType: IParticipationContextType, titleMultiloc: Multiloc) {
   const response = await streams.add<{data: IPollQuestion}>(`${API_PATH}/poll_questions`, {
     participation_context_id: participationContextId,
-    participation_context_type: participationContextType,
+    participation_context_type: capitalizeParticipationContextType(participationContextType),
     title_multiloc: titleMultiloc
   });
   streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/${participationContextType}s/${participationContextId}/poll_questions`] });
