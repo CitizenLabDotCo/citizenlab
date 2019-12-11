@@ -1798,6 +1798,7 @@
   "app.containers.landing.verifyYourIdentity": "",
   "app.errors.after_end_at": "La date de début a lieu après la date de fin",
   "app.errors.cannot_contain_ideas": "Cette phase contient {ideasCount, plural, one {une idée} other {{ideasCount} idées}} et la méthode de participation que vous essayez de changer ne prend pas les idées en compte. Veuillez retirer {ideasCount, plural, one {l'idée} other {les idées}} de la phase et réessayer.",
+  "app.errors.cant_change_after_first_response": "",
   "app.errors.email_already_active": "L'adresse e-mail {value} trouvée ligne {row} du fichier appartient a un utilisateur déjà inscrit",
   "app.errors.email_already_invited": "L'adresse {value} trouvée à la ligne {row} du fichier a déjà reçu une invitation",
   "app.errors.email_blank": "Cela ne peut pas être vide",
