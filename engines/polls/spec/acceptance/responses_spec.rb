@@ -59,10 +59,11 @@ resource "Poll Responses" do
       example_request "XLSX export for an anonymous poll" do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet[0][0].value.to_s).to eq @q1.title_multiloc['en']
         worksheet.each do |row|
           row.cells.each do |cell|
-            expect(cell.value).not_to include @u1.id
-            expect(cell.value).not_to include @u1.email
+            expect(cell.value.to_s).not_to include @u1.id
+            expect(cell.value.to_s).not_to include @u1.email
           end
         end
       end
