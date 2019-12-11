@@ -125,6 +125,7 @@ RSpec.configure do |config|
     require './engines/polls/spec/factories/responses.rb'
     require './engines/polls/spec/factories/response_options.rb'
     require './engines/verification/spec/factories/verifications.rb'
+    require './engines/verification/spec/factories/id_cards.rb'
     # Clean all tables to start
     DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
     # Use transactions for tests

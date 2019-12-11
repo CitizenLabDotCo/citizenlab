@@ -13,22 +13,29 @@ resource "Verifications" do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{name: 'id_card_lookup'}],
+      verification_methods: [{
+        name: 'id_card_lookup',
+        method_name_multiloc: {en: 'By social security number'},
+        card_id_multiloc: {en: 'Social security number'},
+        card_id_tooltip_multiloc: {en: 'You can find this number on you card. We just check, we don\'t store it'},
+        card_id_placeholder: "xx-xxxxx-xx",
+        explainer_image_url: "https://some.fake/image.png"
+      }],
     }
     @tenant.save!
   end
 
   post "web_api/v1/verification_methods/id_card_lookup/verification" do
     with_options scope: :verification do
-      parameter :id_card_id
+      parameter :card_id
     end
 
     describe do
       before do
-        @id_card_id = "123.46234-78B"
-        create(:verification_id_card, id_card_id: @id_card_id)
+        @card_id = "123.46234-78B"
+        id_card = create(:verification_id_card, card_id: @card_id)
       end
-      let(:id_card_id) { @id_card_id }
+      let(:card_id) { @card_id }
       example_request "Verify with id_card_lookup" do
         expect(status).to eq(201)
         expect(@user.reload.verified).to be true
@@ -36,7 +43,7 @@ resource "Verifications" do
     end
 
     describe do
-      let(:id_card_id) { "234.532345-345" }
+      let(:card_id) { "234.532345-345" }
       example_request "[error] Verify with id_card_lookup without a match" do
         expect(status).to eq (422)
         json_response = json_parse(response_body)
@@ -45,24 +52,26 @@ resource "Verifications" do
     end
 
     describe do
-      let(:id_card_id) { "" }
-      example_request "[error] Verify with id_card_lookup using empty id_card_id" do
+      let(:card_id) { "" }
+      example_request "[error] Verify with id_card_lookup using empty card_id" do
         expect(status).to eq (422)
         json_response = json_parse(response_body)
-        expect(json_response).to eq ({:errors => {:id_card_id=>[{:error=>"invalid"}]}})
+        expect(json_response).to eq ({:errors => {:card_id=>[{:error=>"invalid"}]}})
       end
     end
 
     describe do
       before do
         other_user = create(:user)
+        @card_id = "123.46234-78B"
+        id_card = create(:verification_id_card, card_id: @card_id)
         Verification::VerificationService.new.verify_sync(
           user: other_user,
           method_name: "id_card_lookup",
-          verification_parameters: {id_card_id: "123.46234-78B"}
+          verification_parameters: {card_id: @card_id}
         )
       end
-      let(:id_card_id) { "123.4623478B" }
+      let(:card_id) { "123.4623478B" }
       example_request "[error] Verify with id_card_lookup using credentials that are already taken (2nd call)" do
         expect(status).to eq (422)
         json_response = json_parse(response_body)
