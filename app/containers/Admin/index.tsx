@@ -106,7 +106,7 @@ class AdminPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   render() {
-    const { children, className } = this.props;
+    const { children, className, location } = this.props;
     const { adminNoPadding } = this.state;
     const adminFullWidth = (this.state.adminFullWidth === true || location.pathname.endsWith('admin/moderation'));
     const adminWhiteBg = location.pathname.endsWith('admin/moderation');
