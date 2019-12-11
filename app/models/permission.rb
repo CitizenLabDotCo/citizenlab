@@ -42,23 +42,15 @@ class Permission < ApplicationRecord
   	end
   end
 
-  def groups_inclusion user
-    group_ids = user.group_ids
-    groups.map do |group|
-      rules = group.rules.map do |rule|
-        {
-          rule: rule,
-          inclusion: SmartGroupsService.new.parse_json_rule(rule).filter(User.where(id: user.id)).exists?
-        }
-      end
-      {
-        id: group.id,
-        title_multiloc: group.title_multiloc,
-        membership_type: group.membership_type,
-        inclusion: group_ids.include?(group.id),
-        rules: rules
-      }
-    end
+  def participation_conditions
+    service = SmartGroupsService.new
+    groups.select(&:rules?).map do |group|
+      group.rules.select do |rule|
+        rule['ruleType'] != 'verified'
+      end.map do |rule|
+        service.parse_json_rule rule
+      end.map(&:description_multiloc)
+    end.reject { |rules| rules.empty? }
   end
 
 
