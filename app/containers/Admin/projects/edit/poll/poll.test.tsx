@@ -48,8 +48,8 @@ describe('<AdminProjectPoll/>', () => {
     it('renders the right content for a continuous project with polling PM', () => {
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(<AdminProjectPoll project={mockProject} phases={null} locale={'en'} />);
-      expect(wrapper.find('GetPollQuestions').props()).toMatchObject({ participationContextId: 'projectId', participationContextType: 'projects' });
-      expect(wrapper.find('ExportPollButton').props()).toMatchObject({ participationContextId: 'projectId', participationContextType: 'projects' });
+      expect(wrapper.find('GetPollQuestions').props()).toMatchObject({ participationContextId: 'projectId', participationContextType: 'project' });
+      expect(wrapper.find('ExportPollButton').props()).toMatchObject({ participationContextId: 'projectId', participationContextType: 'project' });
     });
   });
   describe('Polling phases', () => {
@@ -57,15 +57,15 @@ describe('<AdminProjectPoll/>', () => {
       const mockProject = getMockProject('projectId', 'timeline');
       const mockPhases = [mockPhaseInformationData, mockPhasePollData, mockPhaseInformationData];
       const wrapper = shallow(<AdminProjectPoll project={mockProject} phases={mockPhases} locale={'en'} />);
-      expect(wrapper.find('GetPollQuestions').props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phases' });
-      expect(wrapper.find('ExportPollButton').props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phases' });
+      expect(wrapper.find('GetPollQuestions').props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phase' });
+      expect(wrapper.find('ExportPollButton').props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phase' });
     });
     it('renders the right content for a timeline project with two polling phases', () => {
       const mockProject = getMockProject('projectId', 'timeline');
       const mockPhases = [mockPhaseInformationData, mockPhasePollData, mockPhasePollData];
       const wrapper = shallow(<AdminProjectPoll project={mockProject} phases={mockPhases} locale={'en'} />);
-      wrapper.find('GetPollQuestions').every(item => expect(item.props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phases' }));
-      wrapper.find('ExportPollButton').every(item => expect(item.props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phases' }));
+      wrapper.find('GetPollQuestions').every(item => expect(item.props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phase' }));
+      wrapper.find('ExportPollButton').every(item => expect(item.props()).toMatchObject({ participationContextId: 'MockPhasePollId', participationContextType: 'phase' }));
     });
   });
 });

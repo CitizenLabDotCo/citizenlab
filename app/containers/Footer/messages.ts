@@ -72,5 +72,9 @@ export default defineMessages({
   logoAltText: {
     id: 'app.containers.footer.logoAltText',
     defaultMessage: 'Website of {tenantName}'
+  },
+  siteMap: {
+    id: 'app.containers.footer.siteMap',
+    defaultMessage: 'Site Map'
   }
 });

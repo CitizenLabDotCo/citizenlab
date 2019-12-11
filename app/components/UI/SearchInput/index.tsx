@@ -11,11 +11,11 @@ import { isPage } from 'utils/helperUtils';
 // i18n
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 const Container = styled.div`
@@ -188,6 +188,9 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
         onKeyDown={handleOnKeyDown}
         className="e2e-search-input"
       />
+      <ScreenReaderOnly aria-live="polite">
+        <FormattedMessage {...messages.searchTerm} values={{ searchTerm }} />
+      </ScreenReaderOnly>
       {isEmpty(searchTerm) ?
         <SearchIcon ariaHidden name="search2" />
       :

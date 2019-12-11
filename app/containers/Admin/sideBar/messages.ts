@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.dashboard',
     defaultMessage: 'Dashboard',
   },
+  moderation: {
+    id: 'app.containers.AdminPage.SideBar.moderation',
+    defaultMessage: 'Moderation',
+  },
   users: {
     id: 'app.containers.AdminPage.SideBar.users',
     defaultMessage: 'Users',

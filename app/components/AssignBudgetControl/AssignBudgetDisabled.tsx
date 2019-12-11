@@ -7,6 +7,7 @@ import { IIdeaData } from 'services/ideas';
 import messages from './messages';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { openVerificationModalWithContext } from 'containers/App/events';
+import { IParticipationContextType } from 'typings';
 
 const Container = styled.div`
   color: ${colors.label};
@@ -32,6 +33,8 @@ const StyledButton = styled.button`
 
 interface Props {
   budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'];
+  participationContextId: string;
+  participationContextType: IParticipationContextType;
 }
 
 interface State { }
@@ -40,7 +43,8 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
   onVerify = (event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    openVerificationModalWithContext('ActionBudget');
+    const { participationContextId, participationContextType } = this.props;
+    openVerificationModalWithContext('ActionBudget', participationContextId, participationContextType, 'budgeting');
   }
 
   removeFocus = (event: React.MouseEvent) => {

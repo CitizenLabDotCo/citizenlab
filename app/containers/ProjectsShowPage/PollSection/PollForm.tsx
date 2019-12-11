@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
+import { IParticipationContextType } from 'typings';
+
 import Radio from 'components/UI/Radio';
 import Button from 'components/UI/Button';
 
@@ -42,7 +44,7 @@ const QuestionContainer = styled.div`
 const QuestionNumber = styled.span`
   font-size: ${fontSizes.medium}px;
   line-height: ${fontSizes.medium}px;
-  font-weight: 700;
+  font-weight: 600;
   background-color: ${colors.background};
   padding: 2px 7px;
   border-radius: 2px;
@@ -58,7 +60,7 @@ const Label = styled.label`
 
 const QuestionText = styled.span`
   font-size: ${fontSizes.large}px;
-  font-weight: 700;
+  font-weight: 600;
 `;
 
 const StyledRadio = styled(Radio)`
@@ -69,7 +71,7 @@ interface Props {
   questions: IPollQuestion[];
   projectId: string;
   id: string;
-  type: 'projects' | 'phases';
+  type: IParticipationContextType;
   disabled: boolean;
 }
 

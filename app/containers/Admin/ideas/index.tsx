@@ -54,7 +54,7 @@ class IdeaDashboard extends PureComponent<Props> {
               <FormattedMessage {...messages.headerSubtitle} />
             </SectionSubtitle>
           </Left>
-          <IdeaButton style="admin-dark" />
+          <IdeaButton style="admin-dark" participationContextType={null}/>
         </HeaderContainer>
 
         <PageWrapper>
