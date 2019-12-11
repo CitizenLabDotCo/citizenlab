@@ -11,6 +11,5 @@ module Verification
       self.hashed_card_id = IdCardService.new.encode(card_id)
     end
 
-
   end
 end
