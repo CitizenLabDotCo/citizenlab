@@ -2,6 +2,9 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
+// typings
+import { IParticipationContextType } from 'typings';
+
 // router
 import Link from 'utils/cl-router/Link';
 
@@ -210,13 +213,13 @@ class ProjectNavbar extends PureComponent<Props, State> {
         const projectPublicationStatus = project.attributes.publication_status;
         const isPBProject = (projectType === 'continuous' && project.attributes.participation_method === 'budgeting');
         const isPBPhase = (phase && phase.attributes.participation_method === 'budgeting');
-        let participationContextType: 'Project' | 'Phase' | null = null;
+        let participationContextType: IParticipationContextType | null = null;
         let participationContextId: string | null = null;
 
         if (isPBProject) {
-          participationContextType = 'Project';
+          participationContextType = 'project';
         } else if (isPBPhase) {
-          participationContextType = 'Phase';
+          participationContextType = 'phase';
         }
 
         if (isPBProject) {
@@ -323,6 +326,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
                     textColor={theme.projectNavbarIdeaButtonTextColor}
                     borderRadius="0px"
+                    participationContextType="project"
                   />
                 }
               </ProjectNavbarItems>

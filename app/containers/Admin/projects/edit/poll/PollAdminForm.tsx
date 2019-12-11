@@ -21,7 +21,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
-import { Multiloc, Locale } from 'typings';
+import { Multiloc, Locale, IParticipationContextType } from 'typings';
 
 const StyledList = styled(List)`
   margin: 10px 0;
@@ -29,7 +29,7 @@ const StyledList = styled(List)`
 
 interface Props {
   participationContextId: string;
-  participationContextType: 'projects' | 'phases';
+  participationContextType: IParticipationContextType;
   pollQuestions: IPollQuestion[] | null | undefined;
   locale: Locale;
 }
@@ -113,14 +113,12 @@ export class PollAdminForm extends PureComponent<Props, State> {
   saveNewQuestion = () => {
     const { participationContextId, participationContextType } = this.props;
     const { newQuestionTitle } = this.state;
-    const participationContextTypeUppercase = participationContextType === 'projects'
-      ? 'Project'
-      : participationContextType === 'phases'
-        ? 'Phase'
-        : null;
-    participationContextTypeUppercase && newQuestionTitle && addPollQuestion(participationContextId, participationContextTypeUppercase, newQuestionTitle).then((res) => {
-      this.setState({ newQuestionTitle: null, editingOptionsId: res.data.id });
-    });
+
+    if (participationContextType && participationContextId && newQuestionTitle) {
+      addPollQuestion(participationContextId, participationContextType, newQuestionTitle).then((res) => {
+        this.setState({ newQuestionTitle: null, editingOptionsId: res.data.id });
+      });
+    }
   }
   cancelNewQuestion = () => {
     this.setState({ newQuestionTitle: null });

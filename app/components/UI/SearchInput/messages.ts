@@ -21,5 +21,9 @@ export default defineMessages({
   a11y_searchTermBlank: {
     id: 'app.containers.SearchInput.a11y_searchTermBlank',
     defaultMessage: 'Search term: blank',
-  }
+  },
+  searchTerm: {
+    id: 'app.containers.SearchInput.searchTerm',
+    defaultMessage: 'Search term: {searchTerm}',
+  },
 });

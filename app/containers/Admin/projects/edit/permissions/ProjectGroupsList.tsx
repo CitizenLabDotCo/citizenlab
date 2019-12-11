@@ -152,7 +152,7 @@ class ProjectGroupsList extends PureComponent<Props & InjectedIntlProps, State> 
         this.setState({ selectedGroups: null });
         this.props.onAddButtonClicked();
       } catch (error) {
-        console.log(error);
+        if (process.env.NODE_ENV === 'development') console.log(error);
       }
     }
   }

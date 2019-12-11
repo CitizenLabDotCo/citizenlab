@@ -61,7 +61,7 @@ class PhaseIdeas extends PureComponent<Props, State> {
               defaultView={phase.attributes.presentation_mode}
               participationMethod={participationMethod}
               participationContextId={phase.id}
-              participationContextType="Phase"
+              participationContextType="phase"
               invisibleTitleMessage={messages.invisibleTitleIdeasListPhase}
             />
           </Container>

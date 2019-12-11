@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import Link from 'utils/cl-router/Link';
 
 // components
 import TypeformSurvey from './TypeformSurvey';
@@ -21,6 +22,7 @@ import { openVerificationModalWithContext } from 'containers/App/events';
 
 // styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -28,7 +30,19 @@ import messages from './messages';
 const Container = styled.div``;
 
 const StyledButton = styled.button`
-  color: #1391A1;
+  color: ${colors.clBlueButtonText};
+  text-decoration: underline;
+  transition: all 100ms ease-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+  display: inline-block;
+  padding: 0;
+`;
+
+const SignUpLink = styled(Link)`
+  color: ${colors.clBlueButtonText};
   text-decoration: underline;
   transition: all 100ms ease-out;
 
@@ -59,7 +73,12 @@ interface State { }
 
 class Survey extends PureComponent<Props, State> {
   onVerify = () => {
-    openVerificationModalWithContext('ActionSurvey');
+    const { projectId, phaseId } = this.props;
+    if (phaseId) {
+      openVerificationModalWithContext('ActionPost', phaseId, 'phase', 'taking_survey');
+    } else if (projectId) {
+      openVerificationModalWithContext('ActionPost', projectId, 'project', 'taking_survey');
+    }
   }
 
   disabledMessage: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
@@ -116,6 +135,8 @@ class Survey extends PureComponent<Props, State> {
               {...message}
               values={{
                 verificationLink: <StyledButton onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
+                signUpLink: <SignUpLink to="/sign-up"><FormattedMessage {...messages.signUpLinkText} /></SignUpLink>,
+                logInLink: <SignUpLink to="/sign-in"><FormattedMessage {...messages.logInLinkText} /></SignUpLink>
               }}
             />
           </Warning>

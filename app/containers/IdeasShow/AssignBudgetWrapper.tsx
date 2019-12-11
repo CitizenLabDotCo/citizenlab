@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { IParticipationContextType } from 'typings';
 
 // components
 import PopContainer from 'components/UI/PopContainer';
@@ -13,7 +14,7 @@ interface Props {
   ideaId: string;
   projectId: string;
   participationContextId: string;
-  participationContextType: 'Phase' | 'Project';
+  participationContextType: IParticipationContextType;
   budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'];
 }
 
@@ -56,6 +57,8 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
         {error === 'budgetingDisabled' &&
           <PopContainer icon="lock-outlined">
             <AssignBudgetDisabled
+              participationContextId={participationContextId}
+              participationContextType={participationContextType}
               budgetingDescriptor={budgetingDescriptor}
             />
           </PopContainer>

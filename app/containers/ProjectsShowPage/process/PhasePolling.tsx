@@ -42,7 +42,7 @@ class PhaseSurvey extends PureComponent<Props, State> {
           <PollSection
             phaseId={phase.id}
             projectId={projectId}
-            type="phases"
+            type="phase"
           />
         </Container>
       );

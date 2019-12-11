@@ -2,6 +2,9 @@ import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
+// typings
+import { IParticipationContextType } from 'typings';
+
 // services
 import { getPostingPermission, DisabledReasons } from 'services/ideaPostingRules';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -92,6 +95,7 @@ interface InputProps extends ButtonContainerProps {
   projectId?: string | undefined;
   phaseId?: string | undefined;
   className?: string;
+  participationContextType: IParticipationContextType | null;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -111,7 +115,12 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
 
   onVerify = (event: React.MouseEvent) => {
     event.preventDefault();
-    openVerificationModalWithContext('ActionIdea');
+    const { participationContextType, projectId, phaseId } = this.props;
+    if (participationContextType === 'project' && projectId) {
+      openVerificationModalWithContext('ActionPost', projectId, 'project', 'posting');
+    } else if (participationContextType === 'phase' && phaseId) {
+      openVerificationModalWithContext('ActionPost', phaseId, 'phase', 'posting');
+    }
   }
 
   onNewIdea = () => {
@@ -139,6 +148,14 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
                 <StyledA href="" onClick={this.onVerify} className="tooltipLink">
                   <FormattedMessage {...messages.verificationLinkText} />
                 </StyledA>,
+              signUpLink:
+                <StyledA href="/sign-up" className="tooltipLink">
+                  <FormattedMessage {...messages.signUpLinkText} />
+                </StyledA>,
+              signInLink:
+                <StyledA href="/sign-in" className="tooltipLink">
+                  <FormattedMessage {...messages.signInLinkText} />
+                </StyledA>,
             }}
           />
         </TooltipWrapper>
@@ -154,7 +171,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             theme="light"
             hideOnClick={false}
           >
-            <ButtonWrapper className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}>
+            <ButtonWrapper tabIndex={isPostingDisabled ? 0 : -1} className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}>
               <Button {...this.props} aria-describedby="tooltip-content" linkTo={linkTo} disabled={isPostingDisabled} ariaDisabled={false}>
                 <FormattedMessage {...messages.startAnIdea} />
               </Button>

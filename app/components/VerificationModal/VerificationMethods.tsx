@@ -1,14 +1,16 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
 import Avatar from 'components/Avatar';
+import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Title, Subtitle } from './styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useParticipationConditions from 'hooks/useParticipationConditions';
 import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // i18n
@@ -22,12 +24,19 @@ import { darken } from 'polished';
 
 // typings
 import { VerificationMethodNames } from 'services/verificationMethods';
+import { ContextShape } from './VerificationModal';
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  ${media.smallerThanMinTablet`
+    padding: 10px;
+  `}
+  ${media.largePhone`
+    padding: 0px;
+  `}
 `;
 
 const AboveTitle = styled.div`
@@ -35,12 +44,19 @@ const AboveTitle = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 25px;
-  background: #fff;
+  ${media.smallerThanMaxTablet`
+    justify-content: flex-start;
+    margin-top: 15px;
+  `}
 `;
 
 const StyledAvatar = styled(Avatar)`
+  margin-left: -5px;
   margin-right: -5px;
   z-index: 2;
+  ${media.largePhone`
+    margin-left: 0;
+  `}
 `;
 
 const ShieldIcon = styled(Icon)`
@@ -51,31 +67,75 @@ const ShieldIcon = styled(Icon)`
 `;
 
 const Content = styled.div`
-  flex: 1 1 auto;
   display: flex;
   justify-content: center;
+  ${media.smallerThanMaxTablet`
+    flex-wrap: wrap;
+  `}
 `;
 
 const Context = styled.div`
   flex: 1 1 auto;
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 32px;
-  padding-bottom: 32px;
+  width: 100%;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  margin-right: 40px;
+  margin-top: 32px;
   margin-bottom: 30px;
-  margin-right: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  ${media.smallerThanMaxTablet`
+    padding: 0;
+    margin: 20px 0 30px;
+  `}
 `;
 
 const ContextLabel = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
   line-height: normal;
+  margin-bottom: 17px;
+`;
+
+const ContextItem = styled.span`
+  color: ${(props: any) => props.theme.colorText};
+  font-size: ${fontSizes.small}px;
+  line-height: normal;
+  border-radius: ${props => props.theme.borderRadius};
+  border: 1px solid ${colors.lightGreyishBlue};
+  padding: 6px 13px;
+  margin-bottom: 5px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  ${media.largePhone`
+    white-space: normal;
+  `}
+  &:first-letter {
+    text-transform: capitalize
+  }
+`;
+
+const Or = styled.span`
+  color: ${(props: any) => props.theme.colorText};
+  font-size: ${fontSizes.small}px;
+  border-radius: 50%;
+  border: 1px solid ${colors.lightGreyishBlue};
+  margin-top: 5px;
+  margin-bottom: 10px;
+  min-width: 25px;
+  height: 25px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 `;
 
 const ButtonsContainer = styled.div`
   flex: 1 1 auto;
   width: 100%;
-  max-width: 420px;
   padding-left: 40px;
   padding-right: 40px;
   padding-top: 32px;
@@ -86,12 +146,12 @@ const ButtonsContainer = styled.div`
   align-items: stretch;
   background: ${colors.background};
   border-radius: ${(props: any) => props.theme.borderRadius};
+  max-width: 423px;
 
-  ${media.smallerThanMinTablet`
-    padding: 0;
-    margin-bottom: 10px;
-    max-width: auto;
-    background: transparent;
+  ${media.smallerThanMaxTablet`
+    padding: 20px;
+    margin: 0;
+    max-width: unset;
   `}
 `;
 
@@ -100,13 +160,16 @@ const MethodButton = styled(Button)`
 `;
 
 interface Props {
-  withContext: boolean;
+  context: ContextShape | null;
   onMethodSelected: (selectedMethod: VerificationMethodNames) => void;
   className?: string;
   theme: any;
 }
 
-const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, className, theme }) => {
+const VerificationMethods = memo<Props>(({ context, onMethodSelected, className, theme }) => {
+
+  const participationConditions = useParticipationConditions(context);
+  const withContext = !!context;
 
   const authUser = useAuthUser();
   const verificationMethods = useVerificationMethods();
@@ -144,7 +207,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
         {withContext ? <FormattedMessage {...messages.toParticipateInThisProject} /> : <FormattedMessage {...messages.andUnlockYourCitizenPotential} />}
       </Title>
       <Content>
-        {withContext && false && // TODO: pass in context and display additionnal rules if any
+        {withContext && !isNilOrError(participationConditions) && participationConditions.length > 0 &&
           <Context>
             <Subtitle>
               <FormattedMessage {...messages.participationConditions} />
@@ -153,6 +216,22 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
             <ContextLabel>
               <FormattedMessage {...messages.peopleMatchingConditions} />
             </ContextLabel>
+
+            {participationConditions.map((rulesSet, index) => {
+              const rules = rulesSet.map((rule, ruleIndex) => (
+                <ContextItem className="e2e-rule-item" key={ruleIndex}>
+                  <T value={rule} />
+                </ContextItem>
+              ));
+              return index === 0 ? rules : (
+                <Fragment key={index}>
+                  <Or>
+                    <FormattedMessage {...messages.or} />
+                  </Or>
+                  {rules}
+                </Fragment>
+              );
+            })}
           </Context>
         }
         <ButtonsContainer className={withContext ? 'withContext' : 'withoutContext'}>
@@ -179,7 +258,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
               boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
               boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
             >
-              <FormattedMessage {...messages.verifyCow}/>
+              <FormattedMessage {...messages.verifyCow} />
             </MethodButton>
           }
 
@@ -202,6 +281,7 @@ const VerificationMethods = memo<Props>(({ withContext, onMethodSelected, classN
               borderHoverColor={darken(0.2, '#e3e3e3')}
               boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
               boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+              overflowEllipsis
             >
               Bogus verification (testing)
             </MethodButton>
