@@ -856,6 +856,8 @@
   "app.containers.AdminPage.ProjectEdit.allowLocation": "Localisation de l'idée",
   "app.containers.AdminPage.ProjectEdit.allowLocationTooltip": "Activez ou désactivez la possibilité d'ajouter une localisation à une idée.",
   "app.containers.AdminPage.ProjectEdit.amountPerCitizen": "Budget total",
+  "app.containers.AdminPage.ProjectEdit.anonymousPolling": "",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "",
   "app.containers.AdminPage.ProjectEdit.archived": "Archivé",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archivé",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Pas de lieu en particulier",

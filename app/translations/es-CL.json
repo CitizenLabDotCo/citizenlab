@@ -856,6 +856,8 @@
   "app.containers.AdminPage.ProjectEdit.allowLocation": "Ubicación de una idea",
   "app.containers.AdminPage.ProjectEdit.allowLocationTooltip": "Activado o desactivado la opción de añadir la ubicación a una idea.",
   "app.containers.AdminPage.ProjectEdit.amountPerCitizen": "Presupuesto total",
+  "app.containers.AdminPage.ProjectEdit.anonymousPolling": "",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "",
   "app.containers.AdminPage.ProjectEdit.archived": "Archivado",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archivado",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Todas las localidades o zonas",
