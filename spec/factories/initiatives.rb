@@ -19,7 +19,7 @@ FactoryBot.define do
 
     before :create do |initiative|
       if initiative.initiative_status_changes.blank?
-        initiative.initiative_status_changes << build(:initiative_status_change, initiative: initiative)
+        initiative.initiative_status_changes << build(:initiative_status_change, initiative: initiative, official_feedback: nil)
       end
     end
 
@@ -28,7 +28,8 @@ FactoryBot.define do
         initiative.initiative_status_changes << create(
           :initiative_status_change, 
           initiative: initiative,
-          initiative_status: evaluator.initiative_status
+          initiative_status: evaluator.initiative_status,
+          official_feedback: nil
           )
       end
     end
