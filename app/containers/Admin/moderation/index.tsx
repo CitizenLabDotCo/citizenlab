@@ -1,13 +1,19 @@
 import React, { PureComponent } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
 
 // components
 import Table from 'components/UI/Table';
 import CustomPagination from 'components/admin/Pagination/CustomPagination';
 import { PageTitle } from 'components/admin/Section';
 
+// resources
+import GetModerations, { GetModerationsChildProps } from 'resources/GetModerations';
+
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import T from 'components/T';
 
 // styling
 import styled from 'styled-components';
@@ -50,9 +56,15 @@ const StyledTable = styled(Table)`
   }
 `;
 
-interface Props {
+interface InputProps {
   className?: string;
 }
+
+interface DataProps {
+  moderations: GetModerationsChildProps;
+}
+
+interface Props extends InputProps, DataProps { }
 
 interface State {}
 
@@ -61,10 +73,6 @@ class Moderation extends PureComponent<Props, State> {
 
   constructor(props) {
     super(props);
-    this.state = {
-      activeComparisonCount: 0,
-      selectedNodes: [[]],
-    };
     this.globalState = globalState.init('AdminFullWidth');
   }
 
@@ -76,85 +84,76 @@ class Moderation extends PureComponent<Props, State> {
     this.globalState.set({ enabled: false });
   }
 
-  handlePaginationClick = () => {
-    // empty
+  handlePaginationClick = (pageNumber: number) => {
+    this.props.moderations.onChangePage(pageNumber);
   }
 
   render() {
-    const currentPage = 1;
-    const lastPage = 10;
-    const moderationData = [
-      {
-        type: 'idea',
-        context: 'A random idea',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere velit sed vulputate varius. Mauris ac turpis est. Sed et gravida risus. Curabitur porttitor, nisi id pulvinar maximus, ipsum lorem posuere est, a gravida justo tortor vel diam. Nulla sed mollis turpis. Pellentesque ac lorem ultricies, iaculis massa non, fermentum nisi. In iaculis felis ut sagittis feugiat. Nulla facilisi. Cras molestie eget massa sit amet cursus. Nullam a justo eget felis facilisis maximus vitae vel est. Phasellus vehicula massa erat. Praesent ut dui eget orci iaculis lacinia. Proin ac magna augue. Donec molestie dolor in lacus eleifend, at posuere arcu ultrices. Nam id erat et arcu scelerisque mattis at ut neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.',
-        date: '2011-10-05T14:48:00.000Z'
-      },
-      {
-        type: 'idea',
-        context: 'A random idea',
-        content: 'Lorem ipsum dolor',
-        date: '2011-10-05T14:48:00.000Z'
-      },
-      {
-        type: 'idea',
-        context: 'A random idea',
-        content: 'Ut tellus massa, rutrum sed dignissim non, commodo id ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec et ante magna. Donec a lectus interdum tortor consectetur fringilla. Phasellus augue augue, ultrices quis erat quis, porttitor sodales magna. Proin id purus sapien. Phasellus nec sapien eget diam tristique venenatis in in justo.',
-        date: '2011-10-05T14:48:00.000Z'
-      },
-      {
-        type: 'idea',
-        context: 'A random idea',
-        content: 'Nulla sollicitudin vitae eros vitae dignissim. Mauris ipsum lacus, suscipit vel pellentesque a, rutrum sit amet lorem. Morbi vel felis enim. Vivamus ac lectus eros. Curabitur vestibulum id enim ullamcorper porttitor. Vestibulum efficitur lorem in turpis ullamcorper, at molestie lorem vulputate. Phasellus a sagittis nisl. Morbi rhoncus augue sed nisi imperdiet interdum a a est. Aenean blandit porta erat, a aliquam mi tincidunt in. Maecenas sit amet nulla nec felis tristique vestibulum tempus sed sapien. Nulla nec metus quis odio laoreet pharetra. Maecenas id pulvinar leo. Etiam faucibus interdum odio vel vehicula. Ut quis imperdiet risus. Integer dignissim dictum mauris, vitae laoreet arcu posuere volutpat.',
-        date: '2011-10-05T14:48:00.000Z'
-      }
-    ];
+    if (!isNilOrError(this.props.moderations?.list)) {
+      const { moderations: { list, currentPage, lastPage } } = this.props;
 
-    return (
-      <Container className={this.props.className}>
-        <StyledPageTitle>
-          <FormattedMessage {...messages.pageTitle} />
-        </StyledPageTitle>
+      return (
+        <Container className={this.props.className}>
+          <StyledPageTitle>
+            <FormattedMessage {...messages.pageTitle} />
+          </StyledPageTitle>
 
-        <StyledTable>
-          <thead>
-            <tr>
-              <th className="type">
-                <FormattedMessage {...messages.type} />
-              </th>
-              <th className="context">
-                <FormattedMessage {...messages.context} />
-              </th>
-              <th className="content">
-                <FormattedMessage {...messages.content} />
-              </th>
-              <th className="date">
-                <FormattedMessage {...messages.date} />
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {moderationData.map((item, index) => {
-              return (
-                <tr key={index}>
-                  <td className="type nowrap">{item.type}</td>
-                  <td className="context">{item.context}</td>
-                  <td className="content">{item.content}</td>
-                  <td className="date nowrap">{item.date}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </StyledTable>
+          <StyledTable>
+            <thead>
+              <tr>
+                <th className="type">
+                  <FormattedMessage {...messages.type} />
+                </th>
+                <th className="context">
+                  <FormattedMessage {...messages.context} />
+                </th>
+                <th className="content">
+                  <FormattedMessage {...messages.content} />
+                </th>
+                <th className="date">
+                  <FormattedMessage {...messages.date} />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {list.map((listItem, index) => {
+                return (
+                  <tr key={index}>
+                    <td className="type nowrap">{listItem.type}</td>
+                    <td className="context">
+                      <T value={listItem.attributes.context_multiloc} />
+                    </td>
+                    <td className="content">
+                      <T value={listItem.attributes.content_multiloc}>
+                        {content => <div dangerouslySetInnerHTML={{ __html: content }} />}
+                      </T>
+                    </td>
+                    <td className="date nowrap">{listItem.attributes.created_at}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </StyledTable>
 
-        <CustomPagination
-          currentPage={currentPage || 1}
-          totalPages={lastPage || 1}
-          loadPage={this.handlePaginationClick}
-        />
-      </Container>
-    );
+          <CustomPagination
+            currentPage={currentPage}
+            totalPages={lastPage}
+            loadPage={this.handlePaginationClick}
+          />
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
-export default Moderation;
+const Data = adopt<DataProps, InputProps>({
+  moderations: <GetModerations pageSize={4} />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataprops => <Moderation {...inputProps} {...dataprops} />}
+  </Data>
+);
