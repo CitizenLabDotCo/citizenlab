@@ -4,8 +4,6 @@ module SmartGroupRules
     PREDICATE_VALUES = %w(has_value not_has_value is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
 
-    RULE_TYPE = "custom_field_select"
-
     include CustomFieldRule
 
     validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: ['select', 'multiselect']).map(&:id) } }
@@ -20,7 +18,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "customFieldId" => {
               "$ref": "#/definitions/customFieldId"
@@ -42,7 +40,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "customFieldId" => {
               "$ref": "#/definitions/customFieldId"
@@ -54,6 +52,10 @@ module SmartGroupRules
           }
         }
       ]
+    end
+
+    def self.rule_type
+      'custom_field_select'
     end
 
     def initialize custom_field_id, predicate, value=nil
@@ -96,6 +98,10 @@ module SmartGroupRules
           raise "Unsupported predicate #{predicate}"
         end
       end
+    end
+
+    def description_value locale
+      CustomFieldOption.find(value).title_multiloc[locale]
     end
 
     private

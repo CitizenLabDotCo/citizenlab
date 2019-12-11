@@ -1,10 +1,10 @@
 module SmartGroupRules
   class LivesIn
     include ActiveModel::Validations
+    include DescribableRule
 
     PREDICATE_VALUES = %w(has_value not_has_value is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
-    RULE_TYPE = 'lives_in'
 
     attr_accessor :predicate, :value
 
@@ -22,7 +22,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "predicate" => {
               "type": "string",
@@ -41,7 +41,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "predicate" => {
               "type" => "string",
@@ -50,6 +50,10 @@ module SmartGroupRules
           }
         }
       ]
+    end
+
+    def self.rule_type
+      'lives_in'
     end
 
     def self.from_json json
@@ -73,6 +77,28 @@ module SmartGroupRules
         users_scope.where("custom_field_values->>'domicile' IS NOT NULL")     
       else
         raise "Unsupported predicate #{predicate}"
+      end
+    end
+
+    def description_property locale
+      CustomField.find_by(key: 'domicile').title_multiloc[locale]
+    end
+
+    def description_rule_type
+      case value
+      when 'outside'
+        self.class.rule_type
+      else
+        CustomFieldSelect.rule_type
+      end
+    end
+
+    def description_value locale
+      case value
+      when 'outside'
+        value
+      else
+        Area.find(value).title_multiloc[locale]
       end
     end
 
