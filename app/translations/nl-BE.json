@@ -353,6 +353,7 @@
   "app.components.VerificationModal.cowIdSerialNumber": "ID-serienummer",
   "app.components.VerificationModal.cowRunNumber": "RUN",
   "app.components.VerificationModal.emptyFieldError": "Dit veld mag niet leeg zijn.",
+  "app.components.VerificationModal.invalidCardIdError": "",
   "app.components.VerificationModal.invalidIdSerialError": "Ongeldig ID-serienummer",
   "app.components.VerificationModal.invalidRunError": "Ongeldige RUN",
   "app.components.VerificationModal.noMatchFormError": "Geen match gevonden.",
