@@ -7,12 +7,17 @@ module Polls::PollParticipationContext
 
 	  # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :is_timeline_project? do
+      validates :poll_anonymous, inclusion: {in: [true, false]}, if: :poll?
       validate :poll_questions_allowed_in_participation_method
     end
   end
 
   def poll?
     self.participation_method == 'poll'
+  end
+
+  def poll_anonymous?
+    self.poll_anonymous
   end
 
   def poll_questions_allowed_in_participation_method
