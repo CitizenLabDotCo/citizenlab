@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
+import { withRouter, WithRouterProps } from 'react-router';
 import { globalState, IAdminFullWidth, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
 
 // components
@@ -16,6 +17,10 @@ const Container = styled.div`
   color: ${colors.adminTextColor};
   fill: ${colors.adminTextColor};
   border-color: ${colors.adminTextColor};
+
+  &.whiteBg {
+    background: #fff;
+  }
 
   .ui, .ui.menu .item, .ui.table th, .ui a, .ui input, .ui .active td {
     color: ${colors.adminTextColor} !important;
@@ -71,7 +76,7 @@ type State = {
   adminNoPadding: boolean;
 };
 
-class AdminPage extends PureComponent<Props, State> {
+class AdminPage extends PureComponent<Props & WithRouterProps, State> {
   FullWidth: IGlobalStateService<IAdminFullWidth>;
   NoPadding: IGlobalStateService<IAdminNoPadding>;
   subscriptions: Subscription[];
@@ -102,11 +107,13 @@ class AdminPage extends PureComponent<Props, State> {
 
   render() {
     const { children, className } = this.props;
-    const { adminFullWidth, adminNoPadding } = this.state;
+    const { adminNoPadding } = this.state;
+    const adminFullWidth = (this.state.adminFullWidth === true || location.pathname.endsWith('admin/moderation'));
+    const adminWhiteBg = location.pathname.endsWith('admin/moderation');
 
     return (
       <>
-        <Container className={className}>
+        <Container className={`${className} ${adminWhiteBg ? 'whiteBg' : ''}`}>
           <Sidebar />
           <RightColumn className={`${adminFullWidth && 'fullWidth'} ${adminNoPadding && 'noPadding'}`}>
             {children}
@@ -117,4 +124,4 @@ class AdminPage extends PureComponent<Props, State> {
   }
 }
 
-export default AdminPage;
+export default withRouter<Props>(AdminPage);

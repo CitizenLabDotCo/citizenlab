@@ -7,19 +7,26 @@ import { isString } from 'lodash-es';
 const Container = styled.div`
   display: flex;
   align-items: center;
+  user-select: none;
   cursor: pointer;
 
-  &:hover,
+  &:hover {
+    color: ${colors.clIconAccent};
+  }
+
   &.active {
-    fill: ${colors.text};
-    color: ${colors.text};
+    color: ${colors.clIconAccent};
+
+    & svg {
+      fill: ${colors.clIconAccent};
+    }
   }
 `;
 
 const StyledIcon = styled(Icon) `
-  height: 6px;
+  height: 7px;
   margin-left: 5px;
-  margin-top: -1px;
+  margin-top: -2px;
 
   &.ascending {
     transform: rotate(180deg);
