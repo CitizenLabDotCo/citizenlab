@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
-const StyledTable: any = styled.table`
+const StyledTable = styled.table`
   width: 100%;
   padding: 0;
   margin: 0;
@@ -10,7 +11,8 @@ const StyledTable: any = styled.table`
   border-spacing: 0;
   border-collapse: collapse;
 
-  th, td {
+  th,
+  td {
     padding: 0;
     margin: 0;
   }
@@ -18,28 +20,20 @@ const StyledTable: any = styled.table`
   thead {
     tr {
       th {
-        fill: ${colors.label};
-        color: ${colors.label};
+        fill: ${colors.text};
+        color: ${colors.adminTextColor};
         font-size: ${fontSizes.small}px;
         font-weight: 600;
+        text-align: left;
         text-transform: uppercase;
-        line-height: 20px;
+        line-height: normal;
         padding-top: 0px;
-        padding-bottom: 10px;
+        padding-bottom: 15px;
+        border-bottom: solid 1px #ddd;
 
         div {
           display: flex;
           align-items: center;
-        }
-
-        &.sortable {
-          cursor: pointer;
-
-          &:hover,
-          &.active {
-            fill: #000;
-            color: #000;
-          }
         }
       }
     }
@@ -48,23 +42,30 @@ const StyledTable: any = styled.table`
   tbody {
     tr {
       border-radius: ${(props: any) => props.theme.borderRadius};
+      border-bottom: solid 1px #ddd;
 
       td {
         color: ${colors.adminTextColor};
         font-size: ${fontSizes.small}px;
         font-weight: 400;
-        line-height: 20px;
-        padding-top: 6px;
-        padding-bottom: 6px;
+        line-height: normal;
+        text-align: left;
+        padding-top: 15px;
+        padding-bottom: 15px;
 
         &.center {
           justify-content: center;
         }
-      }
 
-      &:hover {
-        background: ${colors.background};
-        color: #999;
+        a {
+          color: ${colors.clBlue};
+          text-decoration: underline;
+
+          &:hover {
+            color: ${darken(0.2, colors.clBlue)};
+            text-decoration: underline;
+          }
+        }
       }
     }
   }
@@ -82,21 +83,24 @@ const StyledTable: any = styled.table`
   }
 `;
 
-interface Props {}
+interface Props {
+  className?: string;
+}
 
 interface State {}
 
-export default class Table extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-  }
-
+export default class Table extends PureComponent<Props, State> {
   render() {
-    const { children } = this.props;
-    const className = this.props['className'];
+    const { children, className } = this.props;
 
     return (
-      <StyledTable cellspacing="0" cellpadding="0" className={className}>{children}</StyledTable>
+      <StyledTable
+        cellSpacing="0"
+        cellPadding="0"
+        className={className}
+      >
+        {children}
+      </StyledTable>
     );
   }
 }
