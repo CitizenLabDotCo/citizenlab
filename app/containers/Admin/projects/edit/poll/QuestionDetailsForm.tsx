@@ -98,7 +98,7 @@ export class QuestionDetailsForm extends PureComponent<Props & InjectedIntlProps
     return {
       diff,
       isValid: (Object.keys(diff).length > 0) &&
-       ((questionType === 'multiple_options' && maxAnswers && maxAnswers > 2) || (!maxAnswers))
+       ((questionType === 'multiple_options' && maxAnswers && maxAnswers >= 2) || (!maxAnswers))
     };
   }
 
