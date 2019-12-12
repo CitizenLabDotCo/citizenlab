@@ -3,13 +3,17 @@ import streams from 'utils/streams';
 import { Multiloc, IParticipationContextType } from 'typings';
 import { capitalizeParticipationContextType } from 'utils/helperUtils';
 
+type IPollQuestionAttributes = {
+  question_type: 'multiple_options' | 'single_option';
+  max_options: number | null;
+  title_multiloc: Multiloc;
+  ordering: number;
+};
+
 export interface IPollQuestion {
   id: string;
   type: string;
-  attributes: {
-    title_multiloc: Multiloc;
-    ordering: number;
-  };
+  attributes: IPollQuestionAttributes;
 }
 
 export function pollQuestionsStream(participationContextId: string, participationContextType: IParticipationContextType) {
@@ -41,8 +45,6 @@ export function reorderPollQuestion(questionId: string, newPosition: number) {
     ordering: newPosition
   });
 }
-export function updatePollQuestion(questionId: string, titleMultiloc: Multiloc) {
-  return streams.update<{data: IPollQuestion}>(`${API_PATH}/poll_questions/${questionId}`, questionId, {
-    title_multiloc: titleMultiloc
-  });
+export function updatePollQuestion(questionId: string, diff: Partial<IPollQuestionAttributes>) {
+  return streams.update<{data: IPollQuestion}>(`${API_PATH}/poll_questions/${questionId}`, questionId, diff);
 }
