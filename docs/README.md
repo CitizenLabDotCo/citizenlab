@@ -14,7 +14,7 @@
 
 ### Fixed
 
--English notifications when you have French as your language
+- English notifications when you have French as your language
 
 ## 2019-12-06
 
