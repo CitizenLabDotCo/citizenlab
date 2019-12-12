@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, toggleElementArray } from 'utils/helperUtils';
 
 import { IParticipationContextType } from 'typings';
 
@@ -82,19 +82,14 @@ class PollForm extends PureComponent<Props, State> {
   changeAnswerSingle = (questionId: string, optionId: string) => () => {
     this.setState(state => ({ answers: { ...state.answers, [questionId]: [optionId] } }));
   }
+
   changeAnswerMultiple = (questionId: string, optionId: string) => () => {
     this.setState(state => {
       const oldAnswer = state.answers[questionId] || [];
-      let newOptions;
-      if (oldAnswer.includes(optionId)) {
-        const anSet = new Set(oldAnswer);
-        anSet.delete(optionId);
-        newOptions = [...anSet];
-      } else {
-        newOptions = [...new Set([...oldAnswer, optionId])];
-      }
 
-      return ({ answers: { ...state.answers, [questionId]: newOptions } });
+      toggleElementArray(oldAnswer, optionId);
+
+      return ({ answers: { ...state.answers, [questionId]: oldAnswer } });
     });
   }
 
@@ -109,9 +104,13 @@ class PollForm extends PureComponent<Props, State> {
   validate = () => {
     const { answers } = this.state;
     const { questions, disabled } = this.props;
-    return !disabled
+    // you can submit the form...
+    return !disabled // when it's not disabled and...
+    // each question has at least one answer, and this answer is a string (representing the option) and...
     && questions.every(question => typeof (answers[question.id] || [])[0] === 'string')
+    // for multiple options questions...
     && questions.filter(question => question.attributes.question_type === 'multiple_options')
+    // the number of answers must not be greater than the maximum of answer allowed.
       .every(question =>  question.attributes.max_options && answers[question.id].length <= question.attributes.max_options);
   }
 
