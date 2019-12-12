@@ -37,7 +37,7 @@ export const QuestionContainer = styled.div`
 export const QuestionNumber = styled.span`
   font-size: ${fontSizes.medium}px;
   line-height: ${fontSizes.medium}px;
-  font-weight: 700;
+  font-weight: 600;
   background-color: ${colors.background};
   padding: 2px 7px;
   border-radius: 2px;
@@ -53,8 +53,7 @@ export const Label = styled.label`
 
 export const QuestionText = styled.span`
   font-size: ${fontSizes.large}px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colorText};
+  font-weight: 600;
 `;
 
 interface Props {

@@ -1,5 +1,21 @@
 # Changelog
 
+## 2019-12-11
+
+### Added
+
+- Admin moderation iteration 1 (feature flagged, turned on for a selected number of test clients)
+- New verification onboarding campaign
+
+### Changed
+
+- Improved timeline composer
+- Wysiwyg accessibility improvement
+
+### Fixed
+
+- English notifications when you have French as your language
+
 ## 2019-12-06
 
 ### Fixed

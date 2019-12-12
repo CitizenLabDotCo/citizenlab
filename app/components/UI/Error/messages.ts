@@ -129,6 +129,10 @@ export default defineMessages({
     id: 'app.errors.file_extension_whitelist_error',
     defaultMessage: 'The format of the file you tried to upload is not supported.',
   },
+  cant_change_after_first_response: {
+    id: 'app.errors.cant_change_after_first_response',
+    defaultMessage: 'You can no longer change this, since some users already responded',
+  },
   cannot_contain_ideas: {
     id: 'app.errors.cannot_contain_ideas',
     defaultMessage: 'This phase contains {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} and the participation method you\'re trying to change it to doesn\'t support ideas. Please remove {ideasCount, plural, one {the idea} other {the ideas}} from the phase and try again.',

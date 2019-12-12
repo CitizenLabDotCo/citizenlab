@@ -114,6 +114,9 @@ const ContextItem = styled.span`
   ${media.largePhone`
     white-space: normal;
   `}
+  &:first-letter {
+    text-transform: capitalize
+  }
 `;
 
 const Or = styled.span`
