@@ -21,7 +21,6 @@ const Container: any = styled.div`
 
   input {
     width: 100%;
-    height: 100%;
     color: ${colors.text};
     font-size: ${fontSizes.base}px;
     line-height: 24px;
@@ -52,9 +51,9 @@ const Container: any = styled.div`
       background-color: #f9f9f9;
     }
 
-    ${media.biggerThanPhone`
-      padding-right: ${props => props.error && '40px'};
-    `}
+    // ${media.biggerThanPhone`
+    //   padding-right: ${props => props.error && '40px'};
+    // `}
   }
 `;
 
