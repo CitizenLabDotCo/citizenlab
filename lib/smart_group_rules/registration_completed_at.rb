@@ -1,11 +1,10 @@
 module SmartGroupRules
   class RegistrationCompletedAt
     include ActiveModel::Validations
+    include DescribableRule
 
     PREDICATE_VALUES = %w(is_before is_exactly is_after is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
-    RULE_TYPE = 'registration_completed_at'
-
     attr_accessor :predicate, :value
 
     validates :predicate, presence: true
@@ -22,7 +21,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "predicate" => {
               "type": "string",
@@ -43,7 +42,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "predicate" => {
               "type" => "string",
@@ -52,6 +51,10 @@ module SmartGroupRules
           }
         }
       ]
+    end
+
+    def self.rule_type
+      'registration_completed_at'
     end
 
     def self.from_json json
@@ -77,6 +80,25 @@ module SmartGroupRules
         users_scope.where("registration_completed_at IS NOT NULL")
       else
         raise "Unsupported predicate #{predicate}"
+      end
+    end
+
+    def description_property locale
+      I18n.with_locale(locale) do
+        I18n.t!('smart_group_rules.registration_completed_at.property')
+      end
+    end
+
+    def description_rule_type
+      CustomFieldDate.rule_type
+    end
+
+    def description_value locale
+      if value.present?
+        locale ||= I18n.locale
+        I18n.with_locale(locale) do
+          I18n.l Date.parse(value), format: :default
+        end
       end
     end
 

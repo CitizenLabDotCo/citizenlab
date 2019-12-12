@@ -3,7 +3,6 @@ module SmartGroupRules
     include ActiveModel::Validations
 
     PREDICATE_VALUES = %w(is_verified not_is_verified)
-    RULE_TYPE = 'verified'
 
     attr_accessor :predicate, :value
 
@@ -21,7 +20,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "predicate" => {
               "type": "string",
@@ -30,6 +29,10 @@ module SmartGroupRules
           },
         }
       ]
+    end
+
+    def self.rule_type
+      'verified'
     end
 
     def self.from_json json
