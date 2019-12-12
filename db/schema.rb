@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_14_092523) do
+ActiveRecord::Schema.define(version: 2019_12_11_104007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -577,6 +577,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_092523) do
     t.string "presentation_mode", default: "card"
     t.integer "max_budget"
     t.boolean "location_allowed", default: true, null: false
+    t.boolean "poll_anonymous", default: false, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -664,6 +665,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_092523) do
     t.integer "comments_count", default: 0, null: false
     t.uuid "default_assignee_id"
     t.boolean "location_allowed", default: true, null: false
+    t.boolean "poll_anonymous", default: false, null: false
     t.index ["created_at"], name: "index_projects_on_created_at", order: :desc
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -1036,6 +1038,36 @@ ActiveRecord::Schema.define(version: 2019_11_14_092523) do
             GROUP BY initiative_status_changes_1.initiative_id) initiatives_with_last_status_change ON ((initiatives.id = initiatives_with_last_status_change.initiative_id)))
        JOIN initiative_status_changes ON (((initiatives.id = initiative_status_changes.initiative_id) AND (initiatives_with_last_status_change.last_status_changed_at = initiative_status_changes.created_at))))
        JOIN initiative_statuses ON ((initiative_statuses.id = initiative_status_changes.initiative_status_id)));
+  SQL
+
+  create_view "moderations",  sql_definition: <<-SQL
+      SELECT ideas.id,
+      'Idea'::text AS moderatable_type,
+      ideas.slug AS context_slug,
+      'Idea'::text AS context_type,
+      ideas.title_multiloc AS context_multiloc,
+      ideas.body_multiloc AS content_multiloc,
+      ideas.published_at AS created_at
+     FROM ideas
+  UNION ALL
+   SELECT initiatives.id,
+      'Initiative'::text AS moderatable_type,
+      initiatives.slug AS context_slug,
+      'Idea'::text AS context_type,
+      initiatives.title_multiloc AS context_multiloc,
+      initiatives.body_multiloc AS content_multiloc,
+      initiatives.published_at AS created_at
+     FROM initiatives
+  UNION ALL
+   SELECT comments.id,
+      'Comment'::text AS moderatable_type,
+      union_posts.slug AS context_slug,
+      'Idea'::text AS context_type,
+      union_posts.title_multiloc AS context_multiloc,
+      comments.body_multiloc AS content_multiloc,
+      comments.created_at
+     FROM (comments
+       LEFT JOIN union_posts ON ((union_posts.id = comments.post_id)));
   SQL
 
 end
