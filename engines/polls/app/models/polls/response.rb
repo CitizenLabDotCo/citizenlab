@@ -9,7 +9,7 @@ module Polls
     validates :user, uniqueness: {scope: [:participation_context]}
 
     validate :validate_participation_context_poll
-    validate :validate_all_questions_one_option, on: :response_submission
+    validate :validate_option_count, on: :response_submission
 
     accepts_nested_attributes_for :response_options
 
@@ -23,16 +23,30 @@ module Polls
       end
     end
 
-    def validate_all_questions_one_option
+    def validate_option_count
       if participation_context
-        questions = participation_context.poll_questions
-        answered_questions = response_options.map{|ro| ro.option.question}
-        if questions.sort != answered_questions.sort
-          self.errors.add(
-            :base,
-            :not_all_questions_one_option,
-            message: 'not all questions have been answered with exactly one corresponding option'
-          )
+        participation_context.poll_questions.each do |question|
+          range = case question.question_type
+            when 'single_option'
+              1..1
+            when 'multiple_options'
+              1..(question.max_options || question.options.size)
+            end
+          selected_options = response_options.select{|ro| ro.option.question_id == question.id}.size
+
+          if selected_options < range.min
+            self.errors.add(
+              :base,
+              :too_few_options,
+              message: 'some questions have been answered with too few corresponding options'
+            )
+          elsif selected_options > range.max
+            self.errors.add(
+              :base,
+              :too_many_options,
+              message: 'some questions have been answered with too many corresponding options'
+            )
+          end
         end
       end
     end

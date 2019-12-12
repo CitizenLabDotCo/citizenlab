@@ -93,7 +93,10 @@ namespace :checks do
   end
 
   def validation_errors object
-    object.errors.details if !object.valid?
+    return object.errors.details if !object.valid?
+    if object.class.name == 'User'&& object.custom_field_values.values.to_s.include?('nil')
+      return {custom_field_values: "Contains null values"}
+    end
   end
 
 end
