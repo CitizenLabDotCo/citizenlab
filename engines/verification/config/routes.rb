@@ -8,6 +8,10 @@ Verification::Engine.routes.draw do
         .each do |vm|
         post "verification_methods/#{vm.name}/verification" => "verifications#create", :defaults => { :method_name => vm.name }
       end
+      scope 'verification_id_cards' do
+        post :bulk_replace, controller: 'id_cards'
+        get :count, controller: 'id_cards'
+      end
     end
   end
 end
