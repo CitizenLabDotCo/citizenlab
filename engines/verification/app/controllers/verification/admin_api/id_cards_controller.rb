@@ -6,7 +6,7 @@ module Verification
         file = params[:id_cards][:file]
         parts = file.match(/\Adata:([-\w]+\/[-\w\+\.]+)?;base64,(.*)/m) || []
         if parts[2].present?
-          IdCard.destroy_all
+          IdCard.delete_all
           CSV.parse(Base64.decode64(parts[2])).each_slice(500) do |rows|
             card_ids = rows.map{|r| r[0]}
             LoadIdCardsJob.perform_later(card_ids)
