@@ -5,6 +5,16 @@ describe Onboarding::OnboardingService do
 
   describe "current_campaign" do
 
+    before do
+      @tenant = Tenant.current
+      @tenant.settings['verification']= {
+        allowed: true,
+        enabled: true,
+        verification_methods: [],
+      }
+      @tenant.save!
+    end
+
     let(:custom_field) { create(:custom_field) }
     let(:user) { create(:user,
       bio_multiloc: {en: "I'm a great bloke"},
@@ -23,6 +33,14 @@ describe Onboarding::OnboardingService do
 
     it "returns something else when an unverified user dimissed :verification" do
       user.update!(verified: false)
+      Onboarding::CampaignDismissal.create(user: user, campaign_name: 'verification')
+      expect(service.current_campaign(user)).not_to eq :verification
+    end
+
+    it "returns something else when verification is not active" do
+      user.update!(verified: false)
+      @tenant.settings['verification']['enabled'] = false
+      @tenant.save!
       Onboarding::CampaignDismissal.create(user: user, campaign_name: 'verification')
       expect(service.current_campaign(user)).not_to eq :verification
     end
