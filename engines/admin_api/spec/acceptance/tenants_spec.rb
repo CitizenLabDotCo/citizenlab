@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "Tenants" do
+resource "Tenants", admin_api: true do
 
   explanation "Tenants represent the different platforms (typically one for each city)."
 
