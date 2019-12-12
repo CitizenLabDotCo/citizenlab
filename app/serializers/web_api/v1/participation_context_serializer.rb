@@ -1,6 +1,7 @@
 module WebApi::V1::ParticipationContextSerializer
   extend ActiveSupport::Concern
   include Surveys::WebApi::V1::SurveyParticipationContextSerializer
+  include Polls::WebApi::V1::PollParticipationContextSerializer
 
   included do
     with_options if: Proc.new { |object|
@@ -13,8 +14,6 @@ module WebApi::V1::ParticipationContextSerializer
       attribute :voting_method
       attribute :voting_limited_max
       attribute :presentation_mode
-      attribute :survey_embed_url
-      attribute :survey_service
       attribute :max_budget
     end
   end
