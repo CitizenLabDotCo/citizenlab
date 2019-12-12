@@ -162,7 +162,7 @@ const VerificationFormLookup = memo<Props>(({ onCancel, onVerified, className, m
       }
     }
 
-  }, [cardId]);
+  }, [cardId, authUser]);
 
   const onCancelButtonClicked = useCallback(() => {
     onCancel();
