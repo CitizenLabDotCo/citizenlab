@@ -220,6 +220,7 @@ Rails.application.routes.draw do
       resources :clusterings
 
       resources :avatars, only: [:index, :show]      
+      resources :moderations, only: [:index] 
     end
 
 
