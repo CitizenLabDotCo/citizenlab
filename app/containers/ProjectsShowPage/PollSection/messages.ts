@@ -51,6 +51,6 @@ export default defineMessages({
   },
   maxOptions: {
     id: 'app.containers.Projects.PollForm.maxOptions',
-    defaultMessage: 'max {maxNumber}',
+    defaultMessage: 'max. {maxNumber}',
   },
 });

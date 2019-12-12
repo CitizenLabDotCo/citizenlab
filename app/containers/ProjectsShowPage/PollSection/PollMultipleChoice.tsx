@@ -37,7 +37,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-const PollSingleChoice = ({ question, index, options, value, onChange }: Props) => {
+const PollMultipleChoice = ({ question, index, options, value, onChange }: Props) => {
   return (
     <StyledFieldSet key={question.id}>
       {isNilOrError(options) || options.length === 0 ? null : (
@@ -78,6 +78,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <PollSingleChoice {...inputProps} {...dataprops} />}
+    {dataprops => <PollMultipleChoice {...inputProps} {...dataprops} />}
   </Data>
 );
