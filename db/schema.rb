@@ -1043,4 +1043,34 @@ ActiveRecord::Schema.define(version: 2019_12_10_205216) do
        JOIN initiative_statuses ON ((initiative_statuses.id = initiative_status_changes.initiative_status_id)));
   SQL
 
+  create_view "moderations",  sql_definition: <<-SQL
+      SELECT ideas.id,
+      'Idea'::text AS moderatable_type,
+      ideas.slug AS context_slug,
+      'Idea'::text AS context_type,
+      ideas.title_multiloc AS context_multiloc,
+      ideas.body_multiloc AS content_multiloc,
+      ideas.published_at AS created_at
+     FROM ideas
+  UNION ALL
+   SELECT initiatives.id,
+      'Initiative'::text AS moderatable_type,
+      initiatives.slug AS context_slug,
+      'Idea'::text AS context_type,
+      initiatives.title_multiloc AS context_multiloc,
+      initiatives.body_multiloc AS content_multiloc,
+      initiatives.published_at AS created_at
+     FROM initiatives
+  UNION ALL
+   SELECT comments.id,
+      'Comment'::text AS moderatable_type,
+      union_posts.slug AS context_slug,
+      'Idea'::text AS context_type,
+      union_posts.title_multiloc AS context_multiloc,
+      comments.body_multiloc AS content_multiloc,
+      comments.created_at
+     FROM (comments
+       LEFT JOIN union_posts ON ((union_posts.id = comments.post_id)));
+  SQL
+
 end

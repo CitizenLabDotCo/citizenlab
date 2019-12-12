@@ -757,6 +757,16 @@
             }
           }
         }
+      },
+      "moderation": {
+        "type": "object",
+        "description": "Moderations are pieces of user-generated content that need to be moderated",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
       }
     },
   "dependencies": {
