@@ -113,4 +113,68 @@ describe SmartGroupRules::CustomFieldSelect do
  
   end
 
+  describe "description_multiloc" do
+    let(:custom_field) {create(:custom_field_select, title_multiloc: {
+      'en'    => 'Where should we put the immigrants?',
+      'fr-FR' => 'Où devrions-nous placer les immigrants?',
+      'nl-NL' => 'Waar moeten we de immigraten plaatsen?'
+    })}
+    let(:train_station) { create(:custom_field_option, custom_field: custom_field, title_multiloc: {
+      'en'    => 'In the train station',
+      'fr-FR' => 'Dans la gare',
+      'nl-NL' => 'In het treinstation'
+    })}
+    
+    let(:custom_field_select_has_value_rule) {SmartGroupRules::CustomFieldSelect.from_json({
+      'ruleType'      => 'custom_field_select',
+      'predicate'     => 'has_value',
+      'customFieldId' => custom_field.id,
+      'value'         => train_station.id
+    })}
+    let(:custom_field_select_not_has_value_rule) {SmartGroupRules::CustomFieldSelect.from_json({
+      'ruleType'      => 'custom_field_select',
+      'predicate'     => 'not_has_value',
+      'customFieldId' => custom_field.id,
+      'value'         => train_station.id
+    })}
+    let(:custom_field_select_is_empty_rule) {SmartGroupRules::CustomFieldSelect.from_json({
+      'ruleType'      => 'custom_field_select',
+      'predicate'     => 'is_empty',
+      'customFieldId' => custom_field.id
+    })}
+    let(:custom_field_select_not_is_empty_rule) {SmartGroupRules::CustomFieldSelect.from_json({
+      'ruleType'      => 'custom_field_select',
+      'predicate'     => 'not_is_empty',
+      'customFieldId' => custom_field.id
+    })}
+
+    # TODO test education: return education description instead of number
+
+    it "successfully translates different combinations of rules" do
+      # Stubbing the translations so the specs don't depend on those.
+      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
+
+      expect(custom_field_select_has_value_rule.description_multiloc).to eq ({
+        'en'    => 'Where should we put the immigrants? is In the train station',
+        'fr-FR' => 'Où devrions-nous placer les immigrants? est Dans la gare',
+        'nl-NL' => 'Waar moeten we de immigraten plaatsen? is In het treinstation'
+      })
+      expect(custom_field_select_not_has_value_rule.description_multiloc).to eq ({
+        'en'    => 'Where should we put the immigrants? isn\'t In the train station',
+        'fr-FR' => 'Où devrions-nous placer les immigrants? n\'est pas Dans la gare',
+        'nl-NL' => 'Waar moeten we de immigraten plaatsen? is niet In het treinstation'
+      })
+      expect(custom_field_select_is_empty_rule.description_multiloc).to eq ({
+        'en'    => 'Where should we put the immigrants? has no value',
+        'fr-FR' => 'Où devrions-nous placer les immigrants? n\'as pas de value',
+        'nl-NL' => 'Waar moeten we de immigraten plaatsen? heeft geen waarde'
+      })
+      expect(custom_field_select_not_is_empty_rule.description_multiloc).to eq ({
+        'en'    => 'Where should we put the immigrants? has any value',
+        'fr-FR' => 'Où devrions-nous placer les immigrants? peut avoir n\'importe quel value',
+        'nl-NL' => 'Waar moeten we de immigraten plaatsen? heeft om het even welke waarde'
+      })
+    end
+  end
+
 end
