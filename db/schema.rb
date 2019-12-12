@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_14_092523) do
+ActiveRecord::Schema.define(version: 2019_12_11_104007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1060,7 +1060,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_092523) do
    SELECT initiatives.id,
       'Initiative'::text AS moderatable_type,
       initiatives.slug AS context_slug,
-      'Idea'::text AS context_type,
+      'Initiative'::text AS context_type,
       initiatives.title_multiloc AS context_multiloc,
       initiatives.body_multiloc AS content_multiloc,
       initiatives.published_at AS created_at
