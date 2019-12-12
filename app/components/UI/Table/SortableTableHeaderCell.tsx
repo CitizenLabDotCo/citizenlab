@@ -4,25 +4,33 @@ import { colors } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 import { isString } from 'lodash-es';
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  &:hover,
-  &.active {
-    fill: ${colors.text};
-    color: ${colors.text};
-  }
-`;
-
 const StyledIcon = styled(Icon) `
-  height: 6px;
+  height: 7px;
+  width: 10px;
   margin-left: 5px;
-  margin-top: -1px;
+  margin-top: -2px;
 
   &.ascending {
     transform: rotate(180deg);
+  }
+`;
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  user-select: none;
+  cursor: pointer;
+
+  &:hover {
+    color: ${colors.clIconAccent};
+  }
+
+  &.active {
+    color: ${colors.clIconAccent};
+
+    ${StyledIcon} {
+      fill: ${colors.clIconAccent};
+    }
   }
 `;
 
@@ -30,23 +38,19 @@ interface Props {
   value: string | JSX.Element;
   sorted: 'ascending' | 'descending' | null;
   onClick: () => void;
+  className?: string;
 }
 
 interface State {}
 
 export default class SortableTableHeaderCell extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-  }
-
-  onClick = (event: React.MouseEvent<any>) => {
+  onClick = (event: React.MouseEvent) => {
     event.preventDefault();
     this.props.onClick();
   }
 
   render() {
-    const { value, sorted } = this.props;
-    const className = this.props['className'];
+    const { value, sorted, className } = this.props;
 
     return (
       <Container className={`${className ? className : ''} ${sorted ? 'active' : ''}`} onClick={this.onClick}>
