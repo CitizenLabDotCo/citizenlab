@@ -597,6 +597,8 @@ ActiveRecord::Schema.define(version: 2019_12_11_104007) do
     t.integer "ordering"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "question_type", default: "single_option", null: false
+    t.integer "max_options"
     t.index ["participation_context_type", "participation_context_id"], name: "index_poll_questions_on_participation_context"
   end
 
@@ -767,6 +769,11 @@ ActiveRecord::Schema.define(version: 2019_12_11_104007) do
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
+  end
+
+  create_table "verification_id_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "hashed_card_id"
+    t.index ["hashed_card_id"], name: "index_verification_id_cards_on_hashed_card_id"
   end
 
   create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1053,7 +1060,7 @@ ActiveRecord::Schema.define(version: 2019_12_11_104007) do
    SELECT initiatives.id,
       'Initiative'::text AS moderatable_type,
       initiatives.slug AS context_slug,
-      'Idea'::text AS context_type,
+      'Initiative'::text AS context_type,
       initiatives.title_multiloc AS context_multiloc,
       initiatives.body_multiloc AS content_multiloc,
       initiatives.published_at AS created_at
