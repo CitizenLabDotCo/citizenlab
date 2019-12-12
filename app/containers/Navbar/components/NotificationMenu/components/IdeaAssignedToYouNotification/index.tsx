@@ -1,23 +1,39 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { IIdeaAssignedToYouNotificationData } from 'services/notifications';
+import { get } from 'lodash-es';
 
 // i18n
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+// permissions
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 
 // components
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
 
-type Props = {
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+
+type DataProps = {
+  authUser: GetAuthUserChildProps;
+  project: GetProjectChildProps;
+};
+
+type InputProps = {
   notification: IIdeaAssignedToYouNotificationData;
 };
 
+type Props = DataProps & InputProps;
+
 type State = {};
 
-export default class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
+class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
 
   onClickUserName = (event) => {
     event.stopPropagation();
@@ -58,18 +74,50 @@ export default class IdeaAssignedToYouNotification extends React.PureComponent<P
     }
   }
 
+  getLinkTo = () => {
+    const { authUser, project } = this.props;
+    console.log(project);
+
+    if (authUser) {
+      if (isAdmin({ data: authUser })) {
+        return 'admin/ideas';
+      } else if (!isNilOrError(project) && isProjectModerator({ data: authUser })) {
+        return `admin/projects/${project.id}/ideas`;
+      }
+    }
+
+    return null;
+  }
+
   render() {
     const { notification } = this.props;
+    const linkTo: string | null = this.getLinkTo();
 
-    return (
-      <NotificationWrapper
-        linkTo={`/ideas/${notification.attributes.post_slug}`}
-        timing={notification.attributes.created_at}
-        icon="idea2"
-        isRead={!!notification.attributes.read_at}
-      >
-        {this.getNotificationMessage()}
-      </NotificationWrapper>
-    );
+    console.log(this.props.project);
+    if (linkTo) {
+      return (
+        <NotificationWrapper
+          linkTo={linkTo}
+          timing={notification.attributes.created_at}
+          icon="idea2"
+          isRead={!!notification.attributes.read_at}
+        >
+          {this.getNotificationMessage()}
+        </NotificationWrapper>
+      );
+    }
+
+    return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  project: ({ notification, render }) => <GetProject slug={get(notification, 'attributes.post_slug')}>{render}</GetProject>,
+});
+
+export default (inputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeaAssignedToYouNotification {...dataProps} {...inputProps} />}
+  </Data>
+);
