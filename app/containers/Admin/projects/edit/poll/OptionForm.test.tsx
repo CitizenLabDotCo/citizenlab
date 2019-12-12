@@ -13,6 +13,7 @@ jest.mock('semantic-ui-react', () => ({ Icon: 'Icon' }));
 jest.mock('components/admin/ResourceList', () => ({ Row: 'Row', TextCell: 'TextCell', List: 'List' }));
 jest.mock('./FormOptionRow', () => 'FormOptionRow');
 jest.mock('./OptionRow', () => 'OptionRow');
+jest.mock('./QuestionDetailsForm', () => 'QuestionDetailsForm');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 
 const mockOptions: IPollQuestion[];

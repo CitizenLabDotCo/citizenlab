@@ -233,7 +233,7 @@ describe('<PollAdminForm/>', () => {
 
       getFormQuestionRow().props().onSave();
       expect(updatePollQuestionSpy).toHaveBeenCalledTimes(1);
-      expect(updatePollQuestionSpy).toHaveBeenCalledWith('questionId', { en: 'How are you?' });
+      expect(updatePollQuestionSpy).toHaveBeenCalledWith('questionId', { title_multiloc: { en: 'How are you?' } });
     });
     it('handles closing it', () => {
       const wrapper = shallow(

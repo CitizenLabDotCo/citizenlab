@@ -36,7 +36,7 @@ describe('Continuous project with poll', () => {
 
   it('lets user answer it', () => {
     cy.get('.e2e-continuous-project-poll-container').get('.e2e-poll-question').each(question =>
-      question.find('.e2e-poll-option').first().click()
+      question.find('.e2e-poll-option').first().find('label').click()
     );
     cy.get('.e2e-send-poll').click();
     cy.get('.e2e-form-completed');
