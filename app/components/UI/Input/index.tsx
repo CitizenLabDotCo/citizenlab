@@ -51,9 +51,9 @@ const Container: any = styled.div`
       background-color: #f9f9f9;
     }
 
-    // ${media.biggerThanPhone`
-    //   padding-right: ${props => props.error && '40px'};
-    // `}
+    ${media.biggerThanPhone`
+      padding-right: ${props => props.error && '40px'};
+    `}
   }
 `;
 
