@@ -353,6 +353,7 @@
   "app.components.VerificationModal.cowIdSerialNumber": "ID serial number",
   "app.components.VerificationModal.cowRunNumber": "RUN",
   "app.components.VerificationModal.emptyFieldError": "This field cannot be empty.",
+  "app.components.VerificationModal.invalidCardIdError": "",
   "app.components.VerificationModal.invalidIdSerialError": "Invalid ID serial",
   "app.components.VerificationModal.invalidRunError": "Invalid RUN",
   "app.components.VerificationModal.noMatchFormError": "No match was found.",

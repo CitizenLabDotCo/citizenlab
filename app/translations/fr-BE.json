@@ -353,6 +353,7 @@
   "app.components.VerificationModal.cowIdSerialNumber": "Numéro de série de l'ID",
   "app.components.VerificationModal.cowRunNumber": "EXECUTER\n",
   "app.components.VerificationModal.emptyFieldError": "Ce champ ne peut pas être vide.",
+  "app.components.VerificationModal.invalidCardIdError": "",
   "app.components.VerificationModal.invalidIdSerialError": "Série de l'ID invalide",
   "app.components.VerificationModal.invalidRunError": "EXÉCUTATION non valide",
   "app.components.VerificationModal.noMatchFormError": "Aucune correspondance n'a été trouvée.",

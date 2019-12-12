@@ -353,6 +353,7 @@
   "app.components.VerificationModal.cowIdSerialNumber": "ID Seriennummer",
   "app.components.VerificationModal.cowRunNumber": "RUN",
   "app.components.VerificationModal.emptyFieldError": "Dies kann nicht leer sein.",
+  "app.components.VerificationModal.invalidCardIdError": "",
   "app.components.VerificationModal.invalidIdSerialError": "Ungültige ID seriell",
   "app.components.VerificationModal.invalidRunError": "Ungültiger RUN",
   "app.components.VerificationModal.noMatchFormError": "Keine Übereinstimmung gefunden.",

@@ -353,6 +353,7 @@
   "app.components.VerificationModal.cowIdSerialNumber": "",
   "app.components.VerificationModal.cowRunNumber": "",
   "app.components.VerificationModal.emptyFieldError": "",
+  "app.components.VerificationModal.invalidCardIdError": "",
   "app.components.VerificationModal.invalidIdSerialError": "",
   "app.components.VerificationModal.invalidRunError": "",
   "app.components.VerificationModal.noMatchFormError": "",
