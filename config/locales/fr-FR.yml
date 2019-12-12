@@ -249,7 +249,7 @@ fr:
     gender: Genre
     birthyear: Année de naissance
     domicile: Localité
-    education: Niveau de scolarité
+    education: Niveau d'études
   custom_field_options:
     gender:
       male: Masculin
