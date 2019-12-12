@@ -29,23 +29,26 @@ resource "Verification Id Cards" do
       @idea_card = create(:verification_id_card)
     end
 
-    let(:file) { "data:text/csv;base64,#{Base64.encode64("""
-      aaa1
-      bbb2
-      ccc3
-      ddd4
-      eee5
-      fff6
-      ggg7
-      hhh8
-      iii9
-    """)}"
-    }
+    let(:card_ids) {[
+      "aaa1",
+      "bbb2",
+      "ccc3",
+      "ddd4",
+      "eee5",
+      "fff6",
+      "ggg7",
+      "hhh8",
+      "iii9",
+    ]}
 
-    example_request "Replaces all id cards with the CSV file contents" do
+    let(:file) { "data:text/csv;base64,#{Base64.encode64(card_ids.join("\n"))}" }
+
+    example "Replaces all id cards with the CSV file contents" do
+      expect{do_request}
+        .to have_enqueued_job(Verification::LoadIdCardsJob)
+        .with(card_ids)
       expect(status).to eq(201)
       expect{@idea_card.reload}.to raise_error
-      expect(Verification::IdCard.count).to eq 9
     end
   end
 

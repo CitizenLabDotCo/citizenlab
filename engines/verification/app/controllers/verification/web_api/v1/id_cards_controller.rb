@@ -9,8 +9,9 @@ module Verification
           parts = file.match(/\Adata:([-\w]+\/[-\w\+\.]+)?;base64,(.*)/m) || []
           if parts[2].present?
             IdCard.destroy_all
-            CSV.parse(Base64.decode64(parts[2])) do |row|
-              IdCard.create!(card_id: row[0]) if row[0].present?
+            CSV.parse(Base64.decode64(parts[2])).each_slice(500) do |rows|
+              card_ids = rows.map{|r| r[0]}
+              LoadIdCardsJob.perform_later(card_ids)
             end
             head 201
           else
