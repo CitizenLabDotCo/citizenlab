@@ -71,6 +71,7 @@ resource "Phases" do
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
         parameter :location_allowed, "Can citizens add a location to their ideas? Defaults to true", required: false
+        parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false        
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
@@ -187,6 +188,7 @@ resource "Phases" do
         parameter :start_at, "The start date of the phase"
         parameter :end_at, "The end date of the phase"
         parameter :location_allowed, "Can citizens add a location to their ideas? Defaults to true", required: false
+        parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
