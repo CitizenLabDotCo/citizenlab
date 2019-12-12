@@ -74,6 +74,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :survey_service,
       :max_budget,
       :location_allowed,
+      :poll_anonymous,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     )
