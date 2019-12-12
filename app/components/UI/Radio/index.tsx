@@ -161,7 +161,6 @@ export default class Radio extends PureComponent<Props, State> {
 
     return (
       <Container
-        onClick={this.handleOnChange}
         className={`${className} ${disabled ? 'disabled' : 'enabled'}`}
       >
         <Input
