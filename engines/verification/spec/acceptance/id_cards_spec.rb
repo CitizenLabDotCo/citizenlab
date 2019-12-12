@@ -1,13 +1,11 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "Verification Id Cards" do
+resource "Verification Id Cards", admin_api: true do
  
   before do
-    @admin = create(:admin)
-    token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
+    header 'Authorization', ENV.fetch("ADMIN_API_TOKEN")
     @tenant = Tenant.current
     settings = @tenant.settings
     settings['verification'] = {
@@ -20,7 +18,7 @@ resource "Verification Id Cards" do
     @tenant.save!
   end
 
-  post "web_api/v1/verification_id_cards/bulk_replace" do
+  post "admin_api/verification_id_cards/bulk_replace" do
     with_options scope: :id_cards do
       parameter :file, "Base64 encoded CSV file"
     end
@@ -48,11 +46,11 @@ resource "Verification Id Cards" do
         .to have_enqueued_job(Verification::LoadIdCardsJob)
         .with(card_ids)
       expect(status).to eq(201)
-      expect{@idea_card.reload}.to raise_error
+      expect{@idea_card.reload}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
-  get "web_api/v1/verification_id_cards/count" do
+  get "admin_api/verification_id_cards/count" do
     before do
       @idea_card = create(:verification_id_card)
     end
