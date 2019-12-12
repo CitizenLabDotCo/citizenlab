@@ -285,7 +285,7 @@ en:
       is_checked: "%{property} checked"
       not_is_checked: "%{property} not checked"
     custom_field_date:
-      is_before: "%{property} is before %{value}" 
+      is_before: "%{property} is before %{value}"
       is_exactly: "%{property} is %{value}"
       is_after: "%{property} is after %{value}"
     custom_field_number:
