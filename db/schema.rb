@@ -597,6 +597,8 @@ ActiveRecord::Schema.define(version: 2019_12_11_104007) do
     t.integer "ordering"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "question_type", default: "single_option", null: false
+    t.integer "max_options"
     t.index ["participation_context_type", "participation_context_id"], name: "index_poll_questions_on_participation_context"
   end
 
@@ -1058,7 +1060,7 @@ ActiveRecord::Schema.define(version: 2019_12_11_104007) do
    SELECT initiatives.id,
       'Initiative'::text AS moderatable_type,
       initiatives.slug AS context_slug,
-      'Idea'::text AS context_type,
+      'Initiative'::text AS context_type,
       initiatives.title_multiloc AS context_multiloc,
       initiatives.body_multiloc AS content_multiloc,
       initiatives.published_at AS created_at
