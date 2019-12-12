@@ -64,6 +64,7 @@ resource "Poll Questions" do
     example_request "Get one question by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
+      expect(json_response.dig(:data, :attributes, :question_type)).to eq "single_option"
       expect(json_response.dig(:data, :id)).to eq @question.id
     end
   end
@@ -80,6 +81,8 @@ resource "Poll Questions" do
         parameter :participation_context_id, "The id of the phase/project the question belongs to", required: true
         parameter :participation_context_type, "The type of the participation context (Project or Phase)", required: true
         parameter :title_multiloc, "The question, as a multiloc string", required: true
+        parameter :question_type, "Either #{Polls::Question::QUESTION_TYPES.join(", ")}. Defaults to 'single_option'", required: false
+        parameter :max_options, "The maximum count of options a valid response can contain. Only applicable for question_type 'multiple_options'. Defaults to nil, meaning no limit.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Polls::Question)
 
@@ -87,12 +90,15 @@ resource "Poll Questions" do
       let(:title_multiloc) { question.title_multiloc }
       let(:participation_context_type) { question.participation_context_type}
       let(:participation_context_id) { question.participation_context_id}
+      let(:question_type) { question.question_type }
 
       example_request "Create a question" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:ordering)).to eq 0
+        expect(json_response.dig(:data,:attributes,:question_type)).to eq question_type
+        expect(json_response.dig(:data,:attributes,:max_options)).to be_nil
         expect(json_response.dig(:data,:relationships,:participation_context, :data, :type)).to eq "project"
         expect(json_response.dig(:data,:relationships,:participation_context, :data, :id)).to eq participation_context_id
       end
@@ -100,18 +106,24 @@ resource "Poll Questions" do
 
     patch "web_api/v1/poll_questions/:id" do
       with_options scope: :question do
-        parameter :title_multiloc, "The question, as a multiloc string", required: true
+        parameter :title_multiloc, "The question, as a multiloc string", required: false
+        parameter :question_type, "Either #{Polls::Question::QUESTION_TYPES.join(", ")}", required: false
+        parameter :max_options, "The maximum count of options a valid response can contain. Only applicable for question_type 'multiple_options'. Nil means no limit.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Polls::Option)
 
       let(:question) { create(:poll_question) }
       let(:id) { question.id }
       let(:title_multiloc) { {'en' => "How green is our city?"} }
+      let(:question_type) { "multiple_options" }
+      let(:max_options) { 2 }
 
       example_request "Update a question" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data,:attributes,:question_type)).to eq question_type
+        expect(json_response.dig(:data,:attributes,:max_options)).to eq max_options
       end
     end
 

@@ -4,6 +4,7 @@ module Verification
     ALL_METHODS = [
       Methods::Cow.new,
       Methods::Bogus.new,
+      Methods::IdCardLookup.new,
     ]
 
     def initialize sfxv_service=SideFxVerificationService.new

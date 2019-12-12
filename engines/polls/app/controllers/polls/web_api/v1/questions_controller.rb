@@ -113,6 +113,8 @@ module Polls
 					params.require(:question).permit(
 						:participation_context_type,
 						:participation_context_id,
+						:question_type,
+						:max_options,
 						title_multiloc: CL2_SUPPORTED_LOCALES,
 					)
 				end

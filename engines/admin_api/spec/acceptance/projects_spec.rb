@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "Project" do
+resource "Project", admin_api: true do
 
   before do
     header "Content-Type", "application/json"
