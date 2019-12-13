@@ -20,7 +20,7 @@ module Carrierwave
 
           file_name = self.name.split('.')[0..-2].join('.')
           extension = self.name.split('.').last
-          self.send "#{attribute}=", Carrierwave::FileBase64::Base64StringIO.new(data.strip, file_name, extension)
+          self.send "#{attribute}=", Carrierwave::FileBase64::Base64StringIo.new(data.strip, file_name, extension)
         end
 
         self.send(:define_method, "#{attribute}_by_url=") do |file_attributes|

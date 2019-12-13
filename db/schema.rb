@@ -2,11 +2,11 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
@@ -860,7 +860,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_092523) do
   add_foreign_key "spam_reports", "users"
   add_foreign_key "votes", "users"
 
-  create_view "idea_trending_infos",  sql_definition: <<-SQL
+  create_view "idea_trending_infos", sql_definition: <<-SQL
       SELECT ideas.id AS idea_id,
       GREATEST(comments_at.last_comment_at, upvotes_at.last_upvoted_at, ideas.published_at) AS last_activity_at,
       to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((upvotes_at.upvotes_count)::double precision * upvotes_at.mean_upvoted_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((upvotes_at.upvotes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
@@ -879,8 +879,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_092523) do
             WHERE (((votes.mode)::text = 'up'::text) AND ((votes.votable_type)::text = 'Idea'::text))
             GROUP BY votes.votable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
   SQL
-
-  create_view "project_sort_scores",  sql_definition: <<-SQL
+  create_view "project_sort_scores", sql_definition: <<-SQL
       SELECT sub.id AS project_id,
       concat(sub.status_score, sub.active_score, sub.hot_score, sub.recency_score, sub.action_score) AS score
      FROM ( SELECT projects.id,
@@ -989,8 +988,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_092523) do
                     WHERE ((phases.start_at <= (now())::date) AND (phases.end_at >= (now())::date))) active_phases ON ((active_phases.id = joined_phases.id)))
             GROUP BY projects.id) sub;
   SQL
-
-  create_view "union_posts",  sql_definition: <<-SQL
+  create_view "union_posts", sql_definition: <<-SQL
       SELECT ideas.id,
       ideas.title_multiloc,
       ideas.body_multiloc,
@@ -1025,8 +1023,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_092523) do
       initiatives.official_feedbacks_count
      FROM initiatives;
   SQL
-
-  create_view "initiative_initiative_statuses",  sql_definition: <<-SQL
+  create_view "initiative_initiative_statuses", sql_definition: <<-SQL
       SELECT initiative_status_changes.initiative_id,
       initiative_status_changes.initiative_status_id
      FROM (((initiatives
@@ -1037,5 +1034,4 @@ ActiveRecord::Schema.define(version: 2019_11_14_092523) do
        JOIN initiative_status_changes ON (((initiatives.id = initiative_status_changes.initiative_id) AND (initiatives_with_last_status_change.last_status_changed_at = initiative_status_changes.created_at))))
        JOIN initiative_statuses ON ((initiative_statuses.id = initiative_status_changes.initiative_status_id)));
   SQL
-
 end
