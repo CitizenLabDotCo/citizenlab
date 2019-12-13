@@ -88,7 +88,18 @@ const Container = styled.div`
   }
 `;
 
-export interface Props {
+/**
+ * If we have a label, an id is required. Otherwise id is optional.
+ */
+type LabelProps = {
+  label: string | JSX.Element | null,
+  id: string
+} | {
+  label?: undefined,
+  id?: string | undefined
+};
+
+export type Props = LabelProps & {
   onChange?: {(event): void};
   currentValue?: any;
   value: any;
@@ -99,13 +110,11 @@ export interface Props {
    * of the second question. See PollForm.tsx for a good example.
    */
   name: string | undefined;
-  id?: string | undefined;
-  label?: string | JSX.Element;
   disabled?: boolean;
   buttonColor?: string | undefined;
   className?: string;
   isRequired?: boolean;
-}
+};
 
 interface State {
   inputFocused: boolean;
@@ -175,19 +184,21 @@ export default class Radio extends PureComponent<Props, State> {
           onChange={this.handleOnChange}
           required={isRequired}
         />
-          <Label htmlFor={id} className={`text ${disabled ? 'disabled' : 'enabled'}`}>
-            <CustomRadio
-              className={
-                `${inputFocused ? 'focused' : ''}
-                ${checked ? 'checked' : ''}
-                ${disabled ? 'disabled' : 'enabled'}
-                circle`
-              }
-            >
-              {checked && <Checked aria-hidden color={buttonColor || '#49B47D'}/>}
-            </CustomRadio>
-            {label}
-          </Label>
+
+        <CustomRadio
+          className={
+            `${inputFocused ? 'focused' : ''}
+            ${checked ? 'checked' : ''}
+            ${disabled ? 'disabled' : 'enabled'}
+            circle`
+          }
+        >
+          {checked && <Checked aria-hidden color={buttonColor || '#49B47D'}/>}
+        </CustomRadio>
+
+        <Label htmlFor={id} className={`text ${disabled ? 'disabled' : 'enabled'}`}>
+          {label}
+        </Label>
       </Container>
     );
   }
