@@ -187,7 +187,7 @@ describe('<ConsentManager />', () => {
         SatisMeter: false
       });
     });
-    it('acts correctly for admins (adds intercom)', () => {
+    it('acts correctly for admins (adds satismeter)', () => {
       const blacklist = ['Google Tag Manager'];
       const user = makeUser({ roles: [{ type: 'admin' }] });
       const wrapper = shallow(<ConsentManager authUser={user.data} tenant={getTenant(blacklist)} />);
