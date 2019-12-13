@@ -2,6 +2,8 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc, ILinks } from 'typings';
 
+export type TModerationStatuses = 'read' | 'unread';
+
 export interface IModeration {
   id: '1d10b3f1-6a03-4c52-a0b2-4f60929df3ec';
   type: 'moderation';
@@ -12,6 +14,7 @@ export interface IModeration {
     context_multiloc: Multiloc;
     content_multiloc: Multiloc;
     created_at: string;
+    moderation_status?: TModerationStatuses,
     context_url: string;
   };
 }
