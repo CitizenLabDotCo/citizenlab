@@ -7,8 +7,16 @@ class WebApi::V1::ModerationsController < ApplicationController
       .or(@moderations.where(id: Initiative.published))
       .or(@moderations.where(id: Comment.published))
       .order(created_at: :desc)
-
-    @moderations = @moderations.moderation_status(status: params[:moderation_status]) if params[:moderation_status].present?
+    
+    if params[:moderation_status].present?
+      # Doesn't work
+      # @moderations = @moderations.joins(:moderation_status).where(moderation_statuses: {status: params[:moderation_status]})
+      filtered_ids = ModerationStatus.where(status: params[:moderation_status]).pluck(:moderatable_id)
+      if params[:moderation_status] == 'unread'
+        filtered_ids += (Moderation.ids - ModerationStatus.pluck(:moderatable_id))
+      end
+      @moderations = @moderations.where(id: filtered_ids)
+    end
 
     @moderations = @moderations
       .page(params.dig(:page, :number))
