@@ -31,9 +31,18 @@ type InputProps = {
 
 type Props = DataProps & InputProps;
 
-type State = {};
+type State = {
+  linkTo: string | null;
+};
 
 class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      linkTo: null
+    };
+  }
 
   onClickUserName = (event) => {
     event.stopPropagation();
@@ -74,26 +83,22 @@ class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
     }
   }
 
-  getLinkTo = () => {
+  componentDidMount() {
     const { authUser, project } = this.props;
-    console.log(project);
 
     if (authUser) {
       if (isAdmin({ data: authUser })) {
-        return 'admin/ideas';
+        this.setState({ linkTo: 'admin/ideas' });
       } else if (!isNilOrError(project) && isProjectModerator({ data: authUser })) {
-        return `admin/projects/${project.id}/ideas`;
+        this.setState({ linkTo: `admin/projects/${project.id}/ideas` });
       }
     }
-
-    return null;
   }
 
   render() {
     const { notification } = this.props;
-    const linkTo: string | null = this.getLinkTo();
+    const { linkTo } = this.state;
 
-    console.log(this.props.project);
     if (linkTo) {
       return (
         <NotificationWrapper
@@ -113,7 +118,7 @@ class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ notification, render }) => <GetProject slug={get(notification, 'attributes.post_slug')}>{render}</GetProject>,
+  project: ({ notification, render }) => <GetProject projectSlug={get(notification, 'attributes.post_slug')}>{render}</GetProject>,
 });
 
 export default (inputProps) => (
