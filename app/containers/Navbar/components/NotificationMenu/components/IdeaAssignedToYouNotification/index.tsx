@@ -18,10 +18,12 @@ import T from 'components/T';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 type DataProps = {
   authUser: GetAuthUserChildProps;
+  idea: GetIdeaChildProps;
   project: GetProjectChildProps;
 };
 
@@ -31,19 +33,9 @@ type InputProps = {
 
 type Props = DataProps & InputProps;
 
-type State = {
-  linkTo: string | null;
-};
+type State = {};
 
 class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
-
-  constructor (props) {
-    super(props);
-    this.state = {
-      linkTo: null
-    };
-  }
-
   onClickUserName = (event) => {
     event.stopPropagation();
   }
@@ -83,21 +75,23 @@ class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
     }
   }
 
-  componentDidMount() {
+  getLinkTo = () => {
     const { authUser, project } = this.props;
 
     if (authUser) {
       if (isAdmin({ data: authUser })) {
-        this.setState({ linkTo: 'admin/ideas' });
+       return '/admin/ideas';
       } else if (!isNilOrError(project) && isProjectModerator({ data: authUser })) {
-        this.setState({ linkTo: `admin/projects/${project.id}/ideas` });
+       return `/admin/projects/${project.id}/ideas`;
       }
     }
+
+    return null;
   }
 
   render() {
     const { notification } = this.props;
-    const { linkTo } = this.state;
+    const linkTo = this.getLinkTo();
 
     if (linkTo) {
       return (
@@ -118,7 +112,8 @@ class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ notification, render }) => <GetProject projectSlug={get(notification, 'attributes.post_slug')}>{render}</GetProject>,
+  idea: ({ notification, render }) => <GetIdea slug={get(notification, 'attributes.post_slug')}>{render}</GetIdea>,
+  project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
 });
 
 export default (inputProps) => (
