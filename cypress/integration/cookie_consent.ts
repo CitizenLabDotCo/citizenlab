@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('Initiative new page', () => {
+describe('Cookie consent form', () => {
   const firstName = randomString();
   const lastName = randomString();
   const email = randomEmail();
@@ -10,23 +10,24 @@ describe('Initiative new page', () => {
   before(() => {
     cy.apiSignup(firstName, lastName, email, password).then(user => userId = user.body.data.id);
   });
-  beforeEach(() => {
-    cy.visit('/');
-    cy.wait(500);
-  });
   it('Shows the correct destinations when unsigned', () => {
+    cy.visit('/');
     cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
     cy.get('#e2e-preference-dialog').contains('Google Analytics');
     cy.get('#e2e-preference-dialog').should('not.contain.text', 'SatisMeter');
   });
   it('Shows the correct destinations when signed up as normal user', () => {
     cy.setLoginCookie(email, password);
+    cy.wait(500);
+    cy.visit('/');
     cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
     cy.get('#e2e-preference-dialog').contains('Google Analytics');
     cy.get('#e2e-preference-dialog').should('not.contain.text', 'SatisMeter');
   });
   it('Shows the correct destinations when signed up as admin user', () => {
     cy.setAdminLoginCookie();
+    cy.wait(500);
+    cy.visit('/');
     cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
     cy.get('#e2e-preference-dialog').contains('Google Analytics');
     if (!location.origin.includes('localhost')) {
@@ -34,6 +35,7 @@ describe('Initiative new page', () => {
     }
   });
   it('Lets you pick your categories and save', () => {
+    cy.visit('/');
     cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
     cy.get('#e2e-preference-dialog').get('.e2e-category').each(question =>
       question.find('label').first().click()
@@ -43,6 +45,9 @@ describe('Initiative new page', () => {
   it('When you get admin, lets you consent to admin destintions', () => {
     if (!location.origin.includes('localhost')) {
       cy.setLoginCookie(email, password);
+      cy.wait(500);
+      cy.visit('/');
+
       cy.acceptCookies();
 
       cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
@@ -71,7 +76,6 @@ describe('Initiative new page', () => {
       cy.wait(500);
       cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
       cy.get('#e2e-preference-dialog').contains('SatisMeter');
-
     }
   });
 });
