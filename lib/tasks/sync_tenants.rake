@@ -57,15 +57,45 @@ namespace :sync_tenants do
   end
 
   desc "Apply updates from file"
-  task :apply_updates, [:update_file] => [:environment] do |t, args|
-    instructions = JSON.parse open(args[:update_file]).read
-    instructions.each do |host, classes|
-      Apartment::Tenant.switch(host.gsub('.', '_')) do
-        classes.each do |classname, instances|
-          instances.each do |id, attributes|
-            object = classname.constantize.find id
+  task :apply_updates, [:sheet] => [:environment] do |t, args|
+    template = YAML.load open(Rails.root.join('config', 'tenant_templates', "base.yml")).read
+    instructions = CSV.parse(open(args[:sheet]).read, { headers: true, col_sep: ',', converters: [] })
+
+    Tenant.where(host: instructions.map{|d| d['Tenant host']}.uniq).each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        template['models'].each do |model_name, fields|
+          classname = model_name.classify
+          fields.each do |attributes|
+            object = object_from_template classname, attributes
             if object.present?
-              object.update! attributes
+              attributes.each do |field_name, field_value|
+                value = if (field_name =~ /_multiloc$/) && (field_value.is_a? String)
+                  CL2_SUPPORTED_LOCALES.map do |locale|
+                    translation = I18n.with_locale(locale) { I18n.t!(field_value) }
+                    [locale, translation]
+                  end.to_h
+                elsif field_name.end_with?('_ref')
+                  nil
+                elsif field_name.end_with?('_timediff')
+                  nil
+                elsif !model_name.include?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && !field_name.include?('file')
+                  nil
+                else
+                  field_value
+                end
+                if value
+                  instruction = instructions.find do |d|
+                    d['ID'] == object.id && d['Property'] == field_name && d['Tenant host'] == tenant.host && d['Content type'] == classname
+                  end
+                  if instruction
+                    byebug # if object.class.name == 'Initiative'
+                    # In a later iteration, we could first try to parse 
+                    # the new (string) value provided in the sheet.
+                    object.send "#{field_name}=", value
+                    object.save!
+                  end
+                end
+              end
             end
           end
         end
