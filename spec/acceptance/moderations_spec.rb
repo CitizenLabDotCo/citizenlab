@@ -47,6 +47,7 @@ resource "Moderations" do
       expect(json_response[:data].map { |d| d.dig(:attributes, :moderatable_type) }).to eq ['Initiative', 'Comment', 'Idea', 'Idea']
       expect(json_response[:data].map { |d| d.dig(:attributes, :context_multiloc).stringify_keys['en'] }).to eq ['Burn more leaves', 'More bicycle repairmen', 'More bicycle repairmen', 'Fewer bicycle repairmen']
       expect(json_response[:data].map { |d| d.dig(:attributes, :content_multiloc).stringify_keys['en'] }).to eq ['We must return that CO2 to our atmosphere at all cost', 'I\'m glad there\'s still heroes around', 'They are the true heroes of society', 'They are pretentious donkeys']
+      expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status)}).to eq ['unread', 'unread', 'unread', 'unread']
       expect(json_response[:data].map { |d| Time.parse(d.dig(:attributes, :created_at)).to_i }).to eq [@time - 1.minute, @time - 1.hour, @time - 1.day, @time - 2.days].map(&:to_i)
     end
   end
