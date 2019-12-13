@@ -1,9 +1,9 @@
-SELECT id, 'Idea' moderatable_type, slug AS context_slug, 'Idea' context_type, title_multiloc AS context_multiloc, body_multiloc AS content_multiloc, published_at AS created_at, moderation_statuses.status AS moderation_status
+SELECT ideas.id, 'Idea' moderatable_type, ideas.slug AS context_slug, 'Idea' context_type, ideas.title_multiloc AS context_multiloc, ideas.body_multiloc AS content_multiloc, ideas.published_at AS created_at, moderation_statuses.status AS moderation_status
 FROM ideas
 LEFT OUTER JOIN moderation_statuses
 ON moderation_statuses.moderatable_id = ideas.id
 UNION ALL
-SELECT id, 'Initiative' moderatable_type, slug AS context_slug, 'Initiative' context_type, title_multiloc AS context_multiloc, body_multiloc AS content_multiloc, published_at AS created_at, moderation_statuses.status AS moderation_status
+SELECT initiatives.id, 'Initiative' moderatable_type, initiatives.slug AS context_slug, 'Initiative' context_type, initiatives.title_multiloc AS context_multiloc, initiatives.body_multiloc AS content_multiloc, initiatives.published_at AS created_at, moderation_statuses.status AS moderation_status
 FROM initiatives
 LEFT OUTER JOIN moderation_statuses
 ON moderation_statuses.moderatable_id = initiatives.id

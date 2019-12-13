@@ -103,7 +103,6 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
     t.datetime "body_updated_at"
     t.integer "children_count", default: 0, null: false
     t.string "post_type"
-    t.string "moderation_status", default: "unread"
     t.index ["author_id"], name: "index_comments_on_author_id"
     t.index ["created_at"], name: "index_comments_on_created_at"
     t.index ["lft"], name: "index_comments_on_lft"
@@ -312,7 +311,6 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
     t.integer "official_feedbacks_count", default: 0, null: false
     t.uuid "assignee_id"
     t.datetime "assigned_at"
-    t.string "moderation_status", default: "unread"
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
@@ -408,7 +406,6 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
     t.uuid "assignee_id"
     t.integer "official_feedbacks_count", default: 0, null: false
     t.datetime "assigned_at"
-    t.string "moderation_status", default: "unread"
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
     t.index ["slug"], name: "index_initiatives_on_slug"
@@ -455,6 +452,15 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
     t.index ["group_id", "user_id"], name: "index_memberships_on_group_id_and_user_id", unique: true
     t.index ["group_id"], name: "index_memberships_on_group_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "moderation_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "moderatable_id"
+    t.string "moderatable_type"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["moderatable_type", "moderatable_id"], name: "moderation_statuses_moderatable", unique: true
   end
 
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1058,8 +1064,9 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
       ideas.title_multiloc AS context_multiloc,
       ideas.body_multiloc AS content_multiloc,
       ideas.published_at AS created_at,
-      ideas.moderation_status
-     FROM ideas
+      moderation_statuses.status AS moderation_status
+     FROM (ideas
+       LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = ideas.id)))
   UNION ALL
    SELECT initiatives.id,
       'Initiative'::text AS moderatable_type,
@@ -1068,8 +1075,9 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
       initiatives.title_multiloc AS context_multiloc,
       initiatives.body_multiloc AS content_multiloc,
       initiatives.published_at AS created_at,
-      initiatives.moderation_status
-     FROM initiatives
+      moderation_statuses.status AS moderation_status
+     FROM (initiatives
+       LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = initiatives.id)))
   UNION ALL
    SELECT comments.id,
       'Comment'::text AS moderatable_type,
@@ -1078,8 +1086,9 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
       union_posts.title_multiloc AS context_multiloc,
       comments.body_multiloc AS content_multiloc,
       comments.created_at,
-      comments.moderation_status
-     FROM (comments
+      moderation_statuses.status AS moderation_status
+     FROM ((comments
+       LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = comments.id)))
        LEFT JOIN union_posts ON ((union_posts.id = comments.post_id)));
   SQL
 

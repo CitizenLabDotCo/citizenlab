@@ -15,9 +15,9 @@ resource "Moderations" do
     @m3 = create(:idea, 
       title_multiloc: {'en' => 'More bicycle repairmen'}, 
       body_multiloc: {'en' => 'They are the true heroes of society'},
-      published_at: @time - 1.day,
-      moderation_status: 'read'
+      published_at: @time - 1.day
       )
+    create(:moderation_status, moderatable: @m3, status: 'read')
     @m2 = create(:comment, 
       body_multiloc: {'en' => 'I\'m glad there\'s still heroes around'},
       post: @m3, 
@@ -26,9 +26,9 @@ resource "Moderations" do
     @m4 = create(:idea, 
       title_multiloc: {'en' => 'Fewer bicycle repairmen'}, 
       body_multiloc: {'en' => 'They are pretentious donkeys'},
-      published_at: @time - 2.days,
-      moderation_status: 'read'
+      published_at: @time - 2.days
       )
+    create(:moderation_status, moderatable: @m4, status: 'read')
     @m1 = create(:initiative, 
       title_multiloc: {'en' => 'Burn more leaves'}, 
       body_multiloc: {'en' => 'We must return that CO2 to our atmosphere at all cost'},
@@ -42,7 +42,7 @@ resource "Moderations" do
       parameter :size, "Number of moderations per page"
     end
 
-    parameter :moderation_status, "Filter by moderation status. One of #{Moderatable::MODERATION_STATUSES.join(", ")}.", required: false
+    parameter :moderation_status, "Filter by moderation status. One of #{ModerationStatus::MODERATION_STATUSES.join(", ")}.", required: false
 
     example_request "List all moderations" do
       expect(status).to eq(200)

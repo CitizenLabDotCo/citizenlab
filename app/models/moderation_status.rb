@@ -4,5 +4,5 @@ class ModerationStatus < ApplicationRecord
   belongs_to :moderatable, polymorphic: true
 
   validates :moderatable, presence: true
-  validates :status, inclusion: { in: MODES }
+  validates :status, inclusion: { in: MODERATION_STATUSES }
 end
