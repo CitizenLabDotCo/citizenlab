@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  include EmailCampaigns::UserDecorator
+  include Verification::UserDecorator
+  include Onboarding::UserDecorator
+  include Polls::UserDecorator
   include PgSearch
 
   GENDERS = %w(male female unspecified)

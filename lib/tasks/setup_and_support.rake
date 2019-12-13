@@ -9,7 +9,6 @@ namespace :setup_and_support do
       data.each do |d|
         idea = Idea.find d['ID']
         first_name = idea.author&.first_name || idea.author_name.split(' ').first || ''
-        byebug if !d['Feedback']
         d['Feedback'] = d['Feedback'].gsub '{{first_name}}', first_name
       end
 

@@ -8,7 +8,7 @@ end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'rails', '~> 5.1.0.beta1'
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.0.1'
 # Use postgresql as the database for Active Record
 gem 'pg' # , '~> 0.18'
 # Use Puma as the app server
@@ -66,9 +66,13 @@ gem "active_model_serializers", "~> 0.10.8"
 #    in an error.
 gem "knock", github: 'CitizenLabDotCo/knock'
 gem "sidekiq" # , "~> 5.0.5"
+
+# This branch must be used because the latest version (2.1.1) 
+# requires activerecord < 6.0, while activerecord = 6.0.1 is
+# required by Rails 6.0.1.
 gem "apartment", github: 'influitive/apartment', branch: 'development'
 gem "apartment-sidekiq", "~> 1.2.0"
-gem "carrierwave", "~> 1.2.2"
+gem "carrierwave", "~> 2.0.2"
 gem "carrierwave-base64", "~> 2.6"
 gem "kaminari", "~> 1.1.1"
 gem 'api-pagination', "~> 4.8.2"
