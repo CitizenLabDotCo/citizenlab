@@ -87,7 +87,7 @@ const mapCustomPreferences = (
 
   // remove blacklisted destinations from the destination array
   const remainingDestinations = destinations ?
-    destinations.filter(destination => !blacklistedDestinationsList?.includes(destination.id))
+    destinations.filter(destination => !(blacklistedDestinationsList || []).includes(destination.id))
     : [];
 
   // get user preferences, default unset preferences to true

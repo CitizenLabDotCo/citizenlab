@@ -18,6 +18,13 @@ const Container = styled.div<{ size: string }>`
   label {
     cursor: pointer;
   }
+
+  &.disabled {
+    cursor: not-allowed;
+    label {
+      cursor: not-allowed;
+    }
+  }
 `;
 
 const InputWrapper = styled.div<{ checked: boolean, size: string }>`
@@ -89,6 +96,7 @@ type Props = DefaultProps & LabelProps & {
   onChange: (event: React.MouseEvent | React.KeyboardEvent) => void;
   className?: string;
   notFocusable?: boolean;
+  disabled?: boolean;
 };
 
 interface State {
@@ -109,26 +117,32 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   handleOnClick = (event: React.MouseEvent) => {
-    const targetElement = get(event, 'target') as any;
-    const parentElement = get(event, 'target.parentElement');
-    const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
-    const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+    const { disabled } = this.props;
+    if (!disabled) {
+      const targetElement = get(event, 'target') as any;
+      const parentElement = get(event, 'target.parentElement');
+      const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
+      const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
 
-    if (!targetElementIsLink && !parentElementIsLink) {
-      event && event.preventDefault();
-      this.props.onChange(event);
+      if (!targetElementIsLink && !parentElementIsLink) {
+        event && event.preventDefault();
+        this.props.onChange(event);
+      }
     }
   }
 
   handleOnKeyDown = (event: React.KeyboardEvent) => {
-    const targetElement = get(event, 'target') as any;
-    const parentElement = get(event, 'target.parentElement');
-    const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
-    const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+    const { disabled } = this.props;
+    if (!disabled) {
+      const targetElement = get(event, 'target') as any;
+      const parentElement = get(event, 'target.parentElement');
+      const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
+      const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
 
-    if (!targetElementIsLink && !parentElementIsLink && event.key === 'Enter') {
-      event && event.preventDefault();
-      this.props.onChange(event);
+      if (!targetElementIsLink && !parentElementIsLink && event.key === 'Enter') {
+        event && event.preventDefault();
+        this.props.onChange(event);
+      }
     }
   }
 
@@ -145,7 +159,7 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   render() {
-    const { label, size, checked, className, notFocusable, id } = this.props;
+    const { label, size, checked, className, notFocusable, id, disabled } = this.props;
     const { inputFocused } = this.state;
 
     return (
@@ -154,7 +168,7 @@ export default class Checkbox extends PureComponent<Props, State> {
         onMouseDown={this.removeFocus}
         onClick={this.handleOnClick}
         onKeyDown={this.handleOnKeyDown}
-        className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
+        className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'} ${disabled ? 'disabled' : ''}`}
       >
         <InputWrapper
           className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
@@ -169,6 +183,7 @@ export default class Checkbox extends PureComponent<Props, State> {
             defaultChecked={checked}
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
+            disabled={disabled}
           />
           {checked && <CheckmarkIcon ariaHidden name="checkmark" />}
         </InputWrapper>

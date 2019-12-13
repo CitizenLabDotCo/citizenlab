@@ -400,6 +400,8 @@ export default class Modal extends PureComponent<Props, State> {
               onClickOutside={this.clickOutsideModal}
               hasHeaderOrFooter={header !== undefined || footer !== undefined}
               ariaLabelledBy="modal-header"
+              aria-modal="true"
+              role="dialog"
               isModal
             >
               <CloseButton

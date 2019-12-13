@@ -1,5 +1,31 @@
 # Changelog
 
+## 2019-12-12
+
+### Added
+
+- Polls now support questions for which a user can check multiple options, with a configurable maximum
+- It's now possible to make a poll anonymous, which hides the user from the response excel export
+- New verification method `id_card_lookup`, which supports the generic flow of verifying a user using a predined list of ID card numbers.
+  - The copy can be configured in Admin HQ
+  - The id cards CSV can be uploaded through Admin HQ
+
+## 2019-12-11
+
+### Added
+
+- Admin moderation iteration 1 (feature flagged, turned on for a selected number of test clients)
+- New verification onboarding campaign
+
+### Changed
+
+- Improved timeline composer
+- Wysiwyg accessibility improvement
+
+### Fixed
+
+- English notifications when you have French as your language
+
 ## 2019-12-06
 
 ### Fixed

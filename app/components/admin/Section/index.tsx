@@ -41,7 +41,7 @@ export const SectionSubtitle = styled.p`
   }
 `;
 
-export const PageTitle =  styled.h1`
+export const PageTitle = styled.h1`
   font-size: ${fontSizes.xxxl}px;
   line-height: 40px;
   font-weight: 600;

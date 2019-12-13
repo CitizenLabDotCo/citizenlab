@@ -57,7 +57,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import { VerificationModalSteps } from 'components/VerificationModal/VerificationModal';
+import { VerificationModalSteps, ContextShape } from 'components/VerificationModal/VerificationModal';
 
 const Container = styled.div`
   display: flex;
@@ -101,7 +101,7 @@ type State = {
   userActuallyDeleted: boolean;
   verificationModalOpened: boolean;
   verificationModalInitialStep: VerificationModalSteps;
-  verificationContext?: boolean;
+  verificationModalContext: ContextShape | null;
   mightOpenVerificationModal: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
@@ -125,7 +125,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       visible: true,
       userDeletedModalOpened: false,
       userActuallyDeleted: false,
+
       verificationModalOpened: false,
+      verificationModalContext: null,
       verificationModalInitialStep: null,
       mightOpenVerificationModal: false,
       navbarRef: null,
@@ -141,7 +143,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
     if (has(this.props.location.query, 'verification_success')) {
       window.history.replaceState(null, '', window.location.pathname);
-      this.openVerificationModal('success');
+      this.openVerificationModal('success', null);
     }
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
@@ -216,13 +218,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       }),
 
       eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.open).subscribe(({ eventValue }) => {
-        this.openVerificationModal(eventValue.step, eventValue.withContext);
+        this.openVerificationModal(eventValue.step, eventValue.context);
       }),
 
       eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.verificationNeeded).subscribe(({ eventValue }) => {
         if (this.state.mightOpenVerificationModal) {
-          this.openVerificationModal(eventValue.step, eventValue.withContext);
-          this.setState({ mightOpenVerificationModal: false });
+          this.openVerificationModal(eventValue.step, eventValue.context);
         }
       }),
 
@@ -275,11 +276,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ userDeletedModalOpened: false });
   }
 
-  openVerificationModal = (step: VerificationModalSteps, context?: boolean) => {
+  openVerificationModal = (step: VerificationModalSteps, context: ContextShape | null) => {
     this.setState({
       verificationModalOpened: true,
       verificationModalInitialStep: step,
-      verificationContext: context
+      verificationModalContext: context,
+      mightOpenVerificationModal: false
     });
   }
 
@@ -287,6 +289,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({
       verificationModalOpened: false,
       verificationModalInitialStep: null,
+      verificationModalContext: null,
       mightOpenVerificationModal: false
     });
   }
@@ -312,7 +315,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       userActuallyDeleted,
       verificationModalOpened,
       verificationModalInitialStep,
-      verificationContext,
+      verificationModalContext,
       navbarRef,
       mobileNavbarRef
     } = this.state;
@@ -337,71 +340,69 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider theme={theme}>
               <LiveAnnouncer>
-                <>
-                  <GlobalStyle />
+                <GlobalStyle />
 
-                  <Container>
-                    <Meta />
+                <Container>
+                  <Meta />
 
-                    <ErrorBoundary>
-                      <Suspense fallback={null}>
-                        <PostPageFullscreenModal
-                          type={modalType}
-                          id={modalId}
-                          slug={modalSlug}
-                          close={this.closePostPageModal}
-                          navbarRef={navbarRef}
-                          mobileNavbarRef={mobileNavbarRef}
-                        />
-                      </Suspense>
-                    </ErrorBoundary>
+                  <ErrorBoundary>
+                    <Suspense fallback={null}>
+                      <PostPageFullscreenModal
+                        type={modalType}
+                        id={modalId}
+                        slug={modalSlug}
+                        close={this.closePostPageModal}
+                        navbarRef={navbarRef}
+                        mobileNavbarRef={mobileNavbarRef}
+                      />
+                    </Suspense>
+                  </ErrorBoundary>
 
-                    <ErrorBoundary>
-                      <LoadableModal
-                        opened={userDeletedModalOpened}
-                        close={this.closeUserDeletedModal}
-                      >
-                        <LoadableUserDeleted userActuallyDeleted={userActuallyDeleted} />
-                      </LoadableModal>
-                    </ErrorBoundary>
+                  <ErrorBoundary>
+                    <LoadableModal
+                      opened={userDeletedModalOpened}
+                      close={this.closeUserDeletedModal}
+                    >
+                      <LoadableUserDeleted userActuallyDeleted={userActuallyDeleted} />
+                    </LoadableModal>
+                  </ErrorBoundary>
 
-                    <ErrorBoundary>
-                      <Suspense fallback={null}>
-                        <VerificationModal
-                          opened={verificationModalOpened}
-                          initialActiveStep={verificationModalInitialStep}
-                          context={verificationContext}
-                        />
-                      </Suspense>
-                    </ErrorBoundary>
+                  <ErrorBoundary>
+                    <Suspense fallback={null}>
+                      <VerificationModal
+                        opened={verificationModalOpened}
+                        initialActiveStep={verificationModalInitialStep}
+                        context={verificationModalContext}
+                      />
+                    </Suspense>
+                  </ErrorBoundary>
 
-                    <ErrorBoundary>
-                      <div id="modal-portal" />
-                    </ErrorBoundary>
+                  <ErrorBoundary>
+                    <div id="modal-portal" />
+                  </ErrorBoundary>
 
-                    <ErrorBoundary>
-                      <ConsentManager />
-                    </ErrorBoundary>
+                  <ErrorBoundary>
+                    <ConsentManager />
+                  </ErrorBoundary>
 
-                    <ErrorBoundary>
-                      <Navbar setRef={this.setNavbarRef} setMobileNavigationRef={this.setMobileNavigationRef} />
-                    </ErrorBoundary>
+                  <ErrorBoundary>
+                    <Navbar setRef={this.setNavbarRef} setMobileNavigationRef={this.setMobileNavigationRef} />
+                  </ErrorBoundary>
 
-                    <InnerContainer>
-                      <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
-                        <ErrorBoundary>
-                          {children}
-                        </ErrorBoundary>
-                        <HasPermission.No>
-                          <ForbiddenRoute />
-                        </HasPermission.No>
-                      </HasPermission>
-                    </InnerContainer>
+                  <InnerContainer>
+                    <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
+                      <ErrorBoundary>
+                        {children}
+                      </ErrorBoundary>
+                      <HasPermission.No>
+                        <ForbiddenRoute />
+                      </HasPermission.No>
+                    </HasPermission>
+                  </InnerContainer>
 
-                    {showFooter && <Footer showShortFeedback={showShortFeedback} />}
-                  </Container>
-                </>
-              </LiveAnnouncer>
+                  {showFooter && <Footer showShortFeedback={showShortFeedback} />}
+                </Container>
+                </LiveAnnouncer>
             </ThemeProvider>
           </PreviousPathnameContext.Provider>
         )}

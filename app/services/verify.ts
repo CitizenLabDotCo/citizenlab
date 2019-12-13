@@ -24,3 +24,11 @@ export function verifyBogus(desired_error: string) {
     }
   });
 }
+
+export function verifyIDLookup(idCard: string) {
+  return streams.add<IVerifiedResponse>(`${API_PATH}/verification_methods/id_card_lookup/verification`, {
+    verification: {
+      card_id: idCard
+    }
+  });
+}
