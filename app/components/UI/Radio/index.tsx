@@ -185,18 +185,17 @@ export default class Radio extends PureComponent<Props, State> {
           required={isRequired}
         />
 
-        <CustomRadio
-          className={
-            `${inputFocused ? 'focused' : ''}
-            ${checked ? 'checked' : ''}
-            ${disabled ? 'disabled' : 'enabled'}
-            circle`
-          }
-        >
-          {checked && <Checked aria-hidden color={buttonColor || '#49B47D'}/>}
-        </CustomRadio>
-
         <Label htmlFor={id} className={`text ${disabled ? 'disabled' : 'enabled'}`}>
+          <CustomRadio
+            className={
+              `${inputFocused ? 'focused' : ''}
+              ${checked ? 'checked' : ''}
+              ${disabled ? 'disabled' : 'enabled'}
+              circle`
+            }
+          >
+            {checked && <Checked aria-hidden color={buttonColor || '#49B47D'}/>}
+          </CustomRadio>
           {label}
         </Label>
       </Container>
