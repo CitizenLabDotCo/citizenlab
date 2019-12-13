@@ -1,6 +1,7 @@
 import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
+import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
 import Table from 'components/UI/Table';
@@ -9,6 +10,7 @@ import { PageTitle } from 'components/admin/Section';
 
 // hooks
 import useModerations from 'hooks/useModerations';
+import useTenantLocales from 'hooks/useTenantLocales';
 
 // i18n
 import messages from './messages';
@@ -73,6 +75,21 @@ const StyledTable = styled(Table)`
   }
 `;
 
+const Content = styled.div`
+  &:not(.last) {
+    margin-bottom: 25px;
+  }
+`;
+
+const ContentLocale = styled.div`
+  font-size: ${fontSizes.small}px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+`;
+
+const ContentBody = styled.div``;
+
 const StyledPagination = styled(Pagination)`
   margin-top: 40px;
 `;
@@ -83,7 +100,8 @@ interface Props {
 
 const Moderation = memo<Props>(({ className }) => {
 
-  const moderations = useModerations({ pageSize: 4, moderationStatus: 'unread' });
+  const moderations = useModerations();
+  const tenantLocales = useTenantLocales();
 
   const handlePaginationClick = useCallback((pageNumber: number) => {
     if (!isNilOrError(moderations)) {
@@ -91,7 +109,7 @@ const Moderation = memo<Props>(({ className }) => {
     }
   }, [moderations]);
 
-  if (!isNilOrError(moderations?.list)) {
+  if (!isNilOrError(moderations?.list) && !isNilOrError(tenantLocales)) {
     const { list, currentPage, lastPage } = moderations;
 
     return (
@@ -136,9 +154,19 @@ const Moderation = memo<Props>(({ className }) => {
                     </a>
                   </td>
                   <td className="content">
-                    <T value={listItem.attributes.content_multiloc}>
-                      {content => <div dangerouslySetInnerHTML={{ __html: content }} />}
-                    </T>
+                    <>
+                      {Object.keys(omitBy(listItem.attributes.content_multiloc, (value) => isNil(value) || isEmpty(value))).map((locale, index) => {
+                        const content = listItem.attributes.content_multiloc[locale];
+                        const languageCount = Object.keys(omitBy(listItem.attributes.content_multiloc, (value) => isNil(value) || isEmpty(value))).length;
+
+                        return (
+                          <Content key={`${listItem.id}-${index}`} className={index + 1 === languageCount ? 'last' : ''}>
+                            {languageCount > 1 && <ContentLocale>{locale}</ContentLocale>}
+                            <ContentBody dangerouslySetInnerHTML={{ __html: content }} />
+                          </Content>
+                        );
+                      })}
+                    </>
                   </td>
                 </tr>
               );
