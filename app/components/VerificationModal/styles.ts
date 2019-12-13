@@ -19,8 +19,11 @@ export const Title = styled.h1`
     font-weight: 600;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     margin-bottom: 20px;
+    text-align: left;
+    font-size: ${fontSizes.xl}px;
+    line-height: 28px;
   `}
 `;
 

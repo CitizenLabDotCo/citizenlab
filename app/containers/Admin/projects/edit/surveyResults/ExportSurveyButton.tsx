@@ -1,6 +1,9 @@
 // Libraries
 import React from 'react';
 
+// typings
+import { IParticipationContextType } from 'typings';
+
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
@@ -14,7 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
-  type: 'projects' | 'phases';
+  type: IParticipationContextType;
   id: string;
 }
 

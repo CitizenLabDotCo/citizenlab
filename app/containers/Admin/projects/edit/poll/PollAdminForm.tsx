@@ -3,7 +3,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { isEqual, clone } from 'lodash-es';
-import styled  from 'styled-components';
+import styled from 'styled-components';
 
 // Services / Data loading
 import { addPollQuestion, deletePollQuestion, updatePollQuestion, reorderPollQuestion, IPollQuestion } from 'services/pollQuestions';
@@ -21,7 +21,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
-import { Multiloc, Locale } from 'typings';
+import { Multiloc, Locale, IParticipationContextType } from 'typings';
 
 const StyledList = styled(List)`
   margin: 10px 0;
@@ -29,7 +29,7 @@ const StyledList = styled(List)`
 
 interface Props {
   participationContextId: string;
-  participationContextType: 'projects' | 'phases';
+  participationContextType: IParticipationContextType;
   pollQuestions: IPollQuestion[] | null | undefined;
   locale: Locale;
 }
@@ -113,14 +113,12 @@ export class PollAdminForm extends PureComponent<Props, State> {
   saveNewQuestion = () => {
     const { participationContextId, participationContextType } = this.props;
     const { newQuestionTitle } = this.state;
-    const participationContextTypeUppercase = participationContextType === 'projects'
-      ? 'Project'
-      : participationContextType === 'phases'
-        ? 'Phase'
-        : null;
-    participationContextTypeUppercase && newQuestionTitle && addPollQuestion(participationContextId, participationContextTypeUppercase, newQuestionTitle).then((res) => {
-      this.setState({ newQuestionTitle: null, editingOptionsId: res.data.id });
-    });
+
+    if (participationContextType && participationContextId && newQuestionTitle) {
+      addPollQuestion(participationContextId, participationContextType, newQuestionTitle).then((res) => {
+        this.setState({ newQuestionTitle: null, editingOptionsId: res.data.id });
+      });
+    }
   }
   cancelNewQuestion = () => {
     this.setState({ newQuestionTitle: null });
@@ -137,7 +135,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
 
   saveEditingQuestion = () => {
     const { editingQuestionTitle, editingQuestionId } = this.state;
-    editingQuestionId && updatePollQuestion(editingQuestionId, editingQuestionTitle).then(() => {
+    editingQuestionId && updatePollQuestion(editingQuestionId, { title_multiloc: editingQuestionTitle }).then(() => {
       this.setState({ editingQuestionId: null, editingQuestionTitle: {} });
     });
   }

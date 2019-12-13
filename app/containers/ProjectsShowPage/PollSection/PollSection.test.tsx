@@ -21,7 +21,7 @@ describe('<PollSection/>', () => {
         .map((item, index) => mockQuestion(index, item));
       const wrapper = shallow(
         <PollSection
-          type="projects"
+          type="project"
           phaseId={null}
           projectId="projectId"
           authUser={null}
@@ -37,7 +37,7 @@ describe('<PollSection/>', () => {
         .map((item, index) => mockQuestion(index, item));
       const wrapper = shallow(
         <PollSection
-          type="phases"
+          type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
           authUser={null}
@@ -53,7 +53,7 @@ describe('<PollSection/>', () => {
         .map((item, index) => mockQuestion(index, item));
       const wrapper = shallow(
         <PollSection
-          type="phases"
+          type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
           authUser={null}
@@ -68,7 +68,7 @@ describe('<PollSection/>', () => {
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <PollSection
-          type="phases"
+          type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
           authUser={null}
@@ -82,7 +82,7 @@ describe('<PollSection/>', () => {
     it('renders null when pollQuestions is undefined', () => {
       const wrapper = shallow(
         <PollSection
-          type="projects"
+          type="project"
           phaseId={null}
           projectId="projectId"
           authUser={null}
@@ -96,7 +96,7 @@ describe('<PollSection/>', () => {
     it('renders null when pollQuestions is error', () => {
       const wrapper = shallow(
         <PollSection
-          type="projects"
+          type="project"
           phaseId={null}
           projectId="projectId"
           authUser={null}
@@ -107,13 +107,13 @@ describe('<PollSection/>', () => {
       );
       expect(wrapper.type()).toBe(null);
     });
-    it('renders null when type is phases and phase is null', () => {
+    it('renders null when type is phase and phase is null', () => {
       const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
         .map((item, index) => mockQuestion(index, item));
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <PollSection
-          type="phases"
+          type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
           authUser={null}
@@ -124,13 +124,13 @@ describe('<PollSection/>', () => {
       );
       expect(wrapper.type()).toBe(null);
     });
-    it('renders null when type is phases and phase is undefined', () => {
+    it('renders null when type is phase and phase is undefined', () => {
       const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
         .map((item, index) => mockQuestion(index, item));
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <PollSection
-          type="phases"
+          type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
           authUser={null}
@@ -141,13 +141,13 @@ describe('<PollSection/>', () => {
       );
       expect(wrapper.type()).toBe(null);
     });
-    it('renders null when type is phases and phase is error', () => {
+    it('renders null when type is phase and phase is error', () => {
       const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
         .map((item, index) => mockQuestion(index, item));
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <PollSection
-          type="phases"
+          type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
           authUser={null}
@@ -167,7 +167,7 @@ describe('<PollSection/>', () => {
       const mockProject = { ...mockProjectGeneric, attributes: { action_descriptor: { taking_poll: { enabled: true } } } };
       const wrapper = shallow(
         <PollSection
-          type="projects"
+          type="project"
           phaseId={null}
           projectId="projectId"
           authUser={null}
@@ -188,7 +188,7 @@ describe('<PollSection/>', () => {
       const mockUser = makeUser();
       const wrapper = shallow(
         <PollSection
-          type="projects"
+          type="project"
           phaseId={null}
           projectId="projectId"
           authUser={mockUser}
@@ -208,7 +208,7 @@ describe('<PollSection/>', () => {
       const mockUser = makeUser();
       const wrapper = shallow(
         <PollSection
-          type="projects"
+          type="project"
           phaseId={null}
           projectId="projectId"
           authUser={mockUser}
@@ -230,7 +230,7 @@ describe('<PollSection/>', () => {
       const mockPastPollPhase = { ...mockPhasePollData, attributes: { start_at: '2019-05-10', end_at: '2019-05-30' } };
       const wrapper = shallow(
         <PollSection
-          type="phases"
+          type="phase"
           phaseId={null}
           projectId="projectId"
           authUser={mockUser}
@@ -251,7 +251,7 @@ describe('<PollSection/>', () => {
       const mockUser = makeUser();
       const wrapper = shallow(
         <PollSection
-          type="projects"
+          type="project"
           phaseId={null}
           projectId="projectId"
           authUser={mockUser}

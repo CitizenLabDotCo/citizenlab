@@ -45,6 +45,7 @@ export interface IProjectData {
     survey_embed_url?: string;
     ordering: number;
     location_allowed?: boolean;
+    poll_anonymous?: boolean;
     action_descriptor: {
       posting: {
         enabled: boolean,
@@ -111,6 +112,7 @@ export interface IUpdatedProjectProperties {
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
   default_assignee_id?: string | null;
+  poll_anonymous?: boolean;
 }
 
 export interface IProject {

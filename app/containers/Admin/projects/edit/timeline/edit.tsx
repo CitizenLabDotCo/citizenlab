@@ -9,6 +9,8 @@ import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import moment, { Moment } from 'moment';
 import { get, isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
+import { adopt } from 'react-adopt';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // Services
 import { localeStream } from 'services/locale';
@@ -44,6 +46,9 @@ import { fontSizes } from 'utils/styleUtils';
 import { CLError, Locale, UploadFile, Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
+// Resources
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+
 const PhaseForm = styled.form`
   .DateRangePickerInput {
     border-radius: ${(props: any) => props.theme.borderRadius};
@@ -75,10 +80,13 @@ interface IParams {
   id: string | null;
 }
 
-interface DataProps {}
+interface DataProps {
+  phases: GetPhasesChildProps;
+}
 
-interface Props extends DataProps {
-  params: IParams;
+interface InputProps {}
+
+interface Props extends DataProps, InputProps {
 }
 
 interface State {
@@ -96,7 +104,7 @@ interface State {
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
-class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, State> {
+class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   params$: BehaviorSubject<IParams | null>;
   subscriptions: Subscription[];
 
@@ -333,14 +341,47 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
 
   quillMultilocLabel = <FormattedMessage {...messages.descriptionLabel} />;
 
+  getStartDate = () => {
+    const { phase, attributeDiff } = this.state;
+    const { phases } = this.props;
+    const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
+    let startDate: Moment | null = null;
+
+    // If this is a new phase
+    if (!phase) {
+      const previousPhase = phases && phases[phases.length - 1];
+      const previousPhaseEndDate = previousPhase ? moment(previousPhase.attributes.end_at) : null;
+
+      // And there's a previous phase (end date) and the phase hasn't been picked/changed
+      if (previousPhaseEndDate && !phaseAttrs.start_at) {
+        // Make startDate the previousEndDate + 1 day
+        startDate = previousPhaseEndDate.add(1, 'day');
+        // However, if there's been a manual change to this start date
+      } else if (phaseAttrs.start_at) {
+        // Take this date as the start date
+        startDate = moment(phaseAttrs.start_at);
+      }
+      // Otherwise, there is no date yet and it should remain 'null'
+
+    // else there is already a phase (which means we're in the edit form)
+    // and we take it from the attrs
+    } else {
+      if (phaseAttrs.start_at) {
+        startDate = moment(phaseAttrs.start_at);
+      }
+    }
+
+    return startDate;
+  }
+
   render() {
     const { loaded } = this.state;
 
     if (loaded) {
       const { formatMessage } = this.props.intl;
-      const { errors,  phase, attributeDiff, saving, phaseFiles, submitState } = this.state;
+      const { errors, phase, attributeDiff, saving, phaseFiles, submitState } = this.state;
       const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
-      const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
+      const startDate = this.getStartDate();
       const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null);
 
       return (
@@ -443,4 +484,14 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
   }
 }
 
-export default injectIntl<Props>(AdminProjectTimelineEdit);
+const AdminProjectTimelineEditWithHOCs = injectIntl<Props>(AdminProjectTimelineEdit);
+
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  phases: ({ params, render }) => <GetPhases projectId={params.projectId}>{render}</GetPhases>
+});
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <AdminProjectTimelineEditWithHOCs {...dataProps} {...inputProps} />}
+  </Data>
+));

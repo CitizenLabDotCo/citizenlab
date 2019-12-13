@@ -59,15 +59,19 @@ export default defineMessages({
   },
   commentingMaybeNotPermitted: {
     id: 'app.components.Comments.commentingMaybeNotPermitted',
-    defaultMessage: 'Not all users are allowed to comment. Please {signInLink} to see whether you comply.',
+    defaultMessage: 'Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.',
   },
   signInToComment: {
     id: 'app.containers.Comments.signInToComment',
-    defaultMessage: 'Please {signInLink} to comment.',
+    defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
   },
   signInLinkText: {
     id: 'app.containers.Comments.signInLinkText',
     defaultMessage: 'log in',
+  },
+  signUpLinkText: {
+    id: 'app.containers.Comments.signUpLinkText',
+    defaultMessage: 'sign up',
   },
   verificationLinkText: {
     id: 'app.containers.Comments.verificationLinkText',

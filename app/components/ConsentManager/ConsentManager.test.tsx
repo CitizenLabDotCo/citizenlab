@@ -44,11 +44,11 @@ const destinations = [
     id: 'FunctionalTool',
   },
   {
-    name: 'Intercom',
-    description: 'Only for admins',
-    category: 'Helpdesk',
-    website: 'intercomUrl',
-    id: 'Intercom',
+    name: 'SatisMeter',
+    description: 'Measures satisfaction',
+    category: 'Surveys',
+    website: 'http://satismeter',
+    id: 'SatisMeter',
   }
 ] as IDestination[];
 
@@ -88,7 +88,7 @@ describe('<ConsentManager />', () => {
   });
 
   describe('parsing user choices coming back from child component to set cookie (no blacklist): ', () => {
-    it('sets all to true when called with no preferences set', () => {
+    it('sets all but admin integrations to true when called with no preferences set and an unsigned user', () => {
       const wrapper = shallow(<ConsentManager authUser={null} tenant={getTenant(null)} />);
       const handleMapCustomPreferences = wrapper.find('ConsentManagerBuilder').props().mapCustomPreferences;
 
@@ -103,10 +103,10 @@ describe('<ConsentManager />', () => {
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
         FunctionalTool: true,
-        Intercom: false,
         'Google Tag Manager': true,
         MarketingTool: true,
-        SatisMeter: false
+        SatisMeter: false,
+        Intercom: false
       });
     });
 
@@ -130,9 +130,9 @@ describe('<ConsentManager />', () => {
         AdvertisingTool: false,
         FunctionalTool: true,
         'Google Tag Manager': false,
-        Intercom: false,
         MarketingTool: false,
-        SatisMeter: false
+        SatisMeter: false,
+        Intercom: false
       });
     });
   });
@@ -158,10 +158,10 @@ describe('<ConsentManager />', () => {
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
         FunctionalTool: false,
-        Intercom: false,
         'Google Tag Manager': false,
         MarketingTool: true,
-        SatisMeter: false
+        SatisMeter: false,
+        Intercom: false
       });
     });
 
@@ -181,10 +181,9 @@ describe('<ConsentManager />', () => {
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
         FunctionalTool: true,
-        Intercom: false,
-
         'Google Tag Manager': false,
         MarketingTool: true,
+        Intercom: false,
         SatisMeter: false
       });
     });
@@ -207,7 +206,7 @@ describe('<ConsentManager />', () => {
         FunctionalTool: true,
         'Google Tag Manager': false,
         MarketingTool: true,
-        Intercom: true
+        SatisMeter: true
       });
     });
   });

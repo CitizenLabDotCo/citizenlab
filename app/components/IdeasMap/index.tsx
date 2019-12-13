@@ -183,6 +183,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
               projectId={projectIds[0]}
               phaseId={phaseId || undefined}
               onClick={this.redirectToIdeaCreation}
+              participationContextType={phaseId ? 'phase' : 'project'}
             />
           </div>
         }
