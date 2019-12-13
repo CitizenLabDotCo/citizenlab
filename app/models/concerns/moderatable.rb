@@ -3,22 +3,19 @@ require 'active_support/concern'
 module Moderatable
   extend ActiveSupport::Concern
 
-  MODERATION_STATUSES = %w(unread read)
-
   included do
-    validates :moderation_status, presence: true, inclusion: {in: MODERATION_STATUSES}
+    has_one :moderation_status
 
-    before_validation :set_moderation_status, on: :create
+    scope :moderation_status, (Proc.new do |status|
+      joins(:moderation_status).where(moderation_statuses: {status: status})
+    end)
   end
 
   class_methods do
   end
 
-  
-  private
-
-  def set_moderation_status
-    self.moderation_status ||= 'unread'
+  def moderation_status
+    ModerationStatus.where(moderatable: self).first&.status || 'unread'
   end
 
 end
