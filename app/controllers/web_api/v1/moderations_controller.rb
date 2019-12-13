@@ -8,6 +8,8 @@ class WebApi::V1::ModerationsController < ApplicationController
       .or(@moderations.where(id: Comment.published))
       .order(created_at: :desc)
 
+    @moderations = @moderations.where(moderation_status: params[:moderation_status]) if params[:moderation_status].present?
+
     @moderations = @moderations
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
