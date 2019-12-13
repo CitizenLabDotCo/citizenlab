@@ -106,7 +106,7 @@ describe('<ConsentManager />', () => {
         Intercom: false,
         'Google Tag Manager': true,
         MarketingTool: true,
-        Satismeter: false
+        SatisMeter: false
       });
     });
 
@@ -132,7 +132,7 @@ describe('<ConsentManager />', () => {
         'Google Tag Manager': false,
         Intercom: false,
         MarketingTool: false,
-        Satismeter: false
+        SatisMeter: false
       });
     });
   });
@@ -161,7 +161,7 @@ describe('<ConsentManager />', () => {
         Intercom: false,
         'Google Tag Manager': false,
         MarketingTool: true,
-        Satismeter: false
+        SatisMeter: false
       });
     });
 
@@ -185,7 +185,7 @@ describe('<ConsentManager />', () => {
 
         'Google Tag Manager': false,
         MarketingTool: true,
-        Satismeter: false
+        SatisMeter: false
       });
     });
     it('acts correctly for admins (adds intercom)', () => {

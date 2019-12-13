@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CategoryCard /> renders correctly when allowed 1`] = `
-<CategoryCard__Container>
+<CategoryCard__Container
+  className="e2e-category"
+>
   <CategoryCard__TextContainer>
     <FormattedMessage
       defaultMessage="Marketing and analytics"
@@ -86,7 +88,9 @@ exports[`<CategoryCard /> renders correctly when allowed 1`] = `
 `;
 
 exports[`<CategoryCard /> renders correctly when disallowed 1`] = `
-<CategoryCard__Container>
+<CategoryCard__Container
+  className="e2e-category"
+>
   <CategoryCard__TextContainer>
     <FormattedMessage
       defaultMessage="Marketing and analytics"
@@ -171,7 +175,9 @@ exports[`<CategoryCard /> renders correctly when disallowed 1`] = `
 `;
 
 exports[`<CategoryCard /> renders correctly when null 1`] = `
-<CategoryCard__Container>
+<CategoryCard__Container
+  className="e2e-category"
+>
   <CategoryCard__TextContainer>
     <FormattedMessage
       defaultMessage="Marketing and analytics"

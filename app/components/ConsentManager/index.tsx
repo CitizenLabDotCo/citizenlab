@@ -56,7 +56,7 @@ export interface ConsentManagerProps {
   destinations: IDestination[];
   newDestinations: IDestination[];
   preferences: CustomPreferences;
-  // isConsentRequired: boolean; // passed down by SCM but we'll overwrite it
+  // isConsentRequired: boolean; // passed down by SCM  based on whether user is the EU, but we'll overwrite this
   // implyConsentOnInteraction: boolean; // not in use here but passed through by SCM, defaults to false
 }
 
@@ -67,14 +67,17 @@ interface DataProps {
 }
 interface Props extends InputProps, DataProps { }
 
-// helper function for mapCustomPreferences
-// reducer function, when passed in to _array.reduce, transforms the array
-// into an object with the elements of the array as keys, and false as values
+/** helper function for mapCustomPreferences
+* reducer function, when passed in to _array.reduce, transforms the array
+* into an object with the elements of the array as keys, and false as values
+**/
 const reducerArrayToObject = (acc, curr) => (acc[curr] = false, acc);
 
-// takes in the full list of destinations and the preferences set by the user and
-// gives out both the custom preferences picked by the user to save and the preferences
-// of the user in the format { [preferenceId]: booleanConsent }
+/** takes in the full list of destinations (coming from Segment),
+* the preferences set by the user and the destinations that the user doesn't have access to
+* gives out both the custom preferences picked by the user to save and the preferences
+* of the user in the format { [preferenceId]: booleanConsent }
+**/
 const mapCustomPreferences = (
   { destinations, preferences }: { destinations: IDestination[], preferences: CustomPreferences },
   blacklistedDestinationsList: string[] | null
@@ -90,8 +93,7 @@ const mapCustomPreferences = (
   // get user preferences, default unset preferences to true
   // for categories that contain destinations (for implicit consent)
   // and leave the empty categories null
-  for (const preferenceName of Object.keys(preferences)) {
-    const value = preferences[preferenceName];
+  for (const [preferenceName, value] of Object.entries(preferences)) {
     if (typeof value === 'boolean') {
       customPreferences[preferenceName] = value;
     } else if (preferenceName === 'advertising' && remainingDestinations.find(destination => ADVERTISING_CATEGORIES.includes(destination.category))) {
@@ -130,7 +132,8 @@ const mapCustomPreferences = (
   const blacklistedDestinations = blacklistedDestinationsList ? blacklistedDestinationsList.reduce(reducerArrayToObject, {}) : {};
 
   // set the tenantBlacklisted value on the customPreferences object so we can use
-  // it to later calculate whether a tenant has removed an item from to blacklist
+  // it to later calculate whether a tenant has removed an item from blacklist
+  // or the user has gained access to some preferences
   // and ask consent again when this happens
   customPreferences.tenantBlacklisted = blacklistedDestinationsList || undefined;
 
@@ -179,7 +182,7 @@ export class ConsentManager extends PureComponent<Props> {
         {(consentManagerProps) => (
           <ConsentManagerBuilderHandler
             {...consentManagerProps}
-            blacklistedDestinations={tenant.attributes.settings.core.segment_destinations_blacklist || []}
+            blacklistedDestinations={this.getBlacklistedDestinations()}
           />
         )}
       </ConsentManagerBuilder>
