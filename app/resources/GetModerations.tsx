@@ -2,13 +2,14 @@ import React from 'react';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { moderationsStream, IModeration } from 'services/moderations';
+import { moderationsStream, IModeration, TModerationStatuses } from 'services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 interface InputProps {
   pageNumber?: number;
   pageSize?: number;
+  moderationStatus?: TModerationStatuses;
 }
 
 type children = (renderProps: GetModerationsChildProps) => JSX.Element | null;
@@ -47,7 +48,7 @@ export default class GetTenant extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { pageNumber, pageSize } = this.props;
+    const { pageNumber, pageSize, moderationStatus } = this.props;
 
     this.inputProps$ = new BehaviorSubject({ pageNumber, pageSize });
     this.pageChanges$ = new BehaviorSubject(pageNumber as number);
@@ -64,6 +65,7 @@ export default class GetTenant extends React.Component<Props, State> {
             queryParameters: {
               'page[number]': pageNumber,
               'page[size]': pageSize,
+              moderation_status: moderationStatus
             }
           }).observable;
         })

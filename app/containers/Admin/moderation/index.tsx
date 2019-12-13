@@ -1,6 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 import moment from 'moment';
 
 // components
@@ -8,8 +7,8 @@ import Table from 'components/UI/Table';
 import Pagination from 'components/admin/Pagination/Pagination';
 import { PageTitle } from 'components/admin/Section';
 
-// resources
-import GetModerations, { GetModerationsChildProps } from 'resources/GetModerations';
+// hooks
+import useModerations from 'hooks/useModerations';
 
 // i18n
 import messages from './messages';
@@ -21,6 +20,9 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   margin-bottom: 100px;
 `;
 
@@ -75,99 +77,85 @@ const StyledPagination = styled(Pagination)`
   margin-top: 40px;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
 }
 
-interface DataProps {
-  moderations: GetModerationsChildProps;
-}
+const Moderation = memo<Props>(({ className }) => {
 
-interface Props extends InputProps, DataProps { }
+  const moderations = useModerations({ pageSize: 4, moderationStatus: 'unread' });
 
-interface State {}
-
-class Moderation extends PureComponent<Props, State> {
-
-  handlePaginationClick = (pageNumber: number) => {
-    this.props.moderations.onChangePage(pageNumber);
-  }
-
-  render() {
-    if (!isNilOrError(this.props.moderations?.list)) {
-      const { moderations: { list, currentPage, lastPage } } = this.props;
-
-      return (
-        <Container className={this.props.className}>
-          <PageTitleWrapper>
-            <StyledPageTitle>
-              <FormattedMessage {...messages.pageTitle} />
-            </StyledPageTitle>
-            <BetaLabel>(Beta)</BetaLabel>
-          </PageTitleWrapper>
-
-          <StyledTable>
-            <thead>
-              <tr>
-                <th className="date">
-                  <FormattedMessage {...messages.date} />
-                </th>
-                <th className="type">
-                  <FormattedMessage {...messages.type} />
-                </th>
-                <th className="context">
-                  <FormattedMessage {...messages.context} />
-                </th>
-                <th className="content">
-                  <FormattedMessage {...messages.content} />
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {list.map((listItem, index) => {
-                return (
-                  <tr key={index}>
-                    <td className="date nowrap">
-                      {moment(listItem.attributes.created_at).format('LLL')}
-                    </td>
-                    <td className="type nowrap">
-                      {listItem.attributes.context_type}
-                    </td>
-                    <td className="context">
-                      <a href={listItem.attributes.context_url} role="button">
-                        <T value={listItem.attributes.context_multiloc} />
-                      </a>
-                    </td>
-                    <td className="content">
-                      <T value={listItem.attributes.content_multiloc}>
-                        {content => <div dangerouslySetInnerHTML={{ __html: content }} />}
-                      </T>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </StyledTable>
-
-          <StyledPagination
-            currentPage={currentPage}
-            totalPages={lastPage}
-            loadPage={this.handlePaginationClick}
-          />
-        </Container>
-      );
+  const handlePaginationClick = useCallback((pageNumber: number) => {
+    if (!isNilOrError(moderations)) {
+      moderations.onPageChange(pageNumber);
     }
+  }, [moderations]);
 
-    return null;
+  if (!isNilOrError(moderations?.list)) {
+    const { list, currentPage, lastPage } = moderations;
+
+    return (
+      <Container className={className}>
+        <PageTitleWrapper>
+          <StyledPageTitle>
+            <FormattedMessage {...messages.pageTitle} />
+          </StyledPageTitle>
+          <BetaLabel>(Beta)</BetaLabel>
+        </PageTitleWrapper>
+
+        <StyledTable>
+          <thead>
+            <tr>
+              <th className="date">
+                <FormattedMessage {...messages.date} />
+              </th>
+              <th className="type">
+                <FormattedMessage {...messages.type} />
+              </th>
+              <th className="context">
+                <FormattedMessage {...messages.belongsTo} />
+              </th>
+              <th className="content">
+                <FormattedMessage {...messages.content} />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {list.map((listItem, index) => {
+              return (
+                <tr key={index}>
+                  <td className="date nowrap">
+                    {moment(listItem.attributes.created_at).format('LLL')}
+                  </td>
+                  <td className="type nowrap">
+                    {listItem.attributes.moderatable_type}
+                  </td>
+                  <td className="context">
+                    <a href={listItem.attributes.context_url} role="button" target="_blank">
+                      <T value={listItem.attributes.context_multiloc} />
+                    </a>
+                  </td>
+                  <td className="content">
+                    <T value={listItem.attributes.content_multiloc}>
+                      {content => <div dangerouslySetInnerHTML={{ __html: content }} />}
+                    </T>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </StyledTable>
+
+        <StyledPagination
+          currentPage={currentPage}
+          totalPages={lastPage}
+          loadPage={handlePaginationClick}
+        />
+      </Container>
+    );
   }
-}
 
-const Data = adopt<DataProps, InputProps>({
-  moderations: <GetModerations pageSize={8} />
+  return null;
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataprops => <Moderation {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default Moderation;

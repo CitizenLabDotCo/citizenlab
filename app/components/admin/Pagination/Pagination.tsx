@@ -6,18 +6,14 @@ import messages from './messages';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
-// Typing
-export interface Props {
-  currentPage: number;
-  totalPages: number;
-  loadPage: (page: number) => void;
-  className?: string;
-}
-
 const Container = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
+`;
+
+const ContainerInner = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const ChevronIcon = styled(Icon) `
@@ -115,6 +111,13 @@ const Item = styled.button`
   }
 `;
 
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  loadPage: (page: number) => void;
+  className?: string;
+}
+
 class Pagination extends PureComponent<Props> {
 
   calculateMenuItems(currentPage: number, totalPages: number) {
@@ -169,37 +172,39 @@ class Pagination extends PureComponent<Props> {
     if (totalPages > 1) {
       return (
         <Container className={className}>
-          <Back
-            onMouseDown={this.removeFocus}
-            onClick={this.goTo(currentPage - 1)}
-            disabled={currentPage === 1}
-            className={currentPage === 1 ? 'disabled' : ''}
-          >
-            <ChevronIcon name="chevron-right" />
-            <FormattedMessage {...messages.back} />
-          </Back>
-
-          {pageItems.map((item) => (
-            <Item
-              key={item}
-              className={`${item === currentPage ? 'active' : ''} ${item < 0 ? 'disabled' : ''}`}
+          <ContainerInner>
+            <Back
               onMouseDown={this.removeFocus}
-              onClick={this.handleItemClick(item)}
-              disabled={item < 0}
+              onClick={this.goTo(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={currentPage === 1 ? 'disabled' : ''}
             >
-              <span>{item < 0 ? '...' : item.toString()}</span>
-            </Item>
-          ))}
+              <ChevronIcon name="chevron-right" />
+              <FormattedMessage {...messages.back} />
+            </Back>
 
-          <Next
-            onMouseDown={this.removeFocus}
-            onClick={this.goTo(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className={currentPage === totalPages ? 'disabled' : ''}
-          >
-            <FormattedMessage {...messages.next} />
-            <ChevronIcon name="chevron-right" />
-          </Next>
+            {pageItems.map((item) => (
+              <Item
+                key={item}
+                className={`${item === currentPage ? 'active' : ''} ${item < 0 ? 'disabled' : ''}`}
+                onMouseDown={this.removeFocus}
+                onClick={this.handleItemClick(item)}
+                disabled={item < 0}
+              >
+                <span>{item < 0 ? '...' : item.toString()}</span>
+              </Item>
+            ))}
+
+            <Next
+              onMouseDown={this.removeFocus}
+              onClick={this.goTo(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={currentPage === totalPages ? 'disabled' : ''}
+            >
+              <FormattedMessage {...messages.next} />
+              <ChevronIcon name="chevron-right" />
+            </Next>
+          </ContainerInner>
         </Container>
       );
     }
