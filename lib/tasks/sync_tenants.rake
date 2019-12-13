@@ -88,7 +88,6 @@ namespace :sync_tenants do
                     d['ID'] == object.id && d['Property'] == field_name && d['Tenant host'] == tenant.host && d['Content type'] == classname
                   end
                   if instruction
-                    byebug # if object.class.name == 'Initiative'
                     # In a later iteration, we could first try to parse 
                     # the new (string) value provided in the sheet.
                     object.send "#{field_name}=", value
