@@ -497,7 +497,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
+  project: ({ participationContextType, participationContextId, render }) => <GetProject projectId={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
   phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
   basket: ({ participationContextType, project, phase, render }) => {
     let basketId: string | null = null;

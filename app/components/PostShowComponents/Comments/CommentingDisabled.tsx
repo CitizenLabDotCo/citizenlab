@@ -102,7 +102,7 @@ class CommentingDisabled extends PureComponent<Props> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetProject id={inputProps.projectId}>
+  <GetProject projectId={inputProps.projectId}>
     {project => <CommentingDisabled {...inputProps} project={project} />}
   </GetProject>
 );

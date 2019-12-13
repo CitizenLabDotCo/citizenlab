@@ -96,7 +96,7 @@ class ProjectCircleLabel extends PureComponent<Props & InjectedIntlProps, State>
 const ProjectLabelWithIntl = injectIntl(ProjectCircleLabel);
 
 export default (inputProps: InputProps) => (
-  <GetProject id={inputProps.projectId}>
+  <GetProject projectId={inputProps.projectId}>
     {(project) => <ProjectLabelWithIntl {...inputProps} project={project} />}
   </GetProject>
 );
