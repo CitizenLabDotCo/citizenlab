@@ -34,9 +34,10 @@ export const StyledSection = styled(Section)`
   margin-bottom: 60px;
 `;
 
-const RadioButtonsWrapper = styled.div`
+const RadioButtonsWrapper = styled.fieldset`
   margin-top: 15px;
   margin-bottom: 30px;
+  border: none;
 `;
 
 const StyledRadio = styled(Radio)`
