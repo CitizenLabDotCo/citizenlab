@@ -150,7 +150,7 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   phases: ({ params, render }) => <GetPhases projectId={params.projectId} >{render}</GetPhases>,
-  project: ({ params, render }) => <GetProject id={params.projectId} >{render}</GetProject>,
+  project: ({ params, render }) => <GetProject projectId={params.projectId} >{render}</GetProject>,
   locale: <GetLocale />
 });
 

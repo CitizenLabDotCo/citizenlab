@@ -155,7 +155,7 @@ export class PollSection extends PureComponent<Props> {
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   pollQuestions: ({ projectId, phaseId, type, render }) => <GetPollQuestions participationContextId={type === 'project' ? projectId : phaseId as string} participationContextType={type}>{render}</GetPollQuestions>,
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 
