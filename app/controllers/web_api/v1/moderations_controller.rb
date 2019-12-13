@@ -31,18 +31,32 @@ class WebApi::V1::ModerationsController < ApplicationController
     # raise 404 if not found
     Idea.find params[:id] if !@moderation
 
-    @moderation.assign_attributes moderation_params
-    authorize @moderation
-    SideFxModerationService.new.before_update(@moderation, current_user)
-    if @moderation.save
-      SideFxModerationService.new.after_update(@moderation, current_user)
-      render json: WebApi::V1::ModerationSerializer.new(
-        @moderation, 
-        params: fastjson_params
-        ).serialized_json, status: :ok
-    else
-      render json: { errors: @moderation.errors.details }, status: :unprocessable_entity
+    status = params[:moderation][:moderation_status]
+    if status
+      ModerationStatus.where(moderatable_id: @moderation.id).each(&:destroy!)
+      ModerationStatus.create!(moderatable_id: @moderation.id, status: status)
     end
+
+    # Failed to get there
+    # @moderation.assign_attributes moderation_params
+
+    # authorize @moderation
+    # SideFxModerationService.new.before_update(@moderation, current_user)
+    # if @moderation.save
+    #   SideFxModerationService.new.after_update(@moderation, current_user)
+    #   render json: WebApi::V1::ModerationSerializer.new(
+    #     @moderation, 
+    #     params: fastjson_params
+    #     ).serialized_json, status: :ok
+    # else
+    #   render json: { errors: @moderation.errors.details }, status: :unprocessable_entity
+    # end
+
+    SideFxModerationService.new.after_update(@moderation.reload, current_user)
+    render json: WebApi::V1::ModerationSerializer.new(
+      @moderation.reload, 
+      params: fastjson_params
+      ).serialized_json, status: :ok
   end
 
   def moderation_params
