@@ -1793,7 +1793,7 @@
   "app.containers.footer.yes": "Si",
   "app.containers.landing.browseInitiative": "Busca iniciativas",
   "app.containers.landing.cityProjects": "Proyectos",
-  "app.containers.landing.completeProfile": "Bienvenido a la Consulta Ciudadana",
+  "app.containers.landing.completeProfile": "Completa tu perfil",
   "app.containers.landing.completeYourProfile": "Bienvenido, {firstName}. Completa tu perfil.",
   "app.containers.landing.createAccount": "Inscríbete",
   "app.containers.landing.defaultSignedInMessage": "{firstName}, impulsa un cambio hoy!",
