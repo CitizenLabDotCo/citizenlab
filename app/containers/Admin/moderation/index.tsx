@@ -1,10 +1,9 @@
 import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import moment from 'moment';
-import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
 import Table from 'components/UI/Table';
+import ModerationRow from './ModerationRow';
 import Pagination from 'components/admin/Pagination/Pagination';
 import { PageTitle } from 'components/admin/Section';
 
@@ -15,7 +14,6 @@ import useTenantLocales from 'hooks/useTenantLocales';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 
 // styling
 import styled from 'styled-components';
@@ -75,21 +73,6 @@ const StyledTable = styled(Table)`
   }
 `;
 
-const Content = styled.div`
-  &:not(.last) {
-    margin-bottom: 25px;
-  }
-`;
-
-const ContentLocale = styled.div`
-  font-size: ${fontSizes.small}px;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 5px;
-`;
-
-const ContentBody = styled.div``;
-
 const StyledPagination = styled(Pagination)`
   margin-top: 40px;
 `;
@@ -124,6 +107,7 @@ const Moderation = memo<Props>(({ className }) => {
         <StyledTable>
           <thead>
             <tr>
+              <th></th>
               <th className="date">
                 <FormattedMessage {...messages.date} />
               </th>
@@ -139,38 +123,7 @@ const Moderation = memo<Props>(({ className }) => {
             </tr>
           </thead>
           <tbody>
-            {list.map((listItem, index) => {
-              return (
-                <tr key={index}>
-                  <td className="date nowrap">
-                    {moment(listItem.attributes.created_at).format('LLL')}
-                  </td>
-                  <td className="type nowrap">
-                    {listItem.attributes.moderatable_type}
-                  </td>
-                  <td className="context">
-                    <a href={listItem.attributes.context_url} role="button" target="_blank">
-                      <T value={listItem.attributes.context_multiloc} />
-                    </a>
-                  </td>
-                  <td className="content">
-                    <>
-                      {Object.keys(omitBy(listItem.attributes.content_multiloc, (value) => isNil(value) || isEmpty(value))).map((locale, index) => {
-                        const content = listItem.attributes.content_multiloc[locale];
-                        const languageCount = Object.keys(omitBy(listItem.attributes.content_multiloc, (value) => isNil(value) || isEmpty(value))).length;
-
-                        return (
-                          <Content key={`${listItem.id}-${index}`} className={index + 1 === languageCount ? 'last' : ''}>
-                            {languageCount > 1 && <ContentLocale>{locale}</ContentLocale>}
-                            <ContentBody dangerouslySetInnerHTML={{ __html: content }} />
-                          </Content>
-                        );
-                      })}
-                    </>
-                  </td>
-                </tr>
-              );
-            })}
+            {list.map(listItem => <ModerationRow key={listItem.id} moderation={listItem} />)}
           </tbody>
         </StyledTable>
 

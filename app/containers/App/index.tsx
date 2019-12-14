@@ -125,7 +125,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       visible: true,
       userDeletedModalOpened: false,
       userActuallyDeleted: false,
-
       verificationModalOpened: false,
       verificationModalContext: null,
       verificationModalInitialStep: null,
