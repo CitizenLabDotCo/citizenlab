@@ -55,7 +55,8 @@ const ConsentManagerBuilderHandler = ({
       }
     });
     // anything that was added to the blacklist will be programmatically set to false later...
-    const newBlacklistEntries = blacklistedDestinations.filter(destinationId => !(preferences.tenantBlacklisted || []).includes(destinationId));
+    const newBlacklistEntries = blacklistedDestinations.filter(destinationId =>
+      !(preferences.tenantBlacklisted || []).includes(destinationId));
     // if there is no new destinations, the banner won't show so we save programmatically to apply
     // the blacklist on the preious user choice and overwrite blacklisted destinations to false
     if (newBlacklistEntries.length > 0 && filteredNewDestinations.length === 0) {
