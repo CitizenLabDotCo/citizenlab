@@ -60,6 +60,7 @@ const Footer = ({ validate, mode, handleCancelBack, handleCancelConfirm, handleC
           bgHoverColor={darken(0.1, colors.adminTextColor)}
           className="integration-save"
           disabled={!isValid}
+          id="e2e-preferences-save"
         >
           <FormattedMessage  {...messages.save} />
         </Button>

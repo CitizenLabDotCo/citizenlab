@@ -79,7 +79,7 @@ interface Props {
 }
 
 const CategoryCard = ({ category, destinations, checked, handleChange }: Props) => (
-  <Container>
+  <Container className="e2e-category">
     <TextContainer>
       <FormattedMessage
         id={`${category}-label`}
