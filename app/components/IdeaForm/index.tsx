@@ -56,7 +56,7 @@ const Form = styled.form`
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     padding-left: 25px;
     padding-right: 25px;
   `}
