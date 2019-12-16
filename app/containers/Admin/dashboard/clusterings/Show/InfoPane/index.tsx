@@ -66,6 +66,10 @@ const Tab = styled.li`
   &:not(.active):hover {
     border-color: transparent;
   }
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;
 
 const Content = styled.div`
