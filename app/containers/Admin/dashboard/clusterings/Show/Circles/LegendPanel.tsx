@@ -34,8 +34,10 @@ const Tab = styled.li`
   border-bottom: solid 3px transparent;
   margin-right: 40px;
 
-  &:not(:last-child) {
+  &:first-letter {
+    text-transform: uppercase;
   }
+
 
   &.active {
     color: ${colors.adminTextColor};
