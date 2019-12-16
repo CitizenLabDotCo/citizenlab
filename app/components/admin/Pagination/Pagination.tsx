@@ -1,14 +1,12 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 const Container = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 `;
 
 const ContainerInner = styled.div`
@@ -17,12 +15,13 @@ const ContainerInner = styled.div`
 `;
 
 const ChevronIcon = styled(Icon) `
-  height: 12px;
+  height: 14px;
   fill: ${colors.adminTextColor};
 `;
 
 const NavigateButton = styled.button`
-  height: 34px;
+  width: 38px;
+  height: 38px;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
@@ -30,6 +29,7 @@ const NavigateButton = styled.button`
   padding: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
 
   &.disabled {
     color: #bbb;
@@ -53,26 +53,24 @@ const NavigateButton = styled.button`
   }
 `;
 
-const Next = styled(NavigateButton)`
-  margin-left: 30px;
-
-  ${ChevronIcon} {
-    margin-left: 6px;
-  }
-`;
+const Next = styled(NavigateButton)``;
 
 const Back = styled(NavigateButton)`
-  margin-right: 30px;
-
   ${ChevronIcon} {
-    margin-right: 6px;
     transform: rotate(180deg);
   }
 `;
 
+const Pages = styled.div`
+  margin-left: 12px;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+`;
+
 const Item = styled.button`
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
@@ -89,24 +87,16 @@ const Item = styled.button`
     cursor: pointer;
 
     &.active {
-      background: ${colors.adminTextColor};
       color: #fff;
-
-      &:focus,
-      &:focus:hover {
-        background: ${colors.adminTextColor};
-        color: #fff;
-      }
-
-      &:hover {
-        background: ${colors.adminTextColor};
-        color: #fff;
-      }
+      background: ${colors.adminTextColor};
+      border: solid 1px ${colors.adminTextColor};
     }
 
-    &:hover,
-    &:focus {
-      background: ${rgba(colors.adminTextColor, .2)};
+    &:not(.active) {
+      &:hover,
+      &:focus {
+        background: ${rgba(colors.adminTextColor, .2)};
+      }
     }
   }
 `;
@@ -180,20 +170,21 @@ class Pagination extends PureComponent<Props> {
               className={currentPage === 1 ? 'disabled' : ''}
             >
               <ChevronIcon name="chevron-right" />
-              <FormattedMessage {...messages.back} />
             </Back>
 
-            {pageItems.map((item) => (
-              <Item
-                key={item}
-                className={`${item === currentPage ? 'active' : ''} ${item < 0 ? 'disabled' : ''}`}
-                onMouseDown={this.removeFocus}
-                onClick={this.handleItemClick(item)}
-                disabled={item < 0}
-              >
-                <span>{item < 0 ? '...' : item.toString()}</span>
-              </Item>
-            ))}
+            <Pages>
+              {pageItems.map((item) => (
+                <Item
+                  key={item}
+                  className={`${item === currentPage ? 'active' : ''} ${item < 0 ? 'disabled' : ''}`}
+                  onMouseDown={this.removeFocus}
+                  onClick={this.handleItemClick(item)}
+                  disabled={item < 0}
+                >
+                  <span>{item < 0 ? '...' : item.toString()}</span>
+                </Item>
+              ))}
+            </Pages>
 
             <Next
               onMouseDown={this.removeFocus}
@@ -201,7 +192,6 @@ class Pagination extends PureComponent<Props> {
               disabled={currentPage === totalPages}
               className={currentPage === totalPages ? 'disabled' : ''}
             >
-              <FormattedMessage {...messages.next} />
               <ChevronIcon name="chevron-right" />
             </Next>
           </ContainerInner>

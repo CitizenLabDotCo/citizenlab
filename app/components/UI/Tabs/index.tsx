@@ -13,22 +13,41 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const TabIcon = styled(Icon)`
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  fill: ${darken(0.1, colors.clIconSecondary)};
+  margin-left: 10px;
+`;
+
 const Tab = styled.button`
+  color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
+  font-weight: 400;
   display: flex;
   white-space: nowrap;
   align-items: center;
   margin: 0;
   margin-left: -1px;
-  padding: 1rem 1.7rem;
-  background: ${colors.adminContentBackground};
-  border: solid 1px ${colors.separation};
+  padding: 1rem 1.6rem;
+  background: #fff;
+  border: solid 1px ${colors.adminTextColor};
   cursor: pointer;
-  transition: all 100ms ease-out;
+  transition: all 80ms ease-out;
+
+  ${TabIcon} {
+    fill: ${colors.adminTextColor};
+  }
 
   &.active {
-    background: ${rgba(colors.adminTextColor, 0.15)};
+    color: #fff;
     z-index: 1;
+    background: ${colors.adminTextColor};
+
+    ${TabIcon} {
+      fill: #fff;
+    }
   }
 
   &:first-child {
@@ -43,7 +62,7 @@ const Tab = styled.button`
 
   &:not(.active):hover,
   &:not(.active):focus {
-    background: ${rgba(colors.adminTextColor, 0.05)};
+    background: ${colors.lightGreyishBlue};
     z-index: 1;
   }
 
@@ -58,52 +77,45 @@ const TabText = styled.span`
   white-space: nowrap;
 `;
 
-const TabIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
-  fill: ${darken(0.1, colors.clIconSecondary)};
-  margin-left: 10px;
-`;
-
 export interface ITabItem {
-  name: string;
+  value: string;
+  label: string | JSX.Element;
   icon?: IconNames;
 }
 
 interface Props {
   items: ITabItem[];
-  selectedItemName: string;
+  selectedValue: string;
   className?: string;
   onClick: (itemName: string) => void;
 }
 
-const Tabs = memo<Props>(({ items, selectedItemName, onClick, className }) => {
+const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
 
   const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
   }, []);
 
   const handleTabOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
-    const itemName = event.currentTarget.dataset.itemname as string;
-    onClick(itemName);
+    const newSelectedValue = event.currentTarget.dataset.itemvalue as string;
+    onClick(newSelectedValue);
   }, []);
 
   return (
     <Container className={className} role="tablist">
       {items.map((item: ITabItem, index) =>
         <Tab
-          id={item.name}
+          id={item.value}
           role="tab"
-          aria-selected={selectedItemName === item.name}
-          aria-controls={item.name}
-          key={item.name}
-          className={`item${index + 1} ${selectedItemName === item.name ? 'active' : ''}`}
+          aria-selected={selectedValue === item.value}
+          aria-controls={item.value}
+          key={item.value}
+          className={`item${index + 1} ${selectedValue === item.value ? 'active' : ''}`}
           onMouseDown={removeFocus}
           onClick={handleTabOnClick}
-          data-itemname={item.name}
+          data-itemvalue={item.value}
         >
-          <TabText>{item.name}</TabText>
+          <TabText>{item.label}</TabText>
           {item.icon && <TabIcon name={item.icon} />}
         </Tab>
       )}

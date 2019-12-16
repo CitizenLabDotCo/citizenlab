@@ -37,4 +37,20 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.date',
     defaultMessage: 'Date',
   },
+  rowsPerPage: {
+    id: 'app.containers.Admin.Moderation.rowsPerPage',
+    defaultMessage: 'Rows per page',
+  },
+  show: {
+    id: 'app.containers.Admin.Moderation.show',
+    defaultMessage: 'Show',
+  },
+  read: {
+    id: 'app.containers.Admin.Moderation.read',
+    defaultMessage: 'Viewed',
+  },
+  unread: {
+    id: 'app.containers.Admin.Moderation.unread',
+    defaultMessage: 'Not viewed',
+  },
 });

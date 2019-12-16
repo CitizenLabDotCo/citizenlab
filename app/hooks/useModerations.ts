@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap, map, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { moderationsStream, IModeration, TModerationStatuses } from 'services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
@@ -13,23 +13,42 @@ interface InputProps {
 }
 
 export default function useModerations({ pageNumber = 1, pageSize = 12, moderationStatus = 'unread' } : InputProps = {}) {
-  const inputProps$ = new BehaviorSubject({ pageNumber, pageSize, moderationStatus });
-  const pageChanges$ = new BehaviorSubject(pageNumber || 1);
+  const pageNumber$ = new BehaviorSubject(pageNumber);
+  const pageSize$ = new BehaviorSubject(pageSize);
+  const moderationStatus$ = new BehaviorSubject(moderationStatus);
 
   const [list, setList] = useState<IModeration[] | undefined | null | Error>(undefined);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [lastPage, setLastPage] = useState<number>(1);
+  const [internalPageSize, setInternalPageSize] = useState(pageSize);
+  const [internalModerationStatus, setInternalModerationStatus] = useState(moderationStatus);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
 
-  const onPageChange = useCallback((pageNumber: number) => {
-    pageChanges$.next(pageNumber);
+  const onPageNumberChange = useCallback((pageNumber: number) => {
+    pageNumber$.next(pageNumber);
+  }, []);
+
+  const onPageSizeChange = useCallback((pageSize: number) => {
+    pageSize$.next(pageSize);
+    pageNumber$.next(1);
+  }, []);
+
+  const onModerationStatusChange = useCallback((moderationStatus: TModerationStatuses) => {
+    moderationStatus$.next(moderationStatus);
   }, []);
 
   useEffect(() => {
+    pageNumber$.next(pageNumber);
+    pageSize$.next(pageSize);
+    moderationStatus$.next(moderationStatus);
+  }, [pageNumber, pageSize, moderationStatus]);
+
+  useEffect(() => {
     const subscription = combineLatest(
-      inputProps$,
-      pageChanges$
+      pageNumber$.pipe(distinctUntilChanged()),
+      pageSize$.pipe(distinctUntilChanged()),
+      moderationStatus$.pipe(distinctUntilChanged())
     ).pipe(
-      map(([inputProps, pageNumber]) => ({ ...inputProps, pageNumber })),
+      map(([pageNumber, pageSize, moderationStatus]) => ({ pageNumber, pageSize, moderationStatus })),
       distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
       switchMap(({ pageNumber, pageSize, moderationStatus }) => {
         return moderationsStream({
@@ -38,15 +57,20 @@ export default function useModerations({ pageNumber = 1, pageSize = 12, moderati
             'page[size]': pageSize,
             moderation_status: moderationStatus
           }
-        }).observable;
+        }).observable.pipe(
+          map(response => ({ response, moderationStatus, pageSize }))
+        );
       })
-    ).subscribe((response) => {
+    )
+    .subscribe(({ response, moderationStatus, pageSize }) => {
       const list = !isNilOrError(response) ? response.data : response;
       const currentPage = getPageNumberFromUrl(response?.links?.self) || 1;
       const lastPage = getPageNumberFromUrl(response?.links?.last) || 1;
       setList(list);
       setCurrentPage(currentPage);
       setLastPage(lastPage);
+      setInternalPageSize(pageSize)
+      setInternalModerationStatus(moderationStatus);
     });
 
     return () => subscription.unsubscribe();
@@ -56,6 +80,10 @@ export default function useModerations({ pageNumber = 1, pageSize = 12, moderati
     list,
     currentPage,
     lastPage,
-    onPageChange
+    onPageNumberChange,
+    onPageSizeChange,
+    onModerationStatusChange,
+    pageSize: internalPageSize,
+    moderationStatus: internalModerationStatus
   };
 }

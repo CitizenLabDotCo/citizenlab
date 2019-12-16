@@ -69,6 +69,11 @@ const CheckmarkIcon = styled(Icon)`
   width: 15px;
 `;
 
+const IndeterminateIcon = styled(Icon)`
+  fill: #fff;
+  width: 12px;
+`;
+
 const Label = styled.label`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
@@ -93,6 +98,7 @@ type LabelProps = {
 
 type Props = DefaultProps & LabelProps & {
   checked: boolean;
+  indeterminate?: boolean;
   onChange: (event: React.MouseEvent | React.KeyboardEvent) => void;
   className?: string;
   notFocusable?: boolean;
@@ -159,7 +165,7 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   render() {
-    const { label, size, checked, className, notFocusable, id, disabled } = this.props;
+    const { label, size, checked, indeterminate, className, notFocusable, id, disabled } = this.props;
     const { inputFocused } = this.state;
 
     return (
@@ -172,7 +178,7 @@ export default class Checkbox extends PureComponent<Props, State> {
       >
         <InputWrapper
           className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
-          checked={checked}
+          checked={checked || indeterminate}
           size={size as string}
         >
           <Input
@@ -186,6 +192,7 @@ export default class Checkbox extends PureComponent<Props, State> {
             disabled={disabled}
           />
           {checked && <CheckmarkIcon ariaHidden name="checkmark" />}
+          {indeterminate && <IndeterminateIcon ariaHidden name="indeterminate" />}
         </InputWrapper>
 
         {label &&

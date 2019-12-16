@@ -18,6 +18,10 @@ import styled from 'styled-components';
 import { IModeration } from 'services/moderations';
 import { Multiloc } from 'typings';
 
+const StyledCheckbox = styled(Checkbox)`
+  margin-top: -4px;
+`;
+
 const ContextType = styled.span`
   margin-right: 6px;
 `;
@@ -40,15 +44,15 @@ const ModerationRow = memo<Props>(({ moderation, className }) => {
   return (
     <tr className={className}>
       <td>
-        <Checkbox checked={false} onChange={handleOnChecked(moderation.id)} />
+        <StyledCheckbox checked={false} onChange={handleOnChecked(moderation.id)} />
       </td>
-      <td className="date nowrap">
-        {moment(moderation.attributes.created_at).format('LLL')}
+      <td className="date">
+        {moment(moderation.attributes.created_at).format('L')} {moment(moderation.attributes.created_at).format('LT')}
       </td>
-      <td className="type nowrap">
+      <td className="type">
         <FormattedMessage {...messages[contentType.toLowerCase()]} />
       </td>
-      <td className="context">
+      <td className="belongsTo">
         {moderation.attributes.context_multiloc && !isEmpty(context) &&
           <>
             {contextType &&

@@ -5,9 +5,8 @@ import { isEmpty, get } from 'lodash-es';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import Icon from 'components/UI/Icon';
-import { darken, lighten } from 'polished';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
 const Container = styled.div`
   width: 100%;
@@ -16,14 +15,16 @@ const Container = styled.div`
 `;
 
 const StyledButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.small}px;
   display: flex;
   align-items: center;
   text-transform: uppercase;
-  padding: 6px 8px;
+  font-weight: 500;
+  padding: 8px 8px;
   margin-right: 6px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: transparent;
+  background: ${colors.lightGreyishBlue};
   cursor: pointer;
   transition: all 80ms ease-out;
 
@@ -32,22 +33,25 @@ const StyledButton = styled.button`
   }
 
   &:not(.isSelected):hover {
-    color: #000;
-    background: ${lighten(0.01, colors.lightGreyishBlue)};
+    color: ${colors.adminTextColor};
+    background: ${rgba(colors.adminTextColor, .2)};
   }
 
   &.isSelected {
-    color: #000;
-    background: ${darken(0.05, colors.lightGreyishBlue)};
+    color: #fff;
+    background: ${colors.adminTextColor};
   }
 `;
 
-const DotIcon = styled(Icon)`
-  fill: ${colors.clRed};
+const Dot = styled.div`
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: ${colors.clRed};
   margin-right: 5px;
 
   &.isComplete {
-    fill: ${colors.clGreen};
+    background: ${colors.clGreen};
   }
 `;
 
@@ -96,7 +100,7 @@ class FormLocaleSwitcher extends PureComponent<Props> {
               type="button"
               className={`e2e-locale-switch ${locale} ${locale === selectedLocale ? 'isSelected' : ''} ${index + 1 === locales.length ? 'last' : ''}`}
             >
-              {values && <DotIcon name="dot" className={this.validatePerLocale(locale) ? 'isComplete' : 'notComplete'} />}
+              {values && <Dot className={this.validatePerLocale(locale) ? 'isComplete' : 'notComplete'} />}
               {locale}
             </StyledButton>
           ))}

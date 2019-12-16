@@ -14,6 +14,7 @@ const Arrow = styled.div`
   position: absolute;
   top: 20px;
   right: 11px;
+  pointer-events: none;
 `;
 
 const CustomSelect = styled.select`
@@ -139,7 +140,7 @@ export default class Select extends PureComponent<Props, State> {
             </option>
           ))}
         </CustomSelect>
-        <Arrow className={disabled ? 'disabled' : 'enabled'} />
+        <Arrow className={`arrow ${disabled ? 'disabled' : 'enabled'}`} />
       </Container>
     );
   }
