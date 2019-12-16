@@ -10,6 +10,7 @@ const StyledTable = styled.table`
   border: none;
   border-spacing: 0;
   border-collapse: collapse;
+  table-layout: auto;
 
   th,
   td {
