@@ -32,9 +32,7 @@ const StatusBadge = styled.div<{color: string}>`
   align-items: center;
 `;
 
-const BadgeLabel = styled.span`
-  display: block;
-
+const BadgeLabel = styled.div`
   &:first-letter {
     text-transform: uppercase;
   }

@@ -23,9 +23,7 @@ const ColorIndicator = styled.div`
   margin-right: 0.5rem;
 `;
 
-const StatusText = styled.span`
-  display: block;
-
+const StatusText = styled.div`
   &:first-letter {
     text-transform: capitalize;
   }
