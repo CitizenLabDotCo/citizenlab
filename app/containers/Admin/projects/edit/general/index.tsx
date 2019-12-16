@@ -69,7 +69,6 @@ const ProjectType = styled.div`
   font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
-  text-transform: capitalize;
 `;
 
 const StyledSectionField = styled(SectionField)`

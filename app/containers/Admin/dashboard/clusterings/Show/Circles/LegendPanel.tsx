@@ -27,7 +27,6 @@ const Tab = styled.li`
   color: ${colors.label};
   font-size: ${fontSizes.base};
   font-weight: 400;
-  text-transform: capitalize;
   list-style: none;
   cursor: pointer;
   display: flex;
