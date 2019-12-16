@@ -25,7 +25,7 @@ const ColorIndicator = styled.div`
 
 const StatusText = styled.div`
   &:first-letter {
-    text-transform: capitalize;
+    text-transform: uppercase;
   }
 `;
 
