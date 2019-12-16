@@ -33,6 +33,8 @@ const StatusBadge = styled.div<{color: string}>`
 `;
 
 const BadgeLabel = styled.span`
+  display: block;
+
   &:first-letter {
     text-transform: uppercase;
   }
