@@ -5,4 +5,5 @@ class ModerationStatus < ApplicationRecord
 
   validates :moderatable, presence: true
   validates :status, inclusion: { in: MODERATION_STATUSES }
+
 end
