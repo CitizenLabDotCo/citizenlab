@@ -41,6 +41,8 @@ const FirstRow = styled.div`
 `;
 
 const StyledTimeline = styled(Timeline)`
+  background: #fff;
+
   ${media.smallerThanMaxTablet`
     margin-bottom: 40px;
   `}
@@ -190,7 +192,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  project: ({ params, render }) => <GetProject slug={params.slug}>{render}</GetProject>
+  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (

@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'app.components.VerificationModal.notEntitledFormError',
     defaultMessage: 'Not entitled.',
   },
+  invalidCardIdError: {
+    id: 'app.components.VerificationModal.invalidCardIdError',
+    defaultMessage: 'This id is not valid.',
+  },
   somethingWentWrongError: {
     id: 'app.components.VerificationModal.somethingWentWrongError',
     defaultMessage: 'We can\'t verify you because something went wrong',

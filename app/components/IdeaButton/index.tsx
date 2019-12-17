@@ -171,7 +171,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             theme="light"
             hideOnClick={false}
           >
-            <ButtonWrapper className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}>
+            <ButtonWrapper tabIndex={isPostingDisabled ? 0 : -1} className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}>
               <Button {...this.props} aria-describedby="tooltip-content" linkTo={linkTo} disabled={isPostingDisabled} ariaDisabled={false}>
                 <FormattedMessage {...messages.startAnIdea} />
               </Button>
@@ -189,7 +189,7 @@ const IdeaButtonWithHOCs = injectIntl<Props>(injectTracks<Props & InjectedIntlPr
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId, render, }) => <GetProject id={projectId}>{render}</GetProject>,
+  project: ({ projectId, render, }) => <GetProject projectId={projectId}>{render}</GetProject>,
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 

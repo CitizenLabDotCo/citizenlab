@@ -48,7 +48,6 @@ const Tab = styled.li`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
-  text-transform: capitalize;
   list-style: none;
   cursor: pointer;
   display: flex;
@@ -66,6 +65,10 @@ const Tab = styled.li`
 
   &:not(.active):hover {
     border-color: transparent;
+  }
+
+  &:first-letter {
+    text-transform: uppercase;
   }
 `;
 

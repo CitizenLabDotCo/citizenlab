@@ -1,5 +1,6 @@
 import React, { memo, useState, useCallback, useEffect, useMemo, ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
 import { isEmpty } from 'lodash-es';
+import { LiveMessage } from 'react-aria-live';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -200,6 +201,14 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
           <CloseIcon title={intl.formatMessage(messages.removeSearchTerm)} name="close" />
         </SearchFieldButton>
       }
+      <LiveMessage
+        message={searchTerm ?
+          intl.formatMessage(messages.a11y_searchTerm, { searchTerm })
+          :
+          intl.formatMessage(messages.a11y_searchTermBlank)
+        }
+        aria-live="polite"
+      />
     </Container>
   );
 });

@@ -115,6 +115,7 @@ export interface IParticipationContextConfig {
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
+  poll_anonymous?: boolean;
 }
 
 interface DataProps {
@@ -160,7 +161,8 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       survey_embed_url: null,
       loaded: false,
       noVotingLimit: null,
-      noBudgetingAmount: null
+      noBudgetingAmount: null,
+      poll_anonymous: false,
     };
     this.subscriptions = [];
   }
@@ -190,6 +192,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             max_budget,
             survey_embed_url,
             survey_service,
+            poll_anonymous,
           } = data.data.attributes;
 
           this.setState({
@@ -204,6 +207,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             max_budget,
             survey_embed_url,
             survey_service,
+            poll_anonymous,
             loaded: true
           });
         } else {
@@ -233,7 +237,8 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       presentation_mode,
       max_budget,
       survey_embed_url,
-      survey_service
+      survey_service,
+      poll_anonymous,
     } = this.state;
     let output: IParticipationContextConfig = {} as any;
 
@@ -260,7 +265,8 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       };
     } else if (participation_method === 'poll') {
       output = {
-        participation_method
+        participation_method,
+        poll_anonymous
       };
     } else if (participation_method === 'budgeting') {
       output = omitBy({
@@ -351,6 +357,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
     this.setState({ max_budget: parseInt(max_budget, 10), noBudgetingAmount: null });
   }
 
+  togglePollAnonymous = () => {
+    this.setState(state => ({ poll_anonymous: !state.poll_anonymous }));
+  }
+
   validate() {
     let isValidated = true;
     let noVotingLimit: JSX.Element | null = null;
@@ -395,6 +405,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       loaded,
       noVotingLimit,
       noBudgetingAmount,
+      poll_anonymous,
     } = this.state;
     const tenantCurrency = (!isNilOrError(tenant) ? tenant.attributes.settings.core.currency : '');
 
@@ -648,6 +659,21 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
                   </SectionField>
                 }
+              </>
+            }
+
+            {participation_method === 'poll' &&
+              <>
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.anonymousPolling} />
+                    <IconTooltip content={<FormattedMessage {...messages.anonymousPollingTooltip} />} />
+                  </Label>
+
+                  <Toggle value={poll_anonymous as boolean} onChange={this.togglePollAnonymous} />
+
+                  <Error apiErrors={apiErrors && apiErrors.poll_anonymous} />
+                </SectionField>
               </>
             }
 

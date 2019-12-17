@@ -27,6 +27,7 @@ export interface IPhaseData {
     survey_service?: SurveyServices;
     survey_embed_url?: string;
     location_allowed?: boolean;
+    poll_anonymous?: boolean;
   };
   relationships: {
     permissions: {
@@ -65,6 +66,7 @@ export interface IUpdatedPhaseProperties {
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
+  poll_anonymous?: boolean;
 }
 
 export function phasesStream(projectId: string, streamParams: IStreamParams | null = null) {

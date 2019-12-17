@@ -24,7 +24,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 export default withRouter((props: WithRouterProps) => (
-  <GetProject slug={props.params.slug}>
+  <GetProject projectSlug={props.params.slug}>
     {(project) => {
       if (
         !isNilOrError(project) &&

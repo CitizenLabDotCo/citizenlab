@@ -6,7 +6,7 @@ import { includes, get, isArray } from 'lodash-es';
 // Components
 import Table from 'components/UI/Table';
 import SortableTableHeaderCell from 'components/UI/Table/SortableTableHeaderCell';
-import CustomPagination from 'components/admin/Pagination/CustomPagination';
+import Pagination from 'components/admin/Pagination/Pagination';
 import UserTableRow from './UserTableRow';
 
 // Services
@@ -34,6 +34,7 @@ import messages from './messages';
 
 // Styles
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   flex: 1;
@@ -45,12 +46,30 @@ const Container = styled.div`
 const StyledTable = styled(Table)`
   margin-top: 20px;
 
+  /* thead tr th,
+  tbody tr {
+    border-bottom: none;
+  } */
+
+  tbody tr td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  tbody tr.selected {
+    background: ${colors.background};
+  }
+
   th,
   td {
     padding-left: 5px;
     padding-right: 5px;
     overflow-wrap: break-word;
   }
+`;
+
+const StyledPagination = styled(Pagination)`
+  margin-top: 12px;
 `;
 
 interface InputProps {
@@ -135,7 +154,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
               <tr>
                 <th />
                 <th />
-                <th className="sortable">
+                <th>
                   <SortableTableHeaderCell
                     value={<FormattedMessage {...messages.name} />}
                     onClick={this.handleSortingOnChange('last_name')}
@@ -182,7 +201,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
             </tbody>
           </StyledTable>
 
-          <CustomPagination
+          <StyledPagination
             currentPage={currentPage || 1}
             totalPages={lastPage || 1}
             loadPage={this.handlePaginationClick}

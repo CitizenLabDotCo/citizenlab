@@ -202,7 +202,7 @@ class ProjectsShowPage extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
+  project: ({ projectSlug, render }) => <GetProject projectSlug={projectSlug}>{render}</GetProject>,
   events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 

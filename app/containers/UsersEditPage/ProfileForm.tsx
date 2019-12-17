@@ -285,7 +285,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel thin labelMessage={messages.bio} />
+            <FormLabel thin labelMessage={messages.bio} id="label-bio"/>
             <QuillEditor
               id="bio_multiloc"
               noImages
@@ -295,6 +295,7 @@ class ProfileForm extends PureComponent<Props, State> {
               placeholder={formatMessage({ ...messages.bio_placeholder })}
               onChange={createChangeHandler('bio_multiloc')}
               onBlur={createBlurHandler('bio_multiloc')}
+              labelId="label-bio"
             />
             <Error apiErrors={errors.bio_multiloc} />
           </SectionField>
