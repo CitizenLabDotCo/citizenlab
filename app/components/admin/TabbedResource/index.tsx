@@ -108,7 +108,7 @@ export type TabProps = {
 
 type Props = {
   resource: {
-    title: string | Multiloc,
+    title: string,
     publicLink?: string,
     subtitle?: string;
   },
@@ -147,25 +147,25 @@ function urlMatch(tabUrl: string) {
 class TabbedResource extends React.PureComponent<Props & WithRouterProps, State> {
 
   render() {
-    const { children, resource, messages, tabs, location } = this.props;
+    const { children, resource: { title, subtitle, publicLink }, messages, tabs, location } = this.props;
 
     return (
       <>
         <ResourceHeader className="e2e-resource-header">
           <div>
-            <Title>{showLabel(resource.title)}</Title>
-            {resource.subtitle &&
+            <Title>{title}}</Title>
+            {subtitle &&
               <SectionSubtitle>
-                {resource.subtitle}
+                {subtitle}
               </SectionSubtitle>
             }
           </div>
 
-          {resource.publicLink && messages &&
+          {publicLink && messages &&
             <Button
               style="cl-blue"
               icon="eye"
-              linkTo={resource.publicLink}
+              linkTo={publicLink}
             >
               <FormattedMessage {...messages.viewPublicResource} />
             </Button>
