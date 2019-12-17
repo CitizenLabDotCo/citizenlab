@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource "Moderations" do
- 
   explanation "Moderations are pieces of user-generated content that need to be moderated"
 
   before do
@@ -11,6 +10,9 @@ resource "Moderations" do
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
+  end
+ 
+  before do
     @time = Time.now
     @m3 = create(:idea, 
       title_multiloc: {'en' => 'More bicycle repairmen'}, 
@@ -79,5 +81,41 @@ resource "Moderations" do
         expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status)}).to eq ['read', 'read']
       end
     end
+  end
+
+  patch "web_api/v1/moderations/:moderatable_type/:moderatable_id" do
+    with_options scope: :moderation do
+      parameter :moderation_status, "Either #{ModerationStatus::MODERATION_STATUSES.join(", ")}", required: true
+    end
+   
+    let(:idea) { create(:idea) }
+    let(:moderatable_type) { 'Idea' }
+    let(:moderatable_id) { idea.id }
+
+    describe do
+
+      let (:moderation_status) { 'read' }
+
+      example_request "Mark a moderation as read" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data][:attributes][:moderation_status]).to eq 'read'
+      end
+    end
+
+    describe do
+      before do
+        create(:moderation_status, moderatable: idea, status: 'read')
+      end
+
+      let (:moderation_status) { 'unread' }
+
+      example_request "Mark a moderation as unread" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data][:attributes][:moderation_status]).to eq 'unread'
+      end
+    end
+
   end
 end

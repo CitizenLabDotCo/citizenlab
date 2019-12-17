@@ -27,34 +27,27 @@ class WebApi::V1::ModerationsController < ApplicationController
   end
 
   def update
-    [Idea,Initiative,Comment].each do |claz|
-      @moderation ||= claz.where(id: params[:id]).first
+    @moderation = Moderation.find_by(
+      moderatable_type: params[:moderatable_type],
+      id: params[:moderatable_id]
+    )
+    authorize @moderation
+
+
+    if moderation_params[:moderation_status]
+      @moderation_status = @moderation.moderation_status
+      if !@moderation_status
+        @moderation_status = ModerationStatus.create!(
+          moderatable: @moderation.source_record,
+          status: moderation_params[:moderation_status]
+        )
+        SideFxModerationStatusService.new.after_create(@moderation_status, current_user)
+      else
+        @moderation_status.update!(status: moderation_params[:moderation_status])
+        SideFxModerationStatusService.new.after_update(@moderation_status, current_user)
+      end
     end
-    # raise 404 if not found
-    Idea.find params[:id] if !@moderation
 
-    status = params[:moderation][:moderation_status]
-    if status
-      ModerationStatus.where(moderatable_id: @moderation.id).each(&:destroy!)
-      ModerationStatus.create!(moderatable_id: @moderation.id, status: status)
-    end
-
-    # Failed to get there
-    # @moderation.assign_attributes moderation_params
-
-    # authorize @moderation
-    # SideFxModerationService.new.before_update(@moderation, current_user)
-    # if @moderation.save
-    #   SideFxModerationService.new.after_update(@moderation, current_user)
-    #   render json: WebApi::V1::ModerationSerializer.new(
-    #     @moderation, 
-    #     params: fastjson_params
-    #     ).serialized_json, status: :ok
-    # else
-    #   render json: { errors: @moderation.errors.details }, status: :unprocessable_entity
-    # end
-
-    SideFxModerationService.new.after_update(@moderation.reload, current_user)
     render json: WebApi::V1::ModerationSerializer.new(
       @moderation.reload, 
       params: fastjson_params
