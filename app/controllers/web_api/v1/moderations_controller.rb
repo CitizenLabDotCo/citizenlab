@@ -1,7 +1,6 @@
 class WebApi::V1::ModerationsController < ApplicationController
 
   def index
-    ids = Idea.published.ids + Initiative.published.ids + Comment.published.ids
     @moderations = policy_scope(Moderation)
     @moderations = @moderations.where(id: Idea.published)
       .or(@moderations.where(id: Initiative.published))
@@ -9,13 +8,16 @@ class WebApi::V1::ModerationsController < ApplicationController
       .order(created_at: :desc)
     
     if params[:moderation_status].present?
-      # Doesn't work
-      # @moderations = @moderations.joins(:moderation_status).where(moderation_statuses: {status: params[:moderation_status]})
-      filtered_ids = ModerationStatus.where(status: params[:moderation_status]).pluck(:moderatable_id)
-      if params[:moderation_status] == 'unread'
-        filtered_ids += (Moderation.ids - ModerationStatus.pluck(:moderatable_id))
+      @moderations = @moderations.joins("LEFT JOIN moderation_statuses \
+        ON moderation_statuses.moderatable_id = moderations.id AND \
+           moderation_statuses.moderatable_type = moderations.moderatable_type"
+      )
+      @moderations = case params[:moderation_status]
+      when 'read'
+        @moderations.where(moderation_statuses: {status: 'read'})
+      when 'unread'
+        @moderations.where(moderation_statuses: {status: ['unread', nil]})
       end
-      @moderations = @moderations.where(id: filtered_ids)
     end
 
     @moderations = @moderations
