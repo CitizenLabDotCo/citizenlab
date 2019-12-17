@@ -13,7 +13,6 @@ import messages from '../../messages';
 
 const ItemWrapper = styled.div`
   display: flex;
-  text-transform: capitalize;
 `;
 
 const ColorIndicator = styled.div`
@@ -22,6 +21,12 @@ const ColorIndicator = styled.div`
   background-color: ${props => props.color};
   border-radius: ${props => props.theme.borderRadius};
   margin-right: 0.5rem;
+`;
+
+const StatusText = styled.div`
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;
 
 const StyledText = styled.span`
@@ -50,7 +55,9 @@ class FilterSidebarStatusesItem extends React.PureComponent<Props> {
           <ItemWrapper>
             <ColorIndicator color={status.attributes.color} />
             <div>
-              <T value={status.attributes.title_multiloc} />
+              <StatusText>
+                <T value={status.attributes.title_multiloc} />
+              </StatusText>
               {get(status, 'attributes.transition_type') === 'automatic' &&
                 <StyledText>
                   &nbsp;
