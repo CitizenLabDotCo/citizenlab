@@ -45,6 +45,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.show',
     defaultMessage: 'Show',
   },
+  status: {
+    id: 'app.containers.Admin.Moderation.status',
+    defaultMessage: 'Status',
+  },
+  all: {
+    id: 'app.containers.Admin.Moderation.all',
+    defaultMessage: 'All',
+  },
   read: {
     id: 'app.containers.Admin.Moderation.read',
     defaultMessage: 'Viewed',
@@ -52,5 +60,17 @@ export default defineMessages({
   unread: {
     id: 'app.containers.Admin.Moderation.unread',
     defaultMessage: 'Not viewed',
+  },
+  empty: {
+    id: 'app.containers.Admin.Moderation.empty',
+    defaultMessage: 'Table is empty',
+  },
+  readMore: {
+    id: 'app.containers.Admin.Moderation.readMore',
+    defaultMessage: 'Read more',
+  },
+  collapse: {
+    id: 'app.containers.Admin.Moderation.collapse',
+    defaultMessage: 'Collapse',
   },
 });

@@ -21,7 +21,7 @@ const StyledButton = styled.button`
   align-items: center;
   text-transform: uppercase;
   font-weight: 500;
-  padding: 8px 8px;
+  padding: 7px 8px;
   margin-right: 6px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${colors.lightGreyishBlue};
@@ -34,7 +34,7 @@ const StyledButton = styled.button`
 
   &:not(.isSelected):hover {
     color: ${colors.adminTextColor};
-    background: ${rgba(colors.adminTextColor, .2)};
+    background: ${rgba(colors.adminTextColor, 0.2)};
   }
 
   &.isSelected {
@@ -44,6 +44,7 @@ const StyledButton = styled.button`
 `;
 
 const Dot = styled.div`
+  flex: 0 0 9px;
   width: 9px;
   height: 9px;
   border-radius: 50%;

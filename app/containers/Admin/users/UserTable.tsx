@@ -46,11 +46,6 @@ const Container = styled.div`
 const StyledTable = styled(Table)`
   margin-top: 20px;
 
-  /* thead tr th,
-  tbody tr {
-    border-bottom: none;
-  } */
-
   tbody tr td {
     padding-top: 10px;
     padding-bottom: 10px;
