@@ -338,7 +338,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
+  project: ({ participationContextType, participationContextId, render }) => <GetProject projectId={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
   phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
   basket: ({ project, phase, participationContextType, render }) => {
     let basketId: string | null = null;

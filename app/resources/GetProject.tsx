@@ -7,8 +7,8 @@ import shallowCompare from 'utils/shallowCompare';
 import { projectByIdStream, projectBySlugStream, IProjectData } from 'services/projects';
 
 interface InputProps {
-  id?: string | null;
-  slug?: string | null;
+  projectId?: string | null;
+  projectSlug?: string | null;
   resetOnChange?: boolean;
 }
 
@@ -40,19 +40,19 @@ export default class GetProject extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { id, slug, resetOnChange } = this.props;
+    const { projectId, projectSlug, resetOnChange } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ id, slug });
+    this.inputProps$ = new BehaviorSubject({ projectId, projectSlug });
 
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         tap(() => resetOnChange && this.setState({ project: undefined })),
-        switchMap(({ id, slug }) => {
-          if (isString(id)) {
-            return projectByIdStream(id).observable;
-          } else if (isString(slug)) {
-            return projectBySlugStream(slug).observable;
+        switchMap(({ projectId, projectSlug }) => {
+          if (isString(projectId)) {
+            return projectByIdStream(projectId).observable;
+          } else if (isString(projectSlug)) {
+            return projectBySlugStream(projectSlug).observable;
           }
 
           return of(null);
@@ -65,8 +65,8 @@ export default class GetProject extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { id, slug } = this.props;
-    this.inputProps$.next({ id, slug });
+    const { projectId, projectSlug } = this.props;
+    this.inputProps$.next({ projectId, projectSlug });
   }
 
   componentWillUnmount() {

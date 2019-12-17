@@ -95,7 +95,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   surveys_enabled: <GetFeatureFlag name="surveys" />,
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
   phases: ({ params, render }) => <GetPhases projectId={params.projectId} >{render}</GetPhases>,
-  project: ({ params, render }) => <GetProject id={params.projectId} >{render}</GetProject>,
+  project: ({ params, render }) => <GetProject projectId={params.projectId} >{render}</GetProject>,
 });
 
 export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (

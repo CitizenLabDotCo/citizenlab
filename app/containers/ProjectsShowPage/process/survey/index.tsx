@@ -148,7 +148,7 @@ class Survey extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 

@@ -90,7 +90,7 @@ interface DataProps {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
