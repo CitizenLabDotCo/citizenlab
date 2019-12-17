@@ -1,5 +1,5 @@
 import React from 'react';
-import { isString } from 'lodash-es';
+
 import { withRouter, WithRouterProps } from 'react-router';
 import Link from 'utils/cl-router/Link';
 
@@ -9,10 +9,9 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 
 // typings
-import { Message, Multiloc } from 'typings';
+import { Message } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -99,7 +98,7 @@ const ChildWrapper = styled.div`
 `;
 
 export type TabProps = {
-  label: string | Message,
+  label: string
   url: string,
   active?: boolean,
   feature?: string,
@@ -119,26 +118,6 @@ type Props = {
 };
 
 type State = {};
-
-function isMessage(entry: any): entry is Message {
-  return entry.id && entry.defaultMessage;
-}
-
-function isMultiloc(entry: any): entry is Multiloc {
-  return entry.en || entry.nl || entry.fr;
-}
-
-function showLabel(label: string | Multiloc | Message) {
-  if (isString(label)) {
-    return label;
-  } else if (isMessage(label)) {
-    return <FormattedMessage {...label} />;
-  } else if (isMultiloc(label)) {
-    return <T value={label} />;
-  } else {
-    return '';
-  }
-}
 
 function urlMatch(tabUrl: string) {
   return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
@@ -180,14 +159,14 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
                 return (
                   <FeatureFlag key={tab.url} name={tab.feature}>
                     <Tab key={tab.url} className={`${tab.className} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
-                      <Link to={tab.url}>{showLabel(tab.label)}</Link>
+                      <Link to={tab.url}>{tab.label}</Link>
                     </Tab>
                   </FeatureFlag>
                 );
               } else {
                 return (
                   <Tab key={tab.url} className={`${tab.className} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
-                    <Link to={tab.url}>{showLabel(tab.label)}</Link>
+                    <Link to={tab.url}>{tab.label}</Link>
                   </Tab>
                 );
               }
