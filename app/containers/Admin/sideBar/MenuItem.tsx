@@ -77,6 +77,17 @@ const MenuItemLink = styled(Link) `
         fill: ${colors.clIconPrimary};
       }
     }
+
+    &.moderation {
+      .cl-icon {
+        .cl-icon-primary {
+          fill: ${colors.clIconAccent};
+        }
+        .cl-icon-accent {
+          fill: ${colors.clIconAccent};
+        }
+      }
+    }
   }
 
   ${media.smallerThan1200px`
@@ -102,7 +113,7 @@ export default ({ route }: Props) => {
   const pathname = location.pathname;
   return (
     <HasPermission action="access" item={{ type: 'route', path: route.link }}>
-      <MenuItemLink activeClassName="active" className={`${route.isActive(pathname) ? 'selected' : ''}`} to={route.link}>
+      <MenuItemLink activeClassName="active" className={`${route.iconName} ${route.isActive(pathname) ? 'selected' : ''}`} to={route.link}>
         <IconWrapper><Icon name={route.iconName} /></IconWrapper>
         <Text>
           <FormattedMessage {...messages[route.message]} />

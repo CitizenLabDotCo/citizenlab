@@ -199,7 +199,10 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     const { isAdmin } = this.state;
 
     return (
-      <tr key={user.id} className="e2e-user-table-row">
+      <tr
+        key={user.id}
+        className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
+      >
         <td>
           <StyledCheckbox
             checked={selected}

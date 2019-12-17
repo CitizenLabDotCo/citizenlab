@@ -88,7 +88,18 @@ const Container = styled.div`
   }
 `;
 
-export interface Props {
+/**
+ * If we have a label, an id is required. Otherwise id is optional.
+ */
+type LabelProps = {
+  label: string | JSX.Element | null,
+  id: string
+} | {
+  label?: undefined,
+  id?: string | undefined
+};
+
+export type Props = LabelProps & {
   onChange?: {(event): void};
   currentValue?: any;
   value: any;
@@ -99,12 +110,11 @@ export interface Props {
    * of the second question. See PollForm.tsx for a good example.
    */
   name: string | undefined;
-  id?: string | undefined;
-  label?: string | JSX.Element;
   disabled?: boolean;
   buttonColor?: string | undefined;
   className?: string;
-}
+  isRequired?: boolean;
+};
 
 interface State {
   inputFocused: boolean;
@@ -119,18 +129,20 @@ export default class Radio extends PureComponent<Props, State> {
     };
   }
 
-  handleOnClick = (event: React.MouseEvent) => {
-    if (!this.props.disabled && this.props.onChange) {
+  handleOnChange = (event: React.FormEvent) => {
+    const { onChange, value, disabled } = this.props;
+
+    if (!disabled && onChange) {
       const targetElement = get(event, 'target') as any;
       const parentElement = get(event, 'target.parentElement');
       const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
       const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
 
       if (!targetElementIsLink && !parentElementIsLink) {
-        event && event.preventDefault();
-        this.props.onChange(this.props.value);
+        onChange(value);
       }
     }
+
   }
 
   handleOnFocus = () => {
@@ -141,19 +153,23 @@ export default class Radio extends PureComponent<Props, State> {
     this.setState({ inputFocused: false });
   }
 
-  removeFocus = (event: React.FormEvent) => {
-    event.preventDefault();
-  }
-
   render() {
-    const { id, name, value, currentValue, disabled, buttonColor, label, className } = this.props;
+    const {
+      id,
+      name,
+      value,
+      currentValue,
+      disabled,
+      buttonColor,
+      label,
+      className,
+      isRequired
+    } = this.props;
     const { inputFocused } = this.state;
     const checked = (value === currentValue);
 
     return (
       <Container
-        onMouseDown={this.removeFocus}
-        onClick={this.handleOnClick}
         className={`${className} ${disabled ? 'disabled' : 'enabled'}`}
       >
         <Input
@@ -161,18 +177,27 @@ export default class Radio extends PureComponent<Props, State> {
           type="radio"
           name={name}
           value={value}
-          defaultChecked={checked}
+          checked={checked}
+          aria-checked={checked}
           onFocus={this.handleOnFocus}
           onBlur={this.handleOnBlur}
+          onChange={this.handleOnChange}
+          required={isRequired}
         />
 
-        <CustomRadio className={`${inputFocused ? 'focused' : ''} ${checked ? 'checked' : ''} ${disabled ? 'disabled' : 'enabled'} circle`}>
-          {checked && <Checked aria-hidden color={buttonColor || '#49B47D'}/>}
-        </CustomRadio>
-
-        {label &&
-          <Label htmlFor={id} className={`text ${disabled ? 'disabled' : 'enabled'}`}>{label}</Label>
-        }
+        <Label htmlFor={id} className={`text ${disabled ? 'disabled' : 'enabled'}`}>
+          <CustomRadio
+            className={
+              `${inputFocused ? 'focused' : ''}
+              ${checked ? 'checked' : ''}
+              ${disabled ? 'disabled' : 'enabled'}
+              circle`
+            }
+          >
+            {checked && <Checked aria-hidden color={buttonColor || '#49B47D'}/>}
+          </CustomRadio>
+          {label}
+        </Label>
       </Container>
     );
   }

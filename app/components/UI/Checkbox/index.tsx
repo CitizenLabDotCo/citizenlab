@@ -20,10 +20,10 @@ const Container = styled.div<{ size: string }>`
   }
 
   &.disabled {
+    cursor: not-allowed;
     label {
       cursor: not-allowed;
     }
-    cursor: not-allowed;
   }
 `;
 
@@ -118,27 +118,31 @@ export default class Checkbox extends PureComponent<Props, State> {
 
   handleOnClick = (event: React.MouseEvent) => {
     const { disabled } = this.props;
-    const targetElement = get(event, 'target') as any;
-    const parentElement = get(event, 'target.parentElement');
-    const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
-    const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+    if (!disabled) {
+      const targetElement = get(event, 'target') as any;
+      const parentElement = get(event, 'target.parentElement');
+      const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
+      const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
 
-    if (!targetElementIsLink && !parentElementIsLink && !disabled) {
-      event && event.preventDefault();
-      this.props.onChange(event);
+      if (!targetElementIsLink && !parentElementIsLink) {
+        event && event.preventDefault();
+        this.props.onChange(event);
+      }
     }
   }
 
   handleOnKeyDown = (event: React.KeyboardEvent) => {
     const { disabled } = this.props;
-    const targetElement = get(event, 'target') as any;
-    const parentElement = get(event, 'target.parentElement');
-    const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
-    const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+    if (!disabled) {
+      const targetElement = get(event, 'target') as any;
+      const parentElement = get(event, 'target.parentElement');
+      const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
+      const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
 
-    if (!targetElementIsLink && !parentElementIsLink && event.key === 'Enter' && !disabled) {
-      event && event.preventDefault();
-      this.props.onChange(event);
+      if (!targetElementIsLink && !parentElementIsLink && event.key === 'Enter') {
+        event && event.preventDefault();
+        this.props.onChange(event);
+      }
     }
   }
 
@@ -157,6 +161,7 @@ export default class Checkbox extends PureComponent<Props, State> {
   render() {
     const { label, size, checked, className, notFocusable, id, disabled } = this.props;
     const { inputFocused } = this.state;
+
     return (
       <Container
         size={size as string}

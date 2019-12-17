@@ -273,7 +273,8 @@ const ProgressBarOverlay: any = styled.div`
 `;
 
 const ProjectLabel = styled.div`
-  color: ${({ theme }) => theme.colorSecondary};
+  // darkened to have higher chances of solid color contrast
+  color: ${({ theme }) => darken(0.05, theme.colorSecondary)};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   text-align: center;
@@ -674,7 +675,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
   phase: ({ project, render }) => <GetPhase id={get(project, 'relationships.current_phase.data.id')}>{render}</GetPhase>
 });

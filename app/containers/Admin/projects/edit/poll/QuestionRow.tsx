@@ -2,32 +2,25 @@
 import React from 'react';
 
 // Services & Resources
-import { isNilOrError } from 'utils/helperUtils';
 import { IPollQuestion } from 'services/pollQuestions';
-import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptions';
 
 // Components
 import Button from 'components/UI/Button';
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
-import IconTooltip from 'components/UI/IconTooltip';
 
 import T from 'components/T';
 
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // Inline block so the button acts as a character and is stuck to the end of the title to make it clear it will edit the title text
 const EditTitleButton = styled(Button)`
   display: inline-block;
 `;
 
-const NoOptionsIndicator = styled(TextCell)`
-  color: ${colors.clRed};
-`;
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import WrongOptionsIndicator from './WrongOptionsIndicator';
 
 const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOptions, handleDropRow, handleDragRow }: {
   question: IPollQuestion,
@@ -60,14 +53,7 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
         />
       </TextCell>
 
-      <GetPollOptions questionId={question.id} >
-        {(options: GetPollOptionsChildProps) => !isNilOrError(options) && options.length === 0 ? (
-          <NoOptionsIndicator>
-            <IconTooltip content={<FormattedMessage {...messages.noOptionsTooltip} />} />
-            <FormattedMessage {...messages.noOptions} />
-          </NoOptionsIndicator>
-        ) : null}
-      </GetPollOptions>
+      <WrongOptionsIndicator questionId={question.id}/>
 
       <Button
         className="e2e-delete-question"

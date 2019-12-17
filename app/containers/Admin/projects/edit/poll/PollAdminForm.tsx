@@ -3,7 +3,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { isEqual, clone } from 'lodash-es';
-import styled  from 'styled-components';
+import styled from 'styled-components';
 
 // Services / Data loading
 import { addPollQuestion, deletePollQuestion, updatePollQuestion, reorderPollQuestion, IPollQuestion } from 'services/pollQuestions';
@@ -135,7 +135,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
 
   saveEditingQuestion = () => {
     const { editingQuestionTitle, editingQuestionId } = this.state;
-    editingQuestionId && updatePollQuestion(editingQuestionId, editingQuestionTitle).then(() => {
+    editingQuestionId && updatePollQuestion(editingQuestionId, { title_multiloc: editingQuestionTitle }).then(() => {
       this.setState({ editingQuestionId: null, editingQuestionTitle: {} });
     });
   }

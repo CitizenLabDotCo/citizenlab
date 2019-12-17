@@ -4,6 +4,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { tap, filter, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import moment from 'moment';
 import bowser from 'bowser';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -30,15 +31,15 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 // style
 import styled, { css } from 'styled-components';
 import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { darken, rgba } from 'polished';
 
 // typings
 import { Locale } from 'typings';
 
 const padding = 30;
 const mobilePadding = 15;
-const greyTransparent = 'rgba(116, 116, 116, 0.3)';
 const greyOpaque = `${colors.label}`;
-const greenTransparent = 'rgba(4, 136, 76, 0.3)';
+const greenTransparent = `${rgba(colors.clGreen, 0.15)}`;
 const greenOpaque = `${colors.clGreen}`;
 
 const Container = styled.div`
@@ -273,13 +274,13 @@ const phaseBarHeight = '25px';
 const PhaseBar: any = styled.button`
   width: 100%;
   height: calc( ${phaseBarHeight} - 1px );
-  color: #fff;
+  color: ${greyOpaque};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${greyTransparent};
+  background: ${colors.lightGreyishBlue};
   transition: background 60ms ease-out;
   position: relative;
   cursor: pointer;
@@ -305,7 +306,7 @@ const PhaseArrow = styled(Icon)`
 `;
 
 const PhaseText: any = styled.div`
-  color: ${greyTransparent};
+  color: ${greyOpaque};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-align: center;
@@ -323,17 +324,28 @@ const PhaseText: any = styled.div`
 `;
 
 const selectedPhaseBar = css`
-  ${PhaseBar} { background: ${greyOpaque}; }
+  ${PhaseBar} {
+    background: ${greyOpaque};
+    color: #fff
+  }
   ${PhaseText} { color: ${greyOpaque}; }
 `;
 
 const currentPhaseBar = css`
-  ${PhaseBar} { background: ${greenTransparent}; }
-  ${PhaseText} { color: ${greenTransparent}; }
+  ${PhaseBar} {
+    background: ${greenTransparent};
+    color: ${darken(0.04, greenOpaque)};
+  }
+  ${PhaseText} {
+    color: ${darken(0.04, greenOpaque)};
+  }
 `;
 
 const currentSelectedPhaseBar = css`
-  ${PhaseBar} { background: ${greenOpaque}; }
+  ${PhaseBar} {
+    background: ${greenOpaque};
+    color: #fff;
+  }
   ${PhaseText} { color: ${greenOpaque}; }
 `;
 
@@ -396,7 +408,7 @@ interface State {
   loaded: boolean;
 }
 
-class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
+class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   initialState: State;
   projectId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -468,6 +480,17 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
 
   getDefaultSelectedPhase(currentPhase: ISelectedPhase, phases: IPhases | null) {
     let selectedPhase: ISelectedPhase = null;
+    const { location } = this.props;
+
+    // if, coming from the siteMap, a phase url parameter was passed in, we pick that phase as the default phase,
+    // then remove the param so that when the user navigates to other phases there is no mismatch
+    if (location.query.phase && typeof location.query.phase === 'string') {
+      const phase = phases ? phases.data.find(phase => phase.id === location.query.phase) : null;
+      if (phase) {
+        window.history.replaceState(null, '', location.pathname);
+        return phase;
+      }
+    }
 
     if (isString(currentPhase)) {
       selectedPhase = currentPhase;
@@ -619,6 +642,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                     <IdeaButtonDesktop
                       projectId={this.props.projectId}
                       phaseId={selectedPhaseId}
+                      participationContextType="phase"
                     />
 
                     <PhaseNavigation>
@@ -720,4 +744,4 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(Timeline);
+export default withRouter<Props>(injectIntl<Props & WithRouterProps>(Timeline));

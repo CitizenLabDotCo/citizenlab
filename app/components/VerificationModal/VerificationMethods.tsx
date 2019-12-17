@@ -1,6 +1,5 @@
 import React, { memo, useCallback, Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { AUTH_PATH } from 'containers/App/constants';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -14,9 +13,6 @@ import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
 import useVerificationMethods from 'hooks/useVerificationMethods';
 
-// services
-import { getJwt } from 'utils/auth/jwt';
-
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -27,8 +23,8 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // typings
-import { VerificationMethodNames } from 'services/verificationMethods';
-import { ProjectContext } from './VerificationModal';
+import { IVerificationMethod } from 'services/verificationMethods';
+import { ContextShape } from './VerificationModal';
 
 const Container = styled.div`
   width: 100%;
@@ -118,6 +114,9 @@ const ContextItem = styled.span`
   ${media.largePhone`
     white-space: normal;
   `}
+  &:first-letter {
+    text-transform: capitalize
+  }
 `;
 
 const Or = styled.span`
@@ -161,8 +160,8 @@ const MethodButton = styled(Button)`
 `;
 
 interface Props {
-  context: ProjectContext | null;
-  onMethodSelected: (selectedMethod: VerificationMethodNames) => void;
+  context: ContextShape | null;
+  onMethodSelected: (selectedMethod: IVerificationMethod) => void;
   className?: string;
   theme: any;
 }
@@ -175,36 +174,9 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
   const authUser = useAuthUser();
   const verificationMethods = useVerificationMethods();
 
-  const onVerifyCowButtonClick = useCallback(() => {
-    onMethodSelected('cow');
+  const onSelectMethodButtonClick = useCallback((method) => () => {
+    onMethodSelected(method);
   }, []);
-
-  const onVerifyBogusButtonClick = useCallback(() => {
-    onMethodSelected('bogus');
-  }, []);
-
-  const onVerifyBOSAButtonClick = useCallback(() => {
-    const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${window.location.pathname}`;
-  }, []);
-
-  let showCOWButton = false;
-  let showBogusButton = false;
-  let showBOSAButton = false;
-
-  if (!isNilOrError(verificationMethods) && verificationMethods.data && verificationMethods.data.length > 0) {
-    verificationMethods.data.forEach((item) => {
-      if (item.attributes.name === 'cow') {
-        showCOWButton = true;
-      }
-      if (item.attributes.name === 'bogus') {
-        showBogusButton = true;
-      }
-      if (item.attributes.name === 'bosa_fas') {
-        showBOSAButton = true;
-      }
-    });
-  }
 
   return (
     <Container id="e2e-verification-methods" className={className}>
@@ -212,7 +184,7 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
         <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
         <ShieldIcon name="verify" />
       </AboveTitle>
-      <Title>
+      <Title id="modal-header">
         <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
         {withContext ? <FormattedMessage {...messages.toParticipateInThisProject} /> : <FormattedMessage {...messages.andUnlockYourCitizenPotential} />}
       </Title>
@@ -249,10 +221,11 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
             <FormattedMessage {...messages.verifyNow} />
           </Subtitle>
 
-          {showCOWButton &&
+          {!isNilOrError(verificationMethods) && verificationMethods.data && verificationMethods.data.length > 0 && verificationMethods.data.map(method => (
             <MethodButton
+              key={method.id}
               icon="verify_manually"
-              onClick={onVerifyCowButtonClick}
+              onClick={onSelectMethodButtonClick(method)}
               fullWidth={true}
               size="1"
               justify="left"
@@ -267,58 +240,18 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
               borderHoverColor={darken(0.2, '#e3e3e3')}
               boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
               boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+              id={`e2e-${method.attributes.name}-button`}
             >
-              <FormattedMessage {...messages.verifyCow} />
+              {method.attributes.name === 'cow' ? (
+                <FormattedMessage {...messages.verifyCow} />
+              ) : method.attributes.name === 'bogus' ?
+                  'Bogus verification (testing)'
+                  : method.attributes.name === 'id_card_lookup' ? (
+                    <T value={method.attributes.method_name_multiloc} />
+                  ) : null
+              }
             </MethodButton>
-          }
-
-          {showBOSAButton &&
-            <MethodButton
-              icon="verify_manually"
-              onClick={onVerifyBOSAButtonClick}
-              fullWidth={true}
-              size="1"
-              justify="left"
-              padding="14px 20px"
-              bgColor="#fff"
-              bgHoverColor="#fff"
-              iconColor={theme.colorMain}
-              iconHoverColor={darken(0.2, theme.colorMain)}
-              textColor={theme.colorText}
-              textHoverColor={darken(0.2, theme.colorText)}
-              borderColor="#e3e3e3"
-              borderHoverColor={darken(0.2, '#e3e3e3')}
-              boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
-              boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
-            >
-              <FormattedMessage {...messages.verifyBOSA} />
-            </MethodButton>
-          }
-
-          {showBogusButton &&
-            <MethodButton
-              id="e2e-bogus-button"
-              icon="verify_manually"
-              onClick={onVerifyBogusButtonClick}
-              fullWidth={true}
-              size="1"
-              justify="left"
-              padding="14px 20px"
-              bgColor="#fff"
-              iconColor={theme.colorMain}
-              iconHoverColor={darken(0.2, theme.colorMain)}
-              bgHoverColor="#fff"
-              textColor={theme.colorText}
-              textHoverColor={darken(0.2, theme.colorText)}
-              borderColor="#e3e3e3"
-              borderHoverColor={darken(0.2, '#e3e3e3')}
-              boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
-              boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
-              overflowEllipsis
-            >
-              Bogus verification (testing)
-            </MethodButton>
-          }
+          ))}
         </ButtonsContainer>
       </Content>
     </Container>
