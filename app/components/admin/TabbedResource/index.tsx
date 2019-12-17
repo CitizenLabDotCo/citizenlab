@@ -132,7 +132,7 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
       <>
         <ResourceHeader className="e2e-resource-header">
           <div>
-            <Title>{title}}</Title>
+            <Title>{title}</Title>
             {subtitle &&
               <SectionSubtitle>
                 {subtitle}
