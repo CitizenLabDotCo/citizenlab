@@ -13,10 +13,16 @@ import T from 'components/T';
 
 // styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
 // typings
 import { IModeration } from 'services/moderations';
 import { Multiloc } from 'typings';
+
+const Container = styled.tr<{ bgColor: string }>`
+  background: ${({ bgColor }) => bgColor};
+`;
 
 const StyledCheckbox = styled(Checkbox)`
   margin-top: -4px;
@@ -28,23 +34,42 @@ const ContextType = styled.span`
 
 interface Props {
   moderation: IModeration;
+  selected: boolean;
+  onSelect: (moderationId: string) => void;
   className?: string;
 }
 
-const ModerationRow = memo<Props>(({ moderation, className }) => {
+const ModerationRow = memo<Props>(({ moderation, selected, onSelect, className }) => {
   const context = omitBy(moderation.attributes.context_multiloc, (value) => isNil(value) || isEmpty(value)) as Multiloc;
   const contextType = moderation.attributes?.context_type;
   const content = omitBy(moderation.attributes.content_multiloc, (value) => isNil(value) || isEmpty(value)) as Multiloc;
   const contentType = moderation.attributes?.moderatable_type;
 
-  const handleOnChecked = useCallback((moderationId: string) => (event: React.MouseEvent | React.KeyboardEvent) => {
-    // empty
-  }, []);
+  let bgColor = '#fff';
+
+  if (moderation?.attributes?.moderation_status === 'read') {
+    bgColor = colors.background;
+  }
+
+  if (selected) {
+    bgColor = rgba(colors.adminTextColor, 0.1);
+  }
+
+  const handleOnChecked = useCallback((event: React.MouseEvent | React.KeyboardEvent) => {
+    event.preventDefault();
+    onSelect(moderation.id);
+  }, [onSelect]);
 
   return (
-    <tr className={className}>
-      <td>
-        <StyledCheckbox checked={false} onChange={handleOnChecked(moderation.id)} />
+    <Container
+      className={className}
+      bgColor={bgColor}
+    >
+      <td className="checkbox">
+        <StyledCheckbox
+          checked={selected}
+          onChange={handleOnChecked}
+        />
       </td>
       <td className="date">
         {moment(moderation.attributes.created_at).format('L')} {moment(moderation.attributes.created_at).format('LT')}
@@ -69,7 +94,7 @@ const ModerationRow = memo<Props>(({ moderation, className }) => {
       <td className="content">
         <ModerationContentCell content={content} />
       </td>
-    </tr>
+    </Container>
   );
 });
 

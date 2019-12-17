@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { distinctUntilChanged, switchMap, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { moderationsStream, IModeration, TModerationStatuses } from 'services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
@@ -12,7 +12,7 @@ interface InputProps {
   moderationStatus?: TModerationStatuses;
 }
 
-export default function useModerations({ pageNumber = 1, pageSize = 12, moderationStatus = 'unread' } : InputProps = {}) {
+export default function useModerations({ pageNumber = 1, pageSize = 12, moderationStatus = undefined } : InputProps = {}) {
   const pageNumber$ = new BehaviorSubject(pageNumber);
   const pageSize$ = new BehaviorSubject(pageSize);
   const moderationStatus$ = new BehaviorSubject(moderationStatus);
@@ -33,7 +33,7 @@ export default function useModerations({ pageNumber = 1, pageSize = 12, moderati
   }, []);
 
   const onModerationStatusChange = useCallback((moderationStatus: TModerationStatuses) => {
-    moderationStatus$.next(moderationStatus);
+    moderationStatus$.next((moderationStatus === 'read' || moderationStatus === 'unread') ? moderationStatus : undefined);
   }, []);
 
   useEffect(() => {

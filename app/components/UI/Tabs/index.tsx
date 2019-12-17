@@ -3,10 +3,13 @@ import React, { memo, useCallback, MouseEvent } from 'react';
 // components
 import Icon, { IconNames } from 'components/UI/Icon';
 
+// utils
+import { isPage } from 'utils/helperUtils';
+
 // styling
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { rgba, darken } from 'polished';
+import { darken, rgba } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -17,12 +20,11 @@ const TabIcon = styled(Icon)`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
-  fill: ${darken(0.1, colors.clIconSecondary)};
   margin-left: 10px;
 `;
 
-const Tab = styled.button`
-  color: ${colors.adminTextColor};
+const Tab = styled.button<{ activeTabColor: string }>`
+  color: ${({ activeTabColor }) => activeTabColor};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;
@@ -30,20 +32,20 @@ const Tab = styled.button`
   align-items: center;
   margin: 0;
   margin-left: -1px;
-  padding: 1rem 1.6rem;
+  padding: 12px 18px;
   background: #fff;
-  border: solid 1px ${colors.adminTextColor};
+  border: solid 1px ${({ activeTabColor }) => activeTabColor};
   cursor: pointer;
   transition: all 80ms ease-out;
 
   ${TabIcon} {
-    fill: ${colors.adminTextColor};
+    fill: ${({ activeTabColor }) => activeTabColor};
   }
 
   &.active {
     color: #fff;
     z-index: 1;
-    background: ${colors.adminTextColor};
+    background: ${({ activeTabColor }) => activeTabColor};
 
     ${TabIcon} {
       fill: #fff;
@@ -62,7 +64,7 @@ const Tab = styled.button`
 
   &:not(.active):hover,
   &:not(.active):focus {
-    background: ${colors.lightGreyishBlue};
+    background: ${({ activeTabColor }) => rgba(activeTabColor, 0.1)};
     z-index: 1;
   }
 
@@ -86,11 +88,13 @@ export interface ITabItem {
 interface Props {
   items: ITabItem[];
   selectedValue: string;
+  activeTabColor?: string;
   className?: string;
   onClick: (itemName: string) => void;
+  theme: any;
 }
 
-const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
+const Tabs = memo<Props>(({ items, selectedValue, activeTabColor, onClick, theme, className }) => {
 
   const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -102,7 +106,10 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
   }, []);
 
   return (
-    <Container className={className} role="tablist">
+    <Container
+      className={className}
+      role="tablist"
+    >
       {items.map((item: ITabItem, index) =>
         <Tab
           id={item.value}
@@ -114,6 +121,7 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
           onMouseDown={removeFocus}
           onClick={handleTabOnClick}
           data-itemvalue={item.value}
+          activeTabColor={activeTabColor || (isPage('admin', location.pathname) ? colors.adminTextColor : theme.colorText)}
         >
           <TabText>{item.label}</TabText>
           {item.icon && <TabIcon name={item.icon} />}
@@ -123,4 +131,4 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
   );
 });
 
-export default Tabs;
+export default withTheme(Tabs);
