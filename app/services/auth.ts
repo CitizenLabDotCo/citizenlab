@@ -17,8 +17,16 @@ export function authUserStream() {
   return streams.get<IUser | null>({ apiEndpoint: authApiEndpoint });
 }
 
+export interface ILockedField {
+  type: 'locked_attribute';
+  id: string;
+  attributes: {
+    name: 'first_name' | 'last_name' | 'email' | 'gender' | 'birthyear';
+  };
+}
+
 export function lockedFieldsStream() {
-  return streams.get({ apiEndpoint: `${authApiEndpoint}/locked_attributes` });
+  return streams.get<{ data: ILockedField[]}>({ apiEndpoint: `${authApiEndpoint}/locked_attributes` });
 }
 
 export async function signIn(email: string, password: string) {
